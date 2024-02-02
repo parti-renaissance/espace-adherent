@@ -917,7 +917,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         bool $exclusiveMembership = false,
         bool $territoiresProgresMembership = false,
         bool $agirMembership = false,
-        \DateTime $registeredAt = null
+        ?\DateTime $registeredAt = null
     ): self {
         $adherent = new self();
 
@@ -947,18 +947,18 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         ?string $gender,
         string $firstName,
         string $lastName,
-        \DateTimeInterface $birthDate = null,
-        string $position = null,
-        PostAddress $postAddress = null,
-        PhoneNumber $phone = null,
-        string $nickname = null,
+        ?\DateTimeInterface $birthDate = null,
+        ?string $position = null,
+        ?PostAddress $postAddress = null,
+        ?PhoneNumber $phone = null,
+        ?string $nickname = null,
         bool $nicknameUsed = false,
         string $status = self::DISABLED,
         string $registeredAt = 'now',
         ?array $referentTags = [],
         ?array $mandates = [],
-        string $nationality = null,
-        string $customGender = null
+        ?string $nationality = null,
+        ?string $customGender = null
     ): self {
         $adherent = new self();
 
@@ -1260,7 +1260,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->phone;
     }
 
-    public function setPhone(PhoneNumber $phone = null): void
+    public function setPhone(?PhoneNumber $phone = null): void
     {
         $this->phone = $phone;
     }
@@ -1320,7 +1320,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->birthdate ? $this->birthdate->diff(new \DateTime())->y : null;
     }
 
-    public function isMinor(\DateTime $date = null): bool
+    public function isMinor(?\DateTime $date = null): bool
     {
         return null === $this->birthdate || $this->birthdate->diff($date ?? new \DateTime())->y < 18;
     }
@@ -1619,7 +1619,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     public function hostCommittee(
         Committee $committee,
-        \DateTimeInterface $subscriptionDate = null
+        ?\DateTimeInterface $subscriptionDate = null
     ): CommitteeMembership {
         return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_HOST, $subscriptionDate ?? new \DateTime());
     }
@@ -1629,8 +1629,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     public function followCommittee(
         Committee $committee,
-        \DateTimeInterface $subscriptionDate = null,
-        CommitteeMembershipTriggerEnum $trigger = null
+        ?\DateTimeInterface $subscriptionDate = null,
+        ?CommitteeMembershipTriggerEnum $trigger = null
     ): CommitteeMembership {
         return $this->joinCommittee(
             $committee,
@@ -1644,7 +1644,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         Committee $committee,
         string $privilege,
         \DateTimeInterface $subscriptionDate,
-        CommitteeMembershipTriggerEnum $trigger = null
+        ?CommitteeMembershipTriggerEnum $trigger = null
     ): CommitteeMembership {
         $committee->updateMembersCount(true, $this->isRenaissanceUser(), $this->isRenaissanceAdherent());
 
@@ -1737,7 +1737,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->procurationManagedArea;
     }
 
-    public function setProcurationManagedArea(ProcurationManagedArea $procurationManagedArea = null): void
+    public function setProcurationManagedArea(?ProcurationManagedArea $procurationManagedArea = null): void
     {
         $this->procurationManagedArea = $procurationManagedArea;
     }
@@ -1747,7 +1747,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->assessorManagedArea;
     }
 
-    public function setAssessorManagedArea(AssessorManagedArea $assessorManagedArea = null): void
+    public function setAssessorManagedArea(?AssessorManagedArea $assessorManagedArea = null): void
     {
         $this->assessorManagedArea = $assessorManagedArea;
     }
@@ -1813,7 +1813,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->zoneBasedRoles->removeElement($role);
     }
 
-    public function setReferent(array $tags, string $markerLatitude = null, string $markerLongitude = null): void
+    public function setReferent(array $tags, ?string $markerLatitude = null, ?string $markerLongitude = null): void
     {
         $this->managedArea = new ReferentManagedArea($tags, $markerLatitude, $markerLongitude);
     }
@@ -1988,7 +1988,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->procurationManagedArea->getCodesAsString();
     }
 
-    public function setProcurationManagedAreaCodesAsString(string $codes = null): void
+    public function setProcurationManagedAreaCodesAsString(?string $codes = null): void
     {
         if (!$this->procurationManagedArea) {
             $this->procurationManagedArea = new ProcurationManagedArea();
@@ -2006,7 +2006,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->assessorManagedArea->getCodesAsString();
     }
 
-    public function setAssessorManagedAreaCodesAsString(string $codes = null): void
+    public function setAssessorManagedAreaCodesAsString(?string $codes = null): void
     {
         if (!$this->assessorManagedArea) {
             $this->assessorManagedArea = new AssessorManagedArea();
@@ -2025,7 +2025,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->jecouteManagedArea;
     }
 
-    public function setJecouteManagedZone(Zone $zone = null): void
+    public function setJecouteManagedZone(?Zone $zone = null): void
     {
         if (!$this->jecouteManagedArea) {
             $this->jecouteManagedArea = new JecouteManagedArea();
@@ -2091,7 +2091,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $membership->isHostMember();
     }
 
-    public function isSupervisor(bool $isProvisional = null): bool
+    public function isSupervisor(?bool $isProvisional = null): bool
     {
         return $this->getSupervisorMandates($isProvisional)->count() > 0;
     }
@@ -2109,7 +2109,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->animatorCommittees->toArray();
     }
 
-    public function isSupervisorOf(Committee $committee, bool $isProvisional = null): bool
+    public function isSupervisorOf(Committee $committee, ?bool $isProvisional = null): bool
     {
         return $this->adherentMandates->filter(static function (AdherentMandateInterface $mandate) use ($committee, $isProvisional) {
             return $mandate instanceof CommitteeAdherentMandate
@@ -2286,7 +2286,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->media;
     }
 
-    public function setMedia(Media $media = null): void
+    public function setMedia(?Media $media = null): void
     {
         $this->media = $media;
     }
@@ -2577,7 +2577,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         });
     }
 
-    public function hasDelegatedFromUser(self $delegator, string $access = null): bool
+    public function hasDelegatedFromUser(self $delegator, ?string $access = null): bool
     {
         /** @var DelegatedAccess $delegatedAccess */
         foreach ($this->getReceivedDelegatedAccesses() as $delegatedAccess) {
@@ -2954,7 +2954,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         })->toArray();
     }
 
-    public function findTerritorialCouncilMandates(string $quality = null, bool $active = false): array
+    public function findTerritorialCouncilMandates(?string $quality = null, bool $active = false): array
     {
         return $this->adherentMandates->filter(function (AdherentMandateInterface $mandate) use ($quality, $active) {
             return $mandate instanceof TerritorialCouncilAdherentMandate
@@ -2997,7 +2997,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /** @return CommitteeAdherentMandate[]|Collection */
-    public function getSupervisorMandates(bool $isProvisional = null, string $gender = null): Collection
+    public function getSupervisorMandates(?bool $isProvisional = null, ?string $gender = null): Collection
     {
         return $this->adherentMandates->filter(static function (AdherentMandateInterface $mandate) use ($gender, $isProvisional) {
             return $mandate instanceof CommitteeAdherentMandate
@@ -3039,7 +3039,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->isRenaissanceUser() && $this->hasTag(TagEnum::SYMPATHISANT);
     }
 
-    public function addInstanceQuality($quality, \DateTime $data = null): AdherentInstanceQuality
+    public function addInstanceQuality($quality, ?\DateTime $data = null): AdherentInstanceQuality
     {
         if ($quality instanceof InstanceQuality) {
             if ($adherentInstanceQuality = $this->findInstanceQuality($quality)) {
@@ -3189,7 +3189,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->activismZone;
     }
 
-    public function donatedForMembership(\DateTimeInterface $donatedAt = null): void
+    public function donatedForMembership(?\DateTimeInterface $donatedAt = null): void
     {
         if (!$donatedAt) {
             $donatedAt = new \DateTime('now');

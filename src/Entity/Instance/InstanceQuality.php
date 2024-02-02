@@ -45,7 +45,7 @@ class InstanceQuality
      */
     private $custom;
 
-    public function __construct(string $code, array $scopes, bool $custom = true, UuidInterface $uuid = null)
+    public function __construct(string $code, array $scopes, bool $custom = true, ?UuidInterface $uuid = null)
     {
         $this->code = $code;
         $this->scopes = $scopes;

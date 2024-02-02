@@ -120,12 +120,12 @@ class MailchimpSyncAllMembershipsCommand extends Command
         return self::SUCCESS;
     }
 
-    private function buildPaginator(string $type, int $objectId = null): Paginator
+    private function buildPaginator(string $type, ?int $objectId = null): Paginator
     {
         return new Paginator($this->getQueryBuilder($type, $objectId)->getQuery());
     }
 
-    private function getQueryBuilder(string $type, int $objectId = null): QueryBuilder
+    private function getQueryBuilder(string $type, ?int $objectId = null): QueryBuilder
     {
         $qb = null;
 

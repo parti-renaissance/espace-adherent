@@ -49,9 +49,9 @@ class LoadHeaderBlockData extends Fixture
     private function createHeaderBlock(
         string $name,
         string $prefix,
-        string $slogan = null,
-        string $content = null,
-        \DateTime $deadlineDate = null,
+        ?string $slogan = null,
+        ?string $content = null,
+        ?\DateTime $deadlineDate = null,
         bool $withImage = false
     ): HeaderBlock {
         $headerBlock = new HeaderBlock($name, $prefix, $slogan, $content, $deadlineDate);

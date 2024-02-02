@@ -46,7 +46,7 @@ class ReferentManagedArea
      */
     private $markerLongitude;
 
-    public function __construct(array $tags = [], string $latitude = null, string $longitude = null)
+    public function __construct(array $tags = [], ?string $latitude = null, ?string $longitude = null)
     {
         $this->markerLatitude = $latitude;
         $this->markerLongitude = $longitude;

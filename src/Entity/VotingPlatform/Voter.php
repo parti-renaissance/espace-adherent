@@ -58,7 +58,7 @@ class Voter
      */
     public bool $isPollVoter = false;
 
-    public function __construct(Adherent $adherent = null)
+    public function __construct(?Adherent $adherent = null)
     {
         $this->adherent = $adherent;
         $this->createdAt = new \DateTime();

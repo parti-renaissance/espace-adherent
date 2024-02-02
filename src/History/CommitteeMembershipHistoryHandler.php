@@ -19,7 +19,7 @@ class CommitteeMembershipHistoryHandler
     public function queryCountByMonth(
         Adherent $referent,
         int $months = 6,
-        StatisticsParametersFilter $filter = null
+        ?StatisticsParametersFilter $filter = null
     ): array {
         $countByMonth = [];
         foreach (range(0, $months - 1) as $monthInterval) {

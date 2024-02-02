@@ -117,7 +117,7 @@ abstract class AbstractEventManagerController extends AbstractController
 
     abstract protected function getSpaceType(): string;
 
-    protected function createEventForm(EventCommand $command, BaseEvent $event = null): FormInterface
+    protected function createEventForm(EventCommand $command, ?BaseEvent $event = null): FormInterface
     {
         return $this->createForm(
             EventCommandType::class,
@@ -132,7 +132,7 @@ abstract class AbstractEventManagerController extends AbstractController
 
     abstract protected function getEventsPaginator(
         Adherent $adherent,
-        string $type = null,
+        ?string $type = null,
         int $page = 1
     ): PaginatorInterface;
 

@@ -12,7 +12,7 @@ abstract class AbstractElectionEntity implements ElectionEntityInterface
     use EntityDesignationTrait;
     use EntityIdentityTrait;
 
-    public function __construct(Designation $designation = null, UuidInterface $uuid = null)
+    public function __construct(?Designation $designation = null, ?UuidInterface $uuid = null)
     {
         $this->designation = $designation;
         $this->uuid = $uuid ?? Uuid::uuid4();

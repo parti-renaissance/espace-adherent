@@ -60,7 +60,7 @@ class AdministrateCommitteeFeedItemVoterTest extends AbstractAdherentVoterTestCa
         return $this->createMock(Committee::class);
     }
 
-    private function getCommitteeFeedMock(Adherent $adherent = null, Committee $committee = null): CommitteeFeedItem
+    private function getCommitteeFeedMock(?Adherent $adherent = null, ?Committee $committee = null): CommitteeFeedItem
     {
         $committeeFeed = $this->createMock(CommitteeFeedItem::class);
         if ($committee) {

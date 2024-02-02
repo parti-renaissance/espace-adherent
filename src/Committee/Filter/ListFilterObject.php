@@ -235,7 +235,7 @@ class ListFilterObject
         return $this->certified;
     }
 
-    public function setCertified(bool $certified = null): void
+    public function setCertified(?bool $certified = null): void
     {
         $this->certified = $certified;
     }

@@ -782,7 +782,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     public function findByTerritorialCouncilAndQuality(
         TerritorialCouncil $territorialCouncil,
         string $quality,
-        Adherent $exceptOf = null
+        ?Adherent $exceptOf = null
     ): ?Adherent {
         $qb = $this->createQueryBuilder('a')
             ->leftJoin('a.territorialCouncilMembership', 'tcm')
@@ -901,7 +901,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
      * Returns whether or not the given adherent is already an host of at least
      * one committee.
      */
-    public function hostCommittee(Adherent $adherent, Committee $committee = null): bool
+    public function hostCommittee(Adherent $adherent, ?Committee $committee = null): bool
     {
         $result = (int) $this->createCommitteeHostsQueryBuilder($committee)
             ->select('COUNT(DISTINCT a.id)')
@@ -944,7 +944,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     }
 
     private function createCommitteeHostsQueryBuilder(
-        Committee $committee = null,
+        ?Committee $committee = null,
         bool $withoutSupervisors = false
     ): QueryBuilder {
         $qb = $this->createQueryBuilder('a');
@@ -1133,7 +1133,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     public function findForPhoningCampaign(
         Campaign $campaign,
-        Adherent $excludedAdherent = null,
+        ?Adherent $excludedAdherent = null,
         int $limit = 10
     ): PaginatorInterface {
         $queryBuilder = $this->createQueryBuilderForAudience($campaign->getAudience())

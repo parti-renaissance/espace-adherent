@@ -158,15 +158,15 @@ class Mooc
     protected $listImage;
 
     public function __construct(
-        string $title = null,
-        string $description = null,
-        string $content = null,
-        string $youtubeId = null,
-        \DateTime $youtubeDuration = null,
-        string $shareTwitterText = null,
-        string $shareFacebookText = null,
-        string $shareEmailSubject = null,
-        string $shareEmailBody = null
+        ?string $title = null,
+        ?string $description = null,
+        ?string $content = null,
+        ?string $youtubeId = null,
+        ?\DateTime $youtubeDuration = null,
+        ?string $shareTwitterText = null,
+        ?string $shareFacebookText = null,
+        ?string $shareEmailSubject = null,
+        ?string $shareEmailBody = null
     ) {
         $this->title = $title;
         $this->description = $description;

@@ -20,7 +20,7 @@ class UnregistrationHandler
         $this->entityManager = $entityManager;
     }
 
-    public function handle(Adherent $adherent, UnregistrationCommand $command = null, string $comment = null): void
+    public function handle(Adherent $adherent, ?UnregistrationCommand $command = null, ?string $comment = null): void
     {
         if ($command) {
             $unregistration = UnregistrationFactory::createFromUnregistrationCommandAndAdherent($command, $adherent);

@@ -70,7 +70,7 @@ class Department
      */
     private $cities;
 
-    public function __construct(Region $region = null, string $name = null, string $label = null, string $code = null)
+    public function __construct(?Region $region = null, ?string $name = null, ?string $label = null, ?string $code = null)
     {
         $this->name = $name;
         $this->label = $label;

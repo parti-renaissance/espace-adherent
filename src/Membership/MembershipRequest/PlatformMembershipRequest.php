@@ -159,7 +159,7 @@ class PlatformMembershipRequest extends AbstractMembershipRequest implements Rec
 
     public static function createWithCaptcha(
         ?string $countryIso,
-        string $recaptchaAnswer = null,
+        ?string $recaptchaAnswer = null,
         bool $asUser = false
     ): self {
         $dto = new self($asUser);

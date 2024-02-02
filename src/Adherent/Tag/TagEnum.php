@@ -96,7 +96,7 @@ class TagEnum extends Enum
         ];
     }
 
-    public static function getAdherentYearTag(int $year = null): string
+    public static function getAdherentYearTag(?int $year = null): string
     {
         return self::ADHERENT.':a_jour_'.($year ?? date('Y'));
     }

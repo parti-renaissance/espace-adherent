@@ -86,7 +86,7 @@ class Contribution
      */
     public ?ElectedRepresentative $electedRepresentative = null;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }

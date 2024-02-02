@@ -107,7 +107,7 @@ class BoardMember
         return $this->adherent;
     }
 
-    public function setAdherent(Adherent $adherent = null)
+    public function setAdherent(?Adherent $adherent = null)
     {
         $this->adherent = $adherent;
     }

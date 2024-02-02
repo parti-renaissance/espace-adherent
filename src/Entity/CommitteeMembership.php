@@ -117,8 +117,8 @@ class CommitteeMembership implements UuidEntityInterface
         Committee $committee,
         Adherent $adherent,
         string $privilege = self::COMMITTEE_FOLLOWER,
-        \DateTimeInterface $subscriptionDate = null,
-        CommitteeMembershipTriggerEnum $trigger = null
+        ?\DateTimeInterface $subscriptionDate = null,
+        ?CommitteeMembershipTriggerEnum $trigger = null
     ) {
         $this->uuid = $uuid;
         $this->committee = $committee;
@@ -161,7 +161,7 @@ class CommitteeMembership implements UuidEntityInterface
         Adherent $adherent,
         string $privilege,
         \DateTimeInterface $subscriptionDate,
-        CommitteeMembershipTriggerEnum $trigger = null
+        ?CommitteeMembershipTriggerEnum $trigger = null
     ): self {
         return new self(
             self::createUuid($adherent->getUuid(), $committee->getUuid()),
@@ -183,7 +183,7 @@ class CommitteeMembership implements UuidEntityInterface
     /**
      * Returns whether or not this membership is a supervisor privileged membership.
      */
-    public function isSupervisor(bool $isProvisional = null): bool
+    public function isSupervisor(?bool $isProvisional = null): bool
     {
         return $this->getAdherent()->isSupervisorOf($this->getCommittee(), $isProvisional);
     }
@@ -332,7 +332,7 @@ class CommitteeMembership implements UuidEntityInterface
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $key);
     }
 
-    public function hasActiveCommitteeCandidacy(bool $confirmed = null): bool
+    public function hasActiveCommitteeCandidacy(?bool $confirmed = null): bool
     {
         foreach ($this->committeeCandidacies as $candidacy) {
             if ($candidacy->isOngoing() && (!$confirmed || $candidacy->isConfirmed())) {

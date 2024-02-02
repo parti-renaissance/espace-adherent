@@ -20,7 +20,7 @@ class CommitteeRuntime implements RuntimeExtensionInterface
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         CommitteeCandidacyRepository $committeeCandidacyRepository,
-        CommitteeManager $committeeManager = null
+        ?CommitteeManager $committeeManager = null
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->committeeCandidacyRepository = $committeeCandidacyRepository;
@@ -82,7 +82,7 @@ class CommitteeRuntime implements RuntimeExtensionInterface
         return $membership && $membership->isVotingCommittee() && $membership->getCommitteeCandidacy($committee->getCommitteeElection());
     }
 
-    public function countCommitteeCandidates(Committee $committee, bool $countMaleOnly = null): int
+    public function countCommitteeCandidates(Committee $committee, ?bool $countMaleOnly = null): int
     {
         $candidacies = $this->committeeCandidacyRepository->findByCommittee($committee, $committee->getCurrentDesignation());
 

@@ -40,8 +40,8 @@ class VoteResultRepository extends ServiceEntityRepository
     public function getResultsForCandidate(
         int $adherentId,
         int $designationId,
-        int $committeeId = null,
-        int $territorialCouncilId = null
+        ?int $committeeId = null,
+        ?int $territorialCouncilId = null
     ): array {
         $qb = $this->createQueryBuilder('vote_result')
             ->select('election_round.id AS election_round_id', 'COUNT(1) AS total')

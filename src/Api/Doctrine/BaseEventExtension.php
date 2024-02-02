@@ -32,7 +32,7 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         array $identifiers,
-        Operation $operation = null,
+        ?Operation $operation = null,
         array $context = []
     ): void {
         if (!is_a($resourceClass, BaseEvent::class, true)) {
@@ -46,7 +46,7 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        Operation $operation = null,
+        ?Operation $operation = null,
         array $context = []
     ): void {
         if (!is_a($resourceClass, BaseEvent::class, true)) {
@@ -105,7 +105,7 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
         }
     }
 
-    private function modifyQuery(QueryBuilder $queryBuilder, array $statuses, string $operationName = null): void
+    private function modifyQuery(QueryBuilder $queryBuilder, array $statuses, ?string $operationName = null): void
     {
         $alias = $queryBuilder->getRootAliases()[0];
 

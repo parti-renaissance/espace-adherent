@@ -63,7 +63,7 @@ class DefaultEventRepository extends EventRepository
         Adherent $organizer,
         int $page = 1,
         int $limit = 50,
-        string $groupCategorySlug = null
+        ?string $groupCategorySlug = null
     ): PaginatorInterface {
         $qb = $this
             ->createQueryBuilder('event')

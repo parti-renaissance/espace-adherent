@@ -68,7 +68,7 @@ class Region
      */
     private $departments;
 
-    public function __construct(string $name = null, string $code = null, string $country = AddressInterface::FRANCE)
+    public function __construct(?string $name = null, ?string $code = null, string $country = AddressInterface::FRANCE)
     {
         $this->name = $name;
         $this->code = $code;

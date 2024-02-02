@@ -45,7 +45,7 @@ class VoteRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findLastForAdherent(Adherent $adherent, \DateTime $threshold = null): ?Vote
+    public function findLastForAdherent(Adherent $adherent, ?\DateTime $threshold = null): ?Vote
     {
         $qb = $this->createQueryBuilder('vote')
             ->innerJoin('vote.voter', 'voter')

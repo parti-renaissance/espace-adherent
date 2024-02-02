@@ -106,7 +106,7 @@ class CampaignRepository extends ServiceEntityRepository
         ;
     }
 
-    public function countCampaignsByVotePlaces(array $votePlaces, Campaign $excludedCampaign = null): int
+    public function countCampaignsByVotePlaces(array $votePlaces, ?Campaign $excludedCampaign = null): int
     {
         $qb = $this->createQueryBuilder('campaign')
             ->select('COUNT(1)')

@@ -53,9 +53,9 @@ abstract class AbstractLoadEventData extends Fixture
     protected function createPostAddress(
         string $street,
         string $cityCode,
-        string $region = null,
-        float $latitude = null,
-        float $longitude = null
+        ?string $region = null,
+        ?float $latitude = null,
+        ?float $longitude = null
     ): AddressInterface {
         [, $inseeCode] = explode('-', $cityCode);
         $city = $this->franceCities->getCityByInseeCode($inseeCode);

@@ -93,11 +93,11 @@ class VotePlace
     public function __construct(
         ?float $latitude,
         ?float $longitude,
-        string $code = null,
+        ?string $code = null,
         int $nbAddresses = 0,
         int $nbVoters = 0,
-        UuidInterface $uuid = null,
-        Zone $zone = null
+        ?UuidInterface $uuid = null,
+        ?Zone $zone = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->latitude = $latitude;

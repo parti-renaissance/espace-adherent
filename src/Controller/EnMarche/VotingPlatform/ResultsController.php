@@ -21,7 +21,7 @@ class ResultsController extends AbstractController
         VoteResultRepository $voteResultRepository,
         Election $election,
         Request $request,
-        ElectionRound $electionRound = null
+        ?ElectionRound $electionRound = null
     ): Response {
         if (!$election->isResultsDisplayable() || !$election->isResultPeriodActive()) {
             return $this->redirect($this->redirectManager->getRedirection($election));

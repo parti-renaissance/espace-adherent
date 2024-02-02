@@ -65,8 +65,8 @@ class EventRegistration
         string $lastName,
         string $emailAddress,
         bool $newsletterSubscriber = false,
-        UuidInterface $adherentUuid = null,
-        string $source = null,
+        ?UuidInterface $adherentUuid = null,
+        ?string $source = null,
         string $createdAt = 'now'
     ) {
         $this->uuid = $uuid;
@@ -120,7 +120,7 @@ class EventRegistration
         return $this->firstName.' '.$this->lastName;
     }
 
-    public function matches(BaseEvent $event, Adherent $adherent = null): bool
+    public function matches(BaseEvent $event, ?Adherent $adherent = null): bool
     {
         if (!$this->event->equals($event)) {
             return false;

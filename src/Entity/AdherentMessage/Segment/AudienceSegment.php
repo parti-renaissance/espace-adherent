@@ -84,7 +84,7 @@ class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
      */
     private $author;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }

@@ -7,7 +7,7 @@ use App\Scope\FeatureEnum;
 
 class DeclaredMandateFilterBuilder extends AbstractAdherentMandateFilterBuilder
 {
-    public function build(string $scope, string $feature = null): array
+    public function build(string $scope, ?string $feature = null): array
     {
         $multiple = FeatureEnum::CONTACTS === $feature;
 

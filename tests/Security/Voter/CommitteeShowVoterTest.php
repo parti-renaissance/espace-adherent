@@ -72,7 +72,7 @@ class CommitteeShowVoterTest extends AbstractAdherentVoterTestCase
     /**
      * @return Committee|MockObject
      */
-    private function getCommitteeMock(bool $approved, bool $withCreator = null): Committee
+    private function getCommitteeMock(bool $approved, ?bool $withCreator = null): Committee
     {
         $group = $this->createMock(Committee::class);
 

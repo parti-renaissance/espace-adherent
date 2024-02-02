@@ -344,7 +344,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     /** @ORM\Column(type="boolean", options={"default": false}) */
     private bool $isCanceled = false;
 
-    public function __construct(string $label = null, UuidInterface $uuid = null)
+    public function __construct(?string $label = null, ?UuidInterface $uuid = null)
     {
         $this->label = $label;
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -461,7 +461,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         $this->voteEndDate = $voteEndDate;
     }
 
-    public function getResultStartDate(\DateTime $voteEndDate = null): \DateTime
+    public function getResultStartDate(?\DateTime $voteEndDate = null): \DateTime
     {
         $date = $voteEndDate ?? $this->voteEndDate;
 

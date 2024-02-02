@@ -120,11 +120,11 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
      * @param Theme[]   $themes
      */
     public function __construct(
-        string $status = null,
+        ?string $status = null,
         array $profiles = [],
         array $themes = [],
-        Manifesto $manifesto = null,
-        string $link = null,
+        ?Manifesto $manifesto = null,
+        ?string $link = null,
         bool $isMajor = false
     ) {
         $this->status = $status;

@@ -51,7 +51,7 @@ class LocalPollRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findOnePublishedByZone(Zone $region, Zone $department = null, string $postalCode = null): ?LocalPoll
+    public function findOnePublishedByZone(Zone $region, ?Zone $department = null, ?string $postalCode = null): ?LocalPoll
     {
         $qb = $this->createQueryBuilder('poll')
             ->select('poll')

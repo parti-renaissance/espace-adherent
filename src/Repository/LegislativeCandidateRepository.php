@@ -30,7 +30,7 @@ class LegislativeCandidateRepository extends ServiceEntityRepository
     /**
      * @return LegislativeCandidate[]
      */
-    public function findAllForDirectory(string $status = null): array
+    public function findAllForDirectory(?string $status = null): array
     {
         $qb = $this->createQueryBuilder('lc');
         $qb

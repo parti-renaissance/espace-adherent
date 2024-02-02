@@ -81,7 +81,7 @@ class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatist
      */
     private Collection $statistics;
 
-    public function __construct(string $name, Building $building, UuidInterface $uuid = null)
+    public function __construct(string $name, Building $building, ?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->name = $name;

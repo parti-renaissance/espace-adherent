@@ -183,7 +183,7 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
      */
     private $published;
 
-    public function __construct(UuidInterface $uuid = null, string $name = null, bool $published = false)
+    public function __construct(?UuidInterface $uuid = null, ?string $name = null, bool $published = false)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->name = $name;

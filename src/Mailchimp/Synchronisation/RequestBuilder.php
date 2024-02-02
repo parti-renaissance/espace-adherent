@@ -220,7 +220,7 @@ class RequestBuilder implements LoggerAwareInterface
         return $this;
     }
 
-    public function setIsCertified(bool $isCertified = null): self
+    public function setIsCertified(?bool $isCertified = null): self
     {
         $this->isCertified = $isCertified;
 
@@ -234,7 +234,7 @@ class RequestBuilder implements LoggerAwareInterface
         return $this;
     }
 
-    public function setIsAdherent(bool $isAdherent = null): self
+    public function setIsAdherent(?bool $isAdherent = null): self
     {
         $this->isAdherent = $isAdherent;
 

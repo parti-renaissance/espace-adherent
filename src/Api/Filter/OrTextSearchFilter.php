@@ -22,7 +22,7 @@ final class OrTextSearchFilter extends AbstractFilter
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        Operation $operation = null,
+        ?Operation $operation = null,
         array $context = []
     ) {
         $property = str_replace(self::PROPERTY_SUFFIX, '', $property);

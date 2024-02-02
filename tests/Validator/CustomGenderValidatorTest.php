@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 class CustomGenderValidatorTest extends ConstraintValidatorTestCase
 {
     #[DataProvider('getGender')]
-    public function testValidation(string $gender, string $customGender = null, int $violation = 0): void
+    public function testValidation(string $gender, ?string $customGender = null, int $violation = 0): void
     {
         $member = new PlatformMembershipRequest();
         $member->gender = $gender;

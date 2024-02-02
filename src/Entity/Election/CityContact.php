@@ -82,13 +82,13 @@ class CityContact
     private $city;
 
     public function __construct(
-        CityCard $city = null,
-        string $name = null,
-        string $function = null,
-        PhoneNumber $phone = null,
-        string $caller = null,
+        ?CityCard $city = null,
+        ?string $name = null,
+        ?string $function = null,
+        ?PhoneNumber $phone = null,
+        ?string $caller = null,
         ?bool $done = false,
-        string $comment = null
+        ?string $comment = null
     ) {
         $this->city = $city;
         $this->name = $name;

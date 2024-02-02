@@ -70,10 +70,10 @@ class TerritorialCouncilMembership implements UuidEntityInterface
     protected $candidacies;
 
     public function __construct(
-        TerritorialCouncil $territorialCouncil = null,
-        Adherent $adherent = null,
-        \DateTime $joinedAt = null,
-        UuidInterface $uuid = null
+        ?TerritorialCouncil $territorialCouncil = null,
+        ?Adherent $adherent = null,
+        ?\DateTime $joinedAt = null,
+        ?UuidInterface $uuid = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->territorialCouncil = $territorialCouncil;
@@ -328,7 +328,7 @@ class TerritorialCouncilMembership implements UuidEntityInterface
         return $this->adherent->getFullName();
     }
 
-    public function hasConfirmedCandidacy(Election $election = null): bool
+    public function hasConfirmedCandidacy(?Election $election = null): bool
     {
         if (!$election) {
             $election = $this->getTerritorialCouncil()->getCurrentElection();

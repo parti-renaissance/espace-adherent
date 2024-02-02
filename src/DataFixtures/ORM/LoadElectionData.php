@@ -207,7 +207,7 @@ class LoadElectionData extends Fixture
         string $label,
         string $description,
         string $date,
-        string $reference = null
+        ?string $reference = null
     ): void {
         $round = new ElectionRound();
         $round->setLabel($label);

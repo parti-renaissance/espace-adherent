@@ -40,8 +40,8 @@ class CandidacyManager
 
     public function updateCandidature(
         CommitteeCandidacy $candidacy,
-        Adherent $adherent = null,
-        Committee $committee = null
+        ?Adherent $adherent = null,
+        ?Committee $committee = null
     ): void {
         // if UPDATE
         if ($candidacy->getId()) {
@@ -125,7 +125,7 @@ class CandidacyManager
     public function updateInvitation(
         CommitteeCandidacyInvitation $invitation,
         CommitteeCandidacy $candidacy,
-        CommitteeMembership $previouslyInvitedMembership = null
+        ?CommitteeMembership $previouslyInvitedMembership = null
     ): void {
         $invitation->resetStatus();
 

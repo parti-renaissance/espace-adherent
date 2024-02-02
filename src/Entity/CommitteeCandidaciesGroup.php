@@ -93,7 +93,7 @@ class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
      */
     protected $candidacies;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         parent::__construct();
 

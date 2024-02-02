@@ -59,7 +59,7 @@ abstract class AbstractFilesController extends AbstractController
 
     #[Route(path: '/documents', name: 'list', methods: ['GET'])]
     #[Route(path: '/documents/{slug}', name: 'list_in_directory', methods: ['GET'], requirements: ['slug' => '[A-Za-z0-9\-]+'])]
-    public function listAction(Request $request, File $directory = null): Response
+    public function listAction(Request $request, ?File $directory = null): Response
     {
         $order = $request->query->get('order', 'a');
         $files = $this->fileRepository->findWithPermissionsInDirectory($this->getMainUser($request->getSession())->getFilePermissions(), $directory, $order);

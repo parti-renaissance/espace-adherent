@@ -78,12 +78,12 @@ class SubApproach
     private $measures;
 
     public function __construct(
-        int $position = null,
-        string $title = null,
-        string $subtitle = null,
-        string $content = null,
+        ?int $position = null,
+        ?string $title = null,
+        ?string $subtitle = null,
+        ?string $content = null,
         bool $isExpanded = false,
-        Approach $approach = null
+        ?Approach $approach = null
     ) {
         $this->uuid = Uuid::uuid4();
         $this->position = $position;

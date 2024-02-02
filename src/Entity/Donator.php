@@ -128,12 +128,12 @@ class Donator
     private $kinships;
 
     public function __construct(
-        string $lastName = null,
-        string $firstName = null,
-        string $city = null,
-        string $country = null,
-        string $emailAddress = null,
-        string $gender = null
+        ?string $lastName = null,
+        ?string $firstName = null,
+        ?string $city = null,
+        ?string $country = null,
+        ?string $emailAddress = null,
+        ?string $gender = null
     ) {
         $this->uuid = Uuid::uuid4();
         $this->lastName = $lastName;

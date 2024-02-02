@@ -62,11 +62,11 @@ class LoadJemarcheDataSurveyData extends Fixture implements DependentFixtureInte
         string $firstName,
         string $lastName,
         string $gender,
-        Survey $survey = null,
-        string $emailAddress = null,
-        string $uuid = null,
-        float $latitude = null,
-        float $longitude = null
+        ?Survey $survey = null,
+        ?string $emailAddress = null,
+        ?string $uuid = null,
+        ?float $latitude = null,
+        ?float $longitude = null
     ): JemarcheDataSurvey {
         $jemarcheDataSurvey = new JemarcheDataSurvey($uuid ? Uuid::fromString($uuid) : null);
         $jemarcheDataSurvey->setGender($gender);

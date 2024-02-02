@@ -120,7 +120,7 @@ class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministr
      */
     public bool $isStatutory = false;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->zones = new ArrayCollection();

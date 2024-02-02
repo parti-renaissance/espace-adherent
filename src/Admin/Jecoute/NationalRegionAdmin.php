@@ -23,7 +23,7 @@ class NationalRegionAdmin extends AbstractRegionAdmin
     /** @var RegionRepository */
     private $regionRepository;
 
-    protected function configureActionButtons(array $buttonList, string $action, object $object = null): array
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
         $list = parent::configureActionButtons($buttonList, $action, $object);
 

@@ -194,7 +194,7 @@ class ManagedUsersFilter
     private ?bool $isCampusRegistered = null;
 
     public function __construct(
-        string $subscriptionType = null,
+        ?string $subscriptionType = null,
         array $managedZones = [],
         array $committeeUuids = [],
         array $cities = [],

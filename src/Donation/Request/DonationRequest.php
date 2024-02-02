@@ -141,7 +141,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     private ?int $adherentId = null;
 
     public function __construct(
-        string $clientIp = null,
+        ?string $clientIp = null,
         float $amount = self::DEFAULT_AMOUNT,
         int $duration = PayboxPaymentSubscription::NONE,
         string $type = Donation::TYPE_CB
@@ -155,7 +155,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
 
     public static function createFromAdherent(
         Adherent $adherent,
-        string $clientIp = null,
+        ?string $clientIp = null,
         float $amount = self::DEFAULT_AMOUNT,
         int $duration = PayboxPaymentSubscription::NONE,
         string $type = Donation::TYPE_CB

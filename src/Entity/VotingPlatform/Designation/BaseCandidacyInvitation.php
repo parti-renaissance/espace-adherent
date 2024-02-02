@@ -49,7 +49,7 @@ abstract class BaseCandidacyInvitation implements CandidacyInvitationInterface
      */
     private $declinedAt;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }

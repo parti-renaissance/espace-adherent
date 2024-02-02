@@ -20,7 +20,7 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
      *
      * @return VolunteerRequest[]|RunningMateRequest[]
      */
-    public function findForReferentTags(array $referentTags, ListFilter $filter = null): array
+    public function findForReferentTags(array $referentTags, ?ListFilter $filter = null): array
     {
         return $this->createListQueryBuilder('r', $filter)
             ->innerJoin('r.referentTags', 'refTag')
@@ -42,7 +42,7 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
     /**
      * @return VolunteerRequest[]|RunningMateRequest[]
      */
-    public function findAllForInseeCodes(array $inseeCodes, ListFilter $filter = null): array
+    public function findAllForInseeCodes(array $inseeCodes, ?ListFilter $filter = null): array
     {
         $this->addFavoriteCitiesCondition($inseeCodes, $qb = $this->createListQueryBuilder('r', $filter));
 
@@ -52,7 +52,7 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
     /**
      * @return VolunteerRequest[]|RunningMateRequest[]
      */
-    public function findAllTakenFor(string $inseeCode, ListFilter $filter = null): array
+    public function findAllTakenFor(string $inseeCode, ?ListFilter $filter = null): array
     {
         $qb = $this->createListQueryBuilder('r', $filter);
 
@@ -84,7 +84,7 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
         ;
     }
 
-    private function createListQueryBuilder(string $alias, ListFilter $filter = null): QueryBuilder
+    private function createListQueryBuilder(string $alias, ?ListFilter $filter = null): QueryBuilder
     {
         $qb = $this->createQueryBuilder($alias)
             ->addSelect('tag')

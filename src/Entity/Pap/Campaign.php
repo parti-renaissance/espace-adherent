@@ -335,17 +335,17 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
     protected Collection $zones;
 
     public function __construct(
-        UuidInterface $uuid = null,
-        string $title = null,
-        string $brief = null,
-        Survey $survey = null,
-        int $goal = null,
-        \DateTime $beginAt = null,
-        \DateTime $finishAt = null,
+        ?UuidInterface $uuid = null,
+        ?string $title = null,
+        ?string $brief = null,
+        ?Survey $survey = null,
+        ?int $goal = null,
+        ?\DateTime $beginAt = null,
+        ?\DateTime $finishAt = null,
         int $nbAddresses = 0,
         int $nbVoters = 0,
         array $zones = [],
-        Adherent $createdByAdherent = null,
+        ?Adherent $createdByAdherent = null,
         bool $enabled = true
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();

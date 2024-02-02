@@ -59,7 +59,7 @@ class Candidacy extends BaseCandidacy
      */
     public bool $isSubstitute = false;
 
-    public function __construct(CandidacyPool $election = null, string $gender = null, UuidInterface $uuid = null)
+    public function __construct(?CandidacyPool $election = null, ?string $gender = null, ?UuidInterface $uuid = null)
     {
         parent::__construct($gender, $uuid);
 

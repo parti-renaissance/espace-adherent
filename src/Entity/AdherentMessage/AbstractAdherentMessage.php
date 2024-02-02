@@ -245,14 +245,14 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
      */
     private $source = self::SOURCE_PLATFORM;
 
-    public function __construct(UuidInterface $uuid = null, Adherent $author = null)
+    public function __construct(?UuidInterface $uuid = null, ?Adherent $author = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->author = $author;
         $this->mailchimpCampaigns = new ArrayCollection();
     }
 
-    public static function createFromAdherent(Adherent $adherent, UuidInterface $uuid = null): AdherentMessageInterface
+    public static function createFromAdherent(Adherent $adherent, ?UuidInterface $uuid = null): AdherentMessageInterface
     {
         return new static($uuid ?? Uuid::uuid4(), $adherent);
     }

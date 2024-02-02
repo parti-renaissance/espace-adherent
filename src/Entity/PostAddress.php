@@ -102,13 +102,13 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
     }
 
     public static function createFrenchAddress(
-        string $street = null,
-        string $cityCode = null,
-        string $cityName = null,
-        string $additionalAddress = null,
-        string $region = null,
-        float $latitude = null,
-        float $longitude = null
+        ?string $street = null,
+        ?string $cityCode = null,
+        ?string $cityName = null,
+        ?string $additionalAddress = null,
+        ?string $region = null,
+        ?float $latitude = null,
+        ?float $longitude = null
     ): self {
         [$postalCode, $inseeCode] = explode('-', $cityCode);
 
@@ -133,10 +133,10 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         ?string $zipCode,
         ?string $cityName,
         ?string $street,
-        string $additionalAddress = null,
-        string $region = null,
-        float $latitude = null,
-        float $longitude = null
+        ?string $additionalAddress = null,
+        ?string $region = null,
+        ?float $latitude = null,
+        ?float $longitude = null
     ): self {
         return new self($country, $zipCode, $cityName, $street, $additionalAddress, $latitude, $longitude, $region);
     }

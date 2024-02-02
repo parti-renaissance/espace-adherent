@@ -30,7 +30,7 @@ class GoogleStaticMapProvider implements StaticMapProviderInterface
         $this->key = $key;
     }
 
-    public function get(Coordinates $coordinates, string $size = null)
+    public function get(Coordinates $coordinates, ?string $size = null)
     {
         $id = self::CACHE_KEY_PREFIX.md5($coordinates->getLatitude().'-'.$coordinates->getLongitude().'_'.$size);
         $item = $this->cache->getItem($id);

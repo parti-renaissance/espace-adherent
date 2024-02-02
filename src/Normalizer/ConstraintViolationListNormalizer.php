@@ -12,7 +12,7 @@ class ConstraintViolationListNormalizer implements NormalizerInterface
     {
     }
 
-    public function normalize($object, string $format = null, array $context = [])
+    public function normalize($object, ?string $format = null, array $context = [])
     {
         $violations = [];
 
@@ -33,7 +33,7 @@ class ConstraintViolationListNormalizer implements NormalizerInterface
         return $result + ['violations' => $violations];
     }
 
-    public function supportsNormalization($data, string $format = null): bool
+    public function supportsNormalization($data, ?string $format = null): bool
     {
         return $data instanceof ConstraintViolationListInterface;
     }

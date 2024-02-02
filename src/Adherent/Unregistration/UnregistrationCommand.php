@@ -23,8 +23,8 @@ class UnregistrationCommand
 
     public function __construct(
         array $reasons = [],
-        string $comment = null,
-        Administrator $excludedBy = null,
+        ?string $comment = null,
+        ?Administrator $excludedBy = null,
         bool $notification = false
     ) {
         $this->reasons = $reasons;

@@ -112,13 +112,13 @@ class City implements AlgoliaIndexedEntityInterface
     private $markers;
 
     public function __construct(
-        Department $department = null,
-        string $name = null,
-        array $postalCodes = null,
-        string $inseeCode = null,
-        string $slug = null,
-        float $latitude = null,
-        float $longitude = null
+        ?Department $department = null,
+        ?string $name = null,
+        ?array $postalCodes = null,
+        ?string $inseeCode = null,
+        ?string $slug = null,
+        ?float $latitude = null,
+        ?float $longitude = null
     ) {
         $this->department = $department;
         $this->name = $name;

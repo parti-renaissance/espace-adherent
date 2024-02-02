@@ -24,7 +24,7 @@ class CommitteeFactory
     public function __construct(
         ReferentTagManager $referentTagManager,
         ZoneMatcher $zoneMatcher,
-        PostAddressFactory $addressFactory = null
+        ?PostAddressFactory $addressFactory = null
     ) {
         $this->referentTagManager = $referentTagManager;
         $this->zoneMatcher = $zoneMatcher;

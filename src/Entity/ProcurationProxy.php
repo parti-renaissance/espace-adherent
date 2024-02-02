@@ -355,7 +355,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      */
     private ?\DateTime $remindedAt = null;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->phone = static::createPhoneNumber();
@@ -369,7 +369,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
         return 'Proposition de procuration de '.$this->lastName.' '.$this->firstNames;
     }
 
-    private static function createPhoneNumber(int $countryCode = 33, string $number = null)
+    private static function createPhoneNumber(int $countryCode = 33, ?string $number = null)
     {
         $phone = new PhoneNumber();
         $phone->setCountryCode($countryCode);
@@ -595,7 +595,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
     /**
      * @return ProcurationProxyElectionRound[]|Collection
      */
-    public function getAvailableRounds(ProcurationRequest $request = null): Collection
+    public function getAvailableRounds(?ProcurationRequest $request = null): Collection
     {
         return $this->procurationProxyElectionRounds->filter(function (ProcurationProxyElectionRound $ppElectionRound) use ($request) {
             if ((!$request && ($ppElectionRound->isFrenchRequestAvailable() || $ppElectionRound->isForeignRequestAvailable()))
@@ -732,7 +732,7 @@ class ProcurationProxy implements RecaptchaChallengeInterface
         $this->disabled = false;
     }
 
-    public function disable(string $reason = null): void
+    public function disable(?string $reason = null): void
     {
         $this->disabled = true;
         $this->disabledReason = $reason;

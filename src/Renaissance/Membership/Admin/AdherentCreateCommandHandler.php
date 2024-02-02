@@ -41,7 +41,7 @@ class AdherentCreateCommandHandler
     public function handle(
         AdherentCreateCommand $command,
         Administrator $administrator,
-        Adherent $adherent = null
+        ?Adherent $adherent = null
     ): void {
         $forReAdhesion = false;
         if ($adherent) {

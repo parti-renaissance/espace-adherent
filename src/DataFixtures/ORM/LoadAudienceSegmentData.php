@@ -62,15 +62,15 @@ class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterfa
         Adherent $author,
         string $scope,
         Zone $zone,
-        string $firstName = null,
-        string $lastName = null,
-        string $gender = null,
-        int $ageMin = null,
-        int $ageMax = null,
-        \DateTime $registeredSince = null,
-        \DateTime $registeredUntil = null,
-        bool $includeAdherentsInCommittee = null,
-        bool $isCertified = null
+        ?string $firstName = null,
+        ?string $lastName = null,
+        ?string $gender = null,
+        ?int $ageMin = null,
+        ?int $ageMax = null,
+        ?\DateTime $registeredSince = null,
+        ?\DateTime $registeredUntil = null,
+        ?bool $includeAdherentsInCommittee = null,
+        ?bool $isCertified = null
     ): AudienceSegment {
         $segment = new AudienceSegment(Uuid::fromString($uuid));
         $segment->setAuthor($author);

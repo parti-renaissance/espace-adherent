@@ -86,12 +86,12 @@ class Measure
     private $tags;
 
     public function __construct(
-        int $position = null,
-        string $title = null,
-        string $content = null,
+        ?int $position = null,
+        ?string $title = null,
+        ?string $content = null,
         bool $isLeading = false,
         bool $isExpanded = false,
-        SubApproach $subApproach = null
+        ?SubApproach $subApproach = null
     ) {
         $this->uuid = Uuid::uuid4();
         $this->position = $position;

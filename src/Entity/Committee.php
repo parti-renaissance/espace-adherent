@@ -274,15 +274,15 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
     public ?Adherent $animator = null;
 
     public function __construct(
-        UuidInterface $uuid = null,
-        UuidInterface $creator = null,
-        string $name = null,
-        string $description = null,
-        AddressInterface $address = null,
-        PhoneNumber $phone = null,
-        string $slug = null,
+        ?UuidInterface $uuid = null,
+        ?UuidInterface $creator = null,
+        ?string $name = null,
+        ?string $description = null,
+        ?AddressInterface $address = null,
+        ?PhoneNumber $phone = null,
+        ?string $slug = null,
         string $status = self::PENDING,
-        string $approvedAt = null,
+        ?string $approvedAt = null,
         string $createdAt = 'now',
         int $membersCount = 0,
         array $referentTags = []
@@ -354,8 +354,8 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
         string $creatorUuid,
         string $name,
         string $description,
-        AddressInterface $address = null,
-        PhoneNumber $phone = null,
+        ?AddressInterface $address = null,
+        ?PhoneNumber $phone = null,
         string $createdAt = 'now'
     ): self {
         $committee = new self(
@@ -376,7 +376,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
         string $name,
         string $description,
         AddressInterface $address,
-        PhoneNumber $phone = null,
+        ?PhoneNumber $phone = null,
         string $createdAt = 'now'
     ): self {
         $committee = new self(
@@ -446,7 +446,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
         $this->description = $description;
     }
 
-    public function setSocialNetworks(string $facebookPageUrl = null, string $twitterNickname = null)
+    public function setSocialNetworks(?string $facebookPageUrl = null, ?string $twitterNickname = null)
     {
         $this->facebookPageUrl = $facebookPageUrl;
         $this->setTwitterNickname($twitterNickname);
@@ -649,7 +649,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
     /**
      * @return Adherent[]
      */
-    public function getSupervisors(bool $isProvisional = null): array
+    public function getSupervisors(?bool $isProvisional = null): array
     {
         return array_map(function (CommitteeAdherentMandate $mandate) {
             return $mandate->getAdherent();
@@ -673,7 +673,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
     /**
      * @return CommitteeAdherentMandate[]|Collection
      */
-    public function findSupervisorMandates(string $gender = null, bool $isProvisional = null): Collection
+    public function findSupervisorMandates(?string $gender = null, ?bool $isProvisional = null): Collection
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('quality', CommitteeMandateQualityEnum::SUPERVISOR))
@@ -721,7 +721,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
         return Uuid::uuid5(Uuid::NAMESPACE_OID, static::canonicalize($name));
     }
 
-    public function setPhone(PhoneNumber $phone = null): void
+    public function setPhone(?PhoneNumber $phone = null): void
     {
         $this->phone = $phone;
     }

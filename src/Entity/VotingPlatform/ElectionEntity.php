@@ -46,7 +46,7 @@ class ElectionEntity
      */
     private $election;
 
-    public function __construct(Committee $committee = null, TerritorialCouncil $council = null)
+    public function __construct(?Committee $committee = null, ?TerritorialCouncil $council = null)
     {
         $this->committee = $committee;
         $this->territorialCouncil = $council;

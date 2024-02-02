@@ -34,7 +34,7 @@ class PollManager
         $this->localPollRepository = $localPollRepository;
     }
 
-    public function findActivePoll(string $postalCode = null): ?Poll
+    public function findActivePoll(?string $postalCode = null): ?Poll
     {
         $poll = $this->nationalPollRepository->findLastActivePoll();
 
@@ -57,7 +57,7 @@ class PollManager
         return null;
     }
 
-    public function findActivePollByZone(Zone $zone, string $postalCode = null): ?LocalPoll
+    public function findActivePollByZone(Zone $zone, ?string $postalCode = null): ?LocalPoll
     {
         if ($zone->isRegion()) {
             $region = $zone;

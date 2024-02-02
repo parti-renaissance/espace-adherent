@@ -201,9 +201,9 @@ class SitemapFactoryTest extends TestCase
 
     private function invokeReflectionMethod(
         string $methodName,
-        Sitemap $sitemap = null,
-        int $page = null,
-        int $perPage = null
+        ?Sitemap $sitemap = null,
+        ?int $page = null,
+        ?int $perPage = null
     ): void {
         $reflection = new \ReflectionMethod(SitemapFactory::class, $methodName);
         $reflection->setAccessible(true);

@@ -44,7 +44,7 @@ class DonatorKinship
      */
     private $kinship;
 
-    public function __construct(Donator $donator = null, Donator $related = null, string $kinship = null)
+    public function __construct(?Donator $donator = null, ?Donator $related = null, ?string $kinship = null)
     {
         $this->donator = $donator;
         $this->related = $related;

@@ -13,7 +13,7 @@ class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwar
 
     private const ALREADY_CALLED = 'JE_MENGAGE_WEB_DESIGNATION_DENORMALIZER_ALREADY_CALLED';
 
-    public function denormalize($data, string $class, string $format = null, array $context = [])
+    public function denormalize($data, string $class, ?string $format = null, array $context = [])
     {
         $context[self::ALREADY_CALLED] = true;
 
@@ -45,7 +45,7 @@ class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwar
         return $designation;
     }
 
-    public function supportsDenormalization($data, string $type, string $format = null, array $context = [])
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = [])
     {
         return !isset($context[self::ALREADY_CALLED])
             && is_a($type, Designation::class, true)

@@ -68,9 +68,9 @@ abstract class Poll
     private $published;
 
     public function __construct(
-        UuidInterface $uuid = null,
-        string $question = null,
-        \DateTimeInterface $finishAt = null,
+        ?UuidInterface $uuid = null,
+        ?string $question = null,
+        ?\DateTimeInterface $finishAt = null,
         bool $published = false
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();

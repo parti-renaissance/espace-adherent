@@ -35,7 +35,7 @@ class EventReminderHandler
     public function findEventsToRemind(
         \DateTimeInterface $startAfter,
         \DateTimeInterface $startBefore,
-        string $mode = null
+        ?string $mode = null
     ): array {
         return $this->eventRepository->findEventsToRemind($startAfter, $startBefore, $mode);
     }

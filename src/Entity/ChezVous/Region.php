@@ -52,7 +52,7 @@ class Region
      */
     private $departments;
 
-    public function __construct(string $name = null, string $code = null)
+    public function __construct(?string $name = null, ?string $code = null)
     {
         $this->name = $name;
         $this->code = $code;

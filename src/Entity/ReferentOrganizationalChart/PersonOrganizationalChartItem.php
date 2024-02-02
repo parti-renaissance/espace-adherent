@@ -18,7 +18,7 @@ class PersonOrganizationalChartItem extends AbstractOrganizationalChartItem
      */
     private $referentPersonLinks;
 
-    public function __construct(string $label = null, AbstractOrganizationalChartItem $parent = null)
+    public function __construct(?string $label = null, ?AbstractOrganizationalChartItem $parent = null)
     {
         parent::__construct($label, $parent);
 

@@ -8,7 +8,7 @@ class EventException extends \RuntimeException
 {
     private $event;
 
-    public function __construct($message = '', CommitteeEvent $event = null, \Exception $previous = null)
+    public function __construct($message = '', ?CommitteeEvent $event = null, ?\Exception $previous = null)
     {
         parent::__construct($message, 0, $previous);
 

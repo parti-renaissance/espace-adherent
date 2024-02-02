@@ -41,7 +41,7 @@ class CommitteeMergeHistoryAdmin extends AbstractAdmin
         ;
     }
 
-    protected function configureActionButtons(array $buttonList, string $action, object $object = null): array
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
         if ('merge' === $action) {
             $actions = parent::configureActionButtons($buttonList, 'show', $object);

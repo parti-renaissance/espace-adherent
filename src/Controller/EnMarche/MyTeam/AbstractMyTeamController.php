@@ -37,7 +37,7 @@ abstract class AbstractMyTeamController extends AbstractController
     public function delegateAccess(
         Request $request,
         EntityManagerInterface $entityManager,
-        DelegatedAccess $delegatedAccess = null
+        ?DelegatedAccess $delegatedAccess = null
     ): Response {
         $delegatedAccess ??= new DelegatedAccess();
         $delegatedAccess->setDelegator($this->getUser());

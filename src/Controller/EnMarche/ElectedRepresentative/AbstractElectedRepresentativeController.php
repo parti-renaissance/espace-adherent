@@ -61,7 +61,7 @@ abstract class AbstractElectedRepresentativeController extends AbstractControlle
      */
     abstract protected function getManagedZones(Adherent $adherent): array;
 
-    protected function createFilterForm(ListFilter $filter = null): FormInterface
+    protected function createFilterForm(?ListFilter $filter = null): FormInterface
     {
         return $this->createForm(ElectedRepresentativeFilterType::class, $filter, [
             'space_type' => $this->getSpaceType(),

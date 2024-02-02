@@ -36,7 +36,7 @@ class AttachmentLink
      */
     private $link;
 
-    public function __construct(string $title = null, string $link = null)
+    public function __construct(?string $title = null, ?string $link = null)
     {
         $this->title = $title;
         $this->link = $link;

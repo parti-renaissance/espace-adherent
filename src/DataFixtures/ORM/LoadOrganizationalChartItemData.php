@@ -165,7 +165,7 @@ class LoadOrganizationalChartItemData extends Fixture implements DependentFixtur
     private function createTree(
         ObjectManager $manager,
         array $mapping,
-        AbstractOrganizationalChartItem $parent = null
+        ?AbstractOrganizationalChartItem $parent = null
     ): void {
         foreach ($mapping as $item) {
             $this->createItem($manager, $item, $parent);
@@ -175,7 +175,7 @@ class LoadOrganizationalChartItemData extends Fixture implements DependentFixtur
     private function createItem(
         ObjectManager $manager,
         array $item,
-        AbstractOrganizationalChartItem $parent = null
+        ?AbstractOrganizationalChartItem $parent = null
     ): AbstractOrganizationalChartItem {
         /** @var AbstractOrganizationalChartItem $orgaChartItem */
         $orgaChartItem = new $item['class']($item['label'], $parent);

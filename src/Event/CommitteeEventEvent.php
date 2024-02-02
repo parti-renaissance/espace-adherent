@@ -10,7 +10,7 @@ class CommitteeEventEvent extends EventEvent
 {
     protected $committee;
 
-    public function __construct(?Adherent $author, CommitteeEvent $event, Committee $committee = null)
+    public function __construct(?Adherent $author, CommitteeEvent $event, ?Committee $committee = null)
     {
         parent::__construct($author, $event);
 

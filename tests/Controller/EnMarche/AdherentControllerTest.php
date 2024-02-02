@@ -550,8 +550,8 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
      */
     public function findEmailSubscriptionHistoryByAdherent(
         Adherent $adherent,
-        string $action = null,
-        string $referentTagCode = null
+        ?string $action = null,
+        ?string $referentTagCode = null
     ): array {
         $qb = $this
             ->getEmailSubscriptionHistoryRepository()

@@ -61,10 +61,10 @@ class City
     private $department;
 
     public function __construct(
-        Department $department = null,
-        string $name = null,
-        string $inseeCode = null,
-        array $postalCodes = null
+        ?Department $department = null,
+        ?string $name = null,
+        ?string $inseeCode = null,
+        ?array $postalCodes = null
     ) {
         $this->department = $department;
         $this->name = $name;

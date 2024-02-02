@@ -47,7 +47,7 @@ class UserAuthorizationTest extends AbstractKernelTestCase
         $this->createUserAuthorization()->supportsScopes(['public']);
     }
 
-    private function createUserAuthorization(Adherent $user = null): UserAuthorization
+    private function createUserAuthorization(?Adherent $user = null): UserAuthorization
     {
         $user = $user ?: $this->createUser();
 

@@ -24,7 +24,7 @@ class CommitteeMembershipHistoryRepository extends ServiceEntityRepository
     public function countAdherentMemberOfAtLeastOneCommitteeManagedBy(
         Adherent $referent,
         \DateTimeInterface $until,
-        StatisticsParametersFilter $filter = null
+        ?StatisticsParametersFilter $filter = null
     ): int {
         $this->checkReferent($referent);
 

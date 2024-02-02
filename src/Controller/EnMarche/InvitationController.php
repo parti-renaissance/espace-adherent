@@ -54,7 +54,7 @@ class InvitationController extends AbstractController
         Request $request,
         InvitationRequestHandler $handler,
         string $type,
-        Committee $committee = null
+        ?Committee $committee = null
     ): Response {
         $adherent = $this->getMainUser($request->getSession());
 

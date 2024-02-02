@@ -137,7 +137,7 @@ class BaseEventRepository extends ServiceEntityRepository
     public function findEventsToRemind(
         \DateTimeInterface $startAfter,
         \DateTimeInterface $startBefore,
-        string $mode = null
+        ?string $mode = null
     ): array {
         $qb = $this
             ->createQueryBuilder('event')

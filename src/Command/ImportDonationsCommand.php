@@ -317,7 +317,7 @@ class ImportDonationsCommand extends Command
         $this->io->success("$count donations imported successfully !");
     }
 
-    private function findDonator(string $firstName, string $lastName, string $email = null): ?Donator
+    private function findDonator(string $firstName, string $lastName, ?string $email = null): ?Donator
     {
         return !empty($email) ? $this->donatorRepository->findOneForMatching($email, $firstName, $lastName) : null;
     }

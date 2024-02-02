@@ -22,7 +22,7 @@ class AdherentGeoZoneFilter extends AbstractUserFilter
      */
     private $zone;
 
-    public function __construct(Zone $zone = null)
+    public function __construct(?Zone $zone = null)
     {
         parent::__construct();
 

@@ -254,7 +254,7 @@ final class UpdateFranceCommand extends Command
      *
      * @throws \RuntimeException When entity doesn't exist in database and $factory argument isn't given
      */
-    private function retrieveEntity(string $class, string $code, callable $factory = null): object
+    private function retrieveEntity(string $class, string $code, ?callable $factory = null): object
     {
         $key = $class.'#'.$code;
 

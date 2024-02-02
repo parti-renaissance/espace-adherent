@@ -67,7 +67,7 @@ class ResourceLink implements ExposedImageOwnerInterface
      */
     protected $image;
 
-    public function __construct(UuidInterface $uuid = null, string $label = null, string $url = null)
+    public function __construct(?UuidInterface $uuid = null, ?string $label = null, ?string $url = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->label = $label;

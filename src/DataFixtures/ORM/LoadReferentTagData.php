@@ -57,7 +57,7 @@ class LoadReferentTagData extends Fixture
         $manager->flush();
     }
 
-    private function createReferentTag(ObjectManager $manager, string $name, string $code, string $type = null): void
+    private function createReferentTag(ObjectManager $manager, string $name, string $code, ?string $type = null): void
     {
         $referentTag = new ReferentTag($name, $code);
         $referentTag->setType($type);

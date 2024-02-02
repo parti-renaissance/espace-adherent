@@ -174,9 +174,9 @@ class CityCard
     private $contacts;
 
     public function __construct(
-        City $city = null,
-        int $population = null,
-        string $priority = null,
+        ?City $city = null,
+        ?int $population = null,
+        ?string $priority = null,
         ?bool $risk = false
     ) {
         $this->city = $city;

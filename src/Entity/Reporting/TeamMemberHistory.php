@@ -86,8 +86,8 @@ class TeamMemberHistory
         Team $team,
         Adherent $adherent,
         string $action,
-        Administrator $administrator = null,
-        Adherent $teamManager = null
+        ?Administrator $administrator = null,
+        ?Adherent $teamManager = null
     ) {
         $this->team = $team;
         $this->adherent = $adherent;
@@ -142,7 +142,7 @@ class TeamMemberHistory
         return self::ACTION_REMOVE === $this->action;
     }
 
-    public static function createAdd(Team $team, Adherent $adherent, UserInterface $user = null): self
+    public static function createAdd(Team $team, Adherent $adherent, ?UserInterface $user = null): self
     {
         if ($user instanceof Adherent) {
             return new self($team, $adherent, self::ACTION_ADD, null, $user);

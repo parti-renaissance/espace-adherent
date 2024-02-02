@@ -145,7 +145,7 @@ class DelegatedAccess
      */
     private $type;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->restrictedCommittees = new ArrayCollection();
         $this->uuid = $uuid ?? Uuid::uuid4();

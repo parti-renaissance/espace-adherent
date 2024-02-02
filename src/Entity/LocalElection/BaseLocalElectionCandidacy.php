@@ -50,7 +50,7 @@ abstract class BaseLocalElectionCandidacy extends BaseCandidacy
      */
     private ?string $email = null;
 
-    public function __construct(LocalElection $election = null, string $gender = null, UuidInterface $uuid = null)
+    public function __construct(?LocalElection $election = null, ?string $gender = null, ?UuidInterface $uuid = null)
     {
         parent::__construct($gender, $uuid);
 

@@ -77,7 +77,7 @@ class PayboxFormFactory
         );
     }
 
-    private function slugify(string $string, int $maxLength = null, string $separator = ' '): string
+    private function slugify(string $string, ?int $maxLength = null, string $separator = ' '): string
     {
         $slug = $this->slugify->slugify($string, ['separator' => $separator]);
 

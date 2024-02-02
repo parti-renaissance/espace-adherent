@@ -11,7 +11,7 @@ class NewsletterEvent extends Event
     private $newsletter;
     private $adherent;
 
-    public function __construct(NewsletterSubscriptionInterface $newsletter, Adherent $adherent = null)
+    public function __construct(NewsletterSubscriptionInterface $newsletter, ?Adherent $adherent = null)
     {
         $this->newsletter = $newsletter;
         $this->adherent = $adherent;

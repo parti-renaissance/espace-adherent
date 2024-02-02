@@ -52,7 +52,7 @@ class EventRegistrationCommand
     private $newsletterSubscriber = false;
     private $registrationUuid;
 
-    public function __construct(BaseEvent $event, Adherent $adherent = null)
+    public function __construct(BaseEvent $event, ?Adherent $adherent = null)
     {
         $this->event = $event;
         $this->registrationUuid = Uuid::uuid4();

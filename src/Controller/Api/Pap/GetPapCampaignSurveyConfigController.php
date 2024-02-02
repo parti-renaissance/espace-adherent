@@ -71,11 +71,11 @@ class GetPapCampaignSurveyConfigController extends AbstractController
         string $type,
         string $label,
         bool $required = false,
-        array $choicesOrChildren = null,
-        string $widget = null,
-        array $dependency = null,
-        string $placeholder = null,
-        string $help = null,
+        ?array $choicesOrChildren = null,
+        ?string $widget = null,
+        ?array $dependency = null,
+        ?string $placeholder = null,
+        ?string $help = null,
         array $questionOptions = []
     ): array {
         $question = [

@@ -144,17 +144,17 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
         string $scope,
         string $name,
         Zone $zone,
-        string $firstName = null,
-        string $lastName = null,
-        string $gender = null,
-        int $ageMin = null,
-        int $ageMax = null,
-        \DateTime $registeredSince = null,
-        \DateTime $registeredUntil = null,
-        bool $isCommitteeMember = null,
-        bool $isCertified = null,
-        bool $hasEmailSubscription = null,
-        bool $hasSmsSubscription = null
+        ?string $firstName = null,
+        ?string $lastName = null,
+        ?string $gender = null,
+        ?int $ageMin = null,
+        ?int $ageMax = null,
+        ?\DateTime $registeredSince = null,
+        ?\DateTime $registeredUntil = null,
+        ?bool $isCommitteeMember = null,
+        ?bool $isCertified = null,
+        ?bool $hasEmailSubscription = null,
+        ?bool $hasSmsSubscription = null
     ): Audience {
         $audience = new Audience(Uuid::fromString($uuid));
         $audience->setScope($scope);

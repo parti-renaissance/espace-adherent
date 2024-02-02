@@ -86,7 +86,7 @@ class District
         int $number,
         string $departmentCode,
         GeoData $geoData,
-        ReferentTag $referentTag = null
+        ?ReferentTag $referentTag = null
     ) {
         $this->countries = $countries;
         $this->code = $code;

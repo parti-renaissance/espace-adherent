@@ -15,7 +15,7 @@ class SuggestedQuestion extends Question
      */
     private $published;
 
-    public function __construct(string $content = null, string $type = null, bool $published = false)
+    public function __construct(?string $content = null, ?string $type = null, bool $published = false)
     {
         parent::__construct($content, $type);
 

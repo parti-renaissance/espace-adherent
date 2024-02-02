@@ -33,7 +33,7 @@ class RepublicanSilenceManager
         return $this->repository->findFromDate($date);
     }
 
-    public function hasStartedSilence(array $zones = null): bool
+    public function hasStartedSilence(?array $zones = null): bool
     {
         $silences = $this->getRepublicanSilencesForDate(new \DateTime());
 

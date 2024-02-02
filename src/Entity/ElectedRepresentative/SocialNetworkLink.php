@@ -65,9 +65,9 @@ class SocialNetworkLink
     private $electedRepresentative;
 
     public function __construct(
-        string $url = null,
-        string $type = null,
-        ElectedRepresentative $electedRepresentative = null
+        ?string $url = null,
+        ?string $type = null,
+        ?ElectedRepresentative $electedRepresentative = null
     ) {
         $this->url = $url;
         $this->type = $type;

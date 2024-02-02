@@ -13,7 +13,7 @@ abstract class AbstractAdherentMandateFilterBuilder implements FilterBuilderInte
     {
     }
 
-    public function supports(string $scope, string $feature = null): bool
+    public function supports(string $scope, ?string $feature = null): bool
     {
         return \in_array($feature, [
             FeatureEnum::CONTACTS,

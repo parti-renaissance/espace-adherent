@@ -58,7 +58,7 @@ class TerritorialCouncilQuality
      */
     private $joinedAt;
 
-    public function __construct(string $name, string $zone, \DateTime $joinedAt = null)
+    public function __construct(string $name, string $zone, ?\DateTime $joinedAt = null)
     {
         $this->setName($name);
         $this->zone = $zone;

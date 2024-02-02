@@ -96,8 +96,8 @@ class EventProviderTest extends AbstractKernelTestCase
         string $uuid,
         string $slug,
         string $name,
-        float $latitude = null,
-        float $longitude = null,
+        ?float $latitude = null,
+        ?float $longitude = null,
         $withOrganizer = false
     ) {
         $event = $this->createMock(CommitteeEvent::class);

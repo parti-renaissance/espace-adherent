@@ -60,7 +60,7 @@ class Thread
      */
     public ?Run $currentRun = null;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->messages = new ArrayCollection();
@@ -84,12 +84,12 @@ class Thread
         return $this->addMessage(Message::ROLE_ASSISTANT, $content, $date, $externalId);
     }
 
-    public function addUserMessage(string $content, \DateTimeInterface $date = null): Message
+    public function addUserMessage(string $content, ?\DateTimeInterface $date = null): Message
     {
         return $this->addMessage(Message::ROLE_USER, $content, $date);
     }
 
-    private function addMessage(string $role, string $content, \DateTimeInterface $date = null, string $externalId = null): Message
+    private function addMessage(string $role, string $content, ?\DateTimeInterface $date = null, ?string $externalId = null): Message
     {
         $message = new Message();
         $message->thread = $this;

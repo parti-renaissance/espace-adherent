@@ -113,13 +113,13 @@ trait EntityAddressTrait
 
     protected function __construct(
         ?string $country,
-        string $postalCode = null,
-        string $cityName = null,
-        string $street = null,
-        string $additionalAddress = null,
-        float $latitude = null,
-        float $longitude = null,
-        string $region = null
+        ?string $postalCode = null,
+        ?string $cityName = null,
+        ?string $street = null,
+        ?string $additionalAddress = null,
+        ?float $latitude = null,
+        ?float $longitude = null,
+        ?string $region = null
     ) {
         $this->country = $country;
         $this->address = $street;
@@ -180,7 +180,7 @@ trait EntityAddressTrait
         $this->country = $country;
     }
 
-    public function getCountryName(string $locale = null): ?string
+    public function getCountryName(?string $locale = null): ?string
     {
         return $this->country ? Countries::getName($this->country, $locale) : null;
     }

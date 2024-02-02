@@ -70,7 +70,7 @@ class Candidacy extends BaseCandidacy
         TerritorialCouncilMembership $membership,
         Election $election,
         string $gender,
-        UuidInterface $uuid = null
+        ?UuidInterface $uuid = null
     ) {
         parent::__construct($gender, $uuid);
 

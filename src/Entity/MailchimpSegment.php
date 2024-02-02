@@ -47,14 +47,14 @@ class MailchimpSegment
      */
     private $externalId;
 
-    public function __construct(string $list, string $label, string $externalId = null)
+    public function __construct(string $list, string $label, ?string $externalId = null)
     {
         $this->list = $list;
         $this->label = $label;
         $this->externalId = $externalId;
     }
 
-    public static function createElectedRepresentativeSegment(string $label, string $externalId = null)
+    public static function createElectedRepresentativeSegment(string $label, ?string $externalId = null)
     {
         return new self(self::LIST_ELECTED_REPRESENTATIVE, $label, $externalId);
     }

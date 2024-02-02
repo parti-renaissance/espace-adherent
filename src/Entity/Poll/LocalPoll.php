@@ -34,10 +34,10 @@ class LocalPoll extends Poll implements AuthoredInterface
 
     public function __construct(
         Adherent $author,
-        UuidInterface $uuid = null,
-        string $question = null,
-        \DateTimeInterface $finishAt = null,
-        Zone $zone = null,
+        ?UuidInterface $uuid = null,
+        ?string $question = null,
+        ?\DateTimeInterface $finishAt = null,
+        ?Zone $zone = null,
         bool $published = false
     ) {
         parent::__construct($uuid, $question, $finishAt, $published);
@@ -54,7 +54,7 @@ class LocalPoll extends Poll implements AuthoredInterface
         return $this->author;
     }
 
-    public function setAuthor(Adherent $author = null): void
+    public function setAuthor(?Adherent $author = null): void
     {
         $this->author = $author;
     }

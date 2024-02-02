@@ -24,7 +24,7 @@ class AuthoredItemsCollectionExtension implements QueryCollectionExtensionInterf
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        Operation $operation = null,
+        ?Operation $operation = null,
         array $context = []
     ): void {
         $user = $this->security->getUser();

@@ -39,7 +39,7 @@ class SearchController extends AbstractController
         Request $request,
         EventGroupCategoryRepository $eventGroupCategoryRepository,
         EventCategoryRepository $eventCategoryRepository,
-        string $slug = null
+        ?string $slug = null
     ): Response {
         if ($slug) {
             if ($category = $eventCategoryRepository->findOneBySlug($slug)) {

@@ -287,7 +287,7 @@ class CommitteeManager
     public function followCommittee(
         Adherent $adherent,
         Committee $committee,
-        CommitteeMembershipTriggerEnum $trigger = null
+        ?CommitteeMembershipTriggerEnum $trigger = null
     ): void {
         if ($this->getMembershipRepository()->findMembership($adherent, $committee)) {
             return;

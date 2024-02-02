@@ -148,7 +148,7 @@ class AlgoliaIndexedEntityManagerTest extends TestCase
         $this->getManager($indexer)->preRemove($entity);
     }
 
-    private function getManager(SearchService $indexer, EntityManagerInterface $manager = null): AlgoliaIndexedEntityManager
+    private function getManager(SearchService $indexer, ?EntityManagerInterface $manager = null): AlgoliaIndexedEntityManager
     {
         return new AlgoliaIndexedEntityManager($indexer, $manager ?? $this->createMock(EntityManagerInterface::class));
     }

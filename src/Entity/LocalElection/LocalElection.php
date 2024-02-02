@@ -21,7 +21,7 @@ class LocalElection extends AbstractElectionEntity
      */
     private $candidaciesGroups;
 
-    public function __construct(Designation $designation = null, UuidInterface $uuid = null)
+    public function __construct(?Designation $designation = null, ?UuidInterface $uuid = null)
     {
         parent::__construct($designation, $uuid);
 

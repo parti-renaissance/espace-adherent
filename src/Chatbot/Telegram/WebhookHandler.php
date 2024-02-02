@@ -22,7 +22,7 @@ class WebhookHandler
         $this->client->deleteWebhook($botApiToken);
     }
 
-    public function handleChanges(Chatbot $chatbot, string $botApiTokenBeforeUpdate = null): void
+    public function handleChanges(Chatbot $chatbot, ?string $botApiTokenBeforeUpdate = null): void
     {
         $botApiTokenAfterUpdate = $chatbot->telegramBotApiToken;
 

@@ -107,7 +107,7 @@ class ConsularDistrict
         $this->points = [];
     }
 
-    public function addPoint(float $latitude, float $longitude, string $label = null): void
+    public function addPoint(float $latitude, float $longitude, ?string $label = null): void
     {
         $this->points[] = [
             $latitude,

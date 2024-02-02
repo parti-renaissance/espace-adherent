@@ -48,7 +48,7 @@ class ElectionResult
      */
     private $participated = 0;
 
-    public function __construct(Election $election, UuidInterface $uuid = null)
+    public function __construct(Election $election, ?UuidInterface $uuid = null)
     {
         $this->election = $election;
         $this->uuid = $uuid ?? Uuid::uuid4();

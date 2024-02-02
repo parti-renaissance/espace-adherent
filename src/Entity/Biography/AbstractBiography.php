@@ -102,12 +102,12 @@ abstract class AbstractBiography implements ImageOwnerInterface
     protected $image;
 
     public function __construct(
-        UuidInterface $uuid = null,
-        string $firstNname = null,
-        string $lastName = null,
-        string $description = null,
-        string $content = null,
-        bool $published = null
+        ?UuidInterface $uuid = null,
+        ?string $firstNname = null,
+        ?string $lastName = null,
+        ?string $description = null,
+        ?string $content = null,
+        ?bool $published = null
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->firstName = $firstNname;

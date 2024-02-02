@@ -50,15 +50,15 @@ class EventCommand extends BaseEventCommand
 
     public function __construct(
         ?Adherent $author,
-        Committee $committee = null,
-        UuidInterface $uuid = null,
-        Address $address = null,
-        \DateTimeInterface $beginAt = null,
-        \DateTimeInterface $finishAt = null,
+        ?Committee $committee = null,
+        ?UuidInterface $uuid = null,
+        ?Address $address = null,
+        ?\DateTimeInterface $beginAt = null,
+        ?\DateTimeInterface $finishAt = null,
         bool $isForLegislatives = false,
-        BaseEvent $event = null,
+        ?BaseEvent $event = null,
         string $timezone = GeoCoder::DEFAULT_TIME_ZONE,
-        string $visioUrl = null
+        ?string $visioUrl = null
     ) {
         parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $event, $timezone, $visioUrl);
 

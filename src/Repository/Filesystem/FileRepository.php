@@ -48,7 +48,7 @@ class FileRepository extends ServiceEntityRepository
 
     public function findWithPermissionsInDirectory(
         array $permissions,
-        File $directory = null,
+        ?File $directory = null,
         string $order = 'a'
     ): array {
         $qb = $this->createWithPermissionsQueryBuilder($permissions)

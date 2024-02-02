@@ -96,7 +96,7 @@ class TerritorialCouncil implements StaticSegmentInterface, InstanceEntityInterf
      */
     private $politicalCommittee;
 
-    public function __construct(string $name = null, string $codes = null, bool $isActive = true)
+    public function __construct(?string $name = null, ?string $codes = null, bool $isActive = true)
     {
         $this->uuid = Uuid::uuid4();
         $this->name = $name;

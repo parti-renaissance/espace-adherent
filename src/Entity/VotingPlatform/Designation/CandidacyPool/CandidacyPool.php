@@ -41,7 +41,7 @@ class CandidacyPool
      */
     private $candidaciesGroups;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->candidaciesGroups = new ArrayCollection();

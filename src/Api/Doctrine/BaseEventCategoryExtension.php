@@ -14,7 +14,7 @@ class BaseEventCategoryExtension implements QueryCollectionExtensionInterface
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        Operation $operation = null,
+        ?Operation $operation = null,
         array $context = []
     ): void {
         if (is_subclass_of($resourceClass, BaseEventCategory::class)) {

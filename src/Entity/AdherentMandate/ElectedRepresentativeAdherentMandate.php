@@ -101,10 +101,10 @@ class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
         ?UuidInterface $uuid,
         Adherent $adherent,
         string $mandateType,
-        \DateTime $beginAt = null,
-        \DateTime $finishAt = null,
-        string $delegation = null,
-        Zone $zone = null
+        ?\DateTime $beginAt = null,
+        ?\DateTime $finishAt = null,
+        ?string $delegation = null,
+        ?Zone $zone = null
     ): self {
         $mandate = new self($adherent, null, $beginAt, $finishAt);
         $mandate->uuid = $uuid ?? Uuid::uuid4();

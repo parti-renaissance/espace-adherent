@@ -8,7 +8,7 @@ class MessageRecipient
     private $fullName;
     private $vars;
 
-    public function __construct(string $emailAddress, string $fullName = null, array $vars = [])
+    public function __construct(string $emailAddress, ?string $fullName = null, array $vars = [])
     {
         $this->emailAddress = $emailAddress;
         $this->fullName = $fullName;

@@ -50,7 +50,7 @@ class AdministratorExportHistory
         Administrator $administrator,
         string $routeName,
         array $parameters,
-        \DateTimeInterface $exportedAt = null
+        ?\DateTimeInterface $exportedAt = null
     ) {
         $this->administrator = $administrator;
         $this->routeName = $routeName;

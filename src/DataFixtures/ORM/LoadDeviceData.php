@@ -37,7 +37,7 @@ class LoadDeviceData extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function createDevice(string $uuid, string $deviceUuid, string $postalCode = null): Device
+    public function createDevice(string $uuid, string $deviceUuid, ?string $postalCode = null): Device
     {
         $device = new Device(Uuid::fromString($uuid), $deviceUuid, $postalCode);
 

@@ -47,7 +47,7 @@ class DesignationRepository extends ServiceEntityRepository
     /**
      * @return Designation[]
      */
-    public function getDesignations(array $types, int $limit = null): array
+    public function getDesignations(array $types, ?int $limit = null): array
     {
         $qb = $this->createQueryBuilder('d')
             ->orderBy('d.voteStartDate', 'DESC')
@@ -126,7 +126,7 @@ class DesignationRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAllActiveForAdherent(Adherent $adherent, array $types = [], int $limit = null, bool $withVoteActiveOnly = false): array
+    public function findAllActiveForAdherent(Adherent $adherent, array $types = [], ?int $limit = null, bool $withVoteActiveOnly = false): array
     {
         $queryBuilder = $this->createQueryBuilder('designation')
             ->addSelect(

@@ -142,7 +142,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
         return parent::onAuthenticationFailure($request, $exception);
     }
 
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, ?AuthenticationException $authException = null)
     {
         if (
             \in_array('application/json', $request->getAcceptableContentTypes())

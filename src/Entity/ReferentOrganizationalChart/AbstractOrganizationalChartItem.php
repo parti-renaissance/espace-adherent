@@ -86,7 +86,7 @@ abstract class AbstractOrganizationalChartItem
      */
     private $children;
 
-    public function __construct(string $label = null, self $parent = null)
+    public function __construct(?string $label = null, ?self $parent = null)
     {
         $this->children = new ArrayCollection();
         $this->label = $label;

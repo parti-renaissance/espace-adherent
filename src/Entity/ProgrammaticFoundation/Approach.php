@@ -70,7 +70,7 @@ class Approach
      */
     private $subApproaches;
 
-    public function __construct(int $position = null, string $title = null, string $content = null)
+    public function __construct(?int $position = null, ?string $title = null, ?string $content = null)
     {
         $this->uuid = Uuid::uuid4();
         $this->position = $position;

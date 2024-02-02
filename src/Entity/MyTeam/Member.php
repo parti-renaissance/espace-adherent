@@ -107,10 +107,10 @@ class Member
     private array $scopeFeatures;
 
     public function __construct(
-        Adherent $adherent = null,
-        string $role = null,
+        ?Adherent $adherent = null,
+        ?string $role = null,
         array $scopeFeatures = [],
-        UuidInterface $uuid = null
+        ?UuidInterface $uuid = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->adherent = $adherent;

@@ -236,15 +236,15 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
     private int $participantsCount = 0;
 
     public function __construct(
-        UuidInterface $uuid = null,
-        string $title = null,
-        string $brief = null,
-        Team $team = null,
-        AudienceSnapshot $audience = null,
-        Survey $survey = null,
-        int $goal = null,
-        \DateTime $finishAt = null,
-        Zone $zone = null
+        ?UuidInterface $uuid = null,
+        ?string $title = null,
+        ?string $brief = null,
+        ?Team $team = null,
+        ?AudienceSnapshot $audience = null,
+        ?Survey $survey = null,
+        ?int $goal = null,
+        ?\DateTime $finishAt = null,
+        ?Zone $zone = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->title = $title;

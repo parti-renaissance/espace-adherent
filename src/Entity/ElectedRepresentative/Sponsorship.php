@@ -50,9 +50,9 @@ class Sponsorship
     private $electedRepresentative;
 
     public function __construct(
-        int $presidentialElectionYear = null,
-        string $candidate = null,
-        ElectedRepresentative $electedRepresentative = null
+        ?int $presidentialElectionYear = null,
+        ?string $candidate = null,
+        ?ElectedRepresentative $electedRepresentative = null
     ) {
         $this->electedRepresentative = $electedRepresentative;
         $this->candidate = $candidate;
@@ -74,7 +74,7 @@ class Sponsorship
         return $this->candidate;
     }
 
-    public function setCandidate(string $candidate = null): void
+    public function setCandidate(?string $candidate = null): void
     {
         $this->candidate = $candidate;
     }

@@ -7,7 +7,7 @@ final class Link
     private $url;
     private $label;
 
-    public function __construct(string $url, string $label = null)
+    public function __construct(string $url, ?string $label = null)
     {
         $this->url = $url;
         $this->label = $label;

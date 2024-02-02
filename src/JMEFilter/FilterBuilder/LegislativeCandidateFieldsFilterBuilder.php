@@ -10,12 +10,12 @@ use App\Scope\ScopeEnum;
 
 class LegislativeCandidateFieldsFilterBuilder implements FilterBuilderInterface
 {
-    public function supports(string $scope, string $feature = null): bool
+    public function supports(string $scope, ?string $feature = null): bool
     {
         return ScopeEnum::LEGISLATIVE_CANDIDATE === $scope && FeatureEnum::MESSAGES === $feature;
     }
 
-    public function build(string $scope, string $feature = null): array
+    public function build(string $scope, ?string $feature = null): array
     {
         return (new FilterCollectionBuilder())
             ->createSelect('audienceType', 'Audience')

@@ -14,7 +14,7 @@ class ManagedAreaUtilsTest extends TestCase
         string $country,
         ?string $postalCode,
         array $expectedCodes,
-        string $inseeCode = null
+        ?string $inseeCode = null
     ): void {
         $adherent = $this->createMock(Adherent::class);
         $adherent->expects(self::any())->method('getCountry')->willReturn($country);

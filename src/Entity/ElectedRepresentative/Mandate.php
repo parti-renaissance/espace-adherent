@@ -208,17 +208,17 @@ class Mandate
     private ?GeoZone $attachedZone;
 
     public function __construct(
-        UuidInterface $uuid = null,
-        string $type = null,
+        ?UuidInterface $uuid = null,
+        ?string $type = null,
         bool $isElected = false,
-        string $politicalAffiliation = null,
-        string $laREMSupport = null,
-        GeoZone $geoZone = null,
-        ElectedRepresentative $electedRepresentative = null,
+        ?string $politicalAffiliation = null,
+        ?string $laREMSupport = null,
+        ?GeoZone $geoZone = null,
+        ?ElectedRepresentative $electedRepresentative = null,
         bool $onGoing = true,
-        \DateTime $beginAt = null,
-        \DateTime $finishAt = null,
-        GeoZone $attachedZone = null
+        ?\DateTime $beginAt = null,
+        ?\DateTime $finishAt = null,
+        ?GeoZone $attachedZone = null
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->type = $type;
@@ -311,7 +311,7 @@ class Mandate
         return $this->finishAt;
     }
 
-    public function setFinishAt(\DateTime $finishAt = null): void
+    public function setFinishAt(?\DateTime $finishAt = null): void
     {
         $this->finishAt = $finishAt;
     }
@@ -331,7 +331,7 @@ class Mandate
         return $this->laREMSupport;
     }
 
-    public function setLaREMSupport(string $laREMSupport = null): void
+    public function setLaREMSupport(?string $laREMSupport = null): void
     {
         $this->laREMSupport = $laREMSupport;
     }

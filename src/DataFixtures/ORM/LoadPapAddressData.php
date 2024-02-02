@@ -311,7 +311,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         string $lastName,
         string $gender,
         string $birthdate,
-        string $votePlace = null
+        ?string $votePlace = null
     ): Voter {
         return new Voter(
             Uuid::fromString($uuid),

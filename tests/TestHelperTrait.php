@@ -125,7 +125,7 @@ trait TestHelperTrait
         $this->assertCount($count, $mail->getRecipients());
     }
 
-    public function assertCountMails(int $count, string $type, string $recipient = null): void
+    public function assertCountMails(int $count, string $type, ?string $recipient = null): void
     {
         $repository = $this->getEmailRepository();
 
@@ -170,7 +170,7 @@ trait TestHelperTrait
         return $this->get(Server::class);
     }
 
-    public function getEntityManager(string $class = null): ObjectManager
+    public function getEntityManager(?string $class = null): ObjectManager
     {
         if (null === $class) {
             return $this->getManagerRegistry()->getManager();
@@ -444,7 +444,7 @@ trait TestHelperTrait
     /**
      * @param string|null $email email used to generate a unique UUID
      */
-    protected function createAdherent(string $email = null): Adherent
+    protected function createAdherent(?string $email = null): Adherent
     {
         $email = $email ?: 'john.smith@example.org';
         $phone = new PhoneNumber();
@@ -484,9 +484,9 @@ trait TestHelperTrait
     protected function createPostAddress(
         string $street,
         string $cityCode,
-        string $region = null,
-        float $latitude = null,
-        float $longitude = null
+        ?string $region = null,
+        ?float $latitude = null,
+        ?float $longitude = null
     ): PostAddress {
         [, $inseeCode] = explode('-', $cityCode);
         $city = $this->getFranceCities()->getCityByInseeCode($inseeCode);

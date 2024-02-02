@@ -67,11 +67,11 @@ class ElectedRepresentativeLabel
     private $electedRepresentative;
 
     public function __construct(
-        string $name = null,
-        ElectedRepresentative $electedRepresentative = null,
+        ?string $name = null,
+        ?ElectedRepresentative $electedRepresentative = null,
         bool $onGoing = true,
-        int $beginYear = null,
-        int $finishYear = null
+        ?int $beginYear = null,
+        ?int $finishYear = null
     ) {
         $this->name = $name;
         $this->onGoing = $onGoing;
@@ -125,7 +125,7 @@ class ElectedRepresentativeLabel
         return $this->finishYear;
     }
 
-    public function setFinishYear(int $finishYear = null): void
+    public function setFinishYear(?int $finishYear = null): void
     {
         $this->finishYear = $finishYear;
     }

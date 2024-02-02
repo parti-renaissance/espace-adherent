@@ -84,10 +84,10 @@ class BuildingEvent implements AuthorInterface
 
     public function __construct(
         Building $building,
-        Campaign $campaign = null,
-        string $action = null,
-        string $type = null,
-        string $identifier = null
+        ?Campaign $campaign = null,
+        ?string $action = null,
+        ?string $type = null,
+        ?string $identifier = null
     ) {
         $this->uuid = Uuid::uuid4();
         $this->building = $building;
@@ -122,7 +122,7 @@ class BuildingEvent implements AuthorInterface
         return $this->identifier;
     }
 
-    public function setIdentifier(string $identifier = null): void
+    public function setIdentifier(?string $identifier = null): void
     {
         $this->identifier = $identifier;
     }

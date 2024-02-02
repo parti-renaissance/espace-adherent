@@ -39,7 +39,7 @@ class EmailRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findMostRecentMessage(string $messageClass = null): ?Email
+    public function findMostRecentMessage(?string $messageClass = null): ?Email
     {
         $qb = $this
             ->createQueryBuilder('e')

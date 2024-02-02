@@ -20,7 +20,7 @@ abstract class AbstractAdhesionController extends AbstractController
         $this->processor = $processor;
     }
 
-    protected function getCommand(Request $request = null): RenaissanceMembershipRequest
+    protected function getCommand(?Request $request = null): RenaissanceMembershipRequest
     {
         /** @var ?Adherent $user */
         $user = $this->getUser();

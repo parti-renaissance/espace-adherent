@@ -11,7 +11,7 @@ abstract class AbstractCommitteeMembershipEvent extends Event implements Committ
     private $committee;
     private $adherent;
 
-    public function __construct(Adherent $adherent, Committee $committee = null)
+    public function __construct(Adherent $adherent, ?Committee $committee = null)
     {
         $this->committee = $committee;
         $this->adherent = $adherent;

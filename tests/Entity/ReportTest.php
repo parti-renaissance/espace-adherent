@@ -82,7 +82,7 @@ class ReportTest extends TestCase
         $this->assertNotNull($report->getResolvedAt());
     }
 
-    private function createReport(string $subjectClass, array $reasons, string $comment = null): Report
+    private function createReport(string $subjectClass, array $reasons, ?string $comment = null): Report
     {
         return new class($this->createMock($subjectClass), $this->createMock(Adherent::class), $reasons, $comment) extends Report {
             // CS needed for Style CI

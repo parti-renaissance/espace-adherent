@@ -89,7 +89,7 @@ class DonationController extends AbstractController
         return $donationRequest;
     }
 
-    private function getCurrentStep(Request $request, Adherent $adherent = null): int
+    private function getCurrentStep(Request $request, ?Adherent $adherent = null): int
     {
         if ($adherent && $request->query->has('step')) {
             return min(

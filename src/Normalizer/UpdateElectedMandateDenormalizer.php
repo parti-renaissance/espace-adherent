@@ -24,7 +24,7 @@ class UpdateElectedMandateDenormalizer implements DenormalizerInterface, Denorma
     ) {
     }
 
-    public function denormalize($data, string $class, string $format = null, array $context = [])
+    public function denormalize($data, string $class, ?string $format = null, array $context = [])
     {
         $context[self::ALREADY_CALLED] = true;
 
@@ -58,7 +58,7 @@ class UpdateElectedMandateDenormalizer implements DenormalizerInterface, Denorma
         return $mandate;
     }
 
-    public function supportsDenormalization($data, string $type, string $format = null, array $context = [])
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = [])
     {
         return !isset($context[self::ALREADY_CALLED])
             && is_a($type, Mandate::class, true)
@@ -68,7 +68,7 @@ class UpdateElectedMandateDenormalizer implements DenormalizerInterface, Denorma
     private function handleChanges(
         Mandate $mandate,
         array $functionData,
-        string $format = null,
+        ?string $format = null,
         array $context = []
     ): PoliticalFunction {
         if (isset($functionData['id'])) {

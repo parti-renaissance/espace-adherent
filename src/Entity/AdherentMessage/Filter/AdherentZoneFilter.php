@@ -22,7 +22,7 @@ class AdherentZoneFilter extends AbstractUserFilter
      */
     private $referentTag;
 
-    public function __construct(ReferentTag $referentTag = null)
+    public function __construct(?ReferentTag $referentTag = null)
     {
         parent::__construct();
 

@@ -14,7 +14,7 @@ class SocialShareRepository extends ServiceEntityRepository
         parent::__construct($registry, SocialShare::class);
     }
 
-    public function findForWall(SocialShareCategory $category = null)
+    public function findForWall(?SocialShareCategory $category = null)
     {
         $qb = $this->createQueryBuilder('s')
             ->select('s', 'c')

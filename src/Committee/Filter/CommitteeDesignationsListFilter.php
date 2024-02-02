@@ -25,7 +25,7 @@ class CommitteeDesignationsListFilter
      */
     private $committee;
 
-    public function __construct(array $zones = [], Committee $committee = null)
+    public function __construct(array $zones = [], ?Committee $committee = null)
     {
         $this->zones = $zones;
         $this->committee = $committee;

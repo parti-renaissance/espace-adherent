@@ -54,7 +54,7 @@ class Choice
      */
     private $votes;
 
-    public function __construct(string $value = null, UuidInterface $uuid = null)
+    public function __construct(?string $value = null, ?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->value = $value;

@@ -102,7 +102,7 @@ class DataSurvey implements AuthorInterface
      */
     private $papCampaignHistory;
 
-    public function __construct(Survey $survey = null)
+    public function __construct(?Survey $survey = null)
     {
         $this->survey = $survey;
         $this->uuid = Uuid::uuid4();

@@ -77,7 +77,7 @@ class CommitteeRepository extends ServiceEntityRepository
     /**
      * @return Committee[]
      */
-    public function findApprovedByAddress(Address $address, int $limit = null): array
+    public function findApprovedByAddress(Address $address, ?int $limit = null): array
     {
         return $this->createQueryBuilder('c')
             ->where('c.postAddress.address = :address AND c.postAddress.postalCode = :postal_code')
@@ -157,7 +157,7 @@ class CommitteeRepository extends ServiceEntityRepository
     public function findNearbyCommitteesFilteredByCountry(
         Coordinates $coordinates,
         string $country,
-        string $postalCodePrefix = null,
+        ?string $postalCodePrefix = null,
         int $count = self::DEFAULT_MAX_RESULTS_LIST
     ): array {
         $qb = $this
@@ -235,7 +235,7 @@ class CommitteeRepository extends ServiceEntityRepository
     /**
      * @param Zone[] $zones
      */
-    public function countRequestsForZones(array $zones, string $status = null): int
+    public function countRequestsForZones(array $zones, ?string $status = null): int
     {
         $qb = $this
             ->createRequestsFilterQueryBuilder($zones)

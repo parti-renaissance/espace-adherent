@@ -132,7 +132,7 @@ class Proposal implements EntityContentInterface, EntitySoftDeletedInterface, In
         return $this->media;
     }
 
-    public function setMedia(Media $media = null): self
+    public function setMedia(?Media $media = null): self
     {
         $this->media = $media;
 

@@ -68,7 +68,7 @@ final class EmailTemplate extends AbstractEmailTemplate
         return $body;
     }
 
-    public function addRecipient(string $email, string $name = null, array $vars = []): void
+    public function addRecipient(string $email, ?string $name = null, array $vars = []): void
     {
         $recipient = [
             'email' => $email,

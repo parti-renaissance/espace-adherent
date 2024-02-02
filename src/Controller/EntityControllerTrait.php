@@ -39,7 +39,7 @@ trait EntityControllerTrait
         $this->getEntityManager()->flush();
     }
 
-    public function createDeleteForm(string $action, string $tokenId, Request $request = null): FormInterface
+    public function createDeleteForm(string $action, string $tokenId, ?Request $request = null): FormInterface
     {
         $form = $this->createForm(DeleteEntityType::class, null, [
             'action' => $action,

@@ -129,7 +129,7 @@ class PoliticalCommitteeManager
 
     public function handleTerritorialCouncilMembershipUpdate(
         Adherent $adherent,
-        TerritorialCouncilMembership $oldTcMembership = null
+        ?TerritorialCouncilMembership $oldTcMembership = null
     ): void {
         $tcMembership = $adherent->getTerritorialCouncilMembership();
         $pcMembership = $adherent->getPoliticalCommitteeMembership();

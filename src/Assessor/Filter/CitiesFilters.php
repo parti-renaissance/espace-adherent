@@ -17,7 +17,7 @@ class CitiesFilters extends AssessorFilters
         return $filters;
     }
 
-    public function setStatus(string $status = null): void
+    public function setStatus(?string $status = null): void
     {
         $status = mb_strtolower(trim($status));
 

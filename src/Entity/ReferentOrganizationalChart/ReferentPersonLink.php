@@ -214,7 +214,7 @@ class ReferentPersonLink
         return $this->coReferent;
     }
 
-    public function setCoReferent(string $coReferent = null): void
+    public function setCoReferent(?string $coReferent = null): void
     {
         if (null !== $coReferent && !\in_array($coReferent, self::CO_REFERENT_TYPES)) {
             throw new \InvalidArgumentException(sprintf('Invalid co-referent type "%s". It must be one of %s.', $coReferent, implode(', ', self::CO_REFERENT_TYPES)));
