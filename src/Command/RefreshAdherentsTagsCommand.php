@@ -15,9 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-#[AsCommand(
-    name: 'app:adherent:refresh-tags',
-)]
+#[AsCommand('app:adherent:refresh-tags')]
 class RefreshAdherentsTagsCommand extends Command
 {
     /** @var SymfonyStyle */
@@ -90,7 +88,10 @@ class RefreshAdherentsTagsCommand extends Command
      */
     private function getQueryBuilder(array $ids, array $emails, ?string $source): Paginator
     {
-        $queryBuilder = $this->adherentRepository->createQueryBuilder('adherent');
+        $queryBuilder = $this->adherentRepository
+            ->createQueryBuilder('adherent')
+            ->select('PARTIAL adherent.{id, uuid}')
+        ;
 
         if ($ids) {
             $queryBuilder
