@@ -16,6 +16,7 @@ use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Mailchimp\Event\CampaignEvent;
 use App\Mailchimp\Event\RequestEvent;
+use App\Mailchimp\Exception\FailedSyncException;
 use App\Mailchimp\Exception\InvalidCampaignIdException;
 use App\Mailchimp\Exception\InvalidContactEmailException;
 use App\Mailchimp\Exception\RemovedContactStatusException;
@@ -94,12 +95,14 @@ class Manager implements LoggerAwareInterface
                 $listId,
                 true
             );
-            $adherent->emailStatusComment = null;
+            $adherent->emailStatusComment = $adherent->lastMailchimpFailedSyncResponse = null;
         } catch (InvalidContactEmailException $e) {
             $adherent->emailStatusComment = 'Email invalid';
         } catch (RemovedContactStatusException $e) {
             $adherent->setEmailUnsubscribed(true);
             $adherent->emailStatusComment = $e->getMessage();
+        } catch (FailedSyncException $e) {
+            $adherent->lastMailchimpFailedSyncResponse = $e->getMessage();
         }
 
         if ($result && (null === $adherent->getSource() || $adherent->isRenaissanceUser())) {

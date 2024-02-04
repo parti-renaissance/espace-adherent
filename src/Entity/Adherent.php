@@ -791,6 +791,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public ?string $emailStatusComment = null;
 
     /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $lastMailchimpFailedSyncResponse = null;
+
+    /**
      * @var Registration[]|Collection
      *
      * @ORM\OneToMany(targetEntity=Registration::class, mappedBy="adherent", cascade={"all"}, fetch="EXTRA_LAZY")

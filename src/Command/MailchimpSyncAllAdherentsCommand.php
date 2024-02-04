@@ -7,6 +7,7 @@ use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\Donator;
 use App\Entity\Geo\Zone;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
+use App\Membership\MembershipSourceEnum;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\Query\Expr\Join;
@@ -46,7 +47,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
     {
         $this
             ->addOption('limit', null, InputOption::VALUE_REQUIRED)
-            ->addOption('ref-tags', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
+            ->addOption('tags', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
             ->addOption('zones', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
             ->addOption('disabled-only', null, InputOption::VALUE_NONE)
             ->addOption('certified-only', null, InputOption::VALUE_NONE)
@@ -54,8 +55,9 @@ class MailchimpSyncAllAdherentsCommand extends Command
             ->addOption('committee-voter-only', null, InputOption::VALUE_NONE)
             ->addOption('active-mandates-only', null, InputOption::VALUE_NONE)
             ->addOption('declared-mandates-only', null, InputOption::VALUE_NONE)
-            ->addOption('source', null, InputOption::VALUE_REQUIRED)
+            ->addOption('source', null, InputOption::VALUE_REQUIRED, '', MembershipSourceEnum::RENAISSANCE)
             ->addOption('emails', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
+            ->addOption('batch-size', null, InputOption::VALUE_REQUIRED, '', 500)
         ;
     }
 
@@ -66,10 +68,11 @@ class MailchimpSyncAllAdherentsCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
+        $batchSize = $input->getOption('batch-size');
         $limit = (int) $input->getOption('limit');
 
         $paginator = $this->getQueryBuilder(
-            $input->getOption('ref-tags'),
+            $input->getOption('tags'),
             $input->getOption('zones'),
             $input->getOption('disabled-only'),
             $input->getOption('certified-only'),
@@ -88,7 +91,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
             return self::FAILURE;
         }
 
-        $paginator->getQuery()->setMaxResults($limit && $limit < 500 ? $limit : 500);
+        $paginator->getQuery()->setMaxResults($limit && $limit < $batchSize ? $limit : $batchSize);
 
         $this->io->progressStart($total);
         $offset = 0;
@@ -120,7 +123,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
      * @return Paginator|Adherent[]
      */
     private function getQueryBuilder(
-        array $refTags,
+        array $tags,
         array $zoneCodes,
         bool $disabledOnly,
         bool $certifiedOnly,
@@ -133,6 +136,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
     ): Paginator {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
+            ->select('PARTIAL adherent.{id, uuid, emailAddress}')
             ->where('adherent.status = :status')
             ->setParameter('status', $disabledOnly ? Adherent::DISABLED : Adherent::ENABLED)
         ;
@@ -142,19 +146,15 @@ class MailchimpSyncAllAdherentsCommand extends Command
                 ->andWhere('adherent.source = :source')
                 ->setParameter('source', $source)
             ;
-        } else {
-            $queryBuilder
-                ->andWhere('adherent.adherent = true')
-                ->andWhere('adherent.source IS NULL')
-            ;
         }
 
-        if ($refTags) {
-            $queryBuilder
-                ->innerJoin('adherent.referentTags', 'tag')
-                ->andWhere('tag.code IN (:tags)')
-                ->setParameter('tags', $refTags)
-            ;
+        if ($tags) {
+            $orX = $queryBuilder->expr()->orX();
+            foreach ($tags as $tag) {
+                $orX->add('adherent.tags LIKE :tag_'.$tag);
+                $queryBuilder->setParameter('tag_'.$tag, '%'.$tag.'%');
+            }
+            $queryBuilder->andWhere($orX);
         }
 
         if ($zoneCodes) {
