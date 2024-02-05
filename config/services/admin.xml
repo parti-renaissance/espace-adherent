@@ -996,6 +996,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.openai_assistant" class="App\Admin\OpenAI\AssistantAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Assistants OpenAI" group="Tech" />
+
+            <argument />
+            <argument>App\Entity\OpenAI\Assistant</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Formation

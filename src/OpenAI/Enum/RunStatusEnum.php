@@ -12,10 +12,5 @@ enum RunStatusEnum: string
     case FAILED = 'failed';
     case COMPLETED = 'completed';
     case EXPIRED = 'expired';
-    case ERROR = 'error';
-
-    public const NEED_REFRESH = [
-        self::QUEUED,
-        self::IN_PROGRESS,
-    ];
+    case UNKNOWN = 'unknown';
 }

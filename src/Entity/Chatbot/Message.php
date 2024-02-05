@@ -6,6 +6,8 @@ use App\Chatbot\Enum\MessageRoleEnum;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\OpenAI\OpenAIResourceTrait;
+use App\OpenAI\Model\MessageInterface;
+use App\OpenAI\Model\ThreadInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -15,7 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass="App\Repository\Chatbot\MessageRepository")
  * @ORM\Table(name="chatbot_message")
  */
-class Message
+class Message implements MessageInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -61,7 +63,7 @@ class Message
      */
     public ?Run $run = null;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
@@ -69,5 +71,15 @@ class Message
     public function isUserMessage(): bool
     {
         return MessageRoleEnum::USER === $this->role;
+    }
+
+    public function getThread(): ThreadInterface
+    {
+        return $this->thread;
+    }
+
+    public function getText(): string
+    {
+        return $this->text;
     }
 }

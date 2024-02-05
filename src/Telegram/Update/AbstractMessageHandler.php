@@ -27,7 +27,7 @@ abstract class AbstractMessageHandler implements UpdateHandlerInterface
 
     private function isHandledChatType(Chat $chat): bool
     {
-        return \in_array($chat->getType(), self::HANDLED_CHAT_TYPES, true);
+        return \in_array(ChatTypeEnum::tryFrom($chat->getType()), self::HANDLED_CHAT_TYPES, true);
     }
 
     private function isMessageGranted(BotInterface $bot, Message $message): bool

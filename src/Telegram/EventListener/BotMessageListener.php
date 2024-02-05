@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Telegram\Listener;
+namespace App\Telegram\EventListener;
 
 use App\Telegram\Command\SendBotMessageCommand;
 use App\Telegram\Event\BotMessageEvent;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+#[AsEventListener]
 class BotMessageListener
 {
     public function __construct(private readonly MessageBusInterface $bus)

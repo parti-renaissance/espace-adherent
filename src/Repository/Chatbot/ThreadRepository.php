@@ -4,10 +4,12 @@ namespace App\Repository\Chatbot;
 
 use App\Entity\Chatbot\Chatbot;
 use App\Entity\Chatbot\Thread;
+use App\OpenAI\Model\ThreadInterface;
+use App\OpenAI\Provider\ThreadProviderInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class ThreadRepository extends ServiceEntityRepository
+class ThreadRepository extends ServiceEntityRepository implements ThreadProviderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -32,12 +34,17 @@ class ThreadRepository extends ServiceEntityRepository
         ;
     }
 
-    public function refresh(Thread $thread): void
+    public function findOneByIdentifier(string $identifier): ?ThreadInterface
+    {
+        return $this->findOneByUuid($identifier);
+    }
+
+    public function refresh(ThreadInterface $thread): void
     {
         $this->_em->refresh($thread);
     }
 
-    public function save(Thread $thread): void
+    public function save(ThreadInterface $thread): void
     {
         $this->_em->persist($thread);
         $this->_em->flush($thread);

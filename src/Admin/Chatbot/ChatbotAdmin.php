@@ -41,6 +41,10 @@ class ChatbotAdmin extends AbstractAdmin
                 ->add('assistantType', AssistantTypeEnumType::class, [
                     'label' => 'Type d\'assistant',
                 ])
+                ->add('openAiAssistant', ModelType::class, [
+                    'label' => 'Assistant OpenAI',
+                    'required' => false,
+                ])
             ->end()
         ;
     }

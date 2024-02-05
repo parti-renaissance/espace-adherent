@@ -15,9 +15,9 @@ class Client implements ClientInterface
         $this->botApi->sendMessage($chatId, $text);
     }
 
-    public function setWebhook(string $url): void
+    public function setWebhook(string $url, string $secret): void
     {
-        $this->botApi->setWebhook($url);
+        $this->botApi->setWebhook($url, null, null, 40, null, false, $secret);
     }
 
     public function deleteWebhook(): void

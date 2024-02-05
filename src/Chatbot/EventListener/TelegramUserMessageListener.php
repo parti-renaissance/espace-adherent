@@ -8,8 +8,10 @@ use App\Entity\TelegramBot;
 use App\Repository\Chatbot\ChatbotRepository;
 use App\Repository\Chatbot\ThreadRepository;
 use App\Telegram\Event\UserMessageEvent as TelegramUserMessageEvent;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+#[AsEventListener]
 class TelegramUserMessageListener
 {
     public function __construct(

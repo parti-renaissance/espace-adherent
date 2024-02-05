@@ -6,7 +6,9 @@ use App\Telegram\BotProviderInterface;
 use App\Telegram\Client\ClientFactoryInterface;
 use App\Telegram\Command\SendBotMessageCommand;
 use App\Telegram\Logger;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 class SendBotMessageCommandHandler
 {
     public function __construct(

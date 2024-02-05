@@ -69,10 +69,9 @@ class TelegramBot implements BotInterface
      */
     public array $whitelistedIds = [];
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
-        $this->secret = Uuid::uuid4();
     }
 
     public function __toString(): string
@@ -108,5 +107,10 @@ class TelegramBot implements BotInterface
     public function getWhitelistedChatIds(): array
     {
         return $this->whitelistedIds;
+    }
+
+    public function generateSecret(): void
+    {
+        $this->secret = Uuid::uuid4();
     }
 }

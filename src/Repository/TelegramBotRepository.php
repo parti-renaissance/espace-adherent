@@ -25,7 +25,7 @@ class TelegramBotRepository extends ServiceEntityRepository implements BotProvid
         return $this->findOneByUuid($identifier);
     }
 
-    public function findOneEnabledBySecret(string $secret): ?TelegramBot
+    public function findOneEnabledBySecret(string $secret): ?BotInterface
     {
         return $this->createQueryBuilder('telegram_bot')
             ->where('telegram_bot.enabled = :enabled')

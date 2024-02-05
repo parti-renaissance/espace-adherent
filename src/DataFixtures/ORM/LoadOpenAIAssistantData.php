@@ -13,7 +13,7 @@ class LoadOpenAIAssistantData extends Fixture
         foreach ($this->getAssistants() as $key => $data) {
             $assistant = $this->createAssistant(
                 $data['name'],
-                $data['identifier']
+                $data['openAiId']
             );
 
             $manager->persist($assistant);
@@ -26,11 +26,11 @@ class LoadOpenAIAssistantData extends Fixture
 
     private function createAssistant(
         string $name,
-        string $identifier
+        string $openAiId
     ): Assistant {
         $assistant = new Assistant();
         $assistant->name = $name;
-        $assistant->identifier = $identifier;
+        $assistant->openAiId = $openAiId;
 
         return $assistant;
     }
@@ -39,12 +39,12 @@ class LoadOpenAIAssistantData extends Fixture
     {
         yield 'openai-assistant-1' => [
             'name' => 'Assistant #1',
-            'identifier' => 'assistant-1-identifier',
+            'openAiId' => 'assistant-1-identifier',
         ];
 
         yield 'openai-assistant-2' => [
             'name' => 'Assistant #2',
-            'identifier' => 'assistant-2-identifier',
+            'openAiId' => 'assistant-2-identifier',
         ];
     }
 }

@@ -80,6 +80,11 @@ class Chatbot
         return AssistantTypeEnum::OPENAI === $this->assistantType;
     }
 
+    public function getOpenAiAssistant(): ?OpenAIAssistant
+    {
+        return $this->openAiAssistant;
+    }
+
     public function isTelegramBot(): bool
     {
         return ChatbotTypeEnum::TELEGRAM === $this->type;

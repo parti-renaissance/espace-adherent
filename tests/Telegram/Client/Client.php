@@ -6,11 +6,11 @@ use App\Telegram\Client\ClientInterface;
 
 class Client implements ClientInterface
 {
-    public function sendMessage(string $chatId, string $text): void
+    public function sendMessage(string $chatId, string $text, array $entities = []): void
     {
     }
 
-    public function setWebhook(string $url): void
+    public function setWebhook(string $url, string $secret): void
     {
     }
 

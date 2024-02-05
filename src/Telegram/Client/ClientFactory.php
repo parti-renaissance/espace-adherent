@@ -5,7 +5,7 @@ namespace App\Telegram\Client;
 use App\Telegram\BotInterface;
 use TelegramBot\Api\BotApi;
 
-class ClientFactory
+class ClientFactory implements ClientFactoryInterface
 {
     public function createClient(BotInterface $bot): ClientInterface
     {

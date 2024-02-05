@@ -42,8 +42,8 @@ class LoadChatbotData extends Fixture implements DependentFixtureInterface
         string $code,
         ChatbotTypeEnum $type,
         AssistantTypeEnum $assistantType,
-        TelegramBot $telegramBot = null,
-        OpenAIAssistant $openAiAssistant = null
+        ?TelegramBot $telegramBot = null,
+        ?OpenAIAssistant $openAiAssistant = null
     ): Chatbot {
         $chatbot = new Chatbot();
         $chatbot->name = $code;

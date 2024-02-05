@@ -5,7 +5,7 @@ namespace App\Entity\OpenAI;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
-use App\OpenAI\AssistantInterface;
+use App\OpenAI\Model\AssistantInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="openai_assistant")
  *
  * @UniqueEntity(fields={"name"})
- * @UniqueEntity(fields={"identifier"})
  */
 class Assistant implements AssistantInterface
 {
@@ -37,9 +36,9 @@ class Assistant implements AssistantInterface
      *
      * @Assert\NotBlank
      */
-    public ?string $identifier = null;
+    public ?string $openAiId = null;
 
-    public function __construct(UuidInterface $uuid = null)
+    public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
@@ -51,6 +50,11 @@ class Assistant implements AssistantInterface
 
     public function getIdentifier(): string
     {
-        return $this->identifier;
+        return $this->uuid->toString();
+    }
+
+    public function getOpenAiId(): string
+    {
+        return $this->openAiId;
     }
 }

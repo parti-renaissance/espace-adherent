@@ -2,7 +2,7 @@
 
 namespace App\OpenAI;
 
-use App\Entity\Chatbot\Thread;
+use App\OpenAI\Model\ThreadInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
@@ -16,12 +16,12 @@ class Logger implements LoggerAwareInterface
         $this->logger = $logger;
     }
 
-    public function log(Thread $thread, string $message): void
+    public function log(ThreadInterface $thread, string $message): void
     {
         $this->logger->info(
             sprintf(
                 '[OpenAI][Thread:%s] %s',
-                $thread->getUuid()->toString(),
+                $thread->getIdentifier(),
                 $message
             )
         );

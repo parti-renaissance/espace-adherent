@@ -11,9 +11,9 @@ class Client implements ClientInterface
 {
     private OpenAIClient $openAI;
 
-    public function __construct(private readonly string $openAIApiKey)
+    public function __construct(string $openAIApiKey)
     {
-        $this->openAI = \OpenAI::client($this->openAIApiKey);
+        $this->openAI = \OpenAI::client($openAIApiKey);
     }
 
     public function createThread(): string
@@ -46,7 +46,7 @@ class Client implements ClientInterface
     {
         $runResponse = $this->openAI->threads()->runs()->retrieve($threadId, $runId);
 
-        return RunStatusEnum::tryFrom($runResponse->status) ?? RunStatusEnum::ERROR;
+        return RunStatusEnum::tryFrom($runResponse->status) ?? RunStatusEnum::UNKNOWN;
     }
 
     public function cancelRun(string $threadId, string $runId): void

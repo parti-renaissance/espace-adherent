@@ -5,13 +5,8 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20240123003828 extends AbstractMigration
+final class Version20240204231024 extends AbstractMigration
 {
-    public function getDescription(): string
-    {
-        return '';
-    }
-
     public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE openai_assistant (
@@ -19,12 +14,12 @@ final class Version20240123003828 extends AbstractMigration
           created_by_administrator_id INT DEFAULT NULL,
           updated_by_administrator_id INT DEFAULT NULL,
           name VARCHAR(255) NOT NULL,
-          identifier VARCHAR(255) NOT NULL,
+          open_ai_id VARCHAR(255) NOT NULL,
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
           created_at DATETIME NOT NULL,
           updated_at DATETIME NOT NULL,
           UNIQUE INDEX UNIQ_55C6718E5E237E06 (name),
-          UNIQUE INDEX UNIQ_55C6718E772E836A (identifier),
+          UNIQUE INDEX UNIQ_55C6718EF6E32D4D (open_ai_id),
           UNIQUE INDEX UNIQ_55C6718ED17F50A6 (uuid),
           INDEX IDX_55C6718E9DF5350C (created_by_administrator_id),
           INDEX IDX_55C6718ECF1918FF (updated_by_administrator_id),
@@ -130,7 +125,12 @@ final class Version20240123003828 extends AbstractMigration
         SET
           NULL');
         $this->addSql('CREATE INDEX IDX_EDF1E88484E3FEC4 ON chatbot_message (run_id)');
-        $this->addSql('ALTER TABLE chatbot_run CHANGE external_id open_ai_id VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE
+          chatbot_run
+        ADD
+          open_ai_id VARCHAR(255) DEFAULT NULL,
+        CHANGE
+          external_id open_ai_status VARCHAR(255) DEFAULT NULL');
         $this->addSql('ALTER TABLE chatbot_thread CHANGE external_id open_ai_id VARCHAR(255) DEFAULT NULL');
     }
 
@@ -182,7 +182,14 @@ final class Version20240123003828 extends AbstractMigration
           text content LONGTEXT NOT NULL,
         CHANGE
           open_ai_id external_id VARCHAR(255) DEFAULT NULL');
-        $this->addSql('ALTER TABLE chatbot_run CHANGE open_ai_id external_id VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE
+          chatbot_run
+        ADD
+          external_id VARCHAR(255) DEFAULT NULL,
+        DROP
+          open_ai_status,
+        DROP
+          open_ai_id');
         $this->addSql('ALTER TABLE chatbot_thread CHANGE open_ai_id external_id VARCHAR(255) DEFAULT NULL');
     }
 }

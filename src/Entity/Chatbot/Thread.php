@@ -6,6 +6,8 @@ use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\OpenAI\OpenAIResourceTrait;
+use App\OpenAI\Model\RunInterface;
+use App\OpenAI\Model\ThreadInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,7 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass="App\Repository\Chatbot\ThreadRepository")
  * @ORM\Table(name="chatbot_thread")
  */
-class Thread
+class Thread implements ThreadInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -67,11 +69,17 @@ class Thread
         $this->messages = new ArrayCollection();
     }
 
+    public function getIdentifier(): string
+    {
+        return $this->uuid->toString();
+    }
+
     public function getMessagesToInitializeOnOpenAi(): Collection
     {
         return $this->messages->filter(
             static function (Message $message): bool {
-                return null !== $message->openAiId;
+                return $message->isUserMessage()
+                    && null === $message->openAiId;
             }
         );
     }
@@ -79,7 +87,7 @@ class Thread
     public function hasMessageWithOpenAiId(string $openAiId): bool
     {
         return null !== $this->messages->findFirst(
-            static function (Message $message) use ($openAiId): bool {
+            static function (int $key, Message $message) use ($openAiId): bool {
                 return $openAiId === $message->openAiId;
             }
         );
@@ -88,5 +96,23 @@ class Thread
     public function hasCurrentRun(): bool
     {
         return null !== $this->currentRun;
+    }
+
+    public function removeCurrentRun(): void
+    {
+        $this->currentRun = null;
+    }
+
+    public function createCurrentRun(): void
+    {
+        $run = new Run();
+        $run->thread = $this;
+
+        $this->currentRun = $run;
+    }
+
+    public function getCurrentRun(): ?RunInterface
+    {
+        return $this->currentRun;
     }
 }

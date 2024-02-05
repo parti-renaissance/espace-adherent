@@ -2,13 +2,13 @@
 
 namespace App\OpenAI\Event;
 
-use App\Entity\Chatbot\Thread;
-use App\OpenAI\AssistantInterface;
+use App\OpenAI\Model\AssistantInterface;
+use App\OpenAI\Model\ThreadInterface;
 
 class ThreadEvent
 {
     public function __construct(
-        public readonly Thread $thread,
+        public readonly ThreadInterface $thread,
         public readonly AssistantInterface $assistant
     ) {
     }

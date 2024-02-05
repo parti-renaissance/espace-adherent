@@ -6,34 +6,37 @@ use App\OpenAI\Command\RunThreadCommand;
 use App\OpenAI\Exception\RunNeedRefreshException;
 use App\OpenAI\Logger;
 use App\OpenAI\OpenAI;
-use App\Repository\Chatbot\ThreadRepository;
-use App\Repository\OpenAI\AssistantRepository;
+use App\OpenAI\Provider\AssistantProviderInterface;
+use App\OpenAI\Provider\ThreadProviderInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 class RunThreadCommandHandler
 {
     public function __construct(
-        public readonly ThreadRepository $threadRepository,
-        public readonly AssistantRepository $assistantRepository,
-        public readonly OpenAI $openAI,
-        public readonly Logger $logger
+        private readonly ThreadProviderInterface $threadProvider,
+        private readonly AssistantProviderInterface $assistantProvider,
+        private readonly OpenAI $openAI,
+        private readonly Logger $logger
     ) {
     }
 
     public function __invoke(RunThreadCommand $command): void
     {
-        $thread = $this->threadRepository->findOneByUuid($command->threadIdentifier);
+        $thread = $this->threadProvider->findOneByIdentifier($command->threadIdentifier);
 
         if (!$thread) {
             return;
         }
 
-        $assistant = $this->assistantRepository->loadByIdentifier($command->assistantIdentifier);
+        $assistant = $this->assistantProvider->loadByIdentifier($command->assistantIdentifier);
 
         if (!$assistant) {
             return;
         }
 
-        $this->threadRepository->refresh($thread);
+        $this->threadProvider->refresh($thread);
+        $this->assistantProvider->refresh($assistant);
 
         $this->logger->log($thread, 'Starting handler.');
 
