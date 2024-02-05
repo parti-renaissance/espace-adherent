@@ -180,6 +180,7 @@ class DonationAdmin extends AbstractAdmin
                     'label' => 'Rue',
                     'required' => true,
                 ])
+                ->add('postAddress.additionalAddress', null, ['label' => 'Complément d\'adresse'])
                 ->add('postAddress.postalCode', null, [
                     'label' => 'Code postal',
                     'required' => true,
