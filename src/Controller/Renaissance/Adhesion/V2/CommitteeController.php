@@ -43,6 +43,9 @@ class CommitteeController extends AbstractController
         }
 
         if (!$defaultCommittee) {
+            $adherent->finishAdhesionStep(AdhesionStepEnum::COMMITTEE);
+            $this->entityManager->flush();
+
             return $this->redirectToRoute('app_adhesion_finish');
         }
 
