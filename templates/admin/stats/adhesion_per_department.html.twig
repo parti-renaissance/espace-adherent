@@ -24,9 +24,11 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap.min.css" />
 {% endblock %}
 
+{% set current_year = "now"|date("Y") %}
+
 {% block sonata_page_content_header %}
     <h1>
-        Adhésion par département pour l'année <strong>{{ "now"|date("Y") }}</strong>
+        Adhésion par département pour l'année <strong>{{ current_year }}</strong>
     </h1>
 {% endblock %}
 
@@ -38,19 +40,19 @@
             <div class="info-box">
                 <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">À jour {{ "now"|date("Y") }}</span>
-                    <span class="info-box-number">{{ first['À jour N'] }}</span>
+                    <span class="info-box-text">À jour {{ current_year }}</span>
+                    <span class="info-box-number">{{ first['total_year_n'] }}</span>
                 </div>
             </div>
         </div>
 
-        {% set percentPrimo = first['À jour N'] > 0 ? (first['Primo adhésion'] * 100.0 / first['À jour N']) : 0 %}
+        {% set percentPrimo = first['total_year_n'] > 0 ? (first['total_primo'] * 100.0 / first['total_year_n']) : 0 %}
         <div class="col-md-3 col-xs-12">
             <div class="info-box bg-aqua">
                 <span class="info-box-icon"><i class="fa fa-child"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Primo adhésion</span>
-                    <span class="info-box-number">{{ first['Primo adhésion'] }}</span>
+                    <span class="info-box-number">{{ first['total_primo'] }}</span>
                     <div class="progress">
                         <div class="progress-bar" style="width: {{ percentPrimo }}%"></div>
                     </div>
@@ -61,13 +63,13 @@
             </div>
         </div>
 
-        {% set percentReadhesion = first['À jour N'] > 0 ? (first['Réadhésion'] * 100.0 / first['À jour N']) : 0 %}
+        {% set percentReadhesion = first['total_year_n'] > 0 ? (first['total_recotisation'] * 100.0 / first['total_year_n']) : 0 %}
         <div class="col-md-3 col-xs-12">
             <div class="info-box bg-yellow">
                 <span class="info-box-icon"><i class="fa fa-heartbeat"></i></span>
                 <div class="info-box-content">
-                    <span class="info-box-text">Réadhésion</span>
-                    <span class="info-box-number">{{ first['Réadhésion'] }}</span>
+                    <span class="info-box-text">Recotisation</span>
+                    <span class="info-box-number">{{ first['total_recotisation'] }}</span>
                     <div class="progress">
                         <div class="progress-bar" style="width: {{ percentReadhesion }}%"></div>
                     </div>
@@ -78,13 +80,13 @@
             </div>
         </div>
 
-        {% set percentElu = first['À jour N'] > 0 ? (first['À jour de cotisation élu'] * 100.0 / first['À jour N']) : 0 %}
+        {% set percentElu = first['total_year_n'] > 0 ? (first['total_elu'] * 100.0 / first['total_year_n']) : 0 %}
         <div class="col-md-3 col-xs-12">
             <div class="info-box bg-green">
                 <span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">À jour de cotisation élu</span>
-                    <span class="info-box-number">{{ first['À jour de cotisation élu'] }}</span>
+                    <span class="info-box-number">{{ first['total_elu'] }}</span>
                     <div class="progress">
                         <div class="progress-bar" style="width: {{ percentElu }}%"></div>
                     </div>
@@ -106,9 +108,16 @@
                                 <table class="table table-bordered table-hover dataTable">
                                     <thead>
                                         <tr role="row">
-                                            {% for key in first|keys %}
-                                                <th class="sorting">{{ key }}</th>
-                                            {% endfor %}
+                                            <th class="sorting">Région</th>
+                                            <th class="sorting">Code</th>
+                                            <th class="sorting">Département</th>
+                                            <th class="sorting">Primo adhérent</th>
+                                            <th class="sorting">Recotisation</th>
+                                            <th class="sorting">Elu à jour</th>
+                                            <th class="sorting">À jour {{ current_year }}</th>
+                                            <th class="sorting">À jour {{ current_year - 1 }}</th>
+                                            <th class="sorting">À jour {{ current_year - 2 }}</th>
+                                            <th class="sorting">Sympathisant</th>
                                         </tr>
                                     </thead>
 
@@ -116,7 +125,7 @@
                                         {% for stats in stats_per_department[1:] %}
                                             <tr>
                                                 {% for value in stats %}
-                                                    <td class="{{ value == '0' ? 'text-muted' }}" style="text-wrap: nowrap;">{{ value }}</td>
+                                                    <td class="{{ not value ? 'text-muted' }}">{{ value ?? 0 }}</td>
                                                 {% endfor %}
                                             </tr>
                                         {% endfor %}
