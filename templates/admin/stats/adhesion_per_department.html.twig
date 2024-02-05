@@ -65,7 +65,7 @@
     <div class="row">
         <div class="col-md-3 col-xs-12">
             <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
+                <span class="info-box-icon bg-green"><i class="fa fa-check"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">À jour {{ current_year }}</span>
                     <span class="info-box-number">{{ first['total_year_n'] }}</span>
@@ -76,7 +76,7 @@
         {% set percentPrimo = first['total_year_n'] > 0 ? (first['total_primo'] * 100.0 / first['total_year_n']) : 0 %}
         <div class="col-md-3 col-xs-12">
             <div class="info-box bg-aqua">
-                <span class="info-box-icon"><i class="fa fa-child"></i></span>
+                <span class="info-box-icon"><i class="fa fa-user-plus"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Primo adhésion</span>
                     <span class="info-box-number">{{ first['total_primo'] }}</span>
@@ -93,7 +93,7 @@
         {% set percentReadhesion = first['total_year_n'] > 0 ? (first['total_recotisation'] * 100.0 / first['total_year_n']) : 0 %}
         <div class="col-md-3 col-xs-12">
             <div class="info-box bg-yellow">
-                <span class="info-box-icon"><i class="fa fa-heartbeat"></i></span>
+                <span class="info-box-icon"><i class="fa fa-retweet"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Recotisation</span>
                     <span class="info-box-number">{{ first['total_recotisation'] }}</span>
@@ -110,7 +110,7 @@
         {% set percentElu = first['total_year_n'] > 0 ? (first['total_elu'] * 100.0 / first['total_year_n']) : 0 %}
         <div class="col-md-3 col-xs-12">
             <div class="info-box bg-green">
-                <span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>
+                <span class="info-box-icon"><i class="fa fa-institution"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">À jour de cotisation élu</span>
                     <span class="info-box-number">{{ first['total_elu'] }}</span>
