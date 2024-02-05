@@ -3,7 +3,7 @@
 namespace App\Mailchimp\Synchronisation;
 
 use App\Address\AddressInterface;
-use App\Adherent\Tag\TagEnum;
+use App\Adherent\Tag\TagTranslator;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
 use App\Entity\ApplicationRequest\ApplicationRequest;
@@ -81,7 +81,8 @@ class RequestBuilder implements LoggerAwareInterface
         private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
         private readonly ElectedRepresentativeTagsBuilder $electedRepresentativeTagsBuilder,
         private readonly ElectedRepresentativeAdherentMandateRepository $mandateRepository,
-        private readonly DonationRepository $donationRepository
+        private readonly DonationRepository $donationRepository,
+        private readonly TagTranslator $tagTranslator
     ) {
         $this->logger = new NullLogger();
     }
@@ -294,7 +295,7 @@ class RequestBuilder implements LoggerAwareInterface
 
     public function setAdherentTags(?array $tags): self
     {
-        $this->adherentTags = array_filter(array_map(fn (string $key) => $this->translateAdherentTag($key), $tags));
+        $this->adherentTags = array_filter(array_map(fn (string $key) => $this->tagTranslator->trans($key), $tags));
 
         return $this;
     }
@@ -731,13 +732,5 @@ class RequestBuilder implements LoggerAwareInterface
         }
 
         return $tags;
-    }
-
-    private function translateAdherentTag(string $key): ?string
-    {
-        return match ($key) {
-            TagEnum::ADHERENT, TagEnum::SYMPATHISANT => null,
-            default => TagEnum::getMCTagLabels()[$key] ?? null,
-        };
     }
 }

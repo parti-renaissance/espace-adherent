@@ -4,6 +4,7 @@ namespace App\Mailchimp;
 
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use App\Mailchimp\Campaign\Request\EditCampaignRequest;
+use App\Mailchimp\Exception\FailedSyncException;
 use App\Mailchimp\Exception\InvalidContactEmailException;
 use App\Mailchimp\Exception\RemovedContactStatusException;
 use App\Mailchimp\MailchimpSegment\Request\EditSegmentRequest;
@@ -57,6 +58,8 @@ class Driver implements LoggerAwareInterface
             } elseif (str_contains($responseContent, 'is already a list member in compliance state due to unsubscribe')) {
                 throw new RemovedContactStatusException('Unsubscribed');
             }
+
+            throw new FailedSyncException($responseContent);
         }
 
         return false;

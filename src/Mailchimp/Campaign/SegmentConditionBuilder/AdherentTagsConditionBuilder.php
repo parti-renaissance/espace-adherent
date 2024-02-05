@@ -2,7 +2,7 @@
 
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
-use App\Adherent\Tag\TagEnum;
+use App\Adherent\Tag\TagTranslator;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -11,6 +11,10 @@ use App\Mailchimp\Synchronisation\Request\MemberRequest;
 
 class AdherentTagsConditionBuilder implements SegmentConditionBuilderInterface
 {
+    public function __construct(private readonly TagTranslator $tagTranslator)
+    {
+    }
+
     public function support(SegmentFilterInterface $filter): bool
     {
         return $filter instanceof AudienceFilter;
@@ -55,10 +59,16 @@ class AdherentTagsConditionBuilder implements SegmentConditionBuilderInterface
 
     private function transformTagValue(string $tag): ?string
     {
-        if ($tagValue = TagEnum::getMCTagLabels()[$tag]) {
-            return $tagValue;
+        $label = $this->tagTranslator->trans($tag);
+
+        if (str_starts_with($label, 'adherent.tag.')) {
+            throw new InvalidAdherentTagValueException($tag);
         }
 
-        throw new InvalidAdherentTagValueException($tag);
+        if (!str_contains($tag, ':')) {
+            $label .= ' - ';
+        }
+
+        return $label;
     }
 }
