@@ -21,7 +21,7 @@ class ThreadListener
 
         $this->bus->dispatch(
             new RunThreadCommand(
-                $thread->getUuid()->toString(),
+                $thread->getIdentifier(),
                 $assistant->getIdentifier()
             )
         );

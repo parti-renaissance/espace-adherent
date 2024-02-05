@@ -10,6 +10,7 @@ use App\OpenAI\Model\AssistantInterface;
 use App\OpenAI\Model\MessageInterface;
 use App\OpenAI\Model\RunInterface;
 use App\OpenAI\Model\ThreadInterface;
+use App\OpenAI\Provider\AssistantProviderInterface;
 use App\OpenAI\Provider\MessageProviderInterface;
 use App\OpenAI\Provider\RunProviderInterface;
 use App\OpenAI\Provider\ThreadProviderInterface;
@@ -22,6 +23,7 @@ class OpenAI
         private readonly ThreadProviderInterface $threadProvider,
         private readonly MessageProviderInterface $messageProvider,
         private readonly RunProviderInterface $runProvider,
+        private readonly AssistantProviderInterface $assistantProvider,
         private readonly EventDispatcherInterface $dispatcher
     ) {
     }
@@ -111,6 +113,7 @@ class OpenAI
                 $messageResponse->text,
                 $messageResponse->annotations,
                 $messageResponse->date,
+                $messageResponse->assistantId ? $this->assistantProvider->findOneByOpenAiId($messageResponse->assistantId) : null,
                 $messageResponse->runId ? $this->runProvider->findOneByOpenAiId($messageResponse->runId) : null
             );
 

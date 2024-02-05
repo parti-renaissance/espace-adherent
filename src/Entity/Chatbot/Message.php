@@ -5,6 +5,7 @@ namespace App\Entity\Chatbot;
 use App\Chatbot\Enum\MessageRoleEnum;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\OpenAI\Assistant;
 use App\Entity\OpenAI\OpenAIResourceTrait;
 use App\OpenAI\Model\MessageInterface;
 use App\OpenAI\Model\ThreadInterface;
@@ -56,6 +57,12 @@ class Message implements MessageInterface
      * @Groups({"chatbot:read"})
      */
     public \DateTimeInterface $date;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Assistant::class)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    public ?Assistant $assistant = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Run::class)

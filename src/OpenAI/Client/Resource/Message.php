@@ -13,6 +13,7 @@ class Message
         public readonly array $annotations,
         public readonly \DateTimeInterface $date,
         public readonly string $id,
+        public readonly ?string $assistantId,
         public readonly ?string $runId
     ) {
     }

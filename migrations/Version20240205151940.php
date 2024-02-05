@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20240204231024 extends AbstractMigration
+final class Version20240205151940 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -111,6 +111,8 @@ final class Version20240204231024 extends AbstractMigration
         $this->addSql('ALTER TABLE
           chatbot_message
         ADD
+          assistant_id INT UNSIGNED DEFAULT NULL,
+        ADD
           run_id INT UNSIGNED DEFAULT NULL,
         ADD
           entities JSON NOT NULL,
@@ -121,9 +123,16 @@ final class Version20240204231024 extends AbstractMigration
         $this->addSql('ALTER TABLE
           chatbot_message
         ADD
+          CONSTRAINT FK_EDF1E884E05387EF FOREIGN KEY (assistant_id) REFERENCES openai_assistant (id) ON DELETE
+        SET
+          NULL');
+        $this->addSql('ALTER TABLE
+          chatbot_message
+        ADD
           CONSTRAINT FK_EDF1E88484E3FEC4 FOREIGN KEY (run_id) REFERENCES chatbot_run (id) ON DELETE
         SET
           NULL');
+        $this->addSql('CREATE INDEX IDX_EDF1E884E05387EF ON chatbot_message (assistant_id)');
         $this->addSql('CREATE INDEX IDX_EDF1E88484E3FEC4 ON chatbot_message (run_id)');
         $this->addSql('ALTER TABLE
           chatbot_run
@@ -137,6 +146,7 @@ final class Version20240204231024 extends AbstractMigration
     public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE chatbot DROP FOREIGN KEY FK_7DC4B0043FF15E50');
+        $this->addSql('ALTER TABLE chatbot_message DROP FOREIGN KEY FK_EDF1E884E05387EF');
         $this->addSql('ALTER TABLE chatbot DROP FOREIGN KEY FK_7DC4B004A0E2F38');
         $this->addSql('ALTER TABLE openai_assistant DROP FOREIGN KEY FK_55C6718E9DF5350C');
         $this->addSql('ALTER TABLE openai_assistant DROP FOREIGN KEY FK_55C6718ECF1918FF');
@@ -171,9 +181,12 @@ final class Version20240204231024 extends AbstractMigration
           assistant_type');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_7DC4B00477153098 ON chatbot (code)');
         $this->addSql('ALTER TABLE chatbot_message DROP FOREIGN KEY FK_EDF1E88484E3FEC4');
+        $this->addSql('DROP INDEX IDX_EDF1E884E05387EF ON chatbot_message');
         $this->addSql('DROP INDEX IDX_EDF1E88484E3FEC4 ON chatbot_message');
         $this->addSql('ALTER TABLE
           chatbot_message
+        DROP
+          assistant_id,
         DROP
           run_id,
         DROP

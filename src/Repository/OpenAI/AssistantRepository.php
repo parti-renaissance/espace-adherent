@@ -29,4 +29,9 @@ class AssistantRepository extends ServiceEntityRepository implements AssistantPr
     {
         $this->_em->refresh($assistant);
     }
+
+    public function findOneByOpenAiId(string $openAiId): ?AssistantInterface
+    {
+        return $this->findOneBy(['openAiId' => $openAiId]);
+    }
 }

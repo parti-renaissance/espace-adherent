@@ -4,6 +4,9 @@ namespace App\Repository\Chatbot;
 
 use App\Chatbot\Enum\MessageRoleEnum;
 use App\Entity\Chatbot\Message;
+use App\Entity\Chatbot\Run;
+use App\Entity\OpenAI\Assistant;
+use App\OpenAI\Model\AssistantInterface;
 use App\OpenAI\Model\MessageInterface;
 use App\OpenAI\Model\RunInterface;
 use App\OpenAI\Model\ThreadInterface;
@@ -30,6 +33,7 @@ class MessageRepository extends ServiceEntityRepository implements MessageProvid
         string $text,
         array $annotations,
         \DateTimeInterface $date,
+        ?AssistantInterface $assistant,
         ?RunInterface $run
     ): MessageInterface {
         $message = new Message();
@@ -39,7 +43,14 @@ class MessageRepository extends ServiceEntityRepository implements MessageProvid
         $message->text = $text;
         $message->entities = $annotations;
         $message->date = $date;
-        $message->run = $run;
+
+        if ($assistant instanceof Assistant) {
+            $message->assistant = $assistant;
+        }
+
+        if ($run instanceof Run) {
+            $message->run = $run;
+        }
 
         return $message;
     }

@@ -23,7 +23,7 @@ class RunThreadCommandHandler
 
     public function __invoke(RunThreadCommand $command): void
     {
-        $thread = $this->threadProvider->findOneByIdentifier($command->threadIdentifier);
+        $thread = $this->threadProvider->loadByIdentifier($command->threadIdentifier);
 
         if (!$thread) {
             return;

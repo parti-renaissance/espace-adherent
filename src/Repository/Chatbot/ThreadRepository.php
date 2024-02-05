@@ -34,7 +34,7 @@ class ThreadRepository extends ServiceEntityRepository implements ThreadProvider
         ;
     }
 
-    public function findOneByIdentifier(string $identifier): ?ThreadInterface
+    public function loadByIdentifier(string $identifier): ?ThreadInterface
     {
         return $this->findOneByUuid($identifier);
     }

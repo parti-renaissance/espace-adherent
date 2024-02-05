@@ -18,7 +18,6 @@ class UrlHandler
     {
         $webhookUrl = $this->urlGenerator->generateUrl($bot);
 
-        dd($webhookUrl);
         $this
             ->createClient($bot)
             ->setWebhook($webhookUrl, $bot->getSecret())

@@ -13,6 +13,7 @@ class Client implements ClientInterface
 {
     private Generator $faker;
     private ?string $lastRunId = null;
+    private ?string $lastAssistantId = null;
 
     public function __construct()
     {
@@ -32,6 +33,7 @@ class Client implements ClientInterface
     public function createRun(string $threadId, string $assistantId): string
     {
         $this->lastRunId = uniqid('run_');
+        $this->lastAssistantId = $assistantId;
 
         return $this->lastRunId;
     }
@@ -59,6 +61,7 @@ class Client implements ClientInterface
                 [],
                 new \DateTimeImmutable('now'),
                 uniqid('msg_'),
+                $this->lastAssistantId,
                 $this->lastRunId
             ),
         ];

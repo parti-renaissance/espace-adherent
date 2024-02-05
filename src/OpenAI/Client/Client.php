@@ -84,6 +84,7 @@ class Client implements ClientInterface
                     $content->text->annotations,
                     new \DateTimeImmutable('@'.$messageResponse->createdAt),
                     $messageResponse->id,
+                    $messageResponse->assistantId,
                     $messageResponse->runId
                 );
             }
