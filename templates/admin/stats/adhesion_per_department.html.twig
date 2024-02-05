@@ -2,8 +2,11 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -14,6 +17,21 @@
                 searching: false,
                 lengthChange: false,
                 paging: false,
+                dom: 'frt<"table-footer"iB>',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        className: 'btn btn-default',
+                        filename: 'Adhésion par département {{ current_year }}',
+                        title: null,
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        className: 'btn btn-default',
+                        filename: 'Adhésion par département {{ current_year }}',
+                        title: null,
+                    }
+                ]
             });
         });
     </script>
@@ -21,7 +39,16 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap.min.css" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap.min.css" />
+
+    <style>
+        .table-footer {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+    </style>
 {% endblock %}
 
 {% set current_year = "now"|date("Y") %}
@@ -111,13 +138,13 @@
                                             <th class="sorting">Région</th>
                                             <th class="sorting">Code</th>
                                             <th class="sorting">Département</th>
-                                            <th class="sorting">Primo adhérent</th>
-                                            <th class="sorting">Recotisation</th>
-                                            <th class="sorting">Elu à jour</th>
-                                            <th class="sorting">À jour {{ current_year }}</th>
-                                            <th class="sorting">À jour {{ current_year - 1 }}</th>
-                                            <th class="sorting">À jour {{ current_year - 2 }}</th>
-                                            <th class="sorting">Sympathisant</th>
+                                            <th class="sorting">{{ 'adherent.tag.sympathisant'|trans }}</th>
+                                            <th class="sorting">{{ 'adherent.tag.a_jour_%s'|trans({year: current_year - 2}) }}</th>
+                                            <th class="sorting">{{ 'adherent.tag.a_jour_%s'|trans({year: current_year - 1}) }}</th>
+                                            <th class="sorting">{{ 'adherent.tag.a_jour_%s'|trans({year: current_year}) }}</th>
+                                            <th class="sorting">{{ 'adherent.tag.primo'|trans }}</th>
+                                            <th class="sorting">{{ 'adherent.tag.recotisation'|trans }}</th>
+                                            <th class="sorting">{{ 'adherent.tag.elu_a_jour'|trans }}</th>
                                         </tr>
                                     </thead>
 
@@ -125,7 +152,7 @@
                                         {% for stats in stats_per_department[1:] %}
                                             <tr>
                                                 {% for value in stats %}
-                                                    <td class="{{ not value ? 'text-muted' }}">{{ value ?? 0 }}</td>
+                                                    <td class="{{ not value ? 'text-muted' }}">{{ value == null and loop.index > 2 ? 0 : value }}</td>
                                                 {% endfor %}
                                             </tr>
                                         {% endfor %}
