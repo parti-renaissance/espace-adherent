@@ -9,7 +9,7 @@ final class Version20240203171047 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE adherents ADD last_mailchimp_failed_sync_response VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE adherents ADD last_mailchimp_failed_sync_response LONGTEXT DEFAULT NULL');
     }
 
     public function down(Schema $schema): void

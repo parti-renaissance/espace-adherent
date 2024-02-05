@@ -791,7 +791,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public ?string $emailStatusComment = null;
 
     /**
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     public ?string $lastMailchimpFailedSyncResponse = null;
 
