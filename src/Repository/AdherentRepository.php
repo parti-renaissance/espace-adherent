@@ -1700,13 +1700,13 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $currentYear = date('Y');
 
         $baseQueryBuilder = $this->createQueryBuilder('a')
-            ->select('COUNT(DISTINCT IF(a.tags LIKE :tag_primo, a.id, NULL)) AS total_primo')
+            ->select('COUNT(DISTINCT IF(a.tags LIKE :tag_sympathisant, a.id, NULL)) AS total_sympathisant')
+            ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_a_jour_n2, a.id, NULL)) AS total_year_n2')
+            ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_a_jour_n1, a.id, NULL)) AS total_year_n1')
+            ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_a_jour_n, a.id, NULL)) AS total_year_n')
+            ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_primo, a.id, NULL)) AS total_primo')
             ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_recotisation, a.id, NULL)) AS total_recotisation')
             ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_elu, a.id, NULL)) AS total_elu')
-            ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_a_jour_n, a.id, NULL)) AS total_year_n')
-            ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_a_jour_n1, a.id, NULL)) AS total_year_n1')
-            ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_a_jour_n2, a.id, NULL)) AS total_year_n2')
-            ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_sympathisant, a.id, NULL)) AS total_sympathisant')
             ->setParameters([
                 'tag_primo' => '%'.sprintf(TagEnum::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $currentYear).'%',
                 'tag_recotisation' => '%'.sprintf(TagEnum::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $currentYear).'%',
