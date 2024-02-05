@@ -23,6 +23,7 @@ class OpenAI
         private readonly ThreadProviderInterface $threadProvider,
         private readonly MessageProviderInterface $messageProvider,
         private readonly RunProviderInterface $runProvider,
+        private readonly MessageFactoryInterface $messageFactory,
         private readonly AssistantProviderInterface $assistantProvider,
         private readonly EventDispatcherInterface $dispatcher
     ) {
@@ -107,7 +108,7 @@ class OpenAI
                 continue;
             }
 
-            $message = $this->messageProvider->createAssistantMessage(
+            $message = $this->messageFactory->createAssistantMessage(
                 $thread,
                 $messageResponse->id,
                 $messageResponse->text,

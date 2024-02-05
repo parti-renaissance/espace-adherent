@@ -75,6 +75,23 @@ class Message implements MessageInterface
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
+    public static function create(
+        Thread $thread,
+        MessageRoleEnum $role,
+        string $text,
+        array $entities,
+        \DateTimeInterface $date
+    ): self {
+        $message = new self();
+        $message->thread = $thread;
+        $message->role = $role;
+        $message->text = $text;
+        $message->entities = $entities;
+        $message->date = $date;
+
+        return $message;
+    }
+
     public function isUserMessage(): bool
     {
         return MessageRoleEnum::USER === $this->role;

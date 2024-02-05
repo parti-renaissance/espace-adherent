@@ -23,31 +23,23 @@ class ThreadFactory
         array $entities,
         \DateTimeInterface $date
     ): Message {
-        return $this->createMessage($thread, MessageRoleEnum::USER, $text, $entities, $date);
+        return Message::create($thread, MessageRoleEnum::USER, $text, $entities, $date);
     }
 
-    private function createThread(Chatbot $chatbot): Thread
+    public function createAssistantMessage(
+        Thread $thread,
+        string $text,
+        array $entities,
+        \DateTimeInterface $date
+    ): Message {
+        return Message::create($thread, MessageRoleEnum::ASSISTANT, $text, $entities, $date);
+    }
+
+    protected function createThread(Chatbot $chatbot): Thread
     {
         $thread = new Thread();
         $thread->chatbot = $chatbot;
 
         return $thread;
-    }
-
-    private function createMessage(
-        Thread $thread,
-        MessageRoleEnum $role,
-        string $text,
-        array $entities,
-        \DateTimeInterface $date,
-    ): Message {
-        $message = new Message();
-        $message->thread = $thread;
-        $message->role = $role;
-        $message->text = $text;
-        $message->entities = $entities;
-        $message->date = $date;
-
-        return $message;
     }
 }

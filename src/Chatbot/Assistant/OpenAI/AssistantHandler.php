@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Chatbot\Assistant;
+namespace App\Chatbot\Assistant\OpenAI;
 
+use App\Chatbot\Assistant\AssistantHandlerInterface;
 use App\Entity\Chatbot\Message;
 use App\OpenAI\Event\ThreadEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class OpenAIAssistantHandler implements AssistantHandlerInterface
+class AssistantHandler implements AssistantHandlerInterface
 {
     public function __construct(private readonly EventDispatcherInterface $dispatcher)
     {

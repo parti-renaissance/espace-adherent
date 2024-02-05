@@ -13,7 +13,7 @@ class UserMessageListener
     {
     }
 
-    public function __invoke(UserMessageEvent $event)
+    public function __invoke(UserMessageEvent $event): void
     {
         $this->assistant->handle($event->message);
     }
