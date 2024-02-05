@@ -31,9 +31,6 @@
                     {% if not app.user %}
                         <li><a href="{{ path('app_user_login') }}">Connexion</a></li>
                     {% endif %}
-                    {% if not has_role_adherent %}
-                        <li><a href="{{ path('app_membership_join') }}">Adhérer</a></li>
-                    {% endif %}
                     <li><a href="https://aide.en-marche.fr" rel="noopener noreferrer" target="_blank">Aide</a></li>
                     {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                         <li><a href="{{ path('admin_app_adherent_list', {'_switch_user': '_exit'}) }}">Quitter l'impersonnification</a></li>

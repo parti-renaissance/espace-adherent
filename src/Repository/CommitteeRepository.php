@@ -126,19 +126,6 @@ class CommitteeRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
-    public function findLastApprovedCommittees(int $count = self::DEFAULT_MAX_RESULTS_LIST): array
-    {
-        return $this
-            ->createQueryBuilder('committee')
-            ->where('committee.status = :status')
-            ->setParameter('status', Committee::APPROVED)
-            ->orderBy('committee.approvedAt', 'DESC')
-            ->setMaxResults($count)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     /**
      * @return Committee[]
      */
@@ -152,34 +139,6 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
 
         return $qb->getQuery()->getResult();
-    }
-
-    public function findNearbyCommitteesFilteredByCountry(
-        Coordinates $coordinates,
-        string $country,
-        ?string $postalCodePrefix = null,
-        int $count = self::DEFAULT_MAX_RESULTS_LIST
-    ): array {
-        $qb = $this
-            ->createNearbyQueryBuilder($coordinates)
-            ->andWhere('n.status = :status')
-            ->andWhere('n.postAddress.country = :country')
-            ->setParameter('status', Committee::APPROVED)
-            ->setParameter('country', $country)
-        ;
-
-        if ($postalCodePrefix) {
-            $qb
-                ->andWhere('n.postAddress.postalCode LIKE :postalCode')
-                ->setParameter('postalCode', $postalCodePrefix.'%')
-            ;
-        }
-
-        return $qb
-            ->setMaxResults($count)
-            ->getQuery()
-            ->getResult()
-        ;
     }
 
     public function getQueryBuilderForZones(array $zones): QueryBuilder

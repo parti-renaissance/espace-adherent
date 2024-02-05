@@ -161,8 +161,6 @@ adherent.registration.success: |
     cliquer sur le lien que nous vous avons envoyé par email.
 
 adherent.activation.success: Votre compte adhérent est maintenant actif. Pour poursuivre votre action militante, n'hésitez pas à vous rendre sur l'application mobile Je m'engage.
-adherent.activation.already_active: Votre compte est déjà actif.
-adherent.activation.expired_key: Votre clé d'activation est expirée ! Veuillez contacter les administrateurs du site pour activer votre compte.
 
 adherent.submit_donation_label: Je soutiens maintenant
 adherent.pass_donation_label: Pas maintenant

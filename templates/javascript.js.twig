@@ -467,27 +467,6 @@ $(document).ready(function() {
     });
 {% endmacro %}
 
-{% macro toggleMandatesSelect(checkboxSelector, selectSelector, helpTextSelector) %}
-    (function (checkboxSelector, selectSelector, helpTextSelector) {
-        const formElected = $(checkboxSelector);
-        const selectMandates = $(selectSelector);
-        const helpText = $(helpTextSelector);
-
-        formElected.click(function() {
-            const isChecked = $(this).is(':checked');
-
-            helpText.toggle(isChecked);
-            selectMandates.parent().toggle(isChecked);
-            selectMandates.attr('required', isChecked);
-
-            if (!isChecked) {
-                selectMandates.val('');
-            }
-        });
-        formElected.triggerHandler('click');
-    })('{{ checkboxSelector }}', '{{ selectSelector }}', '{{ helpTextSelector }}');
-{% endmacro %}
-
 {% macro init_event_cropperjs(form) %}
     {% import _self as helper %}
     {{ helper.init_cropperjs(form, 16/9, 960, 540) }}

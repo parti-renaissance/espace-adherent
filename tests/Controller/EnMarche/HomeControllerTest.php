@@ -101,7 +101,5 @@ class HomeControllerTest extends AbstractEnMarcheWebTestCase
         yield 'Emmanuel Macron' => ['/emmanuel-macron/', '/emmanuel-macron'];
         yield 'Le mouvement' => ['/le-mouvement/', '/le-mouvement'];
         yield 'Actualités' => ['/articles/actualites/', '/articles/actualites'];
-        yield 'Inscription' => ['/adhesion/', '/adhesion'];
-        yield 'Inscription with parameters' => ['/adhesion/?param1=value1&param2=value2', '/adhesion?param1=value1&param2=value2'];
     }
 }

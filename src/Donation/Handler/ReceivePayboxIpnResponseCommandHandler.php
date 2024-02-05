@@ -8,7 +8,6 @@ use App\Donation\Command\ReceivePayboxIpnResponseCommand;
 use App\Entity\Donation;
 use App\Mailer\MailerService;
 use App\Mailer\Message\DonationThanksMessage;
-use App\Membership\MembershipRequestHandler;
 use App\Repository\DonationRepository;
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,7 +23,6 @@ class ReceivePayboxIpnResponseCommandHandler implements MessageHandlerInterface
         private readonly EntityManagerInterface $manager,
         private readonly TransactionRepository $transactionRepository,
         private readonly DonationRepository $donationRepository,
-        private readonly MembershipRequestHandler $membershipRequestHandler,
         private readonly MessageBusInterface $bus,
         private readonly LoggerInterface $logger
     ) {
@@ -59,20 +57,14 @@ class ReceivePayboxIpnResponseCommandHandler implements MessageHandlerInterface
 
         if ($transaction->isSuccessful()) {
             if ($donation->isMembership()) {
-                if ($adherent) {
-                    if ($adherent->isV2()) {
-                        if (!$adherent->getActivatedAt()) {
-                            $this->bus->dispatch(new GenerateActivationCodeCommand($adherent, true));
-                        }
-                    } else {
-                        if ($donation->isReAdhesion()) {
-                            $this->membershipRequestHandler->finishRenaissanceReAdhesion($adherent);
-                        } else {
-                            $this->membershipRequestHandler->finishRenaissanceAdhesion($adherent);
-                        }
-                    }
-                } else {
+                if (!$adherent) {
                     $this->logger->error('Adhesion RE: adherent introuvable pour une cotisation réussie, donation id '.$donation->getId());
+
+                    return;
+                }
+
+                if ($adherent->isV2() && !$adherent->getActivatedAt()) {
+                    $this->bus->dispatch(new GenerateActivationCodeCommand($adherent, true));
                 }
             } else {
                 $this->transactionalMailer->sendMessage(DonationThanksMessage::createFromTransaction($transaction));

@@ -19,7 +19,6 @@ use App\Entity\Reporting\CommitteeMembershipHistory;
 use App\Events;
 use App\Exception\CommitteeMembershipException;
 use App\Geocoder\Coordinates;
-use App\Intl\FranceCitiesBundle;
 use App\Membership\UserEvents;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\AdherentRepository;
@@ -260,30 +259,6 @@ class CommitteeManager
         $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
     }
 
-    public function isFollowingCommittee(Adherent $adherent, Committee $committee): bool
-    {
-        return $this->getCommitteeMembership($adherent, $committee) instanceof CommitteeMembership;
-    }
-
-    /**
-     * Makes an adherent follow multiple committees at once.
-     *
-     * @param Adherent $adherent   The follower
-     * @param string[] $committees An array of committee UUIDs
-     */
-    public function followCommittees(Adherent $adherent, array $committees): void
-    {
-        if (empty($committees)) {
-            return;
-        }
-
-        foreach ($this->getCommitteeRepository()->findByUuid($committees) as $committee) {
-            if (!$this->isFollowingCommittee($adherent, $committee)) {
-                $this->followCommittee($adherent, $committee);
-            }
-        }
-    }
-
     public function followCommittee(
         Adherent $adherent,
         Committee $committee,
@@ -415,29 +390,6 @@ class CommitteeManager
     public function hasCommitteeInStatus(Adherent $adherent, array $status): bool
     {
         return $this->getCommitteeRepository()->hasCommitteeInStatus($adherent, $status);
-    }
-
-    public function getCommitteesByCoordinatesAndCountry(
-        Coordinates $coordinates,
-        string $country,
-        string $postalCode,
-        int $count = self::COMMITTEE_PROPOSALS_COUNT
-    ): array {
-        $postalCodePrefix = \array_key_exists(substr($postalCode, 0, 3), FranceCitiesBundle::DOMTOM_INSEE_CODE)
-            ? substr($postalCode, 0, 3)
-            : null;
-
-        return $this->getCommitteeRepository()->findNearbyCommitteesFilteredByCountry(
-            $coordinates,
-            $country,
-            $postalCodePrefix,
-            $count
-        );
-    }
-
-    public function getLastApprovedCommitteesAndMembers(int $count = self::COMMITTEE_PROPOSALS_COUNT): array
-    {
-        return $this->getCommitteeRepository()->findLastApprovedCommittees($count);
     }
 
     public function getAvailableMandateTypesFor(Committee $committee): array

@@ -12,7 +12,6 @@ use App\Exception\InvalidDonationCallbackException;
 use App\Exception\InvalidDonationPayloadException;
 use App\Exception\InvalidDonationStatusException;
 use App\Exception\InvalidPayboxPaymentSubscriptionValueException;
-use App\Membership\MembershipRegistrationProcess;
 use Cocur\Slugify\SlugifyInterface;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,7 +53,6 @@ class DonationRequestUtils
     private $session;
     private $tokenManager;
     private $slugify;
-    private $membershipRegistrationProcess;
     private $geocoder;
 
     public function __construct(
@@ -62,14 +60,12 @@ class DonationRequestUtils
         SessionInterface $session,
         CsrfTokenManagerInterface $tokenManager,
         SlugifyInterface $slugify,
-        MembershipRegistrationProcess $membershipRegistrationProcess,
         GeoCoder $geocoder
     ) {
         $this->validator = $validator;
         $this->session = $session;
         $this->tokenManager = $tokenManager;
         $this->slugify = $slugify;
-        $this->membershipRegistrationProcess = $membershipRegistrationProcess;
         $this->geocoder = $geocoder;
     }
 
@@ -181,7 +177,6 @@ class DonationRequestUtils
             'status' => self::PAYBOX_SUCCESS === $code ? DonationController::RESULT_STATUS_EFFECTUE : DonationController::RESULT_STATUS_ERREUR,
             'uuid' => $donationUuid,
             '_status_token' => (string) $this->tokenManager->getToken(self::STATUS_TOKEN),
-            'is_registration' => $this->membershipRegistrationProcess->isStarted(),
         ];
     }
 

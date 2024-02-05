@@ -218,21 +218,6 @@ app_redirect_login:
     defaults:
         route: app_user_login
 
-app_redirect_register:
-    host: "%app_host%"
-    path: /register
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
-    defaults:
-        route: app_membership_join
-
-app_redirect_inscription:
-    host: "%app_host%"
-    path: /inscription
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
-    defaults:
-        route: app_membership_join
-        permanent: true
-
 app_renaissance_adherent_space:
     host: "%app_renaissance_host%"
     path: /espace-adherent
@@ -326,16 +311,6 @@ renaissance_qr_code:
     path: "/{uuid}"
     methods: "GET"
     controller: App\Controller\EnMarche\QrCodeController
-
-app_api_form_validation:
-    host: "{app_domain}"
-    prefix: "%api_path_prefix%"
-    resource: "../src/Controller/Api/FormController.php"
-    type: "annotation"
-    defaults:
-        app_domain: "%app_host%"
-    requirements:
-        app_domain: "%app_host%|%app_renaissance_host%"
 
 app_api_resubscribe_email:
     host: "{app_domain}"

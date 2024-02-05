@@ -3,29 +3,13 @@
 namespace App\Membership;
 
 use App\Entity\Adherent;
-use App\Entity\AdherentActivationToken;
 use App\Repository\AdherentRepository;
 use Cake\Chronos\Chronos;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 
 class AdherentManager
 {
-    private $manager;
-    private $repository;
-
-    public function __construct(AdherentRepository $repository, ObjectManager $manager)
+    public function __construct(private readonly AdherentRepository $repository)
     {
-        $this->repository = $repository;
-        $this->manager = $manager;
-    }
-
-    public function activateAccount(Adherent $adherent, AdherentActivationToken $token, bool $flush = true): void
-    {
-        $adherent->activate($token);
-
-        if ($flush) {
-            $this->manager->flush();
-        }
     }
 
     public function countMembersByMonthManagedBy(Adherent $referent, int $months = 6): array

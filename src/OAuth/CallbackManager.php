@@ -6,8 +6,8 @@ use App\Repository\OAuth\ClientRepository;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Exception\InvalidUuidStringException;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CallbackManager
@@ -35,7 +35,7 @@ class CallbackManager
      *   - client_id (query string) belongs to an OAuth app
      *   - redirect_uri (query string) is supported by this client_id.
      *
-     * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
+     * @throws InvalidParameterException
      */
     public function generateUrl(
         string $name,
@@ -45,23 +45,6 @@ class CallbackManager
         $callbackParameters = $this->validateRedirectUriAndClient();
 
         return $this->urlGenerator->generate($name, $parameters + $callbackParameters, $referenceType);
-    }
-
-    /**
-     * Generate a redirect response to redirect_uri provided in request query string
-     * if and only if these values are valid, which means :
-     *   - client_id (query string) belongs to an OAuth app
-     *   - redirect_uri (query string) is supported by this client_id.
-     *
-     * It falls back to $fallback route name if request information are not valid
-     *
-     * @throws \Symfony\Component\Routing\Exception\InvalidParameterException
-     */
-    public function redirectToClientIfValid(?string $fallback = null, $fallbackParameters = []): RedirectResponse
-    {
-        $callbackParameters = $this->validateRedirectUriAndClient();
-
-        return new RedirectResponse($callbackParameters['redirect_uri'] ?? $this->urlGenerator->generate($fallback ?: 'homepage', $fallbackParameters));
     }
 
     private function validateRedirectUriAndClient(): array
