@@ -7,6 +7,8 @@ use App\OpenAI\Enum\RunStatusEnum;
 
 interface ClientInterface
 {
+    public function hasAssistant(string $assistantId): bool;
+
     public function createThread(): string;
 
     public function createUserMessage(string $threadId, string $content): string;

@@ -6,6 +6,9 @@ use App\OpenAI\Client\Resource\Message;
 use App\OpenAI\Enum\MessageRoleEnum;
 use App\OpenAI\Enum\RunStatusEnum;
 use OpenAI\Client as OpenAIClient;
+use OpenAI\Exceptions\ErrorException;
+use OpenAI\Exceptions\TransporterException;
+use OpenAI\Exceptions\UnserializableResponse;
 
 class Client implements ClientInterface
 {
@@ -14,6 +17,17 @@ class Client implements ClientInterface
     public function __construct(string $openAIApiKey)
     {
         $this->openAI = \OpenAI::client($openAIApiKey);
+    }
+
+    public function hasAssistant(string $assistantId): bool
+    {
+        try {
+            $this->openAI->assistants()->retrieve($assistantId);
+
+            return true;
+        } catch (ErrorException|UnserializableResponse|TransporterException $e) {
+            return false;
+        }
     }
 
     public function createThread(): string

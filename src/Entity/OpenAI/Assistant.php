@@ -6,6 +6,7 @@ use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\OpenAI\Model\AssistantInterface;
+use App\Validator\OpenAI\ValidAssistantId;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -17,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="openai_assistant")
  *
  * @UniqueEntity(fields={"name"})
+ * @UniqueEntity(fields={"openAiId"})
  */
 class Assistant implements AssistantInterface
 {
@@ -35,6 +37,7 @@ class Assistant implements AssistantInterface
      * @ORM\Column(unique=true)
      *
      * @Assert\NotBlank
+     * @ValidAssistantId
      */
     public ?string $openAiId = null;
 

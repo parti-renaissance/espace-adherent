@@ -25,6 +25,8 @@ class AssistantAdmin extends AbstractAdmin
                 ])
                 ->add('openAiId', TextType::class, [
                     'label' => 'ID OpenAI',
+                    'help_html' => true,
+                    'help' => 'ID commençant par <b>asst_</b>',
                 ])
             ->end()
         ;

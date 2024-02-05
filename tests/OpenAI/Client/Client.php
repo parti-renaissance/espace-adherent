@@ -20,6 +20,11 @@ class Client implements ClientInterface
         $this->faker = Factory::create('fr_FR');
     }
 
+    public function hasAssistant(string $assistantId): bool
+    {
+        return str_starts_with($assistantId, 'asst_');
+    }
+
     public function createThread(): string
     {
         return uniqid('thread_');
