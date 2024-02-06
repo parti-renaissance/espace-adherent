@@ -601,8 +601,8 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     $qb
                         ->andWhere(
                             (new Expr\Orx())
-                                ->add("CONCAT(LOWER($alias.firstName), ' ', LOWER($alias.lastName)) LIKE :search")
-                                ->add("CONCAT(LOWER($alias.lastName), ' ', LOWER($alias.firstName)) LIKE :search")
+                                ->add("CONCAT($alias.firstName, ' ', $alias.lastName) LIKE :search")
+                                ->add("CONCAT($alias.lastName, ' ', $alias.firstName) LIKE :search")
                                 ->add("$alias.emailAddress LIKE :search")
                                 ->add("REPLACE(REPLACE($alias.phone, ' ', ''), '+', '') LIKE REPLACE(REPLACE(:search, ' ', ''), '+', '')")
                                 ->add("$alias.id = REPLACE(:strict_search, ' ', '')")
