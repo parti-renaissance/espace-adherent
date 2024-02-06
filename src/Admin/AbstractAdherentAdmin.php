@@ -697,33 +697,12 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ->add('postalCode', PostalCodeFilter::class, [
                 'label' => 'Code postal',
             ])
-            ->add('city', CallbackFilter::class, [
+            ->add('postAddress.cityName', null, [
                 'label' => 'Ville',
-                'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
-                        return false;
-                    }
-
-                    $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
-                    $qb->setParameter('cityName', '%'.mb_strtolower($value->getValue()).'%');
-
-                    return true;
-                },
             ])
-            ->add('country', CallbackFilter::class, [
+            ->add('postAddress.country', null, [
                 'label' => 'Pays',
                 'field_type' => CountryType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
-                        return false;
-                    }
-
-                    $qb->andWhere(sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
-                    $qb->setParameter('country', mb_strtolower($value->getValue()));
-
-                    return true;
-                },
             ])
             ->add('mailchimpStatus', ChoiceFilter::class, [
                 'label' => 'Abonnement email',
