@@ -23,7 +23,7 @@ class DonationManager
             $donation = $transaction->getDonation();
 
             $history[] = $this->createDonationValueObject(
-                $transaction->getPayboxDateTime(),
+                $transaction->getPayboxDateTime() ?? $transaction->getCreatedAt(),
                 $donation->getAmount(),
                 $donation->getType(),
                 $donation->isSubscription(),
@@ -35,7 +35,7 @@ class DonationManager
         $otherDonations = $this->donationRepository->findOfflineDonationsByAdherent($adherent);
         foreach ($otherDonations as $donation) {
             $history[] = $this->createDonationValueObject(
-                $donation->getDonatedAt(),
+                $donation->getDonatedAt() ?? $donation->getCreatedAt(),
                 $donation->getAmount(),
                 $donation->getType(),
                 $donation->isSubscription(),
