@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait OpenAIResourceTrait
 {
     /**
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(unique=true, nullable=true)
      */
     public ?string $openAiId = null;
 

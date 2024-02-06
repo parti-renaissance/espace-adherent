@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20240205151940 extends AbstractMigration
+final class Version20240205225155 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -132,6 +132,7 @@ final class Version20240205151940 extends AbstractMigration
           CONSTRAINT FK_EDF1E88484E3FEC4 FOREIGN KEY (run_id) REFERENCES chatbot_run (id) ON DELETE
         SET
           NULL');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_EDF1E884F6E32D4D ON chatbot_message (open_ai_id)');
         $this->addSql('CREATE INDEX IDX_EDF1E884E05387EF ON chatbot_message (assistant_id)');
         $this->addSql('CREATE INDEX IDX_EDF1E88484E3FEC4 ON chatbot_message (run_id)');
         $this->addSql('ALTER TABLE
@@ -140,7 +141,9 @@ final class Version20240205151940 extends AbstractMigration
           open_ai_id VARCHAR(255) DEFAULT NULL,
         CHANGE
           external_id open_ai_status VARCHAR(255) DEFAULT NULL');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_D603CBB6F6E32D4D ON chatbot_run (open_ai_id)');
         $this->addSql('ALTER TABLE chatbot_thread CHANGE external_id open_ai_id VARCHAR(255) DEFAULT NULL');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_A356AA3CF6E32D4D ON chatbot_thread (open_ai_id)');
     }
 
     public function down(Schema $schema): void
@@ -181,6 +184,7 @@ final class Version20240205151940 extends AbstractMigration
           assistant_type');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_7DC4B00477153098 ON chatbot (code)');
         $this->addSql('ALTER TABLE chatbot_message DROP FOREIGN KEY FK_EDF1E88484E3FEC4');
+        $this->addSql('DROP INDEX UNIQ_EDF1E884F6E32D4D ON chatbot_message');
         $this->addSql('DROP INDEX IDX_EDF1E884E05387EF ON chatbot_message');
         $this->addSql('DROP INDEX IDX_EDF1E88484E3FEC4 ON chatbot_message');
         $this->addSql('ALTER TABLE
@@ -195,6 +199,7 @@ final class Version20240205151940 extends AbstractMigration
           text content LONGTEXT NOT NULL,
         CHANGE
           open_ai_id external_id VARCHAR(255) DEFAULT NULL');
+        $this->addSql('DROP INDEX UNIQ_D603CBB6F6E32D4D ON chatbot_run');
         $this->addSql('ALTER TABLE
           chatbot_run
         ADD
@@ -203,6 +208,7 @@ final class Version20240205151940 extends AbstractMigration
           open_ai_status,
         DROP
           open_ai_id');
+        $this->addSql('DROP INDEX UNIQ_A356AA3CF6E32D4D ON chatbot_thread');
         $this->addSql('ALTER TABLE chatbot_thread CHANGE open_ai_id external_id VARCHAR(255) DEFAULT NULL');
     }
 }
