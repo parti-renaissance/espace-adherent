@@ -10,6 +10,7 @@ use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Admin\Filter\AdherentRoleFilter;
 use App\Admin\Filter\AdherentTagFilter;
+use App\Admin\Filter\PostalCodeFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Contribution\ContributionStatusEnum;
 use App\Entity\Adherent;
@@ -692,6 +693,9 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         'code',
                     ],
                 ],
+            ])
+            ->add('postalCode', PostalCodeFilter::class, [
+                'label' => 'Code postal',
             ])
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',
