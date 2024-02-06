@@ -52,17 +52,17 @@ class AdminMenuListener implements EventSubscriberInterface
 
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN_ADHERENT_STATS')) {
             $items[] = [
-                'label' => 'Adhésion par département',
+                'label' => 'Adhésions par département',
                 'route' => 'admin_app_stats_adhesion_per_department',
                 'route_params' => null,
                 'route_absolute' => false,
             ];
         }
 
-        $this->addItem($event->getMenu(), 'Stats', $items, 'fa fa-bar-chart');
+        $this->addItem($event->getMenu(), 'Stats', $items, 'fa fa-bar-chart', true);
     }
 
-    private function addItem(ItemInterface $menu, string $groupLabel, array $items, string $groupIcon = 'fa fa-folder'): void
+    private function addItem(ItemInterface $menu, string $groupLabel, array $items, string $groupIcon = 'fa fa-folder', bool $prepend = false): void
     {
         $extras = ['icon' => '<i class="'.$groupIcon.'"></i>'];
 
@@ -79,5 +79,13 @@ class AdminMenuListener implements EventSubscriberInterface
 
         $subMenu = $menu->addChild($subMenu);
         $subMenu->setExtras(array_merge($subMenu->getExtras(), $extras));
+
+        if ($prepend) {
+            $keys = array_map(fn (ItemInterface $item) => $item->getName(), $menu->getChildren());
+
+            usort($keys, fn ($a, $b) => $b === $subMenu->getName());
+
+            $menu->reorderChildren($keys);
+        }
     }
 }

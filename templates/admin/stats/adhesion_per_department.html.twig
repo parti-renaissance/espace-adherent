@@ -14,21 +14,21 @@
                 language: {
                     url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/French.json"
                 },
+                scrollX: true,
                 searching: false,
-                lengthChange: false,
                 paging: false,
                 dom: 'frt<"table-footer"iB>',
                 buttons: [
                     {
                         extend: 'excelHtml5',
                         className: 'btn btn-default',
-                        filename: 'Adhésion par département {{ current_year }}',
+                        filename: 'Adhésions par département {{ current_year }}',
                         title: null,
                     },
                     {
                         extend: 'csvHtml5',
                         className: 'btn btn-default',
-                        filename: 'Adhésion par département {{ current_year }}',
+                        filename: 'Adhésions par département {{ current_year }}',
                         title: null,
                     }
                 ]
@@ -55,7 +55,7 @@
 
 {% block sonata_page_content_header %}
     <h1>
-        Adhésion par département pour l'année <strong>{{ current_year }}</strong>
+        Adhésions par département pour l'année <strong>{{ current_year }}</strong>
     </h1>
 {% endblock %}
 
@@ -63,7 +63,7 @@
     {% set first = stats_per_department|first %}
 
     <div class="row">
-        <div class="col-md-3 col-xs-12">
+        <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-green"><i class="fa fa-check"></i></span>
                 <div class="info-box-content">
@@ -74,7 +74,7 @@
         </div>
 
         {% set percentPrimo = first['total_year_n'] > 0 ? (first['total_primo'] * 100.0 / first['total_year_n']) : 0 %}
-        <div class="col-md-3 col-xs-12">
+        <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box bg-aqua">
                 <span class="info-box-icon"><i class="fa fa-user-plus"></i></span>
                 <div class="info-box-content">
@@ -91,7 +91,7 @@
         </div>
 
         {% set percentReadhesion = first['total_year_n'] > 0 ? (first['total_recotisation'] * 100.0 / first['total_year_n']) : 0 %}
-        <div class="col-md-3 col-xs-12">
+        <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box bg-yellow">
                 <span class="info-box-icon"><i class="fa fa-retweet"></i></span>
                 <div class="info-box-content">
@@ -108,7 +108,7 @@
         </div>
 
         {% set percentElu = first['total_year_n'] > 0 ? (first['total_elu'] * 100.0 / first['total_year_n']) : 0 %}
-        <div class="col-md-3 col-xs-12">
+        <div class="col-md-3 col-sm-6 col-xs-12">
             <div class="info-box bg-green">
                 <span class="info-box-icon"><i class="fa fa-institution"></i></span>
                 <div class="info-box-content">
