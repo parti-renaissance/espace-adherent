@@ -598,20 +598,41 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         return false;
                     }
 
+                    $search = $value->getValue();
+
+                    $conditions = $qb->expr()->orX();
+
+                    preg_match('/(?<first>.*) (?<last>.*)/', $search, $tokens);
+
+                    if (\array_key_exists('first', $tokens) && \array_key_exists('last', $tokens)) {
+                        $conditions
+                            ->add("($alias.firstName LIKE :search_first_token AND $alias.lastName LIKE :search_last_token)")
+                            ->add("($alias.firstName LIKE :search_last_token AND $alias.lastName LIKE :search_first_token)")
+                            ->add("($alias.emailAddress LIKE :search_first_token AND $alias.emailAddress LIKE :search_last_token)")
+                        ;
+
+                        $qb
+                            ->setParameter('search_first_token', '%'.$tokens['first'].'%')
+                            ->setParameter('search_last_token', '%'.$tokens['last'].'%')
+                        ;
+                    } else {
+                        $conditions
+                            ->add("$alias.firstName LIKE :search")
+                            ->add("$alias.lastName LIKE :search")
+                            ->add("$alias.emailAddress LIKE :search")
+                        ;
+                    }
+
+                    $conditions
+                        ->add("REPLACE(REPLACE($alias.phone, ' ', ''), '+', '') LIKE REPLACE(REPLACE(:search, ' ', ''), '+', '')")
+                        ->add("$alias.id = REPLACE(:strict_search, ' ', '')")
+                        ->add("$alias.uuid = :strict_search")
+                    ;
+
                     $qb
-                        ->andWhere(
-                            (new Expr\Orx())
-                                ->add("CONCAT($alias.firstName, ' ', $alias.lastName) LIKE :search")
-                                ->add("CONCAT($alias.lastName, ' ', $alias.firstName) LIKE :search")
-                                ->add("$alias.emailAddress LIKE :search")
-                                ->add("REPLACE(REPLACE($alias.phone, ' ', ''), '+', '') LIKE REPLACE(REPLACE(:search, ' ', ''), '+', '')")
-                                ->add("$alias.id = REPLACE(:strict_search, ' ', '')")
-                                ->add("$alias.uuid = :strict_search")
-                        )
-                        ->setParameters([
-                            'search' => '%'.$value->getValue().'%',
-                            'strict_search' => $value->getValue(),
-                        ])
+                        ->andWhere($conditions)
+                        ->setParameter('search', "%$search%")
+                        ->setParameter('strict_search', $search)
                     ;
 
                     return true;
