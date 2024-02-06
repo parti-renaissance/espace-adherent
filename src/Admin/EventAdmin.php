@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Admin\Filter\PostalCodeFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
@@ -304,6 +305,9 @@ class EventAdmin extends AbstractAdmin
                         'code',
                     ],
                 ],
+            ])
+            ->add('postalCode', PostalCodeFilter::class, [
+                'label' => 'Code postal',
             ])
             ->add('city', CallbackFilter::class, [
                 'label' => 'Ville',

@@ -10,6 +10,7 @@ use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Admin\Filter\AdherentRoleFilter;
 use App\Admin\Filter\AdherentTagFilter;
+use App\Admin\Filter\PostalCodeFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Contribution\ContributionStatusEnum;
 use App\Entity\Adherent;
@@ -578,6 +579,16 @@ class AbstractAdherentAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
+            ->add('status', ChoiceFilter::class, [
+                'label' => 'Etat du compte',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'Activé' => Adherent::ENABLED,
+                        'Désactivé' => Adherent::DISABLED,
+                    ],
+                ],
+            ])
             ->add('search', CallbackFilter::class, [
                 'label' => 'Recherche',
                 'show_filter' => true,
@@ -587,14 +598,41 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         return false;
                     }
 
+                    $search = $value->getValue();
+
+                    $conditions = $qb->expr()->orX();
+
+                    preg_match('/(?<first>.*) (?<last>.*)/', $search, $tokens);
+
+                    if (\array_key_exists('first', $tokens) && \array_key_exists('last', $tokens)) {
+                        $conditions
+                            ->add("($alias.firstName LIKE :search_first_token AND $alias.lastName LIKE :search_last_token)")
+                            ->add("($alias.firstName LIKE :search_last_token AND $alias.lastName LIKE :search_first_token)")
+                            ->add("($alias.emailAddress LIKE :search_first_token AND $alias.emailAddress LIKE :search_last_token)")
+                        ;
+
+                        $qb
+                            ->setParameter('search_first_token', '%'.$tokens['first'].'%')
+                            ->setParameter('search_last_token', '%'.$tokens['last'].'%')
+                        ;
+                    } else {
+                        $conditions
+                            ->add("$alias.firstName LIKE :search")
+                            ->add("$alias.lastName LIKE :search")
+                            ->add("$alias.emailAddress LIKE :search")
+                        ;
+                    }
+
+                    $conditions
+                        ->add("REPLACE(REPLACE($alias.phone, ' ', ''), '+', '') LIKE REPLACE(REPLACE(:search, ' ', ''), '+', '')")
+                        ->add("$alias.id = REPLACE(:strict_search, ' ', '')")
+                        ->add("$alias.uuid = :strict_search")
+                    ;
+
                     $qb
-                        ->andWhere(
-                            (new Expr\Orx())
-                                ->add("$alias.firstName LIKE :search")
-                                ->add("$alias.lastName LIKE :search")
-                                ->add("$alias.emailAddress LIKE :search")
-                        )
-                        ->setParameter('search', '%'.$value->getValue().'%')
+                        ->andWhere($conditions)
+                        ->setParameter('search', "%$search%")
+                        ->setParameter('strict_search', $search)
                     ;
 
                     return true;
@@ -602,6 +640,24 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ])
             ->add('id', null, [
                 'label' => 'ID',
+            ])
+            ->add('lastName', null, [
+                'label' => 'Nom',
+            ])
+            ->add('firstName', null, [
+                'label' => 'Prénom',
+            ])
+            ->add('emailAddress', null, [
+                'label' => 'Adresse email',
+            ])
+            ->add('subscriptionTypes', ModelFilter::class, [
+                'label' => 'Types de souscriptions',
+                'field_options' => [
+                    'class' => SubscriptionType::class,
+                    'multiple' => true,
+                    'choice_label' => 'label',
+                ],
+                'mapping_type' => ClassMetadata::MANY_TO_MANY,
             ])
             ->add('tags_adherents', AdherentTagFilter::class, [
                 'label' => 'Labels adhérents',
@@ -645,15 +701,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     'multiple' => true,
                 ],
             ])
-            ->add('lastName', null, [
-                'label' => 'Nom',
-            ])
-            ->add('firstName', null, [
-                'label' => 'Prénom',
-            ])
-            ->add('emailAddress', null, [
-                'label' => 'Adresse email',
-            ])
             ->add('zones', ZoneAutocompleteFilter::class, [
                 'label' => 'Périmètres géographiques',
                 'show_filter' => true,
@@ -667,6 +714,16 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         'code',
                     ],
                 ],
+            ])
+            ->add('postalCode', PostalCodeFilter::class, [
+                'label' => 'Code postal',
+            ])
+            ->add('postAddress.cityName', null, [
+                'label' => 'Ville',
+            ])
+            ->add('postAddress.country', null, [
+                'label' => 'Pays',
+                'field_type' => CountryType::class,
             ])
             ->add('mailchimpStatus', ChoiceFilter::class, [
                 'label' => 'Abonnement email',
@@ -816,6 +873,19 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+            ->add('registeredAt', DateRangeFilter::class, [
+                'label' => 'Date de création de compte',
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('lastMembershipDonation', DateRangeFilter::class, [
+                'label' => 'Date de dernière cotisation',
+                'show_filter' => true,
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('lastLoggedAt', DateRangeFilter::class, [
+                'label' => 'Date de dernière connexion',
+                'field_type' => DateRangePickerType::class,
+            ])
             ->add('certified', CallbackFilter::class, [
                 'label' => 'Certifié',
                 'field_type' => ChoiceType::class,
@@ -852,61 +922,8 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 'label' => 'Date de certification',
                 'field_type' => DateRangePickerType::class,
             ])
-            ->add('registeredAt', DateRangeFilter::class, [
-                'label' => 'Date de création de compte',
-                'field_type' => DateRangePickerType::class,
-            ])
-            ->add('lastLoggedAt', DateRangeFilter::class, [
-                'label' => 'Date de dernière connexion',
-                'field_type' => DateRangePickerType::class,
-            ])
-            ->add('city', CallbackFilter::class, [
-                'label' => 'Ville',
-                'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
-                        return false;
-                    }
-
-                    $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
-                    $qb->setParameter('cityName', '%'.mb_strtolower($value->getValue()).'%');
-
-                    return true;
-                },
-            ])
-            ->add('country', CallbackFilter::class, [
-                'label' => 'Pays',
-                'field_type' => CountryType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
-                        return false;
-                    }
-
-                    $qb->andWhere(sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
-                    $qb->setParameter('country', mb_strtolower($value->getValue()));
-
-                    return true;
-                },
-            ])
-            ->add('subscriptionTypes', ModelFilter::class, [
-                'label' => 'Types de souscriptions',
-                'field_options' => [
-                    'class' => SubscriptionType::class,
-                    'multiple' => true,
-                    'choice_label' => 'label',
-                ],
-                'mapping_type' => ClassMetadata::MANY_TO_MANY,
-            ])
-            ->add('canaryTester')
-            ->add('status', ChoiceFilter::class, [
-                'label' => 'Etat du compte',
-                'field_type' => ChoiceType::class,
-                'field_options' => [
-                    'choices' => [
-                        'Activé' => Adherent::ENABLED,
-                        'Désactivé' => Adherent::DISABLED,
-                    ],
-                ],
+            ->add('canaryTester', null, [
+                'label' => 'Testeur Canary',
             ])
             ->add('adherent_mandates', CallbackFilter::class, [
                 'label' => 'Mandat(s) internes',
@@ -982,11 +999,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
 
                     return true;
                 },
-            ])
-            ->add('lastMembershipDonation', DateRangeFilter::class, [
-                'label' => 'Date de dernière cotisation',
-                'show_filter' => true,
-                'field_type' => DateRangePickerType::class,
             ])
         ;
     }

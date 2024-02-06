@@ -16,6 +16,8 @@ abstract class AbstractCallbackDecoratorFilter extends Filter
     final public function filter(ProxyQueryInterface $query, string $alias, string $field, FilterData $data): void
     {
         $this->decorated->filter($query, $alias, $field, $data);
+
+        $this->setActive($this->decorated->isActive());
     }
 
     final public function getDefaultOptions(): array
