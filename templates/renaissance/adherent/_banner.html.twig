@@ -4,6 +4,6 @@
     {% include 'renaissance/banner/consultation_in_progress.html.twig' %}
 {% endif %}
 
-{% if is_canary_enabled() and app.user.isRenaissanceAdherent() %}
+{% if app.user.isRenaissanceAdherent() %}
     {% include 'renaissance/banner/quiz_europe.html.twig' %}
 {% endif %}
