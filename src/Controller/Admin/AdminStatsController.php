@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminStatsController extends AbstractController
 {
-    #[Route('/stats/adhesion-par-departement', name: 'admin_app_stats_adhesion_per_department', methods: ['GET'])]
+    #[Route('/stats/adhesions-par-departement', name: 'admin_app_stats_adhesion_per_department', methods: ['GET'])]
     public function listAction(AdherentRepository $adherentRepository, ZoneRepository $zoneRepository): Response
     {
         return $this->render('admin/stats/adhesion_per_department.html.twig', [
