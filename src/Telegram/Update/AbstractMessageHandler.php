@@ -47,7 +47,7 @@ abstract class AbstractMessageHandler implements UpdateHandlerInterface
 
         if ($chatId === $senderId) {
             // private chat
-            return $this->isWhitelisted($bot, $sender->getId());
+            return $this->isWhitelisted($bot, $senderId);
         }
 
         // group chat
