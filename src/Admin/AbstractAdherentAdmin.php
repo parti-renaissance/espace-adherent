@@ -578,6 +578,16 @@ class AbstractAdherentAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
+            ->add('status', ChoiceFilter::class, [
+                'label' => 'Etat du compte',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'Activé' => Adherent::ENABLED,
+                        'Désactivé' => Adherent::DISABLED,
+                    ],
+                ],
+            ])
             ->add('search', CallbackFilter::class, [
                 'label' => 'Recherche',
                 'show_filter' => true,
@@ -608,6 +618,24 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ])
             ->add('id', null, [
                 'label' => 'ID',
+            ])
+            ->add('lastName', null, [
+                'label' => 'Nom',
+            ])
+            ->add('firstName', null, [
+                'label' => 'Prénom',
+            ])
+            ->add('emailAddress', null, [
+                'label' => 'Adresse email',
+            ])
+            ->add('subscriptionTypes', ModelFilter::class, [
+                'label' => 'Types de souscriptions',
+                'field_options' => [
+                    'class' => SubscriptionType::class,
+                    'multiple' => true,
+                    'choice_label' => 'label',
+                ],
+                'mapping_type' => ClassMetadata::MANY_TO_MANY,
             ])
             ->add('tags_adherents', AdherentTagFilter::class, [
                 'label' => 'Labels adhérents',
@@ -651,15 +679,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     'multiple' => true,
                 ],
             ])
-            ->add('lastName', null, [
-                'label' => 'Nom',
-            ])
-            ->add('firstName', null, [
-                'label' => 'Prénom',
-            ])
-            ->add('emailAddress', null, [
-                'label' => 'Adresse email',
-            ])
             ->add('zones', ZoneAutocompleteFilter::class, [
                 'label' => 'Périmètres géographiques',
                 'show_filter' => true,
@@ -673,6 +692,34 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         'code',
                     ],
                 ],
+            ])
+            ->add('city', CallbackFilter::class, [
+                'label' => 'Ville',
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
+                    $qb->setParameter('cityName', '%'.mb_strtolower($value->getValue()).'%');
+
+                    return true;
+                },
+            ])
+            ->add('country', CallbackFilter::class, [
+                'label' => 'Pays',
+                'field_type' => CountryType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $qb->andWhere(sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
+                    $qb->setParameter('country', mb_strtolower($value->getValue()));
+
+                    return true;
+                },
             ])
             ->add('mailchimpStatus', ChoiceFilter::class, [
                 'label' => 'Abonnement email',
@@ -822,6 +869,19 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+            ->add('registeredAt', DateRangeFilter::class, [
+                'label' => 'Date de création de compte',
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('lastMembershipDonation', DateRangeFilter::class, [
+                'label' => 'Date de dernière cotisation',
+                'show_filter' => true,
+                'field_type' => DateRangePickerType::class,
+            ])
+            ->add('lastLoggedAt', DateRangeFilter::class, [
+                'label' => 'Date de dernière connexion',
+                'field_type' => DateRangePickerType::class,
+            ])
             ->add('certified', CallbackFilter::class, [
                 'label' => 'Certifié',
                 'field_type' => ChoiceType::class,
@@ -858,61 +918,8 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 'label' => 'Date de certification',
                 'field_type' => DateRangePickerType::class,
             ])
-            ->add('registeredAt', DateRangeFilter::class, [
-                'label' => 'Date de création de compte',
-                'field_type' => DateRangePickerType::class,
-            ])
-            ->add('lastLoggedAt', DateRangeFilter::class, [
-                'label' => 'Date de dernière connexion',
-                'field_type' => DateRangePickerType::class,
-            ])
-            ->add('city', CallbackFilter::class, [
-                'label' => 'Ville',
-                'field_type' => TextType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
-                        return false;
-                    }
-
-                    $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
-                    $qb->setParameter('cityName', '%'.mb_strtolower($value->getValue()).'%');
-
-                    return true;
-                },
-            ])
-            ->add('country', CallbackFilter::class, [
-                'label' => 'Pays',
-                'field_type' => CountryType::class,
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
-                        return false;
-                    }
-
-                    $qb->andWhere(sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
-                    $qb->setParameter('country', mb_strtolower($value->getValue()));
-
-                    return true;
-                },
-            ])
-            ->add('subscriptionTypes', ModelFilter::class, [
-                'label' => 'Types de souscriptions',
-                'field_options' => [
-                    'class' => SubscriptionType::class,
-                    'multiple' => true,
-                    'choice_label' => 'label',
-                ],
-                'mapping_type' => ClassMetadata::MANY_TO_MANY,
-            ])
-            ->add('canaryTester')
-            ->add('status', ChoiceFilter::class, [
-                'label' => 'Etat du compte',
-                'field_type' => ChoiceType::class,
-                'field_options' => [
-                    'choices' => [
-                        'Activé' => Adherent::ENABLED,
-                        'Désactivé' => Adherent::DISABLED,
-                    ],
-                ],
+            ->add('canaryTester', null, [
+                'label' => 'Testeur Canary',
             ])
             ->add('adherent_mandates', CallbackFilter::class, [
                 'label' => 'Mandat(s) internes',
@@ -988,11 +995,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
 
                     return true;
                 },
-            ])
-            ->add('lastMembershipDonation', DateRangeFilter::class, [
-                'label' => 'Date de dernière cotisation',
-                'show_filter' => true,
-                'field_type' => DateRangePickerType::class,
             ])
         ;
     }
