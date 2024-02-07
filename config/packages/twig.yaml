@@ -27,7 +27,6 @@ twig:
         adherent_interests:         "%adherent_interests%"
         enable_assessor_space:      "%env(bool:ENABLE_ASSESSOR_SPACE)%"
         enable_facebook_pixel:      "%env(bool:ENABLE_FACEBOOK_PIXEL)%"
-        cookiebot_cbid:             "%env(COOKIEBOT_CBID)%"
         axeptio_clid:               "%env(AXEPTIO_CLID)%"
         friendly_captcha_site_key:  "%env(FRIENDLY_CAPTCHA_DEFAULT_SITE_KEY)%"
         unlayer_project_id:         "%env(UNLAYER_PROJECT_ID)%"
