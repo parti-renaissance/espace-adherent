@@ -14,7 +14,7 @@
                 </a>
             </div>
         {% elseif not app.user.hasActiveMembership() %}
-            <div class="alert alert-warning flex px-10 w-full justify-between py-3 rounded-t-2xl">
+            <div class="alert alert-warning flex flex-col sm:flex-row px-10 w-full justify-between py-3 rounded-t-2xl">
                 <span class="flex flex-grow-1 items-center font-medium">
                     <img src="{{ asset('/images/icons/icn_warning.svg') }}" alt="Information" class="mr-3" />
                     Vous devez être à jour de cotisation pour participer à la consultation.

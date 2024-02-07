@@ -1,7 +1,10 @@
 {% extends 'admin/layout.html.twig' %}
 
+{% block sonata_head_title 'Adhésions par département' %}
+
 {% block javascripts %}
     {{ parent() }}
+
     <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
