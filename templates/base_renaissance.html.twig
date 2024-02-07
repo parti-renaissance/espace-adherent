@@ -43,14 +43,11 @@
 </head>
 <body class="font-maax antialiased text-gray-600 {{ block('body_classes') ?? '' }}">
     {{ include('components/_re-sprite.svg.twig') }}
+
     {% block flash_message %}
         {% for label, messages in app.flashes(['error', 'info', 'success']) %}
             {% if messages|length %}
-                {% if label == 'error' %}
-                    <div class="p-4 text-sm text-red-700 bg-red-100 dark:bg-red-200 dark:text-red-800" role="alert">
-                {% else %}
-                    <div class="p-4 text-sm text-blue-700 bg-blue-100 dark:bg-blue-200 dark:text-blue-800" role="alert">
-                {% endif %}
+                <div class="p-4 text-sm {{ label == 'error' ? 'text-red-700 bg-red-100 dark:bg-red-200 dark:text-red-800' : 'text-blue-700 bg-blue-100 dark:bg-blue-200 dark:text-blue-800' }}" role="alert">
                     {% for message in messages %}
                         <div class="flash--{{ label }}">{{ message|trans }}</div>
                     {% endfor %}
@@ -86,21 +83,6 @@
             );
         });
     </script>
-
-    {% if axeptio_clid %}
-        <script>
-            window.axeptioSettings = {
-                clientId: "{{ axeptio_clid }}",
-                cookiesVersion: "renaissance-fr",
-            };
-
-            (function(d, s) {
-                var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
-                e.async = true; e.src = "//static.axept.io/sdk.js";
-                t.parentNode.insertBefore(e, t);
-            })(document, "script");
-        </script>
-    {% endif%}
 
     {% block final_javascripts '' %}
 

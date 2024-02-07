@@ -3,6 +3,25 @@
 {% block page_title department_site.zone.getNameCode() %}
 {% block canonical_url url('app_renaissance_department_site_view', { slug: department_site.slug }) %}
 
+{% block final_javascripts %}
+    {{ parent() }}
+
+    {% if axeptio_clid %}
+        <script>
+            window.axeptioSettings = {
+                clientId: "{{ axeptio_clid }}",
+                cookiesVersion: "renaissance-fr",
+            };
+
+            (function(d, s) {
+                var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+                e.async = true; e.src = "//static.axept.io/sdk.js";
+                t.parentNode.insertBefore(e, t);
+            })(document, "script");
+        </script>
+    {% endif%}
+{% endblock %}
+
 {% block content %}
     {% include 'renaissance/partials/site-header.html.twig' with { theme_bg: 'border-b border-re-blue-400 bg-re-blue-500' } %}
     <article>
