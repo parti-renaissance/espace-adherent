@@ -8712,16 +8712,16 @@
         },
         {
             "name": "openai-php/client",
-            "version": "v0.8.3",
+            "version": "v0.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openai-php/client.git",
-                "reference": "f6b47acbe326851a790d158a56e6bedb4e533f67"
+                "reference": "00470f5fedd7b08ee4860959d6952f0be0ec48a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openai-php/client/zipball/f6b47acbe326851a790d158a56e6bedb4e533f67",
-                "reference": "f6b47acbe326851a790d158a56e6bedb4e533f67",
+                "url": "https://api.github.com/repos/openai-php/client/zipball/00470f5fedd7b08ee4860959d6952f0be0ec48a0",
+                "reference": "00470f5fedd7b08ee4860959d6952f0be0ec48a0",
                 "shasum": ""
             },
             "require": {
@@ -8784,7 +8784,7 @@
             ],
             "support": {
                 "issues": "https://github.com/openai-php/client/issues",
-                "source": "https://github.com/openai-php/client/tree/v0.8.3"
+                "source": "https://github.com/openai-php/client/tree/v0.8.4"
             },
             "funding": [
                 {
@@ -8800,7 +8800,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-02-02T18:30:54+00:00"
+            "time": "2024-02-07T07:57:38+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
