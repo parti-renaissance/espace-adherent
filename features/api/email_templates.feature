@@ -46,6 +46,8 @@ Feature:
         """
         {
             "label": "Campaign Newsletter 92",
+            "subject": null,
+            "subject_editable": true,
             "content": "@string@",
             "json_content": "@string@",
             "uuid": "825c3c30-f4bd-42b5-8adf-29926a02a4af",

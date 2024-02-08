@@ -122,6 +122,8 @@ class EmailTemplateAdmin extends AbstractAdmin
                 ->add('label', TextType::class, [
                     'label' => 'Label',
                 ])
+                ->add('subject', null, ['label' => 'Objet', 'required' => false])
+                ->add('subjectEditable', null, ['label' => 'Objet modifiable', 'required' => false])
                 ->add('isStatutory', null, [
                     'label' => 'Statutaire',
                     'required' => false,
