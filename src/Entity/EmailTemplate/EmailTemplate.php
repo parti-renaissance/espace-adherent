@@ -90,6 +90,22 @@ class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministr
     private ?string $label = null;
 
     /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"email_template_read"})
+     *
+     * @Assert\Length(max="255")
+     */
+    public ?string $subject = null;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @Groups({"email_template_read"})
+     */
+    public bool $subjectEditable = true;
+
+    /**
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
