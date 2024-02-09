@@ -101,7 +101,7 @@ class AdhesionController extends AbstractController
         return [$membershipRequest, $currentUser];
     }
 
-    private function filterUtmParameter($utmParameter): ?string
+    private function filterUtmParameter(string $utmParameter): ?string
     {
         if (!$utmParameter) {
             return null;
