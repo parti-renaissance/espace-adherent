@@ -6,7 +6,6 @@ use App\Address\PostAddressFactory;
 use App\Adherent\Unregistration\UnregistrationCommand;
 use App\Adherent\UnregistrationHandler;
 use App\Entity\Adherent;
-use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
@@ -80,40 +79,6 @@ class MembershipRequestHandler
         }
 
         $this->dispatcher->dispatch(new AdherentEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
-
-        return $adherent;
-    }
-
-    public function createOrUpdateRenaissanceAdherent(
-        AdherentRequest $adherentRequest,
-        ?Adherent $adherent = null
-    ): Adherent {
-        if ($adherent) {
-            $adherent->updateMembershipFromAdherentRequest($adherentRequest);
-        } else {
-            $adherent = $this->adherentFactory->createFromRenaissanceAdherentRequest($adherentRequest);
-        }
-
-        $adherent->enable();
-        $adherent->join();
-        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
-        $adherent->setPapUserRole(true);
-
-        if (!$adherent->utmSource) {
-            $adherent->utmSource = $adherentRequest->utmSource;
-            $adherent->utmCampaign = $adherentRequest->utmCampaign;
-        }
-
-        $this->manager->persist($adherent);
-        $this->referentZoneManager->assignZone($adherent);
-        $this->manager->flush();
-
-        $this->dispatcher->dispatch(new UserEvent($adherent, $adherentRequest->allowEmailNotifications, $adherentRequest->allowMobileNotifications), UserEvents::USER_CREATED);
-        $this->dispatcher->dispatch(new AdherentEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
-        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
-
-        $adherentRequest->activate();
-        $this->manager->flush();
 
         return $adherent;
     }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller\Renaissance\Adhesion\V2\Api;
+namespace App\Controller\Renaissance\Adhesion\Api;
 
 use App\Adhesion\Command\CreateAccountCommand;
 use App\Adhesion\CreateAdherentResult;
 use App\Adhesion\Request\MembershipRequest;
-use App\Controller\Renaissance\Adhesion\V2\ActivateEmailController;
+use App\Controller\Renaissance\Adhesion\ActivateEmailController;
 use App\Entity\Adherent;
 use App\Security\AuthenticationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

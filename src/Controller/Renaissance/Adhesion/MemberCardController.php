@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Renaissance\Adhesion\V2;
+namespace App\Controller\Renaissance\Adhesion;
 
 use App\Address\PostAddressFactory;
 use App\Adhesion\AdhesionStepEnum;

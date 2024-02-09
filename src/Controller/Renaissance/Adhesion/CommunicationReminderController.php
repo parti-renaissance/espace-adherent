@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Renaissance\Adhesion\V2;
+namespace App\Controller\Renaissance\Adhesion;
 
 use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Request\UpdateCommunicationRequest;

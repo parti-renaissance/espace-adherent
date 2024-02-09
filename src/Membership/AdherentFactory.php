@@ -7,7 +7,6 @@ use App\Adherent\Tag\TagEnum;
 use App\Adhesion\Request\MembershipRequest;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
-use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Membership\MembershipRequest\AvecVousMembershipRequest;
 use App\Membership\MembershipRequest\JeMengageMembershipRequest;
 use App\Membership\MembershipRequest\MembershipInterface;
@@ -113,32 +112,6 @@ class AdherentFactory
             $adherent->join();
             $adherent->setPapUserRole(true);
         }
-
-        return $adherent;
-    }
-
-    public function createFromRenaissanceAdherentRequest(AdherentRequest $adherentRequest): Adherent
-    {
-        $adherent = Adherent::create(
-            Uuid::uuid4(),
-            $adherentRequest->email,
-            $adherentRequest->password,
-            null,
-            $adherentRequest->firstName,
-            $adherentRequest->lastName,
-            null,
-            null,
-            $adherentRequest->getPostAddressModel(),
-            null,
-            null,
-            false,
-            Adherent::ENABLED
-        );
-
-        $adherent->join();
-        $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
-        $adherent->tags = [TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE];
-        $adherent->setPapUserRole(true);
 
         return $adherent;
     }

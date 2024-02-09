@@ -2,13 +2,13 @@
 
 namespace App\Adhesion;
 
-use App\Controller\Renaissance\Adhesion\V2\ActivateEmailController;
-use App\Controller\Renaissance\Adhesion\V2\AdhesionController;
-use App\Controller\Renaissance\Adhesion\V2\CommitteeController;
-use App\Controller\Renaissance\Adhesion\V2\CommunicationReminderController;
-use App\Controller\Renaissance\Adhesion\V2\CreatePasswordController;
-use App\Controller\Renaissance\Adhesion\V2\FurtherInformationController;
-use App\Controller\Renaissance\Adhesion\V2\MemberCardController;
+use App\Controller\Renaissance\Adhesion\ActivateEmailController;
+use App\Controller\Renaissance\Adhesion\AdhesionController;
+use App\Controller\Renaissance\Adhesion\CommitteeController;
+use App\Controller\Renaissance\Adhesion\CommunicationReminderController;
+use App\Controller\Renaissance\Adhesion\CreatePasswordController;
+use App\Controller\Renaissance\Adhesion\FurtherInformationController;
+use App\Controller\Renaissance\Adhesion\MemberCardController;
 
 final class AdhesionStepEnum
 {

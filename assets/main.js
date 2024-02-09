@@ -58,13 +58,6 @@ class Main {
             .then((module) => module.default());
     }
 
-    runAdhesionAmountPage() {
-        import('pages/adhesion_amount_page').catch((error) => {
-            throw error;
-        })
-            .then((module) => module.default());
-    }
-
     runAdhesionPage(props) {
         return import('pages/adhesion_funnel/index').catch((error) => {
             throw error;

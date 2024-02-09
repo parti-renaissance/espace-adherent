@@ -35,7 +35,6 @@ use App\Entity\Instance\InstanceQuality;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\DelegatedAccessEnum;
-use App\Entity\Renaissance\Adhesion\AdherentRequest;
 use App\Entity\Team\Member;
 use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
@@ -50,7 +49,6 @@ use App\Mailchimp\Contact\MailchimpCleanableContactInterface;
 use App\Membership\ActivityPositionsEnum;
 use App\Membership\MembershipRequest\MembershipInterface;
 use App\Membership\MembershipRequest\PlatformMembershipRequest;
-use App\Membership\MembershipRequest\RenaissanceMembershipRequest;
 use App\Membership\MembershipSourceEnum;
 use App\OAuth\Model\User as InMemoryOAuthUser;
 use App\Renaissance\Membership\Admin\AdherentCreateCommand;
@@ -1554,7 +1552,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @param PlatformMembershipRequest|RenaissanceMembershipRequest $membership
+     * @param PlatformMembershipRequest $membership
      */
     public function updateMembership(MembershipInterface $membership, PostAddress $postAddress): void
     {
@@ -1576,22 +1574,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($membership instanceof PlatformMembershipRequest) {
             $this->mandates = $membership->getMandates();
-        }
-    }
-
-    public function updateMembershipFromAdherentRequest(AdherentRequest $adherentRequest): void
-    {
-        if (!$this->isCertified()) {
-            $this->firstName = $adherentRequest->firstName;
-            $this->lastName = $adherentRequest->lastName;
-        }
-
-        if (!$this->postAddress->equals($adherentRequest->getPostAddressModel())) {
-            $this->postAddress = $adherentRequest->getPostAddressModel();
-        }
-
-        if ($adherentRequest->password) {
-            $this->password = $adherentRequest->password;
         }
     }
 
