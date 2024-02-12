@@ -5567,10 +5567,10 @@ space-separated-tokens@^2.0.0:
   resolved "https://registry.yarnpkg.com/space-separated-tokens/-/space-separated-tokens-2.0.1.tgz#43193cec4fb858a2ce934b7f98b7f2c18107098b"
   integrity sha512-ekwEbFp5aqSPKaqeY1PGrlGQxPNaq+Cnx4+bE2D8sciBQrHpbwoBbawqTN2+6jPs9IdWxxiUcN0K2pkczD3zmw==
 
-stackblur-canvas@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/stackblur-canvas/-/stackblur-canvas-2.6.0.tgz#7876bab4ea99bfc97b69ce662614d7a1afb2d71b"
-  integrity sha512-8S1aIA+UoF6erJYnglGPug6MaHYGo1Ot7h5fuXx4fUPvcvQfcdw2o/ppCse63+eZf8PPidSu4v1JnmEVtEDnpg==
+stackblur-canvas@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/stackblur-canvas/-/stackblur-canvas-2.7.0.tgz#af931277d0b5096df55e1f91c530043e066989b6"
+  integrity sha512-yf7OENo23AGJhBriGx0QivY5JP6Y1HbrrDI6WLt6C5auYZXlQrheoY8hD4ibekFKz1HOfE48Ww8kMWMnJD/zcQ==
 
 string.prototype.matchall@^4.0.8:
   version "4.0.8"

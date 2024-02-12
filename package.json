@@ -61,7 +61,7 @@
     "sass": "^1.70.0",
     "sass-loader": "^14.1.0",
     "select2": "^4.0.13",
-    "stackblur-canvas": "^2.6.0",
+    "stackblur-canvas": "^2.7.0",
     "style-loader": "^3.3.4",
     "tailwindcss": "^3.4.1",
     "terser-webpack-plugin": "^5.3.10",
