@@ -5,6 +5,7 @@ namespace App\Entity\AdherentMessage;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\AdherentMessage\AdherentMessageDataObject;
 use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\AdherentMessageTypeEnum;
@@ -51,6 +52,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "security": "is_granted('ROLE_MESSAGE_REDACTOR')",
  *         "normalization_context": {"groups": {"message_read_list"}},
  *         "denormalization_context": {"groups": {"message_write"}},
+ *         "pagination_client_enabled": true,
  *     },
  *     collectionOperations={
  *         "get": {
@@ -111,6 +113,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "defaults": {"_api_receive": false},
  *             "controller": "App\Controller\Api\AdherentMessage\UpdateAdherentMessageFilterController"
  *         },
+ *         "duplicate": {
+ *             "path": "/v3/adherent_messages/{uuid}/duplicate",
+ *             "method": "POST",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "defaults": {"_api_receive": false},
+ *             "controller": "App\Controller\Api\AdherentMessage\DuplicateMessageController"
+ *         },
  *         "delete": {
  *             "path": "/v3/adherent_messages/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
@@ -121,6 +130,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(AdherentMessageScopeFilter::class)
  * @ApiFilter(OrderFilter::class, properties={"createdAt"})
+ * @ApiFilter(SearchFilter::class, properties={"label": "partial", "status": "exact"})
  *
  * @ValidAuthorRoleMessageType
  *
@@ -488,5 +498,18 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     protected function getScope(): ?string
     {
         return null;
+    }
+
+    public function __clone(): void
+    {
+        $this->id = null;
+        $this->uuid = Uuid::uuid4();
+        $this->mailchimpCampaigns = new ArrayCollection();
+        $this->status = AdherentMessageStatusEnum::DRAFT;
+        $this->recipientCount = 0;
+        $this->sentAt = null;
+        $this->filter = null;
+        $this->label = $this->label.' - Copie';
+        $this->createdAt = $this->updatedAt = new \DateTime();
     }
 }

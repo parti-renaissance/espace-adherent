@@ -70,6 +70,8 @@ class LoadEmailTemplateData extends Fixture implements DependentFixtureInterface
             file_get_contents(__DIR__.'/../unlayer/content.md'),
             file_get_contents(__DIR__.'/../unlayer/json_content.json'),
         ));
+        $emailTemplate->subject = 'Email statutaire - {{_scope:"zone_name"}}';
+        $emailTemplate->subjectEditable = false;
         $emailTemplate->setScopes([ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, ScopeEnum::REFERENT]);
         $emailTemplate->setCreatedByAdministrator($this->getReference('administrator-2'));
         $emailTemplate->isStatutory = true;

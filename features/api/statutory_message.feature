@@ -131,6 +131,7 @@ Feature:
             "subject": "Voici un message statutaire",
             "status": "draft",
             "recipient_count": 2,
+            "preview_link": null,
             "source": "api"
         }
         """
