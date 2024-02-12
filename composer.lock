@@ -4151,21 +4151,21 @@
         },
         {
             "name": "google/auth",
-            "version": "v1.34.0",
+            "version": "v1.35.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-auth-library-php.git",
-                "reference": "155daeadfd2f09743f611ea493b828d382519575"
+                "reference": "6e9c9fd4e2bbd7042f50083076346e4a1eff4e4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/155daeadfd2f09743f611ea493b828d382519575",
-                "reference": "155daeadfd2f09743f611ea493b828d382519575",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/6e9c9fd4e2bbd7042f50083076346e4a1eff4e4b",
+                "reference": "6e9c9fd4e2bbd7042f50083076346e4a1eff4e4b",
                 "shasum": ""
             },
             "require": {
                 "firebase/php-jwt": "^6.0",
-                "guzzlehttp/guzzle": "^6.2.1|^7.0",
+                "guzzlehttp/guzzle": "^6.5.8||^7.4.5",
                 "guzzlehttp/psr7": "^2.4.5",
                 "php": "^7.4||^8.0",
                 "psr/cache": "^1.0||^2.0||^3.0",
@@ -4203,9 +4203,9 @@
             "support": {
                 "docs": "https://googleapis.github.io/google-auth-library-php/main/",
                 "issues": "https://github.com/googleapis/google-auth-library-php/issues",
-                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.34.0"
+                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.35.0"
             },
-            "time": "2024-01-03T20:45:15+00:00"
+            "time": "2024-02-01T20:41:08+00:00"
         },
         {
             "name": "google/cloud-core",
@@ -4275,16 +4275,16 @@
         },
         {
             "name": "google/cloud-recaptcha-enterprise",
-            "version": "v1.8.1",
+            "version": "v1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise.git",
-                "reference": "97224e0432c8dbfafa51cb930105647cee2b6f49"
+                "reference": "3ce8fe151cdc95f6e74db04890dc983d24259d0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/97224e0432c8dbfafa51cb930105647cee2b6f49",
-                "reference": "97224e0432c8dbfafa51cb930105647cee2b6f49",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/3ce8fe151cdc95f6e74db04890dc983d24259d0f",
+                "reference": "3ce8fe151cdc95f6e74db04890dc983d24259d0f",
                 "shasum": ""
             },
             "require": {
@@ -4319,9 +4319,9 @@
             ],
             "description": "Google Cloud Recaptcha Enterprise Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.8.1"
+                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.8.2"
             },
-            "time": "2024-01-19T15:59:50+00:00"
+            "time": "2024-02-09T19:51:53+00:00"
         },
         {
             "name": "google/cloud-storage",
@@ -4492,16 +4492,16 @@
         },
         {
             "name": "google/gax",
-            "version": "v1.26.3",
+            "version": "v1.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/gax-php.git",
-                "reference": "b7c782dcc40957ad84c9da947cc201f42e97859e"
+                "reference": "7d2533e84480018a351e9c3e20a284342ea7a75e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/b7c782dcc40957ad84c9da947cc201f42e97859e",
-                "reference": "b7c782dcc40957ad84c9da947cc201f42e97859e",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/7d2533e84480018a351e9c3e20a284342ea7a75e",
+                "reference": "7d2533e84480018a351e9c3e20a284342ea7a75e",
                 "shasum": ""
             },
             "require": {
@@ -4541,9 +4541,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/gax-php/issues",
-                "source": "https://github.com/googleapis/gax-php/tree/v1.26.3"
+                "source": "https://github.com/googleapis/gax-php/tree/v1.27.0"
             },
-            "time": "2024-01-18T20:24:45+00:00"
+            "time": "2024-02-07T23:12:02+00:00"
         },
         {
             "name": "google/grpc-gcp",
