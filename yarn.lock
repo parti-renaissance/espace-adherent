@@ -1505,10 +1505,10 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.5.tgz#a6ce3e556e00fd9895dd872dd172ad0d4bd687f4"
   integrity sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==
 
-"@types/google.maps@^3.55.2":
-  version "3.55.2"
-  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.55.2.tgz#6e5a1c257aeda3861a919a56fb9f369468e79e15"
-  integrity sha512-JcTwzkxskR8DN/nnX96Pie3gGN3WHiPpuxzuQ9z3516o1bB243d8w8DHUJ8BohuzoT1o3HUFta2ns/mkZC8KRw==
+"@types/google.maps@^3.55.3":
+  version "3.55.3"
+  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.55.3.tgz#15ec847b64d80fe3602fda77a5ab8dfff3a0dee1"
+  integrity sha512-UF1nfj8h/Vj4wEcdjv5v314HkDB6AWaN34Fr/u+6Oaj+GSRlG+k4c3DnJNKv7S23RvDdvIPt4ON6ONJpzNnarA==
 
 "@types/hast@^3.0.0":
   version "3.0.3"
