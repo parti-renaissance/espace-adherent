@@ -32,6 +32,9 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
 
         if (\in_array('message_read_list', $groups, true)) {
             $data['statistics'] = $this->statisticsAggregator->aggregateData($object);
+        }
+
+        if (array_intersect($groups, ['message_read_list', 'message_read'])) {
             $data['preview_link'] = $this->mailchimpObjectIdMapping->generateMailchimpPreviewLink($object->getMailchimpId());
         }
 

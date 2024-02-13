@@ -193,6 +193,7 @@ Feature:
       "subject": "L'objet de l'email",
       "status": "draft",
       "recipient_count": 0,
+      "preview_link": null,
       "source": "api",
       "synchronized": false
     }
@@ -224,6 +225,7 @@ Feature:
         "subject": "L'objet de l'email",
         "status": "draft",
         "recipient_count": 0,
+        "preview_link": null,
         "source": "api",
         "synchronized": false
     }
@@ -250,6 +252,7 @@ Feature:
         "subject": "Mon nouveau objet de l'email",
         "status": "draft",
         "recipient_count": 0,
+        "preview_link": null,
         "source": "api",
         "synchronized": false
     }
@@ -288,6 +291,7 @@ Feature:
       "subject": "L'objet de l'email",
       "status": "draft",
       "recipient_count": 0,
+      "preview_link": null,
       "source": "api",
       "synchronized": false
     }

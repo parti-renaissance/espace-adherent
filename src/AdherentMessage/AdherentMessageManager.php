@@ -49,6 +49,15 @@ class AdherentMessageManager
         $this->em->flush();
     }
 
+    public function duplicate(AdherentMessageInterface $message): void
+    {
+        $this->em->persist($cloneMessage = clone $message);
+
+        $this->eventDispatcher->dispatch(new MessageEvent($cloneMessage), Events::MESSAGE_PRE_CREATE);
+
+        $this->em->flush();
+    }
+
     public function updateMessage(AdherentMessageInterface $message, AdherentMessageDataObject $dataObject): void
     {
         if (

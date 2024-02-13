@@ -50,7 +50,7 @@
                                     "duplicatable": true,
                                     "deletable": true,
                                     "hideable": true,
-                                    "text": "<strong>Exemple de titre</strong>"
+                                    "text": "<strong>Exemple de titre {{_scope:\"zone_name\"}}</strong>"
                                 }
                             },
                             {
@@ -147,7 +147,7 @@
                                     "duplicatable": true,
                                     "deletable": true,
                                     "hideable": true,
-                                    "text": "<p style=\"font-size: 14px; line-height: 140%;\"><span style=\"font-family: Maax, sans-serif; font-size: 14px; line-height: 19.6px;\"><strong>Lorem ipsum</strong> dolor sit amet. Eum repellendus temporibus sit voluptate incidunt hic repellat voluptas et sint nobis ut dolorem quia aut fuga eius et recusandae tempore. Sit labore similique ut fugiat exercitationem est esse doloribus ut quia fugit et distinctio consectetur?</span></p>\n<p style=\"font-size: 14px; line-height: 140%;\"><span style=\"font-family: Maax, sans-serif; font-size: 14px; line-height: 19.6px;\">Ut porro porro aut consequatur rerum sit temporibus officia qui molestias atque et odit animi et facere corrupti. In corporis internos aut dolore consectetur in quas quod? Vel voluptas fugit et amet voluptatem sed beatae quaerat et neque eveniet sit accusamus galisum. Est provident ipsum quo necessitatibus repellendus et quod numquam.</span></p>\n<p style=\"font-size: 14px; line-height: 140%;\">Ad blanditiis reiciendis sit dolorem similique et ducimus galisum? Nam voluptas quia sit incidunt fuga ad deleniti unde et molestiae excepturi non sunt rerum aut quis unde est rerum laborum. Est aspernatur atque non tempora quidem aut recusandae totam quo quidem rerum eos assumenda illo sed nulla impedit.</p>"
+                                    "text": "<p style=\"font-size: 14px; line-height: 140%;\"><span style=\"font-family: Maax, sans-serif; font-size: 14px; line-height: 19.6px;\"><strong>Lorem ipsum</strong> dolor sit amet. {{first_name:\"Prénom\"}}, {{address:\"Adresse\":ml}}Eum repellendus temporibus sit voluptate incidunt {{first_name:\"Prénom\"}} repellat voluptas et sint nobis ut dolorem quia aut fuga eius et recusandae tempore. Sit labore similique ut fugiat exercitationem est esse doloribus ut quia fugit et distinctio consectetur?</span></p>\n<p style=\"font-size: 14px; line-height: 140%;\"><span style=\"font-family: Maax, sans-serif; font-size: 14px; line-height: 19.6px;\">Ut porro porro aut consequatur rerum sit temporibus officia qui molestias atque et odit animi et facere corrupti. In corporis internos aut dolore consectetur in quas quod? Vel voluptas fugit et amet voluptatem sed beatae quaerat et neque eveniet sit accusamus galisum. Est provident ipsum quo necessitatibus repellendus et quod numquam.</span></p>\n<p style=\"font-size: 14px; line-height: 140%;\">Ad blanditiis reiciendis sit dolorem similique et ducimus galisum? Nam voluptas quia sit incidunt fuga ad deleniti unde et molestiae excepturi non sunt rerum aut quis unde est rerum laborum. Est aspernatur atque non tempora quidem aut recusandae totam quo quidem rerum eos assumenda illo sed nulla impedit.</p>"
                                 }
                             },
                             {
