@@ -36,6 +36,10 @@ class AddressType extends AbstractType
             ])
         ;
 
+        if ($options['with_additional_address']) {
+            $builder->add('additionalAddress', TextType::class, ['required' => false]);
+        }
+
         if ($options['with_city']) {
             $builder
                 ->add('city', HiddenType::class, [
@@ -106,7 +110,9 @@ class AddressType extends AbstractType
                 'set_address_region' => false,
                 'strict_mode' => true,
                 'with_city' => true,
+                'with_additional_address' => false,
             ])
+            ->setAllowedTypes('with_additional_address', 'bool')
             ->setAllowedTypes('disable_fields', 'bool')
             ->setAllowedTypes('child_error_bubbling', 'bool')
             ->setAllowedTypes('strict_mode', 'bool')

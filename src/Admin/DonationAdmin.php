@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Address\AddressInterface;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Donation\DonationEvents;
@@ -146,6 +147,7 @@ class DonationAdmin extends AbstractAdmin
                 ])
                 ->add('nationality', CountryType::class, [
                     'label' => 'Nationalité',
+                    'preferred_choices' => [AddressInterface::FRANCE],
                 ])
                 ->add('donatedAt', null, [
                     'label' => 'Date du don',
@@ -569,6 +571,7 @@ class DonationAdmin extends AbstractAdmin
                 'Ville du donateur' => $donator->getCity(),
                 'Pays du donateur' => $donator->getCountry(),
                 'Adresse de référence' => $referenceDonation?->getAddress(),
+                'Complément d\'adresse de référence' => $referenceDonation?->getAdditionalAddress(),
                 'Code postal de référence' => $referenceDonation?->getPostalCode(),
                 'Ville de référence' => $referenceDonation?->getCityName(),
                 'Pays de référence' => $referenceDonation?->getCountry(),
