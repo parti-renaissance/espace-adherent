@@ -1,0 +1,36 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set adress = [
+        object.addressStreet,
+        object.addressStreet2,
+    ] %}
+
+    {% set city = [] %}
+    {% if object.addressPostCode %}
+        {% set city = city|merge([object.addressPostCode]) %}
+    {% endif %}
+
+    {% if object.addressCity %}
+        {% set city = city|merge([object.addressCity]) %}
+    {% endif %}
+
+    {% if city is not empty %}
+        {% set address = address|merge([city|join(' ')]) %}
+    {% endif %}
+
+    {% set country = [] %}
+    {% if object.addressCountry %}
+        {% set country = country|merge([object.addressCountry]) %}
+    {% endif %}
+
+    {% if object.addressCountryCode %}
+        {% set country = country|merge(['(' ~ object.addressCountryCode ~ ')']) %}
+    {% endif %}
+
+    {% if country is not empty %}
+        {% set address = address|merge([country|join(' ')]) %}
+    {% endif %}
+
+    {{ address|join('<br>') }}
+{% endblock %}

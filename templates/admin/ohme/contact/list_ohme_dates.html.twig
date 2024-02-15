@@ -1,0 +1,15 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.ohmeCreatedAt %}
+        {{ object.ohmeCreatedAt|format_datetime('medium', 'medium') }}
+    {% endif %}
+
+    {% if object.ohmeCreatedAt and object.ohmeUpdatedAt %}
+        <br>
+    {% endif %}
+
+    {% if object.ohmeUpdatedAt %}
+        {{ object.ohmeUpdatedAt|format_datetime('medium', 'medium') }}
+    {% endif %}
+{% endblock %}

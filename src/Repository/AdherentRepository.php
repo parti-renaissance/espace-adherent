@@ -638,6 +638,12 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $this->getEntityManager()->refresh($adherent);
     }
 
+    public function save(Adherent $adherent): void
+    {
+        $this->_em->persist($adherent);
+        $this->_em->flush();
+    }
+
     public function findPaginatedForInseeCodes(
         array $inseeCodes,
         int $page = 1,

@@ -5,6 +5,7 @@ namespace App\Entity\Contribution;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\Ohme\Contact;
 use App\Ohme\PaymentStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -30,7 +31,7 @@ class Payment
      *
      * @Groups({"adherent_elect_read"})
      */
-    public ?\DateTime $date = null;
+    public ?\DateTimeInterface $date = null;
 
     /**
      * @ORM\Column(length=50)
