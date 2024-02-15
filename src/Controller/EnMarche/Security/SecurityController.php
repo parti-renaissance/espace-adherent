@@ -10,7 +10,6 @@ use App\Form\AdherentResetPasswordType;
 use App\Form\LoginType;
 use App\Membership\AdherentChangeEmailHandler;
 use App\Membership\AdherentResetPasswordHandler;
-use App\Membership\MembershipNotifier;
 use App\Membership\MembershipSourceEnum;
 use App\OAuth\App\AuthAppUrlManager;
 use App\OAuth\App\PlatformAuthUrlGenerator;
@@ -164,23 +163,6 @@ class SecurityController extends AbstractController
         return $this->render(sprintf('security/%s_reset_password.html.twig', $appUrlGenerator::getAppCode()), [
             'form' => $form->createView(),
         ]);
-    }
-
-    #[Route(path: '/renvoyer-validation', name: 'adherent_resend_validation', methods: ['GET'])]
-    public function resendValidationEmailAction(
-        MembershipNotifier $membershipNotifier,
-        AuthenticationUtils $authenticationUtils,
-        AdherentRepository $adherentRepository
-    ): Response {
-        /** @var Adherent $adherent */
-        $adherent = $adherentRepository->loadUserByUsername($authenticationUtils->getLastUsername());
-
-        if ($adherent && !$adherent->isEnabled() && !$adherent->getActivatedAt()) {
-            $membershipNotifier->sendEmailValidation($adherent);
-            $this->addFlash('success', 'Un email de validation a bien été envoyé.');
-        }
-
-        return $this->redirectToRoute('app_user_login');
     }
 
     #[Entity('adherent', expr: 'repository.findOneByUuid(adherent_uuid)')]

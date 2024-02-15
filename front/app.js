@@ -125,12 +125,6 @@ class App {
         });
     }
 
-    runDonationInformation(formType) {
-        import('pages/donation_information').catch((error) => { throw error; }).then((module) => {
-            module.default(formType);
-        });
-    }
-
     runReport() {
         import('pages/report').catch((error) => { throw error; }).then((module) => {
             module.default();
@@ -157,30 +151,6 @@ class App {
 
     runJeMarche() {
         import('pages/jemarche').catch((error) => { throw error; }).then((module) => {
-            module.default();
-        });
-    }
-
-    runRegistration(formType) {
-        import('pages/registration').catch((error) => { throw error; }).then((module) => {
-            module.default(formType);
-        });
-    }
-
-    runJoin(formType) {
-        import('pages/join').catch((error) => { throw error; }).then((module) => {
-            module.default(formType);
-        });
-    }
-
-    runRenaissanceAdhesionInformation(formType) {
-        System.import('pages/renaissance_adhesion_information').catch((error) => { throw error; }).then((module) => {
-            module.default(formType);
-        });
-    }
-
-    runComplete() {
-        import('pages/complete').catch((error) => { throw error; }).then((module) => {
             module.default();
         });
     }

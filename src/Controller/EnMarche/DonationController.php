@@ -16,7 +16,6 @@ use App\Exception\PayboxPaymentUnsubscriptionException;
 use App\Form\ConfirmActionType;
 use App\Form\DonationRequestType;
 use App\Form\NewsletterSubscriptionType;
-use App\Membership\MembershipRegistrationProcess;
 use App\Repository\AdherentRepository;
 use App\Repository\DonationRepository;
 use App\Repository\NewsletterSubscriptionRepository;
@@ -119,7 +118,6 @@ class DonationController extends AbstractController
     #[ParamConverter('donation', options: ['mapping' => ['uuid' => 'uuid']])]
     public function resultAction(
         Request $request,
-        MembershipRegistrationProcess $membershipRegistrationProcess,
         AdherentRepository $adherentRepository,
         NewsletterSubscriptionRepository $newsletterSubscriptionRepository,
         Donation $donation,
@@ -135,8 +133,6 @@ class DonationController extends AbstractController
                 $donationRequestUtils->createRetryPayload($donation, $request)
             );
         }
-
-        $membershipRegistrationProcess->terminate();
 
         $emailAddress = $donation->getDonator()->getEmailAddress();
 

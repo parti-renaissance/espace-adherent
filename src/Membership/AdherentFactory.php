@@ -10,7 +10,6 @@ use App\Entity\Administrator;
 use App\Membership\MembershipRequest\AvecVousMembershipRequest;
 use App\Membership\MembershipRequest\JeMengageMembershipRequest;
 use App\Membership\MembershipRequest\MembershipInterface;
-use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use App\Renaissance\Membership\Admin\AdherentCreateCommand;
 use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
@@ -29,19 +28,11 @@ class AdherentFactory
 
     public function createFromMembershipRequest(MembershipInterface $membershipRequest): Adherent
     {
-        if ($membershipRequest instanceof AvecVousMembershipRequest) {
-            return $this->createFromAvecVousMembershipRequest($membershipRequest);
-        }
-
         if ($membershipRequest instanceof JeMengageMembershipRequest) {
             return $this->createFromJeMengageMembershipRequest($membershipRequest);
         }
 
-        if ($membershipRequest instanceof PlatformMembershipRequest) {
-            return $this->createFromPlatformMembershipRequest($membershipRequest);
-        }
-
-        throw new \LogicException(sprintf('Missing Adherent factory for membership request "%s"', $membershipRequest::class));
+        return $this->createFromAvecVousMembershipRequest($membershipRequest);
     }
 
     private function createFromAvecVousMembershipRequest(AvecVousMembershipRequest $request): Adherent
@@ -81,37 +72,6 @@ class AdherentFactory
         $adherent->setNationality($request->nationality);
         $adherent->setSource($request->getSource());
         $adherent->setPapUserRole(true);
-
-        return $adherent;
-    }
-
-    private function createFromPlatformMembershipRequest(PlatformMembershipRequest $request): Adherent
-    {
-        $adherent = Adherent::create(
-            Adherent::createUuid($request->getEmailAddress()),
-            $request->getEmailAddress(),
-            $this->encodePassword($request->password),
-            $request->gender,
-            $request->firstName,
-            $request->lastName,
-            $request->getBirthdate() ? clone $request->getBirthdate() : null,
-            $request->position,
-            $this->addressFactory->createFromAddress($request->getAddress()),
-            $request->getPhone(),
-            null,
-            false,
-            Adherent::DISABLED,
-            'now',
-            [],
-            $request->getMandates(),
-            $request->nationality,
-            $request->customGender
-        );
-
-        if (!$request->isAsUser()) {
-            $adherent->join();
-            $adherent->setPapUserRole(true);
-        }
 
         return $adherent;
     }

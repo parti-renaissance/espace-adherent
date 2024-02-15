@@ -98,32 +98,6 @@
 
 {# Custom types #}
 
-{% block _app_adherent_pin_interests_interests_widget %}
-    {# TODO to be integrated #}
-    {{ form_widget(form) }}
-{% endblock %}
-
-{% block _app_membership_choose_committees_around_adherent_committees_row %}
-    <div {{ block('widget_container_attributes') }}>
-        {% for name, choice in form %}
-            {% set committee_data = form.parent.vars.committees_views_data[name] %}
-            <div class="l__row l__row--h-stretch l__row--v-stretch l__mobile--col b__nudge--bottom-large">
-                <div class="choose-committee register__comites__list background--lighter space--20">
-                    <h3 class="text--medium text--normal text--breakword">{{ choice.vars.label }}</h3>
-                    <div class="text--body space--10-0 icon--with-text">
-                        {{ include('components/participants.html.twig') }}
-                        {{ 'committee.members_count'|trans({ count: committee_data['members_count'] }) }}
-                    </div>
-                </div>
-                <div class="register__comites__follow form__checkbox">
-                    {{ form_widget(choice) }}
-                    {{ form_label(choice, 'Je veux suivre ce comité') }}
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-{% endblock %}
-
 {% block _summary_skills_entry_name_row %}
     {% apply spaceless %}
         <div class="summary-skill">

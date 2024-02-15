@@ -96,7 +96,6 @@ class CallbackManagerTest extends TestCase
         $this->logger->expects($this->never())->method($this->anything());
 
         $this->assertSame('/foo_path', $this->callbackManager->generateUrl('foo', ['test' => 'foo']));
-        $this->assertSame('https://enmarche.fr', $this->callbackManager->redirectToClientIfValid('foo')->getTargetUrl());
     }
 
     #[DataProvider('providesInvalidClientOrRedirectUri')]
@@ -107,16 +106,15 @@ class CallbackManagerTest extends TestCase
         $this->request->query->set('redirect_uri', $redirectUri);
         $this->request->query->set('client_id', $clientId);
 
-        $this->urlGenerator->expects($this->exactly(2))
+        $this->urlGenerator->expects($this->exactly(1))
             ->method('generate')
             ->with('foo', [], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn('/foo_path')
         ;
 
-        $this->logger->expects($this->exactly(2))->method('warning');
+        $this->logger->expects($this->exactly(1))->method('warning');
 
         $this->assertSame('/foo_path', $this->callbackManager->generateUrl('foo'));
-        $this->assertSame('/foo_path', $this->callbackManager->redirectToClientIfValid('foo')->getTargetUrl());
     }
 
     public static function providesInvalidClientOrRedirectUri(): array
@@ -130,7 +128,7 @@ class CallbackManagerTest extends TestCase
 
     public function testItGeneratesUrlWithoutCallbackInformationWhenNothingIsProvided(): void
     {
-        $this->urlGenerator->expects($this->exactly(2))
+        $this->urlGenerator->expects($this->exactly(1))
             ->method('generate')
             ->with('foo', [], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn('/foo_path')
@@ -139,14 +137,13 @@ class CallbackManagerTest extends TestCase
         $this->clientRepository->expects($this->never())->method($this->anything());
 
         $this->assertSame('/foo_path', $this->callbackManager->generateUrl('foo'));
-        $this->assertSame('/foo_path', $this->callbackManager->redirectToClientIfValid('foo')->getTargetUrl());
     }
 
     public function testItGeneratesUrlWithoutCallbackInformationWhenClientIdIsMissing(): void
     {
         $this->request->query->set('redirect_uri', 'https://enmarche.fr');
 
-        $this->urlGenerator->expects($this->exactly(2))
+        $this->urlGenerator->expects($this->exactly(1))
             ->method('generate')
             ->with('foo', [], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn('/foo_path')
@@ -155,14 +152,13 @@ class CallbackManagerTest extends TestCase
         $this->clientRepository->expects($this->never())->method($this->anything());
 
         $this->assertSame('/foo_path', $this->callbackManager->generateUrl('foo'));
-        $this->assertSame('/foo_path', $this->callbackManager->redirectToClientIfValid('foo')->getTargetUrl());
     }
 
     public function testItGeneratesUrlWithoutCallbackInformationWhenRedirectUriIsMissing(): void
     {
         $this->request->query->set('client_id', self::KNOWN_CLIENT_UUID);
 
-        $this->urlGenerator->expects($this->exactly(2))
+        $this->urlGenerator->expects($this->exactly(1))
             ->method('generate')
             ->with('foo', [], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn('/foo_path')
@@ -171,7 +167,6 @@ class CallbackManagerTest extends TestCase
         $this->clientRepository->expects($this->never())->method($this->anything());
 
         $this->assertSame('/foo_path', $this->callbackManager->generateUrl('foo'));
-        $this->assertSame('/foo_path', $this->callbackManager->redirectToClientIfValid('foo')->getTargetUrl());
     }
 
     private function createClient(): Client

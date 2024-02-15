@@ -41,7 +41,7 @@ class UserChecker implements UserCheckerInterface
                 throw $ex;
             }
 
-            throw new AccountNotValidatedException($user, !$user->getSource() ? $this->router->generate('adherent_resend_validation') : null);
+            throw new AccountNotValidatedException($user);
         }
     }
 }

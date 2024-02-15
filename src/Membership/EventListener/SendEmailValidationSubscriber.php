@@ -41,12 +41,6 @@ class SendEmailValidationSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (null === $adherent->getSource()) {
-            $this->notifier->sendEmailValidation($adherent);
-
-            return;
-        }
-
         $message = $token = null;
 
         switch ($adherent->getSource()) {

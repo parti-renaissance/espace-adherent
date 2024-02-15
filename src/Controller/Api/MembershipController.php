@@ -33,7 +33,7 @@ class MembershipController extends AbstractController
             throw $this->createAccessDeniedException('Logged in users can not create account.');
         }
 
-        $membershipRequest = $handler->initialiseMembershipRequest($request->query->get('source', MembershipSourceEnum::RENAISSANCE));
+        $membershipRequest = $handler->initialiseMembershipRequest($request->query->get('source', MembershipSourceEnum::JEMENGAGE));
 
         $serializer->deserialize(
             $request->getContent(),

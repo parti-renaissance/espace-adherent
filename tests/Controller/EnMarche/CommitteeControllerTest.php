@@ -66,7 +66,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
-        $this->assertTrue($this->seeRegisterLink($crawler));
     }
 
     public function testAuthenticatedCommitteeSupervisorCannotUnfollowCommittee()
@@ -264,8 +263,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeRegisterLink($crawler), 'The guest should not see the "register link"');
-        $this->assertTrue($this->seeLoginLink($crawler), 'The guest should see the "login link"');
         $this->assertFalse($this->seeFollowLink($crawler), 'The guest should not see the "follow link"');
         $this->assertFalse($this->seeUnfollowLink($crawler), 'The guest should not see the "unfollow link"');
         $this->assertTrue($this->seeMembersCount($crawler, 3), 'The guest should see the members count');

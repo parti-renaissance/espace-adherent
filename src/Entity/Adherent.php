@@ -48,7 +48,6 @@ use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Mailchimp\Contact\MailchimpCleanableContactInterface;
 use App\Membership\ActivityPositionsEnum;
 use App\Membership\MembershipRequest\MembershipInterface;
-use App\Membership\MembershipRequest\PlatformMembershipRequest;
 use App\Membership\MembershipSourceEnum;
 use App\OAuth\Model\User as InMemoryOAuthUser;
 use App\Renaissance\Membership\Admin\AdherentCreateCommand;
@@ -1548,32 +1547,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if (!$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;
-        }
-    }
-
-    /**
-     * @param PlatformMembershipRequest $membership
-     */
-    public function updateMembership(MembershipInterface $membership, PostAddress $postAddress): void
-    {
-        if (!$this->isCertified()) {
-            $this->customGender = $membership->getCustomGender();
-            $this->gender = $membership->getGender();
-            $this->firstName = $membership->firstName;
-            $this->lastName = $membership->lastName;
-            $this->birthdate = clone $membership->getBirthdate();
-        }
-
-        $this->position = $membership->position;
-        $this->phone = $membership->getPhone();
-        $this->nationality = $membership->nationality;
-
-        if (!$this->postAddress->equals($postAddress)) {
-            $this->postAddress = $postAddress;
-        }
-
-        if ($membership instanceof PlatformMembershipRequest) {
-            $this->mandates = $membership->getMandates();
         }
     }
 

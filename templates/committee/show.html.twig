@@ -50,13 +50,6 @@
                         disabled="disabled">
                     Suivre ce comité
                 </button>
-
-                <div class="committee-follow--anonymous__link text--white b__nudge--top-10">
-                    <a href="{{ em_login_path_for_anonymous_follower() }}" id="committee-login-link" class="link--white text--bold">Connectez-vous</a>
-                    ou
-                    <a href="{{ register_path_for_anonymous_follower() }}" id="committee-register-link" class="link--white text--bold">adhérez</a>
-                    <br />pour suivre ce comité
-                </div>
             </div>
         {% elseif not has_role_adherent %}
             <div class="committee-follow--anonymous">
@@ -66,11 +59,6 @@
                         disabled="disabled">
                     Suivre ce comité
                 </button>
-
-                <div class="committee-follow--anonymous__link text--white b__nudge--top-10">
-                    <a href="{{ path('app_membership_join') }}" id="committee-register-link" class="link--white">Vous devez adhérer au mouvement</a>
-                    pour suivre ce comité
-                </div>
             </div>
         {% elseif can_follow(committee) %}
             <button role="button"

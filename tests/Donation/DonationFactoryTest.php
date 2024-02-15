@@ -8,7 +8,6 @@ use App\Donation\DonationFactory;
 use App\Donation\Request\DonationRequest;
 use App\Donation\Request\DonationRequestUtils;
 use App\Entity\Donator;
-use App\Membership\MembershipRegistrationProcess;
 use App\Repository\Geo\ZoneRepository;
 use Cocur\Slugify\Slugify;
 use libphonenumber\PhoneNumber;
@@ -70,7 +69,6 @@ class DonationFactoryTest extends TestCase
                 $this->createMock(SessionInterface::class),
                 $this->createMock(CsrfTokenManagerInterface::class),
                 Slugify::create(),
-                $this->createMock(MembershipRegistrationProcess::class),
                 $this->createMock(GeoCoder::class)
             ),
             $this->createMock(ZoneRepository::class)

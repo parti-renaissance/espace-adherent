@@ -107,9 +107,6 @@
         {% if not app.user %}
             <a href="{{ path('app_user_login') }}" class="text--body link--no-decor b__nudge--right">Connexion</a>
         {% endif %}
-        {% if not has_role_adherent %}
-            <a href="{{ path('app_membership_join') }}" class="text--body b__nudge--right">Adhérer</a>
-        {% endif %}
         <a href="{{ path('donation_index') }}" class="btn btn--red">Donner</a>
     </div>
 </nav>

@@ -208,64 +208,6 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
     }
     """
 
-  Scenario: Register a user with callback URI
-    Given I am on "/inscription-utilisateur?client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19&redirect_uri=https%3A%2F%2Fen-marche.fr%2Fcallback"
-    When I fill in the following:
-      | Prénom               | Jean-pierre |
-      | Nom                  | D'ARTAGNAN  |
-      | Email                | jp@test.com |
-      | Re-saisir l'email    | jp@test.com |
-      | Mot de passe         | testtest    |
-      | Code postal          | 38000       |
-      | Pays                 | FR          |
-      | Nationalité          | FR          |
-    And I resolved the captcha
-    And I press "Créer mon compte"
-    Then I should be on "/presque-fini"
-    And the response status code should be 200
-
-    Given I should have 1 email "AdherentAccountActivationMessage" for "jp@test.com" with payload:
-    """
-    {
-      "template_name": "adherent-account-activation",
-      "template_content": [],
-      "message": {
-        "subject": "Confirmez votre compte En-Marche.fr",
-        "from_email": "contact@en-marche.fr",
-        "merge_vars": [
-          {
-            "rcpt": "jp@test.com",
-            "vars": [
-              {
-                "name": "first_name",
-                "content": "Jean-Pierre"
-              },
-              {
-                "name": "activation_link",
-                "content": "http:\/\/test.enmarche.code\/inscription\/finaliser\/@string@/@string@?redirect_uri=https:\/\/en-marche.fr\/callback&client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19"
-              }
-            ]
-          }
-        ],
-        "from_name": "La R\u00e9publique En Marche !",
-        "to": [
-          {
-            "email": "jp@test.com",
-            "type": "to",
-            "name": "Jean-Pierre d'Artagnan"
-          }
-        ]
-      }
-    }
-    """
-    When I click on the email link "activation_link"
-    Then I should be on "https://enmarche.fr/callback"
-
-    # Already logged in user returning to register are redirected to the redirect_uri
-    Given I am logged as "jp@test.com"
-    When I am on "/inscription-utilisateur?client_id=f80ce2df-af6d-4ce4-8239-04cfcefd5a19&redirect_uri=https%3A%2F%2Fen-marche.fr%2Fcallback"
-    Then I should be on "https://en-marche.fr/callback"
-
   Scenario: Password authentication with JeMengage User
     When I send a "POST" request to "/oauth/v2/token" with parameters:
       | key           | value                                        |

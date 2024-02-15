@@ -7,8 +7,6 @@ use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Donation\Request\DonationRequest;
 use App\Donation\Request\DonationRequestUtils;
 use App\Entity\Adherent;
-use App\Membership\MembershipRegistrationProcess;
-use App\Repository\AdherentRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -34,23 +32,17 @@ class DonationRequestType extends AbstractType
     ];
 
     private $donationRequestUtils;
-    private $membershipRegistrationProcess;
     private $tokenStorage;
     private $requestStack;
-    private $adherentRepository;
 
     public function __construct(
         DonationRequestUtils $donationRequestUtils,
-        MembershipRegistrationProcess $membershipRegistrationProcess,
         RequestStack $requestStack,
         TokenStorageInterface $tokenStorage,
-        AdherentRepository $adherentRepository
     ) {
-        $this->membershipRegistrationProcess = $membershipRegistrationProcess;
         $this->donationRequestUtils = $donationRequestUtils;
         $this->requestStack = $requestStack;
         $this->tokenStorage = $tokenStorage;
-        $this->adherentRepository = $adherentRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -116,11 +108,6 @@ class DonationRequestType extends AbstractType
 
             if (!$user instanceof Adherent) {
                 $user = null;
-            }
-
-            // The user comes from the registration process
-            if (null === $user && $uuid = $this->membershipRegistrationProcess->getAdherentUuid()) {
-                $user = $this->adherentRepository->findByUuid($uuid);
             }
 
             $formEvent->setData($this->donationRequestUtils->createFromRequest(

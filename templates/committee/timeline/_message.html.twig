@@ -1,14 +1,8 @@
 {% if has_role_adherent %}
     <div class="text--body text--with-bullet space--10-0">{{ item.content|raw }}</div>
-{% elseif has_role_user %}
-    <div class="committee-message-invisible text--body space--10-0">
-        <a href="{{ path('app_membership_join') }}">Vous devez adhérer au mouvement</a>
-        pour voir ce message.
-    </div>
 {% else %}
     <div class="committee-message-invisible text--body space--10-0">
         <a href="{{ path('app_user_login') }}">Connectez-vous</a>
-        (ou <a href="{{ path('app_membership_join') }}">rejoignez En-Marche.fr</a>)
         afin de voir ce message.
     </div>
 {% endif %}
