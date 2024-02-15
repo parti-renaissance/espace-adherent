@@ -6,22 +6,13 @@ use App\Donation\DonationEvents;
 use App\Donation\Event\DonationWasCreatedEvent;
 use App\Donation\Event\DonatorWasUpdatedEvent;
 use App\Repository\AdherentRepository;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DonatorSubscriber implements EventSubscriberInterface
 {
-    private $adherentRepository;
-
-    /**
-     * @var ObjectManager
-     */
-    private $em;
-
-    public function __construct(AdherentRepository $adherentRepository, ObjectManager $em)
+    public function __construct(private readonly AdherentRepository $adherentRepository, private readonly EntityManagerInterface $em)
     {
-        $this->adherentRepository = $adherentRepository;
-        $this->em = $em;
     }
 
     public static function getSubscribedEvents(): array
@@ -45,6 +36,7 @@ class DonatorSubscriber implements EventSubscriberInterface
                 $donator->getFirstName(),
                 $donator->getLastName()
             ));
+            $this->em->flush();
         }
     }
 
