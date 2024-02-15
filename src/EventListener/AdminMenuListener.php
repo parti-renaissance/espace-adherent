@@ -67,7 +67,7 @@ class AdminMenuListener implements EventSubscriberInterface
         $extras = ['icon' => '<i class="'.$groupIcon.'"></i>'];
 
         $subMenu = $this->provider->get('sonata_group_menu', [
-            'name' => 'admin.tools',
+            'name' => $groupLabel,
             'group' => [
                 'label' => $groupLabel,
                 'on_top' => false,

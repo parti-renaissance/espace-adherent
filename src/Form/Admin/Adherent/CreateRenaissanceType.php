@@ -44,6 +44,7 @@ class CreateRenaissanceType extends AbstractType
             ])
             ->add('address', AddressType::class, [
                 'label' => false,
+                'with_additional_address' => true,
                 'child_error_bubbling' => false,
             ])
             ->add('email', EmailType::class, ['disabled' => true])

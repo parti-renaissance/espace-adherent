@@ -996,6 +996,7 @@ adherent.extract.field.country: Pays de résidence
 adherent.extract.field.postalCode: Code postal
 adherent.extract.field.city: Ville
 adherent.extract.field.address: Adresse postale
+adherent.extract.field.additionalAddress: Complément d'adresse
 adherent.extract.field.source: Source
 
 donator.extract.field.email: Email
@@ -1003,6 +1004,7 @@ donator.extract.field.gender: Sexe
 donator.extract.field.firstName: Prénom
 donator.extract.field.lastName: Nom
 donator.extract.field.address: Adresse postale
+donator.extract.field.additionalAddress: Complément d'adresse
 donator.extract.field.postalCode: Code postal
 donator.extract.field.city: Ville
 donator.extract.field.country: Pays de résidence

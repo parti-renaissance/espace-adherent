@@ -57,6 +57,12 @@ class DonatorExtractCommandHandler extends AbstractEmailExtractCommandHandler
                         : null;
 
                     break;
+                case DonatorExtractCommand::FIELD_ADDITIONAL_ADDRESS:
+                    $row[$this->translateField($field)] = $lastDonation
+                        ? $lastDonation->getAdditionalAddress()
+                        : null;
+
+                    break;
                 case DonatorExtractCommand::FIELD_POSTAL_CODE:
                     $row[$this->translateField($field)] = $lastDonation
                         ? $lastDonation->getPostalCode()

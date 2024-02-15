@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use App\Address\AddressInterface;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Donation\DonatorManager;
@@ -114,6 +115,7 @@ class DonatorAdmin extends AbstractAdmin
                 ])
                 ->add('country', CountryType::class, [
                     'label' => 'Pays',
+                    'preferred_choices' => [AddressInterface::FRANCE],
                 ])
             ->end()
             ->with('Administration', ['class' => 'col-md-6'])

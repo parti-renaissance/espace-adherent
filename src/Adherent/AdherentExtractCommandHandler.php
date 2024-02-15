@@ -48,6 +48,10 @@ class AdherentExtractCommandHandler extends AbstractEmailExtractCommandHandler
                     $row[$this->translateField($field)] = $adherent->getAddress();
 
                     break;
+                case AdherentExtractCommand::FIELD_ADDITIONAL_ADDRESS:
+                    $row[$this->translateField($field)] = $adherent->getAdditionalAddress();
+
+                    break;
                 case AdherentExtractCommand::FIELD_POSTAL_CODE:
                     $row[$this->translateField($field)] = $adherent->getPostalCode();
 
