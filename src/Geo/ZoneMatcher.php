@@ -61,7 +61,7 @@ class ZoneMatcher
                     'type' => Zone::CUSTOM,
                 ]);
 
-                $zones = array_merge($zones, $this->matchGeoPoint($address, [Zone::FOREIGN_DISTRICT], [$this->fde]));
+                $zones = array_merge($zones, $this->matchGeoPoint($address, [Zone::FOREIGN_DISTRICT, Zone::CUSTOM], [$this->fde]));
             }
 
             // Country
