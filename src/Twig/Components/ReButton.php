@@ -49,6 +49,13 @@ class ReButton extends AbstractComponentsLogic
                 active:not(:disabled):bg-ui_gray-70
                 disabled:bg-ui_gray-30 disabled:text-white
                 TW,
+            'black' => <<<TW
+                bg-black text-white
+                border border-black
+                hover:text-black hover:bg-white
+                active:not(:disabled):bg-ui_gray-70
+                disabled:bg-ui_gray-30 disabled:text-white
+                TW,
             default => throw new \LogicException(sprintf('Unknown button type "%s"', $this->color))
         };
     }
@@ -100,6 +107,6 @@ class ReButton extends AbstractComponentsLogic
             };
         }
 
-        return $color ? 'loading--'.$color : 'loading';
+        return $color ? 'loading--' . $color : 'loading';
     }
 }

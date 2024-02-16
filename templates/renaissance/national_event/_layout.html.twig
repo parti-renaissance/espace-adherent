@@ -9,7 +9,7 @@
 
 {% block content %}
     <main class="flex flex-col h-screen bde-theme">
-        <header class="sticky top-0 z-10 {{ theme_bg|default('border-b border-b-white/10 bg-white') }}">
+        <header class="sticky top-0 z-10 border-b-4 border-black {{ theme_bg|default('border-b border-b-white/10 bg-white') }}">
             <div class="max-w-8xl mx-auto py-5 px-4 md:px-6 md:py-6">
                 <a href="#">
                     BDE
@@ -35,8 +35,8 @@
             <div class="h-[2px] md:hidden bg-white/25 w-3/4"></div>
             {# --------------- LINKS ---------------#}
             <div class="flex flex-col md:flex-row bg-black items-center md:justify-center gap-7">
-                <a href="https://parti-renaissance.fr/mentions-legales"> Mentions légales </a>
                 <a href="https://parti-renaissance.fr/cgu"> CGU </a>
+                <a href="https://parti-renaissance.fr/mentions-legales"> Mentions légales </a>
                 <a href="https://parti-renaissance.fr/politique-de-protection-des-donnees"> Données personnelles </a>
             </div>
             <div class="h-[2px] md:hidden bg-white/25 w-3/4"></div>

@@ -10,10 +10,10 @@
         <div class="md:grid sm:items-center md:grid-cols-2 w-full">
 
             <div class="flex gap-8 flex-col mt-64 md:mt-32 pt-0 p-5 pl-0 md:col-start-2 items-center md:justify-start">
-                <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-5 !border-black !border-4">
+                <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-black !border-4">
 
                     <p class="text-subtitle1">Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>
-                    <div class="flex-col flex gap-3">
+                    <div class="flex-col flex gap-4">
                         {{ form_row(form.civility, {
                             label: false,
                             attr: { onCheck:"setFieldValid('civility')", validate: "['required']" }
@@ -95,6 +95,7 @@
 
                     <twig:ReButton
                         class="w-full"
+                        color="black"
                         x-on:click="handleOnSubmit($event, $dispatch)"
                         x-bind:class="{disabled: !checkValidity()}"
                     >Je m'inscris</twig:ReButton>

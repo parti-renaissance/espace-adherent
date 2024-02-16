@@ -1,5 +1,8 @@
 $text-color-light: #959CA0;
 $bg-color--dark: #17211C;
+$primary: black;
+$secondary: #00AEEF;
+$tertiary: #959CA0;
 
 .bde-theme {
     &.bg-primary, .bg-primary {
@@ -46,6 +49,23 @@ $bg-color--dark: #17211C;
         > input {
             color: $text-color-light !important;
         }
+    }
+
+    .re-button {
+        @apply rounded-[30px];
+        height: 56px;
+        font-family: 'Value', sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        position: relative;
+        z-index: 2;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 10px 0px 1px #000000;
+        }
+
     }
 
     label.mb-6 {
