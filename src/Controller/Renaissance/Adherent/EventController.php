@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Renaissance\Event;
+namespace App\Controller\Renaissance\Adherent;
 
 use App\Contact\ContactMessage;
 use App\Contact\ContactMessageHandler;

@@ -1,0 +1,103 @@
+{% extends 'renaissance/national_event/_layout.html.twig' %}
+
+{% block page_title 'Inscription' %}
+
+{% form_theme form 'renaissance/forms/national_event_form_theme.html.twig' %}
+
+{% block content_section %}
+    <main class="bg-[#F4F4F7] re_new_ui">
+        {{ form_start(form) }}
+            <div class="flex gap-8 flex-col pt-0 p-5">
+                <twig:Atoms:ReCard class="max-w-[500px] re-step">
+                    <h2>Inscription</h2>
+
+                    <p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>
+
+                    {{ form_row(form.civility, {
+                        label: false,
+                        attr: { onCheck:"setFieldValid('civility')", validate: "['required']" }
+                    }) }}
+
+                    <div class="flex flex-col xs:flex-row gap-5 ">
+                        {{ form_row(form.firstName, {
+                            label: false,
+                            attr: { placeholder: 'Prénom', onCheck:"setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']" }
+                        }) }}
+                        {{ form_row(form.lastName, {
+                            label: false,
+                            attr: { placeholder: 'Nom', onCheck:"setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']" }
+                        }) }}
+                    </div>
+
+                    {{ form_row(form.email, {
+                        label: 'Mon adresse email',
+                        attr: {
+                            placeholder: 'adresse@mail.com',
+                            validate:"['required', 'email']",
+                            autocomplete: 'email',
+                            onCheck:"setFieldValid('email')",
+                        }
+                    }) }}
+
+                    {{ form_row(form.postalCode, {
+                        label: 'Code postal',
+                        attr: { placeholder: '75000', onCheck:"setFieldValid('postalCode')", validate: "['required']" }
+                    }) }}
+
+                    <fieldset class="relative h-[150px]">
+                        <twig:Atoms:ReLabel>Date de naissance</twig:Atoms:ReLabel>
+
+                        <fieldset class="flex gap-2.5 relative z-10">
+                            {{ form_widget(form.birthdate.day, {label: false, attr: {
+                                class: "w-full",
+                                placeholder: 'Jour',
+                                validate: "['required']",
+                                onCheck: "setFieldValid('birthDay')",
+                                'x-on:change': "setDay($event.target.value)",
+                                searchBoxProps: {'x-numberonly': ''}
+                            }}) }}
+
+                            {{ form_widget(form.birthdate.month, {label: false, attr: {
+                                class: "w-full",
+                                placeholder: 'Mois',
+                                validate: "['required']",
+                                onCheck: "setFieldValid('birthMonth')",
+                                'x-on:change': "setMonth($event.target.value)",
+                            }}) }}
+
+                            {{ form_widget(form.birthdate.year, {label: false, attr: {
+                                class: "w-full",
+                                placeholder: 'Année',
+                                validate: "['required']",
+                                onCheck: "setFieldValid('birthYear')",
+                                'x-on:change': "setYear($event.target.value)",
+                                searchBoxProps: {'x-numberonly': ''}
+                            }}) }}
+                        </fieldset>
+
+                        {{ form_errors(form.birthdate) }}
+                    </fieldset>
+
+                    <fieldset>
+                        {{ form_row(form.phone, {label: 'Numéro de téléphone (optionnel)', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.' }) }}
+                    </fieldset>
+
+                    {{ form_row(form.allowNotifications, {label: "Je m’abonne à la newsletter pour ne rien rater de des actualités de la campagne (optionnel)"}) }}
+
+                    {{ form_row(form.acceptCgu, {label: 'national_event.inscription.accept_cgu'}) }}
+
+                    <div class="w-full re-field-frame !h-auto cursor-pointer"
+                         x-on:click="dom('.frc-button')?.click()">
+                        {% include 'renaissance/partials/friendly-captcha.html.twig' %}
+                    </div>
+
+                    <twig:ReButton
+                        class="w-full"
+                        x-on:click="handleOnSubmit($event, $dispatch)"
+                        x-bind:class="{disabled: !checkValidity()}"
+                    >Je m'inscris</twig:ReButton>
+                </twig:Atoms:ReCard>
+            </div>
+        {{ form_end(form) }}
+    </main>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block app_title 'BDE' %}
+
+{% block content %}
+    <main class="flex flex-col h-screen">
+        <header class="sticky top-0 z-10 {{ theme_bg|default('border-b border-b-white/10 bg-white') }}">
+            <div class="max-w-8xl mx-auto py-5 px-4 md:px-6 md:py-6">
+                <a href="#">
+                    BDE
+                </a>
+            </div>
+        </header>
+
+        {% block content_section %}{% endblock %}
+
+        <footer class="flex flex-col md:flex-row bg-black items-center md:justify-center gap-x-7 pb-12 md:py-6 text-white text-sm">
+            <a href="https://parti-renaissance.fr/mentions-legales">
+                Mentions légales
+            </a>
+            <a href="https://parti-renaissance.fr/cgu">
+                CGU
+            </a>
+            <a href="https://parti-renaissance.fr/politique-de-protection-des-donnees">
+                Données personnelles
+            </a>
+        </footer>
+    </main>
+{% endblock %}
