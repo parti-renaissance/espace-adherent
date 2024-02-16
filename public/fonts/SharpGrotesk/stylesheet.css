@@ -1,0 +1,19 @@
+@font-face {
+    font-family: 'Sharp Grotesk';
+    src: url('SharpGrotesk-SemiBold25.woff2') format('woff2'),
+    url('SharpGrotesk-SemiBold25.woff') format('woff'),
+    url('SharpGrotesk-SemiBold25.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Space Grotesk';
+    src: url('SpaceGrotesk-Light.woff2') format('woff2'),
+    url('SpaceGrotesk-Light.woff') format('woff'),
+    url('SpaceGrotesk-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
