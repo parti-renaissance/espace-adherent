@@ -5,31 +5,30 @@
 {% form_theme form 'renaissance/forms/national_event_form_theme.html.twig' %}
 
 {% block content_section %}
-    <main class="bg-[#F4F4F7] re_new_ui bde-theme">
-            {{ form_start(form) }}
+    <main class="bg-[#F4F4F7] re_new_ui  bg-primary">
+        {{ form_start(form) }}
         <div class="md:grid sm:items-center md:grid-cols-2 w-full">
 
             <div class="flex gap-8 flex-col mt-64 md:mt-32 pt-0 p-5 pl-0 md:col-start-2 items-center md:justify-start">
-                <twig:Atoms:ReCard class="max-w-[500px] re-step">
+                <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-5 !border-black !border-4">
 
-                    <h2>Inscription</h2>
-
-                    <p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>
-
-                    {{ form_row(form.civility, {
-                        label: false,
-                        attr: { onCheck:"setFieldValid('civility')", validate: "['required']" }
-                    }) }}
-
-                    <div class="flex flex-col xs:flex-row gap-5 ">
-                        {{ form_row(form.firstName, {
+                    <p class="text-subtitle1">Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>
+                    <div class="flex-col flex gap-3">
+                        {{ form_row(form.civility, {
                             label: false,
-                            attr: { placeholder: 'Prénom', onCheck:"setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']" }
+                            attr: { onCheck:"setFieldValid('civility')", validate: "['required']" }
                         }) }}
-                        {{ form_row(form.lastName, {
-                            label: false,
-                            attr: { placeholder: 'Nom', onCheck:"setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']" }
-                        }) }}
+
+                        <div class="flex flex-col xs:flex-row gap-5 ">
+                            {{ form_row(form.firstName, {
+                                label: false,
+                                attr: { placeholder: 'Prénom', onCheck:"setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']" }
+                            }) }}
+                            {{ form_row(form.lastName, {
+                                label: false,
+                                attr: { placeholder: 'Nom', onCheck:"setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']" }
+                            }) }}
+                        </div>
                     </div>
 
                     {{ form_row(form.email, {
@@ -47,7 +46,7 @@
                         attr: { placeholder: '75000', onCheck:"setFieldValid('postalCode')", validate: "['required']" }
                     }) }}
 
-                    <fieldset class="relative h-[150px]">
+                    <fieldset class="relative">
                         <twig:Atoms:ReLabel>Date de naissance</twig:Atoms:ReLabel>
 
                         <fieldset class="flex gap-2.5 relative z-10">
@@ -103,6 +102,6 @@
             </div>
 
         </div>
-            {{ form_end(form) }}
+        {{ form_end(form) }}
     </main>
 {% endblock %}
