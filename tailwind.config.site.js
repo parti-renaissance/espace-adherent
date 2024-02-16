@@ -115,6 +115,9 @@ module.exports = {
             fontFamily: {
                 maax: ['Maax', ...defaultTheme.fontFamily.sans],
                 din: ['Din', 'sans-serif'],
+                value: ['Value', 'sans-serif'],
+                sharp: ['Sharp Grotesk', 'sans-serif'],
+                space: ['Space Grotesk', 'sans-serif'],
             },
             fontSize: {
                 '4xl': ['2.5rem', { lineHeight: '3.125rem' }],

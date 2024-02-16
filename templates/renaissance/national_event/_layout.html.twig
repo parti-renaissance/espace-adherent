@@ -2,6 +2,11 @@
 
 {% block app_title 'BDE' %}
 
+{% block stylesheets %}
+    <link href="{{ asset('fonts/SharpGrotesk/stylesheet.css') }}" rel="stylesheet">
+    <link href="{{ asset('fonts/Value/stylesheet.css') }}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
     <main class="flex flex-col h-screen">
         <header class="sticky top-0 z-10 {{ theme_bg|default('border-b border-b-white/10 bg-white') }}">

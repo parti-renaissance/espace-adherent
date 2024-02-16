@@ -1,0 +1,70 @@
+@font-face {
+    font-family: 'Value';
+    src: url('Value.woff2') format('woff2'),
+        url('Value.woff') format('woff'),
+        url('Value.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Value';
+    src: url('Value-MediumItalic.woff2') format('woff2'),
+        url('Value-MediumItalic.woff') format('woff'),
+        url('Value-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Value';
+    src: url('Value-BoldItalic.woff2') format('woff2'),
+        url('Value-BoldItalic.woff') format('woff'),
+        url('Value-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Value';
+    src: url('Value-Black.woff2') format('woff2'),
+        url('Value-Black.woff') format('woff'),
+        url('Value-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Value';
+    src: url('Value-Italic.woff2') format('woff2'),
+        url('Value-Italic.woff') format('woff'),
+        url('Value-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Value';
+    src: url('Value-Bold.woff2') format('woff2'),
+        url('Value-Bold.woff') format('woff'),
+        url('Value-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Value';
+    src: url('Value-Medium.woff2') format('woff2'),
+        url('Value-Medium.woff') format('woff'),
+        url('Value-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
