@@ -35,6 +35,7 @@ class EventInscriptionType extends AbstractType
             ])
             ->add('postalCode', TextType::class)
             ->add('acceptCgu', AcceptPersonalDataCollectType::class)
+            ->add('acceptMedia', AcceptPersonalDataCollectType::class)
             ->add('allowNotifications', CheckboxType::class, ['required' => false])
             ->add('utmSource', HiddenType::class)
             ->add('utmCampaign', HiddenType::class)

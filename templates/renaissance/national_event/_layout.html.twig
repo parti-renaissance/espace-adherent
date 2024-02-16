@@ -7,6 +7,8 @@
     <link href="{{ asset('fonts/Value/stylesheet.css') }}" rel="stylesheet">
 {% endblock %}
 
+{% block flash_message '' %}
+
 {% block content %}
     <main class="flex flex-col h-screen bde-theme">
         <header class="sticky top-0 z-20 border-b-[3px] border-black {{ theme_bg|default('border-b border-b-black bg-white') }}">
@@ -48,9 +50,7 @@
                 <img src="{{ asset('images/icons/bde/parteners/LOGO_PARTI_RADICAL.svg') }}" alt="Facebook">
             </div>
 
-            <span>
-                © 2023 RENAISSANCE
-            </span>
+            <span>© 2023 RENAISSANCE</span>
         </footer>
     </main>
 {% endblock %}
