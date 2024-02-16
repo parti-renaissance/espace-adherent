@@ -40,22 +40,26 @@
 {% endblock %}
 
 {% block re_choice_tab_row %}
-    <twig:Atoms:ReLinkedToggle
-        name="{{ full_name }}"
-        {{ ...{
-            ...(disabled ? {disabled: 'disabled'} : {}),
-        } }}
-        {{ ...attr }}
-    >
-        {% for child in form.children %}
-            <twig:Atoms:ReToggleButton
-                x-bind="validateField" name="{{ full_name }}"
-                id="{{ child.vars.id }}"
-                value="{{ child.vars.value }}"
-                checked="{{ child.vars.checked }}"
-            >{{ child.vars.label|trans }}</twig:Atoms:ReToggleButton>
-        {% endfor %}
-    </twig:Atoms:ReLinkedToggle>
+    <div>
+        <twig:Atoms:ReLinkedToggle
+            name="{{ full_name }}"
+            {{ ...{
+                ...(disabled ? {disabled: 'disabled'} : {}),
+            } }}
+            {{ ...attr }}
+        >
+            {% for child in form.children %}
+                <twig:Atoms:ReToggleButton
+                    x-bind="validateField" name="{{ full_name }}"
+                    id="{{ child.vars.id }}"
+                    value="{{ child.vars.value }}"
+                    checked="{{ child.vars.checked }}"
+                >{{ child.vars.label|trans }}</twig:Atoms:ReToggleButton>
+            {% endfor %}
+        </twig:Atoms:ReLinkedToggle>
+
+        {{ form_errors(form) }}
+    </div>
 {% endblock %}
 
 {% block form_widget_simple %}

@@ -15,9 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class MembershipRequest implements DonationRequestInterface
 {
-    public const UTM_SOURCE = 'utm_source';
-    public const UTM_CAMPAIGN = 'utm_campaign';
-
     /**
      * @Assert\NotBlank
      * @StrictEmail(dnsCheck=false)

@@ -107,6 +107,6 @@ class ReButton extends AbstractComponentsLogic
             };
         }
 
-        return $color ? 'loading--' . $color : 'loading';
+        return $color ? 'loading--'.$color : 'loading';
     }
 }

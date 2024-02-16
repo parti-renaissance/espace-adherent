@@ -9,6 +9,7 @@ use App\Donation\Request\DonationRequest;
 use App\Entity\Adherent;
 use App\Form\MembershipRequestType;
 use App\Security\Http\Session\AnonymousFollowerSession;
+use App\Utils\UtmParams;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,9 +46,9 @@ class AdhesionController extends AbstractController
         /** @var Adherent $adherent */
         [$membershipRequest, $adherent] = $this->getMembershipRequest($request, $currentUser);
 
-        if ($request->query->has(MembershipRequest::UTM_SOURCE)) {
-            $membershipRequest->utmSource = $this->filterUtmParameter((string) $request->query->get(MembershipRequest::UTM_SOURCE));
-            $membershipRequest->utmCampaign = $this->filterUtmParameter((string) $request->query->get(MembershipRequest::UTM_CAMPAIGN));
+        if ($request->query->has(UtmParams::UTM_SOURCE)) {
+            $membershipRequest->utmSource = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_SOURCE));
+            $membershipRequest->utmCampaign = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_CAMPAIGN));
         }
 
         $form = $this
@@ -93,20 +94,11 @@ class AdhesionController extends AbstractController
             }
         }
 
-        if ($request->query->has(MembershipRequest::UTM_SOURCE)) {
-            $membershipRequest->utmSource = $this->filterUtmParameter((string) $request->query->get(MembershipRequest::UTM_SOURCE));
-            $membershipRequest->utmCampaign = $this->filterUtmParameter((string) $request->query->get(MembershipRequest::UTM_CAMPAIGN));
+        if ($request->query->has(UtmParams::UTM_SOURCE)) {
+            $membershipRequest->utmSource = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_SOURCE));
+            $membershipRequest->utmCampaign = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_CAMPAIGN));
         }
 
         return [$membershipRequest, $currentUser];
-    }
-
-    private function filterUtmParameter(string $utmParameter): ?string
-    {
-        if (!$utmParameter) {
-            return null;
-        }
-
-        return mb_substr($utmParameter, 0, 255);
     }
 }

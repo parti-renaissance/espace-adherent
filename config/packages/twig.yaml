@@ -29,6 +29,7 @@ twig:
         enable_facebook_pixel:      "%env(bool:ENABLE_FACEBOOK_PIXEL)%"
         axeptio_clid:               "%env(AXEPTIO_CLID)%"
         friendly_captcha_site_key:  "%env(FRIENDLY_CAPTCHA_DEFAULT_SITE_KEY)%"
+        friendly_captcha_europe_site_key: "%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%"
         unlayer_project_id:         "%env(UNLAYER_PROJECT_ID)%"
         article_preview_admin_key:  "%env(ARTICLE_PREVIEW_ADMIN_KEY)%"
 
