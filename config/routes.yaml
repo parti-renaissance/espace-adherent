@@ -276,6 +276,11 @@ app_renaissance:
     resource: "../src/Controller/Renaissance"
     type: "annotation"
 
+app_renaissance_national_event:
+    host:   "%national_event_host%"
+    resource: "../src/Controller/Renaissance/NationalEvent"
+    type: "annotation"
+
 renaissance_site:
     host: "%renaissance_host%"
     path: "/"
