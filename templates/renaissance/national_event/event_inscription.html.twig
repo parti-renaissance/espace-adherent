@@ -20,8 +20,8 @@
         </figure>
 
         {{ form_start(form) }}
-            <div class="md:grid sm:items-center md:grid-cols-2 w-full">
-                <div class="flex gap-8 flex-col mt-64 md:mt-32 pt-0 p-5 pl-0 md:col-start-2 items-center md:justify-start z-10">
+            <div class="md:grid sm:items-center md:grid-cols-2 w-full z-10 relative">
+                <div class="flex gap-8 flex-col mt-64 md:mt-32 pt-0 p-5 pl-0 md:col-start-2 items-center md:justify-start">
                     <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-black !border-[3px] ">
                         {% if event.intoImagePath %}
                             <img class="w-full" src="{{ asset(event.intoImagePath) }}" alt="{{ event.name }}">
