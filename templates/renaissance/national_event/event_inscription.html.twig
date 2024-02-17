@@ -6,6 +6,10 @@
 
 {% block final_javascripts %}
     <script type="module" src="{{ asset('js/friendlycaptcha.widget-0.9.14.module.min.js') }}" async defer></script>
+
+    <script>
+        Bootstrap.onLoad(() => Main.runNationaleEventPage());
+    </script>
 {% endblock %}
 
 {% block content_section %}
@@ -20,8 +24,8 @@
         </figure>
 
         {{ form_start(form) }}
-            <div class="md:grid sm:items-center md:grid-cols-2 w-full z-10 relative">
-                <div class="flex gap-8 flex-col mt-64 md:mt-32 pt-0 p-5 pl-0 md:col-start-2 items-center md:justify-start">
+            <div class="md:grid sm:items-center md:grid-cols-2 w-full z-10 relative" x-data="xNationalEventPage">
+                <div class="flex gap-8 flex-col mt-64 md:mt-32 pt-0 p-5 md:pl-0 md:col-start-2 items-center justify-center md:justify-start">
                     <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-black !border-[3px] ">
                         {% if event.intoImagePath %}
                             <img class="w-full" src="{{ asset(event.intoImagePath) }}" alt="{{ event.name }}">
@@ -75,7 +79,6 @@
                                     placeholder: 'Jour',
                                     validate: "['required']",
                                     onCheck: "setFieldValid('birthDay')",
-                                    'x-on:change': "setDay($event.target.value)",
                                     searchBoxProps: {'x-numberonly': ''}
                                 }}) }}
 
@@ -84,7 +87,6 @@
                                     placeholder: 'Mois',
                                     validate: "['required']",
                                     onCheck: "setFieldValid('birthMonth')",
-                                    'x-on:change': "setMonth($event.target.value)",
                                 }}) }}
 
                                 {{ form_widget(form.birthdate.year, {label: false, attr: {
@@ -92,7 +94,6 @@
                                     placeholder: 'Année',
                                     validate: "['required']",
                                     onCheck: "setFieldValid('birthYear')",
-                                    'x-on:change': "setYear($event.target.value)",
                                     searchBoxProps: {'x-numberonly': ''}
                                 }}) }}
                             </fieldset>
@@ -104,11 +105,11 @@
                             {{ form_row(form.phone, {label: 'Numéro de téléphone (optionnel)', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.' }) }}
                         </fieldset>
 
-                        {{ form_row(form.acceptCgu, {label: 'national_event.inscription.accept_cgu'}) }}
+                        {{ form_row(form.acceptCgu, {label: 'national_event.inscription.accept_cgu', attr: {validate: '["required"]'} }) }}
 
-                        {{ form_row(form.allowNotifications, {label: "Je m’abonne à la newsletter pour ne rien rater de des actualités de BDE (optionnel)"}) }}
+                        {{ form_row(form.allowNotifications, { label: "Je m’abonne à la newsletter pour ne rien rater de des actualités de BDE (optionnel)" }) }}
 
-                        {{ form_row(form.acceptMedia, {label: "En participant à cet événement, je suis informé(e) qu’il sera filmé et autorise Renaissance ou toute structure qui sesubstituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et la voix d’un mineur dont je suis le représentant légal, à l’exploiter et à la diffuser en intégralité ou par extrait (1)"}) }}
+                        {{ form_row(form.acceptMedia, {label: "En participant à cet événement, je suis informé(e) qu’il sera filmé et autorise Renaissance ou toute structure qui sesubstituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et la voix d’un mineur dont je suis le représentant légal, à l’exploiter et à la diffuser en intégralité ou par extrait (1)", attr: {validate: '["required"]'} }) }}
 
                         <div class="w-full re-field-frame !h-auto cursor-pointer"
                              x-on:click="dom('.frc-button')?.click()">
@@ -119,7 +120,7 @@
                             class="w-full"
                             color="black"
                             x-on:click="handleOnSubmit($event, $dispatch)"
-                            x-bind:class="{disabled: !checkValidity()}"
+                            x-bind:disabled="!checkValidity()"
                         >Je m'inscris</twig:ReButton>
                     </twig:Atoms:ReCard>
 
@@ -127,8 +128,8 @@
                         {{ event.textHelp|raw }}
                     </twig:Atoms:ReCard>
 
-                    <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-black !border-[3px] bg-gray-700 text-white">
-                        <h2>Légalités</h2>
+                    <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-white/20 !border-[3px] text-white bg-[rgb(47,53,50)]">
+                        <h2 class="font-medium">Légalités</h2>
 
                         <p>
                             Les données recueillies sur ce formulaire sont traitées par Renaissance et ses équipes aux fins d’organisation de cet événement. Elles permettront à ses équipes de gérer les informations relatives aux participants et de vous inviter à d’autres événements qu’elles organisent. Elles permettront également à Renaissance de vous envoyer ses communications politiques si vous y consentez. En envoyant ce formulaire, vous acceptez que Renaissance traite vos données pour ces finalités. Les champs marqués d’un astérisque sont obligatoires, l’absence de réponse dans ces champs ne permettra pas de traiter votre demande. Vos données seront conservées jusqu’à 1 mois à compter de la fin de l’événement ou jusqu’au retrait de votre consentement lorsque vous acceptez de recevoir les communications politiques de Renaissance.
@@ -142,6 +143,7 @@
                     </twig:Atoms:ReCard>
                 </div>
             </div>
+        <input type="hidden" id="email-validation-token" value="fake"/>
         {{ form_end(form) }}
     </main>
 {% endblock %}

@@ -107,6 +107,13 @@ class Main {
             .then((module) => module.default());
     }
 
+    runNationaleEventPage() {
+        return import('pages/national_event').catch((error) => {
+            throw error;
+        })
+            .then((module) => module.default());
+    }
+
     runMailchimpResubscribeEmail({
         redirectUrl = null,
         signupPayload = null,

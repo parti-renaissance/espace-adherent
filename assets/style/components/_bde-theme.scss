@@ -17,7 +17,6 @@ $tertiary: #959CA0;
         color: black;
     }
 
-    @extend .font-main;
 
     .text-subtitle1 {
         color: $text-color-light;
@@ -31,6 +30,32 @@ $tertiary: #959CA0;
     }
 
     .re-linked-toggle .re-linked-toggle-content {
+        @apply font-space;
+        input {
+            &[type=radio] {
+
+                &:checked + label {
+                    @apply bg-white border-black text-black z-10;
+                    border-width: 2px;
+                }
+
+                &:disabled {
+                    @apply cursor-not-allowed;
+                    & + label {
+                        @apply bg-ui_gray-20 border-ui_gray-20;
+                    }
+                }
+
+                &:focus:not(:checked) + label {
+                    @apply outline-ui_blue-20 outline-2 z-20
+                }
+
+                &:hover:not(:disabled):not(:checked) + label {
+                    @apply border-ui_gray-40 bg-ui_gray-5 text-ui_gray-80 z-10
+                }
+            }
+        }
+
         & > * {
             &:first-child label {
                 @apply rounded-l-full;
@@ -42,9 +67,35 @@ $tertiary: #959CA0;
         }
     }
 
+    .re-checkbox + label {
+        font-family: "Space Grotesk", sans-serif !important;
+    }
+
     .re-field-frame {
+        @apply font-space;
         @apply rounded-[30px];
         padding-left: 10px !important;
+
+
+        &:focus,
+        &.focus,
+        &:active,
+        &.active {
+            @apply outline-4 outline-[#CFCFCF] outline border-black outline-offset-0;
+        }
+
+        &:focus,
+        &.focus,
+        &:hover,
+        &:active,
+        &.active,
+        &.re-field-frame--warning,
+        &.re-field-frame--error,
+        &.re-field-frame--success,
+        &.re-field-frame--valid,
+        {
+            border-width: 2px;
+        }
 
         > input {
             color: $text-color-light !important;
@@ -66,10 +117,14 @@ $tertiary: #959CA0;
             box-shadow: 0px 11px 0px 1px #000000;
         }
 
+        &:disabled {
+            border: none;
+        }
+
     }
 
     label.mb-6 {
-        font-family: Value, sans-serif !important;
+        font-family: Value, sans-serif;
         font-weight: 400;
         margin-bottom: 0.5em !important;
         color: black !important;
