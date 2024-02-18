@@ -22,6 +22,7 @@ class LoadNationalEventData extends Fixture
         $event->textIntro = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
         $event->textHelp = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
         $event->textConfirmation = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
+        $event->intoImagePath = '/static/donation-bg.jpg';
 
         $this->setReference('event-national-1', $event);
 
