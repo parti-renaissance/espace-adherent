@@ -24,6 +24,7 @@ twig:
         jemengage_auth_host:        "%env(JEMENGAGE_AUTH_HOST)%"
         renaissance_host:           "%env(RENAISSANCE_HOST)%"
         app_renaissance_host:       "%env(APP_RENAISSANCE_HOST)%"
+        national_event_host:        "%env(NATIONAL_EVENT_HOST)%"
         adherent_interests:         "%adherent_interests%"
         enable_assessor_space:      "%env(bool:ENABLE_ASSESSOR_SPACE)%"
         enable_facebook_pixel:      "%env(bool:ENABLE_FACEBOOK_PIXEL)%"

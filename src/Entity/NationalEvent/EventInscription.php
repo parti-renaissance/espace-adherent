@@ -97,4 +97,9 @@ class EventInscription
         $this->utmSource = $inscriptionRequest->utmSource;
         $this->utmCampaign = $inscriptionRequest->utmCampaign;
     }
+
+    public function getFullName(): string
+    {
+        return $this->firstName.' '.$this->lastName;
+    }
 }
