@@ -23,7 +23,7 @@ const Page = () => ({
 
     fieldsValid: {
         email: false,
-        consentDataCollect: false,
+        acceptCgu: false,
         acceptMedia: false,
         captcha: false,
         gender: false,

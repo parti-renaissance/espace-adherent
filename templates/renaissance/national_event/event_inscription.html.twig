@@ -40,7 +40,7 @@
                         <div class="flex-col flex gap-4">
                             {{ form_row(form.civility, {
                                 label: false,
-                                attr: { onCheck:"setFieldValid('civility')", validate: "['required']" }
+                                attr: { onCheck:"setFieldValid('gender')", validate: "['required']" }
                             }) }}
 
                             <div class="flex flex-col xs:flex-row gap-5 ">
@@ -105,11 +105,11 @@
                             {{ form_row(form.phone, {label: 'Numéro de téléphone (optionnel)', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.' }) }}
                         </fieldset>
 
-                        {{ form_row(form.acceptCgu, {label: 'national_event.inscription.accept_cgu', attr: {validate: '["required"]'} }) }}
+                        {{ form_row(form.acceptCgu, {label: 'national_event.inscription.accept_cgu', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptCgu')"} }) }}
 
                         {{ form_row(form.allowNotifications, { label: "Je m’abonne à la newsletter pour ne rien rater de des actualités de BDE (optionnel)" }) }}
 
-                        {{ form_row(form.acceptMedia, {label: "En participant à cet événement, je suis informé(e) qu’il sera filmé et autorise Renaissance ou toute structure qui sesubstituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et la voix d’un mineur dont je suis le représentant légal, à l’exploiter et à la diffuser en intégralité ou par extrait (1)", attr: {validate: '["required"]'} }) }}
+                        {{ form_row(form.acceptMedia, {label: "En participant à cet événement, je suis informé(e) qu’il sera filmé et autorise Renaissance ou toute structure qui sesubstituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et la voix d’un mineur dont je suis le représentant légal, à l’exploiter et à la diffuser en intégralité ou par extrait (1)", attr: {validate: '["required"]', onCheck: "setFieldValid('acceptMedia')"} }) }}
 
                         <div class="w-full re-field-frame !h-auto cursor-pointer"
                              x-on:click="dom('.frc-button')?.click()">

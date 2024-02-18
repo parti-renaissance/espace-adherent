@@ -97,7 +97,7 @@ $tertiary: #959CA0;
             border-width: 2px;
         }
 
-        > input {
+        > input::placeholder {
             color: $text-color-light !important;
         }
     }
