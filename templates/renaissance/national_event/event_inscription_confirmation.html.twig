@@ -3,7 +3,7 @@
 {% block page_title 'Confirmation' %}
 
 {% block content_section %}
-    <main class="bg-[#F4F4F7] re_new_ui bg-primary">
+    <main class="bg-[#F4F4F7] re_new_ui bg-primary min-h-full">
         <figure class="fixed md:top-[80px] w-full h-64 sm:h-[70vh]">
             <video class="object-cover absolute top-0 left-0 w-full h-full" autoplay loop muted poster="https://assets.parti-renaissance.fr/national/lille.jpg">
                 <source src="https://assets.parti-renaissance.fr/national/lille.mp4" type="video/mp4">
@@ -15,7 +15,7 @@
 
         <div class="md:grid sm:items-center md:grid-cols-2 w-full">
             <div class="flex gap-8 flex-col mt-64 md:mt-32 pt-0 p-5 pl-0 md:col-start-2 items-center md:justify-start z-10">
-                <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-black !border-[3px] ">
+                <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-black !border-[3px] !font-value ">
                     {% include 'renaissance/partials/flashes.html.twig' with {slim: true} %}
 
                     {{ event.textConfirmation|raw }}
