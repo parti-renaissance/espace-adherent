@@ -5,7 +5,7 @@
 {% block content_section %}
     <main class="bg-[#F4F4F7] re_new_ui bg-primary min-h-full">
         <figure class="fixed md:top-[80px] w-full h-64 sm:h-[70vh]">
-            <video class="object-cover absolute top-0 left-0 w-full h-full" autoplay loop muted poster="https://assets.parti-renaissance.fr/national/lille.jpg">
+            <video disableRemotePlayback class="object-cover absolute top-0 left-0 w-full h-full" autoplay loop muted poster="https://assets.parti-renaissance.fr/national/lille.jpg">
                 <source src="https://assets.parti-renaissance.fr/national/lille.mp4" type="video/mp4">
                 <source src="https://assets.parti-renaissance.fr/national/lille.webm" type="video/webm">
                 <source src="https://assets.parti-renaissance.fr/national/lille.ogv" type="video/ogg">
@@ -39,7 +39,7 @@
                         class="w-full"
                         color="black"
                         tag="a"
-                        href="#"
+                        href="/"
                     >Retourner sur le site</twig:ReButton>
                 </twig:Atoms:ReCard>
             </div>

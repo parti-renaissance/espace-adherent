@@ -2,6 +2,10 @@
 
 {% block app_title 'BDE' %}
 
+{% block favicons %}
+    <link rel="icon" type="image/png" href="{{ asset('images/europe/favicon.png') }}" sizes="32x32" />
+{% endblock %}
+
 {% block stylesheets %}
     <link href="{{ asset('fonts/SharpGrotesk/stylesheet.css') }}" rel="stylesheet">
     <link href="{{ asset('fonts/Value/stylesheet.css') }}" rel="stylesheet">

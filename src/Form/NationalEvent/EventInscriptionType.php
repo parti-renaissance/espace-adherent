@@ -25,7 +25,7 @@ class EventInscriptionType extends AbstractType
             ->add('civility', CivilityType::class)
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
-            ->add('birthdate', BirthdateType::class)
+            ->add('birthdate', BirthdateType::class, ['years' => array_combine($years = range(date('Y') - 1, date('Y') - 120), $years)])
             ->add('phone', PhoneNumberType::class, [
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
