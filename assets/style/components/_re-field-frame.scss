@@ -1,8 +1,29 @@
+.re-phone {
+    width: 100%;
+}
+
+.re-phone .re-field-frame {
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    width: 100% !important;
+
+    &.active {
+        z-index: 20;
+    }
+}
+
+.re-tel .re-textfield-select {
+    left: 2px;
+
+}
+
 .re-textfield-select .re-field-frame {
-    @apply border-0 bg-transparent outline-none;
+    border-bottom-right-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    font-size: 16px !important;
 
     textarea {
-        min-height: 48px !important;
+        min-height: 49px !important;
         padding: 12px;
         text-align: center;
     }
@@ -77,7 +98,7 @@
         }
     }
 
-    &:hover:not(:disabled):not(:focus) {
+    &:hover:not(:disabled):not(:focus):not(:active):not(.active) {
         @apply border-ui_gray-40 bg-ui_gray-5;
 
         &.re-field-frame--success {

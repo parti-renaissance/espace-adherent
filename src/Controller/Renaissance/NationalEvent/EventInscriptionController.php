@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 #[Route('/', name: 'app_renaissance_national_event_index', methods: ['GET', 'POST'])]
 #[Route('/inscription', name: 'app_renaissance_national_event_inscription', methods: ['GET', 'POST'])]
@@ -22,6 +23,7 @@ class EventInscriptionController extends AbstractController
     public function __construct(
         private readonly NationalEventRepository $nationalEventRepository,
         private readonly EventInscriptionHandler $eventInscriptionHandler,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly string $friendlyCaptchaEuropeSiteKey
     ) {
     }
@@ -63,6 +65,7 @@ class EventInscriptionController extends AbstractController
         return $this->renderForm('renaissance/national_event/event_inscription.html.twig', [
             'form' => $form,
             'event' => $event,
+            'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
         ]);
     }
 }
