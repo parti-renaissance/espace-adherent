@@ -102,6 +102,23 @@ $tertiary: #959CA0;
         }
     }
 
+
+    .re-paragraph-status {
+        &.re-paragraph-status--slim {
+            justify-content: flex-start;
+        }
+
+        &.re-paragraph-status--success {
+            background-color: #00E08C;
+            border: none;
+            color: black;
+
+            svg {
+                fill: black;
+            }
+        }
+    }
+
     .re-button {
         @apply rounded-[30px];
         height: 56px;

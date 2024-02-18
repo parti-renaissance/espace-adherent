@@ -22,6 +22,10 @@
         }
     }
 
+    &.re-icon-success {
+        @apply fill-ui_green-50;
+    }
+
 
     &.re-icon-unlock, &.re-icon-lock {
         @apply text-ui_gray-40;
