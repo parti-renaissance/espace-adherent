@@ -5,14 +5,13 @@ namespace App\Controller\Renaissance\Newsletter;
 use App\Entity\Renaissance\NewsletterSubscription;
 use App\Newsletter\Events;
 use App\Newsletter\NewsletterEvent;
+use App\Newsletter\NewsletterTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-#[Route(path: '/newsletter/confirmation/{uuid}/{confirm_token}', name: 'app_renaissance_newsletter_confirm', methods: ['GET'])]
 class ConfirmNewsletterController extends AbstractController
 {
     #[Entity('subscription', expr: 'repository.findOneByUuidAndToken(uuid, confirm_token)')]
@@ -26,6 +25,10 @@ class ConfirmNewsletterController extends AbstractController
             $entityManager->flush();
 
             $eventDispatcher->dispatch(new NewsletterEvent($subscription), Events::CONFIRMATION);
+        }
+
+        if (NewsletterTypeEnum::SITE_EU === $subscription->source) {
+            return $this->render('renaissance/national_event/newsletter_confirmation.html.twig');
         }
 
         $this->addFlash('success', 'Votre inscription à la newsletter a bien été confirmée.');

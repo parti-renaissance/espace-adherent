@@ -3,17 +3,13 @@
 namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\NationalEvent\EventInscription;
+use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
-class NationalEventInscriptionConfirmationMessage extends AbstractRenaissanceMessage
+class NationalEventInscriptionConfirmationMessage extends Message implements EuMessageInterface
 {
     public static function create(EventInscription $eventInscription): self
     {
-        $message = new self(Uuid::uuid4(), $eventInscription->addressEmail, $eventInscription->getFullName(), '');
-
-        $message->setSenderEmail('BDE@part-renaissance.fr');
-        $message->setSenderName('BDE');
-
-        return $message;
+        return new self(Uuid::uuid4(), $eventInscription->addressEmail, $eventInscription->getFullName(), '');
     }
 }

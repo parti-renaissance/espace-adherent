@@ -51,7 +51,6 @@ services:
             $mailchimpClient: '@app.http_client.mailchimp_api'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
             $mailchimpElectedRepresentativeListId: '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
-            $membershipProcessWorkflow: '@state_machine.membership_request'
             $donationProcessWorkflow: '@state_machine.donation_request'
             $electedRepresentativeContributionProcessWorkflow: '@state_machine.contribution_request'
             $votingProcessWorkflow: '@state_machine.voting_process'
@@ -69,6 +68,7 @@ services:
             $jemengageHost: '%jemengage_host%'
             $jemengageAuthHost: '%jemengage_auth_host%'
             $avecvousHost: '%avecvous_host%'
+            $nationalEventHost: '%national_event_host%'
             $ovhSmsWebhookKey: '%env(OVHCLOUD_SMS_WEBHOOK_KEY)%'
             $dynamicLinksHost: '%env(DYNAMIC_LINKS_HOST)%'
             $jemengageAppPackageId: '%env(JEMENGAGE_APP_PACKAGE_ID)%'
@@ -459,6 +459,9 @@ services:
                 App\Mailer\Message\Renaissance\RenaissanceMessageInterface:
                     name: Renaissance
                     email: "%env(RENAISSANCE_SENDER_EMAIL)%"
+                App\Mailer\Message\Renaissance\EuMessageInterface:
+                    name: Besoin d'Europe
+                    email: "%env(EU_SENDER_EMAIL)%"
 
     App\Security\SimpleCsrfTokenManager: ~
 
