@@ -25,9 +25,9 @@
 
         {% block content_section %}{% endblock %}
 
-        <footer class="flex flex-col z-20 bg-black items-center md:justify-center gap-7 pb-12 py-6 text-white text-sm">
+        <footer class="flex flex-col z-20 bg-black items-center md:justify-center gap-[56px] py-[80px] text-white text-sm border-t-2 border-white">
             {# --------------- SOCIALS ---------------#}
-            <div class="flex bg-black items-center md:justify-center gap-7">
+            <div class="flex bg-black items-center md:justify-center gap-[40px]">
                 <a href="https://www.facebook.com/RENAISSANCE/">
                     <img src="{{ asset('images/icons/bde/social-icons/facebook.svg') }}" alt="Facebook">
                 </a>
@@ -39,22 +39,26 @@
                 </a>
             </div>
             <div class="h-[2px] md:hidden bg-white/25 w-3/4"></div>
-            {# --------------- LINKS ---------------#}
-            <div class="flex flex-col md:flex-row bg-black items-center md:justify-center gap-7">
-                <a href="https://parti-renaissance.fr/cgu"> CGU </a>
-                <a href="https://parti-renaissance.fr/mentions-legales"> Mentions légales </a>
-                <a href="https://parti-renaissance.fr/politique-de-protection-des-donnees"> Données personnelles </a>
-            </div>
-            <div class="h-[2px] md:hidden bg-white/25 w-3/4"></div>
+
             {# --------------- PARTENERS ---------------#}
-            <div class="flex flex-col flex-wrap md:flex-row bg-black items-center md:justify-center gap-x-7">
+            <div class="flex flex-col flex-wrap md:flex-row bg-black items-center md:justify-center gap-x-[40px]">
                 <img src="{{ asset('images/icons/bde/parteners/LOGO_RENAISSANCE.svg') }}" alt="Facebook">
                 <img src="{{ asset('images/icons/bde/parteners/LOGO_MODEM.svg') }}" alt="Facebook">
                 <img src="{{ asset('images/icons/bde/parteners/LOGO_HORIZONS.svg') }}" alt="Facebook">
                 <img src="{{ asset('images/icons/bde/parteners/LOGO_PARTI_RADICAL.svg') }}" alt="Facebook">
             </div>
 
-            <span>© 2023 RENAISSANCE</span>
+            <div class="h-[2px] md:hidden bg-white/25 w-3/4"></div>
+
+            {# --------------- LINKS ---------------#}
+            <div class="flex flex-col gap-[40px] md:gap-[24px] justify-center items-center">
+                <div class="flex flex-col md:flex-row bg-black items-center md:justify-center gap-[40px]">
+                    <a href="https://parti-renaissance.fr/cgu"> CGU </a>
+                    <a href="https://parti-renaissance.fr/mentions-legales"> Mentions légales </a>
+                    <a href="https://parti-renaissance.fr/politique-de-protection-des-donnees"> Données personnelles </a>
+                </div>
+                <span>© {{ "now"|date('Y') }} RENAISSANCE</span>
+            </div>
         </footer>
     </main>
 {% endblock %}
