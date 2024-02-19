@@ -347,6 +347,16 @@ app_validate_email:
     requirements:
         app_domain: "%app_renaissance_host%|%national_event_host%"
 
+app_renaissance_newsletter_confirm:
+    host: "{app_domain}"
+    path: '/newsletter/confirmation/{uuid}/{confirm_token}'
+    methods: GET
+    controller: App\Controller\Renaissance\Newsletter\ConfirmNewsletterController
+    defaults:
+        app_domain: "%app_host%"
+    requirements:
+        app_domain: "%app_renaissance_host%|%national_event_host%"
+
 app_article:
     host: "{app_domain}"
     type: "annotation"

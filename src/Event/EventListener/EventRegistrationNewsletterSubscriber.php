@@ -39,8 +39,6 @@ class EventRegistrationNewsletterSubscriber implements EventSubscriberInterface
     {
         $registration = $event->getRegistration();
 
-        $registrationEvent = $registration->getEvent();
-
         if (!$registration->isNewsletterSubscriber()) {
             return;
         }
