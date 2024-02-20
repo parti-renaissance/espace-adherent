@@ -8,6 +8,7 @@ services:
     public: false
     bind:
       $environment: "%kernel.environment%"
+      $webhookProxyHost: "%env(WEBHOOK_PROXY_HOST)%"
 
   App\DataFixtures\:
     resource: '../src/DataFixtures/'
@@ -25,10 +26,6 @@ services:
   Tests\App\Ohme\DummyClient: ~
 
   App\Ohme\ClientInterface: '@Tests\App\Ohme\DummyClient'
-
-  Tests\App\Chatbot\Provider\DummyProvider: ~
-
-  App\Chatbot\Provider\ProviderInterface: '@Tests\App\Chatbot\Provider\DummyProvider'
 
   App\Mandrill\EmailClient:
     class: 'Tests\App\Test\Mailer\NullEmailClient'
@@ -51,3 +48,14 @@ services:
 
   Kreait\Firebase\Contract\DynamicLinks: '@Tests\App\Test\Firebase\DummyDynamicLinks'
   Kreait\Firebase\Contract\Messaging: '@Tests\App\Test\Firebase\DummyMessaging'
+
+  Tests\App\OpenAI\Client\Client: ~
+  App\OpenAI\Client\ClientInterface: '@Tests\App\OpenAI\Client\Client'
+
+  Tests\App\Telegram\Client\ClientFactory: ~
+  App\Telegram\Client\ClientFactoryInterface: '@Tests\App\Telegram\Client\ClientFactory'
+
+  App\Telegram\Webhook\UrlGenerator: ~
+  Tests\App\Telegram\Webhook\ProxyUrlGenerator:
+      decorates: App\Telegram\Webhook\UrlGenerator
+      arguments: ['@.inner']

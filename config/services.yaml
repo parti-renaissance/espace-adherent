@@ -117,6 +117,10 @@ services:
             tags: ['app.acquisition_statistics.calculator']
         App\Adherent\Tag\TagGenerator\TagGeneratorInterface:
             tags: ['app.adherent.tag.generator']
+        App\Chatbot\Assistant\AssistantHandlerInterface:
+            tags: ['app.chatbot.assistant_handler']
+        App\Telegram\Update\UpdateHandlerInterface:
+            tags: ['app.telegram.update_handler']
 
     # Imports
     App\:
@@ -493,3 +497,11 @@ services:
     App\Adhesion\Handler\GenerateActivationCodeCommandHandler:
         arguments:
             $loginLinkHandler: '@security.authenticator.login_link_handler.main'
+
+    App\Chatbot\Assistant:
+        arguments:
+            $assistantHandlers: !tagged_iterator 'app.chatbot.assistant_handler'
+
+    App\Telegram\UpdateHandler:
+        arguments:
+            $updateHandlers: !tagged_iterator 'app.telegram.update_handler'

@@ -2,10 +2,9 @@
 
 namespace App\Form\Admin\Extract;
 
-use App\Form\DataTransformer\StringToArrayTransformer;
+use App\Form\Admin\StringArrayType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 abstract class AbstractEmailExtractType extends AbstractType
@@ -13,12 +12,7 @@ abstract class AbstractEmailExtractType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('emails', TextareaType::class, [
-                'required' => true,
-                'attr' => [
-                    'rows' => 10,
-                ],
-            ])
+            ->add('emails', StringArrayType::class)
             ->add('fields', ChoiceType::class, [
                 'choices' => $this->getFieldChoices(),
                 'choice_label' => function (string $choice) {
@@ -28,11 +22,6 @@ abstract class AbstractEmailExtractType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
             ])
-        ;
-
-        $builder
-            ->get('emails')
-            ->addModelTransformer(new StringToArrayTransformer(\PHP_EOL))
         ;
     }
 

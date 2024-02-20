@@ -5,6 +5,9 @@ namespace App\Entity\Chatbot;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\OpenAI\OpenAIResourceTrait;
+use App\OpenAI\Model\RunInterface;
+use App\OpenAI\Model\ThreadInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,11 +19,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass="App\Repository\Chatbot\ThreadRepository")
  * @ORM\Table(name="chatbot_thread")
  */
-class Thread
+class Thread implements ThreadInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
-    use ExternalResourceTrait;
+    use OpenAIResourceTrait;
 
     /**
      * @ORM\Column(nullable=true)
@@ -66,7 +69,41 @@ class Thread
         $this->messages = new ArrayCollection();
     }
 
-    public function startNewRun(): void
+    public function getIdentifier(): string
+    {
+        return $this->uuid->toString();
+    }
+
+    public function getMessagesToInitializeOnOpenAi(): Collection
+    {
+        return $this->messages->filter(
+            static function (Message $message): bool {
+                return $message->isUserMessage()
+                    && null === $message->openAiId;
+            }
+        );
+    }
+
+    public function hasMessageWithOpenAiId(string $openAiId): bool
+    {
+        return null !== $this->messages->findFirst(
+            static function (int $key, Message $message) use ($openAiId): bool {
+                return $openAiId === $message->openAiId;
+            }
+        );
+    }
+
+    public function hasCurrentRun(): bool
+    {
+        return null !== $this->currentRun;
+    }
+
+    public function removeCurrentRun(): void
+    {
+        $this->currentRun = null;
+    }
+
+    public function createCurrentRun(): void
     {
         $run = new Run();
         $run->thread = $this;
@@ -74,58 +111,8 @@ class Thread
         $this->currentRun = $run;
     }
 
-    public function endCurrentRun(): void
+    public function getCurrentRun(): ?RunInterface
     {
-        $this->currentRun = null;
-    }
-
-    public function addAssistantMessage(string $content, \DateTimeInterface $date, string $externalId): Message
-    {
-        return $this->addMessage(Message::ROLE_ASSISTANT, $content, $date, $externalId);
-    }
-
-    public function addUserMessage(string $content, ?\DateTimeInterface $date = null): Message
-    {
-        return $this->addMessage(Message::ROLE_USER, $content, $date);
-    }
-
-    private function addMessage(string $role, string $content, ?\DateTimeInterface $date = null, ?string $externalId = null): Message
-    {
-        $message = new Message();
-        $message->thread = $this;
-        $message->role = $role;
-        $message->content = $content;
-        $message->date = $date ?? new \DateTimeImmutable('now');
-        $message->externalId = $externalId;
-
-        $this->messages->add($message);
-
-        return $message;
-    }
-
-    public function hasMessageWithExternalId(string $externalId): bool
-    {
-        return null !== $this->messages->findFirst(
-            static function (int $key, Message $message) use ($externalId): bool {
-                return $externalId === $message->externalId;
-            }
-        );
-    }
-
-    public function getMessagesToInitialize(): Collection
-    {
-        return $this->messages->filter(
-            static function (Message $message): bool {
-                return $message->isUserMessage() && !$message->isInitialized();
-            }
-        );
-    }
-
-    /**
-     * @Groups({"chatbot:read"})
-     */
-    public function getNeedRefresh(): bool
-    {
-        return null !== $this->currentRun;
+        return $this->currentRun;
     }
 }

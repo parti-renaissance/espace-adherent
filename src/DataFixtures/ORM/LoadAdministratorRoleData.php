@@ -571,6 +571,16 @@ class LoadAdministratorRoleData extends Fixture
             'Administrateur des scopes',
             AdministratorRoleGroupEnum::TECH
         );
+        yield $this->createRole(
+            'ROLE_ADMIN_TECH_TELEGRAM_BOTS',
+            'Administrateur des Bots Telegram',
+            AdministratorRoleGroupEnum::TECH
+        );
+        yield $this->createRole(
+            'ROLE_ADMIN_TECH_OPENAI_ASSISTANTS',
+            'Administrateur des Assistants OpenAI',
+            AdministratorRoleGroupEnum::TECH
+        );
         // Idées
         yield $this->createRole(
             'ROLE_ADMIN_IDEES_OLDOLF',
