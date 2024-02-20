@@ -20,6 +20,7 @@ framework:
         pools:
             app.cache.redirection:
                 adapter: cache.adapter.doctrine
-            app.cache.voting_platform: ~
             app.cache.france_cities: ~
             app.cache.geocoder: ~
+            app.cache.captain_verify:
+                default_lifetime: 3600

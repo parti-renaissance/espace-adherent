@@ -57,3 +57,6 @@ services:
     App\Committee\CommitteeManager: ~
 
     Algolia\SearchBundle\SearchService: '@Tests\App\Test\Algolia\DummySearchService'
+
+    Tests\App\CaptainVerify\MockHttpClient:
+        decorates: 'app.http_client.captain_verify_api'

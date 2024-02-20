@@ -76,6 +76,11 @@ class EventInscription
      */
     public ?string $sessionId = null;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    public $emailCheck;
+
     public function __construct(NationalEvent $event, ?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();

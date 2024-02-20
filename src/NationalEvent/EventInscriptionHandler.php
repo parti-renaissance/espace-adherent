@@ -2,6 +2,7 @@
 
 namespace App\NationalEvent;
 
+use App\CaptainVerify\Storage;
 use App\Entity\NationalEvent\EventInscription;
 use App\Entity\NationalEvent\NationalEvent;
 use App\Event\Request\EventInscriptionRequest;
@@ -13,6 +14,7 @@ class EventInscriptionHandler
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly Storage $storage
     ) {
     }
 
@@ -20,6 +22,10 @@ class EventInscriptionHandler
     {
         $eventInscription = new EventInscription($nationalEvent);
         $eventInscription->updateFromRequest($inscriptionRequest);
+
+        if ($emailCheckResponse = $this->storage->get($eventInscription->addressEmail)) {
+            $eventInscription->emailCheck = $emailCheckResponse;
+        }
 
         $this->entityManager->persist($eventInscription);
 

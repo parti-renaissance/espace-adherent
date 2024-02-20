@@ -19,4 +19,5 @@ class StrictEmail extends Constraint
     public bool $disposable = true;
     public bool $disabledEmail = true;
     public bool $dnsCheck = true;
+    public bool $captainVerifyCheck = false;
 }

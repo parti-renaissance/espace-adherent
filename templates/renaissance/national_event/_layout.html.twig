@@ -1,6 +1,7 @@
 {% extends 'base_renaissance.html.twig' %}
 
 {% block app_title 'Besoin d\'Europe' %}
+{% block canonical_url ('https://' ~ national_event_host) %}
 
 {% block favicons %}
     <link rel="icon" type="image/png" href="{{ asset('images/europe/favicon.png') }}" sizes="32x32" />

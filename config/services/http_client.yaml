@@ -56,6 +56,12 @@ services:
         arguments:
             - {base_uri: 'https://eu-api.friendlycaptcha.eu', timeout: 10}
 
+    app.http_client.captain_verify_api:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        arguments:
+            - {base_uri: 'https://api.captainverify.com', timeout: 5}
+
     app.http_client.ohme_api:
         class: Symfony\Contracts\HttpClient\HttpClientInterface
         factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
