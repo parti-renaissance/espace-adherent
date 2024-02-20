@@ -5,23 +5,19 @@ $secondary: #00AEEF;
 $tertiary: #959CA0;
 
 .bde-theme {
+    font-family: 'Value', sans-serif;
+    letter-spacing: -0.002em;
+    font-size: 16px !important;
+    line-height: 20px !important;
+    color: black;
+
     &.bg-primary, .bg-primary {
         background-color: $bg-color--dark;
     }
 
-    .font-main {
-        font-family: 'Value', sans-serif;
-        letter-spacing: -0.002em;
-        font-size: 16px !important;
-        line-height: 20px !important;
-        color: black;
-    }
-
-
-    .text-subtitle1 {
+    .text-subtitle1, .help-text {
         color: $text-color-light;
     }
-
 
     .neg-letter-spacing {
         &--4 {
@@ -30,7 +26,6 @@ $tertiary: #959CA0;
     }
 
     .re-linked-toggle .re-linked-toggle-content {
-        @apply font-space;
         input {
             &[type=radio] {
 
@@ -67,15 +62,9 @@ $tertiary: #959CA0;
         }
     }
 
-    .re-checkbox + label {
-        font-family: "Space Grotesk", sans-serif !important;
-    }
-
     .re-field-frame {
-        @apply font-space;
         @apply rounded-[30px];
         padding-left: 10px !important;
-
 
         &:focus,
         &.focus,
@@ -102,7 +91,6 @@ $tertiary: #959CA0;
         }
     }
 
-
     .re-paragraph-status {
         &.re-paragraph-status--slim {
             justify-content: flex-start;
@@ -122,7 +110,6 @@ $tertiary: #959CA0;
     .re-button {
         @apply rounded-[30px];
         height: 56px;
-        font-family: 'Value', sans-serif;
         font-size: 18px;
         font-weight: 700;
         position: relative;
@@ -137,7 +124,6 @@ $tertiary: #959CA0;
         &:disabled {
             border: none;
         }
-
     }
 
     label.mb-6 {
@@ -147,5 +133,4 @@ $tertiary: #959CA0;
         color: black !important;
         font-size: 16px !important;
     }
-
 }
