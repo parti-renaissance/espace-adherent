@@ -1,6 +1,8 @@
 import { captureException } from '@sentry/browser';
 import './typedef';
 
+import { debounce } from 'lodash';
+
 // @ts-check
 
 /**
@@ -194,7 +196,7 @@ function getValue(domEl) {
  * @param { HTMLInputElement } domEl
  * @param { SetNotifyState } setState
  */
-const validateField = (validateTypes, domEl, setState) => {
+const validateField = debounce((validateTypes, domEl, setState) => {
     const value = getValue(domEl);
 
     /** @type {ValidateState} */
@@ -218,7 +220,7 @@ const validateField = (validateTypes, domEl, setState) => {
             message: getStatusMessage(path[0], path[1]),
         });
     }
-};
+}, 300);
 
 /** @param {ValidateState} state  */
 const xValidate = (state) => ({
