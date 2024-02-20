@@ -15,7 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 #[Route('/', name: 'app_renaissance_national_event_index', methods: ['GET', 'POST'])]
-#[Route('/inscription', name: 'app_renaissance_national_event_inscription', methods: ['GET', 'POST'])]
 class EventInscriptionController extends AbstractController
 {
     private const SESSION_ID = 'nation_event:sess_id';

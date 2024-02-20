@@ -54,9 +54,6 @@ services:
             $donationProcessWorkflow: '@state_machine.donation_request'
             $electedRepresentativeContributionProcessWorkflow: '@state_machine.contribution_request'
             $votingProcessWorkflow: '@state_machine.voting_process'
-            $votingPlatformCache: !service
-                class: Symfony\Component\Cache\Psr16Cache
-                arguments: ['@app.cache.voting_platform']
             $geoGouvApiClient: '@app.http_client.geo_gouv'
             $tonMacronInvitationStateMachine: '@state_machine.ton_macron_invitation'
             $patternUuid: '%pattern_uuid%'
@@ -79,6 +76,7 @@ services:
             $goCardlessEnvironment: '%env(GOCARDLESS_ENV)%'
             $openAIApiKey: '%env(OPENAI_API_KEY)%'
             $friendlyCaptchaEuropeSiteKey: '%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%'
+            $captainVerifyApiKey: '%env(CAPTAIN_VERIFY_API_KEY)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
@@ -493,3 +491,10 @@ services:
     App\Adhesion\Handler\GenerateActivationCodeCommandHandler:
         arguments:
             $loginLinkHandler: '@security.authenticator.login_link_handler.main'
+
+    App\CaptainVerify\CaptainVerifyDriver:
+        arguments:
+            $httpClient: '@app.http_client.captain_verify_api'
+
+    App\CaptainVerify\Storage:
+        arguments: [!service {class: Symfony\Component\Cache\Psr16Cache, arguments: ['@app.cache.captain_verify']}]
