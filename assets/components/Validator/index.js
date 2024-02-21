@@ -252,10 +252,6 @@ const xValidate = (state) => ({
         '@change': function (e) {
             this.checkField(e);
         },
-        // eslint-disable-next-line func-names
-        '@blur': function (e) {
-            this.checkField(e);
-        },
     },
 });
 export default {
