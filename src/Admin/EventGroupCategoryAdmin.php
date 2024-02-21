@@ -15,9 +15,8 @@ class EventGroupCategoryAdmin extends EventCategoryAdmin
         $group = $this->getSubject();
 
         $form
-            ->add('name', TextType::class, [
-                'label' => 'Nom',
-            ])
+            ->add('name', TextType::class, ['label' => 'Nom'])
+            ->add('description', null, ['label' => 'Description'])
             ->add('slug', null, [
                 'label' => 'Slug',
                 'disabled' => EventGroupCategory::CAMPAIGN_EVENTS === $group->getSlug(),

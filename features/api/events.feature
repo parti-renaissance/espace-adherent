@@ -81,6 +81,9 @@ Feature:
                 "uuid": "113876dd-87d2-426a-a12a-60ffd5107b10",
                 "name": "Grand Meeting de Marseille",
                 "time_zone": "Europe/Paris",
+                "live_url": null,
+                "visibility": "public",
+                "created_at": "@string@.isDateTime()",
                 "begin_at": "2017-02-20T09:30:00+01:00",
                 "finish_at": "2017-02-20T19:00:00+01:00",
                 "organizer": {
@@ -103,13 +106,14 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "category": {
                     "event_group_category": {
+                        "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
                         "slug": "evenement"
                     },
+                    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Atelier du programme",
                     "slug": "atelier-du-programme"
                 },
-                "private": false,
                 "electoral": false,
                 "visio_url": null,
                 "mode": null,
@@ -121,6 +125,9 @@ Feature:
                 "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
                 "name": "Événements à Fontainebleau 1",
                 "time_zone": "Europe/Paris",
+                "live_url": null,
+                "visibility": "public",
+                "created_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
@@ -143,13 +150,14 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "category": {
                     "event_group_category": {
+                        "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
                         "slug": "evenement"
                     },
+                    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Atelier du programme",
                     "slug": "atelier-du-programme"
                 },
-                "private": false,
                 "electoral": false,
                 "visio_url": null,
                 "mode": null,
@@ -184,6 +192,9 @@ Feature:
                 "uuid": "113876dd-87d2-426a-a12a-60ffd5107b10",
                 "name": "Grand Meeting de Marseille",
                 "time_zone": "Europe/Paris",
+                "live_url": null,
+                "visibility": "public",
+                "created_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
@@ -206,13 +217,14 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "category": {
                     "event_group_category": {
+                        "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
                         "slug": "evenement"
                     },
+                    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Atelier du programme",
                     "slug": "atelier-du-programme"
                 },
-                "private": false,
                 "electoral": false,
                 "visio_url": null,
                 "mode": null,
@@ -224,6 +236,9 @@ Feature:
                 "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
                 "name": "Événements à Fontainebleau 1",
                 "time_zone": "Europe/Paris",
+                "live_url": null,
+                "visibility": "public",
+                "created_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
@@ -246,13 +261,14 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "category": {
                     "event_group_category": {
+                        "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
                         "slug": "evenement"
                     },
+                    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Atelier du programme",
                     "slug": "atelier-du-programme"
                 },
-                "private": false,
                 "electoral": false,
                 "visio_url": null,
                 "mode": null,
@@ -264,6 +280,9 @@ Feature:
                 "uuid": "65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e",
                 "name": "Événements à Fontainebleau 2",
                 "time_zone": "Europe/Paris",
+                "live_url": null,
+                "visibility": "public",
+                "created_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
@@ -286,13 +305,14 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "category": {
                     "event_group_category": {
+                        "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
                         "slug": "evenement"
                     },
+                    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Conférence-débat",
                     "slug": "conference-debat"
                 },
-                "private": false,
                 "electoral": false,
                 "visio_url": null,
                 "mode": null,
@@ -320,6 +340,9 @@ Feature:
                 "uuid": "e770cda4-b215-4ea2-85e5-03fc3e4423e3",
                 "name": "Un événement de l'assemblée départementale",
                 "time_zone": "Europe/Paris",
+                "live_url": null,
+                "visibility": "public",
+                "created_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
@@ -342,13 +365,14 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "category": {
                     "event_group_category": {
+                        "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
                         "slug": "evenement"
                     },
+                    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Convivialité",
                     "slug": "convivialite"
                 },
-                "private": false,
                 "electoral": false,
                 "visio_url": "https://parti-renaissance.fr",
                 "mode": "online",
@@ -360,6 +384,9 @@ Feature:
                 "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
                 "name": "Nouvel événement online privé et électoral",
                 "time_zone": "Europe/Paris",
+                "live_url": null,
+                "visibility": "private",
+                "created_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
@@ -381,7 +408,6 @@ Feature:
                 },
                 "created_at": "@string@.isDateTime()",
                 "category": null,
-                "private": true,
                 "electoral": true,
                 "visio_url": null,
                 "mode": "online",
@@ -393,6 +419,9 @@ Feature:
                 "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
                 "name": "Nouvel événement online",
                 "time_zone": "Europe/Paris",
+                "live_url": null,
+                "visibility": "public",
+                "created_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
@@ -414,7 +443,6 @@ Feature:
                 },
                 "created_at": "@string@.isDateTime()",
                 "category": null,
-                "private": false,
                 "electoral": false,
                 "visio_url": null,
                 "mode": "online",
@@ -441,15 +469,20 @@ Feature:
             {
                 "category": {
                     "event_group_category": {
+                        "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
                         "slug": "evenement"
                     },
+                    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Atelier du programme",
                     "slug": "atelier-du-programme"
                 },
                 "uuid": "113876dd-87d2-426a-a12a-60ffd5107b10",
                 "name": "Grand Meeting de Marseille",
                 "time_zone": "Europe/Paris",
+                "live_url": null,
+                "visibility": "public",
+                "created_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
@@ -470,7 +503,6 @@ Feature:
                     "longitude": 5.362377
                 },
                 "created_at": "@string@.isDateTime()",
-                "private": false,
                 "electoral": false,
                 "visio_url": null,
                 "mode": null,
@@ -482,6 +514,9 @@ Feature:
                 "uuid": "5b279c9f-2b1e-4b93-9c34-1669f56e9d64",
                 "name": "Tractage sur le terrain",
                 "time_zone": "Europe/Paris",
+                "live_url": null,
+                "visibility": "public",
+                "created_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
@@ -504,13 +539,14 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "category": {
                     "event_group_category": {
+                        "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
                         "slug": "evenement"
                     },
+                    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Tractage",
                     "slug": "tractage"
                 },
-                "private": false,
                 "electoral": false,
                 "visio_url": null,
                 "mode": null,
@@ -521,15 +557,20 @@ Feature:
             {
                 "category": {
                     "event_group_category": {
+                        "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                         "name": "événement",
                         "slug": "evenement"
                     },
+                    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                     "name": "Atelier du programme",
                     "slug": "atelier-du-programme"
                 },
                 "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
                 "name": "Événements à Fontainebleau 1",
                 "time_zone": "Europe/Paris",
+                "live_url": null,
+                "visibility": "public",
+                "created_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
@@ -550,7 +591,6 @@ Feature:
                     "longitude": 2.698759
                 },
                 "created_at": "@string@.isDateTime()",
-                "private": false,
                 "electoral": false,
                 "visio_url": null,
                 "mode": null,
@@ -585,6 +625,9 @@ Feature:
                 "uuid": "4d962b05-68fe-4888-ab6b-53b96bdbe797",
                 "name": "Un événement du référent annulé",
                 "time_zone": "Europe/Paris",
+                "live_url": null,
+                "visibility": "public",
+                "created_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
@@ -606,7 +649,6 @@ Feature:
                 },
                 "created_at": "@string@.isDateTime()",
                 "category": null,
-                "private": false,
                 "electoral": false,
                 "visio_url": null,
                 "mode": "online",
@@ -618,6 +660,9 @@ Feature:
                 "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
                 "name": "Nouvel événement online",
                 "time_zone": "Europe/Paris",
+                "live_url": null,
+                "visibility": "public",
+                "created_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
@@ -639,7 +684,6 @@ Feature:
                 },
                 "created_at": "@string@.isDateTime()",
                 "category": null,
-                "private": false,
                 "electoral": false,
                 "visio_url": null,
                 "mode": "online",
@@ -651,6 +695,9 @@ Feature:
                 "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
                 "name": "Nouvel événement online privé et électoral",
                 "time_zone": "Europe/Paris",
+                "live_url": null,
+                "visibility": "private",
+                "created_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
                 "organizer": {
@@ -672,7 +719,6 @@ Feature:
                 },
                 "created_at": "@string@.isDateTime()",
                 "category": null,
-                "private": true,
                 "electoral": true,
                 "visio_url": null,
                 "mode": "online",
@@ -699,13 +745,17 @@ Feature:
             "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
             "name": "En Marche Paris 8",
             "slug": "en-marche-paris-8",
-            "link": "http://test.enmarche.code/comites/en-marche-paris-8"
+            "link": "http://test.enmarche.code/comites/en-marche-paris-8",
+            "created_at": "@string@.isDateTime()"
         },
         "uuid": "0e5f9f02-fa33-4c2c-a700-4235d752315b",
         "name": "Événement de la catégorie masquée",
         "slug": "@string@-evenement-de-la-categorie-masquee",
         "description": "Allons à la rencontre des citoyens.",
         "time_zone": "Europe/Paris",
+        "live_url": null,
+        "visibility": "public",
+        "created_at": "@string@.isDateTime()",
         "begin_at": "@string@.isDateTime()",
         "finish_at": "@string@.isDateTime()",
         "organizer": {
@@ -727,9 +777,11 @@ Feature:
         },
         "category": {
             "event_group_category": {
+                "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                 "name": "événement",
                 "slug": "evenement"
             },
+            "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
             "name": "Catégorie masquée",
             "slug": "categorie-masquee"
         },
@@ -752,13 +804,17 @@ Feature:
             "uuid": "515a56c0-bde8-56ef-b90c-4745b1c93818",
             "name": "En Marche Paris 8",
             "slug": "en-marche-paris-8",
-            "link": "http://test.enmarche.code/comites/en-marche-paris-8"
+            "link": "http://test.enmarche.code/comites/en-marche-paris-8",
+            "created_at": "@string@.isDateTime()"
         },
         "uuid": "0e5f9f02-fa33-4c2c-a700-4235d752315b",
         "name": "Événement de la catégorie masquée",
         "slug": "@string@-evenement-de-la-categorie-masquee",
         "description": "Allons à la rencontre des citoyens.",
         "time_zone": "Europe/Paris",
+        "live_url": null,
+        "visibility": "public",
+        "created_at": "@string@.isDateTime()",
         "begin_at": "@string@.isDateTime()",
         "finish_at": "@string@.isDateTime()",
         "organizer": {
@@ -780,13 +836,14 @@ Feature:
         },
         "category": {
             "event_group_category": {
+                "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                 "name": "événement",
                 "slug": "evenement"
             },
+            "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
             "name": "Catégorie masquée",
             "slug": "categorie-masquee"
         },
-        "private": false,
         "electoral": false,
         "visio_url": null,
         "mode": null,
@@ -879,7 +936,7 @@ Feature:
         },
         "time_zone": "Europe/Paris",
         "electoral": false,
-        "private": true
+        "visibility": "private"
     }
     """
     Then the response status code should be 400
@@ -915,7 +972,7 @@ Feature:
         },
         "time_zone": "Europe/Paris",
         "electoral": false,
-        "private": true
+        "visibility": "private"
     }
     """
     Then the response status code should be 201
@@ -928,6 +985,9 @@ Feature:
         "slug": "2023-01-29-nouveau-evenement",
         "description": "Une description de l'événement",
         "time_zone": "Europe/Paris",
+        "live_url": null,
+        "visibility": "private",
+        "created_at": "@string@.isDateTime()",
         "begin_at": "2023-01-29T16:30:30+01:00",
         "finish_at": "2023-01-30T16:30:30+01:00",
         "organizer": {
@@ -949,9 +1009,11 @@ Feature:
         },
         "category": {
             "event_group_category": {
+                "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                 "name": "événement",
                 "slug": "evenement"
             },
+            "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
             "name": "Kiosque",
             "slug": "kiosque"
         },
@@ -985,7 +1047,7 @@ Feature:
         },
         "time_zone": "Europe/Paris",
         "electoral": false,
-        "private": false
+        "visibility": "public"
     }
     """
     Then the response status code should be 201
@@ -998,6 +1060,9 @@ Feature:
         "slug": "2023-01-29-nouveau-evenement",
         "description": "Une description de l'événement",
         "time_zone": "Europe/Paris",
+        "live_url": null,
+        "visibility": "public",
+        "created_at": "@string@.isDateTime()",
         "begin_at": "2023-01-29T16:30:30+01:00",
         "finish_at": "2023-01-30T16:30:30+01:00",
         "organizer": {
@@ -1009,7 +1074,8 @@ Feature:
             "uuid": "5e00c264-1d4b-43b8-862e-29edc38389b3",
             "name": "Comité des 3 communes",
             "slug": "comite-des-3-communes",
-            "link": "http://test.enmarche.code/comites/comite-des-3-communes"
+            "link": "http://test.enmarche.code/comites/comite-des-3-communes",
+            "created_at": "@string@.isDateTime()"
         },
         "participants_count": 1,
         "status": "SCHEDULED",
@@ -1025,9 +1091,11 @@ Feature:
         },
         "category": {
             "event_group_category": {
+                "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                 "name": "événement",
                 "slug": "evenement"
             },
+            "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
             "name": "Kiosque",
             "slug": "kiosque"
         },
@@ -1281,6 +1349,9 @@ Feature:
         "slug": "2022-12-12-nouvel-evenement-online",
         "description": "Nouvelle description",
         "time_zone": "Europe/Paris",
+        "live_url": null,
+        "visibility": "public",
+        "created_at": "@string@.isDateTime()",
         "begin_at": "2022-12-12T10:30:00+01:00",
         "finish_at": "2022-12-12T16:30:00+01:00",
         "organizer": {
@@ -1302,9 +1373,11 @@ Feature:
         },
         "category": {
             "event_group_category": {
+                "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                 "name": "événement",
                 "slug": "evenement"
             },
+            "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
             "name": "Kiosque",
             "slug": "kiosque"
         },
@@ -1597,7 +1670,7 @@ Feature:
         },
         "time_zone": "Europe/Paris",
         "electoral": false,
-        "private": false
+        "visibility": "public"
     }
     """
     Then the response status code should be 201
@@ -1607,9 +1680,11 @@ Feature:
     {
         "category": {
             "event_group_category": {
+                "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                 "name": "événement",
                 "slug": "evenement"
             },
+            "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
             "name": "Kiosque",
             "slug": "kiosque"
         },
@@ -1618,6 +1693,9 @@ Feature:
         "slug": "2023-01-29-nouveau-evenement",
         "description": "Une description de l'événement",
         "time_zone": "Europe/Paris",
+        "live_url": null,
+        "visibility": "public",
+        "created_at": "@string@.isDateTime()",
         "begin_at": "2023-01-29T16:30:30+01:00",
         "finish_at": "2023-01-30T16:30:30+01:00",
         "organizer": {
@@ -1670,7 +1748,7 @@ Feature:
         },
         "time_zone": "Europe/Paris",
         "electoral": false,
-        "private": false
+        "visibility": "public"
     }
     """
     Then the response status code should be 400
@@ -1724,6 +1802,9 @@ Feature:
         "slug": "2022-12-12-un-evenement-du-candidat-aux-legislatives",
         "description": "Nouvelle description",
         "time_zone": "Europe/Paris",
+        "live_url": null,
+        "visibility": "public",
+        "created_at": "@string@.isDateTime()",
         "begin_at": "2022-12-12T10:30:00+01:00",
         "finish_at": "2022-12-12T16:30:00+01:00",
         "organizer": {
@@ -1745,9 +1826,11 @@ Feature:
         },
         "category": {
             "event_group_category": {
+                "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
                 "name": "événement",
                 "slug": "evenement"
             },
+            "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
             "name": "Kiosque",
             "slug": "kiosque"
         },
@@ -1789,7 +1872,7 @@ Feature:
     }
     """
     Then the response status code should be 200
-    And the JSON node "image_url" should match "http://test.enmarche.code/assets/images/events/@string@.png"
+    And the JSON node "image_url" should match "http://test.renaissance.code/assets/images/events/@string@.png"
     When I send a "DELETE" request to "/api/v3/events/594e7ad0-c289-49ae-8c23-0129275d128b/image?scope=<scope>"
     Then the response status code should be 200
     When I send a "GET" request to "/api/v3/events/594e7ad0-c289-49ae-8c23-0129275d128b?scope=<scope>"

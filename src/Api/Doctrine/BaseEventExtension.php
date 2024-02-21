@@ -10,6 +10,7 @@ use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Event\EventTypeEnum;
+use App\Event\EventVisibilityEnum;
 use App\Repository\Event\BaseEventRepository;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\Query\Expr\Join;
@@ -118,7 +119,10 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
             ])
             && !$this->security->getUser() instanceof Adherent
         ) {
-            $queryBuilder->andWhere("$alias.private = false");
+            $queryBuilder
+                ->andWhere("$alias.visibility != :private_visibility")
+                ->setParameter('private_visibility', EventVisibilityEnum::PRIVATE)
+            ;
         }
 
         $queryBuilder

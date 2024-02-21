@@ -33,7 +33,7 @@ class ArticleControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->isSuccessful($response = $this->client->getResponse());
         $this->assertSame(1, $crawler->filter('html:contains("An exhibit of Markdown")')->count());
-        $this->assertStringContainsString('<img src="/assets/images/article.jpg', $response->getContent());
+        $this->assertStringContainsString('<img src="//test.renaissance.code/assets/images/article.jpg', $response->getContent());
     }
 
     public function testArticleWithoutImage()

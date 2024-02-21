@@ -60,7 +60,7 @@ Feature:
           "published_at": "@string@.isDateTime()",
           "media": {
             "type": "image",
-            "path": "http://test.enmarche.code/assets/images/article.jpg"
+            "path": "http://test.renaissance.code/assets/images/article.jpg"
           },
           "slug": "outre-mer",
           "title": "« Les outre-mer sont l’un des piliers de notre richesse culturelle. »"
@@ -73,7 +73,7 @@ Feature:
           "published_at": "@string@.isDateTime()",
           "media": {
             "type": "image",
-            "path": "http://test.enmarche.code/assets/images/article.jpg"
+            "path": "http://test.renaissance.code/assets/images/article.jpg"
           },
           "slug": "outre-mer-2",
           "title": "« Deuxième actualité: Les outre-mer sont l’un des piliers de notre richesse culturelle. »"
@@ -95,7 +95,7 @@ Feature:
       "published_at": "@string@.isDateTime()",
       "media": {
         "type": "image",
-        "path": "http://test.enmarche.code/assets/images/article.jpg"
+        "path": "http://test.renaissance.code/assets/images/article.jpg"
       },
       "slug": "outre-mer",
       "title": "« Les outre-mer sont l’un des piliers de notre richesse culturelle. »",
