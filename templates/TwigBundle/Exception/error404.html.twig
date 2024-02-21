@@ -1,22 +1,5 @@
-{% extends 'base.html.twig' %}
+{% extends '@Twig/Exception/error_layout.html.twig' %}
 
-{% block banner '' %}
 {% block page_title 'Page introuvable' %}
 
-{% block content %}
-    <main class="error">
-        <section class="l__wrapper--slim">
-            <div class="error__box error__box--404"></div>
-            <div>
-                <h1>
-                    Cette page n'existe pas !
-                </h1>
-                <p class="text--body">
-                    Vous trouverez peut-être ce que vous cherchiez sur notre page d'accueil.
-                </p>
-                <a href="{{ path('homepage') }}" class="btn">Retour à l'accueil</a>
-                <a href="{{ path('donation_index') }}" class="btn btn--primary">Je donne</a>
-            </div>
-        </section>
-    </main>
-{% endblock %}
+{% block error_message 'Cette page n’existe pas.' %}
