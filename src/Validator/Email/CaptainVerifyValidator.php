@@ -7,7 +7,6 @@ use App\Validator\Email\Reason\InvalidEmailByCaptainVerify;
 use Egulias\EmailValidator\EmailLexer;
 use Egulias\EmailValidator\Result\InvalidEmail;
 use Egulias\EmailValidator\Validation\EmailValidation;
-use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 
 class CaptainVerifyValidator implements EmailValidation
 {
@@ -19,13 +18,7 @@ class CaptainVerifyValidator implements EmailValidation
 
     public function isValid(string $email, EmailLexer $emailLexer): bool
     {
-        try {
-            $response = $this->captainVerifyDriver->verify($email);
-
-            if (false === $response->isValid()) {
-                $this->error = new InvalidEmail(new InvalidEmailByCaptainVerify(), '');
-            }
-        } catch (ExceptionInterface $e) {
+        if (!$this->captainVerifyDriver->verify($email)) {
             $this->error = new InvalidEmail(new InvalidEmailByCaptainVerify(), '');
         }
 

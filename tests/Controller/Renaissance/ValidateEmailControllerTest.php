@@ -35,7 +35,7 @@ class ValidateEmailControllerTest extends AbstractRenaissanceWebTestCase
 
         if ($email) {
             if (1 === $status) {
-                self::assertSame('Nous ne sommes pas parvenus à vérifier l\'existence de l\'adresse « '.$email.' ». Vérifiez votre saisie avant de continuer.', $response['message']);
+                self::assertSame("Nous ne sommes pas parvenus à vérifier l'existence de cette adresse. Vérifiez votre saisie, elle peut contenir une erreur. Si elle est correcte, ignorez cette alerte.", $response['message']);
             } else {
                 self::assertSame('L\'adresse « '.$email.' » n\'est pas valide.', $response['message']);
             }

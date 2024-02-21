@@ -17,7 +17,7 @@ class Response
 
     public function isValid(): bool
     {
-        return $this->isSuccess() && 'valid' === $this->result;
+        return $this->result && 'invalid' !== $this->result;
     }
 
     public function isSuccess(): bool

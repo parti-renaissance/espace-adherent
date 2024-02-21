@@ -3,7 +3,7 @@
        <twig:ReIcon name="{{ status }}" class="mr-2" />
     </template>
     <span
-        class="text-sm font-normal text-ui_gray-80 font-maax re-text-status--{{ status }}"
+        class="text-sm font-normal text-ui_gray-80 re-text-status--{{ status }}"
         {{ xSyncStatus ? (':class="`re-text-status--${ ' ~ xSyncStatus ~ ' }`"')|raw }}
         {{ xSyncValue ? ('x-text="' ~ xSyncValue ~ '"')|raw }}
     >

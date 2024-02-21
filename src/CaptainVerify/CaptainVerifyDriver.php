@@ -5,6 +5,7 @@ namespace App\CaptainVerify;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class CaptainVerifyDriver implements LoggerAwareInterface
@@ -19,27 +20,34 @@ class CaptainVerifyDriver implements LoggerAwareInterface
     ) {
     }
 
-    public function verify(string $email): Response
+    public function verify(string $email): bool
     {
         if ($response = $this->storage->get($email)) {
-            return $response;
+            return $response->isValid();
         }
 
         $response = $this->makeRequest($email);
 
         if ($response->isSuccess()) {
             $this->storage->store($email, $response);
-        } else {
-            $this->logger->error('CaptainVerify API error', ['response' => $response]);
+        } elseif ($response->result) {
+            $this->logger->error('CaptainVerify API error "'.$email.'" : '.json_encode($response));
         }
 
-        return $response;
+        return $response->isValid();
     }
 
     private function makeRequest(string $email): Response
     {
-        $httpResponse = $this->httpClient->request('GET', "/v2/verify?email=$email&apikey=$this->captainVerifyApiKey");
+        $response = new Response();
 
-        return $this->denormalizer->denormalize($httpResponse->toArray(), Response::class);
+        try {
+            $httpResponse = $this->httpClient->request('GET', '/v2/verify', ['query' => ['email' => $email, 'apikey' => $this->captainVerifyApiKey]]);
+            $response = $this->denormalizer->denormalize($httpResponse->toArray(), Response::class);
+        } catch (ExceptionInterface $e) {
+            $this->logger->error('CaptainVerify API error "'.$email.'" : '.$e->getMessage());
+        }
+
+        return $response;
     }
 }
