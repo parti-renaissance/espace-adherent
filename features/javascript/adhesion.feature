@@ -11,7 +11,7 @@ Feature:
         And I fill in the following:
             | membership_request[email] | test@test123.com |
         And I click the "membership_request_consentDataCollect" element
-        Then I wait 15 seconds until I see "Nous ne sommes pas parvenus à vérifier l'existence de l'adresse « test@test123.com ». Vérifiez votre saisie avant de continuer."
+        Then I wait 15 seconds until I see "Nous ne sommes pas parvenus à vérifier l'existence de cette adresse. Vérifiez votre saisie, elle peut contenir une erreur. Si elle est correcte, ignorez cette alerte."
         When I fill in the following:
             | membership_request[email] | test@test.com |
         And I wait 2 seconds
@@ -207,7 +207,7 @@ Feature:
         And I fill in the following:
             | membership_request[email] | renaissance-user-4@en-marche-dev.fr |
         And I click the "membership_request_consentDataCollect" element
-        And I wait 15 seconds until I see "Nous ne sommes pas parvenus à vérifier l'existence de l'adresse « renaissance-user-4@en-marche-dev.fr ». Vérifiez votre saisie avant de continuer."
+        And I wait 15 seconds until I see "Nous ne sommes pas parvenus à vérifier l'existence de cette adresse. Vérifiez votre saisie, elle peut contenir une erreur. Si elle est correcte, ignorez cette alerte."
         And I press "J'adhère"
         Then I wait 5 seconds until I see "Un email de confirmation vient d’être envoyé à votre adresse email. Cliquez sur le lien de validation qu’il contient pour continuer votre adhésion."
         And I should have 1 email "AdhesionAlreadyAdherentMessage" for "renaissance-user-4@en-marche-dev.fr" with payload:
