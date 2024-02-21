@@ -36,6 +36,7 @@ trait EntityPersonNameTrait
      *     "committee_candidacy:read",
      *     "committee_election:read",
      *     "committee:read",
+     *     "national_event_inscription:webhook",
      * })
      */
     private $firstName = '';
@@ -68,6 +69,7 @@ trait EntityPersonNameTrait
      *     "committee_candidacy:read",
      *     "committee_election:read",
      *     "committee:read",
+     *     "national_event_inscription:webhook",
      * })
      */
     private $lastName = '';

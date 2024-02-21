@@ -63,7 +63,8 @@ trait EntityPostAddressTrait
      * @SymfonySerializer\Groups({
      *     "user_profile",
      *     "export",
-     *     "adherent_autocomplete"
+     *     "adherent_autocomplete",
+     *     "national_event_inscription:webhook",
      * })
      */
     public function getPostalCode(): ?string

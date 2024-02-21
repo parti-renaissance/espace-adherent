@@ -175,6 +175,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *     "survey_replies_list",
      *     "committee_candidacy:read",
      *     "committee_election:read",
+     *     "national_event_inscription:webhook",
      * })
      * @Assert\NotBlank(message="common.gender.not_blank", groups={"adhesion_complete_profile"})
      * @Assert\Choice(
@@ -202,7 +203,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(type="phone_number", nullable=true)
      *
-     * @Groups({"profile_read", "phoning_campaign_call_read", "elected_representative_read"})
+     * @Groups({
+     *     "profile_read",
+     *     "phoning_campaign_call_read",
+     *     "elected_representative_read",
+     *     "national_event_inscription:webhook",
+     * })
      *
      * @AssertPhoneNumber(message="common.phone_number.invalid", options={"groups": {"additional_info", "adhesion:further_information"}})
      * @Assert\Expression("not this.hasSmsSubscriptionType() or this.getPhone()", message="Vous avez accepté de recevoir des informations du parti par SMS ou téléphone, cependant, vous n'avez pas précisé votre numéro de téléphone.", groups={"adhesion:further_information"})
@@ -217,7 +223,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(type="date", nullable=true)
      *
-     * @Groups({"profile_read"})
+     * @Groups({
+     *     "profile_read",
+     *     "national_event_inscription:webhook",
+     * })
      *
      * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"additional_info", "adhesion:further_information"})
      * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"additional_info", "adhesion:further_information"})
@@ -239,7 +248,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(type="datetime")
      *
-     * @Groups({"adherent_autocomplete"})
+     * @Groups({
+     *     "adherent_autocomplete",
+     *     "national_event_inscription:webhook",
+     * })
      */
     private $registeredAt;
 
@@ -866,6 +878,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private Collection $revenueDeclarations;
 
     /**
+     * @Groups({"national_event_inscription:webhook"})
+     *
      * @ORM\Column(type="simple_array", nullable=true)
      */
     public array $tags = [];

@@ -8,6 +8,7 @@ use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\NationalEvent\NationalEventRepository")
@@ -19,11 +20,15 @@ class NationalEvent
     use EntityTimestampableTrait;
 
     /**
+     * @Groups({"national_event_inscription:webhook"})
+     *
      * @ORM\Column(type="datetime")
      */
     public ?\DateTime $startDate = null;
 
     /**
+     * @Groups({"national_event_inscription:webhook"})
+     *
      * @ORM\Column(type="datetime")
      */
     public ?\DateTime $endDate = null;

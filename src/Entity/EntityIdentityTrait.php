@@ -106,6 +106,7 @@ trait EntityIdentityTrait
      *     "document_read",
      *     "designation_read",
      *     "designation_list",
+     *     "national_event_inscription:webhook",
      * })
      *
      * @ApiProperty(

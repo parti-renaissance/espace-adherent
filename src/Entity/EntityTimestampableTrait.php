@@ -29,6 +29,7 @@ trait EntityTimestampableTrait
      *     "survey_list_dc",
      *     "committee:list",
      *     "document_read",
+     *     "national_event_inscription:webhook",
      * })
      * @Gedmo\Timestampable(on="create")
      */
@@ -42,6 +43,7 @@ trait EntityTimestampableTrait
      * @Groups({
      *     "phoning_campaign_read",
      *     "committee:list",
+     *     "national_event_inscription:webhook",
      * })
      *
      * @Gedmo\Timestampable(on="update")
