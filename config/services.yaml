@@ -48,13 +48,11 @@ services:
             $environment: '%kernel.environment%'
             $projectDir: '%kernel.project_dir%'
             $canaryMode: '%env(ENABLE_CANARY)%'
-            $mailchimpClient: '@app.http_client.mailchimp_api'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
             $mailchimpElectedRepresentativeListId: '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
             $donationProcessWorkflow: '@state_machine.donation_request'
             $electedRepresentativeContributionProcessWorkflow: '@state_machine.contribution_request'
             $votingProcessWorkflow: '@state_machine.voting_process'
-            $geoGouvApiClient: '@app.http_client.geo_gouv'
             $tonMacronInvitationStateMachine: '@state_machine.ton_macron_invitation'
             $patternUuid: '%pattern_uuid%'
             $adherentInterests: '%adherent_interests%'
@@ -464,10 +462,6 @@ services:
         arguments:
             $tokenManager: '@App\Security\SimpleCsrfTokenManager'
 
-    App\Ohme\Client:
-        arguments:
-            $client: '@app.http_client.ohme_api'
-
     App\Mailer\EmailTemplateFactory:
         arguments:
             $senderEmail: '%transactional_sender_email%'
@@ -476,7 +470,6 @@ services:
 
     App\Mandrill\EmailClient:
         arguments:
-            $client: '@app.http_client.mandrill_api'
             $apiKey: '%env(MANDRILL_API_KEY)%'
             $testApiKey: '%env(MANDRILL_TEST_API_KEY)%'
             $appEnvironment: '%env(APP_ENVIRONMENT)%'

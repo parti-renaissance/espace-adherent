@@ -68,9 +68,9 @@ final class UpdateFranceCommand extends Command
      */
     private $entities;
 
-    public function __construct(HttpClientInterface $geoGouvApiClient, EntityManagerInterface $em)
+    public function __construct(HttpClientInterface $geoGouvClient, EntityManagerInterface $em)
     {
-        $this->apiClient = $geoGouvApiClient;
+        $this->apiClient = $geoGouvClient;
         $this->em = $em;
 
         parent::__construct();

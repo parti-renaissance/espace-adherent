@@ -24,9 +24,9 @@ class Driver implements LoggerAwareInterface
     private string $listId;
     private ?ResponseInterface $lastResponse = null;
 
-    public function __construct(HttpClientInterface $client, string $listId)
+    public function __construct(HttpClientInterface $mailchimpClient, string $listId)
     {
-        $this->client = $client;
+        $this->client = $mailchimpClient;
         $this->listId = $listId;
     }
 

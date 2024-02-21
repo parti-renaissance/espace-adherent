@@ -14,10 +14,10 @@ class EmailClient implements EmailClientInterface
     private string $actifKey;
 
     public function __construct(
-        private readonly HttpClientInterface $client,
+        private readonly HttpClientInterface $mandrillClient,
         private readonly string $apiKey,
-        private readonly string $testApiKey,
-        private readonly string $appEnvironment
+        private readonly string $appEnvironment,
+        string $testApiKey,
     ) {
         if ('production' === $this->appEnvironment) {
             $this->actifKey = $apiKey;
@@ -28,14 +28,14 @@ class EmailClient implements EmailClientInterface
 
     public function sendEmail(string $email, bool $resend = false): string
     {
-        $response = $this->client->request('POST', 'messages/send-template.json', ['json' => $this->prepareBody($email, $resend)]);
+        $response = $this->mandrillClient->request('POST', 'messages/send-template.json', ['json' => $this->prepareBody($email, $resend)]);
 
         return $this->filterResponse($response, 'Unable to send email to recipients.');
     }
 
     public function renderEmail(EmailTemplateInterface $email): string
     {
-        $response = $this->client->request('POST', 'templates/render.json', ['json' => $this->prepareBody(json_encode($email))]);
+        $response = $this->mandrillClient->request('POST', 'templates/render.json', ['json' => $this->prepareBody(json_encode($email))]);
 
         $data = json_decode($this->filterResponse($response), true);
 

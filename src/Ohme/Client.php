@@ -6,7 +6,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Client implements ClientInterface
 {
-    public function __construct(private readonly HttpClientInterface $client)
+    public function __construct(private readonly HttpClientInterface $ohmeClient)
     {
     }
 
@@ -19,7 +19,7 @@ class Client implements ClientInterface
             ]),
         ];
 
-        return $this->client->request('GET', 'contacts', $options)->toArray();
+        return $this->ohmeClient->request('GET', 'contacts', $options)->toArray();
     }
 
     public function getPayments(int $limit = 100, int $offset = 0, array $options = []): array
@@ -31,6 +31,6 @@ class Client implements ClientInterface
             ]),
         ];
 
-        return $this->client->request('GET', 'payments', $options)->toArray();
+        return $this->ohmeClient->request('GET', 'payments', $options)->toArray();
     }
 }

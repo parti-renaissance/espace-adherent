@@ -22,7 +22,9 @@ class MockHttpClientCallback
 
         $data = json_decode(file_get_contents($fixturePath), true);
 
-        if (isset($data[$urlParts['path']])) {
+        if (isset($data[$key = $urlParts['path'].'?'.$urlParts['query']])) {
+            return json_encode($data[$key]);
+        } elseif (isset($data[$urlParts['path']])) {
             return json_encode($data[$urlParts['path']]);
         }
 

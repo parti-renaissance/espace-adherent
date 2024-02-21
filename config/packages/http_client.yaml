@@ -10,3 +10,23 @@ framework:
                 timeout: 15
             friendly_captcha.client:
                 base_uri: 'https://eu-api.friendlycaptcha.eu'
+            mailchimp_signup.client:
+                base_uri: '%env(MAILCHIMP_SIGNUP_HOST)%'
+                timeout: 15
+            geo_gouv.client:
+                base_uri: 'https://geo.api.gouv.fr'
+            mandrill.client:
+                base_uri: 'https://mandrillapp.com/api/1.0/'
+            mailchimp.client:
+                base_uri: 'https://us16.api.mailchimp.com'
+                auth_bearer: '%env(MAILCHIMP_API_KEY)%'
+                headers:
+                    'User-Agent': 'Renaissance'
+                timeout: 60
+            ohme.client:
+                base_uri: '%env(OHME_API_HOST)%'
+                timeout: 60
+                headers:
+                    'client-name': '%env(OHME_CLIENT_NAME)%'
+                    'client-secret': '%env(OHME_CLIENT_SECRET)%'
+                    'accept': 'application/json'
