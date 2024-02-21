@@ -60,7 +60,7 @@ services:
         class: Symfony\Contracts\HttpClient\HttpClientInterface
         factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
         arguments:
-            - {base_uri: 'https://api.captainverify.com', timeout: 5}
+            - {base_uri: 'https://api.captainverify.com', timeout: 15}
 
     app.http_client.ohme_api:
         class: Symfony\Contracts\HttpClient\HttpClientInterface
