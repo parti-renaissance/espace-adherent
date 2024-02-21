@@ -67,7 +67,11 @@
     }
 
     &.re-field-frame--warning {
-        @apply border-ui_yellow-80
+        .re-icon-warning {
+            display: none;
+        }
+
+        @apply border-ui_gray-60
     }
 
     &.re-field-frame--error {
@@ -90,7 +94,7 @@
         }
 
         &.re-field-frame--warning {
-            @apply border-ui_yellow-80 outline-ui_yellow-20
+            //@apply border-ui_yellow-80 outline-ui_yellow-20
         }
 
         &.re-field-frame--error {
@@ -106,7 +110,7 @@
         }
 
         &.re-field-frame--warning {
-            @apply bg-ui_yellow-5 border-ui_yellow-80
+            //@apply bg-ui_yellow-5 border-ui_yellow-80
         }
 
         &.re-field-frame--error {
