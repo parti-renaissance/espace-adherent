@@ -44,7 +44,7 @@ clear: perm rm-docker-dev.lock                                                  
 	-$(CONSOLE) redis:flushall -n
 	rm -rf var/logs/*
 	rm -rf public/built
-	rm var/.php_cs.cache
+	rm var/.php_cs/.php_cs.cache
 
 clean: clear                                                                                           ## Clear and remove dependencies
 	rm -rf vendor node_modules
