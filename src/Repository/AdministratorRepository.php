@@ -44,8 +44,9 @@ class AdministratorRepository extends ServiceEntityRepository implements UserLoa
     {
         return $this
             ->createActivatedQueryBuilder('a')
-            ->andWhere('FIND_IN_SET(:role, a.roles) > 0')
-            ->setParameter('role', $role)
+            ->innerJoin('a.administratorRoles', 'role')
+            ->andWhere('role.code = :role_code')
+            ->setParameter('role_code', $role)
             ->getQuery()
             ->getResult()
         ;
