@@ -137,7 +137,7 @@ app_oauth:
     type:     "annotation"
     prefix:   "/oauth/v2"
     defaults:
-        app_domain: "%app_host%"
+        app_domain: "%app_renaissance_host%"
     requirements:
         app_domain: "%app_host%|%app_renaissance_host%|%api_renaissance_host%|%jemengage_auth_host%"
 
@@ -255,7 +255,7 @@ app_api_intl:
     resource: "../src/Controller/IntlController.php"
     type: "annotation"
     defaults:
-        app_domain: "%app_host%"
+        app_domain: "%app_renaissance_host%"
     requirements:
         app_domain: "%app_host%|%procuration_host%|%app_renaissance_host%"
 
@@ -305,7 +305,7 @@ user_validate_new_email:
     controller: App\Controller\EnMarche\Security\SecurityController::activateNewEmailAction
     methods: GET
     defaults:
-        app_domain: "%app_host%"
+        app_domain: "%app_renaissance_host%"
     requirements:
         app_domain: "%app_host%|%app_renaissance_host%"
         "adherent_uuid": "%pattern_uuid%"
@@ -323,7 +323,7 @@ app_api_resubscribe_email:
     resource: "../src/Controller/Api/ResubscribeEmailController.php"
     type: "annotation"
     defaults:
-        app_domain: "%app_host%"
+        app_domain: "%app_renaissance_host%"
     requirements:
         app_domain: "%app_host%|%app_renaissance_host%"
 
@@ -333,7 +333,7 @@ app_api_user_show_me:
     methods: GET
     controller: App\Controller\Api\UserController::showMe
     defaults:
-        app_domain: "%app_host%"
+        app_domain: "%app_renaissance_host%"
     requirements:
         app_domain: "%app_host%|%app_renaissance_host%"
 
@@ -343,7 +343,7 @@ app_validate_email:
     methods: POST
     controller: App\Controller\Renaissance\Adhesion\Api\ValidateEmailController
     defaults:
-        app_domain: "%app_host%"
+        app_domain: "%app_renaissance_host%"
     requirements:
         app_domain: "%app_renaissance_host%|%national_event_host%"
 
@@ -353,7 +353,7 @@ app_renaissance_newsletter_confirm:
     methods: GET
     controller: App\Controller\Renaissance\Newsletter\ConfirmNewsletterController
     defaults:
-        app_domain: "%app_host%"
+        app_domain: "%app_renaissance_host%"
     requirements:
         app_domain: "%app_renaissance_host%|%national_event_host%"
 
@@ -362,7 +362,7 @@ app_article:
     type: "annotation"
     resource: "../src/Controller/EnMarche/ArticleController.php"
     defaults:
-        app_domain: "%app_host%"
+        app_domain: "%app_renaissance_host%"
     requirements:
         app_domain: "%app_host%|%app_renaissance_host%"
 
@@ -371,7 +371,7 @@ app_profile:
     type: "annotation"
     resource: "../src/Controller/EnMarche/UserController.php"
     defaults:
-        app_domain: "%app_host%"
+        app_domain: "%app_renaissance_host%"
     requirements:
         app_domain: "%app_host%|%app_renaissance_host%"
 
@@ -386,7 +386,7 @@ app_certification:
     type: "annotation"
     resource: "../src/Controller/EnMarche/CertificationRequestController.php"
     defaults:
-        app_domain: "%app_host%"
+        app_domain: "%app_renaissance_host%"
     requirements:
         app_domain: "%app_host%|%app_renaissance_host%"
 
@@ -397,7 +397,7 @@ app_static_page:
     methods: GET
     defaults:
         _controller: 'App\Controller\EnMarche\PageController:showPageAction'
-        app_domain: "%app_host%"
+        app_domain: "%app_renaissance_host%"
     requirements:
         slug: .+
         app_domain: "%app_host%|%app_renaissance_host%"
