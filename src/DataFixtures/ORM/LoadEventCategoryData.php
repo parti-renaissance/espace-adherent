@@ -67,7 +67,7 @@ class LoadEventCategoryData extends Fixture implements DependentFixtureInterface
         foreach (self::LEGACY_EVENT_CATEGORIES as $reference => $name) {
             $category = new EventCategory($name);
             $category->setEventGroupCategory($this->getReference('event-group-category-0'));
-
+            $category->description = 'Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.';
             $this->addReference($reference, $category);
 
             $manager->persist($category);
@@ -75,6 +75,8 @@ class LoadEventCategoryData extends Fixture implements DependentFixtureInterface
 
         foreach (self::LEGACY_EVENT_CATEGORIES_GROUPED as $reference => $dataCategory) {
             $category = new EventCategory($dataCategory['name'], $dataCategory['status']);
+            $category->description = 'Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.';
+
             if ($dataCategory['group']) {
                 $category->setEventGroupCategory($this->getReference($dataCategory['group']));
             }

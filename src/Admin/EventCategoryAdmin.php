@@ -9,7 +9,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class EventCategoryAdmin extends AbstractAdmin
 {
@@ -23,9 +22,8 @@ class EventCategoryAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('name', TextType::class, [
-                'label' => 'Nom',
-            ])
+            ->add('name', null, ['label' => 'Nom'])
+            ->add('description', null, ['label' => 'Description'])
             ->add('slug', null, [
                 'label' => 'Slug',
                 'help' => 'Sera utilisé pour la recherche : https://en-marche.fr/evenements/categorie/[votre-valeur]<br />Doit être unique',

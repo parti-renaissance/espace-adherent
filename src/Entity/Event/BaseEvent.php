@@ -35,6 +35,7 @@ use App\Entity\ReferentTaggableEntity;
 use App\Entity\Report\ReportableInterface;
 use App\Entity\ZoneableEntity;
 use App\Event\EventTypeEnum;
+use App\Event\EventVisibilityEnum;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Geocoder\GeoPointInterface;
@@ -50,7 +51,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -235,7 +236,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="uuid", unique=true)
      *
-     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
+     * @Groups({"event_read", "event_list_read"})
      *
      * @ApiProperty(identifier=true)
      */
@@ -262,7 +263,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(length=100)
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
+     * @Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
      * @Assert\Length(allowEmptyString=true, min=5, max=100)
@@ -289,7 +290,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *     handlers={@Gedmo\SlugHandler(class="App\Event\UniqueEventNameHandler")}
      * )
      *
-     * @SymfonySerializer\Groups({"event_read"})
+     * @Groups({"event_read"})
      */
     protected $slug;
 
@@ -298,7 +299,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="text")
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write"})
+     * @Groups({"event_read", "event_write"})
      *
      * @Assert\NotBlank
      * @Assert\Length(allowEmptyString=true, min=10)
@@ -310,7 +311,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(length=50)
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
+     * @Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
      * @Assert\Timezone
@@ -322,7 +323,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="datetime")
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
+     * @Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
      */
@@ -333,7 +334,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="datetime")
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
+     * @Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\NotBlank
      * @Assert\Expression("!value or value > this.getBeginAt()", message="committee.event.invalid_date_range")
@@ -348,7 +349,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @Assert\NotBlank
      *
-     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
+     * @Groups({"event_read", "event_list_read"})
      */
     protected $organizer;
 
@@ -357,7 +358,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
      *
-     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
+     * @Groups({"event_read", "event_list_read"})
      */
     protected $participantsCount = 0;
 
@@ -366,7 +367,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(length=20)
      *
-     * @SymfonySerializer\Groups({"event_read", "event_list_read"})
+     * @Groups({"event_read", "event_list_read"})
      */
     protected $status = self::STATUS_SCHEDULED;
 
@@ -389,16 +390,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @SymfonySerializer\Groups({"event_write", "event_list_read_extended", "event_read_extended"})
-     */
-    private $private = false;
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @SymfonySerializer\Groups({"event_write", "event_list_read_extended", "event_read_extended"})
+     * @Groups({"event_write", "event_list_read_extended", "event_read_extended"})
      */
     private $electoral = false;
 
@@ -407,7 +399,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="integer", nullable=true)
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
+     * @Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\GreaterThan("0", message="committee.event.invalid_capacity")
      */
@@ -418,14 +410,14 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @Assert\Url
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read_extended"})
+     * @Groups({"event_read", "event_write", "event_list_read_extended"})
      */
     private $visioUrl;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @SymfonySerializer\Groups({"event_write"})
+     * @Groups({"event_write"})
      *
      * @AdherentInterestsConstraint
      */
@@ -436,7 +428,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(nullable=true)
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
+     * @Groups({"event_read", "event_write", "event_list_read"})
      *
      * @Assert\Choice(choices=self::MODES)
      */
@@ -447,7 +439,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Event\EventCategory")
      *
-     * @SymfonySerializer\Groups({"event_read", "event_list_read", "event_write"})
+     * @Groups({"event_read", "event_list_read", "event_write"})
      */
     protected $category;
 
@@ -456,7 +448,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @var NullablePostAddress
      *
-     * @SymfonySerializer\Groups({"event_read", "event_write", "event_list_read"})
+     * @Groups({"event_read", "event_write", "event_list_read"})
      */
     protected $postAddress;
 
@@ -464,6 +456,20 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private bool $renaissanceEvent = false;
+
+    /**
+     * @ORM\Column(enumType=EventVisibilityEnum::class, options={"default": "public"})
+     *
+     * @Groups({"event_read", "event_write", "event_list_read"})
+     */
+    public EventVisibilityEnum $visibility = EventVisibilityEnum::PUBLIC;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"event_read", "event_write", "event_list_read"})
+     */
+    public ?string $liveUrl = null;
 
     public function getCategory(): ?EventCategoryInterface
     {
@@ -477,7 +483,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
 
     public function getCategoryName(): ?string
     {
-        return $this->category ? $this->category->getName() : null;
+        return $this->category?->getName();
     }
 
     public function __construct(?UuidInterface $uuid = null)
@@ -549,7 +555,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     }
 
     /**
-     * @SymfonySerializer\Groups({"event_list_read"})
+     * @Groups({"event_list_read"})
      */
     public function getLocalFinishAt(): \DateTimeInterface
     {
@@ -766,7 +772,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         $this->beginAt = $beginAt;
         $this->finishAt = $finishAt;
         $this->description = $description;
-        $this->private = $private;
+        $this->setPrivate($private);
         $this->electoral = $electoral;
         $this->setVisioUrl($visioUrl);
 
@@ -802,12 +808,16 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
 
     public function isPrivate(): bool
     {
-        return $this->private;
+        return EventVisibilityEnum::PRIVATE === $this->visibility;
     }
 
     public function setPrivate(bool $private): void
     {
-        $this->private = $private;
+        if ($private) {
+            $this->visibility = EventVisibilityEnum::PRIVATE;
+        } else {
+            $this->visibility = EventVisibilityEnum::PUBLIC;
+        }
     }
 
     public function isElectoral(): bool

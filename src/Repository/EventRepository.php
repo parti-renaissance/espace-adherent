@@ -10,6 +10,7 @@ use App\Entity\Event\BaseEventCategory;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\ReferentTag;
 use App\Event\EventTypeEnum;
+use App\Event\EventVisibilityEnum;
 use App\Geocoder\Coordinates;
 use App\Search\SearchParametersFilter;
 use App\Statistics\StatisticsParametersFilter;
@@ -65,7 +66,10 @@ class EventRepository extends ServiceEntityRepository
         }
 
         if (!$withPrivate) {
-            $qb->andWhere('e.private = false');
+            $qb
+                ->andWhere('e.visibility != :private_visibility')
+                ->setParameter('private_visibility', EventVisibilityEnum::PRIVATE)
+            ;
         }
 
         $qb
@@ -278,7 +282,10 @@ class EventRepository extends ServiceEntityRepository
         ;
 
         if (!$withPrivate) {
-            $qb->andWhere('e.private = false');
+            $qb
+                ->andWhere('e.visibility != :private_visibility')
+                ->setParameter('private_visibility', EventVisibilityEnum::PRIVATE)
+            ;
         }
 
         return $qb;
@@ -384,7 +391,7 @@ class EventRepository extends ServiceEntityRepository
         }
 
         if (!$search->getWithPrivate()) {
-            $filterPrivate = 'AND events.private = false';
+            $filterPrivate = 'AND events.visibility != :private_visibility';
         }
 
         $sql = preg_replace(
@@ -399,6 +406,10 @@ class EventRepository extends ServiceEntityRepository
         if ($search->getCityCoordinates()) {
             $query->setParameter('distance_max', $search->getRadius());
             $query->setParameter('today', new Chronos('now - 1 hour'));
+        }
+
+        if (!$search->getWithPrivate()) {
+            $query->setParameter('private_visibility', EventVisibilityEnum::PRIVATE);
         }
 
         if (!empty($searchQuery)) {

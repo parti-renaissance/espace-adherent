@@ -112,7 +112,7 @@ trait EntityAddressTrait
     }
 
     protected function __construct(
-        ?string $country,
+        ?string $country = null,
         ?string $postalCode = null,
         ?string $cityName = null,
         ?string $street = null,
@@ -175,7 +175,7 @@ trait EntityAddressTrait
         return $this->country;
     }
 
-    public function setCountry(string $country): void
+    public function setCountry(?string $country): void
     {
         $this->country = $country;
     }

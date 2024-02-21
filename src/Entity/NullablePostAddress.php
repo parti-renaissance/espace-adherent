@@ -42,7 +42,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
     }
 
     public static function createAddress(
-        string $country,
+        ?string $country,
         ?string $zipCode,
         ?string $cityName,
         ?string $street,

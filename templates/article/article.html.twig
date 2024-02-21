@@ -14,7 +14,7 @@
 
 {% block canonical_url url('article_view', {'categorySlug': article.category.slug, 'articleSlug': article.slug}) %}
 
-{% block open_graph_image (article.media ? (homepage_url ~ media_asset(article.media)) : default_sharer)|raw %}
+{% block open_graph_image (article.media ? (media_asset(article.media)) : default_sharer)|raw %}
 
 {% block json_ld %}
     <script type="application/ld+json">

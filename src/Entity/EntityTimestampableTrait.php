@@ -25,12 +25,15 @@ trait EntityTimestampableTrait
      *     "pap_building_history",
      *     "pap_campaign_history_read_list",
      *     "pap_campaign_replies_list",
+     *     "event_read",
+     *     "event_list_read",
      *     "event_list_read_extended",
      *     "survey_list_dc",
      *     "committee:list",
      *     "document_read",
      *     "national_event_inscription:webhook",
      * })
+     *
      * @Gedmo\Timestampable(on="create")
      */
     protected $createdAt;

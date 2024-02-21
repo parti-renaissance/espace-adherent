@@ -5,7 +5,7 @@ namespace App\Entity\Event;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -31,7 +31,7 @@ abstract class BaseEventCategory implements EventCategoryInterface
      * @Assert\NotBlank
      * @Assert\Length(max="100")
      *
-     * @SymfonySerializer\Groups({"event_read", "event_list_read", "event_category_read"})
+     * @Groups({"event_read", "event_list_read", "event_category_read"})
      */
     protected $name = '';
 
@@ -46,7 +46,7 @@ abstract class BaseEventCategory implements EventCategoryInterface
      * @Assert\NotBlank
      * @Assert\Length(max=100)
      *
-     * @SymfonySerializer\Groups({"event_read", "event_list_read", "event_category_read"})
+     * @Groups({"event_read", "event_list_read", "event_category_read"})
      */
     protected $slug;
 
@@ -54,6 +54,13 @@ abstract class BaseEventCategory implements EventCategoryInterface
      * @ORM\Column(length=10, options={"default": "ENABLED"})
      */
     protected $status;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Groups({"event_read", "event_list_read", "event_category_read"})
+     */
+    public ?string $description = null;
 
     public function __construct(?string $name = null, ?string $status = self::ENABLED, ?string $slug = null)
     {
