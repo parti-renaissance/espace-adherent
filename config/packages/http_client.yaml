@@ -5,3 +5,8 @@ framework:
         scoped_clients:
             national_event_webhook.client:
                 base_uri: '%env(NATIONAL_EVENT_WEBHOOK_HOST)%'
+            captain_verify.client:
+                base_uri: 'https://api.captainverify.com'
+                timeout: 15
+            friendly_captcha.client:
+                base_uri: 'https://eu-api.friendlycaptcha.eu'

@@ -302,7 +302,6 @@ services:
 
     App\Recaptcha\FriendlyCaptchaApiClient:
         arguments:
-            $client: '@app.http_client.friendly_captcha_api'
             $privateKey: '%env(FRIENDLY_CAPTCHA_PRIVATE_KEY)%'
             $defaultSiteKey: '%env(FRIENDLY_CAPTCHA_DEFAULT_SITE_KEY)%'
 
@@ -491,10 +490,6 @@ services:
     App\Adhesion\Handler\GenerateActivationCodeCommandHandler:
         arguments:
             $loginLinkHandler: '@security.authenticator.login_link_handler.main'
-
-    App\CaptainVerify\CaptainVerifyDriver:
-        arguments:
-            $httpClient: '@app.http_client.captain_verify_api'
 
     App\CaptainVerify\Storage:
         arguments: [!service {class: Symfony\Component\Cache\Psr16Cache, arguments: ['@app.cache.captain_verify']}]
