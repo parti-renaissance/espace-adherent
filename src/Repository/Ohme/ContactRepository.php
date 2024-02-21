@@ -13,12 +13,12 @@ class ContactRepository extends ServiceEntityRepository
         parent::__construct($registry, Contact::class);
     }
 
-    public function findOneByOhmeIdentifier(string $identifier): ?Contact
+    public function findOneByOhmeIdentifier(string $ohmeIdentifier): ?Contact
     {
         return $this
             ->createQueryBuilder('contact')
-            ->andWhere('contact.identifier = :identifier')
-            ->setParameter('identifier', $identifier)
+            ->andWhere('contact.ohmeIdentifier = :ohme_identifier')
+            ->setParameter('ohme_identifier', $ohmeIdentifier)
             ->getQuery()
             ->getOneOrNullResult()
         ;

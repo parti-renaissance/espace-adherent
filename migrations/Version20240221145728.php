@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20240216015920 extends AbstractMigration
+final class Version20240221145728 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -19,7 +19,7 @@ final class Version20240216015920 extends AbstractMigration
           adherent_id INT UNSIGNED DEFAULT NULL,
           created_by_administrator_id INT DEFAULT NULL,
           updated_by_administrator_id INT DEFAULT NULL,
-          identifier VARCHAR(255) NOT NULL,
+          ohme_identifier VARCHAR(255) NOT NULL,
           email VARCHAR(255) DEFAULT NULL,
           firstname VARCHAR(255) DEFAULT NULL,
           lastname VARCHAR(255) DEFAULT NULL,
@@ -37,12 +37,12 @@ final class Version20240216015920 extends AbstractMigration
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
           created_at DATETIME NOT NULL,
           updated_at DATETIME NOT NULL,
-          UNIQUE INDEX UNIQ_A4E1D16C772E836A (identifier),
+          UNIQUE INDEX UNIQ_A4E1D16CF82D7740 (ohme_identifier),
           UNIQUE INDEX UNIQ_A4E1D16CD17F50A6 (uuid),
           INDEX IDX_A4E1D16C25F06C53 (adherent_id),
           INDEX IDX_A4E1D16C9DF5350C (created_by_administrator_id),
           INDEX IDX_A4E1D16CCF1918FF (updated_by_administrator_id),
-          INDEX IDX_A4E1D16C772E836A (identifier),
+          INDEX IDX_A4E1D16CF82D7740 (ohme_identifier),
           PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE

@@ -5,6 +5,7 @@ namespace App\Admin\Ohme;
 use App\Entity\Adherent;
 use App\Entity\Ohme\Contact;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Filter\Model\FilterData;
@@ -35,6 +36,14 @@ class ContactAdmin extends AbstractAdmin
                     'property' => [
                         'search',
                     ],
+                    'to_string_callback' => static function (Adherent $adherent): string {
+                        return sprintf(
+                            '%s (%s) [%s]',
+                            $adherent->getFullName(),
+                            $adherent->getEmailAddress(),
+                            $adherent->getId()
+                        );
+                    },
                     'btn_add' => false,
                 ])
             ->end()
@@ -111,7 +120,7 @@ class ContactAdmin extends AbstractAdmin
             ->add('ohmeDates', null, [
                 'label' => 'Dates (Ohme)',
                 'virtual_field' => true,
-                'template' => 'admin/ohme/contact/list_fullname.html.twig',
+                'template' => 'admin/ohme/contact/list_ohme_dates.html.twig',
             ])
             ->add('adherent', null, [
                 'label' => 'Adhérent',
@@ -123,6 +132,14 @@ class ContactAdmin extends AbstractAdmin
                 ],
             ])
         ;
+    }
+
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        parent::configureDefaultSortValues($sortValues);
+
+        $sortValues[DatagridInterface::SORT_BY] = 'ohmeCreatedAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
     /**
@@ -139,7 +156,7 @@ class ContactAdmin extends AbstractAdmin
     protected function preUpdate(object $object): void
     {
         if ($this->adherentBeforeUpdate !== $object->adherent) {
-            //$this->contactHandler->updateAdherentLink($object);
+            // $this->contactHandler->updateAdherentLink($object);
         }
     }
 }

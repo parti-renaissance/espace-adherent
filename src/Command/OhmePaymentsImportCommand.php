@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Ohme\ContactImporter;
 use App\Ohme\PaymentImporter;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

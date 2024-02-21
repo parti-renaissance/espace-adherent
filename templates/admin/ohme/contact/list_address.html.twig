@@ -1,7 +1,7 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {% set adress = [
+    {% set address = [
         object.addressStreet,
         object.addressStreet2,
     ] %}
@@ -32,5 +32,5 @@
         {% set address = address|merge([country|join(' ')]) %}
     {% endif %}
 
-    {{ address|join('<br>') }}
+    {{ address|filter(v => v is not empty)|join('<br>')|raw }}
 {% endblock %}

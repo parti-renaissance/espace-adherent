@@ -5,7 +5,6 @@ namespace App\Entity\Contribution;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
-use App\Entity\Ohme\Contact;
 use App\Ohme\PaymentStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -13,7 +12,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Contribution\PaymentRepository")
  * @ORM\Table(name="contribution_payment")
  */
 class Payment

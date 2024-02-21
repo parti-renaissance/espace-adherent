@@ -2,7 +2,7 @@
 
 {% block field %}
     {% if object.ohmeCreatedAt %}
-        {{ object.ohmeCreatedAt|format_datetime('medium', 'medium') }}
+        Créé le: {{ object.ohmeCreatedAt|format_datetime('medium', 'medium') }}
     {% endif %}
 
     {% if object.ohmeCreatedAt and object.ohmeUpdatedAt %}
@@ -10,6 +10,6 @@
     {% endif %}
 
     {% if object.ohmeUpdatedAt %}
-        {{ object.ohmeUpdatedAt|format_datetime('medium', 'medium') }}
+        Modifié le: {{ object.ohmeUpdatedAt|format_datetime('medium', 'medium') }}
     {% endif %}
 {% endblock %}

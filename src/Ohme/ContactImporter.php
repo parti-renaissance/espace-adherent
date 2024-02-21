@@ -43,15 +43,15 @@ class ContactImporter
         }
     }
 
-    private function findContact(string $identifier): ?Contact
+    private function findContact(string $ohmeIdentifier): ?Contact
     {
-        return $this->contactRepository->findOneByOhmeIdentifier($identifier);
+        return $this->contactRepository->findOneByOhmeIdentifier($ohmeIdentifier);
     }
 
-    private function createContact(string $identifier): Contact
+    private function createContact(string $ohmeIdentifier): Contact
     {
         $contact = new Contact();
-        $contact->identifier = $identifier;
+        $contact->ohmeIdentifier = $ohmeIdentifier;
 
         return $contact;
     }

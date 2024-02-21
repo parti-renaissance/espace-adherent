@@ -2,8 +2,6 @@
 
 namespace App\Repository\Contribution;
 
-use App\Entity\Adherent;
-use App\Entity\Contribution\Contribution;
 use App\Entity\Contribution\Payment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

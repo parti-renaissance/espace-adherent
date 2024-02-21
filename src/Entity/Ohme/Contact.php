@@ -12,15 +12,15 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Chatbot\ChatbotRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Ohme\ContactRepository")
  * @ORM\Table(
  *     name="ohme_contact",
  *     indexes={
- *         @ORM\Index(columns={"identifier"}),
+ *         @ORM\Index(columns={"ohme_identifier"}),
  *     }
  * )
  *
- * @UniqueEntity(fields={"identifier"})
+ * @UniqueEntity(fields={"ohmeIdentifier"})
  */
 class Contact
 {
@@ -31,8 +31,7 @@ class Contact
     /**
      * @ORM\Column(unique=true)
      */
-    public string $identifier;
-
+    public string $ohmeIdentifier;
     /**
      * @ORM\Column(nullable=true)
      */
@@ -117,7 +116,7 @@ class Contact
     public function __toString(): string
     {
         return implode(' ', array_filter([
-            sprintf('[%s]', $this->identifier),
+            sprintf('[%s]', $this->ohmeIdentifier),
             $this->firstname,
             $this->lastname,
         ]));
