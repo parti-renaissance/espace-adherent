@@ -186,11 +186,6 @@
                                 <a href="{{ path('app_committee_event_show', { slug: eventNearby.slug }) }}" class="headline link--no-decor">
                                     <h2 class="text--normal">{{ eventNearby.name }}</h2>
                                     <h4 class="text--summary text--gray b__nudge--bottom-medium"><i class="fa fa-clock-o" aria-hidden="true"></i> Le {{ eventNearby.localBeginAt|format_datetime('medium', 'none')|capitalize }}, {{ event.localBeginAt|date('G\\hi', false) }}</h4>
-                                    <img class="search-map"
-                                         src="{{ path('map_url', { latitude: eventNearby.latitude, longitude: eventNearby.longitude }) }}"
-                                         title="Carte d'accès à l'événement {{ eventNearby.name }}"
-                                         alt="{{ eventNearby.inlineFormattedAddress }}"
-                                    />
                                 </a>
                             </div>
                             <div class="box-bottom">

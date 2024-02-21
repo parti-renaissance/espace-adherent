@@ -24,9 +24,6 @@ services:
 
     Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader: '@doctrine.fixtures.loader'
 
-    app.map.google_maps_static_provider:
-        class: 'Tests\App\Test\Map\DummyStaticMapProvider'
-
     app.glide.cache_adapter:
         class: 'League\Flysystem\Memory\MemoryAdapter'
 

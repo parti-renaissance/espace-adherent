@@ -33,12 +33,6 @@ services:
         arguments:
             - {base_uri: 'https://mandrillapp.com/api/1.0/', timeout: 10}
 
-    app.http_client.google_maps_static_api:
-        class: Symfony\Contracts\HttpClient\HttpClientInterface
-        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
-        arguments:
-            - {base_uri: 'https://maps.googleapis.com', timeout: 2}
-
     app.http_client.mailchimp_api:
         class: Symfony\Contracts\HttpClient\HttpClientInterface
         factory: ['Symfony\Component\HttpClient\HttpClient', 'create']

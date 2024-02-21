@@ -6,8 +6,6 @@ use App\Entity\Article;
 use App\Entity\Clarification;
 use App\Entity\CustomSearchResult;
 use App\Entity\Proposal;
-use App\Geocoder\Coordinates;
-use App\Map\StaticMapProviderInterface;
 use App\Timeline\TimelineImageFactory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -84,25 +82,6 @@ class AssetsController extends AbstractController
         }
 
         return $response;
-    }
-
-    #[Route(path: '/maps/{latitude},{longitude}', requirements: ['latitude' => '^%pattern_coordinate%$', 'longitude' => '^%pattern_coordinate%$'], name: 'map_url', methods: ['GET'])]
-    #[Cache(maxage: 900, smaxage: 900)]
-    public function mapAction(
-        Request $request,
-        StaticMapProviderInterface $mapProvider,
-        string $latitude,
-        string $longitude
-    ): Response {
-        if ($request->query->has('algolia')) {
-            $size = self::WIDTH.'x'.self::HEIGHT;
-        }
-
-        if ($contents = $mapProvider->get(new Coordinates($latitude, $longitude), $size ?? null)) {
-            return new Response($contents, Response::HTTP_OK, ['content-type' => 'image/png']);
-        }
-
-        return new BinaryFileResponse($this->createWhiteImage(), Response::HTTP_OK, ['content-type' => 'image/png']);
     }
 
     #[Route(path: '/video/homepage.{format}', requirements: ['format' => 'mov|mp4'], name: 'homepage_video_url', methods: ['GET'])]
