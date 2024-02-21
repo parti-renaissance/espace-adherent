@@ -23,6 +23,7 @@ trait EntityNameSlugTrait
      *     "committee:list",
      *     "committee:write",
      *     "committee:write_limited",
+     *     "national_event_inscription:webhook",
      * })
      *
      * @Assert\NotBlank(groups={"api_committee_edition"})

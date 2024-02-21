@@ -1,0 +1,7 @@
+framework:
+    http_client:
+        default_options:
+            timeout: 10
+        scoped_clients:
+            national_event_webhook.client:
+                base_uri: '%env(NATIONAL_EVENT_WEBHOOK_HOST)%'
