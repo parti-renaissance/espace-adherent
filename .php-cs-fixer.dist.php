@@ -32,7 +32,7 @@ return (new PhpCsFixer\Config())
     ])
     ->setRiskyAllowed(true)
     ->setFinder($finder)
-    ->setCacheFile(__DIR__.'/var/.php_cs.cache')
+    ->setCacheFile(__DIR__.'/var/.php_cs/.php_cs.cache')
     ->registerCustomFixers([
         new App\Fixer\DoctrineMigrationCleanFixer(),
     ])
