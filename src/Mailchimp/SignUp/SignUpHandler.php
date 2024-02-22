@@ -22,7 +22,7 @@ class SignUpHandler implements LoggerAwareInterface
     private $listId;
 
     public function __construct(
-        HttpClientInterface $client,
+        HttpClientInterface $mailchimpSignupClient,
         string $mailchimpSignUpHost,
         int $subscriptionGroupId,
         array $subscriptionIds,
@@ -34,7 +34,7 @@ class SignUpHandler implements LoggerAwareInterface
         $this->subscriptionIds = $subscriptionIds;
         $this->mailchimpOrgId = $mailchimpOrgId;
         $this->listId = $listId;
-        $this->client = $client;
+        $this->client = $mailchimpSignupClient;
     }
 
     public function signUpAdherent(Adherent $adherent): bool

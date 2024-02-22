@@ -48,13 +48,11 @@ services:
             $environment: '%kernel.environment%'
             $projectDir: '%kernel.project_dir%'
             $canaryMode: '%env(ENABLE_CANARY)%'
-            $mailchimpClient: '@app.http_client.mailchimp_api'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
             $mailchimpElectedRepresentativeListId: '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
             $donationProcessWorkflow: '@state_machine.donation_request'
             $electedRepresentativeContributionProcessWorkflow: '@state_machine.contribution_request'
             $votingProcessWorkflow: '@state_machine.voting_process'
-            $geoGouvApiClient: '@app.http_client.geo_gouv'
             $tonMacronInvitationStateMachine: '@state_machine.ton_macron_invitation'
             $patternUuid: '%pattern_uuid%'
             $adherentInterests: '%adherent_interests%'
@@ -157,8 +155,6 @@ services:
         tags: [ 'doctrine.orm.entity_listener' ]
 
     # Services
-
-    App\Map\StaticMapProviderInterface: '@app.map.google_maps_static_provider'
 
     App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler:
         arguments:
@@ -302,7 +298,6 @@ services:
 
     App\Recaptcha\FriendlyCaptchaApiClient:
         arguments:
-            $client: '@app.http_client.friendly_captcha_api'
             $privateKey: '%env(FRIENDLY_CAPTCHA_PRIVATE_KEY)%'
             $defaultSiteKey: '%env(FRIENDLY_CAPTCHA_DEFAULT_SITE_KEY)%'
 
@@ -467,10 +462,6 @@ services:
         arguments:
             $tokenManager: '@App\Security\SimpleCsrfTokenManager'
 
-    App\Ohme\Client:
-        arguments:
-            $client: '@app.http_client.ohme_api'
-
     App\Mailer\EmailTemplateFactory:
         arguments:
             $senderEmail: '%transactional_sender_email%'
@@ -479,7 +470,6 @@ services:
 
     App\Mandrill\EmailClient:
         arguments:
-            $client: '@app.http_client.mandrill_api'
             $apiKey: '%env(MANDRILL_API_KEY)%'
             $testApiKey: '%env(MANDRILL_TEST_API_KEY)%'
             $appEnvironment: '%env(APP_ENVIRONMENT)%'
@@ -491,10 +481,6 @@ services:
     App\Adhesion\Handler\GenerateActivationCodeCommandHandler:
         arguments:
             $loginLinkHandler: '@security.authenticator.login_link_handler.main'
-
-    App\CaptainVerify\CaptainVerifyDriver:
-        arguments:
-            $httpClient: '@app.http_client.captain_verify_api'
 
     App\CaptainVerify\Storage:
         arguments: [!service {class: Symfony\Component\Cache\Psr16Cache, arguments: ['@app.cache.captain_verify']}]

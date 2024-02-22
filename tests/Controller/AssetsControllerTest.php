@@ -43,54 +43,6 @@ class AssetsControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
 
-    public function testStaticMaps()
-    {
-        $this->client->request(Request::METHOD_GET, '/maps/47.3950813,8.3361425');
-        $response = $this->client->getResponse();
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $response);
-
-        $weight = \strlen($response->getContent());
-
-        $this->assertGreaterThan(1024, $weight, 'We are assuming that an image map should be greater than 1 KB');
-        $this->assertLessThan(1024 * 1024, $weight, 'We are assuming that an image map should be less than 1 MB');
-        $this->assertSame('image/png', $response->headers->get('content-type'));
-
-        $tag = md5($response->getContent());
-
-        $this->client->request(Request::METHOD_GET, '/maps/47.3950813,8.3361425');
-
-        $this->assertEquals(
-            $tag,
-            md5($this->client->getResponse()->getContent()),
-            'Exactly same queries should have exactly same image data responses'
-        );
-
-        $this->client->request(Request::METHOD_GET, '/maps/-47.3950813,-8.3361425');
-
-        $this->assertResponseStatusCode(
-            Response::HTTP_OK,
-            $this->client->getResponse(),
-            'Negative values are allowed'
-        );
-
-        $this->client->request(Request::METHOD_GET, '/maps/-47.39508,-8.3361');
-
-        $this->assertResponseStatusCode(
-            Response::HTTP_OK,
-            $this->client->getResponse(),
-            'Precision of various digits count is allowed'
-        );
-
-        $this->client->request(Request::METHOD_GET, '/maps/-47,-8');
-
-        $this->assertResponseStatusCode(
-            Response::HTTP_OK,
-            $this->client->getResponse(),
-            'Integer values are allowed'
-        );
-    }
-
     public function testStaticMapsWithWrongQuery()
     {
         $this->client->request(Request::METHOD_GET, '/maps/47.3950813');

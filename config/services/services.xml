@@ -90,23 +90,6 @@
         </service>
 
         <!-- Mailchimp -->
-        <service id="App\Mailchimp\Driver">
-            <argument type="service" id="app.http_client.mailchimp_api" />
-            <argument type="string">%env(MAILCHIMP_MEMBER_LIST_ID)%</argument>
-            <tag name="monolog.logger" channel="mailchimp_sync"/>
-            <call method="setLogger">
-                <argument type="service" id="logger" />
-            </call>
-        </service>
-
-        <service id="App\Mailchimp\Manager">
-            <argument key="$requestBuildersLocator" type="service" id="app.mailchimp.request_builders_locator" />
-            <call method="setLogger">
-                <argument type="service" id="logger" />
-            </call>
-            <tag name="monolog.logger" channel="mailchimp_sync" />
-        </service>
-
         <service id="app.mailchimp.request_builders_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
             <argument type="collection">
                 <argument key="App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder" type="service" id="App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder" />
@@ -117,9 +100,6 @@
             </argument>
             <tag name="container.service_locator" />
         </service>
-
-        <service id="App\Mailchimp\Synchronisation\RequestBuilder" shared="false"/>
-        <service id="App\Mailchimp\Synchronisation\MemberRequest\NewsletterMemberRequestBuilder" shared="false"/>
 
         <!-- Swagger -->
         <service id="App\Swagger\SwaggerDecorator"

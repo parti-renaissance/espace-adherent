@@ -14,7 +14,7 @@ class CaptainVerifyDriver implements LoggerAwareInterface
 
     public function __construct(
         private readonly Storage $storage,
-        private readonly HttpClientInterface $httpClient,
+        private readonly HttpClientInterface $captainVerifyClient,
         private readonly DenormalizerInterface $denormalizer,
         private readonly string $captainVerifyApiKey
     ) {
@@ -42,7 +42,7 @@ class CaptainVerifyDriver implements LoggerAwareInterface
         $response = new Response();
 
         try {
-            $httpResponse = $this->httpClient->request('GET', '/v2/verify', ['query' => ['email' => $email, 'apikey' => $this->captainVerifyApiKey]]);
+            $httpResponse = $this->captainVerifyClient->request('GET', '/v2/verify', ['query' => ['email' => $email, 'apikey' => $this->captainVerifyApiKey]]);
             $response = $this->denormalizer->denormalize($httpResponse->toArray(), Response::class);
         } catch (ExceptionInterface $e) {
             $this->logger->error('CaptainVerify API error "'.$email.'" : '.$e->getMessage());

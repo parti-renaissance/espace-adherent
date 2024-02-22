@@ -84,11 +84,6 @@
                             </div>
                         </div>
 
-                        <img class="search-map"
-                             src="{{ path('map_url', { latitude: event.latitude, longitude: event.longitude }) }}"
-                             title="Carte d'accès à l'événement {{ event.name }}"
-                             alt="{{ event.inlineFormattedAddress }}" />
-
                         <a href="{{ path('app_committee_event_show', { slug: event.slug }) }}"
                            class="search__results__row__link link--no-decor" target="_blank" rel="noopener noreferrer">
                             En savoir plus

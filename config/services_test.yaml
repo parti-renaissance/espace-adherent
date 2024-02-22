@@ -24,9 +24,6 @@ services:
 
     Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader: '@doctrine.fixtures.loader'
 
-    app.map.google_maps_static_provider:
-        class: 'Tests\App\Test\Map\DummyStaticMapProvider'
-
     app.glide.cache_adapter:
         class: 'League\Flysystem\Memory\MemoryAdapter'
 
@@ -58,5 +55,4 @@ services:
 
     Algolia\SearchBundle\SearchService: '@Tests\App\Test\Algolia\DummySearchService'
 
-    Tests\App\CaptainVerify\MockHttpClient:
-        decorates: 'app.http_client.captain_verify_api'
+    Tests\App\HttpClient\MockHttpClientCallback: ~

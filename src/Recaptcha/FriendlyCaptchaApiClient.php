@@ -16,9 +16,9 @@ class FriendlyCaptchaApiClient implements RecaptchaApiClientInterface
     private string $privateKey;
     private string $defaultSiteKey;
 
-    public function __construct(HttpClientInterface $client, string $privateKey, string $defaultSiteKey)
+    public function __construct(HttpClientInterface $friendlyCaptchaClient, string $privateKey, string $defaultSiteKey)
     {
-        $this->client = $client;
+        $this->client = $friendlyCaptchaClient;
         $this->privateKey = $privateKey;
         $this->defaultSiteKey = $defaultSiteKey;
     }
