@@ -94,7 +94,7 @@ class Main {
     }
 
     runAdhesionCommitteePage() {
-        return import('pages/adhesion_commitee').catch((error) => {
+        return import('pages/adhesion_committee').catch((error) => {
             throw error;
         })
             .then((module) => module.default());
