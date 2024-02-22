@@ -14,7 +14,10 @@ use App\Entity\Donation;
 use App\Entity\DonationTag;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
+use App\Membership\Event\UserEvent;
 use App\Membership\MembershipSourceEnum;
+use App\Membership\UserEvents;
+use App\Repository\AdherentRepository;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -49,18 +52,21 @@ class DonationAdmin extends AbstractAdmin
 
     private $storage;
     private $dispatcher;
+    private $adherentRepository;
 
     public function __construct(
         string $code,
         string $class,
         string $baseControllerName,
         FilesystemInterface $storage,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        AdherentRepository $adherentRepository
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->storage = $storage;
         $this->dispatcher = $dispatcher;
+        $this->adherentRepository = $adherentRepository;
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void
@@ -618,6 +624,11 @@ class DonationAdmin extends AbstractAdmin
     protected function postRemove(object $object): void
     {
         parent::postRemove($object);
+
+        if ($object->isMembership() && $adherent = $object->getDonator()?->getAdherent()) {
+            $this->adherentRepository->refreshLastDonationDate($adherent);
+            $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED_IN_ADMIN);
+        }
 
         if ($object->hasFileUploaded()) {
             $filePath = $object->getFilePathWithDirectory();

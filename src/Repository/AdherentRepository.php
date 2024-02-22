@@ -18,6 +18,8 @@ use App\Entity\Audience\AudienceInterface;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
+use App\Entity\Donation;
+use App\Entity\Donator;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Geo\Zone;
 use App\Entity\MyTeam\DelegatedAccess;
@@ -1748,5 +1750,24 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ));
 
         return $results;
+    }
+
+    public function refreshLastDonationDate(Adherent $adherent): void
+    {
+        $lastDonationDate = $this->createQueryBuilder('a')
+            ->select('MAX(donation.donatedAt)')
+            ->innerJoin(Donator::class, 'donator', Join::WITH, 'donator.adherent = a')
+            ->innerJoin('donator.donations', 'donation', Join::WITH, 'donation.membership = 1 AND donation.status = :status')
+            ->where('a = :adherent')
+            ->setParameters([
+                'adherent' => $adherent,
+                'status' => Donation::STATUS_FINISHED,
+            ])
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        $adherent->setLastMembershipDonation($lastDonationDate ? new \DateTime($lastDonationDate) : null);
+        $this->getEntityManager()->flush();
     }
 }

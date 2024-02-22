@@ -3174,6 +3174,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
     }
 
+    public function setLastMembershipDonation(?\DateTime $date): void
+    {
+        $this->lastMembershipDonation = $date;
+    }
+
     public function hasActiveMembership(): bool
     {
         return $this->isRenaissanceAdherent() && $this->hasTag(TagEnum::getAdherentYearTag());
