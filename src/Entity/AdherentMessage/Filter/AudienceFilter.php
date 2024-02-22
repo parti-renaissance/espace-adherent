@@ -290,6 +290,9 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->mandateType = null;
         $this->declaredMandate = null;
         $this->isCampusRegistered = null;
+        $this->donatorStatus = null;
+        $this->adherentTags = null;
+        $this->electTags = null;
 
         parent::reset();
     }
