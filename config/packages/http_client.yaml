@@ -24,7 +24,7 @@ framework:
                     'User-Agent': 'Renaissance'
                 timeout: 60
             ohme.client:
-                base_uri: '%env(OHME_API_HOST)%'
+                base_uri: 'https://api-ohme.oneheart.fr/api/v1/'
                 timeout: 60
                 headers:
                     'client-name': '%env(OHME_CLIENT_NAME)%'
