@@ -3,39 +3,15 @@
 namespace App\JMEFilter\FilterBuilder;
 
 use App\Adherent\Tag\TagEnum;
-use App\Adherent\Tag\TagTranslator;
-use App\JMEFilter\FilterCollectionBuilder;
 use App\JMEFilter\FilterGroup\MilitantFilterGroup;
-use App\Scope\ScopeEnum;
 
-class AdherentTagsFilterBuilder implements FilterBuilderInterface
+class AdherentTagsFilterBuilder extends AbstractTagsFilterBuilder
 {
-    public function __construct(private readonly TagTranslator $translator)
+    protected function init(): void
     {
-    }
-
-    public function supports(string $scope, ?string $feature = null): bool
-    {
-        return \in_array($scope, ScopeEnum::ALL, true);
-    }
-
-    public function build(string $scope, ?string $feature = null): array
-    {
-        return (new FilterCollectionBuilder())
-            ->createSelect('adherent_tags', 'Labels adhérent')
-            ->setChoices($this->getTranslatedChoices())
-            ->getFilters()
-        ;
-    }
-
-    public function getTranslatedChoices(): array
-    {
-        $choices = [];
-        foreach (TagEnum::getAdherentTags() as $tag) {
-            $choices[$tag] = $this->translator->trans($tag);
-        }
-
-        return $choices;
+        $this->tags = TagEnum::getAdherentTags();
+        $this->fieldName = 'adherent_tags';
+        $this->fieldLabel = 'Labels adhérent';
     }
 
     public function getGroup(): string

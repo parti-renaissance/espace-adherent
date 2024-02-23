@@ -205,6 +205,21 @@ class ManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
+        if ($filter->staticTags) {
+            $staticTag = $filter->staticTags;
+            $operator = 'LIKE';
+
+            if (str_ends_with($staticTag, '--')) {
+                $operator = 'NOT LIKE';
+                $staticTag = substr($staticTag, 0, -2);
+            }
+
+            $qb
+                ->andWhere(sprintf('u.tags %s :static_tag', $operator))
+                ->setParameter('static_tag', '%'.$staticTag.'%')
+            ;
+        }
+
         $restrictionsExpression = $qb->expr()->orX();
 
         if ($committees = $filter->getCommitteeUuids()) {

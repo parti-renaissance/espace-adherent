@@ -88,6 +88,11 @@ class ManagedUsersFilter
 
     /**
      * @Groups({"filter_write"})
+     */
+    public ?string $staticTags = null;
+
+    /**
+     * @Groups({"filter_write"})
      *
      * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, multiple=true)
      */

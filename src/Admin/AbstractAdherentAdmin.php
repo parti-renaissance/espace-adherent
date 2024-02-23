@@ -662,44 +662,17 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ->add('tags_adherents', AdherentTagFilter::class, [
                 'label' => 'Labels adhérents',
                 'show_filter' => true,
-                'field_options' => [
-                    'choices' => TagEnum::getAdherentTags(),
-                    'choice_label' => function (string $tag) {
-                        $label = $this->tagTranslator->trans($tag, false);
-
-                        if ($count = substr_count($tag, ':')) {
-                            return sprintf(
-                                '•%s%s',
-                                str_repeat("\u{a0}", $count * 4),
-                                $label
-                            );
-                        }
-
-                        return $label;
-                    },
-                    'multiple' => true,
-                ],
+                'tags' => TagEnum::getAdherentTags(),
             ])
             ->add('tags_elected', AdherentTagFilter::class, [
                 'label' => 'Labels élus',
                 'show_filter' => true,
-                'field_options' => [
-                    'choices' => TagEnum::getElectTags(),
-                    'choice_label' => function (string $tag) {
-                        $label = $this->tagTranslator->trans($tag, false);
-
-                        if ($count = substr_count($tag, ':')) {
-                            return sprintf(
-                                '•%s%s',
-                                str_repeat("\u{a0}", $count * 4),
-                                $label
-                            );
-                        }
-
-                        return $label;
-                    },
-                    'multiple' => true,
-                ],
+                'tags' => TagEnum::getElectTags(),
+            ])
+            ->add('tags_static', AdherentTagFilter::class, [
+                'label' => 'Labels statiques',
+                'show_filter' => true,
+                'tags' => TagEnum::getStaticTags(),
             ])
             ->add('zones', ZoneAutocompleteFilter::class, [
                 'label' => 'Périmètres géographiques',

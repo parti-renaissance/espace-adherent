@@ -29,10 +29,7 @@ class TagEnum extends Enum
     public const ELU_COTISATION_NOK = 'elu:cotisation_nok';
     public const ELU_EXEMPTE_ET_ADHERENT_COTISATION_NOK = 'elu:exempte_et_adherent_cotisation_nok';
 
-    public static function getTags(): array
-    {
-        return array_merge(self::getAdherentTags(), self::getElectTags());
-    }
+    public const MEETING_LILLE_09_03 = 'meeting_lille_09_03';
 
     public static function getAdherentTags(): array
     {
@@ -74,60 +71,16 @@ class TagEnum extends Enum
         ];
     }
 
-    public static function getMCTagLabels(): array
+    public static function getStaticTags(): array
     {
         return [
-            self::ADHERENT => 'adherent',
-            self::SYMPATHISANT => 'sympathisant',
-            self::SYMPATHISANT_ADHESION_INCOMPLETE => 'sympathisant:adhésion incomplète',
-            self::SYMPATHISANT_COMPTE_EM => 'sympathisant:ancien adhérent En Marche',
-            self::SYMPATHISANT_AUTRE_PARTI => 'sympathisant:adhérent d\'un autre parti',
-            self::ELU => 'elu',
-            self::ELU_ATTENTE_DECLARATION => 'elu:en attente de déclaration',
-            self::ELU_COTISATION_OK => 'elu:à jour de cotisation',
-            self::ELU_COTISATION_OK_EXEMPTE => 'elu:à jour de cotisation:exempté de cotisation',
-            self::ELU_COTISATION_OK_NON_SOUMIS => 'elu:à jour de cotisation:non soumis à cotisation',
-            self::ELU_COTISATION_OK_SOUMIS => 'elu:à jour de cotisation:soumis à cotisation',
-            self::ELU_COTISATION_NOK => 'elu:non à jour de cotisation',
-            self::ELU_EXEMPTE_ET_ADHERENT_COTISATION_NOK => 'elu:exempté mais pas à jour de cotisation adhérent',
+            self::MEETING_LILLE_09_03,
         ];
     }
 
     public static function getAdherentYearTag(?int $year = null): string
     {
         return sprintf(self::ADHERENT_YEAR_TAG_PATTERN, $year ?? date('Y'));
-    }
-
-    public static function getReducedTags(array $allTags): array
-    {
-        $reducedTags = [];
-
-        foreach ($allTags as $tag) {
-            $found = false;
-
-            foreach ($allTags as $tmpTag) {
-                if (str_contains($tmpTag, $tag.':')) {
-                    $found = true;
-                    break;
-                }
-            }
-
-            if (!$found) {
-                $reducedTags[] = $tag;
-            }
-        }
-
-        usort($reducedTags, static function (string $tag): int {
-            if (str_starts_with('adherent', $tag)) {
-                return 1;
-            } elseif (str_starts_with('sympathisant', $tag)) {
-                return 0;
-            } else {
-                return -1;
-            }
-        });
-
-        return $reducedTags;
     }
 
     public static function includesTag(string $searchTag, array $previousTags): bool
