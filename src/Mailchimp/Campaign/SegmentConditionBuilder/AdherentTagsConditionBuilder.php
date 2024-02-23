@@ -60,7 +60,8 @@ class AdherentTagsConditionBuilder implements SegmentConditionBuilderInterface
                 $operator = 'notcontain';
                 $staticTag = substr($staticTag, 0, -2);
             }
-            $tagValue = $this->transformTagValue($staticTag);
+
+            $tagValue = $this->tagTranslator->trans($staticTag);
 
             $conditions[] = [
                 'condition_type' => 'TextMerge',
