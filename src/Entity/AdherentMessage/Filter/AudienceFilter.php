@@ -132,6 +132,13 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     public ?string $electTags = null;
 
     /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"adherent_message_update_filter"})
+     */
+    public ?string $staticTags = null;
+
+    /**
      * @Groups({"audience_segment_read"})
      */
     public function getIsCommitteeMember(): ?bool
@@ -293,6 +300,7 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->donatorStatus = null;
         $this->adherentTags = null;
         $this->electTags = null;
+        $this->staticTags = null;
 
         parent::reset();
     }

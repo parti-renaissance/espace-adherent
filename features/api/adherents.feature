@@ -649,6 +649,17 @@ Feature:
                         }
                     },
                     "type": "select"
+                },
+                {
+                    "code": "static_tags",
+                    "label": "Labels statiques",
+                    "options": {
+                        "choices": {
+                            "meeting_lille_09_03": "Meeting Lille 09\/03\/24",
+                            "meeting_lille_09_03--": "Non inscrit au Meeting Lille 09\/03\/24"
+                        }
+                    },
+                    "type": "select"
                 }
             ]
         },

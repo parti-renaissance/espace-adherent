@@ -37,10 +37,15 @@ abstract class AbstractCallbackDecoratorFilter extends Filter
         return [$type, array_merge(
             $options,
             array_intersect_key(
-                $this->getOptions(),
+                $this->getFilterOptionsForRendering(),
                 array_flip(['field_type', 'field_options', 'operator_type', 'operator_options', 'label']),
             ),
         )];
+    }
+
+    protected function getFilterOptionsForRendering(): array
+    {
+        return $this->getOptions();
     }
 
     abstract protected function getInitialFilterOptions(): array;

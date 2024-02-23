@@ -3,39 +3,15 @@
 namespace App\JMEFilter\FilterBuilder;
 
 use App\Adherent\Tag\TagEnum;
-use App\Adherent\Tag\TagTranslator;
-use App\JMEFilter\FilterCollectionBuilder;
 use App\JMEFilter\FilterGroup\ElectedRepresentativeFilterGroup;
-use App\Scope\ScopeEnum;
 
-class ElectTagsFilterBuilder implements FilterBuilderInterface
+class ElectTagsFilterBuilder extends AbstractTagsFilterBuilder
 {
-    public function __construct(private readonly TagTranslator $translator)
+    protected function init(): void
     {
-    }
-
-    public function supports(string $scope, ?string $feature = null): bool
-    {
-        return \in_array($scope, ScopeEnum::ALL, true);
-    }
-
-    public function build(string $scope, ?string $feature = null): array
-    {
-        return (new FilterCollectionBuilder())
-            ->createSelect('elect_tags', 'Labels élu')
-            ->setChoices($this->getTranslatedChoices())
-            ->getFilters()
-        ;
-    }
-
-    public function getTranslatedChoices(): array
-    {
-        $choices = [];
-        foreach (TagEnum::getElectTags() as $tag) {
-            $choices[$tag] = $this->translator->trans($tag);
-        }
-
-        return $choices;
+        $this->tags = TagEnum::getElectTags();
+        $this->fieldName = 'elect_tags';
+        $this->fieldLabel = 'Labels élu';
     }
 
     public function getGroup(): string

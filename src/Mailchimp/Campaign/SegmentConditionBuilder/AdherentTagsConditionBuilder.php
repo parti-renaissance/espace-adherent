@@ -54,6 +54,22 @@ class AdherentTagsConditionBuilder implements SegmentConditionBuilderInterface
             ];
         }
 
+        if ($staticTag = $filter->staticTags) {
+            $operator = 'contains';
+            if (str_ends_with($staticTag, '--')) {
+                $operator = 'notcontain';
+                $staticTag = substr($staticTag, 0, -2);
+            }
+            $tagValue = $this->transformTagValue($staticTag);
+
+            $conditions[] = [
+                'condition_type' => 'TextMerge',
+                'op' => $operator,
+                'field' => MemberRequest::MERGE_FIELD_ADHERENT_TAGS,
+                'value' => $tagValue,
+            ];
+        }
+
         return $conditions;
     }
 

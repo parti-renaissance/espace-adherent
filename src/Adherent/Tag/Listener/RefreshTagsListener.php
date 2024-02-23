@@ -3,8 +3,10 @@
 namespace App\Adherent\Tag\Listener;
 
 use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
+use App\Entity\Adherent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
+use App\NationalEvent\NewNationalEventInscriptionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -20,11 +22,25 @@ class RefreshTagsListener implements EventSubscriberInterface
             UserEvents::USER_CREATED => 'updateAdherentTags',
             UserEvents::USER_VALIDATED => 'updateAdherentTags',
             UserEvents::USER_UPDATED_IN_ADMIN => 'updateAdherentTags',
+
+            NewNationalEventInscriptionEvent::class => 'postEventInscription',
         ];
+    }
+
+    public function postEventInscription(NewNationalEventInscriptionEvent $event): void
+    {
+        if ($event->eventInscription->adherent) {
+            $this->dispatch($event->eventInscription->adherent);
+        }
     }
 
     public function updateAdherentTags(UserEvent $event): void
     {
-        $this->bus->dispatch(new RefreshAdherentTagCommand($event->getUser()->getUuid()));
+        $this->dispatch($event->getUser());
+    }
+
+    private function dispatch(Adherent $adherent): void
+    {
+        $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
     }
 }

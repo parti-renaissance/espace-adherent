@@ -2,13 +2,23 @@
 
 namespace App\Admin\Filter;
 
+use App\Adherent\Tag\TagTranslator;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\Type\Operator\ContainsOperatorType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class AdherentTagFilter extends AbstractCallbackDecoratorFilter
 {
+    private TagTranslator $tagTranslator;
+
+    #[Required]
+    public function setTagTranslator(TagTranslator $tagTranslator): void
+    {
+        $this->tagTranslator = $tagTranslator;
+    }
+
     protected function getInitialFilterOptions(): array
     {
         return [
@@ -35,6 +45,33 @@ class AdherentTagFilter extends AbstractCallbackDecoratorFilter
 
                 return true;
             },
+            'field_options' => [
+                'multiple' => true,
+                'choice_label' => function (string $tag) {
+                    $label = $this->tagTranslator->trans($tag, false);
+
+                    if ($count = substr_count($tag, ':')) {
+                        return sprintf(
+                            '•%s%s',
+                            str_repeat("\u{a0}", $count * 4),
+                            $label
+                        );
+                    }
+
+                    return $label;
+                },
+            ],
         ];
+    }
+
+    protected function getFilterOptionsForRendering(): array
+    {
+        $filterOptions = $this->getOptions();
+
+        if (!empty($filterOptions['tags'])) {
+            $filterOptions['field_options']['choices'] = $filterOptions['tags'];
+        }
+
+        return $filterOptions;
     }
 }
