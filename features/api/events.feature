@@ -1615,31 +1615,43 @@ Feature:
         "items": [
             {
                 "subscription_date": "@string@.isDateTime()",
-                "type": "adherent",
+                "type": "sympathisant",
                 "first_name": "Referent",
                 "last_name": "Referent",
-                "postal_code": "77000"
+                "postal_code": "77000",
+                "email_address": "referent@en-marche-dev.fr",
+                "phone": "+33 6 73 65 43 49",
+                "tags": []
             },
             {
                 "subscription_date": "@string@.isDateTime()",
-                "type": "adherent",
+                "type": "sympathisant",
                 "first_name": "Francis",
                 "last_name": "Brioul",
-                "postal_code": "77000"
+                "postal_code": "77000",
+                "email_address": "francis.brioul@yahoo.com",
+                "phone": "+33 6 73 65 43 49",
+                "tags": []
             },
             {
                 "subscription_date": "@string@.isDateTime()",
-                "type": "user",
+                "type": "sympathisant",
                 "first_name": "Simple",
                 "last_name": "User",
-                "postal_code": "8057"
+                "postal_code": "8057",
+                "email_address": "simple-user@example.ch",
+                "phone": null,
+                "tags": []
             },
             {
                 "subscription_date": "@string@.isDateTime()",
                 "type": "contact",
                 "first_name": "Marie",
                 "last_name": "CLAIRE",
-                "postal_code": null
+                "postal_code": null,
+                "email_address": "marie.claire@test.com",
+                "phone": null,
+                "tags": []
             }
         ]
     }

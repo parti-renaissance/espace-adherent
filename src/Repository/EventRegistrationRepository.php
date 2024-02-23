@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
+use App\Adherent\Tag\TagEnum;
 use App\Collection\EventRegistrationCollection;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
@@ -198,12 +199,9 @@ class EventRegistrationRepository extends ServiceEntityRepository
         );
     }
 
-    public function iterateByEvent(BaseEvent $event): iterable
+    public function iterateByEvent(BaseEvent $event): \Iterator
     {
-        return $this->createQueryBuilderByEvent($event)
-            ->getQuery()
-            ->iterate()
-        ;
+        return $this->createQueryBuilderByEvent($event)->getQuery()->iterate();
     }
 
     private function createQueryBuilderByEvent(BaseEvent $event): QueryBuilder
@@ -211,10 +209,13 @@ class EventRegistrationRepository extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('event_registration')
             ->select('event_registration.createdAt AS subscription_date')
-            ->addSelect('IF(adherent.id IS NOT NULL, IF(adherent.adherent = :true, \'adherent\', \'user\'), \'contact\') AS type')
+            ->addSelect('IF(adherent.id IS NOT NULL, IF(adherent.tags LIKE :adherent_tag, \'adherent\', \'sympathisant\'), \'contact\') AS type')
             ->addSelect('IF(adherent.id IS NOT NULL, adherent.firstName, event_registration.firstName) AS first_name')
             ->addSelect('IF(adherent.id IS NOT NULL, adherent.lastName, event_registration.lastName) AS last_name')
             ->addSelect('IF(adherent.id IS NOT NULL, adherent.postAddress.postalCode, event_registration.postalCode) AS postal_code')
+            ->addSelect('IF(adherent.id IS NOT NULL, adherent.emailAddress, event_registration.emailAddress) AS email_address')
+            ->addSelect('adherent.phone')
+            ->addSelect('adherent.tags')
             ->leftJoin(
                 Adherent::class,
                 'adherent',
@@ -223,8 +224,10 @@ class EventRegistrationRepository extends ServiceEntityRepository
             )
             ->where('event_registration.event = :event')
             ->orderBy('event_registration.createdAt', 'ASC')
-            ->setParameter('event', $event)
-            ->setParameter('true', true)
+            ->setParameters([
+                'event' => $event,
+                'adherent_tag' => '%'.TagEnum::ADHERENT.':%',
+            ])
         ;
     }
 

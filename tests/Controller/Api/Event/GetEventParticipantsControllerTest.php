@@ -40,15 +40,15 @@ class GetEventParticipantsControllerTest extends AbstractApiTestCase
 
         self::assertSame('application/vnd.ms-excel', $response->headers->get('Content-Type'));
         self::assertMatchesRegularExpression(
-            '/^attachment; filename="inscrits_a_l_evenement_[\d-]{10}-nouvel-evenement-online_[\d]{14}.xls"$/',
+            '/^attachment; filename="nouvel-evenement-online_\d{4}-[\d]{2}-[\d]{2}.xls"$/',
             $response->headers->get('Content-Disposition')
         );
 
         $this->assertStringContainsString('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name=ProgId content=Excel.Sheet><meta name=Generator content="https://github.com/sonata-project/exporter"></head>', $responseContent);
-        $this->assertStringContainsString('<body><table><tr><th>Date d\'inscription</th><th>Prénom</th><th>Nom</th><th>Code postal</th></tr>', $responseContent);
-        $this->assertStringContainsString('</td><td>Referent</td><td>Referent</td><td>77000</td></tr>', $responseContent);
-        $this->assertStringContainsString('<td>Francis</td><td>Brioul</td><td>77000</td></tr>', $responseContent);
-        $this->assertStringContainsString('<td>Simple</td><td>User</td><td>8057</td></tr>', $responseContent);
-        $this->assertStringContainsString('<td>Marie</td><td>CLAIRE</td><td></td></tr></table></body></html>', $responseContent);
+        $this->assertStringContainsString('<body><table><tr><th>Prénom</th><th>Nom</th><th>Email</th><th>Labels</th><th>Code postal</th><th>Téléphone</th><th>Date d\'inscription</th></tr>', $responseContent);
+        $this->assertStringContainsString('<tr><td>Referent</td><td>Referent</td><td>referent@en-marche-dev.fr</td><td></td><td>77000</td><td>+33 6 73 65 43 49</td>', $responseContent);
+        $this->assertStringContainsString('<tr><td>Francis</td><td>Brioul</td><td>francis.brioul@yahoo.com</td><td></td><td>77000</td><td>+33 6 73 65 43 49</td>', $responseContent);
+        $this->assertStringContainsString('<tr><td>Simple</td><td>User</td><td>simple-user@example.ch</td><td></td><td>8057</td><td></td>', $responseContent);
+        $this->assertStringContainsString('<tr><td>Marie</td><td>CLAIRE</td><td>marie.claire@test.com</td><td></td><td></td><td></td>', $responseContent);
     }
 }
