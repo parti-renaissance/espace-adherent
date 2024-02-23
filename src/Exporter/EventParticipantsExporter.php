@@ -2,8 +2,10 @@
 
 namespace App\Exporter;
 
+use App\Adherent\Tag\TagTranslator;
 use App\Entity\Event\BaseEvent;
 use App\Repository\EventRegistrationRepository;
+use App\Utils\PhoneNumberUtils;
 use Cocur\Slugify\Slugify;
 use Sonata\Exporter\Exporter as SonataExporter;
 use Sonata\Exporter\Source\IteratorCallbackSourceIterator;
@@ -11,13 +13,11 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EventParticipantsExporter
 {
-    private EventRegistrationRepository $eventRegistrationRepository;
-    private SonataExporter $exporter;
-
-    public function __construct(EventRegistrationRepository $eventRegistrationRepository, SonataExporter $exporter)
-    {
-        $this->eventRegistrationRepository = $eventRegistrationRepository;
-        $this->exporter = $exporter;
+    public function __construct(
+        private readonly TagTranslator $tagTranslator,
+        private readonly EventRegistrationRepository $eventRegistrationRepository,
+        private readonly SonataExporter $exporter
+    ) {
     }
 
     public function export(BaseEvent $event, string $format): StreamedResponse
@@ -25,9 +25,9 @@ class EventParticipantsExporter
         return $this->exporter->getResponse(
             $format,
             sprintf(
-                'inscrits_a_l_evenement_%s_%s.%s',
-                (new Slugify())->slugify($event->getSlug()),
-                (new \DateTime())->format('YmdHis'),
+                '%s_%s.%s',
+                (new Slugify())->slugify($event->getName()),
+                (new \DateTime())->format('Y-m-d'),
                 $format
             ),
             new IteratorCallbackSourceIterator(
@@ -36,10 +36,13 @@ class EventParticipantsExporter
                     $registration = array_shift($data);
                     $row = [];
 
-                    $row['Date d\'inscription'] = $registration['subscription_date']->format('Y-m-d H:i:s');
                     $row['Prénom'] = $registration['first_name'];
                     $row['Nom'] = $registration['last_name'];
+                    $row['Email'] = $registration['email_address'];
+                    $row['Labels'] = implode(', ', array_map(fn (string $tag) => $this->tagTranslator->trans($tag, false), $registration['tags'] ?? []));
                     $row['Code postal'] = $registration['postal_code'];
+                    $row['Téléphone'] = PhoneNumberUtils::format($registration['phone']);
+                    $row['Date d\'inscription'] = $registration['subscription_date']->format('Y-m-d H:i:s');
 
                     return $row;
                 })
