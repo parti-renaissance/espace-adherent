@@ -38,6 +38,7 @@ use App\Membership\AdherentEvents;
 use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
+use App\Query\Mysql\Sluggify;
 use App\Repository\Instance\InstanceQualityRepository;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
 use App\Utils\PhoneNumberUtils;
@@ -602,7 +603,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
 
                     $conditions = $qb->expr()->orX();
 
-                    $searchCharactersPattern = '/[^a-zA-Z0-9]+/';
+                    $searchCharactersPattern = '/'.Sluggify::REGEXP_PATTERN.'/';
 
                     preg_match('/(?<first>[^\s]*)[\s]*(?<last>.*)/', $search, $tokens);
 

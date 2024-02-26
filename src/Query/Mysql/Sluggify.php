@@ -9,6 +9,8 @@ use Doctrine\ORM\Query\SqlWalker;
 
 class Sluggify extends FunctionNode
 {
+    public const REGEXP_PATTERN = '[^a-zA-Z0-9]+';
+
     private $firstExpression;
 
     public function parse(Parser $parser)
@@ -22,8 +24,9 @@ class Sluggify extends FunctionNode
     public function getSql(SqlWalker $sqlWalker)
     {
         return sprintf(
-            "REGEXP_REPLACE(%s, '[^a-zA-Z0-9]+', '')",
-            $this->firstExpression->dispatch($sqlWalker)
+            "REGEXP_REPLACE(%s, '%s', '')",
+            $this->firstExpression->dispatch($sqlWalker),
+            self::REGEXP_PATTERN
         );
     }
 }
