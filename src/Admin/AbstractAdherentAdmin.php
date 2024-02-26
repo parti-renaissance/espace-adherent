@@ -602,37 +602,39 @@ class AbstractAdherentAdmin extends AbstractAdmin
 
                     $conditions = $qb->expr()->orX();
 
-                    preg_match('/(?<first>.*) (?<last>.*)/', $search, $tokens);
+                    $searchCharactersPattern = '/[^a-zA-Z0-9]+/';
+
+                    preg_match('/(?<first>[^\s]*)[\s]*(?<last>.*)/', $search, $tokens);
 
                     if (\array_key_exists('first', $tokens) && \array_key_exists('last', $tokens)) {
                         $conditions
-                            ->add("($alias.firstName LIKE :search_first_token AND $alias.lastName LIKE :search_last_token)")
-                            ->add("($alias.firstName LIKE :search_last_token AND $alias.lastName LIKE :search_first_token)")
-                            ->add("($alias.emailAddress LIKE :search_first_token AND $alias.emailAddress LIKE :search_last_token)")
+                            ->add("SLUGGIFY($alias.firstName) LIKE :search_first_token AND SLUGGIFY($alias.lastName) LIKE :search_last_token")
+                            ->add("SLUGGIFY($alias.firstName) LIKE :search_last_token AND SLUGGIFY($alias.lastName) LIKE :search_first_token")
+                            ->add("SLUGGIFY($alias.emailAddress) LIKE :search_first_token AND SLUGGIFY($alias.emailAddress) LIKE :search_last_token")
                         ;
 
                         $qb
-                            ->setParameter('search_first_token', '%'.$tokens['first'].'%')
-                            ->setParameter('search_last_token', '%'.$tokens['last'].'%')
+                            ->setParameter('search_first_token', '%'.preg_replace($searchCharactersPattern, '', $tokens['first']).'%')
+                            ->setParameter('search_last_token', '%'.preg_replace($searchCharactersPattern, '', $tokens['last']).'%')
                         ;
                     } else {
                         $conditions
-                            ->add("$alias.firstName LIKE :search")
-                            ->add("$alias.lastName LIKE :search")
-                            ->add("$alias.emailAddress LIKE :search")
+                            ->add("SLUGGIFY($alias.firstName) LIKE :slug_search")
+                            ->add("SLUGGIFY($alias.lastName) LIKE :slug_search")
+                            ->add("SLUGGIFY($alias.emailAddress) LIKE :slug_search")
                         ;
                     }
 
                     $conditions
-                        ->add("REPLACE(REPLACE($alias.phone, ' ', ''), '+', '') LIKE REPLACE(REPLACE(:search, ' ', ''), '+', '')")
+                        ->add("SLUGGIFY($alias.phone) LIKE :slug_search")
                         ->add("$alias.id = REPLACE(:strict_search, ' ', '')")
                         ->add("$alias.uuid = :strict_search")
                     ;
 
                     $qb
                         ->andWhere($conditions)
-                        ->setParameter('search', "%$search%")
                         ->setParameter('strict_search', $search)
+                        ->setParameter('slug_search', '%'.preg_replace($searchCharactersPattern, '', $search).'%')
                     ;
 
                     return true;
