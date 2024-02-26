@@ -16,16 +16,24 @@ class PaymentImporter
     ) {
     }
 
-    public function getPaymentsCount(): int
+    public function getPaymentsCount(array $options = [], ?Contact $contact = null): int
     {
-        $payments = $this->client->getPayments(1);
+        if ($contact) {
+            $options['contact_id'] = $contact->ohmeIdentifier;
+        }
+
+        $payments = $this->client->getPayments(1, 0, $options);
 
         return $payments['count'] ?? 0;
     }
 
-    public function importPayments(int $limit = 100, int $offset = 0): void
+    public function importPayments(int $limit = 100, int $offset = 0, array $options = [], ?Contact $contact = null): void
     {
-        $payments = $this->client->getPayments($limit, $offset);
+        if ($contact) {
+            $options['contact_id'] = $contact->ohmeIdentifier;
+        }
+
+        $payments = $this->client->getPayments($limit, $offset, $options);
 
         if (empty($payments['data']) || !is_iterable($payments['data'])) {
             return;
@@ -36,10 +44,14 @@ class PaymentImporter
                 continue;
             }
 
-            $contact = $this->findContact((string) $paymentData['contact_id']);
+            $currentContact = $contact;
+
+            if (!$currentContact) {
+                $currentContact = $this->findContact((string) $paymentData['contact_id']);
+            }
 
             // Do not retrieve payments that can't be associated to an adherent
-            if (!$contact || !$contact->adherent) {
+            if (!$currentContact || !$currentContact->adherent) {
                 continue;
             }
 
@@ -50,7 +62,7 @@ class PaymentImporter
             $identifier = (string) $paymentData['id'];
 
             $payment = $this->findPayment($identifier) ?? $this->createPayment($identifier);
-            $payment->adherent = $contact->adherent;
+            $payment->adherent = $currentContact->adherent;
 
             $this->updatePayment($payment, $paymentData);
         }

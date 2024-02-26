@@ -4,6 +4,7 @@ namespace App\Admin\Ohme;
 
 use App\Entity\Adherent;
 use App\Entity\Ohme\Contact;
+use App\Ohme\ContactHandler;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -14,15 +15,20 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\Form\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ContactAdmin extends AbstractAdmin
 {
+    private ?ContactHandler $contactHandler = null;
     private ?Adherent $adherentBeforeUpdate = null;
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection->remove('show');
+        $collection
+            ->remove('show')
+            ->remove('delete')
+        ;
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -31,6 +37,7 @@ class ContactAdmin extends AbstractAdmin
             ->with('Metadonnées 🧱', ['class' => 'col-md-6'])
                 ->add('adherent', ModelAutocompleteType::class, [
                     'label' => 'Adhérent',
+                    'required' => false,
                     'minimum_input_length' => 1,
                     'items_per_page' => 20,
                     'property' => [
@@ -70,9 +77,9 @@ class ContactAdmin extends AbstractAdmin
 
                     if (\array_key_exists('first', $tokens) && \array_key_exists('last', $tokens)) {
                         $conditions
-                            ->add("($alias.firstName LIKE :search_first_token AND $alias.lastName LIKE :search_last_token)")
-                            ->add("($alias.firstName LIKE :search_last_token AND $alias.lastName LIKE :search_first_token)")
-                            ->add("($alias.email LIKE :search_first_token AND $alias.email LIKE :search_last_token)")
+                            ->add("$alias.firstname LIKE :search_first_token AND $alias.lastname LIKE :search_last_token")
+                            ->add("$alias.firstname LIKE :search_last_token AND $alias.lastname LIKE :search_first_token")
+                            ->add("$alias.email LIKE :search_first_token AND $alias.email LIKE :search_last_token")
                         ;
 
                         $qb
@@ -81,15 +88,15 @@ class ContactAdmin extends AbstractAdmin
                         ;
                     } else {
                         $conditions
-                            ->add("$alias.firstName LIKE :search")
-                            ->add("$alias.lastName LIKE :search")
+                            ->add("$alias.firstname LIKE :search")
+                            ->add("$alias.lastname LIKE :search")
                             ->add("$alias.email LIKE :search")
                         ;
                     }
 
                     $conditions
                         ->add("REPLACE(REPLACE($alias.phone, ' ', ''), '+', '') LIKE REPLACE(REPLACE(:search, ' ', ''), '+', '')")
-                        ->add("$alias.identifier = REPLACE(:strict_search, ' ', '')")
+                        ->add("$alias.ohmeIdentifier = REPLACE(:strict_search, ' ', '')")
                     ;
 
                     $qb
@@ -101,13 +108,36 @@ class ContactAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+            ->add('has_adherent', CallbackFilter::class, [
+                'label' => 'Lié à un adhérent ?',
+                'show_filter' => true,
+                'field_type' => BooleanType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    switch ($value->getValue()) {
+                        case BooleanType::TYPE_YES:
+                            $qb->andWhere("$alias.adherent IS NOT NULL");
+
+                            break;
+                        case BooleanType::TYPE_NO:
+                            $qb->andWhere("$alias.adherent IS NULL");
+
+                            break;
+                    }
+
+                    return true;
+                },
+            ])
         ;
     }
 
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->addIdentifier('fullname', null, [
+            ->add('fullname', null, [
                 'label' => 'Nom',
                 'virtual_field' => true,
                 'template' => 'admin/ohme/contact/list_fullname.html.twig',
@@ -117,10 +147,11 @@ class ContactAdmin extends AbstractAdmin
                 'virtual_field' => true,
                 'template' => 'admin/ohme/contact/list_address.html.twig',
             ])
-            ->add('ohmeDates', null, [
-                'label' => 'Dates (Ohme)',
-                'virtual_field' => true,
-                'template' => 'admin/ohme/contact/list_ohme_dates.html.twig',
+            ->add('ohmeCreatedAt', null, [
+                'label' => 'Créé le',
+            ])
+            ->add('ohmeUpdatedAt', null, [
+                'label' => 'Modifié le',
             ])
             ->add('adherent', null, [
                 'label' => 'Adhérent',
@@ -156,7 +187,15 @@ class ContactAdmin extends AbstractAdmin
     protected function preUpdate(object $object): void
     {
         if ($this->adherentBeforeUpdate !== $object->adherent) {
-            // $this->contactHandler->updateAdherentLink($object);
+            $this->contactHandler->updateAdherentLink($object);
         }
+    }
+
+    /**
+     * @required
+     */
+    public function setContactHandler(ContactHandler $contactHandler): void
+    {
+        $this->contactHandler = $contactHandler;
     }
 }

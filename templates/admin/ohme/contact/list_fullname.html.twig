@@ -1,7 +1,7 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {{ object.firstname }} {{ object.lastname }}
+    <b>{{ object.firstname }} {{ object.lastname }}</b>
 
     {% if object.email %}
         <br>

@@ -27,6 +27,6 @@ framework:
                 base_uri: 'https://api-ohme.oneheart.fr/api/v1/'
                 timeout: 60
                 headers:
+                    'Accept': 'application/json'
                     'client-name': '%env(OHME_CLIENT_NAME)%'
                     'client-secret': '%env(OHME_CLIENT_SECRET)%'
-                    'accept': 'application/json'

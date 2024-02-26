@@ -15,16 +15,16 @@ class ContactImporter
     ) {
     }
 
-    public function getContactsCount(): int
+    public function getContactsCount(array $options = []): int
     {
-        $contacts = $this->client->getContacts(1);
+        $contacts = $this->client->getContacts(1, 0, $options);
 
         return $contacts['count'] ?? 0;
     }
 
-    public function importContacts(int $limit = 100, int $offset = 0): void
+    public function importContacts(int $limit = 100, int $offset = 0, array $options = []): void
     {
-        $contacts = $this->client->getContacts($limit, $offset);
+        $contacts = $this->client->getContacts($limit, $offset, $options);
 
         if (empty($contacts['data']) || !is_iterable($contacts['data'])) {
             return;
