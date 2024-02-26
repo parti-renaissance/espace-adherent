@@ -9,3 +9,8 @@ framework:
             policy: 'sliding_window'
             limit: 3
             interval: '5 minutes'
+
+        ohme_api_request:
+            policy: 'fixed_window'
+            limit: 100
+            interval: '1 minute'

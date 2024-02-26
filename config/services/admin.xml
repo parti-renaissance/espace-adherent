@@ -864,6 +864,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.ohme_contact" class="App\Admin\Ohme\ContactAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Ohme » Contacts" group="Finances" />
+
+            <argument />
+            <argument>App\Entity\Ohme\Contact</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Tech

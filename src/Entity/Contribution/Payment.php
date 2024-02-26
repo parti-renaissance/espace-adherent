@@ -12,7 +12,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Contribution\PaymentRepository")
  * @ORM\Table(name="contribution_payment")
  */
 class Payment
@@ -30,7 +30,7 @@ class Payment
      *
      * @Groups({"adherent_elect_read"})
      */
-    public ?\DateTime $date = null;
+    public ?\DateTimeInterface $date = null;
 
     /**
      * @ORM\Column(length=50)
