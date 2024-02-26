@@ -81,9 +81,10 @@ class AdherentAdmin extends AbstractAdherentAdmin
                 'template' => 'admin/adherent/list_postaddress.html.twig',
                 'header_style' => 'min-width: 75px',
             ])
-            ->add('referentTags', null, [
-                'label' => 'Tags souscrits',
-                'associated_property' => 'code',
+            ->add('committee', null, [
+                'label' => 'Comité',
+                'virtual_field' => true,
+                'template' => 'admin/adherent/list_committee.html.twig',
             ])
         ;
 
@@ -91,7 +92,7 @@ class AdherentAdmin extends AbstractAdherentAdmin
             'id',
             'lastName',
             'postAddress',
-            'referentTags',
+            'committee',
             'registeredAt',
             'lastMembershipDonation',
             'lastLoggedAt',
