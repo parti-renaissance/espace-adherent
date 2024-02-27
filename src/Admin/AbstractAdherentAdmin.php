@@ -12,11 +12,13 @@ use App\Admin\Filter\AdherentRoleFilter;
 use App\Admin\Filter\AdherentTagFilter;
 use App\Admin\Filter\PostalCodeFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
+use App\Committee\CommitteeMembershipManager;
 use App\Contribution\ContributionStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\BoardMember\Role;
+use App\Entity\Committee;
 use App\Entity\Instance\InstanceQuality;
 use App\Entity\SubscriptionType;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
@@ -28,6 +30,7 @@ use App\Form\Admin\AdherentZoneBasedRoleType;
 use App\Form\Admin\ElectedRepresentativeAdherentMandateType;
 use App\Form\Admin\JecouteManagedAreaType;
 use App\Form\EventListener\BoardMemberListener;
+use App\Form\EventListener\CommitteeMembershipListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
 use App\FranceCities\FranceCities;
@@ -90,6 +93,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
     protected LoggerInterface $logger;
     protected FranceCities $franceCities;
     private TagTranslator $tagTranslator;
+    private CommitteeMembershipManager $committeeMembershipManager;
 
     /**
      * State of adherent data before update
@@ -291,6 +295,13 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         ->add('agirMembership', null, [
                             'label' => 'Je suis membre d’agir, la droite constructive’',
                             'required' => false,
+                        ])
+                    ->end()
+                    ->with('Comité local', ['class' => 'col-md-6'])
+                        ->add('committee', ModelType::class, [
+                            'label' => 'Comité',
+                            'class' => Committee::class,
+                            'mapped' => false,
                         ])
                     ->end()
                     ->with('Adresse', ['class' => 'col-md-6'])
@@ -534,6 +545,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
 
         if ($this->isGrantedAdherentAdminRole()) {
             $form->getFormBuilder()
+                ->addEventSubscriber(new CommitteeMembershipListener($this->committeeMembershipManager))
                 ->addEventSubscriber(new BoardMemberListener())
                 ->addEventSubscriber(new RevokeManagedAreaSubscriber())
                 ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
@@ -1092,6 +1104,12 @@ class AbstractAdherentAdmin extends AbstractAdmin
     public function setInstanceQualityRepository(InstanceQualityRepository $instanceQualityRepository): void
     {
         $this->instanceQualityRepository = $instanceQualityRepository;
+    }
+
+    /** @required */
+    public function setCommitteeMembershipManager(CommitteeMembershipManager $committeeMembershipManager): void
+    {
+        $this->committeeMembershipManager = $committeeMembershipManager;
     }
 
     protected function isGrantedAdherentAdminRole(): bool

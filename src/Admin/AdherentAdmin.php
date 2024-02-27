@@ -2,8 +2,13 @@
 
 namespace App\Admin;
 
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 
 class AdherentAdmin extends AbstractAdherentAdmin
 {
@@ -71,6 +76,39 @@ class AdherentAdmin extends AbstractAdherentAdmin
         return $actions;
     }
 
+    protected function configureDatagridFilters(DatagridMapper $filter): void
+    {
+        parent::configureDatagridFilters($filter);
+
+        $filter
+            ->add('memberships.committee', CallbackFilter::class, [
+                'label' => 'Comité',
+                'field_type' => ModelAutocompleteType::class,
+                'show_filter' => true,
+                'field_options' => [
+                    'model_manager' => $this->getModelManager(),
+                    'minimum_input_length' => 1,
+                    'items_per_page' => 20,
+                    'property' => 'name',
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $committee = $value->getValue();
+
+                    $qb
+                        ->andWhere("$alias.committee = :committee")
+                        ->setParameter('committee', $committee)
+                    ;
+
+                    return true;
+                },
+            ])
+        ;
+    }
+
     protected function configureListFields(ListMapper $list): void
     {
         parent::configureListFields($list);
@@ -81,9 +119,10 @@ class AdherentAdmin extends AbstractAdherentAdmin
                 'template' => 'admin/adherent/list_postaddress.html.twig',
                 'header_style' => 'min-width: 75px',
             ])
-            ->add('referentTags', null, [
-                'label' => 'Tags souscrits',
-                'associated_property' => 'code',
+            ->add('committee', null, [
+                'label' => 'Comité',
+                'virtual_field' => true,
+                'template' => 'admin/adherent/list_committee.html.twig',
             ])
         ;
 
@@ -91,7 +130,7 @@ class AdherentAdmin extends AbstractAdherentAdmin
             'id',
             'lastName',
             'postAddress',
-            'referentTags',
+            'committee',
             'registeredAt',
             'lastMembershipDonation',
             'lastLoggedAt',

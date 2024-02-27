@@ -355,6 +355,9 @@ class CommitteeMembership implements UuidEntityInterface
 
     public function isManual(): bool
     {
-        return CommitteeMembershipTriggerEnum::MANUAL === $this->trigger;
+        return \in_array($this->trigger, [
+            CommitteeMembershipTriggerEnum::MANUAL,
+            CommitteeMembershipTriggerEnum::ADMIN,
+        ], true);
     }
 }
