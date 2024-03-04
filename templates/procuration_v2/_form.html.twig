@@ -1,6 +1,15 @@
 {% extends 'procuration_v2/_layout.html.twig' %}
+{% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
-{% block additional_content %}
+{% block final_javascripts %}
+    <script type="module" src="{{ asset('js/friendlycaptcha.widget-0.9.14.module.min.js') }}" async defer></script>
+
+    <script>
+        Bootstrap.onLoad(() => Main.runNationaleEventPage());
+    </script>
+{% endblock %}
+
+{% block content_section %}
     {{ form_start(form) }}
         <div class="flex gap-8 flex-col p-0 sm:p-5">
             {% if form.vars.errors|length > 0 %}
