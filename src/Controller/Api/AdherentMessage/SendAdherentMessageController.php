@@ -6,6 +6,7 @@ use App\AdherentMessage\AdherentMessageManager;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 #[Security("is_granted('ROLE_MESSAGE_REDACTOR') and (message.getAuthor() == user or user.hasDelegatedFromUser(message.getAuthor(), 'messages'))")]
@@ -15,7 +16,7 @@ class SendAdherentMessageController extends AbstractController
     {
     }
 
-    public function __invoke(AbstractAdherentMessage $message)
+    public function __invoke(AbstractAdherentMessage $message): Response
     {
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('The message is not yet ready to send.');

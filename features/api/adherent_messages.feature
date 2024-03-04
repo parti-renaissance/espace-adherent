@@ -195,7 +195,13 @@ Feature:
       "recipient_count": 0,
       "preview_link": null,
       "source": "api",
-      "synchronized": false
+      "synchronized": false,
+      "author": {
+        "uuid": "@uuid@",
+        "first_name": "Jules",
+        "last_name": "Fullstack",
+        "email_address": "je-mengage-user-1@en-marche-dev.fr"
+      }
     }
     """
     Examples:
@@ -227,7 +233,13 @@ Feature:
         "recipient_count": 0,
         "preview_link": null,
         "source": "api",
-        "synchronized": false
+        "synchronized": false,
+        "author": {
+            "uuid": "@uuid@",
+            "first_name": "Referent",
+            "last_name": "Referent",
+            "email_address": "referent@en-marche-dev.fr"
+        }
     }
     """
 
@@ -254,7 +266,13 @@ Feature:
         "recipient_count": 0,
         "preview_link": null,
         "source": "api",
-        "synchronized": false
+        "synchronized": false,
+        "author": {
+            "uuid": "@uuid@",
+            "first_name": "Referent",
+            "last_name": "Referent",
+            "email_address": "referent@en-marche-dev.fr"
+        }
     }
     """
     Examples:
@@ -293,7 +311,13 @@ Feature:
       "recipient_count": 0,
       "preview_link": null,
       "source": "api",
-      "synchronized": false
+      "synchronized": false,
+      "author": {
+        "uuid": "@uuid@",
+        "first_name": "Coordinateur",
+        "last_name": "Coordinateur",
+        "email_address": "coordinateur@en-marche-dev.fr"
+      }
     }
     """
 

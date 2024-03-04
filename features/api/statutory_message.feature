@@ -132,7 +132,13 @@ Feature:
             "status": "draft",
             "recipient_count": 2,
             "preview_link": null,
-            "source": "api"
+            "source": "api",
+            "author": {
+                "uuid": "@uuid@",
+                "first_name": "Damien",
+                "last_name": "Durock",
+                "email_address": "president-ad@renaissance-dev.fr"
+            }
         }
         """
         When I save this response

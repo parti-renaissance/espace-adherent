@@ -196,7 +196,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(unique=true)
      *
-     * @Groups({"user_profile", "profile_read", "elected_representative_read", "adherent_autocomplete", "my_team_read_list"})
+     * @Groups({
+     *     "user_profile",
+     *     "profile_read",
+     *     "elected_representative_read",
+     *     "adherent_autocomplete",
+     *     "my_team_read_list",
+     *     "message_read",
+     * })
      */
     private $emailAddress;
 
