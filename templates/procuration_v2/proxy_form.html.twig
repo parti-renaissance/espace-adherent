@@ -1,11 +1,12 @@
-{% extends 'base_renaissance.html.twig' %}
+{% extends 'procuration_v2/_form.html.twig' %}
 
 {% block page_title 'Procuration - Proposition (Mandataire)' %}
 
-{% block content %}
-    <main class="bg-[#F4F4F7] re_new_ui">
-        Proposition (Mandataire)
+{% block content_title %}
+    Proposition (Mandataire)
+{% endblock %}
 
-        <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
-    </main>
+{% block additional_form %}
+    {{ form_row(form.electorNumber) }}
+    {{ form_row(form.slots) }}
 {% endblock %}
