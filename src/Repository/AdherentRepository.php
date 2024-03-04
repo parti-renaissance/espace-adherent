@@ -44,6 +44,7 @@ use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
@@ -107,6 +108,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 'adherent_tag' => '%'.TagEnum::ADHERENT.'%',
             ])
             ->getQuery()
+            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
             ->getResult()
         ;
     }
@@ -1245,7 +1247,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             'z2'
         );
 
-        return $queryBuilder->getQuery()->getResult();
+        return $queryBuilder->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->getResult();
     }
 
     public function findFullScoresByCampaign(Campaign $campaign, bool $apiContext = false): array
@@ -1433,6 +1435,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->createQueryBuilderForZones($zones, $adherentRenaissance, $sympathizerRenaissance)
             ->select('PARTIAL adherent.{id, uuid, emailAddress, source, firstName, lastName, lastMembershipDonation}')
             ->getQuery()
+            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
             ->getResult()
         ;
     }
@@ -1679,7 +1682,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->setParameters(new ArrayCollection(array_merge($qb->getParameters()->toArray(), $excludedAdherentQueryBuilder->getParameters()->toArray())))
         ;
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->getResult();
     }
 
     public function findAllWithActifLocalMandates(): array
@@ -1696,6 +1699,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 'status' => Adherent::ENABLED,
             ])
             ->getQuery()
+            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
             ->getResult()
         ;
     }

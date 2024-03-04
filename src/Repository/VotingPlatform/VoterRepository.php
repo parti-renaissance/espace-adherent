@@ -9,6 +9,7 @@ use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -119,7 +120,13 @@ class VoterRepository extends ServiceEntityRepository
             ;
         }
 
-        return $queryBuilder->getQuery()->getResult();
+        $query = $queryBuilder->getQuery();
+
+        if ($partial) {
+            $query->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true);
+        }
+
+        return $query->getResult();
     }
 
     /**

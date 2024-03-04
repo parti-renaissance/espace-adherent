@@ -15,12 +15,9 @@ class TransactionalMessageFactory
 {
     public static function createFromAdherentMessage(AdherentMessageInterface $message, array $recipients = []): Message
     {
-        switch ($message::class) {
-            case ReferentInstancesMessage::class:
-                return RenaissanceReferentToInstancesMembershipMessage::create($message, $recipients);
-        }
-
-        if ($message instanceof TransactionalMessageInterface) {
+        if ($message instanceof ReferentInstancesMessage) {
+            return RenaissanceReferentToInstancesMembershipMessage::create($message, $recipients);
+        } elseif ($message instanceof TransactionalMessageInterface) {
             if (AdherentMessageTypeEnum::STATUTORY === $message->getType()) {
                 return StatutoryRenaissanceMessage::create($message, $recipients);
             }

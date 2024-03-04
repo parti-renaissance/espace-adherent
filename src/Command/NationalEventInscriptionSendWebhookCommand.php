@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\NationalEvent\Command\SendWebhookCommand;
 use App\Repository\NationalEvent\EventInscriptionRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -85,7 +86,7 @@ class NationalEventInscriptionSendWebhookCommand extends Command
             ;
         }
 
-        return new Paginator($queryBuilder->getQuery());
+        return new Paginator($queryBuilder->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true));
     }
 
     #[Required]
