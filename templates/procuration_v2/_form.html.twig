@@ -16,9 +16,9 @@
             {% if form.vars.errors|length > 0 %}
                 <twig:ReParagraphStatus status="error" icon class="max-w-[500px]">
                     <ul
-                        {% if form.vars.errors|length > 1 %}
-                            class="list-disc list-inside flex flex-col gap-2.5"
-                        {% endif %}
+                            {% if form.vars.errors|length > 1 %}
+                                class="list-disc list-inside flex flex-col gap-2.5"
+                            {% endif %}
                     >
                         {% for error in form.vars.errors %}
                             <li class="[&>a]:font-medium [&>a]:underline">{{ error.message|raw }}</li>
@@ -29,6 +29,13 @@
 
 
             <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_1" x-data="FirstFormStep">
+                <header class="flex flex-col gap-8">
+                    <h3 class="font-sharp font-semibold text-[2rem]/[normal] text-black neg-letter-spacing--4">
+                        <span class="text-[#00AEEF]">Le 9 juin,</span><br />Je vote<br />deux fois
+                    </h3>
+                    <p class="text-subtitle1">Ça vous dit de voter une 2e fois le neuf juin ? Remplissez ce formulaire et nous vous mettrons en relation avec une personne proche de chez vous qui ne pourra pas voter.</p>
+
+                </header>
                 {{ form_row(form.email, {
                     label: "Mon adresse email",
                     attr: {
@@ -37,17 +44,17 @@
                         validate: "['required', 'email']"
                     }
                 }) }}
-{#                {{ form_row(form.autorisations, {#}
-{#                    label: 'donation.autorisations.label', label_html: true,#}
-{#                    attr: { onCheck:"setFieldValid('autorisations')", validate: "['required']" }#}
-{#                }) }}#}
+                {#                {{ form_row(form.autorisations, {#}
+                {#                    label: 'donation.autorisations.label', label_html: true,#}
+                {#                    attr: { onCheck:"setFieldValid('autorisations')", validate: "['required']" }#}
+                {#                }) }}#}
                 <twig:Molecules:ReCheckboxField
                         id="procuration_proxy_consentDataCollect"
                         name="procuration_proxy[consentDataCollect]"
                         x-on:click="setFieldValid('autorisations')"
                         validate="['required']"
                 > <label for="procuration_proxy_consentDataCollect">
-                    J’ai lu et j’accepte <a class="underline" href="https://parti-renaissance.fr/politique-de-protection-des-donnees"> la politique de protection des données</a> et les mentions d’informations relatives autraitement de mes données ci-dessous.
+                        J’ai lu et j’accepte <a class="underline" href="https://parti-renaissance.fr/politique-de-protection-des-donnees"> la politique de protection des données</a> et les mentions d’informations relatives autraitement de mes données ci-dessous.
                     </label>
                 </twig:Molecules:ReCheckboxField>
                 <div class="w-full re-field-frame !h-auto cursor-pointer"
@@ -63,6 +70,9 @@
             </twig:Atoms:ReCard>
 
             <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_2" x-data="SecondFormStep">
+                <h3 class="font-sharp font-semibold text-[1.25rem]/[normal] text-black neg-letter-spacing--4 pb-4">
+                    Mes informations<br/>personnelles
+                </h3>
                 {{ form_row(form.gender, {
                     label: 'Civilité'
                 }) }}
@@ -75,9 +85,7 @@
                     label: "Nom"
                 }) }}
 
-                {{ form_row(form.address, {
-                    label: 'Adresse postale'
-                }) }}
+
 
 
                 <fieldset class="relative h-[100px]">
@@ -100,6 +108,15 @@
 
                     {{ form_errors(form.birthdate) }}
                 </fieldset>
+
+                {{ form_row(form.address, {
+                    label: 'Adresse postale'
+                }) }}
+
+                <h3 class="font-sharp font-semibold text-[1.25rem]/[normal] text-black neg-letter-spacing--4">
+                    Mes informations d'électeur
+                </h3>
+
                 <fieldset class="flex flex-col gap-8 relative z-10 ">
                     {{ form_row(form.distantVotePlace, {
                         label: 'Vote dans un autre pays que l\'adresse postale ?',
@@ -108,8 +125,9 @@
                     <fieldset>
                         <twig:Atoms:ReLabel>Ma commune / mon pays de vote</twig:Atoms:ReLabel>
                         <twig:Molecules:ReSelect
-                            id="distant_vote_country"
-                            onQuery="getVoteZone"
+                                id="distant_vote_country"
+                                onQuery="getVoteZone"
+                                placeholder="Paris 17e (75017)"
                         />
                         {{ form_row(form.voteZone) }}
                     </fieldset>
@@ -117,20 +135,37 @@
                     <fieldset>
                         <twig:Atoms:ReLabel>Mon bureau de vote</twig:Atoms:ReLabel>
                         <twig:Molecules:ReSelect
-                            id="distant_vote_place"
-                            onQuery="getVotePlace"
+                                id="distant_vote_place"
+                                onQuery="getVotePlace"
+                                placeholder="Mon bureau de vote"
                         />
-                        {{ form_row(form.votePlace) }}
+                        {{ form_row(form.votePlace)}}
                     </fieldset>
                     <fieldset>
                         <twig:Atoms:ReLabel>Mon numéro d’électeur</twig:Atoms:ReLabel>
                         <p class="text-[#555555] opacity-50">Il facilitera la démarche pour vous faire procuration.</p>
-                        {{ form_row(form.electorNumber) }}
+                        {{ form_row(form.electorNumber, {attr: { placeholder: 'Mon numéro d’électeur' }}) }}
+
+                        <p>
+                            Votre bureau de vote et votre numéro d’électeur sont affichés sur votre carte électorale.
+                            <br />
+                            Si vous ne l’avez pas, récupérez ces informations en quelques clics sur le formulaire de situation électorale de l’État.
+                        </p>
+                    </fieldset>
+                    <p>
+                        Votre bureau de vote et votre numéro d’électeur sont affichés sur votre carte électorale.
+                    </p>
+                    <p>
+                        Si vous ne l’avez pas, récupérez ces informations en quelques clics sur le formulaire de situation électorale de l’État.
+                    </p>
+                    <fieldset>
+                        <twig:Atoms:ReLabel>Mon nombre de procurations</twig:Atoms:ReLabel>
+                        <p class="text-[#555555] opacity-50">Lorem ipsum</p>
+                        {{ form_row(form.slots) }}
                     </fieldset>
 
-
-
                 </fieldset>
+                <twig:ReButton color="black" class="w-full" >Déposer ma demande</twig:ReButton>
             </twig:Atoms:ReCard>
 
             <twig:Atoms:ReCard class="max-w-[500px]">
