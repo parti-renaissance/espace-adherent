@@ -10,6 +10,7 @@ use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Membership\MembershipSourceEnum;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -214,6 +215,6 @@ class MailchimpSyncAllAdherentsCommand extends Command
             ;
         }
 
-        return new Paginator($queryBuilder->getQuery());
+        return new Paginator($queryBuilder->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true));
     }
 }

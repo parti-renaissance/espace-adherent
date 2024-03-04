@@ -14,6 +14,7 @@ use App\Entity\ReferentTag;
 use App\Geo\Http\ZoneAutocompleteFilter;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -526,7 +527,7 @@ class ZoneRepository extends ServiceEntityRepository
             ->setParameter('zones', $zones)
         ;
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)->getResult();
     }
 
     public function findOneByCode(string $code): ?Zone
