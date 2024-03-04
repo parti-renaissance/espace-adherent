@@ -1,94 +1,156 @@
 /** @typedef  {import('alpinejs').AlpineComponent} AlpineComponent */
 
+import { captureException } from '@sentry/browser';
 import CommonFormStep from './CommonFormStep';
-
-function closest(num, arr) {
-    let curr = arr[0];
-    let diff = Math.abs(num - curr);
-    for (let val = 0; val < arr.length; val += 1) {
-        const newdiff = Math.abs(num - arr[val]);
-        if (newdiff < diff) {
-            diff = newdiff;
-            curr = arr[val];
-        }
-    }
-    return curr;
-}
 
 /**
  * First Step component for funnel
  * @returns {AlpineComponent}
  */
-const FirstForm = () => {
-    const uniqAmounts = [30, 60, 120, 250, 500, 1000];
-    const monthlyAmounts = [5, 10, 20, 30, 60, 100];
-    return ({
-        ...CommonFormStep(),
-        fieldsValid: {},
-        nextStepId: 'step_2',
-        id: 'step_1',
-        submitted: false,
-        submittedValues: null,
-        defaultCustomAmount: '',
+const FirstForm = () => ({
+    ...CommonFormStep(),
+    fieldsValid: {
+        email: false,
+        consentDataCollect: false,
+        captcha: false,
+    },
+    captchaToken: null,
+    nextStepId: 'step_2',
+    id: 'step_1',
+    submitted: false,
+    submittedValues: null,
 
-        getTaxTextReduction() {
-            return `${(this.amount * 0.34).toFixed(2)} € ${'-1' === this.duration ? '/ mois' : ''}`;
-        },
-
-        handleAmountClick(amount) {
-            this.animateSvg(amount);
-            document.querySelector('#amount_custom').value = '';
-        },
-
-        /**
-         * @param {Event} e
-         */
-        handleCustomFieldChange(e) {
-            const { value } = e.target;
-            this.amount = '' === value ? '60' : value;
-            this.animateSvg(this.amount);
-        },
-
-        animateSvg(value) {
-            let index = this.getAmounts()
-                .indexOf(Number(value));
-            if (-1 === index) {
-                index = this.getAmounts()
-                    .indexOf(closest(Number(value), this.getAmounts()));
+    checkIdFieldChangeAfterSubmit(field) {
+        return (e) => {
+            if (this.submitted) {
+                const input = e.target;
+                if ('checkbox' === input.type ? input.checked : input.value !== this.submittedValues[field]) {
+                    this.submitted = false;
+                    this.submittedValues = null;
+                    this.fieldsValid[field] = false;
+                    this.stepToFill = 10;
+                    this.stepToFill = 0;
+                }
             }
-            const indexesToAnimate = Array.from(Array(index + 1)
-                .keys());
-            document.querySelectorAll('[id^="p_"]')
-                .forEach((el) => {
-                    const elIndex = Number(el.id.split('_')[1]) - 1;
-                    if (indexesToAnimate.includes(elIndex)) return;
-                    el.classList.remove('active');
+        };
+    },
+
+    init() {
+        const emailInput = document.querySelector('#procuration_proxy_email');
+        const consentDataCollectInput = document.querySelector('#procuration_proxy_consentDataCollect');
+        if (emailInput.value && consentDataCollectInput.checked) {
+            this.submitted = true;
+            this.submittedValues = {
+                email: emailInput.value,
+                consentDataCollect: consentDataCollectInput.checked,
+            };
+        }
+        emailInput.addEventListener('change', this.checkIdFieldChangeAfterSubmit('email'));
+        consentDataCollectInput.addEventListener('change', this.checkIdFieldChangeAfterSubmit('consentDataCollect'));
+
+        this.$nextTick(() => {
+            const tokenInput = dom('input[name="frc-captcha-solution"]:last-child');
+
+            if (dom('.frc-captcha')) {
+                friendlyChallenge.autoWidget.opts.doneCallback = (token) => {
+                    this.captchaToken = token;
+                    this.fieldsValid.captcha = true;
+                };
+            } else if (tokenInput && tokenInput.value) {
+                this.captchaToken = tokenInput.value;
+                this.fieldsValid.captcha = true;
+            }
+        });
+    },
+
+    async _postPersistEmail() {
+        const params = new URLSearchParams(window.location.search);
+        return fetch('/api/persist-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: document.querySelector('#procuration_proxy_email').value,
+                recaptcha: this.captchaToken,
+                utm_source: params.get('utm_source'),
+                utm_campaign: params.get('utm_campaign'),
+            }),
+        });
+    },
+
+    _handleBadRequest($dispatch) {
+        return (data) => data.violations.forEach((x) => {
+            if ('email' === x.property) {
+                $dispatch('x-validate:procuration_proxy_email', {
+                    status: data.status,
+                    message: x.message,
                 });
-            indexesToAnimate.forEach((i) => {
-                setTimeout(() => {
-                    document.querySelector(`#p_${i + 1}`)
-                        .classList
-                        .add('active');
-                }, i * 100);
+            }
+
+            if ('recaptcha' === x.property) {
+                this.captchaToken = null;
+                this.fieldsValid.captcha = false;
+                this.generalNotification = {
+                    status: data.status,
+                    message: x.message,
+                };
+            }
+        });
+    },
+
+    async handleOnSubmit(e, $dispatch) {
+        if (!this._handleOnSubmitBase(e)) {
+            return new Promise(() => {
             });
-        },
+        }
 
-        init() {
-            this.animateSvg(this.amount);
-            this.defaultCustomAmount = this.getCustomAmount();
-        },
-
-        getAmounts(duration) {
-            return '0' === this.duration ? uniqAmounts : monthlyAmounts;
-        },
-        getCustomAmount() {
-            return uniqAmounts.includes(Number(this.amount)) ? '' : this.amount;
-        },
-        async handleOnSubmit(e, $dispatch) {
-            e.preventDefault();
-            this.handleNextStep();
-        },
-    });
-};
+        this.loading = true;
+        return this._postPersistEmail()
+            .then((response) => response.json())
+            .then((payload) => {
+                if (this.isNotifResponse(payload)) {
+                    if ('success' === payload.status) {
+                        this.generalNotification = null;
+                        this.handleNextStep();
+                        this.setStepData();
+                        this.submitted = true;
+                        this.submittedValues = {
+                            email: document.querySelector('#procuration_proxy_email').value,
+                            consentDataCollect: document.querySelector('#procuration_proxy_consentDataCollect').checked,
+                        };
+                        return;
+                    }
+                    if (payload.violations) {
+                        this._handleBadRequest($dispatch)(payload);
+                        this.scrollToFirstError();
+                        return;
+                    }
+                    this.generalNotification = payload;
+                    if ('error' === payload.status) {
+                        this.scrollToFirstError();
+                    }
+                } else {
+                    throw new Error('Invalid payload from /api/persist-email');
+                }
+            })
+            .catch((error) => {
+                this.generalNotification = {
+                    status: 'error',
+                    message: 'Une erreur est survenue lors de la validation de votre email',
+                };
+                this.scrollToFirstError();
+                captureException(error, {
+                    tags: {
+                        component: 'membership-request',
+                        step: 'persist-email',
+                    },
+                });
+            })
+            .finally(() => {
+                this.loading = false;
+            });
+    },
+});
 
 export default FirstForm;

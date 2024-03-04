@@ -51,14 +51,6 @@ const Page = (props) => ({
         }
     },
 
-    connectUrl() {
-        const url = new URL(props.connectUrl, window.location.origin);
-        url.searchParams.set('amount', this.amount);
-        url.searchParams.set('duration', this.duration);
-        url.searchParams.set('localDestination', this.localDestination);
-        return url.toString();
-    },
-
     init() {
         this.$nextTick(() => {
             const firstError = document.querySelector('[data-status="error"]');

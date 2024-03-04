@@ -2,6 +2,8 @@
 import '../../../components/Validator/typedef';
 import CommonFormStep from './CommonFormStep';
 
+/** @typedef {{label:string, value:string}} Option */
+
 /**
  * First Step component for funnel
  * @return {AlpineComponent}
@@ -21,6 +23,7 @@ const SecondForm = () => ({
         address: false,
         postalCode: false,
         cityName: false,
+        voteZone: false,
     },
 
     init() {
@@ -45,6 +48,43 @@ const SecondForm = () => ({
             return false;
         }
         return true;
+    },
+
+    /**
+     * @param {string} query
+     * @return {Promise<Option>}
+     */
+    getVoteZone(query) {
+        return new Promise((resolve) => {
+            setTimeout(resolve([
+                {
+                    label: 'France',
+                    value: '5bfaea8c-835e-11eb-ba14-42010a84009d',
+                },
+                {
+                    label: 'Belgique',
+                    value: '5bfaea8c-835e-11eb-ba14-42010a84009d',
+                },
+            ]), 300);
+        });
+    },
+    /**
+     * @param {string} query
+     * @return {Promise<Option>}
+     */
+    getVotePlace(query) {
+        return new Promise((resolve) => {
+            setTimeout(resolve([
+                {
+                    label: 'Bureau de vote 1',
+                    value: 'cef5805f-b2d3-4d58-8c82-eeeb32164b8',
+                },
+                {
+                    label: 'Bureau de vote 2',
+                    value: 'cef5805f-b2d3-4d58-8c82-eeeb32164b8',
+                },
+            ]), 300);
+        });
     },
 
     async handleOnSubmit(e) {
