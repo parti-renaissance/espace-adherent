@@ -1,0 +1,78 @@
+{% extends 'procuration_v2/_layout.html.twig' %}
+
+{% block additional_content %}
+    {{ form_start(form) }}
+        <div class="flex gap-8 flex-col p-0 sm:p-5">
+            {% if form.vars.errors|length > 0 %}
+                <twig:ReParagraphStatus status="error" icon class="max-w-[500px]">
+                    <ul
+                        {% if form.vars.errors|length > 1 %}
+                            class="list-disc list-inside flex flex-col gap-2.5"
+                        {% endif %}
+                    >
+                        {% for error in form.vars.errors %}
+                            <li class="[&>a]:font-medium [&>a]:underline">{{ error.message|raw }}</li>
+                        {% endfor %}
+                    </ul>
+                </twig:ReParagraphStatus>
+            {% endif %}
+
+
+            <twig:Atoms:ReCard class="max-w-[500px]">
+                {{ form_row(form.email, {
+                    label: "Email"
+                }) }}
+
+                {{ form_row(form.gender, {
+                    label: 'Civilité'
+                }) }}
+
+                {{ form_row(form.firstNames, {
+                    label: "Prénoms"
+                }) }}
+
+                {{ form_row(form.lastName, {
+                    label: "Nom"
+                }) }}
+
+                {{ form_row(form.address, {
+                    label: 'Adresse postale'
+                }) }}
+
+
+                <fieldset class="relative h-[100px]">
+                    <twig:Atoms:ReLabel>Date de naissance</twig:Atoms:ReLabel>
+
+                    <fieldset class="flex gap-2.5 relative z-10 ">
+                        {{ form_widget(form.birthdate.day, {
+                            label: "Jour"
+                        }) }}
+
+                        {{ form_widget(form.birthdate.month, {
+                            label: "Mois"
+                        }) }}
+
+                        {{ form_widget(form.birthdate.year, {
+                            label: "Année"
+                        }) }}
+                    </fieldset>
+
+                    {{ form_errors(form.birthdate) }}
+                </fieldset>
+            </twig:Atoms:ReCard>
+        </div>
+
+        <div>
+            {{ form_row(form.distantVotePlace, {
+                label: 'Vote dans un autre pays que l\'adresse postale ?',
+            }) }}
+
+            {{ form_row(form.voteZone) }}
+            {{ form_row(form.votePlace) }}
+        </div>
+
+        {% block additional_form '' %}
+
+        <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
+    {{ form_end(form) }}
+{% endblock %}

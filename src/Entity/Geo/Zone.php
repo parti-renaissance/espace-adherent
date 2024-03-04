@@ -8,6 +8,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Address\AddressInterface;
 use App\Entity\EntityTimestampableTrait;
+use App\Entity\UuidEntityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -51,7 +52,7 @@ use Symfony\Component\Serializer\Annotation as SymfonySerializer;
  *     @ORM\AttributeOverride(name="code", column=@ORM\Column(unique=false))
  * })
  */
-class Zone implements GeoInterface
+class Zone implements GeoInterface, UuidEntityInterface
 {
     use GeoTrait;
     use EntityTimestampableTrait;
