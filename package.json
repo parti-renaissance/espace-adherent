@@ -37,7 +37,7 @@
     "eslint-import-resolver-webpack": "^0.13.8",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",
-    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react": "^7.34.0",
     "eslint-watch": "^8.0.0",
     "events": "^3.3.0",
     "file-loader": "^6.2.0",
