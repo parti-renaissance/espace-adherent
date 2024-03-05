@@ -9,6 +9,10 @@
     </script>
 {% endblock %}
 
+{% set additional_form %}
+    {% block inner_content_section %}{% endblock %}
+{% endset %}
+
 {% block content_section %}
     <section x-data="xFunnelPage({step: 0})">
         {{ form_start(form) }}
@@ -141,28 +145,8 @@
                         />
                         {{ form_row(form.votePlace)}}
                     </fieldset>
-                    <fieldset>
-                        <twig:Atoms:ReLabel>Mon numéro d’électeur</twig:Atoms:ReLabel>
-                        <p class="text-[#555555] opacity-50">Il facilitera la démarche pour vous faire procuration.</p>
-                        {{ form_row(form.electorNumber, {attr: { placeholder: 'Mon numéro d’électeur' }}) }}
 
-                        <p>
-                            Votre bureau de vote et votre numéro d’électeur sont affichés sur votre carte électorale.
-                            <br />
-                            Si vous ne l’avez pas, récupérez ces informations en quelques clics sur le formulaire de situation électorale de l’État.
-                        </p>
-                    </fieldset>
-                    <p>
-                        Votre bureau de vote et votre numéro d’électeur sont affichés sur votre carte électorale.
-                    </p>
-                    <p>
-                        Si vous ne l’avez pas, récupérez ces informations en quelques clics sur le formulaire de situation électorale de l’État.
-                    </p>
-                    <fieldset>
-                        <twig:Atoms:ReLabel>Mon nombre de procurations</twig:Atoms:ReLabel>
-                        <p class="text-[#555555] opacity-50">Lorem ipsum</p>
-                        {{ form_row(form.slots) }}
-                    </fieldset>
+                    {{ additional_form }}
 
                 </fieldset>
                 <twig:ReButton color="black" class="w-full" >Déposer ma demande</twig:ReButton>
@@ -177,10 +161,8 @@
 
             </twig:Atoms:ReCard>
 
-            {#        {% block additional_form '' %}#}
-
             <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
         </div>
         {{ form_end(form) }}
     </section>
-{% endblock %}
+{% endblock content_section %}
