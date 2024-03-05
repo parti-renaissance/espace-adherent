@@ -301,6 +301,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         ->add('committee', ModelType::class, [
                             'label' => 'Comité',
                             'class' => Committee::class,
+                            'required' => false,
                             'mapped' => false,
                         ])
                     ->end()
