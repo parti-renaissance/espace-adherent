@@ -73,7 +73,7 @@ class InternalApiProxyController extends AbstractController
         return new Response(
             $response->getContent(false),
             $response->getStatusCode(),
-            $response->getHeaders(false)
+            array_intersect_key($response->getHeaders(false), array_fill_keys(['content-type'], true))
         );
     }
 
