@@ -2,6 +2,7 @@
 
 namespace App\Entity\NationalEvent;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -13,10 +14,25 @@ use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\NationalEvent\EventInscriptionRepository")
  * @ORM\Table("national_event_inscription")
+ *
+ * @ApiResource(
+ *     attributes={
+ *         "denormalization_context": {"groups": {"event_inscription_update_status"}},
+ *         "normalization_context": {"groups": {"event_inscription_read"}},
+ *     },
+ *     itemOperations={
+ *         "put": {
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "_api_respond": false,
+ *         },
+ *     },
+ *     collectionOperations={},
+ * )
  */
 class EventInscription
 {
@@ -32,11 +48,16 @@ class EventInscription
     public NationalEvent $event;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
+     * @Groups({
+     *     "national_event_inscription:webhook",
+     *     "event_inscription_update_status",
+     * })
      *
-     * @ORM\Column(enumType=InscriptionStatusEnum::class, options={"default": "pending"})
+     * @ORM\Column(options={"default": "pending"})
+     *
+     * @Assert\Choice(callback={"App\NationalEvent\InscriptionStatusEnum", "toArray"})
      */
-    public InscriptionStatusEnum $status = InscriptionStatusEnum::PENDING;
+    public string $status = InscriptionStatusEnum::PENDING;
 
     /**
      * @Groups({"national_event_inscription:webhook"})
