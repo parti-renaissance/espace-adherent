@@ -4383,22 +4383,22 @@
         },
         {
             "name": "google/cloud-vision",
-            "version": "v1.9.0",
+            "version": "v1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-vision.git",
-                "reference": "718b30975ba3066eaa89a91cd164b7054cfad650"
+                "reference": "ad13f1aa44bd7fdfd1492b2236d520657f500924"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-vision/zipball/718b30975ba3066eaa89a91cd164b7054cfad650",
-                "reference": "718b30975ba3066eaa89a91cd164b7054cfad650",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-vision/zipball/ad13f1aa44bd7fdfd1492b2236d520657f500924",
+                "reference": "ad13f1aa44bd7fdfd1492b2236d520657f500924",
                 "shasum": ""
             },
             "require": {
                 "google/cloud-core": "^1.52.7",
-                "google/gax": "^1.26.0",
-                "php": ">=7.4"
+                "google/gax": "^1.30",
+                "php": "^8.0"
             },
             "require-dev": {
                 "erusev/parsedown": "^1.6",
@@ -4435,9 +4435,9 @@
             ],
             "description": "Cloud Vision Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-vision/tree/v1.9.0"
+                "source": "https://github.com/googleapis/google-cloud-php-vision/tree/v1.9.1"
             },
-            "time": "2024-02-09T19:51:53+00:00"
+            "time": "2024-03-01T11:25:35+00:00"
         },
         {
             "name": "google/common-protos",
