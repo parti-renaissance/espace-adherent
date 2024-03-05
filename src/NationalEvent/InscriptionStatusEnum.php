@@ -2,7 +2,12 @@
 
 namespace App\NationalEvent;
 
-enum InscriptionStatusEnum: string
+use MyCLabs\Enum\Enum;
+
+class InscriptionStatusEnum extends Enum
 {
-    case PENDING = 'pending';
+    public const PENDING = 'pending';
+    public const ACCEPTED = 'accepted';
+    public const INCONCLUSIVE = 'inconclusive';
+    public const REFUSED = 'refused';
 }
