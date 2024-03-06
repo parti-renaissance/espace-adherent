@@ -1,19 +1,22 @@
 <?php
 
-namespace App\Controller\Procuration;
+namespace App\Controller\Api\Zone;
 
-use App\Controller\Api\Zone\AbstractZoneAutocompleteController;
+use App\AdherentSpace\AdherentSpaceEnum;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Geo\ManagedZoneProvider;
 use App\Repository\Geo\ZoneRepository;
 use App\Scope\AuthorizationChecker;
+use App\Scope\ScopeEnum;
 use App\Scope\ScopeGeneratorResolver;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/zone/autocomplete', name: 'api_procuration_zone_autocomplete', methods: ['GET'])]
-class ZoneAutocompleteController extends AbstractZoneAutocompleteController
+#[Route(path: '/v3/zone/autocomplete', name: 'api_v3_zone_autocomplete_for_scope', methods: ['GET'])]
+#[IsGranted('REQUEST_SCOPE_GRANTED')]
+class ZoneAutocompleteRestrictedController extends AbstractZoneAutocompleteController
 {
     use AccessDelegatorTrait;
 
@@ -27,11 +30,17 @@ class ZoneAutocompleteController extends AbstractZoneAutocompleteController
         $filter = $this->getFilter($request);
         $managedZones = [];
 
-        if (
-            ($parentZoneUuid = $request->query->get('parent_zone'))
-            && ($parentZone = $repository->findOneByUuid($parentZoneUuid))
-        ) {
-            $managedZones[] = $parentZone;
+        if (!$filter->forMandateType) {
+            if ($scope = $scopeGeneratorResolver->generate()) {
+                $managedZones = $scope->getZones();
+            } else {
+                $scopeCode = $authorizationChecker->getScope($request);
+                $user = $this->getMainUser($request->getSession());
+
+                if (!\in_array($scopeCode, ScopeEnum::NATIONAL_SCOPES, true)) {
+                    $managedZones = $managedZoneProvider->getManagedZones($user, AdherentSpaceEnum::SCOPES[$scopeCode]);
+                }
+            }
         }
 
         return $this->json(

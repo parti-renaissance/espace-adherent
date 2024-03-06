@@ -135,4 +135,15 @@ class Election
     {
         $this->rounds->removeElement($round);
     }
+
+    public function getUpcomingRound(): ?Round
+    {
+        $rounds = $this->rounds->toArray();
+
+        usort($rounds, static function (Round $round1, Round $round2): int {
+            return $round1->date <=> $round2->date;
+        });
+
+        return $rounds[0] ?? null;
+    }
 }

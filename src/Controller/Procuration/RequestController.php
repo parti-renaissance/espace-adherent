@@ -4,6 +4,7 @@ namespace App\Controller\Procuration;
 
 use App\Controller\CanaryControllerTrait;
 use App\Entity\Procuration\Election;
+use App\Entity\Procuration\Round;
 use App\Form\Procuration\V2\RequestType;
 use App\Procuration\V2\Command\RequestCommand;
 use App\Procuration\V2\ProcurationHandler;
@@ -32,11 +33,17 @@ class RequestController extends AbstractController
     {
         $this->disableInProduction();
 
+        $upcomingRound = $election->getUpcomingRound();
+
+        if (!$upcomingRound) {
+            throw $this->createNotFoundException();
+        }
+
         if ($response = $this->anonymousFollowerSession->start($request)) {
             return $response;
         }
 
-        $requestCommand = $this->getRequestCommand();
+        $requestCommand = $this->getRequestCommand($upcomingRound);
 
         $form = $this
             ->createForm(RequestType::class, $requestCommand)
@@ -58,8 +65,11 @@ class RequestController extends AbstractController
         ]);
     }
 
-    private function getRequestCommand(): RequestCommand
+    private function getRequestCommand(Round $round): RequestCommand
     {
-        return new RequestCommand();
+        $request = new RequestCommand();
+        $request->round = $round;
+
+        return $request;
     }
 }

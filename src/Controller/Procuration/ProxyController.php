@@ -4,6 +4,7 @@ namespace App\Controller\Procuration;
 
 use App\Controller\CanaryControllerTrait;
 use App\Entity\Procuration\Election;
+use App\Entity\Procuration\Round;
 use App\Form\Procuration\V2\ProxyType;
 use App\Procuration\V2\Command\ProxyCommand;
 use App\Procuration\V2\ProcurationHandler;
@@ -32,11 +33,17 @@ class ProxyController extends AbstractController
     {
         $this->disableInProduction();
 
+        $upcomingRound = $election->getUpcomingRound();
+
+        if (!$upcomingRound) {
+            throw $this->createNotFoundException();
+        }
+
         if ($response = $this->anonymousFollowerSession->start($request)) {
             return $response;
         }
 
-        $proxyCommand = $this->getProxyCommand();
+        $proxyCommand = $this->getProxyCommand($upcomingRound);
 
         $form = $this
             ->createForm(ProxyType::class, $proxyCommand)
@@ -58,8 +65,11 @@ class ProxyController extends AbstractController
         ]);
     }
 
-    public function getProxyCommand(): ProxyCommand
+    public function getProxyCommand(Round $round): ProxyCommand
     {
-        return new ProxyCommand();
+        $proxy = new ProxyCommand();
+        $proxy->round = $round;
+
+        return $proxy;
     }
 }

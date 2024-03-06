@@ -5,6 +5,7 @@ namespace App\Procuration\V2\Command;
 use App\Address\Address;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
+use App\Entity\Procuration\Round;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
@@ -87,4 +88,9 @@ abstract class AbstractCommand implements RecaptchaChallengeInterface
     public ?string $clientIp = null;
 
     public ?Adherent $adherent = null;
+
+    /**
+     * @Assert\NotBlank
+     */
+    public ?Round $round = null;
 }
