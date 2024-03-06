@@ -139,6 +139,11 @@ class EventInscription
      */
     public $emailCheck;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    public ?\DateTime $ticketSentAt = null;
+
     public function __construct(NationalEvent $event, ?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
