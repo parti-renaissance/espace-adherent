@@ -59,6 +59,11 @@ class NationalEvent
     public ?string $textConfirmation = null;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    public ?string $textTicketEmail = null;
+
+    /**
      * @ORM\Column(nullable=true)
      */
     public ?string $intoImagePath = null;
