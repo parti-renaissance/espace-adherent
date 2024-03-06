@@ -18,6 +18,12 @@ class LoadGeoZoneData extends Fixture implements DependentFixtureInterface
         /** @var Connection $conn */
         $conn = $manager->getConnection();
         $conn->exec(file_get_contents(__DIR__.'/../../../dump/all-geo-zone.sql'));
+
+        $votePlace = new Zone(Zone::VOTE_PLACE, 'BDV-TEST-1', 'Bureau de vote TEST 1');
+        $votePlace->addParent($this->getZone($manager, 'zone_district_75-1'));
+        $manager->persist($votePlace);
+
+        $manager->flush();
     }
 
     public static function getZoneReference(EntityManagerInterface $manager, string $reference): ?Zone

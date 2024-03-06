@@ -75,7 +75,14 @@ abstract class AbstractProcuration
      */
     public ?Adherent $adherent = null;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Procuration\Round")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     */
+    public Round $round;
+
     public function __construct(
+        Round $round,
         string $email,
         string $gender,
         string $firstNames,
@@ -90,6 +97,7 @@ abstract class AbstractProcuration
         ?\DateTimeInterface $createdAt = null
     ) {
         $this->uuid = Uuid::uuid4();
+        $this->round = $round;
         $this->email = $email;
         $this->gender = $gender;
         $this->firstNames = $firstNames;

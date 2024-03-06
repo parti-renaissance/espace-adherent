@@ -122,6 +122,7 @@ class ZoneRepository extends ServiceEntityRepository
                     $qb->expr()->orX(
                         $qb->expr()->like("REPLACE(zone.name, '-', ' ')", ':term_name'),
                         $qb->expr()->like('zone.code', ':term_code'),
+                        $qb->expr()->like('zone.postalCode', ':term_code'),
                     )
                 )
                 ->setParameter(':term_name', '%'.str_replace('-', ' ', $term).'%')
