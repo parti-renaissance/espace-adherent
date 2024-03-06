@@ -6,13 +6,16 @@ import CommonFormStep from './CommonFormStep';
 
 /**
  * First Step component for funnel
+ * @param {{ zoneApi:string }} props
  * @return {AlpineComponent}
  */
-const SecondForm = () => ({
+const SecondForm = (props) => ({
     ...CommonFormStep(),
     nextStepId: 'step_3',
     id: 'step_2',
     showAutoComplete: true,
+    votePlaceUuid: null,
+    isNotInFrance: false,
     fieldsValid: {
         gender: false,
         emailAddress: false,
@@ -28,7 +31,7 @@ const SecondForm = () => ({
 
     init() {
         const addressInputs = document.querySelectorAll(
-            'input[id^="donation_request_address_"]:not(#membership_request_address_autocomplete)'
+            'input[id^="procuration_proxy__"]'
         );
         addressInputs.forEach((x) => {
             window.addEventListener(`x-validate:${x.id}`, ({ detail }) => {
@@ -55,36 +58,43 @@ const SecondForm = () => ({
      * @return {Promise<Option>}
      */
     getVoteZone(query) {
-        return new Promise((resolve) => {
-            setTimeout(resolve([
-                {
-                    label: 'France',
-                    value: '5bfaea8c-835e-11eb-ba14-42010a84009d',
-                },
-                {
-                    label: 'Belgique',
-                    value: '5bfaea8c-835e-11eb-ba14-42010a84009d',
-                },
-            ]), 300);
-        });
+        return fetch(`${props.zoneApi}?q=${query}&types[]=city&types[]=borough&types[]=country`)
+            .then((response) => response.json())
+            .then((data) => data.filter((x) => !('city' === x.type && 1 < x.postal_code.length))
+                .map((x) => ({
+                    label: `${x.name}`,
+                    value: x.uuid,
+                })));
+    },
+
+    handleVoteZoneChange(uuid) {
+        console.log(uuid, 'uuid');
+        this.votePlaceUuid = uuid;
     },
     /**
      * @param {string} query
      * @return {Promise<Option>}
      */
-    getVotePlace(query) {
-        return new Promise((resolve) => {
-            setTimeout(resolve([
-                {
-                    label: 'Bureau de vote 1',
-                    value: 'cef5805f-b2d3-4d58-8c82-eeeb32164b8',
+    getVotePlace($dispatch, query) {
+        console.log(query);
+        const uuid = this.votePlaceUuid;
+        const el = document.querySelector('#procuration_proxy_votePlace_select_widget');
+        if (!uuid) {
+            document.dispatchEvent(new CustomEvent('x-validate:procuration_proxy_votePlace', {
+                detail: {
+                    status: 'error',
+                    message: 'Veuillez sélectionner une zone de vote',
                 },
-                {
-                    label: 'Bureau de vote 2',
-                    value: 'cef5805f-b2d3-4d58-8c82-eeeb32164b8',
-                },
-            ]), 300);
-        });
+            }));
+            return Promise.resolve([]);
+        }
+        return fetch(`${props.zoneApi}?q=${query}&types[]=vote_place&parent_zone=${this.votePlaceUuid}`)
+            .then((response) => response.json())
+            .then((data) => data.filter((x) => !('city' === x.type && 1 < x.postal_code.length))
+                .map((x) => ({
+                    label: `${x.name}`,
+                    value: x.uuid,
+                })));
     },
 
     async handleOnSubmit(e) {
@@ -95,7 +105,7 @@ const SecondForm = () => ({
 });
 
 export const isFranceCountry = () => {
-    const countryInput = document.querySelector('#donation_request_address_country');
+    const countryInput = document.querySelector('#procuration_proxy_country');
     return 'FR' !== countryInput.value;
 };
 

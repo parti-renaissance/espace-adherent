@@ -12,11 +12,6 @@
         <p class="text-[#555555] opacity-50">Il facilitera la démarche pour vous faire procuration.</p>
         {{ form_row(form.electorNumber, {attr: { placeholder: 'Mon numéro d’électeur' }}) }}
 
-        <p>
-            Votre bureau de vote et votre numéro d’électeur sont affichés sur votre carte électorale.
-            <br />
-            Si vous ne l’avez pas, récupérez ces informations en quelques clics sur le formulaire de situation électorale de l’État.
-        </p>
     </fieldset>
     <p>
         Votre bureau de vote et votre numéro d’électeur sont affichés sur votre carte électorale.
@@ -24,9 +19,9 @@
     <p>
         Si vous ne l’avez pas, récupérez ces informations en quelques clics sur le formulaire de situation électorale de l’État.
     </p>
-    <fieldset>
-        <twig:Atoms:ReLabel>Mon nombre de procurations</twig:Atoms:ReLabel>
-        <p class="text-[#555555] opacity-50">Lorem ipsum</p>
+    <fieldset x-show="isNotInFrance">
+        <twig:Atoms:ReLabel>Et si vous votiez une 3e fois ?</twig:Atoms:ReLabel>
+        <p class="text-[#555555] opacity-50">Les Français de l’étranger peuvent porter jusqu’à deux procurations pour les élections européennes.</p>
         {{ form_row(form.slots) }}
     </fieldset>
 {% endblock %}
