@@ -1,11 +1,16 @@
-{% extends 'base_renaissance.html.twig' %}
+
+{% extends 'procuration_v2/_layout_thanks.html.twig' %}
 
 {% block page_title 'Procuration - Demande (Mandant)' %}
 
-{% block content %}
-    <main class="bg-[#F4F4F7] re_new_ui">
-        Demande (Mandant)
+{% set copylink = url('app_procuration_v2_request', { slug: procuration_request.round.election.slug }) %}
 
-        Merci {{ procuration_request.firstNames }} !
-    </main>
+{% block thanks_text %}
+
+    <p>Votre demande a bien été enregistrée.</p>
+
+    <p>Nous venons de vous envoyer un email de confirmation avec des informations complémentaires.</p>
+
+    <p>Nous vous informerons dès qu'une opportunité de procuration se présente dans votre bureau de vote ou à proximité. </p>
+
 {% endblock %}
