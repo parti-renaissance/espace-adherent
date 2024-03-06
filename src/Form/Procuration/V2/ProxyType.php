@@ -18,7 +18,10 @@ class ProxyType extends AbstractProcurationType
             ->add('electorNumber', TextType::class)
             ->add('slots', ChoiceType::class, [
                 'expanded' => true,
-                'choices' => [1 => 1, 2 => 2],
+                'choices' => [
+                    'procuration.slots.choice_1' => 1,
+                    'procuration.slots.choice_2' => 2,
+                ],
             ])
         ;
     }
