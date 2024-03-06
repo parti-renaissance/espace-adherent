@@ -2,6 +2,7 @@
 
 namespace App\Form\Procuration\V2;
 
+use App\Form\AcceptPersonalDataCollectType;
 use App\Form\AutocompleteAddressType;
 use App\Form\BirthdateType;
 use App\Form\CivilityType;
@@ -18,6 +19,9 @@ abstract class AbstractProcurationType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
+            ->add('acceptCgu', AcceptPersonalDataCollectType::class, [
+                'mapped' => false,
+            ])
             ->add('gender', CivilityType::class)
             ->add('firstNames', TextType::class)
             ->add('lastName', TextType::class)
