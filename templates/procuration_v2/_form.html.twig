@@ -48,10 +48,11 @@
                         validate: "['required', 'email']"
                     }
                 }) }}
-                {#                {{ form_row(form.autorisations, {#}
-                {#                    label: 'donation.autorisations.label', label_html: true,#}
-                {#                    attr: { onCheck:"setFieldValid('autorisations')", validate: "['required']" }#}
-                {#                }) }}#}
+
+                {{ form_row(form.acceptCgu, {
+                    label: "procuration.accept_cgu.label",
+                    attr: { onCheck:"setFieldValid('cgu')", validate: "['required']" }
+                }) }}
                 <twig:Molecules:ReCheckboxField
                         id="procuration_proxy_consentDataCollect"
                         name="procuration_proxy[consentDataCollect]"
