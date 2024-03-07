@@ -11,6 +11,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ORM\Table(name="procuration_v2_initial_requests")
  * @ORM\Entity
  */
 class ProcurationRequest
