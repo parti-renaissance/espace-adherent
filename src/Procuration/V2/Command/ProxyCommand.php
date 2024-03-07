@@ -17,7 +17,7 @@ class ProxyCommand extends AbstractCommand
     public ?string $electorNumber = null;
 
     /**
-     * @AssertRange(
+     * @Assert\Range(
      *     min=1,
      *     max=2
      * )
