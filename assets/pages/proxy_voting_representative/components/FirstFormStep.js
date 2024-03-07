@@ -37,8 +37,8 @@ const FirstForm = (props) => ({
     },
 
     init() {
-        const emailInput = document.querySelector('#procuration_proxy_email');
-        const acceptCguInput = document.querySelector('#procuration_proxy_acceptCgu');
+        const emailInput = document.querySelector('[id$=_email]');
+        const acceptCguInput = document.querySelector('[id$=_acceptCgu]');
         if (emailInput.value && acceptCguInput.checked) {
             this.submitted = true;
             this.submittedValues = {
@@ -72,7 +72,7 @@ const FirstForm = (props) => ({
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                email: document.querySelector('#procuration_proxy_email').value,
+                email: document.querySelector('[id$=_email]').value,
                 recaptcha: this.captchaToken,
                 utm_source: params.get('utm_source'),
                 utm_campaign: params.get('utm_campaign'),
@@ -117,8 +117,8 @@ const FirstForm = (props) => ({
                         this.setStepData();
                         this.submitted = true;
                         this.submittedValues = {
-                            email: document.querySelector('#procuration_proxy_email').value,
-                            cgu: document.querySelector('#procuration_proxy_acceptCgu').checked,
+                            email: document.querySelector('[id$=_email]').value,
+                            cgu: document.querySelector('[id$=_acceptCgu]').checked,
                         };
                         return;
                     }

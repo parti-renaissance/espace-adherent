@@ -31,7 +31,7 @@ const SecondForm = (props) => ({
 
     init() {
         const addressInputs = document.querySelectorAll(
-            'input[id^="procuration_proxy__"]'
+            'input[id^="procuration_"]'
         );
         addressInputs.forEach((x) => {
             window.addEventListener(`x-validate:${x.id}`, ({ detail }) => {
@@ -67,17 +67,16 @@ const SecondForm = (props) => ({
                 })));
     },
 
-    // getVoteZone: debounce(this._getVoteZone, 300),
-
     handleVoteZoneChange(uuidType) {
         const [uuid, type] = uuidType.split('__');
         this.isNotInFrance = 'country' === type;
-        // document.getElementById('procuration_proxy_votePlace').value = uuid;
+        document.querySelector('[id$=_voteZone]').value = uuid;
         this.votePlaceUuid = null;
         this.getVotePlace(uuid)
             .then((options) => {
                 this.votePlaceUuid = uuid;
                 window.options_procuration_proxy_votePlace = options;
+                window.options_procuration_request_votePlace = options;
             });
     },
     /**
@@ -102,7 +101,7 @@ const SecondForm = (props) => ({
 });
 
 export const isFranceCountry = () => {
-    const countryInput = document.querySelector('#procuration_proxy_country');
+    const countryInput = document.querySelector('[id$=_country]');
     return 'FR' !== countryInput.value;
 };
 
