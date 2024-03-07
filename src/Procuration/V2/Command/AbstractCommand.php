@@ -6,20 +6,12 @@ use App\Address\Address;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\Procuration\Round;
-use App\Recaptcha\RecaptchaChallengeInterface;
-use App\Recaptcha\RecaptchaChallengeTrait;
-use App\Validator\Recaptcha as AssertRecaptcha;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertRecaptcha(api="friendly_captcha")
- */
-abstract class AbstractCommand implements RecaptchaChallengeInterface
+abstract class AbstractCommand
 {
-    use RecaptchaChallengeTrait;
-
     /**
      * @Assert\NotBlank(message="common.gender.invalid_choice")
      * @Assert\Choice(

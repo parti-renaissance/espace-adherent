@@ -2,7 +2,6 @@
 
 namespace App\Controller\Procuration\Api;
 
-use App\Adhesion\Command\PersistAdhesionEmailCommand;
 use App\Adhesion\Request\EmailValidationRequest;
 use App\Procuration\Command\PersistProcurationEmailCommand;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +18,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class PersistEmailController extends AbstractController
 {
     use HandleTrait;
+
+    public const SESSION_KEY = 'procuration.email_identifier';
 
     public function __construct(
         private readonly ValidatorInterface $validator,
@@ -40,10 +41,12 @@ class PersistEmailController extends AbstractController
             return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        /** @var PersistAdhesionEmailCommand $command */
+        /** @var PersistProcurationEmailCommand $command */
         $command = $this->serializer->deserialize($request->getContent(), PersistProcurationEmailCommand::class, JsonEncoder::FORMAT);
 
-        $this->handle($command);
+        $emailIdentifier = $this->handle($command);
+
+        $request->getSession()->set(self::SESSION_KEY, $emailIdentifier);
 
         return $this->json([
             'message' => 'OK',

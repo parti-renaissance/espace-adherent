@@ -3,6 +3,7 @@
 namespace App\Controller\Procuration;
 
 use App\Controller\CanaryControllerTrait;
+use App\Controller\Procuration\Api\PersistEmailController;
 use App\Entity\Procuration\Election;
 use App\Entity\Procuration\Round;
 use App\Form\Procuration\V2\ProxyType;
@@ -51,7 +52,13 @@ class ProxyController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$request->getSession()->has(PersistEmailController::SESSION_KEY)) {
+                return $this->redirectToRoute('app_procuration_v2_proxy');
+            }
+
             $procurationProxy = $this->procurationHandler->handleProxy($proxyCommand);
+
+            $request->getSession()->remove(PersistEmailController::SESSION_KEY);
 
             return $this->redirectToRoute('app_procuration_v2_proxy_thanks', [
                 'uuid' => $procurationProxy->getUuid(),
