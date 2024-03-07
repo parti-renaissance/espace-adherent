@@ -5,15 +5,12 @@
 {% form_theme form 'renaissance/forms/national_event_form_theme.html.twig' %}
 
 {% block final_javascripts %}
-    {% if is_open %}
-        <script type="module" src="{{ asset('js/friendlycaptcha.widget-0.9.14.module.min.js') }}" async defer></script>
+    <script type="module" src="{{ asset('js/friendlycaptcha.widget-0.9.14.module.min.js') }}" async defer></script>
 
-        <script>
-            Bootstrap.onLoad(() => Main.runNationaleEventPage());
-        </script>
-    {% endif %}
+    <script>
+        Bootstrap.onLoad(() => Main.runNationaleEventPage());
+    </script>
 {% endblock %}
-
 
 {% block header %}
     {% if not is_open %}
