@@ -7,10 +7,6 @@
 
 {% block thanks_text %}
 
-    <p>Votre demande a bien été enregistrée.</p>
-
-    <p>Nous venons de vous envoyer un email de confirmation avec des informations complémentaires.</p>
-
-    <p> Nous vous informerons dès qu'une opportunité de procuration se présente dans votre bureau de vote ou à proximité. </p>
+    {{ procuration_proxy.round.election.proxyConfirmation }}
 
 {% endblock %}

@@ -63,32 +63,29 @@ const SecondForm = (props) => ({
             .then((data) => data.filter((x) => !('city' === x.type && 1 < x.postal_code.length))
                 .map((x) => ({
                     label: `${x.name}`,
-                    value: x.uuid,
+                    value: `${x.uuid}__${x.type}`,
                 })));
     },
 
-    handleVoteZoneChange(uuid) {
-        console.log(uuid, 'uuid');
-        this.votePlaceUuid = uuid;
+    // getVoteZone: debounce(this._getVoteZone, 300),
+
+    handleVoteZoneChange(uuidType) {
+        const [uuid, type] = uuidType.split('__');
+        this.isNotInFrance = 'country' === type;
+        // document.getElementById('procuration_proxy_votePlace').value = uuid;
+        this.votePlaceUuid = null;
+        this.getVotePlace(uuid)
+            .then((options) => {
+                this.votePlaceUuid = uuid;
+                window.options_procuration_proxy_votePlace = options;
+            });
     },
     /**
-     * @param {string} query
+     * @param {string} uuid
      * @return {Promise<Option>}
      */
-    getVotePlace($dispatch, query) {
-        console.log(query);
-        const uuid = this.votePlaceUuid;
-        const el = document.querySelector('#procuration_proxy_votePlace_select_widget');
-        if (!uuid) {
-            document.dispatchEvent(new CustomEvent('x-validate:procuration_proxy_votePlace', {
-                detail: {
-                    status: 'error',
-                    message: 'Veuillez sélectionner une zone de vote',
-                },
-            }));
-            return Promise.resolve([]);
-        }
-        return fetch(`${props.zoneApi}?q=${query}&types[]=vote_place&parent_zone=${this.votePlaceUuid}`)
+    getVotePlace(uuid) {
+        return fetch(`${props.zoneApi}?noLimit&types[]=vote_place&parent_zone=${uuid}`)
             .then((response) => response.json())
             .then((data) => data.filter((x) => !('city' === x.type && 1 < x.postal_code.length))
                 .map((x) => ({

@@ -1,5 +1,7 @@
 {% extends 'procuration_v2/_layout.html.twig' %}
-{% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
+{% form_theme form 'renaissance/forms/proxy_form_theme.html.twig' %}
+
+
 
 {% block final_javascripts %}
     <script type="module" src="{{ asset('js/friendlycaptcha.widget-0.9.14.module.min.js') }}" async defer></script>
@@ -62,6 +64,7 @@
                 <twig:ReButton
                         color="black"
                         class="w-full"
+                        loading="x:loading"
                         x-on:click="handleOnSubmit($event)"
                 >Je vote par procuration</twig:ReButton>
             </twig:Atoms:ReCard>
@@ -75,15 +78,18 @@
                 }) }}
 
                 {{ form_row(form.firstNames, {
-                    label: "Prénoms"
+                    label: "Prénoms",
+                    attr: {
+                        placeholder: "Marie, Claude, Anne"
+                    }
                 }) }}
 
                 {{ form_row(form.lastName, {
-                    label: "Nom"
+                    label: "Nom",
+                    attr: {
+                        placeholder: "Mon nom de famille complet"
+                    }
                 }) }}
-
-
-
 
                 <fieldset class="relative h-[100px]">
                     <twig:Atoms:ReLabel>Date de naissance</twig:Atoms:ReLabel>
@@ -110,6 +116,13 @@
                     label: 'Adresse postale'
                 }) }}
 
+                <fieldset>
+                    <twig:Atoms:ReLabel>Numéro de téléphone</twig:Atoms:ReLabel>
+                    <p class="text-[#555555] opacity-50">Nous n’utiliserons ce numéro de téléphone que dans le cadre de la procuration, pour traiter votre demande.</p>
+                    {{ form_row(form.phone) }}
+
+                </fieldset>
+
                 <h3 class="font-sharp font-semibold text-[1.25rem]/[normal] text-black neg-letter-spacing--4">
                     Mes informations d'électeur
                 </h3>
@@ -117,36 +130,14 @@
                 <fieldset class="flex flex-col gap-8 relative z-10 ">
                     {{ form_row(form.distantVotePlace, {
                         label: 'Je vote dans une autre ville ou un autre pays ?',
-                        attr: {
-                            'x-model': 'isNotInFrance',
-                        }
                     }) }}
 
                     <fieldset>
-                        <twig:Atoms:ReLabel>Ma commune / mon pays de vote</twig:Atoms:ReLabel>
-                        <twig:Molecules:ReSelect
-                                onQuery="getVoteZone"
-                                id="procuration_proxy_voteZone"
-                                placeholder="Paris 17e (75017)"
-                                name="procuration_proxy[voteZone]"
-                                x-on:change="handleVoteZoneChange($event.target.value)"
-                                validate="['required']"
-                                onCheck="setFieldValid('voteZone')"
-                        />
+                        {{ form_row(form.voteZone) }}
                     </fieldset>
-
-                    <fieldset x-show="!!votePlaceUuid">
-                        <twig:Atoms:ReLabel>Mon bureau de vote</twig:Atoms:ReLabel>
-                        <twig:Molecules:ReSelect
-                                id="procuration_proxy_votePlace"
-                                placeholder="Paris 17"
-                                name="procuration_proxy[votePlace]"
-                                validate="['required']"
-                                onCheck="setFieldValid('voteZone')"
-                                onQuery="(x)=>getVotePlace($dispatch,x)"
-                                placeholder="Mon bureau de vote"
-                        />
-                    </fieldset>
+                    <template x-if="votePlaceUuid">
+                        {{ form_row(form.votePlace) }}
+                    </template>
 
 
 
