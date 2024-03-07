@@ -405,6 +405,11 @@ class LoadAdministratorRoleData extends Fixture
             'Administrateur des modèles d\'emails JME',
             AdministratorRoleGroupEnum::TERRITOIRES
         );
+        yield $this->createRole(
+            'ROLE_ADMIN_TERRITOIRES_PROCURATION_V2_ELECTIONS',
+            'Administrateur des élections de procurations',
+            AdministratorRoleGroupEnum::TERRITOIRES
+        );
         // Application Mobile
         yield $this->createRole(
             'ROLE_ADMIN_APPLICATION_MOBILE_NOTIFICATIONS',
