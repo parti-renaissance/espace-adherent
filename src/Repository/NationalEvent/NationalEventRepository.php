@@ -16,10 +16,8 @@ class NationalEventRepository extends ServiceEntityRepository
     public function findOneForInscriptions(): ?NationalEvent
     {
         return $this->createQueryBuilder('event')
-            ->where('event.ticketStartDate <= :now AND event.ticketEndDate > :now')
-            ->setParameter('now', new \DateTime())
             ->setMaxResults(1)
-            ->orderBy('event.ticketStartDate', 'ASC')
+            ->orderBy('event.startDate', 'DESC')
             ->getQuery()
             ->getOneOrNullResult()
         ;

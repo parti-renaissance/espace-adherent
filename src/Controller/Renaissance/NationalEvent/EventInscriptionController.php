@@ -53,7 +53,7 @@ class EventInscriptionController extends AbstractController
             ->handleRequest($request)
         ;
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if (!$event->isComplete() && $form->isSubmitted() && $form->isValid()) {
             $this->eventInscriptionHandler->handle($event, $inscriptionRequest);
 
             $this->addFlash('success', 'Votre inscription est bien enregistrée');
@@ -65,6 +65,7 @@ class EventInscriptionController extends AbstractController
             'form' => $form,
             'event' => $event,
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
+            'is_open' => !$event->isComplete(),
         ]);
     }
 }

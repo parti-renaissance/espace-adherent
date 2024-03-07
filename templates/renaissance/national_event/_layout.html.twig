@@ -55,6 +55,18 @@
                     <h1 class="font-sharp font-semibold text-[22px]/[19.8px] text-black neg-letter-spacing--4">Besoin<br/>d'Europe</h1>
                 </a>
             </div>
+
+            {% if not is_open %}
+                <div class="flex bg-white justify-center py-5">
+                    <p class="w-[310px]">L’événement est malheureusement complet, suivez le sur nos réseaux sociaux de campagne.</p>
+
+                    {% include 'renaissance/national_event/partials/sn_links.html.twig' %}
+                </div>
+
+                <div class="fixed h-full w-full bg-gray opacity-30">
+                    <h1 class="font-bold bg-red opacity-100">COMPLET</h1>
+                </div>
+            {% endif %}
         </header>
 
         {% block content_section %}{% endblock %}

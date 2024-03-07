@@ -72,4 +72,9 @@ class NationalEvent
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
+
+    public function isComplete(): bool
+    {
+        return $this->ticketEndDate < new \DateTime();
+    }
 }
