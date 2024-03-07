@@ -68,8 +68,22 @@ class NationalEvent
      */
     public ?string $intoImagePath = null;
 
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $source = null;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
+    }
+
+    public function isComplete(?string $source = null): bool
+    {
+        if ($source && $this->source === $source) {
+            return false;
+        }
+
+        return $this->ticketEndDate < new \DateTime();
     }
 }

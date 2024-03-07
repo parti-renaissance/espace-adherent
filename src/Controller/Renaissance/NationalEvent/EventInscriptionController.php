@@ -48,12 +48,14 @@ class EventInscriptionController extends AbstractController
             $inscriptionRequest->utmCampaign = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_CAMPAIGN));
         }
 
+        $isOpen = !$event->isComplete($inscriptionRequest->utmSource);
+
         $form = $this
             ->createForm(EventInscriptionType::class, $inscriptionRequest)
             ->handleRequest($request)
         ;
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($isOpen && $form->isSubmitted() && $form->isValid()) {
             $this->eventInscriptionHandler->handle($event, $inscriptionRequest);
 
             $this->addFlash('success', 'Votre inscription est bien enregistrée');
@@ -65,6 +67,7 @@ class EventInscriptionController extends AbstractController
             'form' => $form,
             'event' => $event,
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
+            'is_open' => $isOpen,
         ]);
     }
 }
