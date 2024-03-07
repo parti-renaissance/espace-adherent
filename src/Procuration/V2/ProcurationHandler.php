@@ -12,7 +12,8 @@ class ProcurationHandler
 {
     public function __construct(
         private readonly ProcurationFactory $factory,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ProcurationNotifier $notifier
     ) {
     }
 
@@ -23,6 +24,8 @@ class ProcurationHandler
         $this->entityManager->persist($request);
         $this->entityManager->flush();
 
+        $this->notifier->sendRequestConfirmation($request);
+
         return $request;
     }
 
@@ -32,6 +35,8 @@ class ProcurationHandler
 
         $this->entityManager->persist($proxy);
         $this->entityManager->flush();
+
+        $this->notifier->sendProxyConfirmation($proxy);
 
         return $proxy;
     }
