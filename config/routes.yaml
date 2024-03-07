@@ -345,7 +345,17 @@ app_validate_email:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_renaissance_host%|%national_event_host%"
+        app_domain: "%app_renaissance_host%|%national_event_host%|%procuration_host%"
+
+app_zone_autocomplete:
+    host: "{app_domain}"
+    path: '/api/zone/autocomplete'
+    methods: GET
+    controller: App\Controller\Api\Zone\ZoneAutocompleteController
+    defaults:
+        app_domain: "%procuration_host%"
+    requirements:
+        app_domain: "%procuration_host%"
 
 app_renaissance_newsletter_confirm:
     host: "{app_domain}"

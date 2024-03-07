@@ -74,7 +74,7 @@ class ZoneRepository extends ServiceEntityRepository
      */
     public function searchByFilterInsideManagedZones(ZoneAutocompleteFilter $filter, array $zones, ?int $perType): array
     {
-        if (empty($filter->q) && false === $filter->searchEvenEmptyTerm) {
+        if (null !== $perType && empty($filter->q) && false === $filter->searchEvenEmptyTerm) {
             return [];
         }
 
@@ -122,6 +122,7 @@ class ZoneRepository extends ServiceEntityRepository
                     $qb->expr()->orX(
                         $qb->expr()->like("REPLACE(zone.name, '-', ' ')", ':term_name'),
                         $qb->expr()->like('zone.code', ':term_code'),
+                        $qb->expr()->like('zone.postalCode', ':term_code'),
                     )
                 )
                 ->setParameter(':term_name', '%'.str_replace('-', ' ', $term).'%')

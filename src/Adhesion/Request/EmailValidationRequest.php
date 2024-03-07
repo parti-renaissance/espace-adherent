@@ -17,14 +17,14 @@ class EmailValidationRequest implements RecaptchaChallengeInterface
     use RecaptchaChallengeTrait;
 
     /**
-     * @Assert\NotBlank(groups={"Default", "adhesion-email:persist"}, message="L'adresse email est nécessaire pour continuer.")
+     * @Assert\NotBlank(groups={"Default", "adhesion-email:persist", "procuration-email:persist"}, message="L'adresse email est nécessaire pour continuer.")
      * @StrictEmail(captainVerifyCheck=true, groups={"Default"})
-     * @StrictEmail(dnsCheck=false, groups={"adhesion-email:persist"})
+     * @StrictEmail(dnsCheck=false, groups={"adhesion-email:persist", "procuration-email:persist"})
      */
-    #[Groups(['adhesion-email:validate', 'adhesion-email:persist'])]
+    #[Groups(['adhesion-email:validate', 'adhesion-email:persist', 'procuration-email:persist'])]
     private ?string $email = null;
 
-    #[Groups(['adhesion-email:validate'])]
+    #[Groups(['adhesion-email:validate', 'procuration-email:persist'])]
     public ?string $token = null;
 
     public function setEmail(?string $email): void

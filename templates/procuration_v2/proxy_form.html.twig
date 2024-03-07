@@ -1,11 +1,27 @@
-{% extends 'base_renaissance.html.twig' %}
+{% extends 'procuration_v2/_form.html.twig' %}
 
 {% block page_title 'Procuration - Proposition (Mandataire)' %}
 
-{% block content %}
-    <main class="bg-[#F4F4F7] re_new_ui">
-        Proposition (Mandataire)
+{% block content_title %}
+    Proposition (Mandataire)
+{% endblock %}
 
-        <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
-    </main>
+{% block inner_content_section %}
+    <fieldset>
+        <twig:Atoms:ReLabel>Mon numéro d’électeur</twig:Atoms:ReLabel>
+        <p class="text-[#555555] opacity-50">Il facilitera la démarche pour vous faire procuration.</p>
+        {{ form_row(form.electorNumber, {attr: { placeholder: 'Mon numéro d’électeur' }}) }}
+
+    </fieldset>
+    <p>
+        Votre bureau de vote et votre numéro d’électeur sont affichés sur votre carte électorale.
+    </p>
+    <p>
+        Si vous ne l’avez pas, récupérez ces informations en quelques clics sur le formulaire de situation électorale de l’État.
+    </p>
+    <fieldset x-show="isNotInFrance">
+        <twig:Atoms:ReLabel>Et si vous votiez une 3e fois ?</twig:Atoms:ReLabel>
+        <p class="text-[#555555] opacity-50">Les Français de l’étranger peuvent porter jusqu’à deux procurations pour les élections européennes.</p>
+        {{ form_row(form.slots) }}
+    </fieldset>
 {% endblock %}

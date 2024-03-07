@@ -476,6 +476,11 @@ procuration.request.rounds: >-
         other {Scrutins concernés}
     }
 
+
+procuration.accept_cgu.label: J'ai lu et j'accepte la politique de protection des données et les mentions d'informations relatives au traitement de mes données ci-dessous.
+procuration.slots.choice_1: Je souhaite porter une procuration
+procuration.slots.choice_2: Je souhaite porter deux procurations
+
 #
 # Newsletter
 #
