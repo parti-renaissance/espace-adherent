@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20240307085148 extends AbstractMigration
+final class Version20240307095411 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -40,6 +40,7 @@ final class Version20240307085148 extends AbstractMigration
           first_names VARCHAR(255) NOT NULL,
           last_name VARCHAR(100) NOT NULL,
           birthdate DATE NOT NULL,
+          phone VARCHAR(35) DEFAULT NULL COMMENT \'(DC2Type:phone_number)\',
           distant_vote_place TINYINT(1) DEFAULT 0 NOT NULL,
           client_ip VARCHAR(50) DEFAULT NULL,
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
@@ -77,6 +78,7 @@ final class Version20240307085148 extends AbstractMigration
           first_names VARCHAR(255) NOT NULL,
           last_name VARCHAR(100) NOT NULL,
           birthdate DATE NOT NULL,
+          phone VARCHAR(35) DEFAULT NULL COMMENT \'(DC2Type:phone_number)\',
           distant_vote_place TINYINT(1) DEFAULT 0 NOT NULL,
           client_ip VARCHAR(50) DEFAULT NULL,
           uuid CHAR(36) NOT NULL COMMENT \'(DC2Type:uuid)\',
