@@ -240,7 +240,6 @@ const xValidate = (state) => ({
         });
     },
     setData(data) {
-        console.log(data);
         this.status = data.status;
         this.message = data.message;
         if (this.onCheck) this.onCheck(!['error', 'loading'].includes(data.status));
