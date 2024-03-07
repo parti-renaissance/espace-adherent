@@ -114,6 +114,13 @@ class Main {
             .then((module) => module.default());
     }
 
+    runProxyVotingRepresentativePage() {
+        return import('pages/proxy_voting_representative').catch((error) => {
+            throw error;
+        })
+            .then((module) => module.default());
+    }
+
     runMailchimpResubscribeEmail({
         redirectUrl = null,
         signupPayload = null,

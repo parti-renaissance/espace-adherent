@@ -1,11 +1,12 @@
-{% extends 'base_renaissance.html.twig' %}
+
+{% extends 'procuration_v2/_layout_thanks.html.twig' %}
 
 {% block page_title 'Procuration - Proposition (Mandataire)' %}
 
-{% block content %}
-    <main class="bg-[#F4F4F7] re_new_ui">
-        Proposition (Mandataire)
+{% set copylink = url('app_procuration_v2_proxy', { slug: procuration_proxy.round.election.slug })  %}
 
-        Merci {{ procuration_proxy.firstNames }} !
-    </main>
+{% block thanks_text %}
+
+    {{ procuration_proxy.round.election.proxyConfirmation }}
+
 {% endblock %}

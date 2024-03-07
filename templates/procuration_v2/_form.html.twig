@@ -1,14 +1,30 @@
 {% extends 'procuration_v2/_layout.html.twig' %}
+{% form_theme form 'renaissance/forms/proxy_form_theme.html.twig' %}
 
-{% block additional_content %}
-    {{ form_start(form) }}
+
+
+{% block final_javascripts %}
+    <script type="module" src="{{ asset('js/friendlycaptcha.widget-0.9.14.module.min.js') }}" async defer></script>
+
+    <script>
+        Bootstrap.onLoad(() => Main.runProxyVotingRepresentativePage());
+    </script>
+{% endblock %}
+
+{% set additional_form %}
+    {% block inner_content_section %}{% endblock %}
+{% endset %}
+
+{% block content_section %}
+    <section x-data="xFunnelPage({step: 0})">
+        {{ form_start(form) }}
         <div class="flex gap-8 flex-col p-0 sm:p-5">
             {% if form.vars.errors|length > 0 %}
                 <twig:ReParagraphStatus status="error" icon class="max-w-[500px]">
                     <ul
-                        {% if form.vars.errors|length > 1 %}
-                            class="list-disc list-inside flex flex-col gap-2.5"
-                        {% endif %}
+                            {% if form.vars.errors|length > 1 %}
+                                class="list-disc list-inside flex flex-col gap-2.5"
+                            {% endif %}
                     >
                         {% for error in form.vars.errors %}
                             <li class="[&>a]:font-medium [&>a]:underline">{{ error.message|raw }}</li>
@@ -18,27 +34,62 @@
             {% endif %}
 
 
-            <twig:Atoms:ReCard class="max-w-[500px]">
+            <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_1" x-data="FirstFormStep({api: '{{ path('app_procuration_persist_email') }}'})">
+                <header class="flex flex-col gap-8">
+                    <h3 class="font-sharp font-semibold text-[2rem]/[normal] text-black neg-letter-spacing--4">
+                        <span class="text-[#00AEEF]">Le 9 juin,</span><br />Je vote<br />deux fois
+                    </h3>
+                    <p class="text-subtitle1">Ça vous dit de voter une 2e fois le neuf juin ? Remplissez ce formulaire et nous vous mettrons en relation avec une personne proche de chez vous qui ne pourra pas voter.</p>
+
+                </header>
                 {{ form_row(form.email, {
-                    label: "Email"
+                    label: "Mon adresse email",
+                    attr: {
+                        placeholder: "adresse@mail.com",
+                        onCheck: "setFieldValid('email')",
+                        validate: "['required', 'email']"
+                    }
                 }) }}
 
+                {{ form_row(form.acceptCgu, {
+                    label: "procuration.accept_cgu.label",
+                    attr: { onCheck:"setFieldValid('acceptCgu')", validate: "['required']" }
+                }) }}
+
+                <div class="w-full re-field-frame !h-auto cursor-pointer"
+                     x-on:click="dom('.frc-button')?.click()">
+                    {% include 'renaissance/partials/friendly-captcha.html.twig' %}
+                </div>
+
+                <twig:ReButton
+                        color="black"
+                        class="w-full"
+                        loading="x:loading"
+                        x-on:click="handleOnSubmit($event)"
+                >Je vote par procuration</twig:ReButton>
+            </twig:Atoms:ReCard>
+
+            <twig:Atoms:ReCard class="max-w-[500px]" id="step_2" x-data="SecondFormStep({ zoneApi: '{{ path('app_zone_autocomplete') }}' })">
+                <h3 class="font-sharp font-semibold text-[1.25rem]/[normal] text-black neg-letter-spacing--4 pb-4">
+                    Mes informations<br/>personnelles
+                </h3>
                 {{ form_row(form.gender, {
                     label: 'Civilité'
                 }) }}
 
                 {{ form_row(form.firstNames, {
-                    label: "Prénoms"
+                    label: "Prénoms",
+                    attr: {
+                        placeholder: "Marie, Claude, Anne"
+                    }
                 }) }}
 
                 {{ form_row(form.lastName, {
-                    label: "Nom"
+                    label: "Nom",
+                    attr: {
+                        placeholder: "Mon nom de famille complet"
+                    }
                 }) }}
-
-                {{ form_row(form.address, {
-                    label: 'Adresse postale'
-                }) }}
-
 
                 <fieldset class="relative h-[100px]">
                     <twig:Atoms:ReLabel>Date de naissance</twig:Atoms:ReLabel>
@@ -57,22 +108,55 @@
                         }) }}
                     </fieldset>
 
+
                     {{ form_errors(form.birthdate) }}
                 </fieldset>
+
+                {{ form_row(form.address, {
+                    label: 'Adresse postale'
+                }) }}
+
+                <fieldset>
+                    <twig:Atoms:ReLabel>Numéro de téléphone</twig:Atoms:ReLabel>
+                    <p class="text-[#555555] opacity-50">Nous n’utiliserons ce numéro de téléphone que dans le cadre de la procuration, pour traiter votre demande.</p>
+                    {{ form_row(form.phone) }}
+
+                </fieldset>
+
+                <h3 class="font-sharp font-semibold text-[1.25rem]/[normal] text-black neg-letter-spacing--4">
+                    Mes informations d'électeur
+                </h3>
+
+                <fieldset class="flex flex-col gap-8 relative z-10 ">
+                    {{ form_row(form.distantVotePlace, {
+                        label: 'Je vote dans une autre ville ou un autre pays ?',
+                    }) }}
+
+                    <fieldset>
+                        {{ form_row(form.voteZone) }}
+                    </fieldset>
+                    <template x-if="votePlaceUuid">
+                        {{ form_row(form.votePlace) }}
+                    </template>
+
+
+
+                </fieldset>
+                {{ additional_form }}
+                <twig:ReButton color="black" class="w-full" >Déposer ma demande</twig:ReButton>
             </twig:Atoms:ReCard>
+
+            <twig:Atoms:ReCard class="max-w-[500px]">
+                Les données recueillies sur ce formulaire sont traitées par Renaissance et ses équipes aux fins d’organisation de cet événement. Elles permettront à ses équipes de gérer les informations relatives aux participants et de vous inviter à d’autres événements qu’elles organisent. Elles permettront également à Renaissance de vous envoyer ses communications politiques si vous y consentez. En envoyant ce formulaire, vous acceptez que Renaissance traite vos données pour ces finalités. Les champs marqués d’un astérisque sont obligatoires, l’absence de réponse dans ces champs ne permettra pas de traiter votre demande. Vos données seront conservées jusqu’à 1 mois à compter de la fin de l’événement ou jusqu’au retrait de votre consentement lorsque vous acceptez de recevoir les communications politiques de Renaissance.
+                Conformément à la réglementation en vigueur, vous pouvez retirer votre consentement à tout moment. Vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement des données vous concernant, ainsi que d’un droit d’accès, de rectification et d’effacement de vos données. Vous disposez, par ailleurs, de la faculté de donner des directives sur le sort de vos données après votre décès. Vous pouvez exercer vos droits en contactant Renaissance à l’adresse postale : Renaissance, 68 rue du Rocher 75008 Paris, ou à l’adresse électronique mes-donnees@parti-renaissance.fr. Dans certaines hypothèses, une copie de votre pièce d’identité pourra vous être demandée. Pour toute information relative au traitement de vos données par Renaissance, vous pouvez consulter la politique de protection des données ou contacter le délégué à la protection des données à l’adresse dpo@parti-renaissance.fr
+
+                (1)	J’autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer, à fixer mon image et/ou ma voix sur tous supports, à l’exploiter et à la diffuser en intégralité ou par extrait sans limitation du nombre de reproduction, sur tous canaux, sites web et réseaux sociaux édités par les équipes de Renaissance ou ses associations partenaires, dans le cadre de sa communication politique, sous toutes formes, par quelque moyen technique que ce soit, et dans le monde entier, et ce, pour une durée de 2 ans. J’accepte également que cette vidéo soit partagée en intégralité ou par extrait, sur les réseaux sociaux par d’autres utilisateurs. Cette autorisation est consentie à titre gratuit, sans aucune exploitation commerciale.
+                Si je participe en compagnie d’une personne mineure, en qualité de représentant légal de cette personne mineure, j’autorise sans réserve Renaissance ou toute structure qui se substituerait à elle, à enregistrer, à fixer les images de la personne participante dont j’ai la responsabilité, ainsi que les éléments sonores dont elle serait l’émettrice, durant l’événement autorise Renaissance à exploiter ces images et/ou éléments sonores, à les diffuser intégralement ou par extrait, sans limitation du nombre de reproduction, sur tous canaux, sites web et réseaux sociaux édités par Renaissance ou ses partenaires, dans le cadre de sa communication politique, sous toutes formes, par quelque moyen technique que ce soit, et dans le monde entier, et ce, pour un durée de 2 ans. J’accepte également que cette vidéo contenant l’image et/ou la voix de la personne dont j’ai la responsabilité soit partagée sur les réseaux sociaux par d’autres utilisateurs. Cette autorisation est consentie à titre gratuit, sans aucune exploitation commerciale.
+
+            </twig:Atoms:ReCard>
+
+            <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
         </div>
-
-        <div>
-            {{ form_row(form.distantVotePlace, {
-                label: 'Vote dans un autre pays que l\'adresse postale ?',
-            }) }}
-
-            {{ form_row(form.voteZone) }}
-            {{ form_row(form.votePlace) }}
-        </div>
-
-        {% block additional_form '' %}
-
-        <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
-    {{ form_end(form) }}
-{% endblock %}
+        {{ form_end(form) }}
+    </section>
+{% endblock content_section %}
