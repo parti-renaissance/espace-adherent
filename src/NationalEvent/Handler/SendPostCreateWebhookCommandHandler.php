@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[AsMessageHandler]
-class SendWebhookCommandHandler
+class SendPostCreateWebhookCommandHandler
 {
     public function __construct(
         private readonly HttpClientInterface $nationalEventWebhookClient,
@@ -21,6 +21,10 @@ class SendWebhookCommandHandler
 
     public function __invoke(SendWebhookCommand $command): void
     {
+        if (!$command->isPostCreate()) {
+            return;
+        }
+
         if (!$eventInscription = $this->eventInscriptionRepository->findOneByUuid($command->getUuid()->toString())) {
             return;
         }

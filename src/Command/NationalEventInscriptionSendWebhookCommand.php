@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\NationalEvent\Command\SendWebhookCommand;
+use App\NationalEvent\WebhookActionEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -30,6 +31,7 @@ class NationalEventInscriptionSendWebhookCommand extends Command
     {
         $this
             ->addArgument('event-id', InputArgument::REQUIRED)
+            ->addOption('ticket', null, InputOption::VALUE_NONE, 'Send ticket webhook')
             ->addOption('emails', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
         ;
     }
@@ -54,9 +56,15 @@ class NationalEventInscriptionSendWebhookCommand extends Command
         $this->io->progressStart($count);
         $offset = 0;
 
+        $isForTicket = (bool) $input->getOption('ticket');
+
         do {
             foreach ($paginator as $eventInscription) {
-                $this->bus->dispatch(new SendWebhookCommand($eventInscription->getUuid()));
+                $this->bus->dispatch(new SendWebhookCommand(
+                    $eventInscription->getUuid(),
+                    $isForTicket ? WebhookActionEnum::POST_UPDATE : WebhookActionEnum::POST_CREATE
+                ));
+
                 $this->io->progressAdvance();
                 ++$offset;
             }
