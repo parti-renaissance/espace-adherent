@@ -74,7 +74,7 @@ class ZoneRepository extends ServiceEntityRepository
      */
     public function searchByFilterInsideManagedZones(ZoneAutocompleteFilter $filter, array $zones, ?int $perType): array
     {
-        if (empty($filter->q) && false === $filter->searchEvenEmptyTerm) {
+        if (null !== $perType && empty($filter->q) && false === $filter->searchEvenEmptyTerm) {
             return [];
         }
 
