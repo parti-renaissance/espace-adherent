@@ -52,13 +52,18 @@ class ProxyController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$request->getSession()->has(PersistEmailController::SESSION_KEY)) {
+            $session = $request->getSession();
+
+            if (
+                !$session->has(PersistEmailController::SESSION_KEY)
+                || $proxyCommand->email !== $session->get(PersistEmailController::SESSION_KEY)
+            ) {
                 return $this->redirectToRoute('app_procuration_v2_proxy');
             }
 
             $procurationProxy = $this->procurationHandler->handleProxy($proxyCommand);
 
-            $request->getSession()->remove(PersistEmailController::SESSION_KEY);
+            $session->remove(PersistEmailController::SESSION_KEY);
 
             return $this->redirectToRoute('app_procuration_v2_proxy_thanks', [
                 'uuid' => $procurationProxy->getUuid(),

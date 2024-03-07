@@ -52,13 +52,18 @@ class RequestController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (!$request->getSession()->has(PersistEmailController::SESSION_KEY)) {
+            $session = $request->getSession();
+
+            if (
+                !$session->has(PersistEmailController::SESSION_KEY)
+                || $requestCommand->email !== $session->get(PersistEmailController::SESSION_KEY)
+            ) {
                 return $this->redirectToRoute('app_procuration_v2_request');
             }
 
             $procurationRequest = $this->procurationHandler->handleRequest($requestCommand);
 
-            $request->getSession()->remove(PersistEmailController::SESSION_KEY);
+            $session->remove(PersistEmailController::SESSION_KEY);
 
             return $this->redirectToRoute('app_procuration_v2_request_thanks', [
                 'uuid' => $procurationRequest->getUuid(),
