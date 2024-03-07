@@ -5,13 +5,14 @@ import CommonFormStep from './CommonFormStep';
 
 /**
  * First Step component for funnel
+ * @param {{ api: string }} props
  * @returns {AlpineComponent}
  */
-const FirstForm = () => ({
+const FirstForm = (props) => ({
     ...CommonFormStep(),
     fieldsValid: {
         email: false,
-        consentDataCollect: false,
+        acceptCgu: false,
         captcha: false,
     },
     captchaToken: null,
@@ -37,16 +38,16 @@ const FirstForm = () => ({
 
     init() {
         const emailInput = document.querySelector('#procuration_proxy_email');
-        const consentDataCollectInput = document.querySelector('#procuration_proxy_consentDataCollect');
-        if (emailInput.value && consentDataCollectInput.checked) {
+        const acceptCguInput = document.querySelector('#procuration_proxy_acceptCgu');
+        if (emailInput.value && acceptCguInput.checked) {
             this.submitted = true;
             this.submittedValues = {
                 email: emailInput.value,
-                consentDataCollect: consentDataCollectInput.checked,
+                acceptCgu: acceptCguInput.checked,
             };
         }
         emailInput.addEventListener('change', this.checkIdFieldChangeAfterSubmit('email'));
-        consentDataCollectInput.addEventListener('change', this.checkIdFieldChangeAfterSubmit('consentDataCollect'));
+        acceptCguInput.addEventListener('change', this.checkIdFieldChangeAfterSubmit('acceptCgu'));
 
         this.$nextTick(() => {
             const tokenInput = dom('input[name="frc-captcha-solution"]:last-child');
@@ -65,7 +66,7 @@ const FirstForm = () => ({
 
     async _postPersistEmail() {
         const params = new URLSearchParams(window.location.search);
-        return fetch('/api/persist-email', {
+        return fetch(props.api, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -117,7 +118,7 @@ const FirstForm = () => ({
                         this.submitted = true;
                         this.submittedValues = {
                             email: document.querySelector('#procuration_proxy_email').value,
-                            consentDataCollect: document.querySelector('#procuration_proxy_consentDataCollect').checked,
+                            cgu: document.querySelector('#procuration_proxy_acceptCgu').checked,
                         };
                         return;
                     }
