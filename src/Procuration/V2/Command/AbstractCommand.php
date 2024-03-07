@@ -9,6 +9,7 @@ use App\Entity\Procuration\Round;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
+use libphonenumber\PhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -66,6 +67,11 @@ abstract class AbstractCommand implements RecaptchaChallengeInterface
      * )
      */
     public ?\DateTimeInterface $birthdate = null;
+
+    /**
+     * @AssertPhoneNumber(message="common.phone_number.invalid")
+     */
+    public ?PhoneNumber $phone = null;
 
     /**
      * @Assert\NotBlank

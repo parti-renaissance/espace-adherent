@@ -10,6 +10,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
 use Doctrine\ORM\Mapping as ORM;
+use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -46,6 +47,11 @@ abstract class AbstractProcuration
      * @ORM\Column(type="date")
      */
     public \DateTimeInterface $birthdate;
+
+    /**
+     * @ORM\Column(type="phone_number", nullable=true)
+     */
+    public ?PhoneNumber $phone = null;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})

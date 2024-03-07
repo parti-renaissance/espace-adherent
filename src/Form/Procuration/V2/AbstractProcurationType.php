@@ -2,11 +2,13 @@
 
 namespace App\Form\Procuration\V2;
 
+use App\Address\AddressInterface;
 use App\Form\AcceptPersonalDataCollectType;
 use App\Form\AutocompleteAddressType;
 use App\Form\BirthdateType;
 use App\Form\CivilityType;
 use App\Form\ZoneUuidType;
+use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -26,6 +28,13 @@ abstract class AbstractProcurationType extends AbstractType
             ->add('firstNames', TextType::class)
             ->add('lastName', TextType::class)
             ->add('birthdate', BirthdateType::class)
+            ->add('phone', PhoneNumberType::class, [
+                'required' => false,
+                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+                'preferred_country_choices' => [AddressInterface::FRANCE],
+                'default_region' => AddressInterface::FRANCE,
+                'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT,
+            ])
             ->add('address', AutocompleteAddressType::class, [
                 'with_additional_address' => true,
             ])
