@@ -4,6 +4,7 @@ namespace App\NationalEvent\Listener;
 
 use App\NationalEvent\Command\SendWebhookCommand;
 use App\NationalEvent\NewNationalEventInscriptionEvent;
+use App\NationalEvent\WebhookActionEnum;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -20,6 +21,6 @@ class SendWebhookListener implements EventSubscriberInterface
 
     public function sendWebhook(NewNationalEventInscriptionEvent $event): void
     {
-        $this->bus->dispatch(new SendWebhookCommand($event->eventInscription->getUuid()));
+        $this->bus->dispatch(new SendWebhookCommand($event->eventInscription->getUuid(), WebhookActionEnum::POST_CREATE));
     }
 }

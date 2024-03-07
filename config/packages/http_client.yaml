@@ -5,6 +5,9 @@ framework:
         scoped_clients:
             national_event_webhook.client:
                 base_uri: '%env(NATIONAL_EVENT_WEBHOOK_HOST)%'
+            national_event_ticket.client:
+                base_uri: '%env(NATIONAL_EVENT_TICKET_HOST)%'
+                auth_bearer: '%env(NATIONAL_EVENT_TICKET_API_KEY)%'
             captain_verify.client:
                 base_uri: 'https://api.captainverify.com'
                 timeout: 15
