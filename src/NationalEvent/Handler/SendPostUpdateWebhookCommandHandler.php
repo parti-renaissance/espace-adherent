@@ -36,7 +36,6 @@ class SendPostUpdateWebhookCommandHandler
         $response = $this->nationalEventTicketClient->request('POST', '/api/tickets', [
             'json' => [
                 'code' => $uuid = $eventInscription->getUuid()->toString(),
-                'externalid' => $uuid,
                 'event' => '/api/events/1',
                 'blacklist' => InscriptionStatusEnum::REFUSED === $eventInscription->status,
                 'custom' => [
