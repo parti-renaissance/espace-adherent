@@ -137,9 +137,12 @@
                     </fieldset>
 
                     <fieldset>
-                        <twig:Atoms:ReLabel>Mon bureau de vote</twig:Atoms:ReLabel>
+                        <twig:Atoms:ReLabel x-text="`Mon bureau de vote ${isNotInFrance ? '(optionnel)' : ''}`"></twig:Atoms:ReLabel>
+                        <p class="text-[#555555] opacity-50 pb-4" x-show="isNotInFrance">
+                            Si vous connaissez votre bureau de vote, il aidera notre équipe à vous trouver le meilleur mandataire. Si vous ne l’avez pas, nous utiliserons votre adresse postale.
+                        </p>
                         <div class="opacity-20 pointer-events-none cursor-not-allowed">
-                            <template x-if="!votePlaceUuid && !votePlaceLoading ">
+                            <template x-if="!votePlaceUuid && !votePlaceLoading">
                                 <twig:Molecules:ReSelect id="fake_vote_place" name="fake_vote_place" placeholder="Mon bureau de vote"/>
                             </template>
 
@@ -147,8 +150,13 @@
                                 <twig:Molecules:ReSelect id="fake_vote_place" name="fake_vote_place" placeholder="Mon bureau de vote" status="loading"/>
                             </template>
                         </div>
-                        <template x-if="votePlaceUuid">
+                        <template x-if="votePlaceUuid && !isNotInFrance">
                             {{ form_row(form.votePlace) }}
+                        </template>
+
+                        <template x-if="votePlaceUuid && isNotInFrance">
+{#                            {{ form_row(form.votePlace) }}#}
+                            <div>NOT IMPLEMENTED</div>
                         </template>
                     </fieldset>
 
