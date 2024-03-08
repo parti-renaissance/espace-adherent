@@ -26,7 +26,7 @@
 
         <p>Partagez-lui ce formulaire pour qu’il fasse comme vous.</p>
 
-        <span class="text-[#1877F2] text-center" x-on:click="$clipboard('{{ copylink }}')">copier le lien</span>
+        <span class="text-[#1877F2] text-center" x-clipboard.raw="{{ copylink }}">copier le lien</span>
 
         <div class="h-[2px] bg-black w-full"></div>
     </div>
