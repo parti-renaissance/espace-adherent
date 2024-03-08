@@ -24,10 +24,12 @@ class ProcurationFactory
             $command->firstNames,
             $command->lastName,
             $command->birthdate,
+            $command->phone,
             $this->addressFactory->createFromAddress($command->address),
             $command->distantVotePlace,
             $command->voteZone,
             $command->votePlace,
+            $command->customVotePlace,
             $command->adherent,
             $command->clientIp
         );
@@ -42,10 +44,12 @@ class ProcurationFactory
             $command->firstNames,
             $command->lastName,
             $command->birthdate,
+            $command->phone,
             $this->addressFactory->createFromAddress($command->address),
             $command->distantVotePlace,
             $command->voteZone,
             $command->votePlace,
+            $command->customVotePlace,
             $command->adherent,
             $command->clientIp
         );
