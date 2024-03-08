@@ -1,16 +1,16 @@
 {% set attr = attributes.all() %}
 
 <div {{ attributes.only('class') }}
-    x-data="xValidateField({
+        x-data="xValidateField({
         status: '{{ status is defined ? status : 'default' }}',
         message: '{{ message is defined ? message : '' }}',
         validate: {{ validate is defined ? validate : '[]' }},
         onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}
     })"
-    {% if id is defined %}
+        {% if id is defined %}
     id="{{ id }}_select_widget"
     @x-validate:{{ id }}.window="setData($event.detail)"
-    {% endif %}>
+        {% endif %}>
 
     <div class="relative flex-col flex justify-center">
         <script>
@@ -36,6 +36,7 @@
              @x-inject-option:{{ id }}.window="setEndValues($event.detail, true)"
         >
             <div class="relative flex flex-col justify-center">
+                <div class="flex justify-center items-center">
                 <textarea x-ref="input" type="text"
                           x-autogrow
                           rows="1"
@@ -46,10 +47,16 @@
                           x-bind:class="{'disabled': isValueSet && blocked, '!pr-24': isValueSet && blocked}"
                           x-on:focus="handleChangeSetValue"
                           x-bind:placeholder="placeholder"
-                          {% for key,value in searchBoxProps %}
-                            {{ key }}="{{ value }}"
-                          {% endfor %}
-                ></textarea>
+                    {% for key,value in searchBoxProps %}
+                        {{ key }}="{{ value }}"
+                    {% endfor %}
+                    ></textarea>
+
+                    <twig:ReIcon x-show="!blocked"
+                            name="x:status === 'default' ? 'chevron' : status"
+                            x-on:click="$refs.input.focus()"
+                            class="flex pr-4 cursor-text"/>
+                </div>
                 <div x-show="isValueSet && blocked" x-cloak @click="handleChangeSetValue"
                      class="absolute self-end pr-4 flex w-full h-full cursor-pointer justify-end items-center">
                     <span class="text-ui_blue-50 font-medium">Changer</span>

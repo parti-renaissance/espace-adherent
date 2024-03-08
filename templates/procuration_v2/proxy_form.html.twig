@@ -6,11 +6,19 @@
     Proposition (Mandataire)
 {% endblock %}
 
+{% block title_content_section %}
+Je vote<br>deux fois
+{% endblock %}
+
+{% block description_content_section %}
+Ça vous dit de voter une 2e fois le neuf juin ? Remplissez ce formulaire et nous vous mettrons en relation avec une personne proche de chez vous qui ne pourra pas voter.
+{% endblock %}
+
 {% block inner_content_section %}
     <fieldset>
         <twig:Atoms:ReLabel>Mon numéro d’électeur</twig:Atoms:ReLabel>
         <p class="text-[#555555] opacity-50">Il facilitera la démarche pour vous faire procuration.</p>
-        {{ form_row(form.electorNumber, {attr: { placeholder: 'Mon numéro d’électeur' }}) }}
+        {{ form_row(form.electorNumber, {attr: { placeholder: 'Mon numéro d’électeur', 'x-numberonly':'', validate: '["required", "max:9"]' }}) }}
 
     </fieldset>
     <p>

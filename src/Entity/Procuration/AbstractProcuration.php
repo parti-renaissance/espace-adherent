@@ -71,6 +71,11 @@ abstract class AbstractProcuration
     public Zone $votePlace;
 
     /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $customVotePlace = null;
+
+    /**
      * @ORM\Column(length=50, nullable=true)
      */
     public ?string $clientIp = null;
@@ -94,10 +99,12 @@ abstract class AbstractProcuration
         string $firstNames,
         string $lastName,
         \DateTimeInterface $birthdate,
+        ?PhoneNumber $phone,
         PostAddress $postAddress,
         bool $distantVotePlace,
         Zone $voteZone,
         Zone $votePlace,
+        ?string $customVotePlace = null,
         ?Adherent $adherent = null,
         ?string $clientIp = null,
         ?\DateTimeInterface $createdAt = null
@@ -109,10 +116,12 @@ abstract class AbstractProcuration
         $this->firstNames = $firstNames;
         $this->lastName = $lastName;
         $this->birthdate = $birthdate;
+        $this->phone = $phone;
         $this->postAddress = $postAddress;
         $this->distantVotePlace = $distantVotePlace;
         $this->voteZone = $voteZone;
         $this->votePlace = $votePlace;
+        $this->customVotePlace = $customVotePlace;
         $this->adherent = $adherent;
         $this->clientIp = $clientIp;
         $this->createdAt = $createdAt ?? new \DateTimeImmutable();

@@ -33,7 +33,7 @@ abstract class AbstractCommand
     public ?string $firstNames = null;
 
     /**
-     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
+     * @Assert\NotBlank
      * @Assert\Length(
      *     min=1,
      *     max=100,
@@ -83,6 +83,11 @@ abstract class AbstractCommand
      * @Assert\NotBlank
      */
     public ?Zone $votePlace = null;
+
+    /**
+     * @Assert\Length(max=255)
+     */
+    public ?string $customVotePlace = null;
 
     public ?string $clientIp = null;
 

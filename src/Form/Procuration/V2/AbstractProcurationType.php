@@ -41,11 +41,12 @@ abstract class AbstractProcurationType extends AbstractType
             ->add('distantVotePlace', CheckboxType::class, [
                 'required' => false,
             ])
-            ->add('voteZone', ZoneUuidType::class, [
+            ->add('voteZone', ZoneUuidType::class)
+            ->add('votePlace', ZoneUuidType::class, [
                 'required' => false,
                 'error_bubbling' => true,
             ])
-            ->add('votePlace', ZoneUuidType::class, [
+            ->add('customVotePlace', TextType::class, [
                 'required' => false,
                 'error_bubbling' => true,
             ])

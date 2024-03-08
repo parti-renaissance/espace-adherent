@@ -1,5 +1,4 @@
 import Alpine from 'alpinejs';
-import Clipboard from '@ryangjchandler/alpine-clipboard';
 import Tooltip from '../components/Tooltip';
 import NumberOnly from '../components/InputNumberOnly';
 import Validator from '../components/Validator';
@@ -12,7 +11,6 @@ import ReGoogleAutoComplete from '../components/ReGoogleAutoComplete';
 
 window.Alpine = Alpine;
 export default () => {
-    Alpine.plugin(Clipboard);
     Alpine.directive('tooltip', Tooltip);
     Alpine.directive('autogrow', Autogrow);
     Alpine.directive('numberonly', NumberOnly);

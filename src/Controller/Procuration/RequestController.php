@@ -58,7 +58,9 @@ class RequestController extends AbstractController
                 !$session->has(PersistEmailController::SESSION_KEY)
                 || $requestCommand->email !== $session->get(PersistEmailController::SESSION_KEY)
             ) {
-                return $this->redirectToRoute('app_procuration_v2_request');
+                $session->remove(PersistEmailController::SESSION_KEY);
+
+                return $this->redirectToRoute('app_procuration_v2_request', ['slug' => $election->slug]);
             }
 
             $procurationRequest = $this->procurationHandler->handleRequest($requestCommand);
