@@ -135,9 +135,23 @@
                     <fieldset>
                         {{ form_row(form.voteZone) }}
                     </fieldset>
-                    <template x-if="votePlaceUuid">
-                        {{ form_row(form.votePlace) }}
-                    </template>
+
+                    <fieldset>
+                        <twig:Atoms:ReLabel>Mon bureau de vote</twig:Atoms:ReLabel>
+                        <div class="opacity-20 pointer-events-none cursor-not-allowed">
+                            <template x-if="!votePlaceUuid && !votePlaceLoading ">
+                                <twig:Molecules:ReSelect id="fake_vote_place" name="fake_vote_place" placeholder="Mon bureau de vote"/>
+                            </template>
+
+                            <template x-if="!votePlaceUuid && votePlaceLoading ">
+                                <twig:Molecules:ReSelect id="fake_vote_place" name="fake_vote_place" placeholder="Mon bureau de vote" status="loading"/>
+                            </template>
+                        </div>
+                        <template x-if="votePlaceUuid">
+                            {{ form_row(form.votePlace) }}
+                        </template>
+                    </fieldset>
+
 
 
 

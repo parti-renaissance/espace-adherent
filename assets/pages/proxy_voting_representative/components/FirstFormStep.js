@@ -83,7 +83,8 @@ const FirstForm = (props) => ({
     _handleBadRequest($dispatch) {
         return (data) => data.violations.forEach((x) => {
             if ('email' === x.property) {
-                $dispatch('x-validate:procuration_proxy_email', {
+                const proxyOrRequest = document.querySelector('#procuration_proxy_email') ? 'proxy' : 'request';
+                $dispatch(`x-validate:procuration_${proxyOrRequest}_email`, {
                     status: data.status,
                     message: x.message,
                 });

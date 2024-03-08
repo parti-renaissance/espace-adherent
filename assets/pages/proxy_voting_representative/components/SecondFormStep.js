@@ -15,6 +15,7 @@ const SecondForm = (props) => ({
     id: 'step_2',
     showAutoComplete: true,
     votePlaceUuid: null,
+    votePlaceLoading: false,
     isNotInFrance: false,
     fieldsValid: {
         gender: false,
@@ -34,7 +35,7 @@ const SecondForm = (props) => ({
             'input[id^="procuration_"]'
         );
         addressInputs.forEach((x) => {
-            window.addEventListener(`x-validate:${x.id}`, ({ detail }) => {
+            window.addEventListener(`x-validate:${x.id.toLowerCase()}`, ({ detail }) => {
                 if ('error' === detail.status && this.showAutoComplete) {
                     this.showAutoComplete = false;
                 }
@@ -68,15 +69,28 @@ const SecondForm = (props) => ({
     },
 
     handleVoteZoneChange(uuidType) {
+        const proxyOrRequest = document.querySelector('[id^=procuration_proxy_]') ? 'proxy' : 'request';
         const [uuid, type] = uuidType.split('__');
         this.isNotInFrance = 'country' === type;
         document.querySelector('[id$=_voteZone]').value = uuid;
         this.votePlaceUuid = null;
+        this.votePlaceLoading = true;
         this.getVotePlace(uuid)
             .then((options) => {
+                window[`options_procuration_${proxyOrRequest}_votePlace`] = options;
+                if (1 === options.length) {
+                    setTimeout(() => {
+                        this.$dispatch(
+                            `x-inject-option:procuration_${proxyOrRequest}_votePlace`.toLowerCase(),
+                            options[0]
+                        );
+                    }, 0);
+                }
+
                 this.votePlaceUuid = uuid;
-                window.options_procuration_proxy_votePlace = options;
-                window.options_procuration_request_votePlace = options;
+            })
+            .finally(() => {
+                this.votePlaceLoading = false;
             });
     },
     /**

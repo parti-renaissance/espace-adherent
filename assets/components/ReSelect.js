@@ -183,13 +183,13 @@ const xReSelect = (props) => {
         },
         async onQuery(query) {
             if (props.onQuery) {
-                this.$dispatch(`x-validate:${props.id}`, {
+                this.$dispatch(`x-validate:${props.id.toLowerCase()}`, {
                     status: 'loading',
                     message: 'Chargement en cours...',
                 });
                 return props.onQuery(query)
                     .then((opts) => {
-                        this.$dispatch(`x-validate:${props.id}`, {
+                        this.$dispatch(`x-validate:${props.id.toLowerCase()}`, {
                             status: 'default',
                             message: '',
                         });

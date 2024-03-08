@@ -17,16 +17,13 @@
 {% endblock %}
 
 {% block _procuration_proxy_votePlace_row %}
-    <fieldset>
-        <twig:Atoms:ReLabel>Mon bureau de vote</twig:Atoms:ReLabel>
-        <twig:Molecules:ReSelect
-                name="{{ full_name }}"
-                id="{{ id }}"
-                validate="['required']"
-                onCheck="setFieldValid('voteZone')"
-                placeholder="Mon bureau de vote"
-        />
-    </fieldset>
+    <twig:Molecules:ReSelect
+            name="{{ full_name }}"
+            id="{{ id }}"
+            validate="['required']"
+            onCheck="setFieldValid('voteZone')"
+            placeholder="Mon bureau de vote"
+    />
 {% endblock %}
 
 
@@ -46,14 +43,11 @@
 {% endblock %}
 
 {% block _procuration_request_votePlace_row %}
-    <fieldset>
-        <twig:Atoms:ReLabel>Mon bureau de vote</twig:Atoms:ReLabel>
-        <twig:Molecules:ReSelect
-                name="{{ full_name }}"
-                id="{{ id }}"
-                validate="['required']"
-                onCheck="setFieldValid('voteZone')"
-                placeholder="Mon bureau de vote"
-        />
-    </fieldset>
+    <twig:Molecules:ReSelect
+            name="{{ full_name }}"
+            id="{{ id }}"
+            validate="['required']"
+            onCheck="setFieldValid('voteZone')"
+            placeholder="Mon bureau de vote"
+    />
 {% endblock %}
