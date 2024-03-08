@@ -28,3 +28,32 @@
         />
     </fieldset>
 {% endblock %}
+
+
+{% block _procuration_request_voteZone_row %}
+    <fieldset>
+        <twig:Atoms:ReLabel>Ma commune / mon pays de vote</twig:Atoms:ReLabel>
+        <twig:Molecules:ReSelect
+                onQuery="getVoteZone"
+                name="{{ full_name }}"
+                id="{{ id }}"
+                placeholder="Paris 17e (75017)"
+                x-on:change="handleVoteZoneChange($event.target.value)"
+                validate="['required']"
+                onCheck="setFieldValid('voteZone')"
+        />
+    </fieldset>
+{% endblock %}
+
+{% block _procuration_request_votePlace_row %}
+    <fieldset>
+        <twig:Atoms:ReLabel>Mon bureau de vote</twig:Atoms:ReLabel>
+        <twig:Molecules:ReSelect
+                name="{{ full_name }}"
+                id="{{ id }}"
+                validate="['required']"
+                onCheck="setFieldValid('voteZone')"
+                placeholder="Mon bureau de vote"
+        />
+    </fieldset>
+{% endblock %}
