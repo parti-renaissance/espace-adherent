@@ -54,6 +54,7 @@ class SendPostUpdateWebhookCommandHandler
                         'nom' => $eventInscription->lastName,
                     ],
                 ],
+                'headers' => ['Content-Type' => 'application/merge-patch+json'],
             ]);
         }
     }
