@@ -99,6 +99,15 @@ Feature:
             "name": "Espagne 1ère circo"
         },
         {
+            "uuid": "e3f28b24-906e-11eb-a875-0242ac150002",
+            "type": "city",
+            "postal_code": [
+                "76570"
+            ],
+            "code": "76495",
+            "name": "Pavilly"
+        },
+        {
             "uuid": "e3f29811-906e-11eb-a875-0242ac150002",
             "type": "city",
             "postal_code": [
@@ -124,15 +133,6 @@ Feature:
             ],
             "code": "13080",
             "name": "Le Puy-Sainte-Réparade"
-        },
-        {
-            "uuid": "e3f28b24-906e-11eb-a875-0242ac150002",
-            "type": "city",
-            "postal_code": [
-                "76570"
-            ],
-            "code": "76495",
-            "name": "Pavilly"
         },
         {
             "uuid": "e3f1e343-906e-11eb-a875-0242ac150002",
@@ -254,6 +254,15 @@ Feature:
     """
     [
         {
+            "uuid": "e3f28b24-906e-11eb-a875-0242ac150002",
+            "type": "city",
+            "postal_code": [
+                "76570"
+            ],
+            "code": "76495",
+            "name": "Pavilly"
+        },
+        {
             "uuid": "e3f29811-906e-11eb-a875-0242ac150002",
             "type": "city",
             "postal_code": [
@@ -279,15 +288,6 @@ Feature:
             ],
             "code": "13080",
             "name": "Le Puy-Sainte-Réparade"
-        },
-        {
-            "uuid": "e3f28b24-906e-11eb-a875-0242ac150002",
-            "type": "city",
-            "postal_code": [
-                "76570"
-            ],
-            "code": "76495",
-            "name": "Pavilly"
         },
         {
             "uuid": "e3f1e343-906e-11eb-a875-0242ac150002",
