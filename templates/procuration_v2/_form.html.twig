@@ -138,10 +138,12 @@
                     Mes informations d'électeur
                 </h3>
 
-                <fieldset class="flex flex-col gap-8 relative z-10 ">
-                    {{ form_row(form.distantVotePlace, {
-                        label: 'Je vote dans une autre ville ou un autre pays ?',
-                    }) }}
+                <fieldset class="flex flex-col gap-8 relative z-10">
+                    <div class="hidden">
+                        {{ form_row(form.distantVotePlace, {
+                            label: 'Je vote dans une autre ville ou un autre pays ?',
+                        }) }}
+                    </div>
 
                     <fieldset>
                         {{ form_row(form.voteZone) }}
