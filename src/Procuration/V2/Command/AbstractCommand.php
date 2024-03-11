@@ -22,7 +22,7 @@ abstract class AbstractCommand
     public ?string $gender = null;
 
     /**
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="procuration.first_names.not_blank")
      * @Assert\Length(
      *     min=2,
      *     max=255,
@@ -33,7 +33,7 @@ abstract class AbstractCommand
     public ?string $firstNames = null;
 
     /**
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="procuration.last_name.not_blank")
      * @Assert\Length(
      *     min=1,
      *     max=100,
@@ -44,7 +44,7 @@ abstract class AbstractCommand
     public ?string $lastName = null;
 
     /**
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="procuration.email.not_blank")
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
@@ -67,7 +67,7 @@ abstract class AbstractCommand
     public ?PhoneNumber $phone = null;
 
     /**
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="procuration.address.not_blank")
      * @Assert\Valid
      */
     public ?Address $address = null;
@@ -75,13 +75,10 @@ abstract class AbstractCommand
     public bool $distantVotePlace = false;
 
     /**
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="procuration.vote_zone.not_blank")
      */
     public ?Zone $voteZone = null;
 
-    /**
-     * @Assert\NotBlank
-     */
     public ?Zone $votePlace = null;
 
     /**
@@ -94,7 +91,7 @@ abstract class AbstractCommand
     public ?Adherent $adherent = null;
 
     /**
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="procuration.round.not_blank")
      */
     public ?Round $round = null;
 }
