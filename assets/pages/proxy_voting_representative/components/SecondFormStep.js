@@ -59,9 +59,10 @@ const SecondForm = (props) => ({
      * @return {Promise<Option>}
      */
     getVoteZone(query) {
+        const boroughCodeCityToExclude = [75056, 69123, 13055]; // Paris, Lyon, Marseille
         return fetch(`${props.zoneApi}?q=${query}&types[]=city&types[]=borough&types[]=country`)
             .then((response) => response.json())
-            .then((data) => data.filter((x) => !('city' === x.type && 1 < x.postal_code.length))
+            .then((data) => data.filter((x) => !boroughCodeCityToExclude.includes(x.code))
                 .map((x) => ({
                     label: `${x.name}`,
                     value: `${x.uuid}__${x.type}`,
