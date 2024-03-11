@@ -16,6 +16,7 @@ const SecondForm = (props) => ({
     showAutoComplete: true,
     votePlaceUuid: null,
     votePlaceLoading: false,
+    isVotePlacesEmpty: false,
     isNotInFrance: false,
     fieldsValid: {
         gender: false,
@@ -64,14 +65,14 @@ const SecondForm = (props) => ({
             .then((response) => response.json())
             .then((data) => data.filter((x) => !boroughCodeCityToExclude.includes(x.code))
                 .map((x) => ({
-                    label: `${x.name}`,
+                    label: `${x.name} | ${'country' === x.type ? x.code : x.postal_code}`,
                     value: `${x.uuid}__${x.type}__${x.code}`,
                 })));
     },
 
     handleVoteZoneChange(uuidType) {
         const proxyOrRequest = document.querySelector('[id^=procuration_proxy_]') ? 'proxy' : 'request';
-        const DOM_TOM_CODES = ['GP', 'GF', 'RE', 'MQ', 'YT', 'NC', 'PF', 'BL', 'MF', 'SX', 'PM', 'WF'];
+        const DOM_TOM_CODES = ['GP', 'GF', 'MQ', 'YT', 'NC', 'PF', 'BL', 'MF', 'SX', 'PM', 'WF', 'RE'];
         const [uuid, type, code] = uuidType.split('__');
         this.isNotInFrance = 'country' === type && !DOM_TOM_CODES.includes(code);
         document.querySelector('[id$=_voteZone]').value = uuid;
@@ -80,6 +81,7 @@ const SecondForm = (props) => ({
         this.getVotePlace(uuid)
             .then((options) => {
                 window[`options_procuration_${proxyOrRequest}_votePlace`] = options;
+                this.isVotePlacesEmpty = 0 === options.length;
                 if (1 === options.length) {
                     setTimeout(() => {
                         this.$dispatch(

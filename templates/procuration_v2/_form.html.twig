@@ -167,11 +167,11 @@
                                 <twig:Molecules:ReSelect id="fake_vote_place" name="fake_vote_place" placeholder="Mon bureau de vote" status="loading"/>
                             </template>
                         </div>
-                        <template x-if="votePlaceUuid && !isNotInFrance">
+                        <template x-if="votePlaceUuid && !isNotInFrance && !isVotePlacesEmpty">
                             {{ form_row(form.votePlace) }}
                         </template>
 
-                        <template x-if="votePlaceUuid && isNotInFrance">
+                        <template x-if="votePlaceUuid && (isNotInFrance || isVotePlacesEmpty)">
                             {{ form_row(form.customVotePlace) }}
                         </template>
 
