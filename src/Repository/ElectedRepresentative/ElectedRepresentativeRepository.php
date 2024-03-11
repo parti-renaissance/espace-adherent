@@ -141,7 +141,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         }
 
         $qb
-            ->addSelect('mandate', 'zone', 'politicalFunction', 'userListDefinition', 'label')
+            ->addSelect('mandate', 'zone', 'politicalFunction', 'label')
             ->addSelect('sponsorship', 'socialNetworkLink', 'userListDefinition')
             ->leftJoin('er.labels', 'label')
             ->leftJoin('er.sponsorships', 'sponsorship')
