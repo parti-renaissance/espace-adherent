@@ -48,12 +48,12 @@ class DonationRequestHandler
 
         $donator->addDonation($donation);
 
-        $this->dispatcher->dispatch(new DonationWasCreatedEvent($donation), DonationEvents::CREATED);
-
         $this->manager->persist($donator);
         $this->manager->persist($donation);
 
         $this->manager->flush();
+
+        $this->dispatcher->dispatch(new DonationWasCreatedEvent($donation), DonationEvents::CREATED);
 
         return $donation;
     }

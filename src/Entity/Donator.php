@@ -29,7 +29,7 @@ class Donator
     /**
      * @var Adherent|null
      *
-     * @ORM\ManyToOne(targetEntity="Adherent")
+     * @ORM\ManyToOne(targetEntity=Adherent::class)
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $adherent;

@@ -16,23 +16,22 @@ class DonatorRepository extends ServiceEntityRepository
 
     public function findOneForMatching(string $emailAddress, string $firstName, string $lastName): ?Donator
     {
-        $donators = $this
+        return $this
             ->createQueryBuilder('donator')
+            ->addSelect('adherent')
+            ->leftJoin('donator.adherent', 'adherent')
             ->andWhere('donator.emailAddress = :emailAddress')
             ->andWhere('donator.firstName = :firstName')
             ->andWhere('donator.lastName = :lastName')
-            ->setParameter('emailAddress', $emailAddress)
-            ->setParameter('firstName', $firstName)
-            ->setParameter('lastName', $lastName)
+            ->setParameters([
+                                'emailAddress' => $emailAddress,
+                                'firstName' => $firstName,
+                                'lastName' => $lastName,
+                            ])
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
         ;
-
-        if ($donators) {
-            return current($donators);
-        }
-
-        return null;
     }
 
     public function updateDonatorEmail(Adherent $adherent): void
