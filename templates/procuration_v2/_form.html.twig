@@ -89,7 +89,7 @@
                 }) }}
 
                 {{ form_row(form.firstNames, {
-                    label: "Prénoms",
+                    label: "Prénom(s)",
                     attr: {
                         placeholder: "Marie, Claude, Anne"
                     }
@@ -138,10 +138,16 @@
                     Mes informations d'électeur
                 </h3>
 
-                <fieldset class="flex flex-col gap-8 relative z-10 ">
-                    {{ form_row(form.distantVotePlace, {
-                        label: 'Je vote dans une autre ville ou un autre pays ?',
-                    }) }}
+                <p class="text-[#555555] opacity-50">
+                    Sachez que ces informations sont indiquées sur votre carte d'électeur. En cas de besoin vous pouvez également les récupérer en allant sur ce site <a class="text-ui_blue-50 hover:text-ui_blue-70" href="https://www.service-public.fr/particuliers/vosdroits/demarches-et-outils/ISE">(Interroger votre situation électorale | Service-Public.fr)</a>
+                </p>
+
+                <fieldset class="flex flex-col gap-8 relative z-10">
+                    <div class="hidden">
+                        {{ form_row(form.distantVotePlace, {
+                            label: 'Je vote dans une autre ville ou un autre pays ?',
+                        }) }}
+                    </div>
 
                     <fieldset>
                         {{ form_row(form.voteZone) }}
@@ -168,9 +174,9 @@
                         <template x-if="votePlaceUuid && isNotInFrance">
                             {{ form_row(form.customVotePlace) }}
                         </template>
+
+
                     </fieldset>
-
-
 
 
                 </fieldset>
