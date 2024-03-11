@@ -258,8 +258,11 @@ procuration.last_name.not_blank: Votre nom de naissance est requis.
 procuration.last_name.min_length: Votre nom de naissance doit comporter au moins {{ limit }} caractères.
 procuration.last_name.max_length: Votre nom de naissance ne peut pas dépasser {{ limit }} caractères.
 
+procuration.first_names.not_blank: Veuillez renseigner vos prénoms.
 procuration.first_names.min_length: Votre prénom doit comporter au moins {{ limit }} caractères.
 procuration.first_names.max_length: Vos prénoms ne peuvent pas dépasser {{ limit }} caractères.
+
+procuration.email.not_blank: Veuillez renseigner votre adresse email.
 
 procuration.birthdate.not_blank: Vous devez spécifier votre date de naissance.
 procuration.birthdate.minimum_required_age: Vous devez être âgé d'au moins 17 ans pour demander une procuration.
@@ -278,6 +281,12 @@ procuration.state.not_empty: Vous devez remplir l'État/Province si le pays de r
 procuration.postal_code.not_empty: Pour la France, la saisie du code postal est obligatoire.
 procuration.vote_country.conditions: Un mandataire ne peut se proposer plus de 2 fois pour un vote en France, et 3 fois pour un vote à l'étranger.
 procuration.proxies_count.already_associated: Si vous voulez réduire le nombre de procurations disponibles pour ce mandataire, vous devez d'abord lui dissocier des demandes.
+
+procuration.address.not_blank: Veuillez renseigner votre adresse postale.
+
+procuration.vote_zone.not_blank: Veuillez renseigner la zone où vous votez (pays, ville, arrondissement).
+
+procuration.round.not_blank: Veuillez renseigner un tour d'élection pour cette demande.
 
 #
 # Event
