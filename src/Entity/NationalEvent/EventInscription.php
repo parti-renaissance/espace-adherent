@@ -63,6 +63,7 @@ class EventInscription
      * @Groups({"national_event_inscription:webhook"})
      *
      * @ORM\ManyToOne(targetEntity=Adherent::class)
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     public ?Adherent $adherent = null;
 
