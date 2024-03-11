@@ -18,5 +18,5 @@ class Proxy extends AbstractProcuration
     /**
      * @ORM\Column(type="smallint", options={"default": 1, "unsigned": true})
      */
-    public string $slots;
+    public int $slots;
 }

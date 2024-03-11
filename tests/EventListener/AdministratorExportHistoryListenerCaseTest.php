@@ -47,7 +47,9 @@ class AdministratorExportHistoryListenerCaseTest extends AbstractRenaissanceWebT
             'format' => 'csv',
         ];
 
+        ob_start();
         $this->client->request('GET', '/admin/app/adherent/export', $parameters);
+        ob_end_clean();
 
         $histories = $this->historyRepository->findAll();
         self::assertCount(1, $histories);

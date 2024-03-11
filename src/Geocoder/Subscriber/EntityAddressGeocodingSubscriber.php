@@ -10,18 +10,15 @@ use App\Geocoder\GeocodableEntityEventInterface;
 use App\Geocoder\Geocoder;
 use App\Geocoder\GeoPointInterface;
 use App\Membership\AdherentEvents;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
 {
-    private $geocoder;
-    private $manager;
-
-    public function __construct(Geocoder $geocoder, ObjectManager $manager)
-    {
-        $this->geocoder = $geocoder;
-        $this->manager = $manager;
+    public function __construct(
+        private readonly Geocoder $geocoder,
+        private readonly EntityManagerInterface $manager
+    ) {
     }
 
     /**
