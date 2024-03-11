@@ -112,20 +112,31 @@ class ZoneRepository extends ServiceEntityRepository
                     )
                 )
                 ->setParameter(':zones', $zones)
-                ->orderBy('zone.name')
             ;
         }
 
         if (!empty($term = $filter->q)) {
             $qb
+                ->addSelect(<<<SQL
+                        CASE
+                            WHEN REPLACE(zone.name, '-', ' ') = :term_strict THEN 1
+                            WHEN REPLACE(zone.name, '-', ' ') LIKE :term_starts_with THEN 2
+                            ELSE 3
+                        END AS HIDDEN score
+                    SQL)
+                ->orderBy('score')
+                ->addOrderBy('zone.name')
+                ->addOrderBy('LENGTH(zone.code)')
                 ->andWhere(
                     $qb->expr()->orX(
-                        $qb->expr()->like("REPLACE(zone.name, '-', ' ')", ':term_name'),
+                        $qb->expr()->like("REPLACE(zone.name, '-', ' ')", ':term_contains'),
                         $qb->expr()->like('zone.code', ':term_code'),
                         $qb->expr()->like('zone.postalCode', ':term_code'),
                     )
                 )
-                ->setParameter(':term_name', '%'.str_replace('-', ' ', $term).'%')
+                ->setParameter(':term_strict', str_replace('-', ' ', $term))
+                ->setParameter(':term_starts_with', str_replace('-', ' ', $term).'%')
+                ->setParameter(':term_contains', '%'.str_replace('-', ' ', $term).'%')
                 ->setParameter(':term_code', "%$term%")
             ;
         }
@@ -147,7 +158,6 @@ class ZoneRepository extends ServiceEntityRepository
 
         return $qb
             ->getQuery()
-            ->setFirstResult(0)
             ->setMaxResults($max)
             ->getResult()
         ;
