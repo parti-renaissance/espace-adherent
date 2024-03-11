@@ -59,20 +59,21 @@ const SecondForm = (props) => ({
      * @return {Promise<Option>}
      */
     getVoteZone(query) {
-        const boroughCodeCityToExclude = [75056, 69123, 13055]; // Paris, Lyon, Marseille
+        const boroughCodeCityToExclude = ['75056', '69123', '13055']; // Paris, Lyon, Marseille
         return fetch(`${props.zoneApi}?q=${query}&types[]=city&types[]=borough&types[]=country`)
             .then((response) => response.json())
             .then((data) => data.filter((x) => !boroughCodeCityToExclude.includes(x.code))
                 .map((x) => ({
                     label: `${x.name}`,
-                    value: `${x.uuid}__${x.type}`,
+                    value: `${x.uuid}__${x.type}__${x.code}`,
                 })));
     },
 
     handleVoteZoneChange(uuidType) {
         const proxyOrRequest = document.querySelector('[id^=procuration_proxy_]') ? 'proxy' : 'request';
-        const [uuid, type] = uuidType.split('__');
-        this.isNotInFrance = 'country' === type;
+        const DOM_TOM_CODES = ['GP', 'GF', 'RE', 'MQ', 'YT', 'NC', 'PF', 'BL', 'MF', 'SX', 'PM', 'WF'];
+        const [uuid, type, code] = uuidType.split('__');
+        this.isNotInFrance = 'country' === type && !DOM_TOM_CODES.includes(code);
         document.querySelector('[id$=_voteZone]').value = uuid;
         this.votePlaceUuid = null;
         this.votePlaceLoading = true;
@@ -101,11 +102,10 @@ const SecondForm = (props) => ({
     getVotePlace(uuid) {
         return fetch(`${props.zoneApi}?noLimit&types[]=vote_place&parent_zone=${uuid}`)
             .then((response) => response.json())
-            .then((data) => data.filter((x) => !('city' === x.type && 1 < x.postal_code.length))
-                .map((x) => ({
-                    label: `${x.name}`,
-                    value: x.uuid,
-                })));
+            .then((data) => data.map((x) => ({
+                label: `${x.name}`,
+                value: x.uuid,
+            })));
     },
 
     async handleOnSubmit(e) {
