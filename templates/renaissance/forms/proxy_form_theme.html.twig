@@ -51,3 +51,57 @@
             placeholder="Mon bureau de vote"
     />
 {% endblock %}
+
+{% block _procuration_proxy_firstNames_row %}
+
+    {%- set type = type|default('text') -%}
+    {% if type == 'hidden' %}
+        {{ parent() }}
+    {% else %}
+        <div>
+            {{ form_label(form) }}
+            <p class="text-[#555555] opacity-50 mb-2">Attention à bien renseigner l'ensemble de vos prénoms présent sur votre acte de naissance.</p>
+            <twig:Molecules:ReTextField
+                name="{{ full_name }}"
+                id="{{ id }}"
+                value="{{ value }}"
+                status="{{ valid ? 'default' : 'error' }}"
+                type="{{ type }}"
+                label="{{ label|trans }}"
+                {{ ...{
+                    ...attr,
+                    ...(required ? {required: 'required'} : {}),
+                    ...(disabled ? {disabled: 'disabled'} : {}),
+                } }}
+            />
+        </div>
+        {{ form_errors(form) }}
+    {% endif %}
+{% endblock %}
+
+{% block _procuration_request_firstNames_row %}
+
+    {%- set type = type|default('text') -%}
+    {% if type == 'hidden' %}
+        {{ parent() }}
+    {% else %}
+        <div>
+            {{ form_label(form) }}
+            <p class="text-[#555555] opacity-50 mb-2">Attention à bien renseigner l'ensemble de vos prénoms présent sur votre acte de naissance.</p>
+            <twig:Molecules:ReTextField
+                name="{{ full_name }}"
+                id="{{ id }}"
+                value="{{ value }}"
+                status="{{ valid ? 'default' : 'error' }}"
+                type="{{ type }}"
+                label="{{ label|trans }}"
+                {{ ...{
+                    ...attr,
+                    ...(required ? {required: 'required'} : {}),
+                    ...(disabled ? {disabled: 'disabled'} : {}),
+                } }}
+            />
+        </div>
+        {{ form_errors(form) }}
+    {% endif %}
+{% endblock %}
