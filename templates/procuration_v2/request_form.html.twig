@@ -16,3 +16,7 @@
 
 {% block inner_content_section %}
 {% endblock %}
+
+{% block legal_content_section %}
+    {{ election.requestLegal|markdown }}
+{% endblock %}
