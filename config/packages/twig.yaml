@@ -32,6 +32,7 @@ twig:
         friendly_captcha_europe_site_key: "%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%"
         unlayer_project_id:         "%env(UNLAYER_PROJECT_ID)%"
         article_preview_admin_key:  "%env(ARTICLE_PREVIEW_ADMIN_KEY)%"
+        eu_campaign_base_url:       "%env(EU_CAMPAIGN_BASE_URL)%"
 
     form_themes:
         - 'form_theme.html.twig'
