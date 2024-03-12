@@ -18,6 +18,18 @@
     {{ election.proxyLegal|markdown }}
 {% endblock %}
 
+{% block alternative_form %}
+    <p class="text-center">
+        Vous ne pouvez pas aller voter le 9 juin ?
+        <br>
+        <a
+            class="text-[#1877F2] text-center hover:text-[rgb(20,86,171)] cursor-pointer"
+            href="{{ url('app_procuration_v2_request', { slug: election.slug }) }}">
+            Donnez procuration
+        </a>
+    </p>
+{% endblock %}
+
 {% block inner_content_section %}
     <fieldset>
         <twig:Atoms:ReLabel>Mon numéro d’électeur</twig:Atoms:ReLabel>

@@ -20,3 +20,16 @@
 {% block legal_content_section %}
     {{ election.requestLegal|markdown }}
 {% endblock %}
+
+
+{% block alternative_form %}
+    <p class="text-center">
+        Vous ne cherchez pas à faire procuration ?
+        <br>
+        <a
+            class="text-[#1877F2] text-center hover:text-[rgb(20,86,171)] cursor-pointer"
+            href="{{ url('app_procuration_v2_proxy', { slug: election.slug }) }}">
+            Votez une deuxième fois le 9 juin
+        </a>
+    </p>
+{% endblock %}

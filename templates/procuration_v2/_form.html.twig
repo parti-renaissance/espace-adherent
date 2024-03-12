@@ -30,6 +30,10 @@
 {% endset %}
 
 
+{% set alternative_form %}
+    {% block alternative_form  %}{% endblock %}
+{% endset %}
+
 
 {% block content_section %}
     <section x-data="xFunnelPage({step: 0})">
@@ -83,6 +87,9 @@
                         loading="x:loading"
                         x-on:click="handleOnSubmit($event)"
                 >Je vote par procuration</twig:ReButton>
+
+               {{ alternative_form }}
+
             </twig:Atoms:ReCard>
 
             <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_2" x-data="SecondFormStep({ zoneApi: '{{ path('app_zone_autocomplete') }}' })">
