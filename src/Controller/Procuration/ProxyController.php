@@ -2,7 +2,6 @@
 
 namespace App\Controller\Procuration;
 
-use App\Controller\CanaryControllerTrait;
 use App\Controller\Procuration\Api\PersistEmailController;
 use App\Entity\Procuration\Election;
 use App\Entity\Procuration\Round;
@@ -19,8 +18,6 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 #[Route(path: '/{slug}/mandataire', name: 'app_procuration_v2_proxy', methods: ['GET', 'POST'])]
 class ProxyController extends AbstractController
 {
-    use CanaryControllerTrait;
-
     private int $step = 0;
 
     public function __construct(
@@ -32,8 +29,6 @@ class ProxyController extends AbstractController
 
     public function __invoke(Request $request, Election $election): Response
     {
-        $this->disableInProduction();
-
         $upcomingRound = $election->getUpcomingRound();
 
         if (!$upcomingRound) {
