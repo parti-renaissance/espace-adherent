@@ -701,7 +701,7 @@ Feature:
       "message": "Validation Failed",
       "violations": [
         {
-          "property": "[0].adherent_uuid",
+          "propertyPath": "[0].adherent_uuid",
           "message": "Cette valeur ne doit pas être vide."
         }
       ]
@@ -726,7 +726,7 @@ Feature:
       "message": "Validation Failed",
       "violations": [
         {
-          "property": "[0].adherent_uuid",
+          "propertyPath": "[0].adherent_uuid",
           "message": "Cette valeur ne doit pas être vide."
         }
       ]
@@ -751,7 +751,7 @@ Feature:
       "message": "Validation Failed",
       "violations": [
         {
-          "property": "[0].adherent_uuid",
+          "propertyPath": "[0].adherent_uuid",
           "message": "Aucun adhérent trouvé pour l'UUID \"c1051bb4-d103-4f74-8988-acbcafc7fdc3\"."
         }
       ]
