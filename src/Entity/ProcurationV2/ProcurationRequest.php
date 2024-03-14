@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Procuration;
+namespace App\Entity\ProcurationV2;
 
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;

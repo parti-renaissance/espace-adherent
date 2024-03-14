@@ -5,7 +5,7 @@ namespace App\Procuration\V2\Command;
 use App\Address\Address;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
-use App\Entity\Procuration\Round;
+use App\Entity\ProcurationV2\Round;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;

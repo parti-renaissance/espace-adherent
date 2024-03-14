@@ -2,7 +2,7 @@
 
 namespace App\Repository\Procuration;
 
-use App\Entity\Procuration\Round;
+use App\Entity\ProcurationV2\Round;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

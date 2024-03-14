@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Procuration;
+namespace App\Entity\ProcurationV2;
 
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;

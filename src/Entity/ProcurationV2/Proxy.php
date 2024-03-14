@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Procuration;
+namespace App\Entity\ProcurationV2;
 
 use Doctrine\ORM\Mapping as ORM;
 

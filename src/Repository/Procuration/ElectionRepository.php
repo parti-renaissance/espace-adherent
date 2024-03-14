@@ -2,7 +2,7 @@
 
 namespace App\Repository\Procuration;
 
-use App\Entity\Procuration\Election;
+use App\Entity\ProcurationV2\Election;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
