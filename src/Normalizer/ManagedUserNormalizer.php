@@ -33,15 +33,15 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
             /** @var ManagedUsersFilter $filter */
             $filter = $context[self::FILTER_PARAM];
 
-            if ($filter->getSubscriptionType()) {
-                $data['email_subscription'] = \in_array($filter->getSubscriptionType(), $object->getSubscriptionTypes(), true);
+            if ($filter->subscriptionType) {
+                $data['email_subscription'] = \in_array($filter->subscriptionType, $object->getSubscriptionTypes(), true);
             }
         }
 
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return empty($context[self::MANAGED_USER_NORMALIZER_ALREADY_CALLED]) && $data instanceof ManagedUser;
     }

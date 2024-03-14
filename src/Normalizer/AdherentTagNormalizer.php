@@ -2,7 +2,9 @@
 
 namespace App\Normalizer;
 
+use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagTranslator;
+use App\Entity\Projection\ManagedUser;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -25,7 +27,13 @@ class AdherentTagNormalizer implements NormalizerInterface, NormalizerAwareInter
         $data = $this->normalizer->normalize($object, $format, $context);
 
         if (\is_array($data) && !empty($data['tags']) && \is_array($data['tags'])) {
-            $data['tags'] = array_map(fn (string $tag) => $this->tagTranslator->trans($tag, false), $data['tags']);
+            $callback = fn (string $tag) => $this->tagTranslator->trans($tag, false);
+
+            if ($object instanceof ManagedUser) {
+                $callback = fn (string $tag) => ['label' => $this->tagTranslator->trans($tag, false), 'type' => TagEnum::getMainLevel($tag)];
+            }
+
+            $data['tags'] = array_map($callback, $data['tags']);
         }
 
         return $data;
@@ -33,6 +41,9 @@ class AdherentTagNormalizer implements NormalizerInterface, NormalizerAwareInter
 
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
-        return \is_array($data) && empty($context[self::ALREADY_CALLED]) && !empty($context[self::ENABLE_TAG_TRANSLATOR]);
+        return
+            empty($context[self::ALREADY_CALLED])
+            && !empty($context[self::ENABLE_TAG_TRANSLATOR])
+            && (\is_array($data) || $data instanceof ManagedUser);
     }
 }

@@ -361,6 +361,7 @@ Feature:
                     "code": "adherent_tags",
                     "label": "Labels adhérent",
                     "options": {
+                        "favorite": true,
                         "choices": {
                             "adherent": "Adhérent",
                             "adherent:a_jour_2024": "Adhérent - À jour 2024",
@@ -370,13 +371,13 @@ Feature:
                             "adherent:a_jour_2023": "Adhérent - À jour 2023",
                             "adherent:a_jour_2022": "Adhérent - À jour 2022",
                             "sympathisant": "Sympathisant",
-                            "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incompl\u00e8te",
+                            "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incomplète",
                             "sympathisant:compte_em": "Sympathisant - Ancien compte En Marche",
-                            "sympathisant:autre_parti": "Sympathisant - Adhérent d\u0027un autre parti"
+                            "sympathisant:autre_parti": "Sympathisant - Adhérent d'un autre parti"
                         }
                     },
                     "type": "select"
-                  },
+                },
                 {
                     "code": "committeeUuids",
                     "label": "Comités",
@@ -405,11 +406,12 @@ Feature:
                 },
                 {
                     "code": "static_tags",
-                    "label": "Labels statiques",
+                    "label": "Labels divers",
                     "options": {
+                        "favorite": true,
                         "choices": {
-                            "meeting_lille_09_03": "Meeting Lille 09\/03\/24",
-                            "meeting_lille_09_03--": "Non inscrit au Meeting Lille 09\/03\/24"
+                            "meeting_lille_09_03": "Meeting Lille 09/03/24",
+                            "meeting_lille_09_03--": "Non inscrit au Meeting Lille 09/03/24"
                         }
                     },
                     "type": "select"
@@ -421,21 +423,22 @@ Feature:
             "color": "#2563EB",
             "filters": [
                 {
-                  "code": "elect_tags",
-                  "label": "Labels élu",
-                  "options": {
-                    "choices": {
-                      "elu": "Élu",
-                      "elu:attente_declaration": "Élu - En attente de déclaration",
-                      "elu:cotisation_ok": "Élu - À jour de cotisation",
-                      "elu:cotisation_ok:exempte": "Élu - À jour de cotisation - Exempté de cotisation",
-                      "elu:cotisation_ok:non_soumis": "Élu - À jour de cotisation - Non soumis à cotisation",
-                      "elu:cotisation_ok:soumis": "Élu - À jour de cotisation - Soumis à cotisation",
-                      "elu:cotisation_nok": "Élu - Non à jour de cotisation",
-                      "elu:exempte_et_adherent_cotisation_nok": "Élu - Exempté mais pas à jour de cotisation adhérent"
-                    }
-                  },
-                  "type": "select"
+                    "code": "elect_tags",
+                    "label": "Labels élu",
+                    "options": {
+                        "favorite": true,
+                        "choices": {
+                            "elu": "Élu",
+                            "elu:attente_declaration": "Élu - En attente de déclaration",
+                            "elu:cotisation_ok": "Élu - À jour de cotisation",
+                            "elu:cotisation_ok:exempte": "Élu - À jour de cotisation - Exempté de cotisation",
+                            "elu:cotisation_ok:non_soumis": "Élu - À jour de cotisation - Non soumis à cotisation",
+                            "elu:cotisation_ok:soumis": "Élu - À jour de cotisation - Soumis à cotisation",
+                            "elu:cotisation_nok": "Élu - Non à jour de cotisation",
+                            "elu:exempte_et_adherent_cotisation_nok": "Élu - Exempté mais pas à jour de cotisation adhérent"
+                        }
+                    },
+                    "type": "select"
                 },
                 {
                     "code": "political_functions",

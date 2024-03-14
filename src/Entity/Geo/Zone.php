@@ -142,6 +142,7 @@ class Zone implements GeoInterface, UuidEntityInterface
      *     "general_meeting_report_list_read",
      *     "general_meeting_report_read",
      *     "committee:read",
+     *     "managed_users_list",
      * })
      *
      * @ApiProperty(
@@ -168,6 +169,7 @@ class Zone implements GeoInterface, UuidEntityInterface
      *     "read_api",
      *     "committee:read",
      *     "zone:code,type",
+     *     "managed_users_list",
      * })
      */
     private $type;

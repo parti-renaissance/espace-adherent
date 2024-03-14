@@ -41,7 +41,7 @@ use App\Membership\AdherentEvents;
 use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
-use App\Query\Mysql\Sluggify;
+use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Repository\Instance\InstanceQualityRepository;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
 use App\Utils\PhoneNumberUtils;
@@ -612,44 +612,22 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $search = $value->getValue();
-
-                    $conditions = $qb->expr()->orX();
-
-                    $searchCharactersPattern = '/'.Sluggify::REGEXP_PATTERN.'/';
-
-                    preg_match('/(?<first>[^\s]*)[\s]*(?<last>.*)/', $search, $tokens);
-
-                    if (\array_key_exists('first', $tokens) && \array_key_exists('last', $tokens)) {
-                        $conditions
-                            ->add("SLUGGIFY($alias.firstName) LIKE :search_first_token AND SLUGGIFY($alias.lastName) LIKE :search_last_token")
-                            ->add("SLUGGIFY($alias.firstName) LIKE :search_last_token AND SLUGGIFY($alias.lastName) LIKE :search_first_token")
-                            ->add("SLUGGIFY($alias.emailAddress) LIKE :search_first_token AND SLUGGIFY($alias.emailAddress) LIKE :search_last_token")
-                        ;
-
-                        $qb
-                            ->setParameter('search_first_token', '%'.preg_replace($searchCharactersPattern, '', $tokens['first']).'%')
-                            ->setParameter('search_last_token', '%'.preg_replace($searchCharactersPattern, '', $tokens['last']).'%')
-                        ;
-                    } else {
-                        $conditions
-                            ->add("SLUGGIFY($alias.firstName) LIKE :slug_search")
-                            ->add("SLUGGIFY($alias.lastName) LIKE :slug_search")
-                            ->add("SLUGGIFY($alias.emailAddress) LIKE :slug_search")
-                        ;
-                    }
-
-                    $conditions
-                        ->add("SLUGGIFY($alias.phone) LIKE :slug_search")
-                        ->add("$alias.id = REPLACE(:strict_search, ' ', '')")
-                        ->add("$alias.uuid = :strict_search")
-                    ;
-
-                    $qb
-                        ->andWhere($conditions)
-                        ->setParameter('strict_search', $search)
-                        ->setParameter('slug_search', '%'.preg_replace($searchCharactersPattern, '', $search).'%')
-                    ;
+                    MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
+                        $qb,
+                        $value->getValue(),
+                        [
+                            ["$alias.firstName", "$alias.lastName"],
+                            ["$alias.lastName", "$alias.firstName"],
+                            ["$alias.emailAddress", "$alias.emailAddress"],
+                        ],
+                        [
+                            "$alias.phone",
+                        ],
+                        [
+                            "$alias.id",
+                            "$alias.uuid",
+                        ]
+                    );
 
                     return true;
                 },

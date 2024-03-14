@@ -205,7 +205,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33138764334',
             'registered_at' => '2017-01-08 05:55:43',
         ]);
-        $adherent5->tags = [TagEnum::ADHERENT, TagEnum::ELU];
+        $adherent5->tags = [TagEnum::getAdherentYearTag(), TagEnum::ELU_COTISATION_OK_EXEMPTE];
         $adherent5->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::CANDIDATE_EMAIL);
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::REFERENT_EMAIL);
@@ -428,7 +428,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33712345678',
             'registered_at' => '1994-03-09 00:00:00',
         ]);
-        $adherent16->tags = [TagEnum::ADHERENT];
+        $adherent16->tags = [TagEnum::getAdherentYearTag()];
         $adherent16->setPosition(ActivityPositionsEnum::EMPLOYED);
         $adherent16->setAssessorManagedAreaCodesAsString('93, 59, GB');
         $adherent16->setSource(MembershipSourceEnum::RENAISSANCE);
@@ -975,7 +975,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
                 $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
                 $adherent->donatedForMembership();
             }
-            $adherent->tags = [TagEnum::ADHERENT];
+            $adherent->tags = [TagEnum::getAdherentYearTag()];
             $adherent->activate(AdherentActivationToken::generate($adherent), '-1 year');
             $manager->persist($adherent);
             $this->addReference('adherent-'.$index, $adherent);
@@ -1018,7 +1018,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+330699008800',
             'is_adherent' => true,
         ]));
-        $adherent->tags = [TagEnum::ADHERENT];
+        $adherent->tags = [TagEnum::getAdherentYearTag()];
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
@@ -1076,7 +1076,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-01-25 19:31:45',
             'is_adherent' => true,
         ]));
-        $adherent->tags = [TagEnum::ADHERENT];
+        $adherent->tags = [TagEnum::getAdherentYearTag()];
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
@@ -1096,7 +1096,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2018-03-22 18:23:45',
             'is_adherent' => true,
         ]));
-        $adherent->tags = [TagEnum::ADHERENT, TagEnum::ELU_COTISATION_OK];
+        $adherent->tags = [TagEnum::getAdherentYearTag(), TagEnum::ELU_COTISATION_OK_SOUMIS];
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
@@ -1118,7 +1118,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2019-03-22 18:23:45',
             'is_adherent' => true,
         ]));
-        $adherent->tags = [TagEnum::ADHERENT];
+        $adherent->tags = [TagEnum::getAdherentYearTag()];
         $adherent->activate(AdherentActivationToken::generate($adherent));
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);

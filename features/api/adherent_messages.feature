@@ -328,83 +328,84 @@ Feature:
       And the JSON should be equal to:
       """
       [
-          {
-              "label": "Informations personnelles",
-              "color": "#0E7490",
-              "filters": [
-                  {
-                      "code": "gender",
-                      "label": "Genre",
-                      "options": {
-                          "choices": {
-                              "female": "Femme",
-                              "male": "Homme",
-                              "other": "Autre"
-                          }
-                      },
-                      "type": "select"
-                  },
-                  {
-                      "code": "firstName",
-                      "label": "Prénom",
-                      "options": null,
-                      "type": "text"
-                  },
-                  {
-                      "code": "lastName",
-                      "label": "Nom",
-                      "options": null,
-                      "type": "text"
-                  },
-                  {
-                      "code": "age",
-                      "label": "Âge",
-                      "options": {
-                          "first": {
-                              "min": 1,
-                              "max": 200
-                          },
-                          "second": {
-                              "min": 1,
-                              "max": 200
-                          }
-                      },
-                      "type": "integer_interval"
-                  },
-                  {
-                      "code": "isCertified",
-                      "label": "Certifié",
-                      "options": {
-                          "choices": [
-                              "Non",
-                              "Oui"
-                          ]
-                      },
-                      "type": "select"
-                  },
-                  {
-                      "code": "zone",
-                      "label": "Zone géographique",
-                      "options": {
-                          "url": "/api/v3/zone/autocomplete?types%5B0%5D=borough&types%5B1%5D=canton&types%5B2%5D=city&types%5B3%5D=department&types%5B4%5D=region&types%5B5%5D=country&types%5B6%5D=district&types%5B7%5D=foreign_district&types%5B8%5D=custom",
-                          "query_param": "q",
-                          "value_param": "uuid",
-                          "label_param": "name",
-                          "multiple": false,
-                          "required": true
-                      },
-                      "type": "zone_autocomplete"
-                  }
-              ]
-          },
-          {
-              "label": "Militant",
-              "color": "#0F766E",
-              "filters": [
-                  {
+        {
+            "label": "Informations personnelles",
+            "color": "#0E7490",
+            "filters": [
+                {
+                    "code": "gender",
+                    "label": "Genre",
+                    "options": {
+                        "choices": {
+                            "female": "Femme",
+                            "male": "Homme",
+                            "other": "Autre"
+                        }
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "firstName",
+                    "label": "Prénom",
+                    "options": null,
+                    "type": "text"
+                },
+                {
+                    "code": "lastName",
+                    "label": "Nom",
+                    "options": null,
+                    "type": "text"
+                },
+                {
+                    "code": "age",
+                    "label": "Âge",
+                    "options": {
+                        "first": {
+                            "min": 1,
+                            "max": 200
+                        },
+                        "second": {
+                            "min": 1,
+                            "max": 200
+                        }
+                    },
+                    "type": "integer_interval"
+                },
+                {
+                    "code": "isCertified",
+                    "label": "Certifié",
+                    "options": {
+                        "choices": [
+                            "Non",
+                            "Oui"
+                        ]
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "zone",
+                    "label": "Zone géographique",
+                    "options": {
+                        "url": "/api/v3/zone/autocomplete?types%5B0%5D=borough&types%5B1%5D=canton&types%5B2%5D=city&types%5B3%5D=department&types%5B4%5D=region&types%5B5%5D=country&types%5B6%5D=district&types%5B7%5D=foreign_district&types%5B8%5D=custom",
+                        "query_param": "q",
+                        "value_param": "uuid",
+                        "label_param": "name",
+                        "multiple": false,
+                        "required": true
+                    },
+                    "type": "zone_autocomplete"
+                }
+            ]
+        },
+        {
+            "label": "Militant",
+            "color": "#0F766E",
+            "filters": [
+                {
                     "code": "adherent_tags",
                     "label": "Labels adhérent",
                     "options": {
+                        "favorite": true,
                         "choices": {
                             "adherent": "Adhérent",
                             "adherent:a_jour_2024": "Adhérent - À jour 2024",
@@ -414,151 +415,153 @@ Feature:
                             "adherent:a_jour_2023": "Adhérent - À jour 2023",
                             "adherent:a_jour_2022": "Adhérent - À jour 2022",
                             "sympathisant": "Sympathisant",
-                            "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incompl\u00e8te",
+                            "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incomplète",
                             "sympathisant:compte_em": "Sympathisant - Ancien compte En Marche",
-                            "sympathisant:autre_parti": "Sympathisant - Adhérent d\u0027un autre parti"
+                            "sympathisant:autre_parti": "Sympathisant - Adhérent d'un autre parti"
                         }
                     },
                     "type": "select"
-                  },
-                  {
-                      "code": "committee",
-                      "label": "Comités",
-                      "options": {
-                          "choices": {
-                              "5e00c264-1d4b-43b8-862e-29edc38389b3": "Comité des 3 communes",
-                              "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3": "Second Comité des 3 communes"
-                          },
-                          "multiple": false,
-                          "required": false
-                      },
-                      "type": "select"
-                  },
-                  {
-                      "code": "isCommitteeMember",
-                      "label": "Membre d'un comité",
-                      "options": {
-                          "choices": [
-                              "Non",
-                              "Oui"
-                          ]
-                      },
-                      "type": "select"
-                  },
-                  {
-                      "code": "lastMembership",
-                      "label": "Dernière cotisation",
-                      "options": null,
-                      "type": "date_interval"
-                  },
-                  {
-                      "code": "registered",
-                      "label": "Inscrit",
-                      "options": null,
-                      "type": "date_interval"
-                  },
-                  {
-                      "code": "renaissance_membership",
-                      "label": "Renaissance",
-                      "options": {
-                          "choices": {
-                              "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
-                              "adherent_re": "Adhérent RE seulement",
-                              "sympathizer_re": "Sympathisant RE seulement",
-                              "others_adherent": "Ni adhérent RE ni sympathisant RE"
-                          }
-                      },
-                      "type": "select"
-                  },
-                  {
-                      "code": "static_tags",
-                      "label": "Labels statiques",
-                      "options": {
-                          "choices": {
-                              "meeting_lille_09_03": "Meeting Lille 09\/03\/24",
-                              "meeting_lille_09_03--": "Non inscrit au Meeting Lille 09\/03\/24"
-                          }
-                      },
-                      "type": "select"
-                  }
-              ]
-          },
-          {
-              "label": "Élu",
-              "color": "#2563EB",
-              "filters": [
-                  {
-                      "code": "declaredMandate",
-                      "label": "Déclaration de mandat",
-                      "options": {
-                          "choices": {
-                              "conseiller_arrondissement": "Conseiller d'arrondissement",
-                              "conseiller_communautaire": "Conseiller communautaire",
-                              "conseiller_departemental": "Conseiller départemental",
-                              "conseiller_fde": "Conseiller FDE",
-                              "conseiller_municipal": "Conseiller municipal",
-                              "conseiller_regional": "Conseiller régional",
-                              "conseiller_territorial": "Conseiller territorial",
-                              "delegue_consulaire": "Délégué consulaire",
-                              "depute": "Député",
-                              "depute_europeen": "Député européen",
-                              "maire": "Maire",
-                              "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
-                              "president_conseil_communautaire": "Président du Conseil communautaire",
-                              "president_conseil_departemental": "Président du Conseil départemental",
-                              "president_conseil_regional": "Président du Conseil régional",
-                              "senateur": "Sénateur"
-                          },
-                          "multiple": false
-                      },
-                      "type": "select"
-                  },
-                  {
+                },
+                {
+                    "code": "committee",
+                    "label": "Comités",
+                    "options": {
+                        "choices": {
+                            "5e00c264-1d4b-43b8-862e-29edc38389b3": "Comité des 3 communes",
+                            "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3": "Second Comité des 3 communes"
+                        },
+                        "multiple": false,
+                        "required": false
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "isCommitteeMember",
+                    "label": "Membre d'un comité",
+                    "options": {
+                        "choices": [
+                            "Non",
+                            "Oui"
+                        ]
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "lastMembership",
+                    "label": "Dernière cotisation",
+                    "options": null,
+                    "type": "date_interval"
+                },
+                {
+                    "code": "registered",
+                    "label": "Inscrit",
+                    "options": null,
+                    "type": "date_interval"
+                },
+                {
+                    "code": "renaissance_membership",
+                    "label": "Renaissance",
+                    "options": {
+                        "choices": {
+                            "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
+                            "adherent_re": "Adhérent RE seulement",
+                            "sympathizer_re": "Sympathisant RE seulement",
+                            "others_adherent": "Ni adhérent RE ni sympathisant RE"
+                        }
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "static_tags",
+                    "label": "Labels divers",
+                    "options": {
+                        "favorite": true,
+                        "choices": {
+                            "meeting_lille_09_03": "Meeting Lille 09/03/24",
+                            "meeting_lille_09_03--": "Non inscrit au Meeting Lille 09/03/24"
+                        }
+                    },
+                    "type": "select"
+                }
+            ]
+        },
+        {
+            "label": "Élu",
+            "color": "#2563EB",
+            "filters": [
+                {
+                    "code": "declaredMandate",
+                    "label": "Déclaration de mandat",
+                    "options": {
+                        "choices": {
+                            "depute_europeen": "Député européen",
+                            "senateur": "Sénateur",
+                            "depute": "Député",
+                            "president_conseil_regional": "Président du Conseil régional",
+                            "conseiller_regional": "Conseiller régional",
+                            "president_conseil_departemental": "Président du Conseil départemental",
+                            "conseiller_departemental": "Conseiller départemental",
+                            "conseiller_territorial": "Conseiller territorial",
+                            "president_conseil_communautaire": "Président du Conseil communautaire",
+                            "conseiller_communautaire": "Conseiller communautaire",
+                            "maire": "Maire",
+                            "conseiller_municipal": "Conseiller municipal",
+                            "conseiller_arrondissement": "Conseiller d'arrondissement",
+                            "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
+                            "conseiller_fde": "Conseiller FDE",
+                            "delegue_consulaire": "Délégué consulaire"
+                        },
+                        "multiple": false
+                    },
+                    "type": "select"
+                },
+                {
                     "code": "elect_tags",
                     "label": "Labels élu",
                     "options": {
-                      "choices": {
-                        "elu": "Élu",
-                        "elu:attente_declaration": "Élu - En attente de déclaration",
-                        "elu:cotisation_ok": "Élu - À jour de cotisation",
-                        "elu:cotisation_ok:exempte": "Élu - À jour de cotisation - Exempté de cotisation",
-                        "elu:cotisation_ok:non_soumis": "Élu - À jour de cotisation - Non soumis à cotisation",
-                        "elu:cotisation_ok:soumis": "Élu - À jour de cotisation - Soumis à cotisation",
-                        "elu:cotisation_nok": "Élu - Non à jour de cotisation",
-                        "elu:exempte_et_adherent_cotisation_nok": "Élu - Exempté mais pas à jour de cotisation adhérent"
-                      }
+                        "favorite": true,
+                        "choices": {
+                            "elu": "Élu",
+                            "elu:attente_declaration": "Élu - En attente de déclaration",
+                            "elu:cotisation_ok": "Élu - À jour de cotisation",
+                            "elu:cotisation_ok:exempte": "Élu - À jour de cotisation - Exempté de cotisation",
+                            "elu:cotisation_ok:non_soumis": "Élu - À jour de cotisation - Non soumis à cotisation",
+                            "elu:cotisation_ok:soumis": "Élu - À jour de cotisation - Soumis à cotisation",
+                            "elu:cotisation_nok": "Élu - Non à jour de cotisation",
+                            "elu:exempte_et_adherent_cotisation_nok": "Élu - Exempté mais pas à jour de cotisation adhérent"
+                        }
                     },
                     "type": "select"
-                  },
-                  {
-                      "code": "mandateType",
-                      "label": "Type de mandat",
-                      "options": {
-                          "choices": {
-                              "conseiller_arrondissement": "Conseiller d'arrondissement",
-                              "conseiller_communautaire": "Conseiller communautaire",
-                              "conseiller_departemental": "Conseiller départemental",
-                              "conseiller_fde": "Conseiller FDE",
-                              "conseiller_municipal": "Conseiller municipal",
-                              "conseiller_regional": "Conseiller régional",
-                              "conseiller_territorial": "Conseiller territorial",
-                              "delegue_consulaire": "Délégué consulaire",
-                              "depute": "Député",
-                              "depute_europeen": "Député européen",
-                              "maire": "Maire",
-                              "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
-                              "president_conseil_communautaire": "Président du Conseil communautaire",
-                              "president_conseil_departemental": "Président du Conseil départemental",
-                              "president_conseil_regional": "Président du Conseil régional",
-                              "senateur": "Sénateur"
-                          },
-                          "multiple": false
-                      },
-                      "type": "select"
-                  }
-              ]
-          }
-      ]
+                },
+                {
+                    "code": "mandateType",
+                    "label": "Type de mandat",
+                    "options": {
+                        "choices": {
+                            "depute_europeen": "Député européen",
+                            "senateur": "Sénateur",
+                            "depute": "Député",
+                            "president_conseil_regional": "Président du Conseil régional",
+                            "conseiller_regional": "Conseiller régional",
+                            "president_conseil_departemental": "Président du Conseil départemental",
+                            "conseiller_departemental": "Conseiller départemental",
+                            "conseiller_territorial": "Conseiller territorial",
+                            "president_conseil_communautaire": "Président du Conseil communautaire",
+                            "conseiller_communautaire": "Conseiller communautaire",
+                            "maire": "Maire",
+                            "conseiller_municipal": "Conseiller municipal",
+                            "conseiller_arrondissement": "Conseiller d'arrondissement",
+                            "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
+                            "conseiller_fde": "Conseiller FDE",
+                            "delegue_consulaire": "Délégué consulaire"
+                        },
+                        "multiple": false
+                    },
+                    "type": "select"
+                }
+            ]
+        }
+    ]
       """
       Examples:
           | user                      | scope                                          |

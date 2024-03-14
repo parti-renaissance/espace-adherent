@@ -43,7 +43,7 @@ class ManagedUserRepositoryTest extends AbstractKernelTestCase
             $this->zoneRepository->findOneBy(['code' => 'CH', 'type' => Zone::COUNTRY]),
             $this->zoneRepository->findOneBy(['code' => '77', 'type' => Zone::DEPARTMENT]),
         ]);
-        $filter->setEmailSubscription($onlyEmailSubscribers);
+        $filter->emailSubscription = $onlyEmailSubscribers;
 
         $this->assertCount($count, $this->managedUserRepository->searchByFilter($filter));
     }

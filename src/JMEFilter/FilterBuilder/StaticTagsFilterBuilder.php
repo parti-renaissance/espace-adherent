@@ -14,7 +14,7 @@ class StaticTagsFilterBuilder extends AbstractTagsFilterBuilder
             TagEnum::MEETING_LILLE_09_03.'--',
         ];
         $this->fieldName = 'static_tags';
-        $this->fieldLabel = 'Labels statiques';
+        $this->fieldLabel = 'Labels divers';
         $this->fullTag = false;
     }
 

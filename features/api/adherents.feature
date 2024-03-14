@@ -197,7 +197,7 @@ Feature:
     {
         "metadata": {
             "total_items": 5,
-            "items_per_page": 100,
+            "items_per_page": 25,
             "count": 5,
             "current_page": 1,
             "last_page": 1
@@ -229,7 +229,24 @@ Feature:
                 "cotisation_dates": [],
                 "campus_registered_at": null,
                 "mandates": [],
-                "declared_mandates": []
+                "declared_mandates": [],
+                "certified": false,
+                "age": "@number@",
+                "tags": [],
+                "zones": [
+                    {
+                        "uuid": "@uuid@",
+                        "type": "district",
+                        "code": "77-1",
+                        "name": "Seine-et-Marne (1)"
+                    },
+                    {
+                        "uuid": "@uuid@",
+                        "type": "city",
+                        "code": "77288",
+                        "name": "Melun"
+                    }
+                ]
             },
             {
                 "address": "2 avenue Jean Jaurès",
@@ -257,7 +274,24 @@ Feature:
                 "cotisation_dates": [],
                 "campus_registered_at": null,
                 "mandates": [],
-                "declared_mandates": ["depute_europeen", "conseiller_municipal"]
+                "declared_mandates": ["depute_europeen", "conseiller_municipal"],
+                "certified": false,
+                "age": "@number@",
+                "tags": [],
+                "zones": [
+                    {
+                        "uuid": "@uuid@",
+                        "type": "department",
+                        "code": "92",
+                        "name": "Hauts-de-Seine"
+                    },
+                    {
+                        "uuid": "@uuid@",
+                        "type": "department",
+                        "code": "59",
+                        "name": "Nord"
+                    }
+                ]
             },
             {
                 "address": "12 Pilgerweg",
@@ -287,7 +321,18 @@ Feature:
                 "cotisation_dates": [],
                 "campus_registered_at": null,
                 "mandates": [],
-                "declared_mandates": ["depute_europeen"]
+                "declared_mandates": ["depute_europeen"],
+                "certified": false,
+                "age": "@number@",
+                "tags": [],
+                "zones": [
+                    {
+                        "uuid": "@uuid@",
+                        "type": "country",
+                        "code": "CH",
+                        "name": "Suisse"
+                    }
+                ]
             },
             {
                 "address": "47 rue Martre",
@@ -317,7 +362,33 @@ Feature:
                 "mandates": [
                     "conseiller_municipal|Métropole du Grand Paris"
                 ],
-                "declared_mandates": ["conseiller_municipal"]
+                "declared_mandates": ["conseiller_municipal"],
+                "certified": true,
+                "age": "@number@",
+                "tags": [
+                    {
+                        "label": "À jour 2024",
+                        "type": "adherent"
+                    },
+                    {
+                        "label": "Exempté de cotisation",
+                        "type": "elu"
+                    }
+                ],
+                "zones": [
+                    {
+                        "uuid": "@uuid@",
+                        "type": "department",
+                        "code": "92",
+                        "name": "Hauts-de-Seine"
+                    },
+                    {
+                        "uuid": "@uuid@",
+                        "type": "city",
+                        "code": "92024",
+                        "name": "Clichy"
+                    }
+                ]
             },
             {
                 "address": "32 Zeppelinstrasse",
@@ -349,7 +420,18 @@ Feature:
                 "cotisation_dates": [],
                 "campus_registered_at": null,
                 "mandates": [],
-                "declared_mandates": ["conseiller_municipal", "maire"]
+                "declared_mandates": ["conseiller_municipal", "maire"],
+                "certified": true,
+                "age": "@number@",
+                "tags": [],
+                "zones": [
+                    {
+                        "uuid": "@uuid@",
+                        "type": "country",
+                        "code": "CH",
+                        "name": "Suisse"
+                    }
+                ]
             }
         ]
     }
@@ -361,7 +443,7 @@ Feature:
     {
         "metadata": {
             "total_items": 1,
-            "items_per_page": 100,
+            "items_per_page": 25,
             "count": 1,
             "current_page": 1,
             "last_page": 1
@@ -393,7 +475,24 @@ Feature:
                 "cotisation_dates": [],
                 "campus_registered_at": null,
                 "mandates": [],
-                "declared_mandates": []
+                "declared_mandates": [],
+                "certified": false,
+                "age": "@number@",
+                "tags": [],
+                "zones": [
+                    {
+                        "uuid": "@uuid@",
+                        "type": "district",
+                        "code": "77-1",
+                        "name": "Seine-et-Marne (1)"
+                    },
+                    {
+                        "uuid": "@uuid@",
+                        "type": "city",
+                        "code": "77288",
+                        "name": "Melun"
+                    }
+                ]
             }
         ]
     }
@@ -412,7 +511,7 @@ Feature:
     {
         "metadata": {
             "total_items": 2,
-            "items_per_page": 100,
+            "items_per_page": 25,
             "count": 2,
             "current_page": 1,
             "last_page": 1
@@ -444,7 +543,24 @@ Feature:
                 "cotisation_dates": [],
                 "campus_registered_at": null,
                 "mandates": [],
-                "declared_mandates": ["depute_europeen", "conseiller_municipal"]
+                "declared_mandates": ["depute_europeen", "conseiller_municipal"],
+                "certified": false,
+                "age": "@number@",
+                "tags": [],
+                "zones": [
+                    {
+                        "uuid": "@uuid@",
+                        "type": "department",
+                        "code": "92",
+                        "name": "Hauts-de-Seine"
+                    },
+                    {
+                        "uuid": "@uuid@",
+                        "type": "department",
+                        "code": "59",
+                        "name": "Nord"
+                    }
+                ]
             },
             {
                 "address": "47 rue Martre",
@@ -472,7 +588,33 @@ Feature:
                 "cotisation_dates": [],
                 "campus_registered_at": null,
                 "mandates": ["conseiller_municipal|Métropole du Grand Paris"],
-                "declared_mandates": ["conseiller_municipal"]
+                "declared_mandates": ["conseiller_municipal"],
+                "certified": true,
+                "age": "@number@",
+                "tags": [
+                    {
+                        "label": "À jour 2024",
+                        "type": "adherent"
+                    },
+                    {
+                        "label": "Exempté de cotisation",
+                        "type": "elu"
+                    }
+                ],
+                "zones": [
+                    {
+                        "uuid": "@uuid@",
+                        "type": "department",
+                        "code": "92",
+                        "name": "Hauts-de-Seine"
+                    },
+                    {
+                        "uuid": "@uuid@",
+                        "type": "city",
+                        "code": "92024",
+                        "name": "Clichy"
+                    }
+                ]
             }
         ]
     }
@@ -489,6 +631,20 @@ Feature:
     And the JSON should be equal to:
     """
     [
+        {
+            "label": "",
+            "color": "",
+            "filters": [
+                {
+                    "code": "searchTerm",
+                    "label": "Recherche",
+                    "options": {
+                        "favorite": true
+                    },
+                    "type": "text"
+                }
+            ]
+        },
         {
             "label": "Informations personnelles",
             "color": "#0E7490",
@@ -577,6 +733,7 @@ Feature:
                     "code": "adherent_tags",
                     "label": "Labels adhérent",
                     "options": {
+                        "favorite": true,
                         "choices": {
                             "adherent": "Adhérent",
                             "adherent:a_jour_2024": "Adhérent - À jour 2024",
@@ -586,9 +743,9 @@ Feature:
                             "adherent:a_jour_2023": "Adhérent - À jour 2023",
                             "adherent:a_jour_2022": "Adhérent - À jour 2022",
                             "sympathisant": "Sympathisant",
-                            "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incompl\u00e8te",
+                            "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incomplète",
                             "sympathisant:compte_em": "Sympathisant - Ancien compte En Marche",
-                            "sympathisant:autre_parti": "Sympathisant - Adhérent d\u0027un autre parti"
+                            "sympathisant:autre_parti": "Sympathisant - Adhérent d'un autre parti"
                         }
                     },
                     "type": "select"
@@ -652,11 +809,12 @@ Feature:
                 },
                 {
                     "code": "static_tags",
-                    "label": "Labels statiques",
+                    "label": "Labels divers",
                     "options": {
+                        "favorite": true,
                         "choices": {
-                            "meeting_lille_09_03": "Meeting Lille 09\/03\/24",
-                            "meeting_lille_09_03--": "Non inscrit au Meeting Lille 09\/03\/24"
+                            "meeting_lille_09_03": "Meeting Lille 09/03/24",
+                            "meeting_lille_09_03--": "Non inscrit au Meeting Lille 09/03/24"
                         }
                     },
                     "type": "select"
@@ -672,22 +830,22 @@ Feature:
                     "label": "Déclaration de mandat",
                     "options": {
                         "choices": {
-                            "conseiller_arrondissement": "Conseiller d'arrondissement",
-                            "conseiller_communautaire": "Conseiller communautaire",
-                            "conseiller_departemental": "Conseiller départemental",
-                            "conseiller_fde": "Conseiller FDE",
-                            "conseiller_municipal": "Conseiller municipal",
-                            "conseiller_regional": "Conseiller régional",
-                            "conseiller_territorial": "Conseiller territorial",
-                            "delegue_consulaire": "Délégué consulaire",
-                            "depute": "Député",
                             "depute_europeen": "Député européen",
-                            "maire": "Maire",
-                            "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
-                            "president_conseil_communautaire": "Président du Conseil communautaire",
-                            "president_conseil_departemental": "Président du Conseil départemental",
+                            "senateur": "Sénateur",
+                            "depute": "Député",
                             "president_conseil_regional": "Président du Conseil régional",
-                            "senateur": "Sénateur"
+                            "conseiller_regional": "Conseiller régional",
+                            "president_conseil_departemental": "Président du Conseil départemental",
+                            "conseiller_departemental": "Conseiller départemental",
+                            "conseiller_territorial": "Conseiller territorial",
+                            "president_conseil_communautaire": "Président du Conseil communautaire",
+                            "conseiller_communautaire": "Conseiller communautaire",
+                            "maire": "Maire",
+                            "conseiller_municipal": "Conseiller municipal",
+                            "conseiller_arrondissement": "Conseiller d'arrondissement",
+                            "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
+                            "conseiller_fde": "Conseiller FDE",
+                            "delegue_consulaire": "Délégué consulaire"
                         },
                         "multiple": true
                     },
@@ -697,6 +855,7 @@ Feature:
                     "code": "elect_tags",
                     "label": "Labels élu",
                     "options": {
+                        "favorite": true,
                         "choices": {
                             "elu": "Élu",
                             "elu:attente_declaration": "Élu - En attente de déclaration",
@@ -715,22 +874,22 @@ Feature:
                     "label": "Type de mandat",
                     "options": {
                         "choices": {
-                            "conseiller_arrondissement": "Conseiller d'arrondissement",
-                            "conseiller_communautaire": "Conseiller communautaire",
-                            "conseiller_departemental": "Conseiller départemental",
-                            "conseiller_fde": "Conseiller FDE",
-                            "conseiller_municipal": "Conseiller municipal",
-                            "conseiller_regional": "Conseiller régional",
-                            "conseiller_territorial": "Conseiller territorial",
-                            "delegue_consulaire": "Délégué consulaire",
-                            "depute": "Député",
                             "depute_europeen": "Député européen",
-                            "maire": "Maire",
-                            "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
-                            "president_conseil_communautaire": "Président du Conseil communautaire",
-                            "president_conseil_departemental": "Président du Conseil départemental",
+                            "senateur": "Sénateur",
+                            "depute": "Député",
                             "president_conseil_regional": "Président du Conseil régional",
-                            "senateur": "Sénateur"
+                            "conseiller_regional": "Conseiller régional",
+                            "president_conseil_departemental": "Président du Conseil départemental",
+                            "conseiller_departemental": "Conseiller départemental",
+                            "conseiller_territorial": "Conseiller territorial",
+                            "president_conseil_communautaire": "Président du Conseil communautaire",
+                            "conseiller_communautaire": "Conseiller communautaire",
+                            "maire": "Maire",
+                            "conseiller_municipal": "Conseiller municipal",
+                            "conseiller_arrondissement": "Conseiller d'arrondissement",
+                            "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
+                            "conseiller_fde": "Conseiller FDE",
+                            "delegue_consulaire": "Délégué consulaire"
                         },
                         "multiple": true
                     },
@@ -754,7 +913,7 @@ Feature:
     {
         "metadata": {
             "total_items": 2,
-            "items_per_page": 100,
+            "items_per_page": 25,
             "count": 2,
             "current_page": 1,
             "last_page": 1
@@ -789,7 +948,24 @@ Feature:
                 "cotisation_dates": ["2022-01-01 12:00:00", "2023-01-01 12:00:00"],
                 "campus_registered_at": null,
                 "mandates": [],
-                "declared_mandates": []
+                "declared_mandates": [],
+                "certified": true,
+                "age": "@number@",
+                "tags": [],
+                "zones": [
+                    {
+                        "uuid": "@uuid@",
+                        "type": "district",
+                        "code": "75-1",
+                        "name": "Paris (1)"
+                    },
+                    {
+                        "uuid": "@uuid@",
+                        "type": "borough",
+                        "code": "75108",
+                        "name": "Paris 8ème"
+                    }
+                ]
             },
             {
                 "address": "36 rue de la Paix",
@@ -821,7 +997,24 @@ Feature:
                 "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"],
                 "campus_registered_at": null,
                 "mandates": [],
-                "declared_mandates": []
+                "declared_mandates": [],
+                "certified": true,
+                "age": "@number@",
+                "tags": [],
+                "zones": [
+                    {
+                        "uuid": "@uuid@",
+                        "type": "district",
+                        "code": "75-1",
+                        "name": "Paris (1)"
+                    },
+                    {
+                        "uuid": "@uuid@",
+                        "type": "borough",
+                        "code": "75108",
+                        "name": "Paris 8ème"
+                    }
+                ]
             }
         ]
     }
@@ -833,7 +1026,7 @@ Feature:
     {
         "metadata": {
             "total_items": 1,
-            "items_per_page": 100,
+            "items_per_page": 25,
             "count": 1,
             "current_page": 1,
             "last_page": 1
@@ -869,7 +1062,24 @@ Feature:
                 "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"],
                 "campus_registered_at": null,
                 "mandates": [],
-                "declared_mandates": []
+                "declared_mandates": [],
+                "certified": true,
+                "age": "@number@",
+                "tags": [],
+                "zones": [
+                    {
+                        "uuid": "@uuid@",
+                        "type": "district",
+                        "code": "75-1",
+                        "name": "Paris (1)"
+                    },
+                    {
+                        "uuid": "@uuid@",
+                        "type": "borough",
+                        "code": "75108",
+                        "name": "Paris 8ème"
+                    }
+                ]
             }
         ]
     }
