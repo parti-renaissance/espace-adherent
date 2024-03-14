@@ -2,8 +2,8 @@
 
 namespace App\Procuration\V2;
 
-use App\Entity\Procuration\Proxy;
-use App\Entity\Procuration\Request;
+use App\Entity\ProcurationV2\Proxy;
+use App\Entity\ProcurationV2\Request;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Procuration\ProcurationProxyConfirmationMessage;
 use App\Mailer\Message\Procuration\ProcurationRequestConfirmationMessage;

@@ -2,8 +2,8 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Entity\Procuration\Election;
-use App\Entity\Procuration\Round;
+use App\Entity\ProcurationV2\Election;
+use App\Entity\ProcurationV2\Round;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;

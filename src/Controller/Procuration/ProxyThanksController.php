@@ -2,7 +2,7 @@
 
 namespace App\Controller\Procuration;
 
-use App\Entity\Procuration\Proxy as ProcurationProxy;
+use App\Entity\ProcurationV2\Proxy as ProcurationProxy;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

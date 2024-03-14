@@ -551,7 +551,7 @@
             <tag name="sonata.admin" manager-type="orm" label="Procurations v2 » Élections" group="Territoires" />
 
             <argument />
-            <argument>App\Entity\Procuration\Election</argument>
+            <argument>App\Entity\ProcurationV2\Election</argument>
             <argument />
         </service>
 

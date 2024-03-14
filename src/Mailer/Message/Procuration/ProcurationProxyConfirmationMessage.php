@@ -2,7 +2,7 @@
 
 namespace App\Mailer\Message\Procuration;
 
-use App\Entity\Procuration\Proxy;
+use App\Entity\ProcurationV2\Proxy;
 use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 

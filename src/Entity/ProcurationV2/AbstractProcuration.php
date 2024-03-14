@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Procuration;
+namespace App\Entity\ProcurationV2;
 
 use App\Entity\Adherent;
 use App\Entity\EntityAdministratorBlameableTrait;
@@ -87,7 +87,7 @@ abstract class AbstractProcuration
     public ?Adherent $adherent;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Procuration\Round")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationV2\Round")
      * @ORM\JoinColumn(nullable=false)
      */
     public Round $round;

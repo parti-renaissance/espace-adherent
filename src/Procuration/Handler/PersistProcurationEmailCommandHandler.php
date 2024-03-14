@@ -2,7 +2,7 @@
 
 namespace App\Procuration\Handler;
 
-use App\Entity\Procuration\ProcurationRequest;
+use App\Entity\ProcurationV2\ProcurationRequest;
 use App\Procuration\Command\PersistProcurationEmailCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

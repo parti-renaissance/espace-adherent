@@ -3,8 +3,8 @@
 namespace App\Controller\Procuration;
 
 use App\Controller\Procuration\Api\PersistEmailController;
-use App\Entity\Procuration\Election;
-use App\Entity\Procuration\Round;
+use App\Entity\ProcurationV2\Election;
+use App\Entity\ProcurationV2\Round;
 use App\Form\Procuration\V2\RequestType;
 use App\Procuration\V2\Command\RequestCommand;
 use App\Procuration\V2\ProcurationHandler;

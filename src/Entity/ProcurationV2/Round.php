@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Procuration;
+namespace App\Entity\ProcurationV2;
 
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="procuration_v2_rounds")
- * @ORM\Entity(repositoryClass="App\Repository\Procuration\RounRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Procuration\RoundRepository")
  */
 class Round
 {
