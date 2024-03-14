@@ -613,7 +613,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     }
 
                     MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
-                        $qb,
+                        $qb->getQueryBuilder(),
                         $value->getValue(),
                         [
                             ["$alias.firstName", "$alias.lastName"],
