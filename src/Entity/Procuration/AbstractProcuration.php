@@ -51,7 +51,7 @@ abstract class AbstractProcuration
     /**
      * @ORM\Column(type="phone_number", nullable=true)
      */
-    public ?PhoneNumber $phone = null;
+    public ?PhoneNumber $phone;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
@@ -60,35 +60,35 @@ abstract class AbstractProcuration
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=false)
      */
     public Zone $voteZone;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=true)
      */
-    public Zone $votePlace;
+    public ?Zone $votePlace;
 
     /**
      * @ORM\Column(nullable=true)
      */
-    public ?string $customVotePlace = null;
+    public ?string $customVotePlace;
 
     /**
      * @ORM\Column(length=50, nullable=true)
      */
-    public ?string $clientIp = null;
+    public ?string $clientIp;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
-    public ?Adherent $adherent = null;
+    public ?Adherent $adherent;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Procuration\Round")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=false)
      */
     public Round $round;
 
@@ -103,7 +103,7 @@ abstract class AbstractProcuration
         PostAddress $postAddress,
         bool $distantVotePlace,
         Zone $voteZone,
-        Zone $votePlace,
+        ?Zone $votePlace = null,
         ?string $customVotePlace = null,
         ?Adherent $adherent = null,
         ?string $clientIp = null,
