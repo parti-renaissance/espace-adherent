@@ -21,27 +21,27 @@ Feature:
         "message": "Validation Failed",
         "violations": [
             {
-                "property": "last_name",
+                "propertyPath": "last_name",
                 "message": "Cette valeur ne doit pas être vide."
             },
             {
-                "property": "gender",
+                "propertyPath": "gender",
                 "message": "Veuillez renseigner un genre."
             },
             {
-                "property": "birthdate",
+                "propertyPath": "birthdate",
                 "message": "Vous devez spécifier votre date de naissance."
             },
             {
-                "property": "phone",
+                "propertyPath": "phone",
                 "message": "Cette valeur n'est pas un numéro de téléphone valide."
             },
             {
-                "property": "email_address",
+                "propertyPath": "email_address",
                 "message": "Cette valeur ne doit pas être vide."
             },
             {
-                "property": "cgu_accepted",
+                "propertyPath": "cgu_accepted",
                 "message": "Vous devez accepter les conditions générales d'utilisation."
             }
         ]

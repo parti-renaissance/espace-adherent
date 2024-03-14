@@ -22,7 +22,7 @@ Feature:
        "message":"Validation Failed",
        "violations":[
           {
-             "property":"segment",
+             "propertyPath":"segment",
              "message":"Le segment n'est pas autorisé"
           }
        ]

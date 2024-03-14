@@ -20,7 +20,7 @@ class ConstraintViolationListNormalizer implements NormalizerInterface
             $propertyPath = $this->nameConverter ? $this->nameConverter->normalize($violation->getPropertyPath(), null, $format, $context) : $violation->getPropertyPath();
 
             $violations[] = [
-                'property' => $propertyPath,
+                'propertyPath' => $propertyPath,
                 'message' => $violation->getMessage(),
             ];
         }
