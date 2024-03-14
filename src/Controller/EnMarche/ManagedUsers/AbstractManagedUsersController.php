@@ -52,7 +52,7 @@ abstract class AbstractManagedUsersController extends AbstractController
             'form' => $form->createView(),
             'users' => $users,
             'filter' => $filter,
-            'total_count' => $this->managedUsersRepository->countManagedUsers($filter->getManagedZones()),
+            'total_count' => $this->managedUsersRepository->countManagedUsers($filter->managedZones),
         ]);
     }
 
@@ -67,9 +67,9 @@ abstract class AbstractManagedUsersController extends AbstractController
             $this->managedZoneProvider->getManagedZones($adherent, $this->getSpaceType())
         );
 
-        $model->setCommitteeUuids($this->getRestrictedCommittees($session));
-        $model->setCities($this->getRestrictedCities($session));
-        $model->setOnlyJeMengageUsers(false);
+        $model->committeeUuids = $this->getRestrictedCommittees($session);
+        $model->cities = $this->getRestrictedCities($session);
+        $model->onlyJeMengageUsers = false;
 
         return $model;
     }

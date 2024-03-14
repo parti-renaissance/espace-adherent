@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Exporter\ManagedUsersExporter;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\ManagedUsers\ManagedUsersFilterFactory;
+use App\Normalizer\AdherentTagNormalizer;
 use App\Normalizer\ManagedUserNormalizer;
 use App\Repository\Projection\ManagedUserRepository;
 use App\Scope\AuthorizationChecker;
@@ -74,8 +75,21 @@ class AdherentListController extends AbstractController
             return $this->exporter->getResponse($_format, $filter);
         }
 
-        $adherents = $this->repository->searchByFilter($filter, $request->query->getInt('page', 1));
+        $adherents = $this->repository->searchByFilter(
+            $filter,
+            $request->query->getInt('page', 1),
+            min($request->query->getInt('itemsPerPage', 25), 200)
+        );
 
-        return $this->json($adherents, Response::HTTP_OK, [], ['groups' => ['managed_user_read'], ManagedUserNormalizer::FILTER_PARAM => $filter]);
+        return $this->json(
+            $adherents,
+            Response::HTTP_OK,
+            [],
+            [
+                'groups' => ['managed_users_list'],
+                ManagedUserNormalizer::FILTER_PARAM => $filter,
+                AdherentTagNormalizer::ENABLE_TAG_TRANSLATOR => true,
+            ]
+        );
     }
 }

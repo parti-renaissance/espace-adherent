@@ -4,7 +4,6 @@ namespace App\Form\ManagedUsers;
 
 use App\Form\BooleanChoiceType;
 use App\Form\DatePickerType;
-use App\Form\EventListener\IncludeExcludeFilterRoleListener;
 use App\Form\FilterRoleType;
 use App\Form\MemberInterestsChoiceType;
 use App\ManagedUsers\ManagedUsersFilter;
@@ -13,14 +12,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ManagedUsersFilterType extends AbstractManagedUsersFilterType
 {
-    /** @var IncludeExcludeFilterRoleListener */
-    private $includeExcludeFilterRoleListener;
-
-    public function __construct(IncludeExcludeFilterRoleListener $includeExcludeFilterRoleListener)
-    {
-        $this->includeExcludeFilterRoleListener = $includeExcludeFilterRoleListener;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
@@ -34,8 +25,6 @@ class ManagedUsersFilterType extends AbstractManagedUsersFilterType
             ->add('registeredUntil', DatePickerType::class, ['required' => false])
             ->add('voteInCommittee', BooleanChoiceType::class)
         ;
-
-        $builder->addEventSubscriber($this->includeExcludeFilterRoleListener);
     }
 
     public function configureOptions(OptionsResolver $resolver)

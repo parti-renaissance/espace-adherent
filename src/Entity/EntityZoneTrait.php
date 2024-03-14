@@ -19,6 +19,7 @@ trait EntityZoneTrait
      *     "phoning_campaign_read",
      *     "phoning_campaign_write",
      *     "read_api",
+     *     "managed_users_list",
      * })
      */
     protected Collection $zones;

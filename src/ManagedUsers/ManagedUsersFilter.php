@@ -15,62 +15,67 @@ class ManagedUsersFilter
     /**
      * @Groups({"filter_write"})
      */
-    private ?string $gender = null;
+    public ?string $searchTerm = null;
 
     /**
      * @Groups({"filter_write"})
      */
-    private ?int $ageMin = null;
+    public ?string $gender = null;
 
     /**
      * @Groups({"filter_write"})
      */
-    private ?int $ageMax = null;
+    public ?int $ageMin = null;
+
+    /**
+     * @Groups({"filter_write"})
+     */
+    public ?int $ageMax = null;
 
     /**
      * @Assert\Length(max=255)
      *
      * @Groups({"filter_write"})
      */
-    private ?string $firstName = null;
+    public ?string $firstName = null;
 
     /**
      * @Assert\Length(max=255)
      *
      * @Groups({"filter_write"})
      */
-    private ?string $lastName = null;
+    public ?string $lastName = null;
 
     /**
      * @Assert\Length(max=255)
      */
-    private ?string $city = null;
+    public ?string $city = null;
 
     /**
      * @Groups({"filter_write"})
      */
-    private array $interests = [];
+    public array $interests = [];
 
     /**
      * @Groups({"filter_write"})
      */
-    private ?\DateTime $registeredSince = null;
+    public ?\DateTime $registeredSince = null;
 
     /**
      * @Groups({"filter_write"})
      */
-    private ?\DateTime $registeredUntil = null;
+    public ?\DateTime $registeredUntil = null;
 
     /**
      * @Groups({"filter_write"})
      */
-    private ?bool $isCommitteeMember = null;
+    public ?bool $isCommitteeMember = null;
 
-    private ?bool $includeCommitteeSupervisors = null;
+    public ?bool $includeCommitteeSupervisors = null;
 
-    private ?bool $includeCommitteeProvisionalSupervisors = null;
+    public ?bool $includeCommitteeProvisionalSupervisors = null;
 
-    private ?bool $includeCommitteeHosts = null;
+    public ?bool $includeCommitteeHosts = null;
 
     /**
      * @Groups({"filter_write"})
@@ -96,14 +101,14 @@ class ManagedUsersFilter
      *
      * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, multiple=true)
      */
-    private array $mandates = [];
+    public array $mandates = [];
 
     /**
      * @Groups({"filter_write"})
      *
      * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, multiple=true)
      */
-    private array $declaredMandates = [];
+    public array $declaredMandates = [];
 
     /**
      * @var Zone[]
@@ -113,90 +118,90 @@ class ManagedUsersFilter
      *     message="referent.managed_zone.empty"
      * )
      */
-    private array $managedZones;
+    public array $managedZones;
 
     /**
      * @var Zone[]
      *
      * @Groups({"filter_write"})
      */
-    private array $zones;
+    public array $zones;
 
     /**
      * @Groups({"filter_write"})
      */
-    private ?bool $emailSubscription = null;
+    public ?bool $emailSubscription = null;
 
     /**
      * @Groups({"filter_write"})
      */
-    private ?bool $smsSubscription = null;
+    public ?bool $smsSubscription = null;
 
-    private ?string $subscriptionType;
+    public ?string $subscriptionType;
 
     /**
      * @Assert\NotBlank
      * @Assert\Choice(choices={"createdAt", "lastName"})
      */
-    private string $sort = 'createdAt';
+    public string $sort = 'createdAt';
 
     /**
      * @Assert\NotBlank
      * @Assert\Choice(choices={"a", "d"})
      */
-    private string $order = 'd';
+    public string $order = 'd';
 
-    private ?Committee $committee = null;
+    public ?Committee $committee = null;
 
     /**
      * @var string[]
      *
      * @Groups({"filter_write"})
      */
-    private array $committeeUuids;
+    public array $committeeUuids;
 
     /**
      * @var string[]
      */
-    private array $cities;
+    public array $cities;
 
-    private ?bool $voteInCommittee = null;
+    public ?bool $voteInCommittee = null;
 
     /**
      * @Groups({"filter_write"})
      */
-    private ?bool $isCertified = null;
+    public ?bool $isCertified = null;
 
     /**
      * @Groups({"filter_write"})
      * @Assert\Choice(choices=App\Renaissance\Membership\RenaissanceMembershipFilterEnum::CHOICES)
      */
-    private ?string $renaissanceMembership = null;
+    public ?string $renaissanceMembership = null;
 
     /**
      * @Groups({"filter_write"})
      */
-    private ?\DateTime $lastMembershipSince = null;
+    public ?\DateTime $lastMembershipSince = null;
 
     /**
      * @Groups({"filter_write"})
      */
-    private ?\DateTime $lastMembershipBefore = null;
+    public ?\DateTime $lastMembershipBefore = null;
 
     /**
      * @Groups({"filter_write"})
      */
-    private ?bool $onlyJeMengageUsers = null;
+    public ?bool $onlyJeMengageUsers = null;
 
     /**
      * @Groups({"filter_write"})
      */
-    private ?bool $isNewRenaissanceUser = null;
+    public ?bool $isNewRenaissanceUser = null;
 
     /**
      * @Groups({"filter_write"})
      */
-    private ?bool $isCampusRegistered = null;
+    public ?bool $isCampusRegistered = null;
 
     public function __construct(
         ?string $subscriptionType = null,
@@ -216,113 +221,23 @@ class ManagedUsersFilter
         $this->cities = $cities;
     }
 
-    public function getGender(): ?string
-    {
-        return $this->gender;
-    }
-
-    public function setGender(?string $gender): void
-    {
-        $this->gender = $gender;
-    }
-
-    public function getAgeMin(): ?int
-    {
-        return $this->ageMin;
-    }
-
-    public function setAgeMin(?int $ageMin): void
-    {
-        $this->ageMin = $ageMin;
-    }
-
-    public function getAgeMax(): ?int
-    {
-        return $this->ageMax;
-    }
-
-    public function setAgeMax(?int $ageMax): void
-    {
-        $this->ageMax = $ageMax;
-    }
-
     /**
      * @Groups({"filter_write"})
      */
     public function setAge(array $minMax): void
     {
         if (!empty($minMax['min'])) {
-            $this->setAgeMin($minMax['min']);
+            $this->ageMin = $minMax['min'];
         }
 
         if (!empty($minMax['max'])) {
-            $this->setAgeMax($minMax['max']);
+            $this->ageMax = $minMax['max'];
         }
-    }
-
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    public function setFirstName(?string $firstName): void
-    {
-        $this->firstName = $firstName;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    public function setLastName(?string $lastName): void
-    {
-        $this->lastName = $lastName;
-    }
-
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(?string $city): void
-    {
-        $this->city = $city;
-    }
-
-    public function getInterests(): ?array
-    {
-        return $this->interests;
-    }
-
-    public function setInterests(?array $interests): void
-    {
-        $this->interests = $interests;
     }
 
     public function getCityAsArray(): array
     {
         return $this->city ? array_map('trim', explode(',', $this->city)) : [];
-    }
-
-    public function getRegisteredSince(): ?\DateTime
-    {
-        return $this->registeredSince;
-    }
-
-    public function setRegisteredSince(?\DateTime $registeredSince): void
-    {
-        $this->registeredSince = $registeredSince;
-    }
-
-    public function getRegisteredUntil(): ?\DateTime
-    {
-        return $this->registeredUntil;
-    }
-
-    public function setRegisteredUntil(?\DateTime $registeredUntil): void
-    {
-        $this->registeredUntil = $registeredUntil;
     }
 
     /**
@@ -331,60 +246,12 @@ class ManagedUsersFilter
     public function setRegistered(array $startEnd): void
     {
         if (!empty($startEnd['start'])) {
-            $this->setRegisteredSince(new \DateTime($startEnd['start']));
+            $this->registeredSince = new \DateTime($startEnd['start']);
         }
 
         if (!empty($startEnd['end'])) {
-            $this->setRegisteredUntil(new \DateTime($startEnd['end']));
+            $this->registeredUntil = new \DateTime($startEnd['end']);
         }
-    }
-
-    public function isCommitteeMember(): ?bool
-    {
-        return $this->isCommitteeMember;
-    }
-
-    public function setIsCommitteeMember(?bool $value): void
-    {
-        $this->isCommitteeMember = $value;
-    }
-
-    public function includeCommitteeSupervisors(): ?bool
-    {
-        return $this->includeCommitteeSupervisors;
-    }
-
-    public function setIncludeCommitteeSupervisors(?bool $value): void
-    {
-        $this->includeCommitteeSupervisors = $value;
-    }
-
-    public function includeCommitteeProvisionalSupervisors(): ?bool
-    {
-        return $this->includeCommitteeProvisionalSupervisors;
-    }
-
-    public function setIncludeCommitteeProvisionalSupervisors(?bool $value): void
-    {
-        $this->includeCommitteeProvisionalSupervisors = $value;
-    }
-
-    public function includeCommitteeHosts(): ?bool
-    {
-        return $this->includeCommitteeHosts;
-    }
-
-    public function setIncludeCommitteeHosts(?bool $value): void
-    {
-        $this->includeCommitteeHosts = $value;
-    }
-
-    /**
-     * @return Zone[]
-     */
-    public function getManagedZones(): array
-    {
-        return $this->managedZones;
     }
 
     public function addManagedZone(Zone $zone): void
@@ -403,14 +270,6 @@ class ManagedUsersFilter
         $this->managedZones = array_values($this->managedZones);
     }
 
-    /**
-     * @return Zone[]
-     */
-    public function getZones(): array
-    {
-        return $this->zones;
-    }
-
     public function addZone(Zone $zone): void
     {
         $this->zones[] = $zone;
@@ -427,143 +286,18 @@ class ManagedUsersFilter
         $this->zones = array_values($this->zones);
     }
 
-    public function getEmailSubscription(): ?bool
-    {
-        return $this->emailSubscription;
-    }
-
-    public function setEmailSubscription(?bool $emailSubscription): void
-    {
-        $this->emailSubscription = $emailSubscription;
-    }
-
-    public function getSmsSubscription(): ?bool
-    {
-        return $this->smsSubscription;
-    }
-
-    public function setSmsSubscription(?bool $smsSubscription): void
-    {
-        $this->smsSubscription = $smsSubscription;
-    }
-
-    public function getVoteInCommittee(): ?bool
-    {
-        return $this->voteInCommittee;
-    }
-
-    public function setVoteInCommittee(?bool $voteInCommittee): void
-    {
-        $this->voteInCommittee = $voteInCommittee;
-    }
-
-    public function getIsCertified(): ?bool
-    {
-        return $this->isCertified;
-    }
-
-    public function setIsCertified(?bool $isCertified): void
-    {
-        $this->isCertified = $isCertified;
-    }
-
-    public function getRenaissanceMembership(): ?string
-    {
-        return $this->renaissanceMembership;
-    }
-
-    public function setRenaissanceMembership(?string $renaissanceMembership): void
-    {
-        $this->renaissanceMembership = $renaissanceMembership;
-    }
-
-    public function getLastMembershipSince(): ?\DateTime
-    {
-        return $this->lastMembershipSince;
-    }
-
-    public function setLastMembershipSince(?\DateTime $lastMembershipSince): void
-    {
-        $this->lastMembershipSince = $lastMembershipSince;
-    }
-
-    public function getLastMembershipBefore(): ?\DateTime
-    {
-        return $this->lastMembershipBefore;
-    }
-
-    public function setLastMembershipBefore(?\DateTime $lastMembershipBefore): void
-    {
-        $this->lastMembershipBefore = $lastMembershipBefore;
-    }
-
     /**
      * @Groups({"filter_write"})
      */
     public function setLastMembership(array $startEnd): void
     {
         if (!empty($startEnd['start'])) {
-            $this->setLastMembershipSince(new \DateTime($startEnd['start']));
+            $this->lastMembershipSince = new \DateTime($startEnd['start']);
         }
 
         if (!empty($startEnd['end'])) {
-            $this->setLastMembershipBefore(new \DateTime($startEnd['end']));
+            $this->lastMembershipBefore = new \DateTime($startEnd['end']);
         }
-    }
-
-    public function getSubscriptionType(): ?string
-    {
-        return $this->subscriptionType;
-    }
-
-    public function getSort(): string
-    {
-        return $this->sort;
-    }
-
-    public function setSort(string $sort): void
-    {
-        $this->sort = $sort;
-    }
-
-    public function getOrder(): string
-    {
-        return $this->order;
-    }
-
-    public function setOrder(string $order): void
-    {
-        $this->order = $order;
-    }
-
-    public function getCommittee(): ?Committee
-    {
-        return $this->committee;
-    }
-
-    public function setCommittee(?Committee $committee): void
-    {
-        $this->committee = $committee;
-    }
-
-    public function getCommitteeUuids(): array
-    {
-        return $this->committeeUuids;
-    }
-
-    public function setCommitteeUuids(array $committeeUuids): void
-    {
-        $this->committeeUuids = $committeeUuids;
-    }
-
-    public function getCities(): array
-    {
-        return $this->cities;
-    }
-
-    public function setCities(array $cities): void
-    {
-        $this->cities = $cities;
     }
 
     public function toArray(): array
@@ -583,8 +317,8 @@ class ManagedUsersFilter
                 'lastName' => $this->lastName,
                 'city' => $this->city,
                 'interests' => $this->interests,
-                'registeredSince' => $this->registeredSince ? $this->registeredSince->format('Y-m-d') : null,
-                'registeredUntil' => $this->registeredUntil ? $this->registeredUntil->format('Y-m-d') : null,
+                'registeredSince' => $this->registeredSince?->format('Y-m-d'),
+                'registeredUntil' => $this->registeredUntil?->format('Y-m-d'),
                 'zones' => array_map(static function (Zone $zone) {
                     return $zone->getId();
                 }, $this->zones),
@@ -596,7 +330,7 @@ class ManagedUsersFilter
                 'isCertified' => $this->isCertified,
                 'sort' => $this->sort,
                 'order' => $this->order,
-                'committee' => $this->committee ? $this->committee->getUuidAsString() : null,
+                'committee' => $this->committee?->getUuidAsString(),
                 'includeRoles' => array_keys(
                     array_filter($roles, static function ($role) {
                         return true === $role;
@@ -612,55 +346,5 @@ class ManagedUsersFilter
                 'isCampusRegistered' => $this->isCampusRegistered,
             ],
         );
-    }
-
-    public function getOnlyJeMengageUsers(): ?bool
-    {
-        return $this->onlyJeMengageUsers;
-    }
-
-    public function setOnlyJeMengageUsers(?bool $onlyJeMengageUsers): void
-    {
-        $this->onlyJeMengageUsers = $onlyJeMengageUsers;
-    }
-
-    public function getIsNewRenaissanceUser(): ?bool
-    {
-        return $this->isNewRenaissanceUser;
-    }
-
-    public function setIsNewRenaissanceUser(?bool $isNewRenaissanceUser): void
-    {
-        $this->isNewRenaissanceUser = $isNewRenaissanceUser;
-    }
-
-    public function getMandates(): array
-    {
-        return $this->mandates;
-    }
-
-    public function setMandates(array $mandates): void
-    {
-        $this->mandates = $mandates;
-    }
-
-    public function getDeclaredMandates(): array
-    {
-        return $this->declaredMandates;
-    }
-
-    public function setDeclaredMandates(array $declaredMandates): void
-    {
-        $this->declaredMandates = $declaredMandates;
-    }
-
-    public function getIsCampusRegistered(): ?bool
-    {
-        return $this->isCampusRegistered;
-    }
-
-    public function setIsCampusRegistered(?bool $isCampusRegistered): void
-    {
-        $this->isCampusRegistered = $isCampusRegistered;
     }
 }

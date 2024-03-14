@@ -91,7 +91,7 @@ class ManagedUser
      *
      * @ORM\Column(type="uuid", nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private $adherentUuid;
 
@@ -100,7 +100,7 @@ class ManagedUser
      *
      * @ORM\Column
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private $email;
 
@@ -109,7 +109,7 @@ class ManagedUser
      *
      * @ORM\Column(length=150, nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private $address;
 
@@ -118,7 +118,7 @@ class ManagedUser
      *
      * @ORM\Column(length=15, nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private $postalCode;
 
@@ -136,7 +136,7 @@ class ManagedUser
      *
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private $city;
 
@@ -145,39 +145,50 @@ class ManagedUser
      *
      * @ORM\Column(length=2, nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private $country;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=50, nullable=true)
+     * @ORM\Column(length=6, nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
-    private $firstName;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     *
-     * @Groups({"managed_user_read"})
-     */
-    private $birthdate;
+    private $gender;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=50, nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
+     */
+    private $firstName;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(length=50, nullable=true)
+     *
+     * @Groups({"managed_users_list"})
      */
     private $lastName;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     *
+     * @Groups({"managed_users_list"})
+     */
+    private $birthdate;
 
     /**
      * @var int|null
      *
      * @ORM\Column(type="smallint", nullable=true)
+     *
+     * @Groups({"managed_users_list"})
      */
     private $age;
 
@@ -186,7 +197,7 @@ class ManagedUser
      *
      * @ORM\Column(type="phone_number", nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private $phone;
 
@@ -195,7 +206,7 @@ class ManagedUser
      *
      * @ORM\Column(length=2, nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private $nationality;
 
@@ -217,6 +228,8 @@ class ManagedUser
      * @var string[]|null
      *
      * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Groups({"managed_users_list"})
      */
     public ?array $tags = null;
 
@@ -260,23 +273,14 @@ class ManagedUser
      *
      * @ORM\Column(type="datetime")
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private $createdAt;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(length=6, nullable=true)
-     *
-     * @Groups({"managed_user_read"})
-     */
-    private $gender;
-
-    /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private $interests;
 
@@ -311,7 +315,7 @@ class ManagedUser
      *
      * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private $lastMembershipDonation;
 
@@ -320,7 +324,7 @@ class ManagedUser
      *
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private ?string $committee;
 
@@ -329,42 +333,42 @@ class ManagedUser
      *
      * @ORM\Column(type="uuid", nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private ?UuidInterface $committeeUuid;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private ?array $additionalTags;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private ?array $mandates;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     private ?array $declaredMandates;
 
     /**
-     * @Groups({"managed_user_read"})
-     *
      * @ORM\Column(type="simple_array", nullable=true)
+     *
+     * @Groups({"managed_users_list"})
      */
     public ?array $cotisationDates = null;
 
     /**
-     * @Groups({"managed_user_read"})
-     *
      * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @Groups({"managed_users_list"})
      */
     private ?\DateTime $campusRegisteredAt;
 
@@ -667,6 +671,9 @@ class ManagedUser
         return $this->voteCommitteeId;
     }
 
+    /**
+     * @Groups({"managed_users_list"})
+     */
     public function isCertified(): bool
     {
         return null !== $this->certifiedAt;
@@ -678,7 +685,7 @@ class ManagedUser
     }
 
     /**
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     public function getRenaissanceMembership(): ?string
     {
@@ -692,7 +699,7 @@ class ManagedUser
     }
 
     /**
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     public function getCityCode(): ?string
     {
@@ -701,36 +708,8 @@ class ManagedUser
         return $zones ? current($zones)->getCode() : null;
     }
 
-    public function getDepartmentCode(): ?string
-    {
-        $zones = $this->getZonesOfType(Zone::DEPARTMENT, true);
-
-        return $zones ? current($zones)->getCode() : null;
-    }
-
-    public function getDepartment(): ?string
-    {
-        $zones = $this->getZonesOfType(Zone::DEPARTMENT, true);
-
-        return $zones ? current($zones)->getName() : null;
-    }
-
-    public function getRegionCode(): ?string
-    {
-        $zones = $this->getZonesOfType(Zone::REGION, true);
-
-        return $zones ? current($zones)->getCode() : null;
-    }
-
-    public function getRegion(): ?string
-    {
-        $zones = $this->getZonesOfType(Zone::REGION, true);
-
-        return $zones ? current($zones)->getName() : null;
-    }
-
     /**
-     * @Groups({"managed_user_read"})
+     * @Groups({"managed_users_list"})
      */
     public function getSmsSubscription(): bool
     {

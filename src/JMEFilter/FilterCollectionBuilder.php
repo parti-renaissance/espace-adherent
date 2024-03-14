@@ -17,6 +17,7 @@ use App\JMEFilter\Types\Text;
  * @method self setLabelParam(string $labelParam)
  * @method self setMultiple(bool $multiple)
  * @method self setRequired(bool $value)
+ * @method self setFavorite(bool $value)
  */
 class FilterCollectionBuilder
 {

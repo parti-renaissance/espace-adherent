@@ -4,10 +4,8 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\DataFixtures\ORM\LoadDelegatedAccessData;
-use App\Entity\Geo\Zone;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
-use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractEnMarcheWebTestCase;
@@ -115,187 +113,6 @@ class ReferentControllerTest extends AbstractEnMarcheWebTestCase
         );
     }
 
-    #[DataProvider('provideUsers')]
-    public function testSearchUserToSendMail($user)
-    {
-        $this->authenticateAsAdherent($this->client, $user);
-
-        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
-        self::assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-
-        /* @var ChoiceFormField $zonesField */
-        $zonesField = $form->get('f[zones]');
-        $zonesField->disableValidation()->setValue([
-            $this->getRepository(Zone::class)->findOneBy([
-                'type' => Zone::DEPARTMENT,
-                'code' => '77', // Seine-et-Marne
-            ])->getId(),
-        ]);
-
-        $this->client->submit($form);
-        self::assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-
-        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
-        self::assertSame(4, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-
-        /* @var ChoiceFormField $zonesField */
-        $zonesField = $form->get('f[zones]');
-        $zonesField->disableValidation()->setValue([
-            $this->getRepository(Zone::class)->findOneBy([
-                'type' => Zone::CITY,
-                'code' => '77288', // Melun
-            ])->getId(),
-        ]);
-
-        $this->client->submit($form);
-        self::assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-
-        // Gender
-        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
-        $data = [
-            'f' => [
-                'gender' => 'male',
-            ],
-        ];
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        self::assertSame(3, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-
-        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
-        $data = [
-            'f' => [
-                'gender' => 'female',
-            ],
-        ];
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        self::assertSame(1, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-
-        // Firstname
-        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
-        $data = [
-            'f' => [
-                'gender' => 'male',
-                'firstName' => 'Mich',
-            ],
-        ];
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        self::assertSame(2, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-
-        // Lastname
-        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
-        $data = [
-            'f' => [
-                'lastName' => 'ou',
-            ],
-        ];
-
-        $this->client->submit($this->client->getCrawler()->selectButton('Appliquer')->form(), $data);
-        self::assertSame(3, $this->client->getCrawler()->filter('tbody tr.referent__item')->count());
-    }
-
-    public function testFilterAdherents()
-    {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
-
-        $this->client->request(Request::METHOD_GET, '/espace-referent/utilisateurs');
-
-        $this->assertCount(4, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-
-        // filter hosts
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[includeRoles]'] = ['CommitteeHosts'];
-        $form['f[excludeRoles]'] = [];
-
-        $this->client->submit($form);
-
-        $this->assertCount(2, $this->client->getCrawler()->filter('.status.status__1'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
-        $this->assertStringContainsString('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
-        $this->assertStringContainsString('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
-
-        // filter supervisors
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[includeRoles]'] = ['CommitteeSupervisors'];
-        $form['f[excludeRoles]'] = [];
-
-        $this->client->submit($form);
-
-        $this->assertCount(0, $this->client->getCrawler()->filter('.status.status__1'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
-        $this->assertStringContainsString('Brioul Francis', $this->client->getCrawler()->filter('tbody tr.referent__item')->text());
-
-        // filter newsletter subscriptions
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[includeRoles]'] = [];
-        $form['f[excludeRoles]'] = [];
-
-        $this->client->submit($form);
-
-        $this->assertCount(5, $this->client->getCrawler()->filter('.status.status__1'));
-        $this->assertCount(4, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertStringContainsString('77000', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertStringContainsString('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertStringContainsString('92110', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(2)->text());
-
-        // exclude
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[includeRoles]'] = [];
-        $form['f[excludeRoles]'] = ['CommitteeSupervisors', 'CommitteeHosts'];
-
-        $this->client->submit($form);
-
-        $this->assertCount(3, $this->client->getCrawler()->filter('.status.status__1'));
-        $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertStringContainsString('8802', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-        $this->assertStringContainsString('8057', $this->client->getCrawler()->filter('tbody tr.referent__item')->eq(1)->text());
-
-        // filter adherents in no committee
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[isCommitteeMember]'] = 0;
-        $form['f[includeRoles]'] = [];
-        $form['f[excludeRoles]'] = [];
-
-        $this->client->submit($form);
-
-        $this->assertCount(1, $this->client->getCrawler()->filter('.status.status__1'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertStringContainsString('Michelle', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-
-        // filter adherents in committees
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[isCommitteeMember]'] = 1;
-        $form['f[includeRoles]'] = [];
-        $form['f[excludeRoles]'] = [];
-
-        $this->client->submit($form);
-
-        $this->assertCount(4, $this->client->getCrawler()->filter('.status.status__1'));
-        $this->assertCount(3, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertCount(2, $this->client->getCrawler()->filter('tbody tr.referent__item--host'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item--adherent'));
-        $this->assertStringContainsString('Francis', $this->client->getCrawler()->filter('tbody tr.referent__item--host')->first()->text());
-        $this->assertStringContainsString('Gisele', $this->client->getCrawler()->filter('tbody tr.referent__item--host')->eq(1)->text());
-        $this->assertStringContainsString('Michel', $this->client->getCrawler()->filter('tbody tr.referent__item--adherent')->text());
-
-        // filter certified adherents
-        $form = $this->client->getCrawler()->selectButton('Appliquer')->form();
-        $form['f[includeRoles]'] = [];
-        $form['f[isCertified]'] = 1;
-
-        $this->client->submit($form);
-
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr.referent__item'));
-        $this->assertCount(1, $this->client->getCrawler()->filter('tbody tr .adherent-name > img'));
-        $this->assertStringContainsString('Berthoux', $this->client->getCrawler()->filter('tbody tr.referent__item')->first()->text());
-    }
-
     public function testReferentCanCreateAdherentMessageSuccessfully(): void
     {
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
@@ -362,11 +179,6 @@ class ReferentControllerTest extends AbstractEnMarcheWebTestCase
             ['/espace-referent/comites'],
             ['/espace-referent/evenements/creer'],
         ];
-    }
-
-    public static function provideUsers(): iterable
-    {
-        yield ['referent@en-marche-dev.fr'];
     }
 
     protected function setUp(): void

@@ -10,6 +10,7 @@ use App\Entity\Projection\ManagedUser;
 use App\FranceCities\FranceCities;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\Membership\MembershipSourceEnum;
+use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Repository\GeoZoneTrait;
 use App\Repository\Helper\MembershipFilterHelper;
 use App\Repository\PaginatorTrait;
@@ -72,10 +73,10 @@ class ManagedUserRepository extends ServiceEntityRepository
             ->leftJoin('zone.parents', 'parent_zone')
             ->where('u.status = :status')
             ->setParameter('status', ManagedUser::STATUS_READY)
-            ->orderBy('u.'.$filter->getSort(), 'd' === $filter->getOrder() ? 'DESC' : 'ASC')
+            ->orderBy('u.'.$filter->sort, 'd' === $filter->order ? 'DESC' : 'ASC')
         ;
 
-        if ($managedZones = $filter->getManagedZones()) {
+        if ($managedZones = $filter->managedZones) {
             $zoneCondition = $qb->expr()->orX();
 
             foreach ($managedZones as $key => $zone) {
@@ -86,7 +87,7 @@ class ManagedUserRepository extends ServiceEntityRepository
             $qb->andWhere($zoneCondition);
         }
 
-        if ($selectedZones = $filter->getZones()) {
+        if ($selectedZones = $filter->zones) {
             $zoneCondition = $qb->expr()->orX();
 
             foreach ($selectedZones as $key => $zone) {
@@ -115,76 +116,89 @@ class ManagedUserRepository extends ServiceEntityRepository
             $qb->andWhere($areaCodeExpression);
         }
 
-        if ($gender = $filter->getGender()) {
+        if ($filter->searchTerm) {
+            MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
+                $qb,
+                $filter->searchTerm,
+                [
+                    ['u.firstName', 'u.lastName'],
+                    ['u.lastName', 'u.firstName'],
+                    ['u.email', 'u.email'],
+                ],
+                ['u.phone']
+            );
+        }
+
+        if ($gender = $filter->gender) {
             $qb
                 ->andWhere('u.gender = :gender')
                 ->setParameter('gender', $gender)
             ;
         }
 
-        if ($lastName = $filter->getLastName()) {
+        if ($lastName = $filter->lastName) {
             $qb
                 ->andWhere('u.lastName LIKE :last_name')
                 ->setParameter('last_name', '%'.$lastName.'%')
             ;
         }
 
-        if ($firstName = $filter->getFirstName()) {
+        if ($firstName = $filter->firstName) {
             $qb
                 ->andWhere('u.firstName LIKE :first_name')
                 ->setParameter('first_name', '%'.$firstName.'%')
             ;
         }
 
-        if ($ageMin = $filter->getAgeMin()) {
+        if ($ageMin = $filter->ageMin) {
             $qb
                 ->andWhere('u.age >= :age_min')
                 ->setParameter('age_min', $ageMin)
             ;
         }
 
-        if ($ageMax = $filter->getAgeMax()) {
+        if ($ageMax = $filter->ageMax) {
             $qb
                 ->andWhere('u.age <= :age_max')
                 ->setParameter('age_max', $ageMax)
             ;
         }
 
-        if ($registeredSince = $filter->getRegisteredSince()) {
+        if ($registeredSince = $filter->registeredSince) {
             $qb
                 ->andWhere('u.createdAt >= :registered_since')
                 ->setParameter('registered_since', $registeredSince->format('Y-m-d 00:00:00'))
             ;
         }
 
-        if ($registeredUntil = $filter->getRegisteredUntil()) {
+        if ($registeredUntil = $filter->registeredUntil) {
             $qb
                 ->andWhere('u.createdAt <= :registered_until')
                 ->setParameter('registered_until', $registeredUntil->format('Y-m-d 23:59:59'))
             ;
         }
 
-        if (null !== $filter->getIsNewRenaissanceUser()) {
+        if (null !== $filter->isNewRenaissanceUser) {
             $qb
-                ->andWhere(sprintf('u.createdAt %s :registered_since_last_15d', $filter->getIsNewRenaissanceUser() ? '>=' : '<'))
+                ->andWhere(sprintf('u.createdAt %s :registered_since_last_15d', $filter->isNewRenaissanceUser ? '>=' : '<'))
                 ->setParameter('registered_since_last_15d', (new \DateTime('-15 days'))->setTime(0, 0))
             ;
         }
 
-        if (null !== $filter->getIsCampusRegistered()) {
+        if (null !== $filter->isCampusRegistered) {
             $qb
-                ->andWhere(sprintf('u.campusRegisteredAt %s NULL', $filter->getIsCampusRegistered() ? 'IS NOT' : 'IS'))
+                ->andWhere(sprintf('u.campusRegisteredAt %s NULL', $filter->isCampusRegistered ? 'IS NOT' : 'IS'))
             ;
         }
 
-        foreach (array_values($filter->getInterests()) as $key => $interest) {
+        foreach (array_values($filter->interests) as $key => $interest) {
             $qb
                 ->andWhere(sprintf('FIND_IN_SET(:interest_%s, u.interests) > 0', $key))
                 ->setParameter('interest_'.$key, $interest)
             ;
         }
 
-        if ($committee = $filter->getCommittee()) {
+        if ($committee = $filter->committee) {
             $qb
                 ->andWhere('FIND_IN_SET(:committee_uuid, u.committeeUuids) > 0')
                 ->setParameter('committee_uuid', $committee->getUuidAsString())
@@ -222,7 +236,7 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         $restrictionsExpression = $qb->expr()->orX();
 
-        if ($committees = $filter->getCommitteeUuids()) {
+        if ($committees = $filter->committeeUuids) {
             $committeesExpression = $qb->expr()->orX();
 
             foreach ($committees as $key => $uuid) {
@@ -234,7 +248,7 @@ class ManagedUserRepository extends ServiceEntityRepository
             $restrictionsExpression->add($committeesExpression);
         }
 
-        if ($cities = $filter->getCities()) {
+        if ($cities = $filter->cities) {
             $citiesExpression = $qb->expr()->orX();
 
             foreach ($cities as $key => $inseeCode) {
@@ -262,57 +276,57 @@ class ManagedUserRepository extends ServiceEntityRepository
             $qb->andWhere($restrictionsExpression);
         }
 
-        if (null !== $filter->isCommitteeMember()) {
-            $qb->andWhere(sprintf('u.isCommitteeMember = %s', $filter->isCommitteeMember() ? '1' : '0'));
+        if (null !== $filter->isCommitteeMember) {
+            $qb->andWhere(sprintf('u.isCommitteeMember = %s', $filter->isCommitteeMember ? '1' : '0'));
         }
 
         $typeExpression = $qb->expr()->orX();
 
         // includes
-        if (true === $filter->includeCommitteeHosts()) {
+        if (true === $filter->includeCommitteeHosts) {
             $typeExpression->add('u.isCommitteeHost = 1');
         }
 
-        if (true === $filter->includeCommitteeSupervisors()) {
+        if (true === $filter->includeCommitteeSupervisors) {
             $typeExpression->add('u.isCommitteeSupervisor = 1');
         }
 
-        if (true === $filter->includeCommitteeProvisionalSupervisors()) {
+        if (true === $filter->includeCommitteeProvisionalSupervisors) {
             $typeExpression->add('u.isCommitteeProvisionalSupervisor = 1');
         }
 
         $qb->andWhere($typeExpression);
 
         // excludes
-        if (false === $filter->includeCommitteeHosts()) {
+        if (false === $filter->includeCommitteeHosts) {
             $qb->andWhere('u.isCommitteeHost = 0');
         }
 
-        if (false === $filter->includeCommitteeSupervisors()) {
+        if (false === $filter->includeCommitteeSupervisors) {
             $qb->andWhere('u.isCommitteeSupervisor = 0');
         }
 
-        if (false === $filter->includeCommitteeProvisionalSupervisors()) {
+        if (false === $filter->includeCommitteeProvisionalSupervisors) {
             $qb->andWhere('u.isCommitteeProvisionalSupervisor = 0');
         }
 
-        if (null !== $filter->getEmailSubscription() && $filter->getSubscriptionType()) {
+        if (null !== $filter->emailSubscription && $filter->subscriptionType) {
             $subscriptionTypesCondition = 'FIND_IN_SET(:subscription_type, u.subscriptionTypes) > 0';
 
-            if (false === $filter->getEmailSubscription()) {
+            if (false === $filter->emailSubscription) {
                 $subscriptionTypesCondition = '(u.subscriptionTypes IS NULL OR FIND_IN_SET(:subscription_type, u.subscriptionTypes) = 0)';
             }
 
             $qb
                 ->andWhere($subscriptionTypesCondition)
-                ->setParameter('subscription_type', $filter->getSubscriptionType())
+                ->setParameter('subscription_type', $filter->subscriptionType)
             ;
         }
 
-        if (null !== $filter->getSmsSubscription()) {
+        if (null !== $filter->smsSubscription) {
             $subscriptionTypesCondition = 'FIND_IN_SET(:sms_subscription_type, u.subscriptionTypes) > 0';
 
-            if (false === $filter->getSmsSubscription()) {
+            if (false === $filter->smsSubscription) {
                 $subscriptionTypesCondition = '(u.subscriptionTypes IS NULL OR FIND_IN_SET(:sms_subscription_type, u.subscriptionTypes) = 0)';
             }
 
@@ -322,36 +336,36 @@ class ManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
-        if (null !== $filter->getVoteInCommittee()) {
-            $qb->andWhere(sprintf('u.voteCommitteeId %s NULL', $filter->getVoteInCommittee() ? 'IS NOT' : 'IS'));
+        if (null !== $filter->voteInCommittee) {
+            $qb->andWhere(sprintf('u.voteCommitteeId %s NULL', $filter->voteInCommittee ? 'IS NOT' : 'IS'));
         }
 
-        if (null !== $filter->getIsCertified()) {
-            $qb->andWhere(sprintf('u.certifiedAt %s NULL', $filter->getIsCertified() ? 'IS NOT' : 'IS'));
+        if (null !== $filter->isCertified) {
+            $qb->andWhere(sprintf('u.certifiedAt %s NULL', $filter->isCertified ? 'IS NOT' : 'IS'));
         }
 
-        if (null !== $renaissanceMembership = $filter->getRenaissanceMembership()) {
+        if (null !== $renaissanceMembership = $filter->renaissanceMembership) {
             MembershipFilterHelper::withMembershipFilter($qb, 'u', $renaissanceMembership);
         }
 
-        if ($lastMembershipSince = $filter->getLastMembershipSince()) {
+        if ($lastMembershipSince = $filter->lastMembershipSince) {
             $qb
                 ->andWhere('u.lastMembershipDonation >= :last_membership_since')
                 ->setParameter('last_membership_since', $lastMembershipSince->format('Y-m-d 00:00:00'))
             ;
         }
 
-        if ($lastMembershipBefore = $filter->getLastMembershipBefore()) {
+        if ($lastMembershipBefore = $filter->lastMembershipBefore) {
             $qb
                 ->andWhere('u.lastMembershipDonation <= :last_membership_before')
                 ->setParameter('last_membership_before', $lastMembershipBefore->format('Y-m-d 23:59:59'))
             ;
         }
 
-        if (null !== $filter->getOnlyJeMengageUsers()) {
+        if (null !== $filter->onlyJeMengageUsers) {
             $qb
                 ->andWhere(
-                    $filter->getOnlyJeMengageUsers()
+                    $filter->onlyJeMengageUsers
                         ? 'u.source = :source_jme'
                         : 'u.source != :source_jme OR u.source IS NULL'
                 )
@@ -359,7 +373,7 @@ class ManagedUserRepository extends ServiceEntityRepository
             ;
         }
 
-        if ($mandateTypes = $filter->getMandates()) {
+        if ($mandateTypes = $filter->mandates) {
             $mandateTypesConditions = $qb->expr()->orX();
 
             foreach ($mandateTypes as $key => $mandateType) {
@@ -370,7 +384,7 @@ class ManagedUserRepository extends ServiceEntityRepository
             $qb->andWhere($mandateTypesConditions);
         }
 
-        if ($declaredMandates = $filter->getDeclaredMandates()) {
+        if ($declaredMandates = $filter->declaredMandates) {
             $declaredMandatesConditions = $qb->expr()->orX();
 
             foreach ($declaredMandates as $key => $declaredMandate) {

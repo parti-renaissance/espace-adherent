@@ -93,4 +93,9 @@ class TagEnum extends Enum
 
         return false;
     }
+
+    public static function getMainLevel(string $tag): string
+    {
+        return explode(':', $tag)[0];
+    }
 }

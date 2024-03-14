@@ -27,6 +27,7 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
     {
         return (new FilterCollectionBuilder())
             ->createSelect($this->fieldName, $this->fieldLabel)
+            ->setFavorite(true)
             ->setChoices($this->getTranslatedChoices())
             ->getFilters()
         ;
