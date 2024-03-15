@@ -126,4 +126,20 @@ abstract class AbstractProcuration
         $this->clientIp = $clientIp;
         $this->createdAt = $createdAt ?? new \DateTimeImmutable();
     }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            '[%s] %s %s (%s)',
+            $this->id,
+            $this->firstNames,
+            $this->lastName,
+            $this->email
+        );
+    }
+
+    public function getPostAddress(): PostAddress
+    {
+        return $this->postAddress;
+    }
 }
