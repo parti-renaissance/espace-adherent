@@ -43,7 +43,7 @@ class GetPapCampaignSurveyConfigController extends AbstractController
                             null,
                             null,
                             null,
-                            'En cochant oui, vous certifiez qu\'il consent à ce que ses données personnelles soient traitées par La République En Marche et qu\'il est informé des droits dont il dispose sur ses données - notamment, la possibilité de se désinscrire à tout moment.'),
+                            'En cochant oui, vous certifiez qu\'il consent à ce que ses données personnelles soient traitées par Renaissance et qu\'il est informé des droits dont il dispose sur ses données - notamment, la possibilité de se désinscrire à tout moment.'),
                         $this->buildQuestion(
                             'profil',
                             'compound',
