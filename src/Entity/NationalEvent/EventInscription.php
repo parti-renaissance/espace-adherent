@@ -171,4 +171,9 @@ class EventInscription
     {
         return $this->firstName.' '.$this->lastName;
     }
+
+    public function __toString(): string
+    {
+        return $this->getFullName();
+    }
 }

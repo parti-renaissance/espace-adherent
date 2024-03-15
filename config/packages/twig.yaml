@@ -38,3 +38,4 @@ twig:
         - 'form_theme.html.twig'
         - '@SonataForm/Form/datepicker.html.twig'
         - '@TetranzSelect2Entity/Form/fields.html.twig'
+        - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
