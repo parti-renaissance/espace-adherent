@@ -28,6 +28,24 @@ class LoadNationalEventData extends Fixture
 
         $this->setReference('event-national-1', $event);
 
+        $manager->persist($event = new NationalEvent());
+
+        $event->setName('Event national 2');
+
+        $event->startDate = new \DateTime('+1 month');
+        $event->endDate = new \DateTime('+1.5 month');
+        $event->ticketStartDate = new \DateTime('-1 day');
+        $event->ticketEndDate = new \DateTime('+1 month');
+
+        $event->textIntro = '<p>Voici un nouvel event</p>';
+        $event->textHelp = '<p>Il suffit de remplir le formulaire</p>';
+        $event->textConfirmation = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
+        $event->textTicketEmail = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
+        $event->intoImagePath = '/donation-bg.jpg';
+        $event->source = '123xyz';
+
+        $this->setReference('event-national-2', $event);
+
         $manager->flush();
     }
 }

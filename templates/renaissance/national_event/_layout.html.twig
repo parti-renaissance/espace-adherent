@@ -1,7 +1,15 @@
 {% extends 'base_renaissance.html.twig' %}
 
 {% block app_title 'Besoin d\'Europe' %}
-{% block canonical_url ('https://' ~ national_event_host) %}
+{%- block canonical_url -%}
+    {% apply spaceless %}
+        {% if event is defined %}
+            {{ url('app_renaissance_national_event_by_slug', {slug: event.getSlug()}) }}
+        {% else %}
+            {{ 'https://' ~ national_event_host }}
+        {% endif %}
+    {% endapply %}
+{%- endblock -%}
 {% block meta_description "Besoin d'Europe est la liste commune Renaissance, MODEM, Horizons et Parti Radical, unis pour les Européennes du 9 juin 2024." %}
 
 {% block favicons %}
