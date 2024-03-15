@@ -448,14 +448,24 @@
     {{ block('admin_image_with_url_row') }}
 {% endblock %}
 
+{% block app_admin_national_event_file_row %}
+    {% set value = form.parent.vars.value %}
+    {% set path = value.intoImagePath ? ('static'~value.intoImagePath) : null %}
+
+    {{ block('admin_image_with_url_row') }}
+{% endblock %}
+
 {% block admin_image_with_url_row %}
     {{ block('form_row') }}
 
     {% if value %}
-        {% set path = value is instanceof('App\\Entity\\ImageOwnerInterface') ? value.getImagePath() : value.getFilePath() %}
+        {% if path is not defined %}
+            {% set path = value is instanceof('App\\Entity\\ImageOwnerInterface') ? value.getImagePath() : value.getFilePath() %}
+        {% endif %}
+
         {% if path %}
             <div>
-                <p><em>Image actuelle:</em></p>
+                <p><em>Image actuelle :</em></p>
                 <p class="text-center">
                     <img class="img-thumbnail" src="{{ path('asset_url', { path: path }) }}">
                 </p>

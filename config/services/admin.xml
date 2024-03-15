@@ -236,6 +236,22 @@
             <argument />
         </service>
 
+        <service id="app.admin.national_event" class="App\Admin\NationalEvent\NationalEventAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Événements" group="Événements" />
+
+            <argument />
+            <argument>App\Entity\NationalEvent\NationalEvent</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.national_event_inscriptions" class="App\Admin\NationalEvent\NationalEventInscriptionsAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Inscrits" group="Événements" />
+
+            <argument />
+            <argument>App\Entity\NationalEvent\EventInscription</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Adhérents

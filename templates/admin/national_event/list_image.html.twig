@@ -1,0 +1,7 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+    {% if value %}
+        <img src="{{ static_asset(value, {}, 0, national_event_host) }}" alt="Image" style="max-height: 70px; max-width: 100px;"  />
+    {% endif %}
+{% endblock %}

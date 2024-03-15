@@ -67,6 +67,8 @@ common.zone.all: Toutes les zones géographiques
 pending: En attente
 approved: Approuvé
 refused: Refusé
+accepted: Accepté
+inconclusive: Non concluant
 blocked: Bloqué
 closed: Fermé
 pre_approved: Pré-approuvé

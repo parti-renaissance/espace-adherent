@@ -8,7 +8,9 @@ use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\NationalEvent\NationalEventRepository")
@@ -73,6 +75,11 @@ class NationalEvent
      */
     public ?string $source = null;
 
+    /**
+     * @Assert\File(maxSize="5M", binaryFormat=false, mimeTypes={"image/*"})
+     */
+    public ?UploadedFile $file = null;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -85,5 +92,10 @@ class NationalEvent
         }
 
         return $this->ticketEndDate < new \DateTime();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->name;
     }
 }

@@ -1,5 +1,5 @@
 parameters:
-    sonata.exporter.writer.csv.with_bom:  true
+    sonata.exporter.writer.csv.with_bom: true
 
 sonata_exporter:
     exporter:
