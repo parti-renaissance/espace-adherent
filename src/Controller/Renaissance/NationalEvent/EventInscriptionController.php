@@ -2,6 +2,7 @@
 
 namespace App\Controller\Renaissance\NationalEvent;
 
+use App\Entity\NationalEvent\NationalEvent;
 use App\Event\Request\EventInscriptionRequest;
 use App\Form\NationalEvent\EventInscriptionType;
 use App\NationalEvent\EventInscriptionHandler;
@@ -15,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 #[Route('/', name: 'app_renaissance_national_event_index', methods: ['GET', 'POST'])]
+#[Route('/{slug}', name: 'app_renaissance_national_event_by_slug', methods: ['GET', 'POST'])]
 class EventInscriptionController extends AbstractController
 {
     private const SESSION_ID = 'nation_event:sess_id';
@@ -27,9 +29,9 @@ class EventInscriptionController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, ?NationalEvent $event = null): Response
     {
-        if (!$event = $this->nationalEventRepository->findOneForInscriptions()) {
+        if (!$event && !$event = $this->nationalEventRepository->findOneForInscriptions()) {
             return $this->redirectToRoute('renaissance_site');
         }
 
@@ -60,7 +62,7 @@ class EventInscriptionController extends AbstractController
 
             $this->addFlash('success', 'Votre inscription est bien enregistrée');
 
-            return $this->redirectToRoute('app_renaissance_national_event_inscription_confirmation');
+            return $this->redirectToRoute('app_renaissance_national_event_inscription_confirmation', ['slug' => $event->getSlug()]);
         }
 
         return $this->renderForm('renaissance/national_event/event_inscription.html.twig', [

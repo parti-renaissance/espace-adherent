@@ -10,6 +10,17 @@ class NationalEventInscriptionConfirmationMessage extends Message implements EuM
 {
     public static function create(EventInscription $eventInscription): self
     {
-        return new self(Uuid::uuid4(), $eventInscription->addressEmail, $eventInscription->getFullName(), '');
+        $event = $eventInscription->event;
+
+        return new self(
+            Uuid::uuid4(),
+            $eventInscription->addressEmail,
+            $eventInscription->getFullName(),
+            'Votre inscription - '.$event->getName(),
+            [
+                'event_name' => $event->getName(),
+                'text_confirmation' => $event->textConfirmation,
+            ]
+        );
     }
 }
