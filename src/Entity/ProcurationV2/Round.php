@@ -57,6 +57,6 @@ class Round
 
     public function __toString(): string
     {
-        return (string) $this->name;
+        return sprintf('%s - %s', $this->election->name, $this->name);
     }
 }

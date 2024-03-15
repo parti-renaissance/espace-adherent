@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
 
-class LoadProcurationElectionData extends Fixture
+class LoadProcurationV2ElectionData extends Fixture
 {
     private Generator $faker;
 
@@ -20,10 +20,11 @@ class LoadProcurationElectionData extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $election1 = $this->createElection('Européennes 2019', 'europeennes-2019');
-        $election1->addRound($this->createRound('Premier tour', new \DateTimeImmutable('2024-06-09')));
+        $election = $this->createElection('Européennes 2024', 'europeennes-2024');
+        $election->addRound($round = $this->createRound('Premier tour', '2024-06-09'));
 
-        $manager->persist($election1);
+        $manager->persist($election);
+        $this->setReference('procuration-v2-round-1', $round);
 
         $manager->flush();
     }
@@ -36,28 +37,27 @@ class LoadProcurationElectionData extends Fixture
         $election->name = $name;
         $election->slug = $slug;
 
-        $election->requestTitle = $this->faker->text();
+        $election->requestTitle = $this->faker->text(30);
         $election->requestDescription = $this->faker->text();
-        $election->requestConfirmation = $this->faker->text();
         $election->requestLegal = $this->faker->text();
+        $election->requestConfirmation = $this->faker->text();
 
-        $election->proxyTitle = $this->faker->text();
+        $election->proxyTitle = $this->faker->text(30);
         $election->proxyDescription = $this->faker->text();
-        $election->proxyConfirmation = $this->faker->text();
         $election->proxyLegal = $this->faker->text();
+        $election->proxyConfirmation = $this->faker->text();
 
         return $election;
     }
 
     private function createRound(
         string $name,
-        \DateTimeInterface $date
+        string $date
     ): Round {
         $round = new Round();
         $round->name = $name;
-        $round->date = $date;
-
         $round->description = $this->faker->text();
+        $round->date = new \DateTimeImmutable($date);
 
         return $round;
     }

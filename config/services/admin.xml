@@ -555,6 +555,30 @@
             <argument />
         </service>
 
+        <service id="app.admin.procuration_v2.procuration_request" class="App\Admin\Procuration\ProcurationRequestAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Procurations v2 » Demandes incomplètes" group="Territoires" />
+
+            <argument />
+            <argument>App\Entity\ProcurationV2\ProcurationRequest</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.procuration_v2.request" class="App\Admin\Procuration\RequestAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Procurations v2 » Mandants" group="Territoires" />
+
+            <argument />
+            <argument>App\Entity\ProcurationV2\Request</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.procuration_v2.proxy" class="App\Admin\Procuration\ProxyAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Procurations v2 » Mandataires" group="Territoires" />
+
+            <argument />
+            <argument>App\Entity\ProcurationV2\Proxy</argument>
+            <argument />
+        </service>
+
         <!--
         ######################################################
         # Application mobile
