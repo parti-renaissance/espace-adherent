@@ -5,18 +5,27 @@ namespace App\Exporter;
 use App\Entity\AssessorOfficeEnum;
 use App\Entity\AssessorRequest;
 use App\Entity\Election\VotePlace;
-use App\Serializer\XlsxEncoder;
 use App\Utils\PhoneNumberUtils;
+use Sonata\Exporter\Exporter;
+use Symfony\Component\HttpFoundation\Response;
 
 class CityAssessorExporter
 {
-    public function export(array $votePlaces): string
+    public function __construct(private readonly Exporter $exporter)
     {
-        return (new XlsxEncoder())->encode(
-            $this->prepareData($votePlaces),
-            XlsxEncoder::FORMAT,
-            [
-                XlsxEncoder::HEADERS_KEY => [
+    }
+
+    public function export(string $cityCode, array $votePlaces): Response
+    {
+        return $this->exporter->getResponse(
+            'xlsx',
+            sprintf(
+                '%s-Assesseurs-%s.xlsx',
+                $cityCode,
+                (new \DateTime())->format('d-m-Y')
+            ),
+            new \ArrayIterator(array_map(function (array $row) {
+                $columns = [
                     'votePlaceId' => 'Numéro du bureau de vote',
                     'votePlaceName' => 'Nom du bureau de vote',
                     'votePlaceAddress' => 'Adresse postale du bureau de vote',
@@ -32,8 +41,16 @@ class CityAssessorExporter
                     'substituteAddress' => 'Adresse postale assesseur suppléant',
                     'substitutePhoneNumber' => 'Numéro de téléphone assesseur suppléant',
                     'substituteVoterNumber' => 'Numéro d\'électeur assesseur suppléant',
-                ],
-            ]
+                ];
+                $tmp = [];
+                foreach ($row as $key => $value) {
+                    if (isset($columns[$key])) {
+                        $tmp[$columns[$key]] = $value;
+                    }
+                }
+
+                return $tmp;
+            }, $this->prepareData($votePlaces)))
         );
     }
 

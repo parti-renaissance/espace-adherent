@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-#[Route(path: '/v3/adherents.{_format}', name: 'app_adherents_list_get', methods: ['GET'], requirements: ['_format' => 'json|csv|xls'], defaults: ['_format' => 'json'])]
+#[Route(path: '/v3/adherents.{_format}', name: 'app_adherents_list_get', methods: ['GET'], requirements: ['_format' => 'json|csv|xlsx'], defaults: ['_format' => 'json'])]
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 class AdherentListController extends AbstractController
 {

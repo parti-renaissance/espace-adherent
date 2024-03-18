@@ -15,7 +15,6 @@ use App\Exporter\CityAssessorExporter;
 use App\Form\ConfirmActionType;
 use App\Repository\AssessorRequestRepository;
 use App\Repository\Election\VotePlaceRepository;
-use App\Serializer\XlsxEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -221,21 +220,7 @@ class AssessorManagerController extends AbstractController
         AssessorRequestRepository $repository,
         AssessorRequestExporter $exporter
     ): Response {
-        return new Response(
-            $exporter->export(
-                $repository->findAllProcessedManagedRequests($this->getUser())
-            ),
-            Response::HTTP_OK,
-            [
-                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'Content-Disposition' => sprintf(
-                    'attachment;filename=%s.%s',
-                    AssessorRequestExporter::FILE_NAME,
-                    XlsxEncoder::FORMAT
-                ),
-                'Cache-Control' => 'max-age=0',
-            ]
-        );
+        return $exporter->export($repository->findAllProcessedManagedRequests($this->getUser()));
     }
 
     #[Route(path: '/communes', name: 'app_assessor_manager_cities', methods: ['GET', 'POST'])]
@@ -271,19 +256,6 @@ class AssessorManagerController extends AbstractController
             return new Response();
         }
 
-        return new Response(
-            $exporter->export($repository->findForCityAssessors($this->getUser(), $cityCode)),
-            Response::HTTP_OK,
-            [
-                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'Content-Disposition' => sprintf(
-                    'attachment;filename=%s-Assesseurs-%s.%s',
-                    $cityCode,
-                    (new \DateTime())->format('d-m-Y'),
-                    XlsxEncoder::FORMAT
-                ),
-                'Cache-Control' => 'max-age=0',
-            ]
-        );
+        return $exporter->export($cityCode, $repository->findForCityAssessors($this->getUser(), $cityCode));
     }
 }

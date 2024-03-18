@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/v3/surveys/{uuid}/replies.{_format}', name: 'api_survey_get_survey_replies', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%', '_format' => 'json|csv|xls'], defaults: ['_format' => 'json'])]
+#[Route(path: '/v3/surveys/{uuid}/replies.{_format}', name: 'api_survey_get_survey_replies', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%', '_format' => 'json|csv|xlsx'], defaults: ['_format' => 'json'])]
 #[Security("is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('SCOPE_CAN_MANAGE', survey)")]
 class GetSurveyRepliesController extends AbstractController
 {

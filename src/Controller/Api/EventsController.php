@@ -50,6 +50,6 @@ class EventsController extends AbstractController
     #[Security('event.getAuthor() === user')]
     public function exportRegistrations(EventRegistrationExporter $exporter, BaseEvent $event): Response
     {
-        return $exporter->getResponse('xls', $event);
+        return $exporter->getResponse('xlsx', $event);
     }
 }

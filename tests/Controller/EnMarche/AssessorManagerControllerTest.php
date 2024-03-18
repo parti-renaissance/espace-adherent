@@ -6,7 +6,6 @@ use App\Assessor\Filter\AssessorRequestFilters;
 use App\Assessor\Filter\CitiesFilters;
 use App\Assessor\Filter\VotePlaceFilters;
 use App\Mailer\Message\Assessor\AssessorRequestAssociateMessage;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
@@ -539,7 +538,7 @@ class AssessorManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertCount(1, $crawler->filter('.datagrid__table-manager td:contains("Saint-Denis (93200,93066)")'));
     }
 
-    public function testCitiesAssignedAssesorsExport()
+    public function testCitiesAssignedAssessorsExport()
     {
         $this->authenticateAsAdherent($this->client, self::ASSESSOR_MANAGER_EMAIL);
 
@@ -549,9 +548,12 @@ class AssessorManagerControllerTest extends AbstractEnMarcheWebTestCase
         $linkNode = $crawler->filter('#request-link-Lille');
 
         $this->assertCount(1, $linkNode);
+
+        ob_start();
         $this->client->click($linkNode->link());
+        $content = ob_get_clean();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $lines = $this->transformToArray($this->client->getResponse()->getContent());
+        $lines = $this->transformToArray($content);
 
         PHPUnitHelper::assertArraySubset(
             [
@@ -658,10 +660,12 @@ class AssessorManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->isSuccessful($this->client->getResponse());
 
         self::assertSame('Exporter les bureaux de vote traités', trim($crawler->filter('#vote-places-export')->text()));
+        ob_start();
         $this->client->click($crawler->selectLink('Exporter les bureaux de vote traités')->link());
+        $content = ob_get_clean();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $lines = $this->transformToArray($this->client->getResponse()->getContent());
+        $lines = $this->transformToArray($content);
 
         PHPUnitHelper::assertArraySubset(
             [
@@ -671,15 +675,15 @@ class AssessorManagerControllerTest extends AbstractEnMarcheWebTestCase
                 'Pays du bureau de vote',
                 'Fonction',
                 'Genre',
-                'Nom',
                 'Prénoms',
+                'Nom',
                 'Date de naissance',
                 'Lieu de naissance',
                 'Adresse',
                 'Code postal',
                 'Ville',
-                "BV d'inscription sur les listes",
                 "Ville du BV d'inscription sur les listes",
+                "BV d'inscription sur les listes",
                 'Adresse email',
                 'Téléphone',
             ],
@@ -694,15 +698,15 @@ class AssessorManagerControllerTest extends AbstractEnMarcheWebTestCase
                 'France',
                 'Titulaire',
                 'Homme',
-                'Luc',
                 'Ratif',
+                'Luc',
                 '04/02/1992',
                 'Paris',
                 '70 Rue Saint-Martin',
                 '93008',
                 'Paris',
-                '93008_0005',
                 'Bobigny',
+                '93008_0005',
                 'luc.ratif@example.fr',
                 '+33 6 12 34 56 78',
             ],
@@ -710,18 +714,5 @@ class AssessorManagerControllerTest extends AbstractEnMarcheWebTestCase
         );
 
         $this->assertCount(5, $lines);
-    }
-
-    private function transformToArray(string $encodedData): array
-    {
-        $tmpHandle = tmpfile();
-        fwrite($tmpHandle, $encodedData);
-        $metaDatas = stream_get_meta_data($tmpHandle);
-        $tmpFilename = $metaDatas['uri'];
-
-        $reader = new Xlsx();
-        $spreadsheet = $reader->load($tmpFilename);
-
-        return $spreadsheet->getActiveSheet()->toArray();
     }
 }

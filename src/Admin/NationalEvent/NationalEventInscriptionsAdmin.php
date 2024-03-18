@@ -102,7 +102,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('addressEmail', null, ['label' => 'E-mail', 'disabled' => true])
                 ->add('utmSource', null, ['label' => 'UTM Source', 'disabled' => true])
                 ->add('utmCampaign', null, ['label' => 'UTM Campagne', 'disabled' => true])
-                ->add('ticketSentAt', null, ['label' => 'Date d\envoi du billet', 'widget' => 'single_text', 'disabled' => true])
+                ->add('ticketSentAt', null, ['label' => 'Date d\'envoi du billet', 'widget' => 'single_text', 'disabled' => true])
             ->end()
         ;
     }
