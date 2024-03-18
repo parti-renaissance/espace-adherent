@@ -4,21 +4,25 @@ namespace App\Controller\Admin;
 
 use App\Entity\Jecoute\Survey;
 use App\Exporter\SurveyExporter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/questionnaires')]
-class AdminJecouteController
+#[Route(path: '/questionnaires/survey/{id}/export', name: 'admin_app_jecoute_surveys_export')]
+class AdminJecouteController extends AbstractController
 {
-    #[Route(path: '/survey/{id}/export', name: 'admin_app_jecoute_surveys_export', requirements: ['type' => 'local|national'])]
-    #[IsGranted('ROLE_ADMIN_JECOUTE')]
-    public function nationalSurveyExportAction(
+    public function __invoke(
         Request $request,
         Survey $survey,
         SurveyExporter $exporter
-    ): StreamedResponse {
+    ): Response {
+        if ($survey->isNational()) {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN_APPLICATION_MOBILE_NATIONAL_SURVEYS');
+        } else {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN_APPLICATION_MOBILE_LOCAL_SURVEYS');
+        }
+
         return $exporter->export($survey, $request->query->get('format', 'csv'), true);
     }
 }
