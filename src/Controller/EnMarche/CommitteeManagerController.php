@@ -18,16 +18,15 @@ use App\Form\CommitteeMemberFilterType;
 use App\Form\EventCommandType;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeMembershipRepository;
-use App\Serializer\XlsxEncoder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sonata\Exporter\Exporter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route(path: '/comites/{slug}')]
@@ -110,7 +109,8 @@ class CommitteeManagerController extends AbstractController
         Committee $committee,
         CommitteeMembershipRepository $repository,
         AdherentRepository $adherentRepository,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        Exporter $exporter
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
@@ -130,36 +130,20 @@ class CommitteeManagerController extends AbstractController
         }
 
         if ($request->query->has('export')) {
-            return new Response(
-                $serializer->serialize(
-                    $repository->getCommitteeMembershipsPaginator(
-                        $committee,
-                        $filter,
-                        $request->query->getInt('page', 1),
-                        null // without limit
-                    ),
-                    XlsxEncoder::FORMAT,
-                    [
-                        'groups' => ['export'],
-                        DateTimeNormalizer::FORMAT_KEY => 'd/m/Y',
-                        XlsxEncoder::HEADERS_KEY => [
-                            'adherent.first_name' => 'Prénom',
-                            'adherent.last_name_initial' => 'Nom',
-                            'adherent.age' => 'Age',
-                            'adherent.postal_code' => 'Code postal',
-                            'adherent.city_name' => 'Ville',
-                            'adherent.registered_at' => "Date d'adhesion",
-                            'subscriptionDate' => 'A rejoint le comité le',
-                        ],
-                    ]
-                ),
-                Response::HTTP_OK,
-                [
-                    'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    'Content-Disposition' => 'attachment;filename="membres-du-comite.xlsx"',
-                    'Cache-Control' => 'max-age=0',
-                ]
-            );
+            return $exporter->getResponse('xlsx', 'membres-du-comite', new \ArrayIterator(array_map(fn (CommitteeMembership $cm) => [
+                'Prénom' => $cm->getAdherent()->getFirstName(),
+                'Nom' => $cm->getAdherent()->getLastName(),
+                'Age' => $cm->getAdherent()->getLastName(),
+                'Code postal' => $cm->getAdherent()->getPostalCode(),
+                'Ville' => $cm->getAdherent()->getCityName(),
+                'Date d\'adhésion' => $cm->getAdherent()->getRegisteredAt()->format('d/m/Y'),
+                'A rejoint le comité le' => $cm->getSubscriptionDate()->format('d/m/Y'),
+            ], $repository->getCommitteeMembershipsPaginator(
+                $committee,
+                $filter,
+                $request->query->getInt('page', 1),
+                null // without limit
+            ))));
         }
 
         return $this->render('committee_manager/list_members.html.twig', [

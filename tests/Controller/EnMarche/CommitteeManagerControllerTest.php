@@ -15,7 +15,6 @@ use App\Mailer\Message\EventRegistrationConfirmationMessage;
 use App\Repository\CommitteeFeedItemRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\EventRepository;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
@@ -627,10 +626,12 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
+        ob_start();
         $this->client->request(Request::METHOD_GET, $this->client->getRequest()->getPathInfo().'?export=1');
+        $content = ob_get_clean();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertCount(6, $this->transformToArray($this->client->getResponse()->getContent()));
+        $this->assertCount(6, $this->transformToArray($content));
     }
 
     public function testAllowToCreateCommittee()
@@ -704,19 +705,6 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
     private function assertCountTimelineMessages(Crawler $crawler, int $nb, string $message = '')
     {
         $this->assertSame($nb, $crawler->filter('.committee__timeline__message')->count(), $message);
-    }
-
-    private function transformToArray(string $encodedData): array
-    {
-        $tmpHandle = tmpfile();
-        fwrite($tmpHandle, $encodedData);
-        $metaDatas = stream_get_meta_data($tmpHandle);
-        $tmpFilename = $metaDatas['uri'];
-
-        $reader = new Xlsx();
-        $spreadsheet = $reader->load($tmpFilename);
-
-        return $spreadsheet->getActiveSheet()->toArray();
     }
 
     protected function setUp(): void

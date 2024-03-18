@@ -6,14 +6,14 @@
     <section>
         <div class="text--right">
             Export des résultats par bureau de vote:&nbsp;
-            <a href="{{ path("app_assessors_#{space_type}_results_export", {'_format': 'xls'}) }}" class=link--blue">XLS</a>
+            <a href="{{ path("app_assessors_#{space_type}_results_export", {'_format': 'xlsx'}) }}" class=link--blue">XLS</a>
             •
             <a href="{{ path("app_assessors_#{space_type}_results_export", {'_format': 'csv'}) }}" class=link--blue">CSV</a>
         </div>
 
         <div class="text--right">
             Export de la liste des candidatures au poste d’assesseur:&nbsp;
-            <a href="{{ path("app_assessors_#{space_type}_export", {'_format': 'xls'}) }}" class=link--blue">XLS</a>
+            <a href="{{ path("app_assessors_#{space_type}_export", {'_format': 'xlsx'}) }}" class=link--blue">XLS</a>
             •
             <a href="{{ path("app_assessors_#{space_type}_export", {'_format': 'csv'}) }}" class=link--blue">CSV</a>
         </div>

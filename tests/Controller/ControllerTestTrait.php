@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use App\Messenger\MessageRecorder\MessageRecorderInterface;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DomCrawler\Crawler;
@@ -215,5 +216,18 @@ trait ControllerTestTrait
         int $absolute = UrlGeneratorInterface::ABSOLUTE_PATH
     ): string {
         return $this->get('router')->generate($route, $params, $absolute);
+    }
+
+    protected function transformToArray(string $encodedData): array
+    {
+        $tmpHandle = tmpfile();
+        fwrite($tmpHandle, $encodedData);
+        $metaDatas = stream_get_meta_data($tmpHandle);
+        $tmpFilename = $metaDatas['uri'];
+
+        $reader = new Xlsx();
+        $spreadsheet = $reader->load($tmpFilename);
+
+        return $spreadsheet->getActiveSheet()->toArray();
     }
 }

@@ -59,23 +59,17 @@ class ExportSurveyAnswersControllerTest extends AbstractApiTestCase
             [],
             ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]
         );
-        $responseContent = ob_get_clean();
+        $content = ob_get_clean();
 
         $this->isSuccessful($response = $this->client->getResponse());
 
-        self::assertSame('application/vnd.ms-excel', $response->headers->get('Content-Type'));
+        self::assertSame('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $response->headers->get('Content-Type'));
         self::assertMatchesRegularExpression(
             '/^attachment; filename="les-enjeux-des-10-prochaines-annees_3_[\d]{14}.xlsx"$/',
             $response->headers->get('Content-Disposition')
         );
 
-        $this->assertStringContainsString('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name=ProgId content=Excel.Sheet><meta name=Generator content="https://github.com/sonata-project/exporter"></head>', $responseContent);
-        $this->assertStringContainsString('<body><table><tr><th>ID</th><th>Nom Prénom de l\'auteur</th><th>Posté le</th><th>Nom</th><th>Prénom</th><th>Email</th><th>Code postal</th><th>Tranche d\'age</th><th>Genre</th><th>Profession</th><th>Code postal de l\'immeuble</th><th>Longitude</th><th>Latitude</th><th>A votre avis quels seront les enjeux des 10 prochaines années?</th><th>L\'écologie est selon vous, importante pour :</th></tr>', $responseContent);
-        $this->assertStringContainsString('<td>Nouvelles technologies</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td></tr>', $responseContent);
-        $this->assertStringContainsString('<td>Les ressources énergétiques</td><td>L\'aspect financier, La préservation de l\'environnement</td></tr>', $responseContent);
-        $this->assertStringContainsString('<td>Vie publique, répartition des pouvoirs et démocratie</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td>', $responseContent);
-        $this->assertStringContainsString('<td>l\'écologie sera le sujet le plus important</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td>', $responseContent);
-        $this->assertStringContainsString('<td>le pouvoir d\'achat</td><td>L\'aspect financier, La préservation de l\'environnement</td>', $responseContent);
+        $this->assertCount(7, $this->transformToArray($content));
     }
 
     public static function provideUsers(): iterable

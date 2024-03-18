@@ -59,20 +59,17 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiTestCa
             [],
             ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]
         );
-        $responseContent = ob_get_clean();
+        $content = ob_get_clean();
 
         $this->isSuccessful($response = $this->client->getResponse());
 
-        self::assertSame('application/vnd.ms-excel', $response->headers->get('Content-Type'));
+        self::assertSame('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $response->headers->get('Content-Type'));
         self::assertMatchesRegularExpression(
             '/^attachment; filename="campagne-sur-l-horizon-2030_Replies_[\d]{14}.xlsx"$/',
             $response->headers->get('Content-Disposition')
         );
 
-        $this->assertStringContainsString('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name=ProgId content=Excel.Sheet><meta name=Generator content="https://github.com/sonata-project/exporter"></head>', $responseContent);
-        $this->assertStringContainsString('<body><table><tr><th>ID</th><th>Nom Prénom de l\'auteur</th><th>Posté le</th><th>Nom</th><th>Prénom</th><th>Code postal</th><th>A votre avis quels seront les enjeux des 10 prochaines années?</th><th>L\'écologie est selon vous, importante pour :</th></tr>', $responseContent);
-        $this->assertStringContainsString('<td>Fa40ke</td><td>Adherent 40</td><td>77000</td><td>l\'écologie sera le sujet le plus important</td><td>L\'héritage laissé aux générations futures, Le bien-être sanitaire</td>', $responseContent);
-        $this->assertStringContainsString('<td>Fa34ke</td><td>Adherent 34</td><td>77000</td><td>le pouvoir d\'achat</td><td>L\'aspect financier, La préservation de l\'environnement</td>', $responseContent);
+        $this->assertCount(4, $this->transformToArray($content));
     }
 
     public static function provideReferents(): iterable
