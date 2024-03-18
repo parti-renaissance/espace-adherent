@@ -48,7 +48,7 @@ class AdminExportCityCardController extends AbstractController
         $this->admin = $admin;
     }
 
-    #[Route(path: '/app/election-citycard/export-all.{_format}', name: 'admin_city_card_export_all', methods: ['GET'], defaults: ['_format' => 'xls'], requirements: ['_format' => 'csv|xls'])]
+    #[Route(path: '/app/election-citycard/export-all.{_format}', name: 'admin_city_card_export_all', methods: ['GET'], defaults: ['_format' => 'xlsx'], requirements: ['_format' => 'csv|xlsx'])]
     #[IsGranted('ROLE_ADMIN_ELECTION_CITY_CARD')]
     public function exportCityCardsAction(Request $request, string $_format): Response
     {
@@ -147,7 +147,7 @@ class AdminExportCityCardController extends AbstractController
         );
     }
 
-    #[Route(path: '/app/election-citycard/export-lists.{_format}', name: 'admin_city_card_export_lists', methods: ['GET'], defaults: ['_format' => 'xls'], requirements: ['_format' => 'csv|xls'])]
+    #[Route(path: '/app/election-citycard/export-lists.{_format}', name: 'admin_city_card_export_lists', methods: ['GET'], defaults: ['_format' => 'xlsx'], requirements: ['_format' => 'csv|xlsx'])]
     #[IsGranted('ROLE_ADMIN_ELECTION_CITY_CARD')]
     public function exportVoteResultListsAction(Request $request, string $_format): Response
     {

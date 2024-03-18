@@ -21,7 +21,7 @@ class ReferentTerritorialCouncilController extends AbstractController
 {
     use AccessDelegatorTrait;
 
-    #[Route(path: '/membres.{_format}', name: 'members_list', methods: ['GET'], defaults: ['_format' => 'html'], requirements: ['_format' => 'html|csv|xls'])]
+    #[Route(path: '/membres.{_format}', name: 'members_list', methods: ['GET'], defaults: ['_format' => 'html'], requirements: ['_format' => 'html|csv|xlsx'])]
     public function membersListAction(
         Request $request,
         string $_format,

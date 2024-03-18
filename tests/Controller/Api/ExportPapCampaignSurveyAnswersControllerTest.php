@@ -31,7 +31,7 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
-        $this->client->request(Request::METHOD_GET, '/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xls?scope=pap_national_manager', [], [], [
+        $this->client->request(Request::METHOD_GET, '/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xlsx?scope=pap_national_manager', [], [], [
                 'HTTP_AUTHORIZATION' => "Bearer $accessToken",
             ]
         );
@@ -51,7 +51,7 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
         );
 
         ob_start();
-        $this->client->request(Request::METHOD_GET, '/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xls?scope=pap_national_manager', [], [], [
+        $this->client->request(Request::METHOD_GET, '/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xlsx?scope=pap_national_manager', [], [], [
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ]);
         $responseContent = ob_get_clean();
@@ -60,7 +60,7 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
 
         self::assertSame('application/vnd.ms-excel', $response->headers->get('Content-Type'));
         self::assertMatchesRegularExpression(
-            '/^attachment; filename="campagne-de-10-jours-suivants_Replies_[\d]{14}.xls"$/',
+            '/^attachment; filename="campagne-de-10-jours-suivants_Replies_[\d]{14}.xlsx"$/',
             $response->headers->get('Content-Disposition')
         );
 
@@ -83,7 +83,7 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
         );
 
         ob_start();
-        $this->client->request(Request::METHOD_GET, '/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xls?scope=referent', [], [], [
+        $this->client->request(Request::METHOD_GET, '/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xlsx?scope=referent', [], [], [
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ]);
         $responseContent = ob_get_clean();
@@ -92,7 +92,7 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
 
         self::assertSame('application/vnd.ms-excel', $response->headers->get('Content-Type'));
         self::assertMatchesRegularExpression(
-            '/^attachment; filename="campagne-de-10-jours-suivants_Replies_[\d]{14}.xls"$/',
+            '/^attachment; filename="campagne-de-10-jours-suivants_Replies_[\d]{14}.xlsx"$/',
             $response->headers->get('Content-Disposition')
         );
 
@@ -116,7 +116,7 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
         ob_start();
         $this->client->request(
             Request::METHOD_GET,
-            sprintf('/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xls?scope=%s', $scope),
+            sprintf('/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xlsx?scope=%s', $scope),
             [],
             [],
             ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]
@@ -127,7 +127,7 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
 
         self::assertSame('application/vnd.ms-excel', $response->headers->get('Content-Type'));
         self::assertMatchesRegularExpression(
-            '/^attachment; filename="campagne-de-10-jours-suivants_Replies_[\d]{14}.xls"$/',
+            '/^attachment; filename="campagne-de-10-jours-suivants_Replies_[\d]{14}.xlsx"$/',
             $response->headers->get('Content-Disposition')
         );
 

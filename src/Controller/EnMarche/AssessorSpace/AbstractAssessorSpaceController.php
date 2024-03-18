@@ -94,7 +94,7 @@ abstract class AbstractAssessorSpaceController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/export.{_format}', name: '_export', methods: ['GET'], defaults: ['_format' => 'xls'], requirements: ['_format' => 'csv|xls'])]
+    #[Route(path: '/export.{_format}', name: '_export', methods: ['GET'], defaults: ['_format' => 'xlsx'], requirements: ['_format' => 'csv|xlsx'])]
     public function exportAssessorsAction(string $_format, AssessorsExporter $exporter): Response
     {
         $this->checkIfSpaceEnabled();
@@ -153,7 +153,7 @@ abstract class AbstractAssessorSpaceController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/resultats/export.{_format}', name: '_results_export', methods: ['GET'], defaults: ['_format' => 'xls'], requirements: ['_format' => 'csv|xls'])]
+    #[Route(path: '/resultats/export.{_format}', name: '_results_export', methods: ['GET'], defaults: ['_format' => 'xlsx'], requirements: ['_format' => 'csv|xlsx'])]
     public function exportResultsAction(
         string $_format,
         VoteResultsExporter $exporter,

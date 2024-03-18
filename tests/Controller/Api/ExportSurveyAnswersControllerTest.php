@@ -31,7 +31,7 @@ class ExportSurveyAnswersControllerTest extends AbstractApiTestCase
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
-        $this->client->request(Request::METHOD_GET, '/api/v3/surveys/4c3594d4-fb6f-4e25-ac2e-7ef81694ec47/replies.xls?scope=national', [], [], [
+        $this->client->request(Request::METHOD_GET, '/api/v3/surveys/4c3594d4-fb6f-4e25-ac2e-7ef81694ec47/replies.xlsx?scope=national', [], [], [
                 'HTTP_AUTHORIZATION' => "Bearer $accessToken",
             ]
         );
@@ -54,7 +54,7 @@ class ExportSurveyAnswersControllerTest extends AbstractApiTestCase
         ob_start();
         $this->client->request(
             Request::METHOD_GET,
-            sprintf('/api/v3/surveys/4c3594d4-fb6f-4e25-ac2e-7ef81694ec47/replies.xls?scope=%s', $scope),
+            sprintf('/api/v3/surveys/4c3594d4-fb6f-4e25-ac2e-7ef81694ec47/replies.xlsx?scope=%s', $scope),
             [],
             [],
             ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]
@@ -65,7 +65,7 @@ class ExportSurveyAnswersControllerTest extends AbstractApiTestCase
 
         self::assertSame('application/vnd.ms-excel', $response->headers->get('Content-Type'));
         self::assertMatchesRegularExpression(
-            '/^attachment; filename="les-enjeux-des-10-prochaines-annees_3_[\d]{14}.xls"$/',
+            '/^attachment; filename="les-enjeux-des-10-prochaines-annees_3_[\d]{14}.xlsx"$/',
             $response->headers->get('Content-Disposition')
         );
 

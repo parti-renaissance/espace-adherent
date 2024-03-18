@@ -643,9 +643,4 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
             'Adhérent' => 'exportIsAdherent',
         ];
     }
-
-    public function getExportFormats(): array
-    {
-        return ['csv', 'xls'];
-    }
 }

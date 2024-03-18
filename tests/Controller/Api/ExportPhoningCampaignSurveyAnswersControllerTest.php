@@ -31,7 +31,7 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiTestCa
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
-        $this->client->request(Request::METHOD_GET, '/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies.xls?scope=phoning_national_manager', [], [], [
+        $this->client->request(Request::METHOD_GET, '/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies.xlsx?scope=phoning_national_manager', [], [], [
                 'HTTP_AUTHORIZATION' => "Bearer $accessToken",
             ]
         );
@@ -54,7 +54,7 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiTestCa
         ob_start();
         $this->client->request(
             Request::METHOD_GET,
-            sprintf('/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies.xls?scope=%s', $scope),
+            sprintf('/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies.xlsx?scope=%s', $scope),
             [],
             [],
             ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]
@@ -65,7 +65,7 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiTestCa
 
         self::assertSame('application/vnd.ms-excel', $response->headers->get('Content-Type'));
         self::assertMatchesRegularExpression(
-            '/^attachment; filename="campagne-sur-l-horizon-2030_Replies_[\d]{14}.xls"$/',
+            '/^attachment; filename="campagne-sur-l-horizon-2030_Replies_[\d]{14}.xlsx"$/',
             $response->headers->get('Content-Disposition')
         );
 

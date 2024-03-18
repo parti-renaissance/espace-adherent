@@ -31,7 +31,7 @@ class GetEventParticipantsControllerTest extends AbstractApiTestCase
         );
 
         ob_start();
-        $this->client->request(Request::METHOD_GET, '/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/participants.xls?scope=referent', [], [], [
+        $this->client->request(Request::METHOD_GET, '/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/participants.xlsx?scope=referent', [], [], [
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ]);
         $responseContent = ob_get_clean();
@@ -40,7 +40,7 @@ class GetEventParticipantsControllerTest extends AbstractApiTestCase
 
         self::assertSame('application/vnd.ms-excel', $response->headers->get('Content-Type'));
         self::assertMatchesRegularExpression(
-            '/^attachment; filename="nouvel-evenement-online_\d{4}-[\d]{2}-[\d]{2}.xls"$/',
+            '/^attachment; filename="nouvel-evenement-online_\d{4}-[\d]{2}-[\d]{2}.xlsx"$/',
             $response->headers->get('Content-Disposition')
         );
 
