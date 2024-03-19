@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * This entity is a projection: do not insert, update or delete objects using this class.
@@ -38,9 +39,6 @@ class ManagedUser
     use EntityZoneTrait;
 
     public const STATUS_READY = 1;
-
-    private const STYLE_TYPE_ADHERENT = 'adherent';
-    private const STYLE_TYPE_HOST = 'host';
 
     /**
      * @var int
@@ -223,6 +221,13 @@ class ManagedUser
      * @ORM\Column(type="simple_array", nullable=true)
      */
     private $committeeUuids;
+
+    /**
+     * @var string[]|null
+     *
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    private $roles;
 
     /**
      * @var string[]|null
@@ -475,15 +480,6 @@ class ManagedUser
         return $this->status;
     }
 
-    public function getStyleType(): string
-    {
-        if ($this->isCommitteeHost || $this->isCommitteeProvisionalSupervisor || $this->isCommitteeSupervisor) {
-            return self::STYLE_TYPE_HOST;
-        }
-
-        return self::STYLE_TYPE_ADHERENT;
-    }
-
     public function getOriginalId(): int
     {
         return $this->originalId;
@@ -616,12 +612,42 @@ class ManagedUser
 
     public function hasSmsSubscriptionType(): bool
     {
-        return \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true);
+        return $this->phone && \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true);
     }
 
     public function getCommitteeUuids(): ?array
     {
         return $this->committeeUuids;
+    }
+
+    /**
+     * @Groups({"managed_users_list", "managed_user_read"})
+     * @SerializedName("roles")
+     */
+    public function getRolesAsArray(): array
+    {
+        $roles = [];
+
+        foreach ($this->roles as $role) {
+            $roleData = [
+                'role' => $role,
+            ];
+
+            if (str_contains($role, '|')) {
+                $rolePart = explode('|', $role);
+
+                $roleData['role'] = $rolePart[0];
+                $roleData['function'] = $rolePart[1];
+            }
+            $roles[] = $roleData;
+        }
+
+        return $roles;
+    }
+
+    public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
     }
 
     public function getCommitteesAsString(string $separator = ' / '): string

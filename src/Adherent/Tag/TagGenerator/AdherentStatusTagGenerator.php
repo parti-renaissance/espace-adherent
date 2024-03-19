@@ -12,6 +12,11 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
     {
     }
 
+    public static function getDefaultPriority(): int
+    {
+        return 1024;
+    }
+
     public function generate(Adherent $adherent, array $previousTags): array
     {
         if (!$adherent->isRenaissanceUser()) {

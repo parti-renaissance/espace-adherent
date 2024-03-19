@@ -60,6 +60,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'declared_mandates' => [MandateTypeEnum::CONSEILLER_MUNICIPAL, MandateTypeEnum::MAIRE],
             'tags' => $adherent->tags,
         ]);
+        $managedUser1->setRoles($this->getRoles($adherent));
 
         /** @var Adherent $adherent */
         $adherent = $this->getReference('adherent-13');
@@ -96,6 +97,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'tags' => $adherent->tags,
         ]);
 
+        $managedUser2->setRoles($this->getRoles($adherent));
+
         /** @var Adherent $adherent */
         $adherent = $this->getReference('adherent-5');
         $managedUser3 = $managedUserFactory->createFromArray([
@@ -130,10 +133,11 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'certified_at' => '2018-06-02 10:20:45',
             'committee' => $committee11->getName(),
             'committee_uuid' => $committee11->getUuid(),
-            'mandates' => [MandateTypeEnum::CONSEILLER_MUNICIPAL.'|Métropole du Grand Paris'],
+            'mandates' => [MandateTypeEnum::CONSEILLER_MUNICIPAL],
             'declared_mandates' => [MandateTypeEnum::CONSEILLER_MUNICIPAL],
             'tags' => $adherent->tags,
         ]);
+        $managedUser3->setRoles($this->getRoles($adherent));
 
         /** @var Adherent $adherent */
         $adherent = $this->getReference('adherent-7');
@@ -169,6 +173,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'supervisor_tags' => ['77'],
             'tags' => $adherent->tags,
         ]);
+        $managedUser4->setRoles($this->getRoles($adherent));
 
         /** @var Adherent $adherent */
         $adherent = $this->getReference('adherent-3');
@@ -205,6 +210,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'tags' => $adherent->tags,
             'additional_tags' => ['new_adherent', 'donator_n-x'],
         ]);
+        $managedUser5->setRoles($this->getRoles($adherent));
 
         /** @var Adherent $adherent */
         $adherent = $this->getReference('deputy-75-1');
@@ -239,10 +245,11 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'tags' => $adherent->tags,
             'additional_tags' => ['new_adherent', 'old_adherent_em', 'donator_n', 'donator_n-x'],
         ]);
+        $managedUser6->setRoles($this->getRoles($adherent));
 
         /** @var Adherent $adherent */
         $adherent = $this->getReference('correspondent-1');
-        $manager->persist($managedUserFactory->createFromArray([
+        $managedUser7 = $managedUserFactory->createFromArray([
             'status' => ManagedUser::STATUS_READY,
             'source' => MembershipSourceEnum::JEMENGAGE,
             'original_id' => $adherent->getId(),
@@ -263,7 +270,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'created_at' => '2017-06-02 15:34:12',
             'declared_mandates' => [MandateTypeEnum::DEPUTE_EUROPEEN, MandateTypeEnum::CONSEILLER_MUNICIPAL],
             'tags' => $adherent->tags,
-        ]));
+        ]);
+        $managedUser7->setRoles($this->getRoles($adherent));
 
         $manager->persist($managedUser1);
         $manager->persist($managedUser2);
@@ -271,6 +279,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         $manager->persist($managedUser4);
         $manager->persist($managedUser5);
         $manager->persist($managedUser6);
+        $manager->persist($managedUser7);
 
         $manager->flush();
     }
@@ -280,10 +289,26 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         return new ManagedUserFactory();
     }
 
+    private function getRoles(Adherent $adherent): array
+    {
+        $roles = [];
+
+        foreach ($adherent->getZoneBasedRoles() as $role) {
+            $roles[] = $role->getType();
+        }
+
+        foreach ($adherent->getReceivedDelegatedAccesses() as $delegatedAccess) {
+            $roles[] = $delegatedAccess->getType().'|'.$delegatedAccess->getRole();
+        }
+
+        return $roles;
+    }
+
     public function getDependencies()
     {
         return [
             LoadCommitteeV1Data::class,
+            LoadDelegatedAccessData::class,
             LoadGeoZoneData::class,
         ];
     }

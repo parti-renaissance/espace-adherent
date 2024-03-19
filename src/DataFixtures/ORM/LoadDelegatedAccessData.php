@@ -6,6 +6,7 @@ use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\Member;
 use App\MyTeam\RoleEnum;
 use App\Scope\FeatureEnum;
+use App\Scope\ScopeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -162,6 +163,17 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         ]);
         $manager->persist($delegatedAccess9);
 
+        $delegatedAccess10 = new DelegatedAccess(Uuid::uuid4());
+        $delegatedAccess10->setDelegated($this->getReference('deputy-75-1'));
+        $delegatedAccess10->setDelegator($this->getReference('president-ad-1'));
+        $delegatedAccess10->setRole('Responsable communication');
+        $delegatedAccess10->setType(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
+        $delegatedAccess10->setAccesses([
+            DelegatedAccess::ACCESS_ADHERENTS,
+            DelegatedAccess::ACCESS_MESSAGES,
+        ]);
+        $manager->persist($delegatedAccess10);
+
         // access from PAD
         $delegatedAccess17 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_17));
         $delegatedAccess17->setDelegated($this->getReference('adherent-5')); // gisele-berthoux@caramail.com
@@ -208,7 +220,7 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdherentData::class,
