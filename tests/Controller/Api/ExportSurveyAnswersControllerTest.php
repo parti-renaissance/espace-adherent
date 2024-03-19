@@ -32,9 +32,8 @@ class ExportSurveyAnswersControllerTest extends AbstractApiTestCase
         );
 
         $this->client->request(Request::METHOD_GET, '/api/v3/surveys/4c3594d4-fb6f-4e25-ac2e-7ef81694ec47/replies.xlsx?scope=national', [], [], [
-                'HTTP_AUTHORIZATION' => "Bearer $accessToken",
-            ]
-        );
+            'HTTP_AUTHORIZATION' => "Bearer $accessToken",
+        ]);
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }

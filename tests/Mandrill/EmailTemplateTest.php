@@ -62,7 +62,7 @@ class EmailTemplateTest extends TestCase
                         'type' => 'to',
                         'name' => 'Vincent Durand',
                     ],
-                 ],
+                ],
             ],
         ];
 

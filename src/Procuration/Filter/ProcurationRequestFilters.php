@@ -12,9 +12,9 @@ class ProcurationRequestFilters extends ProcurationFilters
     public const UNPROCESSED = 'unprocessed';
     public const DISABLED = 'disabled';
     public const STATUSES = [
-      self::PROCESSED,
-      self::UNPROCESSED,
-      self::DISABLED,
+        self::PROCESSED,
+        self::UNPROCESSED,
+        self::DISABLED,
     ];
 
     public static function fromQueryString(Request $request)

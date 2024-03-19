@@ -32,9 +32,8 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
         );
 
         $this->client->request(Request::METHOD_GET, '/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xlsx?scope=pap_national_manager', [], [], [
-                'HTTP_AUTHORIZATION' => "Bearer $accessToken",
-            ]
-        );
+            'HTTP_AUTHORIZATION' => "Bearer $accessToken",
+        ]);
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }

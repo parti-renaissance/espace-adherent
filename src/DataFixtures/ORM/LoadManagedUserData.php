@@ -257,8 +257,8 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
             'gender' => $adherent->getGender(),
             'birthday' => $adherent->getBirthdate(),
             'zones' => [
-               LoadGeoZoneData::getZone($manager, 'zone_department_92'), // Hauts-de-Seine
-               LoadGeoZoneData::getZone($manager, 'zone_department_59'), // Nord
+                LoadGeoZoneData::getZone($manager, 'zone_department_92'), // Hauts-de-Seine
+                LoadGeoZoneData::getZone($manager, 'zone_department_59'), // Nord
             ],
             'created_at' => '2017-06-02 15:34:12',
             'declared_mandates' => [MandateTypeEnum::DEPUTE_EUROPEEN, MandateTypeEnum::CONSEILLER_MUNICIPAL],

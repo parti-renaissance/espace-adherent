@@ -116,7 +116,7 @@ class AssessorControllerTest extends AbstractEnMarcheWebTestCase
         );
 
         $this->client->submit($crawler->selectButton('Valider')->form([
-                'g-recaptcha-response' => 'dummy',
+            'g-recaptcha-response' => 'dummy',
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
@@ -176,8 +176,8 @@ class AssessorControllerTest extends AbstractEnMarcheWebTestCase
         ];
         yield 'Too young to be assessor' => [
             ['birthdate' => ['year' => (new \DateTime())->format('Y'), 'month' => '1', 'day' => '1']],
-            ['birthdate' => ['Vous devez être âgé d\'au moins 18 ans pour être assesseur.'],
-        ], ];
+            ['birthdate' => ['Vous devez être âgé d\'au moins 18 ans pour être assesseur.']],
+        ];
         yield 'Invalid birthdate year' => [
             ['birthdate' => ['year' => 'abc', 'month' => '1', 'day' => '1']],
             ['birthdate' => ['Cette valeur n\'est pas valide.']],

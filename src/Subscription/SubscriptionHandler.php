@@ -16,8 +16,8 @@ class SubscriptionHandler
     public const ACTION_TYPE_SUBSCRIBE = 'subscribe';
     public const ACTION_TYPE_UNSUBSCRIBE = 'unsubscribe';
     public const ACTION_TYPES = [
-      self::ACTION_TYPE_SUBSCRIBE,
-      self::ACTION_TYPE_UNSUBSCRIBE,
+        self::ACTION_TYPE_SUBSCRIBE,
+        self::ACTION_TYPE_UNSUBSCRIBE,
     ];
 
     private $em;

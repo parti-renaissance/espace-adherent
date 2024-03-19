@@ -66,10 +66,10 @@ class LoadJecouteQuestionData extends Fixture
             'content' => 'L\'écologie est selon vous, importante pour :',
             'type' => SurveyQuestionTypeEnum::MULTIPLE_CHOICE_TYPE,
             'choices' => [
-              'L\'héritage laissé aux générations futures',
-              'Le bien-être sanitaire',
-              'L\'aspect financier',
-              'La préservation de l\'environnement',
+                'L\'héritage laissé aux générations futures',
+                'Le bien-être sanitaire',
+                'L\'aspect financier',
+                'La préservation de l\'environnement',
             ],
         ],
     ];

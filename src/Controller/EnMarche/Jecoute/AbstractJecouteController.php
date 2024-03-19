@@ -131,10 +131,9 @@ abstract class AbstractJecouteController extends AbstractController
     {
         $isLocalSurvey = $survey instanceof LocalSurvey;
         $form = $this->createForm(SurveyFormType::class, $survey, [
-                'zones' => $isLocalSurvey ? [$survey->getZone()] : [],
-                'disabled' => true,
-            ]
-        );
+            'zones' => $isLocalSurvey ? [$survey->getZone()] : [],
+            'disabled' => true,
+        ]);
 
         return $this->renderTemplate('jecoute/show.html.twig', [
             'form' => $form->createView(),

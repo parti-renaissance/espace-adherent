@@ -32,9 +32,8 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiTestCa
         );
 
         $this->client->request(Request::METHOD_GET, '/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies.xlsx?scope=phoning_national_manager', [], [], [
-                'HTTP_AUTHORIZATION' => "Bearer $accessToken",
-            ]
-        );
+            'HTTP_AUTHORIZATION' => "Bearer $accessToken",
+        ]);
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }

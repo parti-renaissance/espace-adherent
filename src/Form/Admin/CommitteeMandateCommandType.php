@@ -90,9 +90,9 @@ class CommitteeMandateCommandType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-                'types' => [],
-                'data_class' => CommitteeAdherentMandateCommand::class,
-            ])
+            'types' => [],
+            'data_class' => CommitteeAdherentMandateCommand::class,
+        ])
             ->setAllowedTypes('types', 'array')
         ;
     }

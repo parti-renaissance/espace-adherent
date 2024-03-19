@@ -22,7 +22,7 @@ final class Version20230327141628 extends AbstractMigration
             ON erc.elected_representative_id = er.id
           SET er.contribution_status = :status_eligible,
               er.contributed_at = erc.created_at', [
-                  'status_eligible' => ContributionStatusEnum::ELIGIBLE,
+            'status_eligible' => ContributionStatusEnum::ELIGIBLE,
         ]);
     }
 

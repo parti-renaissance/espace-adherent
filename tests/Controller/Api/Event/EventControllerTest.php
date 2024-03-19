@@ -48,7 +48,7 @@ class EventControllerTest extends AbstractApiTestCase
             'capacity' => 10,
             'visio_url' => 'https://en-marche.fr/123',
             'mode' => BaseEvent::MODE_ONLINE,
-       ]));
+        ]));
 
         $this->assertResponseStatusCodeSame(201);
 

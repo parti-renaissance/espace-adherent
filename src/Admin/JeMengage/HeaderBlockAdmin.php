@@ -91,7 +91,7 @@ class HeaderBlockAdmin extends AbstractAdmin
                 'virtual_field' => true,
             ])
             ->add('updatedAt', null, [
-                 'label' => 'Dernière mise à jour',
+                'label' => 'Dernière mise à jour',
             ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
