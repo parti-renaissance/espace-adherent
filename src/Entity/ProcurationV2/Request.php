@@ -10,4 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Request extends AbstractProcuration
 {
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationV2\Proxy", inversedBy="requests")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    public ?Proxy $proxy = null;
 }
