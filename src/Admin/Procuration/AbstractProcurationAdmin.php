@@ -5,14 +5,18 @@ namespace App\Admin\Procuration;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Geo\Zone;
 use App\Form\GenderType;
+use App\Query\Utils\MultiColumnsSearchHelper;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
@@ -130,17 +134,50 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
+            ->add('search', CallbackFilter::class, [
+                'label' => 'Recherche',
+                'show_filter' => true,
+                'field_type' => TextType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
+                        $qb->getQueryBuilder(),
+                        $value->getValue(),
+                        [
+                            ["$alias.firstNames", "$alias.lastName"],
+                            ["$alias.lastName", "$alias.firstNames"],
+                            ["$alias.email", "$alias.email"],
+                        ],
+                        [
+                            "$alias.phone",
+                        ],
+                        [
+                            "$alias.id",
+                            "$alias.uuid",
+                        ]
+                    );
+
+                    return true;
+                },
+            ])
             ->add('id', null, [
                 'label' => 'ID',
+                'show_filter' => false,
             ])
             ->add('firstNames', null, [
                 'label' => 'Prénoms',
+                'show_filter' => false,
             ])
             ->add('lastName', null, [
                 'label' => 'Nom',
+                'show_filter' => false,
             ])
             ->add('email', null, [
                 'label' => 'Adresse email',
+                'show_filter' => false,
             ])
             ->add('voteZone', ZoneAutocompleteFilter::class, [
                 'label' => 'Zone de vote',
@@ -167,6 +204,7 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
+                'show_filter' => false,
                 'field_type' => DateRangePickerType::class,
             ])
         ;
