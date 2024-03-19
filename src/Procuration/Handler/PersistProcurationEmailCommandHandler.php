@@ -21,6 +21,7 @@ class PersistProcurationEmailCommandHandler
 
         $object->utmCampaign = $command->utmCampaign;
         $object->utmSource = $command->utmSource;
+        $object->clientIp = $command->clientIp;
 
         $this->entityManager->flush();
 

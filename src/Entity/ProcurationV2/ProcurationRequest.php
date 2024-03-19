@@ -27,6 +27,11 @@ class ProcurationRequest
      */
     public ?string $email = null;
 
+    /**
+     * @ORM\Column(length=50, nullable=true)
+     */
+    public ?string $clientIp = null;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();

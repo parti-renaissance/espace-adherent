@@ -43,6 +43,7 @@ class PersistEmailController extends AbstractController
 
         /** @var PersistProcurationEmailCommand $command */
         $command = $this->serializer->deserialize($request->getContent(), PersistProcurationEmailCommand::class, JsonEncoder::FORMAT);
+        $command->clientIp = $request->getClientIp();
 
         $emailIdentifier = $this->handle($command);
 

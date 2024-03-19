@@ -3,6 +3,7 @@
 namespace App\Admin\Procuration;
 
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -37,6 +38,27 @@ class ProxyAdmin extends AbstractProcurationAdmin
         $filter
             ->add('electorNumber', null, [
                 'label' => 'Numéro d\'électeur',
+            ])
+        ;
+    }
+
+    protected function configureListFields(ListMapper $list): void
+    {
+        parent::configureListFields($list);
+
+        $list
+            ->add('slots', null, [
+                'label' => 'Nombre de procuration',
+            ])
+            ->reorder([
+                'id',
+                '_fullName',
+                'email',
+                'phone',
+                'voteZone',
+                'slots',
+                'createdAt',
+                ListMapper::NAME_ACTIONS,
             ])
         ;
     }
