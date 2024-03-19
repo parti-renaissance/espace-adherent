@@ -40,7 +40,7 @@ class AdherentInstanceQualityType extends AbstractType implements DataTransforme
             'class' => InstanceQuality::class,
             'query_builder' => $this->repository->getCustomQualitiesQueryBuilder(),
             'choice_label' => 'getFullLabel',
-       ]);
+        ]);
     }
 
     public function transform($value): mixed

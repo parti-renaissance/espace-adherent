@@ -27,16 +27,16 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
     {
         return $filter instanceof AudienceFilter
             || \in_array(\get_class($filter->getMessage()), [
-            ReferentAdherentMessage::class,
-            ReferentInstancesMessage::class,
-            DeputyAdherentMessage::class,
-            CommitteeAdherentMessage::class,
-            SenatorAdherentMessage::class,
-            LegislativeCandidateAdherentMessage::class,
-            CandidateAdherentMessage::class,
-            CorrespondentAdherentMessage::class,
-            RegionalCoordinatorAdherentMessage::class,
-        ], true);
+                ReferentAdherentMessage::class,
+                ReferentInstancesMessage::class,
+                DeputyAdherentMessage::class,
+                CommitteeAdherentMessage::class,
+                SenatorAdherentMessage::class,
+                LegislativeCandidateAdherentMessage::class,
+                CandidateAdherentMessage::class,
+                CorrespondentAdherentMessage::class,
+                RegionalCoordinatorAdherentMessage::class,
+            ], true);
     }
 
     public function buildFromMailchimpCampaign(MailchimpCampaign $campaign): array

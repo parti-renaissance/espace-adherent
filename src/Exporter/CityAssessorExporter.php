@@ -64,9 +64,9 @@ class CityAssessorExporter
         foreach ($votePlaces as $row) {
             $votePlace = $row['vote_place'];
             $votePlaceData = [
-               'votePlaceId' => $votePlace->getId(),
-               'votePlaceName' => $votePlace->name.' '.$votePlace->code,
-               'votePlaceAddress' => $votePlace->getAddress().', '.$votePlace->getPostalCode().' '.$votePlace->getCityName().' '.$votePlace->getCountry(),
+                'votePlaceId' => $votePlace->getId(),
+                'votePlaceName' => $votePlace->name.' '.$votePlace->code,
+                'votePlaceAddress' => $votePlace->getAddress().', '.$votePlace->getPostalCode().' '.$votePlace->getCityName().' '.$votePlace->getCountry(),
             ];
 
             $holder = [

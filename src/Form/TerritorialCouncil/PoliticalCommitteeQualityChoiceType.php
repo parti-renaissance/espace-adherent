@@ -21,6 +21,6 @@ class PoliticalCommitteeQualityChoiceType extends AbstractType
             'choice_label' => function (string $choice): string {
                 return "political_committee.membership.quality.$choice";
             },
-       ]);
+        ]);
     }
 }

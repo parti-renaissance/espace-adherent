@@ -249,21 +249,21 @@ class CertificationRequestAdmin extends AbstractAdmin
             $birthDate = $adherent->getBirthdate();
 
             return [
-                    'id' => $certificationRequest->getId(),
-                    'Date' => $certificationRequest->getCreatedAt()->format('Y/m/d H:i:s'),
-                    'Status' => $certificationRequest->getStatus(),
-                    'Nom' => $adherent->getLastName(),
-                    'Prénom' => $adherent->getFirstName(),
-                    'Date de naissance' => $birthDate?->format('Y/m/d H:i:s'),
-                    'Nationalité' => $adherent->getNationality(),
-                    'Addresse' => $adherent->getAddress(),
-                    'Code postal' => $adherent->getPostalCode(),
-                    'Ville' => $adherent->getCityName(),
-                    'Pays' => $adherent->getCountry(),
-                    'Téléphone adhérent' => $phone,
-                    'Email' => $adherent->getEmailAddress(),
-                    'uuid' => $certificationRequest->getUuid(),
-                ];
+                'id' => $certificationRequest->getId(),
+                'Date' => $certificationRequest->getCreatedAt()->format('Y/m/d H:i:s'),
+                'Status' => $certificationRequest->getStatus(),
+                'Nom' => $adherent->getLastName(),
+                'Prénom' => $adherent->getFirstName(),
+                'Date de naissance' => $birthDate?->format('Y/m/d H:i:s'),
+                'Nationalité' => $adherent->getNationality(),
+                'Addresse' => $adherent->getAddress(),
+                'Code postal' => $adherent->getPostalCode(),
+                'Ville' => $adherent->getCityName(),
+                'Pays' => $adherent->getCountry(),
+                'Téléphone adhérent' => $phone,
+                'Email' => $adherent->getEmailAddress(),
+                'uuid' => $certificationRequest->getUuid(),
+            ];
         },
         ];
     }

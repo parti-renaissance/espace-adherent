@@ -1756,7 +1756,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             'region' => 'Total',
             'code' => 'Total',
             'department' => 'Total',
-            ], $baseQueryBuilder->getQuery()->getSingleResult()
+        ], $baseQueryBuilder->getQuery()->getSingleResult()
         ));
 
         return $results;

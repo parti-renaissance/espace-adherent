@@ -19,7 +19,7 @@ class AssessorVotePlaceListType extends AbstractType
         $resolver->setDefaults([
             'entry_type' => AssessorRoleAssociationType::class,
             'entry_options' => [
-               'label' => false,
+                'label' => false,
             ],
             'constraints' => [new UniqueVotePlaceAssessor()],
         ]);

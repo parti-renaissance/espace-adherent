@@ -193,11 +193,11 @@ class EventAdmin extends AbstractAdmin
 
         $form
             ->add('description', null, [
-                    'label' => 'Description',
-                    'attr' => [
-                        'rows' => '3',
-                    ],
-                ])
+                'label' => 'Description',
+                'attr' => [
+                    'rows' => '3',
+                ],
+            ])
                 ->add('beginAt', null, [
                     'label' => 'Date de début',
                 ])

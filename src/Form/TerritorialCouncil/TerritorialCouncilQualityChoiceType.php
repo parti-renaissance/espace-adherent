@@ -21,6 +21,6 @@ class TerritorialCouncilQualityChoiceType extends AbstractType
             'choice_label' => function (string $choice): string {
                 return "territorial_council.membership.quality.$choice";
             },
-       ]);
+        ]);
     }
 }
