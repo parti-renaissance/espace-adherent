@@ -11,7 +11,9 @@ use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\MappedSuperclass
@@ -25,31 +27,67 @@ abstract class AbstractProcuration
 
     /**
      * @ORM\Column
+     *
+     * @Assert\NotBlank(message="procuration.email.not_blank")
+     * @Assert\Email(message="common.email.invalid")
+     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     public string $email;
 
     /**
      * @ORM\Column(length=6)
+     *
+     * @Assert\NotBlank(message="common.gender.invalid_choice")
+     * @Assert\Choice(
+     *     callback={"App\ValueObject\Genders", "all"},
+     *     message="common.gender.invalid_choice"
+     * )
      */
     public string $gender;
 
     /**
      * @ORM\Column
+     *
+     * @Assert\NotBlank(message="procuration.first_names.not_blank")
+     * @Assert\Length(
+     *     min=2,
+     *     max=255,
+     *     minMessage="procuration.first_names.min_length",
+     *     maxMessage="procuration.first_names.max_length"
+     * )
      */
     public string $firstNames;
 
     /**
      * @ORM\Column(length=100)
+     *
+     * @Assert\NotBlank(message="procuration.last_name.not_blank")
+     * @Assert\Length(
+     *     min=1,
+     *     max=100,
+     *     minMessage="procuration.last_name.min_length",
+     *     maxMessage="procuration.last_name.max_length"
+     * )
      */
     public string $lastName;
 
     /**
      * @ORM\Column(type="date")
+     *
+     * @Assert\NotBlank(message="procuration.birthdate.not_blank")
+     * @Assert\Range(
+     *     min="-120 years",
+     *     max="-17 years",
+     *     minMessage="procuration.birthdate.maximum_required_age",
+     *     maxMessage="procuration.birthdate.minimum_required_age"
+     * )
      */
     public \DateTimeInterface $birthdate;
 
     /**
      * @ORM\Column(type="phone_number", nullable=true)
+     *
+     * @AssertPhoneNumber(message="common.phone_number.invalid")
      */
     public ?PhoneNumber $phone;
 
@@ -61,6 +99,8 @@ abstract class AbstractProcuration
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotBlank(message="procuration.vote_zone.not_blank")
      */
     public Zone $voteZone;
 
@@ -89,6 +129,8 @@ abstract class AbstractProcuration
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationV2\Round")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotBlank(message="procuration.round.not_blank")
      */
     public Round $round;
 

@@ -38,6 +38,11 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
         $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
     }
 
+    protected function configureFormOptions(array &$formOptions): void
+    {
+        $formOptions['validation_groups'] = ['Default', 'procuration:write'];
+    }
+
     protected function configureFormFields(FormMapper $form): void
     {
         $form

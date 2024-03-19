@@ -40,6 +40,7 @@ class ProxyAdmin extends AbstractProcurationAdmin
                         'search',
                     ],
                     'btn_add' => false,
+                    'by_reference' => false,
                 ])
             ->end()
         ;
