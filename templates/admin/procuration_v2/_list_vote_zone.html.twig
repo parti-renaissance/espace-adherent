@@ -1,5 +1,7 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {{ object.voteZone }}
+    Zone: <b>{{ object.voteZone }}</b>
+    <br>
+    Bureau: <i>{{ object.customVotePlace ?? object.votePlace }}</i>
 {% endblock %}

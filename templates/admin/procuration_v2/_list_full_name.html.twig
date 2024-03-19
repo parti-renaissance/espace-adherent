@@ -1,5 +1,11 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {{ object.firstNames }} {{ object.lastName }}
+    {{ ('common.civility.' ~ (object.gender == constant('App\\ValueObject\\Genders::FEMALE') ? 'mrs' : 'mr'))|trans  }}
+    <i>{{ object.firstNames }}</i> <b>{{ object.lastName }}</b>
+
+    {% if object.birthdate %}
+        <br>
+        {{ object.birthdate|format_datetime('medium', 'none') }}
+    {% endif %}
 {% endblock %}

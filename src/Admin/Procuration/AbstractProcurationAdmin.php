@@ -58,8 +58,6 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
                     'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                     'required' => false,
                 ])
-            ->end()
-            ->with('Adresse', ['class' => 'col-md-6'])
                 ->add('postAddress.address', TextType::class, ['label' => 'Rue'])
                 ->add('postAddress.additionalAddress', TextType::class, ['label' => 'Complément d\'adresse', 'required' => false])
                 ->add('postAddress.postalCode', TextType::class, ['label' => 'Code postal'])
@@ -102,7 +100,7 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
                 'label' => 'ID',
             ])
             ->add('_fullName', null, [
-                'label' => 'Nom',
+                'label' => 'Identité',
                 'virtual_field' => true,
                 'template' => 'admin/procuration_v2/_list_full_name.html.twig',
             ])
@@ -116,10 +114,6 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
             ->add('voteZone', null, [
                 'label' => 'Lieu de vote',
                 'template' => 'admin/procuration_v2/_list_vote_zone.html.twig',
-            ])
-            ->add('votePlace', null, [
-                'label' => 'Bureau de vote',
-                'template' => 'admin/procuration_v2/_list_vote_place.html.twig',
             ])
             ->add('createdAt', null, [
                 'label' => 'Créé le',
