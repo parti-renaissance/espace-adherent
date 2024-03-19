@@ -5,9 +5,18 @@ namespace App\DataFixtures\ORM;
 use App\Entity\ProcurationV2\ProcurationRequest;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
+use Faker\Generator;
 
 class LoadProcurationV2ProcurationRequestData extends Fixture
 {
+    private Generator $faker;
+
+    public function __construct()
+    {
+        $this->faker = Factory::create('fr_FR');
+    }
+
     public function load(ObjectManager $manager)
     {
         $manager->persist($this->createProcurationRequest('john.durand@test.dev'));
@@ -22,6 +31,7 @@ class LoadProcurationV2ProcurationRequestData extends Fixture
     {
         $procurationRequest = new ProcurationRequest();
         $procurationRequest->email = $email;
+        $procurationRequest->clientIp = $this->faker->ipv4();
 
         return $procurationRequest;
     }
