@@ -38,6 +38,53 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
             }
         }
 
+        if (array_intersect(['managed_users_list', 'managed_user_read'], $context['groups'] ?? [])) {
+            if (isset($data['roles'])) {
+                $data['tags'] = array_merge(
+                    $data['tags'] ?? [],
+                    array_map(
+                        function (array $role) {
+                            return [
+                                'type' => 'role',
+                                'label' => ($label = $this->translator->trans($key = 'adherent.zone_based_role_type.'.$role['role'])) === $key ? $role['role'] : $label,
+                                'tooltip' => $role['function'] ?? null,
+                            ];
+                        },
+                        $data['roles']
+                    )
+                );
+                unset($data['roles']);
+            }
+
+            if (!empty($data['mandates'])) {
+                $data['tags'] = array_merge(
+                    $data['tags'] ?? [],
+                    array_map(
+                        function (string $mandate) {
+                            return [
+                                'type' => 'mandate',
+                                'label' => ($label = $this->translator->trans($key = 'adherent.mandate.type.'.$mandate)) === $key ? $mandate : $label,
+                            ];
+                        },
+                        $data['mandates']
+                    )
+                );
+            } elseif (!empty($data['declared_mandates'])) {
+                $data['tags'] = array_merge(
+                    $data['tags'] ?? [],
+                    array_map(
+                        function (string $mandate) {
+                            return [
+                                'type' => 'declared_mandate',
+                                'label' => ($label = $this->translator->trans($key = 'adherent.mandate.type.'.$mandate)) === $key ? $mandate : $label,
+                            ];
+                        },
+                        $data['declared_mandates']
+                    )
+                );
+            }
+        }
+
         return $data;
     }
 

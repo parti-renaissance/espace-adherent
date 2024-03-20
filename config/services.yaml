@@ -186,7 +186,7 @@ services:
 
     App\Adherent\Tag\TagAggregator:
         arguments:
-            $generators: !tagged_iterator {tag: 'app.adherent.tag.generator', default_priority_method: 'getPriority'}
+            $generators: !tagged_iterator {tag: 'app.adherent.tag.generator'}
 
     App\OAuth\App\AuthAppUrlManager:
         arguments:

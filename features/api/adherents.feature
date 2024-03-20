@@ -232,7 +232,13 @@ Feature:
                 "declared_mandates": [],
                 "certified": false,
                 "age": "@number@",
-                "tags": [],
+                "tags": [
+                    {
+                        "type": "role",
+                        "label": "referent",
+                        "tooltip": "Responsable communication"
+                    }
+                ],
                 "zones": [
                     {
                         "uuid": "@uuid@",
@@ -245,51 +251,6 @@ Feature:
                         "type": "city",
                         "code": "77288",
                         "name": "Melun"
-                    }
-                ]
-            },
-            {
-                "address": "2 avenue Jean Jaurès",
-                "city": "Melun",
-                "city_code": null,
-                "country": "FR",
-                "email": "je-mengage-user-1@en-marche-dev.fr",
-                "email_subscription": false,
-                "first_name": "Jules",
-                "adherent_uuid": "@uuid@",
-                "gender": "male",
-                "interests": [],
-                "additional_tags": [],
-                "last_name": "Fullstack",
-                "birthdate": "@string@.isDateTime()",
-                "postal_code": "77000",
-                "phone": null,
-                "nationality": null,
-                "sms_subscription": false,
-                "renaissance_membership": null,
-                "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null,
-                "committee": null,
-                "committee_uuid": null,
-                "cotisation_dates": [],
-                "campus_registered_at": null,
-                "mandates": [],
-                "declared_mandates": ["depute_europeen", "conseiller_municipal"],
-                "certified": false,
-                "age": "@number@",
-                "tags": [],
-                "zones": [
-                    {
-                        "uuid": "@uuid@",
-                        "type": "department",
-                        "code": "92",
-                        "name": "Hauts-de-Seine"
-                    },
-                    {
-                        "uuid": "@uuid@",
-                        "type": "department",
-                        "code": "59",
-                        "name": "Nord"
                     }
                 ]
             },
@@ -324,7 +285,12 @@ Feature:
                 "declared_mandates": ["depute_europeen"],
                 "certified": false,
                 "age": "@number@",
-                "tags": [],
+                "tags": [
+                    {
+                        "type": "declared_mandate",
+                        "label": "Député européen"
+                    }
+                ],
                 "zones": [
                     {
                         "uuid": "@uuid@",
@@ -360,7 +326,7 @@ Feature:
                 "cotisation_dates": [],
                 "campus_registered_at": null,
                 "mandates": [
-                    "conseiller_municipal|Métropole du Grand Paris"
+                    "conseiller_municipal"
                 ],
                 "declared_mandates": ["conseiller_municipal"],
                 "certified": true,
@@ -373,6 +339,55 @@ Feature:
                     {
                         "label": "Exempté de cotisation",
                         "type": "elu"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Délégué de circonscription",
+                        "tooltip": "Collaborateur parlementaire"
+                    },
+                    {
+                        "type": "role",
+                        "label": "senator",
+                        "tooltip": "Collaborateur parlementaire"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Délégué de circonscription",
+                        "tooltip": "Collaborateur parlementaire"
+                    },
+                    {
+                        "type": "role",
+                        "label": "candidate",
+                        "tooltip": "Candidat délégué"
+                    },
+                    {
+                        "type": "role",
+                        "label": "senatorial_candidate",
+                        "tooltip": "Candidat Sénateur délégué"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Président assemblée départementale",
+                        "tooltip": "Responsable élus délégué #1"
+                    },
+                    {
+                        "type": "role",
+                        "label": "referent",
+                        "tooltip": "Responsable communication"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Correspondant",
+                        "tooltip": "Responsable logistique"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Candidat aux législatives",
+                        "tooltip": "Responsable communication"
+                    },
+                    {
+                        "type": "mandate",
+                        "label": "Conseiller municipal"
                     }
                 ],
                 "zones": [
@@ -387,6 +402,65 @@ Feature:
                         "type": "city",
                         "code": "92024",
                         "name": "Clichy"
+                    }
+                ]
+            },
+            {
+                "address": "2 avenue Jean Jaurès",
+                "city": "Melun",
+                "city_code": null,
+                "country": "FR",
+                "email": "je-mengage-user-1@en-marche-dev.fr",
+                "email_subscription": false,
+                "first_name": "Jules",
+                "adherent_uuid": "@uuid@",
+                "gender": "male",
+                "interests": [],
+                "additional_tags": [],
+                "last_name": "Fullstack",
+                "birthdate": "@string@.isDateTime()",
+                "postal_code": "77000",
+                "phone": null,
+                "nationality": null,
+                "sms_subscription": false,
+                "renaissance_membership": null,
+                "created_at": "@string@.isDateTime()",
+                "last_membership_donation": null,
+                "committee": null,
+                "committee_uuid": null,
+                "cotisation_dates": [],
+                "campus_registered_at": null,
+                "mandates": [],
+                "declared_mandates": ["depute_europeen", "conseiller_municipal"],
+                "certified": false,
+                "age": "@number@",
+                "tags": [
+                    {
+                        "type": "role",
+                        "label": "Correspondant",
+                        "tooltip": null
+                    },
+                    {
+                        "type": "declared_mandate",
+                        "label": "Député européen"
+                    },
+                    {
+                        "type": "declared_mandate",
+                        "label": "Conseiller municipal"
+                    }
+                ],
+                "zones": [
+                    {
+                        "uuid": "@uuid@",
+                        "type": "department",
+                        "code": "92",
+                        "name": "Hauts-de-Seine"
+                    },
+                    {
+                        "uuid": "@uuid@",
+                        "type": "department",
+                        "code": "59",
+                        "name": "Nord"
                     }
                 ]
             },
@@ -423,7 +497,16 @@ Feature:
                 "declared_mandates": ["conseiller_municipal", "maire"],
                 "certified": true,
                 "age": "@number@",
-                "tags": [],
+                "tags": [
+                    {
+                        "type": "declared_mandate",
+                        "label": "Conseiller municipal"
+                    },
+                    {
+                        "type": "declared_mandate",
+                        "label": "Maire"
+                    }
+                ],
                 "zones": [
                     {
                         "uuid": "@uuid@",
@@ -478,7 +561,13 @@ Feature:
                 "declared_mandates": [],
                 "certified": false,
                 "age": "@number@",
-                "tags": [],
+                "tags": [
+                    {
+                        "type": "role",
+                        "label": "referent",
+                        "tooltip": "Responsable communication"
+                    }
+                ],
                 "zones": [
                     {
                         "uuid": "@uuid@",
@@ -518,6 +607,109 @@ Feature:
         },
         "items": [
             {
+                "address": "47 rue Martre",
+                "postal_code": "92110",
+                "city": "Clichy",
+                "country": "FR",
+                "first_name": "Gisele",
+                "last_name": "Berthoux",
+                "adherent_uuid": "@uuid@",
+                "birthdate": "@string@.isDateTime()",
+                "gender": "female",
+                "interests": [],
+                "additional_tags": [],
+                "city_code": "92024",
+                "phone": "+33 6 66 66 66 66",
+                "nationality": "FR",
+                "sms_subscription": true,
+                "email": "gisele-berthoux@caramail.com",
+                "email_subscription": true,
+                "renaissance_membership": null,
+                "created_at": "@string@.isDateTime()",
+                "last_membership_donation": null,
+                "committee": "Second Comité des 3 communes",
+                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
+                "cotisation_dates": [],
+                "campus_registered_at": null,
+                "mandates": ["conseiller_municipal"],
+                "declared_mandates": ["conseiller_municipal"],
+                "certified": true,
+                "age": "@number@",
+                "tags": [
+                    {
+                        "label": "À jour 2024",
+                        "type": "adherent"
+                    },
+                    {
+                        "label": "Exempté de cotisation",
+                        "type": "elu"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Délégué de circonscription",
+                        "tooltip": "Collaborateur parlementaire"
+                    },
+                    {
+                        "type": "role",
+                        "label": "senator",
+                        "tooltip": "Collaborateur parlementaire"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Délégué de circonscription",
+                        "tooltip": "Collaborateur parlementaire"
+                    },
+                    {
+                        "type": "role",
+                        "label": "candidate",
+                        "tooltip": "Candidat délégué"
+                    },
+                    {
+                        "type": "role",
+                        "label": "senatorial_candidate",
+                        "tooltip": "Candidat Sénateur délégué"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Président assemblée départementale",
+                        "tooltip": "Responsable élus délégué #1"
+                    },
+                    {
+                        "type": "role",
+                        "label": "referent",
+                        "tooltip": "Responsable communication"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Correspondant",
+                        "tooltip": "Responsable logistique"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Candidat aux législatives",
+                        "tooltip": "Responsable communication"
+                    },
+                    {
+                        "type": "mandate",
+                        "label": "Conseiller municipal"
+                    }
+                ],
+                "zones": [
+                    {
+                        "uuid": "@uuid@",
+                        "type": "department",
+                        "code": "92",
+                        "name": "Hauts-de-Seine"
+                    },
+                    {
+                        "uuid": "@uuid@",
+                        "type": "city",
+                        "code": "92024",
+                        "name": "Clichy"
+                    }
+                ]
+            },
+            {
                 "address": "2 avenue Jean Jaurès",
                 "postal_code": "77000",
                 "city": "Melun",
@@ -546,7 +738,21 @@ Feature:
                 "declared_mandates": ["depute_europeen", "conseiller_municipal"],
                 "certified": false,
                 "age": "@number@",
-                "tags": [],
+                "tags": [
+                    {
+                        "type": "role",
+                        "label": "Correspondant",
+                        "tooltip": null
+                    },
+                    {
+                        "type": "declared_mandate",
+                        "label": "Député européen"
+                    },
+                    {
+                        "type": "declared_mandate",
+                        "label": "Conseiller municipal"
+                    }
+                ],
                 "zones": [
                     {
                         "uuid": "@uuid@",
@@ -559,60 +765,6 @@ Feature:
                         "type": "department",
                         "code": "59",
                         "name": "Nord"
-                    }
-                ]
-            },
-            {
-                "address": "47 rue Martre",
-                "postal_code": "92110",
-                "city": "Clichy",
-                "country": "FR",
-                "first_name": "Gisele",
-                "last_name": "Berthoux",
-                "adherent_uuid": "@uuid@",
-                "birthdate": "@string@.isDateTime()",
-                "gender": "female",
-                "interests": [],
-                "additional_tags": [],
-                "city_code": "92024",
-                "phone": "+33 6 66 66 66 66",
-                "nationality": "FR",
-                "sms_subscription": true,
-                "email": "gisele-berthoux@caramail.com",
-                "email_subscription": true,
-                "renaissance_membership": null,
-                "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null,
-                "committee": "Second Comité des 3 communes",
-                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
-                "cotisation_dates": [],
-                "campus_registered_at": null,
-                "mandates": ["conseiller_municipal|Métropole du Grand Paris"],
-                "declared_mandates": ["conseiller_municipal"],
-                "certified": true,
-                "age": "@number@",
-                "tags": [
-                    {
-                        "label": "À jour 2024",
-                        "type": "adherent"
-                    },
-                    {
-                        "label": "Exempté de cotisation",
-                        "type": "elu"
-                    }
-                ],
-                "zones": [
-                    {
-                        "uuid": "@uuid@",
-                        "type": "department",
-                        "code": "92",
-                        "name": "Hauts-de-Seine"
-                    },
-                    {
-                        "uuid": "@uuid@",
-                        "type": "city",
-                        "code": "92024",
-                        "name": "Clichy"
                     }
                 ]
             }
@@ -951,7 +1103,18 @@ Feature:
                 "declared_mandates": [],
                 "certified": true,
                 "age": "@number@",
-                "tags": [],
+                "tags": [
+                    {
+                        "type": "role",
+                        "label": "Délégué de circonscription",
+                        "tooltip": null
+                    },
+                    {
+                        "type": "role",
+                        "label": "Président assemblée départementale",
+                        "tooltip": "Responsable communication"
+                    }
+                ],
                 "zones": [
                     {
                         "uuid": "@uuid@",
@@ -1000,7 +1163,13 @@ Feature:
                 "declared_mandates": [],
                 "certified": true,
                 "age": "@number@",
-                "tags": [],
+                "tags": [
+                    {
+                        "type": "role",
+                        "label": "referent",
+                        "tooltip": "Responsable mobilisation"
+                    }
+                ],
                 "zones": [
                     {
                         "uuid": "@uuid@",
@@ -1065,7 +1234,13 @@ Feature:
                 "declared_mandates": [],
                 "certified": true,
                 "age": "@number@",
-                "tags": [],
+                "tags": [
+                    {
+                        "type": "role",
+                        "label": "referent",
+                        "tooltip": "Responsable mobilisation"
+                    }
+                ],
                 "zones": [
                     {
                         "uuid": "@uuid@",

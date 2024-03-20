@@ -6,8 +6,8 @@ use App\Entity\Adherent;
 use App\Exporter\ManagedUsersExporter;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\ManagedUsers\ManagedUsersFilterFactory;
-use App\Normalizer\AdherentTagNormalizer;
 use App\Normalizer\ManagedUserNormalizer;
+use App\Normalizer\TranslateAdherentTagNormalizer;
 use App\Repository\Projection\ManagedUserRepository;
 use App\Scope\AuthorizationChecker;
 use App\Scope\Exception\InvalidScopeException;
@@ -88,7 +88,7 @@ class AdherentListController extends AbstractController
             [
                 'groups' => ['managed_users_list'],
                 ManagedUserNormalizer::FILTER_PARAM => $filter,
-                AdherentTagNormalizer::ENABLE_TAG_TRANSLATOR => true,
+                TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR => true,
             ]
         );
     }

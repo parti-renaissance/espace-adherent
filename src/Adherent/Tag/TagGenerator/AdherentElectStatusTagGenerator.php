@@ -7,11 +7,6 @@ use App\Entity\Adherent;
 
 class AdherentElectStatusTagGenerator extends AbstractTagGenerator
 {
-    public static function getDefaultPriority(): int
-    {
-        return -255;
-    }
-
     public function generate(Adherent $adherent, array $previousTags): array
     {
         if (!$adherent->findElectedRepresentativeMandates(true)) {
