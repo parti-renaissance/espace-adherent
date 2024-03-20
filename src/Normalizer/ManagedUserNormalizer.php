@@ -3,7 +3,8 @@
 namespace App\Normalizer;
 
 use App\Entity\Projection\ManagedUser;
-use App\ManagedUsers\ManagedUsersFilter;
+use App\Scope\ScopeGeneratorResolver;
+use App\Subscription\SubscriptionTypeEnum;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -13,11 +14,12 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 {
     use NormalizerAwareTrait;
 
-    public const FILTER_PARAM = 'filter';
     private const MANAGED_USER_NORMALIZER_ALREADY_CALLED = 'MANAGED_USER_NORMALIZER_ALREADY_CALLED';
 
-    public function __construct(private readonly TranslatorInterface $translator)
-    {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver
+    ) {
     }
 
     /** @param ManagedUser $object */
@@ -29,13 +31,10 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
         $data['email_subscription'] = null;
 
-        if (!empty($context[self::FILTER_PARAM]) && $context[self::FILTER_PARAM] instanceof ManagedUsersFilter) {
-            /** @var ManagedUsersFilter $filter */
-            $filter = $context[self::FILTER_PARAM];
+        $scopeGenerator = $this->scopeGeneratorResolver->resolve();
 
-            if ($filter->subscriptionType) {
-                $data['email_subscription'] = \in_array($filter->subscriptionType, $object->getSubscriptionTypes(), true);
-            }
+        if ($scopeGenerator && !empty($subscriptionType = SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scopeGenerator->getCode()] ?? null)) {
+            $data['email_subscription'] = \in_array($subscriptionType, $object->getSubscriptionTypes(), true);
         }
 
         if (array_intersect(['managed_users_list', 'managed_user_read'], $context['groups'] ?? [])) {
