@@ -21,7 +21,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(length=150, nullable=true)
      *
-     * @Assert\Length(max=150, groups={"contact_update"})
+     * @Assert\Length(max=150, groups={"contact_update", "procuration:write"})
      *
      * @SymfonySerializer\Groups({
      *     "profile_read",
@@ -36,7 +36,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(length=15, nullable=true)
      *
-     * @Assert\Length(max=15, groups={"contact_update"})
+     * @Assert\Length(max=15, groups={"contact_update", "procuration:write"})
      *
      * @SymfonySerializer\Groups({
      *     "profile_read",
@@ -51,7 +51,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(length=15, nullable=true, name="city_insee")
      *
-     * @Assert\Length(max=15, groups={"contact_update"})
+     * @Assert\Length(max=15, groups={"contact_update", "procuration:write"})
      *
      * @SymfonySerializer\Groups({
      *     "contact_read_after_write",
@@ -66,7 +66,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=255, groups={"contact_update"})
+     * @Assert\Length(max=255, groups={"contact_update", "procuration:write"})
      *
      * @SymfonySerializer\Groups({
      *     "profile_read",
@@ -81,7 +81,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @ORM\Column(length=2, nullable=true)
      *
-     * @Assert\Country(groups={"contact_update"})
+     * @Assert\Country(groups={"contact_update", "procuration:write"})
      *
      * @SymfonySerializer\Groups({
      *     "profile_read",

@@ -288,6 +288,8 @@ procuration.vote_zone.not_blank: Veuillez renseigner la zone où vous votez (pay
 
 procuration.round.not_blank: Veuillez renseigner un tour d'élection pour cette demande.
 
+procuration.proxy.max_slots: Ce mandataire ne peut pas porter plus de {{ max_slots }} procuration(s).
+
 #
 # Event
 #

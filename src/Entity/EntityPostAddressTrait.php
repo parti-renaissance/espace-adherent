@@ -15,7 +15,8 @@ trait EntityPostAddressTrait
      *
      * @var PostAddress
      *
-     * @Assert\Valid(groups={"contact_update"})
+     * @Assert\NotBlank(groups={"procuration:write"})
+     * @Assert\Valid(groups={"contact_update", "procuration:write"})
      *
      * @SymfonySerializer\Groups({"contact_update"})
      */

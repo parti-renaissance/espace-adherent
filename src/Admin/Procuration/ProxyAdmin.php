@@ -5,6 +5,7 @@ namespace App\Admin\Procuration;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -26,6 +27,20 @@ class ProxyAdmin extends AbstractProcurationAdmin
                         '1' => 1,
                         '2' => 2,
                     ],
+                ])
+            ->end()
+            ->with('Mandants', ['class' => 'col-md-6'])
+                ->add('requests', ModelAutocompleteType::class, [
+                    'label' => 'Mandants associés',
+                    'required' => false,
+                    'multiple' => true,
+                    'minimum_input_length' => 2,
+                    'items_per_page' => 20,
+                    'property' => [
+                        'search',
+                    ],
+                    'btn_add' => false,
+                    'by_reference' => false,
                 ])
             ->end()
         ;
