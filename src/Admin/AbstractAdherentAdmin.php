@@ -48,11 +48,13 @@ use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
@@ -1051,7 +1053,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 $registeredAt = $adherent->getRegisteredAt();
 
                 return [
-                    'UUID' => $adherent->getUuid(),
+                    'UUID' => $adherent->getUuid()->toString(),
                     'Email' => $adherent->getEmailAddress(),
                     'Prénom' => $adherent->getFirstName(),
                     'Nom' => $adherent->getLastName(),
@@ -1094,5 +1096,40 @@ class AbstractAdherentAdmin extends AbstractAdmin
     protected function isGrantedAdherentAdminRole(): bool
     {
         return $this->isGranted('ROLE_ADMIN_ADHERENT_ADHERENTS');
+    }
+
+    /** @param QueryBuilder|ProxyQueryInterface $query */
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
+        $alias = $query->getRootAliases()[0];
+
+        $query
+            ->addSelect(
+                'adherent_mandate',
+                'committee_membership',
+                'coterr_membership',
+                'thematic_communities',
+                'delegated_access',
+                'political_committee_membership',
+                'zone_based_role',
+                'commitment',
+                'referent_team_member',
+                'board_member',
+                'animator_committees',
+            )
+            ->leftJoin($alias.'.adherentMandates', 'adherent_mandate')
+            ->leftJoin($alias.'.memberships', 'committee_membership')
+            ->leftJoin($alias.'.territorialCouncilMembership', 'coterr_membership')
+            ->leftJoin($alias.'.handledThematicCommunities', 'thematic_communities')
+            ->leftJoin($alias.'.receivedDelegatedAccesses', 'delegated_access')
+            ->leftJoin($alias.'.politicalCommitteeMembership', 'political_committee_membership')
+            ->leftJoin($alias.'.zoneBasedRoles', 'zone_based_role')
+            ->leftJoin($alias.'.commitment', 'commitment')
+            ->leftJoin($alias.'.referentTeamMember', 'referent_team_member')
+            ->leftJoin($alias.'.boardMember', 'board_member')
+            ->leftJoin($alias.'.animatorCommittees', 'animator_committees')
+        ;
+
+        return $query;
     }
 }
