@@ -170,7 +170,7 @@
         "phpstan/phpstan": "^1.6",
         "phpstan/phpstan-doctrine": "^1.3",
         "phpstan/phpstan-symfony": "^1.1",
-        "phpunit/phpunit": "^10.0",
+        "phpunit/phpunit": "^11.0",
         "symfony/css-selector": "^5.4",
         "symfony/debug-bundle": "^5.4",
         "symfony/phpunit-bridge": "^5.4",
