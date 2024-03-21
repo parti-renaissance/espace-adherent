@@ -59,6 +59,11 @@ trait EntityZoneTrait
         $this->zones->clear();
     }
 
+    public static function getZonesPropertyName(): string
+    {
+        return 'zones';
+    }
+
     public function getZonesCodes(): array
     {
         return array_map(function (Zone $zone) {

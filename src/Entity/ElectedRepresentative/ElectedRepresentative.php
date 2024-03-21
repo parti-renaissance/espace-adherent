@@ -793,6 +793,11 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     {
     }
 
+    public static function getZonesPropertyName(): string
+    {
+        return '';
+    }
+
     public function getAuthor(): ?Adherent
     {
         return $this->createdByAdherent;

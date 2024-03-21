@@ -17,4 +17,6 @@ interface ZoneableEntity
     public function removeZone(Zone $zone): void;
 
     public function clearZones(): void;
+
+    public static function getZonesPropertyName(): string;
 }

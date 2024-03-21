@@ -14,7 +14,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
@@ -114,7 +114,7 @@ class Zone implements GeoInterface, UuidEntityInterface
      *
      * @ORM\Column(type="uuid", unique=true)
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "zone_read",
      *     "scopes",
      *     "scope",
@@ -144,6 +144,7 @@ class Zone implements GeoInterface, UuidEntityInterface
      *     "committee:read",
      *     "managed_users_list",
      *     "managed_user_read",
+     *     "procuration_request_list",
      * })
      *
      * @ApiProperty(
@@ -164,7 +165,7 @@ class Zone implements GeoInterface, UuidEntityInterface
      *
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "zone_read",
      *     "scope",
      *     "read_api",
@@ -172,6 +173,7 @@ class Zone implements GeoInterface, UuidEntityInterface
      *     "zone:code,type",
      *     "managed_users_list",
      *     "managed_user_read",
+     *     "procuration_request_list",
      * })
      */
     private $type;
@@ -207,7 +209,7 @@ class Zone implements GeoInterface, UuidEntityInterface
      *
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @SymfonySerializer\Groups({"zone_read"})
+     * @Groups({"zone_read"})
      */
     private $postalCode;
 

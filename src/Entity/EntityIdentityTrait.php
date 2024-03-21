@@ -20,7 +20,10 @@ trait EntityIdentityTrait
      *
      * @ApiProperty(identifier=false)
      *
-     * @Groups({"autocomplete", "survey_list"})
+     * @Groups({
+     *     "autocomplete",
+     *     "survey_list",
+     * })
      */
     protected $id;
 
@@ -107,6 +110,8 @@ trait EntityIdentityTrait
      *     "designation_read",
      *     "designation_list",
      *     "national_event_inscription:webhook",
+     *     "procuration_request_list",
+     *     "procuration_request_list_proxy",
      * })
      *
      * @ApiProperty(
