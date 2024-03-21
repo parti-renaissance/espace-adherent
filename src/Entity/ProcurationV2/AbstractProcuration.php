@@ -113,6 +113,7 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank(message="procuration.vote_zone.not_blank")
+     * @Assert\Type(type=Zone::class)
      *
      * @Groups({"procuration_request_list"})
      */
@@ -121,11 +122,18 @@ abstract class AbstractProcuration implements ZoneableEntity
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      * @ORM\JoinColumn(nullable=true)
+     *
+     * @Assert\Type(type=Zone::class)
      */
     public ?Zone $votePlace;
 
     /**
      * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(
+     *     max=255,
+     *     maxMessage="procuration.custom_vote_place.max_length"
+     * )
      */
     public ?string $customVotePlace;
 
