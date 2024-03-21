@@ -193,7 +193,8 @@ Feature:
         "general_meeting_reports",
         "documents",
         "designation",
-        "statutory_message"
+        "statutory_message",
+        "procuration"
       ],
       "attributes": null,
       "delegated_access": null
@@ -493,7 +494,8 @@ Feature:
             "general_meeting_reports",
             "documents",
             "designation",
-            "statutory_message"
+            "statutory_message",
+            "procuration"
         ],
         "attributes": null,
         "delegated_access": {
@@ -545,7 +547,8 @@ Feature:
                 "general_meeting_reports",
                 "documents",
                 "designation",
-                "statutory_message"
+                "statutory_message",
+                "procuration"
             ],
             "attributes": {
                 "committees": [
