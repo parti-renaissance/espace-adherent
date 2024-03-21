@@ -6,6 +6,7 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\AdherentMessage\Sender\SenderInterface;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
+use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\TransactionalMessageInterface;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
@@ -104,7 +105,7 @@ class AdherentMessageManager
 
         $filter = $message->getFilter();
 
-        if (!$filter instanceof MessageFilter) {
+        if (!$filter instanceof MessageFilter && !$filter instanceof AudienceFilter) {
             return [];
         }
 
