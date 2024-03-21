@@ -2,6 +2,8 @@
 
 namespace App\Entity\Projection;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Collection\ZoneCollection;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
@@ -33,6 +35,31 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  *         )
  *     )
  * })
+ *
+ * @ApiResource(
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/v3/adherents/{adherentUuid}",
+ *             "requirements": {"adherentUuid": "%pattern_uuid%"},
+ *             "normalization_context": {
+ *                 "enable_tag_translator": true,
+ *                 "groups": {"managed_user_read"}
+ *             },
+ *         },
+ *     },
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/v3/adherents.{format}",
+ *             "controller": "App\Controller\Api\AdherentList\AdherentListController",
+ *             "requirements": {
+ *                 "format": "json|csv|xlsx",
+ *             },
+ *             "defaults": {
+ *                 "format": "json",
+ *             },
+ *         },
+ *     },
+ * )
  */
 class ManagedUser
 {
@@ -42,6 +69,8 @@ class ManagedUser
 
     /**
      * @var int
+     *
+     * @ApiProperty(identifier=false)
      *
      * @ORM\Id
      * @ORM\Column(type="bigint", options={"unsigned": true})
@@ -87,9 +116,11 @@ class ManagedUser
     /**
      * @var UuidInterface|null
      *
+     * @ApiProperty(identifier=true)
+     *
      * @ORM\Column(type="uuid", nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $adherentUuid;
 
@@ -98,7 +129,7 @@ class ManagedUser
      *
      * @ORM\Column
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $email;
 
@@ -107,7 +138,7 @@ class ManagedUser
      *
      * @ORM\Column(length=150, nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $address;
 
@@ -116,7 +147,7 @@ class ManagedUser
      *
      * @ORM\Column(length=15, nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $postalCode;
 
@@ -134,7 +165,7 @@ class ManagedUser
      *
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $city;
 
@@ -143,7 +174,7 @@ class ManagedUser
      *
      * @ORM\Column(length=2, nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $country;
 
@@ -152,7 +183,7 @@ class ManagedUser
      *
      * @ORM\Column(length=6, nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $gender;
 
@@ -161,7 +192,7 @@ class ManagedUser
      *
      * @ORM\Column(length=50, nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $firstName;
 
@@ -170,14 +201,14 @@ class ManagedUser
      *
      * @ORM\Column(length=50, nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $birthdate;
 
@@ -186,7 +217,7 @@ class ManagedUser
      *
      * @ORM\Column(type="smallint", nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $age;
 
@@ -195,7 +226,7 @@ class ManagedUser
      *
      * @ORM\Column(type="phone_number", nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $phone;
 
@@ -204,7 +235,7 @@ class ManagedUser
      *
      * @ORM\Column(length=2, nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $nationality;
 
@@ -234,7 +265,7 @@ class ManagedUser
      *
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     public ?array $tags = null;
 
@@ -278,14 +309,14 @@ class ManagedUser
      *
      * @ORM\Column(type="datetime")
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $interests;
 
@@ -320,7 +351,7 @@ class ManagedUser
      *
      * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private $lastMembershipDonation;
 
@@ -329,7 +360,7 @@ class ManagedUser
      *
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private ?string $committee;
 
@@ -338,7 +369,7 @@ class ManagedUser
      *
      * @ORM\Column(type="uuid", nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private ?UuidInterface $committeeUuid;
 
@@ -352,28 +383,28 @@ class ManagedUser
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private ?array $mandates;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private ?array $declaredMandates;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     public ?array $cotisationDates = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     private ?\DateTime $campusRegisteredAt;
 
@@ -698,7 +729,7 @@ class ManagedUser
     }
 
     /**
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     public function isCertified(): bool
     {
@@ -735,7 +766,7 @@ class ManagedUser
     }
 
     /**
-     * @Groups({"managed_users_list"})
+     * @Groups({"managed_users_list", "managed_user_read"})
      */
     public function getSmsSubscription(): bool
     {

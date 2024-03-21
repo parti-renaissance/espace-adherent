@@ -6,7 +6,6 @@ use App\Entity\Adherent;
 use App\Exporter\ManagedUsersExporter;
 use App\ManagedUsers\ManagedUsersFilter;
 use App\ManagedUsers\ManagedUsersFilterFactory;
-use App\Normalizer\ManagedUserNormalizer;
 use App\Normalizer\TranslateAdherentTagNormalizer;
 use App\Repository\Projection\ManagedUserRepository;
 use App\Scope\AuthorizationChecker;
@@ -14,18 +13,14 @@ use App\Scope\Exception\InvalidScopeException;
 use App\Scope\Exception\ScopeExceptionInterface;
 use App\Scope\Exception\ScopeQueryParamMissingException;
 use App\Scope\FeatureEnum;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-#[Route(path: '/v3/adherents.{_format}', name: 'app_adherents_list_get', methods: ['GET'], requirements: ['_format' => 'json|csv|xlsx'], defaults: ['_format' => 'json'])]
-#[IsGranted('IS_AUTHENTICATED_FULLY')]
 class AdherentListController extends AbstractController
 {
     public function __construct(
@@ -36,7 +31,7 @@ class AdherentListController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, string $_format): Response
+    public function __invoke(Request $request, string $format): Response
     {
         /** @var Adherent $user */
         $user = $this->getUser();
@@ -63,7 +58,7 @@ class AdherentListController extends AbstractController
             AbstractObjectNormalizer::DISABLE_TYPE_ENFORCEMENT => true,
         ]);
 
-        if ('json' !== $_format) {
+        if ('json' !== $format) {
             try {
                 $this->authorizationChecker->isFeatureGranted($request, $user, [FeatureEnum::CONTACTS_EXPORT]);
             } catch (InvalidScopeException|ScopeQueryParamMissingException $e) {
@@ -72,7 +67,7 @@ class AdherentListController extends AbstractController
                 throw $this->createAccessDeniedException();
             }
 
-            return $this->exporter->getResponse($_format, $filter);
+            return $this->exporter->getResponse($format, $filter);
         }
 
         $adherents = $this->repository->searchByFilter(
@@ -87,7 +82,6 @@ class AdherentListController extends AbstractController
             [],
             [
                 'groups' => ['managed_users_list'],
-                ManagedUserNormalizer::FILTER_PARAM => $filter,
                 TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR => true,
             ]
         );

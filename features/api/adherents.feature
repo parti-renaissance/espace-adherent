@@ -586,7 +586,60 @@ Feature:
         ]
     }
     """
-      Examples:
+    When I send a "GET" request to "/api/v3/adherents/a9fc8d48-6f57-4d89-ae73-50b3f9b586f4?scope=<scope>"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "address": "2 avenue Jean Jaurès",
+        "postal_code": "77000",
+        "city": "Melun",
+        "country": "FR",
+        "first_name": "Francis",
+        "last_name": "Brioul",
+        "adherent_uuid": "@uuid@",
+        "birthdate": "@string@.isDateTime()",
+        "gender": "male",
+        "interests": [],
+        "phone": null,
+        "nationality": null,
+        "sms_subscription": false,
+        "email": "francis.brioul@yahoo.com",
+        "email_subscription": false,
+        "created_at": "@string@.isDateTime()",
+        "last_membership_donation": null,
+        "committee": null,
+        "committee_uuid": null,
+        "cotisation_dates": [],
+        "campus_registered_at": null,
+        "mandates": [],
+        "declared_mandates": [],
+        "certified": false,
+        "age": "@number@",
+        "tags": [
+            {
+                "type": "role",
+                "label": "referent",
+                "tooltip": "Responsable communication"
+            }
+        ],
+        "zones": [
+            {
+                "uuid": "@uuid@",
+                "type": "district",
+                "code": "77-1",
+                "name": "Seine-et-Marne (1)"
+            },
+            {
+                "uuid": "@uuid@",
+                "type": "city",
+                "code": "77288",
+                "name": "Melun"
+            }
+        ]
+    }
+    """
+    Examples:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
