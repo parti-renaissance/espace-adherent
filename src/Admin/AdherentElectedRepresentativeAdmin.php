@@ -21,6 +21,8 @@ class AdherentElectedRepresentativeAdmin extends AbstractAdherentAdmin
 
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
+        parent::configureQuery($query);
+
         $rootAlias = $query->getRootAliases()[0];
 
         $query
