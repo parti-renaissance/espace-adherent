@@ -1340,7 +1340,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     public function getAge(): ?int
     {
-        return $this->birthdate ? $this->birthdate->diff(new \DateTime())->y : null;
+        return $this->birthdate?->diff(new \DateTime())->y;
     }
 
     public function isMinor(?\DateTime $date = null): bool

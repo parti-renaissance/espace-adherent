@@ -35,7 +35,7 @@ class InZoneOfScopeFilter extends AbstractScopeFilter
                 $alias,
                 $resourceClass,
                 'api_zone_filter_resource_alias',
-                'zones',
+                $resourceClass::getZonesPropertyName(),
                 'api_zone_filter_zone_alias'
             )
         ;

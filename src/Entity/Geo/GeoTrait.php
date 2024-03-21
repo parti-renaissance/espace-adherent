@@ -64,6 +64,7 @@ trait GeoTrait
      *     "zone:code,type",
      *     "managed_users_list",
      *     "managed_user_read",
+     *     "procuration_request_list",
      * })
      */
     private $code;
@@ -105,6 +106,7 @@ trait GeoTrait
      *     "committee:read",
      *     "managed_users_list",
      *     "managed_user_read",
+     *     "procuration_request_list",
      * })
      */
     private $name;

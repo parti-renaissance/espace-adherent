@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Countries;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 trait EntityPostAddressTrait
@@ -18,7 +18,10 @@ trait EntityPostAddressTrait
      * @Assert\NotBlank(groups={"procuration:write"})
      * @Assert\Valid(groups={"contact_update", "procuration:write"})
      *
-     * @SymfonySerializer\Groups({"contact_update"})
+     * @Groups({
+     *     "contact_update",
+     *     "procuration_request_list",
+     * })
      */
     protected $postAddress;
 
@@ -38,7 +41,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @SymfonySerializer\Groups({"user_profile"})
+     * @Groups({"user_profile"})
      */
     public function getCountry(): ?string
     {
@@ -61,7 +64,7 @@ trait EntityPostAddressTrait
     }
 
     /**
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "user_profile",
      *     "export",
      *     "adherent_autocomplete",

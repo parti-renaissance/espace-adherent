@@ -9,16 +9,20 @@ use App\Entity\EntityPostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
+use App\Entity\ZoneableEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\MappedSuperclass
  */
-abstract class AbstractProcuration
+abstract class AbstractProcuration implements ZoneableEntity
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -42,6 +46,8 @@ abstract class AbstractProcuration
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice"
      * )
+     *
+     * @Groups({"procuration_request_list", "procuration_request_list_proxy"})
      */
     public string $gender;
 
@@ -55,6 +61,8 @@ abstract class AbstractProcuration
      *     minMessage="procuration.first_names.min_length",
      *     maxMessage="procuration.first_names.max_length"
      * )
+     *
+     * @Groups({"procuration_request_list", "procuration_request_list_proxy"})
      */
     public string $firstNames;
 
@@ -68,6 +76,8 @@ abstract class AbstractProcuration
      *     minMessage="procuration.last_name.min_length",
      *     maxMessage="procuration.last_name.max_length"
      * )
+     *
+     * @Groups({"procuration_request_list", "procuration_request_list_proxy"})
      */
     public string $lastName;
 
@@ -81,6 +91,8 @@ abstract class AbstractProcuration
      *     minMessage="procuration.birthdate.maximum_required_age",
      *     maxMessage="procuration.birthdate.minimum_required_age"
      * )
+     *
+     * @Groups({"procuration_request_list"})
      */
     public \DateTimeInterface $birthdate;
 
@@ -101,6 +113,8 @@ abstract class AbstractProcuration
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank(message="procuration.vote_zone.not_blank")
+     *
+     * @Groups({"procuration_request_list"})
      */
     public Zone $voteZone;
 
@@ -183,5 +197,43 @@ abstract class AbstractProcuration
     public function getPostAddress(): PostAddress
     {
         return $this->postAddress;
+    }
+
+    /**
+     * @Groups({"procuration_request_list"})
+     */
+    public function getAge(): ?int
+    {
+        return $this->birthdate?->diff(new \DateTime())->y;
+    }
+
+    public function getZones(): Collection
+    {
+        return new ArrayCollection([$this->voteZone]);
+    }
+
+    public function clearZones(): void
+    {
+    }
+
+    public function removeZone(Zone $zone): void
+    {
+    }
+
+    public function addZone(Zone $Zone): void
+    {
+    }
+
+    public static function getZonesPropertyName(): string
+    {
+        return 'voteZone';
+    }
+
+    /**
+     * @Groups({"procuration_request_list"})
+     */
+    public function getVotePlaceName(): ?string
+    {
+        return $this->customVotePlace ?? $this->votePlace?->getName();
     }
 }

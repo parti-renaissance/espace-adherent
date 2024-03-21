@@ -6,7 +6,7 @@ use App\Address\AddressInterface;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -23,10 +23,11 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @Assert\Length(max=150, groups={"contact_update", "procuration:write"})
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "profile_read",
      *     "contact_read_after_write",
-     *     "contact_update"
+     *     "contact_update",
+     *     "procuration_request_list",
      * })
      */
     protected ?string $address = null;
@@ -38,10 +39,11 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @Assert\Length(max=15, groups={"contact_update", "procuration:write"})
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "profile_read",
      *     "contact_read_after_write",
-     *     "contact_update"
+     *     "contact_update",
+     *     "procuration_request_list",
      * })
      */
     protected ?string $postalCode = null;
@@ -53,10 +55,11 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @Assert\Length(max=15, groups={"contact_update", "procuration:write"})
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "contact_read_after_write",
      *     "contact_update",
      *     "profile_read",
+     *     "procuration_request_list",
      * })
      */
     protected ?string $city = null;
@@ -68,10 +71,11 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @Assert\Length(max=255, groups={"contact_update", "procuration:write"})
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "profile_read",
      *     "contact_read_after_write",
-     *     "contact_update"
+     *     "contact_update",
+     *     "procuration_request_list",
      * })
      */
     protected ?string $cityName = null;
@@ -83,10 +87,11 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *
      * @Assert\Country(groups={"contact_update", "procuration:write"})
      *
-     * @SymfonySerializer\Groups({
+     * @Groups({
      *     "profile_read",
      *     "contact_read_after_write",
-     *     "contact_update"
+     *     "contact_update",
+     *     "procuration_request_list",
      * })
      */
     protected ?string $country = null;

@@ -4,6 +4,7 @@ namespace App\Normalizer;
 
 use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagTranslator;
+use App\Entity\ProcurationV2\Request;
 use App\Entity\Projection\ManagedUser;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -44,6 +45,14 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
         return
             empty($context[self::ALREADY_CALLED])
             && !empty($context[self::ENABLE_TAG_TRANSLATOR])
-            && (\is_array($data) || $data instanceof ManagedUser);
+            && $this->validateType($data);
+    }
+
+    private function validateType($data): bool
+    {
+        return
+            \is_array($data)
+            || $data instanceof ManagedUser
+            || $data instanceof Request;
     }
 }
