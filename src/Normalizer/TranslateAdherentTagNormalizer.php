@@ -30,7 +30,7 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
         if (\is_array($data) && !empty($data['tags']) && \is_array($data['tags'])) {
             $callback = fn (string $tag) => $this->tagTranslator->trans($tag, false);
 
-            if ($object instanceof ManagedUser) {
+            if ($object instanceof ManagedUser || $object instanceof Request) {
                 $callback = fn (string $tag) => ['label' => $this->tagTranslator->trans($tag, false), 'type' => TagEnum::getMainLevel($tag)];
             }
 

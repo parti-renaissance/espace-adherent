@@ -23,6 +23,7 @@ trait EntityIdentityTrait
      * @Groups({
      *     "autocomplete",
      *     "survey_list",
+     *     "procuration_request_list",
      * })
      */
     protected $id;
