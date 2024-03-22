@@ -483,6 +483,14 @@ procuration.accept_cgu.label: J'ai lu et j'accepte la politique de protection de
 procuration.slots.choice_1: Je souhaite porter une procuration
 procuration.slots.choice_2: Je souhaite porter deux procurations
 
+procuration.request.status.pending: En attente
+procuration.request.status.completed: Complété
+procuration.request.status.manual: Traité manuellement
+
+procuration.proxy.status.pending: En attente
+procuration.proxy.status.completed: Complété
+procuration.proxy.status.excluded: Exclu
+
 #
 # Newsletter
 #

@@ -5,7 +5,9 @@ namespace App\Entity\ProcurationV2;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
+use App\Procuration\V2\ProxyStatusEnum;
 use App\Validator\Procuration\AssociatedSlots;
+use App\Validator\Procuration\ExcludedAssociations;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,13 +19,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\Procuration\ProxyRepository")
  *
  * @AssociatedSlots
+ * @ExcludedAssociations
  */
 class Proxy extends AbstractProcuration
 {
+    public const DEFAULT_SLOTS = 1;
+
     /**
      * @ORM\Column(length=9)
      *
-     * @Assert\NotBlank
      * @Assert\Length(
      *     min=7,
      *     max=9
@@ -40,7 +44,12 @@ class Proxy extends AbstractProcuration
      *     max=2
      * )
      */
-    public int $slots;
+    public int $slots = self::DEFAULT_SLOTS;
+
+    /**
+     * @ORM\Column(enumType=ProxyStatusEnum::class)
+     */
+    public ProxyStatusEnum $status = ProxyStatusEnum::PENDING;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProcurationV2\Request", mappedBy="proxy", cascade={"all"})
@@ -97,5 +106,10 @@ class Proxy extends AbstractProcuration
     {
         $request->proxy = null;
         $this->requests->removeElement($request);
+    }
+
+    public function isExcluded(): bool
+    {
+        return ProxyStatusEnum::EXCLUDED === $this->status;
     }
 }

@@ -2,10 +2,14 @@
 
 namespace App\Admin\Procuration;
 
+use App\Form\Admin\Procuration\ProxyStatusEnumType;
+use App\Procuration\V2\RequestStatusEnum;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -16,7 +20,7 @@ class ProxyAdmin extends AbstractProcurationAdmin
         parent::configureFormFields($form);
 
         $form
-            ->with('Mandataire', ['class' => 'col-md-6'])
+            ->with('Vote')
                 ->add('electorNumber', TextType::class, [
                     'label' => 'Numéro d\'électeur',
                 ])
@@ -29,7 +33,10 @@ class ProxyAdmin extends AbstractProcurationAdmin
                     ],
                 ])
             ->end()
-            ->with('Mandants', ['class' => 'col-md-6'])
+            ->with('Traitement', ['class' => 'col-md-6'])
+                ->add('status', ProxyStatusEnumType::class, [
+                    'label' => 'Statut',
+                ])
                 ->add('requests', ModelAutocompleteType::class, [
                     'label' => 'Mandants associés',
                     'required' => false,
@@ -41,6 +48,17 @@ class ProxyAdmin extends AbstractProcurationAdmin
                     ],
                     'btn_add' => false,
                     'by_reference' => false,
+                    'callback' => function (AdminInterface $admin, $property, $value) {
+                        $datagrid = $admin->getDatagrid();
+                        $qb = $datagrid->getQuery();
+                        $alias = $qb->getRootAlias();
+                        $qb
+                            ->andWhere($alias.'.status = :status_pending')
+                            ->setParameter('status_pending', RequestStatusEnum::PENDING)
+                        ;
+
+                        $datagrid->setValue('search', null, $value);
+                    },
                 ])
             ->end()
         ;
@@ -54,6 +72,14 @@ class ProxyAdmin extends AbstractProcurationAdmin
             ->add('electorNumber', null, [
                 'label' => 'Numéro d\'électeur',
             ])
+            ->add('status', ChoiceFilter::class, [
+                'label' => 'Statut',
+                'show_filter' => true,
+                'field_type' => ProxyStatusEnumType::class,
+                'field_options' => [
+                    'multiple' => true,
+                ],
+            ])
         ;
     }
 
@@ -63,7 +89,15 @@ class ProxyAdmin extends AbstractProcurationAdmin
 
         $list
             ->add('slots', null, [
-                'label' => 'Nombre de procuration',
+                'label' => 'Nombre',
+            ])
+            ->add('requests', null, [
+                'label' => 'Mandants',
+                'template' => 'admin/procuration_v2/_list_proxy_requests.html.twig',
+            ])
+            ->add('status', null, [
+                'label' => 'Statut',
+                'template' => 'admin/procuration_v2/_list_proxy_status.html.twig',
             ])
             ->reorder([
                 'id',
@@ -72,6 +106,8 @@ class ProxyAdmin extends AbstractProcurationAdmin
                 'phone',
                 'voteZone',
                 'slots',
+                'requests',
+                'status',
                 'createdAt',
                 ListMapper::NAME_ACTIONS,
             ])

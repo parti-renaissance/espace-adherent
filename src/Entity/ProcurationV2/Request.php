@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use App\Api\Filter\InZoneOfScopeFilter;
+use App\Procuration\V2\RequestStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -41,6 +42,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Request extends AbstractProcuration
 {
+    /**
+     * @ORM\Column(enumType=RequestStatusEnum::class)
+     */
+    public RequestStatusEnum $status = RequestStatusEnum::PENDING;
+
     /**
      * @Assert\Valid
      *

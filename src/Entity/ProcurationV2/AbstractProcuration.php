@@ -32,7 +32,6 @@ abstract class AbstractProcuration implements ZoneableEntity
     /**
      * @ORM\Column
      *
-     * @Assert\NotBlank(message="procuration.email.not_blank")
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
@@ -41,7 +40,6 @@ abstract class AbstractProcuration implements ZoneableEntity
     /**
      * @ORM\Column(length=6)
      *
-     * @Assert\NotBlank(message="common.gender.invalid_choice")
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice"
@@ -54,7 +52,6 @@ abstract class AbstractProcuration implements ZoneableEntity
     /**
      * @ORM\Column
      *
-     * @Assert\NotBlank(message="procuration.first_names.not_blank")
      * @Assert\Length(
      *     min=2,
      *     max=255,
@@ -69,7 +66,6 @@ abstract class AbstractProcuration implements ZoneableEntity
     /**
      * @ORM\Column(length=100)
      *
-     * @Assert\NotBlank(message="procuration.last_name.not_blank")
      * @Assert\Length(
      *     min=1,
      *     max=100,
@@ -84,7 +80,6 @@ abstract class AbstractProcuration implements ZoneableEntity
     /**
      * @ORM\Column(type="date")
      *
-     * @Assert\NotBlank(message="procuration.birthdate.not_blank")
      * @Assert\Range(
      *     min="-120 years",
      *     max="-17 years",
@@ -112,8 +107,6 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @Assert\NotBlank(message="procuration.vote_zone.not_blank")
-     *
      * @Groups({"procuration_request_list"})
      */
     public Zone $voteZone;
@@ -126,6 +119,11 @@ abstract class AbstractProcuration implements ZoneableEntity
 
     /**
      * @ORM\Column(nullable=true)
+     *
+     * @Assert\Length(
+     *     max=255,
+     *     maxMessage="procuration.custom_vote_place.max_length"
+     * )
      */
     public ?string $customVotePlace;
 
@@ -143,8 +141,6 @@ abstract class AbstractProcuration implements ZoneableEntity
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationV2\Round")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @Assert\NotBlank(message="procuration.round.not_blank")
      */
     public Round $round;
 
