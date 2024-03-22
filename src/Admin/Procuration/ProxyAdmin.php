@@ -96,7 +96,7 @@ class ProxyAdmin extends AbstractProcurationAdmin
                 'template' => 'admin/procuration_v2/_list_proxy_requests.html.twig',
             ])
             ->add('status', null, [
-                'label' => 'Status',
+                'label' => 'Statut',
                 'template' => 'admin/procuration_v2/_list_proxy_status.html.twig',
             ])
             ->reorder([

@@ -73,7 +73,7 @@ class RequestAdmin extends AbstractProcurationAdmin
                 'template' => 'admin/procuration_v2/_list_request_proxy.html.twig',
             ])
             ->add('status', null, [
-                'label' => 'Status',
+                'label' => 'Statut',
                 'template' => 'admin/procuration_v2/_list_request_status.html.twig',
             ])
             ->reorder([
