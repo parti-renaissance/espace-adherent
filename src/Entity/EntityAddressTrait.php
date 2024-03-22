@@ -16,14 +16,21 @@ trait EntityAddressTrait
      *
      * @ORM\Column(length=150, nullable=true)
      *
-     * @Groups({"event_write", "procuration_request_list"})
+     * @Groups({
+     *     "event_write",
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     * })
      */
     protected ?string $address = null;
 
     /**
      * @ORM\Column(length=150, nullable=true)
      *
-     * @Groups({"procuration_request_list"})
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     * })
      */
     protected ?string $additionalAddress = null;
 
@@ -32,7 +39,11 @@ trait EntityAddressTrait
      *
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"event_write", "procuration_request_list"})
+     * @Groups({
+     *     "event_write",
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     * })
      */
     protected ?string $postalCode = null;
 
@@ -46,6 +57,7 @@ trait EntityAddressTrait
      *     "event_write",
      *     "event_read",
      *     "event_list_read",
+     *     "procuration_request_read",
      *     "procuration_request_list",
      * })
      */
@@ -56,7 +68,11 @@ trait EntityAddressTrait
      *
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"event_write", "procuration_request_list"})
+     * @Groups({
+     *     "event_write",
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     * })
      */
     protected ?string $cityName = null;
 
@@ -65,7 +81,11 @@ trait EntityAddressTrait
      *
      * @ORM\Column(length=2, nullable=true)
      *
-     * @Groups({"event_write", "procuration_request_list"})
+     * @Groups({
+     *     "event_write",
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     * })
      */
     protected ?string $country = null;
 

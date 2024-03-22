@@ -27,6 +27,6 @@ class ProxyNormalizer implements NormalizerInterface, NormalizerAwareInterface
         return
             empty($context[self::ALREADY_CALLED])
             && $data instanceof Proxy
-            && \in_array('procuration_request_list', $context['groups'] ?? [], true);
+            && array_intersect(['procuration_request_list', 'procuration_request_read'], $context['groups'] ?? []);
     }
 }

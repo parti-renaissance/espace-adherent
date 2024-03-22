@@ -23,7 +23,6 @@ trait EntityIdentityTrait
      * @Groups({
      *     "autocomplete",
      *     "survey_list",
-     *     "procuration_request_list",
      * })
      */
     protected $id;
@@ -111,6 +110,7 @@ trait EntityIdentityTrait
      *     "designation_read",
      *     "designation_list",
      *     "national_event_inscription:webhook",
+     *     "procuration_request_read",
      *     "procuration_request_list",
      *     "procuration_request_list_proxy",
      * })

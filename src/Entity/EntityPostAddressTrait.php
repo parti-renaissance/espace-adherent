@@ -20,6 +20,7 @@ trait EntityPostAddressTrait
      *
      * @Groups({
      *     "contact_update",
+     *     "procuration_request_read",
      *     "procuration_request_list",
      * })
      */
