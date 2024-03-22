@@ -144,6 +144,7 @@ class Zone implements GeoInterface, UuidEntityInterface
      *     "committee:read",
      *     "managed_users_list",
      *     "managed_user_read",
+     *     "procuration_request_read",
      *     "procuration_request_list",
      * })
      *
@@ -173,6 +174,7 @@ class Zone implements GeoInterface, UuidEntityInterface
      *     "zone:code,type",
      *     "managed_users_list",
      *     "managed_user_read",
+     *     "procuration_request_read",
      *     "procuration_request_list",
      * })
      */

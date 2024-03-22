@@ -32,6 +32,7 @@ trait EntityTimestampableTrait
      *     "committee:list",
      *     "document_read",
      *     "national_event_inscription:webhook",
+     *     "procuration_request_read",
      *     "procuration_request_list",
      * })
      *

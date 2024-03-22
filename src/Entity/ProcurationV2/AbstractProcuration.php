@@ -17,6 +17,7 @@ use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -34,6 +35,8 @@ abstract class AbstractProcuration implements ZoneableEntity
      *
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
+     *
+     * @Groups({"procuration_request_read"})
      */
     public string $email;
 
@@ -45,7 +48,11 @@ abstract class AbstractProcuration implements ZoneableEntity
      *     message="common.gender.invalid_choice"
      * )
      *
-     * @Groups({"procuration_request_list", "procuration_request_list_proxy"})
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     *     "procuration_request_list_proxy",
+     * })
      */
     public string $gender;
 
@@ -59,7 +66,11 @@ abstract class AbstractProcuration implements ZoneableEntity
      *     maxMessage="procuration.first_names.max_length"
      * )
      *
-     * @Groups({"procuration_request_list", "procuration_request_list_proxy"})
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     *     "procuration_request_list_proxy",
+     * })
      */
     public string $firstNames;
 
@@ -73,7 +84,11 @@ abstract class AbstractProcuration implements ZoneableEntity
      *     maxMessage="procuration.last_name.max_length"
      * )
      *
-     * @Groups({"procuration_request_list", "procuration_request_list_proxy"})
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     *     "procuration_request_list_proxy",
+     * })
      */
     public string $lastName;
 
@@ -87,7 +102,10 @@ abstract class AbstractProcuration implements ZoneableEntity
      *     maxMessage="procuration.birthdate.minimum_required_age"
      * )
      *
-     * @Groups({"procuration_request_list"})
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     * })
      */
     public \DateTimeInterface $birthdate;
 
@@ -95,6 +113,8 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @ORM\Column(type="phone_number", nullable=true)
      *
      * @AssertPhoneNumber(message="common.phone_number.invalid")
+     *
+     * @Groups({"procuration_request_read"})
      */
     public ?PhoneNumber $phone;
 
@@ -107,7 +127,10 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @Groups({"procuration_request_list"})
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     * })
      */
     public Zone $voteZone;
 
@@ -196,11 +219,26 @@ abstract class AbstractProcuration implements ZoneableEntity
     }
 
     /**
-     * @Groups({"procuration_request_list"})
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     * })
      */
     public function getAge(): ?int
     {
         return $this->birthdate?->diff(new \DateTime())->y;
+    }
+
+    /**
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     * })
+     * @SerializedName("id")
+     */
+    public function getPublicId(): string
+    {
+        return substr($this->uuid->toString(), 0, 6 - \strlen($this->id)).$this->id;
     }
 
     public function getZones(): Collection
@@ -226,7 +264,10 @@ abstract class AbstractProcuration implements ZoneableEntity
     }
 
     /**
-     * @Groups({"procuration_request_list"})
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     * })
      */
     public function getVotePlaceName(): ?string
     {

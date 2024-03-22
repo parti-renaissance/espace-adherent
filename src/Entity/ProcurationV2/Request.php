@@ -5,6 +5,7 @@ namespace App\Entity\ProcurationV2;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\InZoneOfScopeFilter;
 use App\Procuration\V2\RequestStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,12 +20,21 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={
  *         "routePrefix": "/v3/procuration",
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'procuration')",
+ *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'procurations')",
  *         "normalization_context": {
- *             "groups": {"procuration_request_list"}
+ *             "groups": {"procuration_request_list"},
  *         },
  *     },
- *     itemOperations={},
+ *     itemOperations={
+ *         "get": {
+ *             "path": "/requests/{uuid}",
+ *             "normalization_context": {
+ *                 "groups": {"procuration_request_read"},
+ *                 "enable_tag_translator": true,
+ *                 "datetime_format": "Y-m-d",
+ *             },
+ *         },
+ *     },
  *     collectionOperations={
  *         "get": {
  *             "path": "/requests",
@@ -39,11 +49,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(InZoneOfScopeFilter::class)
  * @ApiFilter(OrderFilter::class, properties={"createdAt"})
+ * @ApiFilter(SearchFilter::class, properties={"status": "exact"})
  */
 class Request extends AbstractProcuration
 {
     /**
      * @ORM\Column(enumType=RequestStatusEnum::class)
+     *
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     * })
      */
     public RequestStatusEnum $status = RequestStatusEnum::PENDING;
 
@@ -53,7 +69,10 @@ class Request extends AbstractProcuration
      * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationV2\Proxy", inversedBy="requests")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      *
-     * @Groups({"procuration_request_list"})
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     * })
      */
     public ?Proxy $proxy = null;
 
@@ -63,7 +82,10 @@ class Request extends AbstractProcuration
     }
 
     /**
-     * @Groups({"procuration_request_list"})
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     * })
      * @SerializedName("tags")
      */
     public function getAdherentTags(): ?array
