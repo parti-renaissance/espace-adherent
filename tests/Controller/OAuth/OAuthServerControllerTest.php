@@ -302,7 +302,6 @@ class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
             'postal_code' => '77190',
             'nickname' => 'pont',
             'use_nickname' => false,
-            'elected' => false,
             'emailAddress' => 'carl999@example.fr',
             'firstName' => 'Carl',
             'lastName' => 'Mirabeau',

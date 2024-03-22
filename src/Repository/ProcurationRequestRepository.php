@@ -71,7 +71,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
 
     public function findMatchingRequests(Adherent $manager, ProcurationRequestFilters $filters): array
     {
-        if (!$manager->isProcurationManager()) {
+        if (!$manager->isProcurationsManager()) {
             return [];
         }
 
@@ -101,7 +101,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
 
     public function countMatchingRequests(Adherent $manager, ProcurationRequestFilters $filters): int
     {
-        if (!$manager->isProcurationManager()) {
+        if (!$manager->isProcurationsManager()) {
             return 0;
         }
 
@@ -164,7 +164,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
 
     public function isManagedBy(Adherent $procurationManager, ProcurationRequest $procurationRequest): bool
     {
-        if (!$procurationManager->isProcurationManager()) {
+        if (!$procurationManager->isProcurationsManager()) {
             return false;
         }
 

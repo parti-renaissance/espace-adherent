@@ -7,11 +7,6 @@ use App\Scope\ScopeEnum;
 
 class PresidentDepartmentalAssemblyScopeGenerator extends AbstractScopeGenerator
 {
-    protected function getZones(Adherent $adherent): array
-    {
-        return $adherent->getPresidentDepartmentalAssemblyZones();
-    }
-
     public function supports(Adherent $adherent): bool
     {
         return $adherent->isPresidentDepartmentalAssembly();

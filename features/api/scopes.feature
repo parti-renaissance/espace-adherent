@@ -29,7 +29,7 @@ Feature:
       },
       {
         "code": "national_communication",
-        "name": "National communication",
+        "name": "Rôle national communication",
         "attributes": null,
         "zones": [
           {
@@ -44,7 +44,7 @@ Feature:
       },
       {
         "code": "national",
-        "name": "National",
+        "name": "Rôle national",
         "attributes": null,
         "zones": [
           {
@@ -83,7 +83,7 @@ Feature:
       },
       {
         "code": "phoning_national_manager",
-        "name": "Responsable Phoning",
+        "name": "Responsable phoning",
         "attributes": null,
         "zones": [
           {
@@ -159,7 +159,7 @@ Feature:
     """
     {
       "code": "national",
-      "name": "National",
+      "name": "Rôle national",
       "zones": [
         {
           "code": "FR",
@@ -194,7 +194,7 @@ Feature:
         "documents",
         "designation",
         "statutory_message",
-        "procuration"
+        "procurations"
       ],
       "attributes": null,
       "delegated_access": null
@@ -495,7 +495,7 @@ Feature:
             "documents",
             "designation",
             "statutory_message",
-            "procuration"
+            "procurations"
         ],
         "attributes": null,
         "delegated_access": {
@@ -548,7 +548,7 @@ Feature:
                 "documents",
                 "designation",
                 "statutory_message",
-                "procuration"
+                "procurations"
             ],
             "attributes": {
                 "committees": [

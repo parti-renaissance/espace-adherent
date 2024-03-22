@@ -1024,6 +1024,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
         $adherent->donatedForMembership();
         $adherent->addZoneBasedRole(AdherentZoneBasedRole::createPresidentDepartmentalAssembly([LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')]));
+        $adherent->addZoneBasedRole(AdherentZoneBasedRole::createProcurationManager([LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')]));
         $this->addReference('president-ad-1', $adherent);
 
         $manager->persist($adherent = $this->adherentFactory->createFromArray([

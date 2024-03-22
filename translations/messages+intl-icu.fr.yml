@@ -125,31 +125,52 @@ committee_host: co-animateur
 host: co-animateur
 board_member: membre du conseil
 coordinator: coordinateur
-procuration_manager: responsable procuration
 assessor_manager: responsable assesseur
 jecoute_manager: Responsable des questionnaires
 assessors_manager: Responsable assesseurs
 assessor: Assesseur
 user: utilisateur
-election_results_reporter: Rapporteur résultats
-role_national: Rôle National
-role_national_communication: Rôle National communication
-senatorial_candidate: Candidat Sénatoriales 2020
-candidate_regional_headed: Tête de liste aux régionales
-candidate_regional_leader: Chef de file aux régionales
-candidate_departmental: Candidat aux départementales
-delegated_candidate_regional_headed: Tête de liste aux régionales délégué
-delegated_candidate_regional_leader: Chef de file aux régionales délégué
-delegated_candidate_departmental: Candidat aux départementales délégué
-legislative_candidate: Candidat aux législatives
-correspondent: Correspondant
-regional_coordinator: coordinateur régional
-regional_delegate: délégué régional
-president_departmental_assembly: Président assemblée départementale
-thematic_community_chief: Responsable Thématique
-role_phoning_manager: Responsable phoning
-role_pap_national_manager: Responsable National PAP
-role_pap_user: Utilisateur PAP app mobile
+pap: Porte-à-porteur
+
+role.referent: Référent
+role.coreferent: Co-Référent
+role.delegated_referent: Référent délégué
+role.deputy: Délégué de circonscription
+role.delegated_deputy: Délégué de circonscription délégué
+role.senator: Sénateur
+role.delegated_senator: Sénateur délégué
+role.committee_supervisor: Animateur
+role.animator: Responsable comité local
+role.committee_provisional_supervisor: Animateur provisoire
+role.committee_host: Co-Animateur
+role.board_member: Membre du conseil
+role.assessor_manager: Responsable assesseur
+role.assessor: Assesseur
+role.jecoute_manager: Responsable des questionnaires
+role.user: Utilisateur
+role.national: Rôle national
+role.national_communication: Rôle national communication
+role.election_results_reporter: Rapporteur résultats
+role.senatorial_candidate: Candidat Sénatoriales 2020
+role.thematic_community_chief: Responsable Thématique
+role.candidate_regional_headed: Tête de liste aux régionales
+role.candidate_regional_leader: Chef de file aux régionales
+role.candidate_departmental: Candidat aux départementales
+role.delegated_candidate_regional_headed: Tête de liste aux régionales délégué
+role.delegated_candidate_regional_leader: Chef de file aux régionales délégué
+role.delegated_candidate_departmental: Candidat aux départementales
+role.phoning_national_manager: Responsable phoning
+role.pap_national_manager: Responsable National PAP
+role.pap_user: Utilisateur PAP app mobile
+role.correspondent: Correspondant
+role.candidate: Candidat
+role.legislative_candidate: Candidat aux législatives
+role.regional_coordinator: Coordinateur régional
+role.regional_delegate: Délégué régional
+role.president_departmental_assembly: Président assemblée départementale
+role.procurations_manager: Responsable procurations
+role.pap: Porte-à-porteur
+role.phoning: Appelant
 
 role_or_mandat.adherent: Adhérent
 role_or_mandat.supervisor: Animateur local
@@ -1366,6 +1387,7 @@ scope.feature.elections: Élections
 scope.feature.ripostes: Ripostes
 scope.feature.team: Équipes
 scope.feature.pap: Porte-à-porte
+scope.feature.procurations: Procurations
 scope.feature.pap_v2: Porte-à-porte V2
 scope.feature.news: Actualités
 scope.feature.phoning_campaign: Phoning
@@ -1412,13 +1434,6 @@ cms_block.description.help: Champ interne pour les administrateurs seulement; ne
 mailchimp_contact.status.subscribed: Abonné
 mailchimp_contact.status.unsubscribed: Désabonné
 mailchimp_contact.status.cleaned: Cleaned
-
-adherent.zone_based_role_type.correspondent: Correspondant
-adherent.zone_based_role_type.legislative_candidate: Candidat aux législatives
-adherent.zone_based_role_type.deputy: Délégué de circonscription
-adherent.zone_based_role_type.regional_coordinator: Coordinateur régional
-adherent.zone_based_role_type.regional_delegate: Délégué régional
-adherent.zone_based_role_type.president_departmental_assembly: Président assemblée départementale
 
 #
 # Scope

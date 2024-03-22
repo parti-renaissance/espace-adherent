@@ -2,6 +2,8 @@
 
 namespace App\Adherent\Authorization;
 
+use App\Address\AddressInterface;
+use App\Entity\Geo\GeoInterface;
 use App\Entity\Geo\Zone;
 use App\Scope\ScopeEnum;
 
@@ -14,6 +16,7 @@ final class ZoneBasedRoleTypeEnum
         ScopeEnum::REGIONAL_COORDINATOR,
         ScopeEnum::REGIONAL_DELEGATE,
         ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
+        ScopeEnum::PROCURATIONS_MANAGER,
     ];
 
     public const ZONE_TYPE_CONDITIONS = [
@@ -37,6 +40,12 @@ final class ZoneBasedRoleTypeEnum
         ],
         ScopeEnum::REGIONAL_DELEGATE => [
             Zone::REGION,
+        ],
+        ScopeEnum::PROCURATIONS_MANAGER => [
+            Zone::DEPARTMENT,
+            Zone::BOROUGH,
+            Zone::CITY => [GeoInterface::CITY_PARIS_CODE, GeoInterface::CITY_LYON_CODE, GeoInterface::CITY_MARSEILLE_CODE],
+            Zone::COUNTRY => [AddressInterface::FRANCE],
         ],
     ];
 }

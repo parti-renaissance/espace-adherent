@@ -40,7 +40,7 @@ class ProcurationReliabilityProcessor
             || $adherent->isSupervisor()
             || $adherent->isJecouteManager()
             || $adherent->isAssessorManager()
-            || $adherent->isProcurationManager()
+            || $adherent->isProcurationsManager()
         ) {
             $proxy->setActivistReliability();
 

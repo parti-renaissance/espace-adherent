@@ -31,7 +31,6 @@ Feature:
       ],
       "nickname": null,
       "use_nickname": false,
-      "elected": false,
       "certified": false,
       "detailed_roles": [
         {
@@ -74,7 +73,6 @@ Feature:
       "last_name":"Picard",
       "nickname":"kikouslove",
       "use_nickname":true,
-      "elected": false,
       "certified": true,
       "detailed_roles": [],
       "emailAddress":"jacques.picard@en-marche.fr",
@@ -235,7 +233,7 @@ Feature:
                 "tags": [
                     {
                         "type": "role",
-                        "label": "referent",
+                        "label": "Référent",
                         "tooltip": "Responsable communication"
                     }
                 ],
@@ -347,7 +345,7 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "senator",
+                        "label": "Sénateur",
                         "tooltip": "Collaborateur parlementaire"
                     },
                     {
@@ -357,12 +355,12 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "candidate",
+                        "label": "Candidat",
                         "tooltip": "Candidat délégué"
                     },
                     {
                         "type": "role",
-                        "label": "senatorial_candidate",
+                        "label": "Candidat Sénatoriales 2020",
                         "tooltip": "Candidat Sénateur délégué"
                     },
                     {
@@ -372,7 +370,7 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "referent",
+                        "label": "Référent",
                         "tooltip": "Responsable communication"
                     },
                     {
@@ -564,7 +562,7 @@ Feature:
                 "tags": [
                     {
                         "type": "role",
-                        "label": "referent",
+                        "label": "Référent",
                         "tooltip": "Responsable communication"
                     }
                 ],
@@ -619,7 +617,7 @@ Feature:
         "tags": [
             {
                 "type": "role",
-                "label": "referent",
+                "label": "Référent",
                 "tooltip": "Responsable communication"
             }
         ],
@@ -704,7 +702,7 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "senator",
+                        "label": "Sénateur",
                         "tooltip": "Collaborateur parlementaire"
                     },
                     {
@@ -714,12 +712,12 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "candidate",
+                        "label": "Candidat",
                         "tooltip": "Candidat délégué"
                     },
                     {
                         "type": "role",
-                        "label": "senatorial_candidate",
+                        "label": "Candidat Sénatoriales 2020",
                         "tooltip": "Candidat Sénateur délégué"
                     },
                     {
@@ -729,7 +727,7 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "referent",
+                        "label": "Référent",
                         "tooltip": "Responsable communication"
                     },
                     {
@@ -1219,7 +1217,7 @@ Feature:
                 "tags": [
                     {
                         "type": "role",
-                        "label": "referent",
+                        "label": "Référent",
                         "tooltip": "Responsable mobilisation"
                     }
                 ],
@@ -1290,7 +1288,7 @@ Feature:
                 "tags": [
                     {
                         "type": "role",
-                        "label": "referent",
+                        "label": "Référent",
                         "tooltip": "Responsable mobilisation"
                     }
                 ],

@@ -681,7 +681,7 @@ class RequestBuilder implements LoggerAwareInterface
                         Manager::INTEREST_KEY_REFERENT => $adherent->isReferent(),
                         Manager::INTEREST_KEY_DEPUTY => $adherent->isDeputy(),
                         Manager::INTEREST_KEY_COORDINATOR => $adherent->isRegionalCoordinator(),
-                        Manager::INTEREST_KEY_PROCURATION_MANAGER => $adherent->isProcurationManager(),
+                        Manager::INTEREST_KEY_PROCURATION_MANAGER => $adherent->isProcurationsManager(),
                         Manager::INTEREST_KEY_ASSESSOR_MANAGER => $adherent->isAssessorManager(),
                         Manager::INTEREST_KEY_BOARD_MEMBER => $adherent->isBoardMember(),
                     ])

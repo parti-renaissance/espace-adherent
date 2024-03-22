@@ -65,7 +65,12 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
         return (bool) $this->delegatedAccess;
     }
 
-    abstract protected function getZones(Adherent $adherent): array;
+    protected function getZones(Adherent $adherent): array
+    {
+        $role = $adherent->findZoneBasedRole($this->getCode());
+
+        return $role ? $role->getZones()->toArray() : [];
+    }
 
     private function findScope(string $code): ?ScopeEntity
     {

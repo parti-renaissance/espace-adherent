@@ -16,9 +16,4 @@ class LegislativeCandidateScopeGenerator extends AbstractScopeGenerator
     {
         return $adherent->isLegislativeCandidate();
     }
-
-    protected function getZones(Adherent $adherent): array
-    {
-        return [$adherent->getLegislativeCandidateZone()];
-    }
 }

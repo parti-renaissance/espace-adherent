@@ -7,11 +7,6 @@ use App\Scope\ScopeEnum;
 
 class RegionalCoordinatorScopeGenerator extends AbstractScopeGenerator
 {
-    protected function getZones(Adherent $adherent): array
-    {
-        return $adherent->getRegionalCoordinatorZone();
-    }
-
     public function supports(Adherent $adherent): bool
     {
         return $adherent->isRegionalCoordinator();

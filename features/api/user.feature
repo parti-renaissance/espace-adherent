@@ -26,7 +26,6 @@ Feature:
       "nickname": "pont",
       "use_nickname": false,
       "certified": false,
-      "elected": false,
       "detailed_roles": [],
       "surveys": {
         "total": 0,
@@ -47,7 +46,6 @@ Feature:
         "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
         "first_name": "Jacques",
         "last_name": "Picard",
-        "elected": false,
         "use_nickname": true,
         "detailed_roles": [],
         "certified": true,

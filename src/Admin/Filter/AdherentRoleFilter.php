@@ -24,7 +24,7 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
             'field_options' => [
                 'choices' => array_merge(AdherentRoleEnum::toArray(), ZoneBasedRoleTypeEnum::ALL),
                 'choice_label' => function (string $value) {
-                    return $value;
+                    return 'role.'.$value;
                 },
                 'multiple' => true,
             ],
@@ -87,12 +87,6 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                     $where->add('boardMember IS NOT NULL');
                 }
 
-                // Procuration Manager
-                if (\in_array(AdherentRoleEnum::PROCURATION_MANAGER, $value, true)) {
-                    $qb->leftJoin(sprintf('%s.procurationManagedArea', $alias), 'procurationManagedArea');
-                    $where->add('procurationManagedArea IS NOT NULL AND procurationManagedArea.codes IS NOT NULL');
-                }
-
                 // Assessor Manager
                 if (\in_array(AdherentRoleEnum::ASSESSOR_MANAGER, $value, true)) {
                     $qb->leftJoin(sprintf('%s.assessorManagedArea', $alias), 'assessorManagedArea');
@@ -123,30 +117,30 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                 }
 
                 // National Role
-                if (\in_array(AdherentRoleEnum::ROLE_NATIONAL, $value, true)) {
+                if (\in_array(AdherentRoleEnum::NATIONAL, $value, true)) {
                     $where->add("$alias.nationalRole = :nationalRole");
                     $qb->setParameter('nationalRole', true);
                 }
 
                 // National Communication Role
-                if (\in_array(AdherentRoleEnum::ROLE_NATIONAL_COMMUNICATION, $value, true)) {
+                if (\in_array(AdherentRoleEnum::NATIONAL_COMMUNICATION, $value, true)) {
                     $where->add("$alias.nationalCommunicationRole = true");
                 }
 
                 // Phoning national Role
-                if (\in_array(AdherentRoleEnum::ROLE_PHONING_MANAGER, $value, true)) {
+                if (\in_array(AdherentRoleEnum::PHONING_NATIONAL_MANAGER, $value, true)) {
                     $where->add("$alias.phoningManagerRole = :phoningManagerRole");
                     $qb->setParameter('phoningManagerRole', true);
                 }
 
                 // PAP national Role
-                if (\in_array(AdherentRoleEnum::ROLE_PAP_NATIONAL_MANAGER, $value, true)) {
+                if (\in_array(AdherentRoleEnum::PAP_NATIONAL_MANAGER, $value, true)) {
                     $where->add("$alias.papNationalManagerRole = :papNationalManagerRole");
                     $qb->setParameter('papNationalManagerRole', true);
                 }
 
                 // PAP user Role
-                if (\in_array(AdherentRoleEnum::ROLE_PAP_USER, $value, true)) {
+                if (\in_array(AdherentRoleEnum::PAP_USER, $value, true)) {
                     $where->add("$alias.papUserRole = :papUserRole");
                     $qb->setParameter('papUserRole', true);
                 }

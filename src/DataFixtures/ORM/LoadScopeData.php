@@ -8,6 +8,7 @@ use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LoadScopeData extends Fixture
 {
@@ -26,24 +27,9 @@ class LoadScopeData extends Fixture
         FeatureEnum::DOCUMENTS,
     ];
 
-    private const LABELS = [
-        ScopeEnum::REFERENT => 'Référent',
-        ScopeEnum::DEPUTY => 'Délégué de circonscription',
-        ScopeEnum::SENATOR => 'Sénateur',
-        ScopeEnum::NATIONAL => 'National',
-        ScopeEnum::NATIONAL_COMMUNICATION => 'National communication',
-        ScopeEnum::CANDIDATE => 'Candidat',
-        ScopeEnum::PHONING => 'Appelant',
-        ScopeEnum::PHONING_NATIONAL_MANAGER => 'Responsable Phoning',
-        ScopeEnum::PAP_NATIONAL_MANAGER => 'Responsable National PAP',
-        ScopeEnum::PAP => 'Porte-à-porteur',
-        ScopeEnum::CORRESPONDENT => 'Correspondant',
-        ScopeEnum::LEGISLATIVE_CANDIDATE => 'Candidat aux législatives',
-        ScopeEnum::REGIONAL_COORDINATOR => 'Coordinateur régional',
-        ScopeEnum::REGIONAL_DELEGATE => 'Délégué régional',
-        ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY => 'Président assemblée départementale',
-        ScopeEnum::ANIMATOR => 'Responsable comité local',
-    ];
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
 
     public function load(ObjectManager $manager)
     {
@@ -56,7 +42,7 @@ class LoadScopeData extends Fixture
 
     private function createScope(string $code, array $apps = [AppEnum::DATA_CORNER]): Scope
     {
-        return new Scope($code, self::LABELS[$code] ?? $code, $this->getFeatures($code), $apps);
+        return new Scope($code, $this->translator->trans('role.'.$code), $this->getFeatures($code), $apps);
     }
 
     private function getFeatures(string $scopeCode): array
@@ -74,6 +60,7 @@ class LoadScopeData extends Fixture
             ScopeEnum::CORRESPONDENT => array_merge(self::BASIC_FEATURES, [FeatureEnum::NEWS, FeatureEnum::MY_TEAM]),
             ScopeEnum::LEGISLATIVE_CANDIDATE => array_merge(self::BASIC_FEATURES, [FeatureEnum::NEWS, FeatureEnum::PAP, FeatureEnum::MY_TEAM, FeatureEnum::PAP_V2]),
             ScopeEnum::REGIONAL_COORDINATOR => array_diff(FeatureEnum::ALL, [FeatureEnum::DEPARTMENT_SITE]),
+            ScopeEnum::PROCURATIONS_MANAGER => [FeatureEnum::PROCURATIONS],
 
             default => FeatureEnum::ALL,
         };

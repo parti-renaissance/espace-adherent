@@ -1105,29 +1105,29 @@ class AbstractAdherentAdmin extends AbstractAdmin
 
         $query
             ->addSelect(
-                'adherent_mandate',
-                'committee_membership',
-                'coterr_membership',
-                'thematic_communities',
-                'delegated_access',
-                'political_committee_membership',
-                'zone_based_role',
-                'commitment',
-                'referent_team_member',
-                'board_member',
-                'animator_committees',
+                '_adherent_mandate',
+                '_committee_membership',
+                '_coterr_membership',
+                '_thematic_communities',
+                '_delegated_access',
+                '_political_committee_membership',
+                '_zone_based_role',
+                '_commitment',
+                '_referent_team_member',
+                '_board_member',
+                '_animator_committees',
             )
-            ->leftJoin($alias.'.adherentMandates', 'adherent_mandate')
-            ->leftJoin($alias.'.memberships', 'committee_membership')
-            ->leftJoin($alias.'.territorialCouncilMembership', 'coterr_membership')
-            ->leftJoin($alias.'.handledThematicCommunities', 'thematic_communities')
-            ->leftJoin($alias.'.receivedDelegatedAccesses', 'delegated_access')
-            ->leftJoin($alias.'.politicalCommitteeMembership', 'political_committee_membership')
-            ->leftJoin($alias.'.zoneBasedRoles', 'zone_based_role')
-            ->leftJoin($alias.'.commitment', 'commitment')
-            ->leftJoin($alias.'.referentTeamMember', 'referent_team_member')
-            ->leftJoin($alias.'.boardMember', 'board_member')
-            ->leftJoin($alias.'.animatorCommittees', 'animator_committees')
+            ->leftJoin($alias.'.adherentMandates', '_adherent_mandate')
+            ->leftJoin($alias.'.memberships', '_committee_membership')
+            ->leftJoin($alias.'.territorialCouncilMembership', '_coterr_membership')
+            ->leftJoin($alias.'.handledThematicCommunities', '_thematic_communities')
+            ->leftJoin($alias.'.receivedDelegatedAccesses', '_delegated_access')
+            ->leftJoin($alias.'.politicalCommitteeMembership', '_political_committee_membership')
+            ->leftJoin($alias.'.zoneBasedRoles', '_zone_based_role')
+            ->leftJoin($alias.'.commitment', '_commitment')
+            ->leftJoin($alias.'.referentTeamMember', '_referent_team_member')
+            ->leftJoin($alias.'.boardMember', '_board_member')
+            ->leftJoin($alias.'.animatorCommittees', '_animator_committees')
         ;
 
         return $query;

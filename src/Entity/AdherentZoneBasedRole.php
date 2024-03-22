@@ -66,6 +66,11 @@ class AdherentZoneBasedRole
         return static::create(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, $zones);
     }
 
+    public static function createProcurationManager(array $zones): self
+    {
+        return static::create(ScopeEnum::PROCURATIONS_MANAGER, $zones);
+    }
+
     private static function create(string $scope, array $zones): self
     {
         $role = new self($scope);

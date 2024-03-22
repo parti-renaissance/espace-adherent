@@ -22,18 +22,16 @@ class AdherentRoleEnum extends Enum
 
     public const BOARD_MEMBER = 'board_member';
 
-    public const PROCURATION_MANAGER = 'procuration_manager';
     public const ASSESSOR_MANAGER = 'assessor_manager';
     public const ASSESSOR = 'assessor';
     public const JECOUTE_MANAGER = 'jecoute_manager';
 
     public const USER = 'user';
 
-    public const ELECTED = 'elected';
     public const ONGOING_ELECTED_REPRESENTATIVE = 'ongoing_eletected_representative';
 
-    public const ROLE_NATIONAL = 'role_national';
-    public const ROLE_NATIONAL_COMMUNICATION = 'role_national_communication';
+    public const NATIONAL = 'national';
+    public const NATIONAL_COMMUNICATION = 'national_communication';
     public const ELECTION_RESULTS_REPORTER = 'election_results_reporter';
 
     public const SENATORIAL_CANDIDATE = 'senatorial_candidate';
@@ -47,9 +45,9 @@ class AdherentRoleEnum extends Enum
     public const DELEGATED_CANDIDATE_REGIONAL_LEADER = 'delegated_candidate_regional_leader';
     public const DELEGATED_CANDIDATE_DEPARTMENTAL = 'delegated_candidate_departmental';
 
-    public const ROLE_PHONING_MANAGER = 'role_phoning_manager';
-    public const ROLE_PAP_NATIONAL_MANAGER = 'role_pap_national_manager';
-    public const ROLE_PAP_USER = 'role_pap_user';
+    public const PHONING_NATIONAL_MANAGER = 'phoning_national_manager';
+    public const PAP_NATIONAL_MANAGER = 'pap_national_manager';
+    public const PAP_USER = 'pap_user';
 
     public static function getCandidates(): array
     {

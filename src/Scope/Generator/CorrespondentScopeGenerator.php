@@ -16,9 +16,4 @@ class CorrespondentScopeGenerator extends AbstractScopeGenerator
     {
         return $adherent->isCorrespondent();
     }
-
-    protected function getZones(Adherent $adherent): array
-    {
-        return $adherent->findZoneBasedRole(ScopeEnum::CORRESPONDENT)->getZones()->toArray();
-    }
 }
