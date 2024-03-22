@@ -54,11 +54,6 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
     private $googleAuthenticatorSecret;
 
     /**
-     * @ORM\Column(type="simple_array")
-     */
-    public array $roles = [];
-
-    /**
      * @var AdministratorRole[]|Collection
      *
      * @ORM\ManyToMany(targetEntity=AdministratorRole::class)
@@ -91,7 +86,7 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
         return $this->emailAddress ?: '';
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         $roles = ['ROLE_ADMIN_DASHBOARD'];
 
