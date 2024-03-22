@@ -74,6 +74,7 @@ const FirstForm = (props) => ({
             body: JSON.stringify({
                 email: document.querySelector('[id$=_email]').value,
                 recaptcha: this.captchaToken,
+                type: document.querySelector('#procuration_proxy_email') ? 'proxy' : 'request',
                 utm_source: params.get('utm_source'),
                 utm_campaign: params.get('utm_campaign'),
             }),
