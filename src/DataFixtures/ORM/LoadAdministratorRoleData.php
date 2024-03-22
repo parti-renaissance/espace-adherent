@@ -413,12 +413,12 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_PROCURATION_V2_ELECTIONS',
             'Administrateur des élections de procurations',
-            AdministratorRoleGroupEnum::TERRITOIRES
+            AdministratorRoleGroupEnum::ELECTIONS
         );
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_PROCURATION_V2_MANAGERS',
             'Administrateur des mandants & mandataires',
-            AdministratorRoleGroupEnum::TERRITOIRES
+            AdministratorRoleGroupEnum::ELECTIONS
         );
         // Application Mobile
         yield $this->createRole(
