@@ -233,7 +233,7 @@ Feature:
                 "tags": [
                     {
                         "type": "role",
-                        "label": "referent",
+                        "label": "Référent",
                         "tooltip": "Responsable communication"
                     }
                 ],
@@ -345,7 +345,7 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "senator",
+                        "label": "Sénateur",
                         "tooltip": "Collaborateur parlementaire"
                     },
                     {
@@ -355,12 +355,12 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "candidate",
+                        "label": "Candidat",
                         "tooltip": "Candidat délégué"
                     },
                     {
                         "type": "role",
-                        "label": "senatorial_candidate",
+                        "label": "Candidat Sénatoriales 2020",
                         "tooltip": "Candidat Sénateur délégué"
                     },
                     {
@@ -370,7 +370,7 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "referent",
+                        "label": "Référent",
                         "tooltip": "Responsable communication"
                     },
                     {
@@ -562,7 +562,7 @@ Feature:
                 "tags": [
                     {
                         "type": "role",
-                        "label": "referent",
+                        "label": "Référent",
                         "tooltip": "Responsable communication"
                     }
                 ],
@@ -617,7 +617,7 @@ Feature:
         "tags": [
             {
                 "type": "role",
-                "label": "referent",
+                "label": "Référent",
                 "tooltip": "Responsable communication"
             }
         ],
@@ -702,7 +702,7 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "senator",
+                        "label": "Sénateur",
                         "tooltip": "Collaborateur parlementaire"
                     },
                     {
@@ -712,12 +712,12 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "candidate",
+                        "label": "Candidat",
                         "tooltip": "Candidat délégué"
                     },
                     {
                         "type": "role",
-                        "label": "senatorial_candidate",
+                        "label": "Candidat Sénatoriales 2020",
                         "tooltip": "Candidat Sénateur délégué"
                     },
                     {
@@ -727,7 +727,7 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "referent",
+                        "label": "Référent",
                         "tooltip": "Responsable communication"
                     },
                     {
@@ -1217,7 +1217,7 @@ Feature:
                 "tags": [
                     {
                         "type": "role",
-                        "label": "referent",
+                        "label": "Référent",
                         "tooltip": "Responsable mobilisation"
                     }
                 ],
@@ -1288,7 +1288,7 @@ Feature:
                 "tags": [
                     {
                         "type": "role",
-                        "label": "referent",
+                        "label": "Référent",
                         "tooltip": "Responsable mobilisation"
                     }
                 ],
