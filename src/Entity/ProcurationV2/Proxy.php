@@ -28,7 +28,6 @@ class Proxy extends AbstractProcuration
     /**
      * @ORM\Column(length=9)
      *
-     * @Assert\NotBlank
      * @Assert\Length(
      *     min=7,
      *     max=9
@@ -40,7 +39,6 @@ class Proxy extends AbstractProcuration
     /**
      * @ORM\Column(type="smallint", options={"default": 1, "unsigned": true})
      *
-     * @Assert\NotBlank
      * @Assert\Range(
      *     min=1,
      *     max=2
@@ -50,9 +48,6 @@ class Proxy extends AbstractProcuration
 
     /**
      * @ORM\Column(enumType=ProxyStatusEnum::class)
-     *
-     * @Assert\NotBlank
-     * @Assert\Type(type=ProxyStatusEnum::class)
      */
     public ProxyStatusEnum $status = ProxyStatusEnum::PENDING;
 

@@ -44,9 +44,6 @@ class Request extends AbstractProcuration
 {
     /**
      * @ORM\Column(enumType=RequestStatusEnum::class)
-     *
-     * @Assert\NotBlank
-     * @Assert\Type(type=RequestStatusEnum::class)
      */
     public RequestStatusEnum $status = RequestStatusEnum::PENDING;
 
