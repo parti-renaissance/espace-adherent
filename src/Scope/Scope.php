@@ -128,12 +128,12 @@ class Scope
 
     public function getDelegatorCode(): ?string
     {
-        return $this->delegatedAccess ? $this->delegatedAccess->getType() : null;
+        return $this->delegatedAccess?->getType();
     }
 
     public function getDelegator(): ?Adherent
     {
-        return $this->delegatedAccess ? $this->delegatedAccess->getDelegator() : null;
+        return $this->delegatedAccess?->getDelegator();
     }
 
     public function getAttributes(): ?array

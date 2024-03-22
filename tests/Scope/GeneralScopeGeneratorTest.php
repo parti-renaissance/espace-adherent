@@ -166,7 +166,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                     'documents',
                     'designation',
                     'statutory_message',
-                    'procuration',
+                    'procurations',
                 ],
             ],
         ]];
@@ -229,6 +229,14 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
         yield [LoadAdherentData::ADHERENT_20_UUID, [
             [
                 'code' => 'president_departmental_assembly',
+                'zones' => [[
+                    'code' => '92',
+                    'name' => 'Hauts-de-Seine',
+                ]],
+                'apps' => ['data_corner'],
+            ],
+            [
+                'code' => 'procurations_manager',
                 'zones' => [[
                     'code' => '92',
                     'name' => 'Hauts-de-Seine',

@@ -1029,14 +1029,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }, $this->getSubscriptionTypes())));
     }
 
-    /**
-     * @Groups({"user_profile"})
-     */
-    public function isElected(): bool
-    {
-        return $this->getMandates() && \count($this->getMandates()) > 0;
-    }
-
     public function getRoles(): array
     {
         $roles = ['ROLE_USER'];
@@ -1093,7 +1085,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_ANIMATOR';
         }
 
-        if ($this->isProcurationManager()) {
+        if ($this->isProcurationsManager()) {
             $roles[] = 'ROLE_PROCURATION_MANAGER';
         }
 
@@ -1210,7 +1202,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->isReferent()
             || $this->isDelegatedReferent()
             || $this->isRegionalCoordinator()
-            || $this->isProcurationManager()
+            || $this->isProcurationsManager()
             || $this->isAssessorManager()
             || $this->isAssessor()
             || $this->isJecouteManager()
@@ -1940,9 +1932,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->managedArea->getMarkerLongitude();
     }
 
-    public function isProcurationManager(): bool
+    public function isProcurationsManager(): bool
     {
-        return $this->procurationManagedArea instanceof ProcurationManagedArea && !empty($this->procurationManagedArea->getCodes());
+        return $this->hasZoneBasedRole(ScopeEnum::PROCURATIONS_MANAGER);
     }
 
     public function isAssessorManager(): bool
@@ -1957,7 +1949,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function canBeProxy(): bool
     {
-        return $this->isReferent() || $this->isProcurationManager();
+        return $this->isReferent() || $this->isProcurationsManager();
     }
 
     public function getProcurationManagedAreaCodesAsString(): ?string
@@ -2732,14 +2724,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @return Zone[]
      */
-    public function getRegionalDelegateZones(): array
-    {
-        return $this->isRegionalDelegate() ? $this->findZoneBasedRole(ScopeEnum::REGIONAL_DELEGATE)->getZones()->toArray() : [];
-    }
-
-    /**
-     * @return Zone[]
-     */
     public function getPresidentDepartmentalAssemblyZones(): array
     {
         return $this->isPresidentDepartmentalAssembly() ? $this->findZoneBasedRole(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY)->getZones()->toArray() : [];
@@ -2847,7 +2831,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->handledThematicCommunities->removeElement($thematicCommunity);
     }
 
-    public function isThematicCommunityChief()
+    public function isThematicCommunityChief(): bool
     {
         return $this->handledThematicCommunities->count() > 0;
     }

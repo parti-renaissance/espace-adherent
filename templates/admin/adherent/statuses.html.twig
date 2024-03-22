@@ -6,6 +6,18 @@
 
 {% set labels = [] %}
 
+{% for zone_based_role in object.getZoneBasedRoles() %}
+    {% set labels = labels|merge([('role.' ~ zone_based_role.getType())|trans]) %}
+{% endfor %}
+
+{% for delegated_role in object.getReceivedDelegatedAccesses() %}
+    {% if delegated_role.getType() in constant('App\\Adherent\\Authorization\\ZoneBasedRoleTypeEnum::ALL') %}
+        {% set labels = labels|merge([(('role.' ~ delegated_role.getType())|trans) ~ ' délégué']) %}
+    {% else %}
+        {% set labels = labels|merge([(delegated_role.getType()|trans)|capitalize ~ ' délégué']) %}
+    {% endif %}
+{% endfor %}
+
 {% if object.hasAdvancedPrivileges %}
     {% if object.isReferent %}
         {% set labels = labels|merge(['Référent']) %}
@@ -15,40 +27,12 @@
         {% set labels = labels|merge(['Co-Référent']) %}
     {% endif %}
 
-    {% if object.isDelegatedReferent %}
-        {% set labels = labels|merge(['Référent délégué']) %}
-    {% endif %}
-
-    {% if object.isRegionalCoordinator %}
-        {% set labels = labels|merge(['Coordinateur Régional']) %}
-    {% endif %}
-
-    {% if object.isRegionalDelegate %}
-        {% set labels = labels|merge(['Coordinateur Régional']) %}
-    {% endif %}
-
-    {% if object.isPresidentDepartmentalAssembly() %}
-        {% set labels = labels|merge(['Président assemblée départementale']) %}
-    {% endif %}
-
-    {% if object.isDelegatedPresidentDepartmentalAssembly() %}
-        {% set labels = labels|merge(['PaD délégué']) %}
-    {% endif %}
-
-    {% if object.isProcurationManager %}
-        {% set labels = labels|merge(['Procuration']) %}
-    {% endif %}
-
     {% if object.isAssessorManager %}
         {% set labels = labels|merge(['Responsable assesseurs']) %}
     {% endif %}
 
     {% if object.isAnimator %}
         {% set labels = labels|merge(['Responsable comité local']) %}
-    {% endif %}
-
-    {% if object.isDelegatedAnimator %}
-        {% set labels = labels|merge(['Responsable comité local délégué']) %}
     {% endif %}
 
     {% if object.isAssessor %}
@@ -75,20 +59,8 @@
         {% set labels = labels|merge(['Membre du Conseil']) %}
     {% endif %}
 
-    {% if object.isDeputy %}
-        {% set labels = labels|merge(['Délégué de circonscription']) %}
-    {% endif %}
-
-    {% if object.isDelegatedDeputy %}
-        {% set labels = labels|merge(['Délégué de circonscription délégué']) %}
-    {% endif %}
-
     {% if object.isSenator %}
         {% set labels = labels|merge(['Sénateur']) %}
-    {% endif %}
-
-    {% if object.isDelegatedSenator %}
-        {% set labels = labels|merge(['Sénateur délégué']) %}
     {% endif %}
 
     {% if object.isSenatorialCandidate %}
@@ -121,14 +93,6 @@
 
     {% if object.isElectionResultsReporter %}
         {% set labels = labels|merge(['Rapporteur résultats']) %}
-    {% endif %}
-
-    {% if object.isLegislativeCandidate %}
-        {% set labels = labels|merge(['Candidat aux législatives']) %}
-    {% endif %}
-
-    {% if object.isCorrespondent %}
-        {% set labels = labels|merge(['Correspondant']) %}
     {% endif %}
 
     {% if object.isThematicCommunityChief %}

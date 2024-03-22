@@ -20,7 +20,7 @@ class AdherentZoneBasedRoleType extends AbstractType
                 'label' => 'Rôle national ou local',
                 'choices' => array_combine(ZoneBasedRoleTypeEnum::ALL, ZoneBasedRoleTypeEnum::ALL),
                 'choice_label' => function (string $label): string {
-                    return 'adherent.zone_based_role_type.'.$label;
+                    return 'role.'.$label;
                 },
             ])
             ->add('zones', AdminZoneAutocompleteType::class, [
