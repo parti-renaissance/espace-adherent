@@ -3,16 +3,16 @@
 namespace App\Adherent\Certification;
 
 use App\Entity\CertificationRequest;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CertificationRequestDocumentManager
 {
     private $storage;
 
-    public function __construct(FilesystemInterface $storage)
+    public function __construct(FilesystemOperator $defaultStorage)
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     public function uploadDocument(CertificationRequest $certificationRequest): void
@@ -24,7 +24,7 @@ class CertificationRequestDocumentManager
         $certificationRequest->processDocument($certificationRequest->getDocument());
         $path = $certificationRequest->getPathWithDirectory();
 
-        $this->storage->put($path, file_get_contents($certificationRequest->getDocument()->getPathname()));
+        $this->storage->write($path, file_get_contents($certificationRequest->getDocument()->getPathname()));
     }
 
     public function removeDocument(CertificationRequest $certificationRequest): void

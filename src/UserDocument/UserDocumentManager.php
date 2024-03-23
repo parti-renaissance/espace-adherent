@@ -4,7 +4,7 @@ namespace App\UserDocument;
 
 use App\Entity\UserDocument;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -15,11 +15,11 @@ class UserDocumentManager
     private $manager;
     private $storage;
 
-    public function __construct(ValidatorInterface $validator, ObjectManager $manager, FilesystemInterface $storage)
+    public function __construct(ValidatorInterface $validator, ObjectManager $manager, FilesystemOperator $defaultStorage)
     {
         $this->validator = $validator;
         $this->manager = $manager;
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     public function createAndSave(UploadedFile $uploadedFile, string $type): UserDocument
@@ -48,7 +48,7 @@ class UserDocumentManager
 
     public function saveToStorage(string $path, string $uploadedFilePath): void
     {
-        $this->storage->put($path, file_get_contents($uploadedFilePath));
+        $this->storage->write($path, file_get_contents($uploadedFilePath));
     }
 
     public function getContent(UserDocument $document): string

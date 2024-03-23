@@ -5,7 +5,7 @@ namespace App\TerritorialCouncil;
 use App\Entity\TerritorialCouncil\OfficialReport;
 use App\Entity\TerritorialCouncil\OfficialReportDocument;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class OfficialReportManager
@@ -13,9 +13,9 @@ class OfficialReportManager
     private $storage;
     private $entityManager;
 
-    public function __construct(FilesystemInterface $storage, EntityManagerInterface $entityManager)
+    public function __construct(FilesystemOperator $defaultStorage, EntityManagerInterface $entityManager)
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
         $this->entityManager = $entityManager;
     }
 
@@ -57,6 +57,6 @@ class OfficialReportManager
             throw new \RuntimeException(sprintf('The file must be an instance of %s', UploadedFile::class));
         }
 
-        $this->storage->put($path, file_get_contents($report->getFile()->getPathname()));
+        $this->storage->write($path, file_get_contents($report->getFile()->getPathname()));
     }
 }

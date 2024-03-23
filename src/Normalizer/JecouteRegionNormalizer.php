@@ -4,8 +4,6 @@ namespace App\Normalizer;
 
 use App\Entity\Jecoute\Region;
 use App\Storage\UrlAdapterInterface;
-use League\Flysystem\Cached\CachedAdapter;
-use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -18,16 +16,16 @@ class JecouteRegionNormalizer implements NormalizerInterface, NormalizerAwareInt
 
     private UrlAdapterInterface $storageAdapter;
 
-    public function __construct(FilesystemInterface $storage)
-    {
-        $storageAdapter = $storage->getAdapter();
-
-        if ($storageAdapter instanceof CachedAdapter) {
-            $storageAdapter = $storageAdapter->getAdapter();
-        }
-
-        $this->storageAdapter = $storageAdapter;
-    }
+    //    public function __construct(FilesystemOperator $defaultStorage)
+    //    {
+    //        $storageAdapter = $storage->getAdapter();
+    //
+    //        if ($storageAdapter instanceof CachedAdapter) {
+    //            $storageAdapter = $storageAdapter->getAdapter();
+    //        }
+    //
+    //        $this->storageAdapter = $storageAdapter;
+    //    }
 
     /**
      * @param Region $object

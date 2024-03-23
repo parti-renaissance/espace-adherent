@@ -4,7 +4,7 @@ namespace App\Admin\Extension;
 
 use App\Admin\ImageUploadAdminInterface;
 use App\Entity\Image;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -14,9 +14,9 @@ class ImageRelationUploadExtension extends AbstractAdminExtension
     private $storage;
     private $logger;
 
-    public function __construct(FilesystemInterface $storage, LoggerInterface $logger)
+    public function __construct(FilesystemOperator $defaultStorage, LoggerInterface $logger)
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
         $this->logger = $logger;
     }
 
@@ -67,7 +67,7 @@ class ImageRelationUploadExtension extends AbstractAdminExtension
             $image->syncWithUploadedFile();
 
             $path = $image->getFilePath();
-            $this->storage->put($path, file_get_contents($image->getFile()->getPathname()));
+            $this->storage->write($path, file_get_contents($image->getFile()->getPathname()));
         }
     }
 

@@ -4,7 +4,7 @@ namespace App\Admin\ApplicationRequest;
 
 use App\Entity\ApplicationRequest\RunningMateRequest;
 use App\Entity\ApplicationRequest\Theme;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\Form\Type\BooleanType;
@@ -110,9 +110,9 @@ class RunningMateRequestAdmin extends AbstractApplicationRequestAdmin
         }
     }
 
-    public function setStorage(FilesystemInterface $storage): void
+    public function setStorage(FilesystemOperator $defaultStorage): void
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     protected function configureExportFields(): array

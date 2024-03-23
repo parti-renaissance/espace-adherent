@@ -3,9 +3,7 @@
 namespace Tests\App\Documents;
 
 use App\Documents\DocumentRepository;
-use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
-use League\Flysystem\Memory\MemoryAdapter;
 use PHPUnit\Framework\TestCase;
 
 class DocumentRepositoryTest extends TestCase

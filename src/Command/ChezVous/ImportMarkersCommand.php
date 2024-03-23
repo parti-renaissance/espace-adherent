@@ -15,7 +15,7 @@ use App\Entity\ChezVous\MeasureType;
 use App\Repository\ChezVous\CityRepository;
 use App\Repository\ChezVous\MeasureRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,20 +35,18 @@ class ImportMarkersCommand extends AbstractImportCommand
 
     protected function configure(): void
     {
-        $this
-            ->addArgument('type', InputArgument::OPTIONAL)
-        ;
+        $this->addArgument('type', InputArgument::OPTIONAL);
     }
 
     public function __construct(
         EntityManagerInterface $em,
         CityRepository $cityRepository,
-        FilesystemInterface $storage,
+        FilesystemOperator $defaultStorage,
         MarkerChoiceLoader $markerChoiceLoader,
         MeasureChoiceLoader $measureChoiceLoader,
         MeasureRepository $measureRepository
     ) {
-        parent::__construct($em, $cityRepository, $storage);
+        parent::__construct($em, $cityRepository, $defaultStorage);
 
         $this->markerChoiceLoader = $markerChoiceLoader;
         $this->measureChoiceLoader = $measureChoiceLoader;

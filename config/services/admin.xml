@@ -104,7 +104,7 @@
             <argument />
 
             <call method="setStorage">
-                <argument type="service" id="League\Flysystem\FilesystemInterface" />
+                <argument type="service" id="League\Flysystem\FilesystemOperator" />
             </call>
             <call method="setGlide">
                 <argument type="service" id="League\Glide\Server" />
@@ -168,7 +168,7 @@
                 </argument>
             </call>
             <call method="setStorage">
-                <argument type="service" id="League\Flysystem\FilesystemInterface" />
+                <argument type="service" id="League\Flysystem\FilesystemOperator" />
             </call>
             <call method="setGlide">
                 <argument type="service" id="League\Glide\Server" />
@@ -1066,7 +1066,7 @@
             <argument />
 
             <call method="setStorage">
-                <argument type="service" id="League\Flysystem\FilesystemInterface" />
+                <argument type="service" id="League\Flysystem\FilesystemOperator" />
             </call>
             <call method="setGlide">
                 <argument type="service" id="League\Glide\Server" />
@@ -1081,7 +1081,7 @@
             <argument />
 
             <call method="setStorage">
-                <argument type="service" id="League\Flysystem\FilesystemInterface" />
+                <argument type="service" id="League\Flysystem\FilesystemOperator" />
             </call>
             <call method="setGlide">
                 <argument type="service" id="League\Glide\Server" />
@@ -1293,7 +1293,7 @@
             <argument>App\Entity\ApplicationRequest\RunningMateRequest</argument>
             <argument />
             <call method="setStorage">
-                <argument type="service" id="League\Flysystem\FilesystemInterface" />
+                <argument type="service" id="League\Flysystem\FilesystemOperator" />
             </call>
         </service>
 
@@ -1329,7 +1329,7 @@
             <argument />
 
             <call method="setStorage">
-                <argument type="service" id="League\Flysystem\FilesystemInterface" />
+                <argument type="service" id="League\Flysystem\FilesystemOperator" />
             </call>
 
             <call method="setGlide">
@@ -1536,7 +1536,7 @@
             <argument />
 
             <call method="setStorage">
-                <argument type="service" id="League\Flysystem\FilesystemInterface" />
+                <argument type="service" id="League\Flysystem\FilesystemOperator" />
             </call>
 
             <call method="setGlide">

@@ -10,7 +10,7 @@ use App\Entity\Timeline\Theme;
 use App\Timeline\TimelineFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -39,11 +39,11 @@ class TimelineImportCommand extends Command
      */
     private $io;
 
-    public function __construct(EntityManagerInterface $em, TimelineFactory $factory, FilesystemInterface $storage)
+    public function __construct(EntityManagerInterface $em, TimelineFactory $factory, FilesystemOperator $defaultStorage)
     {
         $this->em = $em;
         $this->factory = $factory;
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
 
         parent::__construct();
     }

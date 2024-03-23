@@ -4,7 +4,7 @@ namespace Tests\App\EventListener;
 
 use App\Entity\Mooc\AttachmentFile;
 use App\EntityListener\FileListener;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use League\Glide\Server;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Tests\App\AbstractKernelTestCase;
@@ -29,7 +29,7 @@ class FileListenerTest extends AbstractKernelTestCase
         parent::setUp();
 
         $this->entityFileListener = new FileListener(
-            $this->get(FilesystemInterface::class),
+            $this->get(FilesystemOperator::class),
             $this->get(Server::class)
         );
     }

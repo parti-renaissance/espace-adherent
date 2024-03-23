@@ -10,7 +10,7 @@ use App\Entity\Media;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\File;
 
 class LoadFormationData extends Fixture
@@ -19,10 +19,10 @@ class LoadFormationData extends Fixture
     private $mediaFactory;
     private $storage;
 
-    public function __construct(MediaFactory $mediaFactory, FilesystemInterface $storage)
+    public function __construct(MediaFactory $mediaFactory, FilesystemOperator $defaultStorage)
     {
         $this->mediaFactory = $mediaFactory;
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
         $this->faker = Factory::create('fr_FR');
     }
 
@@ -30,7 +30,7 @@ class LoadFormationData extends Fixture
     {
         // Media
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/10decembre.jpg');
-        $this->storage->put('images/espace-formation.jpg', file_get_contents($mediaFile->getPathname()));
+        $this->storage->write('images/espace-formation.jpg', file_get_contents($mediaFile->getPathname()));
         $media = $this->mediaFactory->createFromFile('Image pour l\'espace formation', 'espace-formation.jpg', $mediaFile);
 
         $manager->persist($path1 = $this->createPath('Parcours 1'));

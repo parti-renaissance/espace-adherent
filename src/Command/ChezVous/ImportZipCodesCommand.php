@@ -10,7 +10,7 @@ use App\Repository\ChezVous\DepartmentRepository;
 use App\Repository\ChezVous\RegionRepository;
 use Cocur\Slugify\SlugifyInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -33,12 +33,12 @@ class ImportZipCodesCommand extends AbstractImportCommand
     public function __construct(
         EntityManagerInterface $em,
         CityRepository $cityRepository,
-        FilesystemInterface $storage,
+        FilesystemOperator $defaultStorage,
         SlugifyInterface $slugify,
         RegionRepository $regionRepository,
         DepartmentRepository $departmentRepository
     ) {
-        parent::__construct($em, $cityRepository, $storage);
+        parent::__construct($em, $cityRepository, $defaultStorage);
 
         $this->slugify = $slugify;
         $this->regionRepository = $regionRepository;

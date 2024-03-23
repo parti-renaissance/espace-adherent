@@ -5,7 +5,7 @@ namespace App\Filesystem;
 use App\Entity\Filesystem\File;
 use App\Repository\Filesystem\FileRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileManager
@@ -15,11 +15,11 @@ class FileManager
     private $repository;
 
     public function __construct(
-        FilesystemInterface $storage,
+        FilesystemOperator $defaultStorage,
         EntityManagerInterface $entityManager,
         FileRepository $repository
     ) {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
         $this->entityManager = $entityManager;
         $this->repository = $repository;
     }
@@ -49,7 +49,7 @@ class FileManager
             throw new \RuntimeException(sprintf('The file must be an instance of %s', UploadedFile::class));
         }
 
-        $this->storage->put($file->getPath(), file_get_contents($file->getFile()->getPathname()));
+        $this->storage->write($file->getPath(), file_get_contents($file->getFile()->getPathname()));
     }
 
     public function remove(File $file): void

@@ -7,7 +7,7 @@ use App\Content\MediaFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\File;
 
 class LoadClarificationData extends Fixture
@@ -19,11 +19,11 @@ class LoadClarificationData extends Fixture
     public function __construct(
         ClarificationFactory $clarificationFactory,
         MediaFactory $mediaFactory,
-        FilesystemInterface $storage
+        FilesystemOperator $defaultStorage
     ) {
         $this->clarificationFactory = $clarificationFactory;
         $this->mediaFactory = $mediaFactory;
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     public function load(ObjectManager $manager)
@@ -32,7 +32,7 @@ class LoadClarificationData extends Fixture
 
         // Media
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/10decembre.jpg');
-        $this->storage->put('images/clarification.jpg', file_get_contents($mediaFile->getPathname()));
+        $this->storage->write('images/clarification.jpg', file_get_contents($mediaFile->getPathname()));
         $media = $this->mediaFactory->createFromFile('Clarification image', 'clarification.jpg', $mediaFile);
 
         $manager->persist($media);

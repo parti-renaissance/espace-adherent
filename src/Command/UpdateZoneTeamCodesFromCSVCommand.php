@@ -7,7 +7,7 @@ use App\Entity\Geo\Zone;
 use App\Repository\ChezVous\CityRepository;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,10 +26,10 @@ class UpdateZoneTeamCodesFromCSVCommand extends AbstractImportCommand
     public function __construct(
         EntityManagerInterface $em,
         CityRepository $cityRepository,
-        FilesystemInterface $storage,
+        FilesystemOperator $defaultStorage,
         ZoneRepository $zoneRepository
     ) {
-        parent::__construct($em, $cityRepository, $storage);
+        parent::__construct($em, $cityRepository, $defaultStorage);
 
         $this->em = $em;
         $this->zoneRepository = $zoneRepository;
