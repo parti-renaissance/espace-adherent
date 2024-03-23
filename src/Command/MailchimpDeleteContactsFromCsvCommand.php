@@ -6,7 +6,7 @@ use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
 use App\Mailchimp\Synchronisation\Command\RemoveApplicationRequestCandidateCommand;
 use App\Mailchimp\Synchronisation\Command\RemoveNewsletterMemberCommand;
 use League\Csv\Reader;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
@@ -27,10 +27,10 @@ class MailchimpDeleteContactsFromCsvCommand extends Command
     private $io;
     private $storage;
 
-    public function __construct(MessageBusInterface $bus, FilesystemInterface $storage)
+    public function __construct(MessageBusInterface $bus, FilesystemOperator $defaultStorage)
     {
         $this->bus = $bus;
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
 
         parent::__construct();
     }

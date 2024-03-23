@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Donation;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,16 +15,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminDonationController extends AbstractController
 {
     #[Route(path: '/file/{id}', name: 'app_admin_donation_file', methods: 'GET')]
-    public function fileAction(Donation $donation, FilesystemInterface $storage): Response
+    public function fileAction(Donation $donation, FilesystemOperator $defaultStorage): Response
     {
         $filePath = $donation->getFilePathWithDirectory();
 
-        if (!$storage->has($filePath)) {
+        if (!$defaultStorage->has($filePath)) {
             throw $this->createNotFoundException();
         }
 
-        return new Response($storage->read($filePath), Response::HTTP_OK, [
-            'Content-Type' => $storage->getMimetype($filePath),
+        return new Response($defaultStorage->read($filePath), Response::HTTP_OK, [
+            'Content-Type' => $defaultStorage->mimeType($filePath),
         ]);
     }
 

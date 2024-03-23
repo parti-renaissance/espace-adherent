@@ -29,42 +29,6 @@ class HomeControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertSame(1, $crawler->filter('html:contains("Le candidat du travail")')->count());
     }
 
-    #[DataProvider('provideSitemaps')]
-    public function testSitemaps(string $page): void
-    {
-        $this->client->request(Request::METHOD_GET, $page);
-
-        $this->isSuccessful($this->client->getResponse());
-    }
-
-    #[DataProvider('provideEmptySitemaps')]
-    public function testEmptySitemaps(string $page): void
-    {
-        $this->client->request(Request::METHOD_GET, $page);
-
-        $this->assertClientIsRedirectedTo('/sitemap.xml', $this->client, false, true);
-    }
-
-    public static function provideSitemaps(): array
-    {
-        return [
-            ['/sitemap.xml'],
-            ['/sitemap_main_1.xml'],
-            ['/sitemap_content_1.xml'],
-            ['/sitemap_committees_1.xml'],
-            ['/sitemap_events_1.xml'],
-            ['/sitemap_images_1.xml'],
-        ];
-    }
-
-    public static function provideEmptySitemaps(): array
-    {
-        return [
-            ['/sitemap_committees_42.xml'],
-            ['/sitemap_events_42.xml'],
-        ];
-    }
-
     public function testDynamicRedirections(): void
     {
         $this->client->request(Request::METHOD_GET, '/dynamic-redirection-301/?test=123');

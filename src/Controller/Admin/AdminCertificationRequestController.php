@@ -10,7 +10,7 @@ use App\Entity\CertificationRequest;
 use App\Form\Admin\CertificationRequestBlockCommandType;
 use App\Form\Admin\CertificationRequestRefuseCommandType;
 use App\Form\ConfirmActionType;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,9 +20,9 @@ class AdminCertificationRequestController extends CRUDController
 {
     private $storage;
 
-    public function __construct(FilesystemInterface $storage)
+    public function __construct(FilesystemOperator $defaultStorage)
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     public function approveAction(Request $request, CertificationAuthorityManager $certificationManager): Response

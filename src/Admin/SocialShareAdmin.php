@@ -46,7 +46,7 @@ class SocialShareAdmin extends AbstractAdmin
     protected function prePersist(object $object): void
     {
         // Upload
-        $this->storage->put(
+        $this->storage->write(
             'images/'.$object->getMedia()->getPath(),
             file_get_contents($object->getMedia()->getFile()->getPathname())
         );

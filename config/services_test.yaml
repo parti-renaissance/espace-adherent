@@ -24,8 +24,8 @@ services:
 
     Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader: '@doctrine.fixtures.loader'
 
-    app.glide.cache_adapter:
-        class: 'League\Flysystem\Memory\MemoryAdapter'
+#    app.glide.cache_adapter:
+#        class: 'League\Flysystem\Memory\MemoryAdapter'
 
     Tests\App\Test\Payment\PayboxProvider:
         arguments:
@@ -48,8 +48,6 @@ services:
     App\Messenger\MessageRecorder\MessageRecorderInterface: '@App\Messenger\MessageRecorder\MessageRecorder'
 
     App\Committee\Feed\CommitteeFeedManager: ~
-
-    League\Flysystem\FilesystemInterface: '@League\Flysystem\Filesystem'
 
     App\Committee\CommitteeManager: ~
 

@@ -11,7 +11,7 @@ use App\Repository\DonatorRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -123,13 +123,13 @@ class ImportDonationsCommand extends Command
     private $io;
 
     public function __construct(
-        FilesystemInterface $storage,
+        FilesystemOperator $defaultStorage,
         PostAddressFactory $postAddressFactory,
         DonatorManager $donatorManager,
         DonatorRepository $donatorRepository,
         EntityManagerInterface $em
     ) {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
         $this->postAddressFactory = $postAddressFactory;
         $this->donatorManager = $donatorManager;
         $this->donatorRepository = $donatorRepository;

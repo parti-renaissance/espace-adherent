@@ -8,7 +8,7 @@ use App\Entity\HomeBlock;
 use App\Entity\Media;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\File;
 
 class LoadHomeBlockData extends Fixture
@@ -25,11 +25,11 @@ class LoadHomeBlockData extends Fixture
     public function __construct(
         MediaFactory $mediaFactory,
         HomeBlockFactory $homeBlockFactory,
-        FilesystemInterface $storage
+        FilesystemOperator $defaultStorage
     ) {
         $this->mediaFactory = $mediaFactory;
         $this->homeBlockFactory = $homeBlockFactory;
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     public function load(ObjectManager $manager)
@@ -58,7 +58,7 @@ class LoadHomeBlockData extends Fixture
             }
 
             $mediaFile = new File(__DIR__.'/../../../app/data/dist/'.$homeBlockData['path']);
-            $this->storage->put('images/'.$homeBlockData['path'], file_get_contents($mediaFile->getPathname()));
+            $this->storage->write('images/'.$homeBlockData['path'], file_get_contents($mediaFile->getPathname()));
 
             $media = $this->mediaFactory->createFromFile(
                 $homeBlockData['pathTitle'],

@@ -3,9 +3,9 @@
 namespace Tests\App\Documents;
 
 use App\Documents\DocumentRepository;
-use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
-use League\Flysystem\Memory\MemoryAdapter;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 use PHPUnit\Framework\TestCase;
 
 class DocumentRepositoryTest extends TestCase
@@ -35,8 +35,8 @@ class DocumentRepositoryTest extends TestCase
 
         $adherentsMydir = $this->repository->listDirectory(DocumentRepository::DIRECTORY_ADHERENTS, '/mydir');
         $this->assertCount(2, $adherentsMydir);
-        $this->assertSame('documentb.pdf', $adherentsMydir[0]->getName());
-        $this->assertSame('subdir', $adherentsMydir[1]->getName());
+        $this->assertSame('subdir', $adherentsMydir[0]->getName());
+        $this->assertSame('documentb.pdf', $adherentsMydir[1]->getName());
     }
 
     public function testReadDocument()
@@ -53,13 +53,13 @@ class DocumentRepositoryTest extends TestCase
 
     public function testReadDocumentFailsWhenInvalid()
     {
-        $this->expectException(FileNotFoundException::class);
+        $this->expectException(FilesystemException::class);
         $this->repository->readDocument(DocumentRepository::DIRECTORY_ADHERENTS, 'invalid.pdf');
     }
 
     private function createDir(string $directory, string $path)
     {
-        $this->filesystem->createDir(DocumentRepository::DIRECTORY_ROOT.'/'.$directory.'/'.$path);
+        $this->filesystem->createDirectory(DocumentRepository::DIRECTORY_ROOT.'/'.$directory.'/'.$path);
     }
 
     private function put(string $directory, string $path, string $content)
@@ -71,7 +71,7 @@ class DocumentRepositoryTest extends TestCase
     {
         parent::setUp();
 
-        $this->filesystem = new Filesystem(new MemoryAdapter());
+        $this->filesystem = new Filesystem(new InMemoryFilesystemAdapter());
         $this->repository = new DocumentRepository($this->filesystem);
     }
 

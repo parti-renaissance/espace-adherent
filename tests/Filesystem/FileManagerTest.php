@@ -7,7 +7,7 @@ use App\Entity\Filesystem\FileTypeEnum;
 use App\Filesystem\FileManager;
 use App\Repository\Filesystem\FileRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -22,7 +22,7 @@ class FileManagerTest extends TestCase
     {
         parent::setUp();
 
-        $this->storage = $this->createMock(FilesystemInterface::class);
+        $this->storage = $this->createMock(FilesystemOperator::class);
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->repository = $this->createMock(FileRepository::class);
 

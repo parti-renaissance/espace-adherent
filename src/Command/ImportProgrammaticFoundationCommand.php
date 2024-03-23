@@ -9,7 +9,7 @@ use App\Entity\ProgrammaticFoundation\SubApproach;
 use App\Entity\ProgrammaticFoundation\Tag;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -34,9 +34,9 @@ class ImportProgrammaticFoundationCommand extends Command
      */
     private $io;
 
-    public function __construct(FilesystemInterface $storage, EntityManagerInterface $em)
+    public function __construct(FilesystemOperator $defaultStorage, EntityManagerInterface $em)
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
         $this->em = $em;
 
         parent::__construct();
@@ -122,7 +122,7 @@ class ImportProgrammaticFoundationCommand extends Command
         $csv = Reader::createFromStream($this->storage->readStream($input->getArgument('filename')));
         $csv->setHeaderOffset(0);
 
-        $this->io->progressStart($total = $csv->count());
+        $this->io->progressStart($csv->count());
 
         $line = 0;
         $approach = $subApproach = null;

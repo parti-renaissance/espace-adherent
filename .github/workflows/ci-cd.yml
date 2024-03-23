@@ -37,7 +37,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: vendor/
-          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('composer.lock') }}
 
       - uses: ./.github/actions/docker-login
 
@@ -64,7 +64,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules/
-          key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('yarn.lock') }}
 
       - name: Setup yarn
         uses: ./.github/actions/setup-yarn
@@ -93,13 +93,13 @@ jobs:
         uses: actions/cache@v4
         with:
           path: vendor/
-          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('composer.lock') }}
 
       - name: Cache yarn dependencies
         uses: actions/cache@v4
         with:
           path: node_modules/
-          key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('yarn.lock') }}
 
       - name: Cache PHP CS Fixer
         uses: actions/cache@v4
@@ -160,7 +160,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: vendor/
-          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('composer.lock') }}
 
       - name: Cache PHPUnit
         uses: actions/cache@v4
@@ -203,7 +203,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: vendor/
-          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('composer.lock') }}
 
       - uses: ./.github/actions/docker-login
 
@@ -246,13 +246,13 @@ jobs:
         uses: actions/cache@v4
         with:
           path: vendor/
-          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('composer.lock') }}
 
       - name: Cache yarn dependencies
         uses: actions/cache@v4
         with:
           path: node_modules/
-          key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('yarn.lock') }}
 
       - name: Cache static assets
         uses: actions/cache@v4
@@ -303,13 +303,13 @@ jobs:
         uses: actions/cache@v4
         with:
           path: vendor/
-          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('composer.lock') }}
 
       - name: Cache yarn dependencies
         uses: actions/cache@v4
         with:
           path: node_modules/
-          key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('yarn.lock') }}
 
       - name: Cache static assets
         uses: actions/cache@v4

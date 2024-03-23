@@ -10,7 +10,7 @@ use App\Entity\Timeline\Theme;
 use App\Entity\Timeline\ThemeTranslation;
 use App\Repository\MediaRepository;
 use Cocur\Slugify\SlugifyInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\File;
 
 class TimelineFactory
@@ -24,12 +24,12 @@ class TimelineFactory
         MediaFactory $mediaFactory,
         MediaRepository $mediaRepository,
         SlugifyInterface $slugifier,
-        FilesystemInterface $storage
+        FilesystemOperator $defaultStorage
     ) {
         $this->mediaFactory = $mediaFactory;
         $this->mediaRepository = $mediaRepository;
         $this->slugifier = $slugifier;
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
 
         $this->slugifier->activateRuleSet('default');
     }
@@ -80,7 +80,7 @@ class TimelineFactory
 
         $mediaFile = new File($temporaryFilename);
 
-        if (!$this->storage->put('images/'.$mediaPath, file_get_contents($mediaFile->getPathname()))) {
+        if (!$this->storage->write('images/'.$mediaPath, file_get_contents($mediaFile->getPathname()))) {
             throw new \RuntimeException(sprintf('Image "%s" can\'t be uploaded on storage. (%s)', $name, $path));
         }
 

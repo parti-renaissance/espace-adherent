@@ -3,13 +3,13 @@
 namespace App\Admin;
 
 use App\Entity\EntityMediaInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use League\Glide\Server;
 
 trait MediaSynchronisedAdminTrait
 {
     /**
-     * @var FilesystemInterface
+     * @var FilesystemOperator
      */
     protected $storage;
 
@@ -18,9 +18,9 @@ trait MediaSynchronisedAdminTrait
      */
     protected $glide;
 
-    public function setStorage(FilesystemInterface $storage): void
+    public function setStorage(FilesystemOperator $defaultStorage): void
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     public function setGlide(Server $glide): void
@@ -37,7 +37,7 @@ trait MediaSynchronisedAdminTrait
             return;
         }
 
-        $this->storage->put(
+        $this->storage->write(
             'images/'.$object->getMedia()->getPath(),
             file_get_contents($object->getMedia()->getFile()->getPathname())
         );
@@ -54,7 +54,7 @@ trait MediaSynchronisedAdminTrait
             return;
         }
 
-        $this->storage->put(
+        $this->storage->write(
             'images/'.$object->getMedia()->getPath(),
             file_get_contents($object->getMedia()->getFile()->getPathname())
         );

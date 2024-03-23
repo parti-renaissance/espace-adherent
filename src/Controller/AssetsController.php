@@ -9,7 +9,7 @@ use App\Entity\Proposal;
 use App\Timeline\TimelineImageFactory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\Server;
@@ -43,16 +43,16 @@ class AssetsController extends AbstractController
 
     #[Route(path: '/assets/{path}', requirements: ['path' => '.+'], name: 'asset_url', methods: ['GET'])]
     #[Cache(maxage: 900, smaxage: 900)]
-    public function assetAction(Server $glide, FilesystemInterface $storage, string $path, Request $request): Response
+    public function assetAction(Server $glide, FilesystemOperator $defaultStorage, string $path, Request $request): Response
     {
-        if (!$storage->has($path)) {
+        if (!$defaultStorage->has($path)) {
             throw $this->createNotFoundException();
         }
 
         $parameters = $request->query->all();
 
         if (!empty($parameters['mime_type'])) {
-            return new Response($storage->read($path), Response::HTTP_OK, [
+            return new Response($defaultStorage->read($path), Response::HTTP_OK, [
                 'Content-Type' => $parameters['mime_type'],
             ]);
         }
@@ -68,7 +68,7 @@ class AssetsController extends AbstractController
         }
 
         if (\array_key_exists($extension = pathinfo($path, \PATHINFO_EXTENSION), self::EXTENSIONS_TYPES)) {
-            return new Response($storage->read($path), Response::HTTP_OK, [
+            return new Response($defaultStorage->read($path), Response::HTTP_OK, [
                 'Content-Type' => self::EXTENSIONS_TYPES[$extension],
             ]);
         }
@@ -86,10 +86,10 @@ class AssetsController extends AbstractController
 
     #[Route(path: '/video/homepage.{format}', requirements: ['format' => 'mov|mp4'], name: 'homepage_video_url', methods: ['GET'])]
     #[Cache(maxage: 60, smaxage: 60)]
-    public function videoAction(FilesystemInterface $storage, string $format): Response
+    public function videoAction(FilesystemOperator $defaultStorage, string $format): Response
     {
         return new Response(
-            $storage->read('static/videos/homepage.'.$format),
+            $defaultStorage->read('static/videos/homepage.'.$format),
             Response::HTTP_OK,
             ['Content-Type' => 'video/'.$format]
         );

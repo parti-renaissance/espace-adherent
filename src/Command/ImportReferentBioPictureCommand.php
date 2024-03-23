@@ -7,7 +7,7 @@ use App\Entity\Media;
 use App\Repository\MediaRepository;
 use App\Repository\ReferentRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,7 +42,7 @@ class ImportReferentBioPictureCommand extends Command
     private $mediaFactory;
 
     /**
-     * @var FilesystemInterface
+     * @var FilesystemOperator
      */
     private $storage;
 
@@ -199,11 +199,7 @@ class ImportReferentBioPictureCommand extends Command
             return null;
         }
 
-        if (!$this->storage->put('images/'.$path, file_get_contents($mediaFile->getPathname()))) {
-            $this->imageError[] = sprintf('Image can\'t be upload on storage : %s %s', $name, $path);
-
-            return null;
-        }
+        $this->storage->write('images/'.$path, file_get_contents($mediaFile->getPathname()));
 
         $this->imageAddedOnStorage[] = 'images/'.$path;
         $media = $this->mediaFactory->createFromFile($name, $path, $mediaFile);
@@ -249,9 +245,9 @@ class ImportReferentBioPictureCommand extends Command
     }
 
     /** @required */
-    public function setStorage(FilesystemInterface $storage): void
+    public function setStorage(FilesystemOperator $defaultStorage): void
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     /** @required */

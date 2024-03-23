@@ -7,7 +7,7 @@ use App\Content\PageFactory;
 use App\Entity\Page;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\File;
 
 class LoadPageData extends Fixture
@@ -16,11 +16,11 @@ class LoadPageData extends Fixture
     private $mediaFactory;
     private $storage;
 
-    public function __construct(PageFactory $pageFactory, MediaFactory $mediaFactory, FilesystemInterface $storage)
+    public function __construct(PageFactory $pageFactory, MediaFactory $mediaFactory, FilesystemOperator $defaultStorage)
     {
         $this->pageFactory = $pageFactory;
         $this->mediaFactory = $mediaFactory;
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     public function load(ObjectManager $manager)
@@ -29,7 +29,7 @@ class LoadPageData extends Fixture
             'du risque, qui vivent pour la liberté, l\'égalité, et l\'Europe.';
 
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/10decembre.jpg');
-        $this->storage->put('images/page.jpg', file_get_contents($mediaFile->getPathname()));
+        $this->storage->write('images/page.jpg', file_get_contents($mediaFile->getPathname()));
         $media = $this->mediaFactory->createFromFile('Page image', 'page.jpg', $mediaFile);
 
         $manager->persist($media);

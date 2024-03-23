@@ -3,23 +3,21 @@
 namespace App\Storage;
 
 use App\Entity\EntityFileInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class FileRequestHandler
 {
-    private $filesystem;
-
-    public function __construct(FilesystemInterface $filesystem)
-    {
-        $this->filesystem = $filesystem;
+    public function __construct(
+        private readonly FilesystemOperator $defaultStorage,
+    ) {
     }
 
     public function createResponse(EntityFileInterface $file): Response
     {
-        $response = new Response($this->filesystem->read($file->getPath()), Response::HTTP_OK, [
-            'Content-Type' => $this->filesystem->getMimetype($file->getPath()),
+        $response = new Response($this->defaultStorage->read($file->getPath()), Response::HTTP_OK, [
+            'Content-Type' => $this->defaultStorage->mimeType($file->getPath()),
         ]);
 
         $disposition = $response->headers->makeDisposition(

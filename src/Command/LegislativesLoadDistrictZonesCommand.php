@@ -6,7 +6,7 @@ use App\Entity\LegislativeCandidate;
 use App\Entity\LegislativeDistrictZone;
 use Cocur\Slugify\SlugifyInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -35,7 +35,7 @@ class LegislativesLoadDistrictZonesCommand extends Command
     private $manager;
 
     /**
-     * @var FilesystemInterface
+     * @var FilesystemOperator
      */
     private $storage;
 
@@ -164,9 +164,9 @@ class LegislativesLoadDistrictZonesCommand extends Command
     }
 
     /** @required */
-    public function setStorage(FilesystemInterface $storage): void
+    public function setStorage(FilesystemOperator $defaultStorage): void
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     /** @required */

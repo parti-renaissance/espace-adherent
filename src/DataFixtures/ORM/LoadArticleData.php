@@ -9,7 +9,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Gedmo\Sluggable\Util\Urlizer;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\File;
 
 class LoadArticleData extends Fixture
@@ -21,11 +21,11 @@ class LoadArticleData extends Fixture
     public function __construct(
         ArticleFactory $articleFactory,
         MediaFactory $mediaFactory,
-        FilesystemInterface $storage
+        FilesystemOperator $defaultStorage
     ) {
         $this->articleFactory = $articleFactory;
         $this->mediaFactory = $mediaFactory;
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     public function load(ObjectManager $manager)
@@ -34,7 +34,7 @@ class LoadArticleData extends Fixture
 
         // Media
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/guadeloupe.jpg');
-        $this->storage->put('images/article.jpg', file_get_contents($mediaFile->getPathname()));
+        $this->storage->write('images/article.jpg', file_get_contents($mediaFile->getPathname()));
         $media = $this->mediaFactory->createFromFile('Article image', 'article.jpg', $mediaFile);
 
         $manager->persist($media);

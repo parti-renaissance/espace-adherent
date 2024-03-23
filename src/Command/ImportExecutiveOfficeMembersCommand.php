@@ -7,7 +7,7 @@ use App\Entity\Biography\ExecutiveOfficeRoleEnum;
 use App\Image\ImageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -26,7 +26,7 @@ class ImportExecutiveOfficeMembersCommand extends Command
 {
     private const BATCH_SIZE = 250;
 
-    private FilesystemInterface $storage;
+    private FilesystemOperator $storage;
     private ImageManager $imageManager;
     private EntityManagerInterface $em;
 
@@ -35,9 +35,9 @@ class ImportExecutiveOfficeMembersCommand extends Command
      */
     private $io;
 
-    public function __construct(FilesystemInterface $storage, ImageManager $imageManager, EntityManagerInterface $em)
+    public function __construct(FilesystemOperator $defaultStorage, ImageManager $imageManager, EntityManagerInterface $em)
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
         $this->imageManager = $imageManager;
         $this->em = $em;
 
@@ -178,7 +178,7 @@ class ImportExecutiveOfficeMembersCommand extends Command
             $executiveOfficeMember->setImage(new UploadedFile(
                 $tmpFile,
                 Uuid::uuid4().'.'.pathinfo($imagePath, \PATHINFO_EXTENSION),
-                $this->storage->getMimetype($imagePath),
+                $this->storage->mimeType($imagePath),
                 null,
                 true
             ));
