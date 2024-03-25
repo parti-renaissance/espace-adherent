@@ -2,7 +2,9 @@
 
 namespace App\Admin\Procuration;
 
+use App\Entity\ProcurationV2\Request;
 use App\Form\Admin\Procuration\RequestStatusEnumType;
+use App\Procuration\V2\ProcurationHandler;
 use App\Procuration\V2\ProxyStatusEnum;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -13,6 +15,8 @@ use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 
 class RequestAdmin extends AbstractProcurationAdmin
 {
+    private ?ProcurationHandler $procurationHandler = null;
+
     protected function configureFormFields(FormMapper $form): void
     {
         parent::configureFormFields($form);
@@ -88,5 +92,19 @@ class RequestAdmin extends AbstractProcurationAdmin
                 ListMapper::NAME_ACTIONS,
             ])
         ;
+    }
+
+    /**
+     * @param Request $object
+     */
+    protected function postUpdate(object $object): void
+    {
+        $this->procurationHandler->updateRequestStatus($object);
+    }
+
+    /** @required */
+    final public function setProcurationHandler(ProcurationHandler $procurationHandler): void
+    {
+        $this->procurationHandler = $procurationHandler;
     }
 }
