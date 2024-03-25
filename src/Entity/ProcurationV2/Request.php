@@ -81,7 +81,11 @@ class Request extends AbstractProcuration
 
     public function setProxy(?Proxy $proxy): void
     {
-        $proxy->addRequest($this);
+        $this->proxy = $proxy;
+
+        if ($proxy) {
+            $proxy->addRequest($this);
+        }
     }
 
     /**
@@ -96,8 +100,28 @@ class Request extends AbstractProcuration
         return $this->adherent?->tags;
     }
 
+    public function isPending(): bool
+    {
+        return RequestStatusEnum::PENDING === $this->status;
+    }
+
+    public function isCompleted(): bool
+    {
+        return RequestStatusEnum::COMPLETED === $this->status;
+    }
+
     public function isManual(): bool
     {
         return RequestStatusEnum::MANUAL === $this->status;
+    }
+
+    public function markAsPending(): void
+    {
+        $this->status = RequestStatusEnum::PENDING;
+    }
+
+    public function markAsCompleted(): void
+    {
+        $this->status = RequestStatusEnum::COMPLETED;
     }
 }

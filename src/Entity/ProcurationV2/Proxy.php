@@ -108,8 +108,33 @@ class Proxy extends AbstractProcuration
         $this->requests->removeElement($request);
     }
 
+    public function isPending(): bool
+    {
+        return ProxyStatusEnum::PENDING === $this->status;
+    }
+
+    public function isCompleted(): bool
+    {
+        return ProxyStatusEnum::COMPLETED === $this->status;
+    }
+
     public function isExcluded(): bool
     {
         return ProxyStatusEnum::EXCLUDED === $this->status;
+    }
+
+    public function markAsPending(): void
+    {
+        $this->status = ProxyStatusEnum::PENDING;
+    }
+
+    public function markAsCompleted(): void
+    {
+        $this->status = ProxyStatusEnum::COMPLETED;
+    }
+
+    public function hasFreeSlot(): bool
+    {
+        return $this->requests->count() < $this->slots;
     }
 }

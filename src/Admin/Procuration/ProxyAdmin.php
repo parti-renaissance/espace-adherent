@@ -2,7 +2,9 @@
 
 namespace App\Admin\Procuration;
 
+use App\Entity\ProcurationV2\Proxy;
 use App\Form\Admin\Procuration\ProxyStatusEnumType;
+use App\Procuration\V2\ProcurationHandler;
 use App\Procuration\V2\RequestStatusEnum;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -15,6 +17,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ProxyAdmin extends AbstractProcurationAdmin
 {
+    private ?ProcurationHandler $procurationHandler = null;
+
     protected function configureFormFields(FormMapper $form): void
     {
         parent::configureFormFields($form);
@@ -112,5 +116,19 @@ class ProxyAdmin extends AbstractProcurationAdmin
                 ListMapper::NAME_ACTIONS,
             ])
         ;
+    }
+
+    /**
+     * @param Proxy $object
+     */
+    protected function postUpdate(object $object): void
+    {
+        $this->procurationHandler->updateProxyStatus($object);
+    }
+
+    /** @required */
+    final public function setProcurationHandler(ProcurationHandler $procurationHandler): void
+    {
+        $this->procurationHandler = $procurationHandler;
     }
 }
