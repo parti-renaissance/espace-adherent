@@ -22,4 +22,5 @@ enum AdministratorRoleGroupEnum: string
     case ELECTIONS_DEPARTEMENTALES = 'elections_departementales';
     case ARCHIVES = 'archives';
     case EVENTS = 'events';
+    case ELECTIONS = 'elections';
 }
