@@ -8,6 +8,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\InZoneOfScopeFilter;
 use App\Procuration\V2\RequestStatusEnum;
+use App\Validator\Procuration\ManualAssociations;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -16,6 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="procuration_v2_requests")
  * @ORM\Entity(repositoryClass="App\Repository\Procuration\RequestRepository")
+ *
+ * @ManualAssociations
  *
  * @ApiResource(
  *     attributes={
@@ -91,5 +94,10 @@ class Request extends AbstractProcuration
     public function getAdherentTags(): ?array
     {
         return $this->adherent?->tags;
+    }
+
+    public function isManual(): bool
+    {
+        return RequestStatusEnum::MANUAL === $this->status;
     }
 }

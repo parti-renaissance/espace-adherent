@@ -291,6 +291,7 @@ procuration.round.not_blank: Veuillez renseigner un tour d'élection pour cette 
 procuration.proxy.max_slots: Ce mandataire ne peut pas porter plus de {{ max_slots }} procuration(s).
 
 procuration.proxy.excluded_no_association: Veuillez désassocier le(s) mandant(s) avant d'exclure ce mandataire.
+procuration.request.manual_no_association: Veuillez désassocier le mandataire avant de traiter manuellement cette demande.
 
 #
 # Event
