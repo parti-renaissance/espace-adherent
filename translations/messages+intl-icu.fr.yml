@@ -512,6 +512,9 @@ procuration.proxy.status.pending: En attente
 procuration.proxy.status.completed: Complété
 procuration.proxy.status.excluded: Exclu
 
+procuration.initial_request.type.request: Mandant
+procuration.initial_request.type.proxy: Mandataire
+
 #
 # Newsletter
 #

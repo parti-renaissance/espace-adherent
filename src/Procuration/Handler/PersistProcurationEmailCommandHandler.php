@@ -17,7 +17,7 @@ class PersistProcurationEmailCommandHandler
 
     public function __invoke(PersistProcurationEmailCommand $command): ?string
     {
-        $this->entityManager->persist($object = ProcurationRequest::createForEmail($command->email));
+        $this->entityManager->persist($object = ProcurationRequest::createForEmail($command->email, $command->type));
 
         $object->utmCampaign = $command->utmCampaign;
         $object->utmSource = $command->utmSource;

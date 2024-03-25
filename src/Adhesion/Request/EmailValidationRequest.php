@@ -2,6 +2,7 @@
 
 namespace App\Adhesion\Request;
 
+use App\Procuration\V2\InitialRequestTypeEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha;
@@ -23,6 +24,12 @@ class EmailValidationRequest implements RecaptchaChallengeInterface
      */
     #[Groups(['adhesion-email:validate', 'adhesion-email:persist', 'procuration-email:persist'])]
     private ?string $email = null;
+
+    /**
+     * @Assert\NotBlank(groups={"procuration-email:persist"})
+     */
+    #[Groups(['procuration-email:persist'])]
+    public ?InitialRequestTypeEnum $type = null;
 
     #[Groups(['adhesion-email:validate', 'procuration-email:persist'])]
     public ?string $token = null;
