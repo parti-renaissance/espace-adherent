@@ -10,7 +10,7 @@ use App\Repository\CityRepository;
 use App\Repository\Election\MinistryVoteResultRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use League\Csv\Reader;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -23,7 +23,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class ImportElectionMinistryResultFromCSVCommand extends Command
 {
-    /** @var FilesystemInterface */
+    /** @var FilesystemOperator */
     private $storage;
     /** @var ElectionManager */
     private $electionManager;
@@ -192,9 +192,9 @@ class ImportElectionMinistryResultFromCSVCommand extends Command
     }
 
     /** @required */
-    public function setStorage(FilesystemInterface $storage): void
+    public function setStorage(FilesystemOperator $defaultStorage): void
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     /** @required */

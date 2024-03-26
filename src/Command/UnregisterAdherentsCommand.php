@@ -10,7 +10,7 @@ use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -46,12 +46,12 @@ class UnregisterAdherentsCommand extends Command
     private $handler;
 
     public function __construct(
-        FilesystemInterface $storage,
+        FilesystemOperator $defaultStorage,
         EntityManagerInterface $em,
         EventDispatcherInterface $eventDispatcher,
         UnregistrationHandler $handler
     ) {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
         $this->em = $em;
         $this->handler = $handler;
         $this->dispatcher = $eventDispatcher;

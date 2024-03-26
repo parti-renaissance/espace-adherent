@@ -7,7 +7,7 @@ use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Repository\ChezVous\CityRepository;
 use App\Repository\ReferentTagRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,10 +26,10 @@ class ImportTerritorialCouncilFromCSVCommand extends AbstractImportCommand
     public function __construct(
         EntityManagerInterface $em,
         CityRepository $cityRepository,
-        FilesystemInterface $storage,
+        FilesystemOperator $defaultStorage,
         ReferentTagRepository $referentTagRepository
     ) {
-        parent::__construct($em, $cityRepository, $storage);
+        parent::__construct($em, $cityRepository, $defaultStorage);
 
         $this->em = $em;
         $this->referentTagRepository = $referentTagRepository;

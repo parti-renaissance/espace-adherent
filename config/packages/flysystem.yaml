@@ -1,0 +1,9 @@
+services:
+    League\Flysystem\FilesystemOperator: '@default.storage'
+
+flysystem:
+    storages:
+        default.storage:
+            adapter: 'local'
+            options:
+                directory: '%kernel.project_dir%/app/data'

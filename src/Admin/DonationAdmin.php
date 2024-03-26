@@ -22,7 +22,7 @@ use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
@@ -58,13 +58,13 @@ class DonationAdmin extends AbstractAdmin
         string $code,
         string $class,
         string $baseControllerName,
-        FilesystemInterface $storage,
+        FilesystemOperator $defaultStorage,
         EventDispatcherInterface $dispatcher,
         AdherentRepository $adherentRepository
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
         $this->dispatcher = $dispatcher;
         $this->adherentRepository = $adherentRepository;
     }
@@ -690,7 +690,7 @@ class DonationAdmin extends AbstractAdmin
 
         $donation->setFilenameFromUploadedFile();
 
-        $this->storage->put($donation->getFilePathWithDirectory(), file_get_contents($donation->getFile()->getPathname()));
+        $this->storage->write($donation->getFilePathWithDirectory(), file_get_contents($donation->getFile()->getPathname()));
     }
 
     private function getTypeChoices(): array

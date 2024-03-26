@@ -2,14 +2,14 @@
 
 namespace App\Storage;
 
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use League\Glide\Server;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ImageStorage
 {
     /**
-     * @var FilesystemInterface
+     * @var FilesystemOperator
      */
     private $storage;
 
@@ -18,9 +18,9 @@ class ImageStorage
      */
     private $glide;
 
-    public function __construct(FilesystemInterface $storage, Server $glide)
+    public function __construct(FilesystemOperator $defaultStorage, Server $glide)
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
         $this->glide = $glide;
     }
 
@@ -32,7 +32,7 @@ class ImageStorage
         }
 
         // Uploads the file : creates or updates if exists
-        $this->storage->put($path, file_get_contents($file->getPathname()));
+        $this->storage->write($path, file_get_contents($file->getPathname()));
 
         // Clears the cache file
         $this->glide->deleteCache($path);

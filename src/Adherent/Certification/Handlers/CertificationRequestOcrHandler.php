@@ -9,7 +9,7 @@ use App\Vision\IdentityDocumentParser;
 use App\Vision\ImageAnnotations;
 use App\Vision\VisionHandler;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class CertificationRequestOcrHandler implements CertificationRequestHandlerInterface
@@ -18,7 +18,7 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
     private $visionHandler;
     private $serializer;
     private $pdfToImageConverter;
-    private $filesystem;
+    private $storage;
     private $identityDocumentParser;
 
     public function __construct(
@@ -26,14 +26,14 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
         VisionHandler $visionHandler,
         ObjectNormalizer $normalizer,
         PdfToImageConverter $pdfToImageConverter,
-        FilesystemInterface $filesystem,
+        FilesystemOperator $defaultStorage,
         IdentityDocumentParser $identityDocumentParser
     ) {
         $this->em = $em;
         $this->visionHandler = $visionHandler;
         $this->serializer = $normalizer;
         $this->pdfToImageConverter = $pdfToImageConverter;
-        $this->filesystem = $filesystem;
+        $this->storage = $defaultStorage;
         $this->identityDocumentParser = $identityDocumentParser;
     }
 
@@ -51,9 +51,9 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
     public function handle(CertificationRequest $certificationRequest): void
     {
         if ($certificationRequest->isPdfDocument()) {
-            $content = $this->pdfToImageConverter->getRawImageFromPdf($this->filesystem->read($certificationRequest->getPathWithDirectory()));
+            $content = $this->pdfToImageConverter->getRawImageFromPdf($this->storage->read($certificationRequest->getPathWithDirectory()));
         } else {
-            $content = $this->filesystem->read($certificationRequest->getPathWithDirectory());
+            $content = $this->storage->read($certificationRequest->getPathWithDirectory());
         }
 
         $imageAnnotations = $this->visionHandler->annotate($content);

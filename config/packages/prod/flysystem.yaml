@@ -1,0 +1,7 @@
+flysystem:
+    storages:
+        default.storage:
+            adapter: 'gcloud'
+            options:
+#                client: 'gcloud_client_service' # The service ID of the Google\Cloud\Storage\StorageClient instance
+                bucket: '%env(GCLOUD_BUCKET)%'

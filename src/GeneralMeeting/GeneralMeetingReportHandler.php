@@ -3,12 +3,12 @@
 namespace App\GeneralMeeting;
 
 use App\Entity\GeneralMeeting\GeneralMeetingReport;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Ramsey\Uuid\Uuid;
 
 class GeneralMeetingReportHandler
 {
-    public function __construct(private readonly FilesystemInterface $storage)
+    public function __construct(private readonly FilesystemOperator $defaultStorage)
     {
     }
 
@@ -27,7 +27,7 @@ class GeneralMeetingReportHandler
             $file->getClientOriginalExtension()
         ));
 
-        $this->storage->put($path, file_get_contents($file->getPathname()));
+        $this->defaultStorage->write($path, file_get_contents($file->getPathname()));
 
         $generalMeetingReport->setFile(null);
     }
@@ -40,10 +40,10 @@ class GeneralMeetingReportHandler
 
         $generalMeetingReport->setFilePath(null);
 
-        if (!$this->storage->has($filePath)) {
+        if (!$this->defaultStorage->has($filePath)) {
             return;
         }
 
-        $this->storage->delete($filePath);
+        $this->defaultStorage->delete($filePath);
     }
 }

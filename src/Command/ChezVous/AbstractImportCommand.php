@@ -6,7 +6,7 @@ use App\Entity\ChezVous\City;
 use App\Repository\ChezVous\CityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,11 +28,11 @@ abstract class AbstractImportCommand extends Command
     public function __construct(
         EntityManagerInterface $em,
         CityRepository $cityRepository,
-        FilesystemInterface $storage
+        FilesystemOperator $defaultStorage
     ) {
         $this->em = $em;
         $this->cityRepository = $cityRepository;
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
 
         parent::__construct();
     }

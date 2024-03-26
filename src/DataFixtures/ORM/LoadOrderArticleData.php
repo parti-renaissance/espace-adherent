@@ -8,7 +8,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\File;
 
 class LoadOrderArticleData extends Fixture implements DependentFixtureInterface
@@ -20,11 +20,11 @@ class LoadOrderArticleData extends Fixture implements DependentFixtureInterface
     public function __construct(
         OrderArticleFactory $orderArticleFactory,
         MediaFactory $mediaFactory,
-        FilesystemInterface $storage
+        FilesystemOperator $defaultStorage
     ) {
         $this->orderArticleFactory = $orderArticleFactory;
         $this->mediaFactory = $mediaFactory;
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     public function load(ObjectManager $manager)
@@ -33,7 +33,7 @@ class LoadOrderArticleData extends Fixture implements DependentFixtureInterface
 
         // Media
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/guadeloupe.jpg');
-        $this->storage->put('images/article.jpg', file_get_contents($mediaFile->getPathname()));
+        $this->storage->write('images/article.jpg', file_get_contents($mediaFile->getPathname()));
         $media = $this->mediaFactory->createFromFile('Order article image', 'order_article.jpg', $mediaFile);
 
         $manager->persist($media);

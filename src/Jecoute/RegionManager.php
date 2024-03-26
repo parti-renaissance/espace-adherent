@@ -3,17 +3,18 @@
 namespace App\Jecoute;
 
 use App\Entity\Jecoute\Region;
-use League\Flysystem\AdapterInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\Config;
+use League\Flysystem\FilesystemOperator;
+use League\Flysystem\Visibility;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class RegionManager
 {
     private $storage;
 
-    public function __construct(FilesystemInterface $storage)
+    public function __construct(FilesystemOperator $defaultStorage)
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     public function handleFile(Region $region): void
@@ -45,10 +46,10 @@ class RegionManager
 
         $region->setLogoFromUploadedFile();
 
-        $this->storage->put(
+        $this->storage->write(
             $region->getLogoPathWithDirectory(),
             file_get_contents($uploadedFile->getPathname()),
-            ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
+            [Config::OPTION_VISIBILITY => Visibility::PUBLIC]
         );
     }
 
@@ -66,10 +67,10 @@ class RegionManager
 
         $region->setBannerFromUploadedFile();
 
-        $this->storage->put(
+        $this->storage->write(
             $region->getBannerPathWithDirectory(),
             file_get_contents($uploadedFile->getPathname()),
-            ['visibility' => AdapterInterface::VISIBILITY_PUBLIC]
+            [Config::OPTION_VISIBILITY => Visibility::PUBLIC]
         );
     }
 
