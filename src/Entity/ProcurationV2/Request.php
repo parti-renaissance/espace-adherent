@@ -38,6 +38,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                 "datetime_format": "Y-m-d",
  *             },
  *         },
+ *         "match": {
+ *             "method": "POST",
+ *             "path": "/requests/{uuid}/match",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "controller": "App\Controller\Api\Procuration\MatchRequestWithProxyController",
+ *             "defaults": {"_api_receive": false},
+ *         }
  *     },
  *     collectionOperations={
  *         "get": {

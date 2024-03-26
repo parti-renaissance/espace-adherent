@@ -8,6 +8,7 @@ use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
 use App\Procuration\V2\ProxyStatusEnum;
 use App\Repository\PaginatorTrait;
+use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
@@ -15,6 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class ProxyRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
+    use UuidEntityRepositoryTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
