@@ -65,7 +65,7 @@ class ProxyRepository extends ServiceEntityRepository
 
             $caseSelect = 'CASE WHEN vote_place = :vote_place THEN 2
                     WHEN zone_parent = :city THEN 1
-                    ELSE 0 END AS HIDDEN score';
+                    ELSE 0 END AS score';
 
             $queryBuilder
                 ->innerJoin('proxy.votePlace', 'vote_place')
@@ -77,7 +77,7 @@ class ProxyRepository extends ServiceEntityRepository
             ;
         } else {
             $voteZone = $request->voteZone;
-            $caseSelect = 'CASE WHEN vote_zone = :vote_zone THEN 1 ELSE 0 END AS HIDDEN score';
+            $caseSelect = 'CASE WHEN vote_zone = :vote_zone THEN 1 ELSE 0 END AS score';
 
             $orx->add('vote_zone = :vote_zone');
             $orx->add('zone_parent IN (:parent_zones)');
