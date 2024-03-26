@@ -36,7 +36,10 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      *
-     * @Groups({"procuration_request_read"})
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_proxy_read",
+     * })
      */
     public string $email;
 
@@ -70,6 +73,7 @@ abstract class AbstractProcuration implements ZoneableEntity
      *     "procuration_request_read",
      *     "procuration_request_list",
      *     "procuration_request_list_proxy",
+     *     "procuration_proxy_read",
      * })
      */
     public string $firstNames;
@@ -88,6 +92,7 @@ abstract class AbstractProcuration implements ZoneableEntity
      *     "procuration_request_read",
      *     "procuration_request_list",
      *     "procuration_request_list_proxy",
+     *     "procuration_proxy_read",
      * })
      */
     public string $lastName;
@@ -105,6 +110,7 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     public \DateTimeInterface $birthdate;
@@ -114,7 +120,10 @@ abstract class AbstractProcuration implements ZoneableEntity
      *
      * @AssertPhoneNumber(message="common.phone_number.invalid")
      *
-     * @Groups({"procuration_request_read"})
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_proxy_read",
+     * })
      */
     public ?PhoneNumber $phone;
 
@@ -130,6 +139,7 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     public Zone $voteZone;
@@ -222,6 +232,7 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     public function getAge(): ?int
@@ -233,6 +244,7 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      * @SerializedName("id")
      */
@@ -267,6 +279,7 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     public function getVotePlaceName(): ?string

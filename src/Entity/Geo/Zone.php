@@ -146,6 +146,7 @@ class Zone implements GeoInterface, UuidEntityInterface
      *     "managed_user_read",
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      *
      * @ApiProperty(
@@ -176,6 +177,7 @@ class Zone implements GeoInterface, UuidEntityInterface
      *     "managed_user_read",
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     private $type;

@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -39,20 +40,23 @@ class Proxy extends AbstractProcuration
     /**
      * @ORM\Column(type="smallint", options={"default": 1, "unsigned": true})
      *
-     * @Assert\Range(
-     *     min=1,
-     *     max=2
-     * )
+     * @Assert\Range(min=1, max=2)
+     *
+     * @Groups({"procuration_proxy_read"})
      */
     public int $slots = self::DEFAULT_SLOTS;
 
     /**
      * @ORM\Column(enumType=ProxyStatusEnum::class)
+     *
+     * @Groups({"procuration_proxy_read"})
      */
     public ProxyStatusEnum $status = ProxyStatusEnum::PENDING;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProcurationV2\Request", mappedBy="proxy", cascade={"all"})
+     *
+     * @Groups({"procuration_proxy_read"})
      */
     public Collection $requests;
 

@@ -20,6 +20,7 @@ trait EntityAddressTrait
      *     "event_write",
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     protected ?string $address = null;
@@ -30,6 +31,7 @@ trait EntityAddressTrait
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     protected ?string $additionalAddress = null;
@@ -43,6 +45,7 @@ trait EntityAddressTrait
      *     "event_write",
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     protected ?string $postalCode = null;
@@ -59,6 +62,7 @@ trait EntityAddressTrait
      *     "event_list_read",
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     protected ?string $city = null;
@@ -72,6 +76,7 @@ trait EntityAddressTrait
      *     "event_write",
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     protected ?string $cityName = null;
@@ -85,6 +90,7 @@ trait EntityAddressTrait
      *     "event_write",
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     protected ?string $country = null;

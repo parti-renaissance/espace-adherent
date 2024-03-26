@@ -29,6 +29,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *     "contact_update",
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     protected ?string $address = null;
@@ -46,6 +47,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *     "contact_update",
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     protected ?string $postalCode = null;
@@ -63,6 +65,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *     "profile_read",
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     protected ?string $city = null;
@@ -80,6 +83,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *     "contact_update",
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     protected ?string $cityName = null;
@@ -97,6 +101,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *     "contact_update",
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     protected ?string $country = null;
