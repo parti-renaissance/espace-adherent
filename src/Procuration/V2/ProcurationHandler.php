@@ -45,34 +45,22 @@ class ProcurationHandler
     {
         if ($request->isPending() && $request->proxy instanceof Proxy) {
             $request->markAsCompleted();
-
-            $this->entityManager->flush();
-
-            return;
-        }
-
-        if ($request->isCompleted() && !$request->proxy instanceof Proxy) {
+        } elseif ($request->isCompleted() && !$request->proxy instanceof Proxy) {
             $request->markAsPending();
-
-            $this->entityManager->flush();
         }
+
+        $this->entityManager->flush();
     }
 
     public function updateProxyStatus(Proxy $proxy): void
     {
         if ($proxy->isPending() && !$proxy->hasFreeSlot()) {
             $proxy->markAsCompleted();
-
-            $this->entityManager->flush();
-
-            return;
-        }
-
-        if ($proxy->isCompleted() && $proxy->hasFreeSlot()) {
+        } elseif ($proxy->isCompleted() && $proxy->hasFreeSlot()) {
             $proxy->markAsPending();
-
-            $this->entityManager->flush();
         }
+
+        $this->entityManager->flush();
     }
 
     public function match(Request $request, Proxy $proxy): void

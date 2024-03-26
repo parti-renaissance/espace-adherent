@@ -4,7 +4,8 @@ namespace App\Admin\Procuration;
 
 use App\Entity\ProcurationV2\Proxy;
 use App\Form\Admin\Procuration\ProxyStatusEnumType;
-use App\Procuration\V2\ProcurationHandler;
+use App\Procuration\V2\Event\ProcurationEvents;
+use App\Procuration\V2\Event\ProxyEvent;
 use App\Procuration\V2\RequestStatusEnum;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -14,10 +15,11 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ProxyAdmin extends AbstractProcurationAdmin
 {
-    private ?ProcurationHandler $procurationHandler = null;
+    private ?EventDispatcherInterface $eventDispatcher = null;
 
     protected function configureFormFields(FormMapper $form): void
     {
@@ -121,14 +123,22 @@ class ProxyAdmin extends AbstractProcurationAdmin
     /**
      * @param Proxy $object
      */
+    protected function alterObject(object $object): void
+    {
+        $this->eventDispatcher->dispatch(new ProxyEvent($object), ProcurationEvents::PROXY_BEFORE_UPDATE);
+    }
+
+    /**
+     * @param Proxy $object
+     */
     protected function postUpdate(object $object): void
     {
-        $this->procurationHandler->updateProxyStatus($object);
+        $this->eventDispatcher->dispatch(new ProxyEvent($object), ProcurationEvents::PROXY_AFTER_UPDATE);
     }
 
     /** @required */
-    final public function setProcurationHandler(ProcurationHandler $procurationHandler): void
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
-        $this->procurationHandler = $procurationHandler;
+        $this->eventDispatcher = $eventDispatcher;
     }
 }

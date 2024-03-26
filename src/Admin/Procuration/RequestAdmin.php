@@ -4,7 +4,8 @@ namespace App\Admin\Procuration;
 
 use App\Entity\ProcurationV2\Request;
 use App\Form\Admin\Procuration\RequestStatusEnumType;
-use App\Procuration\V2\ProcurationHandler;
+use App\Procuration\V2\Event\ProcurationEvents;
+use App\Procuration\V2\Event\RequestEvent;
 use App\Procuration\V2\ProxyStatusEnum;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -12,10 +13,11 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RequestAdmin extends AbstractProcurationAdmin
 {
-    private ?ProcurationHandler $procurationHandler = null;
+    private ?EventDispatcherInterface $eventDispatcher = null;
 
     protected function configureFormFields(FormMapper $form): void
     {
@@ -97,14 +99,22 @@ class RequestAdmin extends AbstractProcurationAdmin
     /**
      * @param Request $object
      */
+    protected function alterObject(object $object): void
+    {
+        $this->eventDispatcher->dispatch(new RequestEvent($object), ProcurationEvents::REQUEST_BEFORE_UPDATE);
+    }
+
+    /**
+     * @param Request $object
+     */
     protected function postUpdate(object $object): void
     {
-        $this->procurationHandler->updateRequestStatus($object);
+        $this->eventDispatcher->dispatch(new RequestEvent($object), ProcurationEvents::REQUEST_AFTER_UPDATE);
     }
 
     /** @required */
-    final public function setProcurationHandler(ProcurationHandler $procurationHandler): void
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
-        $this->procurationHandler = $procurationHandler;
+        $this->eventDispatcher = $eventDispatcher;
     }
 }
