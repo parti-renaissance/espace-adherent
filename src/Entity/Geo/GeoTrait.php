@@ -66,6 +66,7 @@ trait GeoTrait
      *     "managed_user_read",
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     private $code;
@@ -109,6 +110,7 @@ trait GeoTrait
      *     "managed_user_read",
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_read",
      * })
      */
     private $name;

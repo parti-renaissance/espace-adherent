@@ -31,6 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={
  *         "get": {
  *             "path": "/requests/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "normalization_context": {
  *                 "groups": {"procuration_request_read"},
  *                 "enable_tag_translator": true,
@@ -43,6 +44,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/requests",
  *             "normalization_context": {
  *                 "groups": {"procuration_request_list"},
+ *                 "enable_tag_translator": true,
+ *                 "datetime_format": "Y-m-d",
+ *             },
+ *         },
+ *         "get_proxies": {
+ *             "method": "GET",
+ *             "path": "/requests/{uuid}/proxies",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "controller": "App\Controller\Api\Procuration\GetMatchedProxiesController",
+ *             "normalization_context": {
+ *                 "groups": {"procuration_proxy_read"},
  *                 "enable_tag_translator": true,
  *                 "datetime_format": "Y-m-d",
  *             },

@@ -2,7 +2,7 @@
 
 namespace App\Normalizer\Procuration;
 
-use App\Entity\ProcurationV2\Proxy;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -17,16 +17,27 @@ class ProxyNormalizer implements NormalizerInterface, NormalizerAwareInterface
     {
         $context[self::ALREADY_CALLED] = true;
 
-        $context['groups'] = ['procuration_request_list_proxy'];
+        $data = $this->normalizer->normalize($object, $format, $context);
 
-        return $this->normalizer->normalize($object, $format, $context);
+        foreach ($data['items'] as &$item) {
+            $score = $item['score'];
+            $item = $item[0];
+
+            $item['matching_level'] = match ($score) {
+                0 => 'department/country',
+                1 => 'city',
+                2 => 'vote_place'
+            };
+        }
+
+        return $data;
     }
 
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
         return
             empty($context[self::ALREADY_CALLED])
-            && $data instanceof Proxy
-            && array_intersect(['procuration_request_list', 'procuration_request_read'], $context['groups'] ?? []);
+            && $data instanceof PaginatorInterface
+            && \in_array('procuration_proxy_read', $context['groups'] ?? [], true);
     }
 }
