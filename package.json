@@ -21,7 +21,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.10",
-    "algoliasearch": "^4.22.1",
+    "algoliasearch": "^4.23.0",
     "alpinejs": "^3.13.7",
     "atob": "^2.1.0",
     "autoprefixer": "^10.4.19",
