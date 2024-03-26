@@ -44,6 +44,7 @@ final class ZoneBasedRoleTypeEnum
         ScopeEnum::PROCURATIONS_MANAGER => [
             Zone::DEPARTMENT,
             Zone::BOROUGH,
+            Zone::FOREIGN_DISTRICT,
             Zone::CITY => [GeoInterface::CITY_PARIS_CODE, GeoInterface::CITY_LYON_CODE, GeoInterface::CITY_MARSEILLE_CODE],
             Zone::COUNTRY => [AddressInterface::FRANCE],
         ],
