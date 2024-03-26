@@ -74,4 +74,13 @@ class ProcurationHandler
             $this->entityManager->flush();
         }
     }
+
+    public function match(Request $request, Proxy $proxy): void
+    {
+        $proxy->addRequest($request);
+        $this->entityManager->flush();
+
+        $this->updateRequestStatus($request);
+        $this->updateProxyStatus($proxy);
+    }
 }

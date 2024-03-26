@@ -98,6 +98,11 @@ class Proxy extends AbstractProcuration
         $this->requests = new ArrayCollection();
     }
 
+    public function hasRequest(Request $request): bool
+    {
+        return $this->requests->contains($request);
+    }
+
     public function addRequest(Request $request): void
     {
         if (!$this->requests->contains($request)) {
