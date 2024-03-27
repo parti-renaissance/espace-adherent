@@ -1066,6 +1066,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     'Code postal' => $adherent->getPostalCode(),
                     'Ville' => $adherent->getCityName(),
                     'Pays' => $adherent->getCountry(),
+                    'Labels' => implode(', ', array_map([$this->tagTranslator, 'trans'], $adherent->tags)),
                 ];
             } catch (\Exception $e) {
                 $this->logger->error(

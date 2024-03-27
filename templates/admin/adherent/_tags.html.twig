@@ -8,7 +8,7 @@
     {% endif %}
 
     <span class="label" style="background-color: {{ backgroundColor }};">
-        {{ translate_tag(tag) }}
+        {{ translate_tag(tag, false) }}
     </span>
     {% if not loop.last %}
         <br>
