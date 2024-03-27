@@ -406,7 +406,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     protected $capacity;
 
     /**
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\Url
      *
@@ -465,7 +465,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     public EventVisibilityEnum $visibility = EventVisibilityEnum::PUBLIC;
 
     /**
-     * @ORM\Column(nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      *
      * @Groups({"event_read", "event_write", "event_list_read"})
      */
