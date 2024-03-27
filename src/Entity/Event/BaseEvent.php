@@ -449,6 +449,8 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * @var NullablePostAddress
      *
      * @Groups({"event_read", "event_write", "event_list_read"})
+     *
+     * @Assert\Valid
      */
     protected $postAddress;
 
