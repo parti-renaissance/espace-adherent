@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mailer\Message\Procuration;
+namespace App\Mailer\Message\Procuration\V2;
 
 use App\Entity\ProcurationV2\Proxy;
 use App\Mailer\Message\Message;
@@ -17,6 +17,6 @@ final class ProcurationProxyConfirmationMessage extends AbstractProcurationMessa
             '[Procuration] Demande prise en compte'
         );
 
-        return self::updateSenderInfo($message);
+        return self::updateNoReplySenderInfo($message);
     }
 }
