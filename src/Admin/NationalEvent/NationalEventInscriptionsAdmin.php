@@ -3,10 +3,16 @@
 namespace App\Admin\NationalEvent;
 
 use App\Address\AddressInterface;
+use App\Adherent\Tag\TagTranslator;
 use App\Admin\AbstractAdmin;
+use App\Admin\Exporter\IterableCallbackDataSourceTrait;
+use App\Admin\Exporter\IteratorCallbackDataSource;
+use App\Entity\NationalEvent\EventInscription;
 use App\Form\CivilityType;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\Query\Utils\MultiColumnsSearchHelper;
+use App\Utils\PhoneNumberUtils;
+use App\Utils\PhpConfigurator;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -17,9 +23,14 @@ use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class NationalEventInscriptionsAdmin extends AbstractAdmin
 {
+    use IterableCallbackDataSourceTrait;
+
+    private TagTranslator $tagTranslator;
+
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
@@ -75,6 +86,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
             ->add('addressEmail', null, ['label' => 'E-mail'])
             ->add('postalCode', null, ['label' => 'Code postal'])
             ->add('status', 'trans', ['label' => 'Statut'])
+            ->add('adherent.tags', null, ['label' => 'Labels', 'template' => 'admin/national_event/list_adherent_tags.html.twig'])
             ->add(ListMapper::NAME_ACTIONS, null, ['actions' => ['edit' => []]])
         ;
     }
@@ -105,5 +117,37 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('ticketSentAt', null, ['label' => 'Date d\'envoi du billet', 'widget' => 'single_text', 'disabled' => true])
             ->end()
         ;
+    }
+
+    protected function configureExportFields(): array
+    {
+        PhpConfigurator::disableMemoryLimit();
+
+        return [IteratorCallbackDataSource::CALLBACK => function (array $inscription) {
+            /** @var EventInscription $inscription */
+            $inscription = $inscription[0];
+
+            return [
+                'UUID' => $inscription->getUuid()->toString(),
+                'Email' => $inscription->addressEmail,
+                'Genre' => $inscription->gender,
+                'Prénom' => $inscription->firstName,
+                'Nom' => $inscription->lastName,
+                'Labels' => implode(', ', array_map([$this->tagTranslator, 'trans'], $inscription->adherent?->tags ?? [])),
+                'Date de naissance' => $inscription->birthdate?->format('d/m/Y'),
+                'Téléphone' => PhoneNumberUtils::format($inscription->phone),
+                'Date d\'inscription' => $inscription->getCreatedAt()->format('d/m/Y H:i:s'),
+                'Billet reçu le' => $inscription->ticketSentAt?->format('d/m/Y H:i:s'),
+                'Code postal' => $inscription->postalCode,
+                'UTM source' => $inscription->utmSource,
+                'UTM campagne' => $inscription->utmCampaign,
+            ];
+        }];
+    }
+
+    #[Required]
+    public function setTagTranslator(TagTranslator $tagTranslator): void
+    {
+        $this->tagTranslator = $tagTranslator;
     }
 }
