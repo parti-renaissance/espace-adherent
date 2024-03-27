@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={
  *         "routePrefix": "/v3/procuration",
  *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'procurations')",
+ *         "pagination_client_items_per_page": true,
  *         "normalization_context": {
  *             "groups": {"procuration_request_list"},
  *         },
