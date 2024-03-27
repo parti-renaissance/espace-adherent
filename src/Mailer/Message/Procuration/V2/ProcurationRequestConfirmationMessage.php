@@ -2,17 +2,17 @@
 
 namespace App\Mailer\Message\Procuration\V2;
 
-use App\Entity\ProcurationV2\Proxy;
+use App\Entity\ProcurationV2\Request;
 use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
-final class ProxyConfirmationMessage extends AbstractProcurationMessage
+final class ProcurationRequestConfirmationMessage extends AbstractProcurationMessage
 {
-    public static function create(Proxy $proxy): Message
+    public static function create(Request $request): Message
     {
         $message = new self(
             Uuid::uuid4(),
-            $proxy->email,
+            $request->email,
             null,
             '[Procuration] Demande prise en compte'
         );

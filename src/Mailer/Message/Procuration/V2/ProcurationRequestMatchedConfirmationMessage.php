@@ -9,7 +9,7 @@ use App\Utils\PhoneNumberUtils;
 use App\ValueObject\Genders;
 use Ramsey\Uuid\Uuid;
 
-final class RequestMatchedConfirmationMessage extends AbstractProcurationMessage
+final class ProcurationRequestMatchedConfirmationMessage extends AbstractProcurationMessage
 {
     public static function create(Request $request, Proxy $proxy): Message
     {

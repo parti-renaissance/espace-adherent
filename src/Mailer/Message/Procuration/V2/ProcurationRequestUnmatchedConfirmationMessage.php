@@ -7,7 +7,7 @@ use App\Entity\ProcurationV2\Request;
 use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
-final class RequestUnmatchedConfirmationMessage extends AbstractProcurationMessage
+final class ProcurationRequestUnmatchedConfirmationMessage extends AbstractProcurationMessage
 {
     public static function create(Request $request, Proxy $proxy): Message
     {

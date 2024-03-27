@@ -5,10 +5,10 @@ namespace App\Procuration\V2;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
 use App\Mailer\MailerService;
-use App\Mailer\Message\Procuration\V2\ProxyConfirmationMessage;
-use App\Mailer\Message\Procuration\V2\RequestConfirmationMessage;
-use App\Mailer\Message\Procuration\V2\RequestMatchedConfirmationMessage;
-use App\Mailer\Message\Procuration\V2\RequestUnmatchedConfirmationMessage;
+use App\Mailer\Message\Procuration\V2\ProcurationProxyConfirmationMessage;
+use App\Mailer\Message\Procuration\V2\ProcurationRequestConfirmationMessage;
+use App\Mailer\Message\Procuration\V2\ProcurationRequestMatchedConfirmationMessage;
+use App\Mailer\Message\Procuration\V2\ProcurationRequestUnmatchedConfirmationMessage;
 
 class ProcurationNotifier
 {
@@ -18,21 +18,21 @@ class ProcurationNotifier
 
     public function sendRequestConfirmation(Request $request): void
     {
-        $this->transactionalMailer->sendMessage(RequestConfirmationMessage::create($request));
+        $this->transactionalMailer->sendMessage(ProcurationRequestConfirmationMessage::create($request));
     }
 
     public function sendProxyConfirmation(Proxy $proxy): void
     {
-        $this->transactionalMailer->sendMessage(ProxyConfirmationMessage::create($proxy));
+        $this->transactionalMailer->sendMessage(ProcurationProxyConfirmationMessage::create($proxy));
     }
 
     public function sendMatchConfirmation(Request $request, Proxy $proxy): void
     {
-        $this->transactionalMailer->sendMessage(RequestMatchedConfirmationMessage::create($request, $proxy));
+        $this->transactionalMailer->sendMessage(ProcurationRequestMatchedConfirmationMessage::create($request, $proxy));
     }
 
     public function sendUnmatchConfirmation(Request $request, Proxy $proxy): void
     {
-        $this->transactionalMailer->sendMessage(RequestUnmatchedConfirmationMessage::create($request, $proxy));
+        $this->transactionalMailer->sendMessage(ProcurationRequestUnmatchedConfirmationMessage::create($request, $proxy));
     }
 }
