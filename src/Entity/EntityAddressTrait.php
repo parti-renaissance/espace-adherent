@@ -7,7 +7,9 @@ use App\Address\GeocodableAddress;
 use App\Geocoder\Coordinates;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Intl\Countries;
+use Symfony\Component\Intl\Exception\MissingResourceException;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait EntityAddressTrait
 {
@@ -85,6 +87,8 @@ trait EntityAddressTrait
      * The address country code (ISO2).
      *
      * @ORM\Column(length=2, nullable=true)
+     *
+     * @Assert\Country
      *
      * @Groups({
      *     "event_write",
@@ -216,7 +220,12 @@ trait EntityAddressTrait
 
     public function getCountryName(?string $locale = null): ?string
     {
-        return $this->country ? Countries::getName($this->country, $locale) : null;
+        try {
+            return $this->country ? Countries::getName($this->country, $locale) : null;
+        } catch (MissingResourceException $e) {
+        }
+
+        return null;
     }
 
     public function getRegion(): ?string
