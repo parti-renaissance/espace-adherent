@@ -113,8 +113,8 @@ class Proxy extends AbstractProcuration
 
     public function removeRequest(Request $request): void
     {
-        $request->proxy = null;
         $this->requests->removeElement($request);
+        $request->proxy = null;
     }
 
     public function isPending(): bool
