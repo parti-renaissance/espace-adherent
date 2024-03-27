@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Mailer\Message\Procuration;
+namespace App\Mailer\Message\Procuration\V2;
 
 use App\Entity\ProcurationV2\Request;
 use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
-final class ProcurationRequestConfirmationMessage extends AbstractProcurationMessage
+final class RequestConfirmationMessage extends AbstractProcurationMessage
 {
     public static function create(Request $request): Message
     {
@@ -17,6 +17,6 @@ final class ProcurationRequestConfirmationMessage extends AbstractProcurationMes
             '[Procuration] Demande prise en compte'
         );
 
-        return self::updateSenderInfo($message);
+        return self::updateNoReplySenderInfo($message);
     }
 }

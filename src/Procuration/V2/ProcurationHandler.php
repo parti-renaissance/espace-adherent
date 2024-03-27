@@ -70,6 +70,8 @@ class ProcurationHandler
 
         $this->updateRequestStatus($request);
         $this->updateProxyStatus($proxy);
+
+        $this->notifier->sendMatchConfirmation($request, $proxy);
     }
 
     public function unmatch(Request $request): void
@@ -83,5 +85,7 @@ class ProcurationHandler
 
         $this->updateRequestStatus($request);
         $this->updateProxyStatus($proxy);
+
+        $this->notifier->sendUnmatchConfirmation($request, $proxy);
     }
 }
