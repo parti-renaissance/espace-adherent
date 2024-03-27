@@ -71,4 +71,17 @@ class ProcurationHandler
         $this->updateRequestStatus($request);
         $this->updateProxyStatus($proxy);
     }
+
+    public function unmatch(Request $request): void
+    {
+        if (!$proxy = $request->proxy) {
+            return;
+        }
+
+        $proxy->removeRequest($request);
+        $this->entityManager->flush();
+
+        $this->updateRequestStatus($request);
+        $this->updateProxyStatus($proxy);
+    }
 }

@@ -44,6 +44,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "controller": "App\Controller\Api\Procuration\MatchRequestWithProxyController",
  *             "defaults": {"_api_receive": false},
+ *         },
+ *         "unmatch": {
+ *             "method": "POST",
+ *             "path": "/requests/{uuid}/unmatch",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "controller": "App\Controller\Api\Procuration\UnmatchRequestAndProxyController",
+ *             "defaults": {"_api_receive": false},
  *         }
  *     },
  *     collectionOperations={

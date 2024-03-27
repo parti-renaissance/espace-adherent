@@ -5,7 +5,6 @@ namespace App\Controller\Api\Procuration;
 use App\Entity\ProcurationV2\Request;
 use App\Procuration\V2\ProcurationHandler;
 use App\Repository\Procuration\ProxyRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
@@ -13,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MatchRequestWithProxyController extends AbstractController
 {
-    public function __invoke(SymfonyRequest $httpRequest, Request $request, ProxyRepository $repository, EntityManagerInterface $entityManager, ProcurationHandler $procurationHandler): Response
+    public function __invoke(SymfonyRequest $httpRequest, Request $request, ProxyRepository $repository, ProcurationHandler $procurationHandler): Response
     {
         $data = json_decode($httpRequest->getContent(), true);
 
