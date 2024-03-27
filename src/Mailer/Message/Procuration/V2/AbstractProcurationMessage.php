@@ -6,9 +6,9 @@ use App\Mailer\Message\Message;
 
 abstract class AbstractProcurationMessage extends Message
 {
-    private const SENDER_NAME = 'Procurations • Besoin d\'Europe';
-    private const SENDER_EMAIL = 'procuration@besoindeurope.fr';
-    private const SENDER_EMAIL_NO_REPLY = 'ne-pas-repondre@besoindeurope.fr';
+    protected const SENDER_NAME = 'Procurations • Besoin d\'Europe';
+    protected const SENDER_EMAIL = 'procuration@besoindeurope.fr';
+    protected const SENDER_EMAIL_NO_REPLY = 'ne-pas-repondre@besoindeurope.fr';
 
     protected static function updateSenderInfo(Message $message): Message
     {

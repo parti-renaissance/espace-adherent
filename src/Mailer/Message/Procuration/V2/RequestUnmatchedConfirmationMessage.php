@@ -26,6 +26,7 @@ final class RequestUnmatchedConfirmationMessage extends AbstractProcurationMessa
         );
 
         $message->addCC($proxy->email);
+        $message->addBCC(self::SENDER_EMAIL);
         $message->setReplyTo($proxy->email);
         $message->setPreserveRecipients(true);
 
