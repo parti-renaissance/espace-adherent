@@ -21,7 +21,6 @@ final class RequestUnmatchedConfirmationMessage extends AbstractProcurationMessa
                 'mandant_last_name' => self::escape($request->lastName),
                 'voter_first_name' => self::escape($proxy->firstNames),
                 'voter_last_name' => self::escape($proxy->lastName),
-
             ]
         );
 

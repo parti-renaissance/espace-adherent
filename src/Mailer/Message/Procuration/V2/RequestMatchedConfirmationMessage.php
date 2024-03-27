@@ -6,6 +6,7 @@ use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
 use App\Mailer\Message\Message;
 use App\Utils\PhoneNumberUtils;
+use App\ValueObject\Genders;
 use Ramsey\Uuid\Uuid;
 
 final class RequestMatchedConfirmationMessage extends AbstractProcurationMessage
@@ -18,15 +19,13 @@ final class RequestMatchedConfirmationMessage extends AbstractProcurationMessage
             null,
             sprintf(
                 'Mise en relation : %s et %s',
-                $request->firstNames,
-                $proxy->firstNames
+                self::getCivilityName($request->gender, $request->lastName),
+                self::getCivilityName($proxy->gender, $proxy->lastName)
             ),
             [
                 'mandant_first_name' => self::escape($request->firstNames),
                 'mandant_last_name' => self::escape($request->lastName),
-                'mandant_vote_place' => self::escape(
-                    $request->customVotePlace ?? $request->votePlace
-                ),
+                'mandant_vote_place' => self::escape($request->getVotePlaceName()),
                 'mandant_phone' => $request->phone ? PhoneNumberUtils::format($request->phone) : null,
                 'mandant_email' => self::escape($request->email),
                 'voter_first_name' => self::escape($proxy->firstNames),
@@ -35,7 +34,6 @@ final class RequestMatchedConfirmationMessage extends AbstractProcurationMessage
                 'voter_birthdate' => self::escape($proxy->birthdate->format('d/m/Y')),
                 'voter_phone' => $proxy->phone ? PhoneNumberUtils::format($proxy->phone) : null,
                 'voter_email' => self::escape($proxy->email),
-
             ]
         );
 
@@ -45,5 +43,14 @@ final class RequestMatchedConfirmationMessage extends AbstractProcurationMessage
         $message->setPreserveRecipients(true);
 
         return self::updateSenderInfo($message);
+    }
+
+    private static function getCivilityName(string $gender, string $lastName): string
+    {
+        return sprintf(
+            '%s %s',
+            Genders::FEMALE === $gender ? 'Mme' : 'M.',
+            $lastName
+        );
     }
 }
