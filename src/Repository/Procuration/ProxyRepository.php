@@ -7,6 +7,7 @@ use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
 use App\Procuration\V2\ProxyStatusEnum;
+use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -17,6 +18,7 @@ class ProxyRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
     use UuidEntityRepositoryTrait;
+    use GeoZoneTrait;
 
     public function __construct(ManagerRegistry $registry)
     {
