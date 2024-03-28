@@ -2,6 +2,11 @@
 
 namespace App\Entity\ProcurationV2;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\Api\Filter\InZoneOfScopeFilter;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
@@ -21,6 +26,28 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @AssociatedSlots
  * @ExcludedAssociations
+ *
+ * @ApiResource(
+ *     attributes={
+ *         "routePrefix": "/v3/procuration",
+ *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'procurations')",
+ *     },
+ *     itemOperations={},
+ *     collectionOperations={
+ *         "get": {
+ *             "path": "/proxies",
+ *             "normalization_context": {
+ *                 "groups": {"procuration_proxy_read"},
+ *                 "enable_tag_translator": true,
+ *                 "datetime_format": "Y-m-d",
+ *             },
+ *         },
+ *     },
+ * )
+ *
+ * @ApiFilter(InZoneOfScopeFilter::class)
+ * @ApiFilter(OrderFilter::class, properties={"createdAt"})
+ * @ApiFilter(SearchFilter::class, properties={"status": "exact"})
  */
 class Proxy extends AbstractProcuration
 {

@@ -20,6 +20,10 @@ class ProxyNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $data = $this->normalizer->normalize($object, $format, $context);
 
         foreach ($data['items'] as &$item) {
+            if (!\array_key_exists('score', $item)) {
+                continue;
+            }
+
             $score = $item['score'];
             $item = $item[0];
 
