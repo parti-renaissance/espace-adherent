@@ -54,7 +54,7 @@ class Proxy extends AbstractProcuration
     public const DEFAULT_SLOTS = 1;
 
     /**
-     * @ORM\Column(length=9)
+     * @ORM\Column(length=9, nullable=true)
      *
      * @Assert\Length(
      *     min=7,
@@ -62,7 +62,7 @@ class Proxy extends AbstractProcuration
      * )
      * @Assert\Regex(pattern="/^[0-9]+$/i")
      */
-    public string $electorNumber;
+    public ?string $electorNumber = null;
 
     /**
      * @ORM\Column(type="smallint", options={"default": 1, "unsigned": true})

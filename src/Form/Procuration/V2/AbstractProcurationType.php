@@ -29,7 +29,6 @@ abstract class AbstractProcurationType extends AbstractType
             ->add('lastName', TextType::class)
             ->add('birthdate', BirthdateType::class)
             ->add('phone', PhoneNumberType::class, [
-                'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 'preferred_country_choices' => [AddressInterface::FRANCE],
                 'default_region' => AddressInterface::FRANCE,

@@ -62,6 +62,7 @@ abstract class AbstractCommand
     public ?\DateTimeInterface $birthdate = null;
 
     /**
+     * @Assert\NotBlank(message="common.phone_number.required")
      * @AssertPhoneNumber(message="common.phone_number.invalid")
      */
     public ?PhoneNumber $phone = null;
