@@ -11,18 +11,23 @@ use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
+use Faker\Generator;
 
 class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInterface
 {
+    private Generator $faker;
+
     public function __construct(
         private readonly PostAddressFactory $addressFactory
     ) {
+        $this->faker = Factory::create('fr_FR');
     }
 
     public function load(ObjectManager $manager)
     {
-        $proxy1 = $this->createProxy(
-            $this->getReference('procuration-v2-round-1'),
+        $manager->persist($this->createProxy(
+            $round = $this->getReference('procuration-v2-round-1'),
             'john.durand@test.dev',
             Genders::MALE,
             'John, Patrick',
@@ -36,12 +41,10 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             false,
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_06088'),
             $this->getReference('zone_vote_place_nice_1')
-        );
+        ));
 
-        $manager->persist($proxy1);
-
-        $proxy2 = $this->createProxy(
-            $this->getReference('procuration-v2-round-1'),
+        $manager->persist($this->createProxy(
+            $round,
             'jane.martin@test.dev',
             Genders::FEMALE,
             'Jane, Janine',
@@ -56,14 +59,33 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'),
             null,
             'BDV CH 1'
-        );
+        ));
 
-        $manager->persist($proxy2);
+        $zone = LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024');
+        for ($i = 1; $i <= 10; ++$i) {
+            $manager->persist($proxy = $this->createProxy(
+                $round,
+                $this->faker->email(),
+                0 === $i % 2 ? Genders::MALE : Genders::FEMALE,
+                $this->faker->firstName(),
+                $this->faker->lastName(),
+                $this->faker->dateTimeBetween('-50 years', '-18 years')->format('Y-m-d'),
+                '+33644332211',
+                'FR',
+                '75008',
+                'Paris',
+                '68 rue du Rocher',
+                false,
+                $zone
+            ));
+            $proxy->setCreatedAt($date = new \DateTime('-'.$i.' days'));
+            $proxy->setUpdatedAt($date);
+        }
 
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadGeoZoneData::class,

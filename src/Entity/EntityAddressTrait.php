@@ -22,7 +22,8 @@ trait EntityAddressTrait
      *     "event_write",
      *     "procuration_request_read",
      *     "procuration_request_list",
-     *     "procuration_proxy_read",
+     *     "procuration_proxy_list",
+     *     "procuration_matched_proxy",
      * })
      */
     protected ?string $address = null;
@@ -33,7 +34,8 @@ trait EntityAddressTrait
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
-     *     "procuration_proxy_read",
+     *     "procuration_proxy_list",
+     *     "procuration_matched_proxy",
      * })
      */
     protected ?string $additionalAddress = null;
@@ -47,7 +49,8 @@ trait EntityAddressTrait
      *     "event_write",
      *     "procuration_request_read",
      *     "procuration_request_list",
-     *     "procuration_proxy_read",
+     *     "procuration_proxy_list",
+     *     "procuration_matched_proxy",
      * })
      */
     protected ?string $postalCode = null;
@@ -64,7 +67,8 @@ trait EntityAddressTrait
      *     "event_list_read",
      *     "procuration_request_read",
      *     "procuration_request_list",
-     *     "procuration_proxy_read",
+     *     "procuration_proxy_list",
+     *     "procuration_matched_proxy",
      * })
      */
     protected ?string $city = null;
@@ -78,7 +82,8 @@ trait EntityAddressTrait
      *     "event_write",
      *     "procuration_request_read",
      *     "procuration_request_list",
-     *     "procuration_proxy_read",
+     *     "procuration_proxy_list",
+     *     "procuration_matched_proxy",
      * })
      */
     protected ?string $cityName = null;
@@ -94,7 +99,8 @@ trait EntityAddressTrait
      *     "event_write",
      *     "procuration_request_read",
      *     "procuration_request_list",
-     *     "procuration_proxy_read",
+     *     "procuration_proxy_list",
+     *     "procuration_matched_proxy",
      * })
      */
     protected ?string $country = null;

@@ -22,7 +22,8 @@ trait EntityPostAddressTrait
      *     "contact_update",
      *     "procuration_request_read",
      *     "procuration_request_list",
-     *     "procuration_proxy_read",
+     *     "procuration_proxy_list",
+     *     "procuration_matched_proxy",
      * })
      */
     protected $postAddress;
