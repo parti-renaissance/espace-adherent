@@ -416,16 +416,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
                             'label' => 'Rôle National communication',
                             'required' => false,
                         ])
-                        ->add('procurationManagedAreaCodesAsString', TextType::class, [
-                            'label' => 'coordinator.label.codes',
-                            'required' => false,
-                            'help_html' => true,
-                            'help' => <<<HELP
-                                Laisser vide si l'adhérent n'est pas responsable procuration. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
-                                Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
-                                HELP
-                            ,
-                        ])
                         ->add('assessorManagedAreaCodesAsString', TextType::class, [
                             'label' => 'assessors_manager',
                             'required' => false,
@@ -564,18 +554,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         }
                     }
                 })
-            ;
-
-            $form
-                ->get('procurationManagedAreaCodesAsString')
-                ->addModelTransformer(new CallbackTransformer(
-                    function ($data) {
-                        return $data;
-                    },
-                    function ($value) {
-                        return strtoupper($value);
-                    }
-                ))
             ;
 
             $form

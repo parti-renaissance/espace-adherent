@@ -38,7 +38,7 @@ class ProcurationProxyRepository extends ServiceEntityRepository
 
         $filters->apply($qb, $alias);
 
-        return $this->addAndWhereManagedBy($qb, $manager)
+        return $qb
             ->addGroupBy("$alias.id")
             ->getQuery()
             ->getResult()
@@ -58,7 +58,7 @@ class ProcurationProxyRepository extends ServiceEntityRepository
 
         $filters->apply($qb, $alias);
 
-        return $this->addAndWhereManagedBy($qb, $manager)
+        return $qb
             ->select('COUNT(DISTINCT pp.id)')
             ->getQuery()
             ->getSingleScalarResult()
@@ -78,10 +78,7 @@ class ProcurationProxyRepository extends ServiceEntityRepository
             ->setParameter('id', $proxy->getId())
         ;
 
-        return (bool) $this->addAndWhereManagedBy($qb, $procurationManager)
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
+        return (bool) $qb->getQuery()->getSingleScalarResult();
     }
 
     public function findMatchingProxies(ProcurationRequest $procurationRequest): array
@@ -147,31 +144,6 @@ class ProcurationProxyRepository extends ServiceEntityRepository
         $this->andWhereMatchingRounds($qb, $procurationRequest);
 
         return $qb->getQuery()->getResult();
-    }
-
-    private function addAndWhereManagedBy(QueryBuilder $qb, Adherent $procurationManager): QueryBuilder
-    {
-        $codesFilter = $qb->expr()->orX();
-
-        foreach ($procurationManager->getProcurationManagedArea()->getCodes() as $key => $code) {
-            if (is_numeric($code)) {
-                // Postal code prefix
-                $codesFilter->add(
-                    $qb->expr()->andX(
-                        'pp.voteCountry = \'FR\'',
-                        $qb->expr()->like('pp.votePostalCode', ':code'.$key)
-                    )
-                );
-
-                $qb->setParameter('code'.$key, $code.'%');
-            } elseif ('all' !== strtolower($code)) {
-                // Country
-                $codesFilter->add($qb->expr()->eq('pp.voteCountry', ':code'.$key));
-                $qb->setParameter('code'.$key, $code);
-            }
-        }
-
-        return $qb->andWhere($codesFilter);
     }
 
     private function createMatchingScore(QueryBuilder $qb, ProcurationRequest $procurationRequest): string

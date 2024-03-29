@@ -3,36 +3,17 @@
 namespace App\RepublicanSilence\ZoneExtractor;
 
 use App\Entity\Adherent;
-use App\Repository\Geo\ZoneRepository;
+use App\Scope\ScopeEnum;
 
 class ProcurationManagerZoneExtractor implements ZoneExtractorInterface
 {
-    private ZoneRepository $zoneRepository;
-
-    public function __construct(ZoneRepository $zoneRepository)
-    {
-        $this->zoneRepository = $zoneRepository;
-    }
-
     public function extractZones(Adherent $adherent, ?string $slug): array
     {
-        $area = $adherent->getProcurationManagedArea();
-
-        if ($area) {
-            $zones = [];
-            foreach ($area->getCodes() as $code) {
-                $zone = $this->zoneRepository->findOneBy(['code' => $code]);
-                if (!$zone) {
-                    $zone = $this->zoneRepository->findOneByPostalCode($code);
-                }
-
-                if ($zone) {
-                    $zones[] = $zone;
-                }
-            }
+        if ($role = $adherent->findZoneBasedRole(ScopeEnum::PROCURATIONS_MANAGER)) {
+            return $role->getZones()->toArray();
         }
 
-        return $zones ?? [];
+        return [];
     }
 
     public function supports(int $type): bool

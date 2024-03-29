@@ -335,15 +335,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $coordinatorCommitteeArea;
 
     /**
-     * @var ProcurationManagedArea|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\ProcurationManagedArea", cascade={"all"}, orphanRemoval=true)
-     *
-     * @Assert\Valid
-     */
-    private $procurationManagedArea;
-
-    /**
      * @var AssessorManagedArea|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\AssessorManagedArea", cascade={"all"}, orphanRemoval=true)
@@ -1705,16 +1696,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             : [];
     }
 
-    public function getProcurationManagedArea(): ?ProcurationManagedArea
-    {
-        return $this->procurationManagedArea;
-    }
-
-    public function setProcurationManagedArea(?ProcurationManagedArea $procurationManagedArea = null): void
-    {
-        $this->procurationManagedArea = $procurationManagedArea;
-    }
-
     public function getAssessorManagedArea(): ?AssessorManagedArea
     {
         return $this->assessorManagedArea;
@@ -1820,11 +1801,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function revokeAssessorManager(): void
     {
         $this->assessorManagedArea = null;
-    }
-
-    public function revokeProcurationManager(): void
-    {
-        $this->procurationManagedArea = null;
     }
 
     public function revokeJecouteManager(): void
@@ -1950,24 +1926,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function canBeProxy(): bool
     {
         return $this->isReferent() || $this->isProcurationsManager();
-    }
-
-    public function getProcurationManagedAreaCodesAsString(): ?string
-    {
-        if (!$this->procurationManagedArea) {
-            return '';
-        }
-
-        return $this->procurationManagedArea->getCodesAsString();
-    }
-
-    public function setProcurationManagedAreaCodesAsString(?string $codes = null): void
-    {
-        if (!$this->procurationManagedArea) {
-            $this->procurationManagedArea = new ProcurationManagedArea();
-        }
-
-        $this->procurationManagedArea->setCodesAsString($codes);
     }
 
     public function getAssessorManagedAreaCodesAsString(): ?string

@@ -8,11 +8,6 @@
         <section class="manager-space referent procuration-manager b__nudge--bottom-huge">
             <header class="manager-header">
                 <div class="l__wrapper">
-                    <div class="first-section">
-                        <div class="manager-information">
-                            <p>Vous gérez : <span>{% if 'all' == app.user.procurationManagedAreaCodesAsString|lower %} {{ 'common.zone.all'|trans }} {% else %} {{ app.user.procurationManagedAreaCodesAsString }} {% endif %}</span></p>
-                        </div>
-                    </div>
                     <div class="second-section">
                         <h1 class="page-title text--large b__nudge--bottom">
                             Espace responsable procuration
