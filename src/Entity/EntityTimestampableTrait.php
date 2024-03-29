@@ -34,7 +34,8 @@ trait EntityTimestampableTrait
      *     "national_event_inscription:webhook",
      *     "procuration_request_read",
      *     "procuration_request_list",
-     *     "procuration_proxy_read",
+     *     "procuration_proxy_list",
+     *     "procuration_matched_proxy",
      * })
      *
      * @Gedmo\Timestampable(on="create")

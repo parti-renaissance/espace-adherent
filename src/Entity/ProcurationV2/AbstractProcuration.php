@@ -38,7 +38,7 @@ abstract class AbstractProcuration implements ZoneableEntity
      *
      * @Groups({
      *     "procuration_request_read",
-     *     "procuration_proxy_read",
+     *     "procuration_matched_proxy",
      * })
      */
     public string $email;
@@ -54,6 +54,8 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_list",
+     *     "procuration_proxy_list_request",
      *     "procuration_request_list_proxy",
      * })
      */
@@ -72,8 +74,10 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_list",
+     *     "procuration_proxy_list_request",
      *     "procuration_request_list_proxy",
-     *     "procuration_proxy_read",
+     *     "procuration_matched_proxy",
      * })
      */
     public string $firstNames;
@@ -91,8 +95,10 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_list",
+     *     "procuration_proxy_list_request",
      *     "procuration_request_list_proxy",
-     *     "procuration_proxy_read",
+     *     "procuration_matched_proxy",
      * })
      */
     public string $lastName;
@@ -110,7 +116,8 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
-     *     "procuration_proxy_read",
+     *     "procuration_proxy_list",
+     *     "procuration_matched_proxy",
      * })
      */
     public \DateTimeInterface $birthdate;
@@ -122,7 +129,7 @@ abstract class AbstractProcuration implements ZoneableEntity
      *
      * @Groups({
      *     "procuration_request_read",
-     *     "procuration_proxy_read",
+     *     "procuration_matched_proxy",
      * })
      */
     public ?PhoneNumber $phone;
@@ -139,7 +146,8 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
-     *     "procuration_proxy_read",
+     *     "procuration_proxy_list",
+     *     "procuration_matched_proxy",
      * })
      */
     public Zone $voteZone;
@@ -232,7 +240,8 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
-     *     "procuration_proxy_read",
+     *     "procuration_proxy_list",
+     *     "procuration_matched_proxy",
      * })
      */
     public function getAge(): ?int
@@ -244,7 +253,10 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
-     *     "procuration_proxy_read",
+     *     "procuration_proxy_list",
+     *     "procuration_matched_proxy",
+     *     "procuration_proxy_list_request",
+     *     "procuration_request_list_proxy",
      * })
      * @SerializedName("id")
      */
@@ -279,11 +291,25 @@ abstract class AbstractProcuration implements ZoneableEntity
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
-     *     "procuration_proxy_read",
+     *     "procuration_proxy_list",
+     *     "procuration_matched_proxy",
      * })
      */
     public function getVotePlaceName(): ?string
     {
         return $this->customVotePlace ?? $this->votePlace?->getName();
+    }
+
+    /**
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     *     "procuration_proxy_list",
+     * })
+     * @SerializedName("tags")
+     */
+    public function getAdherentTags(): ?array
+    {
+        return $this->adherent?->tags;
     }
 }

@@ -11,7 +11,6 @@ use App\Procuration\V2\RequestStatusEnum;
 use App\Validator\Procuration\ManualAssociations;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -56,7 +55,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     collectionOperations={
  *         "get": {
- *             "path": "/requests",
  *             "normalization_context": {
  *                 "groups": {"procuration_request_list"},
  *                 "enable_tag_translator": true,
@@ -69,7 +67,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "controller": "App\Controller\Api\Procuration\GetMatchedProxiesController",
  *             "normalization_context": {
- *                 "groups": {"procuration_proxy_read"},
+ *                 "groups": {"procuration_matched_proxy"},
  *                 "enable_tag_translator": true,
  *                 "datetime_format": "Y-m-d",
  *             },
@@ -89,6 +87,7 @@ class Request extends AbstractProcuration
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_list",
      * })
      */
     public RequestStatusEnum $status = RequestStatusEnum::PENDING;
@@ -102,6 +101,7 @@ class Request extends AbstractProcuration
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
+     *     "procuration_proxy_list",
      * })
      */
     public ?Proxy $proxy = null;
@@ -113,18 +113,6 @@ class Request extends AbstractProcuration
         if ($proxy) {
             $proxy->addRequest($this);
         }
-    }
-
-    /**
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     * })
-     * @SerializedName("tags")
-     */
-    public function getAdherentTags(): ?array
-    {
-        return $this->adherent?->tags;
     }
 
     public function isPending(): bool

@@ -31,13 +31,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={
  *         "routePrefix": "/v3/procuration",
  *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'procurations')",
+ *         "pagination_client_items_per_page": true,
+ *         "normalization_context": {
+ *             "groups": {"procuration_proxy_list"},
+ *         },
  *     },
  *     itemOperations={},
  *     collectionOperations={
  *         "get": {
- *             "path": "/proxies",
  *             "normalization_context": {
- *                 "groups": {"procuration_proxy_read"},
+ *                 "groups": {"procuration_proxy_list"},
  *                 "enable_tag_translator": true,
  *                 "datetime_format": "Y-m-d",
  *             },
@@ -51,15 +54,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Proxy extends AbstractProcuration
 {
-    public const DEFAULT_SLOTS = 1;
-
     /**
      * @ORM\Column(length=9, nullable=true)
      *
-     * @Assert\Length(
-     *     min=7,
-     *     max=9
-     * )
+     * @Assert\Length(min=7, max=9)
      * @Assert\Regex(pattern="/^[0-9]+$/i")
      */
     public ?string $electorNumber = null;
@@ -69,21 +67,30 @@ class Proxy extends AbstractProcuration
      *
      * @Assert\Range(min=1, max=2)
      *
-     * @Groups({"procuration_proxy_read"})
+     * @Groups({
+     *     "procuration_matched_proxy",
+     *     "procuration_proxy_list",
+     * })
      */
-    public int $slots = self::DEFAULT_SLOTS;
+    public int $slots = 1;
 
     /**
      * @ORM\Column(enumType=ProxyStatusEnum::class)
      *
-     * @Groups({"procuration_proxy_read"})
+     * @Groups({
+     *     "procuration_matched_proxy",
+     *     "procuration_proxy_list",
+     * })
      */
     public ProxyStatusEnum $status = ProxyStatusEnum::PENDING;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProcurationV2\Request", mappedBy="proxy", cascade={"all"})
      *
-     * @Groups({"procuration_proxy_read"})
+     * @Groups({
+     *     "procuration_matched_proxy",
+     *     "procuration_proxy_list",
+     * })
      */
     public Collection $requests;
 

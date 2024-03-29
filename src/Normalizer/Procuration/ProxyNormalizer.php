@@ -20,10 +20,6 @@ class ProxyNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $data = $this->normalizer->normalize($object, $format, $context);
 
         foreach ($data['items'] as &$item) {
-            if (!\array_key_exists('score', $item)) {
-                continue;
-            }
-
             $score = $item['score'];
             $item = $item[0];
 
@@ -42,6 +38,6 @@ class ProxyNormalizer implements NormalizerInterface, NormalizerAwareInterface
         return
             empty($context[self::ALREADY_CALLED])
             && $data instanceof PaginatorInterface
-            && \in_array('procuration_proxy_read', $context['groups'] ?? [], true);
+            && \in_array('procuration_matched_proxy', $context['groups'] ?? [], true);
     }
 }
