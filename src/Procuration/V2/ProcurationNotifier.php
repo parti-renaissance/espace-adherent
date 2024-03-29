@@ -2,6 +2,7 @@
 
 namespace App\Procuration\V2;
 
+use App\Entity\Adherent;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
 use App\Mailer\MailerService;
@@ -26,13 +27,13 @@ class ProcurationNotifier
         $this->transactionalMailer->sendMessage(ProcurationProxyConfirmationMessage::create($proxy));
     }
 
-    public function sendMatchConfirmation(Request $request, Proxy $proxy): void
+    public function sendMatchConfirmation(Request $request, Proxy $proxy, ?Adherent $matcher = null): void
     {
-        $this->transactionalMailer->sendMessage(ProcurationRequestMatchedConfirmationMessage::create($request, $proxy));
+        $this->transactionalMailer->sendMessage(ProcurationRequestMatchedConfirmationMessage::create($request, $proxy, $matcher));
     }
 
-    public function sendUnmatchConfirmation(Request $request, Proxy $proxy): void
+    public function sendUnmatchConfirmation(Request $request, Proxy $proxy, ?Adherent $matcher = null): void
     {
-        $this->transactionalMailer->sendMessage(ProcurationRequestUnmatchedConfirmationMessage::create($request, $proxy));
+        $this->transactionalMailer->sendMessage(ProcurationRequestUnmatchedConfirmationMessage::create($request, $proxy, $matcher));
     }
 }

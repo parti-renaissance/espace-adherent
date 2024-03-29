@@ -13,7 +13,8 @@ class ProcurationHandler
     public function __construct(
         private readonly ProcurationFactory $factory,
         private readonly EntityManagerInterface $entityManager,
-        private readonly ProcurationNotifier $notifier
+        private readonly ProcurationNotifier $notifier,
+        private readonly MatchingHistoryHandler $matchingHistoryHandler
     ) {
     }
 
@@ -71,7 +72,9 @@ class ProcurationHandler
         $this->updateRequestStatus($request);
         $this->updateProxyStatus($proxy);
 
-        $this->notifier->sendMatchConfirmation($request, $proxy);
+        $history = $this->matchingHistoryHandler->createMatch($request, $proxy);
+
+        $this->notifier->sendMatchConfirmation($request, $proxy, $history->matcher);
     }
 
     public function unmatch(Request $request): void
@@ -86,6 +89,8 @@ class ProcurationHandler
         $this->updateRequestStatus($request);
         $this->updateProxyStatus($proxy);
 
-        $this->notifier->sendUnmatchConfirmation($request, $proxy);
+        $history = $this->matchingHistoryHandler->createUnmatch($request, $proxy);
+
+        $this->notifier->sendUnmatchConfirmation($request, $proxy, $history->matcher);
     }
 }

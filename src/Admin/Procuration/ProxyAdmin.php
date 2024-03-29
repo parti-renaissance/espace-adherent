@@ -45,6 +45,7 @@ class ProxyAdmin extends AbstractProcurationAdmin
                 ])
                 ->add('requests', ModelAutocompleteType::class, [
                     'label' => 'Mandants associés',
+                    'disabled' => true,
                     'required' => false,
                     'multiple' => true,
                     'minimum_input_length' => 2,
