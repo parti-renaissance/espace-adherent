@@ -5,6 +5,7 @@ namespace App\Procuration\V2\Listener;
 use App\Entity\ProcurationV2\Proxy;
 use App\Procuration\V2\Event\ProcurationEvents;
 use App\Procuration\V2\Event\RequestEvent;
+use App\Procuration\V2\MatchingHistoryHandler;
 use App\Procuration\V2\ProcurationNotifier;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -13,7 +14,8 @@ class RequestMatchedListener implements EventSubscriberInterface
     private ?Proxy $proxyBeforeUpdate = null;
 
     public function __construct(
-        private readonly ProcurationNotifier $procurationNotifier
+        private readonly ProcurationNotifier $procurationNotifier,
+        private readonly MatchingHistoryHandler $matchingHistoryHandler
     ) {
     }
 
@@ -41,6 +43,8 @@ class RequestMatchedListener implements EventSubscriberInterface
             null !== $this->proxyBeforeUpdate
             && $proxy !== $this->proxyBeforeUpdate
         ) {
+            $this->matchingHistoryHandler->createUnmatch($request, $this->proxyBeforeUpdate);
+
             $this->procurationNotifier->sendUnmatchConfirmation($request, $this->proxyBeforeUpdate);
         }
 
@@ -48,6 +52,8 @@ class RequestMatchedListener implements EventSubscriberInterface
             null !== $proxy
             && $proxy !== $this->proxyBeforeUpdate
         ) {
+            $this->matchingHistoryHandler->createMatch($request, $proxy);
+
             $this->procurationNotifier->sendMatchConfirmation($request, $proxy);
         }
     }
