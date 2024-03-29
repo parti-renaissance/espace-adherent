@@ -7,7 +7,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProxyCommand extends AbstractCommand
 {
     /**
-     * @Assert\NotBlank
      * @Assert\Length(
      *     min=7,
      *     max=9
