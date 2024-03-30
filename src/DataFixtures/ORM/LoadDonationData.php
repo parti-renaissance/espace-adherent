@@ -157,17 +157,28 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         $donation->setMembership(true);
         $donator4->setMembershipDonation($donation);
 
+        $donation = $this->createDonation(
+            $donator5 = $this->createDonator('000055', $this->getReference('president-ad-1')),
+            100.,
+            PayboxPaymentSubscription::UNLIMITED,
+            Donation::TYPE_CB,
+            '2020/01/06 19:00:00'
+        );
+        $this->createTransaction($donation);
+
         $donator0->computeLastSuccessfulDonation();
         $donator1->computeLastSuccessfulDonation();
         $donator2->computeLastSuccessfulDonation();
         $donator3->computeLastSuccessfulDonation();
         $donator4->computeLastSuccessfulDonation();
+        $donator5->computeLastSuccessfulDonation();
 
         $manager->persist($donator0);
         $manager->persist($donator1);
         $manager->persist($donator2);
         $manager->persist($donator3);
         $manager->persist($donator4);
+        $manager->persist($donator5);
 
         $manager->flush();
     }

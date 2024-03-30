@@ -33,7 +33,7 @@ class MembershipNotifier implements LoggerAwareInterface
 
     public function sendEmailReminder(Adherent $adherent): bool
     {
-        $donationUrl = $this->callbackManager->generateUrl('donation_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $donationUrl = $this->callbackManager->generateUrl('app_donation_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $this->transactionalMailer->sendMessage(Message\AdherentMembershipReminderMessage::create($adherent, $donationUrl));
     }

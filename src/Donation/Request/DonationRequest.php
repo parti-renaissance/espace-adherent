@@ -7,7 +7,7 @@ use App\Donation\DonationSourceEnum;
 use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Entity\Adherent;
 use App\Entity\Donation;
-use App\Form\DonationRequestType;
+use App\Form\Renaissance\Donation\DonationRequestConfirmType;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Renaissance\Donation\DonationRequestStateEnum;
@@ -123,9 +123,9 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     public $localDestination = false;
 
     /**
-     * @Assert\Choice(DonationRequestType::CONFIRM_DONATION_TYPE_CHOICES, groups={"donation_confirm_type"})
+     * @Assert\Choice(DonationRequestConfirmType::CONFIRM_DONATION_TYPE_CHOICES, groups={"donation_confirm_type"})
      */
-    private $confirmDonationType = DonationRequestType::CONFIRM_DONATION_TYPE_UNIQUE;
+    private $confirmDonationType = DonationRequestConfirmType::CONFIRM_DONATION_TYPE_UNIQUE;
 
     /**
      * @Assert\Range(min=0, max=7500, groups={"donation_confirm_type"})
