@@ -178,7 +178,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent4->setInterests(['jeunesse']);
         $adherent4->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent4->removeSubscriptionTypeByCode(SubscriptionTypeEnum::DEPUTY_EMAIL);
-        $adherent4->setProcurationManagedAreaCodesAsString('75, 44, GB, 92130, 91300');
         $adherent4->addReferentTag($this->getReference('referent_tag_75'));
         $adherent4->addReferentTag($this->getReference('referent_tag_75009'));
         $adherent4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));

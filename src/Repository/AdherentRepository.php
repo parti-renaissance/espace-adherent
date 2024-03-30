@@ -317,12 +317,10 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $this
             ->createQueryBuilder('a')
             ->addSelect('bm')
-            ->addSelect('ap')
             ->addSelect('cca')
             ->addSelect('cm')
             ->addSelect('bmr')
             ->innerJoin('a.boardMember', 'bm')
-            ->leftJoin('a.procurationManagedArea', 'ap')
             ->leftJoin('a.coordinatorCommitteeArea', 'cca')
             ->leftJoin('a.memberships', 'cm')
             ->innerJoin('bm.roles', 'bmr')
@@ -1517,7 +1515,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         return $this
             ->createQueryBuilder($alias)
-            ->addSelect('pma')
             ->addSelect('cca')
             ->addSelect('cm')
             ->addSelect('c')
@@ -1534,7 +1531,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->addSelect('commitment')
             ->addSelect('mandates')
             ->addSelect('zone_based_role')
-            ->leftJoin($alias.'.procurationManagedArea', 'pma')
             ->leftJoin($alias.'.assessorManagedArea', 'ama')
             ->leftJoin($alias.'.jecouteManagedArea', 'jma')
             ->leftJoin($alias.'.coordinatorCommitteeArea', 'cca')

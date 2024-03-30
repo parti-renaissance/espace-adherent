@@ -79,7 +79,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
 
         $filters->apply($qb, $alias);
 
-        $requests = $this->addAndWhereManagedBy($qb, $manager)
+        $requests = $qb
             ->addGroupBy("$alias.id")
             ->getQuery()
             ->getResult()
@@ -113,7 +113,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
 
         $filters->apply($qb, 'pr');
 
-        return (int) $this->addAndWhereManagedBy($qb, $manager)
+        return (int) $qb
             ->select('COUNT(DISTINCT pr.id)')
             ->getQuery()
             ->getSingleScalarResult()
@@ -174,10 +174,7 @@ class ProcurationRequestRepository extends ServiceEntityRepository
             ->setParameter('id', $procurationRequest->getId())
         ;
 
-        return (bool) $this->addAndWhereManagedBy($qb, $procurationManager)
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
+        return (bool) $qb->getQuery()->getSingleScalarResult();
     }
 
     public function createQueryBuilderForReminders(\DateTime $processedAfter, int $limit): QueryBuilder
@@ -194,33 +191,5 @@ class ProcurationRequestRepository extends ServiceEntityRepository
             ->orderBy('pr.processedAt', 'ASC')
             ->setMaxResults($limit)
         ;
-    }
-
-    private function addAndWhereManagedBy(QueryBuilder $qb, Adherent $procurationManager): QueryBuilder
-    {
-        if ($procurationManager->getProcurationManagedArea()->getCodes() === ['ALL']) {
-            return $qb;
-        }
-
-        $codesFilter = $qb->expr()->orX();
-
-        foreach ($procurationManager->getProcurationManagedArea()->getCodes() as $key => $code) {
-            if (is_numeric($code)) {
-                // Postal code prefix
-                $codesFilter->add(
-                    $qb->expr()->andX(
-                        'pr.voteCountry = \'FR\'',
-                        $qb->expr()->like('pr.votePostalCode', ':code'.$key)
-                    )
-                );
-                $qb->setParameter('code'.$key, $code.'%');
-            } else {
-                // Country
-                $codesFilter->add($qb->expr()->eq('pr.voteCountry', ':code'.$key));
-                $qb->setParameter('code'.$key, $code);
-            }
-        }
-
-        return $qb->andWhere($codesFilter);
     }
 }
