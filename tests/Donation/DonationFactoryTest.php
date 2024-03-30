@@ -12,7 +12,6 @@ use Cocur\Slugify\Slugify;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DonationFactoryTest extends TestCase
 {
@@ -63,7 +62,6 @@ class DonationFactoryTest extends TestCase
         return new DonationFactory(
             new PostAddressFactory(),
             new DonationRequestUtils(
-                $this->createMock(ValidatorInterface::class),
                 $this->createMock(CsrfTokenManagerInterface::class),
                 Slugify::create(),
             ),

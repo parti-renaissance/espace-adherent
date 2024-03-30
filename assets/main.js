@@ -44,13 +44,6 @@ class Main {
         import('pages/home_page').then((module) => module.default());
     }
 
-    runDonationPage() {
-        import('pages/donation_page').catch((error) => {
-            throw error;
-        })
-            .then((module) => module.default());
-    }
-
     runDonationFunnelPage() {
         return import('pages/donation_funnel').catch((error) => {
             throw error;

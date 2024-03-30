@@ -66,22 +66,6 @@
     </div>
 {% endblock %}
 
-{% block _app_renaissance_donation_confirmDonationType_row %}
-    {{ form_errors(form.parent.children.confirmSubscriptionAmount) }}
-    {%- for child in form %}
-        <div class="form-radio">
-            {{- form_widget(child) -}}
-            <label for="{{ child.vars.id }}">
-                {% if child.vars.value == constant('App\\Form\\Renaissance\\Donation\\DonationRequestConfirmType::CONFIRM_DONATION_TYPE_UNIQUE') %}
-                    Je fais un don unique de {{ form.parent.children.amount.vars.value|format_currency('EUR')|replace({',00' : ''})  }}
-                {% else %}
-                    Je fais un don mensuel de  <span class="inline-flex items-baseline"> {{ form_widget(form.parent.children.confirmSubscriptionAmount, {attr: {class: 'form-group custom-amount-donation'}}) }} <span> &nbsp;€</span></span>
-                {% endif %}
-            </label>
-        </div>
-    {% endfor -%}
-{% endblock %}
-
 {% block _app_renaissance_membership_gender_row %}
     {{- form_label(form, null, {label_attr: { class: 'text-sm uppercase tracking-wider text-re-blue-500 font-medium' }}) -}}
     {{ form_errors(form) }}

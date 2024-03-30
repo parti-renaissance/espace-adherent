@@ -29,6 +29,6 @@ class CallbackController extends AbstractController
             return $this->redirectToRoute('app_payment_status', ['code' => 'error']);
         }
 
-        return $transactionCallbackHandler->handle($donationUuid, $request, $_callback_token, 'app_payment_status');
+        return $transactionCallbackHandler->handle($donationUuid, $request, $_callback_token);
     }
 }

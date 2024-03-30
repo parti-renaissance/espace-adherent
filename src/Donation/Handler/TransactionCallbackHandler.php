@@ -11,41 +11,28 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class TransactionCallbackHandler
 {
-    private $router;
-    private $donationRepository;
-    private $donationRequestUtils;
-
     public function __construct(
-        UrlGeneratorInterface $router,
-        DonationRepository $donationRepository,
-        DonationRequestUtils $donationRequestUtils
+        private readonly UrlGeneratorInterface $router,
+        private readonly DonationRepository $donationRepository,
+        private readonly DonationRequestUtils $donationRequestUtils
     ) {
-        $this->router = $router;
-        $this->donationRepository = $donationRepository;
-        $this->donationRequestUtils = $donationRequestUtils;
     }
 
     public function handle(
         string $donationUuid,
         Request $request,
         string $callbackToken,
-        string $statusRouteName,
-        bool $forMembership = false,
     ): Response {
         $donation = $this->donationRepository->findOneByUuid($donationUuid);
 
         if (!$donation) {
-            if ($forMembership) {
-                return new RedirectResponse($this->router->generate('app_adhesion_index'));
-            }
-
             return new RedirectResponse($this->router->generate('app_donation_index'));
         }
 
         $payload = $this->donationRequestUtils->extractPayboxResultFromCallback($request, $callbackToken);
 
         return new RedirectResponse($this->router->generate(
-            $statusRouteName,
+            'app_payment_status',
             $this->donationRequestUtils->createCallbackStatus($payload['result'], $donationUuid)
         ));
     }

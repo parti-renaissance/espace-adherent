@@ -2,7 +2,6 @@
 
 namespace App\Controller\Renaissance;
 
-use App\Form\Renaissance\Donation\DonationRequestAmountType;
 use App\Form\Renaissance\NewsletterSubscriptionType;
 use App\Repository\ArticleRepository;
 use App\Repository\Biography\ExecutiveOfficeMemberRepository;
@@ -24,7 +23,6 @@ class HomeController extends AbstractController
         return $this->render('renaissance/home.html.twig', [
             'blocks' => $homeBlockRepository->findAllForRenaissance(),
             'newsletter_form' => $this->createForm(NewsletterSubscriptionType::class, null, ['action' => $this->generateUrl('app_renaissance_newsletter_save')])->createView(),
-            'donation_form' => $this->createForm(DonationRequestAmountType::class, null, ['action' => $this->generateUrl('app_donation_index')])->createView(),
             'commitments' => $commitmentRepository->getAllOrdered(),
             'articles' => $repository->findLatestForRenaissance(9),
             'executive_office_members' => $executiveOfficeMemberRepository->findAllPublishedMembers(true),

@@ -1173,18 +1173,6 @@
             font-size: 20px;
         }
     }
-
-    // Fix confirmDonationType input and radio button
-    label[for="app_donation_confirmDonationType_0"] {
-        &::before {
-            top: 9px;
-        }
-
-        input[type=text] {
-            width: 60px;
-            margin: 0 5px;
-        }
-    }
 }
 
 /*
