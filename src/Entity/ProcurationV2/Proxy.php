@@ -36,7 +36,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "groups": {"procuration_proxy_list"},
  *         },
  *     },
- *     itemOperations={},
+ *     itemOperations={
+ *         "update_status": {
+ *             "method": "PATCH",
+ *             "path": "/proxies/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "validation_groups": {"procuration_update_status"},
+ *             "normalization_context": {
+ *                 "groups": {"procuration_update_status"},
+ *             },
+ *             "denormalization_context": {
+ *                 "groups": {"procuration_update_status"},
+ *             },
+ *         },
+ *     },
  *     collectionOperations={
  *         "get": {
  *             "normalization_context": {
@@ -77,9 +90,12 @@ class Proxy extends AbstractProcuration
     /**
      * @ORM\Column(enumType=ProxyStatusEnum::class)
      *
+     * @Assert\Choice(callback={"App\Procuration\V2\ProxyStatusEnum", "getAvailableStatuses"}, groups={"procuration_update_status"})
+     *
      * @Groups({
      *     "procuration_matched_proxy",
      *     "procuration_proxy_list",
+     *     "procuration_update_status",
      * })
      */
     public ProxyStatusEnum $status = ProxyStatusEnum::PENDING;
