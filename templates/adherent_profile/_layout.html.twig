@@ -43,85 +43,75 @@
                                 <li>{{ role }}</li>
                             {% endfor %}
                         </ul>
-{#                        <div class="adherent-profile__completion b__nudge--bottom-50">#}
-{#                            <div class="text--body text--small b__nudge--bottom-small">#}
-{#                                <!-- If is not completed -->#}
-{#                                Complétion du profil : 50%#}
-{#                                <!-- If is completed TODO#}
-{#                                👏 Profil complété ! -->#}
-{#                            </div>#}
-{#                            <div class="gauge">#}
-{#                                <span></span>#}
-{#                            </div>#}
-{#                        </div>#}
                     </div>
-                    {% block adherent_profile_menu %}
-                    <nav class="adherent-profile__menu adherent-profile__menu--desktop accordion-container">
-                        {% set isInformationRoute = is_active_route(app.request, [
-                            'app_user_edit',
-                            'app_certification_request_*',
-                            'app_user_change_password',
-                            'app_adherent_pin_interests',
-                            'app_user_set_email_notifications',
-                            'app_adherent_commitment',
-                        ] ) %}
-                        {% set isActivityRoute = is_active_route(app.request, 'app_adherent_profile_activity' ) %}
 
-                        <div class="menu-section accordion{{ isInformationRoute ? ' opened' }}">
-                            <div class="menu-section__heading menu-section-informations accordion--title {{ isInformationRoute ? 'active' }}">
-                                <span>Informations</span>
-                                <span class="trigger-container"></span>
+                    {% block adherent_profile_menu %}
+                        <nav class="adherent-profile__menu adherent-profile__menu--desktop accordion-container">
+                            {% set isInformationRoute = is_active_route(app.request, [
+                                'app_user_edit',
+                                'app_certification_request_*',
+                                'app_user_change_password',
+                                'app_adherent_pin_interests',
+                                'app_user_set_email_notifications',
+                                'app_adherent_commitment',
+                            ] ) %}
+                            {% set isActivityRoute = is_active_route(app.request, 'app_adherent_profile_activity' ) %}
+
+                            <div class="menu-section accordion{{ isInformationRoute ? ' opened' }}">
+                                <div class="menu-section__heading menu-section-informations accordion--title {{ isInformationRoute ? 'active' }}">
+                                    <span>Informations</span>
+                                    <span class="trigger-container"></span>
+                                </div>
+                                <ul class="menu-section__items"{% if isInformationRoute %} style="display: block;"{% endif %}>
+                                    <li class="{{ is_active_route(app.request, 'app_user_edit') ? 'active' }}">
+                                        <a href="{{ path('app_user_edit') }}">Général</a>
+                                    </li>
+                                    <li class="{{ is_active_route(app.request, 'app_certification_request_*') ? 'active' }}">
+                                        <a href="{{ path('app_certification_request_home') }}">Certification</a>
+                                    </li>
+                                    <li class="{{ is_active_route(app.request, 'app_user_change_password') ? 'active' }}">
+                                        <a href="{{ path('app_user_change_password') }}">Mot de passe</a>
+                                    </li>
+                                    <li class="{{ is_active_route(app.request, 'app_adherent_pin_interests') ? 'active' }}">
+                                        <a href="{{ path('app_adherent_pin_interests') }}">Centres d'intérêt</a>
+                                    </li>
+                                    <li class="{{ is_active_route(app.request, 'app_adherent_commitment') ? 'active' }}">
+                                        <a href="{{ path('app_adherent_commitment') }}">Engagement</a>
+                                    </li>
+                                    <li class="{{ is_active_route(app.request, 'app_user_set_email_notifications') ? 'active' }}">
+                                        <a href="{{ path('app_user_set_email_notifications') }}">Communication</a>
+                                    </li>
+                                </ul>
                             </div>
-                            <ul class="menu-section__items"{% if isInformationRoute %} style="display: block;"{% endif %}>
-                                <li class="{{ is_active_route(app.request, 'app_user_edit') ? 'active' }}">
-                                    <a href="{{ path('app_user_edit') }}">Général</a>
-                                </li>
-                                <li class="{{ is_active_route(app.request, 'app_certification_request_*') ? 'active' }}">
-                                    <a href="{{ path('app_certification_request_home') }}">Certification</a>
-                                </li>
-                                <li class="{{ is_active_route(app.request, 'app_user_change_password') ? 'active' }}">
-                                    <a href="{{ path('app_user_change_password') }}">Mot de passe</a>
-                                </li>
-                                <li class="{{ is_active_route(app.request, 'app_adherent_pin_interests') ? 'active' }}">
-                                    <a href="{{ path('app_adherent_pin_interests') }}">Centres d'intérêt</a>
-                                </li>
-                                <li class="{{ is_active_route(app.request, 'app_adherent_commitment') ? 'active' }}">
-                                    <a href="{{ path('app_adherent_commitment') }}">Engagement</a>
-                                </li>
-                                <li class="{{ is_active_route(app.request, 'app_user_set_email_notifications') ? 'active' }}">
-                                    <a href="{{ path('app_user_set_email_notifications') }}">Communication</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="menu-section accordion{{ isActivityRoute ? ' opened' }}">
-                            <div class="menu-section__heading menu-section-activity accordion--title {{ isActivityRoute ? 'active' }}">
-                                <span href="">Activités</span>
-                                <span class="trigger-container"></span>
+                            <div class="menu-section accordion{{ isActivityRoute ? ' opened' }}">
+                                <div class="menu-section__heading menu-section-activity accordion--title {{ isActivityRoute ? 'active' }}">
+                                    <span href="#">Activités</span>
+                                    <span class="trigger-container"></span>
+                                </div>
+                                <ul class="menu-section__items"{% if isActivityRoute %} style="display: block;"{% endif %}>
+                                    {% if is_instance_member %}
+                                        <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'instances'}) }}">Mes instances</a></li>
+                                    {% endif %}
+                                    <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}">Mes comités</a></li>
+                                    <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'events'}) }}">Mes événements</a></li>
+                                    <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'donations'}) }}">Mes dons</a></li>
+                                </ul>
                             </div>
-                            <ul class="menu-section__items"{% if isActivityRoute %} style="display: block;"{% endif %}>
-                                {% if is_instance_member %}
-                                    <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'instances'}) }}">Mes instances</a></li>
-                                {% endif %}
-                                <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}">Mes comités</a></li>
-                                <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'events'}) }}">Mes événements</a></li>
-                                <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'donations'}) }}">Mes dons</a></li>
-                            </ul>
-                        </div>
-                        <div class="menu-section">
-                            <a href="{{ path('app_documents_index') }}" class="menu-section__heading menu-section-documents {{ is_active_route(app.request, 'app_documents_index') ? 'active' }}">
-                                <span>Documents</span>
-                            </a>
-                        </div>
-                    </nav>
-                    <ul class="">
-                        {% if is_granted('ROLE_FORMATION_SPACE') %}
-                            <li class="space--10-0">
-                                <a href="{{ path('app_formation_home') }}" class="text--body text--small link--no-decor">Formation</a>
-                            </li>
-                        {% endif %}
-                        <li class="space--10-0"><a href="https://aide.en-marche.fr" rel="noopener noreferrer" target="_blank" class="text--body text--small link--no-decor">Aide</a></li>
-                        <li class="space--10-0"><a href="{{ path('logout') }}" class="text--body text--small link--no-decor">Déconnexion</a></li>
-                    </ul>
+                            <div class="menu-section">
+                                <a href="{{ path('app_documents_index') }}" class="menu-section__heading menu-section-documents {{ is_active_route(app.request, 'app_documents_index') ? 'active' }}">
+                                    <span>Documents</span>
+                                </a>
+                            </div>
+                        </nav>
+                        <ul>
+                            {% if is_granted('ROLE_FORMATION_SPACE') %}
+                                <li class="space--10-0">
+                                    <a href="{{ path('app_formation_home') }}" class="text--body text--small link--no-decor">Formation</a>
+                                </li>
+                            {% endif %}
+                            <li class="space--10-0"><a href="https://aide.en-marche.fr" rel="noopener noreferrer" target="_blank" class="text--body text--small link--no-decor">Aide</a></li>
+                            <li class="space--10-0"><a href="{{ path('logout') }}" class="text--body text--small link--no-decor">Déconnexion</a></li>
+                        </ul>
                     {% endblock %}
                 </aside>
                 <div class="adherent-profile__content">
