@@ -2,7 +2,6 @@ import Container from './services/Container';
 import registerServices from './services';
 
 // Listeners
-import amountChooser from './listeners/amount-chooser';
 import donationBanner from './listeners/donation-banner';
 import progressiveBackground from './listeners/progressive-background';
 import externalLinks from './listeners/external-links';
@@ -19,7 +18,6 @@ class App {
         this._di = null;
         this._listeners = [
             donationBanner,
-            amountChooser,
             progressiveBackground,
             externalLinks,
             noJsRecaptcha,
@@ -105,18 +103,6 @@ class App {
 
     startDateFieldsSynchronisation(referenceDateFieldName, targetDateFieldName) {
         this._di.get('form.date_synchronizer').sync(referenceDateFieldName, targetDateFieldName);
-    }
-
-    runRenaissanceAdhesion() {
-        System.import('pages/renaissance_adhesion').catch((error) => { throw error; }).then((module) => {
-            module.default('.adhesion-widget-wrapper');
-        });
-    }
-
-    runDonation() {
-        import('pages/donation').catch((error) => { throw error; }).then((module) => {
-            module.default('.donation-widget-wrapper');
-        });
     }
 
     runProgrammaticFoundation() {

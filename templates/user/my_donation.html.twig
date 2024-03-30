@@ -1,15 +1,12 @@
 <div class="l__row l__row--h-stretch l__row--wrap">
     <h1 class="text--medium-large">Mes dons</h1>
-    <a href="{{ path('donation_index') }}" class="btn btn--red b__nudge--bottom-larger">Faire un don</a>
+    <a href="{{ path('app_donation_index') }}" class="btn btn--red b__nudge--bottom-larger">Faire un don</a>
 </div>
 
 {% if donations_history is not empty %}
     <p class="text--body">Merci pour votre engagement à nos côtés !</p>
     <p class="text--body text--bold">Votre dernier don remonte à {{ donations_history|first.date|ago }}.</p>
     {% if subscribed_donations %}
-        <a href="{{ path('donation_subscription_cancel') }}">
-            {{ 'adherent.stop_donation'|trans({ count: subscribed_donations|length }) }}
-        </a>. <br />
         {% for subscribed_donation in subscribed_donations %}
             Prochaine échéance du don mensuel de {{ subscribed_donation.amountInEuros }}€ le {{ subscribed_donation.nextDonationAt|format_datetime('medium', 'none') }}
             {% if not loop.last %}
@@ -17,9 +14,9 @@
             {% endif %}
         {% endfor %}
     {% elseif last_subscription_ended %}
-        Vous avez mis fin à votre don mensuel le {{ last_subscription_ended.subscriptionEndedAt|format_datetime('medium', 'none') }}. Vous pouvez en refaire un <a href="{{ path('donation_index') }}">en cliquant ici</a>.
+        Vous avez mis fin à votre don mensuel le {{ last_subscription_ended.subscriptionEndedAt|format_datetime('medium', 'none') }}. Vous pouvez en refaire un <a href="{{ path('app_donation_index') }}">en cliquant ici</a>.
     {% else %}
-        <a href="{{ path('donation_index') }}">Faire un nouveau don</a>.
+        <a href="{{ path('app_donation_index') }}">Faire un nouveau don</a>.
     {% endif %}
     <p class="text--body text--small text--gray">
         Veuillez noter que :<br />
@@ -55,7 +52,7 @@
         Ils nous donnent de la force pour transformer le pays.
 
         <div class="b__nudge--top">
-            <a href="{{ path('donation_index') }}" class="btn btn--primary">Je donne à La République En Marche</a>
+            <a href="{{ path('app_donation_index') }}" class="btn btn--primary">Je donne à La République En Marche</a>
         </div>
     </div>
 {% endif %}

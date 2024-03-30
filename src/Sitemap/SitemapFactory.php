@@ -116,7 +116,6 @@ class SitemapFactory
         if (!$main->isHit()) {
             $sitemap = new Sitemap();
             $sitemap->add($this->generateUrl('homepage'), null, ChangeFrequency::HOURLY, 1);
-            $sitemap->add($this->generateUrl('donation_index'), null, ChangeFrequency::MONTHLY, 0.8);
             $sitemap->add($this->generateUrl('app_je_marche'), null, ChangeFrequency::NEVER, 0.5);
             $sitemap->add($this->generateUrl('newsletter_subscription'), null, ChangeFrequency::NEVER, 0.5);
             $sitemap->add($this->generateUrl('invitation_form'), null, ChangeFrequency::NEVER, 0.5);

@@ -16,12 +16,11 @@ Feature:
   Scenario: The main sitemap displays correctly
     Given I am on "/sitemap_main_1.xml"
     Then the response should be in XML
-    And the XML element "//urlset" should have 5 element
+    And the XML element "//urlset" should have 4 element
     And the XML element "//url[1]/loc" should be equal to "http://test.enmarche.code/"
-    And the XML element "//url[2]/loc" should be equal to "http://test.enmarche.code/don"
-    And the XML element "//url[3]/loc" should be equal to "http://test.enmarche.code/jagis"
-    And the XML element "//url[4]/loc" should be equal to "http://test.enmarche.code/newsletter"
-    And the XML element "//url[5]/loc" should be equal to "http://test.enmarche.code/invitation"
+    And the XML element "//url[2]/loc" should be equal to "http://test.enmarche.code/jagis"
+    And the XML element "//url[3]/loc" should be equal to "http://test.enmarche.code/newsletter"
+    And the XML element "//url[4]/loc" should be equal to "http://test.enmarche.code/invitation"
 
   Scenario: The content sitemap displays correctly
     Given I am on "/sitemap_content_1.xml"

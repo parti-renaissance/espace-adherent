@@ -2,7 +2,6 @@
 
 namespace Tests\App\Donation;
 
-use App\Address\GeoCoder;
 use App\Address\PostAddressFactory;
 use App\Donation\DonationFactory;
 use App\Donation\Request\DonationRequest;
@@ -12,7 +11,6 @@ use App\Repository\Geo\ZoneRepository;
 use Cocur\Slugify\Slugify;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -66,10 +64,8 @@ class DonationFactoryTest extends TestCase
             new PostAddressFactory(),
             new DonationRequestUtils(
                 $this->createMock(ValidatorInterface::class),
-                $this->createMock(SessionInterface::class),
                 $this->createMock(CsrfTokenManagerInterface::class),
                 Slugify::create(),
-                $this->createMock(GeoCoder::class)
             ),
             $this->createMock(ZoneRepository::class)
         );
