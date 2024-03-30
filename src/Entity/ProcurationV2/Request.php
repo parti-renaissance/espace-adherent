@@ -51,7 +51,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "controller": "App\Controller\Api\Procuration\UnmatchRequestAndProxyController",
  *             "defaults": {"_api_receive": false},
- *         }
+ *         },
+ *         "update_status": {
+ *             "method": "PATCH",
+ *             "path": "/requests/{uuid}",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "validation_groups": {"procuration_update_status"},
+ *             "normalization_context": {
+ *                 "groups": {"procuration_update_status"},
+ *             },
+ *             "denormalization_context": {
+ *                 "groups": {"procuration_update_status"},
+ *             },
+ *         },
  *     },
  *     collectionOperations={
  *         "get": {
@@ -84,10 +96,13 @@ class Request extends AbstractProcuration
     /**
      * @ORM\Column(enumType=RequestStatusEnum::class)
      *
+     * @Assert\Choice(callback={"App\Procuration\V2\RequestStatusEnum", "getAvailableStatuses"}, groups={"procuration_update_status"})
+     *
      * @Groups({
      *     "procuration_request_read",
      *     "procuration_request_list",
      *     "procuration_proxy_list",
+     *     "procuration_update_status",
      * })
      */
     public RequestStatusEnum $status = RequestStatusEnum::PENDING;
