@@ -24,8 +24,13 @@ services:
 
     Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader: '@doctrine.fixtures.loader'
 
-#    app.glide.cache_adapter:
-#        class: 'League\Flysystem\Memory\MemoryAdapter'
+    League\Glide\Server:
+        factory: League\Glide\ServerFactory::create
+        arguments:
+            -   source: '@League\Flysystem\FilesystemOperator'
+                cache: '@memory.storage'
+                response: '@League\Glide\Responses\SymfonyResponseFactory'
+                max_image_size: 4000000 # Max image size in number of pixels (2000x2000)
 
     Tests\App\Test\Payment\PayboxProvider:
         arguments:
