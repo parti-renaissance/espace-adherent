@@ -1,58 +1,14 @@
-{% extends 'base_renaissance.html.twig' %}
+{% extends 'besoindeurope/base_besoindeurope.html.twig' %}
 
 {% block page_title 'Procuration - Proposition (Mandataire)' %}
-{% block canonical_url ('https://' ~ national_event_host) %}
-{% block meta_description "Besoin d'Europe est la liste commune Renaissance, MODEM, Horizons et Parti Radical, unis pour les Européennes du 9 juin 2024." %}
-
-{% block favicons %}
-    <link rel="icon" type="image/png" href="{{ asset('images/europe/favicon.png') }}" sizes="32x32" />
-{% endblock %}
 
 {% block stylesheets %}
-    <link href="{{ asset('fonts/SharpGrotesk/stylesheet.css') }}" rel="stylesheet">
-    <link href="{{ asset('fonts/Value/stylesheet.css') }}" rel="stylesheet">
     <style>
         .bg-proxy {
             background: linear-gradient(106deg, #E8EEF2 19.86%, #C1CDD5 109.87%);
         }
     </style>
 {% endblock %}
-
-{% block open_graph %}
-    {% set sharer_image = url('asset_url', {path: 'static/national/besoindeurope.webp', app_domain: national_event_host}) %}
-    <meta property="og:image" content="{{ sharer_image }}" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="{{ sharer_image }}" />
-{% endblock %}
-
-{% block head_javascripts %}
-    {% if app_environment == 'production' %}
-        <!-- Matomo -->
-        <script>
-            var _paq = window._paq = window._paq || [];
-            /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-            _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-            _paq.push(["setDoNotTrack", true]);
-            _paq.push(["disableCookies"]);
-            _paq.push(['trackPageView']);
-            _paq.push(['enableLinkTracking']);
-            (function() {
-                var u="https://partirenaissance.matomo.cloud/";
-                _paq.push(['setTrackerUrl', u+'matomo.php']);
-                _paq.push(['setSiteId', '4']);
-                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-                g.async=true; g.src='https://cdn.matomo.cloud/partirenaissance.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
-            })();
-        </script>
-        <!-- End Matomo Code -->
-    {% endif %}
-{% endblock %}
-
-{% block flash_message '' %}
-
-
 
 {% block content %}
     <main class="flex flex-col re_new_ui bde-theme bg-proxy">
