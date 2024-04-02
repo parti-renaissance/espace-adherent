@@ -411,4 +411,9 @@ class Zone implements GeoInterface, UuidEntityInterface
     {
         return \in_array($this->code, [GeoInterface::CITY_PARIS_CODE, GeoInterface::CITY_LYON_CODE, GeoInterface::CITY_MARSEILLE_CODE], true);
     }
+
+    public function isParis(): bool
+    {
+        return str_starts_with($this->code, '751');
+    }
 }
