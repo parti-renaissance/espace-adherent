@@ -36,7 +36,7 @@ class DataCornerVoter extends Voter
             return false;
         }
 
-        if (!$subject->isRenaissanceAdherent()) {
+        if (!$subject->isRenaissanceUser()) {
             return false;
         }
 
