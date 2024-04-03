@@ -6,7 +6,10 @@ use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
 use App\Procuration\V2\Command\ProxyCommand;
 use App\Procuration\V2\Command\RequestCommand;
+use App\Procuration\V2\Event\ProcurationEvents;
+use App\Procuration\V2\Event\ProxyEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ProcurationHandler
 {
@@ -14,7 +17,8 @@ class ProcurationHandler
         private readonly ProcurationFactory $factory,
         private readonly EntityManagerInterface $entityManager,
         private readonly ProcurationNotifier $notifier,
-        private readonly MatchingHistoryHandler $matchingHistoryHandler
+        private readonly MatchingHistoryHandler $matchingHistoryHandler,
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -38,6 +42,8 @@ class ProcurationHandler
         $this->entityManager->flush();
 
         $this->notifier->sendProxyConfirmation($proxy);
+
+        $this->eventDispatcher->dispatch(new ProxyEvent($proxy), ProcurationEvents::PROXY_CREATED);
 
         return $proxy;
     }

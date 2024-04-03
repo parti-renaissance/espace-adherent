@@ -11,7 +11,6 @@ use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ProxyRepository extends ServiceEntityRepository
@@ -55,50 +54,30 @@ class ProxyRepository extends ServiceEntityRepository
     public function findAvailableProxies(Request $request, int $page): PaginatorInterface
     {
         $queryBuilder = $this->createQueryBuilder('proxy');
-
         $orx = $queryBuilder->expr()->orX();
 
-        if ($votePlace = $request->votePlace) {
-            $city = $votePlace->getParentsOfType(Zone::CITY);
-            $department = $votePlace->getParentsOfType(Zone::DEPARTMENT);
+        $firstLevel = $request->votePlace ?? $request->voteZone;
+        $caseSelect = 'CASE WHEN FIND_IN_SET(:first_level_id, proxy.zoneIds) > 0 THEN '.(match ($firstLevel->getType()) {
+            Zone::VOTE_PLACE => 8,
+            Zone::BOROUGH => 4,
+            Zone::CITY => 2,
+            default => 0,
+        });
+        $orx->add('FIND_IN_SET(:first_level_id, proxy.zoneIds) > 0');
+        $queryBuilder->setParameter('first_level_id', $firstLevel->getId());
 
-            $orx->add('proxy.votePlace = :vote_place');
-            $orx->add('zone_parent IN (:parent_zones)');
+        if ($secondLevel = current($firstLevel->getParentsOfType($firstLevel->isParis() ? Zone::BOROUGH : Zone::CITY))) {
+            $caseSelect .= ' WHEN FIND_IN_SET(:second_level_id, proxy.zoneIds) > 0 THEN '.($secondLevel->isBorough() ? 4 : 2);
+            $orx->add('FIND_IN_SET(:second_level_id, proxy.zoneIds) > 0');
+            $queryBuilder->setParameter('second_level_id', $secondLevel->getId());
+        }
 
-            $caseSelect = 'CASE WHEN vote_place = :vote_place THEN 2
-                    WHEN zone_parent = :city THEN 1
-                    ELSE 0 END AS score';
-
-            $queryBuilder
-                ->innerJoin('proxy.votePlace', 'vote_place')
-                ->leftJoin('vote_place.parents', 'zone_parent', Join::WITH, 'zone_parent.type IN (:parent_types)')
-                ->setParameter('parent_types', [Zone::CITY, Zone::DEPARTMENT])
-                ->setParameter('parent_zones', [$city, $department])
-                ->setParameter('vote_place', $votePlace)
-                ->setParameter('city', $city)
-            ;
+        if ($thirdLevel = current($firstLevel->getParentsOfType($firstLevel->isInFrance() ? Zone::DEPARTMENT : Zone::COUNTRY))) {
+            $caseSelect .= ' ELSE '.($thirdLevel->isDepartment() ? '1' : '0').' END AS score';
+            $orx->add('FIND_IN_SET(:third_level_id, proxy.zoneIds) > 0');
+            $queryBuilder->setParameter('third_level_id', $thirdLevel->getId());
         } else {
-            $voteZone = $request->voteZone;
-            $caseSelect = 'CASE WHEN vote_zone = :vote_zone THEN 1 ELSE 0 END AS score';
-
-            $orx->add('vote_zone = :vote_zone');
-            $orx->add('zone_parent IN (:parent_zones)');
-
-            if ($votePlace = $request->customVotePlace) {
-                $caseSelect = 'CASE WHEN proxy.customVotePlace = :vote_place THEN 2
-                    WHEN vote_zone = :vote_zone THEN 1
-                    ELSE 0 END AS score';
-                $orx->add('proxy.customVotePlace = :vote_place');
-                $queryBuilder->setParameter('vote_place', $votePlace);
-            }
-
-            $queryBuilder
-                ->innerJoin('proxy.voteZone', 'vote_zone')
-                ->leftJoin('vote_zone.parents', 'zone_parent', Join::WITH, 'zone_parent.type IN (:parent_types)')
-                ->setParameter('parent_types', [Zone::CITY, Zone::DEPARTMENT, Zone::COUNTRY])
-                ->setParameter('parent_zones', $voteZone->getWithParents([Zone::CITY, Zone::DEPARTMENT, Zone::COUNTRY]))
-                ->setParameter('vote_zone', $voteZone)
-            ;
+            $caseSelect .= ' ELSE 0 END AS score';
         }
 
         $queryBuilder

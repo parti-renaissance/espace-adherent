@@ -4,6 +4,8 @@ namespace App\Procuration\V2\Event;
 
 class ProcurationEvents
 {
+    public const PROXY_CREATED = 'procuration.proxy.created';
+
     public const PROXY_BEFORE_UPDATE = 'procuration.proxy.before_update';
     public const PROXY_AFTER_UPDATE = 'procuration.proxy.after_update';
 

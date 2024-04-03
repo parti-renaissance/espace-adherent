@@ -24,9 +24,11 @@ class ProxyNormalizer implements NormalizerInterface, NormalizerAwareInterface
             $item = $item[0];
 
             $item['matching_level'] = match ($score) {
-                1 => 'city',
-                2 => 'vote_place',
-                default => 'department/country',
+                1 => 'department',
+                2 => 'city',
+                4 => 'borough',
+                8 => 'vote_place',
+                default => 'country',
             };
         }
 

@@ -112,6 +112,14 @@ class Proxy extends AbstractProcuration
      */
     public Collection $requests;
 
+    /**
+     * Ids of main and parents zones built from votePlace zone or from voteZone zone.
+     * This field helps to improve matching DB query in ProxyRepository
+     *
+     * @ORM\Column(type="simple_array", nullable=true)
+     */
+    public ?array $zoneIds = null;
+
     public function __construct(
         Round $round,
         string $email,
