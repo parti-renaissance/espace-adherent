@@ -26,14 +26,14 @@ final class ProcurationRequestMatchedConfirmationMessage extends AbstractProcura
             [
                 'mandant_first_name' => self::escape($request->firstNames),
                 'mandant_last_name' => self::escape($request->lastName),
-                'mandant_vote_place' => self::escape($request->getVotePlaceName()),
-                'mandant_phone' => $request->phone ? PhoneNumberUtils::format($request->phone) : null,
+                'mandant_vote_place' => self::escape($request->getVotePlaceName() ?? ''),
+                'mandant_phone' => PhoneNumberUtils::format($request->phone),
                 'mandant_email' => self::escape($request->email),
                 'voter_first_name' => self::escape($proxy->firstNames),
                 'voter_last_name' => self::escape($proxy->lastName),
-                'voter_number' => self::escape($proxy->electorNumber),
+                'voter_number' => self::escape($proxy->electorNumber ?? ''),
                 'voter_birthdate' => self::escape($proxy->birthdate->format('d/m/Y')),
-                'voter_phone' => $proxy->phone ? PhoneNumberUtils::format($proxy->phone) : null,
+                'voter_phone' => PhoneNumberUtils::format($proxy->phone),
                 'voter_email' => self::escape($proxy->email),
             ]
         );

@@ -118,7 +118,7 @@ class Proxy extends AbstractProcuration
      *
      * @ORM\Column(type="simple_array", nullable=true)
      */
-    public ?array $zoneIds = null;
+    private ?array $zoneIds = null;
 
     public function __construct(
         Round $round,
@@ -205,5 +205,13 @@ class Proxy extends AbstractProcuration
     public function hasFreeSlot(): bool
     {
         return $this->requests->count() < $this->slots;
+    }
+
+    public function refreshZoneIds(): void
+    {
+        $this->zoneIds = array_map(
+            fn (Zone $zone) => $zone->getId(),
+            ($this->votePlace ?? $this->voteZone)->getWithParents()
+        );
     }
 }
