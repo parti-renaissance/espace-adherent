@@ -15100,16 +15100,16 @@
         },
         {
             "name": "symfony/lock",
-            "version": "v5.4.35",
+            "version": "v5.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/lock.git",
-                "reference": "b8b0d5b283af0e117e7ef6141b5b7e5efb20b247"
+                "reference": "d1a912eaac5a39e2fac19e00055d07890a1b9187"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/lock/zipball/b8b0d5b283af0e117e7ef6141b5b7e5efb20b247",
-                "reference": "b8b0d5b283af0e117e7ef6141b5b7e5efb20b247",
+                "url": "https://api.github.com/repos/symfony/lock/zipball/d1a912eaac5a39e2fac19e00055d07890a1b9187",
+                "reference": "d1a912eaac5a39e2fac19e00055d07890a1b9187",
                 "shasum": ""
             },
             "require": {
@@ -15159,7 +15159,7 @@
                 "semaphore"
             ],
             "support": {
-                "source": "https://github.com/symfony/lock/tree/v5.4.35"
+                "source": "https://github.com/symfony/lock/tree/v5.4.38"
             },
             "funding": [
                 {
@@ -15175,7 +15175,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-23T13:51:25+00:00"
+            "time": "2024-03-16T08:39:04+00:00"
         },
         {
             "name": "symfony/messenger",
