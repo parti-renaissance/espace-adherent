@@ -8,9 +8,15 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\InZoneOfScopeFilter;
 use App\Api\Filter\OrTextSearchFilter;
+use App\Entity\Adherent;
+use App\Entity\Geo\Zone;
+use App\Entity\PostAddress;
 use App\Procuration\V2\RequestStatusEnum;
 use App\Validator\Procuration\ManualAssociations;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use libphonenumber\PhoneNumber;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -36,7 +42,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "normalization_context": {
  *                 "groups": {"procuration_request_read"},
  *                 "enable_tag_translator": true,
- *                 "datetime_format": "Y-m-d",
  *             },
  *         },
  *         "match": {
@@ -71,7 +76,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "normalization_context": {
  *                 "groups": {"procuration_request_list"},
  *                 "enable_tag_translator": true,
- *                 "datetime_format": "Y-m-d",
  *             },
  *         },
  *         "get_proxies": {
@@ -82,7 +86,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "normalization_context": {
  *                 "groups": {"procuration_matched_proxy"},
  *                 "enable_tag_translator": true,
- *                 "datetime_format": "Y-m-d",
  *             },
  *         },
  *     },
@@ -123,13 +126,57 @@ class Request extends AbstractProcuration
      */
     public ?Proxy $proxy = null;
 
+    /**
+     * @var MatchingHistory[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\ProcurationV2\MatchingHistory", mappedBy="request")
+     * @ORM\OrderBy({"createdAt": "ASC"})
+     */
+    private Collection $matchingHistories;
+
+    public function __construct(
+        Round $round,
+        string $email,
+        string $gender,
+        string $firstNames,
+        string $lastName,
+        \DateTimeInterface $birthdate,
+        ?PhoneNumber $phone,
+        PostAddress $postAddress,
+        bool $distantVotePlace,
+        Zone $voteZone,
+        ?Zone $votePlace = null,
+        ?string $customVotePlace = null,
+        ?Adherent $adherent = null,
+        ?string $clientIp = null,
+        ?\DateTimeInterface $createdAt = null
+    ) {
+        parent::__construct(
+            $round,
+            $email,
+            $gender,
+            $firstNames,
+            $lastName,
+            $birthdate,
+            $phone,
+            $postAddress,
+            $distantVotePlace,
+            $voteZone,
+            $votePlace,
+            $customVotePlace,
+            $adherent,
+            $clientIp,
+            $createdAt
+        );
+
+        $this->matchingHistories = new ArrayCollection();
+    }
+
     public function setProxy(?Proxy $proxy): void
     {
         $this->proxy = $proxy;
 
-        if ($proxy) {
-            $proxy->addRequest($this);
-        }
+        $proxy?->addRequest($this);
     }
 
     public function isPending(): bool
@@ -155,5 +202,41 @@ class Request extends AbstractProcuration
     public function markAsCompleted(): void
     {
         $this->status = RequestStatusEnum::COMPLETED;
+    }
+
+    /**
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     *     "procuration_proxy_list_request",
+     *     "procuration_matched_proxy",
+     * })
+     */
+    public function getMatcher(): ?Adherent
+    {
+        /** @var MatchingHistory $last */
+        if ($last = $this->matchingHistories->last()) {
+            return $last->matcher;
+        }
+
+        return null;
+    }
+
+    /**
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     *     "procuration_proxy_list_request",
+     *     "procuration_matched_proxy",
+     * })
+     */
+    public function getMatchedAt(): ?\DateTimeInterface
+    {
+        /** @var MatchingHistory $last */
+        if ($last = $this->matchingHistories->last()) {
+            return $last->createdAt;
+        }
+
+        return null;
     }
 }

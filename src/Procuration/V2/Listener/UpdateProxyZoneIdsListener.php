@@ -2,7 +2,6 @@
 
 namespace App\Procuration\V2\Listener;
 
-use App\Entity\Geo\Zone;
 use App\Procuration\V2\Event\ProcurationEvents;
 use App\Procuration\V2\Event\ProxyEvent;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,14 +21,9 @@ class UpdateProxyZoneIdsListener implements EventSubscriberInterface
         ];
     }
 
-    public function onAfterUpdate(ProxyEvent $event): void
+    public function updateZoneIds(ProxyEvent $event): void
     {
-        $proxy = $event->proxy;
-
-        $proxy->zoneIds = array_map(
-            fn (Zone $zone) => $zone->getId(),
-            ($proxy->votePlace ?? $proxy->voteZone)->getWithParents()
-        );
+        $event->proxy->refreshZoneIds();
 
         $this->entityManager->flush();
     }

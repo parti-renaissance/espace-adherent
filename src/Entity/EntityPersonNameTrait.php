@@ -38,6 +38,10 @@ trait EntityPersonNameTrait
      *     "committee_election:read",
      *     "committee:read",
      *     "national_event_inscription:webhook",
+     *     "procuration_request_list",
+     *     "procuration_request_read",
+     *     "procuration_matched_proxy",
+     *     "procuration_proxy_list_request",
      * })
      */
     private $firstName = '';
@@ -72,6 +76,10 @@ trait EntityPersonNameTrait
      *     "committee_election:read",
      *     "committee:read",
      *     "national_event_inscription:webhook",
+     *     "procuration_request_list",
+     *     "procuration_request_read",
+     *     "procuration_matched_proxy",
+     *     "procuration_proxy_list_request",
      * })
      */
     private $lastName = '';

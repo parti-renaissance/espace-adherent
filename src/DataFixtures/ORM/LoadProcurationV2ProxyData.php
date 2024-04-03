@@ -39,7 +39,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             'Nice',
             '57 Boulevard de la Madeleine',
             false,
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_06088'),
+            LoadGeoZoneData::getZone($manager, 'zone_city_06088'),
             $this->getReference('zone_vote_place_nice_1')
         ));
 
@@ -56,12 +56,12 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             'Kilchberg',
             '12 Pilgerweg',
             false,
-            LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'),
+            LoadGeoZoneData::getZone($manager, 'zone_country_CH'),
             null,
             'BDV CH 1'
         ));
 
-        $zone = LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024');
+        $zone = LoadGeoZoneData::getZone($manager, 'zone_city_92024');
         for ($i = 1; $i <= 10; ++$i) {
             $manager->persist($proxy = $this->createProxy(
                 $round,
@@ -129,6 +129,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
 
         $proxy->electorNumber = $electorNumber;
         $proxy->slots = $slots;
+        $proxy->refreshZoneIds();
 
         return $proxy;
     }

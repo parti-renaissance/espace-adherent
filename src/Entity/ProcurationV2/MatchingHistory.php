@@ -31,7 +31,7 @@ class MatchingHistory
     public \DateTimeInterface $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationV2\Request")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationV2\Request", inversedBy="matchingHistories")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     public Request $request;
