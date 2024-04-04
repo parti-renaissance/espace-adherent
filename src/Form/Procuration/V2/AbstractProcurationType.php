@@ -43,7 +43,7 @@ abstract class AbstractProcurationType extends AbstractType
             ->add('voteZone', ZoneUuidType::class)
             ->add('votePlace', ZoneUuidType::class, [
                 'required' => false,
-                'error_bubbling' => true,
+                'error_bubbling' => false,
             ])
             ->add('customVotePlace', TextType::class, [
                 'required' => false,

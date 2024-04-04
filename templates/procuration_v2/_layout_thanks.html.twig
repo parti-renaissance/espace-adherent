@@ -20,44 +20,41 @@
     {% block thanks_text '' %}
 {% endset %}
 
-
 {% block content_section %}
     <section>
+        <twig:Atoms:ReCard class="max-w-[500px] re-step gap-0 !border-black !border-[2px]">
+            <div class="flex flex-col gap-[24px] !font-value text-black text-[16px]/[20px]">
+                <twig:ReParagraphStatus status="success" icon slim>
+                    Votre demande est bien enregistrée
+                </twig:ReParagraphStatus>
+                <h3 class="font-sharp font-semibold text-[2rem]/[normal] text-black neg-letter-spacing--4">
+                    Merci !
+                </h3>
+                <div class="text-xl">
+                    {{ text_block }}
+                </div>
 
-<twig:Atoms:ReCard class="max-w-[500px] re-step gap-0 !border-black !border-[2px]">
-    <div class="flex flex-col gap-[24px] !font-value text-black text-[16px]/[20px]">
-        <twig:ReParagraphStatus status="success" icon slim>
-            Votre demande est bien enregistrée
-        </twig:ReParagraphStatus>
-        <h3 class="font-sharp font-semibold text-[2rem]/[normal] text-black neg-letter-spacing--4">
-            Merci !
-        </h3>
-        <div class="text-xl">
-            {{ text_block }}
-        </div>
+                <div class="h-[2px] bg-black w-full"></div>
 
-        <div class="h-[2px] bg-black w-full"></div>
+                <p>Vous connaissez quelqu’un qui pourrait voter deux fois le 9 juin ?</p>
 
-        <p>Vous connaissez quelqu’un qui pourrait voter deux fois le 9 juin ?</p>
+                <p>Partagez-lui ce formulaire pour qu’il fasse comme vous.</p>
 
-        <p>Partagez-lui ce formulaire pour qu’il fasse comme vous.</p>
+                <span class="text-[#1877F2] text-center hover:text-[rgb(20,86,171)] cursor-pointer" data-clipboard="{{ copylink }}">copier le lien</span>
 
-        <span class="text-[#1877F2] text-center hover:text-[rgb(20,86,171)] cursor-pointer" data-clipboard="{{ copylink }}">copier le lien</span>
+                <div class="h-[2px] bg-black w-full"></div>
+            </div>
 
-        <div class="h-[2px] bg-black w-full"></div>
-    </div>
+            <div class="flex items-center justify-center gap-[40px] py-[40px]">
+                {% include 'renaissance/national_event/partials/sn_links.html.twig' %}
+            </div>
 
-    <div class="flex items-center justify-center gap-[40px] py-[40px]">
-        {% include 'renaissance/national_event/partials/sn_links.html.twig' %}
-    </div>
-
-    <twig:ReButton
-        class="w-full"
-        color="black"
-        tag="a"
-        href="{{ eu_campaign_base_url }}"
-    >Retourner sur le site</twig:ReButton>
-</twig:Atoms:ReCard>
+            <twig:ReButton
+                class="w-full"
+                color="black"
+                tag="a"
+                href="{{ eu_campaign_base_url }}"
+            >Retourner sur le site</twig:ReButton>
+        </twig:Atoms:ReCard>
     </section>
-
 {% endblock %}

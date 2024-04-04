@@ -80,6 +80,9 @@ abstract class AbstractCommand
      */
     public ?Zone $voteZone = null;
 
+    /**
+     * @Assert\Expression("!this.voteZone || !this.voteZone.isInFrance() || this.votePlace", message="procuration.vote_place.not_blank")
+     */
     public ?Zone $votePlace = null;
 
     /**

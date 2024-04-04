@@ -23,7 +23,7 @@
     {{ block('procuration_voteZone_row') }}
 {% endblock %}
 
-{% block procuration_votePlace_row %}
+{% block procuration_votePlace_widget %}
     <twig:Molecules:ReSelect
             name="{{ full_name }}"
             id="{{ id }}"
@@ -33,18 +33,15 @@
     />
 {% endblock %}
 
-{% block _procuration_proxy_votePlace_row %}
-    {{ block('procuration_votePlace_row') }}
+{% block _procuration_proxy_votePlace_widget %}
+    {{ block('procuration_votePlace_widget') }}
 {% endblock %}
 
-{% block _procuration_request_votePlace_row %}
-    {{ block('procuration_votePlace_row') }}
+{% block _procuration_request_votePlace_widget %}
+    {{ block('procuration_votePlace_widget') }}
 {% endblock %}
-
-
 
 {% block procuration_firstNames_row %}
-
     {%- set type = type|default('text') -%}
     {% if type == 'hidden' %}
         {{ parent() }}

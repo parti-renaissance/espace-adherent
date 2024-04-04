@@ -285,6 +285,7 @@ procuration.proxies_count.already_associated: Si vous voulez réduire le nombre 
 procuration.address.not_blank: Veuillez renseigner votre adresse postale.
 
 procuration.vote_zone.not_blank: Veuillez renseigner la zone où vous votez (pays, ville, arrondissement).
+procuration.vote_place.not_blank: Veuillez renseigner le bureau de vote.
 
 procuration.round.not_blank: Veuillez renseigner un tour d'élection pour cette demande.
 
