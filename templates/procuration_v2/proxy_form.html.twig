@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block title_content_section %}
-    Je vote<br>deux fois
+    {{ election.proxyTitle|markdown }}
 {% endblock %}
 
 {% block description_content_section %}
-    Ça vous dit de voter une 2e fois le neuf juin ? Remplissez ce formulaire et nous vous mettrons en relation avec une personne proche de chez vous qui ne pourra pas voter.
+    {{ election.proxyDescription|markdown }}
 {% endblock %}
 
 {% block legal_content_section %}
@@ -20,12 +20,12 @@
 
 {% block alternative_form %}
     <p class="text-center">
-        Vous ne pouvez pas aller voter le 9 juin ?
+        <b>Absent le 9 juin ?</b> Nous trouvons une personne qui ira voter pour vous.
         <br>
         <a
             class="text-[#1877F2] text-center hover:text-[rgb(20,86,171)] cursor-pointer"
             href="{{ url('app_procuration_v2_request', { slug: election.slug }) }}">
-            Donnez procuration
+            Je dépose une demande
         </a>
     </p>
 {% endblock %}
@@ -43,4 +43,8 @@
         <p class="text-[#555555] opacity-50">Les Français de l’étranger peuvent porter jusqu’à deux procurations pour les élections européennes.</p>
         {{ form_row(form.slots) }}
     </fieldset>
+{% endblock %}
+
+{% block submit_label_content %}
+    Je me propose
 {% endblock %}

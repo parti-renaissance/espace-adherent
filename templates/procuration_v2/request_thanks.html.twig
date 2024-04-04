@@ -5,5 +5,8 @@
 {% set copylink = url('app_procuration_v2_request', { slug: procuration_request.round.election.slug }) %}
 
 {% block thanks_text %}
-    {{ procuration_request.round.election.requestConfirmation }}
+    {{ procuration_request.round.election.requestConfirmation|replace({
+        '{{ email }}': procuration_request.email,
+        '{{email}}': procuration_request.email,
+    })|markdown }}
 {% endblock %}

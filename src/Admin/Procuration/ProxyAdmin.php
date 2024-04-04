@@ -29,6 +29,7 @@ class ProxyAdmin extends AbstractProcurationAdmin
             ->with('Vote')
                 ->add('electorNumber', TextType::class, [
                     'label' => 'Numéro d\'électeur',
+                    'required' => false,
                 ])
                 ->add('slots', ChoiceType::class, [
                     'label' => 'Votes disponibles',

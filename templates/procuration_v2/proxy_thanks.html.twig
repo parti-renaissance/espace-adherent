@@ -5,5 +5,8 @@
 {% set copylink = url('app_procuration_v2_proxy', { slug: procuration_proxy.round.election.slug })  %}
 
 {% block thanks_text %}
-    {{ procuration_proxy.round.election.proxyConfirmation }}
+    {{ procuration_proxy.round.election.proxyConfirmation|replace({
+        '{{ email }}': procuration_proxy.email,
+        '{{email}}': procuration_proxy.email,
+    })|markdown }}
 {% endblock %}
