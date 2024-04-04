@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block title_content_section %}
-    Je vote par<br>procuration
+    {{ election.requestTitle|markdown }}
 {% endblock %}
 
 {% block description_content_section %}
-    Vous cherchez une personne pour voter pour vous ? Remplissez ce formulaire et nous vous mettrons en relation avec une personne proche de chez vous.
+    {{ election.requestDescription|markdown }}
 {% endblock %}
 
 {% block inner_content_section '' %}
@@ -22,12 +22,16 @@
 
 {% block alternative_form %}
     <p class="text-center">
-        Vous ne cherchez pas à faire procuration ?
+        <b>Disponible le 9 juin ?</b> Votez pour une personne proche de chez vous.
         <br>
         <a
             class="text-[#1877F2] text-center hover:text-[rgb(20,86,171)] cursor-pointer"
             href="{{ url('app_procuration_v2_proxy', { slug: election.slug }) }}">
-            Votez une deuxième fois le 9 juin
+            Je me propose
         </a>
     </p>
+{% endblock %}
+
+{% block submit_label_content %}
+    Je dépose une demande
 {% endblock %}

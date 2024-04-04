@@ -37,15 +37,23 @@ class LoadProcurationV2ElectionData extends Fixture
         $election->name = $name;
         $election->slug = $slug;
 
-        $election->requestTitle = $this->faker->text(30);
+        $election->requestTitle = '<span class="text-[#00AEEF]">
+                Le 9 juin,
+            </span>
+            <br>
+            Je vote par<br>procuration';
         $election->requestDescription = $this->faker->text();
         $election->requestLegal = $this->faker->text();
-        $election->requestConfirmation = $this->faker->text();
+        $election->requestConfirmation = 'Merci <b>{{ email }}</b> !';
 
-        $election->proxyTitle = $this->faker->text(30);
+        $election->proxyTitle = '<span class="text-[#00AEEF]">
+                Le 9 juin,
+            </span>
+            <br>
+            Je vote deux fois';
         $election->proxyDescription = $this->faker->text();
         $election->proxyLegal = $this->faker->text();
-        $election->proxyConfirmation = $this->faker->text();
+        $election->proxyConfirmation = 'Merci <b>{{ email }}</b> !';
 
         return $election;
     }
