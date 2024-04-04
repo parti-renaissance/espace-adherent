@@ -7,7 +7,7 @@ use App\Geocoder\Geocoder;
 use App\Repository\ConsularDistrictRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -33,12 +33,12 @@ class ImportConsularDistrictCommand extends Command
     private $geocoder;
 
     public function __construct(
-        FilesystemInterface $storage,
+        FilesystemOperator $defaultStorage,
         EntityManagerInterface $em,
         ConsularDistrictRepository $repository,
         Geocoder $geocoder
     ) {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
         $this->manager = $em;
         $this->repository = $repository;
         $this->geocoder = $geocoder;

@@ -13,7 +13,7 @@ use App\Form\FeedItemType;
 use App\Repository\TerritorialCouncil\OfficialReportRepository;
 use App\Repository\TerritorialCouncil\PoliticalCommitteeFeedItemRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -117,16 +117,16 @@ class PoliticalCommitteeController extends AbstractController
 
     #[Route(path: '/proces-verbaux/{uuid}', name: 'official_report_download', methods: ['GET'])]
     #[IsGranted('CAN_DOWNLOAD_OFFICIAL_REPORT', subject: 'officialReport')]
-    public function downloadReportAction(OfficialReport $officialReport, FilesystemInterface $storage): Response
+    public function downloadReportAction(OfficialReport $officialReport, FilesystemOperator $defaultStorage): Response
     {
         $lastDocument = $officialReport->getLastDocument();
         $filePath = $lastDocument->getFilePathWithDirectory();
 
-        if (!$storage->has($filePath)) {
+        if (!$defaultStorage->has($filePath)) {
             throw $this->createNotFoundException('No file found in storage for this Official report.');
         }
 
-        $response = new Response($storage->read($filePath), Response::HTTP_OK, [
+        $response = new Response($defaultStorage->read($filePath), Response::HTTP_OK, [
             'Content-Type' => $lastDocument->getMimeType(),
         ]);
 

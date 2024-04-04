@@ -13,7 +13,7 @@ use App\Repository\Election\VotePlaceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use League\Csv\Reader;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -26,7 +26,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class ImportElectionVotePlaceResultsCommand extends Command
 {
-    /** @var FilesystemInterface */
+    /** @var FilesystemOperator */
     private $storage;
     /** @var ElectionManager */
     private $electionManager;
@@ -228,9 +228,9 @@ class ImportElectionVotePlaceResultsCommand extends Command
     }
 
     /** @required */
-    public function setStorage(FilesystemInterface $storage): void
+    public function setStorage(FilesystemOperator $defaultStorage): void
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     /** @required */

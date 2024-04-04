@@ -1,0 +1,10 @@
+services:
+    Google\Cloud\Storage\StorageClient: ~
+
+flysystem:
+    storages:
+        default.storage:
+            adapter: 'gcloud'
+            options:
+                client: 'Google\Cloud\Storage\StorageClient'
+                bucket: '%env(GCLOUD_BUCKET)%'

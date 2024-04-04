@@ -6,7 +6,7 @@ use App\Address\AddressInterface;
 use App\Documents\DocumentManager;
 use App\Documents\DocumentRepository;
 use App\Entity\Adherent;
-use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FilesystemException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,7 +48,7 @@ class DocumentsController extends AbstractController
 
         try {
             $document = $this->documentManager->readDocument($type, $path);
-        } catch (FileNotFoundException $e) {
+        } catch (FilesystemException $e) {
             throw $this->createNotFoundException('Document not found', $e);
         }
 

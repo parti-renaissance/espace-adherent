@@ -3,7 +3,7 @@
 namespace App\Admin;
 
 use App\Entity\Media;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use League\Glide\Server;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class MediaAdmin extends AbstractAdmin
 {
     /**
-     * @var FilesystemInterface
+     * @var FilesystemOperator
      */
     private $storage;
 
@@ -56,7 +56,7 @@ class MediaAdmin extends AbstractAdmin
     {
         parent::prePersist($object);
 
-        $this->storage->put($object->getPathWithDirectory(), file_get_contents($object->getFile()->getPathname()));
+        $this->storage->write($object->getPathWithDirectory(), file_get_contents($object->getFile()->getPathname()));
         $this->glide->deleteCache($object->getPathWithDirectory());
     }
 
@@ -68,7 +68,7 @@ class MediaAdmin extends AbstractAdmin
         parent::preUpdate($object);
 
         if ($object->getFile()) {
-            $this->storage->put($object->getPathWithDirectory(), file_get_contents($object->getFile()->getPathname()));
+            $this->storage->write($object->getPathWithDirectory(), file_get_contents($object->getFile()->getPathname()));
             $this->glide->deleteCache($object->getPathWithDirectory());
         }
     }
@@ -161,9 +161,9 @@ class MediaAdmin extends AbstractAdmin
         ;
     }
 
-    public function setStorage(FilesystemInterface $storage): void
+    public function setStorage(FilesystemOperator $defaultStorage): void
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     public function setGlide(Server $glide): void

@@ -5,7 +5,7 @@ namespace App\Admin\NationalEvent;
 use App\Admin\AbstractAdmin;
 use App\Entity\NationalEvent\NationalEvent;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -13,7 +13,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 class NationalEventAdmin extends AbstractAdmin
 {
-    private FilesystemInterface $storage;
+    private FilesystemOperator $storage;
 
     protected function configureListFields(ListMapper $list): void
     {
@@ -78,9 +78,9 @@ class NationalEventAdmin extends AbstractAdmin
     }
 
     #[Required]
-    public function setStorage(FilesystemInterface $storage): void
+    public function setStorage(FilesystemOperator $defaultStorage): void
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     private function handleFileUpload(NationalEvent $object): void
@@ -91,6 +91,6 @@ class NationalEventAdmin extends AbstractAdmin
 
         $object->intoImagePath = sprintf('/national/events/%s.%s', $object->getUuid()->toString(), $object->file->getClientOriginalExtension());
 
-        $this->storage->put('/static'.$object->intoImagePath, file_get_contents($object->file->getPathname()));
+        $this->storage->write('/static'.$object->intoImagePath, file_get_contents($object->file->getPathname()));
     }
 }

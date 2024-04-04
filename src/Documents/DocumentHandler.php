@@ -3,12 +3,12 @@
 namespace App\Documents;
 
 use App\Entity\Document;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Ramsey\Uuid\Uuid;
 
 class DocumentHandler
 {
-    public function __construct(private readonly FilesystemInterface $storage)
+    public function __construct(private readonly FilesystemOperator $defaultStorage)
     {
     }
 
@@ -27,7 +27,7 @@ class DocumentHandler
             $file->getClientOriginalExtension()
         );
 
-        $this->storage->put($document->filePath, file_get_contents($file->getPathname()));
+        $this->defaultStorage->write($document->filePath, file_get_contents($file->getPathname()));
 
         $document->file = null;
     }
@@ -40,10 +40,10 @@ class DocumentHandler
 
         $document->filePath = null;
 
-        if (!$this->storage->has($filePath)) {
+        if (!$this->defaultStorage->has($filePath)) {
             return;
         }
 
-        $this->storage->delete($filePath);
+        $this->defaultStorage->delete($filePath);
     }
 }

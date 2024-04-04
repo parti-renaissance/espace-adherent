@@ -7,7 +7,7 @@ use App\Entity\GeoData;
 use App\Geo\GeometryFactory;
 use App\Repository\DistrictRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,11 +32,11 @@ class UpdateDistrictGeoPolygonCommand extends Command
 
     public function __construct(
         EntityManagerInterface $em,
-        FilesystemInterface $storage,
+        FilesystemOperator $defaultStorage,
         DistrictRepository $repository
     ) {
         $this->em = $em;
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
         $this->districtRepository = $repository;
 
         parent::__construct();

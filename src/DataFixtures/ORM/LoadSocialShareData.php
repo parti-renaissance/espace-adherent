@@ -7,7 +7,7 @@ use App\Entity\SocialShare;
 use App\Entity\SocialShareCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\File;
 
 class LoadSocialShareData extends Fixture
@@ -15,10 +15,10 @@ class LoadSocialShareData extends Fixture
     private $mediaFactory;
     private $storage;
 
-    public function __construct(MediaFactory $mediaFactory, FilesystemInterface $storage)
+    public function __construct(MediaFactory $mediaFactory, FilesystemOperator $defaultStorage)
     {
         $this->mediaFactory = $mediaFactory;
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     public function load(ObjectManager $manager)
@@ -28,7 +28,7 @@ class LoadSocialShareData extends Fixture
 
         for ($i = 1; $i <= 4; ++$i) {
             $mediaFile = new File(__DIR__.'/../../../app/data/dist/social'.$i.'.jpg');
-            $this->storage->put('images/social'.$i.'.jpg', file_get_contents($mediaFile->getPathname()));
+            $this->storage->write('images/social'.$i.'.jpg', file_get_contents($mediaFile->getPathname()));
 
             $manager->persist($media = $this->mediaFactory->createFromFile('Social image '.$i, 'social'.$i.'.jpg', $mediaFile));
             $medias[] = $media;

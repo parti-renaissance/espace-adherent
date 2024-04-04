@@ -278,19 +278,6 @@ services:
 
     Geocoder\Geocoder: '@bazinga_geocoder.geocoder'
 
-    League\Flysystem\Filesystem:
-        arguments:
-            - !service
-                class: 'League\Flysystem\AdapterInterface'
-                factory: 'App\Storage\FilesystemAdapterFactory::createAdapter'
-                arguments:
-                    - '%kernel.environment%'
-                    - '%kernel.project_dir%/app/data'
-                    - '%env(GCLOUD_BUCKET)%'
-                    - '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
-
-    League\Flysystem\FilesystemInterface: '@League\Flysystem\Filesystem'
-
     App\Recaptcha\RecaptchaApiClient:
         arguments:
             $projectId: '%env(GCP_PROJECT_ID)%'
@@ -484,3 +471,13 @@ services:
 
     App\CaptainVerify\Storage:
         arguments: [!service {class: Symfony\Component\Cache\Psr16Cache, arguments: ['@app.cache.captain_verify']}]
+
+    League\Glide\Responses\SymfonyResponseFactory: ~
+
+    League\Glide\Server:
+        factory: League\Glide\ServerFactory::create
+        arguments:
+            -   source: '@League\Flysystem\FilesystemOperator'
+                cache: '%kernel.cache_dir%'
+                response: '@League\Glide\Responses\SymfonyResponseFactory'
+                max_image_size: 4000000 # Max image size in number of pixels (2000x2000)

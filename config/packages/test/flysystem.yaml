@@ -1,0 +1,4 @@
+flysystem:
+    storages:
+        memory.storage:
+            adapter: 'memory'

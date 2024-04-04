@@ -4,7 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\GeneralMeeting\GeneralMeetingReport;
 use Cocur\Slugify\Slugify;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class GeneralMeetingReportDownloadFileController extends AbstractController
 {
-    public function __construct(private readonly FilesystemInterface $storage, private readonly LoggerInterface $logger)
+    public function __construct(private readonly FilesystemOperator $defaultStorage, private readonly LoggerInterface $logger)
     {
     }
 
@@ -21,14 +21,14 @@ class GeneralMeetingReportDownloadFileController extends AbstractController
     {
         $filePath = $generalMeetingReport->getFilePath();
 
-        if (!$this->storage->has($filePath)) {
+        if (!$this->defaultStorage->has($filePath)) {
             $this->logger->error(sprintf('No file found for GeneralMeetingReport with uuid "%s".', $generalMeetingReport->getUuid()->toString()));
 
             throw $this->createNotFoundException('File not found.');
         }
 
-        $response = new Response($this->storage->read($filePath), Response::HTTP_OK, [
-            'Content-Type' => $this->storage->getMimetype($filePath),
+        $response = new Response($this->defaultStorage->read($filePath), Response::HTTP_OK, [
+            'Content-Type' => $this->defaultStorage->mimeType($filePath),
         ]);
 
         $disposition = $response->headers->makeDisposition(

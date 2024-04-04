@@ -17,7 +17,7 @@ use App\Repository\UserListDefinitionRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Sluggable\Util\Urlizer;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -53,16 +53,16 @@ class ThematicCommunityMembershipImportCommand extends Command
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    /** @var FilesystemInterface */
-    private $filesystem;
+    /** @var FilesystemOperator */
+    private $storage;
 
-    public function __construct(EntityManagerInterface $entityManager, FilesystemInterface $filesystem)
+    public function __construct(EntityManagerInterface $entityManager, FilesystemOperator $defaultStorage)
     {
         $this->entityManager = $entityManager;
         $this->adherentRepository = $entityManager->getRepository(Adherent::class);
         $this->communityRepository = $entityManager->getRepository(ThematicCommunity::class);
         $this->userListDefinitionRepository = $entityManager->getRepository(UserListDefinition::class);
-        $this->filesystem = $filesystem;
+        $this->storage = $defaultStorage;
         parent::__construct();
     }
 
@@ -90,7 +90,7 @@ class ThematicCommunityMembershipImportCommand extends Command
     {
         $filename = $input->getArgument('file');
 
-        $content = $this->filesystem->read($filename);
+        $content = $this->storage->read($filename);
         $content = explode("\n", $content);
 
         unset($content[0]); // remove csv headers

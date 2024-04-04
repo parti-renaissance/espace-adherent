@@ -3,12 +3,12 @@
 namespace App\Formation;
 
 use App\Entity\AdherentFormation\Formation;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Ramsey\Uuid\Uuid;
 
 class FormationHandler
 {
-    public function __construct(private readonly FilesystemInterface $storage)
+    public function __construct(private readonly FilesystemOperator $defaultStorage)
     {
     }
 
@@ -31,7 +31,7 @@ class FormationHandler
             $file->getClientOriginalExtension()
         ));
 
-        $this->storage->put($path, file_get_contents($file->getPathname()));
+        $this->defaultStorage->write($path, file_get_contents($file->getPathname()));
 
         $formation->setFile(null);
     }
@@ -44,10 +44,10 @@ class FormationHandler
 
         $formation->setFilePath(null);
 
-        if (!$this->storage->has($filePath)) {
+        if (!$this->defaultStorage->has($filePath)) {
             return;
         }
 
-        $this->storage->delete($filePath);
+        $this->defaultStorage->delete($filePath);
     }
 }

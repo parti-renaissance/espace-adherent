@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\UserDocument;
 use App\UserDocument\UserDocumentManager;
 use Gedmo\Sluggable\Util\Urlizer;
-use League\Flysystem\FileNotFoundException;
+use League\Flysystem\FilesystemException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -122,7 +122,7 @@ class UploadDocumentController extends AbstractController
 
         try {
             $documentContent = $manager->getContent($document);
-        } catch (FileNotFoundException $e) {
+        } catch (FilesystemException $e) {
             throw $this->createNotFoundException('Document not found', $e);
         }
 

@@ -7,7 +7,7 @@ use App\Content\ProposalFactory;
 use App\Entity\ProposalTheme;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\File;
 
 class LoadProposalData extends Fixture
@@ -19,18 +19,18 @@ class LoadProposalData extends Fixture
     public function __construct(
         ProposalFactory $proposalFactory,
         MediaFactory $mediaFactory,
-        FilesystemInterface $storage
+        FilesystemOperator $defaultStorage
     ) {
         $this->proposalFactory = $proposalFactory;
         $this->mediaFactory = $mediaFactory;
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     public function load(ObjectManager $manager)
     {
         // Media
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/guadeloupe.jpg');
-        $this->storage->put('images/proposal.jpg', file_get_contents($mediaFile->getPathname()));
+        $this->storage->write('images/proposal.jpg', file_get_contents($mediaFile->getPathname()));
         $media = $this->mediaFactory->createFromFile('Proposition image', 'proposal.jpg', $mediaFile);
         $manager->persist($media);
 

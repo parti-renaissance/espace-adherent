@@ -6,7 +6,7 @@ use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Filesystem\File;
 use App\Repository\Filesystem\FileRepository;
 use Gedmo\Sluggable\Util\Urlizer;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +27,7 @@ abstract class AbstractFilesController extends AbstractController
 
     #[Route(path: '/documents/{uuid}', name: 'download', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
     #[IsGranted('CAN_DOWNLOAD_FILE', subject: 'file')]
-    public function downloadAction(File $file, FilesystemInterface $storage): Response
+    public function downloadAction(File $file, FilesystemOperator $defaultStorage): Response
     {
         if ($file->isDir()) {
             throw $this->createNotFoundException('Directory cannot be download.');
@@ -39,11 +39,11 @@ abstract class AbstractFilesController extends AbstractController
 
         $filePath = $file->getPath();
 
-        if (!$storage->has($filePath)) {
+        if (!$defaultStorage->has($filePath)) {
             throw $this->createNotFoundException('No file found in storage for this File.');
         }
 
-        $response = new Response($storage->read($filePath), Response::HTTP_OK, [
+        $response = new Response($defaultStorage->read($filePath), Response::HTTP_OK, [
             'Content-Type' => $file->getMimeType(),
         ]);
 

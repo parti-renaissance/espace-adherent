@@ -2,7 +2,9 @@
 
 namespace App\Documents;
 
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\DirectoryListing;
+use League\Flysystem\FilesystemOperator;
+use League\Flysystem\StorageAttributes;
 
 class DocumentRepository
 {
@@ -14,9 +16,9 @@ class DocumentRepository
 
     private $storage;
 
-    public function __construct(FilesystemInterface $storage)
+    public function __construct(FilesystemOperator $defaultStorage)
     {
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     /**
@@ -67,7 +69,7 @@ class DocumentRepository
         $path = self::DIRECTORY_ROOT.'/'.$type.'/'.$path;
 
         return [
-            'mimetype' => $this->storage->getMimetype($path),
+            'mimetype' => $this->storage->mimeType($path),
             'content' => $this->storage->read($path),
         ];
     }
@@ -75,17 +77,19 @@ class DocumentRepository
     /**
      * @return Document[]
      */
-    private function map(string $pathPrefix, array $files): array
+    private function map(string $pathPrefix, DirectoryListing $files): array
     {
         $pathPrefixLength = \strlen($pathPrefix);
         $directory = [];
 
+        /** @var StorageAttributes $file */
         foreach ($files as $file) {
+            $metadata = pathinfo($file->path());
             $directory[] = new Document(
-                $file['type'],
-                $file['filename'],
-                ('file' === $file['type'] && \array_key_exists('extension', $file) && $file['extension']) ? $file['extension'] : '',
-                ltrim(substr($file['path'], $pathPrefixLength), '/')
+                $file->type(),
+                $metadata['filename'],
+                ($file->isFile() && \array_key_exists('extension', $metadata) && $metadata['extension']) ? $metadata['extension'] : '',
+                ltrim(substr($file->path(), $pathPrefixLength), '/')
             );
         }
 

@@ -6,7 +6,7 @@ use App\Content\CustomSearchResultFactory;
 use App\Content\MediaFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\HttpFoundation\File\File;
 
 class LoadCustomSearchData extends Fixture
@@ -18,11 +18,11 @@ class LoadCustomSearchData extends Fixture
     public function __construct(
         CustomSearchResultFactory $customSearchResultFactory,
         MediaFactory $mediaFactory,
-        FilesystemInterface $storage
+        FilesystemOperator $defaultStorage
     ) {
         $this->customSearchResultFactory = $customSearchResultFactory;
         $this->mediaFactory = $mediaFactory;
-        $this->storage = $storage;
+        $this->storage = $defaultStorage;
     }
 
     public function load(ObjectManager $manager)
@@ -31,7 +31,7 @@ class LoadCustomSearchData extends Fixture
             'du risque, qui vivent pour la liberté, l\'égalité, et l\'Europe.';
 
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/10decembre.jpg');
-        $this->storage->put('images/custom_search.jpg', file_get_contents($mediaFile->getPathname()));
+        $this->storage->write('images/custom_search.jpg', file_get_contents($mediaFile->getPathname()));
         $media = $this->mediaFactory->createFromFile('Custom search image', 'custom_search.jpg', $mediaFile);
 
         $manager->persist($media);
