@@ -14,13 +14,11 @@
     Vous cherchez une personne pour voter pour vous ? Remplissez ce formulaire et nous vous mettrons en relation avec une personne proche de chez vous.
 {% endblock %}
 
-{% block inner_content_section %}
-{% endblock %}
+{% block inner_content_section '' %}
 
 {% block legal_content_section %}
     {{ election.requestLegal|markdown }}
 {% endblock %}
-
 
 {% block alternative_form %}
     <p class="text-center">

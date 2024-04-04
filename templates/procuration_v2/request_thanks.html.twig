@@ -1,4 +1,3 @@
-
 {% extends 'procuration_v2/_layout_thanks.html.twig' %}
 
 {% block page_title 'Procuration - Demande (Mandant)' %}
@@ -6,7 +5,5 @@
 {% set copylink = url('app_procuration_v2_request', { slug: procuration_request.round.election.slug }) %}
 
 {% block thanks_text %}
-
     {{ procuration_request.round.election.requestConfirmation }}
-
 {% endblock %}

@@ -60,7 +60,7 @@ const SecondForm = (props) => ({
      * @return {Promise<Option>}
      */
     getVoteZone(query) {
-        const boroughCodeCityToExclude = ['75056', '69123', '13055']; // Paris, Lyon, Marseille
+        const boroughCodeCityToExclude = ['75056', '69123', '13055', 'FR']; // Paris, Lyon, Marseille, France
         return fetch(`${props.zoneApi}?q=${query}&types[]=city&types[]=borough&types[]=country`)
             .then((response) => response.json())
             .then((data) => data.filter((x) => !boroughCodeCityToExclude.includes(x.code))
@@ -74,7 +74,7 @@ const SecondForm = (props) => ({
         const proxyOrRequest = document.querySelector('[id^=procuration_proxy_]') ? 'proxy' : 'request';
         const DOM_TOM_CODES = ['GP', 'GF', 'MQ', 'YT', 'NC', 'PF', 'BL', 'MF', 'SX', 'PM', 'WF', 'RE'];
         const [uuid, type, code] = uuidType.split('__');
-        this.isNotInFrance = 'country' === type && !DOM_TOM_CODES.includes(code);
+        this.isNotInFrance = 'country' === type && !DOM_TOM_CODES.includes(code) && 'FR' !== code;
         document.querySelector('[id$=_voteZone]').value = uuid;
         this.votePlaceUuid = null;
         this.votePlaceLoading = true;

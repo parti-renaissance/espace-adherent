@@ -356,7 +356,7 @@ class Zone implements GeoInterface, UuidEntityInterface
     {
         return
             !\in_array($this->type, [self::COUNTRY, self::FOREIGN_DISTRICT, self::CONSULAR_DISTRICT])
-            || (self::COUNTRY === $this->type && AddressInterface::FRANCE === $this->code);
+            || \in_array($this->code, AddressInterface::FRENCH_CODES, true);
     }
 
     /**
