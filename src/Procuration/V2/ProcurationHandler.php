@@ -8,6 +8,7 @@ use App\Procuration\V2\Command\ProxyCommand;
 use App\Procuration\V2\Command\RequestCommand;
 use App\Procuration\V2\Event\ProcurationEvents;
 use App\Procuration\V2\Event\ProxyEvent;
+use App\Repository\Procuration\ProcurationRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -18,6 +19,7 @@ class ProcurationHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly ProcurationNotifier $notifier,
         private readonly MatchingHistoryHandler $matchingHistoryHandler,
+        private readonly ProcurationRequestRepository $procurationRequestRepository,
         private readonly EventDispatcherInterface $eventDispatcher
     ) {
     }
@@ -30,6 +32,8 @@ class ProcurationHandler
         $this->entityManager->flush();
 
         $this->notifier->sendRequestConfirmation($request);
+
+        $this->cleanInitialRequests($request->email, InitialRequestTypeEnum::REQUEST);
 
         return $request;
     }
@@ -44,6 +48,8 @@ class ProcurationHandler
         $this->notifier->sendProxyConfirmation($proxy);
 
         $this->eventDispatcher->dispatch(new ProxyEvent($proxy), ProcurationEvents::PROXY_CREATED);
+
+        $this->cleanInitialRequests($proxy->email, InitialRequestTypeEnum::PROXY);
 
         return $proxy;
     }
@@ -98,5 +104,23 @@ class ProcurationHandler
         $history = $this->matchingHistoryHandler->createUnmatch($request, $proxy);
 
         $this->notifier->sendUnmatchConfirmation($request, $proxy, $history->matcher);
+    }
+
+    private function cleanInitialRequests(string $email, InitialRequestTypeEnum $type): void
+    {
+        $initialRequests = $this->procurationRequestRepository->findBy([
+            'email' => $email,
+            'type' => $type,
+        ]);
+
+        if (empty($initialRequests)) {
+            return;
+        }
+
+        foreach ($initialRequests as $initialRequest) {
+            $this->entityManager->remove($initialRequest);
+        }
+
+        $this->entityManager->flush();
     }
 }

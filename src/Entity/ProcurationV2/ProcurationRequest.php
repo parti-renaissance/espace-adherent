@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="procuration_v2_initial_requests")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Procuration\ProcurationRequestRepository")
  */
 class ProcurationRequest
 {
