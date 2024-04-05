@@ -305,6 +305,7 @@ abstract class AbstractProcuration implements ZoneableEntity
      *     "procuration_request_read",
      *     "procuration_request_list",
      *     "procuration_proxy_list",
+     *     "procuration_matched_proxy",
      * })
      * @SerializedName("tags")
      */

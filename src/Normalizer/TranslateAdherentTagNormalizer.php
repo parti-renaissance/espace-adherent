@@ -4,7 +4,7 @@ namespace App\Normalizer;
 
 use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagTranslator;
-use App\Entity\ProcurationV2\Request;
+use App\Entity\ProcurationV2\AbstractProcuration;
 use App\Entity\Projection\ManagedUser;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -27,10 +27,14 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if (\is_array($data) && !empty($data['tags']) && \is_array($data['tags'])) {
+        if (\is_array($data) && \array_key_exists('tags', $data)) {
+            if (empty($data['tags']) && $object instanceof AbstractProcuration) {
+                $data['tags'] = ['citoyen'];
+            }
+
             $callback = fn (string $tag) => $this->tagTranslator->trans($tag, false);
 
-            if ($object instanceof ManagedUser || $object instanceof Request) {
+            if ($object instanceof ManagedUser || $object instanceof AbstractProcuration) {
                 $callback = fn (string $tag) => ['label' => $this->tagTranslator->trans($tag, false), 'type' => TagEnum::getMainLevel($tag)];
             }
 
@@ -51,8 +55,8 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
     private function validateType($data): bool
     {
         return
-            \is_array($data)
+            (\is_array($data) && \array_key_exists('tags', $data))
             || $data instanceof ManagedUser
-            || $data instanceof Request;
+            || $data instanceof AbstractProcuration;
     }
 }
