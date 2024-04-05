@@ -39,7 +39,6 @@ const SecondForm = () => ({
     checkFormValidity(e) {
         if (!this._handleOnSubmitBase(e)) {
             const addressFormValidity = ['country', 'address', 'postalCode', 'cityName'].every((x) => true === this.fieldsValid[x]);
-            console.log(addressFormValidity, this.fieldsValid);
             if (!addressFormValidity) {
                 this.showAutoComplete = false;
             }

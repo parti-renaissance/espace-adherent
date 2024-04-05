@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-#[Route('/', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
+#[Route('/inscription', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
 class InscriptionController extends AbstractController
 {
     public const ROUTE_NAME = 'app_bde_inscription';
@@ -66,7 +66,6 @@ class InscriptionController extends AbstractController
 
     private function getInscriptionRequest(Request $request): InscriptionRequest
     {
-        // Create empty membership request otherwise
         $inscriptionRequest = new InscriptionRequest();
 
         if ($emailIdentifier = $request->getSession()->get(PersistEmailController::SESSION_KEY)) {

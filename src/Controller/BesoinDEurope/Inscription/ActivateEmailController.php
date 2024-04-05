@@ -14,7 +14,7 @@ class ActivateEmailController extends AbstractController
 {
     public const ROUTE_NAME = 'app_bde_confirm_email';
 
-    #[Route(path: '/confirmation-email', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
+    #[Route(path: '/inscription/confirmation-email', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
     public function validateAction(): Response
     {
         $adherent = $this->getUser();
