@@ -114,6 +114,12 @@ class Main {
             .then((module) => module.default());
     }
 
+    runBDEInscriptionPage() {
+        return import('pages/bde_inscription')
+            .catch((error) => { throw error; })
+            .then((module) => module.default());
+    }
+
     runProxyVotingRepresentativeThanksPage() {
         return import('pages/proxy_voting_representative/thanks').catch((error) => {
             throw error;

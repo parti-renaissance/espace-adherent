@@ -1,26 +1,24 @@
 {% extends 'besoindeurope/base_besoindeurope.html.twig' %}
 
-{% block page_title 'Procuration - Proposition (Mandataire)' %}
+{% block page_title 'Inscription' %}
 
 {% block stylesheets %}
     {{ parent() }}
 
     <style>
         main.bde-theme {
-            background: linear-gradient(106deg, #E8EEF2 19.86%, #C1CDD5 109.87%);
+            background: #E6EDEF;
         }
     </style>
 {% endblock %}
 
 {% block sub_content %}
     <div class="md:grid mb-[120px] md:grid-cols-2 w-full relative md:pt-[80px] pt-[56px]">
-        <div class="md:sticky md:top-[56px] md:h-[100vh] p-8 md:pt-16">
-            <div class="h-full w-full md:-ml-16">
-            {% include 'procuration_v2/proxy_visual.svg.twig' %}
-            </div>
-        </div>
+        <figure class="md:sticky md:top-[56px] md:h-[100vh] p-8 md:pt-16">
+            {% include 'besoindeurope/inscription/form_visual.svg.twig' %}
+        </figure>
         <div class="flex gap-8 flex-col pt-0 p-5 md:pl-0 items-center justify-center md:items-start">
-             {% block content_section '' %}
+            {% block content_section '' %}
         </div>
     </div>
 {% endblock %}

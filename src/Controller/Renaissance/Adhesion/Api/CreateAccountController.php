@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -27,7 +26,6 @@ class CreateAccountController extends AbstractController
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
-        private readonly TokenStorageInterface $tokenStorage,
         private readonly AuthenticationUtils $authenticationUtils,
         MessageBusInterface $messageBus,
     ) {
@@ -72,7 +70,6 @@ class CreateAccountController extends AbstractController
         $result = $this->handle(new CreateAccountCommand($membershipRequest, $currentUser));
 
         if ($result instanceof CreateAdherentResult) {
-            $this->tokenStorage->setToken(null);
             $this->authenticationUtils->authenticateAdherent($result->getAdherent());
 
             if ($result->isNextStepPayment()) {

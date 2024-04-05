@@ -10,4 +10,5 @@ final class MembershipSourceEnum extends Enum
     public const AVECVOUS = 'avecvous';
     public const PLATFORM = 'platform';
     public const RENAISSANCE = 'renaissance';
+    public const BESOIN_D_EUROPE = 'besoindeurope';
 }

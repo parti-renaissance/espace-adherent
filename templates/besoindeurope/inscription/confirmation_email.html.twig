@@ -1,0 +1,9 @@
+{% extends 'besoindeurope/inscription/_layout.html.twig' %}
+
+{% block page_title 'Confirmation de l\'email' %}
+
+{% block content_section %}
+    <twig:Atoms:ReCard class="max-w-[500px]">
+        {% include 'renaissance/partials/flashes.html.twig' with {slim: true} %}
+    </twig:Atoms:ReCard>
+{% endblock %}

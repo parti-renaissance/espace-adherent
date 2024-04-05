@@ -37,7 +37,6 @@
         <twig:Atoms:ReLabel>Mon numéro d’électeur</twig:Atoms:ReLabel>
         <p class="text-[#555555] opacity-50">Il facilitera la démarche pour vous faire procuration.</p>
         {{ form_row(form.electorNumber, {attr: { placeholder: 'Mon numéro d’électeur', 'x-numberonly':'', validate: '["max:9"]' }}) }}
-
     </fieldset>
 
     <fieldset x-show="isNotInFrance">

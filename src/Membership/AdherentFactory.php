@@ -4,7 +4,9 @@ namespace App\Membership;
 
 use App\Address\PostAddressFactory;
 use App\Adherent\Tag\TagEnum;
+use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Request\MembershipRequest;
+use App\BesoinDEurope\Inscription\InscriptionRequest;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Membership\MembershipRequest\AvecVousMembershipRequest;
@@ -91,6 +93,32 @@ class AdherentFactory
 
         $adherent->tags = [TagEnum::SYMPATHISANT_ADHESION_INCOMPLETE];
         $adherent->setPapUserRole(true);
+
+        return $adherent;
+    }
+
+    public function createFromBesoinDEuropeMembershipRequest(InscriptionRequest $inscriptionRequest): Adherent
+    {
+        $adherent = Adherent::create(
+            uuid: Uuid::uuid4(),
+            emailAddress: $inscriptionRequest->email,
+            password: null,
+            gender: $inscriptionRequest->civility,
+            firstName: $inscriptionRequest->firstName,
+            lastName: $inscriptionRequest->lastName,
+            postAddress: PostAddressFactory::createFromAddress($inscriptionRequest->address),
+            status: Adherent::ENABLED
+        );
+
+        $adherent->tags = [TagEnum::SYMPATHISANT_BESOIN_D_EUROPE];
+        $adherent->setPapUserRole(true);
+        $adherent->join();
+        $adherent->setV2(true);
+        $adherent->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);
+        $adherent->setSource(MembershipSourceEnum::BESOIN_D_EUROPE);
+
+        $adherent->utmSource = $inscriptionRequest->utmSource;
+        $adherent->utmCampaign = $inscriptionRequest->utmCampaign;
 
         return $adherent;
     }

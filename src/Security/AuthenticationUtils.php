@@ -15,8 +15,9 @@ final class AuthenticationUtils
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function authenticateAdherent(UserInterface $user)
+    public function authenticateAdherent(UserInterface $user): void
     {
+        $this->tokenStorage->setToken(null);
         $this->doAuthenticateUser($user);
     }
 

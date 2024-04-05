@@ -69,7 +69,7 @@ app_assets:
     defaults:
         app_domain: "%app_renaissance_host%"
     requirements:
-        app_domain: "%app_host%|%app_renaissance_host%|%national_event_host%"
+        app_domain: "%app_host%|%app_renaissance_host%|%national_event_host%|%user_besoindeurope_host%"
 
 #
 # Mooc
@@ -281,8 +281,17 @@ app_renaissance_national_event:
     resource: "../src/Controller/Renaissance/NationalEvent"
     type: "annotation"
 
+app_besoindeurope:
+    host: "%user_besoindeurope_host%"
+    resource: "../src/Controller/BesoinDEurope"
+    type: "annotation"
+
 renaissance_site:
     host: "%renaissance_host%"
+    path: "/"
+
+besoindeurope_site:
+    host: "%besoindeurope_base_url%"
     path: "/"
 
 app_renaissance_login:
@@ -345,7 +354,7 @@ app_validate_email:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_renaissance_host%|%national_event_host%|%procuration_host%"
+        app_domain: "%app_renaissance_host%|%national_event_host%|%procuration_host%|%user_besoindeurope_host%"
 
 app_zone_autocomplete:
     host: "{app_domain}"
