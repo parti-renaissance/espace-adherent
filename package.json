@@ -74,6 +74,6 @@
   },
   "devDependencies": {
     "@types/alpinejs": "^3.13.10",
-    "@types/google.maps": "^3.55.5"
+    "@types/google.maps": "^3.55.6"
   }
 }
