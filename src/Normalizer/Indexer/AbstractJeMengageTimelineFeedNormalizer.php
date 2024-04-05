@@ -17,6 +17,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'description' => $this->getDescription($object),
             'category' => $this->getCategory($object),
             'address' => $this->getAddress($object),
+            'post_address' => $this->getPostAddress($object),
             'image' => $this->getImage($object),
             'url' => $this->getUrl($object),
             'media_type' => $this->getMediaType($object),
@@ -29,6 +30,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'zone_codes' => $this->getZoneCodes($object),
             'adherent_ids' => $this->getAdherentIds($object),
             'deeplink' => $this->getDeepLink($object),
+            'mode' => $this->getMode($object),
             '_tags' => [$this->getType()],
         ];
     }
@@ -54,6 +56,11 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     }
 
     protected function getAddress(object $object): ?string
+    {
+        return null;
+    }
+
+    protected function getPostAddress(object $object): ?array
     {
         return null;
     }
@@ -103,6 +110,11 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
         return null;
     }
 
+    protected function getMode(object $object): ?string
+    {
+        return null;
+    }
+
     protected function getMediaType(object $object): ?string
     {
         return null;
@@ -120,6 +132,6 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             $codes[] = sprintf('%s_%s', $parentZone->getType(), $parentZone->getCode());
         }
 
-        return $codes;
+        return array_values(array_unique($codes));
     }
 }
