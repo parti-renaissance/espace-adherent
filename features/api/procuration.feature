@@ -47,7 +47,10 @@ Feature:
                 },
                 "age": 33,
                 "id": "@string@",
-                "tags": null,
+                "tags": [{
+                    "label": "Citoyen",
+                    "type": "citoyen"
+                }],
                 "vote_place_name": "BDV CH 1"
             },
             {
@@ -77,7 +80,10 @@ Feature:
                 },
                 "age": "@number@",
                 "id": "@string@",
-                "tags": null,
+                "tags": [{
+                    "label": "Citoyen",
+                    "type": "citoyen"
+                }],
                 "vote_place_name": null
             }
         ]
@@ -123,7 +129,10 @@ Feature:
                 },
                 "age": 33,
                 "id": "@string@",
-                "tags": null,
+                "tags": [{
+                    "label": "Citoyen",
+                    "type": "citoyen"
+                }],
                 "vote_place_name": "BDV CH 1"
             }
         ]

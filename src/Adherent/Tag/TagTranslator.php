@@ -21,13 +21,24 @@ class TagTranslator
                     $year = $matches[1];
                     $parts[$index] = $this->translator->trans('adherent.tag.'.str_replace('_'.$year, '_%s', $part), ['year' => $year]);
                 } else {
-                    $parts[$index] = $this->translator->trans('adherent.tag.'.$part);
+                    $parts[$index] = $this->translate('adherent.tag.'.$part, $part);
                 }
             }
 
             return $fullTag ? implode(' - ', $parts) : last($parts);
         }
 
-        return $this->translator->trans('adherent.tag.'.$tag);
+        return $this->translate('adherent.tag.'.$tag, $tag);
+    }
+
+    private function translate(string $fullKey, string $part): string
+    {
+        $trans = $this->translator->trans($fullKey);
+
+        if ($trans === $fullKey) {
+            return ucfirst($part);
+        }
+
+        return $trans;
     }
 }
