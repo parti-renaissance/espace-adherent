@@ -6,6 +6,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TimeoutExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class CaptainVerifyDriver implements LoggerAwareInterface
@@ -30,8 +31,6 @@ class CaptainVerifyDriver implements LoggerAwareInterface
 
         if ($response->isSuccess()) {
             $this->storage->store($email, $response);
-        } elseif ($response->result) {
-            $this->logger->error('CaptainVerify API error "'.$email.'" : '.json_encode($response));
         }
 
         return $response->isValid();
@@ -45,7 +44,9 @@ class CaptainVerifyDriver implements LoggerAwareInterface
             $httpResponse = $this->captainVerifyClient->request('GET', '/v2/verify', ['query' => ['email' => $email, 'apikey' => $this->captainVerifyApiKey]]);
             $response = $this->denormalizer->denormalize($httpResponse->toArray(), Response::class);
         } catch (ExceptionInterface $e) {
-            $this->logger->error('CaptainVerify API error "'.$email.'" : '.$e->getMessage());
+            if (!$e->getPrevious() instanceof TimeoutExceptionInterface) {
+                $this->logger->error('CaptainVerify API error : '.$e->getMessage());
+            }
         }
 
         return $response;
