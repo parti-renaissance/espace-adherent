@@ -44,7 +44,11 @@ class GetTimelineFeedsController extends AbstractController
         }
 
         $filters = ['is_national:true', $zoneFilter];
-        $tagFilters = [];
+
+        $tagFilters = [[
+            TimelineFeedTypeEnum::NEWS,
+            TimelineFeedTypeEnum::EVENT,
+        ]];
 
         if ($user instanceof DeviceApiUser) {
             $tagFilters[] = [

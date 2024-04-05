@@ -63,9 +63,21 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param BaseEvent $object */
+    protected function getPostAddress(object $object): ?array
+    {
+        return $object->getPostAddressModel()?->toArray();
+    }
+
+    /** @param BaseEvent $object */
     protected function getBeginAt(object $object): ?\DateTime
     {
         return $object->getBeginAt();
+    }
+
+    /** @param BaseEvent $object */
+    protected function getMode(object $object): ?string
+    {
+        return $object->getMode();
     }
 
     /** @param BaseEvent $object */
@@ -100,6 +112,6 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
             $zonesCodes[$key] = $this->buildZoneCodes($zone);
         }
 
-        return array_unique(array_merge(...$zonesCodes));
+        return array_values(array_unique(array_merge(...$zonesCodes)));
     }
 }

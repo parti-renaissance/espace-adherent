@@ -353,4 +353,14 @@ trait EntityAddressTrait
     {
         return AddressInterface::FRANCE === mb_strtoupper($this->country) && $this->city;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'address' => $this->address,
+            'postal_code' => $this->postalCode,
+            'city_name' => $this->cityName,
+            'country' => $this->country,
+        ];
+    }
 }

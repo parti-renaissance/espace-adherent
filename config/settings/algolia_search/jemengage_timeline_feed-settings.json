@@ -21,6 +21,8 @@
         "image",
         "is_local",
         "media_type",
+        "mode",
+        "post_address",
         "time_zone",
         "title",
         "type",
