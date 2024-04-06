@@ -1,0 +1,28 @@
+{% extends 'besoindeurope/base_besoindeurope.html.twig' %}
+
+{% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
+
+{% block header '' %}
+
+{% block body_classes 'min-h-screen flex justify-center items-center' %}
+
+{% block content %}
+    <section class="flex flex-col bg-white px-10 pt-8 pb-[3.25rem] w-[380px] lg:w-[500px] re_new_ui bde-theme">
+        <a href="//{{ besoindeurope_host }}" class="flex flex-col justify-center items-center self-center mb-6 lg:mb-[4.38rem] font-sharp font-semibold text-[2rem]/[normal] text-black neg-letter-spacing--4" title="Site Besoin d'Europe">
+            <span class="text-[#00AEEF]">Le 9 juin<br/>nous avons</span>
+            <span>Besoin<br/>d’Europe</span>
+        </a>
+
+        <h1 class="mb-6 lg:mb-16 text-center font-maax text-ui_gray-80 tracking-tighter font-medium lg:text-2xl">
+            {% block security_block_title '' %}
+        </h1>
+
+        {% include 'renaissance/partials/flashes.html.twig' with { wrapper_class: 'mb-6 lg:mb-16' } %}
+
+        {% block security_content '' %}
+
+        <footer class="text-center mt-24 text-ui_gray-40">
+            Besoin d'Europe © {{ "now"|date('Y') }}
+        </footer>
+    </section>
+{% endblock %}

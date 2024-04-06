@@ -33,7 +33,7 @@ class OAuthServerController extends AbstractController
         $this->httpFoundationFactory = $httpFoundationFactory;
     }
 
-    #[Route(path: '/auth', name: 'app_front_oauth_authorize', methods: ['GET', 'POST'], host: '{app_domain}', defaults: ['app_domain' => '%app_host%'], requirements: ['app_domain' => '%app_host%|%jemengage_auth_host%'])]
+    #[Route(path: '/auth', name: 'app_front_oauth_authorize', methods: ['GET', 'POST'])]
     #[Security("is_granted('IS_AUTHENTICATED_REMEMBERED') and not is_granted('ROLE_ADMIN_DASHBOARD')")]
     public function authorizeAction(Request $request, ClientRepository $repository, OAuthAuthorizationManager $manager)
     {

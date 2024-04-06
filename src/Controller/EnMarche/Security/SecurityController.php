@@ -30,17 +30,16 @@ class SecurityController extends AbstractController
 {
     #[Route(path: '/connexion', name: 'app_user_login', methods: ['GET'])]
     public function loginAction(
-        Request $request,
         AuthenticationUtils $securityUtils,
-        FormFactoryInterface $formFactory
+        FormFactoryInterface $formFactory,
+        AuthAppUrlManager $appUrlManager,
+        ?string $app = null
     ): Response {
-        $currentApp = $request->attributes->get('app');
-
-        if ($this->getUser()) {
+        if ($user = $this->getUser()) {
             $this->addFlash('info', 'Vous êtes déjà connecté(e)');
 
-            if ($currentApp) {
-                return $this->redirect('//'.$this->getParameter($currentApp.'_host'));
+            if ($app) {
+                return $this->redirect($appUrlManager->getUrlGenerator($app)->generateForLoginSuccess($user));
             }
 
             return $this->redirectToRoute('app_search_events');
@@ -50,7 +49,7 @@ class SecurityController extends AbstractController
             '_login_email' => $securityUtils->getLastUsername(),
         ], ['remember_me' => true]);
 
-        return $this->render($currentApp ? sprintf('security/%s_user_login.html.twig', $currentApp) : 'security/adherent_login.html.twig', [
+        return $this->render($app ? sprintf('security/%s_user_login.html.twig', $app) : 'security/adherent_login.html.twig', [
             'form' => $form->createView(),
             'error' => $securityUtils->getLastAuthenticationError(),
         ]);

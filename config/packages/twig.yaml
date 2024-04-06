@@ -32,7 +32,8 @@ twig:
         friendly_captcha_europe_site_key: "%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%"
         unlayer_project_id:         "%env(UNLAYER_PROJECT_ID)%"
         article_preview_admin_key:  "%env(ARTICLE_PREVIEW_ADMIN_KEY)%"
-        besoindeurope_base_url:     "%env(BESOINDEUROPE_BASE_URL)%"
+        besoindeurope_host:         "%env(BESOINDEUROPE_HOST)%"
+        user_besoindeurope_host:    "%env(USER_BESOINDEUROPE_HOST)%"
 
     form_themes:
         - 'form_theme.html.twig'
