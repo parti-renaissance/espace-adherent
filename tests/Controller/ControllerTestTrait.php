@@ -4,7 +4,6 @@ namespace Tests\App\Controller;
 
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
-use App\Entity\ReferentTag;
 use App\Messenger\MessageRecorder\MessageRecorderInterface;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -175,20 +174,6 @@ trait ControllerTestTrait
         $session->save();
 
         $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
-    }
-
-    private static function assertAdherentHasReferentTag(Adherent $adherent, string $code): void
-    {
-        $referentTag = $adherent
-            ->getReferentTags()
-            ->filter(function (ReferentTag $referentTag) use ($code) {
-                return $code === $referentTag->getCode();
-            })
-            ->first()
-        ;
-
-        self::assertInstanceOf(ReferentTag::class, $referentTag);
-        self::assertSame($referentTag->getCode(), $code);
     }
 
     private static function assertAdherentHasZone(Adherent $adherent, string $code): void
