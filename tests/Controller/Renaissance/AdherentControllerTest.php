@@ -100,7 +100,6 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
         self::assertSame(null, $crawler->filter(sprintf($inputPattern, 'phone][number'))->attr('value'));
         self::assertSame('En activité', $crawler->filter(sprintf($optionPattern, 'position'))->text());
         self::assertSame('1942-01-10', $crawler->filter(sprintf($inputPattern, 'birthdate'))->attr('value'));
-        self::assertCount(1, $adherent->getReferentTags());
         self::assertAdherentHasZone($adherent, '77');
 
         // Submit the profile form with invalid data
@@ -212,9 +211,6 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertNotNull($newLongitude = $adherent->getLongitude());
         $this->assertNotSame($oldLatitude, $newLatitude);
         $this->assertNotSame($oldLongitude, $newLongitude);
-        self::assertCount(2, $adherent->getReferentTags());
-        self::assertAdherentHasReferentTag($adherent, '06');
-        self::assertAdherentHasReferentTag($adherent, 'CIRCO_06001');
 
         $histories06Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '06');
         $histories06Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '06');

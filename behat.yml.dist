@@ -41,7 +41,6 @@ default:
                 - Tests\App\Behat\Context\ChronosContext
                 - Tests\App\Behat\Context\EmailContext
                 - Tests\App\Behat\Context\NotificationContext
-                - Tests\App\Behat\Context\ReferentTagContext
                 - Tests\App\Behat\Context\FeatureContext
                 - Tests\App\Behat\Context\DonationContext
         javascript:
@@ -61,6 +60,5 @@ default:
                 - Tests\App\Behat\Context\JsonContext
                 - Tests\App\Behat\Context\EmailContext
                 - Tests\App\Behat\Context\NotificationContext
-                - Tests\App\Behat\Context\ReferentTagContext
                 - Tests\App\Behat\Context\FeatureContext
                 - Tests\App\Behat\Context\DonationContext
