@@ -7,6 +7,7 @@ use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
 use App\Mailer\Message\AdherentResetPasswordConfirmationMessage;
+use App\Mailer\Message\BesoinDEurope\BesoinDEuropeResetPasswordConfirmationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceResetPasswordConfirmationMessage;
 use App\Membership\Event\UserEvent;
 use App\Membership\Event\UserResetPasswordEvent;
@@ -69,7 +70,9 @@ class AdherentResetPasswordHandler
 
         $this->manager->flush();
 
-        if (MembershipSourceEnum::RENAISSANCE === $appCode && !$isCreation) {
+        if (MembershipSourceEnum::BESOIN_D_EUROPE === $appCode) {
+            $this->mailer->sendMessage(BesoinDEuropeResetPasswordConfirmationMessage::createFromAdherent($adherent));
+        } elseif (MembershipSourceEnum::RENAISSANCE === $appCode && !$isCreation) {
             $this->mailer->sendMessage(RenaissanceResetPasswordConfirmationMessage::createFromAdherent($adherent));
         } elseif (null === $adherent->getSource()) {
             $this->mailer->sendMessage(AdherentResetPasswordConfirmationMessage::createFromAdherent($adherent));

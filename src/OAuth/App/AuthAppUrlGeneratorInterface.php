@@ -25,4 +25,6 @@ interface AuthAppUrlGeneratorInterface
     ): string;
 
     public function generateLoginLink(): string;
+
+    public function getAppHost(): string;
 }

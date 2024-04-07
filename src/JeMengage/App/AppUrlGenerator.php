@@ -3,8 +3,6 @@
 namespace App\JeMengage\App;
 
 use App\AppCodeEnum;
-use App\Entity\Adherent;
-use App\Entity\AdherentExpirableTokenInterface;
 use App\OAuth\App\AbstractAppUrlGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -55,19 +53,8 @@ class AppUrlGenerator extends AbstractAppUrlGenerator
         return $this->urlGenerator->generate('app_jemengage_login');
     }
 
-    public function generateCreatePasswordLink(
-        Adherent $adherent,
-        AdherentExpirableTokenInterface $token,
-        array $urlParams = []
-    ): string {
-        return $this->urlGenerator->generate(
-            'app_adherent_reset_password',
-            array_merge($urlParams, [
-                'app_domain' => $this->appAuthHost,
-                'adherent_uuid' => (string) $adherent->getUuid(),
-                'reset_password_token' => (string) $token->getValue(),
-            ]),
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
+    public function getAppHost(): string
+    {
+        return $this->appAuthHost;
     }
 }

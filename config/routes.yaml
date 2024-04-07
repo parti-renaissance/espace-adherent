@@ -17,12 +17,15 @@ app_jemengage_login:
     defaults:
         app: jemengage
 
-app_jemengage_forgot_password:
-    host: "%jemengage_auth_host%"
+app_forgot_password:
+    host: "{app_domain}"
+    methods: "GET|POST"
     path: "/mot-de-passe-oublie"
     controller: App\Controller\EnMarche\Security\SecurityController::retrieveForgotPasswordAction
     defaults:
-        app: jemengage
+        app_domain: "%app_renaissance_host%"
+    requirements:
+        app_domain: "%app_renaissance_host%|%jemengage_auth_host%|%user_besoindeurope_host%"
 
 app_user_login_check:
     host: "{app_domain}"
@@ -52,7 +55,7 @@ app_adherent_reset_password:
     defaults:
         app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_host%|%jemengage_auth_host%|%app_renaissance_host%"
+        app_domain: "%app_host%|%jemengage_auth_host%|%app_renaissance_host%|%user_besoindeurope_host%"
 
 app_jemengage:
     host: '%jemengage_auth_host%'
@@ -311,14 +314,6 @@ app_besoindeurope_login:
     controller: App\Controller\EnMarche\Security\SecurityController::loginAction
     defaults:
         app: besoindeurope
-
-
-app_renaissance_forgot_password:
-    host: "%app_renaissance_host%"
-    path: "/mot-de-passe-oublie"
-    controller: App\Controller\EnMarche\Security\SecurityController::retrieveForgotPasswordAction
-    defaults:
-        app: renaissance
 
 user_validate_new_email:
     host: "{app_domain}"

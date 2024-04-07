@@ -220,7 +220,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         ]);
 
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(RenaissanceResetPasswordConfirmationMessage::class, 'michelle.dufour@example.ch'), 'A confirmation email should have been sent.');
-        $this->assertClientIsRedirectedTo('http://test.renaissance.code/', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client);
 
         $this->client->followRedirect();
 

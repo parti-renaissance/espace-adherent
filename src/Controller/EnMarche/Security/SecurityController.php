@@ -59,25 +59,18 @@ class SecurityController extends AbstractController
     {
     }
 
-    public function logoutAction()
-    {
-    }
-
-    #[Route(path: '/mot-de-passe-oublie', name: 'forgot_password', methods: ['GET', 'POST'])]
     public function retrieveForgotPasswordAction(
         Request $request,
         AdherentResetPasswordHandler $handler,
         AdherentRepository $adherentRepository,
-        TranslatorInterface $translatable
+        TranslatorInterface $translatable,
+        AuthAppUrlManager $appUrlManager,
     ): Response {
-        $currentApp = $request->attributes->get('app');
+        $currentApp = $appUrlManager->getAppCodeFromRequest($request);
+        $urlGenerator = $appUrlManager->getUrlGenerator($currentApp);
 
-        if ($this->getUser()) {
-            if ($currentApp) {
-                return $this->redirect($this->getParameter($currentApp.'_host'));
-            }
-
-            return $this->redirectToRoute('app_search_events');
+        if ($user = $this->getUser()) {
+            return $this->redirect($urlGenerator->generateForLoginSuccess($user));
         }
 
         $form = $this->createFormBuilder()
@@ -105,7 +98,7 @@ class SecurityController extends AbstractController
             $this->addFlash('info', $translatable->trans('adherent.reset_password.email_sent', ['%email%' => $email]));
 
             if ($currentApp) {
-                return $this->redirectToRoute(sprintf('app_%s_forgot_password', $currentApp));
+                return $this->redirectToRoute('app_forgot_password', ['app_domain' => $urlGenerator->getAppHost()]);
             }
 
             return $this->redirectToRoute('app_user_login');
@@ -186,5 +179,9 @@ class SecurityController extends AbstractController
         }
 
         return $this->redirectToRoute($adherent->isRenaissanceUser() ? 'app_renaissance_adherent_space' : 'homepage');
+    }
+
+    public function logoutAction()
+    {
     }
 }
