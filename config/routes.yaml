@@ -57,6 +57,26 @@ app_adherent_reset_password:
     requirements:
         app_domain: "%app_host%|%jemengage_auth_host%|%app_renaissance_host%|%user_besoindeurope_host%"
 
+app_user_get_magic_link:
+    host: "{app_domain}"
+    path: "/demander-un-lien-magique"
+    methods: "GET|POST"
+    controller: App\Controller\Renaissance\MagicLinkController::getMagicLinkAction
+    defaults:
+        app_domain: '%app_renaissance_host%'
+    requirements:
+        app_domain: "%app_renaissance_host%|%user_besoindeurope_host%"
+
+app_user_connect_with_magic_link:
+    host: "{app_domain}"
+    path: "/connexion-avec-un-lien-magique"
+    methods: "GET|POST"
+    controller: App\Controller\Renaissance\MagicLinkController::connectViaMagicLinkAction
+    defaults:
+        app_domain: '%app_renaissance_host%'
+    requirements:
+        app_domain: "%app_renaissance_host%|%user_besoindeurope_host%"
+
 app_jemengage:
     host: '%jemengage_auth_host%'
     resource: "../src/Controller/JeMengage"
@@ -300,6 +320,13 @@ besoindeurope_site:
 vox_app:
     host: "%vox_host%"
     path: "/"
+
+vox_app_redirect:
+    host: "%user_besoindeurope_host%"
+    path: /app
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        route: 'vox_app'
 
 app_renaissance_login:
     host: "%app_renaissance_host%"

@@ -1,4 +1,4 @@
-{% extends 'security/renaissance_layout.html.twig' %}
+{% extends 'security/besoindeurope_layout.html.twig' %}
 
 {% block title 'Connexion en cours' %}
 
@@ -10,7 +10,7 @@
 
     <div class="font-medium text-ui_blue-50 mt-6 lg:mt-16 animate-pulse self-center">Connexion...</div>
 
-    <form x-data x-init="$nextTick(function () {setTimeout(function () {$el.submit()}, 2000)})" action="{{ path('app_user_connect_with_magic_link') }}" method="POST" class="hidden">
+    <form x-data x-init="$nextTick(function () {setTimeout(function () {$el.submit()}, 2000)})" action="{{ path('app_user_connect_with_magic_link', {app_domain: user_besoindeurope_host}) }}" method="POST" class="hidden">
         <input type="hidden" name="expires" value="{{ expires }}">
         <input type="hidden" name="user" value="{{ user }}">
         <input type="hidden" name="hash" value="{{ hash }}">
@@ -19,9 +19,9 @@
         <button type="submit">Continuer</button>
     </form>
 
-    <hr class="my-10 w-full" />
+    <hr class="my-10 w-full border-dashed" />
 
     <p class="text-center text-[13px] lg:text-base font-normal">
-        {% include 'renaissance/partials/contact_info.html.twig' %}
+        {% include 'besoindeurope/partials/contact_info.html.twig' %}
     </p>
 {% endblock %}
