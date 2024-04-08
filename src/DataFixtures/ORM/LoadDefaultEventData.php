@@ -5,6 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Event\EventRegistrationCommand;
+use App\Event\EventVisibilityEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
@@ -24,7 +25,6 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $referent = $this->getReference('adherent-8');
         $senatorialCandidate = $this->getReference('senatorial-candidate');
         $adherent5 = $this->getReference('adherent-5');
-        $adherent56 = $this->getReference('adherent-56');
         $adherentRe4 = $this->getReference('renaissance-user-4');
         $pad92 = $this->getReference('renaissance-user-4');
 
@@ -170,10 +170,29 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event2, $referent)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event2, $this->getReference('adherent-7'))));
 
+        for ($i = 1; $i <= 5; ++$i) {
+            $manager->persist($event = new DefaultEvent());
+
+            $event->setName('Event interne '.$i);
+            $event->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
+            $event->setPublished(true);
+            $event->setBeginAt((new \DateTime('now'))->modify('+2 hours'));
+            $event->setFinishAt((new \DateTime('now'))->modify('+4 hours'));
+            $event->setCapacity(50);
+            $event->setStatus(BaseEvent::STATUS_SCHEDULED);
+            $event->setMode(0 === $i % 2 ? BaseEvent::MODE_MEETING : BaseEvent::MODE_ONLINE);
+            $event->setTimeZone('Europe/Paris');
+            $event->visibility = EventVisibilityEnum::PRIVATE;
+            $event->setOrganizer($senatorialCandidate);
+            $event->setPostAddress($this->createPostAddress('74 Avenue des Champs-Élysées, 75008 Paris', '75008-75108', null, 48.862725, 2.287592));
+            $event->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
+            $event->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
+        }
+
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadUserData::class,

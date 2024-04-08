@@ -871,4 +871,9 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     {
         $this->renaissanceEvent = $renaissanceEvent;
     }
+
+    public function isPublic(): bool
+    {
+        return EventVisibilityEnum::PUBLIC === $this->visibility;
+    }
 }

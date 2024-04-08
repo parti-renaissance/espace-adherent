@@ -10,14 +10,14 @@ Feature:
     And I send a "GET" request to "/api/v3/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 9 |
+      | metadata.total_items  | 14 |
 
   Scenario: As a logged-in Jemarche App user I can get events of my borough (with zipCode filter)
     Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "J'écoute" with scope "jemarche_app"
     And I send a "GET" request to "/api/v3/events?zipCode=75008"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 9 |
+      | metadata.total_items  | 14 |
 
   Scenario: As a logged-in Jemarche App user I can get events of my department
     When I am logged with "benjyd@aol.com" via OAuth client "J'écoute" with scope "jemarche_app"
@@ -36,20 +36,47 @@ Feature:
 
   Scenario: As a non logged-in user I cannot get private event
     When I send a "GET" request to "/api/events/47e5a8bf-8be1-4c38-aae8-b41e6908a1b3"
-    Then the response status code should be 404
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "@string@",
+        "name": "Réunion de réflexion bellifontaine",
+        "description": null,
+        "time_zone": "Europe/Paris",
+        "live_url": null,
+        "slug": "@string@",
+        "committee": null,
+        "visibility": "private",
+        "created_at": null,
+        "begin_at": "@string@.isDateTime()",
+        "finish_at": "@string@.isDateTime()",
+        "organizer": null,
+        "participants_count": null,
+        "status": "SCHEDULED",
+        "capacity": null,
+        "post_address": null,
+        "created_at": null,
+        "link": "@string@.isUrl()",
+        "category": null,
+        "visio_url": null,
+        "mode": null,
+        "image_url": null
+    }
+    """
 
   Scenario: As a non logged-in user I can get events
     When I send a "GET" request to "/api/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 24 |
+      | metadata.total_items  | 31 |
 
   Scenario: As a logged-in user I can get events
     When I am logged as "jacques.picard@en-marche.fr"
     And I send a "GET" request to "/api/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 26 |
+      | metadata.total_items  | 31 |
 
   Scenario: As a non logged-in user I cannot check if I'm registered for events
     When I send a "POST" request to "/api/v3/events/registered" with body:
