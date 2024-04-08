@@ -18,7 +18,8 @@ parameters:
     avecvous_host:                        "%env(AVECVOUS_HOST)%"
     national_event_host:                  "%env(NATIONAL_EVENT_HOST)%"
     user_besoindeurope_host:              "%env(USER_BESOINDEUROPE_HOST)%"
-    besoindeurope_base_url:               "%env(BESOINDEUROPE_BASE_URL)%"
+    besoindeurope_host:                   "%env(BESOINDEUROPE_HOST)%"
+    vox_host:                             "%env(VOX_HOST)%"
     avecvous_qrcode_host:                 "%env(AVECVOUS_QRCODE_HOST)%"
     procuration_host:                     "%env(PROCURATION_HOST)%"
     assessor_host:                        "%env(ASSESSOR_HOST)%"
@@ -66,6 +67,7 @@ services:
             $jemengageAuthHost: '%jemengage_auth_host%'
             $avecvousHost: '%avecvous_host%'
             $nationalEventHost: '%national_event_host%'
+            $userBesoinDEuropeHost: '%user_besoindeurope_host%'
             $ovhSmsWebhookKey: '%env(OVHCLOUD_SMS_WEBHOOK_KEY)%'
             $dynamicLinksHost: '%env(DYNAMIC_LINKS_HOST)%'
             $jemengageAppPackageId: '%env(JEMENGAGE_APP_PACKAGE_ID)%'

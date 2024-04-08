@@ -4,7 +4,6 @@ namespace App\Security;
 
 use App\Entity\Adherent;
 use App\Exception\AccountNotValidatedException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
@@ -12,13 +11,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserChecker implements UserCheckerInterface
 {
-    private UrlGeneratorInterface $router;
-
-    public function __construct(UrlGeneratorInterface $router)
-    {
-        $this->router = $router;
-    }
-
     public function checkPreAuth(UserInterface $user)
     {
     }
