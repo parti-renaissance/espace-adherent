@@ -4,7 +4,6 @@ namespace App\Renaissance\App;
 
 use App\AppCodeEnum;
 use App\Entity\Adherent;
-use App\Entity\AdherentExpirableTokenInterface;
 use App\OAuth\App\AbstractAppUrlGenerator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -45,23 +44,7 @@ class UrlGenerator extends AbstractAppUrlGenerator
             return $this->urlGenerator->generate('app_renaissance_adherent_creation_confirmation');
         }
 
-        return static::generateHomepageLink();
-    }
-
-    public function generateCreatePasswordLink(
-        Adherent $adherent,
-        AdherentExpirableTokenInterface $token,
-        array $urlParams = []
-    ): string {
-        return $this->urlGenerator->generate(
-            'app_adherent_reset_password',
-            array_merge($urlParams, [
-                'app_domain' => $this->appHost,
-                'adherent_uuid' => (string) $adherent->getUuid(),
-                'reset_password_token' => (string) $token->getValue(),
-            ]),
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
+        return $this->generateLoginLink();
     }
 
     public function generateLoginLink(): string
@@ -81,5 +64,10 @@ class UrlGenerator extends AbstractAppUrlGenerator
     public function generateLogout(): string
     {
         return $this->urlGenerator->generate('logout', ['app_domain' => $this->appHost], UrlGeneratorInterface::ABSOLUTE_URL);
+    }
+
+    public function getAppHost(): string
+    {
+        return $this->appHost;
     }
 }

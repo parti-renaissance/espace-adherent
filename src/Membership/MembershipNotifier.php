@@ -89,7 +89,7 @@ class MembershipNotifier implements LoggerAwareInterface
             $this->transactionalMailer->sendMessage(AdhesionAlreadyAdherentMessage::create(
                 $adherent,
                 $url,
-                $this->urlGenerator->generate('app_renaissance_forgot_password', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                $this->urlGenerator->generate('app_forgot_password', [], UrlGeneratorInterface::ABSOLUTE_URL),
                 $url.'&_target_path='.$this->urlGenerator->generate('app_adhesion_index'),
             ));
 
