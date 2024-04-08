@@ -2,15 +2,16 @@
 
 namespace App\Controller\Renaissance;
 
-use App\Entity\Adherent;
+use App\AppCodeEnum;
 use App\Mailer\MailerService;
+use App\Mailer\Message\BesoinDEurope\BesoinDEuropeMagicLinkMessage;
 use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
+use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\AdherentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -19,18 +20,18 @@ class MagicLinkController extends AbstractController
 {
     public const ROUTE_NAME = 'app_user_connect_with_magic_link';
 
-    #[Route(path: '/demander-un-lien-magique', name: 'app_user_get_magic_link', methods: ['GET', 'POST'])]
     public function getMagicLinkAction(
         Request $request,
         LoginLinkHandlerInterface $loginLinkHandler,
         AdherentRepository $adherentRepository,
         MailerService $transactionalMailer,
         TranslatorInterface $translator,
+        AuthAppUrlManager $appUrlManager,
     ): Response {
-        if ($this->getUser()) {
-            $this->addFlash('info', 'Vous êtes déjà connecté(e)');
+        $appUrlGenerator = $appUrlManager->getUrlGenerator($appUrlManager->getAppCodeFromRequest($request) ?? AppCodeEnum::RENAISSANCE);
 
-            return $this->redirectToRoute('app_renaissance_adherent_space');
+        if ($user = $this->getUser()) {
+            return $this->redirect($appUrlGenerator->generateForLoginSuccess($user));
         }
 
         $form = $this
@@ -42,26 +43,44 @@ class MagicLinkController extends AbstractController
             $email = $form->getData();
 
             if ($adherent = $adherentRepository->findOneActiveByEmail($email)) {
-                $loginLink = $loginLinkHandler->createLoginLink($adherent);
-                $transactionalMailer->sendMessage(RenaissanceMagicLinkMessage::create($adherent, $loginLink->getUrl()));
+                $loginLink = $loginLinkHandler->createLoginLink($adherent, $request);
+                $loginUrl = $loginLink->getUrl();
+
+                if (AppCodeEnum::BESOIN_D_EUROPE === $appUrlGenerator::getAppCode()) {
+                    $loginUrlParts = parse_url($loginUrl.'&_target_path=/app');
+
+                    $transactionalMailer->sendMessage(BesoinDEuropeMagicLinkMessage::create(
+                        $adherent,
+                        sprintf(
+                            '%s://%s%s?%s',
+                            $loginUrlParts['scheme'],
+                            $appUrlGenerator->getAppHost(),
+                            $loginUrlParts['path'],
+                            $loginUrlParts['query']
+                        )
+                    ));
+                } else {
+                    $transactionalMailer->sendMessage(RenaissanceMagicLinkMessage::create($adherent, $loginUrl));
+                }
             }
 
             $this->addFlash('info', $translator->trans('adherent.get_magic_link.email_sent', ['%email%' => $email]));
 
-            return $this->redirectToRoute('app_user_get_magic_link');
+            return $this->redirectToRoute('app_user_get_magic_link', ['app_domain' => $appUrlGenerator->getAppHost()]);
         }
 
-        return $this->render('security/renaissance_user_magic_link.html.twig', ['form' => $form->createView()]);
+        return $this->render(sprintf('security/%s_user_magic_link.html.twig', $appUrlGenerator::getAppCode()), ['form' => $form->createView()]);
     }
 
-    #[Route(path: '/connexion-avec-un-lien-magique', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
-    public function connectViaMagicLinkAction(Request $request): Response
+    public function connectViaMagicLinkAction(Request $request, AuthAppUrlManager $appUrlManager): Response
     {
-        if ($this->getUser() instanceof Adherent) {
-            return $this->redirectToRoute('app_renaissance_adherent_space');
+        $appUrlGenerator = $appUrlManager->getUrlGenerator($appUrlManager->getAppCodeFromRequest($request) ?? AppCodeEnum::RENAISSANCE);
+
+        if ($user = $this->getUser()) {
+            return $this->redirect($appUrlGenerator->generateForLoginSuccess($user));
         }
 
-        return $this->render('security/renaissance_connect_magic_link.html.twig', [
+        return $this->render(sprintf('security/%s_connect_magic_link.html.twig', $appUrlGenerator::getAppCode()), [
             'expires' => $request->query->get('expires'),
             'user' => $request->query->get('user'),
             'hash' => $request->query->get('hash'),

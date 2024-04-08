@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Mailer\Message\BesoinDEurope;
+
+use App\Entity\Adherent;
+use App\Mailer\Message\Renaissance\AbstractRenaissanceMessage;
+use Ramsey\Uuid\Uuid;
+
+class BesoinDEuropeMagicLinkMessage extends AbstractRenaissanceMessage
+{
+    public static function create(Adherent $adherent, string $url): self
+    {
+        return new self(
+            Uuid::uuid4(),
+            $adherent->getEmailAddress(),
+            $adherent->getFullName(),
+            '',
+            [],
+            ['magic_link' => $url],
+        );
+    }
+}

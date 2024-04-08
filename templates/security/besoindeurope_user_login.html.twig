@@ -2,6 +2,8 @@
 
 {% block title 'Connectez-vous avec vos identifiants' %}
 
+{% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
+
 {% block security_block_title %}
     Connexion
 {% endblock %}
@@ -41,7 +43,7 @@
 
         <twig:ReButton
             tag="a"
-            href="{{ path('app_user_get_magic_link') }}"
+            href="{{ path('app_user_get_magic_link', {app_domain: user_besoindeurope_host}) }}"
             class="text-sm lg:text-base rounded-full"
             icon="link-circle"
             stroke

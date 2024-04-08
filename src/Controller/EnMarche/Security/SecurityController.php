@@ -141,7 +141,7 @@ class SecurityController extends AbstractController
                     $adherent,
                     $resetPasswordToken,
                     $newPassword,
-                    $appUrlGenerator->getAppCode(),
+                    $appUrlGenerator::getAppCode(),
                     $request->query->has('is_creation')
                 );
                 $this->addFlash('info', 'adherent.reset_password.success');
