@@ -120,8 +120,8 @@ class BaseEventExtension implements QueryItemExtensionInterface, QueryCollection
             && !$this->security->getUser() instanceof Adherent
         ) {
             $queryBuilder
-                ->andWhere("$alias.visibility != :private_visibility")
-                ->setParameter('private_visibility', EventVisibilityEnum::PRIVATE)
+                ->andWhere("$alias.visibility IN (:public_visibilities)")
+                ->setParameter('public_visibilities', [EventVisibilityEnum::PUBLIC, EventVisibilityEnum::PRIVATE])
             ;
         }
 
