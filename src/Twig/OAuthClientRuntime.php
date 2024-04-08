@@ -8,22 +8,30 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class OAuthClientRuntime implements RuntimeExtensionInterface
 {
-    private ClientRepository $clientRepository;
-    private ?string $clientId = null;
+    private array $clientIds = [];
 
-    public function __construct(ClientRepository $clientRepository)
+    public function __construct(private readonly ClientRepository $clientRepository)
     {
-        $this->clientRepository = $clientRepository;
     }
 
     public function getJMEClientId(): ?string
     {
-        if (null !== $this->clientId) {
-            return $this->clientId;
+        return $this->getClientId(AppCodeEnum::JEMENGAGE_WEB);
+    }
+
+    public function getVoxClientId(): ?string
+    {
+        return $this->getClientId(AppCodeEnum::VOX);
+    }
+
+    private function getClientId(string $code): ?string
+    {
+        if (isset($this->clientIds[$code])) {
+            return $this->clientIds[$code];
         }
 
-        $clients = $this->clientRepository->findBy(['code' => AppCodeEnum::JEMENGAGE_WEB]);
+        $clients = $this->clientRepository->findBy(['code' => $code]);
 
-        return $this->clientId = (\count($clients) >= 1 ? $clients[0]->getUuid()->toString() : '');
+        return $this->clientIds[$code] = (\count($clients) >= 1 ? $clients[0]->getUuid()->toString() : '');
     }
 }

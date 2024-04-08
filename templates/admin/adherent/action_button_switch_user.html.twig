@@ -6,6 +6,19 @@
         </a>
     </li>
 
+    <li>
+        <a href="{{ path('app_front_oauth_authorize', {
+            app_domain: app_renaissance_host,
+            '_switch_user': object.emailAddress,
+            response_type: 'code',
+            client_id: get_vox_client_id(),
+            scope: constant('App\\OAuth\\Model\\Scope::JEMARCHE_APP')
+        }) }}" class="sonata-action-element" title="Impersonnifier VOX">
+            <i class="fa fa-user-secret" aria-hidden="true"></i>
+            Impersonnifier VOX 🇪🇺
+        </a>
+    </li>
+
     {% if is_granted(constant('App\\Security\\Voter\\DataCornerVoter::DATA_CORNER'), object) %}
         <li>
             <a href="{{ path('app_front_oauth_authorize', {
