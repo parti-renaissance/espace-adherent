@@ -25,6 +25,7 @@ class LoadClientData extends Fixture
     public const CLIENT_10_UUID = '1931b955-560b-41b2-9eb9-c232157f1471';
     public const CLIENT_11_UUID = '138140b3-1dd2-11b2-ad7e-2348ad4fef66';
     public const CLIENT_12_UUID = '4498e44f-f214-110d-8b76-98a83f9d2b0c';
+    public const CLIENT_13_UUID = '8128979a-cfdb-45d1-a386-f14f22bb19ae';
 
     public function load(ObjectManager $manager)
     {
@@ -178,6 +179,20 @@ class LoadClientData extends Fixture
         $client12->addSupportedScope(Scope::JEMENGAGE_ADMIN);
 
         $manager->persist($client12);
+
+        $client13 = new Client(
+            Uuid::fromString(self::CLIENT_13_UUID),
+            'VOX',
+            'VOX 🇪🇺',
+            'BHLfR-MWLVBF@Z.ZBh4EdTFJ15',
+            [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
+            ['http://app.besoindeurope.code']
+        );
+        $client13->setCode(AppCodeEnum::VOX);
+        $client13->setAskUserForAuthorization(false);
+        $client13->addSupportedScope(Scope::JEMARCHE_APP);
+
+        $manager->persist($client13);
 
         $manager->flush();
     }

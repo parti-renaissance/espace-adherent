@@ -10,6 +10,17 @@
                         RE
                     </a>
 
+                    <a href="{{ path('app_front_oauth_authorize', {
+                        app_domain: app_renaissance_host,
+                        '_switch_user': object.emailAddress,
+                        response_type: 'code',
+                        client_id: get_vox_client_id(),
+                        scope: constant('App\\OAuth\\Model\\Scope::JEMARCHE_APP')
+                    }) }}" class="btn btn-xs btn-default" title="Impersonnifier VOX">
+                        <i class="fa fa-user-secret" aria-hidden="true"></i>
+                        VOX 🇪🇺
+                    </a>
+
                     {% if is_granted(constant('App\\Security\\Voter\\DataCornerVoter::DATA_CORNER'), object) %}
                         <a href="{{ path('app_front_oauth_authorize', {
                             app_domain: app_renaissance_host,

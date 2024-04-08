@@ -12,6 +12,7 @@ final class AppCodeEnum extends Enum
     public const JEMENGAGE = 'jemengage';
     public const JEMENGAGE_WEB = 'jemengage_web';
     public const JEMENGAGE_MOBILE = 'jemengage_mobile';
+    public const VOX = 'vox';
 
     public static function getJemangageAppCodes(): array
     {
