@@ -2,6 +2,8 @@
 
 {% block app_title 'Besoin d\'Europe' %}
 
+{%  block body_classes 'bde-theme' %}
+
 {% block canonical_url besoindeurope_base_url %}
 
 {% block meta_description "Besoin d'Europe est la liste commune Renaissance, MODEM, Horizons et Parti Radical, unis pour les Européennes du 9 juin 2024." %}
@@ -49,8 +51,6 @@
 
 {% block flash_message '' %}
 
-{% block content %}
-    <main class="flex flex-col re_new_ui bde-theme">
         {% block header %}
             <header class="w-full fixed z-10">
                 <div class="max-w-8xl flex items-center mx-auto pt-0 px-6 md:px-6 md:py-6 md:h-[80px] h-[56px] ">
@@ -60,6 +60,8 @@
                 </div>
             </header>
         {% endblock %}
+{% block content %}
+    <main class="flex flex-col re_new_ui">
 
         {% block sub_content '' %}
 

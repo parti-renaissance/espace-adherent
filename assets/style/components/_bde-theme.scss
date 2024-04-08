@@ -25,6 +25,11 @@ $tertiary: #959CA0;
         }
     }
 
+    .re-card {
+        border-color: black;
+        border-width: 2px;
+    }
+
     .re-linked-toggle .re-linked-toggle-content {
         input {
             &[type=radio] {
