@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block content_section %}
-    <section x-data="xFunnelPage({initStep: {{ step }}})" class="w-full sm:w-auto">
+    <section x-data="xFunnelPage({initStep: {{ step }}})" class="w-full sm:w-auto bg-white md:bg-inherit ">
         {{ form_start(form) }}
             <div class="flex gap-8 flex-col p-0">
                 {% if form.vars.errors|length > 0 %}
@@ -84,11 +84,12 @@
                     >Suivant</twig:ReButton>
                 </twig:Atoms:ReCard>
 
-                <twig:Atoms:ReCard class="md:max-w-[500px] re-step" id="step_3">
-                    <h2 class="font-medium">Autorisations</h2>
-
-                    {{ form_row(form.partyMembership, { label: "Êtes-vous déjà membre d'un parti politique de la majorité présidentielle ?" }) }}
-
+                <twig:Atoms:ReCard class="md:max-w-[500px] re-step !gap-4" id="step_3">
+                        <h2 class="font-medium">Autorisations</h2>
+                    <p>
+                        Êtes-vous déjà membre d'un parti politique de la majorité présidentielle ?
+                    </p>
+                        {{ form_row(form.partyMembership) }}
                     <h2 class="font-medium">En adhérant :</h2>
 
                     {{ form_row(form.allowNotifications, { label: "Je souhaite recevoir les informations sur l'actualité de la campagne et ses communications politiques par e-mail" }) }}
