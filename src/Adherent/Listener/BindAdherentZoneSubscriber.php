@@ -19,13 +19,18 @@ class BindAdherentZoneSubscriber implements EventSubscriberInterface
         Zone::VOTE_PLACE,
     ];
 
-    private EntityManagerInterface $em;
-    private ZoneRepository $repository;
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly ZoneRepository $zoneRepository
+    ) {
+    }
 
-    public function __construct(EntityManagerInterface $em, ZoneRepository $zoneRepository)
+    public static function getSubscribedEvents(): array
     {
-        $this->em = $em;
-        $this->repository = $zoneRepository;
+        return [
+            AdherentEvents::REGISTRATION_COMPLETED => ['updateZones', -257],
+            AdherentEvents::PROFILE_UPDATED => ['updateZones', -257],
+        ];
     }
 
     public function updateZones(AdherentEvent $event): void
@@ -35,7 +40,7 @@ class BindAdherentZoneSubscriber implements EventSubscriberInterface
         $typeForGeoSearch = self::TYPES;
 
         if ($adherent->isForeignResident()) {
-            $toAdd = $this->repository->findParent(Zone::FOREIGN_DISTRICT, $adherent->getCountry(), Zone::COUNTRY);
+            $toAdd = $this->zoneRepository->findParent(Zone::FOREIGN_DISTRICT, $adherent->getCountry(), Zone::COUNTRY);
             $typeForGeoSearch = [Zone::CUSTOM];
         }
 
@@ -43,7 +48,7 @@ class BindAdherentZoneSubscriber implements EventSubscriberInterface
             $latitude = $adherent->getLatitude();
             $longitude = $adherent->getLongitude();
 
-            $toAdd = array_merge($toAdd, $this->repository->findByCoordinatesAndTypes($latitude, $longitude, $typeForGeoSearch));
+            $toAdd = array_merge($toAdd, $this->zoneRepository->findByCoordinatesAndTypes($latitude, $longitude, $typeForGeoSearch));
         }
 
         $toAdd = $this->cleanFrenchZonesToAdd($adherent, $toAdd);
@@ -62,19 +67,11 @@ class BindAdherentZoneSubscriber implements EventSubscriberInterface
             $adherent->removeZone($zone);
         }
 
-        foreach ($toAdd as $zone) {
+        foreach (array_unique($toAdd) as $zone) {
             $adherent->addZone($zone);
         }
 
         $this->em->flush();
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            AdherentEvents::REGISTRATION_COMPLETED => ['updateZones', -257],
-            AdherentEvents::PROFILE_UPDATED => ['updateZones', -257],
-        ];
     }
 
     /** @param Zone[] $toAdd */
