@@ -13,11 +13,11 @@
 {% endblock %}
 
 {% block content_section %}
-    <section x-data="xFunnelPage({initStep: {{ step }}})">
+    <section x-data="xFunnelPage({initStep: {{ step }}})" class="w-full sm:w-auto bg-white md:bg-inherit ">
         {{ form_start(form) }}
-            <div class="flex gap-8 flex-col p-0 sm:p-5">
+            <div class="flex gap-8 flex-col p-0">
                 {% if form.vars.errors|length > 0 %}
-                    <twig:ReParagraphStatus status="error" icon class="max-w-[500px]">
+                    <twig:ReParagraphStatus status="error" icon class="md:max-w-[500px]">
                         <ul
                             {% if form.vars.errors|length > 1 %}
                                 class="list-disc list-inside flex flex-col gap-2.5"
@@ -30,7 +30,7 @@
                     </twig:ReParagraphStatus>
                 {% endif %}
 
-                <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_1" x-data="FirstFormStep({api: '{{ path('app_bde_persist_email') }}'})">
+                <twig:Atoms:ReCard class="md:max-w-[500px] re-step" id="step_1" x-data="FirstFormStep({api: '{{ path('app_bde_persist_email') }}'})">
                     <h2 class="font-medium">Inscrivez vous dans la campagne</h2>
 
                     {{ form_row(form.email, {
@@ -59,7 +59,7 @@
                     >Suivant</twig:ReButton>
                 </twig:Atoms:ReCard>
 
-                <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_2" x-data="SecondFormStep()">
+                <twig:Atoms:ReCard class="md:max-w-[500px] re-step" id="step_2" x-data="SecondFormStep()">
                     <h2 class="font-medium">Mes informations</h2>
 
                     {{ form_row(form.civility, { label: false, attr: { onCheck:"setFieldValid('civility')", validate: "['required']", autocomplete:"civility" } }) }}
@@ -84,11 +84,12 @@
                     >Suivant</twig:ReButton>
                 </twig:Atoms:ReCard>
 
-                <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_3">
-                    <h2 class="font-medium">Autorisations</h2>
-
-                    {{ form_row(form.partyMembership, { label: "Êtes-vous déjà membre d'un parti politique de la majorité présidentielle ?" }) }}
-
+                <twig:Atoms:ReCard class="md:max-w-[500px] re-step !gap-4" id="step_3">
+                        <h2 class="font-medium">Autorisations</h2>
+                    <p>
+                        Êtes-vous déjà membre d'un parti politique de la majorité présidentielle ?
+                    </p>
+                        {{ form_row(form.partyMembership) }}
                     <h2 class="font-medium">En adhérant :</h2>
 
                     {{ form_row(form.allowNotifications, { label: "Je souhaite recevoir les informations sur l'actualité de la campagne et ses communications politiques par e-mail" }) }}
@@ -101,7 +102,7 @@
                     >Créer mon compte</twig:ReButton>
                 </twig:Atoms:ReCard>
 
-                <twig:Atoms:ReCard class="max-w-[500px]">
+                <twig:Atoms:ReCard class="md:max-w-[500px]">
                     <h2 class="font-medium">Légalités</h2>
 
                     <p>Les données recueillies sur ce formulaire sont traitées par Renaissance et ses équipes aux fins d’organisation de cet événement. Elles permettront à ses équipes de gérer les informations relatives aux participants et de vous inviter à d’autres événements qu’elles organisent. Elles permettront également à Renaissance de vous envoyer ses communications politiques si vous y consentez. En envoyant ce formulaire, vous acceptez que Renaissance traite vos données pour ces finalités. Les champs marqués d’un astérisque sont obligatoires, l’absence de réponse dans ces champs ne permettra pas de traiter votre demande. Vos données seront conservées jusqu’à 1 mois à compter de la fin de l’événement ou jusqu’au retrait de votre consentement lorsque vous acceptez de recevoir les communications politiques de Renaissance.
