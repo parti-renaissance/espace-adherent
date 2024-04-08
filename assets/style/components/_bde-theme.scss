@@ -26,8 +26,7 @@ $tertiary: #959CA0;
     }
 
     .re-card {
-        border-color: black;
-        border-width: 2px;
+        @apply border-solid border-black md:border-2 rounded-none md:rounded-[30px] border-t-2 border-l-0 border-r-0 border-b-0;
     }
 
     .re-linked-toggle .re-linked-toggle-content {

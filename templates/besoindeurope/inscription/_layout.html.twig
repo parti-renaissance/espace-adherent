@@ -14,10 +14,10 @@
 
 {% block sub_content %}
     <div class="md:grid mb-[120px] md:grid-cols-2 w-full relative md:pt-[80px] pt-[56px]">
-        <figure class="md:sticky md:top-[56px] md:h-[100vh] p-8 md:pt-16">
+        <figure class="md:sticky md:top-[56px] md:h-[100vh] width-full flex justify-center flex-row items-baseline p-8 md:pt-16">
             {% include 'besoindeurope/inscription/form_visual.svg.twig' %}
         </figure>
-        <div class="flex gap-8 flex-col pt-0 p-5 md:pl-0 items-center justify-center md:items-start">
+        <div class="flex gap-8 flex-col md:p-5 md:pt-8 md:pl-0 items-center justify-center md:items-start">
             {% block content_section '' %}
         </div>
     </div>
