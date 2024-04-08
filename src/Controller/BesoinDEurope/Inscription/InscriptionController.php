@@ -1,0 +1,85 @@
+<?php
+
+namespace App\Controller\BesoinDEurope\Inscription;
+
+use App\BesoinDEurope\Inscription\InscriptionRequest;
+use App\Controller\BesoinDEurope\Inscription\Api\PersistEmailController;
+use App\Form\BesoinDEurope\InscriptionRequestType;
+use App\Membership\AdherentEvents;
+use App\Membership\AdherentFactory;
+use App\Membership\Event\AdherentEvent;
+use App\Security\AuthenticationUtils;
+use App\Utils\UtmParams;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+
+#[Route('/inscription', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
+class InscriptionController extends AbstractController
+{
+    public const ROUTE_NAME = 'app_bde_inscription';
+
+    private int $step = 0;
+
+    public function __construct(
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private readonly AdherentFactory $adherentFactory,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly AuthenticationUtils $authenticationUtils,
+    ) {
+    }
+
+    public function __invoke(Request $request): Response
+    {
+        $inscriptionRequest = $this->getInscriptionRequest($request);
+
+        $form = $this
+            ->createForm(InscriptionRequestType::class, $inscriptionRequest)
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $adherent = $this->adherentFactory->createFromBesoinDEuropeMembershipRequest($inscriptionRequest);
+            $this->entityManager->persist($adherent);
+            $this->entityManager->flush();
+
+            $this->eventDispatcher->dispatch(new AdherentEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
+
+            $this->authenticationUtils->authenticateAdherent($adherent);
+
+            $this->addFlash('success', 'Votre compte vient d’être créé');
+
+            return $this->redirectToRoute(ActivateEmailController::ROUTE_NAME);
+        }
+
+        return $this->renderForm('besoindeurope/inscription/form.html.twig', [
+            'form' => $form,
+            'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
+            'step' => $this->step,
+        ]);
+    }
+
+    private function getInscriptionRequest(Request $request): InscriptionRequest
+    {
+        $inscriptionRequest = new InscriptionRequest();
+
+        if ($emailIdentifier = $request->getSession()->get(PersistEmailController::SESSION_KEY)) {
+            $inscriptionRequest->email = $emailIdentifier;
+            $this->step = 1;
+        } else {
+            $inscriptionRequest->email = $request->query->get('email');
+        }
+
+        if ($request->query->has(UtmParams::UTM_SOURCE)) {
+            $inscriptionRequest->utmSource = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_SOURCE));
+            $inscriptionRequest->utmCampaign = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_CAMPAIGN));
+        }
+
+        return $inscriptionRequest;
+    }
+}

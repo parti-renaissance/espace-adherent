@@ -12,18 +12,18 @@
     </script>
 {% endblock %}
 
-{% block header %}
+{% block header_inner %}
     {% if not is_open %}
         <div class="flex flex-col md:flex-row md:gap-12 gap-8 bg-white justify-center items-center p-8">
             <p class="w-[310px]">L’événement est malheureusement complet, suivez le sur nos réseaux sociaux de campagne.</p>
             <div class="flex gap-8">
-                {% include 'renaissance/national_event/partials/sn_links.html.twig' %}
+                {% include 'besoindeurope/partials/sn_links.html.twig' %}
             </div>
         </div>
 
         <div class="fixed h-full w-full flex items-center justify-center">
             <div class="absolute top-0 left-0 w-full h-full bg-black opacity-40"></div>
-            <h1 class="font-sharp font-bold bg-red p-8 md:p-12 min-w-[90vw] md:min-w-[70vw] lg:min-w-[50vw] transform rotate-12 text-center rounded-lg bg-[#FF005C] text-4xl md:text-9xl">COMPLET</h1>
+            <h1 class="font-sharp font-bold p-8 md:p-12 min-w-[90vw] md:min-w-[70vw] lg:min-w-[50vw] transform rotate-12 text-center rounded-lg bg-[#FF005C] text-4xl md:text-9xl">COMPLET</h1>
         </div>
     {% endif %}
 {%  endblock %}

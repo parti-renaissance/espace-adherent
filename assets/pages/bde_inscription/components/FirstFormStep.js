@@ -74,7 +74,6 @@ const FirstForm = (props) => ({
             body: JSON.stringify({
                 email: document.querySelector('[id$=_email]').value,
                 recaptcha: this.captchaToken,
-                type: document.querySelector('#procuration_proxy_email') ? 'proxy' : 'request',
                 utm_source: params.get('utm_source'),
                 utm_campaign: params.get('utm_campaign'),
             }),
@@ -84,8 +83,7 @@ const FirstForm = (props) => ({
     _handleBadRequest($dispatch) {
         return (data) => data.violations.forEach((x) => {
             if ('email' === x.property) {
-                const proxyOrRequest = document.querySelector('#procuration_proxy_email') ? 'proxy' : 'request';
-                $dispatch(`x-validate:procuration_${proxyOrRequest}_email`, {
+                $dispatch('x-validate:inscription_request_email', {
                     status: data.status,
                     message: x.message,
                 });
@@ -144,7 +142,7 @@ const FirstForm = (props) => ({
                 this.scrollToFirstError();
                 captureException(error, {
                     tags: {
-                        component: 'membership-request',
+                        component: 'inscription-request',
                         step: 'persist-email',
                     },
                 });

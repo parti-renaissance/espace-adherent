@@ -46,11 +46,6 @@ class AdhesionController extends AbstractController
         /** @var Adherent $adherent */
         [$membershipRequest, $adherent] = $this->getMembershipRequest($request, $currentUser);
 
-        if ($request->query->has(UtmParams::UTM_SOURCE)) {
-            $membershipRequest->utmSource = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_SOURCE));
-            $membershipRequest->utmCampaign = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_CAMPAIGN));
-        }
-
         $form = $this
             ->createForm(MembershipRequestType::class, $membershipRequest, [
                 'from_certified_adherent' => $currentUser && $currentUser->isCertified(),

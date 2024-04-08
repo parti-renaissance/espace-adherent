@@ -18,11 +18,11 @@ class EmailValidationRequest implements RecaptchaChallengeInterface
     use RecaptchaChallengeTrait;
 
     /**
-     * @Assert\NotBlank(groups={"Default", "adhesion-email:persist", "procuration-email:persist"}, message="L'adresse email est nécessaire pour continuer.")
+     * @Assert\NotBlank(groups={"Default", "adhesion-email:persist", "procuration-email:persist", "bde-email:persist"}, message="L'adresse email est nécessaire pour continuer.")
      * @StrictEmail(captainVerifyCheck=true, groups={"Default"})
-     * @StrictEmail(dnsCheck=false, groups={"adhesion-email:persist", "procuration-email:persist"})
+     * @StrictEmail(dnsCheck=false, groups={"adhesion-email:persist", "procuration-email:persist", "bde-email:persist"})
      */
-    #[Groups(['adhesion-email:validate', 'adhesion-email:persist', 'procuration-email:persist'])]
+    #[Groups(['adhesion-email:validate', 'adhesion-email:persist', 'procuration-email:persist', 'bde-email:validate', 'bde-email:persist'])]
     private ?string $email = null;
 
     /**
@@ -31,7 +31,7 @@ class EmailValidationRequest implements RecaptchaChallengeInterface
     #[Groups(['procuration-email:persist'])]
     public ?InitialRequestTypeEnum $type = null;
 
-    #[Groups(['adhesion-email:validate', 'procuration-email:persist'])]
+    #[Groups(['adhesion-email:validate', 'bde-email:validate'])]
     public ?string $token = null;
 
     public function setEmail(?string $email): void

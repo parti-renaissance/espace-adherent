@@ -17,6 +17,8 @@ parameters:
     jemengage_auth_host:                  "%env(JEMENGAGE_AUTH_HOST)%"
     avecvous_host:                        "%env(AVECVOUS_HOST)%"
     national_event_host:                  "%env(NATIONAL_EVENT_HOST)%"
+    user_besoindeurope_host:              "%env(USER_BESOINDEUROPE_HOST)%"
+    besoindeurope_base_url:               "%env(BESOINDEUROPE_BASE_URL)%"
     avecvous_qrcode_host:                 "%env(AVECVOUS_QRCODE_HOST)%"
     procuration_host:                     "%env(PROCURATION_HOST)%"
     assessor_host:                        "%env(ASSESSOR_HOST)%"
