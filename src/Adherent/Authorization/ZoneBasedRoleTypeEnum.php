@@ -17,6 +17,7 @@ final class ZoneBasedRoleTypeEnum
         ScopeEnum::REGIONAL_DELEGATE,
         ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
         ScopeEnum::PROCURATIONS_MANAGER,
+        ScopeEnum::FDE_COORDINATOR,
     ];
 
     public const ZONE_TYPE_CONDITIONS = [
@@ -47,6 +48,9 @@ final class ZoneBasedRoleTypeEnum
             Zone::FOREIGN_DISTRICT,
             Zone::CITY => [GeoInterface::CITY_PARIS_CODE, GeoInterface::CITY_LYON_CODE, GeoInterface::CITY_MARSEILLE_CODE],
             Zone::COUNTRY => [AddressInterface::FRANCE],
+        ],
+        ScopeEnum::FDE_COORDINATOR => [
+            Zone::FOREIGN_DISTRICT,
         ],
     ];
 }
