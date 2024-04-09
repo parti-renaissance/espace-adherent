@@ -2,12 +2,15 @@
 
 namespace App\Procuration\V2;
 
+use App\Entity\Adherent;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
+use App\Procuration\V2\Command\AbstractCommand;
 use App\Procuration\V2\Command\ProxyCommand;
 use App\Procuration\V2\Command\RequestCommand;
 use App\Procuration\V2\Event\ProcurationEvents;
 use App\Procuration\V2\Event\ProxyEvent;
+use App\Repository\AdherentRepository;
 use App\Repository\Procuration\ProcurationRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -17,6 +20,7 @@ class ProcurationHandler
     public function __construct(
         private readonly ProcurationFactory $factory,
         private readonly EntityManagerInterface $entityManager,
+        private readonly AdherentRepository $adherentRepository,
         private readonly ProcurationNotifier $notifier,
         private readonly MatchingHistoryHandler $matchingHistoryHandler,
         private readonly ProcurationRequestRepository $procurationRequestRepository,
@@ -27,6 +31,10 @@ class ProcurationHandler
     public function handleRequest(RequestCommand $command): Request
     {
         $request = $this->factory->createRequestFromCommand($command);
+
+        if (!$request->adherent) {
+            $request->adherent = $this->findAdherentFromCommand($command);
+        }
 
         $this->entityManager->persist($request);
         $this->entityManager->flush();
@@ -41,6 +49,10 @@ class ProcurationHandler
     public function handleProxy(ProxyCommand $command): Proxy
     {
         $proxy = $this->factory->createProxyFromCommand($command);
+
+        if (!$proxy->adherent) {
+            $proxy->adherent = $this->findAdherentFromCommand($command);
+        }
 
         $this->entityManager->persist($proxy);
         $this->entityManager->flush();
@@ -122,5 +134,10 @@ class ProcurationHandler
         }
 
         $this->entityManager->flush();
+    }
+
+    private function findAdherentFromCommand(AbstractCommand $command): ?Adherent
+    {
+        return $this->adherentRepository->findOneByEmail($command->email);
     }
 }
