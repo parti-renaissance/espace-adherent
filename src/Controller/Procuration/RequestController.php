@@ -3,6 +3,7 @@
 namespace App\Controller\Procuration;
 
 use App\Controller\Procuration\Api\PersistEmailController;
+use App\Entity\Adherent;
 use App\Entity\ProcurationV2\Election;
 use App\Entity\ProcurationV2\Round;
 use App\Form\Procuration\V2\RequestType;
@@ -80,6 +81,12 @@ class RequestController extends AbstractController
     {
         $request = new RequestCommand();
         $request->round = $round;
+
+        $adherent = $this->getUser();
+
+        if ($adherent instanceof Adherent) {
+            $request->adherent = $adherent;
+        }
 
         return $request;
     }

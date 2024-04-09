@@ -3,6 +3,7 @@
 namespace App\Controller\Procuration;
 
 use App\Controller\Procuration\Api\PersistEmailController;
+use App\Entity\Adherent;
 use App\Entity\ProcurationV2\Election;
 use App\Entity\ProcurationV2\Round;
 use App\Form\Procuration\V2\ProxyType;
@@ -80,6 +81,12 @@ class ProxyController extends AbstractController
     {
         $proxy = new ProxyCommand();
         $proxy->round = $round;
+
+        $adherent = $this->getUser();
+
+        if ($adherent instanceof Adherent) {
+            $proxy->adherent = $adherent;
+        }
 
         return $proxy;
     }
