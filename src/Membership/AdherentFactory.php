@@ -117,6 +117,8 @@ class AdherentFactory
         $adherent->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);
         $adherent->setSource(MembershipSourceEnum::BESOIN_D_EUROPE);
 
+        $adherent->setExclusiveMembership((bool) $inscriptionRequest->partyMembership);
+
         $adherent->utmSource = $inscriptionRequest->utmSource;
         $adherent->utmCampaign = $inscriptionRequest->utmCampaign;
 

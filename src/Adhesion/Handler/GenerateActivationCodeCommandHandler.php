@@ -5,6 +5,7 @@ namespace App\Adhesion\Handler;
 use App\Adhesion\ActivationCodeManager;
 use App\Adhesion\Command\GenerateActivationCodeCommand;
 use App\Mailer\MailerService;
+use App\Mailer\Message\BesoinDEurope\BesoinDEuropeInscriptionCodeValidationMessage;
 use App\Mailer\Message\Renaissance\AdhesionCodeValidationMessage;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
@@ -21,12 +22,15 @@ class GenerateActivationCodeCommandHandler
 
     public function __invoke(GenerateActivationCodeCommand $command): void
     {
-        $code = $this->activationCodeGenerator->generate($command->adherent, $command->force);
+        $adherent = $command->adherent;
 
-        $this->transactionalMailer->sendMessage(AdhesionCodeValidationMessage::create(
-            $command->adherent,
-            $code->value,
-            $this->loginLinkHandler->createLoginLink($command->adherent)->getUrl()
-        ));
+        $code = $this->activationCodeGenerator->generate($adherent, $command->force)->value;
+        $magicLink = $this->loginLinkHandler->createLoginLink($adherent, null, $adherent->getSource())->getUrl();
+
+        if ($adherent->isBesoinDEuropeUser()) {
+            $this->transactionalMailer->sendMessage(BesoinDEuropeInscriptionCodeValidationMessage::create($adherent, $code, $magicLink));
+        } else {
+            $this->transactionalMailer->sendMessage(AdhesionCodeValidationMessage::create($adherent, $code, $magicLink));
+        }
     }
 }

@@ -3432,4 +3432,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         return \in_array($step, $this->finishedAdhesionSteps, true);
     }
+
+    public function isBesoinDEuropeUser(): bool
+    {
+        return MembershipSourceEnum::BESOIN_D_EUROPE === $this->source;
+    }
 }

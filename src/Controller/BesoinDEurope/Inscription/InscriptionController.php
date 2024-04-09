@@ -8,6 +8,8 @@ use App\Form\BesoinDEurope\InscriptionRequestType;
 use App\Membership\AdherentEvents;
 use App\Membership\AdherentFactory;
 use App\Membership\Event\AdherentEvent;
+use App\Membership\Event\UserEvent;
+use App\Membership\UserEvents;
 use App\Security\AuthenticationUtils;
 use App\Utils\UtmParams;
 use Doctrine\ORM\EntityManagerInterface;
@@ -48,6 +50,7 @@ class InscriptionController extends AbstractController
             $this->entityManager->persist($adherent);
             $this->entityManager->flush();
 
+            $this->eventDispatcher->dispatch(new UserEvent($adherent, $inscriptionRequest->allowNotifications), UserEvents::USER_CREATED);
             $this->eventDispatcher->dispatch(new AdherentEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
 
             $this->authenticationUtils->authenticateAdherent($adherent);

@@ -469,10 +469,6 @@ services:
         decorates: 'messenger.transport.amqp.factory'
         arguments: ['@App\Messenger\AmqpTransport\AmqpTransportFactory.inner']
 
-    App\Adhesion\Handler\GenerateActivationCodeCommandHandler:
-        arguments:
-            $loginLinkHandler: '@security.authenticator.login_link_handler.main'
-
     App\CaptainVerify\Storage:
         arguments: [!service {class: Symfony\Component\Cache\Psr16Cache, arguments: ['@app.cache.captain_verify']}]
 
@@ -487,5 +483,7 @@ services:
                 max_image_size: 4000000 # Max image size in number of pixels (2000x2000)
 
     App\Security\Http\LoginLink\LoginLinkHandler:
-        decorates: 'Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface'
+        decorates: 'security.authenticator.login_link_handler.main'
         arguments: ['@.inner']
+
+    Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface: '@App\Security\Http\LoginLink\LoginLinkHandler'

@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class RefreshAdherentTagHandler implements MessageHandlerInterface
+class RefreshAdherentTagCommandHandler implements MessageHandlerInterface
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,

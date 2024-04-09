@@ -328,6 +328,13 @@ vox_app_redirect:
     defaults:
         route: 'vox_app'
 
+user_besoindeurope_redirect:
+    host: "%user_besoindeurope_host%"
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        route: 'app_besoindeurope_login'
+
 app_renaissance_login:
     host: "%app_renaissance_host%"
     path: "/connexion"
