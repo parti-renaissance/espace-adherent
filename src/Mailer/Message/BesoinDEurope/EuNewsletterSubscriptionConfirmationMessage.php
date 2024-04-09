@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Mailer\Message\Renaissance;
+namespace App\Mailer\Message\BesoinDEurope;
 
-use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
-final class EuNewsletterSubscriptionConfirmationMessage extends Message implements EuMessageInterface
+final class EuNewsletterSubscriptionConfirmationMessage extends AbstractBesoinDEuropeMessage
 {
     public static function create(string $email, string $confirmationLink): self
     {

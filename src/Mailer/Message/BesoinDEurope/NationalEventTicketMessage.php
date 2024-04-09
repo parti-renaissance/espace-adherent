@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Mailer\Message\Renaissance;
+namespace App\Mailer\Message\BesoinDEurope;
 
 use App\Entity\NationalEvent\EventInscription;
-use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
-class NationalEventTicketMessage extends Message implements EuMessageInterface
+class NationalEventTicketMessage extends AbstractBesoinDEuropeMessage
 {
     public static function create(EventInscription $eventInscription, string $qrCodeData): self
     {

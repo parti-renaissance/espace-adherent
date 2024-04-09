@@ -2,6 +2,7 @@
 
 namespace App\Membership;
 
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationToken;
 use App\Entity\AdherentResetPasswordToken;
@@ -70,7 +71,7 @@ class AdherentResetPasswordHandler
 
         $this->manager->flush();
 
-        if (MembershipSourceEnum::BESOIN_D_EUROPE === $appCode) {
+        if (AppCodeEnum::isBesoinDEuropeApp($appCode)) {
             $this->mailer->sendMessage(BesoinDEuropeResetPasswordConfirmationMessage::createFromAdherent($adherent));
         } elseif (MembershipSourceEnum::RENAISSANCE === $appCode && !$isCreation) {
             $this->mailer->sendMessage(RenaissanceResetPasswordConfirmationMessage::createFromAdherent($adherent));

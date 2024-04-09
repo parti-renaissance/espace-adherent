@@ -28,7 +28,7 @@ class MagicLinkController extends AbstractController
         TranslatorInterface $translator,
         AuthAppUrlManager $appUrlManager,
     ): Response {
-        $appUrlGenerator = $appUrlManager->getUrlGenerator($appUrlManager->getAppCodeFromRequest($request) ?? AppCodeEnum::RENAISSANCE);
+        $appUrlGenerator = $appUrlManager->getUrlGenerator($appCode = $appUrlManager->getAppCodeFromRequest($request) ?? AppCodeEnum::RENAISSANCE);
 
         if ($user = $this->getUser()) {
             return $this->redirect($appUrlGenerator->generateForLoginSuccess($user));
@@ -43,24 +43,12 @@ class MagicLinkController extends AbstractController
             $email = $form->getData();
 
             if ($adherent = $adherentRepository->findOneActiveByEmail($email)) {
-                $loginLink = $loginLinkHandler->createLoginLink($adherent, $request);
-                $loginUrl = $loginLink->getUrl();
+                $loginLink = $loginLinkHandler->createLoginLink($adherent, null, $appCode);
 
-                if (AppCodeEnum::BESOIN_D_EUROPE === $appUrlGenerator::getAppCode()) {
-                    $loginUrlParts = parse_url($loginUrl.'&_target_path=/app');
-
-                    $transactionalMailer->sendMessage(BesoinDEuropeMagicLinkMessage::create(
-                        $adherent,
-                        sprintf(
-                            '%s://%s%s?%s',
-                            $loginUrlParts['scheme'],
-                            $appUrlGenerator->getAppHost(),
-                            $loginUrlParts['path'],
-                            $loginUrlParts['query']
-                        )
-                    ));
+                if (AppCodeEnum::isBesoinDEuropeApp($appCode)) {
+                    $transactionalMailer->sendMessage(BesoinDEuropeMagicLinkMessage::create($adherent, $loginLink->getUrl()));
                 } else {
-                    $transactionalMailer->sendMessage(RenaissanceMagicLinkMessage::create($adherent, $loginUrl));
+                    $transactionalMailer->sendMessage(RenaissanceMagicLinkMessage::create($adherent, $loginLink->getUrl()));
                 }
             }
 

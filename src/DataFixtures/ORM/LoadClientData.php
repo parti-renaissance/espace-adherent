@@ -188,7 +188,7 @@ class LoadClientData extends Fixture
             [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
             ['http://app.besoindeurope.code']
         );
-        $client13->setCode(AppCodeEnum::VOX);
+        $client13->setCode(AppCodeEnum::BESOIN_D_EUROPE);
         $client13->setAskUserForAuthorization(false);
         $client13->addSupportedScope(Scope::JEMARCHE_APP);
 

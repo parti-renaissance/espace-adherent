@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\NationalEvent\EventInscription;
 use App\Mailer\MailerService;
-use App\Mailer\Message\Renaissance\NationalEventTicketMessage;
+use App\Mailer\Message\BesoinDEurope\NationalEventTicketMessage;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;

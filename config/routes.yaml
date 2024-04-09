@@ -43,7 +43,7 @@ logout:
     methods: "GET"
     controller: App\Controller\EnMarche\Security\SecurityController::logoutAction
     defaults:
-        app_domain: '%app_host%'
+        app_domain: '%app_renaissance_host%'
     requirements:
         app_domain: "%app_host%|%jemengage_auth_host%|%app_renaissance_host%|%user_besoindeurope_host%"
 

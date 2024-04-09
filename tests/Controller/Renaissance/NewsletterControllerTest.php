@@ -3,7 +3,7 @@
 namespace Tests\App\Controller\Renaissance;
 
 use App\Entity\Renaissance\NewsletterSubscription;
-use App\Mailer\Message\Renaissance\EuNewsletterSubscriptionConfirmationMessage;
+use App\Mailer\Message\BesoinDEurope\EuNewsletterSubscriptionConfirmationMessage;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\App\AbstractRenaissanceWebTestCase;
