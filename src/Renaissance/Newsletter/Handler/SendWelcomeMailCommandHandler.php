@@ -4,8 +4,8 @@ namespace App\Renaissance\Newsletter\Handler;
 
 use App\Entity\Renaissance\NewsletterSubscription;
 use App\Mailer\MailerService;
+use App\Mailer\Message\BesoinDEurope\EuNewsletterSubscriptionConfirmationMessage;
 use App\Mailer\Message\Message;
-use App\Mailer\Message\Renaissance\EuNewsletterSubscriptionConfirmationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceNewsletterSubscriptionConfirmationMessage;
 use App\Newsletter\NewsletterTypeEnum;
 use App\Renaissance\Newsletter\Command\SendWelcomeMailCommand;

@@ -12,7 +12,6 @@ final class AppCodeEnum extends Enum
     public const JEMENGAGE = 'jemengage';
     public const JEMENGAGE_WEB = 'jemengage_web';
     public const JEMENGAGE_MOBILE = 'jemengage_mobile';
-    public const VOX = 'vox';
 
     public static function getJemangageAppCodes(): array
     {
@@ -31,5 +30,10 @@ final class AppCodeEnum extends Enum
     public static function isRenaissanceApp(?string $code): bool
     {
         return self::RENAISSANCE === $code;
+    }
+
+    public static function isBesoinDEuropeApp(?string $appCode): bool
+    {
+        return self::BESOIN_D_EUROPE === $appCode;
     }
 }

@@ -45,13 +45,18 @@ class PersistEmailController extends AbstractController
         $command = $this->serializer->deserialize($request->getContent(), PersistInscriptionEmailCommand::class, JsonEncoder::FORMAT);
         $command->clientIp = $request->getClientIp();
 
-        $emailIdentifier = $this->handle($command);
+        if ($emailIdentifier = $this->handle($command)) {
+            $request->getSession()->set(self::SESSION_KEY, $emailIdentifier);
 
-        $request->getSession()->set(self::SESSION_KEY, $emailIdentifier);
+            return $this->json([
+                'message' => 'OK',
+                'status' => 'success',
+            ], Response::HTTP_CREATED);
+        }
 
         return $this->json([
-            'message' => 'OK',
-            'status' => 'success',
-        ], Response::HTTP_CREATED);
+            'message' => 'Un email de confirmation vient d’être envoyé à votre adresse email. Cliquez sur le lien de validation qu’il contient pour continuer votre inscription.',
+            'status' => 'warning',
+        ], Response::HTTP_OK);
     }
 }

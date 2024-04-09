@@ -443,7 +443,7 @@ services:
                 App\Mailer\Message\Renaissance\RenaissanceMessageInterface:
                     name: Renaissance
                     email: "%env(RENAISSANCE_SENDER_EMAIL)%"
-                App\Mailer\Message\Renaissance\EuMessageInterface:
+                App\Mailer\Message\BesoinDEurope\BesoinDEuropeMessageInterface:
                     name: Besoin d'Europe
                     email: "%env(EU_SENDER_EMAIL)%"
 
@@ -485,3 +485,7 @@ services:
                 cache: '%kernel.cache_dir%'
                 response: '@League\Glide\Responses\SymfonyResponseFactory'
                 max_image_size: 4000000 # Max image size in number of pixels (2000x2000)
+
+    App\Security\Http\LoginLink\LoginLinkHandler:
+        decorates: 'Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface'
+        arguments: ['@.inner']

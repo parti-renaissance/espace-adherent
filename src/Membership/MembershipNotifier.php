@@ -2,6 +2,7 @@
 
 namespace App\Membership;
 
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
@@ -81,9 +82,20 @@ class MembershipNotifier implements LoggerAwareInterface
         $this->transactionalMailer->sendMessage($message);
     }
 
-    public function sendConnexionDetailsMessage(Adherent $adherent): void
+    public function sendConnexionDetailsMessage(Adherent $adherent, ?string $appCode = null): void
     {
-        $url = $this->linkHandler->createLoginLink($adherent);
+        $url = $this->linkHandler->createLoginLink($adherent, null, $appCode);
+
+        if (AppCodeEnum::isBesoinDEuropeApp($appCode)) {
+            $urlGenerator = $this->appUrlManager->getUrlGenerator($appCode);
+            $this->transactionalMailer->sendMessage(Message\BesoinDEurope\BesoinDEuropeAccountAlreadyExistsMessage::create(
+                $adherent,
+                $url,
+                $this->urlGenerator->generate('app_forgot_password', ['app_domain' => $urlGenerator->getAppHost()], UrlGeneratorInterface::ABSOLUTE_URL),
+            ));
+
+            return;
+        }
 
         if ($adherent->isRenaissanceAdherent()) {
             $this->transactionalMailer->sendMessage(AdhesionAlreadyAdherentMessage::create(
