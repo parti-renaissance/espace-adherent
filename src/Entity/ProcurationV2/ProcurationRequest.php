@@ -40,6 +40,11 @@ class ProcurationRequest
      */
     public ?string $clientIp = null;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    public ?\DateTimeInterface $remindedAt = null;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -53,5 +58,25 @@ class ProcurationRequest
         $object->type = $type;
 
         return $object;
+    }
+
+    public function remind(): void
+    {
+        $this->remindedAt = new \DateTimeImmutable();
+    }
+
+    public function isReminded(): bool
+    {
+        return null !== $this->remindedAt;
+    }
+
+    public function isForRequest(): bool
+    {
+        return InitialRequestTypeEnum::REQUEST === $this->type;
+    }
+
+    public function isForProxy(): bool
+    {
+        return InitialRequestTypeEnum::PROXY === $this->type;
     }
 }
