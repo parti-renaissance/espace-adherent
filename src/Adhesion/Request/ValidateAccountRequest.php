@@ -25,6 +25,10 @@ class ValidateAccountRequest implements MembershipInterface
      */
     public ?string $emailAddress = null;
 
+    public function __construct(private readonly string $source = MembershipSourceEnum::RENAISSANCE)
+    {
+    }
+
     public function getEmailAddress(): ?string
     {
         return $this->emailAddress;
@@ -32,6 +36,6 @@ class ValidateAccountRequest implements MembershipInterface
 
     public function getSource(): ?string
     {
-        return MembershipSourceEnum::RENAISSANCE;
+        return $this->source;
     }
 }
