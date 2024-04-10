@@ -16,18 +16,6 @@ class ProcurationRequestRepository extends ServiceEntityRepository
         parent::__construct($registry, ProcurationRequest::class);
     }
 
-    /**
-     * @return ProcurationRequest[]
-     */
-    public function findAllToRemind(): array
-    {
-        return $this->createQueryBuilder('pr')
-            ->andWhere('pr.remindedAt IS NULL')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     public function save(ProcurationRequest $procurationRequest): void
     {
         $this->_em->persist($procurationRequest);
