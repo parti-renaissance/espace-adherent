@@ -1122,7 +1122,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
         $query
             ->addSelect(
                 '_adherent_mandate',
-                '_adherent_mandate_zone',
                 '_committee_membership',
                 '_coterr_membership',
                 '_thematic_communities',
@@ -1136,7 +1135,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 '_animator_committees',
             )
             ->leftJoin($alias.'.adherentMandates', '_adherent_mandate')
-            ->leftJoin('_adherent_mandate.zone', '_adherent_mandate_zone')
             ->leftJoin($alias.'.memberships', '_committee_membership')
             ->leftJoin($alias.'.territorialCouncilMembership', '_coterr_membership')
             ->leftJoin($alias.'.handledThematicCommunities', '_thematic_communities')
