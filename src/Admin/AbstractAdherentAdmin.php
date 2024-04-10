@@ -16,9 +16,11 @@ use App\Committee\CommitteeMembershipManager;
 use App\Contribution\ContributionStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
+use App\Entity\AdherentZoneBasedRole;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\BoardMember\Role;
 use App\Entity\Committee;
+use App\Entity\Geo\Zone;
 use App\Entity\Instance\InstanceQuality;
 use App\Entity\SubscriptionType;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
@@ -46,6 +48,7 @@ use App\Repository\Instance\InstanceQualityRepository;
 use App\TerritorialCouncil\PoliticalCommitteeManager;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
+use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -80,6 +83,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AbstractAdherentAdmin extends AbstractAdmin
 {
@@ -94,6 +98,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
     protected AdherentProfileHandler $adherentProfileHandler;
     protected LoggerInterface $logger;
     protected FranceCities $franceCities;
+    private TranslatorInterface $translator;
     private TagTranslator $tagTranslator;
     private CommitteeMembershipManager $committeeMembershipManager;
 
@@ -115,6 +120,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
         LoggerInterface $logger,
         FranceCities $franceCities,
         TagTranslator $tagTranslator,
+        TranslatorInterface $translator,
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
@@ -125,6 +131,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
         $this->logger = $logger;
         $this->franceCities = $franceCities;
         $this->tagTranslator = $tagTranslator;
+        $this->translator = $translator;
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void
@@ -1026,25 +1033,54 @@ class AbstractAdherentAdmin extends AbstractAdmin
             $adherent = $adherent[0];
 
             try {
-                $phone = PhoneNumberUtils::format($adherent->getPhone());
-                $birthDate = $adherent->getBirthdate();
-                $registeredAt = $adherent->getRegisteredAt();
-
                 return [
+                    'ID' => $adherent->getId(),
                     'UUID' => $adherent->getUuid()->toString(),
-                    'Email' => $adherent->getEmailAddress(),
+                    'Civilité' => $this->translator->trans(array_search($adherent->getGender(), Genders::CIVILITY_CHOICES, true)),
                     'Prénom' => $adherent->getFirstName(),
                     'Nom' => $adherent->getLastName(),
-                    'Date de naissance' => $birthDate?->format('Y/m/d H:i:s'),
-                    'Téléphone' => $phone,
-                    'Date de création de compte' => $registeredAt?->format('Y/m/d H:i:s'),
-                    'Sexe' => $adherent->getGender(),
-                    'Adresse' => $adherent->getAddress(),
+                    'Date de naissance' => $adherent->getBirthdate()?->format('d/m/Y'),
+                    'Adresse email' => $adherent->getEmailAddress(),
+                    'Téléphone' => PhoneNumberUtils::format($adherent->getPhone()),
+                    'Préférences de notifications' => implode(', ', array_map(function (SubscriptionType $subscriptionType): string {
+                        return $subscriptionType->getLabel();
+                    }, $adherent->getSubscriptionTypes())),
+                    'Comité' => $adherent->getCommitteeV2Membership()?->getCommittee(),
+                    'Adresse postale' => $adherent->getAddress(),
                     'Complément d\'adresse' => $adherent->getAdditionalAddress(),
                     'Code postal' => $adherent->getPostalCode(),
                     'Ville' => $adherent->getCityName(),
                     'Pays' => $adherent->getCountry(),
                     'Labels' => implode(', ', array_map([$this->tagTranslator, 'trans'], $adherent->tags)),
+                    'Rôles' => implode(', ', array_map(function (AdherentZoneBasedRole $role): string {
+                        return sprintf(
+                            '%s [%s]',
+                            $this->translator->trans('role.'.$role->getType()),
+                            implode(', ', array_map(function (Zone $zone): string {
+                                return sprintf(
+                                    '%s (%s)',
+                                    $zone->getName(),
+                                    $zone->getCode()
+                                );
+                            }, $role->getZones()->toArray()))
+                        );
+                    }, $adherent->getZoneBasedRoles())),
+                    'Mandats' => implode(', ', array_map(function (ElectedRepresentativeAdherentMandate $mandate): string {
+                        $zone = $mandate->zone;
+
+                        return sprintf(
+                            '%s [%s]',
+                            $this->translator->trans('adherent.mandate.type.'.$mandate->mandateType),
+                            sprintf(
+                                '%s (%s)',
+                                $zone->getName(),
+                                $zone->getCode()
+                            )
+                        );
+                    }, $adherent->getElectedRepresentativeMandates())),
+                    'Date de création de compte' => $adherent->getRegisteredAt()?->format('d/m/Y H:i:s'),
+                    'Date de dernière cotisation' => $adherent->getLastMembershipDonation()?->format('d/m/Y H:i:s'),
+                    'Date de dernière connexion' => $adherent->getLastLoggedAt()?->format('d/m/Y H:i:s'),
                 ];
             } catch (\Exception $e) {
                 $this->logger->error(
@@ -1053,6 +1089,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 );
 
                 return [
+                    'ID' => $adherent->getId(),
                     'UUID' => $adherent->getUuid(),
                     'Email' => $adherent->getEmailAddress(),
                 ];
@@ -1091,6 +1128,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 '_delegated_access',
                 '_political_committee_membership',
                 '_zone_based_role',
+                '_zone_based_role_zone',
                 '_commitment',
                 '_referent_team_member',
                 '_board_member',
@@ -1103,6 +1141,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ->leftJoin($alias.'.receivedDelegatedAccesses', '_delegated_access')
             ->leftJoin($alias.'.politicalCommitteeMembership', '_political_committee_membership')
             ->leftJoin($alias.'.zoneBasedRoles', '_zone_based_role')
+            ->leftJoin('_zone_based_role.zones', '_zone_based_role_zone')
             ->leftJoin($alias.'.commitment', '_commitment')
             ->leftJoin($alias.'.referentTeamMember', '_referent_team_member')
             ->leftJoin($alias.'.boardMember', '_board_member')
