@@ -32,6 +32,10 @@ class TagEnum extends Enum
 
     public const MEETING_LILLE_09_03 = 'meeting_lille_09_03';
 
+    public const PROCURATION = 'procuration';
+    public const PROCURATION_PROXY = self::PROCURATION.':mandataire';
+    public const PROCURATION_REQUEST = self::PROCURATION.':mandant';
+
     public static function getAdherentTags(): array
     {
         $currentYear = date('Y');
@@ -76,6 +80,8 @@ class TagEnum extends Enum
     {
         return [
             self::MEETING_LILLE_09_03,
+            self::PROCURATION_REQUEST,
+            self::PROCURATION_PROXY,
         ];
     }
 

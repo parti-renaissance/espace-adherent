@@ -478,7 +478,11 @@ Feature:
                         "favorite": true,
                         "choices": {
                             "meeting_lille_09_03": "Meeting Lille 09/03/24",
-                            "meeting_lille_09_03--": "Non inscrit au Meeting Lille 09/03/24"
+                            "meeting_lille_09_03--": "Non inscrit au Meeting Lille 09/03/24",
+                            "procuration:mandant": "Mandant",
+                            "procuration:mandant--": "Non mandant",
+                            "procuration:mandataire": "Mandataire",
+                            "procuration:mandataire--": "Non mandataire"
                         }
                     },
                     "type": "select"
