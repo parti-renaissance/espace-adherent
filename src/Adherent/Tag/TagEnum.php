@@ -32,6 +32,9 @@ class TagEnum extends Enum
 
     public const MEETING_LILLE_09_03 = 'meeting_lille_09_03';
 
+    public const PROCURATION_PROXY = 'mandataire';
+    public const PROCURATION_REQUEST = 'mandant';
+
     public static function getAdherentTags(): array
     {
         $currentYear = date('Y');
