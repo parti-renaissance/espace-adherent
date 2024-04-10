@@ -134,6 +134,7 @@ class Proxy extends AbstractProcuration
         ?Zone $votePlace = null,
         ?string $customVotePlace = null,
         ?Adherent $adherent = null,
+        bool $joinNewsletter = false,
         ?string $clientIp = null,
         ?\DateTimeInterface $createdAt = null
     ) {
@@ -151,6 +152,7 @@ class Proxy extends AbstractProcuration
             $votePlace,
             $customVotePlace,
             $adherent,
+            $joinNewsletter,
             $clientIp,
             $createdAt
         );

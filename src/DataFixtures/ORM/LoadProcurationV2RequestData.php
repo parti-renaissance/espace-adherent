@@ -110,7 +110,8 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         bool $distantVotePlace,
         Zone $voteZone,
         ?Zone $votePlace = null,
-        ?string $customVotePlace = null
+        ?string $customVotePlace = null,
+        bool $joinNewsletter = false
     ): Request {
         return new Request(
             $round,
@@ -124,7 +125,9 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             $distantVotePlace,
             $voteZone,
             $votePlace,
-            $customVotePlace
+            $customVotePlace,
+            null,
+            $joinNewsletter
         );
     }
 }

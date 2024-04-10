@@ -8,6 +8,7 @@ use App\Entity\ProcurationV2\Request;
 use App\Procuration\V2\Command\AbstractCommand;
 use App\Procuration\V2\Command\ProxyCommand;
 use App\Procuration\V2\Command\RequestCommand;
+use App\Procuration\V2\Event\NewProcurationEvent;
 use App\Procuration\V2\Event\ProcurationEvents;
 use App\Procuration\V2\Event\ProxyEvent;
 use App\Repository\AdherentRepository;
@@ -43,6 +44,8 @@ class ProcurationHandler
 
         $this->cleanInitialRequests($request->email, InitialRequestTypeEnum::REQUEST);
 
+        $this->eventDispatcher->dispatch(new NewProcurationEvent($request));
+
         return $request;
     }
 
@@ -62,6 +65,8 @@ class ProcurationHandler
         $this->eventDispatcher->dispatch(new ProxyEvent($proxy), ProcurationEvents::PROXY_CREATED);
 
         $this->cleanInitialRequests($proxy->email, InitialRequestTypeEnum::PROXY);
+
+        $this->eventDispatcher->dispatch(new NewProcurationEvent($proxy));
 
         return $proxy;
     }

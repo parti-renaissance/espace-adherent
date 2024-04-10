@@ -49,6 +49,9 @@ abstract class AbstractProcurationType extends AbstractType
                 'required' => false,
                 'error_bubbling' => true,
             ])
+            ->add('joinNewsletter', CheckboxType::class, [
+                'required' => false,
+            ])
         ;
     }
 }

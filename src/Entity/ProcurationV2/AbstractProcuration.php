@@ -169,6 +169,11 @@ abstract class AbstractProcuration implements ZoneableEntity
     public ?string $customVotePlace;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": false})
+     */
+    public bool $joinNewsletter;
+
+    /**
      * @ORM\Column(length=50, nullable=true)
      */
     public ?string $clientIp;
@@ -199,6 +204,7 @@ abstract class AbstractProcuration implements ZoneableEntity
         ?Zone $votePlace = null,
         ?string $customVotePlace = null,
         ?Adherent $adherent = null,
+        bool $joinNewsletter = false,
         ?string $clientIp = null,
         ?\DateTimeInterface $createdAt = null
     ) {
@@ -216,6 +222,7 @@ abstract class AbstractProcuration implements ZoneableEntity
         $this->votePlace = $votePlace;
         $this->customVotePlace = $customVotePlace;
         $this->adherent = $adherent;
+        $this->joinNewsletter = $joinNewsletter;
         $this->clientIp = $clientIp;
         $this->createdAt = $createdAt ?? new \DateTimeImmutable();
     }

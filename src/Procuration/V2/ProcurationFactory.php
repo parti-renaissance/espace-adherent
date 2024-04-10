@@ -31,6 +31,7 @@ class ProcurationFactory
             $command->votePlace,
             $command->customVotePlace,
             $command->adherent,
+            $command->joinNewsletter,
             $command->clientIp
         );
     }
@@ -51,6 +52,7 @@ class ProcurationFactory
             $command->votePlace,
             $command->customVotePlace,
             $command->adherent,
+            $command->joinNewsletter,
             $command->clientIp
         );
 
