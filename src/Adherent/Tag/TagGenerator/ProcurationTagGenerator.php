@@ -19,11 +19,11 @@ class ProcurationTagGenerator extends AbstractTagGenerator
     {
         $tags = [];
 
-        if ($this->proxyRepository->findAllByAdherent($adherent)) {
+        if (0 < $this->proxyRepository->count(['adherent' => $adherent])) {
             $tags[] = TagEnum::PROCURATION_PROXY;
         }
 
-        if ($this->requestRepository->findAllByAdherent($adherent)) {
+        if (0 < $this->requestRepository->count(['adherent' => $adherent])) {
             $tags[] = TagEnum::PROCURATION_REQUEST;
         }
 

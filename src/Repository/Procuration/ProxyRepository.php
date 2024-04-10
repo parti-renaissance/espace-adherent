@@ -3,7 +3,6 @@
 namespace App\Repository\Procuration;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
-use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
@@ -23,16 +22,6 @@ class ProxyRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Proxy::class);
-    }
-
-    public function findAllByAdherent(Adherent $adherent): array
-    {
-        return $this->createQueryBuilder('p')
-            ->where('p.adherent = :adherent')
-            ->setParameter('adherent', $adherent)
-            ->getQuery()
-            ->getResult()
-        ;
     }
 
     public function countAvailableProxies(Request $request): int

@@ -12,6 +12,10 @@ class StaticTagsFilterBuilder extends AbstractTagsFilterBuilder
         $this->tags = [
             TagEnum::MEETING_LILLE_09_03,
             TagEnum::MEETING_LILLE_09_03.'--',
+            TagEnum::PROCURATION_REQUEST,
+            TagEnum::PROCURATION_REQUEST.'--',
+            TagEnum::PROCURATION_PROXY,
+            TagEnum::PROCURATION_PROXY.'--',
         ];
         $this->fieldName = 'static_tags';
         $this->fieldLabel = 'Labels divers';
