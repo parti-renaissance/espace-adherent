@@ -4,8 +4,11 @@ namespace App\Command;
 
 use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
 use App\Entity\Adherent;
+use App\Entity\ProcurationV2\Proxy;
+use App\Entity\ProcurationV2\Request;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -35,7 +38,9 @@ class RefreshAdherentsTagsCommand extends Command
             ->addOption('id', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
             ->addOption('email', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
             ->addOption('source', null, InputOption::VALUE_REQUIRED)
+            ->addOption('procuration-only', null, InputOption::VALUE_NONE, 'Only refresh adherents linked to procurations')
             ->addOption('batch-size', null, InputOption::VALUE_REQUIRED, '', 500)
+            ->addOption('dry-run', null, InputOption::VALUE_NONE)
         ;
     }
 
@@ -51,7 +56,8 @@ class RefreshAdherentsTagsCommand extends Command
         $paginator = $this->getQueryBuilder(
             $input->getOption('id'),
             $input->getOption('email'),
-            $input->getOption('source')
+            $input->getOption('source'),
+            $input->getOption('procuration-only')
         );
 
         $total = $paginator->count();
@@ -67,7 +73,9 @@ class RefreshAdherentsTagsCommand extends Command
 
         do {
             foreach ($paginator as $adherent) {
-                $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
+                if (!$input->getOption('dry-run')) {
+                    $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
+                }
 
                 $this->io->progressAdvance();
                 ++$offset;
@@ -86,7 +94,7 @@ class RefreshAdherentsTagsCommand extends Command
     /**
      * @return Paginator|Adherent[]
      */
-    private function getQueryBuilder(array $ids, array $emails, ?string $source): Paginator
+    private function getQueryBuilder(array $ids, array $emails, ?string $source, bool $procurationsOnly): Paginator
     {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
@@ -111,6 +119,14 @@ class RefreshAdherentsTagsCommand extends Command
             $queryBuilder
                 ->andWhere('adherent.source = :source')
                 ->setParameter('source', $source)
+            ;
+        }
+
+        if ($procurationsOnly) {
+            $queryBuilder
+                ->leftJoin(Proxy::class, 'procuration_proxy', Join::WITH, 'adherent = procuration_proxy.adherent')
+                ->leftJoin(Request::class, 'procuration_request', Join::WITH, 'adherent = procuration_request.adherent')
+                ->andWhere('procuration_proxy IS NOT NULL OR procuration_request IS NOT NULL')
             ;
         }
 

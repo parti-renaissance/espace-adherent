@@ -87,6 +87,7 @@ class RequestAdmin extends AbstractProcurationAdmin
                 '_fullName',
                 'email',
                 'phone',
+                'adherent',
                 'voteZone',
                 'proxy',
                 'status',
