@@ -109,6 +109,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         Zone $voteZone,
         ?Zone $votePlace = null,
         ?string $customVotePlace = null,
+        bool $joinNewsletter = false,
         string $electorNumber = '123456789',
         int $slots = 1
     ): Proxy {
@@ -124,7 +125,9 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             $distantVotePlace,
             $voteZone,
             $votePlace,
-            $customVotePlace
+            $customVotePlace,
+            null,
+            $joinNewsletter
         );
 
         $proxy->electorNumber = $electorNumber;

@@ -32,7 +32,10 @@ class SendWelcomeMailCommandHandler implements MessageHandlerInterface
 
     private function createMessage(NewsletterSubscription $subscription): Message
     {
-        if (NewsletterTypeEnum::SITE_EU === $subscription->source) {
+        if (\in_array($subscription->source, [
+            NewsletterTypeEnum::SITE_EU,
+            NewsletterTypeEnum::SITE_PROCURATION,
+        ], true)) {
             return EuNewsletterSubscriptionConfirmationMessage::create(
                 $subscription->email,
                 $this->urlGenerator->generate('app_renaissance_newsletter_confirm', [

@@ -13,4 +13,5 @@ class NewsletterTypeEnum extends Enum
     public const SITE_LEGISLATIVE_CANDIDATE = 'site_legislative_candidate';
     public const SITE_RENAISSANCE = 'site_renaissance';
     public const SITE_EU = 'site_eu';
+    public const SITE_PROCURATION = 'site_procuration';
 }

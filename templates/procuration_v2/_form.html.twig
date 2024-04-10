@@ -186,6 +186,12 @@
                         </template>
                         {{ form_errors(form.votePlace) }}
                     </fieldset>
+
+                    <fieldset>
+                        {{ form_row(form.joinNewsletter, {
+                            label: "Je m’abonne à la newsletter pour ne rien rater des actualités de Besoin d'Europe (optionnel)",
+                        }) }}
+                    </fieldset>
                 </fieldset>
                 {{ additional_form }}
 

@@ -90,6 +90,8 @@ abstract class AbstractCommand
      */
     public ?string $customVotePlace = null;
 
+    public bool $joinNewsletter = false;
+
     public ?string $clientIp = null;
 
     public ?Adherent $adherent = null;
