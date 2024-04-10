@@ -1039,7 +1039,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     'Civilité' => $this->translator->trans(array_search($adherent->getGender(), Genders::CIVILITY_CHOICES, true)),
                     'Prénom' => $adherent->getFirstName(),
                     'Nom' => $adherent->getLastName(),
-                    'Date de naissance' => $adherent->getBirthdate()?->format('Y/m/d H:i:s'),
+                    'Date de naissance' => $adherent->getBirthdate()?->format('d/m/Y'),
                     'Adresse email' => $adherent->getEmailAddress(),
                     'Téléphone' => PhoneNumberUtils::format($adherent->getPhone()),
                     'Préférences de notifications' => implode(', ', array_map(function (SubscriptionType $subscriptionType): string {
@@ -1078,9 +1078,9 @@ class AbstractAdherentAdmin extends AbstractAdmin
                             )
                         );
                     }, $adherent->getElectedRepresentativeMandates())),
-                    'Date de création de compte' => $adherent->getRegisteredAt()?->format('Y/m/d H:i:s'),
-                    'Date de dernière cotisation' => $adherent->getLastMembershipDonation()?->format('Y/m/d H:i:s'),
-                    'Date de dernière connexion' => $adherent->getLastLoggedAt()?->format('Y/m/d H:i:s'),
+                    'Date de création de compte' => $adherent->getRegisteredAt()?->format('d/m/Y H:i:s'),
+                    'Date de dernière cotisation' => $adherent->getLastMembershipDonation()?->format('d/m/Y H:i:s'),
+                    'Date de dernière connexion' => $adherent->getLastLoggedAt()?->format('d/m/Y H:i:s'),
                 ];
             } catch (\Exception $e) {
                 $this->logger->error(
@@ -1122,24 +1122,28 @@ class AbstractAdherentAdmin extends AbstractAdmin
         $query
             ->addSelect(
                 '_adherent_mandate',
+                '_adherent_mandate_zone',
                 '_committee_membership',
                 '_coterr_membership',
                 '_thematic_communities',
                 '_delegated_access',
                 '_political_committee_membership',
                 '_zone_based_role',
+                '_zone_based_role_zone',
                 '_commitment',
                 '_referent_team_member',
                 '_board_member',
                 '_animator_committees',
             )
             ->leftJoin($alias.'.adherentMandates', '_adherent_mandate')
+            ->leftJoin('_adherent_mandate.zone', '_adherent_mandate_zone')
             ->leftJoin($alias.'.memberships', '_committee_membership')
             ->leftJoin($alias.'.territorialCouncilMembership', '_coterr_membership')
             ->leftJoin($alias.'.handledThematicCommunities', '_thematic_communities')
             ->leftJoin($alias.'.receivedDelegatedAccesses', '_delegated_access')
             ->leftJoin($alias.'.politicalCommitteeMembership', '_political_committee_membership')
             ->leftJoin($alias.'.zoneBasedRoles', '_zone_based_role')
+            ->leftJoin('_zone_based_role.zones', '_zone_based_role_zone')
             ->leftJoin($alias.'.commitment', '_commitment')
             ->leftJoin($alias.'.referentTeamMember', '_referent_team_member')
             ->leftJoin($alias.'.boardMember', '_board_member')
