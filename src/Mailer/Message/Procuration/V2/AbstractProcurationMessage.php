@@ -12,16 +12,16 @@ abstract class AbstractProcurationMessage extends Message
 
     protected static function updateSenderInfo(Message $message): Message
     {
-        $message->setSenderEmail(self::SENDER_EMAIL);
-        $message->setSenderName(self::SENDER_NAME);
+        $message->setSenderEmail(static::SENDER_EMAIL);
+        $message->setSenderName(static::SENDER_NAME);
 
         return $message;
     }
 
     protected static function updateNoReplySenderInfo(Message $message): Message
     {
-        $message->setSenderEmail(self::SENDER_EMAIL_NO_REPLY);
-        $message->setSenderName(self::SENDER_NAME);
+        $message->setSenderEmail(static::SENDER_EMAIL_NO_REPLY);
+        $message->setSenderName(static::SENDER_NAME);
 
         return $message;
     }
