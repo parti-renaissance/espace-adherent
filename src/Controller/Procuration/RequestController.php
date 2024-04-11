@@ -3,7 +3,6 @@
 namespace App\Controller\Procuration;
 
 use App\Controller\Procuration\Api\PersistEmailController;
-use App\Entity\Adherent;
 use App\Entity\ProcurationV2\Election;
 use App\Entity\ProcurationV2\Round;
 use App\Form\Procuration\V2\RequestType;
@@ -40,7 +39,7 @@ class RequestController extends AbstractController
             return $response;
         }
 
-        $requestCommand = $this->getRequestCommand($upcomingRound);
+        $requestCommand = $this->getRequestCommand($upcomingRound, $request);
 
         $form = $this
             ->createForm(RequestType::class, $requestCommand)
@@ -77,17 +76,12 @@ class RequestController extends AbstractController
         ]);
     }
 
-    private function getRequestCommand(Round $round): RequestCommand
+    private function getRequestCommand(Round $round, Request $request): RequestCommand
     {
-        $request = new RequestCommand();
-        $request->round = $round;
+        $requestCommand = new RequestCommand();
+        $requestCommand->round = $round;
+        $requestCommand->clientIp = $request->getClientIp();
 
-        $adherent = $this->getUser();
-
-        if ($adherent instanceof Adherent) {
-            $request->adherent = $adherent;
-        }
-
-        return $request;
+        return $requestCommand;
     }
 }

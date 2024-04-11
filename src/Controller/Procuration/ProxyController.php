@@ -3,7 +3,6 @@
 namespace App\Controller\Procuration;
 
 use App\Controller\Procuration\Api\PersistEmailController;
-use App\Entity\Adherent;
 use App\Entity\ProcurationV2\Election;
 use App\Entity\ProcurationV2\Round;
 use App\Form\Procuration\V2\ProxyType;
@@ -40,7 +39,7 @@ class ProxyController extends AbstractController
             return $response;
         }
 
-        $proxyCommand = $this->getProxyCommand($upcomingRound);
+        $proxyCommand = $this->getProxyCommand($upcomingRound, $request);
 
         $form = $this
             ->createForm(ProxyType::class, $proxyCommand)
@@ -77,16 +76,11 @@ class ProxyController extends AbstractController
         ]);
     }
 
-    public function getProxyCommand(Round $round): ProxyCommand
+    public function getProxyCommand(Round $round, Request $request): ProxyCommand
     {
         $proxy = new ProxyCommand();
         $proxy->round = $round;
-
-        $adherent = $this->getUser();
-
-        if ($adherent instanceof Adherent) {
-            $proxy->adherent = $adherent;
-        }
+        $proxy->clientIp = $request->getClientIp();
 
         return $proxy;
     }

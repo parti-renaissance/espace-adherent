@@ -120,6 +120,9 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
                 'label' => 'Téléphone',
                 'template' => 'admin/procuration_v2/_list_phone.html.twig',
             ])
+            ->add('adherent', null, [
+                'label' => 'Adhérent',
+            ])
             ->add('voteZone', null, [
                 'label' => 'Lieu de vote',
                 'template' => 'admin/procuration_v2/_list_vote_zone.html.twig',

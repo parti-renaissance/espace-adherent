@@ -26,7 +26,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
 
     public function load(ObjectManager $manager)
     {
-        $manager->persist($this->createProxy(
+        $proxy = $this->createProxy(
             $round = $this->getReference('procuration-v2-round-1'),
             'john.durand@test.dev',
             Genders::MALE,
@@ -41,7 +41,9 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             false,
             LoadGeoZoneData::getZone($manager, 'zone_city_06088'),
             $this->getReference('zone_vote_place_nice_1')
-        ));
+        );
+        $proxy->adherent = $this->getReference('president-ad-1');
+        $manager->persist($proxy);
 
         $manager->persist($this->createProxy(
             $round,
@@ -90,6 +92,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         return [
             LoadGeoZoneData::class,
             LoadProcurationV2ElectionData::class,
+            LoadAdherentData::class,
         ];
     }
 

@@ -112,6 +112,7 @@ class ProxyAdmin extends AbstractProcurationAdmin
                 '_fullName',
                 'email',
                 'phone',
+                'adherent',
                 'voteZone',
                 'slots',
                 'requests',
