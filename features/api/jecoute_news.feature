@@ -941,7 +941,7 @@ Feature:
       | key   | value                                                                         |
       | topic | staging_jemarche_department_92                                                |
       | title | Une nouvelle actualité d'aujourd'hui                                          |
-      | body  | **Vestibulum** et lectus vehicula. *Sed* eget neque nec dolor gravida luctus. |
+      | body  | Vestibulum et lectus vehicula. Sed eget neque nec… |
       Examples:
         | user                                | scope                                          |
         | je-mengage-user-1@en-marche-dev.fr  | correspondent                                  |
@@ -1036,7 +1036,7 @@ Feature:
       | key   | value                                                                                                 |
       | topic | staging_jemarche_department_75                                                                        |
       | title | Une nouvelle actualité d'un candidat aux législatives                                                 |
-      | body  | **Duis ut elit** vel felis mattis pretium. Curabitur ut dui elementum, mollis ante non, dictum magna. |
+      | body  | Duis ut elit vel felis mattis pretium. Curabitur ut… |
     Examples:
       | user                                    | scope                                           |
       | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           |
