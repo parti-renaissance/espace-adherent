@@ -30,7 +30,6 @@ class AdhesionFurtherInformationType extends AbstractType
                 'expanded' => true,
             ])
             ->add('birthdate', BirthdateType::class)
-            ->add('refuseJamNotification', CheckboxType::class, ['required' => false, 'mapped' => false])
             ->add('phone', PhoneNumberType::class, [
                 'required' => false,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
@@ -41,15 +40,23 @@ class AdhesionFurtherInformationType extends AbstractType
             ->add('acceptSmsNotification', CheckboxType::class, ['required' => false, 'mapped' => false])
         ;
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        if ($options['with_jam_notification']) {
+            $builder->add('refuseJamNotification', CheckboxType::class, ['required' => false, 'mapped' => false]);
+        }
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($options) {
             /** @var Adherent $adherent */
             $adherent = $event->getData();
             $form = $event->getForm();
 
-            if ($form->get('refuseJamNotification')->getData()) {
-                $adherent->removeSubscriptionTypeByCode(SubscriptionTypeEnum::JAM_EMAIL);
-            } else {
-                $adherent->addSubscriptionType($this->subscriptionTypeRepository->findOneByCode(SubscriptionTypeEnum::JAM_EMAIL));
+            if ($options['with_jam_notification']) {
+                if ($form->get('refuseJamNotification')->getData()) {
+                    $adherent->removeSubscriptionTypeByCode(SubscriptionTypeEnum::JAM_EMAIL);
+                } else {
+                    $adherent->addSubscriptionType(
+                        $this->subscriptionTypeRepository->findOneByCode(SubscriptionTypeEnum::JAM_EMAIL)
+                    );
+                }
             }
 
             if ($form->get('acceptSmsNotification')->getData()) {
@@ -62,8 +69,12 @@ class AdhesionFurtherInformationType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => Adherent::class,
-        ]);
+        $resolver
+            ->setDefaults([
+                'data_class' => Adherent::class,
+                'with_jam_notification' => true,
+            ])
+            ->setAllowedTypes('with_jam_notification', 'bool')
+        ;
     }
 }

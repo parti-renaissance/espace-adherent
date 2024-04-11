@@ -1090,7 +1090,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
 
                 return [
                     'ID' => $adherent->getId(),
-                    'UUID' => $adherent->getUuid(),
+                    'UUID' => $adherent->getUuid()->toString(),
                     'Email' => $adherent->getEmailAddress(),
                 ];
             }

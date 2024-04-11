@@ -42,7 +42,7 @@ class CreatePasswordController extends AbstractController
 
             $this->addFlash('success', 'Votre mot de passe a bien été sauvegardé !');
 
-            return $this->redirectToRoute(FinishController::ROUTE_NAME);
+            return $this->redirectToRoute(FurtherInformationController::ROUTE_NAME);
         }
 
         return $this->renderForm('besoindeurope/inscription/create_password.html.twig', [
