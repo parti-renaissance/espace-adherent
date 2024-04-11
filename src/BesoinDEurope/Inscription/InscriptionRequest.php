@@ -49,8 +49,13 @@ class InscriptionRequest
      */
     public ?Address $address = null;
 
+    /**
+     * @Assert\NotNull(message="Veuillez cocher une réponse")
+     */
     public ?bool $partyMembership = null;
+
     public bool $allowNotifications = false;
+
     public bool $acceptCgu = false;
     public bool $acceptCgu2 = false;
 
