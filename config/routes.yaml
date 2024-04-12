@@ -405,7 +405,7 @@ app_zone_autocomplete:
     defaults:
         app_domain: "%procuration_host%"
     requirements:
-        app_domain: "%procuration_host%"
+        app_domain: "%procuration_host%|%api_renaissance_host%"
 
 app_renaissance_newsletter_confirm:
     host: "{app_domain}"
