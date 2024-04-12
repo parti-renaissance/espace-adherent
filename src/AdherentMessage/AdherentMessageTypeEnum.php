@@ -7,6 +7,7 @@ use App\Entity\AdherentMessage\CandidateJecouteMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
+use App\Entity\AdherentMessage\FdeCoordinatorAdherentMessage;
 use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\PresidentDepartmentalAssemblyAdherentMessage;
 use App\Entity\AdherentMessage\ReferentAdherentMessage;
@@ -37,6 +38,7 @@ class AdherentMessageTypeEnum extends Enum
     public const REGIONAL_DELEGATE = 'regional_delegate';
     public const PRESIDENT_DEPARTMENTAL_ASSEMBLY = 'president_departmental_assembly';
     public const STATUTORY = 'statutory';
+    public const FDE_COORDINATOR = 'fde_coordinator';
 
     public const CLASSES = [
         self::DEPUTY => DeputyAdherentMessage::class,
@@ -53,6 +55,7 @@ class AdherentMessageTypeEnum extends Enum
         self::REGIONAL_DELEGATE => RegionalDelegateAdherentMessage::class,
         self::PRESIDENT_DEPARTMENTAL_ASSEMBLY => PresidentDepartmentalAssemblyAdherentMessage::class,
         self::STATUTORY => StatutoryAdherentMessage::class,
+        self::FDE_COORDINATOR => FdeCoordinatorAdherentMessage::class,
     ];
 
     public const ROLES = [
@@ -80,6 +83,8 @@ class AdherentMessageTypeEnum extends Enum
         PresidentDepartmentalAssemblyAdherentMessage::class => ['ROLE_PRESIDENT_DEPARTMENTAL_ASSEMBLY', 'ROLE_DELEGATED_PRESIDENT_DEPARTMENTAL_ASSEMBLY'],
 
         StatutoryAdherentMessage::class => [[FeatureVoter::PERMISSION, [FeatureEnum::STATUTORY_MESSAGE]]],
+
+        FdeCoordinatorAdherentMessage::class => ['ROLE_FDE_COORDINATOR', 'ROLE_DELEGATED_FDE_COORDINATOR'],
     ];
 
     public static function getMessageClassFromScopeCode(string $scopeCode): ?string

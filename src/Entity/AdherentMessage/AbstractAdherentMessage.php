@@ -44,6 +44,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     AdherentMessageTypeEnum::REGIONAL_DELEGATE: "RegionalDelegateAdherentMessage",
  *     AdherentMessageTypeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY: "PresidentDepartmentalAssemblyAdherentMessage",
  *     AdherentMessageTypeEnum::STATUTORY: "StatutoryAdherentMessage",
+ *     AdherentMessageTypeEnum::FDE_COORDINATOR: "FdeCoordinatorAdherentMessage",
  * })
  *
  * @ApiResource(

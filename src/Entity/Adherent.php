@@ -1044,6 +1044,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_PRESIDENT_DEPARTMENTAL_ASSEMBLY';
         }
 
+        if ($this->isFdeCoordinator()) {
+            $roles[] = 'ROLE_FDE_COORDINATOR';
+        }
+
         if ($this->isSenator()) {
             $roles[] = 'ROLE_SENATOR';
         }
