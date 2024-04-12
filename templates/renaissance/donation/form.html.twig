@@ -141,6 +141,10 @@
                                     </div>
 
                                     <twig:ReButton color="green" class="w-full" x-on:click="handleOnSubmit($event, $dispatch)">Suivant</twig:ReButton>
+
+                                    <p class="text-center">Vous préférez effectuer votre contribution<br/>par chèque ? Retrouvez ici nos<br/>coordonnées bancaires.</p>
+
+                                    <a href="https://doc.parti.re/bulletin-don.pdf" class="re-button text-sm sm:text-base font-medium px-8 py-2 transition-colors rounded-[10px] justify-center items-center gap-2.5 border border-ui_green-50 inline-flex focus:enabled:outline focus:outline-4 focus:outline-offset-0 focus:outline-ui_blue-20 text-ui_green-50 hover:bg-ui_green-50 hover:text-white active:bg-ui_green-70 w-full">Téléchargez le PDF</a>
                                 </twig:Atoms:ReCard>
                                 <div class="re-step flex-col flex gap-8" id="step_2" x-data="SecondFormStep">
                                     {% if not (app.user and app.user.hasActiveMembership()) %}
