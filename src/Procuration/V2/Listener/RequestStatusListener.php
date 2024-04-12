@@ -3,8 +3,9 @@
 namespace App\Procuration\V2\Listener;
 
 use App\Entity\ProcurationV2\Proxy;
+use App\Entity\ProcurationV2\Request;
+use App\Procuration\V2\Event\ProcurationEvent;
 use App\Procuration\V2\Event\ProcurationEvents;
-use App\Procuration\V2\Event\RequestEvent;
 use App\Procuration\V2\ProcurationHandler;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,18 +29,29 @@ class RequestStatusListener implements EventSubscriberInterface
         ];
     }
 
-    public function onBeforeUpdate(RequestEvent $event): void
+    public function onBeforeUpdate(ProcurationEvent $event): void
     {
-        $proxy = $event->request->proxy;
+        $request = $event->procuration;
+
+        if (!$request instanceof Request) {
+            return;
+        }
+
+        $proxy = $request->proxy;
 
         if ($proxy instanceof Proxy) {
             $this->proxies->add($proxy);
         }
     }
 
-    public function onAfterUpdate(RequestEvent $event): void
+    public function onAfterUpdate(ProcurationEvent $event): void
     {
-        $request = $event->request;
+        $request = $event->procuration;
+
+        if (!$request instanceof Request) {
+            return;
+        }
+
         $proxy = $request->proxy;
 
         if ($proxy instanceof Proxy && !$this->proxies->contains($proxy)) {

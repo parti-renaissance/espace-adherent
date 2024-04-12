@@ -20,6 +20,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -72,6 +73,11 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
                 ->add('postAddress.postalCode', TextType::class, ['label' => 'Code postal'])
                 ->add('postAddress.cityName', TextType::class, ['label' => 'Ville'])
                 ->add('postAddress.country', CountryType::class, ['label' => 'Pays'])
+                ->add('joinNewsletter', CheckboxType::class, [
+                    'label' => 'Inscription à la newsletter',
+                    'required' => false,
+                    'disabled' => true,
+                ])
             ->end()
             ->with('Vote', ['class' => 'col-md-6'])
                 ->add('round', null, [

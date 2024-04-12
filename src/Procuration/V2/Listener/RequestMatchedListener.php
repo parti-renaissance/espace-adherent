@@ -3,8 +3,9 @@
 namespace App\Procuration\V2\Listener;
 
 use App\Entity\ProcurationV2\Proxy;
+use App\Entity\ProcurationV2\Request;
+use App\Procuration\V2\Event\ProcurationEvent;
 use App\Procuration\V2\Event\ProcurationEvents;
-use App\Procuration\V2\Event\RequestEvent;
 use App\Procuration\V2\MatchingHistoryHandler;
 use App\Procuration\V2\ProcurationNotifier;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -27,16 +28,25 @@ class RequestMatchedListener implements EventSubscriberInterface
         ];
     }
 
-    public function onBeforeUpdate(RequestEvent $event): void
+    public function onBeforeUpdate(ProcurationEvent $event): void
     {
-        $request = $event->request;
+        $request = $event->procuration;
+
+        if (!$request instanceof Request) {
+            return;
+        }
 
         $this->proxyBeforeUpdate = $request->proxy;
     }
 
-    public function onAfterUpdate(RequestEvent $event): void
+    public function onAfterUpdate(ProcurationEvent $event): void
     {
-        $request = $event->request;
+        $request = $event->procuration;
+
+        if (!$request instanceof Request) {
+            return;
+        }
+
         $proxy = $request->proxy;
 
         if (

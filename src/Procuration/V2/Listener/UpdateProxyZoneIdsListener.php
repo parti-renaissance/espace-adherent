@@ -2,8 +2,9 @@
 
 namespace App\Procuration\V2\Listener;
 
+use App\Entity\ProcurationV2\Proxy;
+use App\Procuration\V2\Event\ProcurationEvent;
 use App\Procuration\V2\Event\ProcurationEvents;
-use App\Procuration\V2\Event\ProxyEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -21,9 +22,15 @@ class UpdateProxyZoneIdsListener implements EventSubscriberInterface
         ];
     }
 
-    public function updateZoneIds(ProxyEvent $event): void
+    public function updateZoneIds(ProcurationEvent $event): void
     {
-        $event->proxy->refreshZoneIds();
+        $proxy = $event->procuration;
+
+        if (!$proxy instanceof Proxy) {
+            return;
+        }
+
+        $proxy->refreshZoneIds();
 
         $this->entityManager->flush();
     }
