@@ -2671,6 +2671,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->hasZoneBasedRole(ScopeEnum::REGIONAL_DELEGATE);
     }
 
+    public function isFdeCoordinator(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::FDE_COORDINATOR);
+    }
+
     /**
      * @return Zone[]
      */

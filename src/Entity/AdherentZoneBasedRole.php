@@ -71,6 +71,11 @@ class AdherentZoneBasedRole
         return static::create(ScopeEnum::PROCURATIONS_MANAGER, $zones);
     }
 
+    public static function createFdeCoordinator(array $zones): self
+    {
+        return static::create(ScopeEnum::FDE_COORDINATOR, $zones);
+    }
+
     private static function create(string $scope, array $zones): self
     {
         $role = new self($scope);

@@ -27,6 +27,7 @@
                 is_granted('ROLE_BOARD_MEMBER') or
                 is_granted('ROLE_REGIONAL_COORDINATOR') or
                 is_granted('ROLE_PROCURATION_MANAGER') or
+                is_granted('ROLE_FDE_COORDINATOR') or
                 is_granted('ROLE_LEGISLATIVE_CANDIDATE') or
                 is_granted('ROLE_ASSESSOR_MANAGER') or
                 is_granted('ROLE_JECOUTE_MANAGER') or
@@ -45,6 +46,7 @@
                     app.user.isSenator +
                     app.user.isRegionalCoordinator +
                     app.user.isProcurationsManager +
+
                     app.user.isAssessorManager +
                     app.user.isJecouteManager +
                     app.user.isAssessor +

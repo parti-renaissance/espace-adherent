@@ -23,6 +23,7 @@ class ScopeEnum extends Enum
     public const PRESIDENT_DEPARTMENTAL_ASSEMBLY = 'president_departmental_assembly';
     public const ANIMATOR = 'animator';
     public const PROCURATIONS_MANAGER = 'procurations_manager';
+    public const FDE_COORDINATOR = 'fde_coordinator';
 
     public const ALL = [
         self::REFERENT,
@@ -42,6 +43,7 @@ class ScopeEnum extends Enum
         self::ANIMATOR,
         self::REGIONAL_DELEGATE,
         self::PROCURATIONS_MANAGER,
+        self::FDE_COORDINATOR,
     ];
 
     public const NATIONAL_SCOPES = [
