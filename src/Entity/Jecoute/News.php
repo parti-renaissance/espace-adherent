@@ -330,13 +330,19 @@ class News implements AuthoredInterface, AuthorInterface, UserDocumentInterface,
         $this->title = $title;
     }
 
-    public function getCleanedCroppedText(): ?string
+    public function getCleanedCroppedText(?int $length = 512): ?string
     {
-        return $this->isEnriched() ?
-            (new UnicodeString(StringCleaner::removeMarkdown($this->text)))
-                ->truncate(512, '…', false)
-                ->toString()
-            : $this->text;
+        if ($this->isEnriched()) {
+            $content = (new UnicodeString(StringCleaner::removeMarkdown($this->text)));
+
+            if ($length) {
+                $content = $content->truncate($length, '…', false);
+            }
+
+            return $content->toString();
+        }
+
+        return $this->text;
     }
 
     public function getText(): ?string

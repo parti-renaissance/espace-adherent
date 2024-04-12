@@ -37,13 +37,13 @@ class GetTimelineFeedsController extends AbstractController
             $dpt = substr($postalCode, 0, 3);
         }
 
+        $filters = ['is_national:true'];
+
         if (75 === (int) $dpt && $code = array_search($postalCode, FranceCitiesBundle::SPECIAL_CITY_DISTRICTS[FranceCitiesBundle::CUSTOM_CITY_CODE_PARIS])) {
-            $zoneFilter = 'zone_codes:borough_'.$code;
-        } else {
-            $zoneFilter = 'zone_codes:department_'.$dpt;
+            $filters[] = 'zone_codes:borough_'.$code;
         }
 
-        $filters = ['is_national:true', $zoneFilter];
+        $filters[] = 'zone_codes:department_'.$dpt;
 
         $tagFilters = [[
             TimelineFeedTypeEnum::NEWS,

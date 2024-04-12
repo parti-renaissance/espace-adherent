@@ -11,7 +11,7 @@ class NewsCreatedNotification extends AbstractTopicNotification
     {
         $notification = new self(
             $title,
-            $news->getText(),
+            $news->getCleanedCroppedText(50),
             $news->getTopic()
         );
 
