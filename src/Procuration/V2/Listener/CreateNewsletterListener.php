@@ -3,7 +3,8 @@
 namespace App\Procuration\V2\Listener;
 
 use App\Newsletter\NewsletterTypeEnum;
-use App\Procuration\V2\Event\NewProcurationEvent;
+use App\Procuration\V2\Event\ProcurationEvent;
+use App\Procuration\V2\Event\ProcurationEvents;
 use App\Renaissance\Newsletter\NewsletterManager;
 use App\Renaissance\Newsletter\SubscriptionRequest;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -16,10 +17,13 @@ class CreateNewsletterListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [NewProcurationEvent::class => ['createNewsletter', -255]];
+        return [
+            ProcurationEvents::PROXY_CREATED => ['createNewsletter', -255],
+            ProcurationEvents::REQUEST_CREATED => ['createNewsletter', -255],
+        ];
     }
 
-    public function createNewsletter(NewProcurationEvent $event): void
+    public function createNewsletter(ProcurationEvent $event): void
     {
         $procuration = $event->procuration;
 

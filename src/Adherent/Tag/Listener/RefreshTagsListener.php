@@ -7,7 +7,6 @@ use App\Entity\Adherent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\NationalEvent\NewNationalEventInscriptionEvent;
-use App\Procuration\V2\Event\NewProcurationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -25,7 +24,6 @@ class RefreshTagsListener implements EventSubscriberInterface
             UserEvents::USER_UPDATED_IN_ADMIN => 'updateAdherentTags',
 
             NewNationalEventInscriptionEvent::class => 'postEventInscription',
-            NewProcurationEvent::class => 'postProcurationHandle',
         ];
     }
 
@@ -33,13 +31,6 @@ class RefreshTagsListener implements EventSubscriberInterface
     {
         if ($event->eventInscription->adherent) {
             $this->dispatch($event->eventInscription->adherent);
-        }
-    }
-
-    public function postProcurationHandle(NewProcurationEvent $event): void
-    {
-        if ($adherent = $event->procuration->adherent) {
-            $this->dispatch($adherent);
         }
     }
 

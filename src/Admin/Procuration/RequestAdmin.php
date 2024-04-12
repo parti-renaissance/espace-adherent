@@ -4,8 +4,8 @@ namespace App\Admin\Procuration;
 
 use App\Entity\ProcurationV2\Request;
 use App\Form\Admin\Procuration\RequestStatusEnumType;
+use App\Procuration\V2\Event\ProcurationEvent;
 use App\Procuration\V2\Event\ProcurationEvents;
-use App\Procuration\V2\Event\RequestEvent;
 use App\Procuration\V2\ProxyStatusEnum;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -102,7 +102,7 @@ class RequestAdmin extends AbstractProcurationAdmin
      */
     protected function alterObject(object $object): void
     {
-        $this->eventDispatcher->dispatch(new RequestEvent($object), ProcurationEvents::REQUEST_BEFORE_UPDATE);
+        $this->eventDispatcher->dispatch(new ProcurationEvent($object), ProcurationEvents::REQUEST_BEFORE_UPDATE);
     }
 
     /**
@@ -110,7 +110,7 @@ class RequestAdmin extends AbstractProcurationAdmin
      */
     protected function postUpdate(object $object): void
     {
-        $this->eventDispatcher->dispatch(new RequestEvent($object), ProcurationEvents::REQUEST_AFTER_UPDATE);
+        $this->eventDispatcher->dispatch(new ProcurationEvent($object), ProcurationEvents::REQUEST_AFTER_UPDATE);
     }
 
     /** @required */
