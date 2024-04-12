@@ -6,6 +6,7 @@ use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
+use App\Entity\AdherentMessage\FdeCoordinatorAdherentMessage;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
@@ -60,6 +61,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
                 break;
             case ReferentInstancesMessage::class:
             case PresidentDepartmentalAssemblyAdherentMessage::class:
+            case FdeCoordinatorAdherentMessage::class:
                 $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
                 break;
             case DeputyAdherentMessage::class:
