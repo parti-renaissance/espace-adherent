@@ -228,6 +228,14 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
         yield [LoadAdherentData::ADHERENT_2_UUID, []];
         yield [LoadAdherentData::ADHERENT_20_UUID, [
             [
+                'code' => 'fde_coordinator',
+                'zones' => [[
+                    'code' => 'CIRCO_FDE-06',
+                    'name' => 'Suisse',
+                ]],
+                'apps' => ['data_corner'],
+            ],
+            [
                 'code' => 'president_departmental_assembly',
                 'zones' => [[
                     'code' => '92',
