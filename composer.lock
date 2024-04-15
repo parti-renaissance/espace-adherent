@@ -4177,16 +4177,16 @@
         },
         {
             "name": "google/auth",
-            "version": "v1.37.0",
+            "version": "v1.37.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-auth-library-php.git",
-                "reference": "5f16f67375b6f202b857183d7ef4e076acd7d4aa"
+                "reference": "1a7de77b72e6ac60dccf0e6478c4c1005bb0ff46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/5f16f67375b6f202b857183d7ef4e076acd7d4aa",
-                "reference": "5f16f67375b6f202b857183d7ef4e076acd7d4aa",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/1a7de77b72e6ac60dccf0e6478c4c1005bb0ff46",
+                "reference": "1a7de77b72e6ac60dccf0e6478c4c1005bb0ff46",
                 "shasum": ""
             },
             "require": {
@@ -4229,22 +4229,22 @@
             "support": {
                 "docs": "https://googleapis.github.io/google-auth-library-php/main/",
                 "issues": "https://github.com/googleapis/google-auth-library-php/issues",
-                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.37.0"
+                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.37.1"
             },
-            "time": "2024-02-21T17:03:52+00:00"
+            "time": "2024-04-03T18:41:12+00:00"
         },
         {
             "name": "google/cloud-core",
-            "version": "v1.56.2",
+            "version": "v1.57.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-core.git",
-                "reference": "686ffd0bb1328cd2ee963c4444e2ab4b111ba3ba"
+                "reference": "a6bbc85a5ff2edc1c29344e3aaaa0a099d569748"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/686ffd0bb1328cd2ee963c4444e2ab4b111ba3ba",
-                "reference": "686ffd0bb1328cd2ee963c4444e2ab4b111ba3ba",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/a6bbc85a5ff2edc1c29344e3aaaa0a099d569748",
+                "reference": "a6bbc85a5ff2edc1c29344e3aaaa0a099d569748",
                 "shasum": ""
             },
             "require": {
@@ -4295,9 +4295,9 @@
             ],
             "description": "Google Cloud PHP shared dependency, providing functionality useful to all components.",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.56.2"
+                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.57.0"
             },
-            "time": "2024-03-15T18:39:38+00:00"
+            "time": "2024-04-12T23:38:19+00:00"
         },
         {
             "name": "google/cloud-recaptcha-enterprise",
@@ -4351,16 +4351,16 @@
         },
         {
             "name": "google/cloud-storage",
-            "version": "v1.41.0",
+            "version": "v1.41.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-storage.git",
-                "reference": "d934742d9efdf66ae3fe79fccdf34bda74dfb477"
+                "reference": "3b6d7c13970f0c80f2450d2ec1241d7deaad3dda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/d934742d9efdf66ae3fe79fccdf34bda74dfb477",
-                "reference": "d934742d9efdf66ae3fe79fccdf34bda74dfb477",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/3b6d7c13970f0c80f2450d2ec1241d7deaad3dda",
+                "reference": "3b6d7c13970f0c80f2450d2ec1241d7deaad3dda",
                 "shasum": ""
             },
             "require": {
@@ -4370,7 +4370,7 @@
             },
             "require-dev": {
                 "erusev/parsedown": "^1.6",
-                "google/cloud-pubsub": "^1.0",
+                "google/cloud-pubsub": "^2.0",
                 "phpdocumentor/reflection": "^5.3.3",
                 "phpdocumentor/reflection-docblock": "^5.3",
                 "phpseclib/phpseclib": "^2.0||^3.0",
@@ -4402,9 +4402,9 @@
             ],
             "description": "Cloud Storage Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v1.41.0"
+                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v1.41.2"
             },
-            "time": "2024-03-22T12:59:36+00:00"
+            "time": "2024-04-12T23:38:19+00:00"
         },
         {
             "name": "google/cloud-vision",
@@ -4466,24 +4466,24 @@
         },
         {
             "name": "google/common-protos",
-            "version": "v4.5.0",
+            "version": "v4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/common-protos-php.git",
-                "reference": "dfc232e90823cedca107b56e7371f2e2f35b9427"
+                "reference": "f8588298a0a204aef2db15ce501530e476ec883f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/dfc232e90823cedca107b56e7371f2e2f35b9427",
-                "reference": "dfc232e90823cedca107b56e7371f2e2f35b9427",
+                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/f8588298a0a204aef2db15ce501530e476ec883f",
+                "reference": "f8588298a0a204aef2db15ce501530e476ec883f",
                 "shasum": ""
             },
             "require": {
-                "google/protobuf": "^3.6.1",
-                "php": ">=7.4"
+                "google/protobuf": "^v3.25.3||^4.26.1",
+                "php": "^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.0"
+                "phpunit/phpunit": "^9.6"
             },
             "type": "library",
             "autoload": {
@@ -4512,30 +4512,30 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/common-protos-php/issues",
-                "source": "https://github.com/googleapis/common-protos-php/tree/v4.5.0"
+                "source": "https://github.com/googleapis/common-protos-php/tree/v4.6.0"
             },
-            "time": "2023-11-29T21:08:16+00:00"
+            "time": "2024-04-03T19:11:54+00:00"
         },
         {
             "name": "google/gax",
-            "version": "v1.30.0",
+            "version": "v1.30.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/gax-php.git",
-                "reference": "25fb6fe93f8a871d7c626dc4599a481d9ebb6b02"
+                "reference": "2deeb24898d0ba3c4faba48f7f0cfcc1ef341613"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/25fb6fe93f8a871d7c626dc4599a481d9ebb6b02",
-                "reference": "25fb6fe93f8a871d7c626dc4599a481d9ebb6b02",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/2deeb24898d0ba3c4faba48f7f0cfcc1ef341613",
+                "reference": "2deeb24898d0ba3c4faba48f7f0cfcc1ef341613",
                 "shasum": ""
             },
             "require": {
                 "google/auth": "^1.34.0",
                 "google/common-protos": "^4.4",
-                "google/grpc-gcp": "^0.3",
+                "google/grpc-gcp": "^0.4",
                 "google/longrunning": "~0.2",
-                "google/protobuf": "^3.22",
+                "google/protobuf": "^v3.25.3||^4.26.1",
                 "grpc/grpc": "^1.13",
                 "guzzlehttp/promises": "^2.0",
                 "guzzlehttp/psr7": "^2.0",
@@ -4568,29 +4568,29 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/gax-php/issues",
-                "source": "https://github.com/googleapis/gax-php/tree/v1.30.0"
+                "source": "https://github.com/googleapis/gax-php/tree/v1.30.1"
             },
-            "time": "2024-02-28T20:33:41+00:00"
+            "time": "2024-04-03T19:04:34+00:00"
         },
         {
             "name": "google/grpc-gcp",
-            "version": "v0.3.0",
+            "version": "v0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GoogleCloudPlatform/grpc-gcp-php.git",
-                "reference": "4d8b455a45a89f57e1552cadc41a43bc34c40456"
+                "reference": "2a80dbf690922aa52bb6bb79b9a32a9637a5c2d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GoogleCloudPlatform/grpc-gcp-php/zipball/4d8b455a45a89f57e1552cadc41a43bc34c40456",
-                "reference": "4d8b455a45a89f57e1552cadc41a43bc34c40456",
+                "url": "https://api.github.com/repos/GoogleCloudPlatform/grpc-gcp-php/zipball/2a80dbf690922aa52bb6bb79b9a32a9637a5c2d9",
+                "reference": "2a80dbf690922aa52bb6bb79b9a32a9637a5c2d9",
                 "shasum": ""
             },
             "require": {
                 "google/auth": "^1.3",
-                "google/protobuf": "^v3.3.0",
+                "google/protobuf": "^v3.25.3||^4.26.1",
                 "grpc/grpc": "^v1.13.0",
-                "php": "^7.4||^8.0",
+                "php": "^8.0",
                 "psr/cache": "^1.0.1||^2.0.0||^3.0.0"
             },
             "require-dev": {
@@ -4613,22 +4613,22 @@
             "description": "gRPC GCP library for channel management",
             "support": {
                 "issues": "https://github.com/GoogleCloudPlatform/grpc-gcp-php/issues",
-                "source": "https://github.com/GoogleCloudPlatform/grpc-gcp-php/tree/v0.3.0"
+                "source": "https://github.com/GoogleCloudPlatform/grpc-gcp-php/tree/v0.4.0"
             },
-            "time": "2023-04-24T14:37:29+00:00"
+            "time": "2024-04-03T16:37:55+00:00"
         },
         {
             "name": "google/longrunning",
-            "version": "0.3.1",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/php-longrunning.git",
-                "reference": "a974fe870d5f57cc21da697923a1f4e8d08829c9"
+                "reference": "6841b03479d5a397a64036a99c33d8ee06bc8b42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/php-longrunning/zipball/a974fe870d5f57cc21da697923a1f4e8d08829c9",
-                "reference": "a974fe870d5f57cc21da697923a1f4e8d08829c9",
+                "url": "https://api.github.com/repos/googleapis/php-longrunning/zipball/6841b03479d5a397a64036a99c33d8ee06bc8b42",
+                "reference": "6841b03479d5a397a64036a99c33d8ee06bc8b42",
                 "shasum": ""
             },
             "require-dev": {
@@ -4657,22 +4657,22 @@
             ],
             "description": "Google LongRunning Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/php-longrunning/tree/v0.3.1"
+                "source": "https://github.com/googleapis/php-longrunning/tree/v0.4.0"
             },
-            "time": "2024-03-01T11:25:35+00:00"
+            "time": "2024-04-12T23:38:19+00:00"
         },
         {
             "name": "google/protobuf",
-            "version": "v3.25.3",
+            "version": "v4.26.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "983a87f4f8798a90ca3a25b0f300b8fda38df643"
+                "reference": "5c46b0eb09e7ad3e6efef3c5a85e2a34108c52ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/983a87f4f8798a90ca3a25b0f300b8fda38df643",
-                "reference": "983a87f4f8798a90ca3a25b0f300b8fda38df643",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/5c46b0eb09e7ad3e6efef3c5a85e2a34108c52ae",
+                "reference": "5c46b0eb09e7ad3e6efef3c5a85e2a34108c52ae",
                 "shasum": ""
             },
             "require": {
@@ -4701,9 +4701,9 @@
                 "proto"
             ],
             "support": {
-                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.25.3"
+                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v4.26.1"
             },
-            "time": "2024-02-15T21:11:49+00:00"
+            "time": "2024-03-27T19:56:50+00:00"
         },
         {
             "name": "grpc/grpc",
@@ -8116,16 +8116,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "2.9.2",
+            "version": "2.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "437cb3628f4cf6042cc10ae97fc2b8472e48ca1f"
+                "reference": "a30bfe2e142720dfa990d0a7e573997f5d884215"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/437cb3628f4cf6042cc10ae97fc2b8472e48ca1f",
-                "reference": "437cb3628f4cf6042cc10ae97fc2b8472e48ca1f",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/a30bfe2e142720dfa990d0a7e573997f5d884215",
+                "reference": "a30bfe2e142720dfa990d0a7e573997f5d884215",
                 "shasum": ""
             },
             "require": {
@@ -8146,8 +8146,8 @@
                 "mongodb/mongodb": "^1.8",
                 "php-amqplib/php-amqplib": "~2.4 || ^3",
                 "phpspec/prophecy": "^1.15",
-                "phpstan/phpstan": "^0.12.91",
-                "phpunit/phpunit": "^8.5.14",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^8.5.38 || ^9.6.19",
                 "predis/predis": "^1.1 || ^2.0",
                 "rollbar/rollbar": "^1.3 || ^2 || ^3",
                 "ruflin/elastica": "^7",
@@ -8202,7 +8202,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/2.9.2"
+                "source": "https://github.com/Seldaek/monolog/tree/2.9.3"
             },
             "funding": [
                 {
@@ -8214,7 +8214,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-27T15:25:26+00:00"
+            "time": "2024-04-12T20:52:51+00:00"
         },
         {
             "name": "mtdowling/jmespath.php",
