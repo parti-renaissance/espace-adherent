@@ -120,8 +120,8 @@ class EventRepository extends ServiceEntityRepository
     {
         return $this
             ->createSlugQueryBuilder($slug)
-            ->andWhere('e.status IN (:statuses)')
-            ->setParameter('statuses', CommitteeEvent::ACTIVE_STATUSES)
+            ->andWhere('e.status = :status')
+            ->setParameter('status', BaseEvent::STATUS_SCHEDULED)
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -201,20 +201,6 @@ class EventRepository extends ServiceEntityRepository
         ;
     }
 
-    /**
-     * @return CommitteeEvent[]
-     */
-    public function findUpcomingEvents(?int $category = null, bool $withPrivate = false): array
-    {
-        $qb = $this->createUpcomingEventsQueryBuilder($withPrivate);
-
-        if ($category) {
-            $qb->andWhere('ec.id = :category')->setParameter('category', $category);
-        }
-
-        return $qb->getQuery()->getResult();
-    }
-
     public function countUpcomingEvents(bool $withPrivate = false): int
     {
         $qb = $this
@@ -271,14 +257,15 @@ class EventRepository extends ServiceEntityRepository
             ->leftJoin('e.organizer', 'o')
             ->where('e.published = :published')
             ->andWhere('e.renaissanceEvent = :for_re')
-            ->andWhere($qb->expr()->in('e.status', BaseEvent::ACTIVE_STATUSES))
+            ->andWhere('e.status = :event_status')
             ->andWhere('e.beginAt >= :today')
-            ->andWhere('ec.status = :status')
+            ->andWhere('ec.status = :category_status')
             ->orderBy('e.beginAt', 'ASC')
             ->setParameter('published', true)
+            ->setParameter('event_status', BaseEvent::STATUS_SCHEDULED)
             ->setParameter('for_re', $forRenaissance)
             ->setParameter('today', (new Chronos('now'))->format('Y-m-d'))
-            ->setParameter('status', BaseEventCategory::ENABLED)
+            ->setParameter('category_status', BaseEventCategory::ENABLED)
         ;
 
         if (!$withPrivate) {

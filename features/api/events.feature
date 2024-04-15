@@ -49,6 +49,7 @@ Feature:
         "committee": null,
         "visibility": "private",
         "created_at": null,
+        "object_state": "partial",
         "begin_at": "@string@.isDateTime()",
         "finish_at": "@string@.isDateTime()",
         "organizer": null,
@@ -56,7 +57,6 @@ Feature:
         "status": "SCHEDULED",
         "capacity": null,
         "post_address": null,
-        "created_at": null,
         "link": "@string@.isUrl()",
         "category": null,
         "visio_url": null,
@@ -77,17 +77,6 @@ Feature:
     Then the response status code should be 200
     And the JSON nodes should match:
       | metadata.total_items  | 31 |
-
-  Scenario: As a non logged-in user I cannot check if I'm registered for events
-    When I send a "POST" request to "/api/v3/events/registered" with body:
-    """
-    {
-      "uuids": [
-        "44249b1d-ea10-41e0-b288-5eb74fa886ba"
-      ]
-    }
-    """
-    Then the response status code should be 401
 
   Scenario Outline: As a (delegated) referent I can get the list of events corresponding to my zones
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
@@ -141,12 +130,11 @@ Feature:
                     "name": "Atelier du programme",
                     "slug": "atelier-du-programme"
                 },
-                "electoral": false,
                 "visio_url": null,
+                "editable": false,
                 "mode": null,
                 "local_finish_at": "2017-02-20T19:00:00+01:00",
-                "image_url": null,
-                "user_registered_at": null
+                "image_url": null
             },
             {
                 "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
@@ -185,12 +173,11 @@ Feature:
                     "name": "Atelier du programme",
                     "slug": "atelier-du-programme"
                 },
-                "electoral": false,
                 "visio_url": null,
+                "editable": false,
                 "mode": null,
                 "local_finish_at": "@string@.isDateTime()",
-                "image_url": null,
-                "user_registered_at": null
+                "image_url": null
             }
         ]
     }
@@ -252,12 +239,11 @@ Feature:
                     "name": "Atelier du programme",
                     "slug": "atelier-du-programme"
                 },
-                "electoral": false,
                 "visio_url": null,
                 "mode": null,
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": null
+                "editable": false
             },
             {
                 "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
@@ -296,12 +282,11 @@ Feature:
                     "name": "Atelier du programme",
                     "slug": "atelier-du-programme"
                 },
-                "electoral": false,
                 "visio_url": null,
                 "mode": null,
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": null
+                "editable": false
             },
             {
                 "uuid": "65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e",
@@ -340,12 +325,11 @@ Feature:
                     "name": "Conférence-débat",
                     "slug": "conference-debat"
                 },
-                "electoral": false,
                 "visio_url": null,
                 "mode": null,
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": null
+                "editable": false
             }
         ]
     }
@@ -400,12 +384,11 @@ Feature:
                     "name": "Convivialité",
                     "slug": "convivialite"
                 },
-                "electoral": false,
                 "visio_url": "https://parti-renaissance.fr",
                 "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": null
+                "editable": false
             },
             {
                 "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
@@ -435,12 +418,11 @@ Feature:
                 },
                 "created_at": "@string@.isDateTime()",
                 "category": null,
-                "electoral": true,
                 "visio_url": null,
                 "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": "@string@||@null@"
+                "editable": true
             },
             {
                 "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
@@ -470,12 +452,11 @@ Feature:
                 },
                 "created_at": "@string@.isDateTime()",
                 "category": null,
-                "electoral": false,
                 "visio_url": null,
                 "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": "@string@||@null@"
+                "editable": true
             }
         ]
     }
@@ -530,12 +511,11 @@ Feature:
                     "longitude": 5.362377
                 },
                 "created_at": "@string@.isDateTime()",
-                "electoral": false,
                 "visio_url": null,
                 "mode": null,
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": null
+                "editable": false
             },
             {
                 "uuid": "5b279c9f-2b1e-4b93-9c34-1669f56e9d64",
@@ -574,12 +554,11 @@ Feature:
                     "name": "Tractage",
                     "slug": "tractage"
                 },
-                "electoral": false,
                 "visio_url": null,
                 "mode": null,
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": null
+                "editable": false
             },
             {
                 "category": {
@@ -618,12 +597,11 @@ Feature:
                     "longitude": 2.698759
                 },
                 "created_at": "@string@.isDateTime()",
-                "electoral": false,
                 "visio_url": null,
                 "mode": null,
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": null
+                "editable": false
             }
         ]
     }
@@ -676,12 +654,11 @@ Feature:
                 },
                 "created_at": "@string@.isDateTime()",
                 "category": null,
-                "electoral": false,
                 "visio_url": null,
                 "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": null
+                "editable": true
             },
             {
                 "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
@@ -711,12 +688,11 @@ Feature:
                 },
                 "created_at": "@string@.isDateTime()",
                 "category": null,
-                "electoral": false,
                 "visio_url": null,
                 "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": "@string@||@null@"
+                "editable": true
             },
             {
                 "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
@@ -746,12 +722,11 @@ Feature:
                 },
                 "created_at": "@string@.isDateTime()",
                 "category": null,
-                "electoral": true,
                 "visio_url": null,
                 "mode": "online",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
-                "user_registered_at": "@string@||@null@"
+                "editable": true
             }
         ]
     }
@@ -816,7 +791,7 @@ Feature:
         "mode": null,
         "image_url": null,
         "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
-        "user_registered_at": null
+        "editable": false
     }
     """
 
@@ -871,12 +846,11 @@ Feature:
             "name": "Catégorie masquée",
             "slug": "categorie-masquee"
         },
-        "electoral": false,
         "visio_url": null,
         "mode": null,
         "image_url": null,
         "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
-        "user_registered_at": null
+        "editable": false
     }
     """
     Examples:
@@ -944,7 +918,7 @@ Feature:
 
   Scenario: As a deputy I can create an event
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/events" with body:
+    When I send a "POST" request to "/api/v3/events?scope=deputy" with body:
     """
     {
         "name": "Nouveau événement",
@@ -962,7 +936,6 @@ Feature:
           "country": "FR"
         },
         "time_zone": "Europe/Paris",
-        "electoral": false,
         "visibility": "private"
     }
     """
@@ -970,17 +943,24 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "detail": "finish_at: La date de fin de l'événement doit être postérieure à la date de début.",
+      "detail": "post_address: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.\nfinish_at: La date de fin de l'événement doit être postérieure à la date de début.",
       "title": "An error occurred",
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
-      "violations": [{
-       "code": "@uuid@",
-       "message": "La date de fin de l'événement doit être postérieure à la date de début.",
-       "propertyPath": "finish_at"
-      }]
+      "violations": [
+          {
+           "code": null,
+           "message": "L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.",
+           "propertyPath": "post_address"
+          },
+          {
+           "code": "@uuid@",
+           "message": "La date de fin de l'événement doit être postérieure à la date de début.",
+           "propertyPath": "finish_at"
+          }
+      ]
     }
     """
-    When I send a "POST" request to "/api/v3/events" with body:
+    When I send a "POST" request to "/api/v3/events?scope=deputy" with body:
     """
     {
         "name": "Nouveau événement",
@@ -991,14 +971,7 @@ Feature:
         "capacity": 100,
         "mode": "online",
         "visio_url": "https://en-marche.fr/reunions/123",
-        "post_address": {
-          "address": "62 avenue des champs-élysées",
-          "postal_code": "75008",
-          "city_name": "Paris 8ème",
-          "country": "FR"
-        },
         "time_zone": "Europe/Paris",
-        "electoral": false,
         "visibility": "private"
     }
     """
@@ -1026,13 +999,13 @@ Feature:
         "status": "SCHEDULED",
         "capacity": 100,
         "post_address": {
-            "address": "62 avenue des champs-élysées",
-            "postal_code": "75008",
-            "city": "75008-75108",
-            "city_name": "Paris 8ème",
-            "country": "FR",
-            "latitude": 48.870590,
-            "longitude": 2.305370
+            "address": null,
+            "postal_code": null,
+            "city": null,
+            "city_name": null,
+            "country": null,
+            "latitude": null,
+            "longitude": null
         },
         "category": {
             "event_group_category": {
@@ -1047,7 +1020,8 @@ Feature:
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
         "image_url": null,
-        "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
+        "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher",
+        "editable": true
     }
     """
 
@@ -1073,7 +1047,6 @@ Feature:
             "country": ""
         },
         "time_zone": "Europe/Paris",
-        "electoral": false,
         "visibility": "public"
     }
     """
@@ -1129,7 +1102,8 @@ Feature:
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
         "image_url": null,
-        "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
+        "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher",
+        "editable": true
     }
     """
     And I should have 1 email "RenaissanceEventNotificationMessage" for "@en-marche-dev.fr" with payload:
@@ -1411,7 +1385,8 @@ Feature:
         "visio_url": "http://visio.fr",
         "mode": "online",
         "image_url": null,
-        "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher"
+        "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher",
+        "editable": true
     }
     """
     And I should have 1 email
@@ -1708,7 +1683,6 @@ Feature:
           "country": "FR"
         },
         "time_zone": "Europe/Paris",
-        "electoral": false,
         "visibility": "public"
     }
     """
@@ -1757,7 +1731,8 @@ Feature:
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
         "image_url": null,
-        "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
+        "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher",
+        "editable": true
     }
     """
     Examples:
@@ -1786,7 +1761,6 @@ Feature:
           "country": "FR"
         },
         "time_zone": "Europe/Paris",
-        "electoral": false,
         "visibility": "public"
     }
     """
@@ -1876,7 +1850,8 @@ Feature:
         "visio_url": "http://visio.fr",
         "mode": "online",
         "image_url": null,
-        "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-un-evenement-du-candidat-aux-legislatives/afficher"
+        "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-un-evenement-du-candidat-aux-legislatives/afficher",
+        "editable": true
     }
     """
     Examples:

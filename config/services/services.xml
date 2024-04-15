@@ -67,7 +67,7 @@
         <service id="App\Api\Doctrine\JecouteNewsExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Api\Doctrine\BaseEventExtension">
+        <service id="App\Api\Doctrine\EventExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
         <service id="App\Api\Doctrine\GeoZoneExtension">

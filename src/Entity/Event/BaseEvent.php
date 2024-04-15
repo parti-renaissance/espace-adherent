@@ -96,23 +96,24 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/events/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "normalization_context": {
- *                 "groups": {"event_read", "image_owner_exposed", "with_user_registration"}
+ *                 "groups": {"event_read", "image_owner_exposed"}
  *             },
  *         },
  *         "get_public": {
  *             "method": "GET",
  *             "path": "/events/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "security": "object.isPublic() or object.isPrivate()",
  *         },
  *         "put": {
  *             "path": "/v3/events/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('CAN_MANAGE_EVENT', object)",
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('CAN_MANAGE_EVENT', object)",
  *         },
  *         "delete": {
  *             "path": "/v3/events/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('CAN_MANAGE_EVENT', object) and is_granted('CAN_DELETE_EVENT', object)",
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('CAN_MANAGE_EVENT', object) and is_granted('CAN_DELETE_EVENT', object)",
  *             "swagger_context": {
  *                 "parameters": {
  *                     {
@@ -136,7 +137,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "subscribe_anonymous": {
  *             "method": "POST",
  *             "path": "/events/{uuid}/subscribe",
- *             "security": "is_granted('IS_AUTHENTICATED_ANONYMOUSLY')",
  *             "defaults": {"_api_receive": false},
  *             "controller": "App\Controller\Api\Event\SubscribeAsAnonymousController",
  *             "requirements": {"uuid": "%pattern_uuid%"}
@@ -146,7 +146,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/events/{uuid}/image",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\EventImageController",
+ *             "controller": "App\Controller\Api\Event\UpdateImageController",
  *         },
  *         "cancel": {
  *             "path": "/v3/events/{uuid}/cancel",
@@ -160,7 +160,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "get": {
  *             "path": "/v3/events",
  *             "normalization_context": {
- *                 "groups": {"event_list_read", "image_owner_exposed", "with_user_registration"}
+ *                 "groups": {"event_list_read", "image_owner_exposed"}
  *             },
  *         },
  *         "get_public": {
@@ -175,6 +175,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "path": "/v3/events",
  *             "denormalization_context": {"groups": {"event_write", "event_write_creation"}},
  *             "validation_groups": {"Default", "api_put_validation", "event_creation"},
+ *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'events')",
  *         },
  *     },
  * )
@@ -217,10 +218,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     public const STATUSES = [
         self::STATUS_SCHEDULED,
         self::STATUS_CANCELLED,
-    ];
-
-    public const ACTIVE_STATUSES = [
-        self::STATUS_SCHEDULED,
     ];
 
     public const MODE_ONLINE = 'online';
@@ -389,8 +386,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({"event_write", "event_list_read_extended", "event_read_extended"})
      */
     private $electoral = false;
 
@@ -410,7 +405,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @Assert\Url
      *
-     * @Groups({"event_read", "event_write", "event_list_read_extended"})
+     * @Groups({"event_read", "event_write", "event_list_read"})
      */
     private $visioUrl;
 
@@ -647,7 +642,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
 
     public function isActive(): bool
     {
-        return \in_array($this->status, self::ACTIVE_STATUSES, true);
+        return self::STATUS_SCHEDULED === $this->status;
     }
 
     public function isCancelled(): bool
@@ -875,5 +870,10 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     public function isPublic(): bool
     {
         return EventVisibilityEnum::PUBLIC === $this->visibility;
+    }
+
+    public function isForAdherent(): bool
+    {
+        return \in_array($this->visibility, [EventVisibilityEnum::ADHERENT, EventVisibilityEnum::ADHERENT_DUES], true);
     }
 }

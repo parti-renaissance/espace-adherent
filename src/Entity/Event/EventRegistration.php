@@ -56,7 +56,7 @@ class EventRegistration
     /**
      * @ORM\Column(nullable=true)
      */
-    private ?string $source = null;
+    private ?string $source;
 
     public function __construct(
         UuidInterface $uuid,

@@ -30,11 +30,11 @@ class EventControllerTest extends AbstractApiTestCase
             'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
             GrantTypeEnum::PASSWORD,
             Scope::JEMENGAGE_ADMIN,
-            'referent@en-marche-dev.fr',
+            'president-ad@renaissance-dev.fr',
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
-        $this->client->request(Request::METHOD_POST, '/api/v3/events', [], [], [
+        $this->client->request(Request::METHOD_POST, '/api/v3/events?scope=president_departmental_assembly', [], [], [
             'CONTENT_TYPE' => 'application/json',
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
@@ -61,7 +61,7 @@ class EventControllerTest extends AbstractApiTestCase
 
         self::assertSame(AppCodeEnum::JEMENGAGE_WEB, $registration->getSource());
 
-        $this->client->request(Request::METHOD_PUT, sprintf('/api/v3/events/%s', $response['uuid']), [], [], [
+        $this->client->request(Request::METHOD_PUT, sprintf('/api/v3/events/%s?scope=president_departmental_assembly', $response['uuid']), [], [], [
             'CONTENT_TYPE' => 'application/json',
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([
@@ -77,6 +77,6 @@ class EventControllerTest extends AbstractApiTestCase
         self::assertSame('online', $response['mode']);
 
         $this->assertCountMails(1, JeMengageEventUpdateMessage::class);
-        $this->assertMail(JeMengageEventUpdateMessage::class, 'referent@en-marche-dev.fr', ['template_name' => 'je-mengage-event-update']);
+        $this->assertMail(JeMengageEventUpdateMessage::class, 'president-ad@renaissance-dev.fr', ['template_name' => 'je-mengage-event-update']);
     }
 }

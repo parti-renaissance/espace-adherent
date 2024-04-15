@@ -18,21 +18,12 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class SubscribeAsAdherentController extends AbstractController
 {
-    private $entityManager;
-    private $eventRegistrationFactory;
-    private $validator;
-    private $dispatcher;
-
     public function __construct(
-        EntityManagerInterface $entityManager,
-        EventRegistrationFactory $eventRegistrationFactory,
-        ValidatorInterface $validator,
-        EventDispatcherInterface $dispatcher
+        private readonly EntityManagerInterface $entityManager,
+        private readonly EventRegistrationFactory $eventRegistrationFactory,
+        private readonly ValidatorInterface $validator,
+        private readonly EventDispatcherInterface $dispatcher
     ) {
-        $this->entityManager = $entityManager;
-        $this->eventRegistrationFactory = $eventRegistrationFactory;
-        $this->validator = $validator;
-        $this->dispatcher = $dispatcher;
     }
 
     public function __invoke(Request $request, BaseEvent $event): Response

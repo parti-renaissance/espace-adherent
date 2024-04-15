@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security\Voter;
+namespace App\Security\Voter\Event;
 
 use App\Entity\Event\BaseEvent;
 use App\Repository\EventRegistrationRepository;
@@ -11,11 +11,8 @@ class CanDeleteEventVoter extends Voter
 {
     public const PERMISSION = 'CAN_DELETE_EVENT';
 
-    private EventRegistrationRepository $eventRegistrationRepository;
-
-    public function __construct(EventRegistrationRepository $eventRegistrationRepository)
+    public function __construct(private readonly EventRegistrationRepository $eventRegistrationRepository)
     {
-        $this->eventRegistrationRepository = $eventRegistrationRepository;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
