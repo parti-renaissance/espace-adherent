@@ -3,6 +3,8 @@
 namespace Tests\App\Controller\Api\Event;
 
 use App\DataFixtures\ORM\LoadCommitteeEventData;
+use App\DataFixtures\ORM\LoadDefaultEventData;
+use App\Mailer\Message\EventRegistrationConfirmationMessage;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +21,7 @@ class SubscribeAsAnonymousControllerTest extends AbstractApiTestCase
     use ApiControllerTestTrait;
 
     #[DataProvider('provideEvents')]
-    public function testAnonymousCanSubscribeOnEvent(string $eventUuid, string $messageClass)
+    public function testAnonymousCanSubscribeOnEvent(string $eventUuid)
     {
         $this->client->request(Request::METHOD_POST, sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
             'first_name' => 'Joe',
@@ -34,7 +36,6 @@ class SubscribeAsAnonymousControllerTest extends AbstractApiTestCase
         ]));
 
         $this->isSuccessful($this->client->getResponse());
-        $this->assertCountMails(1, $messageClass, 'j.hey@en-marche-dev.fr');
 
         $registration = $this->getEventRegistrationRepository()->findGuestRegistration($eventUuid, $email);
         $this->assertSame('Joe', $registration->getFirstName());
@@ -69,16 +70,16 @@ class SubscribeAsAnonymousControllerTest extends AbstractApiTestCase
 
     public static function provideEvents(): iterable
     {
-        yield [LoadCommitteeEventData::EVENT_1_UUID, 'EventRegistrationConfirmationMessage'];
+        yield [LoadDefaultEventData::EVENT_1_UUID];
     }
 
     public static function provideCancelledEvents(): iterable
     {
-        yield [LoadCommitteeEventData::EVENT_6_UUID, 'EventRegistrationConfirmationMessage'];
+        yield [LoadCommitteeEventData::EVENT_6_UUID, EventRegistrationConfirmationMessage::class];
     }
 
     public static function providePrivateEvents(): iterable
     {
-        yield [LoadCommitteeEventData::EVENT_3_UUID, 'EventRegistrationConfirmationMessage'];
+        yield [LoadCommitteeEventData::EVENT_3_UUID, EventRegistrationConfirmationMessage::class];
     }
 }

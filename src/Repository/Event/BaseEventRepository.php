@@ -8,18 +8,15 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\BaseEventCategory;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
-use App\Entity\Event\EventRegistration;
 use App\Entity\Geo\Zone;
 use App\Event\ListFilter;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class BaseEventRepository extends ServiceEntityRepository
 {
@@ -97,25 +94,10 @@ class BaseEventRepository extends ServiceEntityRepository
     {
         return $this
             ->createSlugQueryBuilder($slug)
-            ->andWhere('event.status IN (:statuses)')
-            ->setParameter('statuses', CommitteeEvent::ACTIVE_STATUSES)
+            ->andWhere('event.status = :status')
+            ->setParameter('status', BaseEvent::STATUS_SCHEDULED)
             ->getQuery()
             ->getOneOrNullResult()
-        ;
-    }
-
-    public function findWithRegistrationByUuids(array $uuids, UserInterface $user): array
-    {
-        self::validUuids($uuids);
-
-        return $this->createQueryBuilder('event')
-            ->innerJoin(EventRegistration::class, 'registration', Join::WITH, 'registration.event = event')
-            ->andWhere('registration.adherentUuid = :adherent_uuid')
-            ->andWhere('event.uuid IN (:uuids)')
-            ->setParameter('adherent_uuid', $user->getUuidAsString())
-            ->setParameter('uuids', $uuids)
-            ->getQuery()
-            ->getResult()
         ;
     }
 
@@ -180,15 +162,16 @@ class BaseEventRepository extends ServiceEntityRepository
                 ->add(sprintf('event INSTANCE OF %s', DefaultEvent::class))
                 ->add(sprintf('event INSTANCE OF %s', CommitteeEvent::class))
             )
-            ->andWhere($qb->expr()->in('event.status', BaseEvent::ACTIVE_STATUSES))
+            ->andWhere('event.status = :event_status')
             ->andWhere('event.beginAt >= CONVERT_TZ(:now, \'Europe/Paris\', event.timeZone)')
-            ->andWhere('category IS NULL OR category.status = :status')
+            ->andWhere('category IS NULL OR category.status = :category_status')
             ->orderBy('event.beginAt', 'ASC')
             ->addOrderBy('event.name', 'ASC')
             ->setParameter('published', true)
             ->setParameter('re_event', true)
+            ->setParameter('event_status', BaseEvent::STATUS_SCHEDULED)
             ->setParameter('now', new \DateTime('now'))
-            ->setParameter('status', BaseEventCategory::ENABLED)
+            ->setParameter('category_status', BaseEventCategory::ENABLED)
             ->setMaxResults($limit)
         ;
 

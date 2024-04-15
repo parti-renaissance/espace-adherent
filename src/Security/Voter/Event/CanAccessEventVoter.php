@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security\Voter;
+namespace App\Security\Voter\Event;
 
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;

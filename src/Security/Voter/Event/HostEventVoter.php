@@ -1,27 +1,23 @@
 <?php
 
-namespace App\Security\Voter;
+namespace App\Security\Voter\Event;
 
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\MyTeam\DelegatedAccess;
-use App\Event\EventPermissions;
+use App\Security\Voter\AbstractAdherentVoter;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class HostEventVoter extends AbstractAdherentVoter
 {
-    /** @var SessionInterface */
-    private $session;
-
-    public function __construct(SessionInterface $session)
+    public function __construct(private readonly SessionInterface $session)
     {
-        $this->session = $session;
     }
 
-    protected function supports(string $attribute, $event): bool
+    protected function supports(string $attribute, $subject): bool
     {
-        return EventPermissions::HOST === $attribute && $event instanceof BaseEvent;
+        return 'HOST_EVENT' === $attribute && $subject instanceof BaseEvent;
     }
 
     /**

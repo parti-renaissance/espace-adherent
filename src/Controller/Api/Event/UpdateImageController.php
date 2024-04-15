@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\Event;
 
 use App\Api\DTO\ImageContent;
 use App\Entity\Event\BaseEvent;
@@ -17,27 +17,16 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Security("is_granted('ROLE_ADHERENT') and is_granted('CAN_MANAGE_EVENT', event)")]
-class EventImageController extends AbstractController
+#[Security("is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('CAN_MANAGE_EVENT', event)")]
+class UpdateImageController extends AbstractController
 {
-    private ImageUploadHelper $imageUploadHelper;
-    private SerializerInterface $serializer;
-    private ValidatorInterface $validator;
-    private ImageManagerInterface $imageManager;
-    private EntityManagerInterface $entityManager;
-
     public function __construct(
-        ImageUploadHelper $imageUploadHelper,
-        SerializerInterface $serializer,
-        ValidatorInterface $validator,
-        ImageManagerInterface $imageManager,
-        EntityManagerInterface $entityManager
+        private readonly ImageUploadHelper $imageUploadHelper,
+        private readonly SerializerInterface $serializer,
+        private readonly ValidatorInterface $validator,
+        private readonly ImageManagerInterface $imageManager,
+        private readonly EntityManagerInterface $entityManager
     ) {
-        $this->imageUploadHelper = $imageUploadHelper;
-        $this->serializer = $serializer;
-        $this->validator = $validator;
-        $this->imageManager = $imageManager;
-        $this->entityManager = $entityManager;
     }
 
     public function __invoke(Request $request, BaseEvent $event): JsonResponse

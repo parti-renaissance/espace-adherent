@@ -27,7 +27,6 @@ trait EntityTimestampableTrait
      *     "pap_campaign_replies_list",
      *     "event_read",
      *     "event_list_read",
-     *     "event_list_read_extended",
      *     "survey_list_dc",
      *     "committee:list",
      *     "document_read",

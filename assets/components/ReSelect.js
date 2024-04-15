@@ -64,8 +64,11 @@ const xReSelect = (props) => {
                 } else {
                     this.isValueSet = true;
                     const option = options.find((o) => o.value === selectInput.value);
-                    this.selected = option;
-                    this.query = option.label;
+
+                    if (option) {
+                        this.selected = option;
+                        this.query = option.label;
+                    }
                 }
             });
         },

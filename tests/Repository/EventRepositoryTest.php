@@ -28,16 +28,6 @@ class EventRepositoryTest extends AbstractKernelTestCase
         $this->assertSame(2, $this->repository->countElements(true, true, true));
     }
 
-    public function testFindUpcomingEvents()
-    {
-        Chronos::setTestNow('2018-05-18');
-
-        $this->assertCount(9, $this->repository->findUpcomingEvents(null, true));
-        $this->assertCount(8, $this->repository->findUpcomingEvents(null, false));
-
-        Chronos::setTestNow();
-    }
-
     public function testCountUpcomingEvents()
     {
         Chronos::setTestNow('2018-05-18');

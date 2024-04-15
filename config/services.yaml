@@ -382,9 +382,9 @@ services:
         decorates: 'api_platform.serializer.context_builder'
         arguments: ['@App\Api\Serializer\JecouteNewsGroupsContextBuilder.inner']
 
-    App\Api\Serializer\EventGroupsContextBuilder:
+    App\Api\Serializer\EventContextBuilder:
         decorates: 'api_platform.serializer.context_builder'
-        arguments: ['@App\Api\Serializer\EventGroupsContextBuilder.inner']
+        arguments: ['@.inner']
 
     App\Api\Serializer\CommitteeGroupsContextBuilder:
         decorates: 'api_platform.serializer.context_builder'

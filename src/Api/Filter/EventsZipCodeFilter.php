@@ -52,10 +52,12 @@ final class EventsZipCodeFilter extends AbstractFilter
             $resourceClass,
             'e2',
             'zones',
-            'z2',
+            'zip_code_filter_zone',
             function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
                 $zoneQueryBuilder->andWhere(sprintf('%s.published = 1', $entityClassAlias));
-            }
+            },
+            true,
+            'zip_code_filter_zone_parent'
         );
     }
 

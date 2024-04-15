@@ -191,6 +191,8 @@ class LoadClientData extends Fixture
         $client13->setCode(AppCodeEnum::BESOIN_D_EUROPE);
         $client13->setAskUserForAuthorization(false);
         $client13->addSupportedScope(Scope::JEMARCHE_APP);
+        $client13->addSupportedScope(Scope::READ_PROFILE);
+        $client13->addSupportedScope(Scope::WRITE_PROFILE);
 
         $manager->persist($client13);
 

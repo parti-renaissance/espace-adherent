@@ -15,28 +15,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SubscribeAsAnonymousController extends AbstractController
 {
-    private $validator;
-    private $serializer;
-    private $handler;
-
     public function __construct(
-        EventRegistrationCommandHandler $handler,
-        SerializerInterface $serializer,
-        ValidatorInterface $validator
+        private readonly EventRegistrationCommandHandler $handler,
+        private readonly SerializerInterface $serializer,
+        private readonly ValidatorInterface $validator
     ) {
-        $this->handler = $handler;
-        $this->serializer = $serializer;
-        $this->validator = $validator;
     }
 
     public function __invoke(Request $request, BaseEvent $event): Response
     {
-        if ($event->isCancelled()) {
-            throw $this->createNotFoundException('Event is cancelled');
+        if (!$event->isPublic()) {
+            throw $this->createNotFoundException('Event is not public');
         }
 
-        if ($event->isPrivate()) {
-            throw $this->createNotFoundException();
+        if ($event->isCancelled()) {
+            throw $this->createNotFoundException('Event is cancelled');
         }
 
         $this->serializer->deserialize($request->getContent(), EventRegistrationCommand::class, JsonEncoder::FORMAT, [
