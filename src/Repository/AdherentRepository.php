@@ -167,24 +167,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    public function isAdherent(string $email): bool
-    {
-        return (bool) $this
-            ->createQueryBuilder('adherent')
-            ->select('COUNT(adherent)')
-            ->where('adherent.emailAddress = :email')
-            ->andWhere('adherent.adherent = :true')
-            ->andWhere('adherent.status = :status')
-            ->setParameters([
-                'email' => $email,
-                'true' => true,
-                'status' => Adherent::ENABLED,
-            ])
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
     /**
      * Finds an Adherent instance by its unique UUID.
      *

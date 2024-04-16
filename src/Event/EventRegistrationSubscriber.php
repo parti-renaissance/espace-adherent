@@ -5,7 +5,6 @@ namespace App\Event;
 use App\AppCodeEnum;
 use App\Events;
 use App\Mailer\MailerService;
-use App\Mailer\Message\EventRegistrationConfirmationMessage;
 use App\Mailer\Message\JeMengage\JeMengageEventRegistrationConfirmationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceEventRegistrationConfirmationMessage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -29,14 +28,13 @@ class EventRegistrationSubscriber implements EventSubscriberInterface
         return [Events::EVENT_REGISTRATION_CREATED => 'sendRegistrationEmail'];
     }
 
-    public function sendRegistrationEmail(EventRegistrationEvent $event)
+    public function sendRegistrationEmail(EventRegistrationEvent $event): void
     {
         if (!$event->getSendMail()) {
             return;
         }
 
         $registration = $event->getRegistration();
-        $registrationEvent = $registration->getEvent();
 
         if (AppCodeEnum::isJeMengage($registration->getSource())) {
             $message = JeMengageEventRegistrationConfirmationMessage::createFromRegistration(
@@ -44,15 +42,10 @@ class EventRegistrationSubscriber implements EventSubscriberInterface
                 $this->generateUrl('app_committee_event_show', ['slug' => $event->getSlug()])
             );
         } else {
-            $message = $registrationEvent->isRenaissanceEvent()
-                ? RenaissanceEventRegistrationConfirmationMessage::createFromRegistration(
-                    $registration,
-                    $this->generateUrl('app_renaissance_event_show', ['slug' => $event->getSlug()])
-                )
-                : EventRegistrationConfirmationMessage::createFromRegistration(
-                    $registration,
-                    $this->generateUrl('app_committee_event_show', ['slug' => $event->getSlug()])
-                );
+            $message = RenaissanceEventRegistrationConfirmationMessage::createFromRegistration(
+                $registration,
+                $this->generateUrl('app_renaissance_event_show', ['slug' => $event->getSlug()])
+            );
         }
 
         $this->mailer->sendMessage($message);

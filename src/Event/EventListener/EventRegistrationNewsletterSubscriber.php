@@ -2,32 +2,17 @@
 
 namespace App\Event\EventListener;
 
-use App\Entity\NewsletterSubscription;
 use App\Event\EventRegistrationEvent;
 use App\Events;
-use App\Newsletter\NewsletterSubscriptionHandler;
-use App\Repository\AdherentRepository;
-use App\Repository\NewsletterSubscriptionRepository;
+use App\Newsletter\NewsletterTypeEnum;
+use App\Renaissance\Newsletter\NewsletterManager;
+use App\Renaissance\Newsletter\SubscriptionRequest;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EventRegistrationNewsletterSubscriber implements EventSubscriberInterface
 {
-    private $handler;
-    private $adherentRepository;
-    private $newsletterSubscriptionRepository;
-    private $validator;
-
-    public function __construct(
-        NewsletterSubscriptionHandler $handler,
-        AdherentRepository $adherentRepository,
-        NewsletterSubscriptionRepository $newsletterSubscriptionRepository,
-        ValidatorInterface $validator
-    ) {
-        $this->handler = $handler;
-        $this->adherentRepository = $adherentRepository;
-        $this->newsletterSubscriptionRepository = $newsletterSubscriptionRepository;
-        $this->validator = $validator;
+    public function __construct(private readonly NewsletterManager $newsletterManager)
+    {
     }
 
     public static function getSubscribedEvents(): array
@@ -43,21 +28,14 @@ class EventRegistrationNewsletterSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($this->adherentRepository->isAdherent($registration->getEmailAddress())) {
-            return;
-        }
+        $newsletterRequest = new SubscriptionRequest();
 
-        $newsletter = $this->newsletterSubscriptionRepository->findOneNotConfirmedByEmail($registration->getEmailAddress());
-        if ($newsletter) {
-            $newsletter->setFromEvent(true);
-        } else {
-            $newsletter = new NewsletterSubscription($registration->getEmailAddress(), null, null, true);
-        }
+        $newsletterRequest->postalCode = $registration->getPostalCode();
+        $newsletterRequest->email = $registration->getEmailAddress();
 
-        if ($this->validator->validate($newsletter)->count()) {
-            return;
-        }
+        $newsletterRequest->cguAccepted = true;
+        $newsletterRequest->source = NewsletterTypeEnum::FROM_EVENT;
 
-        $this->handler->subscribe($newsletter);
+        $this->newsletterManager->saveSubscription($newsletterRequest);
     }
 }

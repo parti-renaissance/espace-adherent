@@ -49,7 +49,19 @@ class EventRegistrationCommand
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     private $emailAddress;
-    private $newsletterSubscriber = false;
+
+    /**
+     * @Groups({"event_registration_write"})
+     *
+     * @Assert\Length(allowEmptyString=true, min=5, max=5)
+     */
+    private $postalCode;
+
+    /**
+     * @Groups({"event_registration_write"})
+     */
+    private $joinNewsletter = false;
+
     private $registrationUuid;
 
     public function __construct(BaseEvent $event, ?Adherent $adherent = null)
@@ -58,16 +70,21 @@ class EventRegistrationCommand
         $this->registrationUuid = Uuid::uuid4();
 
         if ($adherent) {
-            $this->setAdherent($adherent);
+            $this->updateFromAdherent($adherent);
         }
     }
 
-    private function setAdherent(Adherent $adherent): void
+    private function updateFromAdherent(Adherent $adherent): void
     {
         $this->adherent = $adherent;
         $this->firstName = $adherent->getFirstName();
         $this->lastName = $adherent->getLastName();
         $this->emailAddress = $adherent->getEmailAddress();
+    }
+
+    public function setAdherent(?Adherent $adherent): void
+    {
+        $this->adherent = $adherent;
     }
 
     public function getEvent(): BaseEvent
@@ -105,14 +122,14 @@ class EventRegistrationCommand
         $this->emailAddress = mb_strtolower($emailAddress);
     }
 
-    public function isNewsletterSubscriber(): bool
+    public function isJoinNewsletter(): bool
     {
-        return $this->newsletterSubscriber;
+        return $this->joinNewsletter;
     }
 
-    public function setNewsletterSubscriber(bool $newsletterSubscriber): void
+    public function setJoinNewsletter(bool $joinNewsletter): void
     {
-        $this->newsletterSubscriber = $newsletterSubscriber;
+        $this->joinNewsletter = $joinNewsletter;
     }
 
     public function getRegistrationUuid(): UuidInterface
@@ -127,12 +144,12 @@ class EventRegistrationCommand
 
     public function getAdherentUuid(): ?UuidInterface
     {
-        return $this->adherent ? $this->adherent->getUuid() : null;
+        return $this->adherent?->getUuid();
     }
 
     public function getAuthAppCode(): ?string
     {
-        return $this->adherent ? $this->adherent->getAuthAppCode() : null;
+        return $this->adherent?->getAuthAppCode();
     }
 
     /**
@@ -141,5 +158,15 @@ class EventRegistrationCommand
     public function isNotFull(): bool
     {
         return !$this->event->isFull();
+    }
+
+    public function getPostalCode(): ?string
+    {
+        return $this->postalCode;
+    }
+
+    public function setPostalCode(?string $postalCode): void
+    {
+        $this->postalCode = $postalCode;
     }
 }

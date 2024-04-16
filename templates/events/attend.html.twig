@@ -60,11 +60,11 @@
                     </label>
                 </div>
 
-                {% if form.newsletterSubscriber is defined %}
+                {% if form.joinNewsletter is defined %}
                     <div class="form__row form__checkbox" id="field-newsletter-subscriber">
-                        {{ form_widget(form.newsletterSubscriber) }}
-                        {{ form_errors(form.newsletterSubscriber) }}
-                        <label for="{{ form.newsletterSubscriber.vars.id }}">
+                        {{ form_widget(form.joinNewsletter) }}
+                        {{ form_errors(form.joinNewsletter) }}
+                        <label for="{{ form.joinNewsletter.vars.id }}">
                             Je souhaite recevoir la newsletter hebdomadaire de LaREM&nbsp;<i> (optionnel)</i>
                         </label>
                     </div>

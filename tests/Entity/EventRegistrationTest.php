@@ -26,6 +26,7 @@ class EventRegistrationTest extends TestCase
             'Joseph',
             'Seguin',
             'joseph.seguin@domain.tld',
+            null,
             false,
             Uuid::fromString(self::ADHERENT_1_UUID)
         );
@@ -52,6 +53,7 @@ class EventRegistrationTest extends TestCase
             'Rose',
             'Leroy',
             'rose-lr@domain.tld',
+            null,
             true
         );
 

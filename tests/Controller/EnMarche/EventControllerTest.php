@@ -7,10 +7,10 @@ use App\DataFixtures\ORM\LoadCommitteeEventData;
 use App\DataFixtures\ORM\LoadEventCategoryData;
 use App\Entity\Event\EventInvite;
 use App\Entity\Event\EventRegistration;
-use App\Entity\NewsletterSubscription;
+use App\Entity\Renaissance\NewsletterSubscription;
+use App\Mailer\Message\BesoinDEurope\EuNewsletterSubscriptionConfirmationMessage;
 use App\Mailer\Message\EventInvitationMessage;
-use App\Mailer\Message\EventRegistrationConfirmationMessage;
-use App\Mailer\Message\NewsletterSubscriptionConfirmationMessage;
+use App\Mailer\Message\Renaissance\RenaissanceEventRegistrationConfirmationMessage;
 use App\Repository\EmailRepository;
 use App\Repository\EventRegistrationRepository;
 use App\Repository\NewsletterSubscriptionRepository;
@@ -32,7 +32,7 @@ class EventControllerTest extends AbstractEventControllerTestCase
     {
         Chronos::setTestNow('2018-05-18');
 
-        $this->assertCount(5, $this->subscriptionsRepository->findAll());
+        $this->assertCount(0, $this->getRepository(NewsletterSubscription::class)->findAll());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/');
 
@@ -75,13 +75,13 @@ class EventControllerTest extends AbstractEventControllerTestCase
                 'firstName' => 'Pauline',
                 'emailAddress' => 'paupau75@example.org',
                 'lastName' => '75001',
-                'newsletterSubscriber' => true,
+                'joinNewsletter' => true,
                 'acceptTerms' => true,
             ],
         ]));
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadCommitteeEventData::EVENT_1_UUID, 'paupau75@example.org'));
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'paupau75@example.org'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(RenaissanceEventRegistrationConfirmationMessage::class, 'paupau75@example.org'));
 
         $crawler = $this->client->followRedirect();
 
@@ -91,16 +91,15 @@ class EventControllerTest extends AbstractEventControllerTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertCount(1, $this->emailRepository->findMessages(NewsletterSubscriptionConfirmationMessage::class));
+        $this->assertCount(1, $this->emailRepository->findMessages(EuNewsletterSubscriptionConfirmationMessage::class));
 
-        $this->assertCount(6, $subscriptions = $this->subscriptionsRepository->findAll());
+        $this->assertCount(1, $subscriptions = $this->getRepository(NewsletterSubscription::class)->findAll());
 
         /** @var NewsletterSubscription $subscription */
-        $subscription = $subscriptions[5];
+        $subscription = $subscriptions[0];
 
         $this->assertSame('paupau75@example.org', $subscription->getEmail());
-        $this->assertNull($subscription->getPostalCode());
-        $this->assertNull($subscription->getCountry());
+        $this->assertNull($subscription->zipCode);
 
         Chronos::setTestNow();
     }
@@ -132,7 +131,7 @@ class EventControllerTest extends AbstractEventControllerTestCase
         $this->client->followRedirect();
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadCommitteeEventData::EVENT_1_UUID, 'deputy@en-marche-dev.fr'));
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'deputy@en-marche-dev.fr'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(RenaissanceEventRegistrationConfirmationMessage::class, 'deputy@en-marche-dev.fr'));
 
         $crawler = $this->client->followRedirect();
 

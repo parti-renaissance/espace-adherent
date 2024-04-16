@@ -8,18 +8,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventRegistrationCommandHandler
 {
-    private $dispatcher;
-    private $factory;
-    private $manager;
-
     public function __construct(
-        EventDispatcherInterface $dispatcher,
-        EventRegistrationFactory $factory,
-        EventRegistrationManager $manager
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly EventRegistrationFactory $factory,
+        private readonly EventRegistrationManager $manager
     ) {
-        $this->dispatcher = $dispatcher;
-        $this->factory = $factory;
-        $this->manager = $manager;
     }
 
     public function handle(EventRegistrationCommand $command, bool $sendMail = true): void

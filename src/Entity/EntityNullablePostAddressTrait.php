@@ -15,7 +15,7 @@ trait EntityNullablePostAddressTrait
      */
     protected $postAddress;
 
-    public function getPostAddressModel(): NullablePostAddress
+    public function getPostAddressModel(): ?NullablePostAddress
     {
         return $this->postAddress;
     }
