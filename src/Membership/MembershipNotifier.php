@@ -48,6 +48,12 @@ class MembershipNotifier implements LoggerAwareInterface
                 $this->callbackManager->generateUrl('app_donation_index', [], UrlGeneratorInterface::ABSOLUTE_URL),
                 $this->callbackManager->generateUrl('app_my_committee_show_current', [], UrlGeneratorInterface::ABSOLUTE_URL),
             ));
+
+            return;
+        }
+
+        if (MembershipSourceEnum::BESOIN_D_EUROPE === $adherent->getSource()) {
+            $this->transactionalMailer->sendMessage(Message\BesoinDEurope\BesoinDEuropeAccountCreatedMessage::create($adherent));
         }
     }
 
