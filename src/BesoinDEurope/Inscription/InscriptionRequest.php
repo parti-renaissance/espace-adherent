@@ -3,10 +3,16 @@
 namespace App\BesoinDEurope\Inscription;
 
 use App\Address\Address;
+use App\Membership\MembershipRequest\MembershipInterface;
+use App\Membership\MembershipSourceEnum;
 use App\Validator\StrictEmail;
+use App\Validator\UniqueMembership;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class InscriptionRequest
+/**
+ * @UniqueMembership
+ */
+class InscriptionRequest implements MembershipInterface
 {
     /**
      * @Assert\NotBlank
@@ -61,4 +67,14 @@ class InscriptionRequest
 
     public ?string $utmSource = null;
     public ?string $utmCampaign = null;
+
+    public function getEmailAddress(): ?string
+    {
+        return $this->email;
+    }
+
+    public function getSource(): ?string
+    {
+        return MembershipSourceEnum::BESOIN_D_EUROPE;
+    }
 }
