@@ -39,7 +39,7 @@ class FurtherInformationController extends AbstractController
             $adherent->finishAdhesionStep(AdhesionStepEnum::FURTHER_INFORMATION);
             $entityManager->flush();
 
-            return $this->redirectToRoute(FinishController::ROUTE_NAME);
+            return $this->redirectToRoute(CommunicationReminderController::ROUTE_NAME);
         }
 
         return $this->renderForm('besoindeurope/inscription/further_information.html.twig', [
