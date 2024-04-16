@@ -28,7 +28,7 @@ class JecouteAdherentNormalizer extends AdherentNormalizer
             'last_month' => $this->dataSurveyRepository->countByAdherentForLastMonth($object),
         ];
 
-        $data['data_corner_access'] = $this->authorizationChecker->isGranted(DataCornerVoter::DATA_CORNER, $object);
+        $data['cadre_access'] = $this->authorizationChecker->isGranted(DataCornerVoter::DATA_CORNER, $object);
 
         return $data;
     }
