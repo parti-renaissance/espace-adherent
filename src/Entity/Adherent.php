@@ -273,6 +273,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
+    private $activationRemindedAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
     private $membershipRemindedAt;
 
     /**
@@ -1371,6 +1376,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getActivatedAt(): ?\DateTime
     {
         return $this->activatedAt;
+    }
+
+    public function setActivationReminded(): void
+    {
+        $this->activationRemindedAt = new \DateTime();
     }
 
     public function setMembershipReminded(): void
