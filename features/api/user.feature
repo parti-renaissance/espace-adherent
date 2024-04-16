@@ -16,6 +16,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
+      "id": "e69755",
       "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
       "email_address": "carl999@example.fr",
       "email_subscribed": true,
@@ -30,7 +31,9 @@ Feature:
       "surveys": {
         "total": 0,
         "last_month": 0
-      }
+      },
+      "tags": [],
+      "data_corner_access": false
     }
     """
 
@@ -41,6 +44,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
+        "id": "a04656",
         "nickname": "kikouslove",
         "email_address": "jacques.picard@en-marche.fr",
         "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
@@ -55,7 +59,9 @@ Feature:
         "surveys": {
             "total": 7,
             "last_month": 7
-        }
+        },
+        "tags": [],
+        "data_corner_access": false
     }
     """
 
