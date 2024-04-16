@@ -110,9 +110,9 @@ const FirstForm = (props) => ({
         return this._postPersistEmail()
             .then((response) => response.json())
             .then((payload) => {
+                this.generalNotification = null;
                 if (this.isNotifResponse(payload)) {
                     if ('success' === payload.status) {
-                        this.generalNotification = null;
                         this.handleNextStep();
                         this.submitted = true;
                         this.submittedValues = {

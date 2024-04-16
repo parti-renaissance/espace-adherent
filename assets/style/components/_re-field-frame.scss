@@ -6,15 +6,10 @@
     border-bottom-left-radius: 0 !important;
     border-top-left-radius: 0 !important;
     width: 100% !important;
-
-    &.active {
-        z-index: 20;
-    }
 }
 
 .re-tel .re-textfield-select {
     left: 2px;
-
 }
 
 .re-textfield-select .re-field-frame {
@@ -29,8 +24,6 @@
     }
 
     .re-input-option {
-
-
         > div {
             display: flex;
             flex-direction: column;
@@ -49,7 +42,6 @@
         &::placeholder {
             @apply text-ui_gray-60 text-sm sm:text-base;
         }
-
     }
 
     .frc-captcha {
@@ -93,10 +85,6 @@
             @apply border-ui_green-50 outline-ui_green-20
         }
 
-        &.re-field-frame--warning {
-            //@apply border-ui_yellow-80 outline-ui_yellow-20
-        }
-
         &.re-field-frame--error {
             @apply border-ui_red-50 outline-ui_red-20
         }
@@ -109,12 +97,12 @@
             @apply bg-ui_green-5 border-ui_green-50
         }
 
-        &.re-field-frame--warning {
-            //@apply bg-ui_yellow-5 border-ui_yellow-80
-        }
-
         &.re-field-frame--error {
             @apply bg-ui_red-5 border-ui_red-50
         }
+    }
+
+    &-select.active {
+        z-index: 10;
     }
 }

@@ -76,7 +76,7 @@ const xReSelect = (props) => {
         /**
          * @param {?Event} event
          */
-        handleChangeSetValue(event) {
+        handleChangeSetValue() {
             this.isValueSet = false;
             this.toggle = true;
             this.$nextTick(() => {
@@ -89,7 +89,7 @@ const xReSelect = (props) => {
         /**
          * @param {?Event} event
          */
-        handleClickAway(event) {
+        handleClickAway() {
             if (false === this.toggle) return;
             if (!this.isValueSet) {
                 if (this.filteredOptions[0]) {

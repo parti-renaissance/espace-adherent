@@ -12,7 +12,7 @@
     @x-validate:{{ id }}.window="setData($event.detail)"
         {% endif %}>
 
-    <div class="relative flex-col flex justify-center">
+    <div class="flex-col flex justify-center">
         <script>
             if (!window.options_{{ id }}) {
                 window.options_{{ id }} = JSON.parse(`{{ options is defined ? options|json_encode|raw: '[]' }}`);
@@ -28,7 +28,7 @@
                 onQuery: {{ attr.onQuery is defined ? attr.onQuery : 'null' }},
                 blocked: {{ blocked ? 'true' : 'false' }},
              })"
-             class="re-field-frame overflow-hidden !p-0 !h-auto !justify-between {{ disabled ? 'opacity-50 pointer-events-none cursor-not-allowed' : '' }}
+             class="re-field-frame re-field-frame-select overflow-hidden !p-0 !h-auto !justify-between {{ disabled ? 'opacity-50 pointer-events-none cursor-not-allowed' : '' }}
                        {{ (status is defined ? ' re-field-frame--' ~ status) }}"
              x-bind:class="[toggle ? 'active' : '', status ? `re-field-frame--${status}` : '', ].join(' ')"
              x-on:click.away="handleClickAway"
@@ -64,7 +64,7 @@
             </div>
             <div x-show="toggle && filteredOptions.length > 0" class="max-h-[200px] overflow-y-scroll">
                 <hr>
-                <ul>
+                <div>
                     <template x-for="option in filteredOptions">
                         <twig:Atoms:ReInputOption
                                 xSyncSelected="selected.value === option.value"
@@ -74,7 +74,7 @@
                                 x-effect="isOptionSelected(option) ? $el.scrollIntoView({block: 'nearest', inline: 'nearest'}) : ''"
                         />
                     </template>
-                </ul>
+                </div>
             </div>
             <input {{ attributes.without('class', 'options', 'preferredOptions') }}
                     x-ref="select"
