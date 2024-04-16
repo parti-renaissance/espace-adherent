@@ -33,7 +33,7 @@ Feature:
         "last_month": 0
       },
       "tags": [],
-      "data_corner_access": false
+      "cadre_access": false
     }
     """
 
@@ -61,7 +61,7 @@ Feature:
             "last_month": 7
         },
         "tags": [],
-        "data_corner_access": false
+        "cadre_access": false
     }
     """
 
