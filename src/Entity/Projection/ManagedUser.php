@@ -4,6 +4,7 @@ namespace App\Entity\Projection;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Adherent\Tag\TranslatedTagInterface;
 use App\Collection\ZoneCollection;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
@@ -61,7 +62,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  *     },
  * )
  */
-class ManagedUser
+class ManagedUser implements TranslatedTagInterface
 {
     use EntityZoneTrait;
 

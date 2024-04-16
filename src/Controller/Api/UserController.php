@@ -10,6 +10,7 @@ use App\Exception\AdherentTokenAlreadyUsedException;
 use App\Exception\AdherentTokenExpiredException;
 use App\Exception\AdherentTokenMismatchException;
 use App\Membership\AdherentResetPasswordHandler;
+use App\Normalizer\TranslateAdherentTagNormalizer;
 use App\OAuth\Model\ClientApiUser;
 use App\OAuth\Model\DeviceApiUser;
 use App\OAuth\OAuthTokenGenerator;
@@ -45,7 +46,7 @@ class UserController extends AbstractController
         }
 
         return new JsonResponse(
-            $serializer->serialize($user, 'json', ['groups' => $this->getGrantedNormalizationGroups()]),
+            $serializer->serialize($user, 'json', $this->getGrantedNormalizationContext()),
             JsonResponse::HTTP_OK,
             [],
             true
@@ -71,17 +72,18 @@ class UserController extends AbstractController
         );
     }
 
-    private function getGrantedNormalizationGroups(): array
+    private function getGrantedNormalizationContext(): array
     {
-        $groups = ['legacy'];
+        $context = ['groups' => ['legacy']];
 
         if ($this->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')) {
-            $groups = ['jemarche_user_profile'];
+            $context['groups'] = ['jemarche_user_profile'];
+            $context[TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR] = true;
         }
 
-        $groups[] = 'user_profile';
+        $context['groups'][] = 'user_profile';
 
-        return $groups;
+        return $context;
     }
 
     #[Route(path: '/profile/mot-de-passe/{user_uuid}/{create_password_token}', name: 'user_create_password', requirements: ['user_uuid' => '%pattern_uuid%', 'reset_password_token' => '%pattern_sha1%'], methods: ['POST'])]

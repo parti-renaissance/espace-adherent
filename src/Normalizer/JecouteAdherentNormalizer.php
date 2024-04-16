@@ -3,6 +3,8 @@
 namespace App\Normalizer;
 
 use App\Repository\Jecoute\DataSurveyRepository;
+use App\Security\Voter\DataCornerVoter;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 
 class JecouteAdherentNormalizer extends AdherentNormalizer
@@ -11,11 +13,10 @@ class JecouteAdherentNormalizer extends AdherentNormalizer
 
     protected const ALREADY_CALLED = 'JECOUTE_ADHERENT_NORMALIZER_ALREADY_CALLED';
 
-    private $dataSurveyRepository;
-
-    public function __construct(DataSurveyRepository $dataSurveyRepository)
-    {
-        $this->dataSurveyRepository = $dataSurveyRepository;
+    public function __construct(
+        private readonly DataSurveyRepository $dataSurveyRepository,
+        private readonly AuthorizationCheckerInterface $authorizationChecker
+    ) {
     }
 
     public function normalize($object, $format = null, array $context = [])
@@ -26,6 +27,8 @@ class JecouteAdherentNormalizer extends AdherentNormalizer
             'total' => $this->dataSurveyRepository->countByAdherent($object),
             'last_month' => $this->dataSurveyRepository->countByAdherentForLastMonth($object),
         ];
+
+        $data['cadre_access'] = $this->authorizationChecker->isGranted(DataCornerVoter::DATA_CORNER, $object);
 
         return $data;
     }

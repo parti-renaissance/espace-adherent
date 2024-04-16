@@ -2,6 +2,7 @@
 
 namespace App\Entity\ProcurationV2;
 
+use App\Adherent\Tag\TranslatedTagInterface;
 use App\Entity\Adherent;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
@@ -23,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\MappedSuperclass
  */
-abstract class AbstractProcuration implements ZoneableEntity
+abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

@@ -12,13 +12,10 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
 {
     use NormalizerAwareTrait;
 
-    private $adherentInterests;
-    private $campaignHistoryRepository;
-
-    public function __construct(array $adherentInterests, CampaignHistoryRepository $campaignHistoryRepository)
-    {
-        $this->adherentInterests = $adherentInterests;
-        $this->campaignHistoryRepository = $campaignHistoryRepository;
+    public function __construct(
+        private readonly array $adherentInterests,
+        private readonly CampaignHistoryRepository $campaignHistoryRepository
+    ) {
     }
 
     private const LEGACY_MAPPING = [

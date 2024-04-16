@@ -8,6 +8,7 @@ use App\Address\PostAddressFactory;
 use App\Adherent\Contribution\ContributionAmountUtils;
 use App\Adherent\LastLoginGroupEnum;
 use App\Adherent\Tag\TagEnum;
+use App\Adherent\Tag\TranslatedTagInterface;
 use App\AdherentProfile\AdherentProfile;
 use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Request\MembershipRequest;
@@ -119,7 +120,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={},
  * )
  */
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface, TranslatedTagInterface
 {
     use EntityCrudTrait;
     use EntityIdentityTrait;
@@ -876,7 +877,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private Collection $revenueDeclarations;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
+     * @Groups({
+     *     "national_event_inscription:webhook",
+     *     "jemarche_user_profile"
+     * })
      *
      * @ORM\Column(type="simple_array", nullable=true)
      */
@@ -3446,5 +3450,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isBesoinDEuropeUser(): bool
     {
         return MembershipSourceEnum::BESOIN_D_EUROPE === $this->source;
+    }
+
+    /**
+     * @Groups({"jemarche_user_profile"})
+     * @SerializedName("id")
+     */
+    public function getPublicId(): string
+    {
+        return 6 > ($idLength = \strlen($this->id))
+            ? substr($this->uuid->toString(), 0, 6 - $idLength).$this->id
+            : substr($this->id, -6);
     }
 }

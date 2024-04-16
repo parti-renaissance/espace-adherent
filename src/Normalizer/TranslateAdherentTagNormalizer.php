@@ -4,8 +4,8 @@ namespace App\Normalizer;
 
 use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagTranslator;
+use App\Adherent\Tag\TranslatedTagInterface;
 use App\Entity\ProcurationV2\AbstractProcuration;
-use App\Entity\Projection\ManagedUser;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -34,7 +34,7 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
 
             $callback = fn (string $tag) => $this->tagTranslator->trans($tag, false);
 
-            if ($object instanceof ManagedUser || $object instanceof AbstractProcuration) {
+            if ($object instanceof TranslatedTagInterface) {
                 $callback = fn (string $tag) => ['label' => $this->tagTranslator->trans($tag, false), 'type' => TagEnum::getMainLevel($tag)];
             }
 
@@ -56,7 +56,6 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
     {
         return
             (\is_array($data) && \array_key_exists('tags', $data))
-            || $data instanceof ManagedUser
-            || $data instanceof AbstractProcuration;
+            || $data instanceof TranslatedTagInterface;
     }
 }
