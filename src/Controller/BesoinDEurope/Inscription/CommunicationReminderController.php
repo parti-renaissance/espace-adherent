@@ -4,8 +4,6 @@ namespace App\Controller\BesoinDEurope\Inscription;
 
 use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Request\UpdateCommunicationRequest;
-use App\Controller\Renaissance\Adhesion\AdhesionController;
-use App\Controller\Renaissance\Adhesion\CommitteeController;
 use App\Entity\Adherent;
 use App\Form\AdhesionCommunicationType;
 use App\Repository\SubscriptionTypeRepository;
