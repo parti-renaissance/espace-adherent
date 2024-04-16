@@ -75,7 +75,7 @@ class EventControllerTest extends AbstractEventControllerTestCase
                 'firstName' => 'Pauline',
                 'emailAddress' => 'paupau75@example.org',
                 'lastName' => '75001',
-                'newsletterSubscriber' => true,
+                'joinNewsletter' => true,
                 'acceptTerms' => true,
             ],
         ]));

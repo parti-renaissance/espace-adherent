@@ -36,9 +36,9 @@ class EventRegistrationType extends AbstractType
         $registration = $builder->getData();
         if (
             !$this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')
-            || ($registration instanceof EventRegistrationCommand && !$registration->isNewsletterSubscriber())
+            || ($registration instanceof EventRegistrationCommand && !$registration->isJoinNewsletter())
         ) {
-            $builder->add('newsletterSubscriber', CheckboxType::class, ['required' => false]);
+            $builder->add('joinNewsletter', CheckboxType::class, ['required' => false]);
         }
     }
 

@@ -5,6 +5,7 @@ namespace App\Controller\Api\Event;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationCommandHandler;
+use App\Repository\AdherentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,8 @@ class SubscribeAsAnonymousController extends AbstractController
     public function __construct(
         private readonly EventRegistrationCommandHandler $handler,
         private readonly SerializerInterface $serializer,
-        private readonly ValidatorInterface $validator
+        private readonly ValidatorInterface $validator,
+        private readonly AdherentRepository $adherentRepository,
     ) {
     }
 
@@ -43,10 +45,9 @@ class SubscribeAsAnonymousController extends AbstractController
             return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        $this->handler->handle(
-            $command,
-            $event->needNotifyForRegistration()
-        );
+        $command->setAdherent($this->adherentRepository->findOneForMatching($command->getEmailAddress(), $command->getFirstName(), $command->getLastName()));
+
+        $this->handler->handle($command, $event->needNotifyForRegistration());
 
         return $this->json('OK', Response::HTTP_CREATED);
     }

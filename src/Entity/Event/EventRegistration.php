@@ -64,6 +64,7 @@ class EventRegistration
         string $firstName,
         string $lastName,
         string $emailAddress,
+        ?string $postalCode,
         bool $newsletterSubscriber = false,
         ?UuidInterface $adherentUuid = null,
         ?string $source = null,
@@ -78,6 +79,7 @@ class EventRegistration
         $this->adherentUuid = $adherentUuid;
         $this->source = $source;
         $this->createdAt = new \DateTime($createdAt);
+        $this->postalCode = $postalCode;
     }
 
     public function getEvent(): BaseEvent
