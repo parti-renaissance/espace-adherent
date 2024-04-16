@@ -7,6 +7,7 @@ use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Command\GenerateActivationCodeCommand;
 use App\Adhesion\Exception\ActivationCodeExceptionInterface;
 use App\Adhesion\Request\ValidateAccountRequest;
+use App\BesoinDEurope\Inscription\Command\InscriptionConfirmationCommand;
 use App\Entity\Adherent;
 use App\Form\ActivateEmailByCodeType;
 use App\Form\ConfirmActionType;
@@ -57,6 +58,9 @@ class ActivateEmailController extends AbstractController
             if ($form->get('validate')->isClicked()) {
                 try {
                     $this->activationCodeManager->validate((string) $validateAccountRequest->code, $adherent);
+
+                    $this->bus->dispatch(new InscriptionConfirmationCommand($adherent->getUuid()));
+
                     $this->addFlash('success', 'Votre adresse email a bien été validée !');
 
                     return $this->redirectToRoute(CreatePasswordController::ROUTE_NAME);
