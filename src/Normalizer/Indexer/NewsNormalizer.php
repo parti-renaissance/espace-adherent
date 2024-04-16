@@ -52,4 +52,16 @@ class NewsNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     {
         return $this->buildZoneCodes($object->getZone());
     }
+
+    /** @param News $object */
+    protected function getCtaLabel(object $object): ?string
+    {
+        return $object->getLinkLabel();
+    }
+
+    /** @param News $object */
+    protected function getCtaLink(object $object): ?string
+    {
+        return $object->getExternalLink();
+    }
 }

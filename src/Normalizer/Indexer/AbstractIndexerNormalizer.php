@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 abstract class AbstractIndexerNormalizer implements NormalizerInterface
 {
-    final public function supportsNormalization($data, $format = null)
+    final public function supportsNormalization($data, $format = null): bool
     {
         return is_a($data, $this->getClassName()) && Searchable::NORMALIZATION_FORMAT === $format;
     }
@@ -16,6 +16,6 @@ abstract class AbstractIndexerNormalizer implements NormalizerInterface
 
     protected function formatDate(?\DateTimeInterface $dateTime, string $format = 'd/m/Y H:i'): ?string
     {
-        return $dateTime ? $dateTime->format($format) : null;
+        return $dateTime?->format($format);
     }
 }
