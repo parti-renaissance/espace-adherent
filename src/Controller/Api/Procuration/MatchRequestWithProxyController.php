@@ -44,7 +44,7 @@ class MatchRequestWithProxyController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $procurationHandler->match($request, $proxy);
+        $procurationHandler->match($request, $proxy, $data['email_copy'] ?? true);
 
         return $this->json('OK');
     }

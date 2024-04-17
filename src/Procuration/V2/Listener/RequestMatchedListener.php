@@ -53,7 +53,7 @@ class RequestMatchedListener implements EventSubscriberInterface
             null !== $this->proxyBeforeUpdate
             && $proxy !== $this->proxyBeforeUpdate
         ) {
-            $this->matchingHistoryHandler->createUnmatch($request, $this->proxyBeforeUpdate);
+            $this->matchingHistoryHandler->createUnmatch($request, $this->proxyBeforeUpdate, false);
 
             $this->procurationNotifier->sendUnmatchConfirmation($request, $this->proxyBeforeUpdate);
         }
@@ -62,7 +62,7 @@ class RequestMatchedListener implements EventSubscriberInterface
             null !== $proxy
             && $proxy !== $this->proxyBeforeUpdate
         ) {
-            $this->matchingHistoryHandler->createMatch($request, $proxy);
+            $this->matchingHistoryHandler->createMatch($request, $proxy, false);
 
             $this->procurationNotifier->sendMatchConfirmation($request, $proxy);
         }

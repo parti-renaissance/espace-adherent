@@ -2,15 +2,12 @@
 
 namespace App\Procuration\V2;
 
-use App\Entity\Adherent;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
-use App\Procuration\V2\Command\AbstractCommand;
 use App\Procuration\V2\Command\ProxyCommand;
 use App\Procuration\V2\Command\RequestCommand;
 use App\Procuration\V2\Event\ProcurationEvent;
 use App\Procuration\V2\Event\ProcurationEvents;
-use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -19,7 +16,6 @@ class ProcurationHandler
     public function __construct(
         private readonly ProcurationFactory $factory,
         private readonly EntityManagerInterface $entityManager,
-        private readonly AdherentRepository $adherentRepository,
         private readonly ProcurationNotifier $notifier,
         private readonly MatchingHistoryHandler $matchingHistoryHandler,
         private readonly EventDispatcherInterface $eventDispatcher
@@ -72,7 +68,7 @@ class ProcurationHandler
         $this->entityManager->flush();
     }
 
-    public function match(Request $request, Proxy $proxy): void
+    public function match(Request $request, Proxy $proxy, bool $emailCopy): void
     {
         $proxy->addRequest($request);
         $this->entityManager->flush();
@@ -80,12 +76,12 @@ class ProcurationHandler
         $this->updateRequestStatus($request);
         $this->updateProxyStatus($proxy);
 
-        $history = $this->matchingHistoryHandler->createMatch($request, $proxy);
+        $history = $this->matchingHistoryHandler->createMatch($request, $proxy, $emailCopy);
 
-        $this->notifier->sendMatchConfirmation($request, $proxy, $history->matcher);
+        $this->notifier->sendMatchConfirmation($request, $proxy, $emailCopy ? $history->matcher : null);
     }
 
-    public function unmatch(Request $request): void
+    public function unmatch(Request $request, bool $emailCopy): void
     {
         if (!$proxy = $request->proxy) {
             return;
@@ -97,13 +93,8 @@ class ProcurationHandler
         $this->updateRequestStatus($request);
         $this->updateProxyStatus($proxy);
 
-        $history = $this->matchingHistoryHandler->createUnmatch($request, $proxy);
+        $history = $this->matchingHistoryHandler->createUnmatch($request, $proxy, $emailCopy);
 
-        $this->notifier->sendUnmatchConfirmation($request, $proxy, $history->matcher);
-    }
-
-    private function findAdherentFromCommand(AbstractCommand $command): ?Adherent
-    {
-        return $this->adherentRepository->findOneByEmail($command->email);
+        $this->notifier->sendUnmatchConfirmation($request, $proxy, $emailCopy ? $history->matcher : null);
     }
 }

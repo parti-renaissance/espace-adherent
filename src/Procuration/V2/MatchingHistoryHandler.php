@@ -18,9 +18,9 @@ class MatchingHistoryHandler
     ) {
     }
 
-    public function createMatch(Request $request, Proxy $proxy): MatchingHistory
+    public function createMatch(Request $request, Proxy $proxy, bool $emailCopy): MatchingHistory
     {
-        $history = MatchingHistory::createMatch($request, $proxy);
+        $history = MatchingHistory::createMatch($request, $proxy, $emailCopy);
 
         $this->addMatcher($history);
 
@@ -29,9 +29,9 @@ class MatchingHistoryHandler
         return $history;
     }
 
-    public function createUnmatch(Request $request, Proxy $proxy): MatchingHistory
+    public function createUnmatch(Request $request, Proxy $proxy, bool $emailCopy): MatchingHistory
     {
-        $history = MatchingHistory::createUnmatch($request, $proxy);
+        $history = MatchingHistory::createUnmatch($request, $proxy, $emailCopy);
 
         $this->addMatcher($history);
 
