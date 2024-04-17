@@ -76,13 +76,15 @@ class MembershipNotifier implements LoggerAwareInterface
 
     public function sendUnregistrationMessage(Adherent $adherent): void
     {
-        $this->transactionalMailer->sendMessage(
-            match ($adherent->getSource()) {
-                MembershipSourceEnum::RENAISSANCE => Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage::createFromAdherent($adherent),
-                MembershipSourceEnum::BESOIN_D_EUROPE => Message\BesoinDEurope\BesoinDEuropeTerminateMembershipMessage::create($adherent),
-                default => Message\AdherentTerminateMembershipMessage::createFromAdherent($adherent)
-            }
-        );
+        if (MembershipSourceEnum::BESOIN_D_EUROPE === $adherent->getSource()) {
+            $this->transactionalMailer->sendMessage(Message\BesoinDEurope\BesoinDEuropeTerminateMembershipMessage::create($adherent));
+
+            return;
+        }
+
+        if (MembershipSourceEnum::RENAISSANCE === $adherent->getSource()) {
+            $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage::createFromAdherent($adherent));
+        }
     }
 
     public function sendAccountCreatedEmail(Adherent $adherent): void

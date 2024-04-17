@@ -11,7 +11,6 @@ use App\Entity\Reporting\EmailSubscriptionHistory;
 use App\Entity\SubscriptionType;
 use App\Entity\Unregistration;
 use App\Mailer\Message\AdherentContactMessage;
-use App\Mailer\Message\AdherentTerminateMembershipMessage;
 use App\Mailer\Message\CommitteeCreationConfirmationMessage;
 use App\Repository\CommitteeRepository;
 use App\Repository\EmailRepository;
@@ -876,8 +875,6 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertSame(0, $errors->count());
         $this->assertSame('Votre adhésion et votre compte En Marche ont bien été supprimés et vos données personnelles effacées de notre base.', trim($crawler->filter('#is_not_adherent h1')->eq(0)->text()));
-
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(AdherentTerminateMembershipMessage::class, $userEmail));
 
         $this->client->getContainer()->get('test.'.RemoveAdherentAndRelatedDataCommandHandler::class)(
             new RemoveAdherentAndRelatedDataCommand(Uuid::fromString($uuid))
