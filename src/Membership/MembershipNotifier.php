@@ -42,7 +42,10 @@ class MembershipNotifier implements LoggerAwareInterface
     public function sendActivationReminder(Adherent $adherent): void
     {
         if (MembershipSourceEnum::BESOIN_D_EUROPE === $adherent->getSource()) {
-            $this->transactionalMailer->sendMessage(Message\BesoinDEurope\BesoinDEuropeActivationReminderMessage::create($adherent));
+            $this->transactionalMailer->sendMessage(Message\BesoinDEurope\BesoinDEuropeActivationReminderMessage::create(
+                $adherent,
+                $this->linkHandler->createLoginLink($adherent, null, AppCodeEnum::BESOIN_D_EUROPE)->getUrl()
+            ));
         }
     }
 

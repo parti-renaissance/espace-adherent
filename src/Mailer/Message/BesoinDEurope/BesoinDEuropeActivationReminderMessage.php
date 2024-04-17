@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 class BesoinDEuropeActivationReminderMessage extends AbstractBesoinDEuropeMessage
 {
-    public static function create(Adherent $adherent): self
+    public static function create(Adherent $adherent, string $loginLink): self
     {
         return new self(
             Uuid::uuid4(),
@@ -16,6 +16,7 @@ class BesoinDEuropeActivationReminderMessage extends AbstractBesoinDEuropeMessag
             '',
             [
                 'first_name' => self::escape($adherent->getFirstName()),
+                'login_link' => $loginLink,
             ],
         );
     }
