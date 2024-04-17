@@ -7,6 +7,7 @@ use App\AdherentProfile\AdherentProfileConfiguration;
 use App\AdherentProfile\AdherentProfileHandler;
 use App\Entity\Adherent;
 use App\Membership\MembershipRequestHandler;
+use App\Membership\MembershipSourceEnum;
 use App\OAuth\TokenRevocationAuthority;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -106,7 +107,13 @@ class ProfileController extends AbstractController
         /** @var Adherent $user */
         $user = $this->getUser();
 
-        $handler->terminateMembership($user, null, false, '[API] Compte supprimé par l\'adhérent');
+        $handler->terminateMembership(
+            $user,
+            null,
+            $user instanceof Adherent && MembershipSourceEnum::BESOIN_D_EUROPE === $user->getSource(),
+            '[API] Compte supprimé par l\'adhérent'
+        );
+
         $tokenRevocationAuthority->revokeUserTokens($user);
 
         return $this->json('OK');
