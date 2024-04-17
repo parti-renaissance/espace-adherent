@@ -53,7 +53,11 @@ class BesoinDEuropeRemindActivationCommand extends Command
             ->where('adherent.source = :source_bde')
             ->andWhere('adherent.activatedAt IS NULL')
             ->andWhere('adherent.activationRemindedAt IS NULL')
-            ->setParameter('source_bde', MembershipSourceEnum::BESOIN_D_EUROPE)
+            ->andWhere('adherent.registeredAt < :current_day')
+            ->setParameters([
+                'source_bde' => MembershipSourceEnum::BESOIN_D_EUROPE,
+                'current_day' => date('Y-m-d'),
+            ])
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
