@@ -9,7 +9,6 @@ use App\Entity\Donator;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\MyTeam;
 use App\Entity\Unregistration;
-use App\Mailer\Message\AdherentTerminateMembershipMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentAccountCreatedMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage;
 use App\Repository\AdherentRepository;
@@ -78,7 +77,6 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         $this->assertInstanceOf(Adherent::class, $adherent);
         $this->assertSame(0, $this->unregistrationRepository->count([]));
         $this->assertCountMails(0, RenaissanceAdherentTerminateMembershipMessage::class, $email);
-        $this->assertCountMails(0, AdherentTerminateMembershipMessage::class, $email);
         $adherentUuid = $adherent->getUuid()->toString();
 
         $this->client->request(Request::METHOD_GET, sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()));
@@ -109,7 +107,6 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         $this->assertNull($this->adherentRepository->findOneByEmail($email));
         $this->assertSame(1, $this->unregistrationRepository->count([]));
         $this->assertCountMails(($notification && $isRenaissance) ? 1 : 0, RenaissanceAdherentTerminateMembershipMessage::class, $email);
-        $this->assertCountMails(($notification && !$isRenaissance) ? 1 : 0, AdherentTerminateMembershipMessage::class, $email);
 
         $unregistration = $this->unregistrationRepository->findOneBy(['uuid' => $adherentUuid]);
         $this->assertInstanceOf(Unregistration::class, $unregistration);
