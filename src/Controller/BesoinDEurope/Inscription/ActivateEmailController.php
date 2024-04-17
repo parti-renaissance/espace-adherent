@@ -44,7 +44,7 @@ class ActivateEmailController extends AbstractController
         }
 
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::ACTIVATION)) {
-            return $this->redirectToRoute('vox_app');
+            return $this->redirectToRoute('vox_app_redirect');
         }
 
         $validateAccountRequest = new ValidateAccountRequest(MembershipSourceEnum::BESOIN_D_EUROPE);

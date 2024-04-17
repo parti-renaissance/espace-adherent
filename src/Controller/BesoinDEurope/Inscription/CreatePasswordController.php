@@ -26,7 +26,7 @@ class CreatePasswordController extends AbstractController
         }
 
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::PASSWORD)) {
-            return $this->redirectToRoute('vox_app');
+            return $this->redirectToRoute('vox_app_redirect');
         }
 
         $form = $this

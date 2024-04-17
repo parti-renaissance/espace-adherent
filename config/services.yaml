@@ -19,7 +19,6 @@ parameters:
     national_event_host:                  "%env(NATIONAL_EVENT_HOST)%"
     user_besoindeurope_host:              "%env(USER_BESOINDEUROPE_HOST)%"
     besoindeurope_host:                   "%env(BESOINDEUROPE_HOST)%"
-    vox_host:                             "%env(VOX_HOST)%"
     avecvous_qrcode_host:                 "%env(AVECVOUS_QRCODE_HOST)%"
     procuration_host:                     "%env(PROCURATION_HOST)%"
     assessor_host:                        "%env(ASSESSOR_HOST)%"

@@ -15,7 +15,7 @@
                         '_switch_user': object.emailAddress,
                         response_type: 'code',
                         client_id: get_vox_client_id(),
-                        scope: constant('App\\OAuth\\Model\\Scope::JEMARCHE_APP')
+                        scope: [constant('App\\OAuth\\Model\\Scope::JEMARCHE_APP'), constant('App\\OAuth\\Model\\Scope::READ_PROFILE'), constant('App\\OAuth\\Model\\Scope::WRITE_PROFILE')]|join(' ')
                     }) }}" class="btn btn-xs btn-default" title="Impersonnifier VOX">
                         <i class="fa fa-user-secret" aria-hidden="true"></i>
                         VOX 🇪🇺
