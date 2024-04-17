@@ -1066,17 +1066,17 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         );
                     }, $adherent->getZoneBasedRoles())),
                     'Mandats' => implode(', ', array_map(function (ElectedRepresentativeAdherentMandate $mandate): string {
-                        $zone = $mandate->zone;
+                        $str = $this->translator->trans('adherent.mandate.type.'.$mandate->mandateType);
 
-                        return sprintf(
-                            '%s [%s]',
-                            $this->translator->trans('adherent.mandate.type.'.$mandate->mandateType),
-                            sprintf(
-                                '%s (%s)',
+                        if ($zone = $mandate->zone) {
+                            $str .= sprintf(
+                                ' [%s (%s)]',
                                 $zone->getName(),
                                 $zone->getCode()
-                            )
-                        );
+                            );
+                        }
+
+                        return $str;
                     }, $adherent->getElectedRepresentativeMandates())),
                     'Date de création de compte' => $adherent->getRegisteredAt()?->format('d/m/Y H:i:s'),
                     'Date de dernière cotisation' => $adherent->getLastMembershipDonation()?->format('d/m/Y H:i:s'),
