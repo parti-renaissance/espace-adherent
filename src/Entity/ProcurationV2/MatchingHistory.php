@@ -31,6 +31,11 @@ class MatchingHistory
     public \DateTimeInterface $createdAt;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    public bool $emailCopy;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationV2\Request", inversedBy="matchingHistories")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
@@ -57,21 +62,23 @@ class MatchingHistory
     public function __construct(
         MatchingHistoryActionEnum $status,
         Request $request,
-        Proxy $proxy
+        Proxy $proxy,
+        bool $emailCopy
     ) {
         $this->status = $status;
         $this->request = $request;
         $this->proxy = $proxy;
+        $this->emailCopy = $emailCopy;
         $this->createdAt = new \DateTimeImmutable();
     }
 
-    public static function createMatch(Request $request, Proxy $proxy): self
+    public static function createMatch(Request $request, Proxy $proxy, bool $emailCopy): self
     {
-        return new self(MatchingHistoryActionEnum::MATCH, $request, $proxy);
+        return new self(MatchingHistoryActionEnum::MATCH, $request, $proxy, $emailCopy);
     }
 
-    public static function createUnmatch(Request $request, Proxy $proxy): self
+    public static function createUnmatch(Request $request, Proxy $proxy, bool $emailCopy): self
     {
-        return new self(MatchingHistoryActionEnum::UNMATCH, $request, $proxy);
+        return new self(MatchingHistoryActionEnum::UNMATCH, $request, $proxy, $emailCopy);
     }
 }
