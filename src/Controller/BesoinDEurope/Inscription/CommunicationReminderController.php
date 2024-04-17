@@ -33,7 +33,7 @@ class CommunicationReminderController extends AbstractController
         }
 
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::COMMUNICATION)) {
-            return $this->redirectToRoute('vox_app');
+            return $this->redirectToRoute('vox_app_redirect');
         }
 
         $acceptSms = $adherent->hasSmsSubscriptionType();
