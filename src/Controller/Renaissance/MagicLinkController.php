@@ -73,6 +73,7 @@ class MagicLinkController extends AbstractController
             'user' => $request->query->get('user'),
             'hash' => $request->query->get('hash'),
             'target_path' => $request->query->get('_target_path'),
+            'failure_path' => $request->query->get('_failure_path'),
         ]);
     }
 }

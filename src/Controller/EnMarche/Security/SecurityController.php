@@ -5,6 +5,7 @@ namespace App\Controller\EnMarche\Security;
 use App\Entity\Adherent;
 use App\Entity\AdherentChangeEmailToken;
 use App\Entity\AdherentResetPasswordToken;
+use App\Entity\Administrator;
 use App\Exception\AdherentTokenExpiredException;
 use App\Form\AdherentResetPasswordType;
 use App\Form\LoginType;
@@ -36,6 +37,10 @@ class SecurityController extends AbstractController
         ?string $app = null
     ): Response {
         if ($user = $this->getUser()) {
+            if ($user instanceof Administrator) {
+                return $this->redirectToRoute('admin_app_adherent_list');
+            }
+
             $this->addFlash('info', 'Vous êtes déjà connecté(e)');
 
             if ($app) {

@@ -16,6 +16,8 @@ interface AuthAppUrlGeneratorInterface
 
     public function generateForLoginSuccess(Adherent $adherent): string;
 
+    public function generateForLogoutSuccess(): string;
+
     public function generateSuccessResetPasswordLink(Request $request): string;
 
     public function generateCreatePasswordLink(

@@ -34,6 +34,11 @@ class UrlGenerator extends AbstractAppUrlGenerator
         return $this->urlGenerator->generate('vox_app_redirect');
     }
 
+    public function generateForLogoutSuccess(): string
+    {
+        return $this->urlGenerator->generate('vox_app');
+    }
+
     public function generateSuccessResetPasswordLink(Request $request): string
     {
         return $this->generateLoginLink();
