@@ -19,7 +19,7 @@ class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
     public function onLogoutSuccess(Request $request)
     {
         if ($currentApp = $this->appUrlManager->getAppCodeFromRequest($request)) {
-            return new RedirectResponse($this->appUrlManager->getUrlGenerator($currentApp)->generateHomepageLink());
+            return new RedirectResponse($this->appUrlManager->getUrlGenerator($currentApp)->generateForLogoutSuccess());
         }
 
         return new RedirectResponse('/');
