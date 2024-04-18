@@ -11,23 +11,3 @@
         }
     </style>
 {% endblock %}
-
-{% block sub_content %}
-    <div class="md:grid mb-[120px] md:grid-cols-2 w-full relative md:pt-[200px] pt-[56px]">
-        {% block side_content %}
-            <figure class="md:sticky md:top-[56px] md:h-[100vh] width-full flex flex-col justify-start items-center p-8 md:pt-16">
-                {% include 'besoindeurope/inscription/form_visual.svg.twig' %}
-
-                <h1 class="font-sharp font-semibold text-[30px]/[29px] text-black neg-letter-spacing--4">
-                    Avant le 9 juin<br/>
-                    nous avons <br/>
-                    <span class="text-[#00AEEF]">Besoin de vous !</span>
-                </h1>
-            </figure>
-        {% endblock %}
-
-        <div class="flex gap-8 flex-col md:p-5 md:pt-8 md:pl-0 items-center justify-center md:items-start">
-            {% block content_section '' %}
-        </div>
-    </div>
-{% endblock %}

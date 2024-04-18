@@ -40,7 +40,7 @@ class CreatePasswordController extends AbstractController
 
             $entityManager->flush();
 
-            $this->addFlash('success', 'Votre mot de passe a bien été sauvegardé !');
+            $this->addFlash('success', 'Votre mot de passe a bien été sauvegardé');
 
             return $this->redirectToRoute(FurtherInformationController::ROUTE_NAME);
         }

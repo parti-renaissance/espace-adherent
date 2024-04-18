@@ -4,86 +4,86 @@
 
 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
-{% block content_section %}
-    <twig:Atoms:ReCard class="max-w-[500px]" x-data="xFurtherInformationForm({
-        isElu: {{ (form.mandates.vars.value and form.mandates.vars.value|length ? 'true' : 'false')|e('js') }}
-    })">
-        {% include 'renaissance/partials/flashes.html.twig' with {slim: true} %}
+{% block sub_content %}
+    <div class="bg-[#F4F5F7] flex flex-col items-center py-20">
+        <twig:Atoms:ReCard class="max-w-[500px]" x-data="xFurtherInformationForm({
+            isElu: {{ (form.mandates.vars.value and form.mandates.vars.value|length ? 'true' : 'false')|e('js') }}
+        })">
+            {% include 'renaissance/partials/flashes.html.twig' with {slim: true} %}
 
-        {{ form_start(form, { attr: { 'x-ref': 'form', class: 'flex gap-6 flex-col'} }) }}
-            {{ form_errors(form) }}
+            {{ form_start(form, { attr: { 'x-ref': 'form', class: 'flex gap-6 flex-col'} }) }}
+                {{ form_errors(form) }}
 
-            <p class="font-medium">Informations complémentaires</p>
+                <p class="font-medium">Informations complémentaires</p>
 
-            <fieldset>
-                <twig:Molecules:ReCheckboxField id="is-elu" class="w-full" x-on:change="handleIsElu($event)">
-                    <label for="is-elu">Je suis élu (optionnel)</label>
-                </twig:Molecules:ReCheckboxField>
-            </fieldset>
-
-            <twig:ReParagraphStatus status="valid" x-show="isElu" x-cloak>
-                En déclarant vos mandats ici, nous préviendrons votre
-                <span class="font-medium">Président d’Assemblée départementale</span>
-                qui pourra, le cas échéant, vous inclure dans les élus de Renaissance.
-            </twig:ReParagraphStatus>
-
-            <fieldset class="flex flex-col gap-2.5" x-show="isElu" x-cloak id="elu-form">
-                {{ form_row(form.mandates) }}
-            </fieldset>
-
-            <p class="font-medium">Date de naissance</p>
-
-            <fieldset class="relative max-h-[55px]">
-                <fieldset class="flex gap-2.5 relative">
-                    {{ form_widget(form.birthdate.day, {label: false, attr: {
-                        class: "w-full",
-                        placeholder: 'Jour',
-                        validate: "['required']",
-                        onCheck: "setFieldValid('birthDay')",
-                        'x-on:change': "setDay($event.target.value)",
-                        searchBoxProps: {'x-numberonly': ''}
-                    }}) }}
-
-                    {{ form_widget(form.birthdate.month, {label: false, attr: {
-                        class: "w-full",
-                        placeholder: 'Mois',
-                        validate: "['required']",
-                        onCheck: "setFieldValid('birthMonth')",
-                        'x-on:change': "setMonth($event.target.value)",
-                    }}) }}
-
-                    {{ form_widget(form.birthdate.year, {label: false, attr: {
-                        class: "w-full",
-                        placeholder: 'Année',
-                        validate: "['required']",
-                        onCheck: "setFieldValid('birthYear')",
-                        'x-on:change': "setYear($event.target.value)",
-                        searchBoxProps: {'x-numberonly': ''}
-                    }}) }}
+                <fieldset>
+                    <twig:Molecules:ReCheckboxField id="is-elu" class="w-full" x-on:change="handleIsElu($event)">
+                        <label for="is-elu">Je suis élu (optionnel)</label>
+                    </twig:Molecules:ReCheckboxField>
                 </fieldset>
 
-                {{ form_errors(form.birthdate) }}
-            </fieldset>
+                <twig:ReParagraphStatus status="valid" x-show="isElu" x-cloak>
+                    Cette information sera donnée à nos équipes locales qui pourront vous recontacter le cas échéant.
+                </twig:ReParagraphStatus>
 
-            <hr class="border-dashed">
+                <fieldset class="flex flex-col gap-2.5" x-show="isElu" x-cloak id="elu-form">
+                    {{ form_row(form.mandates) }}
+                </fieldset>
 
-            <p class="font-medium">Numéro de téléphone</p>
+                <p class="font-medium">Date de naissance</p>
 
-            <fieldset>
-                {{ form_row(form.phone, {label: false }) }}
-            </fieldset>
+                <fieldset class="relative max-h-[55px]">
+                    <fieldset class="flex gap-2.5 relative">
+                        {{ form_widget(form.birthdate.day, {label: false, attr: {
+                            class: "w-full",
+                            placeholder: 'Jour',
+                            validate: "['required']",
+                            onCheck: "setFieldValid('birthDay')",
+                            'x-on:change': "setDay($event.target.value)",
+                            searchBoxProps: {'x-numberonly': ''}
+                        }}) }}
 
-            {{ form_row(form.acceptSmsNotification, {label: "Je souhaite recevoir les informations sur l'actualité de la campagne et ses communications politiques par SMS et téléphone"}) }}
+                        {{ form_widget(form.birthdate.month, {label: false, attr: {
+                            class: "w-full",
+                            placeholder: 'Mois',
+                            validate: "['required']",
+                            onCheck: "setFieldValid('birthMonth')",
+                            'x-on:change': "setMonth($event.target.value)",
+                        }}) }}
 
-            <twig:ReButton
-                color="black"
-                class="w-full"
-                loading="x:loading"
-                x-on:click="handleSubmit($event)"
-                x-bind:class="{disabled: !checkValidity()}"
-            >Valider</twig:ReButton>
-        {{ form_end(form) }}
-    </twig:Atoms:ReCard>
+                        {{ form_widget(form.birthdate.year, {label: false, attr: {
+                            class: "w-full",
+                            placeholder: 'Année',
+                            validate: "['required']",
+                            onCheck: "setFieldValid('birthYear')",
+                            'x-on:change': "setYear($event.target.value)",
+                            searchBoxProps: {'x-numberonly': ''}
+                        }}) }}
+                    </fieldset>
+
+                    {{ form_errors(form.birthdate) }}
+                </fieldset>
+
+                <hr class="border-dashed">
+
+                <p class="font-medium">Numéro de téléphone</p>
+
+                <fieldset>
+                    {{ form_row(form.phone, {label: false }) }}
+                </fieldset>
+
+                {{ form_row(form.acceptSmsNotification, {label: "Je souhaite recevoir les informations sur l'actualité de la campagne et ses communications politiques par SMS et téléphone"}) }}
+
+                <twig:ReButton
+                    color="black"
+                    class="w-full"
+                    loading="x:loading"
+                    x-on:click="handleSubmit($event)"
+                    x-bind:class="{disabled: !checkValidity()}"
+                >Valider</twig:ReButton>
+            {{ form_end(form) }}
+        </twig:Atoms:ReCard>
+    </div>
 {% endblock %}
 
 {% block final_javascripts %}
