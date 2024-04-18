@@ -299,9 +299,9 @@ app_renaissance:
     resource: "../src/Controller/Renaissance"
     type: "annotation"
 
-app_renaissance_national_event:
-    host:   "%national_event_host%"
-    resource: "../src/Controller/Renaissance/NationalEvent"
+app_bde_national_event:
+    host: "%national_event_host%"
+    resource: "../src/Controller/BesoinDEurope/NationalEvent"
     type: "annotation"
 
 app_besoindeurope:

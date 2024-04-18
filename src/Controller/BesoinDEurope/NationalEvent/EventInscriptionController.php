@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Renaissance\NationalEvent;
+namespace App\Controller\BesoinDEurope\NationalEvent;
 
 use App\Entity\NationalEvent\NationalEvent;
 use App\Event\Request\EventInscriptionRequest;
@@ -15,8 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-#[Route('/', name: 'app_renaissance_national_event_index', methods: ['GET', 'POST'])]
-#[Route('/{slug}', name: 'app_renaissance_national_event_by_slug', methods: ['GET', 'POST'])]
+#[Route('/', name: 'app_bde_national_event_index', methods: ['GET', 'POST'])]
+#[Route('/{slug}', name: 'app_bde_national_event_by_slug', methods: ['GET', 'POST'])]
 class EventInscriptionController extends AbstractController
 {
     private const SESSION_ID = 'nation_event:sess_id';
@@ -62,10 +62,10 @@ class EventInscriptionController extends AbstractController
 
             $this->addFlash('success', 'Votre inscription est bien enregistrée');
 
-            return $this->redirectToRoute('app_renaissance_national_event_inscription_confirmation', ['slug' => $event->getSlug()]);
+            return $this->redirectToRoute('app_bde_national_event_inscription_confirmation', ['slug' => $event->getSlug()]);
         }
 
-        return $this->renderForm('renaissance/national_event/event_inscription.html.twig', [
+        return $this->renderForm('besoindeurope/national_event/event_inscription.html.twig', [
             'form' => $form,
             'event' => $event,
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),

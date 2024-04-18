@@ -3,7 +3,7 @@
 {%- block canonical_url -%}
     {% apply spaceless %}
         {% if event is defined %}
-            {{ url('app_renaissance_national_event_by_slug', {slug: event.getSlug()}) }}
+            {{ url('app_bde_national_event_by_slug', {slug: event.getSlug()}) }}
         {% else %}
             {{ 'https://' ~ national_event_host }}
         {% endif %}

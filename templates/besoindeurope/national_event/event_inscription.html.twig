@@ -1,4 +1,4 @@
-{% extends 'renaissance/national_event/_layout.html.twig' %}
+{% extends 'besoindeurope/national_event/_layout.html.twig' %}
 
 {% block page_title 'Inscription' %}
 
@@ -30,11 +30,11 @@
 
 {% block content_section %}
     <main class="bg-[#F4F4F7] re_new_ui bg-primary">
-        {% include 'renaissance/national_event/partials/background_video.html.twig' %}
+        {% include 'besoindeurope/national_event/partials/background_video.html.twig' %}
 
         {{ form_start(form) }}
         <div class="md:grid sm:items-center mb-[120px] md:grid-cols-2 w-full z-10 relative" x-data="xNationalEventPage">
-            <div class="flex gap-8 flex-col mt-64 md:mt-[200px] pt-0 p-5 md:pl-0 md:col-start-2 items-center justify-center md:justify-start">
+            <div class="flex gap-8 flex-col mt-64 md:mt-[120px] pt-0 p-5 md:pl-0 md:col-start-2 items-center justify-center md:justify-start">
                 <twig:Atoms:ReCard class="max-w-[500px] re-step !gap-6 !border-black !border-[2px] ">
                     {% if event.intoImagePath %}
                         <img class="w-full" src="{{ static_asset(event.intoImagePath, {}, 0, national_event_host) }}" alt="{{ event.name }}">

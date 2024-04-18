@@ -61,7 +61,7 @@ class ActivateEmailController extends AbstractController
 
                     $this->bus->dispatch(new InscriptionConfirmationCommand($adherent->getUuid()));
 
-                    $this->addFlash('success', 'Votre adresse email a bien été validée !');
+                    $this->addFlash('success', 'Votre adresse email a bien été validée');
 
                     return $this->redirectToRoute(CreatePasswordController::ROUTE_NAME);
                 } catch (ActivationCodeExceptionInterface $e) {
@@ -71,7 +71,7 @@ class ActivateEmailController extends AbstractController
                 $limiter = $this->changeEmailLimiter->create('change_email.'.$adherent->getId());
 
                 if (!$limiter->consume()->isAccepted()) {
-                    $this->addFlash('error', 'Veuillez patienter quelques minutes avant de retenter.');
+                    $this->addFlash('error', 'Veuillez patienter quelques minutes avant de retenter');
 
                     return $this->redirectToRoute(self::ROUTE_NAME);
                 }
@@ -80,7 +80,7 @@ class ActivateEmailController extends AbstractController
                 $this->entityManager->flush();
                 $this->bus->dispatch(new GenerateActivationCodeCommand($adherent, true));
 
-                $this->addFlash('success', 'Votre adresse email a bien été modifiée ! Veuillez saisir le nouveau code reçu par email.');
+                $this->addFlash('success', 'Votre adresse email a bien été modifiée. Veuillez saisir le nouveau code reçu par email.');
 
                 return $this->redirectToRoute(self::ROUTE_NAME);
             }
@@ -105,7 +105,7 @@ class ActivateEmailController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->bus->dispatch(new GenerateActivationCodeCommand($adherent));
-                $this->addFlash('success', 'Un nouveau code vous a été envoyé par email.');
+                $this->addFlash('success', 'Un nouveau code vous a été envoyé par email');
             } catch (HandlerFailedException $e) {
                 if ($exceptions = $e->getNestedExceptionOfClass(ActivationCodeExceptionInterface::class)) {
                     $this->addFlash('error', $exceptions[0]->getMessage());
