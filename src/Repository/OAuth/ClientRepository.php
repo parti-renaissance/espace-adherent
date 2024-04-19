@@ -2,6 +2,7 @@
 
 namespace App\Repository\OAuth;
 
+use App\AppCodeEnum;
 use App\Entity\OAuth\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -49,5 +50,10 @@ class ClientRepository extends ServiceEntityRepository
     private function addActiveClientCriteria(QueryBuilder $qb, string $rootAlias = 'c'): void
     {
         $qb->andWhere(sprintf('%s.deletedAt IS NULL', $rootAlias));
+    }
+
+    public function getVoxClient(): Client
+    {
+        return $this->findOneBy(['code' => AppCodeEnum::BESOIN_D_EUROPE]);
     }
 }

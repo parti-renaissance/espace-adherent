@@ -28,7 +28,7 @@ class OAuthClientRuntime implements RuntimeExtensionInterface
             return $this->clientIds[$code];
         }
 
-        return $this->clientIds[$code] = $this->clientRepository->findOneBy(['code' => $code]);
+        return $this->clientIds[$code] = $this->clientRepository->getVoxClient();
     }
 
     private function getClientId(string $code): ?string
