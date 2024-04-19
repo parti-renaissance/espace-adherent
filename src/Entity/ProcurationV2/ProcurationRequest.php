@@ -50,12 +50,11 @@ class ProcurationRequest
         $this->uuid = $uuid ?? Uuid::uuid4();
     }
 
-    public static function createForEmail(string $email, InitialRequestTypeEnum $type): self
+    public static function createForEmail(string $email): self
     {
         $object = new self();
 
         $object->email = $email;
-        $object->type = $type;
 
         return $object;
     }

@@ -15,10 +15,4 @@ class ProcurationRequestRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ProcurationRequest::class);
     }
-
-    public function save(ProcurationRequest $procurationRequest): void
-    {
-        $this->_em->persist($procurationRequest);
-        $this->_em->flush();
-    }
 }
