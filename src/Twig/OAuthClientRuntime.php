@@ -3,6 +3,7 @@
 namespace App\Twig;
 
 use App\AppCodeEnum;
+use App\Entity\OAuth\Client;
 use App\Repository\OAuth\ClientRepository;
 use Twig\Extension\RuntimeExtensionInterface;
 
@@ -19,9 +20,15 @@ class OAuthClientRuntime implements RuntimeExtensionInterface
         return $this->getClientId(AppCodeEnum::JEMENGAGE_WEB);
     }
 
-    public function getVoxClientId(): ?string
+    public function getVoxClient(): ?Client
     {
-        return $this->getClientId(AppCodeEnum::BESOIN_D_EUROPE);
+        $code = AppCodeEnum::BESOIN_D_EUROPE;
+
+        if (!empty($this->clientIds[$code])) {
+            return $this->clientIds[$code];
+        }
+
+        return $this->clientIds[$code] = $this->clientRepository->findOneBy(['code' => $code]);
     }
 
     private function getClientId(string $code): ?string

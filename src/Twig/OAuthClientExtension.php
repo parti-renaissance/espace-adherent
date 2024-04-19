@@ -11,7 +11,7 @@ class OAuthClientExtension extends AbstractExtension
     {
         return [
             new TwigFunction('get_jme_client_id', [OAuthClientRuntime::class, 'getJMEClientId']),
-            new TwigFunction('get_vox_client_id', [OAuthClientRuntime::class, 'getVoxClientId']),
+            new TwigFunction('get_vox_client', [OAuthClientRuntime::class, 'getVoxClient']),
         ];
     }
 }
