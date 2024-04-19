@@ -12,7 +12,6 @@ parameters:
     transactional_sender_name:            'La République En Marche !'
     feed_ttl:                             60 # in minutes
     app_host:                             "%env(APP_HOST)%"
-    vox_host:                             "%env(VOX_HOST)%"
     legislatives_host:                    "%env(LEGISLATIVES_HOST)%"
     jemengage_host:                       "%env(JEMENGAGE_HOST)%"
     jemengage_auth_host:                  "%env(JEMENGAGE_AUTH_HOST)%"

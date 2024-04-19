@@ -24,6 +24,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class InscriptionController extends AbstractController
 {
     public const ROUTE_NAME = 'app_bde_inscription';
+    public const REDIRECT_PATH_KEY = 'bde.inscription.redirect_path';
 
     private int $step = 0;
 
@@ -38,6 +39,10 @@ class InscriptionController extends AbstractController
 
     public function __invoke(Request $request): Response
     {
+        if ($redirectUri = $request->query->get('redirect_uri')) {
+            $request->getSession()->set(self::REDIRECT_PATH_KEY, $redirectUri);
+        }
+
         $inscriptionRequest = $this->getInscriptionRequest($request);
 
         $form = $this
