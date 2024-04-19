@@ -1464,8 +1464,7 @@ executive_office.title.member_by_right: Membres de droit
 #
 # Menu
 #
-admin.new.renaissance_adherent.label: Nouvel Adhérent
-admin.new.renaissance_adherent.create.label: Créer
+admin.new.renaissance_adherent.create.label: Créer un adhérent
 admin.new.renaissance_adherent.success: Le compte adhérent Renaissance (%s %s) a bien été créé.
 
 adherent.tag.adherent: Adhérent

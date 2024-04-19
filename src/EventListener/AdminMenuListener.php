@@ -36,14 +36,15 @@ class AdminMenuListener implements EventSubscriberInterface
 
     private function addCreateAdherentMenu(ConfigureMenuEvent $event): void
     {
-        $this->addItem($event->getMenu(), 'admin.new.renaissance_adherent.label', [
-            [
-                'label' => 'admin.new.renaissance_adherent.create.label',
+        $event
+            ->getMenu()
+            ->getChild('Adhérents')
+            ->addChild('admin.new.renaissance_adherent.create.label', [
                 'route' => 'admin_app_adherent_create_renaissance_verify_email',
                 'route_params' => null,
                 'route_absolute' => false,
-            ],
-        ]);
+            ])
+        ;
     }
 
     private function addStatsMenu(ConfigureMenuEvent $event): void
