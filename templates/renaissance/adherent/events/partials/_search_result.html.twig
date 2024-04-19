@@ -1,11 +1,11 @@
 {% apply spaceless %}
     {% for event in results %}
-        {% if date is not defined or date != event.localBeginAt|date('Ym', false) %}
-            {% set date = event.localBeginAt|date('Ym', false) %}
+        {% if date is not defined or date != event.localBeginAt|date('Ym', event.timeZone) %}
+            {% set date = event.localBeginAt|date('Ym', event.timeZone) %}
 
             <div class="lg:col-span-2">
                 <h4 class="mt-6 mb-2 text-lg leading-5 uppercase tracking-wider font-medium text-gray-700">
-                    {{ event.localBeginAt|format_datetime('none', 'none', 'MMMM YYYY') }}
+                    {{ event.localBeginAt|format_datetime('none', 'none', 'MMMM YYYY', event.timeZone) }}
                 </h4>
             </div>
         {% endif %}
@@ -13,18 +13,18 @@
         <article class="flex flex-col overflow-hidden border rounded-lg shadow-md border-slate-100 search-results-item lg:col-span-1">
             <div class="flex flex-col justify-between flex-1 p-6 bg-white">
                 <div class="flex items-center justify-between space-x-1 text-gray-500">
-                        <span class="inline-flex items-center">
-                            {% include 'icons/calendar-empty.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
-                            <time datetime="{{ event.beginAt|format_datetime('none', 'none', "HH'H'mm") }}" class="capitalize">
-                                {{ event.beginAt|format_datetime('full', 'none', "E d MMM YYYY") }}
-                            </time>
-                        </span>
+                    <span class="inline-flex items-center">
+                        {% include 'icons/calendar-empty.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
+                        <time datetime="{{ event.localBeginAt|format_datetime('none', 'none', "HH'H'mm", event.timeZone) }}" class="capitalize">
+                            {{ event.localBeginAt|format_datetime('full', 'none', "E d MMM YYYY", event.timeZone) }}
+                        </time>
+                    </span>
                     <span class="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-sm text-gray-700 ring-1 ring-inset ring-gray-200">
-                            <svg class="h-1.5 w-1.5 fill-blue-600" viewBox="0 0 6 6" aria-hidden="true">
-                                <circle cx="3" cy="3" r="3" />
-                            </svg>
-                            {{ event.categoryName }}
-                        </span>
+                        <svg class="h-1.5 w-1.5 fill-blue-600" viewBox="0 0 6 6" aria-hidden="true">
+                            <circle cx="3" cy="3" r="3" />
+                        </svg>
+                        {{ event.categoryName }}
+                    </span>
                 </div>
                 <div class="mt-5 flex-1">
                     <h3 class="text-lg font-medium text-slate-900">{{- event.name -}}</h3>
@@ -34,28 +34,28 @@
                         <p class="flex items-center flex-wrap">
                             {% include 'icons/user.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' } %}
                             <span>
-                                    {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}
-                                        Par le comité <span class="font-medium text-gray-700">{{ event.committee.name }}</span>
-                                    {% elseif event.organizer %}
-                                        Par <span class="font-medium text-gray-700">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span>
-                                    {% endif %}
-                                </span>
+                                {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}
+                                    Par le comité <span class="font-medium text-gray-700">{{ event.committee.name }}</span>
+                                {% elseif event.organizer %}
+                                    Par <span class="font-medium text-gray-700">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span>
+                                {% endif %}
+                            </span>
                         </p>
                         {% if event.getAddress() %}
                             <p class="mt-2 flex items-center">
                                 {% include 'icons/map.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' } %}
                                 <span>
-                                        {{ event.postAddress.inlineFormattedAddress }}
-                                    </span>
+                                    {{ event.postAddress.inlineFormattedAddress }}
+                                </span>
                             </p>
                         {% endif %}
                         <p class="mt-2 flex items-center">
                             {% include 'icons/clock.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' } %}
                             <span>
-                                    <time datetime="{{ event.beginAt|format_datetime('none', 'none', "HH'H'mm") }}" class="capitalize">
-                                        {{ event.beginAt|date('G\\hi') -}} {{ event.timeZone|utc_offset }}
-                                    </time>
-                                </span>
+                                <time datetime="{{ event.localBeginAt|format_datetime('none', 'none', "HH'H'mm", event.timeZone) }}" class="capitalize">
+                                    {{ event.localBeginAt|date('G\\hi', event.timeZone) -}} {{ event.timeZone|utc_offset }}
+                                </time>
+                            </span>
                         </p>
                     </div>
                     <div class="mt-3 flex items-center justify-between space-x-1 text-gray-500">
@@ -65,9 +65,9 @@
                             En savoir plus
                         </a>
                         <span class="inline-flex items-center">
-                                {% include 'icons/participants.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
+                            {% include 'icons/participants.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
                             {{ 'participants_count'|trans({ count: event.participantsCount }) }}
-                           </span>
+                       </span>
                     </div>
                 </div>
             </div>

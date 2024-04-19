@@ -536,6 +536,9 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         $this->beginAt = $beginAt;
     }
 
+    /**
+     * @Groups({"event_read", "event_list_read"})
+     */
     public function getLocalBeginAt(): \DateTimeInterface
     {
         return (clone $this->beginAt)->setTimezone(new \DateTimeZone($this->getTimeZone()));
@@ -552,7 +555,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     }
 
     /**
-     * @Groups({"event_list_read"})
+     * @Groups({"event_read", "event_list_read"})
      */
     public function getLocalFinishAt(): \DateTimeInterface
     {

@@ -3,6 +3,7 @@
 namespace App\Normalizer;
 
 use ApiPlatform\Metadata\HttpOperation;
+use App\Address\GeoCoder;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
@@ -36,6 +37,18 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
 
         if (\in_array($context['operation_name'] ?? null, ['api_base_events_post_collection', 'api_base_events_put_item'], true)) {
             $object->setRenaissanceEvent(true);
+        }
+
+        if (GeoCoder::DEFAULT_TIME_ZONE !== $object->getTimeZone()) {
+            $timeZone = new \DateTimeZone($object->getTimeZone());
+
+            if ($date = $object->getBeginAt()) {
+                $object->setBeginAt((new \DateTime($date->format('Y-m-d H:i:s'), $timeZone))->setTimezone(new \DateTimeZone(GeoCoder::DEFAULT_TIME_ZONE)));
+            }
+
+            if ($date = $object->getFinishAt()) {
+                $object->setFinishAt((new \DateTime($date->format('Y-m-d H:i:s'), $timeZone))->setTimezone(new \DateTimeZone(GeoCoder::DEFAULT_TIME_ZONE)));
+            }
         }
 
         return $object;
