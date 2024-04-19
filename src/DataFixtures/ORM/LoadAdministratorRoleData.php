@@ -59,48 +59,48 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_RENAISSANCE_COMMITMENTS',
             'Administrateur des valeurs et engagements',
-            AdministratorRoleGroupEnum::RE_SITE_WEB
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_RENAISSANCE_ARTICLES',
             'Administrateur des actualités',
-            AdministratorRoleGroupEnum::RE_SITE_WEB
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_RENAISSANCE_HOME_BLOCKS',
             'Administrateur des blocs d\'articles',
-            AdministratorRoleGroupEnum::RE_SITE_WEB
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_RENAISSANCE_BIOGRAPHY_EXECUTIVE_OFFICE_MEMBERS',
             'Administrateur des biographies du BurEx',
-            AdministratorRoleGroupEnum::RE_SITE_WEB
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_RENAISSANCE_ADHERENT_FORMATIONS',
             'Administrateur des formations adhérent',
-            AdministratorRoleGroupEnum::RE_SITE_WEB
+            AdministratorRoleGroupEnum::MOBILISATION
         );
         yield $this->createRole(
             'ROLE_ADMIN_RENAISSANCE_DEPARTMENT_SITES',
             'Administrateur des sites départementaux',
-            AdministratorRoleGroupEnum::RE_SITE_WEB
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_RENAISSANCE_CREATE_ADHERENT',
             'Création/Vérification de compte adhérent RE',
-            AdministratorRoleGroupEnum::RE_SITE_WEB
+            AdministratorRoleGroupEnum::ADHERENTS
         );
         // Communication
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_MEDIAS',
             'Administrateur des médias (Upload)',
-            AdministratorRoleGroupEnum::COMMUNICATION
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_ARTICLES',
             'Administrateur des articles',
-            AdministratorRoleGroupEnum::COMMUNICATION
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_ARTICLE_CATEGORIES',
@@ -110,12 +110,12 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_PAGES',
             'Administrateur des pages statiques',
-            AdministratorRoleGroupEnum::COMMUNICATION
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_HOME_BLOCKS',
             'Administrateur des blocs d\'articles',
-            AdministratorRoleGroupEnum::COMMUNICATION
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_CMS_BLOCKS',
@@ -125,7 +125,7 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_CLARIFICATIONS',
             'Administrateur des désintoxs',
-            AdministratorRoleGroupEnum::COMMUNICATION
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_REDIRECTIONS',
@@ -135,12 +135,12 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_BIOGRAPHY_EXEXECUTIVE_OFFICE_MEMBERS',
             'Administrateur des biographies BurEx',
-            AdministratorRoleGroupEnum::COMMUNICATION
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_LIVE_LINKS',
             'Administrateur des liens en direct',
-            AdministratorRoleGroupEnum::COMMUNICATION
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_NEWSLETTER_SUBSCRIPTIONS',
@@ -150,7 +150,7 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_SMS_CAMPAIGNS',
             'Administrateur des campagnes SMS',
-            AdministratorRoleGroupEnum::COMMUNICATION,
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER,
         );
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_QR_CODES',
@@ -227,62 +227,62 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_POLITIQUE_ADHERENT_ELECTED_REPRESENTATIVES',
             'Administrateur des adhérents élus',
-            AdministratorRoleGroupEnum::POLITIQUE
+            AdministratorRoleGroupEnum::ELUS
         );
         yield $this->createRole(
             'ROLE_ADMIN_POLITIQUE_APPLICATION_REQUEST_TECHNICAL_SKILLS',
             'Administrateur des compétences techniques (Muni)',
-            AdministratorRoleGroupEnum::POLITIQUE
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_POLITIQUE_APPLICATION_REQUEST_THEMES',
             'Administrateur des thèmes (Muni)',
-            AdministratorRoleGroupEnum::POLITIQUE
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_POLITIQUE_APPLICATION_REQUEST_TAGS',
             'Administrateur des tags de candidatures (Muni)',
-            AdministratorRoleGroupEnum::POLITIQUE
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_POLITIQUE_APPLICATION_REQUEST_RUNNING_MATE_REQUESTS',
             'Administrateur des candidatures colistiers',
-            AdministratorRoleGroupEnum::POLITIQUE
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_POLITIQUE_APPLICATION_REQUEST_VOLUNTEER_REQUESTS',
             'Administrateur des candidatures bénévoles',
-            AdministratorRoleGroupEnum::POLITIQUE
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_POLITIQUE_REPUBLICAN_SILENCES',
             'Administrateur des silences républicains',
-            AdministratorRoleGroupEnum::POLITIQUE
+            AdministratorRoleGroupEnum::ELECTIONS
         );
         yield $this->createRole(
             'ROLE_ADMIN_POLITIQUE_LEGISLATIVE_CANDIDATES',
             'Administrateur des candidats aux législatives',
-            AdministratorRoleGroupEnum::POLITIQUE
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_POLITIQUE_LEGISLATIVE_DISTRICT_ZONES',
             'Administrateur des zones de candidats aux législatives',
-            AdministratorRoleGroupEnum::POLITIQUE,
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER,
         );
         yield $this->createRole(
             'ROLE_ADMIN_POLITIQUE_ELECTED_REPRESENTATIVES',
             'Administrateur du registre national des élus (legacy)',
-            AdministratorRoleGroupEnum::POLITIQUE,
+            AdministratorRoleGroupEnum::ARCHIVES_A_GARDER,
         );
         yield $this->createRole(
             'ROLE_ADMIN_POLITIQUE_ELECTION_CITY_CARDS',
             'Administrateur des villes (élections)',
-            AdministratorRoleGroupEnum::POLITIQUE
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_POLITIQUE_ELECTION_CITY_CARD_MANAGERS',
             'Administrateur du suivi/pilotage (élections)',
-            AdministratorRoleGroupEnum::POLITIQUE
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         // Territoires
         yield $this->createRole(
@@ -303,12 +303,12 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_COMMITTEE_DESIGNATION',
             'Administrateur des désignations de comités',
-            AdministratorRoleGroupEnum::TERRITOIRES
+            AdministratorRoleGroupEnum::ELECTIONS_INTERNES
         );
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_COMMITTEE_MERGES',
             'Administrateur des fusions de comités',
-            AdministratorRoleGroupEnum::TERRITOIRES
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_EVENTS',
@@ -328,22 +328,22 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_PROCURATION_REQUESTS',
             'Administrateur des demandes de procuration',
-            AdministratorRoleGroupEnum::TERRITOIRES
+            AdministratorRoleGroupEnum::ELECTIONS
         );
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_PROCURATION_PROXIES',
             'Administrateur des propositions de procuration',
-            AdministratorRoleGroupEnum::TERRITOIRES
+            AdministratorRoleGroupEnum::ELECTIONS
         );
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_REFERENTS',
             'Administrateur des référents',
-            AdministratorRoleGroupEnum::TERRITOIRES
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_REFERENT_AREAS',
             'Administrateur des zones de référents',
-            AdministratorRoleGroupEnum::TERRITOIRES
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_ORGANIZATIONAL_CHART_ITEMS',
@@ -353,17 +353,17 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_VOTE_PLACES',
             'Administrateur des bureaux de votes (assesseurs)',
-            AdministratorRoleGroupEnum::TERRITOIRES
+            AdministratorRoleGroupEnum::ELECTIONS
         );
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_ASSESSOR_REQUESTS',
             'Administrateur des demandes assesseurs',
-            AdministratorRoleGroupEnum::TERRITOIRES
+            AdministratorRoleGroupEnum::ELECTIONS
         );
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_ELECTIONS',
             'Administrateur des élections (assesseurs)',
-            AdministratorRoleGroupEnum::TERRITOIRES
+            AdministratorRoleGroupEnum::ELECTIONS
         );
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_REPORTS',
@@ -373,7 +373,7 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_CITIES',
             'Administrateur des communes',
-            AdministratorRoleGroupEnum::TERRITOIRES
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_FILES',
@@ -485,69 +485,69 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_PHONING_CAMPAIGNS',
             'Administrateur des campagnes',
-            AdministratorRoleGroupEnum::PHONING
+            AdministratorRoleGroupEnum::MOBILISATION
         );
         yield $this->createRole(
             'ROLE_ADMIN_PHONING_CAMPAIGN_HISTORIES',
             'Administrateur des appels passés',
-            AdministratorRoleGroupEnum::PHONING
+            AdministratorRoleGroupEnum::MOBILISATION
         );
         // Porte à porte
         yield $this->createRole(
             'ROLE_ADMIN_PORTE_A_PORTE_CAMPAIGNS',
             'Administrateur des campagnes',
-            AdministratorRoleGroupEnum::PORTE_A_PORTE
+            AdministratorRoleGroupEnum::MOBILISATION
         );
         yield $this->createRole(
             'ROLE_ADMIN_PORTE_A_PORTE_CAMPAIGN_HISTORIES',
             'Administrateur des portes frappées',
-            AdministratorRoleGroupEnum::PORTE_A_PORTE
+            AdministratorRoleGroupEnum::MOBILISATION
         );
         // Instances
         yield $this->createRole(
             'ROLE_ADMIN_INSTANCES_TERRITORIAL_COUNCILS',
             'Administrateur des Coterr et Copol',
-            AdministratorRoleGroupEnum::INSTANCES
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_INSTANCES_TERRITORIAL_COUNCIL_MEMBERSHIPS',
             'Administrateur des membres',
-            AdministratorRoleGroupEnum::INSTANCES
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_INSTANCES_VOTING_PLATFORM_DESIGNATIONS',
             'Administrateur des désignations statutaires',
-            AdministratorRoleGroupEnum::INSTANCES
+            AdministratorRoleGroupEnum::ELECTIONS_INTERNES
         );
         yield $this->createRole(
             'ROLE_ADMIN_INSTANCES_VOTING_PLATFORM_DESIGNATION_POLLS',
             'Administrateur des questionnaires (désignation)',
-            AdministratorRoleGroupEnum::INSTANCES
+            AdministratorRoleGroupEnum::ELECTIONS_INTERNES
         );
         yield $this->createRole(
             'ROLE_ADMIN_INSTANCES_VOTING_PLATFORM_DESIGNATION_CANDIDACY_POOLS',
             'Administrateur des candidatures (désignations)',
-            AdministratorRoleGroupEnum::INSTANCES
+            AdministratorRoleGroupEnum::ELECTIONS_INTERNES
         );
         yield $this->createRole(
             'ROLE_ADMIN_INSTANCES_TERRITORIAL_COUNCIL_MEMBERSHIP_LOGS',
             'Administrateur des logs',
-            AdministratorRoleGroupEnum::INSTANCES
+            AdministratorRoleGroupEnum::ELECTIONS_INTERNES
         );
         yield $this->createRole(
             'ROLE_ADMIN_INSTANCES_DESIGNATION_ELECTIONS',
             'Administrateur des élections',
-            AdministratorRoleGroupEnum::INSTANCES
+            AdministratorRoleGroupEnum::ELECTIONS_INTERNES
         );
         yield $this->createRole(
             'ROLE_ADMIN_INSTANCES_DESIGNATION_CANDIDATURES',
             'Administrateur des candidatures',
-            AdministratorRoleGroupEnum::INSTANCES
+            AdministratorRoleGroupEnum::ELECTIONS_INTERNES
         );
         yield $this->createRole(
             'ROLE_ADMIN_INSTANCES_DESIGNATION_VOTES',
             'Administrateur des émargements',
-            AdministratorRoleGroupEnum::INSTANCES
+            AdministratorRoleGroupEnum::ELECTIONS_INTERNES
         );
         // Finances
         yield $this->createRole(
@@ -558,7 +558,7 @@ class LoadAdministratorRoleData extends Fixture
         // Tech
         yield $this->createRole(
             'ROLE_ADMIN_TECH_ADMINISTRATORS',
-            'Administrateur des dons',
+            'Administrateur des administrateurs',
             AdministratorRoleGroupEnum::TECH
         );
         yield $this->createRole(
@@ -675,7 +675,7 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_ELECTIONS_DEPARTEMENTALES_ALL',
             'Administrateur des élections départementales',
-            AdministratorRoleGroupEnum::ELECTIONS_DEPARTEMENTALES
+            AdministratorRoleGroupEnum::ELECTIONS_INTERNES
         );
     }
 }
