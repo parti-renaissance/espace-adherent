@@ -41,7 +41,7 @@ services:
 
   Tests\App\Test\Algolia\DummySearchService:
     decorates: 'search.service'
-    arguments: [ '@Tests\App\Test\Algolia\DummySearchService.inner' ]
+    arguments: [ '@.inner' ]
 
   App\OpenGraph\OpenGraphFetcher:
     class: 'Tests\App\Test\OpenGraph\DummyOpenGraphFetcher'

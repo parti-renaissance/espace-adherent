@@ -27,11 +27,11 @@
             <div class="flex flex-col overflow-hidden shadow rounded-xl w-20">
                 <div class="text-center bg-teal-600 p-1">
                     <span
-                        class="text-white uppercase text-base leading-6 font-medium">{{ event.localBeginAt|format_datetime('none', 'none', 'MMM')|trim('.') -}}</span>
+                        class="text-white uppercase text-base leading-6 font-medium">{{ event.localBeginAt|format_datetime('none', 'none', 'MMM', event.timeZone)|trim('.') -}}</span>
                 </div>
                 <div class="bg-white text-center py-2">
                     <span
-                        class="text-xl font-semibold text-gray-900 lg:text-2xl">{{ event.localBeginAt|date('d') -}}</span>
+                        class="text-xl font-semibold text-gray-900 lg:text-2xl">{{ event.localBeginAt|date('d', event.timeZone) -}}</span>
                 </div>
             </div>
             <div>
@@ -94,7 +94,7 @@
                         <dd class="text-sm leading-5 space-y-1">
                             <h4 class="text-gray-400">Date & Heure</h4>
                             <p class="text-gray-700 font-medium">
-                                {{- event.beginAt|format_datetime('full', 'none')|capitalize }}, {{ event.beginAt|date('G\\hi') -}}{{ event.timeZone|utc_offset }}
+                                {{- event.localBeginAt|format_datetime('full', 'none', '', event.timeZone)|capitalize }}, {{ event.localBeginAt|date('G\\hi', event.timeZone) -}}{{ event.timeZone|utc_offset }}
                             </p>
                             <a href="{{ path('app_renaissance_event_ical', { slug: event.slug }) }}" class="text-re-blue-500 hover:text-re-blue-800 hover:underline">
                                 Ajouter au calendrier

@@ -71,7 +71,7 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param BaseEvent $object */
     protected function getBeginAt(object $object): ?\DateTime
     {
-        return $object->getBeginAt();
+        return $object->getLocalBeginAt();
     }
 
     /** @param BaseEvent $object */
@@ -83,7 +83,17 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param BaseEvent $object */
     protected function getFinishAt(object $object): ?\DateTime
     {
-        return $object->getFinishAt();
+        return $object->getLocalFinishAt();
+    }
+
+    /** @param BaseEvent $object */
+    protected function getTimeZone(object $object): ?string
+    {
+        if (!$date = $object->getLocalBeginAt()) {
+            return null;
+        }
+
+        return 'UTC'.$date->format('P');
     }
 
     /** @param BaseEvent $object */

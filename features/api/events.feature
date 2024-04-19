@@ -61,6 +61,8 @@ Feature:
         "category": null,
         "visio_url": null,
         "mode": null,
+        "local_begin_at": null,
+        "local_finish_at": null,
         "image_url": null
     }
     """
@@ -133,6 +135,7 @@ Feature:
                 "visio_url": null,
                 "editable": false,
                 "mode": null,
+                "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "2017-02-20T19:00:00+01:00",
                 "image_url": null
             },
@@ -176,6 +179,7 @@ Feature:
                 "visio_url": null,
                 "editable": false,
                 "mode": null,
+                "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null
             }
@@ -241,6 +245,7 @@ Feature:
                 },
                 "visio_url": null,
                 "mode": null,
+                "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "editable": false
@@ -284,6 +289,7 @@ Feature:
                 },
                 "visio_url": null,
                 "mode": null,
+                "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "editable": false
@@ -327,6 +333,7 @@ Feature:
                 },
                 "visio_url": null,
                 "mode": null,
+                "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "editable": false
@@ -386,6 +393,7 @@ Feature:
                 },
                 "visio_url": "https://parti-renaissance.fr",
                 "mode": "online",
+                "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "editable": false
@@ -420,6 +428,7 @@ Feature:
                 "category": null,
                 "visio_url": null,
                 "mode": "online",
+                "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "editable": true
@@ -454,6 +463,7 @@ Feature:
                 "category": null,
                 "visio_url": null,
                 "mode": "online",
+                "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "editable": true
@@ -513,6 +523,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "visio_url": null,
                 "mode": null,
+                "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "editable": false
@@ -556,6 +567,7 @@ Feature:
                 },
                 "visio_url": null,
                 "mode": null,
+                "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "editable": false
@@ -599,6 +611,7 @@ Feature:
                 "created_at": "@string@.isDateTime()",
                 "visio_url": null,
                 "mode": null,
+                "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "editable": false
@@ -656,6 +669,7 @@ Feature:
                 "category": null,
                 "visio_url": null,
                 "mode": "online",
+                "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "editable": true
@@ -690,6 +704,7 @@ Feature:
                 "category": null,
                 "visio_url": null,
                 "mode": "online",
+                "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "editable": true
@@ -724,6 +739,7 @@ Feature:
                 "category": null,
                 "visio_url": null,
                 "mode": "online",
+                "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "editable": true
@@ -789,6 +805,8 @@ Feature:
         },
         "visio_url": null,
         "mode": null,
+        "local_begin_at": "@string@.isDateTime()",
+        "local_finish_at": "@string@.isDateTime()",
         "image_url": null,
         "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
         "editable": false
@@ -827,6 +845,8 @@ Feature:
         "participants_count": 0,
         "status": "SCHEDULED",
         "capacity": 10,
+        "local_begin_at": "@string@.isDateTime()",
+        "local_finish_at": "@string@.isDateTime()",
         "post_address": {
             "address": "60 avenue des Champs-Élysées",
             "postal_code": "75008",
@@ -1019,6 +1039,8 @@ Feature:
         },
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
+        "local_begin_at": "@string@.isDateTime()",
+        "local_finish_at": "@string@.isDateTime()",
         "image_url": null,
         "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher",
         "editable": true
@@ -1101,6 +1123,8 @@ Feature:
         },
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
+        "local_begin_at": "@string@.isDateTime()",
+        "local_finish_at": "@string@.isDateTime()",
         "image_url": null,
         "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher",
         "editable": true
@@ -1384,6 +1408,8 @@ Feature:
         },
         "visio_url": "http://visio.fr",
         "mode": "online",
+        "local_begin_at": "@string@.isDateTime()",
+        "local_finish_at": "@string@.isDateTime()",
         "image_url": null,
         "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher",
         "editable": true
@@ -1730,6 +1756,8 @@ Feature:
         },
         "visio_url": "https://en-marche.fr/reunions/123",
         "mode": "online",
+        "local_begin_at": "@string@.isDateTime()",
+        "local_finish_at": "@string@.isDateTime()",
         "image_url": null,
         "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher",
         "editable": true
@@ -1849,6 +1877,8 @@ Feature:
         },
         "visio_url": "http://visio.fr",
         "mode": "online",
+        "local_begin_at": "@string@.isDateTime()",
+        "local_finish_at": "@string@.isDateTime()",
         "image_url": null,
         "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-un-evenement-du-candidat-aux-legislatives/afficher",
         "editable": true
