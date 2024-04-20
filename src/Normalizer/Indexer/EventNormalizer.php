@@ -89,11 +89,7 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param BaseEvent $object */
     protected function getTimeZone(object $object): ?string
     {
-        if (!$date = $object->getLocalBeginAt()) {
-            return null;
-        }
-
-        return 'UTC'.$date->format('P');
+        return $object->getTimeZone();
     }
 
     /** @param BaseEvent $object */

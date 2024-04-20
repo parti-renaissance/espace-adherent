@@ -43,7 +43,7 @@ class MagicLinkController extends AbstractController
             $email = $form->getData();
 
             if ($adherent = $adherentRepository->findOneActiveByEmail($email)) {
-                $loginLink = $loginLinkHandler->createLoginLink($adherent, null, $appCode);
+                $loginLink = $loginLinkHandler->createLoginLink($adherent, $request, $appCode);
 
                 if (AppCodeEnum::isBesoinDEuropeApp($appCode)) {
                     $transactionalMailer->sendMessage(BesoinDEuropeMagicLinkMessage::create($adherent, $loginLink->getUrl()));
