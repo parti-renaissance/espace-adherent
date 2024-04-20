@@ -24,7 +24,7 @@ class LoginLinkHandler implements LoginLinkHandlerInterface
         $link = $this->decorated->createLoginLink($user, $request);
 
         if (AppCodeEnum::isBesoinDEuropeApp($appCode)) {
-            if (!$targetPath = $request->getSession()->get('_security.main.target_path')) {
+            if (!$request || !$targetPath = $request->getSession()->get('_security.main.target_path')) {
                 $targetPath = $this->urlGenerator->generate('vox_app_redirect');
             }
             $urlParts = parse_url($link->getUrl().'&_failure_path=/connexion&_target_path='.urlencode($targetPath));
