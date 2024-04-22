@@ -11,6 +11,22 @@ $tertiary: #959CA0;
     line-height: 20px !important;
     color: black;
 
+    .text {
+        &-secondary {
+            color: $secondary;
+        }
+    }
+
+    a {
+        color: $secondary !important;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+            color: $primary;
+        }
+    }
+
     &.bg-primary, .bg-primary {
         background-color: $bg-color--dark;
     }

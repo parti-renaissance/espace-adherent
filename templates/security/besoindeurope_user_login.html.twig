@@ -9,43 +9,45 @@
 {% endblock %}
 
 {% block security_content %}
-    {{ form_start(form, { action: path('app_user_login_check', { app_domain: user_besoindeurope_host }), attr: { class: 'grid grid-cols-1 gap-6 lg:gap-4 w-[280px] lg:w-[420px]' } }) }}
+    {{ form_start(form, { action: path('app_user_login_check', { app_domain: user_besoindeurope_host }), attr: { class: 'grid grid-cols-1 gap-6' } }) }}
         {% if error %}
             <twig:ReParagraphStatus status="error" icon>
                 {{- error.messageKey|trans(error.messageData)|raw -}}
             </twig:ReParagraphStatus>
         {% endif %}
 
-        {{ form_row(form._login_email, {
-            attr: {
-                placeholder: 'Adresse email',
-                validate:"['required']",
-                autocomplete: 'email',
-            }, label: false}) }}
+        <div class="gap-4 flex flex-col">
+            {{ form_row(form._login_email, {
+                attr: {
+                    placeholder: 'Adresse email',
+                    validate:"['required']",
+                    autocomplete: 'email',
+                }, label: false}) }}
 
-        {{ form_row(form._login_password, { attr: {
-            placeholder: 'Mot de passe',
-            validate:"['required']",
-        }, label: false }) }}
+            {{ form_row(form._login_password, { attr: {
+                placeholder: 'Mot de passe',
+                validate:"['required']",
+            }, label: false }) }}
+        </div>
 
         {{ form_row(form._remember_me, { label: 'Se souvenir de moi' }) }}
 
         <twig:ReButton color="black" class="w-full">Me connecter</twig:ReButton>
     {{ form_end(form) }}
 
-    <div class="grid grid-cols-1 gap-6 lg:gap-10 mt-6 lg:mt-10">
+    <div class="grid grid-cols-1 gap-6 mt-6">
         <div class="flex justify-between">
-            <a href="{{ path('app_bde_inscription') }}" class="font-maax hover:underline text-ui_blue-50 text-[13px] lg:text-base font-normal tracking-tight">Créer un compte</a>
-            <a href="{{ path('app_forgot_password', {app_domain: user_besoindeurope_host}) }}" class="font-maax hover:underline text-ui_blue-50 text-[13px] lg:text-base font-normal tracking-tight">Mot de passe oublié ?</a>
+            <a href="{{ path('app_bde_inscription') }}" class="font-maax hover:underline text-[16px] lg:text-base font-normal tracking-tight">Créer un compte</a>
+            <a href="{{ path('app_forgot_password', {app_domain: user_besoindeurope_host}) }}" class="font-maax hover:underline  text-[16px] lg:text-base font-normal tracking-tight">Mot de passe oublié ?</a>
         </div>
 
-        <hr class="border-dashed" />
+        <hr class="border-dashed mt-6 mb-6"/>
 
         <twig:ReButton
             tag="a"
             href="{{ path('app_user_get_magic_link', {app_domain: user_besoindeurope_host}) }}"
-            class="text-sm lg:text-base rounded-full"
-            icon="link-circle"
+            class="text-sm lg:text-base rounded-full text-[#00AEEF] border-[#00AEEF]"
+            icon="link-circle-bde"
             stroke
         >Me connecter avec un lien</twig:ReButton>
 

@@ -4,11 +4,11 @@
 
 {% block security_content %}
     <div class="relative flex h-6 w-6 items-center justify-center self-center">
-        <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></div>
-        <div class="relative inline-flex rounded-full h-5 w-5 bg-sky-500"></div>
+        <div class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E4EFF]"></div>
+        <div class="relative inline-flex rounded-full h-5 w-5 bg-[#00AEEF]"></div>
     </div>
 
-    <div class="font-medium text-ui_blue-50 mt-6 lg:mt-16 animate-pulse self-center">Connexion...</div>
+    <div class="font-medium text-[#00AEEF] mt-6 lg:mt-16 animate-pulse self-center">Connexion...</div>
 
     <form x-data x-init="$nextTick(function () {setTimeout(function () {$el.submit()}, 2000)})" action="{{ path('app_user_connect_with_magic_link', {app_domain: user_besoindeurope_host}) }}" method="POST" class="hidden">
         <input type="hidden" name="expires" value="{{ expires }}">
@@ -20,9 +20,9 @@
         <button type="submit">Continuer</button>
     </form>
 
-    <hr class="my-10 w-full border-dashed" />
+    <hr class="my-6 w-full border-dashed" />
 
-    <p class="text-center text-[13px] lg:text-base font-normal">
+    <p class="text-center text-[16px] font-normal">
         {% include 'besoindeurope/partials/contact_info.html.twig' %}
     </p>
 {% endblock %}
