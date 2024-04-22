@@ -4301,16 +4301,16 @@
         },
         {
             "name": "google/cloud-recaptcha-enterprise",
-            "version": "v1.11.0",
+            "version": "v1.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise.git",
-                "reference": "f5c8f77fd560ed13dd8ca870c8ce7063bbad76c4"
+                "reference": "80cc783635084c71b65d9d89d1994973a30c9722"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/f5c8f77fd560ed13dd8ca870c8ce7063bbad76c4",
-                "reference": "f5c8f77fd560ed13dd8ca870c8ce7063bbad76c4",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/80cc783635084c71b65d9d89d1994973a30c9722",
+                "reference": "80cc783635084c71b65d9d89d1994973a30c9722",
                 "shasum": ""
             },
             "require": {
@@ -4345,9 +4345,9 @@
             ],
             "description": "Google Cloud Recaptcha Enterprise Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.11.0"
+                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.11.1"
             },
-            "time": "2024-04-08T16:08:04+00:00"
+            "time": "2024-04-19T22:39:11+00:00"
         },
         {
             "name": "google/cloud-storage",
@@ -4619,16 +4619,16 @@
         },
         {
             "name": "google/longrunning",
-            "version": "0.4.0",
+            "version": "0.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/php-longrunning.git",
-                "reference": "6841b03479d5a397a64036a99c33d8ee06bc8b42"
+                "reference": "67b80d36df06eaf5000fea010c77307e72fa0985"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/php-longrunning/zipball/6841b03479d5a397a64036a99c33d8ee06bc8b42",
-                "reference": "6841b03479d5a397a64036a99c33d8ee06bc8b42",
+                "url": "https://api.github.com/repos/googleapis/php-longrunning/zipball/67b80d36df06eaf5000fea010c77307e72fa0985",
+                "reference": "67b80d36df06eaf5000fea010c77307e72fa0985",
                 "shasum": ""
             },
             "require-dev": {
@@ -4657,9 +4657,9 @@
             ],
             "description": "Google LongRunning Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/php-longrunning/tree/v0.4.0"
+                "source": "https://github.com/googleapis/php-longrunning/tree/v0.4.1"
             },
-            "time": "2024-04-12T23:38:19+00:00"
+            "time": "2024-04-19T22:39:11+00:00"
         },
         {
             "name": "google/protobuf",
