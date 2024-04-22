@@ -202,7 +202,7 @@ class News implements AuthoredInterface, AuthorInterface, UserDocumentInterface,
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Assert\Length(max=255)
+     * @Assert\Length(max=30)
      * @Assert\Expression(
      *     "value !== null or (this.isEnriched() === false or null === this.getExternalLink())",
      *     message="news.link_label.required"

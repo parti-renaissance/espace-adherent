@@ -108,7 +108,7 @@ class NewsAdmin extends AbstractAdmin
                 ->add('linkLabel', TextType::class, [
                     'label' => 'Label',
                     'required' => false,
-                    'help' => 'Le label du lien (255 caractères maximum).',
+                    'help' => 'Le label du lien (30 caractères maximum).',
                 ])
                 ->add('pinned', null, [
                     'label' => 'Épinglée',
