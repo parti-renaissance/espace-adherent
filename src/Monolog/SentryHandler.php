@@ -74,6 +74,10 @@ class SentryHandler implements HandlerInterface
         withScope(function (Scope $scope) use (&$result, $record): void {
             $scope->setExtras($record['extra'] ?? []);
 
+            foreach ($record['context'] ?? [] as $key => $value) {
+                $scope->setContext($key, $value);
+            }
+
             $result = $this->decorated->handle($record);
         });
 
