@@ -102,9 +102,8 @@ Feature:
         """
 
         # Step 6 : email confirmation
-        When I click on the email link "magic_link"
-        Then I should be on "/adhesion/confirmation-email" wait otherwise
-        And I should see "Confirmer votre adresse email"
+        Given I am on "/adhesion/confirmation-email"
+        Then I should see "Confirmer votre adresse email"
         And I should see "test@test.com"
         When I fill in the following:
             | code | 1234 |
