@@ -11,6 +11,12 @@ $tertiary: #959CA0;
     line-height: 20px !important;
     color: black;
 
+    .text {
+        &-secondary {
+            color: $secondary;
+        }
+    }
+
     a {
         color: $secondary !important;
         text-decoration: none;
