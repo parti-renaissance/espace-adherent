@@ -125,7 +125,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
 
         $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
 
-        if ($redirect = $this->besoinDEuropeRedirectHandler->getBesoinDEuropeRedirect($targetPath)) {
+        if ($redirect = $this->besoinDEuropeRedirectHandler->redirectToCompleteInscription($targetPath)) {
             return $redirect;
         }
 

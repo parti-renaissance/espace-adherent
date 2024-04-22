@@ -20,7 +20,7 @@ class FinishInscriptionRedirectHandler
     ) {
     }
 
-    public function getBesoinDEuropeRedirect(?string $targetUrl): ?RedirectResponse
+    public function redirectToCompleteInscription(?string $initialTargetUrl): ?RedirectResponse
     {
         $adherent = $this->security->getUser();
 
@@ -38,8 +38,8 @@ class FinishInscriptionRedirectHandler
             return null;
         }
 
-        if ($targetUrl) {
-            $this->session->set(self::SESSION_KEY, $targetUrl);
+        if ($initialTargetUrl) {
+            $this->session->set(self::SESSION_KEY, $initialTargetUrl);
         }
 
         return new RedirectResponse($this->urlGenerator->generate($nextStepRouteName));

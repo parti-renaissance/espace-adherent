@@ -64,10 +64,6 @@ class MagicLinkController extends AbstractController
     {
         $appUrlGenerator = $appUrlManager->getUrlGenerator($appUrlManager->getAppCodeFromRequest($request) ?? AppCodeEnum::RENAISSANCE);
 
-        if ($user = $this->getUser()) {
-            return $this->redirect($appUrlGenerator->generateForLoginSuccess($user));
-        }
-
         return $this->render(sprintf('security/%s_connect_magic_link.html.twig', $appUrlGenerator::getAppCode()), [
             'expires' => $request->query->get('expires'),
             'user' => $request->query->get('user'),

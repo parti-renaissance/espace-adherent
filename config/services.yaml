@@ -484,6 +484,6 @@ services:
 
     Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface: '@App\Security\Http\LoginLink\LoginLinkHandler'
 
-    App\Security\Http\Authentication\DefaultAuthenticationSuccessHandler:
+    App\Security\Http\LoginLink\Authentication\DefaultAuthenticationSuccessHandler:
         decorates: 'security.authentication.success_handler.main.login_link'
         arguments: ['@.inner']
