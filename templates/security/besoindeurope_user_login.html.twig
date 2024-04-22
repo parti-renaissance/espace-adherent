@@ -15,19 +15,21 @@
                 {{- error.messageKey|trans(error.messageData)|raw -}}
             </twig:ReParagraphStatus>
         {% endif %}
-<div class="gap-4 flex flex-col">
-        {{ form_row(form._login_email, {
-            attr: {
-                placeholder: 'Adresse email',
-                validate:"['required']",
-                autocomplete: 'email',
-            }, label: false}) }}
 
-        {{ form_row(form._login_password, { attr: {
-            placeholder: 'Mot de passe',
-            validate:"['required']",
-        }, label: false }) }}
-</div>
+        <div class="gap-4 flex flex-col">
+            {{ form_row(form._login_email, {
+                attr: {
+                    placeholder: 'Adresse email',
+                    validate:"['required']",
+                    autocomplete: 'email',
+                }, label: false}) }}
+
+            {{ form_row(form._login_password, { attr: {
+                placeholder: 'Mot de passe',
+                validate:"['required']",
+            }, label: false }) }}
+        </div>
+
         {{ form_row(form._remember_me, { label: 'Se souvenir de moi' }) }}
 
         <twig:ReButton color="black" class="w-full">Me connecter</twig:ReButton>

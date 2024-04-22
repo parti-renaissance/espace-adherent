@@ -11,18 +11,16 @@
             <span class="!text-black">Besoin<br/>d’Europe</span>
         </a>
 
+        <div class="flex flex-col items-center justify-center h-full w-full">
+            {% include 'renaissance/partials/flashes.html.twig' with { wrapper_class: 'mb-6 lg:mb-16' } %}
+            <div class="w-full p-8 m-auto max-w-[500px]">
+                <h1 class="mb-6  text-center font-maax text-ui_gray-80 tracking-tighter font-medium text-xl">
+                    {% block security_block_title '' %}
+                </h1>
 
-<div class="flex flex-col items-center justify-center h-full w-full">
-    {% include 'renaissance/partials/flashes.html.twig' with { wrapper_class: 'mb-6 lg:mb-16' } %}
-    <div class="w-full p-8 m-auto max-w-[500px]">
-        <h1 class="mb-6  text-center font-maax text-ui_gray-80 tracking-tighter font-medium text-xl">
-            {% block security_block_title '' %}
-        </h1>
-
-
-        {% block security_content '' %}
-    </div>
-</div>
+                {% block security_content '' %}
+            </div>
+        </div>
 
         <footer class="text-center mt-24 text-ui_gray-40">
             Besoin d'Europe © {{ "now"|date('Y') }}
