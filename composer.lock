@@ -4238,16 +4238,16 @@
         },
         {
             "name": "google/cloud-core",
-            "version": "v1.57.0",
+            "version": "v1.58.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-core.git",
-                "reference": "a6bbc85a5ff2edc1c29344e3aaaa0a099d569748"
+                "reference": "2ea91dab93f9281c97e28691c0d9d806c5b61359"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/a6bbc85a5ff2edc1c29344e3aaaa0a099d569748",
-                "reference": "a6bbc85a5ff2edc1c29344e3aaaa0a099d569748",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/2ea91dab93f9281c97e28691c0d9d806c5b61359",
+                "reference": "2ea91dab93f9281c97e28691c0d9d806c5b61359",
                 "shasum": ""
             },
             "require": {
@@ -4298,9 +4298,9 @@
             ],
             "description": "Google Cloud PHP shared dependency, providing functionality useful to all components.",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.57.0"
+                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.58.0"
             },
-            "time": "2024-04-12T23:38:19+00:00"
+            "time": "2024-04-19T22:39:11+00:00"
         },
         {
             "name": "google/cloud-recaptcha-enterprise",
@@ -4411,16 +4411,16 @@
         },
         {
             "name": "google/cloud-vision",
-            "version": "v1.9.1",
+            "version": "v1.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-vision.git",
-                "reference": "ad13f1aa44bd7fdfd1492b2236d520657f500924"
+                "reference": "256924287f88026572dc2ff52ec249fa80c7eb56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-vision/zipball/ad13f1aa44bd7fdfd1492b2236d520657f500924",
-                "reference": "ad13f1aa44bd7fdfd1492b2236d520657f500924",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-vision/zipball/256924287f88026572dc2ff52ec249fa80c7eb56",
+                "reference": "256924287f88026572dc2ff52ec249fa80c7eb56",
                 "shasum": ""
             },
             "require": {
@@ -4463,9 +4463,9 @@
             ],
             "description": "Cloud Vision Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-vision/tree/v1.9.1"
+                "source": "https://github.com/googleapis/google-cloud-php-vision/tree/v1.9.2"
             },
-            "time": "2024-03-01T11:25:35+00:00"
+            "time": "2024-04-19T22:39:11+00:00"
         },
         {
             "name": "google/common-protos",
