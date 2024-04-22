@@ -2,7 +2,7 @@
 
 namespace App\Controller\BesoinDEurope;
 
-use App\Controller\BesoinDEurope\Inscription\InscriptionController;
+use App\BesoinDEurope\Inscription\FinishInscriptionRedirectHandler;
 use App\Repository\OAuth\ClientRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,9 +13,10 @@ class RedirectAppController extends AbstractController
     public function __invoke(Request $request, string $userBesoinDEuropeHost, ClientRepository $clientRepository): Response
     {
         $client = $clientRepository->getVoxClient();
+        $session = $request->getSession();
 
-        if ($redirectUri = $request->getSession()->get(InscriptionController::REDIRECT_PATH_KEY)) {
-            $request->getSession()->remove(InscriptionController::REDIRECT_PATH_KEY);
+        if ($redirectUri = $session->get(FinishInscriptionRedirectHandler::SESSION_KEY)) {
+            $session->remove(FinishInscriptionRedirectHandler::SESSION_KEY);
         } else {
             $redirectUri = current($client->getRedirectUris());
         }

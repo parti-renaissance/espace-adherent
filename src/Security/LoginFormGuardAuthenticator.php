@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\BesoinDEurope\Inscription\FinishInscriptionRedirectHandler;
 use App\Entity\Adherent;
 use App\Entity\FailedLoginAttempt;
 use App\Membership\MembershipSourceEnum;
@@ -38,6 +39,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
     private $failedLoginAttemptRepository;
     private $apiPathPrefix;
     private AuthAppUrlManager $appUrlManager;
+    private FinishInscriptionRedirectHandler $besoinDEuropeRedirectHandler;
     private ?string $currentAppCode = null;
 
     public function __construct(
@@ -47,6 +49,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
         AnonymousFollowerSession $anonymousFollowerSession,
         FailedLoginAttemptRepository $failedLoginAttemptRepository,
         AuthAppUrlManager $appUrlManager,
+        FinishInscriptionRedirectHandler $besoinDEuropeRedirectHandler,
         string $apiPathPrefix
     ) {
         $this->urlGenerator = $urlGenerator;
@@ -56,6 +59,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
         $this->failedLoginAttemptRepository = $failedLoginAttemptRepository;
         $this->apiPathPrefix = $apiPathPrefix;
         $this->appUrlManager = $appUrlManager;
+        $this->besoinDEuropeRedirectHandler = $besoinDEuropeRedirectHandler;
     }
 
     public function supports(Request $request)
@@ -119,7 +123,13 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
             return $this->anonymousFollowerSession->terminate();
         }
 
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+        $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
+
+        if ($redirect = $this->besoinDEuropeRedirectHandler->redirectToCompleteInscription($targetPath)) {
+            return $redirect;
+        }
+
+        if ($targetPath) {
             return new RedirectResponse($targetPath);
         }
 
