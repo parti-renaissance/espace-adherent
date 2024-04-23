@@ -37,11 +37,38 @@
 
     <div class="grid grid-cols-1 gap-6 mt-6">
         <div class="flex justify-between">
-            <a href="{{ path('app_bde_inscription') }}" class="font-maax hover:underline text-[16px] lg:text-base font-normal tracking-tight">Créer un compte</a>
-            <a href="{{ path('app_forgot_password', {app_domain: user_besoindeurope_host}) }}" class="font-maax hover:underline  text-[16px] lg:text-base font-normal tracking-tight">Mot de passe oublié ?</a>
+            {% if with_renaissance %}
+                <a href="{{ path('app_forgot_password', {app_domain: app_renaissance_host}) }}" class="font-maax hover:underline  text-[16px] lg:text-base font-normal tracking-tight">Mot de passe oublié ?</a>
+            {% else %}
+                <a href="{{ path('app_bde_inscription') }}" class="font-maax hover:underline text-[16px] lg:text-base font-normal tracking-tight">Créer un compte</a>
+                <a href="{{ path('app_forgot_password', {app_domain: user_besoindeurope_host}) }}" class="font-maax hover:underline  text-[16px] lg:text-base font-normal tracking-tight">Mot de passe oublié ?</a>
+            {% endif %}
         </div>
 
         <hr class="border-dashed mt-6 mb-6"/>
+
+        {% if with_renaissance %}
+            <twig:ReButton
+                    tag="a"
+                    color="blue"
+                    href="{{ path('app_besoindeurope_login') }}"
+                    class="text-sm lg:text-base rounded-full bg-[#00AEEF] border-[#00AEEF]"
+                >
+                    <span class="text-white">Me connecter avec Besoin d'Europe</span>
+            </twig:ReButton>
+        {% else %}
+            <twig:ReButton
+                tag="a"
+                color="blue"
+                href="{{ path('app_besoindeurope_re_login') }}"
+                class="text-sm lg:text-base rounded-full bg-[#00AEEF] border-[#00AEEF]"
+            >
+                <span class="flex items-center gap-x-2.5">
+                    <img src="{{ asset('images/renaissance/logo-circle.svg') }}" alt="Renaissance logo" style="height: 16px" />
+                    <span class="text-white">Continuer avec Renaissance</span>
+                </span>
+            </twig:ReButton>
+        {% endif %}
 
         <twig:ReButton
             tag="a"
@@ -51,8 +78,10 @@
             stroke
         >Me connecter avec un lien</twig:ReButton>
 
-        <p class="text-center text-[13px] lg:text-base font-normal">
-            {% include 'besoindeurope/partials/contact_info.html.twig' %}
-        </p>
+        {% if not with_renaissance %}
+            <p class="text-center text-[13px] lg:text-base font-normal">
+                {% include 'besoindeurope/partials/contact_info.html.twig' %}
+            </p>
+        {% endif %}
     </div>
 {% endblock %}

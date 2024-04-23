@@ -343,6 +343,14 @@ app_besoindeurope_login:
     defaults:
         app: besoindeurope
 
+app_besoindeurope_re_login:
+    host: "%user_besoindeurope_host%"
+    path: "/connexion-avec-renaissance"
+    controller: App\Controller\EnMarche\Security\SecurityController::loginAction
+    defaults:
+        app: besoindeurope
+        with_renaissance: true
+
 user_validate_new_email:
     host: "{app_domain}"
     path: "/valider-changement-email/{adherent_uuid}/{change_email_token}"
