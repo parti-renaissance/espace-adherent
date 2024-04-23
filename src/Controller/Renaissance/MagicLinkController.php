@@ -3,6 +3,7 @@
 namespace App\Controller\Renaissance;
 
 use App\AppCodeEnum;
+use App\Entity\Administrator;
 use App\Mailer\MailerService;
 use App\Mailer\Message\BesoinDEurope\BesoinDEuropeMagicLinkMessage;
 use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
@@ -31,6 +32,10 @@ class MagicLinkController extends AbstractController
         $appUrlGenerator = $appUrlManager->getUrlGenerator($appCode = $appUrlManager->getAppCodeFromRequest($request) ?? AppCodeEnum::RENAISSANCE);
 
         if ($user = $this->getUser()) {
+            if ($user instanceof Administrator) {
+                return $this->redirectToRoute('admin_app_adherent_list');
+            }
+
             return $this->redirect($appUrlGenerator->generateForLoginSuccess($user));
         }
 

@@ -75,6 +75,10 @@ class SecurityController extends AbstractController
         $urlGenerator = $appUrlManager->getUrlGenerator($currentApp);
 
         if ($user = $this->getUser()) {
+            if ($user instanceof Administrator) {
+                return $this->redirectToRoute('admin_app_adherent_list');
+            }
+
             return $this->redirect($urlGenerator->generateForLoginSuccess($user));
         }
 

@@ -17,9 +17,11 @@ class RedirectAppController extends AbstractController
 
         if ($redirectUri = $session->get(FinishInscriptionRedirectHandler::SESSION_KEY)) {
             $session->remove(FinishInscriptionRedirectHandler::SESSION_KEY);
-        } else {
-            $redirectUri = current($client->getRedirectUris());
+
+            return $this->redirect($redirectUri);
         }
+
+        $redirectUri = current($client->getRedirectUris());
 
         return $this->redirectToRoute('app_front_oauth_authorize', [
             'app_domain' => $userBesoinDEuropeHost,
