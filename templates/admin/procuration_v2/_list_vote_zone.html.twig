@@ -4,4 +4,15 @@
     Zone: <b>{{ object.voteZone }}</b>
     <br>
     Bureau: <i>{{ object.customVotePlace ?? object.votePlace }}</i>
+
+    {% if
+        object is instanceof('App\\Entity\\ProcurationV2\\Request')
+        and object.isFDE()
+        and object.fromFrance
+    %}
+        <br>
+        <span class="badge bg-blue">
+            Veut sa procuration sur le sol Français
+        </span>
+    {% endif %}
 {% endblock %}

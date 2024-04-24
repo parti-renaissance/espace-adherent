@@ -508,6 +508,7 @@ procuration.slots.choice_2: Je souhaite porter deux procurations
 procuration.request.status.pending: En attente
 procuration.request.status.completed: Complété
 procuration.request.status.manual: Traité manuellement
+procuration.request.status.excluded: Exclu
 
 procuration.proxy.status.pending: En attente
 procuration.proxy.status.completed: Complété

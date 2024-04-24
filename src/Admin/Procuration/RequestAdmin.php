@@ -12,7 +12,9 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RequestAdmin extends AbstractProcurationAdmin
@@ -24,6 +26,12 @@ class RequestAdmin extends AbstractProcurationAdmin
         parent::configureFormFields($form);
 
         $form
+            ->with('Vote')
+                ->add('fromFrance', CheckboxType::class, [
+                    'label' => 'Veut sa procuration sur le sol Français',
+                    'required' => false,
+                ])
+            ->end()
             ->with('Traitement', ['class' => 'col-md-6'])
                 ->add('status', RequestStatusEnumType::class, [
                     'label' => 'Statut',
@@ -65,6 +73,9 @@ class RequestAdmin extends AbstractProcurationAdmin
                 'field_options' => [
                     'multiple' => true,
                 ],
+            ])
+            ->add('fromFrance', BooleanFilter::class, [
+                'label' => 'Veut sa procuration sur le sol Français',
             ])
         ;
     }

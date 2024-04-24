@@ -20,6 +20,14 @@
     {{ election.requestLegal|markdown }}
 {% endblock %}
 
+{% block fde_additional_form %}
+    <fieldset>
+        {{ form_row(form.fromFrance, {
+            label: 'Je vais faire ma procuration sur le sol Français',
+        }) }}
+    </fieldset>
+{% endblock %}
+
 {% block alternative_form %}
     <p class="text-center">
         <b>Disponible le 9 juin ?</b>

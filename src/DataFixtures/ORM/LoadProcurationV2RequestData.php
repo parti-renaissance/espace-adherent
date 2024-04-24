@@ -58,7 +58,8 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             false,
             LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'),
             null,
-            'BDV CH 1'
+            'BDV CH 1',
+            false
         ));
 
         $zone = LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024');
@@ -111,6 +112,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         Zone $voteZone,
         ?Zone $votePlace = null,
         ?string $customVotePlace = null,
+        bool $fromFrance = true,
         bool $joinNewsletter = false
     ): Request {
         return new Request(
@@ -126,6 +128,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             $voteZone,
             $votePlace,
             $customVotePlace,
+            $fromFrance,
             null,
             $joinNewsletter
         );

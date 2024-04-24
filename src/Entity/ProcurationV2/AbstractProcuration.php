@@ -2,6 +2,7 @@
 
 namespace App\Entity\ProcurationV2;
 
+use App\Address\AddressInterface;
 use App\Adherent\Tag\TranslatedTagInterface;
 use App\Entity\Adherent;
 use App\Entity\EntityAdministratorBlameableTrait;
@@ -320,5 +321,10 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
     public function getAdherentTags(): ?array
     {
         return $this->adherent?->tags;
+    }
+
+    public function isFDE(): bool
+    {
+        return $this->voteZone->isCountry() && AddressInterface::FRANCE !== $this->voteZone->getCode();
     }
 }

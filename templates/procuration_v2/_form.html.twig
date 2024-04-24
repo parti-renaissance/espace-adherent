@@ -14,6 +14,10 @@
     {% endif %}
 {% endblock %}
 
+{% set fde_additional_form %}
+    {% block fde_additional_form '' %}
+{% endset %}
+
 {% set additional_form %}
     {% block inner_content_section '' %}
 {% endset %}
@@ -164,6 +168,8 @@
                     <fieldset>
                         {{ form_row(form.voteZone) }}
                     </fieldset>
+
+                    {{ fde_additional_form }}
 
                     <fieldset>
                         <twig:Atoms:ReLabel x-text="`Mon bureau de vote ${isNotInFrance ? '(optionnel)' : ''}`"></twig:Atoms:ReLabel>
