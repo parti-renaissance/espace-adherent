@@ -2,7 +2,7 @@
 
 namespace App\Form\Admin;
 
-use App\Adherent\Authorization\ZoneBasedRoleTypeEnum;
+use App\Adherent\AdherentRoles;
 use App\Admin\AdherentZoneBasedRoleAdmin;
 use App\Entity\AdherentZoneBasedRole;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -18,7 +18,7 @@ class AdherentZoneBasedRoleType extends AbstractType
         $builder
             ->add('type', ChoiceType::class, [
                 'label' => 'Rôle national ou local',
-                'choices' => array_combine(ZoneBasedRoleTypeEnum::ALL, ZoneBasedRoleTypeEnum::ALL),
+                'choices' => AdherentRoles::getZoneBasedRoles(),
                 'choice_label' => function (string $label): string {
                     return 'role.'.$label;
                 },

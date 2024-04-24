@@ -132,6 +132,11 @@ assessor: Assesseur
 user: utilisateur
 pap: Porte-à-porteur
 
+role.group.local: Local
+role.group.elections: Élections
+role.group.national: National
+role.group.other: Autres
+
 role.referent: Référent
 role.coreferent: Co-Référent
 role.delegated_referent: Référent délégué
