@@ -1464,8 +1464,7 @@ executive_office.title.member_by_right: Membres de droit
 #
 # Menu
 #
-admin.new.renaissance_adherent.label: Nouvel Adhérent
-admin.new.renaissance_adherent.create.label: Créer
+admin.new.renaissance_adherent.create.label: Créer un adhérent
 admin.new.renaissance_adherent.success: Le compte adhérent Renaissance (%s %s) a bien été créé.
 
 adherent.tag.adherent: Adhérent
@@ -1508,21 +1507,27 @@ besoindeurope.inscription.accept_cgu: J’accepte <a href="https://parti-renaiss
 administrator:
     role:
         group_code:
-            re_site_web: Re site web
-            communication: Communication
-            politique: Politique
             adherents: Adhérents
-            territoires: Territoires
+            communication: Communication
             events: Événements
+            territoires: Territoires
+            mobilisation: Mobilisation
+            elus: Élus
+            elections: Élections
+            elections_internes: Élections internes
             application_mobile: Application mobile
-            phoning: Phoning
-            porte_a_porte: Porte-à-porte
-            instances: Instances
             finances: Finances
             tech: Tech
             idees: Idées
             formation: Formation
+            archives_a_garder: Archives (à garder)
+            archives_a_depublier: Archives (à dépublier)
+            archives: Archives
             socle_programmatique: Socle programmatique
             communautes_thematiques: Communautés thématiques
+            re_site_web: Re site web
+            politique: Politique
+            phoning: Phoning
+            porte_a_porte: Porte-à-porte
+            instances: Instances
             elections_departementales: Élections départementales
-            archives: Archives
