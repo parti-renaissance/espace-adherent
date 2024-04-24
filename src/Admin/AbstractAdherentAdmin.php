@@ -11,6 +11,7 @@ use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Admin\Filter\AdherentRoleFilter;
 use App\Admin\Filter\AdherentTagFilter;
 use App\Admin\Filter\PostalCodeFilter;
+use App\Admin\Filter\StaticAdherentTagFilter;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Committee\CommitteeMembershipManager;
 use App\Contribution\ContributionStatusEnum;
@@ -650,10 +651,9 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'tags' => TagEnum::getElectTags(),
             ])
-            ->add('tags_static', AdherentTagFilter::class, [
+            ->add('tags_static', StaticAdherentTagFilter::class, [
                 'label' => 'Labels statiques',
                 'show_filter' => true,
-                'tags' => TagEnum::getStaticTags(),
             ])
             ->add('zones', ZoneAutocompleteFilter::class, [
                 'label' => 'Périmètres géographiques',

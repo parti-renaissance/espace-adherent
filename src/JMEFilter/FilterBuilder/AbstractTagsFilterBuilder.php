@@ -13,7 +13,7 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
     protected string $fieldLabel;
     protected bool $fullTag = true;
 
-    final public function __construct(private readonly TagTranslator $translator)
+    public function __construct(private readonly TagTranslator $translator)
     {
         $this->init();
     }

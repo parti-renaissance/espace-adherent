@@ -22,4 +22,9 @@ class NationalEventRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findOneBySlug(string $part): ?NationalEvent
+    {
+        return $this->findOneBy(['slug' => $part]);
+    }
 }

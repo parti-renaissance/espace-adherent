@@ -1016,12 +1016,14 @@ Feature:
                     "options": {
                         "favorite": true,
                         "choices": {
-                            "meeting_lille_09_03": "Meeting Lille 09/03/24",
-                            "meeting_lille_09_03--": "Non inscrit au Meeting Lille 09/03/24",
+                            "national_event:event-national-1": "Event National 1",
+                            "national_event:event-national-1--": "Non inscrit à Event National 1",
+                            "national_event:event-national-2": "Event National 2",
+                            "national_event:event-national-2--": "Non inscrit à Event National 2",
                             "procuration:mandant": "Mandant",
-                            "procuration:mandant--": "Non mandant",
+                            "procuration:mandant--": "Non Mandant",
                             "procuration:mandataire": "Mandataire",
-                            "procuration:mandataire--": "Non mandataire"
+                            "procuration:mandataire--": "Non Mandataire"
                         }
                     },
                     "type": "select"

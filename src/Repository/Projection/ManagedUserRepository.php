@@ -222,14 +222,16 @@ class ManagedUserRepository extends ServiceEntityRepository
         if ($filter->staticTags) {
             $staticTag = $filter->staticTags;
             $operator = 'LIKE';
+            $nullCheck = '';
 
             if (str_ends_with($staticTag, '--')) {
                 $operator = 'NOT LIKE';
+                $nullCheck = ' OR u.tags IS NULL';
                 $staticTag = substr($staticTag, 0, -2);
             }
 
             $qb
-                ->andWhere(sprintf('u.tags %s :static_tag', $operator))
+                ->andWhere(sprintf('u.tags %s :static_tag %s', $operator, $nullCheck))
                 ->setParameter('static_tag', '%'.$staticTag.'%')
             ;
         }
