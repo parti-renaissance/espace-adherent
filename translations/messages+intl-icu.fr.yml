@@ -443,10 +443,12 @@ survey.age_range.between_55_64: Entre 55 et 64 ans
 survey.age_range.between_65_80: Entre 65 et 80 ans
 survey.age_range.greater_than_80: Plus de 80 ans
 
-jecoute_news.create.success: L'actualité a bien été créée
-jecoute_news.edit.success: L'actualité a bien été éditée
-jecoute_news.publish.success: L'actualité a bien été publiée
-jecoute_news.unpublish.success: L'actualité a bien été dépubliée
+News_list: Notifications
+News_create: Créer une notification
+jecoute_news.create.success: La notification a bien été créée
+jecoute_news.edit.success: La notification a bien été éditée
+jecoute_news.publish.success: La notification a bien été publiée
+jecoute_news.unpublish.success: La notification a bien été dépubliée
 
 jecoute_region.create.success: La personnalisation a été créée avec succès.
 jecoute_region.edit.success: La personnalisation a été modifiée avec succès.
@@ -1141,7 +1143,7 @@ delegated_access.form.access.committee: Comités
 delegated_access.form.access.polls: Question du jour
 delegated_access.form.access.jecoute: Questionnaires
 delegated_access.form.access.jecoute_region: Campagne
-delegated_access.form.access.jecoute_news: Actualités
+delegated_access.form.access.jecoute_news: Notifications
 delegated_access.form.access.elected_representatives: Élus
 delegated_access.form.access.files: Documents
 delegated_access.created_successfully: L'accès délégué à votre espace a correctement été créé
@@ -1398,7 +1400,7 @@ scope.feature.team: Équipes
 scope.feature.pap: Porte-à-porte
 scope.feature.procurations: Procurations
 scope.feature.pap_v2: Porte-à-porte V2
-scope.feature.news: Actualités
+scope.feature.news: Notifications
 scope.feature.phoning_campaign: Phoning
 scope.feature.survey: Questionnaires
 scope.feature.department_site: Site départemental

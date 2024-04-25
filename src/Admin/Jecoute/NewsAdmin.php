@@ -137,7 +137,7 @@ class NewsAdmin extends AbstractAdmin
                 ->add('published', CheckboxType::class, [
                     'label' => 'Publication',
                     'required' => false,
-                    'help' => 'Cochez cette case pour publier l\'actualité',
+                    'help' => 'Cochez cette case pour publier la notification',
                 ])
                 ->add('notification', CheckboxType::class, [
                     'label' => 'Notification',
