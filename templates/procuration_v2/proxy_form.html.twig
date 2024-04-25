@@ -2,9 +2,12 @@
 
 {% block page_title 'Procuration - Proposition (Mandataire)' %}
 
-{% block content_title %}
-    Proposition (Mandataire)
-{% endblock %}
+{% block open_graph_image "https://doc.besoindeurope.fr/images/sharer/procuration-mandataire.jpg" %}
+{% block open_graph_title "Votez pour une personne proche de chez vous • Besoin d’Europe" %}
+{% block open_graph_description "Remplissez ce formulaire et nous vous mettrons en relation avec une personne proche de chez vous." %}
+{% block canonical_url url('app_procuration_v2_proxy', { slug: election.slug }) %}
+
+{% block content_title 'Proposition (Mandataire)' %}
 
 {% block title_content_section %}
     {{ election.proxyTitle|markdown }}

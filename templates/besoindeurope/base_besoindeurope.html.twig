@@ -1,12 +1,20 @@
 {% extends 'base_renaissance.html.twig' %}
 
 {% block app_title 'Besoin d\'Europe' %}
+{% block meta_description "Besoin d'Europe est la liste commune Renaissance, MODEM, Horizons et Parti Radical, unis pour les Européennes du 9 juin 2024." %}
+
+{% set homepage_url = 'https://' ~ besoindeurope_host %}
+{% set default_sharer_image = url('asset_url', {path: 'static/national/besoindeurope.webp', app_domain: national_event_host}) %}
+
+{% block open_graph %}
+    <meta property="og:image" content="{% block open_graph_image default_sharer_image %}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="{{ block('open_graph_image') }}" />
+{% endblock %}
 
 {%  block body_classes 're_new_ui bde-theme' %}
-
-{% block canonical_url 'https://' ~ besoindeurope_host %}
-
-{% block meta_description "Besoin d'Europe est la liste commune Renaissance, MODEM, Horizons et Parti Radical, unis pour les Européennes du 9 juin 2024." %}
 
 {% block favicons %}
     <link rel="icon" type="image/png" href="{{ asset('images/europe/favicon.png') }}" sizes="32x32" />
@@ -15,15 +23,6 @@
 {% block stylesheets %}
     <link href="{{ asset('fonts/SharpGrotesk/stylesheet.css') }}" rel="stylesheet">
     <link href="{{ asset('fonts/Value/stylesheet.css') }}" rel="stylesheet">
-{% endblock %}
-
-{% block open_graph %}
-    {% set sharer_image = url('asset_url', {path: 'static/national/besoindeurope.webp', app_domain: national_event_host}) %}
-    <meta property="og:image" content="{{ sharer_image }}" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="{{ sharer_image }}" />
 {% endblock %}
 
 {% block head_javascripts %}
