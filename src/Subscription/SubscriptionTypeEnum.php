@@ -50,6 +50,7 @@ final class SubscriptionTypeEnum extends Enum
         self::REFERENT_EMAIL,
         self::CANDIDATE_EMAIL,
         self::SENATOR_EMAIL,
+        self::JAM_EMAIL,
     ];
 
     public const SUBSCRIPTION_TYPES_BY_SCOPES = [
