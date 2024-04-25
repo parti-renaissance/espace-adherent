@@ -21,6 +21,7 @@
 
     {% block meta %}
         <meta property="og:site_name" content="{% block open_graph_site_name block('app_title') %}" />
+        <meta property="og:type" content="website" />
         <meta property="og:url" content="{% block open_graph_url block('canonical_url') %}" />
         <meta property="og:locale" content="fr_FR" />
         <meta property="og:title" content="{% block open_graph_title block('title') %}" />
