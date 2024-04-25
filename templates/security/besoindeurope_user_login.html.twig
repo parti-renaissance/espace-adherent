@@ -1,6 +1,10 @@
 {% extends 'security/besoindeurope_layout.html.twig' %}
 
-{% block title 'Connectez-vous avec vos identifiants' %}
+{% block page_title 'Connexion' %}
+
+{% block open_graph_image "https://doc.besoindeurope.fr/images/sharer/connexion.jpg" %}
+{% block open_graph_description "Connexion aux outils de campagne des européennes." %}
+{% block canonical_url url('app_besoindeurope_login') %}
 
 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 

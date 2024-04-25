@@ -2,6 +2,8 @@
 
 {% block page_title 'Adhésion' %}
 
+{% block canonical_url url('app_adhesion_index') %}
+
 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
 {% set isReContribution = (app.user and app.user.missingMembershipYears ? '1' : '0') %}

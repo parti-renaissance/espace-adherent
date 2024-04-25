@@ -5,7 +5,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}{% apply spaceless %}{% block page_title '' %}{% endapply %} | {% block app_title 'Renaissance' %}{% endblock %}</title>
+    <title>{% block title %}{% apply spaceless %}{% block page_title '' %}{% endapply %} • {% block app_title 'Renaissance' %}{% endblock %}</title>
 
     {% block favicons %}
         <link rel="icon" type="image/png" href="{{ asset('favicon-re.png') }}" sizes="32x32" />
@@ -22,6 +22,7 @@
     {% block meta %}
         <meta property="og:site_name" content="{% block open_graph_site_name block('app_title') %}" />
         <meta property="og:url" content="{% block open_graph_url block('canonical_url') %}" />
+        <meta property="og:locale" content="fr_FR" />
         <meta property="og:title" content="{% block open_graph_title block('title') %}" />
         <meta property="og:description" content="{% block open_graph_description block('meta_description') %}" />
 
