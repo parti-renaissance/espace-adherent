@@ -96,7 +96,7 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var string|null
      *
-     * @Assert\NotBlank(message="adherent_profile.nationality.not_blank")
+     * @Assert\Expression("value or !this.isAdherent", message="adherent_profile.nationality.not_blank")
      * @Assert\Country(message="common.nationality.invalid", groups={"Default", "api_put_validation"})
      *
      * @SymfonySerializer\Groups({"profile_write"})
@@ -232,6 +232,8 @@ class AdherentProfile implements MembershipInterface
      */
     private $subscriptionTypes = [];
 
+    public bool $isAdherent = false;
+
     public function __construct()
     {
         $this->address = new Address();
@@ -259,6 +261,7 @@ class AdherentProfile implements MembershipInterface
         $dto->mandates = $adherent->getMandates();
         $dto->interests = $adherent->getInterests();
         $dto->subscriptionTypes = $adherent->getSubscriptionTypeCodes();
+        $dto->isAdherent = $adherent->isRenaissanceAdherent();
 
         return $dto;
     }

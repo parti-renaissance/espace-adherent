@@ -148,6 +148,8 @@ class LoadClientData extends Fixture
         $client10->setCode(AppCodeEnum::JEMENGAGE_MOBILE);
         $client10->setAskUserForAuthorization(false);
         $client10->addSupportedScope(Scope::JEMARCHE_APP);
+        $client10->addSupportedScope(Scope::WRITE_PROFILE);
+        $client10->addSupportedScope(Scope::READ_PROFILE);
 
         $manager->persist($client10);
 
