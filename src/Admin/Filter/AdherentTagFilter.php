@@ -19,6 +19,11 @@ class AdherentTagFilter extends AbstractCallbackDecoratorFilter
         $this->tagTranslator = $tagTranslator;
     }
 
+    protected function getTags(): array
+    {
+        return $this->getOptions()['tags'] ?? [];
+    }
+
     protected function getInitialFilterOptions(): array
     {
         return [
@@ -68,8 +73,8 @@ class AdherentTagFilter extends AbstractCallbackDecoratorFilter
     {
         $filterOptions = $this->getOptions();
 
-        if (!empty($filterOptions['tags'])) {
-            $filterOptions['field_options']['choices'] = $filterOptions['tags'];
+        if ($tags = $this->getTags()) {
+            $filterOptions['field_options']['choices'] = $tags;
         }
 
         return $filterOptions;

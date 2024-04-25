@@ -2,22 +2,24 @@
 
 namespace App\Adherent\Tag\TagGenerator;
 
-use App\Adherent\Tag\TagEnum;
+use App\Adherent\Tag\StaticTag\EventTagBuilder;
 use App\Entity\Adherent;
+use App\Entity\NationalEvent\EventInscription;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 
 class EventTagGenerator extends AbstractTagGenerator
 {
-    public function __construct(private readonly EventInscriptionRepository $eventInscriptionRepository)
-    {
+    public function __construct(
+        private readonly EventInscriptionRepository $eventInscriptionRepository,
+        private readonly EventTagBuilder $eventTagBuilder,
+    ) {
     }
 
     public function generate(Adherent $adherent, array $previousTags): array
     {
-        if ($this->eventInscriptionRepository->findAllByAdherent($adherent)) {
-            return [TagEnum::MEETING_LILLE_09_03];
-        }
-
-        return [];
+        return array_map(
+            fn (EventInscription $inscription) => $this->eventTagBuilder->buildForEvent($inscription->event),
+            $this->eventInscriptionRepository->findAllByAdherent($adherent)
+        );
     }
 }

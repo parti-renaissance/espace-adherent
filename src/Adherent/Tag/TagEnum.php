@@ -30,7 +30,8 @@ class TagEnum extends Enum
     public const ELU_COTISATION_NOK = 'elu:cotisation_nok';
     public const ELU_EXEMPTE_ET_ADHERENT_COTISATION_NOK = 'elu:exempte_et_adherent_cotisation_nok';
 
-    public const MEETING_LILLE_09_03 = 'meeting_lille_09_03';
+    public const NATIONAL_EVENT = 'national_event';
+    public const NATIONAL_EVENT_PATTERN = self::NATIONAL_EVENT.':%s';
 
     public const PROCURATION = 'procuration';
     public const PROCURATION_PROXY = self::PROCURATION.':mandataire';
@@ -79,7 +80,6 @@ class TagEnum extends Enum
     public static function getStaticTags(): array
     {
         return [
-            self::MEETING_LILLE_09_03,
             self::PROCURATION_REQUEST,
             self::PROCURATION_PROXY,
         ];
@@ -104,5 +104,10 @@ class TagEnum extends Enum
     public static function getMainLevel(string $tag): string
     {
         return explode(':', $tag)[0];
+    }
+
+    public static function getNationalEventTag(string $eventSlug): string
+    {
+        return sprintf(self::NATIONAL_EVENT_PATTERN, $eventSlug);
     }
 }
