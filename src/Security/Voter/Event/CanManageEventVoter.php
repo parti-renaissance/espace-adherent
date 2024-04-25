@@ -16,6 +16,7 @@ class CanManageEventVoter extends AbstractAdherentVoter
     {
     }
 
+    /** @param BaseEvent $subject */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
         if (!$scope = $this->scopeGeneratorResolver->generate()) {
