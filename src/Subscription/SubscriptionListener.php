@@ -9,15 +9,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class SubscriptionListener implements EventSubscriberInterface
 {
-    private SubscriptionHandler $subscriptionHandler;
-    private EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler;
-
     public function __construct(
-        SubscriptionHandler $subscriptionHandler,
-        EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler
+        private readonly SubscriptionHandler $subscriptionHandler,
+        private readonly EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler
     ) {
-        $this->subscriptionHandler = $subscriptionHandler;
-        $this->emailSubscriptionHistoryHandler = $emailSubscriptionHistoryHandler;
     }
 
     public static function getSubscribedEvents(): array
@@ -25,6 +20,7 @@ class SubscriptionListener implements EventSubscriberInterface
         return [
             UserEvents::USER_CREATED => 'onUserCreated',
             UserEvents::USER_SWITCH_TO_ADHERENT => 'addSubscriptionTypeToAdherent',
+            UserEvents::USER_UPDATE_SUBSCRIPTIONS => ['addSubscriptionTypeToAdherent', 1024],
         ];
     }
 

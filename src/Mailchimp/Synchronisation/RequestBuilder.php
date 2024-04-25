@@ -121,7 +121,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setCampusRegisteredAt($adherent->getValidCampusRegistration())
         ;
 
-        if (null === $adherent->getSource() || $adherent->isRenaissanceUser()) {
+        if (null === $adherent->getSource() || $adherent->isRenaissanceUser() || $adherent->isBesoinDEuropeUser()) {
             $this
                 ->setTeamCode($adherent)
                 ->setIsCertified($adherent->isCertified())

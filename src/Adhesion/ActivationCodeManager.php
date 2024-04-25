@@ -9,9 +9,12 @@ use App\Adhesion\Exception\ActivationCodeRetryLimitReachedException;
 use App\Adhesion\Exception\ActivationCodeUsedException;
 use App\Entity\Adherent;
 use App\Entity\AdherentActivationCode;
+use App\Membership\Event\UserEvent;
+use App\Membership\UserEvents;
 use App\Repository\AdherentActivationCodeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ActivationCodeManager
 {
@@ -21,6 +24,7 @@ class ActivationCodeManager
         private readonly AdherentActivationCodeRepository $activationCodeRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly RateLimiterFactory $activationAccountRetryLimiter,
+        private readonly EventDispatcherInterface $dispatcher,
     ) {
     }
 
@@ -63,6 +67,8 @@ class ActivationCodeManager
         $code->usedAt = new \DateTime();
 
         $this->entityManager->flush();
+
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
     }
 
     public function invalidateForAdherent(Adherent $adherent): void

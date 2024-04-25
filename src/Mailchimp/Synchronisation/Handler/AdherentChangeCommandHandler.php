@@ -44,6 +44,7 @@ class AdherentChangeCommandHandler implements MessageHandlerInterface, LoggerAwa
             null !== $adherent->getSource()
             && !$adherent->isJemengageUser()
             && !$adherent->isRenaissanceUser()
+            && !$adherent->isBesoinDEuropeUser()
         ) {
             return;
         }

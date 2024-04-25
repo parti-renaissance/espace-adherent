@@ -6,13 +6,15 @@ use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Request\UpdateCommunicationRequest;
 use App\Entity\Adherent;
 use App\Form\AdhesionCommunicationType;
-use App\Repository\SubscriptionTypeRepository;
+use App\Membership\Event\UserEvent;
+use App\Membership\UserEvents;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[Route(path: '/inscription/rappel-communication', name: self::ROUTE_NAME, methods: ['GET', 'POST'])]
 class CommunicationReminderController extends AbstractController
@@ -20,8 +22,8 @@ class CommunicationReminderController extends AbstractController
     public const ROUTE_NAME = 'app_bde_communication_reminder';
 
     public function __construct(
-        private readonly SubscriptionTypeRepository $subscriptionTypeRepository,
         private readonly EntityManagerInterface $entityManager,
+        private readonly EventDispatcherInterface $dispatcher,
     ) {
     }
 
@@ -57,13 +59,7 @@ class CommunicationReminderController extends AbstractController
                 $adherent->setPhone($data->phone);
             }
 
-            if ($data->acceptEmail) {
-                $adherent->addSubscriptionType($this->subscriptionTypeRepository->findOneByCode(SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL));
-            }
-
-            if ($data->acceptSms) {
-                $adherent->addSubscriptionType($this->subscriptionTypeRepository->findOneByCode(SubscriptionTypeEnum::MILITANT_ACTION_SMS));
-            }
+            $this->dispatcher->dispatch(new UserEvent($adherent, $data->acceptEmail, $data->acceptSms), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
 
             $adherent->finishAdhesionStep(AdhesionStepEnum::COMMUNICATION);
             $this->entityManager->flush();

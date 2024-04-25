@@ -105,7 +105,7 @@ class Manager implements LoggerAwareInterface
             $adherent->lastMailchimpFailedSyncResponse = $e->getMessage();
         }
 
-        if ($result && (null === $adherent->getSource() || $adherent->isRenaissanceUser())) {
+        if ($result && (null === $adherent->getSource() || $adherent->isRenaissanceUser() || $adherent->isBesoinDEuropeUser())) {
             $this->updateMemberTags(
                 $message->getEmailAddress(),
                 $this->mailchimpObjectIdMapping->getMainListId(),
