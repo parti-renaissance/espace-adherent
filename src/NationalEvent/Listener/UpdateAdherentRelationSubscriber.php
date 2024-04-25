@@ -1,0 +1,45 @@
+<?php
+
+namespace App\NationalEvent\Listener;
+
+use App\Membership\AdherentEvents;
+use App\Membership\Event\AdherentEvent;
+use App\Repository\NationalEvent\EventInscriptionRepository;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+class UpdateAdherentRelationSubscriber implements EventSubscriberInterface
+{
+    public function __construct(private readonly EventInscriptionRepository $eventInscriptionRepository)
+    {
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            AdherentEvents::REGISTRATION_COMPLETED => ['onAdherentRegistration', -10],
+        ];
+    }
+
+    public function onAdherentRegistration(AdherentEvent $event): void
+    {
+        $adherent = $event->getAdherent();
+
+        if (!$adherent->isBesoinDEuropeUser()) {
+            return;
+        }
+
+        $this->eventInscriptionRepository
+            ->createQueryBuilder('ei')
+            ->update()
+            ->set('ei.adherent', ':adherent')
+            ->where('er.adherent IS NULL')
+            ->andWhere('er.addressEmail = :email')
+            ->setParameters([
+                'adherent' => $adherent,
+                'email' => $adherent->getEmailAddress(),
+            ])
+            ->getQuery()
+            ->execute()
+        ;
+    }
+}
