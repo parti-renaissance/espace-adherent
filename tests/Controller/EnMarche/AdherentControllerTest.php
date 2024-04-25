@@ -20,6 +20,7 @@ use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractEnMarcheWebTestCase;
@@ -36,6 +37,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
 
     /* @var EmailRepository */
     private $emailRepository;
+    private $subscriptionTypeRepository;
 
     public function testMyEventsPageIsProtected(): void
     {
@@ -435,7 +437,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
 
         $subscriptions = $crawler->filter('input[name="adherent_email_subscription[subscriptionTypes][]"]');
 
-        $this->assertCount(8, $subscriptions);
+        $this->assertCount(9, $subscriptions);
 
         // Submit the email subscriptions form with invalid data
         // We need to use a POST request because the crawler does not
@@ -455,9 +457,9 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
 
         // Submit the emails subscription form with valid data
         Chronos::setTestNow('+1 day');
-        $this->client->submit($crawler->selectButton('adherent_email_subscription[submit]')->form(), [
+        $this->client->submit($form = $crawler->selectButton('adherent_email_subscription[submit]')->form(), [
             'adherent_email_subscription' => [
-                'subscriptionTypes' => $this->getSubscriptionTypesFormValues([
+                'subscriptionTypes' => $this->getSubscriptionTypesFormValues($form->get('adherent_email_subscription[subscriptionTypes]'), [
                     SubscriptionTypeEnum::LOCAL_HOST_EMAIL,
                     SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL,
                     SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL,
@@ -488,9 +490,9 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
 
         // Unsubscribe from 'subscribed_emails_local_host' and 'subscribed_emails_referents'
         Chronos::setTestNow('+1 week');
-        $this->client->submit($crawler->selectButton('adherent_email_subscription[submit]')->form(), [
+        $this->client->submit($form = $crawler->selectButton('adherent_email_subscription[submit]')->form(), [
             'adherent_email_subscription' => [
-                'subscriptionTypes' => $this->getSubscriptionTypesFormValues([
+                'subscriptionTypes' => $this->getSubscriptionTypesFormValues($form->get('adherent_email_subscription[subscriptionTypes]'), [
                     SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL,
                     SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL,
                 ]),
@@ -511,9 +513,9 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
 
         Chronos::setTestNow('+2 weeks'); // To make sure the date order of the SQL query is correct
         // Re-subscribe to 'subscribed_emails_local_host' and 'subscribed_emails_referents'
-        $this->client->submit($crawler->selectButton('adherent_email_subscription[submit]')->form(), [
+        $this->client->submit($form = $crawler->selectButton('adherent_email_subscription[submit]')->form(), [
             'adherent_email_subscription' => [
-                'subscriptionTypes' => $this->getSubscriptionTypesFormValues([
+                'subscriptionTypes' => $this->getSubscriptionTypesFormValues($form->get('adherent_email_subscription[subscriptionTypes]'), [
                     SubscriptionTypeEnum::LOCAL_HOST_EMAIL,
                     SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL,
                     SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL,
@@ -919,20 +921,26 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->committeeRepository = $this->getCommitteeRepository();
         $this->emailRepository = $this->getEmailRepository();
+        $this->subscriptionTypeRepository = $this->getSubscriptionTypeRepository();
     }
 
     protected function tearDown(): void
     {
         $this->emailRepository = null;
         $this->committeeRepository = null;
+        $this->subscriptionTypeRepository = null;
 
         parent::tearDown();
     }
 
-    private function getSubscriptionTypesFormValues(array $codes): array
+    private function getSubscriptionTypesFormValues(array $checkboxes, array $codes): array
     {
-        return array_map(static function (SubscriptionType $type) use ($codes) {
+        $choices = array_filter(array_map(static function (SubscriptionType $type) use ($codes) {
             return \in_array($type->getCode(), $codes, true) ? $type->getId() : false;
-        }, $this->getSubscriptionTypeRepository()->findByCodes(SubscriptionTypeEnum::ADHERENT_TYPES));
+        }, $this->subscriptionTypeRepository->findByCodes(SubscriptionTypeEnum::ADHERENT_TYPES)));
+
+        return array_map(function (ChoiceFormField $choice) use ($choices) {
+            return \in_array(current($choice->availableOptionValues()), $choices);
+        }, $checkboxes);
     }
 }

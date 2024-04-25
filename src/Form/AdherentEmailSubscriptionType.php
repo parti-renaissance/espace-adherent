@@ -51,6 +51,7 @@ class AdherentEmailSubscriptionType extends AbstractType
                             return 'subscription_type.group.communication_mobile';
                         case SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL:
                         case SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL:
+                        case SubscriptionTypeEnum::JAM_EMAIL:
                             return 'subscription_type.group.communication_emails';
                         case SubscriptionTypeEnum::DEPUTY_EMAIL:
                         case SubscriptionTypeEnum::REFERENT_EMAIL:
