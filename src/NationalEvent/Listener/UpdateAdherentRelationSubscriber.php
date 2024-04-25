@@ -34,9 +34,11 @@ class UpdateAdherentRelationSubscriber implements EventSubscriberInterface
             ->set('ei.adherent', ':adherent')
             ->where('er.adherent IS NULL')
             ->andWhere('er.addressEmail = :email')
+            ->andWhere('er.createdAt > :created_after')
             ->setParameters([
                 'adherent' => $adherent,
                 'email' => $adherent->getEmailAddress(),
+                'created_after' => new \DateTime('-6 months'),
             ])
             ->getQuery()
             ->execute()
