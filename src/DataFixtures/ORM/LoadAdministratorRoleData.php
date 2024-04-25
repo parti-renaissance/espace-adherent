@@ -574,7 +574,7 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_TECH_USER_LIST_DEFINITIONS',
             'Administrateur des labels',
-            AdministratorRoleGroupEnum::TECH
+            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_TECH_OAUTH_CLIENTS',
