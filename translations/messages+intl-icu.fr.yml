@@ -1141,7 +1141,7 @@ delegated_access.form.access.committee: Comités
 delegated_access.form.access.polls: Question du jour
 delegated_access.form.access.jecoute: Questionnaires
 delegated_access.form.access.jecoute_region: Campagne
-delegated_access.form.access.jecoute_news: Actualités
+delegated_access.form.access.jecoute_news: Notifications
 delegated_access.form.access.elected_representatives: Élus
 delegated_access.form.access.files: Documents
 delegated_access.created_successfully: L'accès délégué à votre espace a correctement été créé
@@ -1398,7 +1398,7 @@ scope.feature.team: Équipes
 scope.feature.pap: Porte-à-porte
 scope.feature.procurations: Procurations
 scope.feature.pap_v2: Porte-à-porte V2
-scope.feature.news: Actualités
+scope.feature.news: Notifications
 scope.feature.phoning_campaign: Phoning
 scope.feature.survey: Questionnaires
 scope.feature.department_site: Site départemental
