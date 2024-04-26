@@ -581,6 +581,7 @@ security:
             pattern: ^/admin
             provider: admins_db
             switch_user: true
+            access_denied_handler: App\Security\AccessDeniedHandler
             form_login:
                 login_path: app_admin_login
                 check_path: app_admin_login_check
@@ -627,6 +628,7 @@ security:
                     - App\Security\LoginFormGuardAuthenticator
                     - lexik_jwt_authentication.jwt_token_authenticator
             entry_point: App\Security\LoginFormGuardAuthenticator
+            access_denied_handler: App\Security\AccessDeniedHandler
             login_link:
                 check_route: app_user_connect_with_magic_link
                 check_post_only: true
