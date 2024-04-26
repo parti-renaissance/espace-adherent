@@ -114,6 +114,12 @@ class Request extends AbstractProcuration
 
     /**
      * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     *     "procuration_proxy_list",
+     * })
      */
     public bool $fromFrance;
 
