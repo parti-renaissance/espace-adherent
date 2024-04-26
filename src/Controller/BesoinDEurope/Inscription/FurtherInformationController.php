@@ -2,6 +2,7 @@
 
 namespace App\Controller\BesoinDEurope\Inscription;
 
+use App\Adhesion\AdhesionStepEnum;
 use App\Entity\Adherent;
 use App\Form\AdhesionFurtherInformationType;
 use Doctrine\ORM\EntityManagerInterface;
