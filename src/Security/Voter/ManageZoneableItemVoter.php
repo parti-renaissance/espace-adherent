@@ -4,6 +4,7 @@ namespace App\Security\Voter;
 
 use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
+use App\Entity\Event\CommitteeEvent;
 use App\Entity\Geo\Zone;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\ZoneableEntity;
@@ -30,6 +31,7 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
         if ($scope = $this->scopeGeneratorResolver->generate()) {
             $adherent = $scope->getDelegator() ?? $adherent;
             $zoneIds = array_map(fn (Zone $zone) => $zone->getId(), $scope->getZones());
+            $committeeUuids = $scope->getCommitteeUuids();
         } elseif ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
             $adherent = $delegatedAccess->getDelegator();
         }
@@ -44,6 +46,10 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             $spaceType = $scope->getMainCode();
         } else {
             $spaceType = $this->getSpaceType($attribute);
+        }
+
+        if (!empty($committeeUuids) && $subject instanceof CommitteeEvent) {
+            return \in_array($subject->getCommitteeUuid(), $committeeUuids);
         }
 
         if (empty($zoneIds) && !$zoneIds = $this->managedZoneProvider->getManagedZonesIds($adherent, $spaceType)) {
