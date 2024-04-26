@@ -7,7 +7,7 @@
 {% set with_renaissance = app.request.attributes.get('with_renaissance', false) %}
 
 {% block content %}
-    <section class="flex flex-col bg-white pt-[40px] pb-[3.25rem] re_new_ui bde-theme">
+    <section class="flex flex-col bg-white pt-[40px] pb-[3.25rem] re_new_ui {{ not with_renaissance ? 'bde-theme' }}">
         {% if with_renaissance %}
             <a href="{{ path('renaissance_site') }}" class="flex justify-center items-center self-center rounded-full bg-[#F4F4F7] mb-6 lg:mb-[4.38rem] w-[80px] h-[80px] lg:w-[120px] lg:h-[120px] hover:animate-pulse" title="Site Renaissance">
                 <img src="{{ asset('/images/renaissance/logo-circle-dark.svg') }}" alt="logo" class="w-3/4" />
