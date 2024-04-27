@@ -3,10 +3,9 @@
 namespace App\Mailer\Message\BesoinDEurope;
 
 use App\Entity\Event\EventRegistration;
-use App\Mailer\Message\Renaissance\AbstractRenaissanceMessage;
 use Ramsey\Uuid\Uuid;
 
-class BesoinDEuropeEventRegistrationConfirmationMessage extends AbstractRenaissanceMessage
+class BesoinDEuropeEventRegistrationConfirmationMessage extends AbstractBesoinDEuropeMessage
 {
     public static function createFromRegistration(EventRegistration $registration, string $eventLink): self
     {
