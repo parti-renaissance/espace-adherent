@@ -17,7 +17,7 @@ $tertiary: #959CA0;
         }
     }
 
-    a {
+    a:not(.re-button) {
         color: $secondary !important;
         text-decoration: none;
         transition: all 0.2s ease-in-out;
@@ -48,7 +48,6 @@ $tertiary: #959CA0;
     .re-linked-toggle .re-linked-toggle-content {
         input {
             &[type=radio] {
-
                 &:checked + label {
                     @apply bg-white border-black text-black z-10;
                     border-width: 2px;

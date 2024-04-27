@@ -20,7 +20,7 @@ const Page = (props) => ({
     },
     disableDispatchToStepper: false,
     amount: props.amount,
-    duration: props.duration,
+    duration: props.duration ?? '0',
     localDestination: props.localDestination,
 
     handleStepperChange(step) {

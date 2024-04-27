@@ -76,7 +76,7 @@ class DonationController extends AbstractController
             $isSubscription ? DonationRequest::MIN_AMOUNT : DonationRequest::MIN_AMOUNT_SUBSCRIPTION
         );
 
-        $localDestination = $request->query->getBoolean('localDestination', false);
+        $localDestination = $request->query->getBoolean('localDestination');
 
         $donationRequest = $currentUser
             ? DonationRequest::createFromAdherent($currentUser, $clientIp, $amount)

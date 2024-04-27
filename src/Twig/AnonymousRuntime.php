@@ -9,20 +9,15 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class AnonymousRuntime implements RuntimeExtensionInterface
 {
-    private const USER_LOGIN_ROUTE = 'app_renaissance_login';
-
-    private $urlGenerator;
-    private $requestStack;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator, RequestStack $requestStack)
-    {
-        $this->urlGenerator = $urlGenerator;
-        $this->requestStack = $requestStack;
+    public function __construct(
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly RequestStack $requestStack,
+    ) {
     }
 
     public function generateLoginPathForAnonymousFollower(string $callbackRoute = '', array $params = []): string
     {
-        return $this->doGeneratePathForAnonymousFollower(self::USER_LOGIN_ROUTE, $callbackRoute, $params);
+        return $this->doGeneratePathForAnonymousFollower('/connexion', $callbackRoute, $params);
     }
 
     private function doGeneratePathForAnonymousFollower(
@@ -38,7 +33,7 @@ class AnonymousRuntime implements RuntimeExtensionInterface
             $params = $this->requestStack->getMainRequest()->attributes->get('_route_params');
         }
 
-        $params[AnonymousFollowerSession::AUTHENTICATION_INTENTION] = $this->urlGenerator->generate($intention);
+        $params[AnonymousFollowerSession::AUTHENTICATION_INTENTION] = $intention;
 
         return $this->urlGenerator->generate($callbackRoute, $params);
     }
