@@ -78,6 +78,9 @@ services:
             $openAIApiKey: '%env(OPENAI_API_KEY)%'
             $friendlyCaptchaEuropeSiteKey: '%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%'
             $captainVerifyApiKey: '%env(CAPTAIN_VERIFY_API_KEY)%'
+            $systemPayMode: '%env(SYSTEMPAY_MODE)%'
+            $systemPaySiteId: '%env(SYSTEMPAY_SITE_ID)%'
+            $systemPayKey: '%env(SYSTEMPAY_KEY)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:

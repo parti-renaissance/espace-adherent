@@ -19,8 +19,7 @@ function closest(num, arr) {
  * First Step component for funnel
  * @returns {AlpineComponent}
  */
-const FirstForm = () => {
-    const uniqAmounts = [30, 60, 120, 250, 500, 1000];
+const FirstForm = ({ amounts: uniqAmounts = [30, 60, 120, 250, 500, 1000] } = {}) => {
     const monthlyAmounts = [5, 10, 20, 30, 60, 100];
     return ({
         ...CommonFormStep(),
@@ -32,7 +31,7 @@ const FirstForm = () => {
         defaultCustomAmount: '',
 
         getTaxTextReduction() {
-            return `${(this.amount * 0.34).toFixed(2)} € ${'-1' === this.duration ? '/ mois' : ''}`;
+            return `${(this.amount * 0.34).toFixed(2).toLocaleString()} € ${'-1' === this.duration ? '/ mois' : ''}`;
         },
 
         handleAmountClick(amount) {
@@ -78,7 +77,7 @@ const FirstForm = () => {
             this.defaultCustomAmount = this.getCustomAmount();
         },
 
-        getAmounts(duration) {
+        getAmounts() {
             return '0' === this.duration ? uniqAmounts : monthlyAmounts;
         },
         getCustomAmount() {
