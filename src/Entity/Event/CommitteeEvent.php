@@ -155,11 +155,6 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
         return true;
     }
 
-    public function needNotifyForCancellation(): bool
-    {
-        return true;
-    }
-
     public function getContentContainingDocuments(): string
     {
         return (string) $this->description;

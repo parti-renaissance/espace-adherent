@@ -316,6 +316,10 @@ besoindeurope_site:
     host: "%besoindeurope_host%"
     path: "/"
 
+vox_app:
+    host: "%vox_host%"
+    path: "/"
+
 vox_app_redirect:
     methods: GET
     host: "%user_besoindeurope_host%"
