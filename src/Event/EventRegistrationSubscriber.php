@@ -5,7 +5,7 @@ namespace App\Event;
 use App\AppCodeEnum;
 use App\Events;
 use App\Mailer\MailerService;
-use App\Mailer\Message\JeMengage\JeMengageEventRegistrationConfirmationMessage;
+use App\Mailer\Message\BesoinDEurope\BesoinDEuropeEventRegistrationConfirmationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceEventRegistrationConfirmationMessage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -37,9 +37,9 @@ class EventRegistrationSubscriber implements EventSubscriberInterface
         $registration = $event->getRegistration();
 
         if (AppCodeEnum::isJeMengage($registration->getSource())) {
-            $message = JeMengageEventRegistrationConfirmationMessage::createFromRegistration(
+            $message = BesoinDEuropeEventRegistrationConfirmationMessage::createFromRegistration(
                 $registration,
-                $this->generateUrl('app_committee_event_show', ['slug' => $event->getSlug()])
+                $this->generateUrl('vox_app').'/event-detail?id='.$registration->getEvent()->getUuidAsString(),
             );
         } else {
             $message = RenaissanceEventRegistrationConfirmationMessage::createFromRegistration(

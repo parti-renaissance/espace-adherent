@@ -7,7 +7,6 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventTypeEnum;
-use App\Mailer\Message\JeMengage\JeMengageEventUpdateMessage;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use PHPUnit\Framework\Attributes\Group;
@@ -75,8 +74,5 @@ class EventControllerTest extends AbstractApiTestCase
 
         self::assertSame('My best edited event !', $response['name']);
         self::assertSame('online', $response['mode']);
-
-        $this->assertCountMails(1, JeMengageEventUpdateMessage::class);
-        $this->assertMail(JeMengageEventUpdateMessage::class, 'president-ad@renaissance-dev.fr', ['template_name' => 'je-mengage-event-update']);
     }
 }

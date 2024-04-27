@@ -86,7 +86,7 @@ class SendEventUpdateNotificationListener implements EventSubscriberInterface
 
     private function doPostUpdate(BaseEvent $event): void
     {
-        if (!$this->matchChanges($event)) {
+        if (true || !$this->matchChanges($event)) {
             return;
         }
 
