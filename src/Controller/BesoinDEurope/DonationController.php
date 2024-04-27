@@ -20,6 +20,7 @@ class DonationController extends AbstractController
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly RequestParamsBuilder $requestParamsBuilder,
         private readonly AnonymousFollowerSession $anonymousFollowerSession,
+        private readonly string $friendlyCaptchaEuropeSiteKey,
     ) {
     }
 
@@ -64,6 +65,9 @@ class DonationController extends AbstractController
             $donationRequest->utmSource = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_SOURCE));
             $donationRequest->utmCampaign = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_CAMPAIGN));
         }
+
+        $donationRequest->setRecaptchaSiteKey($this->friendlyCaptchaEuropeSiteKey);
+        $donationRequest->setRecaptcha($request->request->get('frc-captcha-solution'));
 
         return $donationRequest;
     }
