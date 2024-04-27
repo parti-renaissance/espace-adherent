@@ -19,6 +19,7 @@ final class AppCodeEnum extends Enum
             self::JEMENGAGE,
             self::JEMENGAGE_WEB,
             self::JEMENGAGE_MOBILE,
+            self::BESOIN_D_EUROPE,
         ];
     }
 
