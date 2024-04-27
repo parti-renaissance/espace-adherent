@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Event;
 
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
@@ -56,7 +57,7 @@ class SubscribeAsAdherentController extends AbstractController
         }
 
         $this->entityManager->persist($registration = $this->eventRegistrationFactory->createFromCommand($command));
-        $registration->setSource($adherent->getAuthAppCode());
+        $registration->setSource(AppCodeEnum::BESOIN_D_EUROPE);
         $event->incrementParticipantsCount();
         $this->entityManager->flush();
 
