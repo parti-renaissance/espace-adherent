@@ -82,6 +82,7 @@ services:
             $systemPayMode: '%env(SYSTEMPAY_MODE)%'
             $systemPaySiteId: '%env(SYSTEMPAY_SITE_ID)%'
             $systemPayKey: '%env(SYSTEMPAY_KEY)%'
+            $appEnvironment: '%env(APP_ENVIRONMENT)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
@@ -463,7 +464,6 @@ services:
         arguments:
             $apiKey: '%env(MANDRILL_API_KEY)%'
             $testApiKey: '%env(MANDRILL_TEST_API_KEY)%'
-            $appEnvironment: '%env(APP_ENVIRONMENT)%'
 
     App\Messenger\AmqpTransport\AmqpTransportFactory:
         decorates: 'messenger.transport.amqp.factory'

@@ -14,12 +14,17 @@ class SendPostUpdateWebhookCommandHandler
 {
     public function __construct(
         private readonly HttpClientInterface $nationalEventTicketClient,
-        private readonly EventInscriptionRepository $eventInscriptionRepository
+        private readonly EventInscriptionRepository $eventInscriptionRepository,
+        private readonly string $appEnvironment,
     ) {
     }
 
     public function __invoke(SendWebhookCommand $command): void
     {
+        if ('production' !== $this->appEnvironment) {
+            return;
+        }
+
         if (!$command->isPostUpdate()) {
             return;
         }
