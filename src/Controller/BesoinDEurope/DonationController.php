@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-#[Route(path: '/don', name: 'app_bde_donation', methods: ['GET', 'POST'])]
 class DonationController extends AbstractController
 {
     public function __construct(
@@ -24,7 +23,8 @@ class DonationController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request): Response
+    #[Route(path: '/don', name: 'app_bde_donation', methods: ['GET', 'POST'])]
+    public function formAction(Request $request): Response
     {
         if ($response = $this->anonymousFollowerSession->start($request)) {
             return $response;
@@ -50,15 +50,22 @@ class DonationController extends AbstractController
         ]);
     }
 
+    #[Route(path: '/don/merci', name: 'app_bde_donation_thanks', methods: 'GET')]
+    public function thanksAction(): Response
+    {
+        return $this->render('besoindeurope/donation/thanks.html.twig');
+    }
+
     private function getDonationRequest(Request $request): DonationRequest
     {
         $donationRequest = new DonationRequest();
 
         if ($user = $this->getUser()) {
             $donationRequest->updateFromAdherent($user);
+        } else {
+            $donationRequest->email = $request->query->get('email');
         }
 
-        $donationRequest->email = $request->query->get('email');
         $donationRequest->amount = $request->query->getInt('amount');
 
         if ($request->query->has(UtmParams::UTM_SOURCE)) {
