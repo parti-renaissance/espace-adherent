@@ -85,6 +85,10 @@ $tertiary: #959CA0;
         @apply rounded-[30px];
         padding-left: 10px !important;
 
+        &.re-field-frame-select {
+            padding-left: 0 !important;
+        }
+
         &:focus,
         &.focus,
         &:active,
@@ -152,4 +156,8 @@ $tertiary: #959CA0;
         color: black !important;
         font-size: 16px !important;
     }
+}
+
+.re-phone .re-field-frame {
+    padding-left: 0 !important;
 }

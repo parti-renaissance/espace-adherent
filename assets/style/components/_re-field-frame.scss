@@ -36,7 +36,11 @@
 }
 
 .re-field-frame {
-    @apply transition-colors  w-full h-[51px] px-5 py-4 bg-white rounded-lg border border-ui_gray-30 ring-0;
+    @apply transition-colors  w-full h-[51px] p-1 pt-3.5 md:pt-4 md:py-4 bg-white rounded-lg border border-ui_gray-30 ring-0;
+    &.re-field-frame-select textarea {
+        @apply text-center;
+    }
+
     &input, &textarea, input {
         @apply rounded-lg text-ui_gray-80 text-sm sm:text-base appearance-none;
         &::placeholder {
