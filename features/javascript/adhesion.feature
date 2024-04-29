@@ -295,7 +295,7 @@ Feature:
         And I fill in the following:
             | membership_request[email] | carl999@example.fr |
         And I click the "membership_request_consentDataCollect" element
-        And I wait 3 seconds
+        And I wait 5 seconds
         And I press "J'adhère"
         Then I wait 5 seconds until I see "Un email de confirmation vient d’être envoyé à votre adresse email. Cliquez sur le lien de validation qu’il contient pour continuer votre adhésion."
         And I should have 1 email "AdhesionAlreadySympathizerMessage" for "carl999@example.fr" with payload:

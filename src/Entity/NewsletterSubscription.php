@@ -11,6 +11,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
 use Symfony\Component\Intl\Countries;
+use Symfony\Component\Intl\Exception\MissingResourceException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -141,7 +142,12 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface, EntityS
 
     public function getCountryName(): ?string
     {
-        return $this->country ? Countries::getName($this->country) : null;
+        try {
+            return $this->country ? Countries::getName($this->country) : null;
+        } catch (MissingResourceException $e) {
+        }
+
+        return null;
     }
 
     public function isFromEvent(): bool
