@@ -9,9 +9,9 @@ use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
 use App\Entity\CommitteeMembership;
 use App\Entity\Event\CommitteeEvent;
+use App\Mailer\Message\BesoinDEurope\BesoinDEuropeEventRegistrationConfirmationMessage;
 use App\Mailer\Message\CommitteeMessageNotificationMessage;
-use App\Mailer\Message\EventNotificationMessage;
-use App\Mailer\Message\EventRegistrationConfirmationMessage;
+use App\Mailer\Message\Renaissance\RenaissanceEventNotificationMessage;
 use App\Repository\CommitteeFeedItemRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\EventRepository;
@@ -269,10 +269,10 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertSame("♻ débat sur l'agriculture écologique ♻", $event->getName());
         $this->assertSame("♻ Cette journée sera consacrée à un grand débat sur la question de l'agriculture écologique. ♻", $event->getDescription());
         $this->assertFalse($event->isForLegislatives());
-        $this->assertCountMails(1, EventNotificationMessage::class, 'gisele-berthoux@caramail.com');
-        $this->assertCountMails(1, EventNotificationMessage::class, 'commissaire.biales@example.fr');
-        $this->assertCountMails(0, EventNotificationMessage::class, 'carl999@example.fr');
-        $this->assertCountMails(0, EventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
+        $this->assertCountMails(1, RenaissanceEventNotificationMessage::class, 'gisele-berthoux@caramail.com');
+        $this->assertCountMails(1, RenaissanceEventNotificationMessage::class, 'commissaire.biales@example.fr');
+        $this->assertCountMails(0, RenaissanceEventNotificationMessage::class, 'carl999@example.fr');
+        $this->assertCountMails(0, BesoinDEuropeEventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
 
         $eventItem = $this->committeeFeedItemRepository->findMostRecentFeedEvent(LoadCommitteeV1Data::COMMITTEE_1_UUID);
         $this->assertInstanceOf(CommitteeFeedItem::class, $eventItem);
@@ -328,10 +328,10 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertSame("♻ débat sur l'agriculture écologique à Singapore", $event->getName());
         $this->assertSame("♻ Cette journée sera consacrée à un grand débat sur la question de l'agriculture écologique. ♻", $event->getDescription());
         $this->assertFalse($event->isForLegislatives());
-        $this->assertCountMails(1, EventNotificationMessage::class, 'commissaire.biales@example.fr');
-        $this->assertCountMails(1, EventNotificationMessage::class, 'gisele-berthoux@caramail.com');
-        $this->assertCountMails(0, EventNotificationMessage::class, 'carl999@example.fr');
-        $this->assertCountMails(0, EventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
+        $this->assertCountMails(1, RenaissanceEventNotificationMessage::class, 'commissaire.biales@example.fr');
+        $this->assertCountMails(1, RenaissanceEventNotificationMessage::class, 'gisele-berthoux@caramail.com');
+        $this->assertCountMails(0, RenaissanceEventNotificationMessage::class, 'carl999@example.fr');
+        $this->assertCountMails(0, BesoinDEuropeEventRegistrationConfirmationMessage::class, 'gisele-berthoux@caramail.com');
 
         $eventItem = $this->committeeFeedItemRepository->findMostRecentFeedEvent(LoadCommitteeV1Data::COMMITTEE_1_UUID);
         $this->assertInstanceOf(CommitteeFeedItem::class, $eventItem);

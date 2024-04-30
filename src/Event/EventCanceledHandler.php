@@ -5,19 +5,16 @@ namespace App\Event;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Events;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventCanceledHandler
 {
-    private $dispatcher;
-    private $manager;
-
-    public function __construct(EventDispatcherInterface $dispatcher, ObjectManager $manager)
-    {
-        $this->dispatcher = $dispatcher;
-        $this->manager = $manager;
+    public function __construct(
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly EntityManagerInterface $manager
+    ) {
     }
 
     public function handle(BaseEvent $event): void
@@ -26,12 +23,7 @@ class EventCanceledHandler
 
         $this->manager->flush();
 
-        if ($event->needNotifyForCancellation()) {
-            $this->dispatcher->dispatch(
-                $this->createDispatchedEvent($event),
-                Events::EVENT_CANCELLED,
-            );
-        }
+        $this->dispatcher->dispatch($this->createDispatchedEvent($event), Events::EVENT_CANCELLED);
     }
 
     private function createDispatchedEvent(BaseEvent $event): Event

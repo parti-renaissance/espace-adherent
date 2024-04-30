@@ -8,12 +8,11 @@ use App\DataFixtures\ORM\LoadEventCategoryData;
 use App\Entity\Event\EventInvite;
 use App\Entity\Event\EventRegistration;
 use App\Entity\Renaissance\NewsletterSubscription;
+use App\Mailer\Message\BesoinDEurope\BesoinDEuropeEventRegistrationConfirmationMessage;
 use App\Mailer\Message\BesoinDEurope\EuNewsletterSubscriptionConfirmationMessage;
 use App\Mailer\Message\EventInvitationMessage;
-use App\Mailer\Message\Renaissance\RenaissanceEventRegistrationConfirmationMessage;
 use App\Repository\EmailRepository;
 use App\Repository\EventRegistrationRepository;
-use App\Repository\NewsletterSubscriptionRepository;
 use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -26,7 +25,6 @@ class EventControllerTest extends AbstractEventControllerTestCase
 {
     private ?EventRegistrationRepository $repository;
     private ?EmailRepository $emailRepository;
-    private ?NewsletterSubscriptionRepository $subscriptionsRepository;
 
     public function testAnonymousUserCanRegisterToEvent()
     {
@@ -81,7 +79,7 @@ class EventControllerTest extends AbstractEventControllerTestCase
         ]));
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadCommitteeEventData::EVENT_1_UUID, 'paupau75@example.org'));
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(RenaissanceEventRegistrationConfirmationMessage::class, 'paupau75@example.org'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(BesoinDEuropeEventRegistrationConfirmationMessage::class, 'paupau75@example.org'));
 
         $crawler = $this->client->followRedirect();
 
@@ -131,7 +129,7 @@ class EventControllerTest extends AbstractEventControllerTestCase
         $this->client->followRedirect();
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadCommitteeEventData::EVENT_1_UUID, 'deputy@en-marche-dev.fr'));
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(RenaissanceEventRegistrationConfirmationMessage::class, 'deputy@en-marche-dev.fr'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(BesoinDEuropeEventRegistrationConfirmationMessage::class, 'deputy@en-marche-dev.fr'));
 
         $crawler = $this->client->followRedirect();
 
@@ -481,14 +479,12 @@ class EventControllerTest extends AbstractEventControllerTestCase
 
         $this->repository = $this->getEventRegistrationRepository();
         $this->emailRepository = $this->getEmailRepository();
-        $this->subscriptionsRepository = $this->getNewsletterSubscriptionRepository();
     }
 
     protected function tearDown(): void
     {
         $this->repository = null;
         $this->emailRepository = null;
-        $this->subscriptionsRepository = null;
 
         parent::tearDown();
     }
