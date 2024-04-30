@@ -8,36 +8,37 @@
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
-            "version": "0.4.4",
+            "version": "0.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/a2lix/AutoFormBundle.git",
-                "reference": "50b8952d8504431780d56e873549686474b8773c"
+                "reference": "0c2f5418ccee0a84edfde18f09a3063fa8664c37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a2lix/AutoFormBundle/zipball/50b8952d8504431780d56e873549686474b8773c",
-                "reference": "50b8952d8504431780d56e873549686474b8773c",
+                "url": "https://api.github.com/repos/a2lix/AutoFormBundle/zipball/0c2f5418ccee0a84edfde18f09a3063fa8664c37",
+                "reference": "0c2f5418ccee0a84edfde18f09a3063fa8664c37",
                 "shasum": ""
             },
             "require": {
-                "doctrine/persistence": "^1.3|^2.0|^3.0",
-                "php": ">=7.2.5",
-                "symfony/config": "^3.4.30|^4.3|^5.0|^6.0",
-                "symfony/dependency-injection": "^3.4.30|^4.3|^5.0|^6.0",
-                "symfony/doctrine-bridge": "^3.4.30|^4.3|^5.0|^6.0",
-                "symfony/form": "^3.4.30|^4.3|^5.0|^6.0",
-                "symfony/http-kernel": "^3.4.30|^4.3|^5.0|^6.0"
+                "doctrine/persistence": "^2.0|^3.0",
+                "php": "^8.1",
+                "symfony/config": "^5.4.30|^6.3|^7.0",
+                "symfony/dependency-injection": "^5.4.30|^6.3|^7.0",
+                "symfony/doctrine-bridge": "^5.4.30|^6.3|^7.0",
+                "symfony/form": "^5.4.30|^6.3|^7.0",
+                "symfony/http-kernel": "^5.4.30|^6.3|^7.0"
             },
             "require-dev": {
-                "doctrine/orm": "^2.7",
-                "edgedesign/phpqa": "^1.25",
-                "friendsofphp/php-cs-fixer": "^3.4.0",
-                "phpstan/phpstan": "^1.2.0",
-                "symfony/cache": "^5.4",
-                "symfony/phpunit-bridge": "^6.0",
-                "symfony/validator": "^3.4.30|^4.3|^5.0|^6.0",
-                "vimeo/psalm": "^4.15"
+                "doctrine/orm": "^2.15",
+                "friendsofphp/php-cs-fixer": "^3.45",
+                "kubawerlos/php-cs-fixer-custom-fixers": "^3.18",
+                "phpstan/phpstan": "^1.10",
+                "rector/rector": "^0.18",
+                "symfony/cache": "^5.4.30|^6.3|^7.0",
+                "symfony/phpunit-bridge": "^5.4.30|^6.3|^7.0",
+                "symfony/validator": "^5.4.30|^6.3|^7.0",
+                "vimeo/psalm": "^5.18"
             },
             "suggest": {
                 "a2lix/translation-form-bundle": "For translation form"
@@ -80,47 +81,48 @@
             ],
             "support": {
                 "issues": "https://github.com/a2lix/AutoFormBundle/issues",
-                "source": "https://github.com/a2lix/AutoFormBundle/tree/0.4.4"
+                "source": "https://github.com/a2lix/AutoFormBundle/tree/0.4.7"
             },
-            "time": "2022-11-24T12:09:27+00:00"
+            "time": "2024-01-09T18:21:56+00:00"
         },
         {
             "name": "a2lix/translation-form-bundle",
-            "version": "3.2.1",
+            "version": "3.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/a2lix/TranslationFormBundle.git",
-                "reference": "ca3bf7bf8d5b68d6fe723632443195b63dc6326e"
+                "reference": "7c0a3a12b029db0d4cef3ad6a69b4f6321958384"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/ca3bf7bf8d5b68d6fe723632443195b63dc6326e",
-                "reference": "ca3bf7bf8d5b68d6fe723632443195b63dc6326e",
+                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/7c0a3a12b029db0d4cef3ad6a69b4f6321958384",
+                "reference": "7c0a3a12b029db0d4cef3ad6a69b4f6321958384",
                 "shasum": ""
             },
             "require": {
-                "a2lix/auto-form-bundle": "^0.2|^0.3|^0.4",
-                "php": ">=7.2",
-                "symfony/config": "^3.4.30|^4.3|^5.0|^6.0",
-                "symfony/dependency-injection": "^3.4.30|^4.3|^5.0|^6.0",
-                "symfony/doctrine-bridge": "^3.4.30|^4.3|^5.0|^6.0",
-                "symfony/event-dispatcher": "^3.4.30|^4.3|^5.0|^6.0",
-                "symfony/form": "^3.4.30|^4.3|^5.0|^6.0",
-                "symfony/http-foundation": "^3.4.30|^4.3|^5.0|^6.0",
-                "symfony/http-kernel": "^3.4.30|^4.3|^5.0|^6.0",
-                "symfony/options-resolver": "^3.4.30|^4.3|^5.0|^6.0"
+                "a2lix/auto-form-bundle": "^0.4",
+                "php": "^8.1",
+                "symfony/config": "^5.4.30|^6.3|^7.0",
+                "symfony/dependency-injection": "^5.4.30|^6.3|^7.0",
+                "symfony/doctrine-bridge": "^5.4.30|^6.3|^7.0",
+                "symfony/event-dispatcher": "^5.4.30|^6.3|^7.0",
+                "symfony/form": "^5.4.30|^6.3|^7.0",
+                "symfony/http-foundation": "^5.4.30|^6.3|^7.0",
+                "symfony/http-kernel": "^5.4.30|^6.3|^7.0",
+                "symfony/options-resolver": "^5.4.30|^6.3|^7.0"
             },
             "require-dev": {
-                "doctrine/orm": "^2.7",
-                "edgedesign/phpqa": "^1.25",
-                "friendsofphp/php-cs-fixer": "^3.4.0",
-                "knplabs/doctrine-behaviors": "^2.0",
-                "matthiasnoback/symfony-dependency-injection-test": "^4.3",
-                "phpstan/phpstan": "^1.2.0",
-                "symfony/cache": "^5.4",
-                "symfony/phpunit-bridge": "^6.0",
-                "symfony/validator": "^3.4.30|^4.3|^5.0|^6.0",
-                "vimeo/psalm": "^4.15"
+                "doctrine/orm": "^2.15",
+                "friendsofphp/php-cs-fixer": "^3.45",
+                "knplabs/doctrine-behaviors": "^2.3",
+                "kubawerlos/php-cs-fixer-custom-fixers": "^3.18",
+                "matthiasnoback/symfony-dependency-injection-test": "^5.0",
+                "phpstan/phpstan": "^1.10",
+                "rector/rector": "^0.18",
+                "symfony/cache": "^5.4.30|^6.3|^7.0",
+                "symfony/phpunit-bridge": "^5.4.30|^6.3|^7.0",
+                "symfony/validator": "^5.4.30|^6.3|^7.0",
+                "vimeo/psalm": "^5.18"
             },
             "suggest": {
                 "knplabs/doctrine-behaviors": "For Knp strategy",
@@ -166,9 +168,9 @@
             ],
             "support": {
                 "issues": "https://github.com/a2lix/TranslationFormBundle/issues",
-                "source": "https://github.com/a2lix/TranslationFormBundle/tree/3.2.1"
+                "source": "https://github.com/a2lix/TranslationFormBundle/tree/3.2.4"
             },
-            "time": "2022-01-26T09:02:44+00:00"
+            "time": "2024-04-09T14:08:34+00:00"
         },
         {
             "name": "algolia/algoliasearch-client-php",
@@ -15938,21 +15940,20 @@
         },
         {
             "name": "symfony/process",
-            "version": "v5.4.39",
+            "version": "v6.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "85a554acd7c28522241faf2e97b9541247a0d3d5"
+                "reference": "cdb1c81c145fd5aa9b0038bab694035020943381"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/85a554acd7c28522241faf2e97b9541247a0d3d5",
-                "reference": "85a554acd7c28522241faf2e97b9541247a0d3d5",
+                "url": "https://api.github.com/repos/symfony/process/zipball/cdb1c81c145fd5aa9b0038bab694035020943381",
+                "reference": "cdb1c81c145fd5aa9b0038bab694035020943381",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
-                "symfony/polyfill-php80": "^1.16"
+                "php": ">=8.1"
             },
             "type": "library",
             "autoload": {
@@ -15980,7 +15981,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v5.4.39"
+                "source": "https://github.com/symfony/process/tree/v6.4.7"
             },
             "funding": [
                 {
@@ -15996,7 +15997,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-18T08:26:06+00:00"
+            "time": "2024-04-18T09:22:46+00:00"
         },
         {
             "name": "symfony/property-access",
