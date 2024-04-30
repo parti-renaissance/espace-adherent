@@ -1431,7 +1431,7 @@ Feature:
              },
              {
                 "name": "event_url",
-                "content": "http://vox.code/event-detail?id=@uuid@"
+                "content": "http://vox.code/evenements/@uuid@"
              },
              {
                 "name": "event_date",

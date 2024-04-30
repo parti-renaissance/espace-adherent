@@ -108,7 +108,7 @@ class EventMessageNotifierListener implements EventSubscriberInterface
 
         $this->transactionalMailer->sendMessage(BesoinDEuropeEventRegistrationConfirmationMessage::createFromRegistration(
             $registration,
-            $this->generateUrl('vox_app').'/event-detail?id='.$registration->getEvent()->getUuidAsString(),
+            $this->generateUrl('vox_app').'/evenements/'.$registration->getEvent()->getUuidAsString(),
         ));
     }
 
@@ -140,7 +140,7 @@ class EventMessageNotifierListener implements EventSubscriberInterface
                     $chunk,
                     $event->getOrganizer(),
                     $event,
-                    $this->generateUrl('vox_app').'/event-detail?id='.$event->getUuidAsString(),
+                    $this->generateUrl('vox_app').'/evenements/'.$event->getUuidAsString(),
                 ));
             }
         }
