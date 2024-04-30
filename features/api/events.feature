@@ -1415,6 +1415,101 @@ Feature:
         "editable": true
     }
     """
+    And I should have 1 email
+    And I should have 1 email "BesoinDEuropeEventUpdateMessage" for "francis.brioul@yahoo.com" with payload:
+    """
+    {
+       "template_name": "besoin-d-europe-event-update",
+       "template_content": [],
+       "message": {
+          "subject": "",
+          "from_email": "ne-pas-repondre@besoindeurope.fr",
+          "global_merge_vars": [
+             {
+                "name": "event_name",
+                "content": "Nouvel événement online"
+             },
+             {
+                "name": "event_url",
+                "content": "http://vox.code/event-detail?id=@uuid@"
+             },
+             {
+                "name": "event_date",
+                "content": "lundi 12 décembre 2022"
+             },
+             {
+                "name": "event_hour",
+                "content": "10h30"
+             },
+             {
+                "name": "event_address",
+                "content": "dammarie-les-lys, 77190 dammarie-les-lys"
+             }
+          ],
+          "merge_vars": [
+             {
+                "rcpt": "referent@en-marche-dev.fr",
+                "vars": [
+                   {
+                      "name": "first_name",
+                      "content": "Referent"
+                   }
+                ]
+             },
+             {
+                "rcpt": "francis.brioul@yahoo.com",
+                "vars": [
+                   {
+                      "name": "first_name",
+                      "content": "Francis"
+                   }
+                ]
+             },
+             {
+                "rcpt": "simple-user@example.ch",
+                "vars": [
+                   {
+                      "name": "first_name",
+                      "content": "Simple"
+                   }
+                ]
+             },
+             {
+                "rcpt": "marie.claire@test.com",
+                "vars": [
+                   {
+                      "name": "first_name",
+                      "content": "Marie"
+                   }
+                ]
+             }
+          ],
+          "from_name": "Besoin d'Europe",
+          "to": [
+             {
+                "email": "referent@en-marche-dev.fr",
+                "type": "to",
+                "name": "Referent Referent"
+             },
+             {
+                "email": "francis.brioul@yahoo.com",
+                "type": "to",
+                "name": "Francis Brioul"
+             },
+             {
+                "email": "simple-user@example.ch",
+                "type": "to",
+                "name": "Simple User"
+             },
+             {
+                "email": "marie.claire@test.com",
+                "type": "to",
+                "name": "Marie CLAIRE"
+             }
+          ]
+       }
+    }
+    """
     Examples:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |
@@ -1424,6 +1519,89 @@ Feature:
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "PUT" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/cancel?scope=<scope>"
     Then the response status code should be 200
+    And I should have 1 email
+    And I should have 1 email "BesoinDEuropeEventCancellationMessage" for "francis.brioul@yahoo.com" with payload:
+    """
+    {
+       "template_name": "besoin-d-europe-event-cancellation",
+       "template_content": [],
+       "message": {
+          "subject": "",
+          "from_email": "ne-pas-repondre@besoindeurope.fr",
+          "global_merge_vars": [
+             {
+                "name": "event_name",
+                "content": "Nouvel événement online"
+             },
+             {
+                "name": "events_link",
+                "content": "http://vox.code/evenements"
+             }
+          ],
+          "merge_vars": [
+             {
+                "rcpt": "referent@en-marche-dev.fr",
+                "vars": [
+                   {
+                      "name": "target_firstname",
+                      "content": "Referent"
+                   }
+                ]
+             },
+             {
+                "rcpt": "francis.brioul@yahoo.com",
+                "vars": [
+                   {
+                      "name": "target_firstname",
+                      "content": "Francis"
+                   }
+                ]
+             },
+             {
+                "rcpt": "simple-user@example.ch",
+                "vars": [
+                   {
+                      "name": "target_firstname",
+                      "content": "Simple"
+                   }
+                ]
+             },
+             {
+                "rcpt": "marie.claire@test.com",
+                "vars": [
+                   {
+                      "name": "target_firstname",
+                      "content": "Marie"
+                   }
+                ]
+             }
+          ],
+          "from_name": "Besoin d'Europe",
+          "to": [
+             {
+                "email": "referent@en-marche-dev.fr",
+                "type": "to",
+                "name": "Referent Referent"
+             },
+             {
+                "email": "francis.brioul@yahoo.com",
+                "type": "to",
+                "name": "Francis Brioul"
+             },
+             {
+                "email": "simple-user@example.ch",
+                "type": "to",
+                "name": "Simple User"
+             },
+             {
+                "email": "marie.claire@test.com",
+                "type": "to",
+                "name": "Marie CLAIRE"
+             }
+          ]
+       }
+    }
+    """
     Examples:
       | user                      | scope                                          |
       | referent@en-marche-dev.fr | referent                                       |

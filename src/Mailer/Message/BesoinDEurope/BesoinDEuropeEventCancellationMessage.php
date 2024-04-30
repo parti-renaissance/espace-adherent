@@ -1,19 +1,14 @@
 <?php
 
-namespace App\Mailer\Message\Renaissance;
+namespace App\Mailer\Message\BesoinDEurope;
 
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
 use Ramsey\Uuid\Uuid;
 
-final class RenaissanceEventCancellationMessage extends AbstractRenaissanceMessage
+final class BesoinDEuropeEventCancellationMessage extends AbstractBesoinDEuropeMessage
 {
-    /**
-     * Creates a new message instance for a list of recipients.
-     *
-     * @param EventRegistration[] $recipients
-     */
     public static function create(array $recipients, Adherent $host, BaseEvent $event, string $eventsLink): self
     {
         if (!$recipients) {
@@ -21,18 +16,14 @@ final class RenaissanceEventCancellationMessage extends AbstractRenaissanceMessa
         }
 
         $recipient = array_shift($recipients);
-        if (!$recipient instanceof EventRegistration) {
-            throw new \RuntimeException(sprintf('First recipient must be an %s instance, %s given', EventRegistration::class, $recipient::class));
-        }
 
         $message = new self(
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
             $recipient->getFirstName().' '.$recipient->getLastName(),
-            sprintf('L\'événement "%s" a été annulé.', $event->getName()),
+            '',
             static::getTemplateVars($event->getName(), $eventsLink),
-            self::getRecipientVars($recipient),
-            $host->getEmailAddress()
+            self::getRecipientVars($recipient)
         );
 
         foreach ($recipients as $recipient) {
@@ -50,7 +41,7 @@ final class RenaissanceEventCancellationMessage extends AbstractRenaissanceMessa
     {
         return [
             'event_name' => $eventName,
-            'event_slug' => $eventsLink,
+            'events_link' => $eventsLink,
         ];
     }
 

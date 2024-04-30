@@ -791,11 +791,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         return false;
     }
 
-    public function needNotifyForCancellation(): bool
-    {
-        return false;
-    }
-
     public function isReminded(): bool
     {
         return $this->reminded;

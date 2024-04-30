@@ -1,35 +1,30 @@
 <?php
 
-namespace App\Mailer\Message\JeMengage;
+namespace App\Mailer\Message\BesoinDEurope;
 
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
-use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
-final class JeMengageEventUpdateMessage extends AbstractJeMengageMessage
+class BesoinDEuropeEventUpdateMessage extends AbstractBesoinDEuropeMessage
 {
-    public static function create(array $recipients, Adherent $host, BaseEvent $event, string $icalEventUrl): Message
+    public static function create(array $recipients, Adherent $host, BaseEvent $event, string $eventUrl): self
     {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one Adherent recipient is required.');
         }
 
         $recipient = array_shift($recipients);
-        if (!$recipient instanceof EventRegistration) {
-            throw new \RuntimeException(sprintf('First recipient must be an %s instance, %s given', EventRegistration::class, $recipient::class));
-        }
 
-        $message = self::updateSenderInfo(new self(
+        $message = new self(
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
             $recipient->getFirstName().' '.$recipient->getLastName(),
-            'Un événement auquel vous participez a été mis à jour',
-            static::getTemplateVars($event, $icalEventUrl),
-            static::getRecipientVars($recipient),
-            $host->getEmailAddress()
-        ));
+            '',
+            static::getTemplateVars($event, $eventUrl),
+            static::getRecipientVars($recipient)
+        );
 
         /* @var EventRegistration[] $recipients */
         foreach ($recipients as $recipient) {
@@ -43,10 +38,11 @@ final class JeMengageEventUpdateMessage extends AbstractJeMengageMessage
         return $message;
     }
 
-    private static function getTemplateVars(BaseEvent $event, string $icalEventUrl): array
+    private static function getTemplateVars(BaseEvent $event, string $eventUrl): array
     {
         return [
             'event_name' => self::escape($event->getName()),
+            'event_url' => $eventUrl,
             'event_date' => static::formatDate($event->getLocalBeginAt(), 'EEEE d MMMM y'),
             'event_hour' => sprintf(
                 '%sh%s',
@@ -54,7 +50,6 @@ final class JeMengageEventUpdateMessage extends AbstractJeMengageMessage
                 static::formatDate($event->getLocalBeginAt(), 'mm')
             ),
             'event_address' => $event->getInlineFormattedAddress(),
-            'calendar_url' => $icalEventUrl,
         ];
     }
 
