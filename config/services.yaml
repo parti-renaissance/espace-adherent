@@ -121,6 +121,8 @@ services:
             tags: ['app.acquisition_statistics.calculator']
         App\Adherent\Tag\TagGenerator\TagGeneratorInterface:
             tags: ['app.adherent.tag.generator']
+        App\JeMengage\Timeline\FeedProcessor\FeedProcessorInterface:
+            tags: ['app.timeline.feed_processor']
 
     # Imports
     App\:
@@ -188,6 +190,10 @@ services:
     App\AdherentMessage\AdherentMessageManager:
         arguments:
             $senders: !tagged_iterator 'app.adherent_message.sender'
+
+    App\JeMengage\Timeline\DataProvider:
+        arguments:
+            $processors: !tagged_iterator 'app.timeline.feed_processor'
 
     App\Adherent\Tag\TagAggregator:
         arguments:

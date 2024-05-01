@@ -6,6 +6,7 @@ use App\Adherent\Tag\TagEnum;
 use App\Api\Serializer\EventContextBuilder;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
+use App\Event\EventCleaner;
 use App\Event\EventVisibilityEnum;
 use App\Repository\EventRegistrationRepository;
 use App\Security\Voter\Event\CanManageEventVoter;
@@ -25,6 +26,7 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
         private readonly Security $security,
         private readonly EventRegistrationRepository $eventRegistrationRepository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly EventCleaner $eventCleaner,
     ) {
     }
 
@@ -59,17 +61,6 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
             && $data instanceof BaseEvent;
     }
 
-    private function cleanPrivateEvent(array $event): array
-    {
-        foreach ($event as $key => $value) {
-            if (!\in_array($key, ['name', 'uuid', 'slug', 'time_zone', 'begin_at', 'finish_at', 'status', 'visibility', 'image_url', 'link'])) {
-                $event[$key] = null;
-            }
-        }
-
-        return $event;
-    }
-
     private function cleanEventDataIfNeed(BaseEvent $event, ?Adherent $adherent, array $eventData, string $apiContext): array
     {
         if (EventContextBuilder::CONTEXT_PRIVATE === $apiContext) {
@@ -89,7 +80,7 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
             );
 
         if ($needClean) {
-            $eventData = $this->cleanPrivateEvent($eventData);
+            $eventData = $this->eventCleaner->cleanEventData($eventData);
             $eventData['object_state'] = 'partial';
         } else {
             $eventData['object_state'] = 'full';

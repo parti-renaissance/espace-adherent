@@ -28,7 +28,8 @@
         "time_zone",
         "title",
         "type",
-        "url"
+        "url",
+        "visibility"
     ],
     "unretrievableAttributes": [],
     "optionalWords": null,

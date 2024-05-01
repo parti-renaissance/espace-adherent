@@ -2,10 +2,9 @@
 
 namespace App\Controller\Api\JeMengage;
 
-use App\Algolia\SearchService;
 use App\Entity\Adherent;
-use App\Entity\Algolia\AlgoliaJeMengageTimelineFeed;
 use App\Intl\FranceCitiesBundle;
+use App\JeMengage\Timeline\DataProvider;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use App\OAuth\Model\DeviceApiUser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -19,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')]
 class GetTimelineFeedsController extends AbstractController
 {
-    public function __invoke(Request $request, SearchService $searchService): JsonResponse
+    public function __invoke(Request $request, DataProvider $dataProvider): JsonResponse
     {
         /** @var Adherent|DeviceApiUser $user */
         $user = $this->getUser();
@@ -59,12 +58,7 @@ class GetTimelineFeedsController extends AbstractController
             $filters[] = 'adherent_ids:'.$user->getId();
         }
 
-        $timelineFeeds = $searchService->rawSearch(AlgoliaJeMengageTimelineFeed::class, '', [
-            'page' => $page,
-            'attributesToHighlight' => [],
-            'filters' => implode(' OR ', $filters),
-            'tagFilters' => $tagFilters,
-        ]);
+        $timelineFeeds = $dataProvider->findItems($user, $page, $filters, $tagFilters);
 
         return $this->json($timelineFeeds, Response::HTTP_OK);
     }
