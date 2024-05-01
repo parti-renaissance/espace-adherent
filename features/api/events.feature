@@ -58,7 +58,16 @@ Feature:
         "capacity": null,
         "post_address": null,
         "link": "@string@.isUrl()",
-        "category": null,
+        "category": {
+            "event_group_category": {
+                "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
+                "name": "événement",
+                "slug": "evenement"
+            },
+            "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
+            "name": "Réunion d'équipe",
+            "slug": "reunion-dequipe"
+        },
         "visio_url": null,
         "mode": null,
         "local_begin_at": null,

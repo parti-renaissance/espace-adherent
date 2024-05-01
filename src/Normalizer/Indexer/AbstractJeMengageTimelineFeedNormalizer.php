@@ -31,6 +31,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'adherent_ids' => $this->getAdherentIds($object),
             'deeplink' => $this->getDeepLink($object),
             'mode' => $this->getMode($object),
+            'visibility' => $this->getVisibility($object),
             'cta_label' => $this->getCtaLabel($object),
             'cta_link' => $this->getCtaLink($object),
             '_tags' => [$this->getType()],
@@ -123,6 +124,11 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     }
 
     protected function getCtaLink(object $object): ?string
+    {
+        return null;
+    }
+
+    protected function getVisibility(object $object): ?string
     {
         return null;
     }

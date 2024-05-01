@@ -827,7 +827,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
 
     public function isIndexable(): bool
     {
-        return $this->isPublished() && $this->isGeocoded() && AddressInterface::FRANCE === $this->getCountry();
+        return $this->isPublished() && !$this->isCancelled();
     }
 
     public function getIndexOptions(): array
