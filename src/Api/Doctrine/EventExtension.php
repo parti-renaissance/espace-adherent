@@ -52,7 +52,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
             return;
         }
 
-        $this->modifyQuery($queryBuilder, $context);
+        $this->modifyQuery($queryBuilder, $context, BaseEvent::STATUS_SCHEDULED);
 
         $alias = $queryBuilder->getRootAliases()[0];
 
@@ -88,7 +88,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
         }
     }
 
-    private function modifyQuery(QueryBuilder $queryBuilder, array $context): void
+    private function modifyQuery(QueryBuilder $queryBuilder, array $context, ?string $eventStatus = null): void
     {
         $alias = $queryBuilder->getRootAliases()[0];
 
@@ -96,8 +96,6 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
             ->andWhere("$alias.published = :true")
             ->setParameter('true', true)
         ;
-
-        $eventStatus = BaseEvent::STATUS_SCHEDULED;
 
         if (EventContextBuilder::CONTEXT_PUBLIC_ANONYMOUS === $context[EventContextBuilder::CONTEXT_KEY]) {
             $queryBuilder
