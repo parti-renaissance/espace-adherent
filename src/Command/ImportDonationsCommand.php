@@ -65,7 +65,7 @@ class ImportDonationsCommand extends Command
         'etats unis' => 'US',
         'usa' => 'US',
         'france' => 'FR',
-        'grece' => 'FR',
+        'grece' => 'GR',
         'hong kong' => 'HK',
         'hong kong (chine)' => 'HK',
         'ile maurice' => 'MU',
@@ -101,6 +101,7 @@ class ImportDonationsCommand extends Command
         'tahiti pf' => '',
         'thailande' => 'TH',
         'uae' => 'AE',
+        'emirats arabes unis' => 'AE',
     ];
 
     private const NATIONALITY_MAP = [
@@ -115,6 +116,12 @@ class ImportDonationsCommand extends Command
         'marocaine' => 'MA',
         'neerlandaise' => 'NL',
         'suisse' => 'CH',
+        'angolaise' => 'AO',
+        'australienne' => 'AU',
+        'britannique' => 'UK',
+        'camerounaise' => 'CM',
+        'congolaise' => 'CD',
+        'italienne' => 'IT',
     ];
 
     /**
