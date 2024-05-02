@@ -341,6 +341,6 @@ class ImportDonationsCommand extends Command
 
     private function updateDonatorIdentifier(string $identifier): void
     {
-        $this->donatorManager->updateIdentifier($identifier, false);
+        $this->donatorManager->updateIdentifier($identifier, true);
     }
 }
