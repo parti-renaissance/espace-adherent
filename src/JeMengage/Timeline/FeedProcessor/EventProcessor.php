@@ -12,8 +12,6 @@ use Symfony\Component\Security\Core\Security;
 
 class EventProcessor extends AbstractFeedProcessor
 {
-    private const CONTEXT_CLEANER_ENABLED_KEY = 'event:cleaner_enabled';
-
     private ?Adherent $currentUser = null;
 
     public function __construct(
@@ -38,17 +36,12 @@ class EventProcessor extends AbstractFeedProcessor
 
     private function cleanEventDataIfNeed(array $item, array &$context): array
     {
-        $needClean = $context[self::CONTEXT_CLEANER_ENABLED_KEY] ?? null;
-
-        if (null === $needClean) {
-            $user = $this->getCurrentUser();
-            $needClean = $context[self::CONTEXT_CLEANER_ENABLED_KEY] =
-                EventVisibilityEnum::isForAdherent($visibility = $item['visibility'] ?? EventVisibilityEnum::ADHERENT_DUES->value)
-                && (
-                    (EventVisibilityEnum::ADHERENT->value === $visibility && !$user->hasTag(TagEnum::ADHERENT))
-                    || (EventVisibilityEnum::ADHERENT_DUES->value === $visibility && !$user->hasTag(TagEnum::getAdherentYearTag()))
-                );
-        }
+        $user = $this->getCurrentUser();
+        $needClean = EventVisibilityEnum::isForAdherent($visibility = $item['visibility'] ?? EventVisibilityEnum::ADHERENT_DUES->value)
+            && (
+                (EventVisibilityEnum::ADHERENT->value === $visibility && !$user->hasTag(TagEnum::ADHERENT))
+                || (EventVisibilityEnum::ADHERENT_DUES->value === $visibility && !$user->hasTag(TagEnum::getAdherentYearTag()))
+            );
 
         if ($needClean) {
             $item = $this->eventCleaner->cleanEventData($item);
