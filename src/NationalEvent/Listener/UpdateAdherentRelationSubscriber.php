@@ -24,7 +24,10 @@ class UpdateAdherentRelationSubscriber implements EventSubscriberInterface
     {
         $adherent = $event->getAdherent();
 
-        if (!$adherent->isBesoinDEuropeUser()) {
+        if (
+            !$adherent->isBesoinDEuropeUser()
+            && !$adherent->isRenaissanceUser()
+        ) {
             return;
         }
 
