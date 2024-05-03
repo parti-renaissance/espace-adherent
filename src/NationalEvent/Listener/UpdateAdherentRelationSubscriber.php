@@ -24,13 +24,6 @@ class UpdateAdherentRelationSubscriber implements EventSubscriberInterface
     {
         $adherent = $event->getAdherent();
 
-        if (
-            !$adherent->isBesoinDEuropeUser()
-            && !$adherent->isRenaissanceUser()
-        ) {
-            return;
-        }
-
         $this->eventInscriptionRepository
             ->createQueryBuilder('ei')
             ->update()
