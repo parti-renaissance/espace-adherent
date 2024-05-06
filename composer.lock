@@ -14103,16 +14103,16 @@
         },
         {
             "name": "symfony/event-dispatcher-contracts",
-            "version": "v3.4.2",
+            "version": "v3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher-contracts.git",
-                "reference": "4e64b49bf370ade88e567de29465762e316e4224"
+                "reference": "8f93aec25d41b72493c6ddff14e916177c9efc50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/4e64b49bf370ade88e567de29465762e316e4224",
-                "reference": "4e64b49bf370ade88e567de29465762e316e4224",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/8f93aec25d41b72493c6ddff14e916177c9efc50",
+                "reference": "8f93aec25d41b72493c6ddff14e916177c9efc50",
                 "shasum": ""
             },
             "require": {
@@ -14122,7 +14122,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "3.4-dev"
+                    "dev-main": "3.5-dev"
                 },
                 "thanks": {
                     "name": "symfony/contracts",
@@ -14159,7 +14159,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v3.4.2"
+                "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v3.5.0"
             },
             "funding": [
                 {
@@ -14175,7 +14175,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-23T14:51:35+00:00"
+            "time": "2024-04-18T09:32:20+00:00"
         },
         {
             "name": "symfony/expression-language",
@@ -20619,16 +20619,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v3.54.0",
+            "version": "v3.55.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "2aecbc8640d7906c38777b3dcab6f4ca79004d08"
+                "reference": "c9eeacb559bfa0bcc7f778cfb7b42715c83d2c7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/2aecbc8640d7906c38777b3dcab6f4ca79004d08",
-                "reference": "2aecbc8640d7906c38777b3dcab6f4ca79004d08",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/c9eeacb559bfa0bcc7f778cfb7b42715c83d2c7e",
+                "reference": "c9eeacb559bfa0bcc7f778cfb7b42715c83d2c7e",
                 "shasum": ""
             },
             "require": {
@@ -20700,7 +20700,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.54.0"
+                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.55.0"
             },
             "funding": [
                 {
@@ -20708,7 +20708,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-17T08:12:13+00:00"
+            "time": "2024-05-06T00:10:15+00:00"
         },
         {
             "name": "instaclick/php-webdriver",
