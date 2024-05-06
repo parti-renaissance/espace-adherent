@@ -19,7 +19,7 @@ const ReContributionOpt = (props) => ({
     sliderValue: 0,
     onInputChange(_value) {
         const target = document.querySelector('#custom-price-input');
-        const value = Math.min(Math.max(_value, 60), 7500);
+        const value = Math.min(Math.max(_value, 50), 7500);
         const event = new CustomEvent('custom-price-input:set-value', {
             detail: this.reverseLogSlider(value),
         });
@@ -40,7 +40,7 @@ const ReContributionOpt = (props) => ({
         const maxp = 100;
 
         // The result should be between 100 an 10000000
-        const minv = Math.log(60);
+        const minv = Math.log(50);
         const maxv = Math.log(7500);
 
         // calculate adjustment factor
@@ -55,7 +55,7 @@ const ReContributionOpt = (props) => ({
         const maxp = 100;
 
         // The result should be between 100 an 10000000
-        const minv = Math.log(60);
+        const minv = Math.log(50);
         const maxv = Math.log(7500);
 
         // calculate adjustment factor
