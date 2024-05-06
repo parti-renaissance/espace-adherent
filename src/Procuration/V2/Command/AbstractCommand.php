@@ -3,6 +3,7 @@
 namespace App\Procuration\V2\Command;
 
 use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\Round;
@@ -100,4 +101,11 @@ abstract class AbstractCommand
      * @Assert\NotBlank(message="procuration.round.not_blank")
      */
     public ?Round $round = null;
+
+    public function isFDE(): bool
+    {
+        return $this->voteZone
+            && $this->voteZone->isCountry()
+            && AddressInterface::FRANCE !== $this->voteZone->getCode();
+    }
 }

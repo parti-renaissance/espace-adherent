@@ -16,9 +16,9 @@ class ProxyCommand extends AbstractCommand
     public ?string $electorNumber = null;
 
     /**
-     * @Assert\Range(
-     *     min=1,
-     *     max=2
+     * @Assert\Expression(
+     *     expression="value >= 1 and ((!this.isFDE() and value <= 2) or (this.isFDE() and value <= 3))",
+     *     message="procuration.proxy.slots.invalid"
      * )
      */
     public int $slots = 1;

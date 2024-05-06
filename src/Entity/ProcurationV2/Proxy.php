@@ -80,7 +80,10 @@ class Proxy extends AbstractProcuration
     /**
      * @ORM\Column(type="smallint", options={"default": 1, "unsigned": true})
      *
-     * @Assert\Range(min=1, max=2)
+     * @Assert\Expression(
+     *     expression="value >= 1 and ((!this.isFDE() and value <= 2) or (this.isFDE() and value <= 3))",
+     *     message="procuration.proxy.slots.invalid"
+     * )
      *
      * @Groups({
      *     "procuration_matched_proxy",
