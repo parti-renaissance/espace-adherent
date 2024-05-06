@@ -145,6 +145,11 @@ class EventInscription
      */
     public ?\DateTime $ticketSentAt = null;
 
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $ticketCustomDetail = null;
+
     public function __construct(NationalEvent $event, ?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
