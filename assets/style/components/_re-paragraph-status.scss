@@ -12,6 +12,10 @@
         }
     }
 
+    &--default {
+        @apply text-[#555555] bg-[rgba(221,221,221,0.10)] border-[#D1D5DA]
+    }
+
     &--success {
         @apply text-ui_green-90 bg-ui_green-5 border-ui_green-50
     }
