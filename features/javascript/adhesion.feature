@@ -44,11 +44,11 @@ Feature:
         And I should see "Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi"
         And I click the "#step_4 #amount_5_label" selector
         And I should not see "Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi"
-        And I press "Je cotise pour 60 €"
+        And I press "Je cotise pour 50 €"
 
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I wait until I see "60.00 EUR"
+        And I wait until I see "50.00 EUR"
         When I fill in the following:
             | CVVX         | 123              |
             | NUMERO_CARTE | 1111222233334444 |
@@ -345,11 +345,11 @@ Feature:
         And I should see "Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi"
         And I click the "#step_4 #amount_5_label" selector
         And I should not see "Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi"
-        And I press "Je cotise pour 60 €"
+        And I press "Je cotise pour 50 €"
 
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I wait until I see "60.00 EUR"
+        And I wait until I see "50.00 EUR"
         When I fill in the following:
             | CVVX         | 123              |
             | NUMERO_CARTE | 1111222233334444 |
