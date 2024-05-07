@@ -46,6 +46,8 @@ class SendPostUpdateWebhookCommandHandler
                 'custom' => [
                     'prenom' => $eventInscription->firstName,
                     'nom' => $eventInscription->lastName,
+                    'champ_supp' => (string) $eventInscription->ticketCustomDetail,
+                    'email' => $eventInscription->addressEmail,
                 ],
             ],
         ]);
@@ -58,6 +60,7 @@ class SendPostUpdateWebhookCommandHandler
                         'prenom' => $eventInscription->firstName,
                         'nom' => $eventInscription->lastName,
                         'champ_supp' => (string) $eventInscription->ticketCustomDetail,
+                        'email' => $eventInscription->addressEmail,
                     ],
                 ],
                 'headers' => ['Content-Type' => 'application/merge-patch+json'],
