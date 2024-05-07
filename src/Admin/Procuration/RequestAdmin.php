@@ -28,7 +28,7 @@ class RequestAdmin extends AbstractProcurationAdmin
         $form
             ->with('Vote')
                 ->add('fromFrance', CheckboxType::class, [
-                    'label' => 'Veut sa procuration sur le sol Français',
+                    'label' => 'procuration.request.fromFrance.label',
                     'required' => false,
                 ])
             ->end()
@@ -75,7 +75,7 @@ class RequestAdmin extends AbstractProcurationAdmin
                 ],
             ])
             ->add('fromFrance', BooleanFilter::class, [
-                'label' => 'Veut sa procuration sur le sol Français',
+                'label' => 'procuration.request.fromFrance.label',
             ])
         ;
     }
