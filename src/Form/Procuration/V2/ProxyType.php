@@ -23,6 +23,7 @@ class ProxyType extends AbstractProcurationType
                 'choices' => [
                     'procuration.slots.choice_1' => 1,
                     'procuration.slots.choice_2' => 2,
+                    'procuration.slots.choice_3' => 3,
                 ],
             ])
         ;

@@ -37,6 +37,7 @@ class ProxyAdmin extends AbstractProcurationAdmin
                     'choices' => [
                         '1' => 1,
                         '2' => 2,
+                        '3' => 3,
                     ],
                 ])
             ->end()

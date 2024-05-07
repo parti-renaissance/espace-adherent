@@ -30,6 +30,7 @@ class ProcurationFactory
             $command->voteZone,
             $command->votePlace,
             $command->customVotePlace,
+            $command->fromFrance,
             $command->adherent,
             $command->joinNewsletter,
             $command->clientIp

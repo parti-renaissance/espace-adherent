@@ -14,6 +14,7 @@ const SecondForm = (props) => ({
     nextStepId: 'step_3',
     id: 'step_2',
     showAutoComplete: true,
+    showManualBDV: false,
     votePlaceUuid: null,
     votePlaceLoading: false,
     isVotePlacesEmpty: false,
@@ -68,6 +69,13 @@ const SecondForm = (props) => ({
                     label: `${x.name} | ${'country' === x.type ? x.code : x.postal_code}`,
                     value: `${x.uuid}__${x.type}__${x.code}`,
                 })));
+    },
+
+    /**
+     * @param {boolean} open
+     */
+    setManualBDV(open) {
+        this.showManualBDV = open;
     },
 
     handleVoteZoneChange(uuidType) {

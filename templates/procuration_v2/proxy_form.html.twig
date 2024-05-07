@@ -43,10 +43,22 @@
     </fieldset>
 
     <fieldset x-show="isNotInFrance">
-        <twig:Atoms:ReLabel>Et si vous votiez une 3e fois ?</twig:Atoms:ReLabel>
-        <p class="text-[#555555] opacity-50">Les Français de l’étranger peuvent porter jusqu’à deux procurations pour les élections européennes.</p>
+        <twig:Atoms:ReLabel>Et si vous votiez une 3e ou 4e fois ?</twig:Atoms:ReLabel>
+        <p class="text-[#555555] opacity-50">En tant que FDE, vous pouvez porter jusqu’à 3 procurations dès lors que seule l’une d’entre elles, au maximum, a été enregistrée dans une gendarmerie ou un commissariat en France.</p>
         {{ form_row(form.slots) }}
     </fieldset>
+    <twig:ReParagraphStatus status="default" x-show="isNotInFrance">
+        <div>
+            Voici les différents scénarios possibles :
+            <ul class="list-disc pl-6">
+                <li>3 procurations enregistrées à l’étranger (dans un consulat français)</li>
+                <li>2 procurations enregistrées à l’étranger et 1 procuration enregistrée en France</li>
+                <li>1 procuration enregistrée à l’étranger et 1 procuration enregistrée en France</li>
+                <li>1 procuration enregistrée à l’étranger et aucune procuration enregistrée en France</li>
+                <li>Aucune procuration enregistrée à l’étranger et 1 procuration enregistrée en France</li>
+            </ul>
+        </div>
+    </twig:ReParagraphStatus>
 {% endblock %}
 
 {% block submit_label_content %}

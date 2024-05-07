@@ -113,6 +113,17 @@ class Request extends AbstractProcuration
     public RequestStatusEnum $status = RequestStatusEnum::PENDING;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": true})
+     *
+     * @Groups({
+     *     "procuration_request_read",
+     *     "procuration_request_list",
+     *     "procuration_proxy_list",
+     * })
+     */
+    public bool $fromFrance;
+
+    /**
      * @Assert\Valid
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationV2\Proxy", inversedBy="requests")
@@ -147,6 +158,7 @@ class Request extends AbstractProcuration
         Zone $voteZone,
         ?Zone $votePlace = null,
         ?string $customVotePlace = null,
+        bool $fromFrance = true,
         ?Adherent $adherent = null,
         bool $joinNewsletter = false,
         ?string $clientIp = null,
@@ -171,6 +183,7 @@ class Request extends AbstractProcuration
             $createdAt
         );
 
+        $this->fromFrance = $fromFrance;
         $this->matchingHistories = new ArrayCollection();
     }
 

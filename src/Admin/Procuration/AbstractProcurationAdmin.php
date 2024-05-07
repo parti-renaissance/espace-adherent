@@ -2,6 +2,7 @@
 
 namespace App\Admin\Procuration;
 
+use App\Address\AddressInterface;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\Entity\Geo\Zone;
 use App\Form\GenderType;
@@ -21,6 +22,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -192,6 +194,61 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
             ->add('email', null, [
                 'label' => 'Adresse email',
                 'show_filter' => false,
+            ])
+            ->add('isFDE', CallbackFilter::class, [
+                'label' => 'FDE',
+                'field_type' => ChoiceType::class,
+                'field_options' => [
+                    'choices' => [
+                        'yes',
+                        'no',
+                    ],
+                    'choice_label' => static function (string $choice): string {
+                        return "global.$choice";
+                    },
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $qb->innerJoin("$alias.voteZone", '_fde_vote_zone');
+
+                    switch ($value->getValue()) {
+                        case 'yes':
+                            $qb
+                                ->andWhere('_fde_vote_zone.type = :fde_type_country')
+                                ->setParameter('fde_type_country', Zone::COUNTRY)
+                                ->andWhere('_fde_vote_zone.code != :fde_code_france')
+                                ->setParameter('fde_code_france', AddressInterface::FRANCE)
+                            ;
+
+                            return true;
+
+                        case 'no':
+                            $qb
+                                ->andWhere(
+                                    $qb
+                                        ->expr()
+                                        ->orX()
+                                        ->add(
+                                            $qb
+                                                ->expr()
+                                                ->andX()
+                                                ->add('_fde_vote_zone.type = :fde_type_country')
+                                                ->add('_fde_vote_zone.code = :fde_code_france')
+                                        )
+                                        ->add('_fde_vote_zone.type != :fde_type_country')
+                                )
+                                ->setParameter('fde_type_country', Zone::COUNTRY)
+                                ->setParameter('fde_code_france', AddressInterface::FRANCE)
+                            ;
+
+                            return true;
+                        default:
+                            return false;
+                    }
+                },
             ])
             ->add('voteZone', ZoneAutocompleteFilter::class, [
                 'label' => 'Zone de vote',
