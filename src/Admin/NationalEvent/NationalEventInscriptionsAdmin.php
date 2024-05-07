@@ -7,15 +7,22 @@ use App\Adherent\Tag\TagTranslator;
 use App\Admin\AbstractAdmin;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Exporter\IteratorCallbackDataSource;
+use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
+use App\Entity\AdherentZoneBasedRole;
+use App\Entity\Geo\Zone;
+use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\NationalEvent\EventInscription;
 use App\Form\CivilityType;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
+use App\ValueObject\Genders;
+use Doctrine\ORM\QueryBuilder;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
@@ -126,23 +133,82 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
         return [IteratorCallbackDataSource::CALLBACK => function (array $inscription) {
             /** @var EventInscription $inscription */
             $inscription = $inscription[0];
+            $nationalEvent = $inscription->event;
+            $adherent = $inscription->adherent;
+
+            $translator = $this->getTranslator();
 
             return [
-                'UUID' => $inscription->getUuid()->toString(),
+                'Événement national' => $nationalEvent->getName(),
+                'Événement national UUID' => $nationalEvent->getUuid()->toString(),
+                'Participant UUID' => $inscription->getUuid()->toString(),
                 'Email' => $inscription->addressEmail,
-                'Genre' => $inscription->gender,
+                'Civilité' => $inscription->gender ? $translator->trans(array_search($inscription->gender, Genders::CIVILITY_CHOICES, true)) : null,
                 'Prénom' => $inscription->firstName,
                 'Nom' => $inscription->lastName,
-                'Labels' => implode(', ', array_map([$this->tagTranslator, 'trans'], $inscription->adherent?->tags ?? [])),
+                'Labels' => implode(', ', array_map([$this->tagTranslator, 'trans'], $adherent?->tags ?? [])),
+                'Rôles' => implode(', ', array_map(function (AdherentZoneBasedRole $role) use ($translator): string {
+                    return sprintf(
+                        '%s [%s]',
+                        $translator->trans('role.'.$role->getType()),
+                        implode(', ', array_map(function (Zone $zone): string {
+                            return sprintf(
+                                '%s (%s)',
+                                $zone->getName(),
+                                $zone->getCode()
+                            );
+                        }, $role->getZones()->toArray()))
+                    );
+                }, $adherent?->getZoneBasedRoles() ?? [])),
+                'Rôle délégué' => implode(', ', array_map(function (DelegatedAccess $delegatedAccess): string {
+                    return $delegatedAccess->getRole();
+                }, $adherent?->getReceivedDelegatedAccesses()->toArray() ?? [])),
+                'Mandats' => implode(', ', array_map(function (ElectedRepresentativeAdherentMandate $mandate) use ($translator): string {
+                    $str = $translator->trans('adherent.mandate.type.'.$mandate->mandateType);
+
+                    if ($zone = $mandate->zone) {
+                        $str .= sprintf(
+                            ' [%s (%s)]',
+                            $zone->getName(),
+                            $zone->getCode()
+                        );
+                    }
+
+                    return $str;
+                }, $adherent?->getElectedRepresentativeMandates() ?? [])),
                 'Date de naissance' => $inscription->birthdate?->format('d/m/Y'),
                 'Téléphone' => PhoneNumberUtils::format($inscription->phone),
                 'Date d\'inscription' => $inscription->getCreatedAt()->format('d/m/Y H:i:s'),
-                'Billet reçu le' => $inscription->ticketSentAt?->format('d/m/Y H:i:s'),
+                'Statut' => $translator->trans($inscription->status),
+                'Envoyé le' => $inscription->ticketSentAt?->format('d/m/Y H:i:s'),
                 'Code postal' => $inscription->postalCode,
                 'UTM source' => $inscription->utmSource,
                 'UTM campagne' => $inscription->utmCampaign,
             ];
         }];
+    }
+
+    /** @param QueryBuilder|ProxyQueryInterface $query */
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
+        $alias = $query->getRootAliases()[0];
+
+        $query
+            ->addSelect(
+                '_adherent',
+                '_adherent_mandate',
+                '_delegated_access',
+                '_zone_based_role',
+                '_zone_based_role_zone',
+            )
+            ->leftJoin("$alias.adherent", '_adherent')
+            ->leftJoin('_adherent.adherentMandates', '_adherent_mandate')
+            ->leftJoin('_adherent.receivedDelegatedAccesses', '_delegated_access')
+            ->leftJoin('_adherent.zoneBasedRoles', '_zone_based_role')
+            ->leftJoin('_zone_based_role.zones', '_zone_based_role_zone')
+        ;
+
+        return $query;
     }
 
     #[Required]
