@@ -517,6 +517,7 @@ procuration.request.status.pending: En attente
 procuration.request.status.completed: Complété
 procuration.request.status.manual: Traité manuellement
 procuration.request.status.excluded: Exclu
+procuration.request.fromFrance.label: Va faire sa procuration sur le sol français
 
 procuration.proxy.status.pending: En attente
 procuration.proxy.status.completed: Complété
