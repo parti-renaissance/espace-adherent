@@ -172,6 +172,16 @@ class Address
      */
     public ?VotePlace $votePlace = null;
 
+    /**
+     * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
+     *
+     * @Groups({
+     *     "pap_address_list",
+     *     "pap_address_read",
+     * })
+     */
+    public ?int $priority = null;
+
     public function __construct(
         ?UuidInterface $uuid = null,
         ?string $number = null,
