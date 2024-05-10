@@ -56,6 +56,7 @@ Feature:
     [
         {
             "number": "55",
+            "priority": null,
             "address": "Rue du Rocher",
             "insee_code": "75108",
             "postal_codes": ["75008"],
@@ -86,6 +87,7 @@ Feature:
         },
         {
             "number": "65",
+            "priority": null,
             "address": "Rue du Rocher",
             "insee_code": "75108",
             "postal_codes": ["75008"],
@@ -112,6 +114,7 @@ Feature:
         },
         {
             "number": "70",
+            "priority": null,
             "address": "Rue du Rocher",
             "insee_code": "75108",
             "postal_codes": ["75008"],
@@ -138,6 +141,7 @@ Feature:
         },
         {
             "number": "67",
+            "priority": null,
             "address": "Rue du Rocher",
             "insee_code": "75108",
             "postal_codes": ["75008"],
@@ -184,6 +188,7 @@ Feature:
             "latitude": 48.880085,
             "longitude": 2.321696,
             "number": "62",
+            "priority": null,
             "postal_codes": [
                 "75008"
             ],
@@ -203,6 +208,7 @@ Feature:
     {
       "uuid": "a0b9231b-9ff5-49b9-aa7a-1d28abbba32f",
       "number": "55",
+      "priority": null,
       "address": "Rue du Rocher",
       "insee_code": "75108",
       "postal_codes": ["75008"],
