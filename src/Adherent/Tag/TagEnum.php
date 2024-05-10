@@ -60,6 +60,7 @@ class TagEnum extends Enum
             self::SYMPATHISANT_ADHESION_INCOMPLETE,
             self::SYMPATHISANT_COMPTE_EM,
             self::SYMPATHISANT_AUTRE_PARTI,
+            self::SYMPATHISANT_BESOIN_D_EUROPE,
         ]);
     }
 

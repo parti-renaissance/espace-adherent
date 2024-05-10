@@ -373,7 +373,8 @@ Feature:
                             "sympathisant": "Sympathisant",
                             "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incomplète",
                             "sympathisant:compte_em": "Sympathisant - Ancien compte En Marche",
-                            "sympathisant:autre_parti": "Sympathisant - Adhérent d'un autre parti"
+                            "sympathisant:autre_parti": "Sympathisant - Adhérent d'un autre parti",
+                            "sympathisant:besoin_d_europe": "Sympathisant - Besoin d'Europe"
                         }
                     },
                     "type": "select"
