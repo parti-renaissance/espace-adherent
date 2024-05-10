@@ -61,7 +61,7 @@ Feature:
             "last_month": 7
         },
         "tags": [],
-        "cadre_access": false
+        "cadre_access": true
     }
     """
 
