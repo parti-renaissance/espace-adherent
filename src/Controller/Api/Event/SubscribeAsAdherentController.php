@@ -10,6 +10,7 @@ use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationEvent;
 use App\Event\EventRegistrationFactory;
 use App\Events;
+use App\Repository\EventRegistrationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,8 @@ class SubscribeAsAdherentController extends AbstractController
         private readonly EntityManagerInterface $entityManager,
         private readonly EventRegistrationFactory $eventRegistrationFactory,
         private readonly ValidatorInterface $validator,
-        private readonly EventDispatcherInterface $dispatcher
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly EventRegistrationRepository $eventRegistrationRepository
     ) {
     }
 
@@ -56,16 +58,21 @@ class SubscribeAsAdherentController extends AbstractController
             return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        $this->entityManager->persist($registration = $this->eventRegistrationFactory->createFromCommand($command));
+        if ($newRegistration = (!$registration = $this->eventRegistrationRepository->findAdherentRegistration($event->getUuidAsString(), $adherent->getUuidAsString()))) {
+            $this->entityManager->persist($registration = $this->eventRegistrationFactory->createFromCommand($command));
+            $event->incrementParticipantsCount();
+        }
+
         $registration->setSource(AppCodeEnum::BESOIN_D_EUROPE);
-        $event->incrementParticipantsCount();
         $this->entityManager->flush();
 
-        $this->dispatcher->dispatch(new EventRegistrationEvent(
-            $registration,
-            $event->getSlug(),
-            true
-        ), Events::EVENT_REGISTRATION_CREATED);
+        if ($newRegistration) {
+            $this->dispatcher->dispatch(new EventRegistrationEvent(
+                $registration,
+                $event->getSlug(),
+                true
+            ), Events::EVENT_REGISTRATION_CREATED);
+        }
 
         return $this->json('OK', Response::HTTP_CREATED);
     }
