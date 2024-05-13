@@ -13,7 +13,6 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
@@ -81,15 +80,13 @@ class OAuthServerController extends AbstractController
     }
 
     #[Route(path: '/token', name: 'app_front_oauth_get_access_token', methods: ['POST'])]
-    public function getAccessTokenAction(Request $request, LoggerInterface $logger)
+    public function getAccessTokenAction(Request $request)
     {
         $response = new Response();
 
         try {
             return $this->authorizationServer->respondToAccessTokenRequest($request, $response);
         } catch (OAuthServerException $exception) {
-            $logger->error($exception->getMessage(), ['exception' => $exception->getPayload(), 'request' => $request->getParsedBody()]);
-
             return $exception->generateHttpResponse($response);
         }
     }
