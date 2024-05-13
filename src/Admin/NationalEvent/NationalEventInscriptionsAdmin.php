@@ -180,7 +180,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'Téléphone' => PhoneNumberUtils::format($inscription->phone),
                 'Date d\'inscription' => $inscription->getCreatedAt()->format('d/m/Y H:i:s'),
                 'Statut' => $translator->trans($inscription->status),
-                'Envoyé le' => $inscription->ticketSentAt?->format('d/m/Y H:i:s'),
+                'Billet envoyé le' => $inscription->ticketSentAt?->format('d/m/Y H:i:s'),
                 'Code postal' => $inscription->postalCode,
                 'UTM source' => $inscription->utmSource,
                 'UTM campagne' => $inscription->utmCampaign,
