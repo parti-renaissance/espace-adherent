@@ -80,7 +80,7 @@
         "nyholm/psr7": "^1.5",
         "odolbeau/phone-number-bundle": "^3.3",
         "openai-php/client": "^0.8.1",
-        "phpoffice/phpspreadsheet": "^1.16",
+        "phpoffice/phpspreadsheet": "^2.1",
         "predis/predis": "^1.1.0",
         "ramsey/uuid": "^4.1",
         "ramsey/uuid-doctrine": "^2.0",
