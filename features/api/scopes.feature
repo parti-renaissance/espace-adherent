@@ -553,7 +553,8 @@ Feature:
             "attributes": {
                 "committees": [
                     {"name": "Comité des 3 communes", "uuid": "@uuid@"}
-                ]
+                ],
+                "dpt": "92"
             },
             "delegated_access": null
         }
