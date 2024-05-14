@@ -996,6 +996,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+330699008800',
             'is_adherent' => false,
         ]));
+        $adherent->setPapUserRole(true);
         $adherent->setMandates([MandateTypeEnum::DEPUTE_EUROPEEN, MandateTypeEnum::CONSEILLER_MUNICIPAL]);
         $adherent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $adherent->activate(AdherentActivationToken::generate($adherent));

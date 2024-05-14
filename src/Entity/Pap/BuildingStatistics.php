@@ -59,17 +59,6 @@ class BuildingStatistics implements CampaignStatisticsInterface
     private Campaign $campaign;
 
     /**
-     * @ORM\Column(length=25)
-     *
-     * @Groups({
-     *     "pap_address_list",
-     *     "pap_address_read",
-     *     "pap_building_statistics_read",
-     * })
-     */
-    private string $status;
-
-    /**
      * @ORM\Column(type="datetime", nullable=true)
      *
      * @Groups({
@@ -111,6 +100,17 @@ class BuildingStatistics implements CampaignStatisticsInterface
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
      *
+     * @Groups({
+     *     "pap_address_list",
+     *     "pap_address_read",
+     *     "pap_building_statistics_read",
+     * })
+     */
+    private int $nbDistributedPrograms = 0;
+
+    /**
+     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
+     *
      * @Groups({"pap_address_list", "pap_address_read"})
      */
     private int $nbSurveys = 0;
@@ -132,16 +132,6 @@ class BuildingStatistics implements CampaignStatisticsInterface
     public function getCampaign(): Campaign
     {
         return $this->campaign;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): void
-    {
-        $this->status = $status;
     }
 
     public function getLastPassage(): ?\DateTimeInterface
@@ -184,6 +174,16 @@ class BuildingStatistics implements CampaignStatisticsInterface
         $this->nbVisitedDoors = $nbVisitedDoors;
     }
 
+    public function getNbDistributedPrograms(): int
+    {
+        return $this->nbDistributedPrograms;
+    }
+
+    public function setNbDistributedPrograms(int $nbDistributedPrograms): void
+    {
+        $this->nbDistributedPrograms = $nbDistributedPrograms;
+    }
+
     public function getNbSurveys(): int
     {
         return $this->nbSurveys;
@@ -192,5 +192,14 @@ class BuildingStatistics implements CampaignStatisticsInterface
     public function setNbSurveys(int $nbSurveys): void
     {
         $this->nbSurveys = $nbSurveys;
+    }
+
+    public function getStatusDetail(): ?string
+    {
+        if ($this->statusDetail || BuildingStatusEnum::COMPLETED !== $this->status) {
+            return $this->statusDetail;
+        }
+
+        return BuildingStatusEnum::COMPLETED_PAP;
     }
 }
