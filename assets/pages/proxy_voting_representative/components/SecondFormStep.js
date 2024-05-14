@@ -79,6 +79,12 @@ const SecondForm = (props) => ({
     },
 
     handleVoteZoneChange(uuidType) {
+        if (!uuidType) {
+            this.votePlaceUuid = null;
+            this.isVotePlacesEmpty = true;
+            return;
+        }
+
         const proxyOrRequest = document.querySelector('[id^=procuration_proxy_]') ? 'proxy' : 'request';
         const DOM_TOM_CODES = ['GP', 'GF', 'MQ', 'YT', 'NC', 'PF', 'BL', 'MF', 'SX', 'PM', 'WF', 'RE'];
         const [uuid, type, code] = uuidType.split('__');
@@ -110,7 +116,7 @@ const SecondForm = (props) => ({
      * @return {Promise<Option>}
      */
     getVotePlace(uuid) {
-        return fetch(`${props.zoneApi}?noLimit&types[]=vote_place&parent_zone=${uuid}`)
+        return fetch(`${props.zoneApi}?noLimit&types[]=vote_place&parent_zone=${uuid}&searchEvenEmptyTerm=true`)
             .then((response) => response.json())
             .then((data) => data.map((x) => ({
                 label: `${x.name}`,
