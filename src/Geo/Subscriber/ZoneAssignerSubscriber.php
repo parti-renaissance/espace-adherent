@@ -37,10 +37,6 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
     {
         $event = $eventEvent->getEvent();
 
-        if ($event->getAddress() && $eventEvent->isAddressChanged()) {
-            $this->assignZone($event, $event->getPostAddressModel(), true);
-        }
-
         if ($event->getZones()->isEmpty() && $event instanceof BaseCommitteeEvent) {
             /** @var Zone $firstZone */
             $firstZone = $event->getCommittee()->getZones()->first();
