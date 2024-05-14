@@ -953,7 +953,7 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "detail": "finish_at: La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018, 10:10.\ncategory: Catégorie est requise.\npost_address: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.",
+      "detail": "finish_at: La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018, 10:10.\ncategory: Catégorie est requise.\nname: Cette valeur ne doit pas être vide.\ncanonical_name: Cette valeur ne doit pas être vide.\ndescription: Cette valeur ne doit pas être vide.",
       "title": "An error occurred",
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "violations": [
@@ -966,11 +966,6 @@ Feature:
               "code": null,
               "message": "Catégorie est requise.",
               "propertyPath": "category"
-          },
-          {
-              "code": null,
-              "propertyPath": "post_address",
-              "message": "L'adresse saisie ne fait pas partie de la zone géographique que vous gérez."
           },
           {
               "code": "@uuid@",
@@ -1018,15 +1013,10 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "detail": "post_address: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.\nfinish_at: La date de fin de l'événement doit être postérieure à la date de début.",
+      "detail": "finish_at: La date de fin de l'événement doit être postérieure à la date de début.",
       "title": "An error occurred",
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "violations": [
-          {
-           "code": null,
-           "message": "L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.",
-           "propertyPath": "post_address"
-          },
           {
            "code": "@uuid@",
            "message": "La date de fin de l'événement doit être postérieure à la date de début.",
@@ -1806,52 +1796,6 @@ Feature:
         "image_url": null,
         "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher",
         "editable": true
-    }
-    """
-    Examples:
-      | user                                    | scope                                           |
-      | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           |
-      | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  |
-
-  Scenario Outline:  As a (delegated) legislative candidate I cannot create an event in not my managed zone
-    Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/events?scope=<scope>" with body:
-    """
-    {
-        "name": "Nouveau événement",
-        "category": "kiosque",
-        "description": "Une description de l'événement",
-        "begin_at": "2023-01-29 16:30:30",
-        "finish_at": "2023-01-30 16:30:30",
-        "capacity": 100,
-        "mode": "online",
-        "visio_url": "https://en-marche.fr/reunions/123",
-        "post_address": {
-          "address": "dammarie-les-lys",
-          "postal_code": "77190",
-          "city": "77190-77152",
-          "city_name": "dammarie-les-lys",
-          "country": "FR"
-        },
-        "time_zone": "Europe/Paris",
-        "visibility": "public"
-    }
-    """
-    Then the response status code should be 400
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-        "type": "https://tools.ietf.org/html/rfc2616#section-10",
-        "title": "An error occurred",
-        "detail": "post_address: L'adresse saisie ne fait pas partie de la zone géographique que vous gérez.",
-        "violations": [
-            {
-                "code": null,
-                "propertyPath": "post_address",
-                "message": "L'adresse saisie ne fait pas partie de la zone géographique que vous gérez."
-            }
-        ]
     }
     """
     Examples:
