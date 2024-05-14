@@ -19,7 +19,7 @@ class JecouteSpaceEnum extends Enum
             self::REFERENT_SPACE => 'référent',
             self::MANAGER_SPACE => 'responsable des questionnaires',
             self::CANDIDATE_SPACE => 'candidat aux départementales',
-            self::CORRESPONDENT_SPACE => 'correspondant',
+            self::CORRESPONDENT_SPACE => 'responsable local',
             self::LEGISLATIVE_CANDIDATE_SPACE => 'candidat aux législatives',
         ];
     }
