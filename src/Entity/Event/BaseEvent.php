@@ -40,7 +40,6 @@ use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Geocoder\GeoPointInterface;
 use App\Report\ReportType;
-use App\Validator\AddressInScopeZones;
 use App\Validator\AdherentInterests as AdherentInterestsConstraint;
 use App\Validator\DateRange;
 use App\Validator\EventCategory as AssertValidEventCategory;
@@ -199,7 +198,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  *
  * @AssertValidEventCategory
- * @AddressInScopeZones
  */
 abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, ExposedObjectInterface
 {
