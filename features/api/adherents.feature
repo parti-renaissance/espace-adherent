@@ -375,7 +375,7 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "Correspondant",
+                        "label": "Responsable local",
                         "tooltip": "Responsable logistique"
                     },
                     {
@@ -435,7 +435,7 @@ Feature:
                 "tags": [
                     {
                         "type": "role",
-                        "label": "Correspondant",
+                        "label": "Responsable local",
                         "tooltip": null
                     },
                     {
@@ -732,7 +732,7 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "Correspondant",
+                        "label": "Responsable local",
                         "tooltip": "Responsable logistique"
                     },
                     {
@@ -792,7 +792,7 @@ Feature:
                 "tags": [
                     {
                         "type": "role",
-                        "label": "Correspondant",
+                        "label": "Responsable local",
                         "tooltip": null
                     },
                     {

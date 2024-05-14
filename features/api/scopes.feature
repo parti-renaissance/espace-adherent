@@ -331,7 +331,7 @@ Feature:
           "data_corner"
         ],
         "code": "delegated_6d2506a7-bec7-45a1-a5ee-8f8b48daa5ec",
-        "name": "Correspondant délégué",
+        "name": "Responsable local délégué",
         "attributes": null,
         "zones": [
           {

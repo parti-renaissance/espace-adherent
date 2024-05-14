@@ -541,7 +541,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                 'type' => 'regular',
                 'settings' => [
                     'template_id' => 10,
-                    'subject_line' => '[Correspondant] Subject',
+                    'subject_line' => '[Responsable local] Subject',
                     'title' => 'Full Name - '.date('d/m/Y'),
                     'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
                     'from_name' => 'First Name | Campagne 2022',
