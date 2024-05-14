@@ -5,13 +5,31 @@ namespace App\Entity\Pap;
 use App\Entity\Adherent;
 use App\Pap\BuildingStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait StatusTrait
 {
     /**
      * @ORM\Column(length=25)
+     *
+     * @Groups({
+     *     "pap_address_list",
+     *     "pap_address_read",
+     *     "pap_building_statistics_read",
+     * })
      */
     private string $status;
+
+    /**
+     * @ORM\Column(length=25, nullable=true)
+     *
+     * @Groups({
+     *      "pap_address_list",
+     *      "pap_address_read",
+     *      "pap_building_statistics_read",
+     *  })
+     */
+    private ?string $statusDetail = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -32,6 +50,16 @@ trait StatusTrait
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    public function getStatusDetail(): ?string
+    {
+        return $this->statusDetail;
+    }
+
+    public function setStatusDetail(?string $statusDetail): void
+    {
+        $this->statusDetail = $statusDetail;
     }
 
     public function getClosedAt(): ?\DateTimeInterface

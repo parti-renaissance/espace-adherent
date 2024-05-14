@@ -2,7 +2,9 @@
 
 namespace App\Pap\Handler;
 
+use App\Entity\Pap\Building;
 use App\Entity\Pap\BuildingEvent;
+use App\Entity\Pap\BuildingStatistics;
 use App\Entity\Pap\CampaignStatisticsInterface;
 use App\Entity\Pap\CampaignStatisticsOwnerInterface;
 use App\Pap\BuildingEventActionEnum;
@@ -79,7 +81,27 @@ class BuildingEventCommandHandler implements MessageHandlerInterface
             throw new \RuntimeException(sprintf('Statistics not found for entity "%s" with id "%s" for PAP campaign with id "%s"', $object::class, $object->getId(), $campaign->getId()));
         }
 
+        $statusDetail = null;
+        if (
+            $object instanceof Building
+            && BuildingStatusEnum::COMPLETED === $status
+        ) {
+            $statusDetail = BuildingStatusEnum::COMPLETED_PAP;
+
+            if ('boitage' === $buildingEvent->closeType) {
+                $statusDetail = BuildingStatusEnum::COMPLETED_BOITAGE;
+                /** @var BuildingStatistics $stats */
+                if ($stats->getNbVisitedDoors() > 0) {
+                    $statusDetail = BuildingStatusEnum::COMPLETED_HYBRID;
+                }
+            }
+
+            $stats->setNbDistributedPrograms($buildingEvent->programs ?? 0);
+        }
+
         $stats->setStatus($status);
+        $stats->setStatusDetail($statusDetail);
+
         $stats->setClosedAt(BuildingStatusEnum::COMPLETED === $status ? $buildingEvent->getCreatedAt() : null);
         $stats->setClosedBy(BuildingStatusEnum::COMPLETED === $status ? $buildingEvent->getAuthor() : null);
     }

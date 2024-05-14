@@ -3712,6 +3712,7 @@ Feature:
                     "uuid": "@uuid@"
                 },
                 "status": "ongoing",
+                "status_detail": null,
                 "last_passage": "@string@.isDateTime()",
                 "last_passage_done_by": {
                     "uuid": "@uuid@",
@@ -3719,6 +3720,7 @@ Feature:
                     "last_name": "Fa33ke"
                 },
                 "nb_visited_doors": 1,
+                "nb_distributed_programs": 0,
                 "uuid": "@uuid@"
             },
             {
@@ -3737,9 +3739,11 @@ Feature:
                     "uuid": "@uuid@"
                 },
                 "status": "todo",
+                "status_detail": null,
                 "last_passage": null,
                 "last_passage_done_by": null,
                 "nb_visited_doors": 0,
+                "nb_distributed_programs": 0,
                 "uuid": "@uuid@"
             },
             {
@@ -3758,9 +3762,11 @@ Feature:
                     "uuid": "@uuid@"
                 },
                 "status": "todo",
+                "status_detail": null,
                 "last_passage": null,
                 "last_passage_done_by": null,
                 "nb_visited_doors": 0,
+                "nb_distributed_programs": 0,
                 "uuid": "@uuid@"
             },
             {
@@ -3779,9 +3785,11 @@ Feature:
                     "uuid": "@uuid@"
                 },
                 "status": "todo",
+                "status_detail": null,
                 "last_passage": null,
                 "last_passage_done_by": null,
                 "nb_visited_doors": 0,
+                "nb_distributed_programs": 0,
                 "uuid": "@uuid@"
             }
         ]

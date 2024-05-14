@@ -72,6 +72,7 @@ Feature:
                         "uuid": "@uuid@"
                     },
                     "status": "ongoing",
+                    "status_detail": null,
                     "last_passage": "@string@.isDateTime()",
                     "last_passage_done_by": {
                         "uuid": "@uuid@",
@@ -79,6 +80,7 @@ Feature:
                         "last_name": "Fa33ke"
                     },
                     "nb_visited_doors": 1,
+                    "nb_distributed_programs": 0,
                     "nb_surveys": 0,
                     "uuid": "@uuid@"
                 }
@@ -103,9 +105,11 @@ Feature:
                         "uuid": "@uuid@"
                     },
                     "status": "todo",
+                    "status_detail": null,
                     "last_passage": null,
                     "last_passage_done_by": null,
                     "nb_visited_doors": 0,
+                    "nb_distributed_programs": 0,
                     "nb_surveys": 0,
                     "uuid": "@uuid@"
                 }
@@ -130,9 +134,11 @@ Feature:
                         "uuid": "@uuid@"
                     },
                     "status": "todo",
+                    "status_detail": null,
                     "last_passage": null,
                     "last_passage_done_by": null,
                     "nb_visited_doors": 0,
+                    "nb_distributed_programs": 0,
                     "nb_surveys": 0,
                     "uuid": "@uuid@"
                 }
@@ -157,9 +163,11 @@ Feature:
                         "uuid": "@uuid@"
                     },
                     "status": "todo",
+                    "status_detail": null,
                     "last_passage": null,
                     "last_passage_done_by": null,
                     "nb_visited_doors": 0,
+                    "nb_distributed_programs": 0,
                     "nb_surveys": 0,
                     "uuid": "@uuid@"
                 }
@@ -177,7 +185,9 @@ Feature:
                     "last_passage_done_by": null,
                     "nb_surveys": 0,
                     "nb_visited_doors": 0,
+                    "nb_distributed_programs": 0,
                     "status": "todo",
+                    "status_detail": null,
                     "uuid": "@uuid@"
                 },
                 "type": "building",
@@ -223,6 +233,7 @@ Feature:
                "uuid": "@uuid@"
            },
            "status": "ongoing",
+           "status_detail": null,
            "last_passage": "@string@.isDateTime()",
            "last_passage_done_by": {
              "uuid": "@uuid@",
@@ -230,6 +241,7 @@ Feature:
              "last_name": "Fa33ke"
            },
            "nb_visited_doors": 1,
+           "nb_distributed_programs": 0,
            "nb_surveys": 0,
            "uuid": "@uuid@"
         }
@@ -397,6 +409,46 @@ Feature:
     """
     "OK"
     """
+    When I send a "GET" request to "/api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f"
+    And I wait 1 second
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "uuid": "a0b9231b-9ff5-49b9-aa7a-1d28abbba32f",
+      "number": "55",
+      "priority": null,
+      "address": "Rue du Rocher",
+      "insee_code": "75108",
+      "postal_codes": ["75008"],
+      "city_name": "Paris 8ème",
+      "latitude": 48.878708,
+      "longitude": 2.319111,
+      "building": {
+        "type": "building",
+        "uuid": "@uuid@",
+        "campaign_statistics": {
+           "campaign": {
+               "uuid": "@uuid@"
+           },
+           "status": "ongoing",
+           "status_detail": null,
+           "last_passage": "@string@.isDateTime()",
+           "last_passage_done_by": {
+             "uuid": "@uuid@",
+             "first_name": "Adherent 33",
+             "last_name": "Fa33ke"
+           },
+           "nb_visited_doors": 1,
+           "nb_distributed_programs": 0,
+           "nb_surveys": 0,
+           "uuid": "@uuid@"
+        }
+      },
+      "voters_count": 2
+    }
+    """
     When I send a "POST" request to "/api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events" with body:
     """
     {
@@ -410,6 +462,101 @@ Feature:
     And the JSON should be equal to:
     """
     "OK"
+    """
+    When I send a "GET" request to "/api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f"
+    And I wait 1 second
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "uuid": "a0b9231b-9ff5-49b9-aa7a-1d28abbba32f",
+      "number": "55",
+      "priority": null,
+      "address": "Rue du Rocher",
+      "insee_code": "75108",
+      "postal_codes": ["75008"],
+      "city_name": "Paris 8ème",
+      "latitude": 48.878708,
+      "longitude": 2.319111,
+      "building": {
+        "type": "building",
+        "uuid": "@uuid@",
+        "campaign_statistics": {
+           "campaign": {
+               "uuid": "@uuid@"
+           },
+           "status": "completed",
+           "status_detail": "completed_pap",
+           "last_passage": "@string@.isDateTime()",
+           "last_passage_done_by": {
+             "uuid": "@uuid@",
+             "first_name": "Adherent 33",
+             "last_name": "Fa33ke"
+           },
+           "nb_visited_doors": 1,
+           "nb_distributed_programs": 0,
+           "nb_surveys": 0,
+           "uuid": "@uuid@"
+        }
+      },
+      "voters_count": 2
+    }
+    """
+    When I send a "POST" request to "/api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events" with body:
+    """
+    {
+        "action": "close",
+        "close_type": "boitage",
+        "programs": 10,
+        "type": "building",
+        "campaign": "d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9"
+    }
+    """
+    Then the response status code should be 201
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    "OK"
+    """
+    When I send a "GET" request to "/api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    {
+      "uuid": "a0b9231b-9ff5-49b9-aa7a-1d28abbba32f",
+      "number": "55",
+      "priority": null,
+      "address": "Rue du Rocher",
+      "insee_code": "75108",
+      "postal_codes": ["75008"],
+      "city_name": "Paris 8ème",
+      "latitude": 48.878708,
+      "longitude": 2.319111,
+      "building": {
+        "type": "building",
+        "uuid": "@uuid@",
+        "campaign_statistics": {
+           "campaign": {
+               "uuid": "@uuid@"
+           },
+           "status": "completed",
+           "status_detail": "completed_hybrid",
+           "last_passage": "@string@.isDateTime()",
+           "last_passage_done_by": {
+             "uuid": "@uuid@",
+             "first_name": "Adherent 33",
+             "last_name": "Fa33ke"
+           },
+           "nb_visited_doors": 1,
+           "nb_distributed_programs": 10,
+           "nb_surveys": 0,
+           "uuid": "@uuid@"
+        }
+      },
+      "voters_count": 2
+    }
     """
 
   Scenario: As a logged-in user I can open and close a building block

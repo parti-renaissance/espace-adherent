@@ -82,6 +82,20 @@ class BuildingEvent implements AuthorInterface
      */
     private $author;
 
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Groups({"pap_building_event_write"})
+     */
+    public ?string $closeType = null;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
+     *
+     * @Groups({"pap_building_event_write"})
+     */
+    public ?int $programs = null;
+
     public function __construct(
         Building $building,
         ?Campaign $campaign = null,
