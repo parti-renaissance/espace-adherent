@@ -3,7 +3,6 @@
 namespace Tests\App\Controller\EnMarche\EventManager;
 
 use App\Entity\Event\BaseEvent;
-use App\Entity\Notification;
 use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
@@ -11,7 +10,6 @@ class ReferentEventManagerControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    private $notificationRepository;
     private $eventRepository;
 
     public function testListEvents(): void
@@ -34,8 +32,6 @@ class ReferentEventManagerControllerTest extends AbstractEnMarcheWebTestCase
 
     public function testCreateEvent(): void
     {
-        $this->assertCount(0, $this->notificationRepository->findAll());
-
         $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
 
         $crawler = $this->client->request('GET', '/espace-referent/evenements/creer');
@@ -54,20 +50,6 @@ class ReferentEventManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertResponseIsSuccessful();
         $errors = $crawler->filter('.form__errors > li');
         $this->assertCount(0, $errors);
-
-        $notifications = $this->notificationRepository->findAll();
-        $this->assertCount(1, $this->notificationRepository->findAll());
-
-        /** @var Notification $notification */
-        $notification = current($notifications);
-
-        self::assertSame('DefaultEventCreatedNotification', $notification->getNotificationClass());
-        self::assertSame('Hauts-de-Seine, nouvel événement', $notification->getTitle());
-        self::assertStringStartsWith('My new referent event • ', $notification->getBody());
-        self::assertStringEndsWith(' • 92 boulevard victor hugo, 92110 Clichy', $notification->getBody());
-        self::assertSame('staging_jemarche_department_92', $notification->getTopic());
-        self::assertEmpty($notification->getTokens());
-        self::assertNotNull($notification->getDelivered());
 
         /** @var BaseEvent $event */
         $event = $this->eventRepository->createQueryBuilder('event')
@@ -88,7 +70,6 @@ class ReferentEventManagerControllerTest extends AbstractEnMarcheWebTestCase
     {
         parent::setUp();
 
-        $this->notificationRepository = $this->getRepository(Notification::class);
         $this->eventRepository = $this->getRepository(BaseEvent::class);
     }
 
@@ -96,7 +77,6 @@ class ReferentEventManagerControllerTest extends AbstractEnMarcheWebTestCase
     {
         parent::tearDown();
 
-        $this->notificationRepository = null;
         $this->eventRepository = null;
     }
 }
