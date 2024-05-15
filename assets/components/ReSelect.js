@@ -20,6 +20,15 @@ const filterOptions = (query, options) => options
     .filter((option) => normaliseString(option.label)
         .includes(normaliseString(query)));
 
+const scrollIntoViewWithOffset = (el, offset) => {
+    window.scrollTo({
+        behavior: 'smooth',
+        top:
+            el.getBoundingClientRect().top
+            - document.body.getBoundingClientRect().top
+            - offset,
+    });
+};
 /**
  * Alpine Component for ReSelect
  * @param {{
@@ -79,11 +88,20 @@ const xReSelect = (props) => {
         handleChangeSetValue() {
             this.isValueSet = false;
             this.toggle = true;
+
             this.$nextTick(() => {
+                this.scrollToTop();
                 this.$refs.input.focus();
                 this.$refs.input.select();
                 this.$refs.input.dispatchEvent(new Event('change'));
             });
+        },
+
+        scrollToTop() {
+            if (0 < this.filteredOptions.length && 768 > window.innerWidth) {
+                scrollIntoViewWithOffset(this.$refs.input, 120);
+                document.querySelector('body').style.overflow = 'hidden';
+            }
         },
 
         /**
@@ -113,6 +131,7 @@ const xReSelect = (props) => {
             if (this.isValueSet) this.isValueSet = false;
             this.filteredOptions = await this.onQuery(e.target.value);
             this.activeFirst();
+            this.scrollToTop();
         },
         /**
          * Handle when user type in the input
@@ -171,6 +190,7 @@ const xReSelect = (props) => {
             this.$refs.select.value = option && option.value ? option.value : '';
             this.query = option && option.label ? option.label : '';
             this.toggle = false;
+            document.querySelector('body').style.overflow = 'scroll';
 
             this.$refs.select.dispatchEvent(new Event('change'));
             if (!silent) {
