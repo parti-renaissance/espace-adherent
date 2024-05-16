@@ -24,14 +24,6 @@ class MyTeamMemberValidator extends ConstraintValidator
             return;
         }
 
-        if (null !== $value->getSource() && !$value->isJemengageUser() && !$value->isRenaissanceUser()) {
-            $this
-                ->context
-                ->buildViolation($constraint->messageInvalidAdherentSource)
-                ->addViolation()
-            ;
-        }
-
         if (!$scope = $this->scopeGeneratorResolver->generate()) {
             return;
         }
