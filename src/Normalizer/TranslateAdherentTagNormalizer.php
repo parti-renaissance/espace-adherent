@@ -39,10 +39,7 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
                 $callback = function (string $tag) use ($context) {
                     if (
                         empty($context[self::NO_STATIC_TAGS])
-                        || (
-                            !empty($context[self::NO_STATIC_TAGS])
-                            && \in_array($tag, array_merge(TagEnum::getElectTags(), TagEnum::getAdherentTags()), true)
-                        )
+                        || \in_array($tag, array_merge(TagEnum::getElectTags(), TagEnum::getAdherentTags()), true)
                     ) {
                         return ['label' => $this->tagTranslator->trans($tag, false), 'type' => TagEnum::getMainLevel($tag)];
                     }
@@ -51,7 +48,7 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
                 };
             }
 
-            $data['tags'] = array_filter(array_map($callback, $data['tags']));
+            $data['tags'] = array_values(array_filter(array_map($callback, $data['tags'])));
         }
 
         return $data;
