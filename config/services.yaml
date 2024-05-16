@@ -53,7 +53,6 @@ services:
             $canaryMode: '%env(ENABLE_CANARY)%'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
             $mailchimpElectedRepresentativeListId: '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
-            $donationProcessWorkflow: '@state_machine.donation_request'
             $electedRepresentativeContributionProcessWorkflow: '@state_machine.contribution_request'
             $votingProcessWorkflow: '@state_machine.voting_process'
             $tonMacronInvitationStateMachine: '@state_machine.ton_macron_invitation'
@@ -83,6 +82,7 @@ services:
             $systemPaySiteId: '%env(SYSTEMPAY_SITE_ID)%'
             $systemPayKey: '%env(SYSTEMPAY_KEY)%'
             $appEnvironment: '%env(APP_ENVIRONMENT)%'
+            $googlePlaceApiKey: '%env(GMAPS_PRIVATE_API_KEY)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:

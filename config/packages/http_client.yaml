@@ -33,3 +33,6 @@ framework:
                     'Accept': 'application/json'
                     'client-name': '%env(OHME_CLIENT_NAME)%'
                     'client-secret': '%env(OHME_CLIENT_SECRET)%'
+            google_place.client:
+                base_uri: 'https://maps.googleapis.com/maps/api/place/'
+                timeout: 15
