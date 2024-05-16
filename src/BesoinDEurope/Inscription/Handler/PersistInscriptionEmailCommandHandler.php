@@ -22,13 +22,13 @@ class PersistInscriptionEmailCommandHandler
 
     public function __invoke(PersistInscriptionEmailCommand $command): ?string
     {
-        if ($adherent = $this->adherentRepository->findOneByEmail($command->email)) {
+        if ($adherent = $this->adherentRepository->findOneByEmail($command->getEmail())) {
             $this->membershipNotifier->sendConnexionDetailsMessage($adherent, AppCodeEnum::BESOIN_D_EUROPE);
 
             return null;
         }
 
-        $this->entityManager->persist($object = InscriptionRequest::createForEmail($command->email));
+        $this->entityManager->persist($object = InscriptionRequest::createForEmail($command->getEmail()));
 
         $object->utmCampaign = $command->utmCampaign;
         $object->utmSource = $command->utmSource;
