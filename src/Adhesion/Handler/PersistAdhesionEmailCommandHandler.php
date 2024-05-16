@@ -21,13 +21,13 @@ class PersistAdhesionEmailCommandHandler
 
     public function __invoke(PersistAdhesionEmailCommand $command): ?string
     {
-        if ($adherent = $this->adherentRepository->findOneByEmail($command->email)) {
+        if ($adherent = $this->adherentRepository->findOneByEmail($command->getEmail())) {
             $this->membershipNotifier->sendConnexionDetailsMessage($adherent);
 
             return null;
         }
 
-        $this->entityManager->persist($object = AdherentRequest::createForEmail($command->email));
+        $this->entityManager->persist($object = AdherentRequest::createForEmail($command->getEmail()));
 
         $object->utmCampaign = $command->utmCampaign;
         $object->utmSource = $command->utmSource;

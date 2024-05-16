@@ -6,12 +6,19 @@ use App\Procuration\V2\InitialRequestTypeEnum;
 
 class PersistProcurationEmailCommand
 {
-    public function __construct(
-        public readonly string $email,
-        public readonly InitialRequestTypeEnum $type,
-        public readonly ?string $utmSource = null,
-        public readonly ?string $utmCampaign = null,
-        public ?string $clientIp = null
-    ) {
+    private string $email;
+    public InitialRequestTypeEnum $type;
+    public ?string $utmSource = null;
+    public ?string $utmCampaign = null;
+    public ?string $clientIp = null;
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = mb_strtolower($email);
     }
 }

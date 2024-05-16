@@ -19,10 +19,10 @@ class PersistProcurationEmailCommandHandler
 
     public function __invoke(PersistProcurationEmailCommand $command): ?string
     {
-        $initialRequest = $this->findInitialRequest($command->email);
+        $initialRequest = $this->findInitialRequest($command->getEmail());
 
         if (!$initialRequest) {
-            $initialRequest = ProcurationRequest::createForEmail($command->email);
+            $initialRequest = ProcurationRequest::createForEmail($command->getEmail());
 
             $this->entityManager->persist($initialRequest);
         }
