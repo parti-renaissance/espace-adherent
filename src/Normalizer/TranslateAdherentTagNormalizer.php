@@ -15,6 +15,7 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
     use NormalizerAwareTrait;
 
     public const ENABLE_TAG_TRANSLATOR = 'enable_tag_translator';
+    public const NO_STATIC_TAGS = 'no_static_tags';
     private const ALREADY_CALLED = 'ADHERENT_TAG_NORMALIZER_ALREADY_CALLED';
 
     public function __construct(private readonly TagTranslator $tagTranslator)
@@ -35,10 +36,19 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
             $callback = fn (string $tag) => $this->tagTranslator->trans($tag, false);
 
             if ($object instanceof TranslatedTagInterface) {
-                $callback = fn (string $tag) => ['label' => $this->tagTranslator->trans($tag, false), 'type' => TagEnum::getMainLevel($tag)];
+                $callback = function (string $tag) use ($context) {
+                    if (
+                        empty($context[self::NO_STATIC_TAGS])
+                        || \in_array($tag, array_merge(TagEnum::getElectTags(), TagEnum::getAdherentTags()), true)
+                    ) {
+                        return ['label' => $this->tagTranslator->trans($tag, false), 'type' => TagEnum::getMainLevel($tag)];
+                    }
+
+                    return null;
+                };
             }
 
-            $data['tags'] = array_map($callback, $data['tags']);
+            $data['tags'] = array_values(array_filter(array_map($callback, $data['tags'])));
         }
 
         return $data;

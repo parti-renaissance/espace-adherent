@@ -79,6 +79,7 @@ class UserController extends AbstractController
         if ($this->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')) {
             $context['groups'] = ['jemarche_user_profile'];
             $context[TranslateAdherentTagNormalizer::ENABLE_TAG_TRANSLATOR] = true;
+            $context[TranslateAdherentTagNormalizer::NO_STATIC_TAGS] = true;
         }
 
         $context['groups'][] = 'user_profile';
