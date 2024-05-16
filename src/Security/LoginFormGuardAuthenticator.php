@@ -5,7 +5,6 @@ namespace App\Security;
 use App\BesoinDEurope\Inscription\FinishInscriptionRedirectHandler;
 use App\Entity\Adherent;
 use App\Entity\FailedLoginAttempt;
-use App\Membership\MembershipSourceEnum;
 use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\FailedLoginAttemptRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
@@ -102,19 +101,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
     /** @param UserInterface|Adherent $user */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        if (!$this->passwordEncoder->isPasswordValid($user, $credentials['password'])) {
-            return false;
-        }
-
-        if (
-            null !== $user->getSource()
-            && MembershipSourceEnum::RENAISSANCE !== $user->getSource()
-            && $this->currentAppCode !== $user->getSource()
-        ) {
-            return false;
-        }
-
-        return true;
+        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
@@ -123,14 +110,12 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
             return $this->anonymousFollowerSession->terminate();
         }
 
-        $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
+        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+            return new RedirectResponse($targetPath);
+        }
 
         if ($redirect = $this->besoinDEuropeRedirectHandler->redirectToCompleteInscription($targetPath)) {
             return $redirect;
-        }
-
-        if ($targetPath) {
-            return new RedirectResponse($targetPath);
         }
 
         /** @var Adherent $adherent */

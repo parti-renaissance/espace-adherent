@@ -1371,17 +1371,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         if ($filter->type) {
             MembershipFilterHelper::withMembershipFilter($qb, 'a', $filter->type);
-        } else {
-            $qb
-                ->andWhere((new Orx())
-                    ->add('a.source IS NULL AND a.adherent = :true')
-                    ->add('a.source = :source_jme')
-                    ->add('a.source = :source_renaissance')
-                )
-                ->setParameter('true', true)
-                ->setParameter('source_jme', MembershipSourceEnum::JEMENGAGE)
-                ->setParameter('source_renaissance', MembershipSourceEnum::RENAISSANCE)
-            ;
         }
 
         return $qb
