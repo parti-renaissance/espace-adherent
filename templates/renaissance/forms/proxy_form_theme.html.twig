@@ -7,7 +7,7 @@
             onQuery="getVoteZone"
             name="{{ full_name }}"
             id="{{ id }}"
-            placeholder="Paris 17e (75017)"
+            placeholder="{{ attr.placeholder ?? 'Rechercher votre commune ou pays' }}"
             x-on:change="handleVoteZoneChange($event.target.value)"
             validate="['required']"
             onCheck="setFieldValid('voteZone')"
@@ -29,7 +29,8 @@
             id="{{ id }}"
             validate="['required']"
             onCheck="setFieldValid('voteZone')"
-            placeholder="Mon bureau de vote"
+            placeholder="{{ attr.placeholder ?? 'Rechercher votre bureau de vote' }}"
+
     />
 {% endblock %}
 
