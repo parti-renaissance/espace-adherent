@@ -8,3 +8,9 @@ flysystem:
             options:
                 client: 'Google\Cloud\Storage\StorageClient'
                 bucket: '%env(GCLOUD_BUCKET)%'
+
+        national_event.storage:
+            adapter: 'gcloud'
+            options:
+                client: 'Google\Cloud\Storage\StorageClient'
+                bucket: '%env(GCLOUD_NATIONAL_EVENT_BUCKET)%'

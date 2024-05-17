@@ -62,8 +62,24 @@ class NationalEvent
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\NotBlank(groups={"Admin"})
      */
     public ?string $textTicketEmail = null;
+
+    /**
+     * @ORM\Column(nullable=true)
+     *
+     * @Assert\NotBlank(groups={"Admin"})
+     */
+    public ?string $subjectTicketEmail = null;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\NotBlank(groups={"Admin"})
+     */
+    public ?string $imageTicketEmail = null;
 
     /**
      * @ORM\Column(nullable=true)

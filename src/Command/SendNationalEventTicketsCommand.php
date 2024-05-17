@@ -3,19 +3,16 @@
 namespace App\Command;
 
 use App\Entity\NationalEvent\EventInscription;
-use App\Mailer\MailerService;
-use App\Mailer\Message\BesoinDEurope\NationalEventTicketMessage;
+use App\NationalEvent\Command\SendTicketCommand;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\Repository\NationalEvent\EventInscriptionRepository;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Doctrine\ORM\Tools\Pagination\Paginator;
-use Endroid\QrCode\Builder\BuilderInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand('app:national-event:send-tickets')]
 class SendNationalEventTicketsCommand extends Command
@@ -25,9 +22,7 @@ class SendNationalEventTicketsCommand extends Command
 
     public function __construct(
         private readonly EventInscriptionRepository $eventInscriptionRepository,
-        private readonly ObjectManager $entityManager,
-        private readonly MailerService $transactionalMailer,
-        private readonly BuilderInterface $builder,
+        private readonly MessageBusInterface $messageBus,
     ) {
         parent::__construct();
     }
@@ -44,9 +39,9 @@ class SendNationalEventTicketsCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $paginator = $this->getQueryBuilder($emails = $input->getOption('email'));
+        $inscriptions = $this->getQueryBuilder($input->getOption('email'));
 
-        if (0 === $total = $paginator->count()) {
+        if (0 === $total = \count($inscriptions)) {
             $this->io->success('No tickets to send.');
 
             return self::SUCCESS;
@@ -58,22 +53,11 @@ class SendNationalEventTicketsCommand extends Command
 
         $this->io->progressStart($total);
 
-        do {
-            foreach ($paginator as $eventInscription) {
-                $this->transactionalMailer->sendMessage(NationalEventTicketMessage::create(
-                    $eventInscription,
-                    $this->builder->data($eventInscription->getUuid()->toString())->build()->getDataUri()
-                ));
+        foreach ($inscriptions as $eventInscription) {
+            $this->messageBus->dispatch(new SendTicketCommand($eventInscription->getUuid()));
 
-                $eventInscription->ticketSentAt = new \DateTime();
-
-                $this->entityManager->flush();
-
-                $this->io->progressAdvance();
-            }
-
-            $this->entityManager->clear();
-        } while (empty($emails) && iterator_count($paginator->getIterator()));
+            $this->io->progressAdvance();
+        }
 
         $this->io->progressFinish();
 
@@ -81,14 +65,13 @@ class SendNationalEventTicketsCommand extends Command
     }
 
     /**
-     * @return Paginator|EventInscription[]
+     * @return EventInscription[]
      */
-    private function getQueryBuilder(array $emails): Paginator
+    private function getQueryBuilder(array $emails): array
     {
         $queryBuilder = $this->eventInscriptionRepository
             ->createQueryBuilder('event_inscription')
-            ->innerJoin('event_inscription.event', 'event')
-            ->addSelect('event')
+            ->select('PARTIAL event_inscription.{id, uuid}')
         ;
 
         if ($emails) {
@@ -101,10 +84,9 @@ class SendNationalEventTicketsCommand extends Command
                 ->andWhere('event_inscription.status IN (:status)')
                 ->andWhere('event_inscription.ticketSentAt IS NULL')
                 ->setParameter('status', [InscriptionStatusEnum::ACCEPTED, InscriptionStatusEnum::INCONCLUSIVE])
-                ->setMaxResults(500)
             ;
         }
 
-        return new Paginator($queryBuilder->getQuery());
+        return $queryBuilder->getQuery()->getResult();
     }
 }

@@ -1,0 +1,154 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block sonata_page_content_header %}
+    <div class="sticky-wrapper">
+        <nav class="navbar navbar-default" role="navigation" style="width: auto;">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">
+                        Envoi de ticket pour l'événement national : "{{ national_event.name }}"
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    {{ block('notice') }}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <div class="row" style="margin-bottom: 10px">
+                        <div class="col-sm-8">
+                            <h4>Les inscrits</h4>
+                            <p>
+                                {% for status, count in count_by_status %}
+                                    {{ status|trans }} : <strong>{{ count }}</strong>,
+                                {% endfor %}
+                                <span class="text-muted"><strong>{{ count_with_ticket }}</strong> billets reçus, <strong>{{ count_without_ticket }}</strong> billets non reçus</span>
+                            </p>
+                        </div>
+                        <div class="col-sm-4 text-right">
+                            <form method="get" class="input-group input-group-sm">
+                                <input type="search" class="form-control" name="q" value="{{ app.request.query.get('q') }}" placeholder="Rechercher par nom, prénom, email ou uuid" />
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-info btn-flat">Rechercher</button>
+                                </span>
+                            </form>
+                        </div>
+                        <div class="col-sm-12 text-right">
+                            {% if count_without_qrcodes %}
+                                <span class="text-danger">{{ count_without_qrcodes }} inscrits n'ont pas de QR code</span>
+
+                                <a href="{{ path('admin_app_nationalevent_nationalevent_generateTicketQRCodes', {id: national_event.id}) }}" class="btn btn-warning">
+                                    Générer les QR codes
+                                </a>
+                            {% endif %}
+
+                            <a href="#" class="btn btn-danger {{ count_without_qrcodes > 0 ? 'disabled' }}" data-toggle="modal" data-target="#confirm-send-all">
+                                Envoyer les billets à tous ({{ count_without_ticket + count_with_ticket }} billets)
+                            </a>
+
+                            {% if count_without_ticket and (count_without_ticket + count_with_ticket) != count_without_ticket %}
+                                <a href="#" class="btn btn-info {{ count_without_qrcodes > 0 ? 'disabled' }}" data-toggle="modal" data-target="#confirm-send-only-missing">
+                                    Envoyer les billets à ceux pas reçus ({{ count_without_ticket }} billets)
+                                </a>
+                            {% endif %}
+
+                            <div class="text-left">
+                                <div class="modal fade" id="confirm-send-all" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">Envoi de billet</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Êtes-vous sûr de vouloir envoyer les billets à tous les inscrits ?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a href="#" data-dismiss="modal">Annuler</a>
+                                                <a href="{{ path('admin_app_nationalevent_nationalevent_sendTickets', {id: national_event.id, all: true}) }}" class="btn btn-danger">Envoyer à tous</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="confirm-send-only-missing" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">Envoi de billet</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Êtes-vous sûr de vouloir envoyer les billets à tous ceux qui ne l'ont pas reçu ?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a href="#" data-dismiss="modal">Annuler</a>
+                                                <a href="{{ path('admin_app_nationalevent_nationalevent_sendTickets', {id: national_event.id, only_missing: true}) }}" class="btn btn-danger">Envoyer à tous</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered table-hover dataTable">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting">Uuid</th>
+                                            <th class="sorting">Billet reçu</th>
+                                            <th class="sorting">Civilité</th>
+                                            <th class="sorting">Prénom</th>
+                                            <th class="sorting">Nom</th>
+                                            <th class="sorting">Email</th>
+                                            <th class="sorting">Code postal</th>
+                                            <th class="sorting">Statut</th>
+                                            <th class="sorting">Labels</th>
+                                            <th class="sorting">Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for row in event_inscriptions %}
+                                            <tr>
+                                                <td>
+                                                    <img height="40" src="https://billets.besoindeurope.fr/{{ national_event.slug }}/{{ row.uuid }}.png" />
+                                                    {{ row.uuid }}
+                                                </td>
+                                                <td>{{ row.ticketSentAt|format_datetime('none', 'none', "d MMM yyyy à HH:mm") }}</td>
+                                                <td>{{ row.gender }}</td>
+                                                <td>{{ row.firstName }}</td>
+                                                <td>{{ row.lastName }}</td>
+                                                <td>{{ row.addressEmail }}</td>
+                                                <td>{{ row.postalCode }}</td>
+                                                <td>{{ row.status|trans }}</td>
+                                                <td>{% include 'admin/adherent/_tags.html.twig' with { tags: row.adherent ? row.adherent.tags : [] } %}</td>
+                                                <td>
+                                                    <a href="{{ path('admin_app_nationalevent_nationalevent_sendTickets', {id: national_event.id, uuid: row.uuid}) }}" class="btn btn-primary">Envoyer billet</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {% include 'admin/partial/_pagination.html.twig' with {
+                                current_page: event_inscriptions.currentPage,
+                                total_pages: event_inscriptions.lastPage,
+                                pagination_route_params: {id: national_event.id}|merge(app.request.query.all)
+                            } %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
