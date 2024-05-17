@@ -14,3 +14,4 @@ flysystem:
             options:
                 client: 'Google\Cloud\Storage\StorageClient'
                 bucket: '%env(GCLOUD_NATIONAL_EVENT_BUCKET)%'
+                visibility_handler: 'flysystem.adapter.gcloud.visibility.uniform'
