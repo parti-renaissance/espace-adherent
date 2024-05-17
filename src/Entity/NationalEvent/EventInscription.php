@@ -150,6 +150,11 @@ class EventInscription
      */
     public ?string $ticketCustomDetail = null;
 
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?string $ticketQRCodeFile = null;
+
     public function __construct(NationalEvent $event, ?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();

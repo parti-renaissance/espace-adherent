@@ -151,7 +151,7 @@
 
             <argument />
             <argument>App\Entity\NationalEvent\NationalEvent</argument>
-            <argument />
+            <argument>App\Controller\Admin\AdminNationalEventCRUDController</argument>
         </service>
 
         <service id="app.admin.national_event_inscriptions" class="App\Admin\NationalEvent\NationalEventInscriptionsAdmin">

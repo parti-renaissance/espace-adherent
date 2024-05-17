@@ -1,0 +1,37 @@
+<?php
+
+namespace App\NationalEvent\Handler;
+
+use App\Entity\NationalEvent\EventInscription;
+use App\Mailer\MailerService;
+use App\Mailer\Message\BesoinDEurope\NationalEventTicketMessage;
+use App\NationalEvent\Command\GenerateTicketQRCodeCommand;
+use App\Repository\NationalEvent\EventInscriptionRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+
+#[AsMessageHandler]
+class SendTicketCommandHandler
+{
+    public function __construct(
+        private readonly EventInscriptionRepository $eventInscriptionRepository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly MailerService $transactionalMailer,
+    ) {
+    }
+
+    public function __invoke(GenerateTicketQRCodeCommand $command): void
+    {
+        /** @var EventInscription $eventInscription */
+        if (!$eventInscription = $this->eventInscriptionRepository->findOneByUuid($command->getUuid()->toString())) {
+            return;
+        }
+
+        // generate QR code
+        $this->transactionalMailer->sendMessage(NationalEventTicketMessage::create($eventInscription));
+
+        $eventInscription->ticketSentAt = new \DateTime();
+
+        $this->entityManager->flush();
+    }
+}

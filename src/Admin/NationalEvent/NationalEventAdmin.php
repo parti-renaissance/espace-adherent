@@ -8,12 +8,24 @@ use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use League\Flysystem\FilesystemOperator;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Contracts\Service\Attribute\Required;
 
 class NationalEventAdmin extends AbstractAdmin
 {
     private FilesystemOperator $storage;
+
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
+        $collection
+            ->add('inscriptions', $this->getRouterIdParameter().'/inscriptions')
+            ->add('sendTickets', $this->getRouterIdParameter().'/send-tickets')
+            ->add('generateTicketQRCodes', $this->getRouterIdParameter().'/generate-ticket-qrcodes')
+        ;
+    }
 
     protected function configureListFields(ListMapper $list): void
     {
@@ -24,7 +36,12 @@ class NationalEventAdmin extends AbstractAdmin
             ->add('intoImagePath', null, ['label' => 'Image', 'template' => 'admin/national_event/list_image.html.twig'])
             ->add('startDate', null, ['label' => 'Date de début'])
             ->add('endDate', null, ['label' => 'Date de fin'])
-            ->add(ListMapper::NAME_ACTIONS, null, ['actions' => ['edit' => []]])
+            ->add(ListMapper::NAME_ACTIONS, null, ['actions' => [
+                'edit' => [],
+                'inscriptions' => [
+                    'template' => 'admin/national_event/list_action_inscriptions.html.twig',
+                ],
+            ]])
         ;
     }
 
@@ -52,7 +69,9 @@ class NationalEventAdmin extends AbstractAdmin
                 ->add('textConfirmation', CKEditorType::class, ['label' => false, 'required' => true])
             ->end()
             ->with('Contenu du mail de billet', ['class' => 'col-md-6'])
-                ->add('textTicketEmail', CKEditorType::class, ['label' => false, 'required' => true])
+                ->add('subjectTicketEmail', TextType::class, ['label' => 'Objet', 'required' => true])
+                ->add('imageTicketEmail', UrlType::class, ['label' => 'URL de l\'image', 'required' => true])
+                ->add('textTicketEmail', CKEditorType::class, ['label' => 'Détail', 'required' => true])
             ->end()
         ;
     }

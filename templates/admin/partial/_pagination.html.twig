@@ -1,0 +1,27 @@
+{% set current_page = current_page|default(1) %}
+{% set total_pages = total_pages|default(1) %}
+{% set pagination_route_name = app.request.attributes.get('_route') %}
+{% set pagination_route_params = pagination_route_params|default({}) %}
+{% set pagination_type = pagination_type|default(null) %}
+{% set nearbyPagesLimit = 3 %}
+
+<div class="text-center">
+    <ul class="pagination">
+        {% for i in 1..total_pages %}
+            {% if 0 == (current_page - nearbyPagesLimit) - loop.index %}
+                <li class="{{ current_page == 1 ? 'active' }}"><a href="{{ path(pagination_route_name, pagination_route_params|merge({ page: 1 })) }}">1</a>
+            {% elseif 0 < (current_page - nearbyPagesLimit) - loop.index %}
+            {% elseif 0 > (current_page + nearbyPagesLimit) - loop.index %}
+            {% else %}
+                {% if loop.index == 1 %}
+                    <li class="{{ current_page == 1 ? 'active' }}"><a href="{{ path(pagination_route_name, pagination_route_params|merge({ page: 1 })) }}">1</a></li>
+                {% else %}
+                    <li class="{{ current_page == i ? 'active' }}"><a href="{{ path(pagination_route_name, pagination_route_params|merge({ page: i })) }}">{{ i }}</a></li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if current_page != total_pages  and (current_page + nearbyPagesLimit) < total_pages %}
+            <li class="{{ current_page == total_pages ? 'active' }}"><a href="{{ path(pagination_route_name, pagination_route_params|merge({ page: total_pages })) }}">{{ total_pages }}</a></li>
+        {% endif %}
+    </ul>
+</div>
