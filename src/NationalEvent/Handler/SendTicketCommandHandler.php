@@ -5,7 +5,7 @@ namespace App\NationalEvent\Handler;
 use App\Entity\NationalEvent\EventInscription;
 use App\Mailer\MailerService;
 use App\Mailer\Message\BesoinDEurope\NationalEventTicketMessage;
-use App\NationalEvent\Command\GenerateTicketQRCodeCommand;
+use App\NationalEvent\Command\SendTicketCommand;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -20,7 +20,7 @@ class SendTicketCommandHandler
     ) {
     }
 
-    public function __invoke(GenerateTicketQRCodeCommand $command): void
+    public function __invoke(SendTicketCommand $command): void
     {
         /** @var EventInscription $eventInscription */
         if (!$eventInscription = $this->eventInscriptionRepository->findOneByUuid($command->getUuid()->toString())) {

@@ -22,14 +22,22 @@
             <div class="box">
                 <div class="box-body">
                     <div class="row" style="margin-bottom: 10px">
-                        <div class="col-sm-4">
+                        <div class="col-sm-8">
                             <h4>Les inscrits</h4>
                             <p>
                                 {% for status, count in count_by_status %}
                                     {{ status|trans }} : <strong>{{ count }}</strong>,
                                 {% endfor %}
-                                <br/><strong>{{ count_with_ticket }}</strong> billets reçus, <strong>{{ count_without_ticket }}</strong> billets non reçus
+                                <span class="text-muted"><strong>{{ count_with_ticket }}</strong> billets reçus, <strong>{{ count_without_ticket }}</strong> billets non reçus</span>
                             </p>
+                        </div>
+                        <div class="col-sm-4 text-right">
+                            <form method="get" class="input-group input-group-sm">
+                                <input type="search" class="form-control" name="q" value="{{ app.request.query.get('q') }}" placeholder="Rechercher par nom, prénom, email ou uuid" />
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-info btn-flat">Rechercher</button>
+                                </span>
+                            </form>
                         </div>
                         <div class="col-sm-12 text-right">
                             {% if count_without_qrcodes %}
@@ -41,10 +49,10 @@
                             {% endif %}
 
                             <a href="#" class="btn btn-danger {{ count_without_qrcodes > 0 ? 'disabled' }}" data-toggle="modal" data-target="#confirm-send-all">
-                                Envoyer les billets à tous ({{ event_inscriptions.totalItems }} billets)
+                                Envoyer les billets à tous ({{ count_without_ticket + count_with_ticket }} billets)
                             </a>
 
-                            {% if count_without_ticket %}
+                            {% if count_without_ticket and (count_without_ticket + count_with_ticket) != count_without_ticket %}
                                 <a href="#" class="btn btn-info {{ count_without_qrcodes > 0 ? 'disabled' }}" data-toggle="modal" data-target="#confirm-send-only-missing">
                                     Envoyer les billets à ceux pas reçus ({{ count_without_ticket }} billets)
                                 </a>
@@ -135,7 +143,7 @@
                             {% include 'admin/partial/_pagination.html.twig' with {
                                 current_page: event_inscriptions.currentPage,
                                 total_pages: event_inscriptions.lastPage,
-                                pagination_route_params: {id: national_event.id}
+                                pagination_route_params: {id: national_event.id}|merge(app.request.query.all)
                             } %}
                         </div>
                     </div>

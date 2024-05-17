@@ -36,18 +36,31 @@ class EventInscriptionRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAllForEventPaginated(NationalEvent $event, array $statuses, int $page = 1, $limit = 30): PaginatorInterface
+    public function findAllForEventPaginated(NationalEvent $event, ?string $searchTerm, array $statuses, int $page = 1, $limit = 30): PaginatorInterface
     {
-        return $this->configurePaginator($this->createQueryBuilder('event_inscription')
+        $queryBuilder = $this->createQueryBuilder('ei')
             ->addSelect('adherent')
-            ->leftJoin('event_inscription.adherent', 'adherent')
-            ->where('event_inscription.event = :event')
-            ->andWhere('event_inscription.status IN (:statuses)')
+            ->leftJoin('ei.adherent', 'adherent')
+            ->where('ei.event = :event')
+            ->andWhere('ei.status IN (:statuses)')
             ->setParameter('event', $event)
             ->setParameter('statuses', $statuses)
-            ->orderBy('event_inscription.createdAt', 'DESC'),
-            $page, $limit
-        );
+            ->orderBy('ei.createdAt', 'DESC')
+        ;
+
+        if ($searchTerm) {
+            $queryBuilder
+                ->andWhere($queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->like('ei.firstName', ':searchTerm'),
+                    $queryBuilder->expr()->like('ei.lastName', ':searchTerm'),
+                    $queryBuilder->expr()->like('ei.addressEmail', ':searchTerm'),
+                    $queryBuilder->expr()->like('ei.uuid', ':searchTerm'),
+                ))
+                ->setParameter('searchTerm', '%'.$searchTerm.'%')
+            ;
+        }
+
+        return $this->configurePaginator($queryBuilder, $page, $limit);
     }
 
     /**

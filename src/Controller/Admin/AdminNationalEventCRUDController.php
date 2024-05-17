@@ -19,7 +19,13 @@ class AdminNationalEventCRUDController extends CRUDController
         return $this->renderWithExtraParams('admin/national_event/inscriptions.html.twig', [
             'national_event' => $event,
             'action' => 'inscriptions',
-            'event_inscriptions' => $eventInscriptionRepository->findAllForEventPaginated($event, $statuses = [InscriptionStatusEnum::ACCEPTED, InscriptionStatusEnum::INCONCLUSIVE], $request->query->getInt('page', 1), 100),
+            'event_inscriptions' => $eventInscriptionRepository->findAllForEventPaginated(
+                $event,
+                $request->query->get('q'),
+                $statuses = [InscriptionStatusEnum::ACCEPTED, InscriptionStatusEnum::INCONCLUSIVE],
+                $request->query->getInt('page', 1),
+                2
+            ),
             'count_without_qrcodes' => $eventInscriptionRepository->countWithoutTicketQRCodes($event),
             'count_without_ticket' => $eventInscriptionRepository->countTickets($event, true, $statuses),
             'count_with_ticket' => $eventInscriptionRepository->countTickets($event, false, $statuses),
