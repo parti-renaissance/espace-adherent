@@ -37,6 +37,7 @@ class EventInscriptionType extends AbstractType
             ->add('acceptCgu', AcceptPersonalDataCollectType::class)
             ->add('acceptMedia', AcceptPersonalDataCollectType::class)
             ->add('allowNotifications', CheckboxType::class, ['required' => false])
+            ->add('qualities', QualityChoiceType::class)
             ->add('utmSource', HiddenType::class)
             ->add('utmCampaign', HiddenType::class)
         ;

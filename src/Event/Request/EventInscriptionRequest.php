@@ -75,6 +75,8 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
     public ?string $utmSource = null;
     public ?string $utmCampaign = null;
 
+    public array $qualities = [];
+
     public function __construct(
         public readonly string $sessionId,
         public readonly string $clientIp,

@@ -30,6 +30,8 @@ class LoadNationalEventInscriptionData extends Fixture
             $eventInscription->firstName = $this->faker->firstName();
             $eventInscription->lastName = $this->faker->lastName();
             $eventInscription->gender = 0 === $i % 2 ? Genders::FEMALE : Genders::MALE;
+            $eventInscription->ticketQRCodeFile = 0 === $i % 2 ? $eventInscription->getUuid()->toString().'.png' : null;
+            $eventInscription->ticketSentAt = 0 === $i % 2 ? new \DateTime() : null;
             $eventInscription->addressEmail = $this->faker->email();
             $eventInscription->postalCode = $this->faker->postcode();
             $eventInscription->birthdate = $this->faker->dateTimeBetween('-100 years', '-15 years');

@@ -103,6 +103,11 @@ class EventInscription
     public ?string $postalCode = null;
 
     /**
+     * @ORM\Column(nullable=true)
+     */
+    public ?array $qualities = null;
+
+    /**
      * @Groups({"national_event_inscription:webhook"})
      *
      * @ORM\Column(type="date", nullable=true)
@@ -172,6 +177,7 @@ class EventInscription
         $this->gender = $inscriptionRequest->civility;
         $this->phone = $inscriptionRequest->phone;
         $this->postalCode = $inscriptionRequest->postalCode;
+        $this->qualities = $inscriptionRequest->qualities;
         $this->birthdate = $inscriptionRequest->birthdate;
         $this->utmSource = $inscriptionRequest->utmSource;
         $this->utmCampaign = $inscriptionRequest->utmCampaign;
