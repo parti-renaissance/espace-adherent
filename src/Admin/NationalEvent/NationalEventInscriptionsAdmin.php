@@ -13,6 +13,7 @@ use App\Entity\Geo\Zone;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\NationalEvent\EventInscription;
 use App\Form\CivilityType;
+use App\Form\NationalEvent\QualityChoiceType;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Utils\PhoneNumberUtils;
@@ -108,6 +109,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('lastName', null, ['label' => 'Nom'])
                 ->add('postalCode', null, ['label' => 'Code postal'])
                 ->add('birthdate', null, ['label' => 'Date de naissance', 'widget' => 'single_text'])
+                ->add('qualities', QualityChoiceType::class, ['label' => 'Qualités'])
                 ->add('phone', PhoneNumberType::class, [
                     'label' => 'Téléphone',
                     'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,

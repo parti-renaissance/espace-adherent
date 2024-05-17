@@ -104,14 +104,11 @@
                                     <thead>
                                         <tr role="row">
                                             <th class="sorting">Uuid</th>
-                                            <th class="sorting">Billet reçu</th>
-                                            <th class="sorting">Civilité</th>
-                                            <th class="sorting">Prénom</th>
-                                            <th class="sorting">Nom</th>
-                                            <th class="sorting">Email</th>
+                                            <th class="sorting">Civilité/Prénom/Nom/Email</th>
                                             <th class="sorting">Code postal</th>
-                                            <th class="sorting">Statut</th>
                                             <th class="sorting">Labels</th>
+                                            <th class="sorting">Statut</th>
+                                            <th class="sorting">Billet reçu</th>
                                             <th class="sorting">Action</th>
                                         </tr>
                                     </thead>
@@ -120,19 +117,30 @@
                                         {% for row in event_inscriptions %}
                                             <tr>
                                                 <td>
-                                                    <img height="40" src="https://billets.besoindeurope.fr/{{ national_event.slug }}/{{ row.uuid }}.png" />
-                                                    {{ row.uuid }}
+                                                    {% set image_url = 'https://' ~ ticket_besoindeurope_host ~ '/' ~ row.ticketQRCodeFile %}
+                                                    <a href="{{ image_url }}" target="_blank">
+                                                        <img height="40" src="{{ image_url }}" /> {{ row.uuid }}
+                                                    </a>
                                                 </td>
-                                                <td>{{ row.ticketSentAt|format_datetime('none', 'none', "d MMM yyyy à HH:mm") }}</td>
-                                                <td>{{ row.gender }}</td>
-                                                <td>{{ row.firstName }}</td>
-                                                <td>{{ row.lastName }}</td>
-                                                <td>{{ row.addressEmail }}</td>
-                                                <td>{{ row.postalCode }}</td>
-                                                <td>{{ row.status|trans }}</td>
-                                                <td>{% include 'admin/adherent/_tags.html.twig' with { tags: row.adherent ? row.adherent.tags : [] } %}</td>
                                                 <td>
-                                                    <a href="{{ path('admin_app_nationalevent_nationalevent_sendTickets', {id: national_event.id, uuid: row.uuid}) }}" class="btn btn-primary">Envoyer billet</a>
+                                                    {{ row.gender == 'male' ? 'M' : 'Mme' }} {{ row.firstName }} {{ row.lastName }}
+                                                    <br/><strong>{{ row.addressEmail }}</strong>
+                                                </td>
+                                                <td>{{ row.postalCode }}</td>
+                                                <td>{% include 'admin/adherent/_tags.html.twig' with { tags: row.adherent ? row.adherent.tags : [] } %}</td>
+                                                <td>{{ row.status|trans }}</td>
+                                                <td>{{ row.ticketSentAt|format_datetime('none', 'none', "d MMM yyyy à HH:mm") }}</td>
+                                                <td>
+                                                    <div class="btn-group" style="display: flex;">
+                                                        <a href="{{ path('admin_app_nationalevent_eventinscription_edit', {id: row.id}) }}" class="btn btn-sm btn-default">
+                                                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                                                            Éditer
+                                                        </a>
+                                                        <a href="{{ path('admin_app_nationalevent_nationalevent_sendTickets', {id: national_event.id, uuid: row.uuid}) }}" class="btn btn-sm btn-success">
+                                                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                                                            Envoyer billet
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         {% endfor %}

@@ -24,6 +24,8 @@ class LoadNationalEventData extends Fixture
         $event->textConfirmation = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
         $event->textTicketEmail = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
         $event->intoImagePath = '/donation-bg.jpg';
+        $event->imageTicketEmail = '/donation-bg.jpg';
+        $event->subjectTicketEmail = 'Meeting arrive bientôt !';
         $event->source = '123xyz';
 
         $this->setReference('event-national-1', $event);
@@ -42,6 +44,8 @@ class LoadNationalEventData extends Fixture
         $event->textConfirmation = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
         $event->textTicketEmail = '<p>Lorem ipsum dolor sit amet consectetur. Nunc cras porta sed nullam eget at.</p>';
         $event->intoImagePath = '/donation-bg.jpg';
+        $event->imageTicketEmail = '/donation-bg.jpg';
+        $event->subjectTicketEmail = 'Meeting arrive bientôt !';
         $event->source = '123xyz';
 
         $this->setReference('event-national-2', $event);

@@ -24,7 +24,7 @@ class AdminNationalEventCRUDController extends CRUDController
                 $request->query->get('q'),
                 $statuses = [InscriptionStatusEnum::ACCEPTED, InscriptionStatusEnum::INCONCLUSIVE],
                 $request->query->getInt('page', 1),
-                2
+                100
             ),
             'count_without_qrcodes' => $eventInscriptionRepository->countWithoutTicketQRCodes($event),
             'count_without_ticket' => $eventInscriptionRepository->countTickets($event, true, $statuses),
@@ -41,6 +41,8 @@ class AdminNationalEventCRUDController extends CRUDController
             $inscriptions = $eventInscriptionRepository->findAllPartialForEvent($event, [InscriptionStatusEnum::ACCEPTED, InscriptionStatusEnum::INCONCLUSIVE]);
         } elseif ($request->query->has('only_missing')) {
             $inscriptions = $eventInscriptionRepository->findAllPartialForEvent($event, [InscriptionStatusEnum::ACCEPTED, InscriptionStatusEnum::INCONCLUSIVE], true);
+        } elseif (($uuid = $request->query->get('uuid')) && $inscription = $eventInscriptionRepository->findOneByUuid($uuid)) {
+            $inscriptions = [$inscription];
         }
 
         if ($inscriptions) {

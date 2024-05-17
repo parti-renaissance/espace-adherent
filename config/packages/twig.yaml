@@ -34,6 +34,7 @@ twig:
         article_preview_admin_key:  "%env(ARTICLE_PREVIEW_ADMIN_KEY)%"
         besoindeurope_host:         "%env(BESOINDEUROPE_HOST)%"
         user_besoindeurope_host:    "%env(USER_BESOINDEUROPE_HOST)%"
+        ticket_besoindeurope_host:  "%env(GCLOUD_NATIONAL_EVENT_BUCKET)%"
 
     form_themes:
         - 'form_theme.html.twig'
