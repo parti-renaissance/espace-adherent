@@ -59,7 +59,7 @@
     "react-markdown": "^9.0.1",
     "regenerator-runtime": "^0.14.1",
     "reqwest": "^2.0.5",
-    "sass": "^1.77.1",
+    "sass": "^1.77.2",
     "sass-loader": "^14.2.1",
     "select2": "^4.0.13",
     "stackblur-canvas": "^2.7.0",
