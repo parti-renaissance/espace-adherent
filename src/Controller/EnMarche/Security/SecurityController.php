@@ -11,7 +11,6 @@ use App\Form\AdherentResetPasswordType;
 use App\Form\LoginType;
 use App\Membership\AdherentChangeEmailHandler;
 use App\Membership\AdherentResetPasswordHandler;
-use App\Membership\MembershipSourceEnum;
 use App\OAuth\App\AuthAppUrlManager;
 use App\OAuth\App\PlatformAuthUrlGenerator;
 use App\Repository\AdherentRepository;
@@ -91,16 +90,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
 
-            if (
-                ($adherent = $adherentRepository->findOneByEmail($email))
-                && (
-                    $currentApp === $adherent->getSource()
-                    || (
-                        \in_array($adherent->getSource(), [null, MembershipSourceEnum::RENAISSANCE])
-                        && \in_array($currentApp, [MembershipSourceEnum::JEMENGAGE, MembershipSourceEnum::RENAISSANCE], true)
-                    )
-                )
-            ) {
+            if ($adherent = $adherentRepository->findOneByEmail($email)) {
                 $handler->handle($adherent, $currentApp);
             }
 
