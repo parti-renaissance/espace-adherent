@@ -2,6 +2,7 @@
 
 namespace App\Form\NationalEvent;
 
+use App\NationalEvent\QualityEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,11 +18,7 @@ class QualityChoiceType extends AbstractType
     {
         $resolver->setDefaults([
             'required' => false,
-            'choices' => [
-                'Colistier(e) Besoin d\'Europe' => 'colistier',
-                'Parlementaire' => 'parlementaire',
-                'Élu(e) local(e)' => 'elu_local',
-            ],
+            'choices' => array_combine(array_values(QualityEnum::LABELS), array_keys(QualityEnum::LABELS)),
             'expanded' => true,
             'multiple' => true,
         ]);

@@ -15,6 +15,7 @@ use App\Entity\NationalEvent\EventInscription;
 use App\Form\CivilityType;
 use App\Form\NationalEvent\QualityChoiceType;
 use App\NationalEvent\InscriptionStatusEnum;
+use App\NationalEvent\QualityEnum;
 use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
@@ -184,6 +185,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'Statut' => $translator->trans($inscription->status),
                 'Billet envoyé le' => $inscription->ticketSentAt?->format('d/m/Y H:i:s'),
                 'Code postal' => $inscription->postalCode,
+                'Qualités' => implode(', ', array_map(fn (string $quality) => QualityEnum::LABELS[$quality] ?? $quality, $inscription->qualities ?? [])),
                 'UTM source' => $inscription->utmSource,
                 'UTM campagne' => $inscription->utmCampaign,
             ];
