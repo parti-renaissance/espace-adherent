@@ -183,6 +183,13 @@ class Building implements CampaignStatisticsOwnerInterface
      */
     public function getCampaignStatistics(): ?CampaignStatisticsInterface
     {
-        return $this->currentCampaign ? $this->findStatisticsForCampaign($this->currentCampaign) : new BuildingStatistics($this, $this->currentCampaign);
+        if ($this->currentCampaign) {
+            return $this->findStatisticsForCampaign($this->currentCampaign) ?? new BuildingStatistics(
+                $this,
+                $this->currentCampaign
+            );
+        }
+
+        return null;
     }
 }

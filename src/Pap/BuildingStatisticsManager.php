@@ -27,14 +27,8 @@ class BuildingStatisticsManager
         $this->campaignHistoryRepository = $campaignHistoryRepository;
     }
 
-    public function updateStats(Building $building, Campaign $campaign): void
+    public function updateStats(Building $building, Campaign $campaign): BuildingStatistics
     {
-        $campaignHistory = $this->campaignHistoryRepository->findLastFor($building, $campaign);
-
-        if (!$campaignHistory) {
-            return;
-        }
-
         // building stats
         if (!$buildingStats = $building->findStatisticsForCampaign($campaign)) {
             $building->addStatistic($buildingStats = new BuildingStatistics(
@@ -48,8 +42,12 @@ class BuildingStatisticsManager
         if ($buildingStats->isTodo()) {
             $buildingStats->setStatus(BuildingStatusEnum::ONGOING);
         }
-        $buildingStats->setLastPassage($campaignHistory->getUpdatedAt());
-        $buildingStats->setLastPassageDoneBy($campaignHistory->getQuestioner());
+
+        if ($campaignHistory = $this->campaignHistoryRepository->findLastFor($building, $campaign)) {
+            $buildingStats->setLastPassage($campaignHistory->getUpdatedAt());
+            $buildingStats->setLastPassageDoneBy($campaignHistory->getQuestioner());
+        }
+
         $buildingStats->setNbVisitedDoors($this->campaignHistoryRepository->countDoorsForBuilding($building));
         $buildingStats->setNbSurveys($this->dataSurveyRepository->countSurveysForBuilding($building));
 
@@ -97,5 +95,7 @@ class BuildingStatisticsManager
         }
 
         $this->em->flush();
+
+        return $buildingStats;
     }
 }

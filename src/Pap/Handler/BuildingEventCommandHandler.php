@@ -9,7 +9,9 @@ use App\Entity\Pap\CampaignStatisticsInterface;
 use App\Entity\Pap\CampaignStatisticsOwnerInterface;
 use App\Pap\BuildingEventActionEnum;
 use App\Pap\BuildingEventTypeEnum;
+use App\Pap\BuildingStatisticsManager;
 use App\Pap\BuildingStatusEnum;
+use App\Pap\Command\BuildingEventAsyncCommand;
 use App\Pap\Command\BuildingEventCommandInterface;
 use App\Repository\Pap\BuildingEventRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,13 +19,11 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class BuildingEventCommandHandler implements MessageHandlerInterface
 {
-    private EntityManagerInterface $entityManager;
-    private BuildingEventRepository $buildingEventRepository;
-
-    public function __construct(EntityManagerInterface $entityManager, BuildingEventRepository $buildingEventRepository)
-    {
-        $this->entityManager = $entityManager;
-        $this->buildingEventRepository = $buildingEventRepository;
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly BuildingEventRepository $buildingEventRepository,
+        private readonly BuildingStatisticsManager $buildingStatisticsManager,
+    ) {
     }
 
     public function __invoke(BuildingEventCommandInterface $command): void
@@ -64,7 +64,7 @@ class BuildingEventCommandHandler implements MessageHandlerInterface
                     throw new \InvalidArgumentException(sprintf('Type %s is not supported for creation a building statistics', $type));
             }
 
-            $this->updateStatisticsCloseInfo($objectWithStats, $buildingEvent);
+            $this->updateStatisticsCloseInfo($objectWithStats, $buildingEvent, $command instanceof BuildingEventAsyncCommand);
         }
 
         $this->entityManager->flush();
@@ -72,13 +72,18 @@ class BuildingEventCommandHandler implements MessageHandlerInterface
 
     private function updateStatisticsCloseInfo(
         CampaignStatisticsOwnerInterface $object,
-        BuildingEvent $buildingEvent
+        BuildingEvent $buildingEvent,
+        bool $isAsync
     ): void {
         $status = BuildingEventActionEnum::CLOSE === $buildingEvent->getAction() ? BuildingStatusEnum::COMPLETED : BuildingStatusEnum::ONGOING;
         $campaign = $buildingEvent->getCampaign();
         /** @var CampaignStatisticsInterface $stats */
         if (!$stats = $object->findStatisticsForCampaign($campaign)) {
-            throw new \RuntimeException(sprintf('Statistics not found for entity "%s" with id "%s" for PAP campaign with id "%s"', $object::class, $object->getId(), $campaign->getId()));
+            if ($isAsync && $object instanceof Building) {
+                $stats = $this->buildingStatisticsManager->updateStats($object, $campaign);
+            } else {
+                throw new \RuntimeException(sprintf('Statistics not found for entity "%s" with id "%s" for PAP campaign with id "%s"', $object::class, $object->getId(), $campaign->getId()));
+            }
         }
 
         $statusDetail = null;
