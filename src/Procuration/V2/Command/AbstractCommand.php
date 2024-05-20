@@ -11,6 +11,9 @@ use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @Assert\Expression("!this.voteZone || !this.voteZone.isInFrance() || this.votePlace || this.customVotePlace", message="procuration.vote_place.not_blank")
+ */
 abstract class AbstractCommand
 {
     /**
@@ -81,9 +84,6 @@ abstract class AbstractCommand
      */
     public ?Zone $voteZone = null;
 
-    /**
-     * @Assert\Expression("!this.voteZone || !this.voteZone.isInFrance() || this.votePlace", message="procuration.vote_place.not_blank")
-     */
     public ?Zone $votePlace = null;
 
     /**
