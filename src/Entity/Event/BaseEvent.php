@@ -189,6 +189,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "name": "partial",
  *     "mode": "exact",
  *     "beginAt": "start",
+ *     "status": "exact",
  * })
  * @ApiFilter(OrderFilter::class, properties={"createdAt", "beginAt", "finishAt"})
  *

@@ -51,8 +51,9 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
         if (!is_a($resourceClass, BaseEvent::class, true)) {
             return;
         }
+        $filters = $context['filters'] ?? [];
 
-        $this->modifyQuery($queryBuilder, $context, BaseEvent::STATUS_SCHEDULED);
+        $this->modifyQuery($queryBuilder, $context, $filters['status'] ?? BaseEvent::STATUS_SCHEDULED);
 
         $alias = $queryBuilder->getRootAliases()[0];
 
