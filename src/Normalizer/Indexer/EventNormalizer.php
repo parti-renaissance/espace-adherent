@@ -3,7 +3,6 @@
 namespace App\Normalizer\Indexer;
 
 use App\Entity\Event\BaseEvent;
-use App\Entity\Geo\Zone;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
@@ -113,12 +112,9 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
         }
 
         $zonesCodes = [];
-        $zones = array_filter($object->zones->toArray(), function (Zone $zone) {
-            return \in_array($zone->getType(), [Zone::BOROUGH, Zone::CITY]);
-        });
 
-        foreach ($zones as $key => $zone) {
-            $zonesCodes[$key] = $this->buildZoneCodes($zone);
+        foreach ($object->zones as $zone) {
+            $zonesCodes[] = $this->buildZoneCodes($zone);
         }
 
         return array_values(array_unique(array_merge(...$zonesCodes)));
