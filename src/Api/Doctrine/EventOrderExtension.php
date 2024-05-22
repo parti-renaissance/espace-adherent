@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Api\Doctrine;
+
+use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Metadata\Operation;
+use App\Entity\Event\BaseEvent;
+use Doctrine\ORM\QueryBuilder;
+
+class EventOrderExtension implements QueryCollectionExtensionInterface
+{
+    public function applyToCollection(
+        QueryBuilder $queryBuilder,
+        QueryNameGeneratorInterface $queryNameGenerator,
+        string $resourceClass,
+        ?Operation $operation = null,
+        array $context = []
+    ): void {
+        if (!is_a($resourceClass, BaseEvent::class, true)) {
+            return;
+        }
+
+        $alias = $queryBuilder->getRootAliases()[0];
+
+        /* Apply additional sorting by unique column (ID) to avoid issue with duplicated
+         * rows between two pages when ordering by a non-unique column (ex.: date). */
+        if ($queryBuilder->getDQLPart('orderBy')) {
+            $queryBuilder->addOrderBy($alias.'.id', 'DESC');
+        }
+    }
+}
