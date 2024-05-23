@@ -3,7 +3,6 @@
 namespace App\Entity\Jecoute;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
@@ -276,11 +275,6 @@ class Riposte implements AuthorInterface, IndexableEntityInterface, DynamicLinkO
     public function setCreatedBy(?Administrator $createdBy): void
     {
         $this->createdBy = $createdBy;
-    }
-
-    public function setAuthor(Adherent $author): void
-    {
-        $this->author = $author;
     }
 
     public function getNbViews(): ?int

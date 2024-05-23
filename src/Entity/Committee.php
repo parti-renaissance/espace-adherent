@@ -320,11 +320,6 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
         }
     }
 
-    public function getPostAddress(): AddressInterface
-    {
-        return $this->postAddress;
-    }
-
     /**
      * @Groups({"committee:read"})
      */

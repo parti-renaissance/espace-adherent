@@ -4,10 +4,7 @@ namespace App\Geocoder;
 
 trait GeoHashChangeAwareTrait
 {
-    /**
-     * @var bool
-     */
-    private $isAddressChanged = false;
+    private bool $isAddressChanged = false;
 
     public function markAddressAsChanged(): void
     {

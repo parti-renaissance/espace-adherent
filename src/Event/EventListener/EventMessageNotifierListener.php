@@ -117,7 +117,7 @@ class EventMessageNotifierListener implements EventSubscriberInterface
         if ($event->needSendMessage()) {
             $event = $event->getEvent();
             $this->visioUrl = $event->getVisioUrl();
-            $this->postAddress = clone $event->getPostAddressModel();
+            $this->postAddress = clone $event->getPostAddress();
             $this->eventBeginAt = clone $event->getBeginAt();
             $this->eventFinishAt = clone $event->getFinishAt();
         }
@@ -152,7 +152,7 @@ class EventMessageNotifierListener implements EventSubscriberInterface
             $this->eventBeginAt != $event->getBeginAt()
             || $this->eventFinishAt != $event->getFinishAt()
             || $this->visioUrl != $event->getVisioUrl()
-            || ($this->postAddress && !$this->postAddress->equals($event->getPostAddressModel()));
+            || ($this->postAddress && !$this->postAddress->equals($event->getPostAddress()));
     }
 
     private function generateUrl(string $route, array $params = []): string

@@ -167,6 +167,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                     'designation',
                     'statutory_message',
                     'procurations',
+                    'actions',
                 ],
             ],
         ]];

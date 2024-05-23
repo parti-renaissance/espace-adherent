@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait AuthoredTrait
 {
@@ -10,12 +11,22 @@ trait AuthoredTrait
      * @var Adherent|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", fetch="EAGER")
+     *
+     * @Groups({
+     *     "action_read",
+     *     "action_write",
+     * })
      */
     private $author;
 
     public function getAuthor(): ?Adherent
     {
         return $this->author;
+    }
+
+    public function setAuthor(Adherent $author): void
+    {
+        $this->author = $author;
     }
 
     public function getAuthorFullName(): string

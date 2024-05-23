@@ -2,6 +2,7 @@
 
 namespace Tests\App;
 
+use App\Address\AddressInterface;
 use App\Committee\Feed\CommitteeFeedManager;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
@@ -29,6 +30,7 @@ use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\Member;
 use App\Entity\NewsletterInvite;
 use App\Entity\NewsletterSubscription;
+use App\Entity\NullablePostAddress;
 use App\Entity\Pap\Building;
 use App\Entity\Pap\BuildingEvent;
 use App\Entity\Pap\Campaign as PapCampaign;
@@ -485,10 +487,15 @@ trait TestHelperTrait
         string $cityCode,
         ?string $region = null,
         ?float $latitude = null,
-        ?float $longitude = null
-    ): PostAddress {
+        ?float $longitude = null,
+        bool $nullable = false
+    ): AddressInterface {
         [, $inseeCode] = explode('-', $cityCode);
         $city = $this->getFranceCities()->getCityByInseeCode($inseeCode);
+
+        if ($nullable) {
+            return NullablePostAddress::createFrenchAddress($street, $cityCode, $city?->getName(), null, $region, $latitude, $longitude);
+        }
 
         return PostAddress::createFrenchAddress($street, $cityCode, $city?->getName(), null, $region, $latitude, $longitude);
     }

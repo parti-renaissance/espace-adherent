@@ -2,8 +2,10 @@
 
 namespace App\Geo\Subscriber;
 
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Address\AddressInterface;
 use App\Committee\Event\CommitteeEvent;
+use App\Entity\Action\Action;
 use App\Entity\Event\CommitteeEvent as BaseCommitteeEvent;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntity;
@@ -13,6 +15,8 @@ use App\Geo\ZoneMatcher;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class ZoneAssignerSubscriber implements EventSubscriberInterface
 {
@@ -31,6 +35,16 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
         }
 
         $this->assignZone($committee, $committee->getPostAddress());
+    }
+
+    public function assignZoneToAction(ViewEvent $event): void
+    {
+        $action = $event->getControllerResult();
+        if (!$action instanceof Action) {
+            return;
+        }
+
+        $this->assignZone($action, $action->getPostAddress());
     }
 
     public function assignZoneToEvent(EventEvent $eventEvent): void
@@ -82,6 +96,7 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
             Events::COMMITTEE_UPDATED => ['assignZoneToCommittee', -1024],
             Events::EVENT_CREATED => ['assignZoneToEvent', -1024],
             Events::EVENT_UPDATED => ['assignZoneToEvent', -1024],
+            KernelEvents::VIEW => ['assignZoneToAction', EventPriorities::POST_WRITE],
         ];
     }
 }

@@ -69,7 +69,7 @@ class EventFactory
 
         $this->referentTagManager->assignReferentLocalTags($event);
 
-        foreach ($this->zoneMatcher->match($event->getPostAddressModel()) as $zone) {
+        foreach ($this->zoneMatcher->match($event->getPostAddress()) as $zone) {
             $event->addZone($zone);
         }
 

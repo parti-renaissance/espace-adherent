@@ -27,7 +27,7 @@ class CommitteeCommandTest extends AbstractKernelTestCase
             Uuid::fromString(self::CREATOR_UUID),
             $name,
             $description,
-            $this->createPostAddress('2 Rue de la République', '69001-69381'),
+            $this->createPostAddress('2 Rue de la République', '69001-69381', nullable: true),
             (new PhoneNumber())->setCountryCode('FR')->setNationalNumber('0407080502'),
             '69001-en-marche-lyon'
         );

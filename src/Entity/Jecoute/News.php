@@ -9,7 +9,6 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\JecouteNewsScopeFilter;
 use App\Api\Filter\JecouteNewsZipCodeFilter;
 use App\Api\Filter\ScopeVisibilityFilter;
-use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Entity\AuthoredInterface;
 use App\Entity\AuthoredTrait;
@@ -453,11 +452,6 @@ class News implements AuthoredInterface, AuthorInterface, UserDocumentInterface,
     public function setEnriched(bool $enriched): void
     {
         $this->enriched = $enriched;
-    }
-
-    public function setAuthor(Adherent $author): void
-    {
-        $this->author = $author;
     }
 
     public function getSpace(): ?string

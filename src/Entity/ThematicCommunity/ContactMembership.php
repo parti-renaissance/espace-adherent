@@ -96,7 +96,7 @@ class ContactMembership extends ThematicCommunityMembership
 
     public function getPostAddress(): PostAddress
     {
-        return $this->contact ? $this->contact->getPostAddressModel() : PostAddress::createEmptyAddress();
+        return $this->contact ? $this->contact->getPostAddress() : PostAddress::createEmptyAddress();
     }
 
     public function setPostAddress(AddressInterface $address): void

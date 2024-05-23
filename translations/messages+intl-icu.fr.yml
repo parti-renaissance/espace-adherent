@@ -1414,6 +1414,7 @@ scope.feature.adherent_formations: Formations
 scope.feature.documents: Documents
 scope.feature.committee: Comités locaux
 scope.feature.designation: Désignation
+scope.feature.actions: Actions
 
 scope.app.data_corner: DataCorner
 scope.app.jemarche: Je m'engage

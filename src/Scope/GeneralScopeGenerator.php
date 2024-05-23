@@ -15,6 +15,8 @@ class GeneralScopeGenerator
      */
     private $generators;
 
+    private array $cache = [];
+
     private $delegatedAccessRepository;
 
     public function __construct(iterable $generators, DelegatedAccessRepository $delegatedAccessRepository)
@@ -28,6 +30,10 @@ class GeneralScopeGenerator
      */
     public function generateScopes(Adherent $adherent): array
     {
+        if (!empty($this->cache[$adherentId = $adherent->getId()])) {
+            return $this->cache[$adherentId];
+        }
+
         $scopes = [];
 
         /** @var ScopeGeneratorInterface $generator */
@@ -54,7 +60,12 @@ class GeneralScopeGenerator
             }
         }
 
-        return $scopes;
+        return $this->cache[$adherentId] = $scopes;
+    }
+
+    public function getAllAllowedFeatures(Adherent $adherent): array
+    {
+        return array_unique(array_merge(...array_map(fn (Scope $scope) => $scope->getFeatures(), $this->generateScopes($adherent))));
     }
 
     public function getGenerator(string $scopeCode, Adherent $adherent): ScopeGeneratorInterface
@@ -97,7 +108,7 @@ class GeneralScopeGenerator
 
     public static function isDelegatedScopeCode(string $scopeCode): bool
     {
-        return ScopeGeneratorInterface::DELEGATED_SCOPE_PREFIX === substr($scopeCode, 0, \strlen(ScopeGeneratorInterface::DELEGATED_SCOPE_PREFIX));
+        return str_starts_with($scopeCode, ScopeGeneratorInterface::DELEGATED_SCOPE_PREFIX);
     }
 
     private function findDelegatedAccess(string $scopeCode): ?DelegatedAccess
