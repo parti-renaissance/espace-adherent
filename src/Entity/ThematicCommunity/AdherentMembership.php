@@ -55,7 +55,7 @@ class AdherentMembership extends ThematicCommunityMembership
 
     public function getPostAddress(): ?PostAddress
     {
-        return $this->adherent->getPostAddressModel();
+        return $this->adherent->getPostAddress();
     }
 
     public function getCityName(): ?string

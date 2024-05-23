@@ -376,7 +376,8 @@ Feature:
                             "documents",
                             "designation",
                             "statutory_message",
-                            "procurations"
+                            "procurations",
+                            "actions"
                         ],
                         "uuid": "e0da56db-c4c6-4aa4-ad8d-7e9505dfdd93"
                     }

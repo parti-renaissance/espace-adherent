@@ -240,11 +240,6 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
         );
     }
 
-    public function getPostAddress(): PostAddress
-    {
-        return $this->postAddress;
-    }
-
     /**
      * @Groups({
      *     "procuration_request_read",

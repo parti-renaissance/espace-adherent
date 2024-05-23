@@ -1633,11 +1633,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return CommitteeMembership::createForAdherent($committee, $this, $privilege, $subscriptionDate, $trigger);
     }
 
-    public function getPostAddress(): PostAddress
-    {
-        return $this->postAddress;
-    }
-
     /**
      * Returns whether or not the current adherent is the same as the given one.
      */

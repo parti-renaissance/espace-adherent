@@ -245,6 +245,6 @@ class BaseEventCommand
 
     final protected static function getAddressModelFromEvent(BaseEvent $event): Address
     {
-        return Address::createFromAddress($event->getPostAddressModel());
+        return Address::createFromAddress($event->getPostAddress());
     }
 }

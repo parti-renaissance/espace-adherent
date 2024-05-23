@@ -194,7 +194,8 @@ Feature:
         "documents",
         "designation",
         "statutory_message",
-        "procurations"
+        "procurations",
+        "actions"
       ],
       "attributes": null,
       "delegated_access": null
@@ -495,7 +496,8 @@ Feature:
             "documents",
             "designation",
             "statutory_message",
-            "procurations"
+            "procurations",
+            "actions"
         ],
         "attributes": null,
         "delegated_access": {
@@ -548,7 +550,8 @@ Feature:
                 "documents",
                 "designation",
                 "statutory_message",
-                "procurations"
+                "procurations",
+                "actions"
             ],
             "attributes": {
                 "committees": [

@@ -61,7 +61,7 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param BaseEvent $object */
     protected function getPostAddress(object $object): ?array
     {
-        return $object->getPostAddressModel()?->toArray();
+        return $object->getPostAddress()?->toArray();
     }
 
     /** @param BaseEvent $object */

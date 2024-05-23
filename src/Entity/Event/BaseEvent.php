@@ -693,11 +693,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         return $this->getUuid()->toString();
     }
 
-    public function getPostAddress(): ?AddressInterface
-    {
-        return $this->postAddress;
-    }
-
     public function setAuthor(Adherent $adherent): void
     {
         $this->organizer = $adherent;

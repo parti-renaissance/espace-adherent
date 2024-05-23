@@ -24,11 +24,13 @@ trait EntityPostAddressTrait
      *     "procuration_request_list",
      *     "procuration_proxy_list",
      *     "procuration_matched_proxy",
+     *     "action_read",
+     *     "action_write",
      * })
      */
     protected $postAddress;
 
-    public function getPostAddressModel(): PostAddress
+    public function getPostAddress(): PostAddress
     {
         return $this->postAddress;
     }

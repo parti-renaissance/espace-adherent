@@ -33,7 +33,7 @@ class AvecVousMembershipRequest extends AbstractMembershipRequest
         $membershipRequest->allowMobileNotifications = $contact->isPhoneContact();
         $membershipRequest->birthdate = $contact->getBirthdate();
         $membershipRequest->phone = $contact->getPhone();
-        $membershipRequest->address = Address::createFromAddress($contact->getPostAddressModel());
+        $membershipRequest->address = Address::createFromAddress($contact->getPostAddress());
 
         return $membershipRequest;
     }

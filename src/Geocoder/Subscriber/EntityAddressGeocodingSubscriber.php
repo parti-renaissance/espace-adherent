@@ -2,16 +2,22 @@
 
 namespace App\Geocoder\Subscriber;
 
+use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Donation\DonationEvents;
+use App\Entity\Event\BaseEvent;
 use App\Events;
 use App\Geocoder\Coordinates;
+use App\Geocoder\Event\DefaultEvent;
 use App\Geocoder\Exception\GeocodingException;
 use App\Geocoder\GeocodableEntityEventInterface;
+use App\Geocoder\GeocodableInterface;
 use App\Geocoder\Geocoder;
 use App\Geocoder\GeoPointInterface;
 use App\Membership\AdherentEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
 {
@@ -42,11 +48,21 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
         return false;
     }
 
-    public function updateCoordinates(GeocodableEntityEventInterface $event): void
+    public function updateCoordinates(GeocodableEntityEventInterface $object): void
     {
-        if ($this->updateGeocodableEntity($event->getGeocodableEntity())) {
-            $event->markAddressAsChanged();
+        if ($this->updateGeocodableEntity($object->getGeocodableEntity())) {
+            $object->markAddressAsChanged();
         }
+    }
+
+    public function apiUpdateCoordinates(ViewEvent $viewEvent): void
+    {
+        $object = $viewEvent->getControllerResult();
+        if (!$object instanceof GeocodableInterface || $object instanceof BaseEvent) {
+            return;
+        }
+
+        $this->updateCoordinates(new DefaultEvent($object));
     }
 
     private function geocode(string $address): ?Coordinates
@@ -70,6 +86,7 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
             Events::EVENT_UPDATED => ['updateCoordinates', -256],
             DonationEvents::CREATED => ['updateCoordinates', -256],
             DonationEvents::UPDATED => ['updateCoordinates', -256],
+            KernelEvents::VIEW => ['apiUpdateCoordinates', EventPriorities::POST_WRITE],
         ];
     }
 }

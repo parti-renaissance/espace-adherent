@@ -245,7 +245,7 @@ trait EntityAddressTrait
     }
 
     /**
-     * @Groups({"event_read", "event_list_read"})
+     * @Groups({"event_read", "event_list_read", "action_read"})
      */
     public function getLatitude(): ?float
     {
@@ -253,7 +253,7 @@ trait EntityAddressTrait
     }
 
     /**
-     * @Groups({"event_read", "event_list_read"})
+     * @Groups({"event_read", "event_list_read", "action_read"})
      */
     public function getLongitude(): ?float
     {

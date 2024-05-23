@@ -27,17 +27,20 @@ class AuthorizationChecker
 
     public function isFeatureGranted(Request $request, Adherent $adherent, array $featureCodes): bool
     {
+        if (\count($featureCodes) !== \count(array_filter($featureCodes, [FeatureEnum::class, 'isValid']))) {
+            throw new InvalidFeatureCodeException();
+        }
+
         if (!$scope = $this->getScope($request)) {
+            if ($this->isDirectCheckAllowed($featureCodes)) {
+                return 0 < \count(array_intersect($featureCodes, $this->scopeGenerator->getAllAllowedFeatures($adherent)));
+            }
+
             throw new ScopeQueryParamMissingException();
         }
 
-        if (!ScopeEnum::isValid($scope)
-            && !GeneralScopeGenerator::isDelegatedScopeCode($scope)) {
+        if (!ScopeEnum::isValid($scope) && !GeneralScopeGenerator::isDelegatedScopeCode($scope)) {
             throw new InvalidScopeException();
-        }
-
-        if (\count($featureCodes) !== \count(array_filter($featureCodes, [FeatureEnum::class, 'isValid']))) {
-            throw new InvalidFeatureCodeException();
         }
 
         $scope = $this->scopeGenerator->getGenerator($scope, $adherent)->generate($adherent);
@@ -71,5 +74,10 @@ class AuthorizationChecker
         } catch (NotFoundScopeGeneratorException $e) {
             return null;
         }
+    }
+
+    private function isDirectCheckAllowed(array $featureCodes): bool
+    {
+        return $featureCodes === [FeatureEnum::ACTIONS];
     }
 }

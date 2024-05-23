@@ -68,6 +68,7 @@ trait GeoTrait
      *     "procuration_request_list",
      *     "procuration_proxy_list",
      *     "procuration_matched_proxy",
+     *     "action_read",
      * })
      */
     private $code;
@@ -113,6 +114,7 @@ trait GeoTrait
      *     "procuration_request_list",
      *     "procuration_proxy_list",
      *     "procuration_matched_proxy",
+     *     "action_read",
      * })
      */
     private $name;
