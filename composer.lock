@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4049809515b0dfaeaa0571af029ffbaa",
+    "content-hash": "d5ed6937940ae2826760223d5d66cbaf",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -8847,16 +8847,16 @@
         },
         {
             "name": "openai-php/client",
-            "version": "v0.8.5",
+            "version": "v0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openai-php/client.git",
-                "reference": "0f755fafa4d3f8d5c8ed964d3166d078fac0605a"
+                "reference": "7b5652b5e107b04b67aa5bc6560acf162ef2be97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openai-php/client/zipball/0f755fafa4d3f8d5c8ed964d3166d078fac0605a",
-                "reference": "0f755fafa4d3f8d5c8ed964d3166d078fac0605a",
+                "url": "https://api.github.com/repos/openai-php/client/zipball/7b5652b5e107b04b67aa5bc6560acf162ef2be97",
+                "reference": "7b5652b5e107b04b67aa5bc6560acf162ef2be97",
                 "shasum": ""
             },
             "require": {
@@ -8871,15 +8871,15 @@
             "require-dev": {
                 "guzzlehttp/guzzle": "^7.8.1",
                 "guzzlehttp/psr7": "^2.6.2",
-                "laravel/pint": "^1.15.0",
+                "laravel/pint": "^1.15.3",
                 "mockery/mockery": "^1.6.11",
                 "nunomaduro/collision": "^7.10.0",
-                "pestphp/pest": "^2.34.6",
+                "pestphp/pest": "^2.34.7",
                 "pestphp/pest-plugin-arch": "^2.7",
                 "pestphp/pest-plugin-type-coverage": "^2.8.1",
-                "phpstan/phpstan": "^1.10.66",
+                "phpstan/phpstan": "^1.10.67",
                 "rector/rector": "^1.0.4",
-                "symfony/var-dumper": "^6.4.4"
+                "symfony/var-dumper": "^6.4.7"
             },
             "type": "library",
             "autoload": {
@@ -8919,7 +8919,7 @@
             ],
             "support": {
                 "issues": "https://github.com/openai-php/client/issues",
-                "source": "https://github.com/openai-php/client/tree/v0.8.5"
+                "source": "https://github.com/openai-php/client/tree/v0.9.0"
             },
             "funding": [
                 {
@@ -8935,7 +8935,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-15T19:11:23+00:00"
+            "time": "2024-05-21T18:50:46+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
