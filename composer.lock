@@ -6841,16 +6841,16 @@
         },
         {
             "name": "league/flysystem-bundle",
-            "version": "3.3.3",
+            "version": "3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-bundle.git",
-                "reference": "a69de474d7d7229d6c3b0eb59912b5f38955b9d3"
+                "reference": "dd057bafa10e33fd846bbb44da108104eb06a3e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-bundle/zipball/a69de474d7d7229d6c3b0eb59912b5f38955b9d3",
-                "reference": "a69de474d7d7229d6c3b0eb59912b5f38955b9d3",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-bundle/zipball/dd057bafa10e33fd846bbb44da108104eb06a3e0",
+                "reference": "dd057bafa10e33fd846bbb44da108104eb06a3e0",
                 "shasum": ""
             },
             "require": {
@@ -6896,9 +6896,9 @@
             "description": "Symfony bundle integrating Flysystem into Symfony 5.4+ applications",
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem-bundle/issues",
-                "source": "https://github.com/thephpleague/flysystem-bundle/tree/3.3.3"
+                "source": "https://github.com/thephpleague/flysystem-bundle/tree/3.3.4"
             },
-            "time": "2024-03-21T08:37:42+00:00"
+            "time": "2024-05-22T11:59:30+00:00"
         },
         {
             "name": "league/flysystem-google-cloud-storage",
