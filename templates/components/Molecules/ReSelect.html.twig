@@ -43,7 +43,7 @@
                           class="re-field-frame w-full !border-0 min-h-[51px] overflow-hidden !outline-0 !rounded-none resize-none"
                           x-on:keyDown="handleKeyDown($event)"
                           x-model="query"
-                          x-on:input.debounce.200ms="handleInput($event);"
+                          x-on:input.debounce.600ms="handleInput($event);"
                           x-bind:class="{'disabled': isValueSet && blocked, '!pr-24': isValueSet && blocked}"
                           x-on:focus="handleChangeSetValue"
                           x-bind:placeholder="placeholder"
