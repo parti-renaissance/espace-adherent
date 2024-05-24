@@ -9125,21 +9125,21 @@
         },
         {
             "name": "php-http/curl-client",
-            "version": "2.3.1",
+            "version": "2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/curl-client.git",
-                "reference": "085570be588f7cbdc4601e78886eea5b7051ad71"
+                "reference": "0b869922458b1cde9137374545ed4fff7ac83623"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/curl-client/zipball/085570be588f7cbdc4601e78886eea5b7051ad71",
-                "reference": "085570be588f7cbdc4601e78886eea5b7051ad71",
+                "url": "https://api.github.com/repos/php-http/curl-client/zipball/0b869922458b1cde9137374545ed4fff7ac83623",
+                "reference": "0b869922458b1cde9137374545ed4fff7ac83623",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
-                "php": "^7.1 || ^8.0",
+                "php": "^7.4 || ^8.0",
                 "php-http/discovery": "^1.6",
                 "php-http/httplug": "^2.0",
                 "php-http/message": "^1.2",
@@ -9153,7 +9153,7 @@
                 "psr/http-client-implementation": "1.0"
             },
             "require-dev": {
-                "guzzlehttp/psr7": "^1.0",
+                "guzzlehttp/psr7": "^2.0",
                 "laminas/laminas-diactoros": "^2.0",
                 "php-http/client-integration-tests": "^3.0",
                 "php-http/message-factory": "^1.1",
@@ -9184,9 +9184,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/curl-client/issues",
-                "source": "https://github.com/php-http/curl-client/tree/2.3.1"
+                "source": "https://github.com/php-http/curl-client/tree/2.3.2"
             },
-            "time": "2023-11-03T15:32:00+00:00"
+            "time": "2024-03-03T08:21:07+00:00"
         },
         {
             "name": "php-http/discovery",
@@ -9326,16 +9326,16 @@
         },
         {
             "name": "php-http/message",
-            "version": "1.16.0",
+            "version": "1.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/message.git",
-                "reference": "47a14338bf4ebd67d317bf1144253d7db4ab55fd"
+                "reference": "5997f3289332c699fa2545c427826272498a2088"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/message/zipball/47a14338bf4ebd67d317bf1144253d7db4ab55fd",
-                "reference": "47a14338bf4ebd67d317bf1144253d7db4ab55fd",
+                "url": "https://api.github.com/repos/php-http/message/zipball/5997f3289332c699fa2545c427826272498a2088",
+                "reference": "5997f3289332c699fa2545c427826272498a2088",
                 "shasum": ""
             },
             "require": {
@@ -9389,9 +9389,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/message/issues",
-                "source": "https://github.com/php-http/message/tree/1.16.0"
+                "source": "https://github.com/php-http/message/tree/1.16.1"
             },
-            "time": "2023-05-17T06:43:38+00:00"
+            "time": "2024-03-07T13:22:09+00:00"
         },
         {
             "name": "php-http/message-factory",
@@ -9506,16 +9506,16 @@
         },
         {
             "name": "php-http/promise",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/promise.git",
-                "reference": "2916a606d3b390f4e9e8e2b8dd68581508be0f07"
+                "reference": "fc85b1fba37c169a69a07ef0d5a8075770cc1f83"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/promise/zipball/2916a606d3b390f4e9e8e2b8dd68581508be0f07",
-                "reference": "2916a606d3b390f4e9e8e2b8dd68581508be0f07",
+                "url": "https://api.github.com/repos/php-http/promise/zipball/fc85b1fba37c169a69a07ef0d5a8075770cc1f83",
+                "reference": "fc85b1fba37c169a69a07ef0d5a8075770cc1f83",
                 "shasum": ""
             },
             "require": {
@@ -9552,9 +9552,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/promise/issues",
-                "source": "https://github.com/php-http/promise/tree/1.3.0"
+                "source": "https://github.com/php-http/promise/tree/1.3.1"
             },
-            "time": "2024-01-04T18:49:48+00:00"
+            "time": "2024-03-15T13:55:21+00:00"
         },
         {
             "name": "phpoffice/phpspreadsheet",
@@ -19145,16 +19145,16 @@
         },
         {
             "name": "willdurand/geocoder-bundle",
-            "version": "5.20.0",
+            "version": "5.20.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/geocoder-php/BazingaGeocoderBundle.git",
-                "reference": "06c094cb65a0a50386674ee4d0d918a31cf36da4"
+                "reference": "0e1b7eb3d9fda20b5fe1349b4da7212fdf17e61b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/geocoder-php/BazingaGeocoderBundle/zipball/06c094cb65a0a50386674ee4d0d918a31cf36da4",
-                "reference": "06c094cb65a0a50386674ee4d0d918a31cf36da4",
+                "url": "https://api.github.com/repos/geocoder-php/BazingaGeocoderBundle/zipball/0e1b7eb3d9fda20b5fe1349b4da7212fdf17e61b",
+                "reference": "0e1b7eb3d9fda20b5fe1349b4da7212fdf17e61b",
                 "shasum": ""
             },
             "require": {
@@ -19162,9 +19162,9 @@
                 "php": "^7.4 || ^8.0",
                 "php-http/curl-client": "^2.3",
                 "php-http/discovery": "^1.14",
-                "symfony/console": "^4.4 || ^5.0 || ^6.0 || ^7.0",
-                "symfony/framework-bundle": "^4.4 || ^5.0 || ^6.0 || ^7.0",
-                "symfony/options-resolver": "^4.4 || ^5.0 || ^6.0 || ^7.0",
+                "symfony/console": "^4.4 || ^5.4 || ^6.4 || ^7.0",
+                "symfony/framework-bundle": "^4.4 || ^5.4 || ^6.4 || ^7.0",
+                "symfony/options-resolver": "^4.4 || ^5.4 || ^6.4 || ^7.0",
                 "willdurand/geocoder": "^4.6"
             },
             "conflict": {
@@ -19173,9 +19173,9 @@
             "require-dev": {
                 "doctrine/annotations": "^1.11.1 || ^2.0",
                 "doctrine/doctrine-bundle": "^2.3",
-                "doctrine/orm": "~2.8",
+                "doctrine/orm": "^2.8",
                 "fakerphp/faker": "^1.20",
-                "friendsofphp/php-cs-fixer": "^3.13",
+                "friendsofphp/php-cs-fixer": "^3.0",
                 "geocoder-php/algolia-places-provider": "^0.4",
                 "geocoder-php/arcgis-online-provider": "^4.4",
                 "geocoder-php/bing-maps-provider": "^4.3",
@@ -19208,15 +19208,17 @@
                 "geoip/geoip": "~1.17",
                 "nyholm/nsa": "^1.3",
                 "nyholm/psr7": "^1.5",
-                "nyholm/symfony-bundle-test": "dev-master",
+                "nyholm/symfony-bundle-test": "^2.0 || ^3.0",
                 "php-http/message": "^1.13",
                 "php-http/mock-client": "^1.6",
                 "phpstan/phpstan": "^1.9.2",
                 "psr/http-client": "^1.0",
+                "psr/simple-cache": "^1.0 || ^2.0",
                 "symfony/cache": "^4.4 || ^5.0 || ^6.0 || ^7.0",
                 "symfony/config": "^4.4 || ^5.0 || ^6.0 || ^7.0",
-                "symfony/phpunit-bridge": "^5.2 || ^6.0 || ^7.0",
+                "symfony/phpunit-bridge": "^6.1",
                 "symfony/validator": "^4.4 || ^5.0 || ^6.0 || ^7.0",
+                "symfony/var-exporter": "^5.0 || ^6.0 || ^7.0",
                 "symfony/yaml": "^4.4 || ^5.0 || ^6.0 || ^7.0"
             },
             "type": "symfony-bundle",
@@ -19247,9 +19249,9 @@
             ],
             "support": {
                 "issues": "https://github.com/geocoder-php/BazingaGeocoderBundle/issues",
-                "source": "https://github.com/geocoder-php/BazingaGeocoderBundle/tree/5.20.0"
+                "source": "https://github.com/geocoder-php/BazingaGeocoderBundle/tree/5.20.1"
             },
-            "time": "2023-11-03T11:53:05+00:00"
+            "time": "2024-05-22T10:35:41+00:00"
         },
         {
             "name": "willdurand/negotiation",
