@@ -12,6 +12,7 @@ use App\Entity\EntityPostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
+use App\Entity\IndexableEntityInterface;
 use App\Entity\ZoneableEntity;
 use App\Geocoder\GeoPointInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,6 +26,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Action\ActionRepository")
  * @ORM\Table(name="vox_action")
+ *
+ * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
  *
  * @ApiResource(
  *     attributes={
@@ -77,7 +80,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity
+class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity, IndexableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityPostAddressTrait;
@@ -169,5 +172,15 @@ class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity
     public function addNewParticipant(Adherent $adherent): void
     {
         $this->participants->add(new ActionParticipant($this, $adherent));
+    }
+
+    public function getIndexOptions(): array
+    {
+        return [];
+    }
+
+    public function isIndexable(): bool
+    {
+        return !$this->isCancelled();
     }
 }
