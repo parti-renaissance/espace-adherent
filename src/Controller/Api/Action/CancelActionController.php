@@ -14,7 +14,7 @@ class CancelActionController extends AbstractController
 {
     public function __invoke(Action $action, EntityManagerInterface $manager): Response
     {
-        if (Action::STATUS_CANCELLED === $action->status) {
+        if ($action->isCancelled()) {
             throw new BadRequestHttpException('This action is already cancelled');
         }
 

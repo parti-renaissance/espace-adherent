@@ -4,6 +4,7 @@ namespace App\Entity\Action;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Collection\ZoneCollection;
+use App\Entity\Adherent;
 use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
@@ -46,7 +47,21 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "defaults": {"_api_receive": false},
  *             "controller": "App\Controller\Api\Action\CancelActionController",
- *         }
+ *         },
+ *         "register": {
+ *             "path": "/v3/actions/{uuid}/register",
+ *             "method": "POST",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "defaults": {"_api_receive": false},
+ *             "controller": "App\Controller\Api\Action\RegisterController",
+ *         },
+ *         "unregister": {
+ *             "path": "/v3/actions/{uuid}/register",
+ *             "method": "DELETE",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "defaults": {"_api_receive": false},
+ *             "controller": "App\Controller\Api\Action\RegisterController",
+ *         },
  *     },
  *     collectionOperations={
  *         "get": {
@@ -97,7 +112,7 @@ class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity
     public ?string $description = null;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Action\ActionParticipant", mappedBy="action", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\Action\ActionParticipant", mappedBy="action", cascade={"persist"}, fetch="EXTRA_LAZY")
      */
     private Collection $participants;
 
@@ -144,5 +159,15 @@ class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity
     {
         $this->status = self::STATUS_CANCELLED;
         $this->canceledAt = new \DateTime();
+    }
+
+    public function isCancelled(): bool
+    {
+        return self::STATUS_CANCELLED === $this->status;
+    }
+
+    public function addNewParticipant(Adherent $adherent): void
+    {
+        $this->participants->add(new ActionParticipant($this, $adherent));
     }
 }
