@@ -32,6 +32,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *     "procuration_proxy_list",
      *     "procuration_matched_proxy",
      *     "action_read",
+     *     "action_read_list",
      *     "action_write",
      * })
      */
@@ -53,6 +54,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *     "procuration_proxy_list",
      *     "procuration_matched_proxy",
      *     "action_read",
+     *     "action_read_list",
      *     "action_write",
      * })
      */
@@ -74,6 +76,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *     "procuration_proxy_list",
      *     "procuration_matched_proxy",
      *     "action_read",
+     *     "action_read_list",
      *     "action_write",
      * })
      */
@@ -95,6 +98,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *     "procuration_proxy_list",
      *     "procuration_matched_proxy",
      *     "action_read",
+     *     "action_read_list",
      *     "action_write",
      * })
      */
@@ -116,6 +120,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      *     "procuration_proxy_list",
      *     "procuration_matched_proxy",
      *     "action_read",
+     *     "action_read_list",
      *     "action_write",
      * })
      */

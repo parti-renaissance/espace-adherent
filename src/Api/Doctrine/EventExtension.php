@@ -6,7 +6,7 @@ use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
-use App\Api\Serializer\EventContextBuilder;
+use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
@@ -57,7 +57,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
 
         $alias = $queryBuilder->getRootAliases()[0];
 
-        if (EventContextBuilder::CONTEXT_PRIVATE === $context[EventContextBuilder::CONTEXT_KEY]) {
+        if (PrivatePublicContextBuilder::CONTEXT_PRIVATE === $context[PrivatePublicContextBuilder::CONTEXT_KEY]) {
             $scope = $this->scopeResolver->generate();
 
             if ($scope && $committeeUuids = $scope->getCommitteeUuids()) {
@@ -69,7 +69,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
                 ));
                 $queryBuilder->setParameter('committee_uuids', $committeeUuids);
             }
-        } elseif (EventContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $context[EventContextBuilder::CONTEXT_KEY]) {
+        } elseif (PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $context[PrivatePublicContextBuilder::CONTEXT_KEY]) {
             /** @var Adherent $user */
             $user = $this->security->getUser();
             if ($zone = $user->getParisBoroughOrDepartment()) {
@@ -98,12 +98,12 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
             ->setParameter('true', true)
         ;
 
-        if (EventContextBuilder::CONTEXT_PUBLIC_ANONYMOUS === $context[EventContextBuilder::CONTEXT_KEY]) {
+        if (PrivatePublicContextBuilder::CONTEXT_PUBLIC_ANONYMOUS === $context[PrivatePublicContextBuilder::CONTEXT_KEY]) {
             $queryBuilder
                 ->andWhere("$alias.visibility IN (:public_visibilities)")
                 ->setParameter('public_visibilities', [EventVisibilityEnum::PUBLIC, EventVisibilityEnum::PRIVATE])
             ;
-        } elseif (EventContextBuilder::CONTEXT_PRIVATE === $context[EventContextBuilder::CONTEXT_KEY]) {
+        } elseif (PrivatePublicContextBuilder::CONTEXT_PRIVATE === $context[PrivatePublicContextBuilder::CONTEXT_KEY]) {
             $eventStatus = null;
         }
 

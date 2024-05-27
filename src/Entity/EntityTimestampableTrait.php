@@ -35,6 +35,8 @@ trait EntityTimestampableTrait
      *     "procuration_request_list",
      *     "procuration_proxy_list",
      *     "procuration_matched_proxy",
+     *     "action_read",
+     *     "action_read_list",
      * })
      *
      * @Gedmo\Timestampable(on="create")
@@ -50,6 +52,8 @@ trait EntityTimestampableTrait
      *     "phoning_campaign_read",
      *     "committee:list",
      *     "national_event_inscription:webhook",
+     *     "action_read",
+     *     "action_read_list",
      * })
      *
      * @Gedmo\Timestampable(on="update")

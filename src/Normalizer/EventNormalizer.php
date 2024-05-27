@@ -3,7 +3,7 @@
 namespace App\Normalizer;
 
 use App\Adherent\Tag\TagEnum;
-use App\Api\Serializer\EventContextBuilder;
+use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventCleaner;
@@ -37,16 +37,16 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
         $event = $this->normalizer->normalize($object, $format, $context);
 
-        $apiContext = $context[EventContextBuilder::CONTEXT_KEY] ?? null;
+        $apiContext = $context[PrivatePublicContextBuilder::CONTEXT_KEY] ?? null;
         $user = $this->getUser();
 
-        if (EventContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $apiContext) {
+        if (PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $apiContext) {
             if ($user) {
                 $registration = $this->eventRegistrationRepository->findAdherentRegistration($object->getUuid()->toString(), $user->getUuid()->toString());
 
                 $event['user_registered_at'] = $registration?->getCreatedAt()->format(\DateTimeInterface::RFC3339);
             }
-        } elseif (EventContextBuilder::CONTEXT_PRIVATE === $apiContext) {
+        } elseif (PrivatePublicContextBuilder::CONTEXT_PRIVATE === $apiContext) {
             $event['editable'] = $this->authorizationChecker->isGranted(CanManageEventVoter::PERMISSION, $object);
         }
 
@@ -57,20 +57,20 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
     {
         return
             empty($context[self::EVENT_USER_REGISTRATION_ALREADY_CALLED])
-            && !empty($context[EventContextBuilder::CONTEXT_KEY])
+            && !empty($context[PrivatePublicContextBuilder::CONTEXT_KEY])
             && $data instanceof BaseEvent;
     }
 
     private function cleanEventDataIfNeed(BaseEvent $event, ?Adherent $adherent, array $eventData, string $apiContext): array
     {
-        if (EventContextBuilder::CONTEXT_PRIVATE === $apiContext) {
+        if (PrivatePublicContextBuilder::CONTEXT_PRIVATE === $apiContext) {
             return $eventData;
         }
 
         $needClean =
-            (EventContextBuilder::CONTEXT_PUBLIC_ANONYMOUS === $apiContext && !$event->isPublic())
+            (PrivatePublicContextBuilder::CONTEXT_PUBLIC_ANONYMOUS === $apiContext && !$event->isPublic())
             || (
-                EventContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $apiContext
+                PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $apiContext
                 && $event->isForAdherent()
                 && (
                     !$adherent

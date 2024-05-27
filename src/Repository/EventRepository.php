@@ -621,7 +621,7 @@ class EventRepository extends ServiceEntityRepository
     ): array {
         return $this
             ->createNearbyQueryBuilder(new Coordinates($event->getLatitude(), $event->getLongitude()))
-            ->andWhere($this->getNearbyExpression().' < :distance_max')
+            ->andWhere($this->getNearbyExpression('n').' < :distance_max')
             ->andWhere('n.beginAt > :date')
             ->andWhere('n.status = :status')
             ->andwhere('n.published = :published')

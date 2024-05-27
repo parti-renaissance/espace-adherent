@@ -7,11 +7,11 @@ use Doctrine\ORM\QueryBuilder;
 
 trait NearbyTrait
 {
-    public function getNearbyExpression(): string
+    public function getNearbyExpression(string $alias): string
     {
-        return '(6371 * acos(cos(radians(:latitude)) * cos(radians(n.postAddress.latitude))
-            * cos(radians(n.postAddress.longitude) - radians(:longitude)) + sin(radians(:latitude)) *
-            sin(radians(n.postAddress.latitude))))';
+        return sprintf('(6371 * acos(cos(radians(:latitude)) * cos(radians(%1$s.postAddress.latitude))
+            * cos(radians(%1$s.postAddress.longitude) - radians(:longitude)) + sin(radians(:latitude)) *
+            sin(radians(%1$s.postAddress.latitude))))', $alias);
     }
 
     /**
@@ -21,21 +21,23 @@ trait NearbyTrait
      *
      * Setting the hidden flag to false allow you to get an array as result containing
      * the entity and the calculated distance.
-     *
-     * @return QueryBuilder
      */
-    public function createNearbyQueryBuilder(Coordinates $coordinates, bool $hidden = true)
+    public function createNearbyQueryBuilder(Coordinates $coordinates, bool $hidden = true): QueryBuilder
+    {
+        return $this->updateNearByQueryBuilder($this->createQueryBuilder('n'), 'n', $coordinates, $hidden);
+    }
+
+    public function updateNearByQueryBuilder(QueryBuilder $queryBuilder, string $alias, Coordinates $coordinates, bool $hidden = true): QueryBuilder
     {
         $hidden = $hidden ? 'hidden' : '';
 
-        return $this
-            ->createQueryBuilder('n')
-            ->addSelect($this->getNearbyExpression().' as '.$hidden.' distance_between')
+        return $queryBuilder
+            ->addSelect($this->getNearbyExpression($alias).' as '.$hidden.' distance_between')
             ->setParameter('latitude', $coordinates->getLatitude())
             ->setParameter('longitude', $coordinates->getLongitude())
-            ->where('n.postAddress.latitude IS NOT NULL')
-            ->andWhere('n.postAddress.longitude IS NOT NULL')
-            ->orderBy('distance_between', 'asc')
+            ->where($alias.'.postAddress.latitude IS NOT NULL')
+            ->andWhere($alias.'.postAddress.longitude IS NOT NULL')
+            ->orderBy('distance_between', 'ASC')
         ;
     }
 }

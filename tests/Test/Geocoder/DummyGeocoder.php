@@ -12,7 +12,7 @@ use Geocoder\Query\ReverseQuery;
 
 class DummyGeocoder implements Geocoder
 {
-    private static $coordinates = [
+    public static array $coordinates = [
         'paris' => [
             'latitude' => 48.8589506,
             'longitude' => 2.2773447,

@@ -7,6 +7,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -20,6 +21,7 @@ class ActionParticipant
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[Groups(['action_read', 'action_read_list'])]
     public bool $isPresent = false;
 
     /**
@@ -29,7 +31,9 @@ class ActionParticipant
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", fetch="EAGER")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[Groups(['action_read', 'action_read_list'])]
     public Adherent $adherent;
 
     public function __construct(Action $action, Adherent $adherent)
