@@ -10,7 +10,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Action\ActionParticipantRepository")
  * @ORM\Table(name="vox_action_participant")
  */
 class ActionParticipant
