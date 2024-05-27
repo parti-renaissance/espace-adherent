@@ -39,6 +39,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "put": {
  *             "path": "/v3/actions/{uuid}",
  *             "security": "is_granted('IS_FEATURE_GRANTED', 'actions') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'actions'))",
+ *         },
+ *         "cancel": {
+ *             "path": "/v3/actions/{uuid}/cancel",
+ *             "method": "PUT",
+ *             "requirements": {"uuid": "%pattern_uuid%"},
+ *             "defaults": {"_api_receive": false},
+ *             "controller": "App\Controller\Api\Action\CancelActionController",
  *         }
  *     },
  *     collectionOperations={
@@ -64,6 +71,7 @@ class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity
     use AuthoredTrait;
 
     public const STATUS_SCHEDULED = 'scheduled';
+    public const STATUS_CANCELLED = 'cancelled';
 
     /**
      * @ORM\Column(name="`type`")
@@ -108,6 +116,11 @@ class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity
     #[Groups(['action_read', 'action_read_list'])]
     public string $status = self::STATUS_SCHEDULED;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    public ?\DateTime $canceledAt = null;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
@@ -125,5 +138,11 @@ class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity
     public function getFirstParticipants(): array
     {
         return $this->participants->matching(Criteria::create()->setMaxResults(3)->orderBy(['createdAt' => 'ASC']))->toArray();
+    }
+
+    public function cancel(): void
+    {
+        $this->status = self::STATUS_CANCELLED;
+        $this->canceledAt = new \DateTime();
     }
 }
