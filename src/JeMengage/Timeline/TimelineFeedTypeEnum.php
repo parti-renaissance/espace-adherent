@@ -2,6 +2,7 @@
 
 namespace App\JeMengage\Timeline;
 
+use App\Entity\Action\Action;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Jecoute\News;
 use App\Entity\Jecoute\Riposte;
@@ -18,6 +19,7 @@ class TimelineFeedTypeEnum extends Enum
     public const PAP_CAMPAIGN = 'pap-campaign';
     public const PHONING_CAMPAIGN = 'phoning-campaign';
     public const SURVEY = 'survey';
+    public const ACTION = 'action';
 
     public const CLASS_MAPPING = [
         News::class => self::NEWS,
@@ -26,5 +28,6 @@ class TimelineFeedTypeEnum extends Enum
         Riposte::class => self::RIPOSTE,
         Survey::class => self::SURVEY,
         BaseEvent::class => self::EVENT,
+        Action::class => self::ACTION,
     ];
 }

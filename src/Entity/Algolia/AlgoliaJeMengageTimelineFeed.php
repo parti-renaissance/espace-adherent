@@ -3,6 +3,7 @@
 namespace App\Entity\Algolia;
 
 use Algolia\SearchBundle\Entity\Aggregator;
+use App\Entity\Action\Action;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Entity\IndexableEntityInterface;
@@ -40,7 +41,7 @@ class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntity
         $this->objectID = $entity->getUuid()->toString();
     }
 
-    public static function getEntities()
+    public static function getEntities(): array
     {
         return [
             LocalSurvey::class,
@@ -51,6 +52,7 @@ class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntity
             Riposte::class,
             CommitteeEvent::class,
             DefaultEvent::class,
+            Action::class,
         ];
     }
 
