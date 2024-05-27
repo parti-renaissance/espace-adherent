@@ -43,6 +43,7 @@ trait EntityPersonNameTrait
      *     "procuration_matched_proxy",
      *     "procuration_proxy_list_request",
      *     "action_read",
+     *     "action_read_list",
      * })
      */
     private $firstName = '';
@@ -82,6 +83,7 @@ trait EntityPersonNameTrait
      *     "procuration_matched_proxy",
      *     "procuration_proxy_list_request",
      *     "action_read",
+     *     "action_read_list",
      * })
      */
     private $lastName = '';

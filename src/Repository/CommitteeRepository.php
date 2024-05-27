@@ -352,14 +352,16 @@ class CommitteeRepository extends ServiceEntityRepository
      */
     public function searchCommittees(SearchParametersFilter $search): array
     {
+        $alias = 'n';
+
         if ($coordinates = $search->getCityCoordinates()) {
             $qb = $this
                 ->createNearbyQueryBuilder($coordinates)
-                ->andWhere($this->getNearbyExpression().' < :distance_max')
+                ->andWhere($this->getNearbyExpression($alias).' < :distance_max')
                 ->setParameter('distance_max', $search->getRadius())
             ;
         } else {
-            $qb = $this->createQueryBuilder('n');
+            $qb = $this->createQueryBuilder($alias);
         }
 
         if (!empty($query = $search->getQuery())) {

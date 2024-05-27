@@ -25,6 +25,7 @@ trait EntityPostAddressTrait
      *     "procuration_proxy_list",
      *     "procuration_matched_proxy",
      *     "action_read",
+     *     "action_read_list",
      *     "action_write",
      * })
      */

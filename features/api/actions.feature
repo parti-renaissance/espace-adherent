@@ -28,6 +28,9 @@ Feature:
             "type": "pap",
             "date": "@string@.isDateTime()",
             "uuid": "@uuid@",
+            "status": "scheduled",
+            "created_at": "@string@.isDateTime()",
+            "updated_at": "@string@.isDateTime()",
             "description": "<p>Bonjour, voici une description</p><ul><li>élément 1</li><li>élément 2</li></ul>",
             "post_address": {
                 "address": "92 bd Victor Hugo",
@@ -48,13 +51,17 @@ Feature:
                     "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
                     "type": "city",
                     "code": "92024",
-                    "name": "Clichy"
+                    "name": "Clichy",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
                 },
                 {
                     "uuid": "e3f0ee1a-906e-11eb-a875-0242ac150002",
                     "type": "district",
                     "code": "92-5",
-                    "name": "Hauts-de-Seine (5)"
+                    "name": "Hauts-de-Seine (5)",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
                 }
             ]
         }
@@ -73,6 +80,9 @@ Feature:
             "type": "boitage",
             "date": "@string@.isDateTime()",
             "uuid": "@uuid@",
+            "created_at": "@string@.isDateTime()",
+            "updated_at": "@string@.isDateTime()",
+            "status": "scheduled",
             "description": "<p>Bonjour, voici une description</p><ul><li>élément 1</li><li>élément 2</li></ul>",
             "post_address": {
                 "address": "92 bd Victor Hugo",
@@ -93,13 +103,17 @@ Feature:
                     "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
                     "type": "city",
                     "code": "92024",
-                    "name": "Clichy"
+                    "name": "Clichy",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
                 },
                 {
                     "uuid": "e3f0ee1a-906e-11eb-a875-0242ac150002",
                     "type": "district",
                     "code": "92-5",
-                    "name": "Hauts-de-Seine (5)"
+                    "name": "Hauts-de-Seine (5)",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
                 }
             ]
         }
@@ -122,3 +136,10 @@ Feature:
         }
         """
         Then the response status code should be 403
+
+    Scenario: As a logged-in VOX user I can get actions around me
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
+        And I send a "GET" request to "/api/v3/actions?latitude=48.866667&longitude=2.333333"
+        Then the response status code should be 200
+        And the JSON node "metadata.items_per_page" should be equal to "300"
+        And the JSON node "metadata.total_items" should be equal to "50"

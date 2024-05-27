@@ -117,6 +117,7 @@ trait EntityIdentityTrait
      *     "procuration_request_list_proxy",
      *     "procuration_matched_proxy",
      *     "action_read",
+     *     "action_read_list",
      * })
      *
      * @ApiProperty(
