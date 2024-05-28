@@ -32,7 +32,10 @@ Feature:
         "total": 0,
         "last_month": 0
       },
-      "tags": [],
+      "tags": [{
+        "label": "Ancien compte En Marche",
+        "type": "sympathisant"
+      }],
       "cadre_access": false
     }
     """

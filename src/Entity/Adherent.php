@@ -1169,7 +1169,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_CORRESPONDENT';
         }
 
-        if ($this->isRenaissanceUser()) {
+        if ($this->isRenaissanceAdherent() || $this->isRenaissanceSympathizer()) {
             $roles[] = 'ROLE_RENAISSANCE_USER';
         }
 
@@ -2973,12 +2973,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isRenaissanceAdherent(): bool
     {
-        return $this->isRenaissanceUser() && $this->hasTag(TagEnum::ADHERENT);
+        return $this->hasTag(TagEnum::ADHERENT);
     }
 
     public function isRenaissanceSympathizer(): bool
     {
-        return $this->isRenaissanceUser() && $this->hasTag(TagEnum::SYMPATHISANT);
+        return $this->hasTag(TagEnum::SYMPATHISANT);
     }
 
     public function addInstanceQuality($quality, ?\DateTime $data = null): AdherentInstanceQuality
@@ -3399,7 +3399,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function hasTag(string $tag): bool
     {
-        return TagEnum::includesTag($tag, $this->tags);
+        return TagEnum::includesTag($tag, $this->tags ?? []);
     }
 
     public function updateFromMembershipRequest(MembershipRequest $membershipRequest): void

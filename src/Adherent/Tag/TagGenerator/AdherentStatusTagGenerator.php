@@ -4,6 +4,7 @@ namespace App\Adherent\Tag\TagGenerator;
 
 use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
+use App\Membership\MembershipSourceEnum;
 use App\Repository\DonationRepository;
 
 class AdherentStatusTagGenerator extends AbstractTagGenerator
@@ -21,6 +22,10 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
     {
         if ($adherent->isBesoinDEuropeUser()) {
             return [TagEnum::SYMPATHISANT_BESOIN_D_EUROPE];
+        }
+
+        if (\in_array($adherent->getSource(), [MembershipSourceEnum::AVECVOUS, MembershipSourceEnum::JEMENGAGE])) {
+            return [TagEnum::SYMPATHISANT_COMPTE_AVECVOUS_JEMENGAGE];
         }
 
         if (!$adherent->isRenaissanceUser()) {
