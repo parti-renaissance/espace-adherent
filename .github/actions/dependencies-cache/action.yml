@@ -1,0 +1,26 @@
+name: Dependencies cache
+description: Restore dependencies from cache
+
+runs:
+    using: composite
+    steps:
+        -   name: Cache composer
+            uses: actions/cache@v4
+            with:
+                path: vendor/
+                key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('composer.lock') }}
+
+        -   name: Cache yarn dependencies
+            uses: actions/cache@v4
+            with:
+                path: node_modules/
+                key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('yarn.lock') }}
+
+        -   name: Cache static assets
+            uses: actions/cache@v4
+            with:
+                path: |
+                    public/built/
+                    public/css/
+                    public/select2/
+                key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
