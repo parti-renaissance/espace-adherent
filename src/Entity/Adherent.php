@@ -142,9 +142,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Assert\Length(allowEmptyString=true, min=3, max=25, groups={"Default", "anonymize"})
      * @Assert\Regex(pattern="/^[a-z0-9 _-]+$/i", message="adherent.nickname.invalid_syntax", groups={"anonymize"})
      * @Assert\Regex(pattern="/^[a-zÀ-ÿ0-9 .!_-]+$/i", message="adherent.nickname.invalid_extended_syntax")
-     *
-     * @Groups({"user_profile"})
      */
+    #[Groups(['user_profile'])]
     private $nickname;
 
     /**
@@ -165,19 +164,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(length=6, nullable=true)
      *
-     * @Groups({
-     *     "api_candidacy_read",
-     *     "profile_read",
-     *     "phoning_campaign_call_read",
-     *     "phoning_campaign_history_read_list",
-     *     "pap_campaign_history_read_list",
-     *     "pap_campaign_replies_list",
-     *     "phoning_campaign_replies_list",
-     *     "survey_replies_list",
-     *     "committee_candidacy:read",
-     *     "committee_election:read",
-     *     "national_event_inscription:webhook",
-     * })
      * @Assert\NotBlank(message="common.gender.not_blank", groups={"adhesion_complete_profile"})
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
@@ -185,42 +171,28 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *     groups={"adhesion_complete_profile"}
      * )
      */
+    #[Groups(['api_candidacy_read', 'profile_read', 'phoning_campaign_call_read', 'phoning_campaign_history_read_list', 'pap_campaign_history_read_list', 'pap_campaign_replies_list', 'phoning_campaign_replies_list', 'survey_replies_list', 'committee_candidacy:read', 'committee_election:read', 'national_event_inscription:webhook'])]
     private $gender;
 
     /**
      * @ORM\Column(length=80, nullable=true)
-     *
-     * @Groups({"profile_read"})
      */
+    #[Groups(['profile_read'])]
     private $customGender;
 
     /**
      * @ORM\Column(unique=true)
-     *
-     * @Groups({
-     *     "user_profile",
-     *     "profile_read",
-     *     "elected_representative_read",
-     *     "adherent_autocomplete",
-     *     "my_team_read_list",
-     *     "message_read",
-     * })
      */
+    #[Groups(['user_profile', 'profile_read', 'elected_representative_read', 'adherent_autocomplete', 'my_team_read_list', 'message_read'])]
     private $emailAddress;
 
     /**
      * @ORM\Column(type="phone_number", nullable=true)
      *
-     * @Groups({
-     *     "profile_read",
-     *     "phoning_campaign_call_read",
-     *     "elected_representative_read",
-     *     "national_event_inscription:webhook",
-     * })
-     *
      * @AssertPhoneNumber(message="common.phone_number.invalid", options={"groups": {"additional_info", "adhesion:further_information"}})
      * @Assert\Expression("not this.hasSmsSubscriptionType() or this.getPhone()", message="Vous avez accepté de recevoir des informations du parti par SMS ou téléphone, cependant, vous n'avez pas précisé votre numéro de téléphone.", groups={"adhesion:further_information"})
      */
+    #[Groups(['profile_read', 'phoning_campaign_call_read', 'elected_representative_read', 'national_event_inscription:webhook'])]
     private $phone;
 
     /**
@@ -231,21 +203,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @ORM\Column(type="date", nullable=true)
      *
-     * @Groups({
-     *     "profile_read",
-     *     "national_event_inscription:webhook",
-     * })
-     *
      * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"additional_info", "adhesion:further_information"})
      * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"additional_info", "adhesion:further_information"})
      */
+    #[Groups(['profile_read', 'national_event_inscription:webhook'])]
     private $birthdate;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"profile_read"})
      */
+    #[Groups(['profile_read'])]
     private $position;
 
     /**
@@ -255,12 +222,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(type="datetime")
-     *
-     * @Groups({
-     *     "adherent_autocomplete",
-     *     "national_event_inscription:webhook",
-     * })
      */
+    #[Groups(['adherent_autocomplete', 'national_event_inscription:webhook'])]
     private $registeredAt;
 
     /**
@@ -305,9 +268,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var SubscriptionType[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\SubscriptionType", cascade={"persist"})
-     *
-     * @Groups({"profile_read"})
      */
+    #[Groups(['profile_read'])]
     private $subscriptionTypes;
 
     /**
@@ -422,9 +384,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({"profile_read"})
      */
+    #[Groups(['profile_read'])]
     private $adherent = false;
 
     /**
@@ -451,9 +412,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({"adherent_elect_read"})
      */
+    #[Groups(['adherent_elect_read'])]
     private array $mandates = [];
 
     /**
@@ -486,9 +446,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Assert\Url(groups="Admin")
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="legislative_candidate.facebook_page_url.invalid", groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
-     *
-     * @Groups({"profile_read"})
      */
+    #[Groups(['profile_read'])]
     private $facebookPageUrl;
 
     /**
@@ -499,9 +458,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Assert\Url(groups="Admin")
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="legislative_candidate.twitter_page_url.invalid", groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
-     *
-     * @Groups({"profile_read"})
      */
+    #[Groups(['profile_read'])]
     private $twitterPageUrl;
 
     /**
@@ -512,9 +470,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @Assert\Url(groups="Admin")
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?linkedin.com\/#", message="legislative_candidate.linkedin_page_url.invalid", groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
-     *
-     * @Groups({"profile_read"})
      */
+    #[Groups(['profile_read'])]
     private $linkedinPageUrl;
 
     /**
@@ -524,27 +481,24 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @Assert\Url(groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
-     *
-     * @Groups({"profile_read"})
      */
+    #[Groups(['profile_read'])]
     private $telegramPageUrl;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"profile_read"})
      */
+    #[Groups(['profile_read'])]
     private $job;
 
     /**
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"profile_read"})
      */
+    #[Groups(['profile_read'])]
     private $activityArea;
 
     /**
@@ -552,11 +506,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *
      * @ORM\Column(length=2, nullable=true)
      *
-     * @Groups({"profile_read"})
-     *
      * @Assert\NotBlank(groups={"adhesion_complete_profile"})
      * @Assert\Country(message="common.nationality.invalid", groups={"adhesion_complete_profile"})
      */
+    #[Groups(['profile_read'])]
     private $nationality;
 
     /**
@@ -721,9 +674,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @ORM\Embedded(class="App\Entity\PostAddress", columnPrefix="address_")
      *
      * @var PostAddress
-     *
-     * @Groups({"profile_read"})
      */
+    #[Groups(['profile_read'])]
     protected $postAddress;
 
     /**
@@ -817,25 +769,22 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"adherent_elect_read"})
      */
+    #[Groups(['adherent_elect_read'])]
     private ?string $contributionStatus = null;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      *
-     * @Groups({"adherent_elect_read", "adherent_elect_update"})
-     *
      * @Assert\Expression("!value || (!this.findActifNationalMandates() and this.findActifLocalMandates())", message="adherent.elect.exempt_invalid_status", groups={"adherent_elect_update"})
      */
+    #[Groups(['adherent_elect_read', 'adherent_elect_update'])]
     public bool $exemptFromCotisation = false;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({"adherent_elect_read"})
      */
+    #[Groups(['adherent_elect_read'])]
     private ?\DateTime $contributedAt = null;
 
     /**
@@ -864,9 +813,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      *     fetch="EXTRA_LAZY"
      * )
      * @ORM\OrderBy({"date": "DESC"})
-     *
-     * @Groups({"adherent_elect_read"})
      */
+    #[Groups(['adherent_elect_read'])]
     private Collection $payments;
 
     /**
@@ -882,13 +830,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private Collection $revenueDeclarations;
 
     /**
-     * @Groups({
-     *     "national_event_inscription:webhook",
-     *     "jemarche_user_profile"
-     * })
-     *
      * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[Groups(['national_event_inscription:webhook', 'jemarche_user_profile'])]
     public array $tags = [];
 
     /**
@@ -1324,16 +1268,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->birthdate;
     }
 
-    /**
-     * @Groups({
-     *     "export",
-     *     "phoning_campaign_history_read_list",
-     *     "pap_campaign_history_read_list",
-     *     "pap_campaign_replies_list",
-     *     "phoning_campaign_replies_list",
-     *     "survey_replies_list",
-     * })
-     */
+    #[Groups(['export', 'phoning_campaign_history_read_list', 'pap_campaign_history_read_list', 'pap_campaign_replies_list', 'phoning_campaign_replies_list', 'survey_replies_list'])]
     public function getAge(): ?int
     {
         return $this->birthdate?->diff(new \DateTime())->y;
@@ -1651,9 +1586,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->status = $status;
     }
 
-    /**
-     * @Groups({"export"})
-     */
+    #[Groups(['export'])]
     public function getRegisteredAt(): ?\DateTime
     {
         return $this->registeredAt;
@@ -1698,10 +1631,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @Groups({"referent"})
-     *
      * @return string[]
      */
+    #[Groups(['referent'])]
     public function getManagedAreaTagCodes(): array
     {
         return $this->getManagedArea()
@@ -2069,9 +2001,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->nicknameUsed;
     }
 
-    /**
-     * @Groups({"user_profile"})
-     */
+    #[Groups(['user_profile'])]
     public function getUseNickname(): bool
     {
         return $this->isNicknameUsed();
@@ -2255,9 +2185,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->nationality = $nationality;
     }
 
-    /**
-     * @Groups({"export"})
-     */
+    #[Groups(['export'])]
     public function getCityName(): ?string
     {
         return $this->postAddress->getCityName();
@@ -2309,9 +2237,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->postAddress = clone $this->postAddress;
     }
 
-    /**
-     * @Groups({"user_profile"})
-     */
+    #[Groups(['user_profile'])]
     public function getDetailedRoles(): array
     {
         $roles = [];
@@ -2424,9 +2350,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->certifiedAt;
     }
 
-    /**
-     * @Groups({"user_profile", "profile_read"})
-     */
+    #[Groups(['user_profile', 'profile_read'])]
     public function isCertified(): bool
     {
         return null !== $this->certifiedAt;
@@ -3059,9 +2983,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->subscriptionTypes->clear();
     }
 
-    /**
-     * @Groups({"user_profile"})
-     */
+    #[Groups(['user_profile'])]
     public function isEmailSubscribed(): bool
     {
         return ContactStatusEnum::SUBSCRIBED === $this->mailchimpStatus;
@@ -3286,9 +3208,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->contributions->removeElement($contribution);
     }
 
-    /**
-     * @Groups({"adherent_elect_read"})
-     */
+    #[Groups(['adherent_elect_read'])]
     public function getContributionAmount(): ?int
     {
         $lastRevenueDeclaration = $this->getLastRevenueDeclaration();
@@ -3351,10 +3271,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->revenueDeclarations->add(RevenueDeclaration::create($this, $amount));
     }
 
-    /**
-     * @Groups({"adherent_elect_read"})
-     * @SerializedName("elect_mandates")
-     */
+    #[Groups(['adherent_elect_read'])]
+    #[SerializedName('elect_mandates')]
     public function getElectedRepresentativeMandates(): array
     {
         return array_values($this->findElectedRepresentativeMandates(false));
@@ -3389,9 +3307,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
     }
 
-    /**
-     * @Groups({"adherent_elect_read"})
-     */
+    #[Groups(['adherent_elect_read'])]
     public function getLastRevenueDeclaration(): ?RevenueDeclaration
     {
         return $this->revenueDeclarations->first() ?: null;
@@ -3462,10 +3378,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return MembershipSourceEnum::BESOIN_D_EUROPE === $this->source;
     }
 
-    /**
-     * @Groups({"jemarche_user_profile"})
-     * @SerializedName("id")
-     */
+    #[Groups(['jemarche_user_profile'])]
+    #[SerializedName('id')]
     public function getPublicId(): string
     {
         return 6 > ($idLength = \strlen($this->id))

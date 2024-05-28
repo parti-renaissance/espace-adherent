@@ -19,9 +19,8 @@ class JeMengageMembershipRequest extends AbstractMembershipRequest
      *     minMessage="common.first_name.min_length",
      *     maxMessage="common.first_name.max_length"
      * )
-     *
-     * @Groups({"membership:write"})
      */
+    #[Groups(['membership:write'])]
     public ?string $lastName = null;
 
     /**
@@ -30,37 +29,32 @@ class JeMengageMembershipRequest extends AbstractMembershipRequest
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice",
      * )
-     *
-     * @Groups({"membership:write"})
      */
+    #[Groups(['membership:write'])]
     public ?string $gender = null;
 
     /**
      * @Assert\NotBlank(message="common.birthdate.not_blank")
-     *
-     * @Groups({"membership:write"})
      */
+    #[Groups(['membership:write'])]
     public ?\DateTimeInterface $birthdate = null;
 
     /**
      * @Assert\Country(message="common.nationality.invalid")
-     *
-     * @Groups({"membership:write"})
      */
+    #[Groups(['membership:write'])]
     public ?string $nationality = null;
 
     /**
      * @AssertPhoneNumber
-     *
-     * @Groups({"membership:write"})
      */
+    #[Groups(['membership:write'])]
     public ?PhoneNumber $phone = null;
 
     /**
      * @Assert\Valid
-     *
-     * @Groups({"membership:write"})
      */
+    #[Groups(['membership:write'])]
     public ?Address $address = null;
 
     final public function getSource(): string

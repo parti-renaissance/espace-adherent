@@ -69,9 +69,8 @@ class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
      *
      * @Assert\Valid
      * @Assert\NotNull
-     *
-     * @Groups({"audience_segment_read", "audience_segment_write"})
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write'])]
     private $filter;
 
     /**

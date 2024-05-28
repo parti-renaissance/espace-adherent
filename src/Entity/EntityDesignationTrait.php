@@ -17,9 +17,8 @@ trait EntityDesignationTrait
      *
      * @Assert\NotBlank(groups={"Admin"})
      * @Assert\Valid(groups={"Admin"})
-     *
-     * @Groups({"committee_election:read"})
      */
+    #[Groups(['committee_election:read'])]
     protected $designation;
 
     public function getDesignation(): ?Designation
@@ -144,9 +143,7 @@ trait EntityDesignationTrait
         return $this->getVoteEndDate();
     }
 
-    /**
-     * @Groups({"committee:read", "committee_election:read"})
-     */
+    #[Groups(['committee:read', 'committee_election:read'])]
     public function getStatus(): string
     {
         if (!$this->designation) {

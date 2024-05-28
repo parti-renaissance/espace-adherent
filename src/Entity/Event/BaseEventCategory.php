@@ -30,9 +30,8 @@ abstract class BaseEventCategory implements EventCategoryInterface
      *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
-     *
-     * @Groups({"event_read", "event_list_read", "event_category_read"})
      */
+    #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
     protected $name = '';
 
     /**
@@ -45,9 +44,8 @@ abstract class BaseEventCategory implements EventCategoryInterface
      *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
-     *
-     * @Groups({"event_read", "event_list_read", "event_category_read"})
      */
+    #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
     protected $slug;
 
     /**
@@ -57,9 +55,8 @@ abstract class BaseEventCategory implements EventCategoryInterface
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"event_read", "event_list_read", "event_category_read"})
      */
+    #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
     public ?string $description = null;
 
     public function __construct(?string $name = null, ?string $status = self::ENABLED, ?string $slug = null)

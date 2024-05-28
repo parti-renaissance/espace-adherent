@@ -26,9 +26,8 @@ class BuildingEvent implements AuthorInterface
      * @Assert\Choice(
      *     callback={"App\Pap\BuildingEventActionEnum", "toArray"}
      * )
-     *
-     * @Groups({"pap_building_event_write"})
      */
+    #[Groups(['pap_building_event_write'])]
     private ?string $action = null;
 
     /**
@@ -38,16 +37,14 @@ class BuildingEvent implements AuthorInterface
      * @Assert\Choice(
      *     callback={"App\Pap\BuildingEventTypeEnum", "toArray"}
      * )
-     *
-     * @Groups({"pap_building_event_write"})
      */
+    #[Groups(['pap_building_event_write'])]
     private ?string $type = null;
 
     /**
      * @ORM\Column(length=50, nullable=true)
-     *
-     * @Groups({"pap_building_event_write"})
      */
+    #[Groups(['pap_building_event_write'])]
     private ?string $identifier = null;
 
     /**
@@ -62,9 +59,8 @@ class BuildingEvent implements AuthorInterface
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotNull
-     *
-     * @Groups({"pap_building_event_write"})
      */
+    #[Groups(['pap_building_event_write'])]
     private ?Campaign $campaign = null;
 
     /**
@@ -84,16 +80,14 @@ class BuildingEvent implements AuthorInterface
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"pap_building_event_write"})
      */
+    #[Groups(['pap_building_event_write'])]
     public ?string $closeType = null;
 
     /**
      * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
-     *
-     * @Groups({"pap_building_event_write"})
      */
+    #[Groups(['pap_building_event_write'])]
     public ?int $programs = null;
 
     public function __construct(

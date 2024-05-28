@@ -49,9 +49,8 @@ class Thread
      *     orphanRemoval=true,
      *     fetch="EXTRA_LAZY"
      * )
-     *
-     * @Groups({"chatbot:read"})
      */
+    #[Groups(['chatbot:read'])]
     public Collection $messages;
 
     /**
@@ -121,9 +120,7 @@ class Thread
         );
     }
 
-    /**
-     * @Groups({"chatbot:read"})
-     */
+    #[Groups(['chatbot:read'])]
     public function getNeedRefresh(): bool
     {
         return null !== $this->currentRun;

@@ -64,23 +64,16 @@ class Mandate
      *
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\MandateTypeEnum", "toArray"})
-     *
-     * @Groups({
-     *     "elected_mandate_write",
-     *     "elected_mandate_read",
-     *     "elected_representative_read",
-     *     "elected_representative_list"
-     * })
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read', 'elected_representative_list'])]
     private $type;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     private $isElected;
 
     /**
@@ -101,18 +94,16 @@ class Mandate
      *     "value !== null or (value == null and this.getType() === constant('App\\Entity\\ElectedRepresentative\\MandateTypeEnum::EURO_DEPUTY'))",
      *     message="Le périmètre géographique est obligatoire."
      * )
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read", "elected_representative_list"})
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read', 'elected_representative_list'])]
     private $geoZone;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     private $onGoing = true;
 
     /**
@@ -121,9 +112,8 @@ class Mandate
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     private $beginAt;
 
     /**
@@ -139,9 +129,8 @@ class Mandate
      *     "not (value !== null and this.isOnGoing())",
      *     message="La date de fin ne peut être saisie que dans le cas où le mandat n'est pas en cours."
      * )
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     private $finishAt;
 
     /**
@@ -151,9 +140,8 @@ class Mandate
      *
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Election\VoteListNuanceEnum", "toArray"})
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     private $politicalAffiliation;
 
     /**
@@ -162,9 +150,8 @@ class Mandate
      * @ORM\Column(nullable=true)
      *
      * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\LaREMSupportEnum", "toArray"})
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     private $laREMSupport;
 
     /**
@@ -174,9 +161,8 @@ class Mandate
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotBlank
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read"})
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read'])]
     private $electedRepresentative;
 
     /**
@@ -190,9 +176,8 @@ class Mandate
      * )
      *
      * @Assert\Valid
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     private $politicalFunctions;
 
     /**

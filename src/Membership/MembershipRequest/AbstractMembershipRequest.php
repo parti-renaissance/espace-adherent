@@ -17,9 +17,8 @@ abstract class AbstractMembershipRequest implements MembershipInterface
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      * @BannedAdherent
-     *
-     * @Groups({"membership:write"})
      */
+    #[Groups(['membership:write'])]
     protected ?string $emailAddress = null;
 
     /**
@@ -29,26 +28,20 @@ abstract class AbstractMembershipRequest implements MembershipInterface
      *     minMessage="common.first_name.min_length",
      *     maxMessage="common.first_name.max_length"
      * )
-     *
-     * @Groups({"membership:write"})
      */
+    #[Groups(['membership:write'])]
     public ?string $firstName = null;
 
     /**
      * @Assert\IsTrue(message="common.cgu.not_accepted", groups={"Default", "membership_request_amount"})
-     *
-     * @Groups({"membership:write"})
      */
+    #[Groups(['membership:write'])]
     public bool $cguAccepted = false;
 
-    /**
-     * @Groups({"membership:write"})
-     */
+    #[Groups(['membership:write'])]
     public ?bool $allowEmailNotifications = null;
 
-    /**
-     * @Groups({"membership:write"})
-     */
+    #[Groups(['membership:write'])]
     public ?bool $allowMobileNotifications = null;
 
     public function getEmailAddress(): ?string

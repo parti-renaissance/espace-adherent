@@ -11,7 +11,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -50,9 +50,8 @@ class Region
      *
      * @Assert\Length(max=120)
      * @Assert\NotBlank
-     *
-     * @SymfonySerializer\Groups({"jecoute_region_read"})
      */
+    #[Groups(['jecoute_region_read'])]
     protected $subtitle;
 
     /**
@@ -61,9 +60,8 @@ class Region
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
-     *
-     * @SymfonySerializer\Groups({"jecoute_region_read"})
      */
+    #[Groups(['jecoute_region_read'])]
     private $description;
 
     /**
@@ -73,9 +71,8 @@ class Region
      *
      * @Assert\Choice(callback={"App\Jecoute\RegionColorEnum", "all"})
      * @Assert\NotBlank
-     *
-     * @SymfonySerializer\Groups({"jecoute_region_read"})
      */
+    #[Groups(['jecoute_region_read'])]
     protected $primaryColor;
 
     /**
@@ -84,9 +81,8 @@ class Region
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
-     *
-     * @SymfonySerializer\Groups({"jecoute_region_read"})
      */
+    #[Groups(['jecoute_region_read'])]
     protected $externalLink;
 
     /**

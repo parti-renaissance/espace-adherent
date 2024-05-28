@@ -12,7 +12,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -36,9 +36,8 @@ class File
      *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
-     *
-     * @SymfonySerializer\Groups({"autocomplete"})
      */
+    #[Groups(['autocomplete'])]
     private $name;
 
     /**

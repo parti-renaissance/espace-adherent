@@ -43,9 +43,8 @@ trait AddressTrait
 
     /**
      * @Assert\Length(max=255)
-     *
-     * @Groups({"profile_write"})
      */
+    #[Groups(['profile_write'])]
     protected ?string $region = null;
 
     public function getAddress(): ?string

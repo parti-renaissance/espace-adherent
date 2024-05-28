@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -81,11 +81,10 @@ class PushToken
      *
      * @ApiProperty(identifier=true)
      *
-     * @SymfonySerializer\Groups({"push_token_write"})
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[Groups(['push_token_write'])]
     private $identifier;
 
     /**
@@ -93,11 +92,10 @@ class PushToken
      *
      * @ORM\Column
      *
-     * @SymfonySerializer\Groups({"push_token_write"})
-     *
      * @Assert\NotBlank
      * @Assert\Choice(choices=PushTokenSourceEnum::ALL)
      */
+    #[Groups(['push_token_write'])]
     private $source;
 
     public function __construct(

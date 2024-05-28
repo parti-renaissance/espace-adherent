@@ -63,9 +63,8 @@ class Audience extends AbstractAudience
      * @ORM\Column
      *
      * @Assert\NotBlank
-     *
-     * @Groups({"audience_read", "audience_write", "audience_list_read"})
      */
+    #[Groups(['audience_read', 'audience_write', 'audience_list_read'])]
     private $name;
 
     public function getName(): ?string

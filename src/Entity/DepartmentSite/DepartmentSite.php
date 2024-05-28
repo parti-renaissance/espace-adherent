@@ -73,9 +73,8 @@ class DepartmentSite
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
-     *
-     * @Groups({"department_site_read", "department_site_write"})
      */
+    #[Groups(['department_site_read', 'department_site_write'])]
     private ?string $content = null;
 
     /**
@@ -88,9 +87,8 @@ class DepartmentSite
      *     message="department_site.zone.type.not_valid"
      * )
      * @AssertZoneInScopeZones
-     *
-     * @Groups({"department_site_read", "department_site_read_list", "department_site_write"})
      */
+    #[Groups(['department_site_read', 'department_site_read_list', 'department_site_write'])]
     private ?Zone $zone = null;
 
     /**
@@ -98,13 +96,8 @@ class DepartmentSite
      * @Gedmo\Slug(handlers={
      *     @Gedmo\SlugHandler(class="App\DepartmentSite\DepartmentSiteSlugHandler")
      * }, fields={"content"})
-     *
-     * @Groups({
-     *     "department_site_read",
-     *     "department_site_read_list",
-     *     "department_site_post_write",
-     * })
      */
+    #[Groups(['department_site_read', 'department_site_read_list', 'department_site_post_write'])]
     private ?string $slug = null;
 
     public function __construct(?UuidInterface $uuid = null)

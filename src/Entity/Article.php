@@ -76,9 +76,8 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="SET NULL")
      *
      * @Assert\NotBlank
-     *
-     * @Groups({"article_list_read", "article_read"})
      */
+    #[Groups(['article_list_read', 'article_read'])]
     private $category;
 
     /**
@@ -87,9 +86,8 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotBlank
-     *
-     * @Groups({"article_list_read", "article_read"})
      */
+    #[Groups(['article_list_read', 'article_read'])]
     private $publishedAt;
 
     /**
@@ -106,9 +104,8 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
      *
      * @Assert\NotBlank
      * @Assert\Valid
-     *
-     * @Groups({"article_list_read", "article_read"})
      */
+    #[Groups(['article_list_read', 'article_read'])]
     private $media;
 
     /**
@@ -120,9 +117,8 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
      * @Assert\Length(max=100)
      *
      * @ApiProperty(identifier=true)
-     *
-     * @Groups({"article_list_read", "article_read"})
      */
+    #[Groups(['article_list_read', 'article_read'])]
     private $slug;
 
     public function __construct()

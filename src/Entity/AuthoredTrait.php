@@ -12,13 +12,8 @@ trait AuthoredTrait
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", fetch="EAGER")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @Groups({
-     *     "action_read",
-     *     "action_read_list",
-     *     "action_write",
-     * })
      */
+    #[Groups(['action_read', 'action_read_list', 'action_write'])]
     private $author;
 
     public function getAuthor(): ?Adherent

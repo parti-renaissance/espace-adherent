@@ -82,36 +82,32 @@ class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministr
     /**
      * @ORM\Column
      *
-     * @Groups({"email_template_read", "email_template_write", "email_template_list_read"})
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="255")
      */
+    #[Groups(['email_template_read', 'email_template_write', 'email_template_list_read'])]
     private ?string $label = null;
 
     /**
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"email_template_read"})
-     *
      * @Assert\Length(max="255")
      */
+    #[Groups(['email_template_read'])]
     public ?string $subject = null;
 
     /**
      * @ORM\Column(type="boolean", options={"default": true})
-     *
-     * @Groups({"email_template_read"})
      */
+    #[Groups(['email_template_read'])]
     public bool $subjectEditable = true;
 
     /**
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
-     *
-     * @Groups({"email_template_read", "email_template_write"})
      */
+    #[Groups(['email_template_read', 'email_template_write'])]
     private ?string $content = null;
 
     /**
@@ -194,9 +190,7 @@ class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministr
         $this->scopes = $scopes;
     }
 
-    /**
-     * @Groups({"email_template_read", "email_template_list_read"})
-     */
+    #[Groups(['email_template_read', 'email_template_list_read'])]
     public function isFromAdmin(): bool
     {
         return null !== $this->getCreatedByAdministrator();

@@ -11,24 +11,14 @@ trait StatusTrait
 {
     /**
      * @ORM\Column(length=25)
-     *
-     * @Groups({
-     *     "pap_address_list",
-     *     "pap_address_read",
-     *     "pap_building_statistics_read",
-     * })
      */
+    #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
     private string $status;
 
     /**
      * @ORM\Column(length=25, nullable=true)
-     *
-     * @Groups({
-     *      "pap_address_list",
-     *      "pap_address_read",
-     *      "pap_building_statistics_read",
-     *  })
      */
+    #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
     private ?string $statusDetail = null;
 
     /**

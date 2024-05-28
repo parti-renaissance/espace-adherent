@@ -12,13 +12,8 @@ trait GeneralFilterTrait
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $gender;
 
     /**
@@ -28,13 +23,8 @@ trait GeneralFilterTrait
      *
      * @Assert\GreaterThanOrEqual(1)
      * @Assert\LessThanOrEqual(200)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $ageMin;
 
     /**
@@ -44,13 +34,8 @@ trait GeneralFilterTrait
      *
      * @Assert\GreaterThanOrEqual(1)
      * @Assert\LessThanOrEqual(200)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $ageMax;
 
     /**
@@ -59,13 +44,8 @@ trait GeneralFilterTrait
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $firstName;
 
     /**
@@ -74,13 +54,8 @@ trait GeneralFilterTrait
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $lastName;
 
     /**
@@ -103,59 +78,38 @@ trait GeneralFilterTrait
      * @var \DateTime|null
      *
      * @ORM\Column(type="date", nullable=true)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $registeredSince;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="date", nullable=true)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $registeredUntil;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"audience_segment_read", "audience_segment_write", "adherent_message_update_filter"})
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     protected ?string $renaissanceMembership = null;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="date", nullable=true)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $lastMembershipSince;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="date", nullable=true)
-     *
-     * @Groups({
-     *     "audience_segment_read",
-     *     "audience_segment_write",
-     *     "adherent_message_update_filter",
-     * })
      */
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     private $lastMembershipBefore;
 
     public function getGender(): ?string

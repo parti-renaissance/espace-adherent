@@ -30,23 +30,20 @@ class Message
 
     /**
      * @ORM\Column
-     *
-     * @Groups({"chatbot:read"})
      */
+    #[Groups(['chatbot:read'])]
     public string $role;
 
     /**
      * @ORM\Column(type="text")
-     *
-     * @Groups({"chatbot:read"})
      */
+    #[Groups(['chatbot:read'])]
     public string $content;
 
     /**
      * @ORM\Column(type="datetime")
-     *
-     * @Groups({"chatbot:read"})
      */
+    #[Groups(['chatbot:read'])]
     public \DateTimeInterface $date;
 
     public function __construct(?UuidInterface $uuid = null)

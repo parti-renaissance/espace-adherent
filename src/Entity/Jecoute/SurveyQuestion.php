@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -45,9 +45,8 @@ class SurveyQuestion implements AuthoredInterface
      * @ORM\ManyToOne(targetEntity="Question", cascade={"persist"})
      *
      * @Assert\Valid
-     *
-     * @SymfonySerializer\Groups({"survey_write_dc"})
      */
+    #[Groups(['survey_write_dc'])]
     private $question;
 
     /**

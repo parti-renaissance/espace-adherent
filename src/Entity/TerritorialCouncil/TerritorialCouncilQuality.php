@@ -36,9 +36,8 @@ class TerritorialCouncilQuality
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
-     *
-     * @Serializer\Groups({"api_candidacy_read"})
      */
+    #[Serializer\Groups(['api_candidacy_read'])]
     private $name;
 
     /**

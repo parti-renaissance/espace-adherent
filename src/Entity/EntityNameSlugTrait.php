@@ -14,20 +14,9 @@ trait EntityNameSlugTrait
      *
      * @ORM\Column
      *
-     * @Groups({
-     *     "adherent_committees_modal",
-     *     "jecoute_region_read",
-     *     "cause_read",
-     *     "cause_write",
-     *     "event_read",
-     *     "committee:list",
-     *     "committee:write",
-     *     "committee:write_limited",
-     *     "national_event_inscription:webhook",
-     * })
-     *
      * @Assert\NotBlank(groups={"api_committee_edition"})
      */
+    #[Groups(['adherent_committees_modal', 'jecoute_region_read', 'cause_read', 'cause_write', 'event_read', 'committee:list', 'committee:write', 'committee:write_limited', 'national_event_inscription:webhook'])]
     protected $name;
 
     /**
@@ -43,15 +32,8 @@ trait EntityNameSlugTrait
      * @ORM\Column
      *
      * @Gedmo\Slug(fields={"canonicalName"})
-     *
-     * @Groups({
-     *     "adherent_committees_modal",
-     *     "jecoute_region_read",
-     *     "cause_read",
-     *     "event_list_read",
-     *     "event_read",
-     * })
      */
+    #[Groups(['adherent_committees_modal', 'jecoute_region_read', 'cause_read', 'event_list_read', 'event_read'])]
     protected $slug;
 
     public function getName(): string

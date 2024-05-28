@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -22,9 +22,8 @@ class Choice
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
-     *
-     * @SymfonySerializer\Groups({"survey_list", "survey_read_dc"})
      */
+    #[Groups(['survey_list', 'survey_read_dc'])]
     private $id;
 
     /**
@@ -40,9 +39,8 @@ class Choice
      *
      * @Assert\NotBlank
      * @Assert\Length(max=80)
-     *
-     * @SymfonySerializer\Groups({"survey_list", "survey_read_dc", "survey_write_dc"})
      */
+    #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
     private $content;
 
     /**

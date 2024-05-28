@@ -2,6 +2,7 @@
 
 namespace App\Entity\Jecoute;
 
+use App\Controller\Api\Jecoute\JemarcheDataSurveyReplyController;
 use App\Entity\Adherent;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
@@ -28,17 +29,15 @@ class DataSurvey implements AuthorInterface
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @Groups({"survey_replies_list"})
      */
+    #[Groups(['survey_replies_list'])]
     private $author;
 
     /**
      * @var string|null
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"survey_replies_list"})
      */
+    #[Groups(['survey_replies_list'])]
     private $authorPostalCode;
 
     /**
@@ -56,9 +55,8 @@ class DataSurvey implements AuthorInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Jecoute\DataAnswer", mappedBy="dataSurvey", cascade={"persist", "remove"})
      *
      * @Assert\Valid
-     *
-     * @Groups({"data_survey_write"})
      */
+    #[Groups(['data_survey_write'])]
     private $answers;
 
     /**
@@ -66,15 +64,8 @@ class DataSurvey implements AuthorInterface
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      *
      * @Assert\NotBlank
-     *
-     * @Groups({
-     *     "phoning_campaign_history_read_list",
-     *     "phoning_campaign_replies_list",
-     *     "pap_campaign_replies_list",
-     *     App\Controller\Api\Jecoute\JemarcheDataSurveyReplyController::DESERIALIZE_GROUP,
-     *     "pap_campaign_history_read_list",
-     * })
      */
+    #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'pap_campaign_replies_list', JemarcheDataSurveyReplyController::DESERIALIZE_GROUP, 'pap_campaign_history_read_list'])]
     private $survey;
 
     /**
@@ -88,18 +79,16 @@ class DataSurvey implements AuthorInterface
      * @var PhoningCampaignHistory|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Phoning\CampaignHistory", mappedBy="dataSurvey")
-     *
-     * @Groups({"phoning_campaign_replies_list", "survey_replies_list"})
      */
+    #[Groups(['phoning_campaign_replies_list', 'survey_replies_list'])]
     private $phoningCampaignHistory;
 
     /**
      * @var PapCampaignHistory|null
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Pap\CampaignHistory", mappedBy="dataSurvey")
-     *
-     * @Groups({"pap_campaign_replies_list", "survey_replies_list"})
      */
+    #[Groups(['pap_campaign_replies_list', 'survey_replies_list'])]
     private $papCampaignHistory;
 
     public function __construct(?Survey $survey = null)

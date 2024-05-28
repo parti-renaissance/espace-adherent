@@ -81,15 +81,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *
      * @Assert\NotBlank
      * @Assert\Length(max="50")
-     *
-     * @Groups({
-     *     "elected_representative_change_diff",
-     *     "elected_representative_write",
-     *     "elected_representative_read",
-     *     "elected_representative_list",
-     *     "elected_mandate_read",
-     * })
      */
+    #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read', 'elected_representative_list', 'elected_mandate_read'])]
     private $lastName;
 
     /**
@@ -99,15 +92,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *
      * @Assert\NotBlank
      * @Assert\Length(max="50")
-     *
-     * @Groups({
-     *     "elected_representative_change_diff",
-     *     "elected_representative_write",
-     *     "elected_representative_read",
-     *     "elected_representative_list",
-     *     "elected_mandate_read",
-     * })
      */
+    #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read', 'elected_representative_list', 'elected_mandate_read'])]
     private $firstName;
 
     /**
@@ -119,9 +105,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice"
      * )
-     *
-     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read", "elected_representative_list"})
      */
+    #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read', 'elected_representative_list'])]
     private $gender;
 
     /**
@@ -136,9 +121,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *     minMessage="L'élu doit être âgé de moins de 120 ans",
      *     maxMessage="L'age minimum pour être un élu est de 18 ans"
      * )
-     *
-     * @Groups({"elected_representative_change_diff", "elected_representative_write", "elected_representative_read"})
      */
+    #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read'])]
     private $birthDate;
 
     /**
@@ -147,9 +131,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max="255")
-     *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
+    #[Groups(['elected_representative_write', 'elected_representative_read'])]
     private $birthPlace;
 
     /**
@@ -159,9 +142,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
-     *
-     * @Groups({"elected_representative_write"})
      */
+    #[Groups(['elected_representative_write'])]
     private $contactEmail;
 
     /**
@@ -170,18 +152,16 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      * @ORM\Column(type="phone_number", nullable=true)
      *
      * @AssertPhoneNumber
-     *
-     * @Groups({"elected_representative_write", "elected_representative_read", "elected_representative_list"})
      */
+    #[Groups(['elected_representative_write', 'elected_representative_read', 'elected_representative_list'])]
     private $contactPhone;
 
     /**
      * @var bool|null
      *
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
+    #[Groups(['elected_representative_write', 'elected_representative_read'])]
     private $hasFollowedTraining = false;
 
     /**
@@ -204,24 +184,21 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"elected_representative_read", "elected_representative_list"})
      */
+    #[Groups(['elected_representative_read', 'elected_representative_list'])]
     private ?string $contributionStatus = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({"elected_representative_read", "elected_representative_list"})
      */
+    #[Groups(['elected_representative_read', 'elected_representative_list'])]
     private ?\DateTime $contributedAt = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\ElectedRepresentative\Contribution")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @Groups({"elected_representative_list", "elected_representative_read"})
      */
+    #[Groups(['elected_representative_list', 'elected_representative_read'])]
     private ?Contribution $lastContribution = null;
 
     /**
@@ -229,9 +206,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *
      * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
-     * @Groups({"elected_representative_write", "elected_representative_read"})
      */
+    #[Groups(['elected_representative_write', 'elected_representative_read'])]
     private $adherent;
 
     /**
@@ -260,9 +236,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      * )
      *
      * @Assert\Valid
-     *
-     * @Groups({"elected_representative_read"})
      */
+    #[Groups(['elected_representative_read'])]
     private $mandates;
 
     /**
@@ -330,9 +305,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      *     fetch="EXTRA_LAZY"
      * )
      * @ORM\OrderBy({"date": "DESC"})
-     *
-     * @Groups({"elected_representative_read"})
      */
+    #[Groups(['elected_representative_read'])]
     private Collection $payments;
 
     /**
@@ -461,9 +435,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         $this->hasFollowedTraining = $hasFollowedTraining;
     }
 
-    /**
-     * @Groups({"elected_representative_change_diff"})
-     */
+    #[Groups(['elected_representative_change_diff'])]
     public function isAdherent(): bool
     {
         return $this->adherent instanceof Adherent;
@@ -509,9 +481,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
     /**
      * @return Mandate[]
-     *
-     * @Groups({"elected_representative_list"})
      */
+    #[Groups(['elected_representative_list'])]
     public function getCurrentMandates(): array
     {
         $now = new \DateTime();
@@ -565,9 +536,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
     /**
      * @return PoliticalFunction[]
-     *
-     * @Groups({"elected_representative_list"})
      */
+    #[Groups(['elected_representative_list'])]
     public function getCurrentPoliticalFunctions(): array
     {
         return array_merge(...array_map(function (Mandate $mandate) {
@@ -697,9 +667,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         return $this->birthDate ? $this->birthDate->diff(new \DateTime())->y : null;
     }
 
-    /**
-     * @Groups({"elected_representative_change_diff", "elected_representative_read"})
-     */
+    #[Groups(['elected_representative_change_diff', 'elected_representative_read'])]
     public function getEmailAddress(): ?string
     {
         if ($this->adherent) {

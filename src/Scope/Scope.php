@@ -8,39 +8,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class Scope
 {
-    /**
-     * @Groups({"scopes", "scope"})
-     */
+    #[Groups(['scopes', 'scope'])]
     private string $code;
 
-    /**
-     * @Groups({"scopes", "scope"})
-     */
+    #[Groups(['scopes', 'scope'])]
     private string $name;
 
-    /**
-     * @Groups({"scopes", "scope"})
-     */
+    #[Groups(['scopes', 'scope'])]
     private array $zones;
 
-    /**
-     * @Groups({"scopes", "scope"})
-     */
+    #[Groups(['scopes', 'scope'])]
     private array $apps;
 
-    /**
-     * @Groups({"scope"})
-     */
+    #[Groups(['scope'])]
     private array $features;
 
-    /**
-     * @Groups({"scope"})
-     */
+    #[Groups(['scope'])]
     private ?DelegatedAccess $delegatedAccess;
 
-    /**
-     * @Groups({"scopes", "scope"})
-     */
+    #[Groups(['scopes', 'scope'])]
     private ?array $attributes = null;
 
     private ?Adherent $currentUser;

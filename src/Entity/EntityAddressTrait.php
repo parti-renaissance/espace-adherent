@@ -17,75 +17,38 @@ trait EntityAddressTrait
      * The address street.
      *
      * @ORM\Column(length=150, nullable=true)
-     *
-     * @Groups({
-     *     "event_write",
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     * })
      */
+    #[Groups(['event_write', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     protected ?string $address = null;
 
     /**
      * @ORM\Column(length=150, nullable=true)
-     *
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     * })
      */
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     protected ?string $additionalAddress = null;
 
     /**
      * The address zip code.
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({
-     *     "event_write",
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     * })
      */
+    #[Groups(['event_write', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     protected ?string $postalCode = null;
 
     /**
      * The address city code (postal code + INSEE code).
      *
      * @ORM\Column(length=15, nullable=true, name="city_insee")
-     *
-     * @Groups({
-     *     "profil_read",
-     *     "event_write",
-     *     "event_read",
-     *     "event_list_read",
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     * })
      */
+    #[Groups(['profil_read', 'event_write', 'event_read', 'event_list_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     protected ?string $city = null;
 
     /**
      * The address city name.
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({
-     *     "event_write",
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     * })
      */
+    #[Groups(['event_write', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     protected ?string $cityName = null;
 
     /**
@@ -94,27 +57,14 @@ trait EntityAddressTrait
      * @ORM\Column(length=2, nullable=true)
      *
      * @Assert\Country
-     *
-     * @Groups({
-     *     "event_write",
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     * })
      */
+    #[Groups(['event_write', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     protected ?string $country = null;
 
     /**
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({
-     *     "event_write",
-     *     "profile_read",
-     *     "contact_read_after_write",
-     *     "contact_update",
-     * })
      */
+    #[Groups(['event_write', 'profile_read', 'contact_read_after_write', 'contact_update'])]
     protected ?string $region = null;
 
     /**
@@ -132,9 +82,7 @@ trait EntityAddressTrait
      */
     protected ?string $geocodableHash = null;
 
-    /**
-     * @Groups({"event_read", "event_list_read"})
-     */
+    #[Groups(['event_read', 'event_list_read'])]
     public function getAddress(): ?string
     {
         return $this->address;
@@ -175,9 +123,7 @@ trait EntityAddressTrait
         $this->region = $region;
     }
 
-    /**
-     * @Groups({"event_read", "event_list_read"})
-     */
+    #[Groups(['event_read', 'event_list_read'])]
     public function getPostalCode(): ?string
     {
         return $this->postalCode;
@@ -198,9 +144,7 @@ trait EntityAddressTrait
         $this->city = $city;
     }
 
-    /**
-     * @Groups({"event_read", "event_list_read"})
-     */
+    #[Groups(['event_read', 'event_list_read'])]
     public function getCityName(): ?string
     {
         return $this->cityName;
@@ -211,9 +155,7 @@ trait EntityAddressTrait
         $this->cityName = $cityName;
     }
 
-    /**
-     * @Groups({"event_read", "event_list_read"})
-     */
+    #[Groups(['event_read', 'event_list_read'])]
     public function getCountry(): ?string
     {
         return $this->country;
@@ -244,27 +186,13 @@ trait EntityAddressTrait
         $this->region = $region;
     }
 
-    /**
-     * @Groups({
-     *     "event_read",
-     *     "event_list_read",
-     *     "action_read",
-     *     "action_read_list",
-     * })
-     */
+    #[Groups(['event_read', 'event_list_read', 'action_read', 'action_read_list'])]
     public function getLatitude(): ?float
     {
         return $this->latitude;
     }
 
-    /**
-     * @Groups({
-     *     "event_read",
-     *     "event_list_read",
-     *     "action_read",
-     *     "action_read_list",
-     * })
-     */
+    #[Groups(['event_read', 'event_list_read', 'action_read', 'action_read_list'])]
     public function getLongitude(): ?float
     {
         return $this->longitude;

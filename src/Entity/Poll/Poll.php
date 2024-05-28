@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -39,9 +39,8 @@ abstract class Poll
      *     minMessage="poll.question.min_length",
      *     maxMessage="poll.question.max_length"
      * )
-     *
-     * @SymfonySerializer\Groups({"poll_read"})
      */
+    #[Groups(['poll_read'])]
     private $question;
 
     /**
@@ -50,9 +49,8 @@ abstract class Poll
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotNull(message="poll.finish_at.not_null")
-     *
-     * @SymfonySerializer\Groups({"poll_read"})
      */
+    #[Groups(['poll_read'])]
     private $finishAt;
 
     /**
@@ -147,9 +145,7 @@ abstract class Poll
         return false;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"poll_read"})
-     */
+    #[Groups(['poll_read'])]
     public function getResult(): array
     {
         $result = [

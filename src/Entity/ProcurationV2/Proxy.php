@@ -84,35 +84,22 @@ class Proxy extends AbstractProcuration
      *     expression="value >= 1 and ((!this.isFDE() and value == 1) or (this.isFDE() and value <= 3))",
      *     message="procuration.proxy.slots.invalid"
      * )
-     *
-     * @Groups({
-     *     "procuration_matched_proxy",
-     *     "procuration_proxy_list",
-     * })
      */
+    #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]
     public int $slots = 1;
 
     /**
      * @ORM\Column(enumType=ProxyStatusEnum::class)
      *
      * @Assert\Choice(callback={"App\Procuration\V2\ProxyStatusEnum", "getAvailableStatuses"}, groups={"procuration_update_status"})
-     *
-     * @Groups({
-     *     "procuration_matched_proxy",
-     *     "procuration_proxy_list",
-     *     "procuration_update_status",
-     * })
      */
+    #[Groups(['procuration_matched_proxy', 'procuration_proxy_list', 'procuration_update_status'])]
     public ProxyStatusEnum $status = ProxyStatusEnum::PENDING;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\ProcurationV2\Request", mappedBy="proxy", cascade={"all"})
-     *
-     * @Groups({
-     *     "procuration_matched_proxy",
-     *     "procuration_proxy_list",
-     * })
      */
+    #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]
     public Collection $requests;
 
     /**

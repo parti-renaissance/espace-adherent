@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait EntityFollowersTrait
 {
@@ -47,9 +48,7 @@ trait EntityFollowersTrait
             : null;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"cause_read"})
-     */
+    #[Groups(['cause_read'])]
     public function getFollowersCount(): int
     {
         return $this->followers->count();

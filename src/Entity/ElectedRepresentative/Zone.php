@@ -7,7 +7,7 @@ use App\Entity\ReferentTag;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\ZoneRepository")
@@ -30,18 +30,16 @@ class Zone
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
-     *
-     * @SymfonySerializer\Groups({"autocomplete"})
      */
+    #[Groups(['autocomplete'])]
     private $id;
 
     /**
      * @var string|null
      *
      * @ORM\Column
-     *
-     * @SymfonySerializer\Groups({"autocomplete"})
      */
+    #[Groups(['autocomplete'])]
     private $name;
 
     /**

@@ -6,7 +6,7 @@ use App\Geocoder\GeocodableInterface;
 use App\Validator\Address as AssertValidAddress;
 use App\Validator\FrenchAddress;
 use App\Validator\GeocodableAddress as AssertGeocodableAddress;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -30,16 +30,14 @@ class Address implements AddressInterface, GeocodableInterface
      *     groups={"fill_personal_info"}
      * )
      * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"Default", "Update", "fill_personal_info"})
-     *
-     * @SymfonySerializer\Groups({"profile_write", "membership:write"})
      */
+    #[Groups(['profile_write', 'membership:write'])]
     protected ?string $address = null;
 
     /**
      * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"Default", "Update", "fill_personal_info"})
-     *
-     * @SymfonySerializer\Groups({"profile_write", "membership:write"})
      */
+    #[Groups(['profile_write', 'membership:write'])]
     protected ?string $additionalAddress = null;
 
     /**
@@ -49,16 +47,14 @@ class Address implements AddressInterface, GeocodableInterface
      *     groups={"Default", "Registration", "Update", "fill_personal_info"}
      * )
      * @Assert\Length(max=15, maxMessage="common.postal_code.max_length", groups={"Default", "Registration", "Update", "fill_personal_info"})
-     *
-     * @SymfonySerializer\Groups({"profile_write", "membership:write"})
      */
+    #[Groups(['profile_write', 'membership:write'])]
     protected ?string $postalCode = null;
 
     /**
      * @Assert\Length(max=15, groups={"Default", "Update", "fill_personal_info"})
-     *
-     * @SymfonySerializer\Groups({"profile_write", "membership:write"})
      */
+    #[Groups(['profile_write', 'membership:write'])]
     protected ?string $city = null;
 
     /**
@@ -68,16 +64,14 @@ class Address implements AddressInterface, GeocodableInterface
      *     message="common.city_name.not_blank",
      *     groups={"Update", "fill_personal_info"}
      * )
-     *
-     * @SymfonySerializer\Groups({"profile_write", "membership:write"})
      */
+    #[Groups(['profile_write', 'membership:write'])]
     protected ?string $cityName = null;
 
     /**
      * @Assert\NotBlank(message="common.country.not_blank", groups={"Default", "Registration", "Update", "fill_personal_info"})
      * @Assert\Country(message="common.country.invalid", groups={"Default", "Registration", "Update", "fill_personal_info"})
-     *
-     * @SymfonySerializer\Groups({"profile_write", "membership:write"})
      */
+    #[Groups(['profile_write', 'membership:write'])]
     protected ?string $country = null;
 }

@@ -68,9 +68,8 @@ class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
      *         }
      *     }
      * )
-     *
-     * @Groups({"committee_election:read", "committee_candidacies_group:read", "committee_candidacy:read"})
      */
+    #[Groups(['committee_election:read', 'committee_candidacies_group:read', 'committee_candidacy:read'])]
     protected UuidInterface $uuid;
 
     /**
@@ -78,9 +77,8 @@ class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
      * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @Assert\NotBlank
-     *
-     * @Groups({"committee_candidacies_group:write", "committee_candidacies_group:read"})
      */
+    #[Groups(['committee_candidacies_group:write', 'committee_candidacies_group:read'])]
     protected ?CommitteeElection $election = null;
 
     /**
@@ -88,9 +86,8 @@ class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
      *
      * @ORM\OneToMany(targetEntity="App\Entity\CommitteeCandidacy", mappedBy="candidaciesGroup", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"createdAt": "ASC"})
-     *
-     * @Groups({"committee_candidacies_group:read", "committee_election:read"})
      */
+    #[Groups(['committee_candidacies_group:read', 'committee_election:read'])]
     protected $candidacies;
 
     public function __construct(?UuidInterface $uuid = null)

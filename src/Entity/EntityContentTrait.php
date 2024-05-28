@@ -15,9 +15,8 @@ trait EntityContentTrait
      *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
-     *
-     * @Groups({"article_list_read", "article_read"})
      */
+    #[Groups(['article_list_read', 'article_read'])]
     private $title;
 
     /**
@@ -37,9 +36,8 @@ trait EntityContentTrait
      *
      * @Assert\Length(allowEmptyString=true, min=10, max=255)
      * @Assert\NotBlank
-     *
-     * @Groups({"article_read"})
      */
+    #[Groups(['article_read'])]
     private $description;
 
     /**
@@ -48,9 +46,8 @@ trait EntityContentTrait
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(allowEmptyString=true, min=10, max=255)
-     *
-     * @Groups({"article_read"})
      */
+    #[Groups(['article_read'])]
     private $twitterDescription;
 
     /**
@@ -68,9 +65,8 @@ trait EntityContentTrait
      * @ORM\Column(type="text")
      *
      * @Assert\NotBlank
-     *
-     * @Groups({"article_read"})
      */
+    #[Groups(['article_read'])]
     private $content;
 
     public function __toString(): string

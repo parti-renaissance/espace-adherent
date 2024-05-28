@@ -17,18 +17,8 @@ trait EntityPostAddressTrait
      *
      * @Assert\NotBlank(groups={"procuration:write"})
      * @Assert\Valid(groups={"contact_update", "procuration:write"})
-     *
-     * @Groups({
-     *     "contact_update",
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     *     "action_read",
-     *     "action_read_list",
-     *     "action_write",
-     * })
      */
+    #[Groups(['contact_update', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write'])]
     protected $postAddress;
 
     public function getPostAddress(): PostAddress
@@ -46,9 +36,7 @@ trait EntityPostAddressTrait
         return $this->postAddress ? $this->postAddress->getInlineFormattedAddress($locale) : '';
     }
 
-    /**
-     * @Groups({"user_profile"})
-     */
+    #[Groups(['user_profile'])]
     public function getCountry(): ?string
     {
         return $this->postAddress->getCountry();
@@ -69,14 +57,7 @@ trait EntityPostAddressTrait
         return $this->postAddress->getAdditionalAddress();
     }
 
-    /**
-     * @Groups({
-     *     "user_profile",
-     *     "export",
-     *     "adherent_autocomplete",
-     *     "national_event_inscription:webhook",
-     * })
-     */
+    #[Groups(['user_profile', 'export', 'adherent_autocomplete', 'national_event_inscription:webhook'])]
     public function getPostalCode(): ?string
     {
         return $this->postAddress->getPostalCode();

@@ -39,9 +39,8 @@ class EventCategory extends BaseEventCategory
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank
-     *
-     * @Groups({"event_read", "event_list_read", "event_category_read"})
      */
+    #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
     private $eventGroupCategory;
 
     public function getEventGroupCategory(): ?EventGroupCategory

@@ -64,103 +64,90 @@ class JemarcheDataSurvey implements DataSurveyAwareInterface
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"jemarche_data_survey_write"})
      */
+    #[Groups(['jemarche_data_survey_write'])]
     private $firstName;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"jemarche_data_survey_write"})
      */
+    #[Groups(['jemarche_data_survey_write'])]
     private $lastName;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"jemarche_data_survey_write"})
      */
+    #[Groups(['jemarche_data_survey_write'])]
     private $emailAddress;
 
     /**
      * @ORM\Column(type="boolean")
-     *
-     * @Groups({"jemarche_data_survey_write"})
      */
+    #[Groups(['jemarche_data_survey_write'])]
     private $agreedToStayInContact = false;
 
     /**
      * @ORM\Column(type="boolean")
-     *
-     * @Groups({"jemarche_data_survey_write"})
      */
+    #[Groups(['jemarche_data_survey_write'])]
     private $agreedToContactForJoin = false;
 
     /**
      * @ORM\Column(type="boolean")
-     *
-     * @Groups({"jemarche_data_survey_write"})
      */
+    #[Groups(['jemarche_data_survey_write'])]
     private $agreedToTreatPersonalData = false;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"jemarche_data_survey_write"})
      */
+    #[Groups(['jemarche_data_survey_write'])]
     private $postalCode;
 
     /**
      * @ORM\Column(length=30, nullable=true)
      *
      * @Assert\Choice(callback={"App\Jecoute\ProfessionEnum", "all"})
-     *
-     * @Groups({"jemarche_data_survey_write"})
      */
+    #[Groups(['jemarche_data_survey_write'])]
     private $profession;
 
     /**
      * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Choice(callback={"App\Jecoute\AgeRangeEnum", "all"})
-     *
-     * @Groups({"jemarche_data_survey_write"})
      */
+    #[Groups(['jemarche_data_survey_write'])]
     private $ageRange;
 
     /**
      * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Choice(callback={"App\Jecoute\GenderEnum", "all"})
-     *
-     * @Groups({"jemarche_data_survey_write"})
      */
+    #[Groups(['jemarche_data_survey_write'])]
     private $gender;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"jemarche_data_survey_write"})
      */
+    #[Groups(['jemarche_data_survey_write'])]
     private $genderOther;
 
     /**
      * @var float|null
      *
      * @ORM\Column(type="geo_point", nullable=true)
-     *
-     * @Groups({"jemarche_data_survey_write"})
      */
+    #[Groups(['jemarche_data_survey_write'])]
     private $latitude;
 
     /**
      * @var float|null
      *
      * @ORM\Column(type="geo_point", nullable=true)
-     *
-     * @Groups({"jemarche_data_survey_write"})
      */
+    #[Groups(['jemarche_data_survey_write'])]
     private $longitude;
 
     /**
