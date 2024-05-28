@@ -7,7 +7,7 @@ use App\Entity\AuthoredInterface;
 use App\Entity\Geo\Zone;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -59,9 +59,7 @@ class LocalPoll extends Poll implements AuthoredInterface
         $this->author = $author;
     }
 
-    /**
-     * @SymfonySerializer\Groups({"poll_read"})
-     */
+    #[Groups(['poll_read'])]
     public function getType(): string
     {
         return PollTypeEnum::LOCAL;

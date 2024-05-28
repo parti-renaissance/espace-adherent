@@ -39,26 +39,23 @@ class Mooc
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
-     *
-     * @Groups({"mooc_list"})
      */
+    #[Groups(['mooc_list'])]
     private $title;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"mooc_list"})
      */
+    #[Groups(['mooc_list'])]
     private $description;
 
     /**
      * @ORM\Column(unique=true)
      * @Gedmo\Slug(fields={"title"}, unique=true)
-     *
-     * @Groups({"mooc_list"})
      */
+    #[Groups(['mooc_list'])]
     private $slug;
 
     /**
@@ -228,9 +225,7 @@ class Mooc
         return $this->chapters;
     }
 
-    /**
-     * @Groups({"mooc_list"})
-     */
+    #[Groups(['mooc_list'])]
     public function getChapterCount(): int
     {
         return $this->chapters->count();

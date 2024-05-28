@@ -232,10 +232,9 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="uuid", unique=true)
      *
-     * @Groups({"event_read", "event_list_read"})
-     *
      * @ApiProperty(identifier=true)
      */
+    #[Groups(['event_read', 'event_list_read'])]
     protected $uuid;
 
     /**
@@ -259,11 +258,10 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(length=100)
      *
-     * @Groups({"event_read", "event_write", "event_list_read"})
-     *
      * @Assert\NotBlank
      * @Assert\Length(allowEmptyString=true, min=5, max=100)
      */
+    #[Groups(['event_read', 'event_write', 'event_list_read'])]
     protected $name;
 
     /**
@@ -285,9 +283,8 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *     dateFormat="Y-m-d",
      *     handlers={@Gedmo\SlugHandler(class="App\Event\UniqueEventNameHandler")}
      * )
-     *
-     * @Groups({"event_read"})
      */
+    #[Groups(['event_read'])]
     protected $slug;
 
     /**
@@ -295,11 +292,10 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="text")
      *
-     * @Groups({"event_read", "event_write"})
-     *
      * @Assert\NotBlank
      * @Assert\Length(allowEmptyString=true, min=10)
      */
+    #[Groups(['event_read', 'event_write'])]
     protected $description;
 
     /**
@@ -307,11 +303,10 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(length=50)
      *
-     * @Groups({"event_read", "event_write", "event_list_read"})
-     *
      * @Assert\NotBlank
      * @Assert\Timezone
      */
+    #[Groups(['event_read', 'event_write', 'event_list_read'])]
     protected $timeZone = GeoCoder::DEFAULT_TIME_ZONE;
 
     /**
@@ -319,10 +314,9 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="datetime")
      *
-     * @Groups({"event_read", "event_write", "event_list_read"})
-     *
      * @Assert\NotBlank
      */
+    #[Groups(['event_read', 'event_write', 'event_list_read'])]
     protected $beginAt;
 
     /**
@@ -330,11 +324,10 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="datetime")
      *
-     * @Groups({"event_read", "event_write", "event_list_read"})
-     *
      * @Assert\NotBlank
      * @Assert\Expression("!value or value > this.getBeginAt()", message="committee.event.invalid_date_range")
      */
+    #[Groups(['event_read', 'event_write', 'event_list_read'])]
     protected $finishAt;
 
     /**
@@ -344,27 +337,24 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * @ORM\JoinColumn(onDelete="RESTRICT")
      *
      * @Assert\NotBlank
-     *
-     * @Groups({"event_read", "event_list_read"})
      */
+    #[Groups(['event_read', 'event_list_read'])]
     protected $organizer;
 
     /**
      * @var int
      *
      * @ORM\Column(type="smallint", options={"unsigned": true})
-     *
-     * @Groups({"event_read", "event_list_read"})
      */
+    #[Groups(['event_read', 'event_list_read'])]
     protected $participantsCount = 0;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=20)
-     *
-     * @Groups({"event_read", "event_list_read"})
      */
+    #[Groups(['event_read', 'event_list_read'])]
     protected $status = self::STATUS_SCHEDULED;
 
     /**
@@ -393,28 +383,25 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(type="integer", nullable=true)
      *
-     * @Groups({"event_read", "event_write", "event_list_read"})
-     *
      * @Assert\GreaterThan("0", message="committee.event.invalid_capacity")
      */
+    #[Groups(['event_read', 'event_write', 'event_list_read'])]
     protected $capacity;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\Url
-     *
-     * @Groups({"event_read", "event_write", "event_list_read"})
      */
+    #[Groups(['event_read', 'event_write', 'event_list_read'])]
     private $visioUrl;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
      *
-     * @Groups({"event_write"})
-     *
      * @AdherentInterestsConstraint
      */
+    #[Groups(['event_write'])]
     private $interests = [];
 
     /**
@@ -422,19 +409,17 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @ORM\Column(nullable=true)
      *
-     * @Groups({"event_read", "event_write", "event_list_read"})
-     *
      * @Assert\Choice(choices=self::MODES)
      */
+    #[Groups(['event_read', 'event_write', 'event_list_read'])]
     private $mode;
 
     /**
      * @var EventCategoryInterface|EventCategory|null
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Event\EventCategory")
-     *
-     * @Groups({"event_read", "event_list_read", "event_write"})
      */
+    #[Groups(['event_read', 'event_list_read', 'event_write'])]
     protected $category;
 
     /**
@@ -442,10 +427,9 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @var NullablePostAddress
      *
-     * @Groups({"event_read", "event_write", "event_list_read"})
-     *
      * @Assert\Valid
      */
+    #[Groups(['event_read', 'event_write', 'event_list_read'])]
     protected $postAddress;
 
     /**
@@ -455,16 +439,14 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
 
     /**
      * @ORM\Column(enumType=EventVisibilityEnum::class, options={"default": "public"})
-     *
-     * @Groups({"event_read", "event_write", "event_list_read"})
      */
+    #[Groups(['event_read', 'event_write', 'event_list_read'])]
     public EventVisibilityEnum $visibility = EventVisibilityEnum::PUBLIC;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"event_read", "event_write", "event_list_read"})
      */
+    #[Groups(['event_read', 'event_write', 'event_list_read'])]
     public ?string $liveUrl = null;
 
     public function getCategory(): ?EventCategoryInterface
@@ -535,9 +517,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         $this->beginAt = $beginAt;
     }
 
-    /**
-     * @Groups({"event_read", "event_list_read"})
-     */
+    #[Groups(['event_read', 'event_list_read'])]
     public function getLocalBeginAt(): \DateTimeInterface
     {
         return (clone $this->beginAt)->setTimezone(new \DateTimeZone($this->getTimeZone()));
@@ -553,9 +533,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         $this->finishAt = $finishAt;
     }
 
-    /**
-     * @Groups({"event_read", "event_list_read"})
-     */
+    #[Groups(['event_read', 'event_list_read'])]
     public function getLocalFinishAt(): \DateTimeInterface
     {
         return (clone $this->finishAt)->setTimezone(new \DateTimeZone($this->getTimeZone()));

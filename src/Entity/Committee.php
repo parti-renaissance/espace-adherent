@@ -193,9 +193,8 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
      * The group description.
      *
      * @ORM\Column(type="text")
-     *
-     * @Groups({"committee:list", "committee:write", "committee:write_limited"})
      */
+    #[Groups(['committee:list', 'committee:write', 'committee:write_limited'])]
     private $description;
 
     /**
@@ -253,24 +252,19 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
      *
-     * @Groups({
-     *     "committee:read",
-     *     "committee:write",
-     * })
-     *
      * @Assert\Count(min=1, minMessage="Le comité doit contenir au moins une zone.", groups={"api_committee_edition"})
      * @AssertZoneType(types=Zone::COMMITTEE_TYPES, groups={"api_committee_edition"})
      */
+    #[Groups(['committee:read', 'committee:write'])]
     protected Collection $zones;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="animatorCommittees")
      * @ORM\JoinColumn(onDelete="SET NULL")
      *
-     * @Groups({"committee:read", "committee:update_animator"})
-     *
      * @Assert\Expression("!this.animator or this.animator.isRenaissanceAdherent()", message="Président doit être un adhérent Renaissance.")
      */
+    #[Groups(['committee:read', 'committee:update_animator'])]
     public ?Adherent $animator = null;
 
     public function __construct(
@@ -320,9 +314,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
         }
     }
 
-    /**
-     * @Groups({"committee:read"})
-     */
+    #[Groups(['committee:read'])]
     public function getCommitteeElection(): ?CommitteeElection
     {
         return $this->getCurrentElection();
@@ -741,25 +733,19 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
         return self::REFUSED === $this->status;
     }
 
-    /**
-     * @Groups({"committee:list"})
-     */
+    #[Groups(['committee:list'])]
     public function getMembersCount(): int
     {
         return $this->membersCount;
     }
 
-    /**
-     * @Groups({"committee:list"})
-     */
+    #[Groups(['committee:list'])]
     public function getSympathizersCount(): int
     {
         return $this->sympathizersCount;
     }
 
-    /**
-     * @Groups({"committee:list"})
-     */
+    #[Groups(['committee:list'])]
     public function getMembersEmCount(): int
     {
         return $this->membersEmCount;

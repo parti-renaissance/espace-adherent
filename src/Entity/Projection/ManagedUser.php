@@ -120,36 +120,32 @@ class ManagedUser implements TranslatedTagInterface
      * @ApiProperty(identifier=true)
      *
      * @ORM\Column(type="uuid", nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $adherentUuid;
 
     /**
      * @var string
      *
      * @ORM\Column
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $email;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=150, nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $address;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=15, nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $postalCode;
 
     /**
@@ -165,79 +161,70 @@ class ManagedUser implements TranslatedTagInterface
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $city;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=2, nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $country;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=6, nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $gender;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=50, nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $firstName;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=50, nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $lastName;
 
     /**
      * @ORM\Column(type="date", nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $birthdate;
 
     /**
      * @var int|null
      *
      * @ORM\Column(type="smallint", nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $age;
 
     /**
      * @var PhoneNumber|null
      *
      * @ORM\Column(type="phone_number", nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $phone;
 
     /**
      * @var string|null
      *
      * @ORM\Column(length=2, nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $nationality;
 
     /**
@@ -265,9 +252,8 @@ class ManagedUser implements TranslatedTagInterface
      * @var string[]|null
      *
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     public ?array $tags = null;
 
     /**
@@ -309,16 +295,14 @@ class ManagedUser implements TranslatedTagInterface
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime")
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $createdAt;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $interests;
 
     /**
@@ -351,62 +335,54 @@ class ManagedUser implements TranslatedTagInterface
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private $lastMembershipDonation;
 
     /**
      * name of committee v2
      *
      * @ORM\Column(nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private ?string $committee;
 
     /**
      * uuid of committee v2
      *
      * @ORM\Column(type="uuid", nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private ?UuidInterface $committeeUuid;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({"managed_users_list"})
      */
+    #[Groups(['managed_users_list'])]
     private ?array $additionalTags;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private ?array $mandates;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private ?array $declaredMandates;
 
     /**
      * @ORM\Column(type="simple_array", nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     public ?array $cotisationDates = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({"managed_users_list", "managed_user_read"})
      */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     private ?\DateTime $campusRegisteredAt;
 
     /**
@@ -652,10 +628,8 @@ class ManagedUser implements TranslatedTagInterface
         return $this->committeeUuids;
     }
 
-    /**
-     * @Groups({"managed_users_list", "managed_user_read"})
-     * @SerializedName("roles")
-     */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[SerializedName('roles')]
     public function getRolesAsArray(): array
     {
         $roles = [];
@@ -729,9 +703,7 @@ class ManagedUser implements TranslatedTagInterface
         return $this->voteCommitteeId;
     }
 
-    /**
-     * @Groups({"managed_users_list", "managed_user_read"})
-     */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     public function isCertified(): bool
     {
         return null !== $this->certifiedAt;
@@ -742,9 +714,7 @@ class ManagedUser implements TranslatedTagInterface
         return $this->lastMembershipDonation;
     }
 
-    /**
-     * @Groups({"managed_users_list"})
-     */
+    #[Groups(['managed_users_list'])]
     public function getRenaissanceMembership(): ?string
     {
         if (MembershipSourceEnum::RENAISSANCE === $this->source) {
@@ -756,9 +726,7 @@ class ManagedUser implements TranslatedTagInterface
         return null;
     }
 
-    /**
-     * @Groups({"managed_users_list"})
-     */
+    #[Groups(['managed_users_list'])]
     public function getCityCode(): ?string
     {
         $zones = $this->getZonesOfType(Zone::CITY, true);
@@ -766,9 +734,7 @@ class ManagedUser implements TranslatedTagInterface
         return $zones ? current($zones)->getCode() : null;
     }
 
-    /**
-     * @Groups({"managed_users_list", "managed_user_read"})
-     */
+    #[Groups(['managed_users_list', 'managed_user_read'])]
     public function getSmsSubscription(): bool
     {
         return \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true);

@@ -41,12 +41,8 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @Assert\NotBlank
-     *
-     * @Groups({
-     *     "elected_mandate_write",
-     *     "elected_mandate_read",
-     * })
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read'])]
     protected $adherent;
 
     /**
@@ -68,26 +64,16 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotBlank
-     *
-     * @Groups({
-     *     "elected_mandate_write",
-     *     "elected_mandate_read",
-     *     "adherent_elect_read",
-     * })
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
     protected $beginAt;
 
     /**
      * @var \DateTime|null
      *
      * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups({
-     *     "elected_mandate_write",
-     *     "elected_mandate_read",
-     *     "adherent_elect_read",
-     * })
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
     protected $finishAt;
 
     /**

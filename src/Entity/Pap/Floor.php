@@ -50,9 +50,8 @@ class Floor implements EntityAdherentBlameableInterface, CampaignStatisticsOwner
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true})
-     *
-     * @Groups({"pap_building_block_list"})
      */
+    #[Groups(['pap_building_block_list'])]
     private int $number;
 
     /**

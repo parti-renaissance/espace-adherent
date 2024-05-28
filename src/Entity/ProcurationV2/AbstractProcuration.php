@@ -37,12 +37,8 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
      *
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
-     *
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_matched_proxy",
-     * })
      */
+    #[Groups(['procuration_request_read', 'procuration_matched_proxy'])]
     public string $email;
 
     /**
@@ -52,15 +48,8 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice"
      * )
-     *
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_proxy_list_request",
-     *     "procuration_request_list_proxy",
-     * })
      */
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_proxy_list_request', 'procuration_request_list_proxy'])]
     public string $gender;
 
     /**
@@ -72,16 +61,8 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
      *     minMessage="procuration.first_names.min_length",
      *     maxMessage="procuration.first_names.max_length"
      * )
-     *
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_proxy_list_request",
-     *     "procuration_request_list_proxy",
-     *     "procuration_matched_proxy",
-     * })
      */
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_proxy_list_request', 'procuration_request_list_proxy', 'procuration_matched_proxy'])]
     public string $firstNames;
 
     /**
@@ -93,16 +74,8 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
      *     minMessage="procuration.last_name.min_length",
      *     maxMessage="procuration.last_name.max_length"
      * )
-     *
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_proxy_list_request",
-     *     "procuration_request_list_proxy",
-     *     "procuration_matched_proxy",
-     * })
      */
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_proxy_list_request', 'procuration_request_list_proxy', 'procuration_matched_proxy'])]
     public string $lastName;
 
     /**
@@ -114,26 +87,16 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
      *     minMessage="procuration.birthdate.maximum_required_age",
      *     maxMessage="procuration.birthdate.minimum_required_age"
      * )
-     *
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     * })
      */
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     public \DateTimeInterface $birthdate;
 
     /**
      * @ORM\Column(type="phone_number", nullable=true)
      *
      * @AssertPhoneNumber(message="common.phone_number.invalid")
-     *
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_matched_proxy",
-     * })
      */
+    #[Groups(['procuration_request_read', 'procuration_matched_proxy'])]
     public ?PhoneNumber $phone;
 
     /**
@@ -144,14 +107,8 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     * })
      */
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     public Zone $voteZone;
 
     /**
@@ -240,30 +197,14 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
         );
     }
 
-    /**
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     * })
-     */
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     public function getAge(): ?int
     {
         return $this->birthdate?->diff(new \DateTime())->y;
     }
 
-    /**
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     *     "procuration_proxy_list_request",
-     *     "procuration_request_list_proxy",
-     * })
-     * @SerializedName("id")
-     */
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_list_request', 'procuration_request_list_proxy'])]
+    #[SerializedName('id')]
     public function getPublicId(): string
     {
         return substr($this->uuid->toString(), 0, 6 - \strlen($this->id)).$this->id;
@@ -291,28 +232,14 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
         return 'voteZone';
     }
 
-    /**
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     * })
-     */
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     public function getVotePlaceName(): ?string
     {
         return $this->customVotePlace ?? $this->votePlace?->getName();
     }
 
-    /**
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     * })
-     * @SerializedName("tags")
-     */
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
+    #[SerializedName('tags')]
     public function getAdherentTags(): ?array
     {
         return $this->adherent?->tags;

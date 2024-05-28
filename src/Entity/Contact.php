@@ -64,9 +64,8 @@ class Contact implements RecaptchaChallengeInterface
      *     minMessage="common.first_name.min_length",
      *     maxMessage="common.first_name.max_length"
      * )
-     *
-     * @Groups({"contact_create", "contact_read"})
      */
+    #[Groups(['contact_create', 'contact_read'])]
     private ?string $firstName;
 
     /**
@@ -78,9 +77,8 @@ class Contact implements RecaptchaChallengeInterface
      *     minMessage="common.last_name.min_length",
      *     maxMessage="common.last_name.max_length"
      * )
-     *
-     * @Groups({"contact_update"})
      */
+    #[Groups(['contact_update'])]
     private ?string $lastName;
 
     /**
@@ -89,18 +87,16 @@ class Contact implements RecaptchaChallengeInterface
      * @Assert\NotBlank
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
-     *
-     * @Groups({"contact_create", "contact_read"})
      */
+    #[Groups(['contact_create', 'contact_read'])]
     private ?string $emailAddress;
 
     /**
      * @ORM\Column(type="phone_number", nullable=true)
      *
      * @AssertPhoneNumber
-     *
-     * @Groups({"contact_update"})
      */
+    #[Groups(['contact_update'])]
     private ?PhoneNumber $phone = null;
 
     /**
@@ -110,9 +106,8 @@ class Contact implements RecaptchaChallengeInterface
      *     min="-120 years",
      *     max="now"
      * )
-     *
-     * @Groups({"contact_update"})
      */
+    #[Groups(['contact_update'])]
     private ?\DateTimeInterface $birthdate = null;
 
     /**
@@ -122,9 +117,8 @@ class Contact implements RecaptchaChallengeInterface
      *     choices=App\Membership\Contact\InterestEnum::ALL,
      *     multiple=true
      *  )
-     *
-     * @Groups({"contact_update"})
      */
+    #[Groups(['contact_update'])]
     private array $interests = [];
 
     /**
@@ -140,32 +134,28 @@ class Contact implements RecaptchaChallengeInterface
      *     choices=App\Membership\Contact\SourceEnum::ALL,
      *     message="contact.source.choice"
      * )
-     *
-     * @Groups({"contact_create"})
      */
+    #[Groups(['contact_create'])]
     private ?string $source;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({"contact_update"})
      */
+    #[Groups(['contact_update'])]
     private bool $mailContact = false;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({"contact_update"})
      */
+    #[Groups(['contact_update'])]
     private bool $phoneContact = false;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      *
      * @Assert\IsTrue(message="contact.cgu_accepted.is_true")
-     *
-     * @Groups({"contact_create", "contact_update"})
      */
+    #[Groups(['contact_create', 'contact_update'])]
     private bool $cguAccepted = false;
 
     /**

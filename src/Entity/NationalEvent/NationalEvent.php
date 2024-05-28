@@ -22,17 +22,15 @@ class NationalEvent
     use EntityTimestampableTrait;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
-     *
      * @ORM\Column(type="datetime")
      */
+    #[Groups(['national_event_inscription:webhook'])]
     public ?\DateTime $startDate = null;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
-     *
      * @ORM\Column(type="datetime")
      */
+    #[Groups(['national_event_inscription:webhook'])]
     public ?\DateTime $endDate = null;
 
     /**

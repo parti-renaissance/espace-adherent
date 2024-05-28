@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -31,9 +31,8 @@ class SubscriptionType
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
-     *
-     * @SymfonySerializer\Groups({"profile_read"})
      */
+    #[Groups(['profile_read'])]
     private $label;
 
     /**
@@ -43,9 +42,8 @@ class SubscriptionType
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
-     *
-     * @SymfonySerializer\Groups({"profile_read"})
      */
+    #[Groups(['profile_read'])]
     private $code;
 
     /**

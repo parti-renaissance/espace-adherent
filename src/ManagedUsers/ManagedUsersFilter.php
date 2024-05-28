@@ -12,38 +12,28 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ManagedUsersFilter
 {
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?string $searchTerm = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?string $gender = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?int $ageMin = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?int $ageMax = null;
 
     /**
      * @Assert\Length(max=255)
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     public ?string $firstName = null;
 
     /**
      * @Assert\Length(max=255)
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     public ?string $lastName = null;
 
     /**
@@ -51,24 +41,16 @@ class ManagedUsersFilter
      */
     public ?string $city = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public array $interests = [];
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?\DateTime $registeredSince = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?\DateTime $registeredUntil = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?bool $isCommitteeMember = null;
 
     public ?bool $includeCommitteeSupervisors = null;
@@ -78,36 +60,30 @@ class ManagedUsersFilter
     public ?bool $includeCommitteeHosts = null;
 
     /**
-     * @Groups({"filter_write"})
-     *
      * @Assert\Choice(callback={"App\Adherent\Tag\TagEnum", "getAdherentTags"})
      */
+    #[Groups(['filter_write'])]
     public ?string $adherentTags = null;
 
     /**
-     * @Groups({"filter_write"})
-     *
      * @Assert\Choice(callback={"App\Adherent\Tag\TagEnum", "getElectTags"})
      */
+    #[Groups(['filter_write'])]
     public ?string $electTags = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?string $staticTags = null;
 
     /**
-     * @Groups({"filter_write"})
-     *
      * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, multiple=true)
      */
+    #[Groups(['filter_write'])]
     public array $mandates = [];
 
     /**
-     * @Groups({"filter_write"})
-     *
      * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, multiple=true)
      */
+    #[Groups(['filter_write'])]
     public array $declaredMandates = [];
 
     /**
@@ -122,19 +98,14 @@ class ManagedUsersFilter
 
     /**
      * @var Zone[]
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     public array $zones;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?bool $emailSubscription = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?bool $smsSubscription = null;
 
     public ?string $subscriptionType;
@@ -155,9 +126,8 @@ class ManagedUsersFilter
 
     /**
      * @var string[]
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     public array $committeeUuids;
 
     /**
@@ -167,40 +137,28 @@ class ManagedUsersFilter
 
     public ?bool $voteInCommittee = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?bool $isCertified = null;
 
     /**
-     * @Groups({"filter_write"})
      * @Assert\Choice(choices=App\Renaissance\Membership\RenaissanceMembershipFilterEnum::CHOICES)
      */
+    #[Groups(['filter_write'])]
     public ?string $renaissanceMembership = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?\DateTime $lastMembershipSince = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?\DateTime $lastMembershipBefore = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?bool $onlyJeMengageUsers = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?bool $isNewRenaissanceUser = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public ?bool $isCampusRegistered = null;
 
     public function __construct(
@@ -221,9 +179,7 @@ class ManagedUsersFilter
         $this->cities = $cities;
     }
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public function setAge(array $minMax): void
     {
         if (!empty($minMax['min'])) {
@@ -240,9 +196,7 @@ class ManagedUsersFilter
         return $this->city ? array_map('trim', explode(',', $this->city)) : [];
     }
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public function setRegistered(array $startEnd): void
     {
         if (!empty($startEnd['start'])) {
@@ -286,9 +240,7 @@ class ManagedUsersFilter
         $this->zones = array_values($this->zones);
     }
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     public function setLastMembership(array $startEnd): void
     {
         if (!empty($startEnd['start'])) {

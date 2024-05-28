@@ -59,9 +59,8 @@ class MyTeam
      *
      * @Assert\NotBlank
      * @Assert\Choice(choices=App\Scope\ScopeEnum::ALL)
-     *
-     * @Groups({"my_team_read_list"})
      */
+    #[Groups(['my_team_read_list'])]
     private string $scope;
 
     /**
@@ -73,9 +72,8 @@ class MyTeam
      *     cascade={"all"},
      *     orphanRemoval=true
      * )
-     *
-     * @Groups({"my_team_read_list"})
      */
+    #[Groups(['my_team_read_list'])]
     private Collection $members;
 
     public function __construct(Adherent $owner, string $scope, ?UuidInterface $uuid = null)

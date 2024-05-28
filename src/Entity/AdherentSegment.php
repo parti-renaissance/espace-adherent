@@ -40,9 +40,8 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
      * @ORM\Column
      *
      * @Assert\NotBlank
-     *
-     * @Groups({"public", "write"})
      */
+    #[Groups(['public', 'write'])]
     private $label;
 
     /**
@@ -52,9 +51,8 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
      *
      * @Assert\NotBlank
      * @Assert\Count(min=1)
-     *
-     * @Groups({"write"})
      */
+    #[Groups(['write'])]
     private $memberIds = [];
 
     /**
@@ -64,9 +62,8 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
      *
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\AdherentSegment\AdherentSegmentTypeEnum", "toArray"})
-     *
-     * @Groups({"write"})
      */
+    #[Groups(['write'])]
     private $segmentType;
 
     /**

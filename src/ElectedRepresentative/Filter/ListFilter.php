@@ -15,46 +15,40 @@ class ListFilter
      * @var string|null
      *
      * @Assert\Length(max=255)
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private $firstName;
 
     /**
      * @var string|null
      *
      * @Assert\Length(max=255)
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private $lastName;
 
     /**
      * @var string|null
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private $gender;
 
     /**
      * @var array|null
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private $labels = [];
 
     /**
      * @var array|null
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private $politicalFunctions = [];
 
     /**
      * @var array|null
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private $cities = [];
 
     /**
@@ -71,19 +65,14 @@ class ListFilter
 
     /**
      * @var bool|null
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private $emailSubscription;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     private ?bool $revenueDeclared = null;
 
-    /**
-     * @Groups({"filter_write"})
-     */
+    #[Groups(['filter_write'])]
     private ?bool $contributionActive = null;
 
     /**
@@ -100,9 +89,8 @@ class ListFilter
      * @var Zone[]
      *
      * @Assert\NotNull
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private $zones = [];
 
     /**
@@ -122,18 +110,17 @@ class ListFilter
     private $order = 'a';
 
     /**
-     * @Groups({"filter_write"})
      * @Assert\Choice(choices=App\Renaissance\Membership\RenaissanceMembershipFilterEnum::CHOICES)
      */
+    #[Groups(['filter_write'])]
     private ?string $renaissanceMembership = null;
 
     public ?Adherent $createdOrUpdatedByAdherent = null;
 
     /**
      * @var string[]
-     *
-     * @Groups({"filter_write"})
      */
+    #[Groups(['filter_write'])]
     private array $committeeUuids = [];
 
     public function __construct(array $managedZones = [], ?Adherent $createdByAdherent = null)

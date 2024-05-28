@@ -26,9 +26,8 @@ class TerritorialCouncilMembership implements UuidEntityInterface
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Adherent", inversedBy="territorialCouncilMembership")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE", unique=true)
-     *
-     * @Groups({"api_candidacy_read"})
      */
+    #[Groups(['api_candidacy_read'])]
     private $adherent;
 
     /**
@@ -48,9 +47,8 @@ class TerritorialCouncilMembership implements UuidEntityInterface
      *     mappedBy="territorialCouncilMembership",
      *     orphanRemoval=true
      * )
-     *
-     * @Groups({"api_candidacy_read"})
      */
+    #[Groups(['api_candidacy_read'])]
     private $qualities;
 
     /**
@@ -89,9 +87,7 @@ class TerritorialCouncilMembership implements UuidEntityInterface
         $this->qualities = new ArrayCollection($this->qualities->toArray());
     }
 
-    /**
-     * @Groups({"api_candidacy_read"})
-     */
+    #[Groups(['api_candidacy_read'])]
     public function getUuid(): UuidInterface
     {
         return $this->uuid;

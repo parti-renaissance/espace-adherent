@@ -75,9 +75,8 @@ class CommitteeCandidacy extends BaseCandidacy
      *
      * @Assert\NotBlank(message="Cet adhérent n'est pas un membre du comité.", groups={"api_committee_candidacy_validation"})
      * @AssertCommitteeMembershipZoneInScopeZones(groups={"api_committee_candidacy_validation"})
-     *
-     * @Groups({"committee_candidacy:read", "committee_election:read"})
      */
+    #[Groups(['committee_candidacy:read', 'committee_election:read'])]
     private $committeeMembership;
 
     /**
@@ -103,9 +102,8 @@ class CommitteeCandidacy extends BaseCandidacy
      * @ORM\JoinColumn(onDelete="CASCADE")
      *
      * @Assert\NotBlank(groups={"api_committee_candidacy_validation"})
-     *
-     * @Groups({"committee_candidacy:write", "committee_candidacy:read"})
      */
+    #[Groups(['committee_candidacy:write', 'committee_candidacy:read'])]
     protected $candidaciesGroup;
 
     public function __construct(CommitteeElection $election, ?string $gender = null, ?UuidInterface $uuid = null)

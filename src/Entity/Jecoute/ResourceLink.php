@@ -44,9 +44,8 @@ class ResourceLink implements ExposedImageOwnerInterface
      *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
-     *
-     * @Groups({"jecoute_resource_links_read"})
      */
+    #[Groups(['jecoute_resource_links_read'])]
     private ?string $label;
 
     /**
@@ -54,9 +53,8 @@ class ResourceLink implements ExposedImageOwnerInterface
      *
      * @Assert\NotBlank
      * @Assert\Url
-     *
-     * @Groups({"jecoute_resource_links_read"})
      */
+    #[Groups(['jecoute_resource_links_read'])]
     private ?string $url;
 
     /**

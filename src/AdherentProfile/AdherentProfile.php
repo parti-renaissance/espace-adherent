@@ -9,7 +9,7 @@ use App\Validator\AdherentInterests;
 use App\Validator\UniqueMembership;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,16 +26,14 @@ class AdherentProfile implements MembershipInterface
      *     message="common.gender.invalid_choice",
      *     groups={"Default", "api_put_validation"}
      * )
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Groups(['profile_write'])]
     private $gender;
 
     /**
      * @var string|null
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Groups(['profile_write'])]
     private $customGender;
 
     /**
@@ -50,9 +48,8 @@ class AdherentProfile implements MembershipInterface
      *     maxMessage="common.first_name.max_length",
      *     groups={"Default", "api_put_validation"}
      * )
-     *
-     * @SymfonySerializer\Groups({"uncertified_profile_write"})
      */
+    #[Groups(['uncertified_profile_write'])]
     private $firstName;
 
     /**
@@ -67,18 +64,16 @@ class AdherentProfile implements MembershipInterface
      *     maxMessage="common.last_name.max_length",
      *     groups={"Default", "api_put_validation"}
      * )
-     *
-     * @SymfonySerializer\Groups({"uncertified_profile_write"})
      */
+    #[Groups(['uncertified_profile_write'])]
     private $lastName;
 
     /**
      * @var Address
      *
      * @Assert\Valid
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Groups(['profile_write'])]
     private $address;
 
     /**
@@ -88,9 +83,8 @@ class AdherentProfile implements MembershipInterface
      *     callback={"App\Membership\ActivityPositionsEnum", "all"},
      *     message="adherent.activity_position.invalid_choice"
      * )
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Groups(['profile_write'])]
     private $position;
 
     /**
@@ -98,9 +92,8 @@ class AdherentProfile implements MembershipInterface
      *
      * @Assert\Expression("value or !this.isAdherent", message="adherent_profile.nationality.not_blank")
      * @Assert\Country(message="common.nationality.invalid", groups={"Default", "api_put_validation"})
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Groups(['profile_write'])]
     private $nationality;
 
     /**
@@ -109,18 +102,16 @@ class AdherentProfile implements MembershipInterface
      * @Assert\NotBlank(message="adherent_profile.email.not_blank")
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Groups(['profile_write'])]
     private $emailAddress;
 
     /**
      * @var PhoneNumber|null
      *
      * @AssertPhoneNumber
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Groups(['profile_write'])]
     private $phone;
 
     /**
@@ -134,45 +125,40 @@ class AdherentProfile implements MembershipInterface
      *     maxMessage="adherent.birthdate.minimum_required_age",
      *     groups={"Default", "api_put_validation"}
      * )
-     *
-     * @SymfonySerializer\Groups({"uncertified_profile_write"})
      */
+    #[Groups(['uncertified_profile_write'])]
     private $birthdate;
 
     /**
      * @var string
      *
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="adherent_profile.facebook_page_url.invalid")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Groups(['profile_write'])]
     private $facebookPageUrl;
 
     /**
      * @var string
      *
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="adherent_profile.twitter_page_url.invalid")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Groups(['profile_write'])]
     private $twitterPageUrl;
 
     /**
      * @var string
      *
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?linkedin.com\/#", message="adherent_profile.linkedin_page_url.invalid")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Groups(['profile_write'])]
     private $linkedinPageUrl;
 
     /**
      * @var string
      *
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?t.me\/#", message="adherent_profile.telegram_page_url.invalid")
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Groups(['profile_write'])]
     private $telegramPageUrl;
 
     /**
@@ -182,9 +168,8 @@ class AdherentProfile implements MembershipInterface
      *     choices=App\Entity\JobEnum::JOBS,
      *     message="adherent.job.invalid_choice"
      * )
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Groups(['profile_write'])]
     private $job;
 
     /**
@@ -194,9 +179,8 @@ class AdherentProfile implements MembershipInterface
      *     choices=App\Entity\ActivityAreaEnum::ACTIVITIES,
      *     message="adherent.activity_area.invalid_choice"
      * )
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Groups(['profile_write'])]
     private $activityArea;
 
     /**
@@ -213,10 +197,9 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var array
      *
-     * @SymfonySerializer\Groups({"profile_write"})
-     *
      * @AdherentInterests
      */
+    #[Groups(['profile_write'])]
     private $interests = [];
 
     /**
@@ -227,9 +210,8 @@ class AdherentProfile implements MembershipInterface
      *     multipleMessage="adherent_profile.subscription_types.invalid_choice",
      *     multiple=true
      * )
-     *
-     * @SymfonySerializer\Groups({"profile_write"})
      */
+    #[Groups(['profile_write'])]
     private $subscriptionTypes = [];
 
     public bool $isAdherent = false;

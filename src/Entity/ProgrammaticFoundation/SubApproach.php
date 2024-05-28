@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -30,33 +30,33 @@ class SubApproach
     /**
      * @ORM\Column(type="smallint")
      * @Assert\GreaterThan(value=0, message="programmatic_foundation.position.greater_than_zero")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Groups(['approach_list_read'])]
     private $position;
 
     /**
      * @ORM\Column
      * @Assert\NotBlank(message="programmatic_foundation.title.not_empty")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Groups(['approach_list_read'])]
     private $title;
 
     /**
      * @ORM\Column(nullable=true)
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Groups(['approach_list_read'])]
     private $subtitle;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Groups(['approach_list_read'])]
     private $content;
 
     /**
      * @ORM\Column(type="boolean")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Groups(['approach_list_read'])]
     private $isExpanded;
 
     /**
@@ -73,8 +73,8 @@ class SubApproach
      *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"position": "ASC"})
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Groups(['approach_list_read'])]
     private $measures;
 
     public function __construct(

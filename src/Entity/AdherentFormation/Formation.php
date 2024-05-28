@@ -116,26 +116,16 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      *
      * @Assert\NotBlank(message="Veuillez renseigner un titre.")
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
-     *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
      */
+    #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     private ?string $title = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
-     *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
      */
+    #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     private ?string $description = null;
 
     /**
@@ -143,13 +133,8 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      *
      * @Assert\NotBlank
      * @Assert\Choice(choices=FormationContentTypeEnum::ALL)
-     *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
      */
+    #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     private string $contentType = FormationContentTypeEnum::FILE;
 
     /**
@@ -189,34 +174,20 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      * @ORM\Column(nullable=true)
      *
      * @Assert\Url
-     *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
      */
+    #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     private ?string $link = null;
 
     /**
      * @ORM\Column(type="boolean", options={"default": false})
-     *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     *     "formation_write",
-     * })
      */
+    #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     private bool $published = false;
 
     /**
      * @ORM\Column(type="smallint", options={"unsigned": true})
-     *
-     * @Groups({
-     *     "formation_read",
-     *     "formation_list_read",
-     * })
      */
+    #[Groups(['formation_read', 'formation_list_read'])]
     private int $printCount = 0;
 
     /**

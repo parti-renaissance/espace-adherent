@@ -54,26 +54,15 @@ class Building implements CampaignStatisticsOwnerInterface
      *     callback={"App\Pap\BuildingTypeEnum", "toArray"},
      *     message="pap.building.type.invalid_choice"
      * )
-     *
-     * @Groups({
-     *     "pap_address_list",
-     *     "pap_building_read",
-     *     "pap_building_write",
-     *     "pap_address_read",
-     *     "pap_building_statistics_read",
-     * })
      */
+    #[Groups(['pap_address_list', 'pap_building_read', 'pap_building_write', 'pap_address_read', 'pap_building_statistics_read'])]
     private ?string $type = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Pap\Address", inversedBy="building")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Groups({
-     *     "pap_campaign_history_read_list",
-     *     "pap_building_statistics_read",
-     * })
      */
+    #[Groups(['pap_campaign_history_read_list', 'pap_building_statistics_read'])]
     private ?Address $address = null;
 
     /**
@@ -178,9 +167,7 @@ class Building implements CampaignStatisticsOwnerInterface
         $this->type = $type;
     }
 
-    /**
-     * @Groups({"pap_address_list", "pap_address_read"})
-     */
+    #[Groups(['pap_address_list', 'pap_address_read'])]
     public function getCampaignStatistics(): ?CampaignStatisticsInterface
     {
         if ($this->currentCampaign) {

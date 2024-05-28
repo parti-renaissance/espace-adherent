@@ -17,9 +17,8 @@ class PoliticalFunction
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
-     *
-     * @Groups({"elected_mandate_read"})
      */
+    #[Groups(['elected_mandate_read'])]
     private $id;
 
     /**
@@ -29,14 +28,8 @@ class PoliticalFunction
      *
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum", "toArray"})
-     *
-     * @Groups({
-     *     "elected_mandate_write",
-     *     "elected_mandate_read",
-     *     "elected_representative_read",
-     *     "elected_representative_list"
-     * })
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read', 'elected_representative_list'])]
     private $name;
 
     /**
@@ -45,18 +38,16 @@ class PoliticalFunction
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max="255")
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     private $clarification;
 
     /**
      * @var bool
      *
      * @ORM\Column(type="boolean", options={"default": true})
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     private $onGoing = true;
 
     /**
@@ -65,9 +56,8 @@ class PoliticalFunction
      * @ORM\Column(type="date")
      *
      * @Assert\NotBlank
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     private $beginAt;
 
     /**
@@ -83,9 +73,8 @@ class PoliticalFunction
      *     "not (value !== null and this.isOnGoing())",
      *     message="La date de fin ne peut être saisie que dans le cas où la fonction n'est pas en cours."
      * )
-     *
-     * @Groups({"elected_mandate_write", "elected_mandate_read", "elected_representative_read"})
      */
+    #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     private $finishAt;
 
     /**

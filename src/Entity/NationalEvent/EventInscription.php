@@ -41,65 +41,53 @@ class EventInscription
     use EntityUTMTrait;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
-     *
      * @ORM\ManyToOne(targetEntity=NationalEvent::class)
      */
+    #[Groups(['national_event_inscription:webhook'])]
     public NationalEvent $event;
 
     /**
-     * @Groups({
-     *     "national_event_inscription:webhook",
-     *     "event_inscription_update_status",
-     * })
-     *
      * @ORM\Column(options={"default": "pending"})
-     *
      * @Assert\Choice(callback={"App\NationalEvent\InscriptionStatusEnum", "toArray"})
      */
+    #[Groups(['national_event_inscription:webhook', 'event_inscription_update_status'])]
     public string $status = InscriptionStatusEnum::PENDING;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
-     *
      * @ORM\ManyToOne(targetEntity=Adherent::class)
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[Groups(['national_event_inscription:webhook'])]
     public ?Adherent $adherent = null;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
-     *
      * @ORM\Column(length=6)
      */
+    #[Groups(['national_event_inscription:webhook'])]
     public ?string $gender = null;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
-     *
      * @ORM\Column
      */
+    #[Groups(['national_event_inscription:webhook'])]
     public ?string $firstName = null;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
-     *
      * @ORM\Column
      */
+    #[Groups(['national_event_inscription:webhook'])]
     public ?string $lastName = null;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
-     *
      * @ORM\Column
      */
+    #[Groups(['national_event_inscription:webhook'])]
     public ?string $addressEmail = null;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
-     *
      * @ORM\Column(nullable=true)
      */
+    #[Groups(['national_event_inscription:webhook'])]
     public ?string $postalCode = null;
 
     /**
@@ -108,17 +96,15 @@ class EventInscription
     public ?array $qualities = null;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
-     *
      * @ORM\Column(type="date", nullable=true)
      */
+    #[Groups(['national_event_inscription:webhook'])]
     public ?\DateTime $birthdate = null;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
-     *
      * @ORM\Column(type="phone_number", nullable=true)
      */
+    #[Groups(['national_event_inscription:webhook'])]
     public ?PhoneNumber $phone = null;
 
     /**
@@ -132,17 +118,15 @@ class EventInscription
     public ?string $clientIp = null;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
-     *
      * @ORM\Column(nullable=true)
      */
+    #[Groups(['national_event_inscription:webhook'])]
     public ?string $sessionId = null;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
-     *
      * @ORM\Column(type="json", nullable=true)
      */
+    #[Groups(['national_event_inscription:webhook'])]
     public $emailCheck;
 
     /**

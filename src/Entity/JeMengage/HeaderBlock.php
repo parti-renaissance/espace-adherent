@@ -34,9 +34,8 @@ class HeaderBlock implements ExposedImageOwnerInterface
      *
      * @Assert\NotBlank(message="header_block.name.not_blank")
      * @Assert\Length(max="100", maxMessage="header_block.name.max_length")
-     *
-     * @Groups({"header_block_read"})
      */
+    #[Groups(['header_block_read'])]
     private ?string $name = null;
 
     /**
@@ -50,25 +49,22 @@ class HeaderBlock implements ExposedImageOwnerInterface
      *
      * @Assert\NotBlank(message="header_block.prefix.not_blank")
      * @Assert\Length(max="50", maxMessage="header_block.prefix.max_length")
-     *
-     * @Groups({"header_block_read"})
      */
+    #[Groups(['header_block_read'])]
     private ?string $prefix = null;
 
     /**
      * @ORM\Column(length=100, nullable=true)
      *
      * @Assert\Length(max="100", maxMessage="header_block.slogan.max_length")
-     *
-     * @Groups({"header_block_read"})
      */
+    #[Groups(['header_block_read'])]
     private ?string $slogan = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"header_block_read"})
      */
+    #[Groups(['header_block_read'])]
     private ?string $content = null;
 
     /**

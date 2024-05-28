@@ -102,25 +102,14 @@ class Request extends AbstractProcuration
      * @ORM\Column(enumType=RequestStatusEnum::class)
      *
      * @Assert\Choice(callback={"App\Procuration\V2\RequestStatusEnum", "getAvailableStatuses"}, groups={"procuration_update_status"})
-     *
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_update_status",
-     * })
      */
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_update_status'])]
     public RequestStatusEnum $status = RequestStatusEnum::PENDING;
 
     /**
      * @ORM\Column(type="boolean", options={"default": true})
-     *
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     * })
      */
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list'])]
     public bool $fromFrance;
 
     /**
@@ -128,13 +117,8 @@ class Request extends AbstractProcuration
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationV2\Proxy", inversedBy="requests")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     *
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     * })
      */
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list'])]
     public ?Proxy $proxy = null;
 
     /**
@@ -219,14 +203,7 @@ class Request extends AbstractProcuration
         $this->status = RequestStatusEnum::COMPLETED;
     }
 
-    /**
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list_request",
-     *     "procuration_matched_proxy",
-     * })
-     */
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list_request', 'procuration_matched_proxy'])]
     public function getMatcher(): ?Adherent
     {
         /** @var MatchingHistory $last */
@@ -237,14 +214,7 @@ class Request extends AbstractProcuration
         return null;
     }
 
-    /**
-     * @Groups({
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list_request",
-     *     "procuration_matched_proxy",
-     * })
-     */
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list_request', 'procuration_matched_proxy'])]
     public function getMatchedAt(): ?\DateTimeInterface
     {
         /** @var MatchingHistory $last */

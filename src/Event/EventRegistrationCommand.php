@@ -22,40 +22,34 @@ class EventRegistrationCommand
     private $adherent;
 
     /**
-     * @Groups({"event_registration_write"})
-     *
      * @Assert\NotBlank
      * @Assert\Length(allowEmptyString=true, min=2, max=50)
      */
+    #[Groups(['event_registration_write'])]
     private $firstName;
 
     /**
-     * @Groups({"event_registration_write"})
-     *
      * @Assert\NotBlank
      * @Assert\Length(allowEmptyString=true, min=1, max=50)
      */
+    #[Groups(['event_registration_write'])]
     private $lastName;
 
     /**
-     * @Groups({"event_registration_write"})
-     *
      * @Assert\NotBlank
      * @Assert\Email
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
+    #[Groups(['event_registration_write'])]
     private $emailAddress;
 
     /**
-     * @Groups({"event_registration_write"})
-     *
      * @Assert\Length(allowEmptyString=true, min=5, max=5)
      */
+    #[Groups(['event_registration_write'])]
     private $postalCode;
 
-    /**
-     * @Groups({"event_registration_write"})
-     */
+    #[Groups(['event_registration_write'])]
     private $joinNewsletter = false;
 
     private $registrationUuid;

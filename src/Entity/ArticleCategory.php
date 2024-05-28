@@ -54,9 +54,8 @@ class ArticleCategory
      *
      * @Assert\NotBlank
      * @Assert\Length(max=50)
-     *
-     * @Groups({"article_category_read", "article_list_read", "article_read"})
      */
+    #[Groups(['article_category_read', 'article_list_read', 'article_read'])]
     private $name;
 
     /**
@@ -65,9 +64,8 @@ class ArticleCategory
      * @ORM\Column(length=100, unique=true)
      *
      * @Assert\NotBlank
-     *
-     * @Groups({"article_category_read", "article_list_read", "article_read"})
      */
+    #[Groups(['article_category_read', 'article_list_read', 'article_read'])]
     private $slug;
 
     /**

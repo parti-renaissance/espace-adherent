@@ -4,7 +4,7 @@ namespace App\Entity\ProgrammaticFoundation;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation as SymfonySerializer;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -27,8 +27,8 @@ class Tag
      *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
-     * @SymfonySerializer\Groups({"approach_list_read"})
      */
+    #[Groups(['approach_list_read'])]
     private $label;
 
     public function __construct(string $label = '')

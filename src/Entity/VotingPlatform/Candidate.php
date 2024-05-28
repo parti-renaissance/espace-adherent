@@ -22,27 +22,24 @@ class Candidate
      * @var string
      *
      * @ORM\Column
-     *
-     * @Groups({"election_result"})
      */
+    #[Groups(['election_result'])]
     private $firstName;
 
     /**
      * @var string
      *
      * @ORM\Column
-     *
-     * @Groups({"election_result"})
      */
+    #[Groups(['election_result'])]
     private $lastName;
 
     /**
      * @var string
      *
      * @ORM\Column
-     *
-     * @Groups({"election_result"})
      */
+    #[Groups(['election_result'])]
     private $gender;
 
     /**

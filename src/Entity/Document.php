@@ -65,18 +65,16 @@ class Document implements EntityAdministratorBlameableInterface
      *
      * @Assert\NotBlank(message="Veuillez renseigner un titre.")
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
-     *
-     * @Groups({"document_read"})
      */
+    #[Groups(['document_read'])]
     public ?string $title = null;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      *
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
-     *
-     * @Groups({"document_read"})
      */
+    #[Groups(['document_read'])]
     public ?string $comment = null;
 
     /**

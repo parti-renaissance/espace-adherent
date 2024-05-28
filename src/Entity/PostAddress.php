@@ -22,20 +22,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @ORM\Column(length=150, nullable=true)
      *
      * @Assert\Length(max=150, groups={"contact_update", "procuration:write"})
-     *
-     * @Groups({
-     *     "profile_read",
-     *     "contact_read_after_write",
-     *     "contact_update",
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     *     "action_read",
-     *     "action_read_list",
-     *     "action_write",
-     * })
      */
+    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write'])]
     protected ?string $address = null;
 
     /**
@@ -44,20 +32,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Length(max=15, groups={"contact_update", "procuration:write"})
-     *
-     * @Groups({
-     *     "profile_read",
-     *     "contact_read_after_write",
-     *     "contact_update",
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     *     "action_read",
-     *     "action_read_list",
-     *     "action_write",
-     * })
      */
+    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write'])]
     protected ?string $postalCode = null;
 
     /**
@@ -66,20 +42,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @ORM\Column(length=15, nullable=true, name="city_insee")
      *
      * @Assert\Length(max=15, groups={"contact_update", "procuration:write"})
-     *
-     * @Groups({
-     *     "contact_read_after_write",
-     *     "contact_update",
-     *     "profile_read",
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     *     "action_read",
-     *     "action_read_list",
-     *     "action_write",
-     * })
      */
+    #[Groups(['contact_read_after_write', 'contact_update', 'profile_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write'])]
     protected ?string $city = null;
 
     /**
@@ -88,20 +52,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255, groups={"contact_update", "procuration:write"})
-     *
-     * @Groups({
-     *     "profile_read",
-     *     "contact_read_after_write",
-     *     "contact_update",
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     *     "action_read",
-     *     "action_read_list",
-     *     "action_write",
-     * })
      */
+    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write'])]
     protected ?string $cityName = null;
 
     /**
@@ -110,20 +62,8 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
      * @ORM\Column(length=2, nullable=true)
      *
      * @Assert\Country(groups={"contact_update", "procuration:write"})
-     *
-     * @Groups({
-     *     "profile_read",
-     *     "contact_read_after_write",
-     *     "contact_update",
-     *     "procuration_request_read",
-     *     "procuration_request_list",
-     *     "procuration_proxy_list",
-     *     "procuration_matched_proxy",
-     *     "action_read",
-     *     "action_read_list",
-     *     "action_write",
-     * })
      */
+    #[Groups(['profile_read', 'contact_read_after_write', 'contact_update', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write'])]
     protected ?string $country = null;
 
     public static function createEmptyAddress(): self

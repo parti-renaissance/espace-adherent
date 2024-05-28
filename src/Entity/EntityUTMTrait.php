@@ -8,16 +8,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 trait EntityUTMTrait
 {
     /**
-     * @Groups({"national_event_inscription:webhook"})
-     *
      * @ORM\Column(nullable=true)
      */
+    #[Groups(['national_event_inscription:webhook'])]
     public ?string $utmSource = null;
 
     /**
-     * @Groups({"national_event_inscription:webhook"})
-     *
      * @ORM\Column(nullable=true)
      */
+    #[Groups(['national_event_inscription:webhook'])]
     public ?string $utmCampaign = null;
 }
