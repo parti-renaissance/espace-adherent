@@ -258,7 +258,12 @@ trait EntityAddressTrait
     }
 
     /**
-     * @Groups({"event_read", "event_list_read", "action_read"})
+     * @Groups({
+     *     "event_read",
+     *     "event_list_read",
+     *     "action_read",
+     *     "action_read_list",
+     * })
      */
     public function getLongitude(): ?float
     {
