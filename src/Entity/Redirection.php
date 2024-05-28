@@ -2,63 +2,58 @@
 
 namespace App\Entity;
 
+use App\EntityListener\RedirectionListener;
+use App\Repository\RedirectionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="redirections")
- * @ORM\Entity(repositoryClass="App\Repository\RedirectionRepository")
- * @ORM\EntityListeners({"App\EntityListener\RedirectionListener"})
- */
+#[ORM\Table(name: 'redirections')]
+#[ORM\Entity(repositoryClass: RedirectionRepository::class)]
+#[ORM\EntityListeners([RedirectionListener::class])]
 class Redirection
 {
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="url_from", type="text")
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=10000)
      */
+    #[ORM\Column(name: 'url_from', type: 'text')]
     private $from;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="url_to", type="text")
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=10000)
      */
+    #[ORM\Column(name: 'url_to', type: 'text')]
     private $to;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer")
-     *
      * @Assert\NotBlank
      * @Assert\Choice(choices={301, 302})
      */
+    #[ORM\Column(type: 'integer')]
     private $type;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Gedmo\Timestampable(on="update")
      */
+    #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
     public function __toString()

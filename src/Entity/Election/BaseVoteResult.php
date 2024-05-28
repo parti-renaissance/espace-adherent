@@ -8,76 +8,66 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\MappedSuperclass
- */
+#[ORM\MappedSuperclass]
 abstract class BaseVoteResult
 {
     use TimestampableEntity;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var ElectionRound
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ElectionRound")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectionRound::class)]
     private $electionRound;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
      */
+    #[ORM\Column(type: 'integer')]
     private $registered = 0;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
      */
+    #[ORM\Column(type: 'integer')]
     private $abstentions = 0;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
      */
+    #[ORM\Column(type: 'integer')]
     private $participated = 0;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
      */
+    #[ORM\Column(type: 'integer')]
     private $expressed = 0;
 
     /**
      * @var Adherent|null
      *
      * @Gedmo\Blameable(on="create")
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     protected $createdBy;
 
     /**
      * @var Adherent|null
      *
      * @Gedmo\Blameable(on="update")
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     protected $updatedBy;
 
     public function __construct(ElectionRound $electionRound)

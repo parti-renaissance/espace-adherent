@@ -4,30 +4,26 @@ namespace App\Entity\Election;
 
 use App\Entity\City;
 use App\Entity\ElectionRound;
+use App\Repository\Election\MinistryVoteResultRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Election\MinistryVoteResultRepository")
- * @ORM\Table(uniqueConstraints={
- *     @ORM\UniqueConstraint(name="ministry_vote_result_city_round_unique", columns={"city_id", "election_round_id"}),
- * })
- */
+#[ORM\Table]
+#[ORM\UniqueConstraint(name: 'ministry_vote_result_city_round_unique', columns: ['city_id', 'election_round_id'])]
+#[ORM\Entity(repositoryClass: MinistryVoteResultRepository::class)]
 class MinistryVoteResult extends BaseVoteResult
 {
     /**
      * @var City
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\City")
      */
+    #[ORM\ManyToOne(targetEntity: City::class)]
     private $city;
 
     /**
      * @var MinistryListTotalResult[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Election\MinistryListTotalResult", mappedBy="ministryVoteResult", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToMany(mappedBy: 'ministryVoteResult', targetEntity: MinistryListTotalResult::class, cascade: ['all'], orphanRemoval: true)]
     private $listTotalResults;
 
     public function __construct(City $city, ElectionRound $electionRound)

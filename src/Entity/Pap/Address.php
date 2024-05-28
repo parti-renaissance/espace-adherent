@@ -7,6 +7,8 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Collection\ZoneCollection;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityZoneTrait;
+use App\Entity\Geo\Zone;
+use App\Repository\Pap\AddressRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,12 +17,6 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Pap\AddressRepository")
- * @ORM\Table(name="pap_address", indexes={
- *     @ORM\Index(columns={"offset_x", "offset_y"}),
- *     @ORM\Index(columns={"latitude", "longitude"})
- * })
- *
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {
@@ -45,104 +41,75 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     },
  * )
  */
+#[ORM\Table(name: 'pap_address')]
+#[ORM\Index(columns: ['offset_x', 'offset_y'])]
+#[ORM\Index(columns: ['latitude', 'longitude'])]
+#[ORM\Entity(repositoryClass: AddressRepository::class)]
 class Address
 {
     use EntityIdentityTrait;
     use EntityZoneTrait;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
-     * @ORM\JoinTable(name="pap_address_zone")
-     */
+    #[ORM\JoinTable(name: 'pap_address_zone')]
+    #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
     protected Collection $zones;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['pap_address_list', 'pap_address_read', 'pap_campaign_history_read_list', 'pap_building_statistics_read'])]
+    #[ORM\Column(nullable: true)]
     private ?string $number;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['pap_address_list', 'pap_address_read', 'pap_campaign_history_read_list', 'pap_building_statistics_read'])]
+    #[ORM\Column(nullable: true)]
     private ?string $address;
 
-    /**
-     * @ORM\Column(length=5, nullable=true)
-     */
     #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
+    #[ORM\Column(length: 5, nullable: true)]
     private ?string $inseeCode;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
     #[Groups(['pap_address_list', 'pap_address_read', 'pap_campaign_history_read_list', 'pap_building_statistics_read'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private ?array $postalCodes;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['pap_address_list', 'pap_address_read', 'pap_campaign_history_read_list', 'pap_building_statistics_read'])]
+    #[ORM\Column(nullable: true)]
     private ?string $cityName;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $offsetX;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $offsetY;
 
-    /**
-     * @ORM\Column(type="geo_point", nullable=true)
-     */
     #[Groups(['pap_address_list', 'pap_address_read'])]
+    #[ORM\Column(type: 'geo_point', nullable: true)]
     private ?float $latitude;
 
-    /**
-     * @ORM\Column(type="geo_point", nullable=true)
-     */
     #[Groups(['pap_address_list', 'pap_address_read'])]
+    #[ORM\Column(type: 'geo_point', nullable: true)]
     private ?float $longitude;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Pap\Voter", mappedBy="address", cascade={"all"}, fetch="EXTRA_LAZY")
-     *
      * @ApiSubresource
      */
+    #[ORM\OneToMany(mappedBy: 'address', targetEntity: Voter::class, cascade: ['all'], fetch: 'EXTRA_LAZY')]
     private Collection $voters;
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
-     */
     #[Groups(['pap_address_list', 'pap_address_read'])]
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     private int $votersCount = 0;
 
     /**
      * @var Building[]|Collection
-     *
-     * @ORM\OneToOne(
-     *     targetEntity="App\Entity\Pap\Building",
-     *     mappedBy="address",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
      */
     #[Groups(['pap_address_list', 'pap_address_read'])]
+    #[ORM\OneToOne(mappedBy: 'address', targetEntity: Building::class, cascade: ['all'], orphanRemoval: true)]
     private ?Building $building = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\VotePlace")
-     */
+    #[ORM\ManyToOne(targetEntity: VotePlace::class)]
     public ?VotePlace $votePlace = null;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
-     */
     #[Groups(['pap_address_list', 'pap_address_read'])]
+    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     public ?int $priority = null;
 
     public function __construct(

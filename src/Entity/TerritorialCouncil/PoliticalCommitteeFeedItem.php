@@ -4,17 +4,14 @@ namespace App\Entity\TerritorialCouncil;
 
 use App\Entity\AbstractFeedItem;
 use App\Entity\Adherent;
+use App\Repository\TerritorialCouncil\PoliticalCommitteeFeedItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\PoliticalCommitteeFeedItemRepository")
- */
+#[ORM\Entity(repositoryClass: PoliticalCommitteeFeedItemRepository::class)]
 class PoliticalCommitteeFeedItem extends AbstractFeedItem
 {
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\PoliticalCommittee")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: PoliticalCommittee::class)]
     private $politicalCommittee;
 
     public function __construct(

@@ -7,10 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="geo_foreign_district")
- */
+#[ORM\Table(name: 'geo_foreign_district')]
+#[ORM\Entity]
 class ForeignDistrict implements ZoneableInterface
 {
     use GeoTrait;
@@ -18,24 +16,21 @@ class ForeignDistrict implements ZoneableInterface
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="smallint")
      */
+    #[ORM\Column(type: 'smallint')]
     private $number;
 
     /**
      * @var CustomZone
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\CustomZone")
-     * @ORM\JoinColumn(nullable=false)
      */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: CustomZone::class)]
     private $customZone;
 
     /**
      * @var Collection|Country[]
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Geo\Country", mappedBy="foreignDistrict")
      */
+    #[ORM\OneToMany(mappedBy: 'foreignDistrict', targetEntity: Country::class)]
     private $countries;
 
     public function __construct(string $code, string $name, int $number, CustomZone $customZone)

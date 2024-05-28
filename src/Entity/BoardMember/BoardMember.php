@@ -3,15 +3,14 @@
 namespace App\Entity\BoardMember;
 
 use App\Entity\Adherent;
+use App\Repository\BoardMember\BoardMemberRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="board_member")
- * @ORM\Entity(repositoryClass="App\Repository\BoardMember\BoardMemberRepository")
- */
+#[ORM\Table(name: 'board_member')]
+#[ORM\Entity(repositoryClass: BoardMemberRepository::class)]
 class BoardMember
 {
     public const AREA_FRANCE_METROPOLITAN = 'metropolitan';
@@ -24,23 +23,17 @@ class BoardMember
         'board_member.area.abroad' => self::AREA_ABROAD,
     ];
 
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Adherent", inversedBy="boardMember")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\OneToOne(inversedBy: 'boardMember', targetEntity: Adherent::class)]
     private $adherent;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=50)
      *
      * @Assert\NotBlank(message="board_member.area.invalid_choice", groups={"elections"})
      * @Assert\Choice(
@@ -48,47 +41,34 @@ class BoardMember
      *     message="board_member.area.invalid_choice"
      * )
      */
+    #[ORM\Column(length: 50)]
     private $area;
 
     /**
      * @var Role[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\BoardMember\Role", inversedBy="boardMembers", cascade={"persist"})
-     * @ORM\JoinTable(
-     *     name="board_member_roles",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="board_member_id", referencedColumnName="id", onDelete="CASCADE")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")
-     *     }
-     * )
-     * @ORM\OrderBy({"name": "ASC"})
      * @Assert\NotNull
      */
+    #[ORM\JoinTable(name: 'board_member_roles')]
+    #[ORM\JoinColumn(name: 'board_member_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'boardMembers', cascade: ['persist'])]
+    #[ORM\OrderBy(['name' => 'ASC'])]
     private $roles;
 
     /**
      * @var BoardMember[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\BoardMember\BoardMember", inversedBy="owners", cascade={"persist"})
-     * @ORM\JoinTable(
-     *     name="saved_board_members",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="board_member_owner_id", referencedColumnName="id")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="board_member_saved_id", referencedColumnName="id")
-     *     }
-     * )
      */
+    #[ORM\JoinTable(name: 'saved_board_members')]
+    #[ORM\JoinColumn(name: 'board_member_owner_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'board_member_saved_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: BoardMember::class, inversedBy: 'owners', cascade: ['persist'])]
     private $savedMembers;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\BoardMember\BoardMember", mappedBy="savedMembers")
-     *
      * @var BoardMember[]
      */
+    #[ORM\ManyToMany(targetEntity: BoardMember::class, mappedBy: 'savedMembers')]
     private $owners;
 
     public function __construct()

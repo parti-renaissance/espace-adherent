@@ -5,24 +5,19 @@ namespace App\Entity\ManagedArea;
 use App\Entity\Geo\Zone;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class CandidateManagedArea
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Zone::class, cascade: ['persist'])]
     private $zone;
 
     public function getId(): ?int

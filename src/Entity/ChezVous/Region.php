@@ -2,6 +2,7 @@
 
 namespace App\Entity\ChezVous;
 
+use App\Repository\ChezVous\RegionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,47 +10,42 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ChezVous\RegionRepository")
- * @ORM\Table(name="chez_vous_regions")
- *
  * @UniqueEntity("code")
  */
+#[ORM\Table(name: 'chez_vous_regions')]
+#[ORM\Entity(repositoryClass: RegionRepository::class)]
 class Region
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
      */
+    #[ORM\Column(length: 100)]
     private $name;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=10, unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="10")
      */
+    #[ORM\Column(length: 10, unique: true)]
     private $code;
 
     /**
      * @var Department[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity=Department::class, mappedBy="region", cascade={"all"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      */
+    #[ORM\OneToMany(mappedBy: 'region', targetEntity: Department::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private $departments;
 
     public function __construct(?string $name = null, ?string $code = null)

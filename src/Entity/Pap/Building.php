@@ -5,6 +5,7 @@ namespace App\Entity\Pap;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Entity\EntityIdentityTrait;
+use App\Repository\Pap\BuildingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -15,9 +16,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Pap\BuildingRepository")
- * @ORM\Table(name="pap_building")
- *
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {
@@ -42,60 +40,44 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  */
+#[ORM\Table(name: 'pap_building')]
+#[ORM\Entity(repositoryClass: BuildingRepository::class)]
 class Building implements CampaignStatisticsOwnerInterface
 {
     use EntityIdentityTrait;
     use CampaignStatisticsTrait;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Choice(
      *     callback={"App\Pap\BuildingTypeEnum", "toArray"},
      *     message="pap.building.type.invalid_choice"
      * )
      */
     #[Groups(['pap_address_list', 'pap_building_read', 'pap_building_write', 'pap_address_read', 'pap_building_statistics_read'])]
+    #[ORM\Column(nullable: true)]
     private ?string $type = null;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Pap\Address", inversedBy="building")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
     #[Groups(['pap_campaign_history_read_list', 'pap_building_statistics_read'])]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\OneToOne(inversedBy: 'building', targetEntity: Address::class)]
     private ?Address $address = null;
 
     /**
      * @var BuildingBlock[]|Collection
      *
      * @ApiSubresource
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Pap\BuildingBlock",
-     *     mappedBy="building",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     * )
-     * @ORM\OrderBy({"name": "ASC"})
      */
+    #[ORM\OneToMany(mappedBy: 'building', targetEntity: BuildingBlock::class, cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OrderBy(['name' => 'ASC'])]
     private Collection $buildingBlocks;
 
     /**
      * @var BuildingStatistics[]|Collection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Pap\BuildingStatistics",
-     *     mappedBy="building",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     fetch="EXTRA_LAZY",
-     * )
      */
+    #[ORM\OneToMany(mappedBy: 'building', targetEntity: BuildingStatistics::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private Collection $statistics;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign")
-     */
+    #[ORM\ManyToOne(targetEntity: Campaign::class)]
     private ?Campaign $currentCampaign = null;
 
     public function __construct(?UuidInterface $uuid = null)

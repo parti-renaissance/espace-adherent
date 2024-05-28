@@ -2,26 +2,20 @@
 
 namespace App\Entity\LocalElection;
 
+use App\Repository\LocalElection\CandidacyRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\LocalElection\CandidacyRepository")
- * @ORM\Table(
- *     name="local_election_candidacy",
- *     indexes={
- *         @ORM\Index(columns={"email"}),
- *     }
- * )
- */
+#[ORM\Table(name: 'local_election_candidacy')]
+#[ORM\Index(columns: ['email'])]
+#[ORM\Entity(repositoryClass: CandidacyRepository::class)]
 class Candidacy extends BaseLocalElectionCandidacy
 {
     /**
      * @var CandidaciesGroup|null
      *
      * @Gedmo\SortableGroup
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\LocalElection\CandidaciesGroup", inversedBy="candidacies")
      */
+    #[ORM\ManyToOne(targetEntity: CandidaciesGroup::class, inversedBy: 'candidacies')]
     protected $candidaciesGroup;
 }

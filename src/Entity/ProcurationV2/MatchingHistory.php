@@ -7,56 +7,38 @@ use App\Entity\Administrator;
 use App\Procuration\V2\MatchingHistoryActionEnum;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="procuration_v2_matching_history")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'procuration_v2_matching_history')]
+#[ORM\Entity]
 class MatchingHistory
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     protected ?int $id = null;
 
-    /**
-     * @ORM\Column(enumType=MatchingHistoryActionEnum::class)
-     */
+    #[ORM\Column(enumType: MatchingHistoryActionEnum::class)]
     public MatchingHistoryActionEnum $status;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     public \DateTimeInterface $createdAt;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": 0})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     public bool $emailCopy;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationV2\Request", inversedBy="matchingHistories")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Request::class, inversedBy: 'matchingHistories')]
     public Request $request;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationV2\Proxy")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Proxy::class)]
     public Proxy $proxy;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $matcher = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     public ?Administrator $adminMatcher = null;
 
     public function __construct(

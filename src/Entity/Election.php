@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\ElectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,62 +10,55 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="elections")
- * @ORM\Entity(repositoryClass="App\Repository\ElectionRepository")
- *
  * @UniqueEntity("name")
  */
+#[ORM\Table(name: 'elections')]
+#[ORM\Entity(repositoryClass: ElectionRepository::class)]
 class Election
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(unique: true)]
     private $name = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'text')]
     private $introduction = '';
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $proposalContent;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $requestContent;
 
     /**
      * @var ElectionRound[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\ElectionRound", mappedBy="election", cascade={"all"}, orphanRemoval=true)
-     *
      * @Assert\Count(min=1, minMessage="election.rounds.min_count")
      */
+    #[ORM\OneToMany(mappedBy: 'election', targetEntity: ElectionRound::class, cascade: ['all'], orphanRemoval: true)]
     private $rounds;
 
     public function __construct()

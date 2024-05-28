@@ -4,46 +4,41 @@ namespace App\Entity\Election;
 
 use App\Entity\City;
 use App\Entity\ElectionRound;
+use App\Repository\Election\VoteResultListCollectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Election\VoteResultListCollectionRepository")
- */
+#[ORM\Entity(repositoryClass: VoteResultListCollectionRepository::class)]
 class VoteResultListCollection
 {
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var City
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\City")
      */
+    #[ORM\ManyToOne(targetEntity: City::class)]
     private $city;
 
     /**
      * @var VoteResultList[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Election\VoteResultList", mappedBy="listCollection", cascade={"all"}, orphanRemoval=true)
-     *
      * @Assert\Count(min=1)
      */
+    #[ORM\OneToMany(mappedBy: 'listCollection', targetEntity: VoteResultList::class, cascade: ['all'], orphanRemoval: true)]
     private $lists;
 
     /**
      * @var ElectionRound
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ElectionRound")
      */
+    #[ORM\ManyToOne(targetEntity: ElectionRound::class)]
     private $electionRound;
 
     public function __construct(City $city, ElectionRound $electionRound)

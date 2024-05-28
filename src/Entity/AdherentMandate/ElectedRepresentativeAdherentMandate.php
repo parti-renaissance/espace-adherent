@@ -8,6 +8,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Adherent\MandateTypeEnum;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
+use App\Repository\AdherentMandate\ElectedRepresentativeAdherentMandateRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -48,38 +49,34 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(SearchFilter::class, properties={
  *     "adherent.uuid": "exact",
  * })
- *
- * @ORM\Entity(repositoryClass="App\Repository\AdherentMandate\ElectedRepresentativeAdherentMandateRepository")
  */
+#[ORM\Entity(repositoryClass: ElectedRepresentativeAdherentMandateRepository::class)]
 class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
 {
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL)
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
+    #[ORM\Column]
     public string $mandateType;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255)
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
+    #[ORM\Column(nullable: true)]
     public ?string $delegation = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     *
      * @Assert\Expression(
      *     "value !== null or (value == null and this.mandateType === constant('App\\Adherent\\MandateTypeEnum::DEPUTE_EUROPEEN'))",
      *     message="Le périmètre géographique est obligatoire."
      * )
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
     public ?Zone $zone = null;
 
     public static function create(

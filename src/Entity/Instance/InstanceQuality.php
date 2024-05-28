@@ -5,13 +5,12 @@ namespace App\Entity\Instance;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Instance\InstanceQualityScopeEnum;
+use App\Repository\Instance\InstanceQualityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Instance\InstanceQualityRepository")
- */
+#[ORM\Entity(repositoryClass: InstanceQualityRepository::class)]
 class InstanceQuality
 {
     use EntityIdentityTrait;
@@ -19,30 +18,26 @@ class InstanceQuality
 
     /**
      * @var string
-     *
-     * @ORM\Column(unique=true)
      */
+    #[ORM\Column(unique: true)]
     private $code;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $label;
 
     /**
      * @var string[]
-     *
-     * @ORM\Column(type="simple_array")
      */
+    #[ORM\Column(type: 'simple_array')]
     private $scopes;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": true})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $custom;
 
     public function __construct(string $code, array $scopes, bool $custom = true, ?UuidInterface $uuid = null)

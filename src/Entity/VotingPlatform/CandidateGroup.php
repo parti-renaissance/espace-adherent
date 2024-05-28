@@ -3,6 +3,7 @@
 namespace App\Entity\VotingPlatform;
 
 use App\Entity\EntityIdentityTrait;
+use App\Repository\VotingPlatform\CandidateGroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -10,52 +11,39 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\CandidateGroupRepository")
- * @ORM\Table(name="voting_platform_candidate_group")
- */
+#[ORM\Table(name: 'voting_platform_candidate_group')]
+#[ORM\Entity(repositoryClass: CandidateGroupRepository::class)]
 class CandidateGroup
 {
     use EntityIdentityTrait;
 
     /**
      * @var Candidate[]|ArrayCollection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\VotingPlatform\Candidate",
-     *     cascade={"all"},
-     *     mappedBy="candidateGroup",
-     *     orphanRemoval=true
-     * )
      */
+    #[ORM\OneToMany(mappedBy: 'candidateGroup', targetEntity: Candidate::class, cascade: ['all'], orphanRemoval: true)]
     private $candidates;
 
     /**
      * @var ElectionPool
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\ElectionPool", inversedBy="candidateGroups")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectionPool::class, inversedBy: 'candidateGroups')]
     private $electionPool;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
     #[Groups(['election_result'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $elected = false;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $label;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     public ?string $mediaFilePath = null;
 
     public function __construct(?UuidInterface $uuid = null)

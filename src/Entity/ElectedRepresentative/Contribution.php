@@ -6,80 +6,57 @@ use App\ElectedRepresentative\Contribution\ContributionTypeEnum;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\GoCardless\Subscription;
+use App\Repository\ElectedRepresentative\ContributionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\ContributionRepository")
- * @ORM\Table(name="elected_representative_contribution")
- */
+#[ORM\Table(name: 'elected_representative_contribution')]
+#[ORM\Entity(repositoryClass: ContributionRepository::class)]
 class Contribution
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
     #[Groups(['elected_representative_list', 'elected_representative_read'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $startDate = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
     #[Groups(['elected_representative_list', 'elected_representative_read'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $endDate = null;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     public ?string $gocardlessCustomerId = null;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     public ?string $gocardlessBankAccountId = null;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": true})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     public ?bool $gocardlessBankAccountEnabled = null;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     public ?string $gocardlessMandateId = null;
 
-    /**
-     * @ORM\Column(length=20)
-     */
     #[Groups(['elected_representative_list', 'elected_representative_read'])]
     #[SerializedName('status')]
+    #[ORM\Column(length: 20)]
     public ?string $gocardlessMandateStatus = null;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     public ?string $gocardlessSubscriptionId = null;
 
-    /**
-     * @ORM\Column(length=20)
-     */
+    #[ORM\Column(length: 20)]
     public ?string $gocardlessSubscriptionStatus = null;
 
-    /**
-     * @ORM\Column(length=20)
-     */
     #[Groups(['elected_representative_list', 'elected_representative_read'])]
+    #[ORM\Column(length: 20)]
     public ?string $type = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="contributions")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectedRepresentative::class, inversedBy: 'contributions')]
     public ?ElectedRepresentative $electedRepresentative = null;
 
     public function __construct(?UuidInterface $uuid = null)

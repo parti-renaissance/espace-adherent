@@ -20,9 +20,12 @@ use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Team\Team;
+use App\EntityListener\AlgoliaIndexListener;
+use App\EntityListener\DynamicLinkListener;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Phoning\CampaignHistoryStatusEnum;
+use App\Repository\Phoning\CampaignRepository;
 use App\Validator\Scope\ScopeVisibility;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -34,14 +37,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Phoning\CampaignRepository")
- * @ORM\Table(name="phoning_campaign")
- *
- * @ORM\EntityListeners({
- *     "App\EntityListener\DynamicLinkListener",
- *     "App\EntityListener\AlgoliaIndexListener",
- * })
- *
  * @ApiResource(
  *     shortName="PhoningCampaign",
  *     attributes={
@@ -120,6 +115,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ScopeVisibility
  */
+#[ORM\Table(name: 'phoning_campaign')]
+#[ORM\Entity(repositoryClass: CampaignRepository::class)]
+#[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
 class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;
@@ -132,91 +130,79 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
     #[Groups(['phoning_campaign_read', 'phoning_campaign_read_with_score', 'phoning_campaign_list', 'phoning_campaign_write', 'phoning_campaign_history_read_list', 'phoning_campaign_replies_list'])]
+    #[ORM\Column]
     private $title;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
     #[Groups(['phoning_campaign_read', 'phoning_campaign_read_with_score', 'phoning_campaign_write'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $brief;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer")
-     *
      * @Assert\NotBlank
      * @Assert\GreaterThan(value="0")
      */
     #[Groups(['phoning_campaign_read', 'phoning_campaign_read_with_score', 'phoning_campaign_list', 'phoning_campaign_write'])]
+    #[ORM\Column(type: 'integer')]
     private $goal;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(type="datetime", nullable=true)
-     *
      * @Assert\NotBlank(groups={"regular_campaign"})
      */
     #[Groups(['phoning_campaign_read', 'phoning_campaign_read_with_score', 'phoning_campaign_list', 'phoning_campaign_write'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $finishAt;
 
     /**
      * @var Team|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Team\Team")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     *
      * @Assert\NotBlank(groups={"regular_campaign"})
      */
     #[Groups(['phoning_campaign_read', 'phoning_campaign_list', 'phoning_campaign_write'])]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Team::class)]
     private $team;
 
     /**
      * @var AudienceSnapshot|null
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Audience\AudienceSnapshot", cascade={"all"}, orphanRemoval=true)
-     * @ORM\JoinColumn
-     *
      * @Assert\NotBlank(groups={"regular_campaign"})
      */
     #[Groups(['audience_read', 'phoning_campaign_read', 'phoning_campaign_write'])]
+    #[ORM\JoinColumn]
+    #[ORM\OneToOne(targetEntity: AudienceSnapshot::class, cascade: ['all'], orphanRemoval: true)]
     private $audience;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Jecoute\Survey")
-     * @ORM\JoinColumn(nullable=false)
-     *
      * @Assert\NotBlank
      */
     #[Groups(['phoning_campaign_read', 'phoning_campaign_write'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Survey::class)]
     private $survey;
 
     /**
      * @var Collection|CampaignHistory[]
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Phoning\CampaignHistory", mappedBy="campaign", fetch="EXTRA_LAZY")
      */
+    #[ORM\OneToMany(mappedBy: 'campaign', targetEntity: CampaignHistory::class, fetch: 'EXTRA_LAZY')]
     private $campaignHistories;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
     #[Groups(['phoning_campaign_read', 'phoning_campaign_read_with_score'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $permanent = false;
 
-    /**
-     * @ORM\Column(type="integer", options={"default": 0})
-     */
     #[Groups(['phoning_campaign_read', 'phoning_campaign_list'])]
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private int $participantsCount = 0;
 
     public function __construct(

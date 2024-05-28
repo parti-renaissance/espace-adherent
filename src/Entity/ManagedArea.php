@@ -5,27 +5,23 @@ namespace App\Entity;
 use App\Validator\TagAllInManagedAreaCodes;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\MappedSuperclass
- */
+#[ORM\MappedSuperclass]
 abstract class ManagedArea
 {
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var array
      *
-     * @ORM\Column(type="simple_array", nullable=true)
-     *
      * @TagAllInManagedAreaCodes
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $codes;
 
     public function getId(): ?int

@@ -13,9 +13,7 @@ trait ImageTrait
      */
     protected $image;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     protected $imageName;
 
     private $removeImage = false;

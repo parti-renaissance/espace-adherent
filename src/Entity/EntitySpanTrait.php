@@ -9,25 +9,22 @@ trait EntitySpanTrait
 {
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $onGoing = false;
 
     /**
      * @var \DateTimeInterface|null
      *
-     * @ORM\Column(type="date")
-     *
      * @Assert\LessThanOrEqual("today")
      */
+    #[ORM\Column(type: 'date')]
     private $startedAt;
 
     /**
      * @var \DateTimeInterface|null
-     *
-     * @ORM\Column(type="date", nullable=true)
      */
+    #[ORM\Column(type: 'date', nullable: true)]
     private $endedAt;
 
     public function isOnGoing(): bool

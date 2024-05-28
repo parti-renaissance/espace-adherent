@@ -5,45 +5,37 @@ namespace App\Entity\Reporting;
 use App\Entity\Administrator;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class AdministratorExportHistory
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var Administrator
-     *
-     * @ORM\ManyToOne(targetEntity=Administrator::class)
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $administrator;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $routeName;
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="json")
      */
+    #[ORM\Column(type: 'json')]
     private $parameters;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $exportedAt;
 
     public function __construct(

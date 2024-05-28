@@ -3,67 +3,58 @@
 namespace App\Entity\ElectedRepresentative;
 
 use App\Exception\BadPoliticalFunctionNameException;
+use App\Repository\ElectedRepresentative\PoliticalFunctionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\PoliticalFunctionRepository")
- * @ORM\Table(name="elected_representative_political_function")
- */
+#[ORM\Table(name: 'elected_representative_political_function')]
+#[ORM\Entity(repositoryClass: PoliticalFunctionRepository::class)]
 class PoliticalFunction
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     */
     #[Groups(['elected_mandate_read'])]
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum", "toArray"})
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read', 'elected_representative_list'])]
+    #[ORM\Column]
     private $name;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max="255")
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
+    #[ORM\Column(nullable: true)]
     private $clarification;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": true})
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $onGoing = true;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(type="date")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
+    #[ORM\Column(type: 'date')]
     private $beginAt;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="date", nullable=true)
      *
      * @Assert\Expression(
      *     "value == null or value > this.getBeginAt()",
@@ -75,26 +66,25 @@ class PoliticalFunction
      * )
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
+    #[ORM\Column(type: 'date', nullable: true)]
     private $finishAt;
 
     /**
      * @var ElectedRepresentative|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="politicalFunctions")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectedRepresentative::class, inversedBy: 'politicalFunctions')]
     private $electedRepresentative;
 
     /**
      * @var Mandate|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\Mandate", inversedBy="politicalFunctions")
-     * @ORM\JoinColumn(nullable=false)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Mandate::class, inversedBy: 'politicalFunctions')]
     private $mandate;
 
     public function __construct(

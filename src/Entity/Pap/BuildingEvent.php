@@ -5,89 +5,76 @@ namespace App\Entity\Pap;
 use App\Entity\Adherent;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
+use App\Repository\Pap\BuildingEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Pap\BuildingEventRepository")
- * @ORM\Table(name="pap_building_event")
- */
+#[ORM\Table(name: 'pap_building_event')]
+#[ORM\Entity(repositoryClass: BuildingEventRepository::class)]
 class BuildingEvent implements AuthorInterface
 {
     use EntityIdentityTrait;
 
     /**
-     * @ORM\Column(length=25)
-     *
      * @Assert\NotBlank
      * @Assert\Choice(
      *     callback={"App\Pap\BuildingEventActionEnum", "toArray"}
      * )
      */
     #[Groups(['pap_building_event_write'])]
+    #[ORM\Column(length: 25)]
     private ?string $action = null;
 
     /**
-     * @ORM\Column(length=25)
-     *
      * @Assert\NotBlank
      * @Assert\Choice(
      *     callback={"App\Pap\BuildingEventTypeEnum", "toArray"}
      * )
      */
     #[Groups(['pap_building_event_write'])]
+    #[ORM\Column(length: 25)]
     private ?string $type = null;
 
-    /**
-     * @ORM\Column(length=50, nullable=true)
-     */
     #[Groups(['pap_building_event_write'])]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $identifier = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Building")
-     *
      * @Assert\NotNull
      */
+    #[ORM\ManyToOne(targetEntity: Building::class)]
     private Building $building;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign")
-     * @ORM\JoinColumn(nullable=false)
-     *
      * @Assert\NotNull
      */
     #[Groups(['pap_building_event_write'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Campaign::class)]
     private ?Campaign $campaign = null;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
      * @Gedmo\Timestampable(on="create")
      */
+    #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $createdAt = null;
 
     /**
      * @var Adherent|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", fetch="EAGER")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, fetch: 'EAGER')]
     private $author;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['pap_building_event_write'])]
+    #[ORM\Column(nullable: true)]
     public ?string $closeType = null;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
-     */
     #[Groups(['pap_building_event_write'])]
+    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     public ?int $programs = null;
 
     public function __construct(

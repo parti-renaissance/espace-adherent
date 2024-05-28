@@ -2,11 +2,10 @@
 
 namespace App\Entity;
 
+use App\Repository\MyEuropeChoiceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\MyEuropeChoiceRepository")
- */
+#[ORM\Entity(repositoryClass: MyEuropeChoiceRepository::class)]
 class MyEuropeChoice extends InteractiveChoice
 {
     public const MAIL_INTRODUCTION_KEY = 'S00C01';

@@ -2,15 +2,14 @@
 
 namespace App\Entity;
 
+use App\Repository\ProposalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="proposals")
- * @ORM\Entity(repositoryClass="App\Repository\ProposalRepository")
- */
+#[ORM\Table(name: 'proposals')]
+#[ORM\Entity(repositoryClass: ProposalRepository::class)]
 class Proposal implements EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface
 {
     use EntityTimestampableTrait;
@@ -19,50 +18,44 @@ class Proposal implements EntityContentInterface, EntitySoftDeletedInterface, In
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="smallint")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'smallint')]
     private $position;
 
     /**
      * @var ProposalTheme[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ProposalTheme")
      */
+    #[ORM\ManyToMany(targetEntity: ProposalTheme::class)]
     private $themes;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $published = false;
 
     /**
      * @var Media|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Media")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\ManyToOne(targetEntity: Media::class)]
     private $media;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $displayMedia = true;
 
     public function __construct()

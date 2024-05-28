@@ -14,7 +14,9 @@ use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\ZoneableEntity;
+use App\EntityListener\AlgoliaIndexListener;
 use App\Geocoder\GeoPointInterface;
+use App\Repository\Action\ActionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -24,11 +26,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Action\ActionRepository")
- * @ORM\Table(name="vox_action")
- *
- * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
- *
  * @ApiResource(
  *     attributes={
  *         "denormalization_context": {"groups": {"action_write"}},
@@ -80,6 +77,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
+#[ORM\Table(name: 'vox_action')]
+#[ORM\Entity(repositoryClass: ActionRepository::class)]
+#[ORM\EntityListeners([AlgoliaIndexListener::class])]
 class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity, IndexableEntityInterface
 {
     use EntityIdentityTrait;
@@ -92,58 +92,47 @@ class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity, Inde
     public const STATUS_CANCELLED = 'cancelled';
 
     /**
-     * @ORM\Column(name="`type`")
-     *
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Action\ActionTypeEnum", "toArray"})
      */
     #[Groups(['action_read', 'action_read_list', 'action_write'])]
+    #[ORM\Column(name: '`type`')]
     public ?string $type = null;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['action_read', 'action_read_list', 'action_write'])]
+    #[ORM\Column(type: 'datetime')]
     public ?\DateTime $date = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     #[Groups(['action_read', 'action_write'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     public ?string $description = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Action\ActionParticipant", mappedBy="action", cascade={"persist"}, fetch="EXTRA_LAZY")
-     */
+    #[ORM\OneToMany(mappedBy: 'action', targetEntity: ActionParticipant::class, cascade: ['persist'], fetch: 'EXTRA_LAZY')]
     private Collection $participants;
 
     /**
      * @var ZoneCollection|Zone[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone")
-     * @ORM\JoinTable(name="vox_action_zone")
      */
     #[Groups(['action_read'])]
+    #[ORM\JoinTable(name: 'vox_action_zone')]
+    #[ORM\ManyToMany(targetEntity: Zone::class)]
     protected Collection $zones;
 
-    /**
-     * @ORM\Column(options={"default": "scheduled"})
-     */
     #[Groups(['action_read', 'action_read_list'])]
+    #[ORM\Column(options: ['default' => 'scheduled'])]
     public string $status = self::STATUS_SCHEDULED;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $canceledAt = null;
 
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
         $this->participants = new ArrayCollection();
-        $this->zones = new ArrayCollection();
+        $this->zones = new ZoneCollection();
     }
 
     #[Groups(['action_read_list'])]

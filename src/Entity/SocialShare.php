@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
+use App\Repository\SocialShareRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\SocialShareRepository")
- * @ORM\Table(name="social_shares")
- */
+#[ORM\Table(name: 'social_shares')]
+#[ORM\Entity(repositoryClass: SocialShareRepository::class)]
 class SocialShare
 {
     use EntityTimestampableTrait;
@@ -25,84 +24,71 @@ class SocialShare
         self::TYPE_PDF,
     ];
 
-    /**
-     * @ORM\Column(type="bigint")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'bigint')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
-     * @ORM\Column(length=100)
-     *
      * @Assert\Length(max=100)
      */
+    #[ORM\Column(length: 100)]
     private $name = '';
 
     /**
-     * @ORM\Column
-     *
      * @Gedmo\Slug(fields={"name"})
      */
+    #[ORM\Column]
     private $slug;
 
     /**
-     * @ORM\Column(length=10)
-     *
      * @Assert\NotBlank
      * @Assert\Choice({"image", "video", "pdf"})
      */
+    #[ORM\Column(length: 10)]
     private $type = self::TYPE_IMAGE;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=200)
      */
+    #[ORM\Column(type: 'text')]
     private $description;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\Url
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $defaultUrl = '';
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(nullable: true)]
     private $facebookUrl = '';
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(nullable: true)]
     private $twitterUrl = '';
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SocialShareCategory")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\ManyToOne(targetEntity: SocialShareCategory::class)]
     private $socialShareCategory;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Media", cascade={"persist"})
-     *
      * @Assert\NotBlank
      */
+    #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist'])]
     private $media;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $published;
 
     public function __construct(string $name = '', int $position = 1, $published = false)

@@ -10,9 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
 {
     use TimestampableEntity;
@@ -23,99 +21,83 @@ class MailchimpCampaign implements AdherentMessageSynchronizedObjectInterface
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     protected $id;
 
     /**
      * @var MailchimpCampaignReport|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\AdherentMessage\MailchimpCampaignReport", cascade={"all"})
      */
+    #[ORM\OneToOne(targetEntity: MailchimpCampaignReport::class, cascade: ['all'])]
     private $report;
 
     /**
      * @var string
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $externalId;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $synchronized = false;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
      */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $recipientCount;
 
     /**
      * @var AdherentMessageInterface|AbstractAdherentMessage
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\AdherentMessage\AbstractAdherentMessage", inversedBy="mailchimpCampaigns")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: AbstractAdherentMessage::class, inversedBy: 'mailchimpCampaigns')]
     private $message;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $staticSegmentId;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $label;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $status = self::STATUS_DRAFT;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $detail;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $city;
 
     /**
      * @var MailchimpSegment[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\MailchimpSegment", cascade={"all"})
      */
+    #[ORM\ManyToMany(targetEntity: MailchimpSegment::class, cascade: ['all'])]
     private $mailchimpSegments;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $mailchimpListType = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     */
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
     private ?Zone $zone = null;
 
     public function __construct(AdherentMessageInterface $message)

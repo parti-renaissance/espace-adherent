@@ -27,6 +27,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
 use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\ExposedObjectInterface;
+use App\Entity\Geo\Zone;
 use App\Entity\ImageTrait;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\NullablePostAddress;
@@ -34,12 +35,15 @@ use App\Entity\ReferentTag;
 use App\Entity\ReferentTaggableEntity;
 use App\Entity\Report\ReportableInterface;
 use App\Entity\ZoneableEntity;
+use App\EntityListener\AlgoliaIndexListener;
+use App\EntityListener\DynamicLinkListener;
 use App\Event\EventTypeEnum;
 use App\Event\EventVisibilityEnum;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Geocoder\GeoPointInterface;
 use App\Report\ReportType;
+use App\Repository\Event\BaseEventRepository;
 use App\Validator\AdherentInterests as AdherentInterestsConstraint;
 use App\Validator\DateRange;
 use App\Validator\EventCategory as AssertValidEventCategory;
@@ -54,27 +58,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Event\BaseEventRepository")
- * @ORM\Table(
- *     name="events",
- *     indexes={
- *         @ORM\Index(columns={"begin_at"}),
- *         @ORM\Index(columns={"finish_at"}),
- *         @ORM\Index(columns={"status"})
- *     }
- * )
- * @ORM\AssociationOverrides({
- *     @ORM\AssociationOverride(name="zones",
- *         joinTable=@ORM\JoinTable(name="event_zone")
- *     )
- * })
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({
- *     EventTypeEnum::TYPE_DEFAULT: "DefaultEvent",
- *     EventTypeEnum::TYPE_COMMITTEE: "CommitteeEvent",
- * })
- *
  * @DateRange(
  *     startDateField="beginAt",
  *     endDateField="finishAt",
@@ -193,13 +176,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  * @ApiFilter(OrderFilter::class, properties={"createdAt", "beginAt", "finishAt"})
  *
- * @ORM\EntityListeners({
- *     "App\EntityListener\DynamicLinkListener",
- *     "App\EntityListener\AlgoliaIndexListener",
- * })
- *
  * @AssertValidEventCategory
  */
+#[ORM\Table(name: '`events`')]
+#[ORM\Index(columns: ['begin_at'])]
+#[ORM\Index(columns: ['finish_at'])]
+#[ORM\Index(columns: ['status'])]
+#[ORM\Entity(repositoryClass: BaseEventRepository::class)]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap([EventTypeEnum::TYPE_DEFAULT => DefaultEvent::class, EventTypeEnum::TYPE_COMMITTEE => CommitteeEvent::class])]
+#[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
 abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, ExposedObjectInterface
 {
     use EntityIdentityTrait;
@@ -230,38 +217,36 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     /**
      * @var UuidInterface
      *
-     * @ORM\Column(type="uuid", unique=true)
-     *
      * @ApiProperty(identifier=true)
      */
     #[Groups(['event_read', 'event_list_read'])]
+    #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
 
     /**
-     * @var Collection|ReferentTag[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
-     * @ORM\JoinTable(
-     *     name="event_referent_tag",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="referent_tag_id", referencedColumnName="id", onDelete="CASCADE")
-     *     }
-     * )
+     * @var ZoneCollection|Zone[]
      */
+    #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
+    #[ORM\JoinTable(name: 'event_zone')]
+    protected Collection $zones;
+
+    /**
+     * @var Collection|ReferentTag[]
+     */
+    #[ORM\JoinTable(name: 'event_referent_tag')]
+    #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'referent_tag_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
     protected $referentTags;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100)
-     *
      * @Assert\NotBlank
      * @Assert\Length(allowEmptyString=true, min=5, max=100)
      */
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[ORM\Column(length: 100)]
     protected $name;
 
     /**
@@ -270,14 +255,13 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * @var string|null
      *
      * @Assert\NotBlank
-     * @ORM\Column(length=100)
      */
+    #[ORM\Column(length: 100)]
     protected $canonicalName;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=130, unique=true)
      * @Gedmo\Slug(
      *     fields={"beginAt", "canonicalName"},
      *     dateFormat="Y-m-d",
@@ -285,169 +269,155 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      * )
      */
     #[Groups(['event_read'])]
+    #[ORM\Column(length: 130, unique: true)]
     protected $slug;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      * @Assert\Length(allowEmptyString=true, min=10)
      */
     #[Groups(['event_read', 'event_write'])]
+    #[ORM\Column(type: 'text')]
     protected $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank
      * @Assert\Timezone
      */
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[ORM\Column(length: 50)]
     protected $timeZone = GeoCoder::DEFAULT_TIME_ZONE;
 
     /**
      * @var \DateTimeInterface|null
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[ORM\Column(type: 'datetime')]
     protected $beginAt;
 
     /**
      * @var \DateTimeInterface|null
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Assert\NotBlank
      * @Assert\Expression("!value or value > this.getBeginAt()", message="committee.event.invalid_date_range")
      */
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[ORM\Column(type: 'datetime')]
     protected $finishAt;
 
     /**
      * @var Adherent|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="RESTRICT")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['event_read', 'event_list_read'])]
+    #[ORM\JoinColumn(onDelete: 'RESTRICT')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     protected $organizer;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="smallint", options={"unsigned": true})
      */
     #[Groups(['event_read', 'event_list_read'])]
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
     protected $participantsCount = 0;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=20)
      */
     #[Groups(['event_read', 'event_list_read'])]
+    #[ORM\Column(length: 20)]
     protected $status = self::STATUS_SCHEDULED;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": true})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     protected $published = true;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     protected $reminded = false;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $electoral = false;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer", nullable=true)
-     *
      * @Assert\GreaterThan("0", message="committee.event.invalid_capacity")
      */
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[ORM\Column(type: 'integer', nullable: true)]
     protected $capacity;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     *
      * @Assert\Url
      */
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $visioUrl;
 
     /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     *
      * @AdherentInterestsConstraint
      */
     #[Groups(['event_write'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $interests = [];
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Choice(choices=self::MODES)
      */
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[ORM\Column(nullable: true)]
     private $mode;
 
     /**
      * @var EventCategoryInterface|EventCategory|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event\EventCategory")
      */
     #[Groups(['event_read', 'event_list_read', 'event_write'])]
+    #[ORM\ManyToOne(targetEntity: EventCategory::class)]
     protected $category;
 
     /**
-     * @ORM\Embedded(class="App\Entity\NullablePostAddress", columnPrefix="address_")
-     *
      * @var NullablePostAddress
-     *
      * @Assert\Valid
      */
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[ORM\Embedded(class: NullablePostAddress::class, columnPrefix: 'address_')]
     protected $postAddress;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $renaissanceEvent = false;
 
-    /**
-     * @ORM\Column(enumType=EventVisibilityEnum::class, options={"default": "public"})
-     */
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[ORM\Column(enumType: EventVisibilityEnum::class, options: ['default' => 'public'])]
     public EventVisibilityEnum $visibility = EventVisibilityEnum::PUBLIC;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     public ?string $liveUrl = null;
+
+    public function __construct(?UuidInterface $uuid = null)
+    {
+        $this->uuid = $uuid ?? Uuid::uuid4();
+
+        $this->referentTags = new ArrayCollection();
+        $this->zones = new ZoneCollection();
+    }
 
     public function getCategory(): ?EventCategoryInterface
     {
@@ -464,14 +434,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         return $this->category?->getName();
     }
 
-    public function __construct(?UuidInterface $uuid = null)
-    {
-        $this->uuid = $uuid ?? Uuid::uuid4();
-
-        $this->referentTags = new ArrayCollection();
-        $this->zones = new ZoneCollection();
-    }
-
     public function __toString(): string
     {
         return $this->name ?: '';
@@ -484,7 +446,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
 
     public function getName(): string
     {
-        return $this->name;
+        return $this->name ?? '';
     }
 
     public function getCanonicalName(): ?string

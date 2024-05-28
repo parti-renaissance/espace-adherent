@@ -2,28 +2,25 @@
 
 namespace App\Entity;
 
+use App\Repository\DonatorIdentifierRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="donator_identifier")
- * @ORM\Entity(repositoryClass="App\Repository\DonatorIdentifierRepository")*
- */
+#[ORM\Table(name: 'donator_identifier')]
+#[ORM\Entity(repositoryClass: DonatorIdentifierRepository::class)]
 class DonatorIdentifier
 {
     /**
      * The unique auto incremented primary key.
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     /**
      * The last unique account identifier of donators.
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $identifier;
 
     public function getId(): int

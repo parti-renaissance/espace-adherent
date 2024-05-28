@@ -6,16 +6,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class PersonOrganizationalChartItem extends AbstractOrganizationalChartItem
 {
     /**
      * @var Collection|ReferentPersonLink[]
-     *
-     * @ORM\OneToMany(targetEntity="ReferentPersonLink", mappedBy="personOrganizationalChartItem", cascade={"persist"})
      */
+    #[ORM\OneToMany(mappedBy: 'personOrganizationalChartItem', targetEntity: ReferentPersonLink::class, cascade: ['persist'])]
     private $referentPersonLinks;
 
     public function __construct(?string $label = null, ?AbstractOrganizationalChartItem $parent = null)

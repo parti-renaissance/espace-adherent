@@ -2,6 +2,7 @@
 
 namespace App\Entity\ChezVous;
 
+use App\Repository\ChezVous\DepartmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,65 +10,58 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ChezVous\DepartmentRepository")
- * @ORM\Table(name="chez_vous_departments")
- *
  * @UniqueEntity("code")
  */
+#[ORM\Table(name: 'chez_vous_departments')]
+#[ORM\Entity(repositoryClass: DepartmentRepository::class)]
 class Department
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
      */
+    #[ORM\Column(length: 100)]
     private $name;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100, nullable=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
      */
+    #[ORM\Column(length: 100, nullable: true)]
     private $label;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=10, unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="10")
      */
+    #[ORM\Column(length: 10, unique: true)]
     private $code;
 
     /**
      * @var Region|null
-     *
-     * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="departments", fetch="EAGER")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Region::class, fetch: 'EAGER', inversedBy: 'departments')]
     private $region;
 
     /**
      * @var City[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity=City::class, mappedBy="department", cascade={"all"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      */
+    #[ORM\OneToMany(mappedBy: 'department', targetEntity: City::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private $cities;
 
     public function __construct(?Region $region = null, ?string $name = null, ?string $label = null, ?string $code = null)

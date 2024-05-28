@@ -8,15 +8,12 @@ use App\Entity\Team\Team;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Table(indexes={
- *     @ORM\Index(name="team_member_history_adherent_id_idx", columns={"adherent_id"}),
- *     @ORM\Index(name="team_member_history_administrator_id_idx", columns={"administrator_id"}),
- *     @ORM\Index(name="team_member_history_team_manager_id_idx", columns={"team_manager_id"}),
- *     @ORM\Index(name="team_member_history_date_idx", columns={"date"})
- * })
- * @ORM\Entity
- */
+#[ORM\Table]
+#[ORM\Index(columns: ['adherent_id'], name: 'team_member_history_adherent_id_idx')]
+#[ORM\Index(columns: ['administrator_id'], name: 'team_member_history_administrator_id_idx')]
+#[ORM\Index(columns: ['team_manager_id'], name: 'team_member_history_team_manager_id_idx')]
+#[ORM\Index(columns: ['date'], name: 'team_member_history_date_idx')]
+#[ORM\Entity]
 class TeamMemberHistory
 {
     public const ACTION_ADD = 'add';
@@ -29,57 +26,50 @@ class TeamMemberHistory
 
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var Team
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Team\Team")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Team::class)]
     private $team;
 
     /**
      * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $adherent;
 
     /**
      * @var Administrator|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $administrator;
 
     /**
      * @var Adherent|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $teamManager;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=20)
      */
+    #[ORM\Column(length: 20)]
     private $action;
 
     /**
      * @var \DateTimeImmutable
-     *
-     * @ORM\Column(type="datetime_immutable")
      */
+    #[ORM\Column(type: 'datetime_immutable')]
     private $date;
 
     private function __construct(

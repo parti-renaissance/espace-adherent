@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\Repository\DocumentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -49,11 +50,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "title": "partial",
  * })
  *
- * @ORM\Entity(repositoryClass="App\Repository\DocumentRepository");
- * @ORM\Table
- *
  * @UniqueEntity(fields={"title"}, message="document.title.unique_entity")
  */
+#[ORM\Table]
+#[ORM\Entity(repositoryClass: DocumentRepository::class)]
 class Document implements EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
@@ -61,20 +61,18 @@ class Document implements EntityAdministratorBlameableInterface
     use EntityAdministratorBlameableTrait;
 
     /**
-     * @ORM\Column(unique=true)
-     *
      * @Assert\NotBlank(message="Veuillez renseigner un titre.")
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
      */
     #[Groups(['document_read'])]
+    #[ORM\Column(unique: true)]
     public ?string $title = null;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     *
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
      */
     #[Groups(['document_read'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     public ?string $comment = null;
 
     /**
@@ -105,9 +103,7 @@ class Document implements EntityAdministratorBlameableInterface
      */
     public ?UploadedFile $file = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     public ?string $filePath = null;
 
     public function __construct(?UuidInterface $uuid = null)

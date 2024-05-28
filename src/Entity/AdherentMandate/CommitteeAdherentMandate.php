@@ -6,11 +6,10 @@ use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
 use App\Committee\DTO\CommitteeAdherentMandateCommand;
 use App\Entity\Adherent;
 use App\Entity\Committee;
+use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\AdherentMandate\CommitteeAdherentMandateRepository")
- */
+#[ORM\Entity(repositoryClass: CommitteeAdherentMandateRepository::class)]
 class CommitteeAdherentMandate extends AbstractAdherentMandate
 {
     public static function createFromCommand(CommitteeAdherentMandateCommand $command): self

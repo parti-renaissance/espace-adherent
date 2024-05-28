@@ -3,52 +3,42 @@
 namespace App\Entity\TerritorialCouncil;
 
 use App\Entity\EntityIdentityTrait;
+use App\Repository\TerritorialCouncil\PoliticalCommitteeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\PoliticalCommitteeRepository")
- */
+#[ORM\Entity(repositoryClass: PoliticalCommitteeRepository::class)]
 class PoliticalCommittee implements InstanceEntityInterface
 {
     use EntityIdentityTrait;
 
     /**
      * @var TerritorialCouncil|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncil", cascade={"all"}, inversedBy="politicalCommittee")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\OneToOne(inversedBy: 'politicalCommittee', targetEntity: TerritorialCouncil::class, cascade: ['all'])]
     private $territorialCouncil;
 
     /**
-     * @ORM\Column(unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(unique: true)]
     private $name;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isActive;
 
     /**
      * @var Collection|PoliticalCommitteeMembership[]
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="PoliticalCommitteeMembership",
-     *     cascade={"persist", "remove"},
-     *     mappedBy="politicalCommittee",
-     *     orphanRemoval=true
-     * )
      */
+    #[ORM\OneToMany(mappedBy: 'politicalCommittee', targetEntity: PoliticalCommitteeMembership::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private $memberships;
 
     public function __construct(string $name, TerritorialCouncil $territorialCouncil, bool $isActive = false)

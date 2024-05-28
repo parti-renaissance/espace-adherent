@@ -13,16 +13,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- *
  * @ApiResource(
  *     itemOperations={},
  *     collectionOperations={},
  *     subresourceOperations={},
  * )
- *
  * @ManagedZone(zoneGetMethodName="getZone")
  */
+#[ORM\Entity]
 class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEntity, CampaignAdherentMessageFilterInterface
 {
     use GeneralFilterTrait {
@@ -31,98 +29,78 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
 
     /**
      * @var bool|null
-     *
-     * @ORM\Column(type="boolean", nullable=true)
      */
     #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     protected $isCertified;
 
     /**
      * @var Zone|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     *
      * @Assert\Expression("this.getSegment() or this.getZone() or this.getCommittee()", message="Cette valeur ne doit pas être vide.")
      */
     #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
     private $zone;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\Expression("this.getSegment() or this.getScope()", message="Cette valeur ne doit pas être vide.")
      * @ValidScope
      */
     #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
+    #[ORM\Column]
     private $scope;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
     #[Groups(['adherent_message_update_filter'])]
+    #[ORM\Column(nullable: true)]
     private $audienceType;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
     #[Groups(['adherent_message_update_filter'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Committee::class)]
     private ?Committee $committee = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
     #[Groups(['adherent_message_update_filter'])]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $isCommitteeMember = null;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL)
      */
     #[Groups(['adherent_message_update_filter'])]
+    #[ORM\Column(nullable: true)]
     private ?string $mandateType = null;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL)
      */
     #[Groups(['adherent_message_update_filter'])]
+    #[ORM\Column(nullable: true)]
     private ?string $declaredMandate = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
     #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     protected ?bool $isCampusRegistered = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['adherent_message_update_filter'])]
+    #[ORM\Column(nullable: true)]
     private ?string $donatorStatus = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['adherent_message_update_filter'])]
+    #[ORM\Column(nullable: true)]
     public ?string $adherentTags = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['adherent_message_update_filter'])]
+    #[ORM\Column(nullable: true)]
     public ?string $electTags = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['adherent_message_update_filter'])]
+    #[ORM\Column(nullable: true)]
     public ?string $staticTags = null;
 
     #[Groups(['audience_segment_read'])]

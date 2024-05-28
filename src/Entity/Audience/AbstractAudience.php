@@ -10,9 +10,7 @@ use Doctrine\ORM\Mapping\MappedSuperclass;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @MappedSuperclass
- */
+#[MappedSuperclass]
 abstract class AbstractAudience implements AudienceInterface
 {
     use EntityIdentityTrait;

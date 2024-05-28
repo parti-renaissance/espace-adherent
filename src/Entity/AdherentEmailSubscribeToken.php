@@ -2,15 +2,13 @@
 
 namespace App\Entity;
 
+use App\Repository\AdherentEmailSubscribeTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(uniqueConstraints={
- *     @ORM\UniqueConstraint(columns={"value"}),
- *     @ORM\UniqueConstraint(columns={"value", "adherent_uuid"})
- * })
- * @ORM\Entity(repositoryClass="App\Repository\AdherentEmailSubscribeTokenRepository")
- */
+#[ORM\Table]
+#[ORM\UniqueConstraint(columns: ['value'])]
+#[ORM\UniqueConstraint(columns: ['value', 'adherent_uuid'])]
+#[ORM\Entity(repositoryClass: AdherentEmailSubscribeTokenRepository::class)]
 class AdherentEmailSubscribeToken extends AdherentToken
 {
     use AuthoredTrait;
@@ -21,9 +19,7 @@ class AdherentEmailSubscribeToken extends AdherentToken
 
     public const DURATION = '+6 months';
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $triggerSource = null;
 
     public function getType(): string

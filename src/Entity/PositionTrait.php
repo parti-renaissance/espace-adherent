@@ -11,11 +11,10 @@ trait PositionTrait
     /**
      * @var int
      *
-     * @ORM\Column(type="smallint", options={"default": 0})
-     *
      * @Gedmo\SortablePosition
      */
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
+    #[ORM\Column(type: 'smallint', options: ['default' => 0])]
     private $position = 0;
 
     public function getPosition(): int

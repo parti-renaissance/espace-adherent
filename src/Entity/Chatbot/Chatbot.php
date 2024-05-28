@@ -5,6 +5,7 @@ namespace App\Entity\Chatbot;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\Chatbot\ChatbotRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -12,10 +13,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Chatbot\ChatbotRepository")
- *
  * @UniqueEntity(fields={"code"})
  */
+#[ORM\Entity(repositoryClass: ChatbotRepository::class)]
 class Chatbot
 {
     use EntityIdentityTrait;
@@ -23,32 +23,24 @@ class Chatbot
     use EntityAdministratorBlameableTrait;
 
     /**
-     * @ORM\Column(unique=true)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(unique: true)]
     public ?string $code = null;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     public ?string $assistantId = null;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $enabled = false;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     public ?string $telegramBotApiToken = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     public ?string $telegramBotSecret = null;
 
     public function __construct(?UuidInterface $uuid = null)

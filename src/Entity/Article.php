@@ -6,6 +6,8 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\EntityListener\ArticleListener;
+use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -41,13 +43,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(SearchFilter::class, properties={"title": "partial", "category.slug": "exact"})
  *
- * @ORM\Table(name="articles")
- * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
- * @ORM\EntityListeners({"App\EntityListener\ArticleListener"})
- *
  * @UniqueEntity(fields={"slug"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
+#[ORM\Table(name: 'articles')]
+#[ORM\Entity(repositoryClass: ArticleRepository::class)]
+#[ORM\EntityListeners([ArticleListener::class])]
 class Article implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface, EntitySourceableInterface
 {
     use EntityTimestampableTrait;
@@ -61,64 +62,57 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
     /**
      * @var int
      *
-     * @ORM\Column(type="bigint")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     *
      * @ApiProperty(identifier=false)
      */
+    #[ORM\Column(type: 'bigint')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var ArticleCategory|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ArticleCategory")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="SET NULL")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['article_list_read', 'article_read'])]
+    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: ArticleCategory::class)]
     private $category;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['article_list_read', 'article_read'])]
+    #[ORM\Column(type: 'datetime')]
     private $publishedAt;
 
     /**
      * @var ProposalTheme[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="ProposalTheme")
      */
+    #[ORM\ManyToMany(targetEntity: ProposalTheme::class)]
     private $themes;
 
     /**
      * @var Media
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Media", cascade={"persist"})
-     *
      * @Assert\NotBlank
      * @Assert\Valid
      */
     #[Groups(['article_list_read', 'article_read'])]
+    #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist'])]
     private $media;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100, unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
-     *
      * @ApiProperty(identifier=true)
      */
     #[Groups(['article_list_read', 'article_read'])]
+    #[ORM\Column(length: 100, unique: true)]
     private $slug;
 
     public function __construct()

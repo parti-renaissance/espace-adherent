@@ -2,50 +2,44 @@
 
 namespace App\Entity;
 
+use App\Repository\NewsletterInviteRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
-/**
- * @ORM\Table(name="newsletter_invitations")
- * @ORM\Entity(repositoryClass="App\Repository\NewsletterInviteRepository")
- */
+#[ORM\Table(name: 'newsletter_invitations')]
+#[ORM\Entity(repositoryClass: NewsletterInviteRepository::class)]
 class NewsletterInvite
 {
     use EntityIdentityTrait;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=50)
      */
+    #[ORM\Column(length: 50)]
     private $firstName = '';
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=50)
      */
+    #[ORM\Column(length: 50)]
     private $lastName = '';
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $email = '';
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=50, nullable=true)
      */
+    #[ORM\Column(length: 50, nullable: true)]
     private $clientIp;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     public function __construct()

@@ -5,65 +5,57 @@ namespace App\Entity\ElectedRepresentative;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="elected_representative_label")
- */
+#[ORM\Table(name: 'elected_representative_label')]
+#[ORM\Entity]
 class ElectedRepresentativeLabel
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=50)
      */
+    #[ORM\Column(length: 50)]
     private $name;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": true})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $onGoing = true;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer", nullable=true)
-     *
      * @Assert\Choice(callback="getYears")
      */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $beginYear;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer", nullable=true)
-     *
      * @Assert\Expression("value == null or value > this.getBeginYear()", message="La date de fin de l'étiquette doit être postérieure à la date de début.")
      * @Assert\Choice(callback="getYears")
      */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $finishYear;
 
     /**
      * @var ElectedRepresentative
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="labels")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectedRepresentative::class, inversedBy: 'labels')]
     private $electedRepresentative;
 
     public function __construct(

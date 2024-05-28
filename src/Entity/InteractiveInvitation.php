@@ -2,19 +2,16 @@
 
 namespace App\Entity;
 
+use App\Repository\InteractiveInvitationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\InteractiveInvitationRepository")
- * @ORM\Table(name="interactive_invitations")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({
- *     "my_europe": "App\Entity\MyEuropeInvitation",
- * })
- */
+#[ORM\Table(name: 'interactive_invitations')]
+#[ORM\Entity(repositoryClass: InteractiveInvitationRepository::class)]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap(['my_europe' => MyEuropeInvitation::class])]
 abstract class InteractiveInvitation
 {
     use EntityIdentityTrait;
@@ -22,19 +19,13 @@ abstract class InteractiveInvitation
 
     protected $friendFirstName;
 
-    /**
-     * @ORM\Column(type="smallint", length=3, options={"unsigned": true})
-     */
+    #[ORM\Column(type: 'smallint', length: 3, options: ['unsigned' => true])]
     protected $friendAge;
 
-    /**
-     * @ORM\Column(length=6)
-     */
+    #[ORM\Column(length: 6)]
     protected $friendGender;
 
-    /**
-     * @ORM\Column(length=50, nullable=true)
-     */
+    #[ORM\Column(length: 50, nullable: true)]
     protected $friendPosition;
 
     /**
@@ -42,48 +33,28 @@ abstract class InteractiveInvitation
      */
     protected $friendEmailAddress;
 
-    /**
-     * @ORM\Column(length=50, nullable=true)
-     */
+    #[ORM\Column(length: 50, nullable: true)]
     protected $authorFirstName;
 
-    /**
-     * @ORM\Column(length=50, nullable=true)
-     */
+    #[ORM\Column(length: 50, nullable: true)]
     protected $authorLastName;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     protected $authorEmailAddress;
 
-    /**
-     * @ORM\Column(length=100, nullable=true)
-     */
+    #[ORM\Column(length: 100, nullable: true)]
     protected $mailSubject;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     protected $mailBody;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     protected $createdAt;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\InteractiveChoice", fetch="EAGER")
-     * @ORM\JoinTable(
-     *     name="interactive_invitation_has_choices",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="invitation_id", referencedColumnName="id")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="choice_id", referencedColumnName="id")
-     *     }
-     * )
-     */
+    #[ORM\JoinTable(name: 'interactive_invitation_has_choices')]
+    #[ORM\JoinColumn(name: 'invitation_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'choice_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: InteractiveChoice::class, fetch: 'EAGER')]
     protected $choices;
 
     public function __construct(

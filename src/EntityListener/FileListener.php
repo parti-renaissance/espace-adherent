@@ -20,10 +20,8 @@ class FileListener
         $this->glide = $glide;
     }
 
-    /**
-     * @ORM\PreUpdate
-     * @ORM\PrePersist
-     */
+    #[ORM\PreUpdate]
+    #[ORM\PrePersist]
     public function processFile(EntityFileInterface $entityFile): void
     {
         if ($entityFile->getFile()) {

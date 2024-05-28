@@ -3,14 +3,13 @@
 namespace App\Entity\Audience;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\Audience\AudienceRepository;
 use App\Validator\ManagedZone;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Audience\AudienceRepository")
- *
  * @ApiResource(
  *     attributes={
  *         "security": "is_granted('ROLE_AUDIENCE')",
@@ -52,19 +51,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     }
  * )
- *
  * @ManagedZone(path="zone", message="common.zone.not_managed_zone")
  */
+#[ORM\Entity(repositoryClass: AudienceRepository::class)]
 class Audience extends AbstractAudience
 {
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
     #[Groups(['audience_read', 'audience_write', 'audience_list_read'])]
+    #[ORM\Column]
     private $name;
 
     public function getName(): ?string

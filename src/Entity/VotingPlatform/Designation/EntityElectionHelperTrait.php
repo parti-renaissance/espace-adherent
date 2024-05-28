@@ -8,9 +8,8 @@ trait EntityElectionHelperTrait
 {
     /**
      * @var Designation|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation")
      */
+    #[ORM\ManyToOne(targetEntity: Designation::class)]
     protected $currentDesignation;
 
     public function setCurrentElection(ElectionEntityInterface $election): void

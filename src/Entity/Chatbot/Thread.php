@@ -5,6 +5,7 @@ namespace App\Entity\Chatbot;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\Chatbot\ThreadRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,51 +13,34 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Chatbot\ThreadRepository")
- * @ORM\Table(name="chatbot_thread")
- */
+#[ORM\Table(name: 'chatbot_thread')]
+#[ORM\Entity(repositoryClass: ThreadRepository::class)]
 class Thread
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use ExternalResourceTrait;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     public ?string $telegramChatId = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Chatbot::class)
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Chatbot::class)]
     public Chatbot $chatbot;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Adherent::class)
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent = null;
 
     /**
      * @var Message[]|Collection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity=Message::class,
-     *     mappedBy="thread",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     fetch="EXTRA_LAZY"
-     * )
      */
     #[Groups(['chatbot:read'])]
+    #[ORM\OneToMany(mappedBy: 'thread', targetEntity: Message::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     public Collection $messages;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Run::class, cascade={"all"}, fetch="EXTRA_LAZY")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\OneToOne(targetEntity: Run::class, cascade: ['all'], fetch: 'EXTRA_LAZY')]
     public ?Run $currentRun = null;
 
     public function __construct(?UuidInterface $uuid = null)

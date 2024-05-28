@@ -9,27 +9,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 trait StatusTrait
 {
-    /**
-     * @ORM\Column(length=25)
-     */
     #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
+    #[ORM\Column(length: 25)]
     private string $status;
 
-    /**
-     * @ORM\Column(length=25, nullable=true)
-     */
     #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
+    #[ORM\Column(length: 25, nullable: true)]
     private ?string $statusDetail = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $closedAt = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private ?Adherent $closedBy = null;
 
     public function getStatus(): string

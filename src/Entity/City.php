@@ -2,62 +2,57 @@
 
 namespace App\Entity;
 
+use App\Repository\CityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CityRepository")
- * @ORM\Table(name="cities")
- *
  * @UniqueEntity("inseeCode", message="city.insee_code.unique")
  */
+#[ORM\Table(name: 'cities')]
+#[ORM\Entity(repositoryClass: CityRepository::class)]
 class City
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100)
-     *
      * @Assert\NotBlank(message="city.name.not_blank")
      * @Assert\Length(max="100", maxMessage="city.name.max_length")
      */
+    #[ORM\Column(length: 100)]
     private $name;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=10, unique=true)
-     *
      * @Assert\NotBlank(message="city.insee_code.not_blank")
      * @Assert\Length(max="10", maxMessage="city.insee_code.max_length")
      */
+    #[ORM\Column(length: 10, unique: true)]
     private $inseeCode;
 
     /**
      * @var array|null
      *
-     * @ORM\Column(type="simple_array")
-     *
      * @Assert\NotBlank(message="city.postal_code.not_blank")
      * @Assert\Count(min="1")
      */
+    #[ORM\Column(type: 'simple_array')]
     private $postalCodes;
 
     /**
      * @var Department|null
-     *
-     * @ORM\ManyToOne(targetEntity=Department::class, inversedBy="cities", fetch="EAGER")
      */
+    #[ORM\ManyToOne(targetEntity: Department::class, fetch: 'EAGER', inversedBy: 'cities')]
     private $department;
 
     public function __construct(

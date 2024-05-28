@@ -10,9 +10,8 @@ trait EntityUserListDefinitionTrait
 {
     /**
      * @var Collection|UserListDefinition[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\UserListDefinition", cascade={"persist"})
      */
+    #[ORM\ManyToMany(targetEntity: UserListDefinition::class, cascade: ['persist'])]
     protected $userListDefinitions;
 
     /**

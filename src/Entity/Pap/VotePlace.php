@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Api\Filter\PapVotePlaceScopeFilter;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Geo\Zone;
+use App\Repository\Pap\VotePlaceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,11 +15,6 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Pap\VotePlaceRepository")
- * @ORM\Table(name="pap_vote_place", indexes={
- *     @ORM\Index(columns={"latitude", "longitude"}),
- * })
- *
  * @ApiResource(
  *     shortName="PapVotePlace",
  *     attributes={
@@ -41,48 +37,37 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @deprecated Use {@see \App\Entity\Election\VotePlace}
  */
+#[ORM\Table(name: 'pap_vote_place')]
+#[ORM\Index(columns: ['latitude', 'longitude'])]
+#[ORM\Entity(repositoryClass: VotePlaceRepository::class)]
 class VotePlace
 {
     use EntityIdentityTrait;
 
-    /**
-     * @ORM\Column(type="geo_point", nullable=true)
-     */
     #[Groups(['pap_address_list'])]
+    #[ORM\Column(type: 'geo_point', nullable: true)]
     public ?float $latitude;
 
-    /**
-     * @ORM\Column(type="geo_point", nullable=true)
-     */
     #[Groups(['pap_address_list'])]
+    #[ORM\Column(type: 'geo_point', nullable: true)]
     public ?float $longitude;
 
-    /**
-     * @ORM\Column(nullable=true, unique=true)
-     */
     #[Groups(['pap_vote_place_read'])]
+    #[ORM\Column(unique: true, nullable: true)]
     public ?string $code = null;
 
-    /**
-     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     */
     #[Groups(['pap_vote_place_read'])]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     public int $nbAddresses;
 
-    /**
-     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     */
     #[Groups(['pap_vote_place_read'])]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     public int $nbVoters;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     */
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
     public ?Zone $zone = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Pap\Campaign", mappedBy="votePlaces", fetch="EXTRA_LAZY")
-     */
+    #[ORM\ManyToMany(targetEntity: Campaign::class, mappedBy: 'votePlaces', fetch: 'EXTRA_LAZY')]
     public Collection $campaigns;
 
     public function __construct(

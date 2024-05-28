@@ -13,45 +13,38 @@ use Ramsey\Uuid\UuidInterface;
 /**
  * An abstract temporary token for Adherent.
  *
- * @ORM\MappedSuperclass
- *
  * @phpstan-consistent-constructor
  */
+#[ORM\MappedSuperclass]
 abstract class AdherentToken implements AdherentExpirableTokenInterface
 {
     use EntityIdentityTrait;
 
-    /**
-     * @ORM\Column(type="uuid")
-     */
+    #[ORM\Column(type: 'uuid')]
     private $adherentUuid;
 
     /**
      * @var SHA1|string
-     *
-     * @ORM\Column(length=40)
      */
+    #[ORM\Column(length: 40)]
     private $value;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $expiredAt;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $usedAt;
 
     public function __construct(UuidInterface $adherentUuid, \DateTime $createdAt, \DateTime $expiration, SHA1 $value)

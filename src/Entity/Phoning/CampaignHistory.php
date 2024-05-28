@@ -13,6 +13,7 @@ use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\DataSurveyAwareInterface;
 use App\Entity\Jecoute\DataSurveyAwareTrait;
 use App\Phoning\CampaignHistoryStatusEnum;
+use App\Repository\Phoning\CampaignHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -20,9 +21,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Phoning\CampaignHistoryRepository")
- * @ORM\Table(name="phoning_campaign_history")
- *
  * @ApiResource(
  *     shortName="PhoningCampaignHistory",
  *     attributes={
@@ -67,6 +65,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(AdherentIdentityFilter::class, properties={"adherent", "caller"})
  * @ApiFilter(DateFilter::class, properties={"beginAt"})
  */
+#[ORM\Table(name: 'phoning_campaign_history')]
+#[ORM\Entity(repositoryClass: CampaignHistoryRepository::class)]
 class CampaignHistory implements DataSurveyAwareInterface
 {
     use EntityIdentityTrait;
@@ -74,35 +74,30 @@ class CampaignHistory implements DataSurveyAwareInterface
 
     /**
      * @var Adherent|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $caller;
 
     /**
      * @var Adherent|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     #[Groups(['phoning_campaign_call_read', 'phoning_campaign_history_read_list', 'phoning_campaign_replies_list'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $adherent;
 
     /**
      * @var Campaign
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Phoning\Campaign", inversedBy="campaignHistories")
-     * @ORM\JoinColumn(nullable=false)
      */
     #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Campaign::class, inversedBy: 'campaignHistories')]
     private $campaign;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=10, nullable=true)
      *
      * @Assert\Choice(
      *     callback={"App\Phoning\CampaignHistoryTypeEnum", "toArray"},
@@ -110,12 +105,11 @@ class CampaignHistory implements DataSurveyAwareInterface
      * )
      */
     #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
+    #[ORM\Column(length: 10, nullable: true)]
     private $type;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=25)
      *
      * @Assert\NotNull
      * @Assert\Choice(
@@ -124,46 +118,41 @@ class CampaignHistory implements DataSurveyAwareInterface
      * )
      */
     #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read', 'phoning_campaign_history_read_list'])]
+    #[ORM\Column(length: 25)]
     private $status;
 
     /**
      * @var bool|null
-     *
-     * @ORM\Column(type="boolean", nullable=true)
      */
     #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     protected $postalCodeChecked;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255)
      */
     #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
+    #[ORM\Column(nullable: true)]
     private $profession;
 
     /**
      * @var bool|null
-     *
-     * @ORM\Column(type="boolean", nullable=true)
      */
     #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $needEmailRenewal;
 
     /**
      * @var bool|null
-     *
-     * @ORM\Column(type="boolean", nullable=true)
      */
     #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $needSmsRenewal;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=20, nullable=true)
      *
      * @Assert\Choice(
      *     callback={"App\Phoning\CampaignHistoryEngagementEnum", "toArray"},
@@ -171,32 +160,29 @@ class CampaignHistory implements DataSurveyAwareInterface
      * )
      */
     #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
+    #[ORM\Column(length: 20, nullable: true)]
     private $engagement;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="smallint", options={"unsigned": true}, nullable=true)
-     *
      * @Assert\Range(min="1", max="5")
      */
     #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
+    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     private $note;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'survey_replies_list'])]
+    #[ORM\Column(type: 'datetime')]
     private $beginAt;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      *
      * @Assert\Expression(
      *     "value === null or value > this.getBeginAt()",
@@ -204,15 +190,15 @@ class CampaignHistory implements DataSurveyAwareInterface
      * )
      */
     #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'survey_replies_list'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $finishAt;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true, inversedBy="phoningCampaignHistory")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     *
      * @Assert\Valid
      */
     #[Groups(['phoning_campaign_history_read_list'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(inversedBy: 'phoningCampaignHistory', targetEntity: DataSurvey::class, cascade: ['persist'], orphanRemoval: true)]
     private ?DataSurvey $dataSurvey = null;
 
     public function __construct(Campaign $campaign, ?UuidInterface $uuid = null)

@@ -3,60 +3,53 @@
 namespace App\Entity\ApplicationRequest;
 
 use App\ApplicationRequest\ApplicationRequestTypeEnum;
+use App\Repository\ApplicationRequest\VolunteerRequestRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="application_request_volunteer")
- * @ORM\Entity(repositoryClass="App\Repository\ApplicationRequest\VolunteerRequestRepository")
- */
+#[ORM\Table(name: 'application_request_volunteer')]
+#[ORM\Entity(repositoryClass: VolunteerRequestRepository::class)]
 class VolunteerRequest extends ApplicationRequest
 {
     /**
      * @var TechnicalSkill[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ApplicationRequest\TechnicalSkill")
-     *
      * @Assert\Count(min=1, minMessage="application_request.technical_skills.min")
      */
+    #[ORM\ManyToMany(targetEntity: TechnicalSkill::class)]
     private $technicalSkills;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $customTechnicalSkills;
 
     /**
      * @var bool|null
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $isPreviousCampaignMember;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $previousCampaignDetails;
 
     /**
      * @var bool|null
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $shareAssociativeCommitment;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $associativeCommitmentDetails;
 
     public function __construct(?UuidInterface $uuid = null)

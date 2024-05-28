@@ -13,76 +13,62 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="programmatic_foundation_measure")
- *
  * @UniqueEntity(
  *     fields={"position", "subApproach"},
  *     errorPath="position",
  *     message="programmatic_foundation.unique_position.measure"
  * )
  */
+#[ORM\Table(name: 'programmatic_foundation_measure')]
+#[ORM\Entity]
 class Measure
 {
     use EntityIdentityTrait;
     use TimestampableEntity;
 
     /**
-     * @ORM\Column(type="smallint")
      * @Assert\GreaterThan(value=0, message="programmatic_foundation.position.greater_than_zero")
      */
     #[Groups(['approach_list_read'])]
+    #[ORM\Column(type: 'smallint')]
     private $position;
 
     /**
-     * @ORM\Column
      * @Assert\NotBlank(message="programmatic_foundation.title.not_empty")
      */
     #[Groups(['approach_list_read'])]
+    #[ORM\Column]
     private $title;
 
     /**
-     * @ORM\Column(type="text")
      * @Assert\NotBlank(message="programmatic_foundation.content.not_empty")
      */
     #[Groups(['approach_list_read'])]
+    #[ORM\Column(type: 'text')]
     private $content;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
     #[Groups(['approach_list_read'])]
+    #[ORM\Column(type: 'boolean')]
     private $isLeading;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
     #[Groups(['approach_list_read'])]
+    #[ORM\Column(type: 'boolean')]
     private $isExpanded;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProgrammaticFoundation\SubApproach", inversedBy="measures")
      * @Assert\NotNull(message="programmatic_foundation.parent.required.measure")
      */
+    #[ORM\ManyToOne(targetEntity: SubApproach::class, inversedBy: 'measures')]
     private $subApproach;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\ProgrammaticFoundation\Project",
-     *     mappedBy="measure",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"position": "ASC"})
-     */
     #[Groups(['approach_list_read'])]
+    #[ORM\OneToMany(mappedBy: 'measure', targetEntity: Project::class, cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     private $projects;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ProgrammaticFoundation\Tag")
-     * @ORM\JoinTable(name="programmatic_foundation_measure_tag")
-     */
     #[Groups(['approach_list_read'])]
+    #[ORM\JoinTable(name: 'programmatic_foundation_measure_tag')]
+    #[ORM\ManyToMany(targetEntity: Tag::class)]
     private $tags;
 
     public function __construct(

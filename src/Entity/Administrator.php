@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\AdministratorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,68 +13,55 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="administrators")
- * @ORM\Entity(repositoryClass="App\Repository\AdministratorRepository")
- *
  * @UniqueEntity(fields={"emailAddress"})
  */
+#[ORM\Table(name: 'administrators')]
+#[ORM\Entity(repositoryClass: AdministratorRepository::class)]
 class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(unique=true)
-     *
      * @Assert\Email
      * @Assert\NotBlank
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
+    #[ORM\Column(unique: true)]
     private $emailAddress;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $password;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $googleAuthenticatorSecret;
 
     /**
      * @var AdministratorRole[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity=AdministratorRole::class)
-     * @ORM\JoinTable(
-     *     name="administrators_roles",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="administrator_id", referencedColumnName="id", onDelete="CASCADE")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="administrator_role_id", referencedColumnName="id", onDelete="CASCADE")
-     *     }
-     * )
      */
+    #[ORM\JoinTable(name: 'administrators_roles')]
+    #[ORM\JoinColumn(name: 'administrator_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'administrator_role_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: AdministratorRole::class)]
     private Collection $administratorRoles;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $activated = true;
 
     public function __construct()

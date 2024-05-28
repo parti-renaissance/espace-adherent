@@ -2,17 +2,14 @@
 
 namespace App\Entity\Jecoute;
 
+use App\Repository\Jecoute\SuggestedQuestionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="jecoute_suggested_question")
- * @ORM\Entity(repositoryClass="App\Repository\Jecoute\SuggestedQuestionRepository")
- */
+#[ORM\Table(name: 'jecoute_suggested_question')]
+#[ORM\Entity(repositoryClass: SuggestedQuestionRepository::class)]
 class SuggestedQuestion extends Question
 {
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $published;
 
     public function __construct(?string $content = null, ?string $type = null, bool $published = false)

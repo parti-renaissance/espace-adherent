@@ -2,21 +2,18 @@
 
 namespace App\Entity;
 
+use App\Repository\AdherentChangeEmailTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\AdherentChangeEmailTokenRepository")
- * @ORM\Table(indexes={
- *     @ORM\Index(columns={"email", "used_at", "expired_at"})
- * })
- */
+#[ORM\Table]
+#[ORM\Index(columns: ['email', 'used_at', 'expired_at'])]
+#[ORM\Entity(repositoryClass: AdherentChangeEmailTokenRepository::class)]
 class AdherentChangeEmailToken extends AdherentToken
 {
     /**
      * @var string|null
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $email;
 
     public function getEmail(): ?string

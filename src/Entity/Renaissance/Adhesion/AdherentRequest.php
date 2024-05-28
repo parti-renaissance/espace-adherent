@@ -11,9 +11,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class AdherentRequest
 {
     use EntityIdentityTrait;
@@ -22,56 +20,42 @@ class AdherentRequest
     use EntityUTMTrait;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     public ?string $firstName = null;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     public ?string $lastName = null;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     public ?string $email = null;
 
     /**
-     * @ORM\Column(type="float")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'float')]
     public ?float $amount = null;
 
-    /**
-     * @ORM\Column(type="uuid")
-     */
+    #[ORM\Column(type: 'uuid')]
     public UuidInterface $token;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $tokenUsedAt = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     public ?string $password = null;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $allowEmailNotifications = false;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $allowMobileNotifications = false;
 
     public function __construct(?UuidInterface $uuid = null)

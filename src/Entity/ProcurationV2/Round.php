@@ -5,15 +5,14 @@ namespace App\Entity\ProcurationV2;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\Procuration\RoundRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="procuration_v2_rounds")
- * @ORM\Entity(repositoryClass="App\Repository\Procuration\RoundRepository")
- */
+#[ORM\Table(name: 'procuration_v2_rounds')]
+#[ORM\Entity(repositoryClass: RoundRepository::class)]
 class Round
 {
     use EntityIdentityTrait;
@@ -21,33 +20,29 @@ class Round
     use EntityAdministratorBlameableTrait;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     public ?string $name = null;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'text')]
     public ?string $description = null;
 
     /**
-     * @ORM\Column(type="date")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'date')]
     public ?\DateTimeInterface $date = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Election::class, inversedBy="rounds")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Election::class, inversedBy: 'rounds')]
     public ?Election $election = null;
 
     public function __construct(?UuidInterface $uuid = null)

@@ -10,44 +10,30 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="campus_registration")
- */
+#[ORM\Table(name: 'campus_registration')]
+#[ORM\Entity]
 class Registration
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     public ?string $eventMakerId = null;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     public ?string $campusEventId = null;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     public ?string $eventMakerOrderUid = null;
 
-    /**
-     * @ORM\Column(enumType=RegistrationStatusEnum::class)
-     */
+    #[ORM\Column(enumType: RegistrationStatusEnum::class)]
     public ?RegistrationStatusEnum $status = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTimeInterface $registeredAt = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="campusRegistrations")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'campusRegistrations')]
     public ?Adherent $adherent = null;
 
     public function __construct(?UuidInterface $uuid = null)

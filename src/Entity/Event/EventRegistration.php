@@ -6,56 +6,40 @@ use App\Entity\Adherent;
 use App\Entity\EntityCrudTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPersonNameTrait;
+use App\Repository\EventRegistrationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\EventRegistrationRepository")
- * @ORM\Table(name="events_registrations", indexes={
- *     @ORM\Index(name="event_registration_email_address_idx", columns={"email_address"}),
- *     @ORM\Index(name="event_registration_adherent_uuid_idx", columns={"adherent_uuid"}),
- * })
- */
+#[ORM\Table(name: 'events_registrations')]
+#[ORM\Index(columns: ['email_address'], name: 'event_registration_email_address_idx')]
+#[ORM\Index(columns: ['adherent_uuid'], name: 'event_registration_adherent_uuid_idx')]
+#[ORM\Entity(repositoryClass: EventRegistrationRepository::class)]
 class EventRegistration
 {
     use EntityCrudTrait;
     use EntityIdentityTrait;
     use EntityPersonNameTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event\BaseEvent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: BaseEvent::class)]
     private $event;
 
-    /**
-     * @ORM\Column
-     */
+    #[ORM\Column]
     private $emailAddress;
 
-    /**
-     * @ORM\Column(length=15, nullable=true)
-     */
+    #[ORM\Column(length: 15, nullable: true)]
     private $postalCode;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private $newsletterSubscriber;
 
-    /**
-     * @ORM\Column(type="uuid", nullable=true)
-     */
+    #[ORM\Column(type: 'uuid', nullable: true)]
     private $adherentUuid;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $source;
 
     public function __construct(

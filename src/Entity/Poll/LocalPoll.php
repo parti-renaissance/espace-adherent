@@ -5,31 +5,28 @@ namespace App\Entity\Poll;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
 use App\Entity\Geo\Zone;
+use App\Repository\Poll\LocalPollRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Poll\LocalPollRepository")
- */
+#[ORM\Entity(repositoryClass: LocalPollRepository::class)]
 class LocalPoll extends Poll implements AuthoredInterface
 {
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $author;
 
     /**
      * @var Zone|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
     private $zone;
 
     public function __construct(

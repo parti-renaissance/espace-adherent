@@ -11,14 +11,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 trait EntityPostAddressTrait
 {
     /**
-     * @ORM\Embedded(class="App\Entity\PostAddress", columnPrefix="address_")
-     *
      * @var PostAddress
      *
      * @Assert\NotBlank(groups={"procuration:write"})
      * @Assert\Valid(groups={"contact_update", "procuration:write"})
      */
     #[Groups(['contact_update', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list', 'action_write'])]
+    #[ORM\Embedded(class: PostAddress::class, columnPrefix: 'address_')]
     protected $postAddress;
 
     public function getPostAddress(): PostAddress

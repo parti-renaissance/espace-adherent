@@ -12,119 +12,100 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- * @ORM\Table(
- *     name="mooc_elements",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="mooc_element_slug", columns={"slug", "chapter_id"})}
- * )
- *
  * @UniqueEntity(fields={"slug", "chapter"})
- *
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({
- *     MoocElementTypeEnum::VIDEO: "App\Entity\Mooc\MoocVideoElement",
- *     MoocElementTypeEnum::QUIZ: "App\Entity\Mooc\MoocQuizElement",
- *     MoocElementTypeEnum::IMAGE: "App\Entity\Mooc\MoocImageElement",
- * })
  */
+#[ORM\Table(name: 'mooc_elements')]
+#[ORM\UniqueConstraint(name: 'mooc_element_slug', columns: ['slug', 'chapter_id'])]
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap([MoocElementTypeEnum::VIDEO => MoocVideoElement::class, MoocElementTypeEnum::QUIZ => MoocQuizElement::class, MoocElementTypeEnum::IMAGE => MoocImageElement::class])]
 abstract class BaseMoocElement
 {
     use EntityTimestampableTrait;
     use Sortable;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     protected $id;
 
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     protected $title;
 
     /**
-     * @ORM\Column
      * @Gedmo\Slug(fields={"title"}, unique=true)
      */
+    #[ORM\Column]
     protected $slug;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     protected $content;
 
     /**
      * @var Chapter
      *
-     * @ORM\ManyToOne(targetEntity="Chapter", inversedBy="elements", cascade={"persist"})
      * @Gedmo\SortableGroup
-     *
      * @Assert\Valid
      */
+    #[ORM\ManyToOne(targetEntity: Chapter::class, cascade: ['persist'], inversedBy: 'elements')]
     protected $chapter;
 
     /**
      * @var Collection|AttachmentLink[]
      *
-     * @ORM\ManyToMany(targetEntity="AttachmentLink", cascade={"persist"}, orphanRemoval=true)
-     * @ORM\JoinTable(name="mooc_element_attachment_link")
-     * @ORM\OrderBy({"id": "ASC"})
-     *
      * @Assert\Valid
      */
+    #[ORM\JoinTable(name: 'mooc_element_attachment_link')]
+    #[ORM\ManyToMany(targetEntity: AttachmentLink::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['id' => 'ASC'])]
     protected $links;
 
     /**
      * @var Collection|AttachmentFile[]
      *
-     * @ORM\ManyToMany(targetEntity="AttachmentFile", cascade={"persist"}, orphanRemoval=true)
-     * @ORM\JoinTable(name="mooc_element_attachment_file")
-     * @ORM\OrderBy({"id": "ASC"})
-     *
      * @Assert\Valid
      */
+    #[ORM\JoinTable(name: 'mooc_element_attachment_file')]
+    #[ORM\ManyToMany(targetEntity: AttachmentFile::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['id' => 'ASC'])]
     protected $files;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $shareTwitterText;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $shareFacebookText;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $shareEmailSubject;
 
     /**
-     * @ORM\Column(length=500)
-     *
      * @Assert\NotBlank
      * @Assert\Length(allowEmptyString=true, min=5, max=500)
      */
+    #[ORM\Column(length: 500)]
     protected $shareEmailBody;
 
     public function __construct(

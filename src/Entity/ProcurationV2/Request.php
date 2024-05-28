@@ -12,6 +12,7 @@ use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
 use App\Procuration\V2\RequestStatusEnum;
+use App\Repository\Procuration\RequestRepository;
 use App\Validator\Procuration\ManualAssociations;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -21,9 +22,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="procuration_v2_requests")
- * @ORM\Entity(repositoryClass="App\Repository\Procuration\RequestRepository")
- *
  * @ManualAssociations
  *
  * @ApiResource(
@@ -96,37 +94,34 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(SearchFilter::class, properties={"status": "exact"})
  * @ApiFilter(OrTextSearchFilter::class, properties={"firstNames": "lastName", "lastName": "firstNames", "email": "email"})
  */
+#[ORM\Table(name: 'procuration_v2_requests')]
+#[ORM\Entity(repositoryClass: RequestRepository::class)]
 class Request extends AbstractProcuration
 {
     /**
-     * @ORM\Column(enumType=RequestStatusEnum::class)
-     *
      * @Assert\Choice(callback={"App\Procuration\V2\RequestStatusEnum", "getAvailableStatuses"}, groups={"procuration_update_status"})
      */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_update_status'])]
+    #[ORM\Column(enumType: RequestStatusEnum::class)]
     public RequestStatusEnum $status = RequestStatusEnum::PENDING;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": true})
-     */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     public bool $fromFrance;
 
     /**
      * @Assert\Valid
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationV2\Proxy", inversedBy="requests")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list'])]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Proxy::class, inversedBy: 'requests')]
     public ?Proxy $proxy = null;
 
     /**
      * @var MatchingHistory[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\ProcurationV2\MatchingHistory", mappedBy="request")
-     * @ORM\OrderBy({"createdAt": "ASC"})
      */
+    #[ORM\OneToMany(mappedBy: 'request', targetEntity: MatchingHistory::class)]
+    #[ORM\OrderBy(['createdAt' => 'ASC'])]
     private Collection $matchingHistories;
 
     public function __construct(

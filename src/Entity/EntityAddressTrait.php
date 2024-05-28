@@ -15,71 +15,56 @@ trait EntityAddressTrait
 {
     /**
      * The address street.
-     *
-     * @ORM\Column(length=150, nullable=true)
      */
     #[Groups(['event_write', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
+    #[ORM\Column(length: 150, nullable: true)]
     protected ?string $address = null;
 
-    /**
-     * @ORM\Column(length=150, nullable=true)
-     */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
+    #[ORM\Column(length: 150, nullable: true)]
     protected ?string $additionalAddress = null;
 
     /**
      * The address zip code.
-     *
-     * @ORM\Column(nullable=true)
      */
     #[Groups(['event_write', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
+    #[ORM\Column(nullable: true)]
     protected ?string $postalCode = null;
 
     /**
      * The address city code (postal code + INSEE code).
-     *
-     * @ORM\Column(length=15, nullable=true, name="city_insee")
      */
     #[Groups(['profil_read', 'event_write', 'event_read', 'event_list_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
+    #[ORM\Column(name: 'city_insee', length: 15, nullable: true)]
     protected ?string $city = null;
 
     /**
      * The address city name.
-     *
-     * @ORM\Column(nullable=true)
      */
     #[Groups(['event_write', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
+    #[ORM\Column(nullable: true)]
     protected ?string $cityName = null;
 
     /**
      * The address country code (ISO2).
      *
-     * @ORM\Column(length=2, nullable=true)
-     *
      * @Assert\Country
      */
     #[Groups(['event_write', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
+    #[ORM\Column(length: 2, nullable: true)]
     protected ?string $country = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['event_write', 'profile_read', 'contact_read_after_write', 'contact_update'])]
+    #[ORM\Column(nullable: true)]
     protected ?string $region = null;
 
-    /**
-     * @ORM\Column(type="geo_point", nullable=true)
-     */
+    #[ORM\Column(type: 'geo_point', nullable: true)]
     protected ?float $latitude = null;
 
-    /**
-     * @ORM\Column(type="geo_point", nullable=true)
-     */
+    #[ORM\Column(type: 'geo_point', nullable: true)]
     protected ?float $longitude = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     protected ?string $geocodableHash = null;
 
     #[Groups(['event_read', 'event_list_read'])]

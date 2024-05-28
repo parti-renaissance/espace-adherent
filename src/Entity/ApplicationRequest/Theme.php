@@ -2,38 +2,34 @@
 
 namespace App\Entity\ApplicationRequest;
 
+use App\Repository\ApplicationRequest\ThemeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="application_request_theme")
- * @ORM\Entity(repositoryClass="App\Repository\ApplicationRequest\ThemeRepository")
- */
+#[ORM\Table(name: 'application_request_theme')]
+#[ORM\Entity(repositoryClass: ThemeRepository::class)]
 class Theme
 {
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     private $name;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": true})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $display = true;
 
     public function __construct(?string $name = null)

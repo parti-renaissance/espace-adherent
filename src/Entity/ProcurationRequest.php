@@ -6,6 +6,7 @@ use App\Address\AddressInterface;
 use App\Procuration\ProcurationDisableReasonEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Repository\ProcurationRequestRepository;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,11 +17,10 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="procuration_requests")
- * @ORM\Entity(repositoryClass="App\Repository\ProcurationRequestRepository")
- *
  * @AssertRecaptcha(groups={"elections"})
  */
+#[ORM\Table(name: 'procuration_requests')]
+#[ORM\Entity(repositoryClass: ProcurationRequestRepository::class)]
 class ProcurationRequest implements RecaptchaChallengeInterface
 {
     use EntityTimestampableTrait;
@@ -60,34 +60,28 @@ class ProcurationRequest implements RecaptchaChallengeInterface
     ];
     public const ACTIONS_URI_REGEX = self::ACTION_PROCESS.'|'.self::ACTION_UNPROCESS.'|'.self::ACTION_ENABLE.'|'.self::ACTION_DISABLE;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * The associated found proxy.
      *
      * @var ProcurationProxy
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationProxy", inversedBy="foundRequests")
      */
+    #[ORM\ManyToOne(targetEntity: ProcurationProxy::class, inversedBy: 'foundRequests')]
     private $foundProxy;
 
     /**
      * The user who associated the found proxy.
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(name="procuration_request_found_by_id", referencedColumnName="id", onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(name: 'procuration_request_found_by_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $foundBy;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=6)
      *
      * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"profile"})
      * @Assert\Choice(
@@ -96,12 +90,11 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      *     groups={"profile"}
      * )
      */
+    #[ORM\Column(length: 6)]
     private $gender;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=50)
      *
      * @Assert\NotBlank(message="procuration.last_name.not_blank", groups={"profile"})
      * @Assert\Length(
@@ -112,12 +105,11 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      *     groups={"profile"}
      * )
      */
+    #[ORM\Column(length: 50)]
     private $lastName = '';
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=100)
      *
      * @Assert\NotBlank(groups={"profile"})
      * @Assert\Length(
@@ -128,22 +120,20 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      *     groups={"profile"}
      * )
      */
+    #[ORM\Column(length: 100)]
     private $firstNames = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(length=150)
-     *
      * @Assert\NotBlank(message="common.address.required", groups={"profile"})
      * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"profile"})
      */
+    #[ORM\Column(length: 150)]
     private $address = '';
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Length(max=15, groups={"profile"})
      * @Assert\Expression(
@@ -152,30 +142,27 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      *     groups={"profile"}
      * )
      */
+    #[ORM\Column(length: 15, nullable: true)]
     private $postalCode = '';
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=15, nullable=true, name="city_insee")
-     *
      * @Assert\Length(max=15, groups={"profile"})
      */
+    #[ORM\Column(name: 'city_insee', length: 15, nullable: true)]
     private $city;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255, groups={"profile"})
      */
+    #[ORM\Column(nullable: true)]
     private $cityName;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255, groups={"profile"})
      * @Assert\Expression(
@@ -184,43 +171,39 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      *     groups={"profile"}
      * )
      */
+    #[ORM\Column(nullable: true)]
     private $state;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=2)
-     *
      * @Assert\NotBlank(groups={"profile"})
      * @Assert\Country(message="common.country.invalid", groups={"profile"})
      */
+    #[ORM\Column(length: 2)]
     private $country = AddressInterface::FRANCE;
 
     /**
      * @var PhoneNumber
      *
-     * @ORM\Column(type="phone_number", nullable=true)
-     *
      * @Assert\NotBlank(message="common.phone_number.required", groups={"profile"})
      * @AssertPhoneNumber(options={"groups": {"profile"}})
      */
+    #[ORM\Column(type: 'phone_number', nullable: true)]
     private $phone;
 
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank(groups={"profile"})
      * @Assert\Email(message="common.email.invalid", groups={"profile"})
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"profile"})
      */
+    #[ORM\Column]
     private $emailAddress = '';
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="date", nullable=true)
      *
      * @Assert\NotBlank(message="procuration.birthdate.not_blank", groups={"profile"})
      * @Assert\Range(
@@ -231,22 +214,20 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      *     groups={"profile"}
      * )
      */
+    #[ORM\Column(type: 'date', nullable: true)]
     private $birthdate;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\NotBlank(groups={"profile"}, message="procuration.voter_number.not_blank")
      * @Assert\Length(max=255, groups={"profile"})
      */
+    #[ORM\Column(nullable: true)]
     private $voterNumber;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Length(max=15, groups={"vote"})
      * @Assert\Expression(
@@ -255,97 +236,83 @@ class ProcurationRequest implements RecaptchaChallengeInterface
      *     groups={"vote"}
      * )
      */
+    #[ORM\Column(length: 15, nullable: true)]
     private $votePostalCode = '';
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=15, nullable=true, name="vote_city_insee")
-     *
      * @Assert\Length(max=15, groups={"vote"})
      */
+    #[ORM\Column(name: 'vote_city_insee', length: 15, nullable: true)]
     private $voteCity;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255, groups={"vote"})
      */
+    #[ORM\Column(nullable: true)]
     private $voteCityName;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=2)
-     *
      * @Assert\NotBlank(groups={"vote"})
      * @Assert\Country(message="common.country.invalid", groups={"vote"})
      */
+    #[ORM\Column(length: 2)]
     private $voteCountry = AddressInterface::FRANCE;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank(groups={"vote"})
      * @Assert\Length(max=50, groups={"vote"})
      */
+    #[ORM\Column(length: 50)]
     private $voteOffice = '';
 
     /**
      * @var ElectionRound[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ElectionRound")
-     * @ORM\JoinTable(name="procuration_requests_to_election_rounds")
-     *
      * @Assert\Count(min=1, minMessage="procuration.election_rounds.min_count", groups={"election_rounds"})
      */
+    #[ORM\JoinTable(name: 'procuration_requests_to_election_rounds')]
+    #[ORM\ManyToMany(targetEntity: ElectionRound::class)]
     private $electionRounds;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $processed = false;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $processedAt;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $remindedAt = null;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": true})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $requestFromFrance = true;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public $reachable = false;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $enabled = false;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $disabledReason = null;
 
     public function __construct()
@@ -380,9 +347,7 @@ class ProcurationRequest implements RecaptchaChallengeInterface
         $this->processed = true;
         $this->processedAt = new \DateTimeImmutable();
 
-        if ($procurationProxy) {
-            $procurationProxy->process($this);
-        }
+        $procurationProxy?->process($this);
     }
 
     public function unprocess(): void

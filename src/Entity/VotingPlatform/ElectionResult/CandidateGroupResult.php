@@ -10,50 +10,43 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="voting_platform_candidate_group_result")
- */
+#[ORM\Table(name: 'voting_platform_candidate_group_result')]
+#[ORM\Entity]
 class CandidateGroupResult
 {
     use EntityIdentityTrait;
 
     /**
      * @var CandidateGroup
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\CandidateGroup")
      */
     #[Groups(['election_result'])]
+    #[ORM\ManyToOne(targetEntity: CandidateGroup::class)]
     private $candidateGroup;
 
     /**
      * @var ElectionPoolResult
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\ElectionResult\ElectionPoolResult", inversedBy="candidateGroupResults")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectionPoolResult::class, inversedBy: 'candidateGroupResults')]
     private $electionPoolResult;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
      */
     #[Groups(['election_result'])]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     private $total = 0;
 
     /**
      * @var array|null
-     *
-     * @ORM\Column(type="json", nullable=true)
      */
+    #[ORM\Column(type: 'json', nullable: true)]
     private $totalMentions;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $majorityMention;
 
     public function __construct(CandidateGroup $candidateGroup, ?UuidInterface $uuid = null)

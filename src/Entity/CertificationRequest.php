@@ -3,14 +3,13 @@
 namespace App\Entity;
 
 use App\Adherent\Certification\CertificationRequestRefuseCommand;
+use App\Repository\CertificationRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CertificationRequestRepository")
- */
+#[ORM\Entity(repositoryClass: CertificationRequestRepository::class)]
 class CertificationRequest
 {
     use EntityIdentityTrait;
@@ -46,30 +45,26 @@ class CertificationRequest
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=20)
      */
+    #[ORM\Column(length: 20)]
     private $status = self::STATUS_PENDING;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $documentName;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=30, nullable=true)
      */
+    #[ORM\Column(length: 30, nullable: true)]
     private $documentMimeType;
 
     /**
@@ -86,96 +81,83 @@ class CertificationRequest
 
     /**
      * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity=Adherent::class, inversedBy="certificationRequests")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'certificationRequests')]
     private $adherent;
 
     /**
      * @var Administrator|null
-     *
-     * @ORM\ManyToOne(targetEntity=Administrator::class)
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $processedBy;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $processedAt;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=30, nullable=true)
      */
+    #[ORM\Column(length: 30, nullable: true)]
     private $blockReason;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $customBlockReason;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $blockComment;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=30, nullable=true)
      */
+    #[ORM\Column(length: 30, nullable: true)]
     private $refusalReason;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $customRefusalReason;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $refusalComment;
 
     /**
      * @var array|null
-     *
-     * @ORM\Column(type="json", nullable=true)
      */
+    #[ORM\Column(type: 'json', nullable: true)]
     private $ocrPayload;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $ocrStatus;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $ocrResult;
 
     /**
      * @var Adherent|null
-     *
-     * @ORM\ManyToOne(targetEntity=Adherent::class)
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $foundDuplicatedAdherent;
 
     public function __construct(Adherent $adherent)

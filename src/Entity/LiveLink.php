@@ -2,61 +2,55 @@
 
 namespace App\Entity;
 
+use App\Repository\LiveLinkRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="live_links")
- * @ORM\Entity(repositoryClass="App\Repository\LiveLinkRepository")
- */
+#[ORM\Table(name: 'live_links')]
+#[ORM\Entity(repositoryClass: LiveLinkRepository::class)]
 class LiveLink
 {
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="smallint")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'smallint')]
     private $position;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $title;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $link;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Gedmo\Timestampable(on="update")
      */
+    #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
     public function __toString()

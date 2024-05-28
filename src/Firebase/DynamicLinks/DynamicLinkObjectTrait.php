@@ -6,9 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait DynamicLinkObjectTrait
 {
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $dynamicLink = null;
 
     public function getDynamicLink(): ?string

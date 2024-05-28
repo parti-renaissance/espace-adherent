@@ -12,9 +12,11 @@ use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Api\Filter\AdherentMessageScopeFilter;
 use App\Entity\Adherent;
+use App\Entity\AdherentMessage\Filter\AbstractAdherentMessageFilter;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\UnlayerJsonContentTrait;
+use App\Repository\AdherentMessageRepository;
 use App\Validator\ValidAuthorRoleMessageType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,28 +27,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AdherentMessageRepository")
- * @ORM\Table(name="adherent_messages")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({
- *     AdherentMessageTypeEnum::REFERENT: "ReferentAdherentMessage",
- *     AdherentMessageTypeEnum::DEPUTY: "DeputyAdherentMessage",
- *     AdherentMessageTypeEnum::COMMITTEE: "CommitteeAdherentMessage",
- *     AdherentMessageTypeEnum::SENATOR: "SenatorAdherentMessage",
- *     AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE: "ReferentElectedRepresentativeMessage",
- *     AdherentMessageTypeEnum::REFERENT_INSTANCES: "ReferentInstancesMessage",
- *     AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE: "LegislativeCandidateAdherentMessage",
- *     AdherentMessageTypeEnum::CANDIDATE: "CandidateAdherentMessage",
- *     AdherentMessageTypeEnum::CANDIDATE_JECOUTE: "CandidateJecouteMessage",
- *     AdherentMessageTypeEnum::CORRESPONDENT: "CorrespondentAdherentMessage",
- *     AdherentMessageTypeEnum::REGIONAL_COORDINATOR: "RegionalCoordinatorAdherentMessage",
- *     AdherentMessageTypeEnum::REGIONAL_DELEGATE: "RegionalDelegateAdherentMessage",
- *     AdherentMessageTypeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY: "PresidentDepartmentalAssemblyAdherentMessage",
- *     AdherentMessageTypeEnum::STATUTORY: "StatutoryAdherentMessage",
- *     AdherentMessageTypeEnum::FDE_COORDINATOR: "FdeCoordinatorAdherentMessage",
- * })
- *
  * @ApiResource(
  *     shortName="AdherentMessage",
  *     attributes={
@@ -137,6 +117,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @phpstan-consistent-constructor
  */
+#[ORM\Table(name: 'adherent_messages')]
+#[ORM\Entity(repositoryClass: AdherentMessageRepository::class)]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap(AdherentMessageTypeEnum::CLASSES)]
 abstract class AbstractAdherentMessage implements AdherentMessageInterface
 {
     use EntityIdentityTrait;
@@ -146,107 +131,85 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     /**
      * @var Adherent
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['message_read_list', 'message_read'])]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $author;
 
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
     #[Groups(['message_read', 'message_read_list', 'message_write'])]
+    #[ORM\Column]
     private $label;
 
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
     #[Groups(['message_read', 'message_read_list', 'message_write', 'message_read_content'])]
+    #[ORM\Column]
     private $subject;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['message_write', 'message_read_content'])]
+    #[ORM\Column(type: 'text')]
     private $content;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
     #[Groups(['message_read_status', 'message_read', 'message_read_list'])]
+    #[ORM\Column]
     private $status = AdherentMessageStatusEnum::DRAFT;
 
     /**
      * @var AdherentMessageFilterInterface|null
-     *
-     * @ORM\OneToOne(
-     *     targetEntity="App\Entity\AdherentMessage\Filter\AbstractAdherentMessageFilter",
-     *     inversedBy="message",
-     *     cascade={"all"},
-     *     fetch="EAGER",
-     *     orphanRemoval=true
-     * )
      */
+    #[ORM\OneToOne(inversedBy: 'message', targetEntity: AbstractAdherentMessageFilter::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
     private $filter;
 
     /**
      * @var \DateTimeInterface|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
     #[Groups(['message_read_list'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $sentAt;
 
     /**
      * @var MailchimpCampaign[]|Collection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\AdherentMessage\MailchimpCampaign",
-     *     mappedBy="message",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
      */
+    #[ORM\OneToMany(mappedBy: 'message', targetEntity: MailchimpCampaign::class, cascade: ['all'], orphanRemoval: true)]
     private $mailchimpCampaigns;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
      */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $recipientCount;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $sendToTimeline = false;
 
     /**
      * @var string
-     *
-     * @ORM\Column(options={"default": self::SOURCE_PLATFORM})
      */
     #[Groups(['message_read', 'message_read_list'])]
+    #[ORM\Column(options: ['default' => self::SOURCE_PLATFORM])]
     private $source = self::SOURCE_PLATFORM;
 
     public function __construct(?UuidInterface $uuid = null, ?Adherent $author = null)
@@ -353,9 +316,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
             $this->resetFilter();
         }
 
-        if ($filter) {
-            $filter->setMessage($this);
-        }
+        $filter?->setMessage($this);
 
         $this->filter = $filter;
     }

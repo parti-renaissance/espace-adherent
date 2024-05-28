@@ -8,24 +8,18 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="elected_representative_revenue_declaration")
- */
+#[ORM\Table(name: 'elected_representative_revenue_declaration')]
+#[ORM\Entity]
 class RevenueDeclaration
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     public int $amount;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="revenueDeclarations")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectedRepresentative::class, inversedBy: 'revenueDeclarations')]
     public ElectedRepresentative $electedRepresentative;
 
     public function __construct(?UuidInterface $uuid = null)

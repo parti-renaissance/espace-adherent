@@ -7,36 +7,28 @@ use App\Entity\Device;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\MappedSuperclass
- */
+#[ORM\MappedSuperclass]
 abstract class AbstractGrantToken extends AbstractToken
 {
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     private $scopes = [];
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\OAuth\Client")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Client::class)]
     private $client;
 
     /**
      * @var Adherent|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $user;
 
     /**
      * @var Device|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Device")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Device::class)]
     private $device;
 
     public function __construct(

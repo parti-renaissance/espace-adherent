@@ -5,23 +5,21 @@ namespace App\Entity\Timeline;
 use App\Entity\AbstractTranslatableEntity;
 use App\Entity\AlgoliaIndexedEntityInterface;
 use App\Entity\EntityMediaTrait;
+use App\Repository\Timeline\ManifestoRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="timeline_manifestos")
- * @ORM\Entity(repositoryClass="App\Repository\Timeline\ManifestoRepository")
- */
+#[ORM\Table(name: 'timeline_manifestos')]
+#[ORM\Entity(repositoryClass: ManifestoRepository::class)]
 class Manifesto extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {
     use EntityMediaTrait;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="bigint")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'bigint')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     public function __toString(): string
@@ -41,7 +39,7 @@ class Manifesto extends AbstractTranslatableEntity implements AlgoliaIndexedEnti
 
     public function getImage(): ?string
     {
-        return $this->media ? $this->media->getPathWithDirectory() : null;
+        return $this->media?->getPathWithDirectory();
     }
 
     public function getTitles(): array

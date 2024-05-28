@@ -6,54 +6,45 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="referent_team_member")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'referent_team_member')]
+#[ORM\Entity]
 class ReferentTeamMember
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var Adherent
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\Adherent", inversedBy="referentTeamMember")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE", unique=true)
      */
+    #[ORM\JoinColumn(unique: true, nullable: false, onDelete: 'CASCADE')]
+    #[ORM\OneToOne(inversedBy: 'referentTeamMember', targetEntity: Adherent::class)]
     private $member;
 
     /**
      * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $referent;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $limited;
 
     /**
      * @var Committee[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Committee")
      */
+    #[ORM\ManyToMany(targetEntity: Committee::class)]
     private $restrictedCommittees;
 
     /**
      * @var array|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $restrictedCities;
 
     public function __construct(

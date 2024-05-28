@@ -2,47 +2,40 @@
 
 namespace App\Entity\VotingPlatform;
 
+use App\Repository\VotingPlatform\VoteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\VoteRepository")
- *
- * @ORM\Table(name="voting_platform_vote", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="unique_vote", columns={"voter_id", "election_round_id"}),
- * })
- */
+#[ORM\Table(name: 'voting_platform_vote')]
+#[ORM\UniqueConstraint(name: 'unique_vote', columns: ['voter_id', 'election_round_id'])]
+#[ORM\Entity(repositoryClass: VoteRepository::class)]
 class Vote
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
      * @var Voter
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Voter", cascade={"all"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Voter::class, cascade: ['all'])]
     private $voter;
 
     /**
      * @var ElectionRound
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\ElectionRound")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectionRound::class)]
     private $electionRound;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $votedAt;
 
     public function __construct(Voter $voter, ElectionRound $electionRound)

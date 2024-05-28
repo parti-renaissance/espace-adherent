@@ -2,17 +2,17 @@
 
 namespace App\Entity;
 
+use App\Repository\LegislativeCandidateRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="legislative_candidates")
- * @ORM\Entity(repositoryClass="App\Repository\LegislativeCandidateRepository")
- *
  * @UniqueEntity(fields="slug", groups="Admin")
  */
+#[ORM\Table(name: 'legislative_candidates')]
+#[ORM\Entity(repositoryClass: LegislativeCandidateRepository::class)]
 class LegislativeCandidate implements EntityMediaInterface
 {
     use EntityPersonNameTrait;
@@ -28,25 +28,20 @@ class LegislativeCandidate implements EntityMediaInterface
     public const STATUS_QUALIFIED = 'qualified';
     public const STATUS_WON = 'won';
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'integer')]
     private $position = 0;
 
     /**
-     * @ORM\Column(length=6)
-     *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
@@ -54,99 +49,89 @@ class LegislativeCandidate implements EntityMediaInterface
      *     groups="Admin"
      * )
      */
+    #[ORM\Column(length: 6)]
     private $gender;
 
     /**
-     * @ORM\Column(length=100, nullable=true)
-     *
      * @Assert\Email(groups="Admin")
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups="Admin")
      */
+    #[ORM\Column(length: 100, nullable: true)]
     private $emailAddress;
 
     /**
-     * @ORM\Column(length=100, unique=true)
      * @Gedmo\Slug(fields={"districtName"})
-     *
      * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="legislative_candidate.slug.invalid", groups="Admin")
      */
+    #[ORM\Column(length: 100, unique: true)]
     private $slug;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url(groups="Admin")
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="legislative_candidate.facebook_page_url.invalid", groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
      */
+    #[ORM\Column(nullable: true)]
     private $facebookPageUrl;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url(groups="Admin")
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="legislative_candidate.twitter_page_url.invalid", groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
      */
+    #[ORM\Column(nullable: true)]
     private $twitterPageUrl;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url(groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
      */
+    #[ORM\Column(nullable: true)]
     private $donationPageUrl;
 
     /**
-     * @ORM\Column(nullable=true)
      * @Assert\Url(groups="Admin")
      */
+    #[ORM\Column(nullable: true)]
     private $websiteUrl;
 
     /**
-     * @ORM\Column(length=100)
      * @Assert\NotBlank(groups="Admin")
      */
+    #[ORM\Column(length: 100)]
     private $districtName;
 
     /**
-     * @ORM\Column(type="smallint")
      * @Assert\NotBlank(groups="Admin")
      */
+    #[ORM\Column(type: 'smallint')]
     private $districtNumber;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $geojson;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\LegislativeDistrictZone", fetch="EAGER")
-     *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Valid
      */
+    #[ORM\ManyToOne(targetEntity: LegislativeDistrictZone::class, fetch: 'EAGER')]
     private $districtZone;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(callback="getCareerChoices", message="legislative_candidate.carreer.invalid", groups="Admin")
      */
+    #[ORM\Column]
     private $career;
 
     /**
-     * @ORM\Column(length=20, options={"default": "none"})
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(callback="getStatuses", groups="Admin")
      */
+    #[ORM\Column(length: 20, options: ['default' => 'none'])]
     private $status = self::STATUS_NONE;
 
     public static function getCareerChoices(): array

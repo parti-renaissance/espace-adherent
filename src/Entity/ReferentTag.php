@@ -3,19 +3,19 @@
 namespace App\Entity;
 
 use App\Entity\Geo\Zone;
+use App\Repository\ReferentTagRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ReferentTagRepository")
- * @ORM\Table(name="referent_tags")
- *
  * @UniqueEntity("name")
  * @UniqueEntity("code")
  *
  * @deprecated
  */
+#[ORM\Table(name: 'referent_tags')]
+#[ORM\Entity(repositoryClass: ReferentTagRepository::class)]
 class ReferentTag
 {
     public const TYPE_DEPARTMENT = 'department';
@@ -24,55 +24,48 @@ class ReferentTag
     public const TYPE_BOROUGH = 'borough';
     public const TYPE_METROPOLIS = 'metropolis';
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100, unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
      */
+    #[ORM\Column(length: 100, unique: true)]
     private $name;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100, unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
      * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="referent_tag.code.invalid")
      */
+    #[ORM\Column(length: 100, unique: true)]
     private $code;
 
     /**
      * Mailchimp Id of the tag
      *
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $externalId;
 
     /**
      * @var string
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $type;
 
     /**
      * @var Zone
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
      */
+    #[ORM\ManyToOne(targetEntity: Zone::class, cascade: ['persist'])]
     private $zone;
 
     public function __construct(?string $name = null, ?string $code = null, ?Zone $zone = null)

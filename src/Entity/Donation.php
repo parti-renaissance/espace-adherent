@@ -4,7 +4,9 @@ namespace App\Entity;
 
 use App\Donation\DonationSourceEnum;
 use App\Donation\Paybox\PayboxPaymentSubscription;
+use App\EntityListener\DonationListener;
 use App\Geocoder\GeoPointInterface;
+use App\Repository\DonationRepository;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,15 +18,11 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="donations", indexes={
- *     @ORM\Index(name="donation_duration_idx", columns={"duration"}),
- *     @ORM\Index(name="donation_status_idx", columns={"status"}),
- * })
- *
- * @ORM\Entity(repositoryClass="App\Repository\DonationRepository")
- * @ORM\EntityListeners({"App\EntityListener\DonationListener"})
- */
+#[ORM\Table(name: 'donations')]
+#[ORM\Index(columns: ['duration'], name: 'donation_duration_idx')]
+#[ORM\Index(columns: ['status'], name: 'donation_status_idx')]
+#[ORM\Entity(repositoryClass: DonationRepository::class)]
+#[ORM\EntityListeners([DonationListener::class])]
 class Donation implements GeoPointInterface
 {
     use EntityIdentityTrait;
@@ -46,108 +44,83 @@ class Donation implements GeoPointInterface
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $type;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private $amount;
 
     /**
      * @var \DateTimeInterface|null
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $donatedAt;
 
     /**
      * @var \DateTimeInterface|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $lastSuccessDate;
 
-    /**
-     * @ORM\Column(type="smallint", options={"default": 0})
-     */
+    #[ORM\Column(type: 'smallint', options: ['default' => 0])]
     private $duration;
 
     /**
      * We keep this property for legacy datas
      *
      * @var PhoneNumber|null
-     *
-     * @ORM\Column(type="phone_number", nullable=true)
      */
+    #[ORM\Column(type: 'phone_number', nullable: true)]
     private $phone;
 
     /**
      * Client IP is registered only one time when the order(donation) is created
      *
      * @var string|null
-     *
-     * @ORM\Column(length=50, nullable=true)
      */
+    #[ORM\Column(length: 50, nullable: true)]
     private $clientIp;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     */
+    #[ORM\Column(type: 'datetime_immutable')]
     private $createdAt;
 
     /**
      * @var \DateTimeInterface|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $subscriptionEndedAt;
 
-    /**
-     * @ORM\Column(length=25)
-     */
+    #[ORM\Column(length: 25)]
     private $status = self::STATUS_WAITING_CONFIRMATION;
 
     /**
      * @var \DateTimeInterface
      *
-     * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
+    #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private $payboxOrderRef;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private $checkNumber;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private $transferNumber;
 
-    /**
-     * @ORM\Column(length=2, nullable=true)
-     */
+    #[ORM\Column(length: 2, nullable: true)]
     private $nationality;
 
-    /**
-     * @ORM\Column(nullable=true, length=6)
-     */
+    #[ORM\Column(length: 6, nullable: true)]
     private $code;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $filename;
 
     /**
@@ -168,52 +141,40 @@ class Donation implements GeoPointInterface
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $beneficiary;
 
     /**
      * @var Donator|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Donator", inversedBy="donations")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Donator::class, inversedBy: 'donations')]
     private $donator;
 
     /**
      * @var Transaction[]
-     *
-     * @ORM\OneToMany(targetEntity="Transaction", mappedBy="donation", cascade={"all"})
-     * @ORM\OrderBy({"payboxDateTime": "DESC"})
      */
+    #[ORM\OneToMany(mappedBy: 'donation', targetEntity: Transaction::class, cascade: ['all'])]
+    #[ORM\OrderBy(['payboxDateTime' => 'DESC'])]
     private $transactions;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\DonationTag")
-     */
+    #[ORM\ManyToMany(targetEntity: DonationTag::class)]
     private $tags;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $source = null;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $membership = false;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $reAdhesion = false;
 
     public function __construct(

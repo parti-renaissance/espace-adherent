@@ -9,9 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class AdherentZoneBasedRole
 {
     use EntityIdentityTrait;
@@ -19,19 +17,17 @@ class AdherentZoneBasedRole
     use EntityZoneTrait;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Choice(choices=App\Adherent\Authorization\ZoneBasedRoleTypeEnum::ALL)
      */
+    #[ORM\Column]
     private ?string $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="zoneBasedRoles")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)]
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'zoneBasedRoles')]
     private ?Adherent $adherent = null;
 
     public function __construct(?string $type = null)

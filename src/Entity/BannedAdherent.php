@@ -2,19 +2,16 @@
 
 namespace App\Entity;
 
+use App\Repository\BannedAdherentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\BannedAdherentRepository")
- */
+#[ORM\Entity(repositoryClass: BannedAdherentRepository::class)]
 class BannedAdherent
 {
     use EntityIdentityTrait;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $date;
 
     public function __construct(UuidInterface $uuid)

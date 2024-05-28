@@ -10,25 +10,19 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="contribution_revenue_declaration")
- */
+#[ORM\Table(name: 'contribution_revenue_declaration')]
+#[ORM\Entity]
 class RevenueDeclaration
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
     #[Groups(['adherent_elect_read'])]
+    #[ORM\Column(type: 'integer')]
     public int $amount;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="revenueDeclarations")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'revenueDeclarations')]
     public ?Adherent $adherent = null;
 
     public function __construct(?UuidInterface $uuid = null)

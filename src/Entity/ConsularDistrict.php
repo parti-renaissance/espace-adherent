@@ -2,53 +2,45 @@
 
 namespace App\Entity;
 
+use App\Repository\ConsularDistrictRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ConsularDistrictRepository")
- */
+#[ORM\Entity(repositoryClass: ConsularDistrictRepository::class)]
 class ConsularDistrict
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="simple_array")
      */
+    #[ORM\Column(type: 'simple_array')]
     private $countries;
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="simple_array")
      */
+    #[ORM\Column(type: 'simple_array')]
     private $cities;
 
     /**
      * @var string
-     *
-     * @ORM\Column(unique=true)
      */
+    #[ORM\Column(unique: true)]
     private $code;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="smallint")
      */
+    #[ORM\Column(type: 'smallint')]
     private $number;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
+    #[ORM\Column(type: 'json', nullable: true)]
     private $points;
 
     public function __construct(array $countries, array $cities, string $code, int $number)

@@ -3,14 +3,13 @@
 namespace App\Entity\Geo;
 
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\Geo\CityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Geo\CityRepository")
- * @ORM\Table(name="geo_city")
- */
+#[ORM\Table(name: 'geo_city')]
+#[ORM\Entity(repositoryClass: CityRepository::class)]
 class City implements ZoneableInterface
 {
     use GeoTrait;
@@ -18,54 +17,47 @@ class City implements ZoneableInterface
 
     /**
      * @var string[]|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $postalCode;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
      */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $population;
 
     /**
      * @var Department|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Department")
-     * @ORM\JoinColumn(nullable=true)
      */
+    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\ManyToOne(targetEntity: Department::class)]
     private $department;
 
     /**
      * @var District|null
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\District", inversedBy="cities", cascade={"persist"})
-     * @ORM\JoinTable(name="geo_city_district")
      */
+    #[ORM\JoinTable(name: 'geo_city_district')]
+    #[ORM\ManyToMany(targetEntity: District::class, inversedBy: 'cities', cascade: ['persist'])]
     private $districts;
 
     /**
      * @var Canton[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Canton", inversedBy="cities")
-     * @ORM\JoinTable(name="geo_city_canton")
      */
+    #[ORM\JoinTable(name: 'geo_city_canton')]
+    #[ORM\ManyToMany(targetEntity: Canton::class, inversedBy: 'cities')]
     private $cantons;
 
     /**
      * @var CityCommunity|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\CityCommunity")
      */
+    #[ORM\ManyToOne(targetEntity: CityCommunity::class)]
     private $cityCommunity;
 
     /**
      * @var City|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\City")
      */
+    #[ORM\ManyToOne(targetEntity: City::class)]
     private $replacement;
 
     public function __construct(string $code, string $name)

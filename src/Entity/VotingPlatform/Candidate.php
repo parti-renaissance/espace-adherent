@@ -10,90 +10,75 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="voting_platform_candidate")
- */
+#[ORM\Table(name: 'voting_platform_candidate')]
+#[ORM\Entity]
 class Candidate
 {
     use EntityIdentityTrait;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
     #[Groups(['election_result'])]
+    #[ORM\Column]
     private $firstName;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
     #[Groups(['election_result'])]
+    #[ORM\Column]
     private $lastName;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
     #[Groups(['election_result'])]
+    #[ORM\Column]
     private $gender;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $biography;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $faithStatement;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $imagePath;
 
     /**
      * @var CandidateGroup
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\CandidateGroup", inversedBy="candidates")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: CandidateGroup::class, inversedBy: 'candidates')]
     private $candidateGroup;
 
     /**
      * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $adherent;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $additionallyElected = false;
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true}, nullable=true)
-     */
+    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     public ?int $position = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     public ?bool $isSubstitute = null;
 
     public function __construct(

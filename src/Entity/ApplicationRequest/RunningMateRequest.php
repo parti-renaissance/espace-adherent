@@ -3,21 +3,19 @@
 namespace App\Entity\ApplicationRequest;
 
 use App\ApplicationRequest\ApplicationRequestTypeEnum;
+use App\Repository\ApplicationRequest\RunningMateRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="application_request_running_mate")
- * @ORM\Entity(repositoryClass="App\Repository\ApplicationRequest\RunningMateRequestRepository")
- */
+#[ORM\Table(name: 'application_request_running_mate')]
+#[ORM\Entity(repositoryClass: RunningMateRequestRepository::class)]
 class RunningMateRequest extends ApplicationRequest
 {
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $curriculumName;
 
     /**
@@ -38,71 +36,62 @@ class RunningMateRequest extends ApplicationRequest
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isLocalAssociationMember = false;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $localAssociationDomain;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isPoliticalActivist = false;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $politicalActivistDetails;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isPreviousElectedOfficial = false;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $previousElectedOfficialDetails;
 
     /**
      * @var string|null
      *
      * @Assert\NotBlank
-     *
-     * @ORM\Column(type="text")
      */
+    #[ORM\Column(type: 'text')]
     private $favoriteThemeDetails;
 
     /**
      * @var string|null
      *
      * @Assert\NotBlank
-     *
-     * @ORM\Column(type="text")
      */
+    #[ORM\Column(type: 'text')]
     private $projectDetails;
 
     /**
      * @var string|null
      *
      * @Assert\NotBlank
-     *
-     * @ORM\Column(type="text")
      */
+    #[ORM\Column(type: 'text')]
     private $professionalAssets;
 
     public function hasCurriculumUploaded(): bool

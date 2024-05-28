@@ -10,88 +10,68 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(
- *     name="committee_merge_histories",
- *     indexes={
- *         @ORM\Index(name="committee_merge_histories_source_committee_id_idx", columns={"source_committee_id"}),
- *         @ORM\Index(name="committee_merge_histories_destination_committee_id_idx", columns={"destination_committee_id"}),
- *         @ORM\Index(name="committee_merge_histories_date_idx", columns={"date"})
- *     }
- * )
- * @ORM\Entity
- */
+#[ORM\Table(name: 'committee_merge_histories')]
+#[ORM\Index(columns: ['source_committee_id'], name: 'committee_merge_histories_source_committee_id_idx')]
+#[ORM\Index(columns: ['destination_committee_id'], name: 'committee_merge_histories_destination_committee_id_idx')]
+#[ORM\Index(columns: ['date'], name: 'committee_merge_histories_date_idx')]
+#[ORM\Entity]
 class CommitteeMergeHistory
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var Committee
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Committee::class)]
     private $sourceCommittee;
 
     /**
      * @var Committee
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Committee::class)]
     private $destinationCommittee;
 
     /**
      * @var Administrator|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $mergedBy;
 
     /**
      * @var \DateTimeImmutable
-     *
-     * @ORM\Column(type="datetime_immutable")
      */
+    #[ORM\Column(type: 'datetime_immutable')]
     private $date;
 
     /**
      * @var CommitteeMembership[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\CommitteeMembership")
-     * @ORM\JoinTable(
-     *     name="committee_merge_histories_merged_memberships",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="committee_merge_history_id", referencedColumnName="id", onDelete="CASCADE")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="committee_membership_id", referencedColumnName="id", unique=true, onDelete="CASCADE")
-     *     }
-     * )
      */
+    #[ORM\JoinTable(name: 'committee_merge_histories_merged_memberships')]
+    #[ORM\JoinColumn(name: 'committee_merge_history_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'committee_membership_id', referencedColumnName: 'id', unique: true, onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: CommitteeMembership::class)]
     private $mergedMemberships;
 
     /**
      * @var Administrator|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $revertedBy;
 
     /**
      * @var \DateTimeImmutable|null
-     *
-     * @ORM\Column(type="datetime_immutable", nullable=true)
      */
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $revertedAt;
 
     public function __construct(

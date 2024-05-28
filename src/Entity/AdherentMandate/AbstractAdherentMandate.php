@@ -9,24 +9,18 @@ use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
+use App\Repository\AdherentMandate\AdherentMandateRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\AdherentMandate\AdherentMandateRepository")
- * @ORM\Table(name="adherent_mandate")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({
- *     "committee": "App\Entity\AdherentMandate\CommitteeAdherentMandate",
- *     "territorial_council": "App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate",
- *     "national_council": "App\Entity\AdherentMandate\NationalCouncilAdherentMandate",
- *     "elected_representative": "App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate"
- * })
- */
+#[ORM\Table(name: 'adherent_mandate')]
+#[ORM\Entity(repositoryClass: AdherentMandateRepository::class)]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap(['committee' => CommitteeAdherentMandate::class, 'territorial_council' => TerritorialCouncilAdherentMandate::class, 'national_council' => NationalCouncilAdherentMandate::class, 'elected_representative' => ElectedRepresentativeAdherentMandate::class])]
 abstract class AbstractAdherentMandate implements AdherentMandateInterface
 {
     use EntityIdentityTrait;
@@ -37,18 +31,15 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
     /**
      * @var Adherent
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="adherentMandates")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read'])]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'adherentMandates')]
     protected $adherent;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=6, nullable=true)
      *
      * @Assert\NotBlank(message="common.gender.invalid_choice")
      * @Assert\Choice(
@@ -56,59 +47,52 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
      *     message="common.gender.invalid_choice"
      * )
      */
+    #[ORM\Column(length: 6, nullable: true)]
     protected $gender;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
+    #[ORM\Column(type: 'datetime')]
     protected $beginAt;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected $finishAt;
 
     /**
      * @var Committee
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Committee", inversedBy="adherentMandates")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Committee::class, inversedBy: 'adherentMandates')]
     protected $committee;
 
     /**
      * @var TerritorialCouncil
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncil")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: TerritorialCouncil::class)]
     protected $territorialCouncil;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     protected $quality;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $reason;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public $provisional = false;
 
     public function __construct(

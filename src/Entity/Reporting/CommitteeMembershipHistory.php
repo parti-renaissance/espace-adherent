@@ -10,34 +10,26 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Table(
- *     name="committees_membership_histories",
- *     indexes={
- *         @ORM\Index(name="committees_membership_histories_adherent_uuid_idx", columns={"adherent_uuid"}),
- *         @ORM\Index(name="committees_membership_histories_action_idx", columns={"action"}),
- *         @ORM\Index(name="committees_membership_histories_date_idx", columns={"date"})
- *     }
- * )
- * @ORM\Entity
- */
+#[ORM\Table(name: 'committees_membership_histories')]
+#[ORM\Index(columns: ['adherent_uuid'], name: 'committees_membership_histories_adherent_uuid_idx')]
+#[ORM\Index(columns: ['action'], name: 'committees_membership_histories_action_idx')]
+#[ORM\Index(columns: ['date'], name: 'committees_membership_histories_date_idx')]
+#[ORM\Entity]
 class CommitteeMembershipHistory
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     protected $id;
 
     /**
      * @var Committee
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Committee", cascade={"persist"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Committee::class, cascade: ['persist'])]
     private $committee;
 
     /**
@@ -45,23 +37,20 @@ class CommitteeMembershipHistory
      * Otherwise stats would be broken.
      *
      * @var UuidInterface
-     *
-     * @ORM\Column(type="uuid")
      */
+    #[ORM\Column(type: 'uuid')]
     private $adherentUuid;
 
     /**
      * @var Collection|ReferentTag[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
      */
+    #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
     private $referentTags;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=10)
      */
+    #[ORM\Column(length: 10)]
     private $action;
 
     /**
@@ -70,16 +59,14 @@ class CommitteeMembershipHistory
      * Privilege is either HOST or SUPERVISOR or FOLLOWER.
      *
      * @var string
-     *
-     * @ORM\Column(length=10)
      */
+    #[ORM\Column(length: 10)]
     private $privilege;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime_immutable")
      */
+    #[ORM\Column(type: 'datetime_immutable')]
     private $date;
 
     public function __construct(

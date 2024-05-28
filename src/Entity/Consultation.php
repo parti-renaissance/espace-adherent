@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
+use App\Repository\ConsultationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ConsultationRepository")
- */
+#[ORM\Entity(repositoryClass: ConsultationRepository::class)]
 class Consultation
 {
     use EntityIdentityTrait;
@@ -17,31 +16,26 @@ class Consultation
     use EntityAdministratorBlameableTrait;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
      */
+    #[ORM\Column]
     private ?string $title = null;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'text')]
     private ?string $content = null;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Url(protocols={"https"}, message="Protocole autorisé : https")
      */
+    #[ORM\Column]
     private ?string $url = null;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": 1})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private bool $published = true;
 
     public function __construct(?UuidInterface $uuid = null)

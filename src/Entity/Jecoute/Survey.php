@@ -18,9 +18,12 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityScopeVisibilityInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\IndexableEntityInterface;
+use App\EntityListener\AlgoliaIndexListener;
+use App\EntityListener\DynamicLinkListener;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Jecoute\SurveyTypeEnum;
+use App\Repository\Jecoute\SurveyRepository;
 use App\Scope\ScopeVisibilityEnum;
 use App\Validator\Jecoute\SurveyScopeTarget;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -33,21 +36,6 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Jecoute\SurveyRepository")
- * @ORM\Table(name="jecoute_survey")
- *
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({
- *     SurveyTypeEnum::LOCAL: "LocalSurvey",
- *     SurveyTypeEnum::NATIONAL: "NationalSurvey"
- * })
- *
- * @ORM\EntityListeners({
- *     "App\EntityListener\DynamicLinkListener",
- *     "App\EntityListener\AlgoliaIndexListener",
- * })
- *
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {"groups": {"survey_list"}},
@@ -107,6 +95,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @SurveyScopeTarget
  */
+#[ORM\Table(name: 'jecoute_survey')]
+#[ORM\Entity(repositoryClass: SurveyRepository::class)]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap([SurveyTypeEnum::LOCAL => LocalSurvey::class, SurveyTypeEnum::NATIONAL => NationalSurvey::class])]
+#[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
 abstract class Survey implements IndexableEntityInterface, EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, DynamicLinkObjectInterface, EntityScopeVisibilityInterface
 {
     use EntityIdentityTrait;
@@ -118,38 +112,33 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
     /**
      * @var UuidInterface
      *
-     * @ORM\Column(type="uuid", unique=true)
-     *
      * @ApiProperty(identifier=true)
      */
     #[Groups(['data_survey_write', 'data_survey_read', 'jemarche_data_survey_read', 'survey_list', 'survey_list_dc', 'survey_read_dc', 'phoning_campaign_read', 'phoning_campaign_history_read_list', 'pap_campaign_read_after_write', 'pap_campaign_read', 'pap_campaign_history_read_list', 'phoning_campaign_replies_list', 'pap_campaign_replies_list'])]
+    #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=70)
      */
     #[Groups(['survey_list', 'survey_list_dc', 'survey_write_dc', 'survey_read_dc', 'phoning_campaign_read', 'phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'pap_campaign_replies_list', 'pap_campaign_history_read_list'])]
+    #[ORM\Column]
     private $name;
 
     /**
      * @var SurveyQuestion[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Jecoute\SurveyQuestion", mappedBy="survey", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @ORM\OrderBy({"position": "ASC"})
-     *
      * @Assert\Count(min="1", minMessage="survey.questions.min_count")
      * @Assert\Valid
      */
     #[Groups(['survey_write_dc'])]
+    #[ORM\OneToMany(mappedBy: 'survey', targetEntity: SurveyQuestion::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     private $questions;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
     #[Groups(['survey_list_dc', 'survey_read_dc', 'survey_write_dc'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $published;
 
     public function __construct(?UuidInterface $uuid = null, ?string $name = null, bool $published = false)

@@ -11,6 +11,7 @@ use App\Entity\ReferentTag;
 use App\Entity\StaticSegmentTrait;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
 use App\Entity\VotingPlatform\Designation\EntityElectionHelperTrait;
+use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,10 +20,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\TerritorialCouncilRepository")
- *
  * @UniqueEntity("name")
  */
+#[ORM\Entity(repositoryClass: TerritorialCouncilRepository::class)]
 class TerritorialCouncil implements StaticSegmentInterface, InstanceEntityInterface
 {
     use EntityIdentityTrait;
@@ -32,68 +32,50 @@ class TerritorialCouncil implements StaticSegmentInterface, InstanceEntityInterf
     use StaticSegmentTrait;
 
     /**
-     * @ORM\Column(unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(unique: true)]
     private $name;
 
     /**
-     * @ORM\Column(length=50, unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=50)
      */
+    #[ORM\Column(length: 50, unique: true)]
     private $codes;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": true})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $isActive;
 
     /**
      * @var Collection|ReferentTag[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag", cascade={"persist"})
-     * @ORM\JoinTable(
-     *     name="territorial_council_referent_tag",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="territorial_council_id", referencedColumnName="id", onDelete="CASCADE")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="referent_tag_id", referencedColumnName="id", onDelete="CASCADE")
-     *     }
-     * )
      */
+    #[ORM\JoinTable(name: 'territorial_council_referent_tag')]
+    #[ORM\JoinColumn(name: 'territorial_council_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'referent_tag_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: ReferentTag::class, cascade: ['persist'])]
     protected $referentTags;
 
     /**
      * @var Collection|TerritorialCouncilMembership[]
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership",
-     *     cascade={"persist", "remove"},
-     *     mappedBy="territorialCouncil",
-     *     orphanRemoval=true
-     * )
      */
+    #[ORM\OneToMany(mappedBy: 'territorialCouncil', targetEntity: TerritorialCouncilMembership::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private $memberships;
 
     /**
      * @var Election[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\TerritorialCouncil\Election", mappedBy="territorialCouncil", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToMany(mappedBy: 'territorialCouncil', targetEntity: Election::class, cascade: ['all'], orphanRemoval: true)]
     private $elections;
 
     /**
      * @var PoliticalCommittee|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\PoliticalCommittee", mappedBy="territorialCouncil", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToOne(mappedBy: 'territorialCouncil', targetEntity: PoliticalCommittee::class, cascade: ['all'], orphanRemoval: true)]
     private $politicalCommittee;
 
     public function __construct(?string $name = null, ?string $codes = null, bool $isActive = true)
@@ -207,9 +189,7 @@ class TerritorialCouncil implements StaticSegmentInterface, InstanceEntityInterf
 
     public function setIsPoliticalCommitteeActive(bool $isActive): void
     {
-        if ($this->politicalCommittee) {
-            $this->politicalCommittee->setIsActive($isActive);
-        }
+        $this->politicalCommittee?->setIsActive($isActive);
     }
 
     public function getPoliticalCommitteeMembershipsCount(): int

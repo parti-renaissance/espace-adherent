@@ -3,40 +3,36 @@
 namespace App\Entity\TerritorialCouncil\ElectionPoll;
 
 use App\Entity\EntityIdentityTrait;
+use App\Repository\TerritorialCouncil\ElectionPoll\PollChoiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\ElectionPoll\PollChoiceRepository")
- * @ORM\Table(name="territorial_council_election_poll_choice")
- */
+#[ORM\Table(name: 'territorial_council_election_poll_choice')]
+#[ORM\Entity(repositoryClass: PollChoiceRepository::class)]
 class PollChoice
 {
     use EntityIdentityTrait;
 
     /**
      * @var Poll
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\ElectionPoll\Poll", inversedBy="choices")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Poll::class, inversedBy: 'choices')]
     private $electionPoll;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $value;
 
     /**
      * @var Vote|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\TerritorialCouncil\ElectionPoll\Vote", mappedBy="choice", fetch="EXTRA_LAZY")
      */
+    #[ORM\OneToMany(mappedBy: 'choice', targetEntity: Vote::class, fetch: 'EXTRA_LAZY')]
     private $votes;
 
     public function __construct(Poll $electionPoll, string $value, ?UuidInterface $uuid = null)

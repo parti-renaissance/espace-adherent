@@ -12,16 +12,11 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="poll")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({
- *     PollTypeEnum::LOCAL: "App\Entity\Poll\LocalPoll",
- *     PollTypeEnum::NATIONAL: "App\Entity\Poll\NationalPoll"
- * })
- */
+#[ORM\Table(name: 'poll')]
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap([PollTypeEnum::LOCAL => LocalPoll::class, PollTypeEnum::NATIONAL => NationalPoll::class])]
 abstract class Poll
 {
     use EntityIdentityTrait;
@@ -29,8 +24,6 @@ abstract class Poll
 
     /**
      * @var string
-     *
-     * @ORM\Column
      *
      * @Assert\NotBlank(message="poll.question.not_blank")
      * @Assert\Length(
@@ -41,28 +34,25 @@ abstract class Poll
      * )
      */
     #[Groups(['poll_read'])]
+    #[ORM\Column]
     private $question;
 
     /**
      * @var \DateTimeInterface
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Assert\NotNull(message="poll.finish_at.not_null")
      */
     #[Groups(['poll_read'])]
+    #[ORM\Column(type: 'datetime')]
     private $finishAt;
 
     /**
      * @var Choice[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Poll\Choice", mappedBy="poll", cascade={"all"})
      */
+    #[ORM\OneToMany(mappedBy: 'poll', targetEntity: Choice::class, cascade: ['all'])]
     private $choices;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $published;
 
     public function __construct(

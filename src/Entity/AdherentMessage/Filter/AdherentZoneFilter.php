@@ -6,9 +6,7 @@ use App\Entity\ReferentTag;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class AdherentZoneFilter extends AbstractUserFilter
 {
     use BasicUserFiltersTrait;
@@ -16,10 +14,9 @@ class AdherentZoneFilter extends AbstractUserFilter
     /**
      * @var ReferentTag
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ReferentTag")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\ManyToOne(targetEntity: ReferentTag::class)]
     private $referentTag;
 
     public function __construct(?ReferentTag $referentTag = null)

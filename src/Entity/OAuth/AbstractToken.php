@@ -6,39 +6,33 @@ use App\Entity\EntityIdentityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\MappedSuperclass
- */
+#[ORM\MappedSuperclass]
 abstract class AbstractToken implements TokenInterface
 {
     use EntityIdentityTrait;
 
     /**
      * @var string
-     *
-     * @ORM\Column(unique=true)
      */
+    #[ORM\Column(unique: true)]
     private $identifier;
 
     /**
      * @var \DateTimeImmutable
-     *
-     * @ORM\Column(type="datetime_immutable")
      */
+    #[ORM\Column(type: 'datetime_immutable')]
     private $expiresAt;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $revokedAt;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     public function __construct(UuidInterface $uuid, string $identifier, \DateTimeImmutable $expiryDateTime)

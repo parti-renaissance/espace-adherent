@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
+use App\Repository\InternalApiApplicationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\InternalApiApplicationRepository")
- */
+#[ORM\Entity(repositoryClass: InternalApiApplicationRepository::class)]
 class InternalApiApplication
 {
     use EntityIdentityTrait;
@@ -17,27 +16,24 @@ class InternalApiApplication
     /**
      * @var string
      *
-     * @ORM\Column(length=200)
-     *
      * @Assert\Length(max=200, maxMessage="internal_api_application.validation.application_name_length")
      */
+    #[ORM\Column(length: 200)]
     private $applicationName;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=200)
-     *
      * @Assert\NotBlank
      * @Assert\Url
      */
+    #[ORM\Column(length: 200)]
     private $hostname;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $scopeRequired;
 
     public function __construct(

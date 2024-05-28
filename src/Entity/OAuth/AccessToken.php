@@ -2,12 +2,11 @@
 
 namespace App\Entity\OAuth;
 
+use App\Repository\OAuth\AccessTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\OAuth\AccessTokenRepository")
- * @ORM\Table(name="oauth_access_tokens")
- */
+#[ORM\Table(name: 'oauth_access_tokens')]
+#[ORM\Entity(repositoryClass: AccessTokenRepository::class)]
 class AccessToken extends AbstractGrantToken
 {
 }

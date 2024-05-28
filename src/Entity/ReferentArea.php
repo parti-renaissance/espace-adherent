@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
+use App\Repository\ReferentAreaRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ReferentAreaRepository")
  * @UniqueEntity(fields="areaCode", message="legislative_district_zone.area_code.unique", groups="Admin")
  */
+#[ORM\Entity(repositoryClass: ReferentAreaRepository::class)]
 class ReferentArea
 {
     private const TYPE_DEPARTMENT = 'departement';
@@ -27,23 +28,18 @@ class ReferentArea
         'Arrondissement (Paris etc.)' => self::TYPE_DISTRICT,
     ];
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
-     * @ORM\Column(length=6, unique=true)
-     *
      * @Assert\NotBlank(groups="Admin")
      */
+    #[ORM\Column(length: 6, unique: true)]
     private $areaCode;
 
     /**
-     * @ORM\Column(length=20)
-     *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(
      *     callback="getAreaTypeChoices",
@@ -51,19 +47,17 @@ class ReferentArea
      *     groups="Admin"
      * )
      */
+    #[ORM\Column(length: 20)]
     private $areaType = self::TYPE_DEPARTMENT;
 
     /**
-     * @ORM\Column(length=100)
-     *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Length(allowEmptyString=true, min=2, max=100, groups="Admin")
      */
+    #[ORM\Column(length: 100)]
     private $name;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $keywords;
 
     public static function createDepartmentZone(string $areaCode, string $name, array $keywords = []): self
@@ -132,7 +126,7 @@ class ReferentArea
 
     public function setAreaCode(string $code): void
     {
-        $this->areaCode = $code = $code;
+        $this->areaCode = $code;
     }
 
     private static function isCorsica(string $areaCode): bool

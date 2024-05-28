@@ -9,10 +9,9 @@ use Symfony\Component\Intl\Countries;
 trait EntityNullablePostAddressTrait
 {
     /**
-     * @ORM\Embedded(class="App\Entity\NullablePostAddress", columnPrefix="address_")
-     *
      * @var NullablePostAddress
      */
+    #[ORM\Embedded(class: NullablePostAddress::class, columnPrefix: 'address_')]
     protected $postAddress;
 
     public function getPostAddress(): ?NullablePostAddress
@@ -87,16 +86,12 @@ trait EntityNullablePostAddressTrait
 
     public function updateCoordinates(Coordinates $coordinates): void
     {
-        if ($this->postAddress) {
-            $this->postAddress->updateCoordinates($coordinates);
-        }
+        $this->postAddress?->updateCoordinates($coordinates);
     }
 
     public function resetCoordinates(): void
     {
-        if ($this->postAddress) {
-            $this->postAddress->resetCoordinates();
-        }
+        $this->postAddress?->resetCoordinates();
     }
 
     public function getGeolocalisation(): array
@@ -114,8 +109,6 @@ trait EntityNullablePostAddressTrait
 
     public function setGeocodableHash(string $hash): void
     {
-        if ($this->postAddress) {
-            $this->postAddress->setGeocodableHash($hash);
-        }
+        $this->postAddress?->setGeocodableHash($hash);
     }
 }

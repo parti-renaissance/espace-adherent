@@ -5,47 +5,33 @@ namespace App\Entity\Reporting;
 use App\Entity\Administrator;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="administrator_role_history")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'administrator_role_history')]
+#[ORM\Entity]
 class AdministratorRoleHistory
 {
     private const ACTION_ADD = 'add';
     private const ACTION_REMOVE = 'remove';
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Administrator::class)
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private Administrator $administrator;
 
-    /**
-     * @ORM\Column
-     */
+    #[ORM\Column]
     private string $role;
 
-    /**
-     * @ORM\Column
-     */
+    #[ORM\Column]
     private string $action;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     */
+    #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeInterface $date;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Administrator::class)
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private Administrator $author;
 
     private function __construct(

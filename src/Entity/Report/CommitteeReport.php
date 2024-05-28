@@ -5,16 +5,13 @@ namespace App\Entity\Report;
 use App\Entity\Committee;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class CommitteeReport extends Report
 {
     /**
      * @var Committee
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
-     * @ORM\JoinColumn(name="committee_id", onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(name: 'committee_id', onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Committee::class)]
     protected $subject;
 }

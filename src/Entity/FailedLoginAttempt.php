@@ -2,37 +2,33 @@
 
 namespace App\Entity;
 
+use App\Repository\FailedLoginAttemptRepository;
 use App\Security\LoginAttemptSignature;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\FailedLoginAttemptRepository")
- */
+#[ORM\Entity(repositoryClass: FailedLoginAttemptRepository::class)]
 class FailedLoginAttempt
 {
     use EntityIdentityTrait;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $signature;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $at;
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="json")
      */
+    #[ORM\Column(type: 'json')]
     private $extra;
 
     private function __construct(string $signature, array $extra)

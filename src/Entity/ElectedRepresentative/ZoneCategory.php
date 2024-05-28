@@ -4,10 +4,8 @@ namespace App\Entity\ElectedRepresentative;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="elected_representative_zone_category")
- */
+#[ORM\Table(name: 'elected_representative_zone_category')]
+#[ORM\Entity]
 class ZoneCategory
 {
     public const CITY = 'Ville';
@@ -33,18 +31,16 @@ class ZoneCategory
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(unique=true)
      */
+    #[ORM\Column(unique: true)]
     private $name;
 
     public function __construct(string $name)

@@ -9,48 +9,34 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="elected_representative_payment")
- */
+#[ORM\Table(name: 'elected_representative_payment')]
+#[ORM\Entity]
 class Payment
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     public ?string $ohmeId = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
     #[Groups(['elected_representative_read'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $date = null;
 
-    /**
-     * @ORM\Column(length=50)
-     */
     #[Groups(['elected_representative_read'])]
+    #[ORM\Column(length: 50)]
     public ?string $method = null;
 
-    /**
-     * @ORM\Column(length=50, nullable=true)
-     */
     #[Groups(['elected_representative_read'])]
+    #[ORM\Column(length: 50, nullable: true)]
     public ?string $status = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
     #[Groups(['elected_representative_read'])]
+    #[ORM\Column(type: 'integer')]
     public ?int $amount = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\ElectedRepresentative", inversedBy="payments")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectedRepresentative::class, inversedBy: 'payments')]
     public ?ElectedRepresentative $electedRepresentative = null;
 
     public function __construct(?UuidInterface $uuid = null)

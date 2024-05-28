@@ -2,89 +2,81 @@
 
 namespace App\Entity\ChezVous;
 
+use App\Repository\ChezVous\MeasureTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ChezVous\MeasureTypeRepository")
- * @ORM\Table(name="chez_vous_measure_types")
- *
  * @UniqueEntity("code")
  */
+#[ORM\Table(name: 'chez_vous_measure_types')]
+#[ORM\Entity(repositoryClass: MeasureTypeRepository::class)]
 class MeasureType
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      * @Assert\Choice(callback={"App\ChezVous\MeasureChoiceLoader", "getTypeChoices"})
      */
+    #[ORM\Column(unique: true)]
     private $code;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $label;
 
     /**
      * @var \DateTimeInterface|null
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url
      */
+    #[ORM\Column(nullable: true)]
     private $sourceLink;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(nullable: true)]
     private $sourceLabel;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url
      */
+    #[ORM\Column(nullable: true)]
     private $oldolfLink;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url
      */
+    #[ORM\Column(nullable: true)]
     private $eligibilityLink;
 
     public function __construct(string $code, string $label)

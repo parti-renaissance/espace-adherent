@@ -2,19 +2,16 @@
 
 namespace App\Entity\OAuth;
 
+use App\Repository\OAuth\RefreshTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\OAuth\RefreshTokenRepository")
- * @ORM\Table(name="oauth_refresh_tokens")
- */
+#[ORM\Table(name: 'oauth_refresh_tokens')]
+#[ORM\Entity(repositoryClass: RefreshTokenRepository::class)]
 class RefreshToken extends AbstractToken
 {
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\OAuth\AccessToken")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: AccessToken::class)]
     private $accessToken;
 
     public function __construct(

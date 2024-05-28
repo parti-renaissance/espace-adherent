@@ -5,32 +5,26 @@ namespace App\Entity\Reporting;
 use App\Entity\Adherent;
 use App\Entity\ReferentTag;
 use App\Entity\SubscriptionType;
+use App\Repository\EmailSubscriptionHistoryRepository;
 use Cake\Chronos\Chronos;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Table(
- *     name="adherent_email_subscription_histories",
- *     indexes={
- *         @ORM\Index(name="adherent_email_subscription_histories_adherent_uuid_idx", columns={"adherent_uuid"}),
- *         @ORM\Index(name="adherent_email_subscription_histories_adherent_action_idx", columns={"action"}),
- *         @ORM\Index(name="adherent_email_subscription_histories_adherent_date_idx", columns={"date"})
- *     }
- * )
- * @ORM\Entity(repositoryClass="App\Repository\EmailSubscriptionHistoryRepository")
- */
+#[ORM\Table(name: 'adherent_email_subscription_histories')]
+#[ORM\Index(columns: ['adherent_uuid'], name: 'adherent_email_subscription_histories_adherent_uuid_idx')]
+#[ORM\Index(columns: ['action'], name: 'adherent_email_subscription_histories_adherent_action_idx')]
+#[ORM\Index(columns: ['date'], name: 'adherent_email_subscription_histories_adherent_date_idx')]
+#[ORM\Entity(repositoryClass: EmailSubscriptionHistoryRepository::class)]
 class EmailSubscriptionHistory
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
@@ -38,39 +32,34 @@ class EmailSubscriptionHistory
      * Otherwise stats would be broken.
      *
      * @var UuidInterface
-     *
-     * @ORM\Column(type="uuid")
      */
+    #[ORM\Column(type: 'uuid')]
     private $adherentUuid;
 
     /**
      * @var SubscriptionType
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\SubscriptionType")
-     * @ORM\JoinColumn(nullable=false)
      */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: SubscriptionType::class)]
     private $subscriptionType;
 
     /**
      * @var Collection|ReferentTag[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
-     * @ORM\JoinTable(name="adherent_email_subscription_history_referent_tag")
      */
+    #[ORM\JoinTable(name: 'adherent_email_subscription_history_referent_tag')]
+    #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
     private $referentTags;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=32)
      */
+    #[ORM\Column(length: 32)]
     private $action;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime_immutable")
      */
+    #[ORM\Column(type: 'datetime_immutable')]
     private $date;
 
     public function __construct(

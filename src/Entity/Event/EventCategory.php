@@ -3,6 +3,7 @@
 namespace App\Entity\Event;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\EventCategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -25,22 +26,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @ORM\Entity(repositoryClass="App\Repository\EventCategoryRepository")
- * @ORM\Table(name="events_categories")
- *
  * @UniqueEntity("name")
  */
+#[ORM\Table(name: 'events_categories')]
+#[ORM\Entity(repositoryClass: EventCategoryRepository::class)]
 class EventCategory extends BaseEventCategory
 {
     /**
      * @var EventGroupCategory|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event\EventGroupCategory", inversedBy="eventCategories")
-     * @ORM\JoinColumn(nullable=false)
-     *
      * @Assert\NotBlank
      */
     #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: EventGroupCategory::class, inversedBy: 'eventCategories')]
     private $eventGroupCategory;
 
     public function getEventGroupCategory(): ?EventGroupCategory

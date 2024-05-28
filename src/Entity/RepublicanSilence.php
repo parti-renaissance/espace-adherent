@@ -7,41 +7,36 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class RepublicanSilence
 {
     use EntityZoneTrait;
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['read_api'])]
+    #[ORM\Column(type: 'datetime')]
     private $beginAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Assert\NotBlank
      * @Assert\Expression("value > this.getBeginAt()", message="committee.event.invalid_date_range")
      */
     #[Groups(['read_api'])]
+    #[ORM\Column(type: 'datetime')]
     private $finishAt;
 
     public function __construct()

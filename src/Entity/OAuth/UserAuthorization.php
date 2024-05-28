@@ -5,43 +5,40 @@ namespace App\Entity\OAuth;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\OAuth\Model\Scope;
+use App\Repository\OAuth\UserAuthorizationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\OAuth\UserAuthorizationRepository")
- * @ORM\Table(name="user_authorizations", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="user_authorizations_unique", columns={"user_id", "client_id"})
- * })
  * @UniqueEntity(fields={"user", "client"}, message="user_authorization.non_unique")
  */
+#[ORM\Table(name: 'user_authorizations')]
+#[ORM\UniqueConstraint(name: 'user_authorizations_unique', columns: ['user_id', 'client_id'])]
+#[ORM\Entity(repositoryClass: UserAuthorizationRepository::class)]
 class UserAuthorization
 {
     use EntityIdentityTrait;
 
     /**
      * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $user;
 
     /**
      * @var Client
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\OAuth\Client")
-     * @ORM\JoinColumn(name="client_id", referencedColumnName="id", onDelete="RESTRICT")
      */
+    #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id', onDelete: 'RESTRICT')]
+    #[ORM\ManyToOne(targetEntity: Client::class)]
     private $client;
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="json")
      */
+    #[ORM\Column(type: 'json')]
     private $scopes;
 
     /**

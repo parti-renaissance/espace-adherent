@@ -16,10 +16,15 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityScopeVisibilityWithZonesInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
+use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\Survey;
+use App\EntityListener\AlgoliaIndexListener;
+use App\EntityListener\DynamicLinkListener;
+use App\EntityListener\PapCampaignListener;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
+use App\Repository\Pap\CampaignRepository;
 use App\Scope\ScopeVisibilityEnum;
 use App\Validator\PapCampaignStarted as AssertStartedPapCampaignValid;
 use App\Validator\PapCampaignVotePlaces as AssertVotePlacesValid;
@@ -33,17 +38,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Pap\CampaignRepository")
- * @ORM\Table(name="pap_campaign", indexes={
- *     @ORM\Index(columns={"begin_at", "finish_at"}),
- * })
- *
- * @ORM\EntityListeners({
- *     "App\EntityListener\DynamicLinkListener",
- *     "App\EntityListener\AlgoliaIndexListener",
- *     "App\EntityListener\PapCampaignListener",
- * })
- *
  * @ApiResource(
  *     shortName="PapCampaign",
  *     attributes={
@@ -146,6 +140,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @AssertStartedPapCampaignValid
  * @AssertVotePlacesValid
  */
+#[ORM\Table(name: 'pap_campaign')]
+#[ORM\Index(columns: ['begin_at', 'finish_at'])]
+#[ORM\Entity(repositoryClass: CampaignRepository::class)]
+#[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class, PapCampaignListener::class])]
 class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZonesInterface, EntityAdherentBlameableInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;
@@ -158,37 +156,32 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
     #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
+    #[ORM\Column]
     private $title;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
     #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $brief;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer")
-     *
      * @Assert\NotBlank
      * @Assert\GreaterThan(value="0")
      */
     #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
+    #[ORM\Column(type: 'integer')]
     private $goal;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      *
      * @Assert\NotBlank(groups={"regular_campaign"})
      * @Assert\GreaterThanOrEqual(
@@ -198,93 +191,78 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      * )
      */
     #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $beginAt;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(type="datetime", nullable=true)
-     *
      * @Assert\NotBlank(groups={"regular_campaign"})
      * @Assert\Expression("value > this.getBeginAt()", message="pap.campaign.invalid_end_date")
      */
     #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $finishAt;
 
     /**
      * @var Survey|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Jecoute\Survey")
-     * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotBlank
      *
      * @ApiSubresource
      */
     #[Groups(['pap_campaign_write', 'pap_campaign_read', 'pap_campaign_read_after_write'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Survey::class)]
     private $survey;
 
-    /**
-     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     */
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     private int $nbAddresses;
 
-    /**
-     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
-     */
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     private int $nbVoters;
 
     /**
      * @var Collection|CampaignHistory[]
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Pap\CampaignHistory", mappedBy="campaign", fetch="EXTRA_LAZY")
      */
+    #[ORM\OneToMany(mappedBy: 'campaign', targetEntity: CampaignHistory::class, fetch: 'EXTRA_LAZY')]
     private $campaignHistories;
 
     /**
      * @var VotePlace[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Pap\VotePlace", inversedBy="campaigns")
-     * @ORM\JoinTable(name="pap_campaign_vote_place")
-     *
      * @ApiSubresource
      */
     #[Groups(['pap_campaign_write'])]
+    #[ORM\JoinTable(name: 'pap_campaign_vote_place')]
+    #[ORM\ManyToMany(targetEntity: VotePlace::class, inversedBy: 'campaigns')]
     private $votePlaces;
 
     /**
      * @var Collection|BuildingStatistics[]
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Pap\BuildingStatistics", mappedBy="campaign", fetch="EXTRA_LAZY")
-     *
      * @ApiSubresource
      */
+    #[ORM\OneToMany(mappedBy: 'campaign', targetEntity: BuildingStatistics::class, fetch: 'EXTRA_LAZY')]
     private Collection $buildingStatistics;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $associated = false;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": true})
-     */
     #[Groups(['pap_campaign_write', 'pap_campaign_read', 'pap_campaign_read_after_write', 'pap_campaign_read_list'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private bool $enabled;
 
     /**
-     * @ORM\Column(length=30)
-     *
      * @Assert\NotBlank(message="scope.visibility.not_blank")
      * @Assert\Choice(choices=App\Scope\ScopeVisibilityEnum::ALL, message="scope.visibility.choice")
      */
     #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_read_after_write'])]
+    #[ORM\Column(length: 30)]
     protected string $visibility = ScopeVisibilityEnum::NATIONAL;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
-     * @ORM\JoinTable(name="pap_campaign_zone")
-     */
+    #[ORM\JoinTable(name: 'pap_campaign_zone')]
+    #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
     protected Collection $zones;
 
     public function __construct(

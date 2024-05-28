@@ -5,6 +5,7 @@ namespace App\Entity\Jecoute;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
 use App\Entity\EntityIdentityTrait;
+use App\Repository\Jecoute\SurveyQuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -15,48 +16,39 @@ use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="jecoute_survey_question")
- * @ORM\Entity(repositoryClass="App\Repository\Jecoute\SurveyQuestionRepository")
- */
+#[ORM\Table(name: 'jecoute_survey_question')]
+#[ORM\Entity(repositoryClass: SurveyQuestionRepository::class)]
 class SurveyQuestion implements AuthoredInterface
 {
     use EntityIdentityTrait;
     use Sortable;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     protected $id;
 
     /**
      * @var Survey
      *
-     * @ORM\ManyToOne(targetEntity="Survey", inversedBy="questions", cascade={"persist"})
      * @Gedmo\SortableGroup
      */
+    #[ORM\ManyToOne(targetEntity: Survey::class, cascade: ['persist'], inversedBy: 'questions')]
     private $survey;
 
     /**
      * @var Question
      *
-     * @ORM\ManyToOne(targetEntity="Question", cascade={"persist"})
-     *
      * @Assert\Valid
      */
     #[Groups(['survey_write_dc'])]
+    #[ORM\ManyToOne(targetEntity: Question::class, cascade: ['persist'])]
     private $question;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Jecoute\DataAnswer", mappedBy="surveyQuestion")
-     */
+    #[ORM\OneToMany(mappedBy: 'surveyQuestion', targetEntity: DataAnswer::class)]
     private $dataAnswers;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $fromSuggestedQuestion;
 
     public function __construct(?Survey $survey = null, ?Question $question = null)

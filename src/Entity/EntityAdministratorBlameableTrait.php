@@ -8,18 +8,16 @@ trait EntityAdministratorBlameableTrait
 {
     /**
      * @var Administrator|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $createdByAdministrator;
 
     /**
      * @var Administrator|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $updatedByAdministrator;
 
     public function getCreatedByAdministrator(): ?Administrator

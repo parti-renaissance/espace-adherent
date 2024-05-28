@@ -4,33 +4,27 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="coordinator_managed_areas")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'coordinator_managed_areas')]
+#[ORM\Entity]
 class CoordinatorManagedArea
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * The codes of the managed zones.
      *
      * @var array
-     *
-     * @ORM\Column(type="simple_array")
      */
+    #[ORM\Column(type: 'simple_array')]
     private $codes;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $sector;
 
     public function __construct(array $codes = [], string $sector = '')

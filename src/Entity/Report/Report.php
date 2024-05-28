@@ -5,23 +5,17 @@ namespace App\Entity\Report;
 use App\Entity\Adherent;
 use App\Entity\AuthoredTrait;
 use App\Entity\EntityIdentityTrait;
+use App\Repository\ReportRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ReportRepository")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({
- *     "committee": "CommitteeReport",
- *     "community_event": "CommunityEventReport",
- * })
- *
- * @ORM\Table(name="reports", indexes={
- *     @ORM\Index(name="report_status_idx", columns={"status"}),
- *     @ORM\Index(name="report_type_idx", columns={"type"})
- * })
- */
+#[ORM\Table(name: 'reports')]
+#[ORM\Index(columns: ['status'], name: 'report_status_idx')]
+#[ORM\Index(columns: ['type'], name: 'report_type_idx')]
+#[ORM\Entity(repositoryClass: ReportRepository::class)]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap(['committee' => CommitteeReport::class, 'community_event' => CommunityEventReport::class])]
 abstract class Report
 {
     use EntityIdentityTrait;
@@ -34,37 +28,32 @@ abstract class Report
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="json")
      */
+    #[ORM\Column(type: 'json')]
     private $reasons;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=16, options={"default": App\Entity\Report\ReportStatusEnum::STATUS_UNRESOLVED})
      */
+    #[ORM\Column(length: 16, options: ['default' => ReportStatusEnum::STATUS_UNRESOLVED])]
     private $status = ReportStatusEnum::STATUS_UNRESOLVED;
 
     /**
      * @var \DateTimeImmutable
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     /**
      * @var \DateTimeImmutable
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $resolvedAt;
 
     /**

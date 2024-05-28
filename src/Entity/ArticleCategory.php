@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\ArticleCategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -21,76 +22,68 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     }
  * )
- *
- * @ORM\Table(name="articles_categories")
- * @ORM\Entity(repositoryClass="App\Repository\ArticleCategoryRepository")
  */
+#[ORM\Table(name: 'articles_categories')]
+#[ORM\Entity(repositoryClass: ArticleCategoryRepository::class)]
 class ArticleCategory
 {
     public const DEFAULT_CATEGORY = 'tout';
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="smallint")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'smallint')]
     private $position;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=50)
      */
     #[Groups(['article_category_read', 'article_list_read', 'article_read'])]
+    #[ORM\Column(length: 50)]
     private $name;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100, unique=true)
-     *
      * @Assert\NotBlank
      */
     #[Groups(['article_category_read', 'article_list_read', 'article_read'])]
+    #[ORM\Column(length: 100, unique: true)]
     private $slug;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url
      */
+    #[ORM\Column(nullable: true)]
     private $ctaLink;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100, nullable=true)
-     *
      * @Assert\Length(max="100")
      */
+    #[ORM\Column(length: 100, nullable: true)]
     private $ctaLabel;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": 1})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $display;
 
     public function __construct(

@@ -7,38 +7,33 @@ use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="election_city_manager")
- */
+#[ORM\Table(name: 'election_city_manager')]
+#[ORM\Entity]
 class CityManager
 {
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $name;
 
     /**
      * @var PhoneNumber|null
      *
-     * @ORM\Column(type="phone_number", nullable=true)
-     *
      * @AssertPhoneNumber
      */
+    #[ORM\Column(type: 'phone_number', nullable: true)]
     private $phone;
 
     public function __construct(?string $name = null, ?PhoneNumber $phone = null)

@@ -7,43 +7,28 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="referent_managed_areas")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'referent_managed_areas')]
+#[ORM\Entity]
 class ReferentManagedArea
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var ReferentTag[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
-     * @ORM\JoinTable(
-     *     name="referent_managed_areas_tags",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="referent_managed_area_id", referencedColumnName="id", onDelete="CASCADE")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="referent_tag_id", referencedColumnName="id")
-     *     }
-     * )
      */
+    #[ORM\JoinTable(name: 'referent_managed_areas_tags')]
+    #[ORM\JoinColumn(name: 'referent_managed_area_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'referent_tag_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
     private $tags;
 
-    /**
-     * @ORM\Column(type="geo_point", nullable=true)
-     */
+    #[ORM\Column(type: 'geo_point', nullable: true)]
     private $markerLatitude;
 
-    /**
-     * @ORM\Column(type="geo_point", nullable=true)
-     */
+    #[ORM\Column(type: 'geo_point', nullable: true)]
     private $markerLongitude;
 
     public function __construct(array $tags = [], ?string $latitude = null, ?string $longitude = null)

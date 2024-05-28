@@ -5,6 +5,7 @@ namespace App\Entity\Formation;
 use App\Entity\EntityMediaInterface;
 use App\Entity\EntityMediaTrait;
 use App\Entity\PositionTrait;
+use App\Repository\Formation\ModuleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,12 +14,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="formation_modules")
- * @ORM\Entity(repositoryClass="App\Repository\Formation\ModuleRepository")
- *
  * @UniqueEntity(fields={"title", "axe"}, message="module.title.unique_entity")
  * @UniqueEntity(fields={"slug", "axe"}, message="module.slug.unique_entity")
  */
+#[ORM\Table(name: 'formation_modules')]
+#[ORM\Entity(repositoryClass: ModuleRepository::class)]
 class Module implements EntityMediaInterface
 {
     use EntityMediaTrait;
@@ -26,73 +26,61 @@ class Module implements EntityMediaInterface
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="bigint")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'bigint')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(unique=true)
-     *
      * @Assert\NotBlank(message="Veuillez renseigner un titre.")
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
      */
+    #[ORM\Column(unique: true)]
     private $title;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(unique=true)
-     *
      * @Gedmo\Slug(fields={"title"})
      */
+    #[ORM\Column(unique: true)]
     private $slug;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank(message="Veuillez renseigner une description.")
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
      */
+    #[ORM\Column(type: 'text')]
     private $description;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank(message="Veuillez renseigner un contenu.")
      */
+    #[ORM\Column(type: 'text')]
     private $content;
 
     /**
      * @var Axe|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Formation\Axe", inversedBy="modules")
-     *
      * @Assert\NotBlank(message="Veuillez renseigner un axe.")
      */
+    #[ORM\ManyToOne(targetEntity: Axe::class, inversedBy: 'modules')]
     private $axe;
 
     /**
      * @var Collection|File[]
      *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Formation\File",
-     *     cascade={"persist", "remove"},
-     *     mappedBy="module",
-     *     orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"id": "ASC"})
-     *
      * @Assert\Valid
      */
+    #[ORM\OneToMany(mappedBy: 'module', targetEntity: File::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['id' => 'ASC'])]
     private $files;
 
     public function __construct()

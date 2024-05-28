@@ -6,15 +6,11 @@ use App\Entity\Image;
 use App\Validator\ImageObject as AssertImageObject;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class MoocImageElement extends BaseMoocElement
 {
     /**
      * @var Image|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"all"}, orphanRemoval=true)
      *
      * @AssertImageObject(
      *     mimeTypes={"image/jpeg", "image/png"},
@@ -23,6 +19,7 @@ class MoocImageElement extends BaseMoocElement
      *     maxHeight="720"
      * )
      */
+    #[ORM\OneToOne(targetEntity: Image::class, cascade: ['all'], orphanRemoval: true)]
     protected $image;
 
     public function getImage(): ?Image

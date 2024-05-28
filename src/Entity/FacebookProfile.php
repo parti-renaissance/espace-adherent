@@ -6,10 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Table(name="facebook_profiles")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'facebook_profiles')]
+#[ORM\Entity]
 class FacebookProfile
 {
     use EntityIdentityTrait;
@@ -17,51 +15,44 @@ class FacebookProfile
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=30, unique=true)
      */
+    #[ORM\Column(length: 30, unique: true)]
     private $facebookId;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $name = '';
 
     /**
      * @var string
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $emailAddress = '';
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=30)
      */
+    #[ORM\Column(length: 30)]
     private $gender = '';
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="json")
      */
+    #[ORM\Column(type: 'json')]
     private $ageRange = [];
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $accessToken;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $hasAutoUploaded = false;
 
     public function __toString()

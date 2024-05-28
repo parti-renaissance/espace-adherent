@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Device;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\Jecoute\JemarcheDataSurveyRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -13,8 +14,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Jecoute\JemarcheDataSurveyRepository")
- *
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {
@@ -50,112 +49,89 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  */
+#[ORM\Entity(repositoryClass: JemarcheDataSurveyRepository::class)]
 class JemarcheDataSurvey implements DataSurveyAwareInterface
 {
     use EntityIdentityTrait;
     use DataSurveyAwareTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Device")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Device::class)]
     private $device;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     #[Groups(['jemarche_data_survey_write'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $firstName;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     #[Groups(['jemarche_data_survey_write'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $lastName;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     #[Groups(['jemarche_data_survey_write'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $emailAddress;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
     #[Groups(['jemarche_data_survey_write'])]
+    #[ORM\Column(type: 'boolean')]
     private $agreedToStayInContact = false;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
     #[Groups(['jemarche_data_survey_write'])]
+    #[ORM\Column(type: 'boolean')]
     private $agreedToContactForJoin = false;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
     #[Groups(['jemarche_data_survey_write'])]
+    #[ORM\Column(type: 'boolean')]
     private $agreedToTreatPersonalData = false;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     #[Groups(['jemarche_data_survey_write'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $postalCode;
 
     /**
-     * @ORM\Column(length=30, nullable=true)
-     *
      * @Assert\Choice(callback={"App\Jecoute\ProfessionEnum", "all"})
      */
     #[Groups(['jemarche_data_survey_write'])]
+    #[ORM\Column(length: 30, nullable: true)]
     private $profession;
 
     /**
-     * @ORM\Column(length=15, nullable=true)
-     *
      * @Assert\Choice(callback={"App\Jecoute\AgeRangeEnum", "all"})
      */
     #[Groups(['jemarche_data_survey_write'])]
+    #[ORM\Column(length: 15, nullable: true)]
     private $ageRange;
 
     /**
-     * @ORM\Column(length=15, nullable=true)
-     *
      * @Assert\Choice(callback={"App\Jecoute\GenderEnum", "all"})
      */
     #[Groups(['jemarche_data_survey_write'])]
+    #[ORM\Column(length: 15, nullable: true)]
     private $gender;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     #[Groups(['jemarche_data_survey_write'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $genderOther;
 
     /**
      * @var float|null
-     *
-     * @ORM\Column(type="geo_point", nullable=true)
      */
     #[Groups(['jemarche_data_survey_write'])]
+    #[ORM\Column(type: 'geo_point', nullable: true)]
     private $latitude;
 
     /**
      * @var float|null
-     *
-     * @ORM\Column(type="geo_point", nullable=true)
      */
     #[Groups(['jemarche_data_survey_write'])]
+    #[ORM\Column(type: 'geo_point', nullable: true)]
     private $longitude;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true, inversedBy="jemarcheDataSurvey")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     *
      * @Assert\Valid
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(inversedBy: 'jemarcheDataSurvey', targetEntity: DataSurvey::class, cascade: ['persist'], orphanRemoval: true)]
     private ?DataSurvey $dataSurvey = null;
 
     public function __construct(?UuidInterface $uuid = null)

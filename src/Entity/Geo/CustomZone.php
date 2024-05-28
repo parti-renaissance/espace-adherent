@@ -5,10 +5,8 @@ namespace App\Entity\Geo;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(readOnly=true)
- * @ORM\Table(name="geo_custom_zone")
- */
+#[ORM\Table(name: 'geo_custom_zone')]
+#[ORM\Entity(readOnly: true)]
 class CustomZone implements ZoneableInterface
 {
     use GeoTrait;

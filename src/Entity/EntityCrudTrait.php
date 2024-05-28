@@ -60,7 +60,7 @@ trait EntityCrudTrait
 
         // This prevents Algolia to try modifying for example "postAddress.latitude" or ”organizer_id”
         // https://github.com/algolia/AlgoliaSearchBundle/blob/4415de8d3d279fb68c97edeb54a1184b84ebbc9c/Mapping/Helper/ChangeAwareMethod.php#L21-L42
-        if (str_contains($property, '.') || '_id' === substr($property, -3)) {
+        if (str_contains($property, '.') || str_ends_with($property, '_id')) {
             return;
         }
 

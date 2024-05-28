@@ -22,9 +22,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\MappedSuperclass
- */
+#[ORM\MappedSuperclass]
 abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInterface
 {
     use EntityIdentityTrait;
@@ -33,28 +31,24 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
     use EntityAdministratorBlameableTrait;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     #[Groups(['procuration_request_read', 'procuration_matched_proxy'])]
+    #[ORM\Column]
     public string $email;
 
     /**
-     * @ORM\Column(length=6)
-     *
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice"
      * )
      */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_proxy_list_request', 'procuration_request_list_proxy'])]
+    #[ORM\Column(length: 6)]
     public string $gender;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\Length(
      *     min=2,
      *     max=255,
@@ -63,11 +57,10 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
      * )
      */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_proxy_list_request', 'procuration_request_list_proxy', 'procuration_matched_proxy'])]
+    #[ORM\Column]
     public string $firstNames;
 
     /**
-     * @ORM\Column(length=100)
-     *
      * @Assert\Length(
      *     min=1,
      *     max=100,
@@ -76,11 +69,10 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
      * )
      */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_proxy_list_request', 'procuration_request_list_proxy', 'procuration_matched_proxy'])]
+    #[ORM\Column(length: 100)]
     public string $lastName;
 
     /**
-     * @ORM\Column(type="date")
-     *
      * @Assert\Range(
      *     min="-120 years",
      *     max="-17 years",
@@ -89,64 +81,49 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
      * )
      */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
+    #[ORM\Column(type: 'date')]
     public \DateTimeInterface $birthdate;
 
     /**
-     * @ORM\Column(type="phone_number", nullable=true)
-     *
      * @AssertPhoneNumber(message="common.phone_number.invalid")
      */
     #[Groups(['procuration_request_read', 'procuration_matched_proxy'])]
+    #[ORM\Column(type: 'phone_number', nullable: true)]
     public ?PhoneNumber $phone;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $distantVotePlace;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     * @ORM\JoinColumn(nullable=false)
-     */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
     public Zone $voteZone;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     * @ORM\JoinColumn(nullable=true)
-     */
+    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
     public ?Zone $votePlace;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(
      *     max=255,
      *     maxMessage="procuration.custom_vote_place.max_length"
      * )
      */
+    #[ORM\Column(nullable: true)]
     public ?string $customVotePlace;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $joinNewsletter;
 
-    /**
-     * @ORM\Column(length=50, nullable=true)
-     */
+    #[ORM\Column(length: 50, nullable: true)]
     public ?string $clientIp;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationV2\Round")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Round::class)]
     public Round $round;
 
     public function __construct(
@@ -223,7 +200,7 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
     {
     }
 
-    public function addZone(Zone $Zone): void
+    public function addZone(Zone $zone): void
     {
     }
 

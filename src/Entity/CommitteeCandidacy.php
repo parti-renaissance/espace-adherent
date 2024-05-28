@@ -7,6 +7,8 @@ use App\Entity\VotingPlatform\Designation\BaseCandidaciesGroup;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
+use App\EntityListener\AlgoliaIndexListener;
+use App\Repository\CommitteeCandidacyRepository;
 use App\Validator\CommitteeMembershipZoneInScopeZones as AssertCommitteeMembershipZoneInScopeZones;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Common\Collections\Collection;
@@ -47,63 +49,56 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @ORM\Entity(repositoryClass="App\Repository\CommitteeCandidacyRepository")
- *
- * @ORM\EntityListeners({"App\EntityListener\AlgoliaIndexListener"})
- *
  * @Assert\Expression(
  *     expression="!this.isVotePeriodStarted()",
  *     message="Vous ne pouvez pas créer de candidature sur une élection en cours",
  *     groups={"api_committee_candidacy_validation"}
  * )
  */
+#[ORM\Entity(repositoryClass: CommitteeCandidacyRepository::class)]
+#[ORM\EntityListeners([AlgoliaIndexListener::class])]
 class CommitteeCandidacy extends BaseCandidacy
 {
     /**
      * @var CommitteeElection
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeElection", inversedBy="candidacies")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: CommitteeElection::class, inversedBy: 'candidacies')]
     private $committeeElection;
 
     /**
      * @var CommitteeMembership
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeMembership", inversedBy="committeeCandidacies")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     *
      * @Assert\NotBlank(message="Cet adhérent n'est pas un membre du comité.", groups={"api_committee_candidacy_validation"})
      * @AssertCommitteeMembershipZoneInScopeZones(groups={"api_committee_candidacy_validation"})
      */
     #[Groups(['committee_candidacy:read', 'committee_election:read'])]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: CommitteeMembership::class, inversedBy: 'committeeCandidacies')]
     private $committeeMembership;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $type;
 
     /**
      * @var CommitteeCandidacyInvitation[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\CommitteeCandidacyInvitation", mappedBy="candidacy", cascade={"all"})
-     *
      * @Assert\Count(value=1, groups={"invitation_edit"}, exactMessage="This value should not be blank.")
      */
+    #[ORM\OneToMany(mappedBy: 'candidacy', targetEntity: CommitteeCandidacyInvitation::class, cascade: ['all'])]
     protected $invitations;
 
     /**
      * @var CommitteeCandidaciesGroup|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeCandidaciesGroup", inversedBy="candidacies", cascade={"persist"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     *
      * @Assert\NotBlank(groups={"api_committee_candidacy_validation"})
      */
     #[Groups(['committee_candidacy:write', 'committee_candidacy:read'])]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: CommitteeCandidaciesGroup::class, cascade: ['persist'], inversedBy: 'candidacies')]
     protected $candidaciesGroup;
 
     public function __construct(CommitteeElection $election, ?string $gender = null, ?UuidInterface $uuid = null)

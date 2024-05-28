@@ -6,65 +6,57 @@ use App\Entity\EntityPostAddressTrait;
 use App\Entity\TerritorialCouncil\ElectionPoll\Poll;
 use App\Entity\VotingPlatform\Designation\AbstractElectionEntity;
 use App\Geocoder\GeoPointInterface;
+use App\Repository\TerritorialCouncil\ElectionRepository;
 use App\TerritorialCouncil\Designation\DesignationVoteModeEnum;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\ElectionRepository")
- * @ORM\Table(name="territorial_council_election")
- */
+#[ORM\Table(name: 'territorial_council_election')]
+#[ORM\Entity(repositoryClass: ElectionRepository::class)]
 class Election extends AbstractElectionEntity implements GeoPointInterface
 {
     use EntityPostAddressTrait;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $meetingStartDate;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $meetingEndDate;
 
     /**
      * @var TerritorialCouncil
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncil", inversedBy="elections")
      */
+    #[ORM\ManyToOne(targetEntity: TerritorialCouncil::class, inversedBy: 'elections')]
     private $territorialCouncil;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $electionMode;
 
     /**
      * @var Poll|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\ElectionPoll\Poll", inversedBy="election", cascade={"all"}, orphanRemoval=true)
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\OneToOne(inversedBy: 'election', targetEntity: Poll::class, cascade: ['all'], orphanRemoval: true)]
     private $electionPoll;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $meetingUrl;
 
     public function getTerritorialCouncil(): TerritorialCouncil

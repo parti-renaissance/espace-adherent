@@ -5,13 +5,9 @@ namespace App\Entity\Mooc;
 use App\Entity\BaseFile;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(
- *     name="mooc_attachment_file",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="mooc_attachment_file_slug_extension", columns={"slug", "extension"})}
- * )
- */
+#[ORM\Table(name: 'mooc_attachment_file')]
+#[ORM\UniqueConstraint(name: 'mooc_attachment_file_slug_extension', columns: ['slug', 'extension'])]
+#[ORM\Entity]
 class AttachmentFile extends BaseFile
 {
     public function getPrefixPath(): string

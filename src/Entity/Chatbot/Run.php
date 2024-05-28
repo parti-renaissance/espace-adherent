@@ -8,10 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="chatbot_run")
- */
+#[ORM\Table(name: 'chatbot_run')]
+#[ORM\Entity]
 class Run
 {
     use EntityIdentityTrait;
@@ -23,15 +21,11 @@ class Run
     public const STATUS_COMPLETED = 'completed';
     public const STATUS_CANCELLED = 'cancelled';
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Thread::class)
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Thread::class)]
     public Thread $thread;
 
-    /**
-     * @ORM\Column
-     */
+    #[ORM\Column]
     public string $status = self::STATUS_QUEUED;
 
     public function __construct(?UuidInterface $uuid = null)

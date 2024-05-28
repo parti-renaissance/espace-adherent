@@ -4,17 +4,17 @@ namespace App\Entity;
 
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Repository\JeMarcheReportRepository;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * @ORM\Table(name="je_marche_reports")
- * @ORM\Entity(repositoryClass="App\Repository\JeMarcheReportRepository")
- *
  * @AssertRecaptcha
  */
+#[ORM\Table(name: 'je_marche_reports')]
+#[ORM\Entity(repositoryClass: JeMarcheReportRepository::class)]
 class JeMarcheReport implements RecaptchaChallengeInterface
 {
     use EntityTimestampableTrait;
@@ -28,38 +28,32 @@ class JeMarcheReport implements RecaptchaChallengeInterface
     public const TYPE_WORKSHOP = 'atelier';
     public const TYPE_ACTION = 'action-qui-me-ressemble';
 
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=30)
-     *
      * @Assert\NotBlank
      * @Assert\Choice(callback="getTypes")
      */
+    #[ORM\Column(length: 30)]
     private $type = '';
 
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
+    #[ORM\Column]
     private $emailAddress = '';
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=11)
      *
      * @Assert\NotBlank(message="jemarche.postal_code.not_blank")
      * @Assert\Length(
@@ -69,49 +63,46 @@ class JeMarcheReport implements RecaptchaChallengeInterface
      *     maxMessage="jemarche.postal_code.invalid"
      * )
      */
+    #[ORM\Column(length: 11)]
     private $postalCode = '';
 
     /**
      * @var array
      *
-     * @ORM\Column(type="simple_array", nullable=true)
-     *
      * @Assert\All({
      *     @Assert\Email(message="jemarche.email.invalid"),
      *     @Assert\Length(max=255, maxMessage="common.email.max_length")
      * })
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $convinced = [];
 
     /**
      * @var array
      *
-     * @ORM\Column(type="simple_array", nullable=true)
-     *
      * @Assert\All({
      *     @Assert\Email(message="jemarche.email.invalid"),
      *     @Assert\Length(max=255, maxMessage="common.email.max_length")
      * })
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $almostConvinced = [];
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
-     *
      * @Assert\GreaterThanOrEqual(value=0, message="jemarche.not_conviced.greater_than_or_equal_0")
      * @Assert\LessThanOrEqual(value=65535, message="jemarche.not_conviced.less_than_or_equal_65000")
      */
+    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     private $notConvinced;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="text", nullable=true)
-     *
      * @Assert\Length(max=2500, maxMessage="jemarche.reaction.max_2500")
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $reaction = '';
 
     public static function createWithCaptcha(string $recaptcha): self

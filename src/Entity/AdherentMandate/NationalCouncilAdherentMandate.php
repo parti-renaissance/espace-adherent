@@ -4,11 +4,10 @@ namespace App\Entity\AdherentMandate;
 
 use App\Entity\Adherent;
 use App\Entity\TerritorialCouncil\TerritorialCouncil;
+use App\Repository\AdherentMandate\NationalCouncilAdherentMandateRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\AdherentMandate\NationalCouncilAdherentMandateRepository")
- */
+#[ORM\Entity(repositoryClass: NationalCouncilAdherentMandateRepository::class)]
 class NationalCouncilAdherentMandate extends AbstractAdherentMandate
 {
     public static function create(

@@ -5,21 +5,17 @@ namespace App\Entity\ThematicCommunity;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityUserListDefinitionTrait;
+use App\Repository\ThematicCommunity\ThematicCommunityMembershipRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ThematicCommunity\ThematicCommunityMembershipRepository")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({
- *     "contact": "App\Entity\ThematicCommunity\ContactMembership",
- *     "adherent": "App\Entity\ThematicCommunity\AdherentMembership",
- * })
- */
+#[ORM\Entity(repositoryClass: ThematicCommunityMembershipRepository::class)]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap(['contact' => ContactMembership::class, 'adherent' => AdherentMembership::class])]
 abstract class ThematicCommunityMembership
 {
     use EntityIdentityTrait;
@@ -50,87 +46,76 @@ abstract class ThematicCommunityMembership
 
     /**
      * @var ThematicCommunity
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ThematicCommunity\ThematicCommunity")
      */
+    #[ORM\ManyToOne(targetEntity: ThematicCommunity::class)]
     protected $community;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $joinedAt;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default": false})
-     *
      * @Assert\NotNull
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $hasJob = false;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $job;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default": false})
-     *
      * @Assert\NotNull
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $association = false;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $associationName;
 
     /**
      * @var array
      *
-     * @ORM\Column(type="simple_array", nullable=true)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $motivations = [];
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $expert = false;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $status = self::STATUS_PENDING;
 
     /**
      * @var Adherent|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\OneToOne(targetEntity: Adherent::class)]
     protected $adherent;
 
     /**
      * @var Contact|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\ThematicCommunity\Contact", cascade={"all"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\OneToOne(targetEntity: Contact::class, cascade: ['all'])]
     protected $contact;
 
     public function __construct(?UuidInterface $uuid = null)

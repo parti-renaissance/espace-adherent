@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Repository\InviteRepository;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\WasNotInvitedRecently as AssertWasNotInvitedRecently;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,9 +13,6 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="invitations")
- * @ORM\Entity(repositoryClass="App\Repository\InviteRepository")
- *
  * @AssertWasNotInvitedRecently(
  *     emailField="email",
  *     since="24 hours",
@@ -22,6 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @AssertRecaptcha
  */
+#[ORM\Table(name: 'invitations')]
+#[ORM\Entity(repositoryClass: InviteRepository::class)]
 class Invite implements RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
@@ -29,8 +29,6 @@ class Invite implements RecaptchaChallengeInterface
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=50)
      *
      * @Assert\NotBlank
      * @Assert\Length(
@@ -40,12 +38,11 @@ class Invite implements RecaptchaChallengeInterface
      *     maxMessage="common.first_name.max_length"
      * )
      */
+    #[ORM\Column(length: 50)]
     private $firstName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=50)
      *
      * @Assert\NotBlank
      * @Assert\Length(
@@ -55,40 +52,37 @@ class Invite implements RecaptchaChallengeInterface
      *     maxMessage="common.last_name.max_length"
      * )
      */
+    #[ORM\Column(length: 50)]
     private $lastName;
 
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
+    #[ORM\Column]
     private $email;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank(message="invitation.message.not_blank")
      */
+    #[ORM\Column(type: 'text')]
     private $message;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=50, nullable=true)
      */
+    #[ORM\Column(length: 50, nullable: true)]
     private $clientIp;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     public function __construct(?UuidInterface $uuid = null)

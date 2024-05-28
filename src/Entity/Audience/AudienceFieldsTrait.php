@@ -12,27 +12,23 @@ trait AudienceFieldsTrait
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=50)
      */
     #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
+    #[ORM\Column(nullable: true)]
     private $firstName;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=50)
      */
     #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
+    #[ORM\Column(nullable: true)]
     private $lastName;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=6, nullable=true)
      *
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
@@ -40,100 +36,88 @@ trait AudienceFieldsTrait
      * )
      */
     #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
+    #[ORM\Column(length: 6, nullable: true)]
     private $gender;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
      */
     #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $ageMin;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
      */
     #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $ageMax;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="date", nullable=true)
      */
     #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
+    #[ORM\Column(type: 'date', nullable: true)]
     private $registeredSince;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="date", nullable=true)
      */
     #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
+    #[ORM\Column(type: 'date', nullable: true)]
     private $registeredUntil;
 
     /**
      * @var bool|null
-     *
-     * @ORM\Column(type="boolean", nullable=true)
      */
     #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $isCommitteeMember;
 
     /**
      * @var bool|null
-     *
-     * @ORM\Column(type="boolean", nullable=true)
      */
     #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $isCertified;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
+    #[ORM\Column(nullable: true)]
     private ?string $renaissanceMembership = null;
 
     /**
      * @var bool|null
-     *
-     * @ORM\Column(type="boolean", nullable=true)
      */
     #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $hasEmailSubscription;
 
     /**
      * @var bool|null
-     *
-     * @ORM\Column(type="boolean", nullable=true)
      */
     #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $hasSmsSubscription;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
     #[Groups(['audience_write'])]
+    #[ORM\Column(nullable: true)]
     private $scope;
 
     /**
      * @var Zone|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      */
     #[Groups(['audience_read', 'audience_write'])]
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
     private $zone;
 
     /**
      * @var string[]
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
     #[Groups(['audience_write'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private array $roles = [];
 
     public function getFirstName(): ?string

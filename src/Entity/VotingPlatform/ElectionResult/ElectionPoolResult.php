@@ -16,58 +16,50 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="voting_platform_election_pool_result")
- */
+#[ORM\Table(name: 'voting_platform_election_pool_result')]
+#[ORM\Entity]
 class ElectionPoolResult
 {
     use EntityIdentityTrait;
 
     /**
      * @var ElectionPool
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\ElectionPool")
      */
+    #[ORM\ManyToOne(targetEntity: ElectionPool::class)]
     private $electionPool;
 
     /**
      * @var ElectionRoundResult
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\ElectionResult\ElectionRoundResult", inversedBy="electionPoolResults")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectionRoundResult::class, inversedBy: 'electionPoolResults')]
     private $electionRoundResult;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isElected = false;
 
     /**
      * @var CandidateGroupResult[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\ElectionResult\CandidateGroupResult", mappedBy="electionPoolResult", cascade={"all"})
      */
     #[Groups(['election_result'])]
+    #[ORM\OneToMany(mappedBy: 'electionPoolResult', targetEntity: CandidateGroupResult::class, cascade: ['all'])]
     private $candidateGroupResults;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
      */
     #[Groups(['election_result'])]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     private $expressed = 0;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
      */
     #[Groups(['election_result'])]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     private $blank = 0;
 
     public function __construct(ElectionPool $pool, ?UuidInterface $uuid = null)

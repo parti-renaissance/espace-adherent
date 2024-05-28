@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Committee\CommitteeMembershipTriggerEnum;
+use App\Repository\CommitteeMembershipRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -13,25 +14,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * This entity represents a committee membership.
  *
  * Each instance of CommitteeMembership means an Adherent is a member of a Committee.
- *
- * @ORM\Table(
- *     name="committees_memberships",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(
- *             name="adherent_has_joined_committee",
- *             columns={"adherent_id", "committee_id"}
- *         ),
- *         @ORM\UniqueConstraint(
- *             name="adherent_votes_in_committee",
- *             columns={"adherent_id", "enable_vote"}
- *         )
- *     },
- *     indexes={
- *         @ORM\Index(name="committees_memberships_role_idx", columns={"privilege"})
- *     }
- * )
- * @ORM\Entity(repositoryClass="App\Repository\CommitteeMembershipRepository")
  */
+#[ORM\Table(name: 'committees_memberships')]
+#[ORM\Index(columns: ['privilege'], name: 'committees_memberships_role_idx')]
+#[ORM\UniqueConstraint(name: 'adherent_has_joined_committee', columns: ['adherent_id', 'committee_id'])]
+#[ORM\UniqueConstraint(name: 'adherent_votes_in_committee', columns: ['adherent_id', 'enable_vote'])]
+#[ORM\Entity(repositoryClass: CommitteeMembershipRepository::class)]
 class CommitteeMembership implements UuidEntityInterface
 {
     use EntityIdentityTrait;
@@ -46,20 +34,18 @@ class CommitteeMembership implements UuidEntityInterface
 
     /**
      * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="memberships")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     #[Groups(['export', 'api_candidacy_read', 'committee_candidacy:read', 'committee_election:read'])]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'memberships')]
     private $adherent;
 
     /**
      * @var Committee
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     #[Groups(['adherent_committees_modal'])]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Committee::class)]
     private $committee;
 
     /**
@@ -68,45 +54,34 @@ class CommitteeMembership implements UuidEntityInterface
      * Privilege is either HOST or FOLLOWER
      *
      * @var string
-     *
-     * @ORM\Column(length=10)
      */
     #[Groups(['adherent_committees_modal'])]
+    #[ORM\Column(length: 10)]
     private $privilege;
 
     /**
      * The date and time when the adherent joined the committee.
      *
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $joinedAt;
 
     /**
      * Indicates if the adherent votes in this committee
      *
      * @var bool|null
-     *
-     * @ORM\Column(type="boolean", nullable=true)
      */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private $enableVote;
 
     /**
      * @var CommitteeCandidacy[]
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\CommitteeCandidacy",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     mappedBy="committeeMembership"
-     * )
      */
+    #[ORM\OneToMany(mappedBy: 'committeeMembership', targetEntity: CommitteeCandidacy::class, cascade: ['all'], orphanRemoval: true)]
     private $committeeCandidacies;
 
-    /**
-     * @ORM\Column(name="`trigger`", nullable=true, enumType=CommitteeMembershipTriggerEnum::class)
-     */
+    #[ORM\Column(name: '`trigger`', nullable: true, enumType: CommitteeMembershipTriggerEnum::class)]
     private ?CommitteeMembershipTriggerEnum $trigger;
 
     private function __construct(
@@ -211,7 +186,7 @@ class CommitteeMembership implements UuidEntityInterface
 
     public function getFullName(): ?string
     {
-        return $this->adherent ? $this->adherent->getFullName() : null;
+        return $this->adherent?->getFullName();
     }
 
     public function getCommittee(): Committee

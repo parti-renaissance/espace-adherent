@@ -5,6 +5,7 @@ namespace App\Entity\ElectedRepresentative;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Geo\Zone as GeoZone;
+use App\Repository\ElectedRepresentative\MandateRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -49,10 +50,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         }
  *     }
  * )
- *
- * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\MandateRepository")
- * @ORM\Table(name="elected_representative_mandate")
  */
+#[ORM\Table(name: 'elected_representative_mandate')]
+#[ORM\Entity(repositoryClass: MandateRepository::class)]
 class Mandate
 {
     use EntityIdentityTrait;
@@ -60,35 +60,30 @@ class Mandate
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\MandateTypeEnum", "toArray"})
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read', 'elected_representative_list'])]
+    #[ORM\Column]
     private $type;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isElected;
 
     /**
      * @var Zone|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ElectedRepresentative\Zone", cascade={"merge", "detach"})
-     *
      * @deprecated Will be replaced by $geoZone
      */
+    #[ORM\ManyToOne(targetEntity: Zone::class, cascade: ['merge', 'detach'])]
     private $zone;
 
     /**
      * @var GeoZone|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      *
      * @Assert\Expression(
      *     "value !== null or (value == null and this.getType() === constant('App\\Entity\\ElectedRepresentative\\MandateTypeEnum::EURO_DEPUTY'))",
@@ -96,30 +91,27 @@ class Mandate
      * )
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read', 'elected_representative_list'])]
+    #[ORM\ManyToOne(targetEntity: GeoZone::class)]
     private $geoZone;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": true})
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $onGoing = true;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="date")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
+    #[ORM\Column(type: 'date')]
     private $beginAt;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="date", nullable=true)
      *
      * @Assert\Expression(
      *     "value === null or value > this.getBeginAt()",
@@ -131,65 +123,54 @@ class Mandate
      * )
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
+    #[ORM\Column(type: 'date', nullable: true)]
     private $finishAt;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=10)
-     *
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Election\VoteListNuanceEnum", "toArray"})
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
+    #[ORM\Column(length: 10)]
     private $politicalAffiliation;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\LaREMSupportEnum", "toArray"})
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
+    #[ORM\Column(nullable: true)]
     private $laREMSupport;
 
     /**
      * @var ElectedRepresentative
      *
-     * @ORM\ManyToOne(targetEntity="ElectedRepresentative", inversedBy="mandates")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read'])]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectedRepresentative::class, inversedBy: 'mandates')]
     private $electedRepresentative;
 
     /**
      * @var PoliticalFunction[]|Collection
      *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\ElectedRepresentative\PoliticalFunction",
-     *     mappedBy="mandate",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
-     *
      * @Assert\Valid
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
+    #[ORM\OneToMany(mappedBy: 'mandate', targetEntity: PoliticalFunction::class, cascade: ['all'], orphanRemoval: true)]
     private $politicalFunctions;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="smallint", options={"default": 1})
      */
+    #[ORM\Column(type: 'smallint', options: ['default' => 1])]
     private $number = 1;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     */
+    #[ORM\ManyToOne(targetEntity: GeoZone::class)]
     private ?GeoZone $attachedZone;
 
     public function __construct(

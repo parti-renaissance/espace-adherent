@@ -2,48 +2,43 @@
 
 namespace App\Entity;
 
+use App\Repository\OrderSectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="order_sections")
- * @ORM\Entity(repositoryClass="App\Repository\OrderSectionRepository")
- */
+#[ORM\Table(name: 'order_sections')]
+#[ORM\Entity(repositoryClass: OrderSectionRepository::class)]
 class OrderSection
 {
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=50)
      */
+    #[ORM\Column(length: 50)]
     private $name;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="smallint")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'smallint')]
     private $position;
 
     /**
      * @var OrderArticle[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\OrderArticle", mappedBy="sections")
-     * @ORM\OrderBy({"position": "ASC"})
      */
+    #[ORM\ManyToMany(targetEntity: OrderArticle::class, mappedBy: 'sections')]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     private $articles;
 
     public function __construct(int $position = 1, string $name = '')

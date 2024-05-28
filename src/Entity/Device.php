@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Collection\ZoneCollection;
+use App\Repository\DeviceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -34,10 +35,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     }
  * )
- *
- * @ORM\Table(name="devices")
- * @ORM\Entity(repositoryClass="App\Repository\DeviceRepository")
  */
+#[ORM\Table(name: 'devices')]
+#[ORM\Entity(repositoryClass: DeviceRepository::class)]
 class Device
 {
     use EntityIdentityTrait;
@@ -47,38 +47,34 @@ class Device
     /**
      * @var UuidInterface
      *
-     * @ORM\Column(type="uuid", unique=true)
-     *
      * @ApiProperty(identifier=false)
      */
     #[Groups(['user_profile'])]
+    #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
 
     /**
      * @var string
      *
-     * @ORM\Column(unique=true)
-     *
      * @ApiProperty(identifier=true)
      */
     #[Groups(['user_profile'])]
+    #[ORM\Column(unique: true)]
     protected $deviceUuid;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=15, nullable=true)
-     *
      * @Assert\Length(max=15)
      */
     #[Groups(['user_profile', 'device_write'])]
+    #[ORM\Column(length: 15, nullable: true)]
     private $postalCode;
 
     /**
      * @var \DateTimeInterface|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $lastLoggedAt;
 
     public function __construct(UuidInterface $uuid, string $deviceUuid, ?string $postalCode = null)

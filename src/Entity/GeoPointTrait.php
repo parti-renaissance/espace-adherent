@@ -9,18 +9,16 @@ trait GeoPointTrait
 {
     /**
      * @var float|null
-     *
-     * @ORM\Column(type="geo_point", nullable=true)
      */
     #[Groups(['scope'])]
+    #[ORM\Column(type: 'geo_point', nullable: true)]
     private $latitude;
 
     /**
      * @var float|null
-     *
-     * @ORM\Column(type="geo_point", nullable=true)
      */
     #[Groups(['scope'])]
+    #[ORM\Column(type: 'geo_point', nullable: true)]
     private $longitude;
 
     public function getLatitude(): ?float

@@ -6,6 +6,7 @@ use App\Entity\Audience\AudienceSnapshot;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\SmsCampaignRepository;
 use App\SmsCampaign\SmsCampaignStatusEnum;
 use App\SmsCampaign\Statistics;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,9 +14,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\SmsCampaignRepository")
- */
+#[ORM\Entity(repositoryClass: SmsCampaignRepository::class)]
 class SmsCampaign
 {
     use EntityIdentityTrait;
@@ -25,72 +24,63 @@ class SmsCampaign
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     private $title;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=149)
      */
+    #[ORM\Column(type: 'text')]
     private $content;
 
     /**
      * @var AudienceSnapshot
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Audience\AudienceSnapshot", cascade={"persist"}, orphanRemoval=true)
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\OneToOne(targetEntity: AudienceSnapshot::class, cascade: ['persist'], orphanRemoval: true)]
     private $audience;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $status = SmsCampaignStatusEnum::DRAFT;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
      */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $recipientCount;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
      */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $adherentCount;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $responsePayload;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $externalId;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $sentAt;
 
     public ?Statistics $statistics = null;

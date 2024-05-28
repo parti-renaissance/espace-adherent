@@ -5,33 +5,22 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="senatorial_candidate_areas")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'senatorial_candidate_areas')]
+#[ORM\Entity]
 class SenatorialCandidateManagedArea
 {
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag", cascade={"persist"})
-     * @ORM\JoinTable(
-     *     name="senatorial_candidate_areas_tags",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="senatorial_candidate_area_id", referencedColumnName="id", onDelete="CASCADE")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="referent_tag_id", referencedColumnName="id")
-     *     }
-     * )
-     */
+    #[ORM\JoinTable(name: 'senatorial_candidate_areas_tags')]
+    #[ORM\JoinColumn(name: 'senatorial_candidate_area_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'referent_tag_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: ReferentTag::class, cascade: ['persist'])]
     private $departmentTags;
 
     public function __construct()

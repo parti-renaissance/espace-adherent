@@ -3,80 +3,71 @@
 namespace App\Entity;
 
 use App\Address\AddressInterface;
+use App\Repository\DistrictRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * References :
  *  - France: https://www.data.gouv.fr/s/resources/contours-precis-des-circonscriptions-legislatives/20170511-183720/circonscriptions-legislatives.json
  *  - Other countries: https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson
- *
- * @ORM\Entity(repositoryClass="App\Repository\DistrictRepository")
- * @ORM\Table(name="districts", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="district_department_code_number", columns={"department_code", "number"}),
- * })
  */
+#[ORM\Table(name: 'districts')]
+#[ORM\UniqueConstraint(name: 'district_department_code_number', columns: ['department_code', 'number'])]
+#[ORM\Entity(repositoryClass: DistrictRepository::class)]
 class District
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * The managed district countries.
      *
      * @var array
-     *
-     * @ORM\Column(type="simple_array")
      */
+    #[ORM\Column(type: 'simple_array')]
     private $countries;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=6, unique=true)
      */
+    #[ORM\Column(length: 6, unique: true)]
     private $code;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="smallint", options={"unsigned": true})
      */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
     private $number;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=50)
      */
+    #[ORM\Column(length: 50)]
     private $name;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=5)
      */
+    #[ORM\Column(length: 5)]
     private $departmentCode;
 
     /**
      * @var GeoData
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\GeoData", cascade={"all"})
-     * @ORM\JoinColumn(nullable=false)
      */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\OneToOne(targetEntity: GeoData::class, cascade: ['all'])]
     private $geoData;
 
     /**
      * @var ReferentTag|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\ReferentTag")
-     * @ORM\JoinColumn(unique=true)
      */
+    #[ORM\JoinColumn(unique: true)]
+    #[ORM\OneToOne(targetEntity: ReferentTag::class)]
     private $referentTag;
 
     public function __construct(

@@ -2,88 +2,57 @@
 
 namespace App\Entity;
 
+use App\Repository\TonMacronFriendInvitationRepository;
 use App\TonMacron\InvitationProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Table(name="ton_macron_friend_invitations")
- * @ORM\Entity(repositoryClass="App\Repository\TonMacronFriendInvitationRepository")
- */
+#[ORM\Table(name: 'ton_macron_friend_invitations')]
+#[ORM\Entity(repositoryClass: TonMacronFriendInvitationRepository::class)]
 class TonMacronFriendInvitation
 {
     use EntityIdentityTrait;
     use EntityCrudTrait;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     private $friendFirstName;
 
-    /**
-     * @ORM\Column(type="smallint", length=3, options={"unsigned": true})
-     */
+    #[ORM\Column(type: 'smallint', length: 3, options: ['unsigned' => true])]
     private $friendAge;
 
-    /**
-     * @ORM\Column(length=6)
-     */
+    #[ORM\Column(length: 6)]
     private $friendGender;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     private $friendPosition;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private $friendEmailAddress;
 
-    /**
-     * @ORM\Column(length=50, nullable=true)
-     */
+    #[ORM\Column(length: 50, nullable: true)]
     private $authorFirstName;
 
-    /**
-     * @ORM\Column(length=50, nullable=true)
-     */
+    #[ORM\Column(length: 50, nullable: true)]
     private $authorLastName;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private $authorEmailAddress;
 
-    /**
-     * @ORM\Column(length=100, nullable=true)
-     */
+    #[ORM\Column(length: 100, nullable: true)]
     private $mailSubject;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $mailBody;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\TonMacronChoice", fetch="EAGER")
-     * @ORM\JoinTable(
-     *     name="ton_macron_friend_invitation_has_choices",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="invitation_id", referencedColumnName="id")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="choice_id", referencedColumnName="id")
-     *     }
-     * )
-     */
+    #[ORM\JoinTable(name: 'ton_macron_friend_invitation_has_choices')]
+    #[ORM\JoinColumn(name: 'invitation_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'choice_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: TonMacronChoice::class, fetch: 'EAGER')]
     private $choices;
 
     public function __construct(

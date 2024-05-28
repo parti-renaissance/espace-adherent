@@ -4,6 +4,7 @@ namespace App\Entity\Poll;
 
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\Poll\ChoiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,10 +13,8 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Poll\ChoiceRepository")
- * @ORM\Table(name="poll_choice")
- */
+#[ORM\Table(name: 'poll_choice')]
+#[ORM\Entity(repositoryClass: ChoiceRepository::class)]
 class Choice
 {
     use EntityIdentityTrait;
@@ -27,8 +26,6 @@ class Choice
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank(message="poll_choice.value.not_blank")
      * @Assert\Length(
      *     max=255,
@@ -36,21 +33,20 @@ class Choice
      * )
      */
     #[Groups(['poll_read'])]
+    #[ORM\Column]
     private $value;
 
     /**
      * @var Poll
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Poll\Poll", inversedBy="choices")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Poll::class, inversedBy: 'choices')]
     private $poll;
 
     /**
      * @var Vote[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Poll\Vote", mappedBy="choice", cascade={"all"})
      */
+    #[ORM\OneToMany(mappedBy: 'choice', targetEntity: Vote::class, cascade: ['all'])]
     private $votes;
 
     public function __construct(?string $value = null, ?UuidInterface $uuid = null)

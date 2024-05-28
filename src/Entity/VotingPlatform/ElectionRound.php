@@ -2,55 +2,48 @@
 
 namespace App\Entity\VotingPlatform;
 
+use App\Repository\VotingPlatform\ElectionRoundRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\ElectionRoundRepository")
- *
- * @ORM\Table(name="voting_platform_election_round")
- */
+#[ORM\Table(name: 'voting_platform_election_round')]
+#[ORM\Entity(repositoryClass: ElectionRoundRepository::class)]
 class ElectionRound
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
      * @var UuidInterface
-     *
-     * @ORM\Column(type="uuid", unique=true)
      */
+    #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
     /**
      * @var Election
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Election", inversedBy="electionRounds")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Election::class, inversedBy: 'electionRounds')]
     private $election;
 
     /**
      * @var ElectionPool[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\VotingPlatform\ElectionPool", inversedBy="electionRounds", cascade={"all"})
-     * @ORM\JoinTable(name="voting_platform_election_round_election_pool")
      */
+    #[ORM\JoinTable(name: 'voting_platform_election_round_election_pool')]
+    #[ORM\ManyToMany(targetEntity: ElectionPool::class, inversedBy: 'electionRounds', cascade: ['all'])]
     private $electionPools;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": true})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $isActive;
 
     public function __construct(bool $isActive = true)

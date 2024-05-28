@@ -6,15 +6,14 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityUTMTrait;
 use App\Procuration\V2\InitialRequestTypeEnum;
+use App\Repository\Procuration\ProcurationRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="procuration_v2_initial_requests")
- * @ORM\Entity(repositoryClass="App\Repository\Procuration\ProcurationRequestRepository")
- */
+#[ORM\Table(name: 'procuration_v2_initial_requests')]
+#[ORM\Entity(repositoryClass: ProcurationRequestRepository::class)]
 class ProcurationRequest
 {
     use EntityIdentityTrait;
@@ -22,27 +21,21 @@ class ProcurationRequest
     use EntityUTMTrait;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     public ?string $email = null;
 
     /**
-     * @ORM\Column(enumType=InitialRequestTypeEnum::class)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(enumType: InitialRequestTypeEnum::class)]
     public ?InitialRequestTypeEnum $type = null;
 
-    /**
-     * @ORM\Column(length=50, nullable=true)
-     */
+    #[ORM\Column(length: 50, nullable: true)]
     public ?string $clientIp = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTimeInterface $remindedAt = null;
 
     public function __construct(?UuidInterface $uuid = null)

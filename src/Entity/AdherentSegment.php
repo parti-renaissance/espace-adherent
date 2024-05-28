@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\AdherentMessage\StaticSegmentInterface;
+use App\EntityListener\AdherentSegmentListener;
+use App\Repository\AdherentSegmentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -11,9 +13,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AdherentSegmentRepository")
- * @ORM\EntityListeners({"App\EntityListener\AdherentSegmentListener"})
- *
  * @ApiResource(
  *     collectionOperations={
  *         "post": {
@@ -29,6 +28,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={}
  * )
  */
+#[ORM\Entity(repositoryClass: AdherentSegmentRepository::class)]
+#[ORM\EntityListeners([AdherentSegmentListener::class])]
 class AdherentSegment implements AuthorInterface, StaticSegmentInterface
 {
     use EntityIdentityTrait;
@@ -37,50 +38,45 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
     #[Groups(['public', 'write'])]
+    #[ORM\Column]
     private $label;
 
     /**
      * @var array
      *
-     * @ORM\Column(type="simple_array")
-     *
      * @Assert\NotBlank
      * @Assert\Count(min=1)
      */
     #[Groups(['write'])]
+    #[ORM\Column(type: 'simple_array')]
     private $memberIds = [];
 
     /**
      * @var string
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\AdherentSegment\AdherentSegmentTypeEnum", "toArray"})
      */
     #[Groups(['write'])]
+    #[ORM\Column(nullable: true)]
     private $segmentType;
 
     /**
      * @var Adherent|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=false)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $author;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $synchronized = false;
 
     public function __construct(?UuidInterface $uuid = null)

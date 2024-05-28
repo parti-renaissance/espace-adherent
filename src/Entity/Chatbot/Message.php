@@ -4,15 +4,14 @@ namespace App\Entity\Chatbot;
 
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\Chatbot\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Chatbot\MessageRepository")
- * @ORM\Table(name="chatbot_message")
- */
+#[ORM\Table(name: 'chatbot_message')]
+#[ORM\Entity(repositoryClass: MessageRepository::class)]
 class Message
 {
     use EntityIdentityTrait;
@@ -22,28 +21,20 @@ class Message
     public const ROLE_USER = 'user';
     public const ROLE_ASSISTANT = 'assistant';
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Thread::class, inversedBy="messages")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Thread::class, inversedBy: 'messages')]
     public Thread $thread;
 
-    /**
-     * @ORM\Column
-     */
     #[Groups(['chatbot:read'])]
+    #[ORM\Column]
     public string $role;
 
-    /**
-     * @ORM\Column(type="text")
-     */
     #[Groups(['chatbot:read'])]
+    #[ORM\Column(type: 'text')]
     public string $content;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
     #[Groups(['chatbot:read'])]
+    #[ORM\Column(type: 'datetime')]
     public \DateTimeInterface $date;
 
     public function __construct(?UuidInterface $uuid = null)

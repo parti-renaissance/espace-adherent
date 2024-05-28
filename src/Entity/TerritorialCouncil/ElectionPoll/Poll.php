@@ -10,33 +10,28 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="territorial_council_election_poll")
- */
+#[ORM\Table(name: 'territorial_council_election_poll')]
+#[ORM\Entity]
 class Poll
 {
     use EntityIdentityTrait;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $gender;
 
     /**
      * @var PollChoice[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\TerritorialCouncil\ElectionPoll\PollChoice", mappedBy="electionPoll", cascade={"all"})
      */
+    #[ORM\OneToMany(mappedBy: 'electionPoll', targetEntity: PollChoice::class, cascade: ['all'])]
     private $choices;
 
     /**
      * @var Election
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\Election", mappedBy="electionPoll")
      */
+    #[ORM\OneToOne(mappedBy: 'electionPoll', targetEntity: Election::class)]
     private $election;
 
     public function __construct(string $gender, ?UuidInterface $uuid = null)

@@ -9,25 +9,22 @@ trait DynamicSegmentTrait
 {
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
      */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $mailchimpId;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true}, nullable=true)
      */
     #[Groups(['audience_segment_read'])]
+    #[ORM\Column(type: 'integer', nullable: true, options: ['unsigned' => true])]
     private $recipientCount;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
     #[Groups(['audience_segment_read'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $synchronized = false;
 
     public function getMailchimpId(): ?int
