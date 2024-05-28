@@ -31,6 +31,7 @@ Feature:
             "status": "scheduled",
             "created_at": "@string@.isDateTime()",
             "updated_at": "@string@.isDateTime()",
+            "user_registered_at": null,
             "description": "<p>Bonjour, voici une description</p><ul><li>élément 1</li><li>élément 2</li></ul>",
             "post_address": {
                 "address": "92 bd Victor Hugo",
@@ -83,6 +84,7 @@ Feature:
             "created_at": "@string@.isDateTime()",
             "updated_at": "@string@.isDateTime()",
             "status": "scheduled",
+            "user_registered_at": null,
             "description": "<p>Bonjour, voici une description</p><ul><li>élément 1</li><li>élément 2</li></ul>",
             "post_address": {
                 "address": "92 bd Victor Hugo",

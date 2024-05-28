@@ -27,4 +27,16 @@ class ActionParticipantRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findAllRegistrationDates(string $adherentUuid): array
+    {
+        return array_column($this->createQueryBuilder('ap')
+            ->select('ap.createdAt', 'a.id')
+            ->innerJoin('ap.adherent', 'ad')
+            ->innerJoin('ap.action', 'a')
+            ->where('ad.uuid = :adherent_uuid')
+            ->setParameter('adherent_uuid', $adherentUuid)
+            ->getQuery()
+            ->getResult(), 'createdAt', 'id');
+    }
 }
