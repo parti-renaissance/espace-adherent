@@ -156,11 +156,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Cache composer
-        uses: actions/cache@v4
-        with:
-          path: vendor/
-          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('composer.lock') }}
+      - uses: ./.github/actions/dependencies-cache
 
       - name: Cache PHPUnit
         uses: actions/cache@v4
@@ -199,11 +195,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Cache composer
-        uses: actions/cache@v4
-        with:
-          path: vendor/
-          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('composer.lock') }}
+      - uses: ./.github/actions/dependencies-cache
 
       - uses: ./.github/actions/docker-login
 
@@ -242,26 +234,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Cache composer
-        uses: actions/cache@v4
-        with:
-          path: vendor/
-          key: cache-${{ env.CACHE_KEY }}-composer-${{ hashFiles('composer.lock') }}
-
-      - name: Cache yarn dependencies
-        uses: actions/cache@v4
-        with:
-          path: node_modules/
-          key: cache-${{ env.CACHE_KEY }}-yarn-${{ hashFiles('yarn.lock') }}
-
-      - name: Cache static assets
-        uses: actions/cache@v4
-        with:
-          path: |
-            public/built/
-            public/css/
-            public/select2/
-          key: cache-${{ env.CACHE_KEY }}-static-${{ github.sha }}
+      - uses: ./.github/actions/dependencies-cache
 
       - uses: ./.github/actions/docker-login
 
