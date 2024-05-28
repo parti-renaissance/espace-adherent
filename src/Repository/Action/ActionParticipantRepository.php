@@ -12,4 +12,19 @@ class ActionParticipantRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ActionParticipant::class);
     }
+
+    public function findAdherentRegistration(string $actionUuid, string $adherentUuid): ?ActionParticipant
+    {
+        return $this->createQueryBuilder('ap')
+            ->innerJoin('ap.action', 'a')
+            ->innerJoin('ap.adherent', 'ad')
+            ->where('a.uuid = :action_uuid AND ad.uuid = :adherent_uuid')
+            ->setParameters([
+                'action_uuid' => $actionUuid,
+                'adherent_uuid' => $adherentUuid,
+            ])
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
