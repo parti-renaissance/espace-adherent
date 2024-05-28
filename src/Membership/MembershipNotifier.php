@@ -129,14 +129,11 @@ class MembershipNotifier implements LoggerAwareInterface
 
             return;
         }
-        if ($adherent->isRenaissanceUser() || !$adherent->getSource()) {
+
+        if ($adherent->isRenaissanceSympathizer()) {
             $url .= '&_target_path='.$this->urlGenerator->generate('app_adhesion_index');
-
-            $this->transactionalMailer->sendMessage(AdhesionAlreadySympathizerMessage::create($adherent, $url));
-
-            return;
         }
 
-        $this->logger->error(sprintf('[Adhesion] le compte adhérent [%d] existe déjà (source : %s)', $adherent->getId(), $adherent->getSource()));
+        $this->transactionalMailer->sendMessage(AdhesionAlreadySympathizerMessage::create($adherent, $url));
     }
 }

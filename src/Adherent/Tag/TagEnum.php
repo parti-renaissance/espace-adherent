@@ -15,6 +15,7 @@ class TagEnum extends Enum
 
     public const SYMPATHISANT = 'sympathisant';
     public const SYMPATHISANT_COMPTE_EM = 'sympathisant:compte_em';
+    public const SYMPATHISANT_COMPTE_AVECVOUS_JEMENGAGE = 'sympathisant:compte_avecvous_jemengage';
     public const SYMPATHISANT_ADHESION_INCOMPLETE = 'sympathisant:adhesion_incomplete';
     public const SYMPATHISANT_AUTRE_PARTI = 'sympathisant:autre_parti';
     public const SYMPATHISANT_BESOIN_D_EUROPE = 'sympathisant:besoin_d_europe';
@@ -59,6 +60,7 @@ class TagEnum extends Enum
             self::SYMPATHISANT,
             self::SYMPATHISANT_ADHESION_INCOMPLETE,
             self::SYMPATHISANT_COMPTE_EM,
+            self::SYMPATHISANT_COMPTE_AVECVOUS_JEMENGAGE,
             self::SYMPATHISANT_AUTRE_PARTI,
             self::SYMPATHISANT_BESOIN_D_EUROPE,
         ]);

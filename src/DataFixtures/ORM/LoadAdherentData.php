@@ -117,6 +117,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33111223344',
             'registered_at' => '2016-11-16 20:45:33',
         ]);
+        $adherent2->tags = [TagEnum::SYMPATHISANT_COMPTE_EM];
         $adherent2->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent2->removeSubscriptionType($this->getReference('st-'.SubscriptionTypeEnum::LOCAL_HOST_EMAIL));
 
