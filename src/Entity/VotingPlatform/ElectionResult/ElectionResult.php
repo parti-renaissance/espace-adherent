@@ -14,36 +14,31 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="voting_platform_election_result")
- */
+#[ORM\Table(name: 'voting_platform_election_result')]
+#[ORM\Entity]
 class ElectionResult
 {
     use EntityIdentityTrait;
 
     /**
      * @var Election
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\VotingPlatform\Election", inversedBy="electionResult")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\OneToOne(inversedBy: 'electionResult', targetEntity: Election::class)]
     private $election;
 
     /**
      * @var ElectionRoundResult[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\ElectionResult\ElectionRoundResult", mappedBy="electionResult", cascade={"all"})
      */
     #[Groups(['election_result'])]
+    #[ORM\OneToMany(mappedBy: 'electionResult', targetEntity: ElectionRoundResult::class, cascade: ['all'])]
     private $electionRoundResults;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
      */
     #[Groups(['election_result'])]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     private $participated = 0;
 
     public function __construct(Election $election, ?UuidInterface $uuid = null)

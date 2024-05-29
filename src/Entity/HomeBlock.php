@@ -2,18 +2,18 @@
 
 namespace App\Entity;
 
+use App\Repository\HomeBlockRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="home_blocks")
- * @ORM\Entity(repositoryClass="App\Repository\HomeBlockRepository")
- *
  * @UniqueEntity(fields={"position"})
  * @UniqueEntity(fields={"positionName"})
  */
+#[ORM\Table(name: 'home_blocks')]
+#[ORM\Entity(repositoryClass: HomeBlockRepository::class)]
 class HomeBlock
 {
     public const TYPE_ARTICLE = 'article';
@@ -22,151 +22,132 @@ class HomeBlock
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="bigint")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'bigint')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="smallint", unique=true)
      */
+    #[ORM\Column(type: 'smallint', unique: true)]
     private $position;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=30, unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=30)
      */
+    #[ORM\Column(length: 30, unique: true)]
     private $positionName;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=70)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=70)
      */
+    #[ORM\Column(length: 70)]
     private $title;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100, nullable=true)
-     *
      * @Assert\Length(max=100)
      */
+    #[ORM\Column(length: 100, nullable: true)]
     private $subtitle;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=10)
-     *
      * @Assert\NotBlank
      * @Assert\Choice({"video", "article", "banner"})
      */
+    #[ORM\Column(length: 10)]
     private $type = self::TYPE_ARTICLE;
 
     /**
      * @var Media|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Media")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\ManyToOne(targetEntity: Media::class)]
     private $media;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     private $link;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": true})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $displayFilter = true;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $displayTitles = false;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": true})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $displayBlock = true;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $videoControls = false;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": true})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $videoAutoplayLoop = true;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=70, nullable=true)
-     *
      * @Assert\Length(max=70)
      */
+    #[ORM\Column(length: 70, nullable: true)]
     private $titleCta;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=6, nullable=true)
-     *
      * @Assert\Choice(callback={"\App\Admin\Color", "all"})
      */
+    #[ORM\Column(length: 6, nullable: true)]
     private $colorCta;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=6, nullable=true)
-     *
      * @Assert\Choice(callback={"\App\Admin\Color", "all"})
      */
+    #[ORM\Column(length: 6, nullable: true)]
     private $bgColor;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Gedmo\Timestampable(on="update")
      */
+    #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $forRenaissance = false;
 
     public function __toString()

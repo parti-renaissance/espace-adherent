@@ -5,10 +5,8 @@ namespace App\Entity\Geo;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="geo_borough")
- */
+#[ORM\Table(name: 'geo_borough')]
+#[ORM\Entity]
 class Borough implements ZoneableInterface
 {
     use GeoTrait;
@@ -16,24 +14,21 @@ class Borough implements ZoneableInterface
 
     /**
      * @var string[]|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $postalCode;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
      */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $population;
 
     /**
      * @var City
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\City")
-     * @ORM\JoinColumn(nullable=false)
      */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: City::class)]
     private $city;
 
     public function __construct(string $code, string $name, City $city)

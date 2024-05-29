@@ -2,57 +2,49 @@
 
 namespace App\Entity;
 
+use App\Repository\UserListDefinitionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UserListDefinitionRepository")
- * @ORM\Table(uniqueConstraints={
- *     @ORM\UniqueConstraint(name="user_list_definition_type_code_unique", columns={"type", "code"})
- * })
- */
+#[ORM\Table]
+#[ORM\UniqueConstraint(name: 'user_list_definition_type_code_unique', columns: ['type', 'code'])]
+#[ORM\Entity(repositoryClass: UserListDefinitionRepository::class)]
 class UserListDefinition
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Entity\UserListDefinitionEnum", "getTypes"})
      */
+    #[ORM\Column(length: 50)]
     private $type;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(length: 100)]
     private $code;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(length: 100)]
     private $label;
 
-    /**
-     * @ORM\Column(length=7, nullable=true)
-     */
+    #[ORM\Column(length: 7, nullable: true)]
     private $color;
 
     public function __construct(?string $type = null, ?string $code = null, ?string $label = null, ?string $color = null)

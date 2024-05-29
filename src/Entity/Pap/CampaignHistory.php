@@ -16,6 +16,7 @@ use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\DataSurveyAwareInterface;
 use App\Entity\Jecoute\DataSurveyAwareTrait;
 use App\Pap\CampaignHistoryStatusEnum;
+use App\Repository\Pap\CampaignHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -23,9 +24,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Pap\CampaignHistoryRepository")
- * @ORM\Table(name="pap_campaign_history")
- *
  * @ApiResource(
  *     shortName="PapCampaignHistory",
  *     attributes={
@@ -74,40 +72,36 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(DateFilter::class, properties={"createdAt", "beginAt"})
  * @ApiFilter(OrderFilter::class, properties={"createdAt"})
  */
+#[ORM\Table(name: 'pap_campaign_history')]
+#[ORM\Entity(repositoryClass: CampaignHistoryRepository::class)]
 class CampaignHistory implements DataSurveyAwareInterface
 {
     use DataSurveyAwareTrait;
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
     #[Groups(['pap_building_history', 'pap_campaign_history_read_list', 'pap_campaign_replies_list'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private ?Adherent $questioner = null;
 
     /**
      * @Assert\NotNull
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign", inversedBy="campaignHistories")
-     * @ORM\JoinColumn(nullable=false)
      */
     #[Groups(['pap_campaign_history_write', 'pap_campaign_history_read_list'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Campaign::class, inversedBy: 'campaignHistories')]
     private ?Campaign $campaign = null;
 
     /**
      * @Assert\NotNull
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Building")
-     * @ORM\JoinColumn(nullable=false)
      */
     #[Groups(['pap_campaign_history_write', 'pap_campaign_history_read_list'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Building::class)]
     private ?Building $building = null;
 
     /**
-     * @ORM\Column(length=25)
-     *
      * @Assert\NotNull
      * @Assert\Choice(
      *     choices=App\Pap\CampaignHistoryStatusEnum::ALL,
@@ -115,118 +109,93 @@ class CampaignHistory implements DataSurveyAwareInterface
      * )
      */
     #[Groups(['pap_campaign_history_read', 'pap_campaign_history_write', 'pap_campaign_history_read_list'])]
+    #[ORM\Column(length: 25)]
     private ?string $status = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['pap_campaign_history_write', 'pap_building_history', 'pap_campaign_history_read_list'])]
+    #[ORM\Column(nullable: true)]
     private ?string $buildingBlock = null;
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true}, nullable=true)
-     */
     #[Groups(['pap_campaign_history_write', 'pap_building_history', 'pap_campaign_history_read_list'])]
+    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     private ?int $floor = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['pap_campaign_history_write', 'pap_building_history', 'pap_campaign_history_read_list'])]
+    #[ORM\Column(nullable: true)]
     private ?string $door = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list'])]
+    #[ORM\Column(nullable: true)]
     private ?string $firstName = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list'])]
+    #[ORM\Column(nullable: true)]
     private ?string $lastName = null;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Email
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list'])]
+    #[ORM\Column(nullable: true)]
     private ?string $emailAddress = null;
 
     /**
-     * @ORM\Column(length=15, nullable=true)
-     *
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice"
      * )
      */
     #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list'])]
+    #[ORM\Column(length: 15, nullable: true)]
     private ?string $gender = null;
 
     /**
-     * @ORM\Column(length=15, nullable=true)
-     *
      * @Assert\Choice(callback={"App\Jecoute\AgeRangeEnum", "all"})
      */
     #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list'])]
+    #[ORM\Column(length: 15, nullable: true)]
     private ?string $ageRange = null;
 
     /**
-     * @ORM\Column(length=30, nullable=true)
-     *
      * @Assert\Choice(callback={"App\Jecoute\ProfessionEnum", "all"})
      */
     #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list'])]
+    #[ORM\Column(length: 30, nullable: true)]
     private ?string $profession = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
     #[Groups(['pap_campaign_history_write'])]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $toContact = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['pap_campaign_history_write'])]
+    #[ORM\Column(nullable: true)]
     private ?string $voterStatus = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list'])]
+    #[ORM\Column(nullable: true)]
     private ?string $voterPostalCode = null;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
     #[Groups(['pap_campaign_history_write'])]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $toJoin = null;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list', 'survey_replies_list'])]
+    #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $beginAt = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
     #[Groups(['pap_campaign_replies_list', 'survey_replies_list'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $finishAt = null;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true, inversedBy="papCampaignHistory")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     *
      * @Assert\Valid
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(inversedBy: 'papCampaignHistory', targetEntity: DataSurvey::class, cascade: ['persist'], orphanRemoval: true)]
     private ?DataSurvey $dataSurvey = null;
 
     public function __construct(?UuidInterface $uuid = null)

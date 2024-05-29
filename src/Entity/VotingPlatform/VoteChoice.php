@@ -4,62 +4,53 @@ namespace App\Entity\VotingPlatform;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- *
- * @ORM\Table(name="voting_platform_vote_choice")
- */
+#[ORM\Table(name: 'voting_platform_vote_choice')]
+#[ORM\Entity]
 class VoteChoice
 {
     public const BLANK_VOTE_VALUE = -1;
 
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
      * @var VoteResult
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\VoteResult", inversedBy="voteChoices")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: VoteResult::class, inversedBy: 'voteChoices')]
     private $voteResult;
 
     /**
      * @var CandidateGroup
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\CandidateGroup")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: CandidateGroup::class)]
     private $candidateGroup;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isBlank = false;
 
     /**
      * For storing the mention on Majority Vote
      *
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $mention;
 
     /**
      * @var ElectionPool
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\ElectionPool")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectionPool::class)]
     private $electionPool;
 
     public function __construct(ElectionPool $electionPool)

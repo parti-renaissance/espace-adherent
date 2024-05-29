@@ -7,71 +7,61 @@ use App\Entity\UserListDefinition;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessageFilter implements CampaignAdherentMessageFilterInterface
 {
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $gender;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(nullable: true)]
     private $firstName;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(nullable: true)]
     private $lastName;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $mandate;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $politicalFunction;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $label;
 
     /**
      * @var UserListDefinition|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\UserListDefinition")
      */
+    #[ORM\ManyToOne(targetEntity: UserListDefinition::class)]
     private $userListDefinition;
 
     /**
      * @var ReferentTag|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ReferentTag")
-     *
      * @Assert\NotNull
      */
+    #[ORM\ManyToOne(targetEntity: ReferentTag::class)]
     private $referentTag;
 
     public function __construct(?ReferentTag $referentTag = null)

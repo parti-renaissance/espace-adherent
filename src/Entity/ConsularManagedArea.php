@@ -4,25 +4,21 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class ConsularManagedArea
 {
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var ConsularDistrict
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ConsularDistrict")
      */
+    #[ORM\ManyToOne(targetEntity: ConsularDistrict::class)]
     private $consularDistrict;
 
     public function getId(): int

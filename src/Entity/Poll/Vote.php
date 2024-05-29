@@ -5,48 +5,42 @@ namespace App\Entity\Poll;
 use App\Entity\Adherent;
 use App\Entity\Device;
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\Poll\VoteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Poll\VoteRepository")
- *
- * @ORM\Table(name="poll_vote")
- */
+#[ORM\Table(name: 'poll_vote')]
+#[ORM\Entity(repositoryClass: VoteRepository::class)]
 class Vote
 {
     use EntityTimestampableTrait;
 
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     protected $id;
 
     /**
      * @var Choice
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Poll\Choice", inversedBy="votes")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Choice::class, inversedBy: 'votes')]
     private $choice;
 
     /**
      * @var Adherent|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $adherent;
 
     /**
      * @var Device|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Device")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Device::class)]
     private $device;
 
     public function __construct(Choice $choice, ?Adherent $adherent = null, ?Device $device = null)

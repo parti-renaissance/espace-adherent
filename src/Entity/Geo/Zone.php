@@ -9,6 +9,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Address\AddressInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\UuidEntityInterface;
+use App\Repository\Geo\ZoneRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -37,21 +38,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     "name": "word_start",
  *     "type": "exact"
  * })
- *
- * @ORM\Entity(repositoryClass="App\Repository\Geo\ZoneRepository")
- * @ORM\Table(
- *     name="geo_zone",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(name="geo_zone_code_type_unique", columns={"code", "type"})
- *     },
- *     indexes={
- *         @ORM\Index(columns={"type"}),
- *     }
- * )
- * @ORM\AttributeOverrides({
- *     @ORM\AttributeOverride(name="code", column=@ORM\Column(unique=false))
- * })
  */
+#[ORM\Table(name: 'geo_zone')]
+#[ORM\Index(columns: ['type'])]
+#[ORM\UniqueConstraint(name: 'geo_zone_code_type_unique', columns: ['code', 'type'])]
+#[ORM\Entity(repositoryClass: ZoneRepository::class)]
+#[ORM\AttributeOverrides([new ORM\AttributeOverride(name: 'code', column: new ORM\Column(unique: false))])]
 class Zone implements GeoInterface, UuidEntityInterface
 {
     use GeoTrait;
@@ -112,8 +104,6 @@ class Zone implements GeoInterface, UuidEntityInterface
      *
      * @var UuidInterface
      *
-     * @ORM\Column(type="uuid", unique=true)
-     *
      * @ApiProperty(
      *     identifier=true,
      *     attributes={
@@ -126,53 +116,45 @@ class Zone implements GeoInterface, UuidEntityInterface
      * )
      */
     #[Groups(['zone_read', 'scopes', 'scope', 'jecoute_news_read_dc', 'audience_read', 'audience_segment_read', 'phoning_campaign_read', 'survey_list_dc', 'survey_read_dc', 'team_read', 'team_list_read', 'pap_campaign_read', 'pap_campaign_read_after_write', 'phoning_campaign_read', 'phoning_campaign_list', 'department_site_read', 'department_site_read_list', 'elected_representative_read', 'elected_representative_list', 'formation_list_read', 'formation_read', 'formation_write', 'elected_mandate_read', 'adherent_elect_read', 'general_meeting_report_list_read', 'general_meeting_report_read', 'committee:read', 'managed_users_list', 'managed_user_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read'])]
+    #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
     #[Groups(['zone_read', 'scope', 'read_api', 'committee:read', 'zone:code,type', 'managed_users_list', 'managed_user_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read'])]
+    #[ORM\Column]
     private $type;
 
     /**
      * @var ?string
-     *
-     * @ORM\Column(length=6, nullable=true)
      */
+    #[ORM\Column(length: 6, nullable: true)]
     private $teamCode;
 
     /**
      * @var Collection|self[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", inversedBy="children")
-     * @ORM\JoinTable(
-     *     name="geo_zone_parent",
-     *     joinColumns={@ORM\JoinColumn(name="child_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="parent_id", referencedColumnName="id")}
-     * )
      */
+    #[ORM\JoinTable(name: 'geo_zone_parent')]
+    #[ORM\JoinColumn(name: 'child_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'parent_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: Zone::class, inversedBy: 'children')]
     private $parents;
 
     /**
      * @var Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", mappedBy="parents")
      */
+    #[ORM\ManyToMany(targetEntity: Zone::class, mappedBy: 'parents')]
     private $children;
 
     /**
      * @var string[]|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
     #[Groups(['zone_read'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $postalCode;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private ?array $tags = null;
 
     public function __construct(string $type, string $code, string $name, ?UuidInterface $uuid = null)

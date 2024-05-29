@@ -7,28 +7,23 @@ use LongitudeOne\Spatial\PHP\Types\Geometry\GeometryInterface;
 use LongitudeOne\Spatial\PHP\Types\Geometry\MultiPolygon;
 use LongitudeOne\Spatial\PHP\Types\Geometry\Polygon;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="geo_data", indexes={
- *     @ORM\Index(name="geo_data_geo_shape_idx", columns={"geo_shape"}, flags={"spatial"})
- * })
- */
+#[ORM\Table(name: 'geo_data')]
+#[ORM\Index(columns: ['geo_shape'], name: 'geo_data_geo_shape_idx', flags: ['spatial'])]
+#[ORM\Entity]
 class GeoData
 {
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var GeometryInterface
-     *
-     * @ORM\Column(type="geometry")
      */
+    #[ORM\Column(type: 'geometry')]
     private $geoShape;
 
     /**

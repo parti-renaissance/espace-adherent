@@ -6,39 +6,35 @@ use App\Entity\AbstractTranslatableEntity;
 use App\Entity\AlgoliaIndexedEntityInterface;
 use App\Entity\EntityMediaInterface;
 use App\Entity\EntityMediaTrait;
+use App\Repository\Timeline\ThemeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="timeline_themes")
- * @ORM\Entity(repositoryClass="App\Repository\Timeline\ThemeRepository")
- */
+#[ORM\Table(name: 'timeline_themes')]
+#[ORM\Entity(repositoryClass: ThemeRepository::class)]
 class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, AlgoliaIndexedEntityInterface
 {
     use EntityMediaTrait;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="bigint")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'bigint')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $featured;
 
     /**
      * @var Measure[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Timeline\Measure", mappedBy="themes")
      */
+    #[ORM\ManyToMany(targetEntity: Measure::class, mappedBy: 'themes')]
     private $measures;
 
     public function __construct(bool $featured = false)
@@ -94,7 +90,7 @@ class Theme extends AbstractTranslatableEntity implements EntityMediaInterface, 
 
     public function getImage(): ?string
     {
-        return $this->media ? $this->media->getPathWithDirectory() : null;
+        return $this->media?->getPathWithDirectory();
     }
 
     public function getMeasureTitles(): array

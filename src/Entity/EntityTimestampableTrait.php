@@ -11,21 +11,19 @@ trait EntityTimestampableTrait
     /**
      * @var \DateTimeInterface
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Gedmo\Timestampable(on="create")
      */
     #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'email_template_read', 'email_template_list_read', 'riposte_list_read', 'riposte_read', 'phoning_campaign_read', 'message_read_list', 'pap_building_history', 'pap_campaign_history_read_list', 'pap_campaign_replies_list', 'event_read', 'event_list_read', 'survey_list_dc', 'committee:list', 'document_read', 'national_event_inscription:webhook', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read', 'action_read_list'])]
+    #[ORM\Column(type: 'datetime')]
     protected $createdAt;
 
     /**
      * @var \DateTimeInterface
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Gedmo\Timestampable(on="update")
      */
     #[Groups(['phoning_campaign_read', 'committee:list', 'national_event_inscription:webhook', 'action_read', 'action_read_list'])]
+    #[ORM\Column(type: 'datetime')]
     protected $updatedAt;
 
     public function getCreatedAt(): \DateTimeInterface

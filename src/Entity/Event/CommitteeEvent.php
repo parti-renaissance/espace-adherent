@@ -11,47 +11,35 @@ use App\Entity\UserDocument;
 use App\Entity\UserDocumentInterface;
 use App\Entity\UserDocumentTrait;
 use App\Event\EventTypeEnum;
+use App\Repository\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
- */
+#[ORM\Entity(repositoryClass: EventRepository::class)]
 class CommitteeEvent extends BaseEvent implements UserDocumentInterface, SynchronizedEntity
 {
     use UserDocumentTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
     #[Groups(['event_read', 'event_write_creation'])]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Committee::class)]
     private $committee;
 
     private $type;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isForLegislatives;
 
     /**
      * @var UserDocument[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\UserDocument", cascade={"persist"})
-     * @ORM\JoinTable(
-     *     name="event_user_documents",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="user_document_id", referencedColumnName="id", onDelete="CASCADE")
-     *     }
-     * )
      */
+    #[ORM\JoinTable(name: 'event_user_documents')]
+    #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'user_document_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: UserDocument::class, cascade: ['persist'])]
     protected Collection $documents;
 
     public function __construct(
@@ -92,7 +80,6 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
         $this->type = $type;
         $this->documents = new ArrayCollection();
         $this->referentTags = new ArrayCollection($referentTags);
-        $this->zones = new ArrayCollection();
         $this->timeZone = $timeZone;
     }
 
@@ -128,11 +115,6 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
         }
 
         return $committee->getUuidAsString();
-    }
-
-    public function getCategoryName(): ?string
-    {
-        return parent::getCategoryName();
     }
 
     public function isReferentEvent(): bool

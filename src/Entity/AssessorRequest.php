@@ -7,6 +7,7 @@ use App\Assessor\AssessorRequestElectionRoundsEnum;
 use App\Entity\Election\VotePlace as ElectionVotePlace;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Repository\AssessorRequestRepository;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,11 +19,10 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="assessor_requests")
- * @ORM\Entity(repositoryClass="App\Repository\AssessorRequestRepository")
- *
  * @AssertRecaptcha
  */
+#[ORM\Table(name: 'assessor_requests')]
+#[ORM\Entity(repositoryClass: AssessorRequestRepository::class)]
 class AssessorRequest implements RecaptchaChallengeInterface
 {
     use EntityTimestampableTrait;
@@ -32,20 +32,17 @@ class AssessorRequest implements RecaptchaChallengeInterface
     /**
      * @var string
      *
-     * @ORM\Column(length=6)
-     *
      * @Assert\NotBlank(message="common.gender.invalid_choice")
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
      *     message="common.gender.invalid_choice"
      * )
      */
+    #[ORM\Column(length: 6)]
     private $gender;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=50)
      *
      * @Assert\NotBlank(message="assessor.last_name.not_blank")
      * @Assert\Length(
@@ -55,12 +52,11 @@ class AssessorRequest implements RecaptchaChallengeInterface
      *     maxMessage="assessor.last_name.max_length"
      * )
      */
+    #[ORM\Column(length: 50)]
     private $lastName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=100)
      *
      * @Assert\NotBlank(message="assessor.first_name.not_blank")
      * @Assert\Length(
@@ -70,12 +66,11 @@ class AssessorRequest implements RecaptchaChallengeInterface
      *     maxMessage="assessor.first_name.max_length"
      * )
      */
+    #[ORM\Column(length: 100)]
     private $firstName;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="date")
      *
      * @Assert\NotBlank(message="common.birthdate.not_blank")
      * @Assert\Range(
@@ -85,111 +80,100 @@ class AssessorRequest implements RecaptchaChallengeInterface
      *     maxMessage="assessor.birthdate.minimum_required_age"
      * )
      */
+    #[ORM\Column(type: 'date')]
     private $birthdate;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank(message="common.birthcity.not_blank")
      * @Assert\Length(max=50)
      */
+    #[ORM\Column(length: 50)]
     private $birthCity;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=150)
-     *
      * @Assert\NotBlank(message="common.address.required")
      * @Assert\Length(max=150, maxMessage="common.address.max_length")
      */
+    #[ORM\Column(length: 150)]
     private $address;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=15, nullable=true)
-     *
      * @Assert\Length(max=15)
      */
+    #[ORM\Column(length: 15, nullable: true)]
     private $postalCode;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank(message="common.city_name.not_blank")
      * @Assert\Length(max=50)
      */
+    #[ORM\Column(length: 50)]
     private $city;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=2, options={"default": "FR"})
-     *
      * @Assert\NotBlank(message="common.country.not_blank")
      * @Assert\Country(message="common.country.invalid")
      */
+    #[ORM\Column(length: 2, options: ['default' => 'FR'])]
     private $country = AddressInterface::FRANCE;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank(message="assessor.vote_city.not_blank")
      * @Assert\Length(max=50)
      */
+    #[ORM\Column(length: 50)]
     private $voteCity;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=10, nullable=true)
-     *
      * @Assert\Length(max=10)
      */
+    #[ORM\Column(length: 10, nullable: true)]
     private $officeNumber;
 
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
+    #[ORM\Column]
     private $emailAddress;
 
     /**
      * @var PhoneNumber
      *
-     * @ORM\Column(type="phone_number")
-     *
      * @Assert\NotBlank(message="common.phone_number.required")
      * @AssertPhoneNumber
      */
+    #[ORM\Column(type: 'phone_number')]
     private $phone;
 
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank(message="assessor.voter_number.not_blank")
      * @Assert\Length(max="255")
      */
+    #[ORM\Column]
     private $voterNumber;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=50, nullable=true)
      *
      * @Assert\Expression(
      *     "(this.isFrenchAssessorRequest() and value != null) or (!this.isFrenchAssessorRequest() and value == null)",
@@ -199,12 +183,11 @@ class AssessorRequest implements RecaptchaChallengeInterface
      * @Assert\NotBlank(message="assessor.assessor_city.not_blank")
      * @Assert\Length(max=50)
      */
+    #[ORM\Column(length: 50, nullable: true)]
     private $assessorCity;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Expression(
      *     "(this.isFrenchAssessorRequest() and value != null) or (!this.isFrenchAssessorRequest() and value == null)",
@@ -213,22 +196,20 @@ class AssessorRequest implements RecaptchaChallengeInterface
      * )
      * @Assert\Length(max=15)
      */
+    #[ORM\Column(length: 15, nullable: true)]
     private $assessorPostalCode;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=2)
-     *
      * @Assert\NotBlank
      * @Assert\Country(message="common.country.invalid")
      */
+    #[ORM\Column(length: 2)]
     private $assessorCountry = AddressInterface::FRANCE;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=15)
      *
      * @Assert\NotBlank(message="assessor.office.invalid_choice")
      * @Assert\Choice(
@@ -236,43 +217,38 @@ class AssessorRequest implements RecaptchaChallengeInterface
      *     message="assessor.office.invalid_choice"
      * )
      */
+    #[ORM\Column(length: 15)]
     private $office = AssessorOfficeEnum::HOLDER;
 
     /**
      * @var ElectionVotePlace|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Election\VotePlace")
      */
+    #[ORM\ManyToOne(targetEntity: ElectionVotePlace::class)]
     private $votePlace;
 
     /**
      * @var ElectionVotePlace[]|ArrayCollection
      *
      * @Assert\NotBlank(message="assessor.vote_place_wishes.not_blank", groups={"fill_assessor_info"})
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Election\VotePlace")
-     * @ORM\JoinTable(name="assessor_requests_vote_place_wishes")
      */
+    #[ORM\JoinTable(name: 'assessor_requests_vote_place_wishes')]
+    #[ORM\ManyToMany(targetEntity: ElectionVotePlace::class)]
     private $votePlaceWishes;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $processed = false;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $processedAt;
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="simple_array")
      *
      * @Assert\NotBlank(message="assessor.election_rounds.not_blank")
      * @Assert\Choice(
@@ -281,20 +257,19 @@ class AssessorRequest implements RecaptchaChallengeInterface
      *     multiple=true
      * )
      */
+    #[ORM\Column(type: 'simple_array')]
     private $electionRounds;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $enabled = true;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public $reachable = false;
 
     public function __construct()

@@ -15,54 +15,44 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="jecoute_question")
- * @ORM\Entity
- *
- * @InheritanceType("JOINED")
- * @DiscriminatorColumn(name="discr", type="string")
- * @DiscriminatorMap({
- *     "question": "Question",
- *     "suggested_question": "SuggestedQuestion"
- * })
- *
  * @SurveyQuestionTypeChoice
  */
+#[ORM\Table(name: 'jecoute_question')]
+#[ORM\Entity]
+#[InheritanceType('JOINED')]
+#[DiscriminatorColumn(name: 'discr', type: 'string')]
+#[DiscriminatorMap(['question' => Question::class, 'suggested_question' => SuggestedQuestion::class])]
 class Question
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
     #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
+    #[ORM\Column]
     private $content;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Choice(callback={"App\Jecoute\SurveyQuestionTypeEnum", "all"})
      */
     #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
+    #[ORM\Column]
     private $type;
 
     /**
      * @var Choice[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="Choice", mappedBy="question", cascade={"all"}, orphanRemoval=true)
-     * @ORM\OrderBy({"position": "ASC"})
-     *
      * @Assert\Valid
      */
     #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Choice::class, cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     private $choices;
 
     public function __construct(?string $content = null, ?string $type = null)

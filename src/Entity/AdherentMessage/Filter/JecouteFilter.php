@@ -6,9 +6,7 @@ use App\Entity\Geo\Zone;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class JecouteFilter extends AbstractAdherentMessageFilter implements AdherentSegmentAwareFilterInterface, CampaignAdherentMessageFilterInterface
 {
     use AdherentSegmentAwareFilterTrait;
@@ -16,19 +14,17 @@ class JecouteFilter extends AbstractAdherentMessageFilter implements AdherentSeg
     /**
      * @var string|null
      *
-     * @ORM\Column(length=10, nullable=true)
-     *
      * @Assert\Length(allowEmptyString=true, min=5, max=5)
      */
+    #[ORM\Column(length: 10, nullable: true)]
     private $postalCode;
 
     /**
      * @var Zone
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
     private $zone;
 
     public function __construct(?Zone $zone = null)

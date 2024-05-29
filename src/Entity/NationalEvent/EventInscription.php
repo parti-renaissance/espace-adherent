@@ -9,6 +9,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityUTMTrait;
 use App\Event\Request\EventInscriptionRequest;
 use App\NationalEvent\InscriptionStatusEnum;
+use App\Repository\NationalEvent\EventInscriptionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
@@ -17,9 +18,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\NationalEvent\EventInscriptionRepository")
- * @ORM\Table("national_event_inscription")
- *
  * @ApiResource(
  *     attributes={
  *         "denormalization_context": {"groups": {"event_inscription_update_status"}},
@@ -34,114 +32,82 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={},
  * )
  */
+#[ORM\Table('national_event_inscription')]
+#[ORM\Entity(repositoryClass: EventInscriptionRepository::class)]
 class EventInscription
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityUTMTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=NationalEvent::class)
-     */
     #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\ManyToOne(targetEntity: NationalEvent::class)]
     public NationalEvent $event;
 
     /**
-     * @ORM\Column(options={"default": "pending"})
      * @Assert\Choice(callback={"App\NationalEvent\InscriptionStatusEnum", "toArray"})
      */
     #[Groups(['national_event_inscription:webhook', 'event_inscription_update_status'])]
+    #[ORM\Column(options: ['default' => 'pending'])]
     public string $status = InscriptionStatusEnum::PENDING;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Adherent::class)
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
     #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent = null;
 
-    /**
-     * @ORM\Column(length=6)
-     */
     #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column(length: 6)]
     public ?string $gender = null;
 
-    /**
-     * @ORM\Column
-     */
     #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column]
     public ?string $firstName = null;
 
-    /**
-     * @ORM\Column
-     */
     #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column]
     public ?string $lastName = null;
 
-    /**
-     * @ORM\Column
-     */
     #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column]
     public ?string $addressEmail = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column(nullable: true)]
     public ?string $postalCode = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     public ?array $qualities = null;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
     #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column(type: 'date', nullable: true)]
     public ?\DateTime $birthdate = null;
 
-    /**
-     * @ORM\Column(type="phone_number", nullable=true)
-     */
     #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column(type: 'phone_number', nullable: true)]
     public ?PhoneNumber $phone = null;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $joinNewsletter = false;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     public ?string $clientIp = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column(nullable: true)]
     public ?string $sessionId = null;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
     #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column(type: 'json', nullable: true)]
     public $emailCheck;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $ticketSentAt = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     public ?string $ticketCustomDetail = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     public ?string $ticketQRCodeFile = null;
 
     public function __construct(NationalEvent $event, ?UuidInterface $uuid = null)

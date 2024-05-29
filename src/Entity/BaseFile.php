@@ -2,57 +2,50 @@
 
 namespace App\Entity;
 
+use App\EntityListener\FileListener;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\MappedSuperclass
- *
- * @ORM\EntityListeners({"App\EntityListener\FileListener"})
- */
+#[ORM\MappedSuperclass]
+#[ORM\EntityListeners([FileListener::class])]
 abstract class BaseFile implements EntityFileInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
+    #[ORM\Column]
     private $title;
 
     /**
-     * @ORM\Column
      * @Gedmo\Slug(fields={"title"})
      */
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
+    #[ORM\Column]
     private $slug;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
     #[Groups(['formation_read', 'formation_list_read'])]
+    #[ORM\Column]
     private $path;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
     #[Groups(['formation_read', 'formation_list_read'])]
+    #[ORM\Column]
     private $extension;
 
     /**

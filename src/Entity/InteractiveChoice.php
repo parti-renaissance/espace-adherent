@@ -6,38 +6,26 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="interactive_choices")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({
- *     "my_europe": "App\Entity\MyEuropeChoice",
- * })
- */
+#[ORM\Table(name: 'interactive_choices')]
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap(['my_europe' => MyEuropeChoice::class])]
 abstract class InteractiveChoice
 {
     use EntityIdentityTrait;
     use EntityCrudTrait;
 
-    /**
-     * @ORM\Column(type="smallint", length=1, options={"unsigned": true})
-     */
+    #[ORM\Column(type: 'smallint', length: 1, options: ['unsigned' => true])]
     protected $step;
 
-    /**
-     * @ORM\Column(length=30, unique=true)
-     */
+    #[ORM\Column(length: 30, unique: true)]
     protected $contentKey;
 
-    /**
-     * @ORM\Column(length=100)
-     */
+    #[ORM\Column(length: 100)]
     protected $label;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     protected $content;
 
     public function __construct(

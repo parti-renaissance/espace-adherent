@@ -9,10 +9,9 @@ trait AdherentSegmentAwareFilterTrait
 {
     /**
      * @var AdherentSegment|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\AdherentSegment")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: AdherentSegment::class)]
     private $adherentSegment;
 
     public function getAdherentSegment(): ?AdherentSegment

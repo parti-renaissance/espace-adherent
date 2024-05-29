@@ -12,9 +12,8 @@ trait EntityReferentTagTrait
 {
     /**
      * @var Collection|ReferentTag[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
      */
+    #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
     protected $referentTags;
 
     /**

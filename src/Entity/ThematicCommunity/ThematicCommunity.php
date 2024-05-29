@@ -6,13 +6,12 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityNameSlugTrait;
 use App\Entity\ImageOwnerInterface;
 use App\Entity\ImageTrait;
+use App\Repository\ThematicCommunity\ThematicCommunityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ThematicCommunity\ThematicCommunityRepository")
- */
+#[ORM\Entity(repositoryClass: ThematicCommunityRepository::class)]
 class ThematicCommunity implements ImageOwnerInterface
 {
     use EntityIdentityTrait;
@@ -31,26 +30,23 @@ class ThematicCommunity implements ImageOwnerInterface
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     protected $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'text')]
     private $description;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $enabled = true;
 
     public function __construct()

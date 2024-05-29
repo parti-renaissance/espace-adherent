@@ -5,6 +5,7 @@ namespace App\Entity\ProcurationV2;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\Procuration\ElectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,12 +15,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="procuration_v2_elections")
- * @ORM\Entity(repositoryClass="App\Repository\Procuration\ElectionRepository")
- *
  * @UniqueEntity(fields={"name"})
  * @UniqueEntity(fields={"slug"})
  */
+#[ORM\Table(name: 'procuration_v2_elections')]
+#[ORM\Entity(repositoryClass: ElectionRepository::class)]
 class Election
 {
     use EntityIdentityTrait;
@@ -27,89 +27,73 @@ class Election
     use EntityAdministratorBlameableTrait;
 
     /**
-     * @ORM\Column(unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(unique: true)]
     public ?string $name = null;
 
     /**
-     * @ORM\Column(length=100, unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
      */
+    #[ORM\Column(length: 100, unique: true)]
     public ?string $slug = null;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'text')]
     public ?string $requestTitle = null;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'text')]
     public ?string $requestDescription = null;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'text')]
     public ?string $requestConfirmation = null;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'text')]
     public ?string $requestLegal = null;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'text')]
     public ?string $proxyTitle = null;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'text')]
     public ?string $proxyDescription = null;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'text')]
     public ?string $proxyConfirmation = null;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'text')]
     public ?string $proxyLegal = null;
 
     /**
      * @var Round[]|Collection
      *
-     * @ORM\OneToMany(
-     *     targetEntity=Round::class,
-     *     mappedBy="election",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
-     *
      * @Assert\Valid
      */
+    #[ORM\OneToMany(mappedBy: 'election', targetEntity: Round::class, cascade: ['all'], orphanRemoval: true)]
     public Collection $rounds;
 
     public function __construct(?UuidInterface $uuid = null)

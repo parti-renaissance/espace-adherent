@@ -4,10 +4,12 @@ namespace App\Entity\DepartmentSite;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Api\Filter\DepartmentSiteScopeFilter;
+use App\DepartmentSite\DepartmentSiteSlugHandler;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\UnlayerJsonContentTrait;
+use App\Repository\DepartmentSite\DepartmentSiteRepository;
 use App\Validator\ZoneInScopeZones as AssertZoneInScopeZones;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -58,11 +60,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @ORM\Entity(repositoryClass="App\Repository\DepartmentSite\DepartmentSiteRepository")
- *
  * @UniqueEntity(fields={"zone"}, message="department_site.zone.not_unique")
  * @UniqueEntity(fields={"slug"})
  */
+#[ORM\Entity(repositoryClass: DepartmentSiteRepository::class)]
 class DepartmentSite
 {
     use EntityIdentityTrait;
@@ -70,17 +71,13 @@ class DepartmentSite
     use EntityTimestampableTrait;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['department_site_read', 'department_site_write'])]
+    #[ORM\Column(type: 'text')]
     private ?string $content = null;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Geo\Zone")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     *
      * @Assert\NotBlank
      * @Assert\Expression(
      *     "value and (value.getType() === constant('App\\Entity\\Geo\\Zone::DEPARTMENT') or (value.getType() === constant('App\\Entity\\Geo\\Zone::CUSTOM') and value.getCode() === constant('App\\Entity\\Geo\\Zone::FDE_CODE')))",
@@ -89,15 +86,14 @@ class DepartmentSite
      * @AssertZoneInScopeZones
      */
     #[Groups(['department_site_read', 'department_site_read_list', 'department_site_write'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(targetEntity: Zone::class)]
     private ?Zone $zone = null;
 
-    /**
-     * @ORM\Column(unique=true)
-     * @Gedmo\Slug(handlers={
-     *     @Gedmo\SlugHandler(class="App\DepartmentSite\DepartmentSiteSlugHandler")
-     * }, fields={"content"})
-     */
+    #[ORM\Column(unique: true)]
     #[Groups(['department_site_read', 'department_site_read_list', 'department_site_post_write'])]
+    #[Gedmo\Slug(fields: ['content'])]
+    #[Gedmo\SlugHandler(class: DepartmentSiteSlugHandler::class)]
     private ?string $slug = null;
 
     public function __construct(?UuidInterface $uuid = null)

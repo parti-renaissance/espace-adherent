@@ -4,15 +4,13 @@ namespace App\Entity\Pap;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\EntityIdentityTrait;
+use App\Repository\Pap\VoterRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Pap\VoterRepository")
- * @ORM\Table(name="pap_voter")
- *
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {
@@ -25,48 +23,36 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={},
  * )
  */
+#[ORM\Table(name: 'pap_voter')]
+#[ORM\Entity(repositoryClass: VoterRepository::class)]
 class Voter
 {
     use EntityIdentityTrait;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $firstName;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['pap_address_voter_list'])]
+    #[ORM\Column(nullable: true)]
     private ?string $lastName;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['pap_address_voter_list'])]
+    #[ORM\Column(nullable: true)]
     private ?string $gender;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
     #[Groups(['pap_address_voter_list'])]
+    #[ORM\Column(type: 'date', nullable: true)]
     private ?\DateTimeInterface $birthdate;
 
-    /**
-     * @ORM\Column(length=10, nullable=true)
-     */
     #[Groups(['pap_address_voter_list'])]
+    #[ORM\Column(length: 10, nullable: true)]
     private ?string $votePlace;
 
-    /**
-     * @ORM\Column(length=5, nullable=true)
-     */
+    #[ORM\Column(length: 5, nullable: true)]
     private ?string $source;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Address", inversedBy="voters")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Address::class, inversedBy: 'voters')]
     private ?Address $address;
 
     public function __construct(

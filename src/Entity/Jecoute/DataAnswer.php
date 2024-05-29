@@ -9,59 +9,45 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Table(name="jecoute_data_answer")
- * @ORM\Entity
- *
  * @DataSurveyAnswerTypeChoice
  */
+#[ORM\Table(name: 'jecoute_data_answer')]
+#[ORM\Entity]
 class DataAnswer
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SurveyQuestion", inversedBy="dataAnswers")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
     #[Groups(['data_survey_write'])]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: SurveyQuestion::class, inversedBy: 'dataAnswers')]
     private $surveyQuestion;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
     #[Groups(['data_survey_write'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $textField;
 
     /**
      * @var Choice[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Choice", fetch="EAGER", inversedBy="dataAnswers")
-     * @ORM\JoinTable(
-     *     name="jecoute_data_answer_selected_choices",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="data_answer_id", referencedColumnName="id", onDelete="CASCADE")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="choice_id", referencedColumnName="id", onDelete="CASCADE")
-     *     }
-     * )
-     * @ORM\OrderBy({"id": "ASC"})
      */
     #[Groups(['data_survey_write'])]
+    #[ORM\JoinTable(name: 'jecoute_data_answer_selected_choices')]
+    #[ORM\JoinColumn(name: 'data_answer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'choice_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: Choice::class, inversedBy: 'dataAnswers', fetch: 'EAGER')]
+    #[ORM\OrderBy(['id' => 'ASC'])]
     private $selectedChoices;
 
     /**
      * @var DataSurvey
-     *
-     * @ORM\ManyToOne(targetEntity="DataSurvey", inversedBy="answers", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: DataSurvey::class, cascade: ['persist', 'remove'], inversedBy: 'answers')]
     private $dataSurvey;
 
     public function __construct()

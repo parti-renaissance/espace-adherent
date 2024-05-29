@@ -9,52 +9,45 @@ use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="territorial_council_quality")
- * @ORM\Entity
- *
  * @UniqueEntity(fields={"territorialCouncilMembership", "name"})
  */
+#[ORM\Table(name: 'territorial_council_quality')]
+#[ORM\Entity]
 class TerritorialCouncilQuality
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     /**
      * @var TerritorialCouncilMembership|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership", inversedBy="qualities")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: TerritorialCouncilMembership::class, inversedBy: 'qualities')]
     private $territorialCouncilMembership;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
     #[Serializer\Groups(['api_candidacy_read'])]
+    #[ORM\Column]
     private $name;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $zone;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Assert\NotNull
      */
+    #[ORM\Column(type: 'datetime')]
     private $joinedAt;
 
     public function __construct(string $name, string $zone, ?\DateTime $joinedAt = null)

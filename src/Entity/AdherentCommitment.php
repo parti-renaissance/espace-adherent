@@ -2,70 +2,61 @@
 
 namespace App\Entity;
 
+use App\Repository\AdherentCommitmentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\AdherentCommitmentRepository")
- */
+#[ORM\Entity(repositoryClass: AdherentCommitmentRepository::class)]
 class AdherentCommitment
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var Adherent
-     *
-     * @ORM\OneToOne(targetEntity=Adherent::class, inversedBy="commitment")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\OneToOne(inversedBy: 'commitment', targetEntity: Adherent::class)]
     private $adherent;
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $commitmentActions = [];
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $debateAndProposeIdeasActions = [];
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $actForTerritoryActions = [];
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $progressivismActions = [];
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $skills = [];
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", nullable=true)
      */
+    #[ORM\Column(type: 'string', nullable: true)]
     private $availability;
 
     public function __construct(Adherent $adherent)

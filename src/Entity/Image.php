@@ -9,37 +9,32 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Image
 {
     use TimestampableEntity;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var UuidInterface
-     *
-     * @ORM\Column(type="uuid", unique=true)
      */
+    #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=10)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=10)
      */
+    #[ORM\Column(length: 10)]
     private $extension;
 
     /**

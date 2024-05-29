@@ -16,11 +16,6 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="pap_building_block", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="building_block_unique", columns={"name", "building_id"})
- * })
- *
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {
@@ -33,6 +28,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={},
  * )
  */
+#[ORM\Table(name: 'pap_building_block')]
+#[ORM\UniqueConstraint(name: 'building_block_unique', columns: ['name', 'building_id'])]
+#[ORM\Entity]
 class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatisticsOwnerInterface
 {
     use EntityAdherentBlameableTrait;
@@ -40,43 +38,26 @@ class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatist
     use EntityTimestampableTrait;
     use CampaignStatisticsTrait;
 
-    /**
-     * @ORM\Column
-     */
     #[Groups(['pap_building_block_list'])]
+    #[ORM\Column]
     private string $name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Building", inversedBy="buildingBlocks")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Building::class, inversedBy: 'buildingBlocks')]
     private Building $building;
 
     /**
      * @var Floor[]|Collection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Pap\Floor",
-     *     mappedBy="buildingBlock",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     fetch="EAGER"
-     * )
-     * @ORM\OrderBy({"number": "ASC"})
      */
     #[Groups(['pap_building_block_list'])]
+    #[ORM\OneToMany(mappedBy: 'buildingBlock', targetEntity: Floor::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OrderBy(['number' => 'ASC'])]
     private Collection $floors;
 
     /**
      * @var BuildingBlockStatistics[]|Collection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Pap\BuildingBlockStatistics",
-     *     mappedBy="buildingBlock",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
      */
+    #[ORM\OneToMany(mappedBy: 'buildingBlock', targetEntity: BuildingBlockStatistics::class, cascade: ['all'], orphanRemoval: true)]
     private Collection $statistics;
 
     public function __construct(string $name, Building $building, ?UuidInterface $uuid = null)

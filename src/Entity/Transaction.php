@@ -2,14 +2,12 @@
 
 namespace App\Entity;
 
+use App\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\TransactionRepository")
- * @ORM\Table(name="donation_transactions", indexes={
- *     @ORM\Index(name="donation_transactions_result_idx", columns={"paybox_result_code"})
- * })
- */
+#[ORM\Table(name: 'donation_transactions')]
+#[ORM\Index(columns: ['paybox_result_code'], name: 'donation_transactions_result_idx')]
+#[ORM\Entity(repositoryClass: TransactionRepository::class)]
 class Transaction
 {
     public const PAYBOX_SUCCESS = '00000';
@@ -32,68 +30,59 @@ class Transaction
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=100, nullable=true)
      */
+    #[ORM\Column(length: 100, nullable: true)]
     private $payboxResultCode;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=100, nullable=true)
      */
+    #[ORM\Column(length: 100, nullable: true)]
     private $payboxAuthorizationCode;
 
     /**
      * @var array|null
-     *
-     * @ORM\Column(type="json", nullable=true)
      */
+    #[ORM\Column(type: 'json', nullable: true)]
     private $payboxPayload;
 
     /**
      * @var \DateTimeImmutable|null
-     *
-     * @ORM\Column(type="datetime_immutable", nullable=true)
      */
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $payboxDateTime;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(unique=true, nullable=true)
      */
+    #[ORM\Column(unique: true, nullable: true)]
     private $payboxTransactionId;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $payboxSubscriptionId;
 
     /**
      * @var \DateTimeImmutable
-     *
-     * @ORM\Column(type="datetime_immutable")
      */
+    #[ORM\Column(type: 'datetime_immutable')]
     private $createdAt;
 
     /**
      * @var Donation
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Donation", inversedBy="transactions")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Donation::class, inversedBy: 'transactions')]
     private $donation;
 
     public function __construct(Donation $donation, array $payboxPayload)

@@ -8,13 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- *
  * @Assert\Expression(
  *     "(this.getTerritorialCouncil() && !this.getPoliticalCommittee()) || (!this.getTerritorialCouncil() && this.getPoliticalCommittee())",
  *     message="Vous ne pouvez pas filtrer sur le conseil territorial et le comité politique en même temps."
  * )
  */
+#[ORM\Entity]
 class ReferentInstancesFilter extends AbstractAdherentMessageFilter
 {
     public const INSTANCE_TYPE_COTERR = 'territorial_council';
@@ -22,23 +21,20 @@ class ReferentInstancesFilter extends AbstractAdherentMessageFilter
 
     /**
      * @var TerritorialCouncil|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncil")
      */
+    #[ORM\ManyToOne(targetEntity: TerritorialCouncil::class)]
     private $territorialCouncil;
 
     /**
      * @var PoliticalCommittee|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\PoliticalCommittee")
      */
+    #[ORM\ManyToOne(targetEntity: PoliticalCommittee::class)]
     private $politicalCommittee;
 
     /**
      * @var string[]
-     *
-     * @ORM\Column(type="simple_array")
      */
+    #[ORM\Column(type: 'simple_array')]
     private $qualities = [];
 
     public function getTerritorialCouncil(): ?TerritorialCouncil

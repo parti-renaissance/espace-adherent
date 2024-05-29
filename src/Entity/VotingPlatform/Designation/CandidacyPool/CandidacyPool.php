@@ -11,34 +11,28 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table("designation_candidacy_pool")
- */
+#[ORM\Table('designation_candidacy_pool')]
+#[ORM\Entity]
 class CandidacyPool
 {
     use EntityIdentityTrait;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     public ?string $label = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Designation", inversedBy="candidacyPools", cascade={"persist"}, fetch="EAGER")
-     */
+    #[ORM\ManyToOne(targetEntity: Designation::class, cascade: ['persist'], fetch: 'EAGER', inversedBy: 'candidacyPools')]
     public ?Designation $designation = null;
 
     /**
      * @var CandidaciesGroup[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\Designation\CandidacyPool\CandidaciesGroup", mappedBy="candidacyPool", fetch="EAGER", cascade={"persist"})
-     *
      * @Assert\Valid
      * @Assert\Count(min=1)
      */
+    #[ORM\OneToMany(mappedBy: 'candidacyPool', targetEntity: CandidaciesGroup::class, cascade: ['persist'], fetch: 'EAGER')]
     private $candidaciesGroups;
 
     public function __construct(?UuidInterface $uuid = null)

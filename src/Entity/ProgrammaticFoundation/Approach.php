@@ -28,46 +28,36 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @ORM\Entity
- * @ORM\Table(name="programmatic_foundation_approach")
- *
  * @UniqueEntity("position", message="programmatic_foundation.unique_position.approach")
  */
+#[ORM\Table(name: 'programmatic_foundation_approach')]
+#[ORM\Entity]
 class Approach
 {
     use EntityIdentityTrait;
     use TimestampableEntity;
 
     /**
-     * @ORM\Column(type="smallint")
      * @Assert\GreaterThan(value=0, message="programmatic_foundation.position.greater_than_zero")
      */
     #[Groups(['approach_list_read'])]
+    #[ORM\Column(type: 'smallint')]
     private $position;
 
     /**
-     * @ORM\Column
      * @Assert\NotBlank(message="programmatic_foundation.title.not_empty")
      */
     #[Groups(['approach_list_read'])]
+    #[ORM\Column]
     private $title;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     #[Groups(['approach_list_read'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $content;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\ProgrammaticFoundation\SubApproach",
-     *     mappedBy="approach",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"position": "ASC"})
-     */
     #[Groups(['approach_list_read'])]
+    #[ORM\OneToMany(mappedBy: 'approach', targetEntity: SubApproach::class, cascade: ['all'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     private $subApproaches;
 
     public function __construct(?int $position = null, ?string $title = null, ?string $content = null)

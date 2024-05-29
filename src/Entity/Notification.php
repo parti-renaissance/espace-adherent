@@ -5,69 +5,59 @@ namespace App\Entity;
 use App\Firebase\Notification\MulticastNotificationInterface;
 use App\Firebase\Notification\NotificationInterface;
 use App\Firebase\Notification\TopicNotificationInterface;
+use App\Repository\NotificationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\NotificationRepository")
- */
+#[ORM\Entity(repositoryClass: NotificationRepository::class)]
 class Notification
 {
     use EntityTimestampableTrait;
 
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $notificationClass;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $title;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="text")
      */
+    #[ORM\Column(type: 'text')]
     private $body;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $deliveredAt;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $topic;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $tokens;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
+    #[ORM\Column(type: 'json', nullable: true)]
     private ?array $data;
 
     public function __construct(

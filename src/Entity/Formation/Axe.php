@@ -13,11 +13,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="formation_axes")
- * @ORM\Entity
- *
  * @UniqueEntity(fields={"title"}, message="Il existe déjà un axe de formation avec ce titre.")
  */
+#[ORM\Table(name: 'formation_axes')]
+#[ORM\Entity]
 class Axe implements EntityMediaInterface
 {
     use EntityMediaTrait;
@@ -25,17 +24,14 @@ class Axe implements EntityMediaInterface
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="bigint")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'bigint')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column
      *
      * @Assert\NotBlank(message="Veuillez renseigner un titre.")
      * @Assert\Length(
@@ -45,51 +41,47 @@ class Axe implements EntityMediaInterface
      *     minMessage="Le titre doit pas faire plus de 150 caractères."
      * )
      */
+    #[ORM\Column]
     private $title;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(unique=true)
-     *
      * @Gedmo\Slug(fields={"title"})
      */
+    #[ORM\Column(unique: true)]
     protected $slug;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank(message="Veuillez renseigner une description.")
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
      */
+    #[ORM\Column(type: 'text')]
     private $description;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank(message="Veuillez renseigner un contenu.")
      */
+    #[ORM\Column(type: 'text')]
     private $content;
 
     /**
      * @var Path
      *
-     * @ORM\ManyToOne(targetEntity="Path", inversedBy="axes")
-     * @ORM\JoinColumn(nullable=false)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Path::class, inversedBy: 'axes')]
     private $path;
 
     /**
      * @var Module[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="Module", mappedBy="axe")
      */
+    #[ORM\OneToMany(mappedBy: 'axe', targetEntity: Module::class)]
     private $modules;
 
     public function __construct()

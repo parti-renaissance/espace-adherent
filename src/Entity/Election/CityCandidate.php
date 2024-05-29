@@ -7,109 +7,96 @@ use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="election_city_candidate")
- */
+#[ORM\Table(name: 'election_city_candidate')]
+#[ORM\Entity]
 class CityCandidate
 {
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $name;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=6, nullable=true)
-     *
      * @Assert\Choice(choices=App\ValueObject\Genders::CHOICES)
      */
+    #[ORM\Column(length: 6, nullable: true)]
     private $gender;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
+    #[ORM\Column(nullable: true)]
     private $email;
 
     /**
      * @var PhoneNumber|null
      *
-     * @ORM\Column(type="phone_number", nullable=true)
-     *
      * @AssertPhoneNumber
      */
+    #[ORM\Column(type: 'phone_number', nullable: true)]
     private $phone;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(nullable: true)]
     private $profile;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(nullable: true)]
     private $investitureType;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(nullable: true)]
     private $politicalScheme;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(nullable: true)]
     private $alliances;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $agreement;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(type="integer", nullable=true)
-     *
      * @Assert\GreaterThanOrEqual(0)
      */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $eligibleAdvisersCount;
 
     public function __construct(

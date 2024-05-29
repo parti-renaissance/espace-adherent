@@ -2,15 +2,16 @@
 
 namespace App\Entity;
 
+use App\Repository\LegislativeDistrictZoneRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\LegislativeDistrictZoneRepository")
- * @ORM\Table(name="legislative_district_zones")
  * @UniqueEntity(fields="areaCode", message="legislative_district_zone.area_code.unique", groups="Admin")
  */
+#[ORM\Table(name: 'legislative_district_zones')]
+#[ORM\Entity(repositoryClass: LegislativeDistrictZoneRepository::class)]
 class LegislativeDistrictZone
 {
     private const TYPE_DEPARTMENT = 'departement';
@@ -25,16 +26,12 @@ class LegislativeDistrictZone
         'Autre région du monde' => self::TYPE_REGION,
     ];
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
-     * @ORM\Column(length=4, unique=true)
-     *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Regex(
      *     pattern="/^([0-1]\d{3}|002[A-B])$/",
@@ -42,11 +39,10 @@ class LegislativeDistrictZone
      *     groups="Admin"
      * )
      */
+    #[ORM\Column(length: 4, unique: true)]
     private $areaCode;
 
     /**
-     * @ORM\Column(length=20)
-     *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(
      *     callback="getAreaTypeChoices",
@@ -54,24 +50,20 @@ class LegislativeDistrictZone
      *     groups="Admin"
      * )
      */
+    #[ORM\Column(length: 20)]
     private $areaType = self::TYPE_DEPARTMENT;
 
-    /**
-     * @ORM\Column(type="smallint", name="`rank`", options={"unsigned": true})
-     */
+    #[ORM\Column(name: '`rank`', type: 'smallint', options: ['unsigned' => true])]
     private $rank;
 
     /**
-     * @ORM\Column(length=100)
-     *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Length(allowEmptyString=true, min=2, max=100, groups="Admin")
      */
+    #[ORM\Column(length: 100)]
     private $name;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $keywords;
 
     public static function createDepartmentZone(string $areaCode, string $name, array $keywords = []): self
@@ -165,7 +157,7 @@ class LegislativeDistrictZone
         // Rank 20 stands for South Corsica.
         // Rank 21 stands for North Corsica.
         if (self::isCorsica($areaCode)) {
-            return 'A' === substr($areaCode, -1) ? 20 : 21;
+            return str_ends_with($areaCode, 'A') ? 20 : 21;
         }
 
         $rank = (int) ltrim($areaCode, '0');

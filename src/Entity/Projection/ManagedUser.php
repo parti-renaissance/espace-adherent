@@ -10,8 +10,10 @@ use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use App\Membership\MembershipSourceEnum;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
+use App\Repository\Projection\ManagedUserRepository;
 use App\Subscription\SubscriptionTypeEnum;
 use App\ValueObject\Genders;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\UuidInterface;
@@ -22,20 +24,6 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  * This entity is a projection: do not insert, update or delete objects using this class.
  * The table is populated on a regular basis by a background worker to improve performance
  * of SQL queries.
- *
- * @ORM\Table(name="projection_managed_users", indexes={
- *     @ORM\Index(columns={"status"}),
- *     @ORM\Index(columns={"original_id"}),
- *     @ORM\Index(columns={"zones_ids"}),
- * })
- * @ORM\Entity(readOnly=true, repositoryClass="App\Repository\Projection\ManagedUserRepository")
- * @ORM\AssociationOverrides({
- *     @ORM\AssociationOverride(name="zones",
- *         joinTable=@ORM\JoinTable(
- *             name="projection_managed_users_zone"
- *         )
- *     )
- * })
  *
  * @ApiResource(
  *     itemOperations={
@@ -62,6 +50,11 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  *     },
  * )
  */
+#[ORM\Table(name: 'projection_managed_users')]
+#[ORM\Index(columns: ['status'])]
+#[ORM\Index(columns: ['original_id'])]
+#[ORM\Index(columns: ['zones_ids'])]
+#[ORM\Entity(repositoryClass: ManagedUserRepository::class, readOnly: true)]
 class ManagedUser implements TranslatedTagInterface
 {
     use EntityZoneTrait;
@@ -72,323 +65,278 @@ class ManagedUser implements TranslatedTagInterface
      * @var int
      *
      * @ApiProperty(identifier=false)
-     *
-     * @ORM\Id
-     * @ORM\Column(type="bigint", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'bigint', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="smallint")
      */
+    #[ORM\Column(type: 'smallint')]
     private $status;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $adherentStatus;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $activatedAt;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $source;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="bigint", options={"unsigned": true})
      */
+    #[ORM\Column(type: 'bigint', options: ['unsigned' => true])]
     private $originalId;
 
     /**
      * @var UuidInterface|null
      *
      * @ApiProperty(identifier=true)
-     *
-     * @ORM\Column(type="uuid", nullable=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(type: 'uuid', nullable: true)]
     private $adherentUuid;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column]
     private $email;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=150, nullable=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(length: 150, nullable: true)]
     private $address;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=15, nullable=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(length: 15, nullable: true)]
     private $postalCode;
 
     /**
      * The postal code is filled only for committee supervisors.
      *
      * @var string|null
-     *
-     * @ORM\Column(length=15, nullable=true)
      */
+    #[ORM\Column(length: 15, nullable: true)]
     private $committeePostalCode;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(nullable: true)]
     private $city;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=2, nullable=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(length: 2, nullable: true)]
     private $country;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=6, nullable=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(length: 6, nullable: true)]
     private $gender;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=50, nullable=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(length: 50, nullable: true)]
     private $firstName;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=50, nullable=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(length: 50, nullable: true)]
     private $lastName;
 
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(type: 'date', nullable: true)]
     private $birthdate;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="smallint", nullable=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(type: 'smallint', nullable: true)]
     private $age;
 
     /**
      * @var PhoneNumber|null
-     *
-     * @ORM\Column(type="phone_number", nullable=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(type: 'phone_number', nullable: true)]
     private $phone;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=2, nullable=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(length: 2, nullable: true)]
     private $nationality;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $committees;
 
     /**
      * @var string[]|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $committeeUuids;
 
     /**
      * @var string[]|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $roles;
 
     /**
      * @var string[]|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     public ?array $tags = null;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $isCommitteeMember;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $isCommitteeHost;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $isCommitteeSupervisor;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $isCommitteeProvisionalSupervisor;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $subscribedTags;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime")
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $interests;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $supervisorTags;
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $subscriptionTypes;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
      */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $voteCommitteeId;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $certifiedAt;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $lastMembershipDonation;
 
     /**
      * name of committee v2
-     *
-     * @ORM\Column(nullable=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(nullable: true)]
     private ?string $committee;
 
     /**
      * uuid of committee v2
-     *
-     * @ORM\Column(type="uuid", nullable=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(type: 'uuid', nullable: true)]
     private ?UuidInterface $committeeUuid;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
     #[Groups(['managed_users_list'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private ?array $additionalTags;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private ?array $mandates;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private ?array $declaredMandates;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     public ?array $cotisationDates = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
     #[Groups(['managed_users_list', 'managed_user_read'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $campusRegisteredAt;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $zonesIds;
+
+    /**
+     * @var ZoneCollection|Zone[]
+     */
+    #[Groups(['phoning_campaign_read', 'phoning_campaign_write', 'read_api', 'managed_users_list', 'managed_user_read'])]
+    #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
+    #[ORM\JoinTable(name: 'projection_managed_users_zone')]
+    protected Collection $zones;
 
     public function __construct(
         int $status,
@@ -663,16 +611,11 @@ class ManagedUser implements TranslatedTagInterface
 
     public function getGenderLabel(): string
     {
-        switch ($this->gender) {
-            case Genders::MALE:
-                return 'Homme';
-
-            case Genders::FEMALE:
-                return 'Femme';
-
-            default:
-                return 'Autre';
-        }
+        return match ($this->gender) {
+            Genders::MALE => 'Homme',
+            Genders::FEMALE => 'Femme',
+            default => 'Autre',
+        };
     }
 
     public function getUserRoleLabels($separator = ' / '): string

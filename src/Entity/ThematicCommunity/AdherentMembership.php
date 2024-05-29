@@ -7,50 +7,48 @@ use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="thematic_community_membership_adherent")
- */
+#[ORM\Table(name: 'thematic_community_membership_adherent')]
+#[ORM\Entity]
 class AdherentMembership extends ThematicCommunityMembership
 {
     public function getFirstName(): ?string
     {
-        return $this->adherent ? $this->adherent->getFirstName() : null;
+        return $this->adherent?->getFirstName();
     }
 
     public function getLastName(): ?string
     {
-        return $this->adherent ? $this->adherent->getLastName() : null;
+        return $this->adherent?->getLastName();
     }
 
     public function getEmail(): ?string
     {
-        return $this->adherent ? $this->adherent->getEmailAddress() : null;
+        return $this->adherent?->getEmailAddress();
     }
 
     public function getGender(): ?string
     {
-        return $this->adherent ? $this->adherent->getGender() : null;
+        return $this->adherent?->getGender();
     }
 
     public function getCustomGender(): ?string
     {
-        return $this->adherent ? $this->adherent->getCustomGender() : null;
+        return $this->adherent?->getCustomGender();
     }
 
     public function getBirthDate(): ?\DateTime
     {
-        return $this->adherent ? $this->adherent->getBirthDate() : null;
+        return $this->adherent?->getBirthDate();
     }
 
     public function getPhone(): ?PhoneNumber
     {
-        return $this->adherent ? $this->adherent->getPhone() : null;
+        return $this->adherent?->getPhone();
     }
 
     public function getPosition(): ?string
     {
-        return $this->adherent ? $this->adherent->getPosition() : null;
+        return $this->adherent?->getPosition();
     }
 
     public function getPostAddress(): ?PostAddress
@@ -60,12 +58,12 @@ class AdherentMembership extends ThematicCommunityMembership
 
     public function getCityName(): ?string
     {
-        return $this->adherent ? $this->adherent->getCityName() : null;
+        return $this->adherent?->getCityName();
     }
 
     public function getPostalCode(): ?string
     {
-        return $this->adherent ? $this->adherent->getPostalCode() : null;
+        return $this->adherent?->getPostalCode();
     }
 
     public function hasSmsSubscriptionType(): bool

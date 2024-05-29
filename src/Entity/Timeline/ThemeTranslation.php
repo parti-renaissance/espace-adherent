@@ -9,52 +9,47 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="timeline_theme_translations")
- *
  * @UniqueEntity(fields={"locale", "title"}, errorPath="title")
  * @UniqueEntity(fields={"locale", "slug"}, errorPath="slug")
  */
+#[ORM\Table(name: 'timeline_theme_translations')]
+#[ORM\Entity]
 class ThemeTranslation implements TranslationInterface
 {
     use TranslationTrait;
 
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     protected $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
      */
+    #[ORM\Column(length: 100)]
     private $title;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
      */
+    #[ORM\Column(length: 100)]
     private $slug;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'text')]
     private $description;
 
     public function getTitle(): ?string

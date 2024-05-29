@@ -2,6 +2,7 @@
 
 namespace App\Entity\ReferentOrganizationalChart;
 
+use App\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,81 +10,74 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @Gedmo\Tree(type="nested")
- * @ORM\Entity(repositoryClass="App\Repository\ReferentOrganizationalChart\OrganizationalChartItemRepository")
- * @ORM\Table(name="organizational_chart_item")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string", length=20)
- * @ORM\DiscriminatorMap({
- *     "person_orga_item": "App\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem",
- *     "group_orga_item": "App\Entity\ReferentOrganizationalChart\GroupOrganizationalChartItem"
- * })
  */
+#[ORM\Table(name: 'organizational_chart_item')]
+#[ORM\Entity(repositoryClass: OrganizationalChartItemRepository::class)]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string', length: 20)]
+#[ORM\DiscriminatorMap(['person_orga_item' => PersonOrganizationalChartItem::class, 'group_orga_item' => GroupOrganizationalChartItem::class])]
 abstract class AbstractOrganizationalChartItem
 {
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $label;
 
     /**
      * @var int
      *
      * @Gedmo\TreeLeft
-     * @ORM\Column(name="lft", type="integer")
      */
+    #[ORM\Column(name: 'lft', type: 'integer')]
     private $lft;
 
     /**
      * @var int
      *
      * @Gedmo\TreeLevel
-     * @ORM\Column(name="lvl", type="integer")
      */
+    #[ORM\Column(name: 'lvl', type: 'integer')]
     private $lvl;
 
     /**
      * @var int
      *
      * @Gedmo\TreeRight
-     * @ORM\Column(name="rgt", type="integer")
      */
+    #[ORM\Column(name: 'rgt', type: 'integer')]
     private $rgt;
 
     /**
      * @var AbstractOrganizationalChartItem
      *
      * @Gedmo\TreeRoot
-     * @ORM\ManyToOne(targetEntity="AbstractOrganizationalChartItem")
-     * @ORM\JoinColumn(name="tree_root", referencedColumnName="id", onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(name: 'tree_root', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: AbstractOrganizationalChartItem::class)]
     private $root;
 
     /**
      * @var AbstractOrganizationalChartItem
      *
      * @Gedmo\TreeParent
-     *
-     * @ORM\ManyToOne(targetEntity="AbstractOrganizationalChartItem", inversedBy="children", cascade={"persist"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: AbstractOrganizationalChartItem::class, cascade: ['persist'], inversedBy: 'children')]
     private $parent;
 
     /**
      * @var Collection|AbstractOrganizationalChartItem[]
-     *
-     * @ORM\OneToMany(targetEntity="AbstractOrganizationalChartItem", mappedBy="parent", cascade={"persist"})
      */
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: AbstractOrganizationalChartItem::class, cascade: ['persist'])]
     private $children;
 
     public function __construct(?string $label = null, ?self $parent = null)

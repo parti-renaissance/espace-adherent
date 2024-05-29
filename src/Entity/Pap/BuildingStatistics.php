@@ -7,22 +7,12 @@ use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Pap\BuildingStatusEnum;
+use App\Repository\Pap\BuildingStatisticsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Pap\BuildingStatisticsRepository")
- * @ORM\Table(
- *     name="pap_building_statistics",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(columns={"building_id", "campaign_id"}),
- *     },
- *     indexes={
- *         @ORM\Index(columns={"status"}),
- *     },
- * )
- *
  * @ApiResource(
  *     attributes={
  *         "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
@@ -34,60 +24,48 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={},
  * )
  */
+#[ORM\Table(name: 'pap_building_statistics')]
+#[ORM\Index(columns: ['status'])]
+#[ORM\UniqueConstraint(columns: ['building_id', 'campaign_id'])]
+#[ORM\Entity(repositoryClass: BuildingStatisticsRepository::class)]
 class BuildingStatistics implements CampaignStatisticsInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use StatusTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Building", inversedBy="statistics")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
     #[Groups(['pap_building_statistics_read'])]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Building::class, inversedBy: 'statistics')]
     private Building $building;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign", inversedBy="buildingStatistics")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
     #[Groups(['pap_address_list', 'pap_address_read'])]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Campaign::class, inversedBy: 'buildingStatistics')]
     private Campaign $campaign;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
     #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $lastPassage = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
     #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     protected ?Adherent $lastPassageDoneBy;
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
-     */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     private int $nbVoters = 0;
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
-     */
     #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     private int $nbVisitedDoors = 0;
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
-     */
     #[Groups(['pap_address_list', 'pap_address_read', 'pap_building_statistics_read'])]
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     private int $nbDistributedPrograms = 0;
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
-     */
     #[Groups(['pap_address_list', 'pap_address_read'])]
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     private int $nbSurveys = 0;
 
     public function __construct(Building $building, Campaign $campaign, ?string $status = null)

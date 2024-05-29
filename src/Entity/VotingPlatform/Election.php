@@ -7,6 +7,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\ElectionResult\ElectionResult;
+use App\Repository\VotingPlatform\ElectionRepository;
 use App\VotingPlatform\Election\ElectionStatusEnum;
 use App\VotingPlatform\Election\Enum\ElectionCancelReasonEnum;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,10 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\ElectionRepository")
- * @ORM\Table(name="voting_platform_election")
- */
+#[ORM\Table(name: 'voting_platform_election')]
+#[ORM\Entity(repositoryClass: ElectionRepository::class)]
 class Election
 {
     use EntityIdentityTrait;
@@ -30,90 +29,75 @@ class Election
 
     /**
      * @var ElectionEntity
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\VotingPlatform\ElectionEntity", mappedBy="election", cascade={"all"})
      */
+    #[ORM\OneToOne(mappedBy: 'election', targetEntity: ElectionEntity::class, cascade: ['all'])]
     private $electionEntity;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $status = ElectionStatusEnum::OPEN;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $closedAt;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $canceledAt;
 
-    /**
-     * @ORM\Column(nullable=true, enumType=ElectionCancelReasonEnum::class)
-     */
+    #[ORM\Column(nullable: true, enumType: ElectionCancelReasonEnum::class)]
     private ?ElectionCancelReasonEnum $cancelReason = null;
 
     /**
      * @var ElectionRound[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\ElectionRound", mappedBy="election", cascade={"all"})
-     * @ORM\OrderBy({"id": "ASC"})
      */
+    #[ORM\OneToMany(mappedBy: 'election', targetEntity: ElectionRound::class, cascade: ['all'])]
+    #[ORM\OrderBy(['id' => 'ASC'])]
     private $electionRounds;
 
     /**
      * @var ElectionPool[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\ElectionPool", mappedBy="election", cascade={"all"})
      */
+    #[ORM\OneToMany(mappedBy: 'election', targetEntity: ElectionPool::class, cascade: ['all'])]
     private $electionPools;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $secondRoundEndDate;
 
     /**
      * @var ElectionResult|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\VotingPlatform\ElectionResult\ElectionResult", mappedBy="election", cascade={"persist"})
      */
+    #[ORM\OneToOne(mappedBy: 'election', targetEntity: ElectionResult::class, cascade: ['persist'])]
     private $electionResult;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
      */
+    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     private $additionalPlaces;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $additionalPlacesGender;
 
     /**
      * @var VotersList|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\VotingPlatform\VotersList", mappedBy="election")
      */
+    #[ORM\OneToOne(mappedBy: 'election', targetEntity: VotersList::class)]
     private $votersList;
 
-    /**
-     * @ORM\Column(type="smallint", options={"default": 0})
-     */
+    #[ORM\Column(type: 'smallint', options: ['default' => 0])]
     public int $notificationsSent = 0;
 
     public function __construct(
@@ -129,9 +113,7 @@ class Election
         $this->electionPools = new ArrayCollection();
         $this->electionEntity = $entity;
 
-        if ($entity) {
-            $entity->setElection($this);
-        }
+        $entity?->setElection($this);
 
         foreach ($rounds as $round) {
             $this->addElectionRound($round);

@@ -7,78 +7,68 @@ use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="election_city_contact")
- */
+#[ORM\Table(name: 'election_city_contact')]
+#[ORM\Entity]
 class CityContact
 {
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $name;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(name="`function`", nullable=true)
-     *
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(name: '`function`', nullable: true)]
     private $function;
 
     /**
      * @var PhoneNumber|null
      *
-     * @ORM\Column(type="phone_number", nullable=true)
-     *
      * @AssertPhoneNumber
      */
+    #[ORM\Column(type: 'phone_number', nullable: true)]
     private $phone;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(nullable: true)]
     private $caller;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $done;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
 
     /**
      * @var CityCard|null
-     *
-     * @ORM\ManyToOne(targetEntity=CityCard::class, inversedBy="contacts")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: CityCard::class, inversedBy: 'contacts')]
     private $city;
 
     public function __construct(

@@ -5,10 +5,8 @@ namespace App\Entity\Election;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="election_city_partner")
- */
+#[ORM\Table(name: 'election_city_partner')]
+#[ORM\Entity]
 class CityPartner
 {
     public const CONSENSUS = 'consensus';
@@ -21,38 +19,34 @@ class CityPartner
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $label;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Choice(choices=CityPartner::CONSENSUS_CHOICES)
      */
+    #[ORM\Column(nullable: true)]
     private $consensus;
 
     /**
      * @var CityCard|null
-     *
-     * @ORM\ManyToOne(targetEntity=CityCard::class, inversedBy="partners")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: CityCard::class, inversedBy: 'partners')]
     private $city;
 
     public function __construct(?CityCard $city = null, ?string $label = null, ?string $consensus = null)

@@ -8,6 +8,7 @@ use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Pap\CampaignHistory as PapCampaignHistory;
 use App\Entity\Phoning\CampaignHistory as PhoningCampaignHistory;
+use App\Repository\Jecoute\DataSurveyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,79 +17,68 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="jecoute_data_survey", indexes={
- *     @ORM\Index(columns={"author_postal_code"}),
- * })
- * @ORM\Entity(repositoryClass="App\Repository\Jecoute\DataSurveyRepository")
- */
+#[ORM\Table(name: 'jecoute_data_survey')]
+#[ORM\Index(columns: ['author_postal_code'])]
+#[ORM\Entity(repositoryClass: DataSurveyRepository::class)]
 class DataSurvey implements AuthorInterface
 {
     use EntityIdentityTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
     #[Groups(['survey_replies_list'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $author;
 
     /**
      * @var string|null
-     * @ORM\Column(nullable=true)
      */
     #[Groups(['survey_replies_list'])]
+    #[ORM\Column(nullable: true)]
     private $authorPostalCode;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Gedmo\Timestampable(on="create")
      */
+    #[ORM\Column(type: 'datetime')]
     private $postedAt;
 
     /**
      * @var DataAnswer[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Jecoute\DataAnswer", mappedBy="dataSurvey", cascade={"persist", "remove"})
-     *
      * @Assert\Valid
      */
     #[Groups(['data_survey_write'])]
+    #[ORM\OneToMany(mappedBy: 'dataSurvey', targetEntity: DataAnswer::class, cascade: ['persist', 'remove'])]
     private $answers;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Jecoute\Survey")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     *
      * @Assert\NotBlank
      */
     #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'pap_campaign_replies_list', JemarcheDataSurveyReplyController::DESERIALIZE_GROUP, 'pap_campaign_history_read_list'])]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Survey::class)]
     private $survey;
 
     /**
      * @var JemarcheDataSurvey|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\JemarcheDataSurvey", mappedBy="dataSurvey")
      */
+    #[ORM\OneToOne(mappedBy: 'dataSurvey', targetEntity: JemarcheDataSurvey::class)]
     private $jemarcheDataSurvey;
 
     /**
      * @var PhoningCampaignHistory|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\Phoning\CampaignHistory", mappedBy="dataSurvey")
      */
     #[Groups(['phoning_campaign_replies_list', 'survey_replies_list'])]
+    #[ORM\OneToOne(mappedBy: 'dataSurvey', targetEntity: PhoningCampaignHistory::class)]
     private $phoningCampaignHistory;
 
     /**
      * @var PapCampaignHistory|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\Pap\CampaignHistory", mappedBy="dataSurvey")
      */
     #[Groups(['pap_campaign_replies_list', 'survey_replies_list'])]
+    #[ORM\OneToOne(mappedBy: 'dataSurvey', targetEntity: PapCampaignHistory::class)]
     private $papCampaignHistory;
 
     public function __construct(?Survey $survey = null)

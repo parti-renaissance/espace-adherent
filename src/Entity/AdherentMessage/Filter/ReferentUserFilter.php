@@ -8,34 +8,29 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class ReferentUserFilter extends AbstractUserFilter
 {
     use BasicUserFiltersTrait;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $contactOnlyVolunteers = false;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $contactOnlyRunningMates = false;
 
     /**
      * @var ReferentTag[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
-     *
      * @Assert\NotNull
      */
+    #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
     private $referentTags;
 
     public function __construct(array $referentTags)

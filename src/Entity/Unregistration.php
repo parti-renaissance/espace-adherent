@@ -2,16 +2,15 @@
 
 namespace App\Entity;
 
+use App\Repository\UnregistrationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="unregistrations")
- * @ORM\Entity(repositoryClass="App\Repository\UnregistrationRepository")
- */
+#[ORM\Table(name: 'unregistrations')]
+#[ORM\Entity(repositoryClass: UnregistrationRepository::class)]
 class Unregistration
 {
     public const REASON_EMAILS = 'unregistration_reasons.emails';
@@ -44,79 +43,63 @@ class Unregistration
 
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     /**
      * @var UuidInterface
-     *
-     * @ORM\Column(type="uuid")
      */
+    #[ORM\Column(type: 'uuid')]
     private $uuid;
 
-    /**
-     * @ORM\Column(type="uuid")
-     */
+    #[ORM\Column(type: 'uuid')]
     public ?UuidInterface $adherentUuid = null;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=15, nullable=true)
      */
+    #[ORM\Column(length: 15, nullable: true)]
     private $postalCode;
 
     /**
-     * @ORM\Column(type="json", nullable=true)
      * @Assert\NotBlank(message="adherent.unregistration.reasons")
      */
+    #[ORM\Column(type: 'json', nullable: true)]
     private $reasons;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="text", nullable=true)
-     *
      * @Assert\Length(allowEmptyString=true, min=10, max=1000)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $registeredAt;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $unregisteredAt;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isAdherent;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isRenaissance;
 
     /**
      * @var Collection|ReferentTag[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
      */
+    #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
     private $referentTags;
 
     /**
      * @var string
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
      */
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $excludedBy;
 
     public function __construct(

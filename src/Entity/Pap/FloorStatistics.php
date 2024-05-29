@@ -8,36 +8,26 @@ use App\Pap\BuildingStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="pap_floor_statistics")
- */
+#[ORM\Table(name: 'pap_floor_statistics')]
+#[ORM\Entity]
 class FloorStatistics implements CampaignStatisticsInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use StatusTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Floor", inversedBy="statistics")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Floor::class, inversedBy: 'statistics')]
     private Floor $floor;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Campaign::class)]
     private Campaign $campaign;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private array $visitedDoors = [];
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
-     */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     private int $nbSurveys = 0;
 
     public function __construct(Floor $floor, Campaign $campaign, ?string $status = null)

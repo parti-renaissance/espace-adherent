@@ -2,15 +2,14 @@
 
 namespace App\Entity;
 
+use App\Repository\OrderArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="order_articles")
- * @ORM\Entity(repositoryClass="App\Repository\OrderArticleRepository")
- */
+#[ORM\Table(name: 'order_articles')]
+#[ORM\Entity(repositoryClass: OrderArticleRepository::class)]
 class OrderArticle implements EntityContentInterface, EntitySoftDeletedInterface
 {
     use EntityTimestampableTrait;
@@ -19,59 +18,47 @@ class OrderArticle implements EntityContentInterface, EntitySoftDeletedInterface
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="smallint")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'smallint')]
     private $position;
 
     /**
      * @var OrderSection[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\OrderSection", inversedBy="articles")
-     * @ORM\JoinTable(
-     *     name="order_section_order_article",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="order_article_id", referencedColumnName="id", onDelete="CASCADE")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="order_section_id", referencedColumnName="id", onDelete="CASCADE")
-     *     }
-     * )
-     *
      * @Assert\Count(min=1)
      */
+    #[ORM\JoinTable(name: 'order_section_order_article')]
+    #[ORM\JoinColumn(name: 'order_article_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'order_section_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: OrderSection::class, inversedBy: 'articles')]
     private $sections;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $published = false;
 
     /**
      * @var Media|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Media")
      */
+    #[ORM\ManyToOne(targetEntity: Media::class)]
     private $media;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $displayMedia = true;
 
     public function __construct()

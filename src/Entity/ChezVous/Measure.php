@@ -2,57 +2,52 @@
 
 namespace App\Entity\ChezVous;
 
+use App\Repository\ChezVous\MeasureRepository;
 use App\Validator\ChezVous\MeasurePayload;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ChezVous\MeasureRepository")
- * @ORM\Table(name="chez_vous_measures", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="chez_vous_measures_city_type_unique", columns={"city_id", "type_id"}),
- * })
- *
  * @MeasurePayload
  *
  * @UniqueEntity(fields={"city", "type"}, errorPath="type")
  */
+#[ORM\Table(name: 'chez_vous_measures')]
+#[ORM\UniqueConstraint(name: 'chez_vous_measures_city_type_unique', columns: ['city_id', 'type_id'])]
+#[ORM\Entity(repositoryClass: MeasureRepository::class)]
 class Measure
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="json", nullable=true)
      */
+    #[ORM\Column(type: 'json', nullable: true)]
     private $payload;
 
     /**
      * @var City|null
      *
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="measures")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: City::class, inversedBy: 'measures')]
     private $city;
 
     /**
      * @var MeasureType|null
      *
-     * @ORM\ManyToOne(targetEntity=MeasureType::class)
-     * @ORM\JoinColumn(nullable=false)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: MeasureType::class)]
     private $type;
 
     public function __construct(?City $city = null, ?MeasureType $type = null, ?array $payload = null)
@@ -117,10 +112,6 @@ class Measure
 
     public function setEntries(iterable $entries): void
     {
-        if (empty($entries)) {
-            $this->payload = null;
-        }
-
         $this->payload = [];
 
         foreach ($entries as $entry) {

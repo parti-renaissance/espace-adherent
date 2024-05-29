@@ -9,6 +9,7 @@ use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AuthorInterface;
 use App\Entity\DynamicSegmentTrait;
 use App\Entity\EntityIdentityTrait;
+use App\Repository\AdherentMessage\Segment\AudienceSegmentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -16,8 +17,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AdherentMessage\Segment\AudienceSegmentRepository")
- *
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {"groups": {"audience_segment_read"}},
@@ -51,6 +50,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: AudienceSegmentRepository::class)]
 class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
 {
     use EntityIdentityTrait;
@@ -59,28 +59,21 @@ class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
     /**
      * @var AudienceFilter|null
      *
-     * @ORM\OneToOne(
-     *     targetEntity="App\Entity\AdherentMessage\Filter\AudienceFilter",
-     *     cascade={"all"},
-     *     fetch="EAGER",
-     *     orphanRemoval=true
-     * )
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
      * @Assert\Valid
      * @Assert\NotNull
      */
     #[Groups(['audience_segment_read', 'audience_segment_write'])]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\OneToOne(targetEntity: AudienceFilter::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
     private $filter;
 
     /**
      * @var Adherent|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $author;
 
     public function __construct(?UuidInterface $uuid = null)

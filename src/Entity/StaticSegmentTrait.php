@@ -8,9 +8,8 @@ trait StaticSegmentTrait
 {
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", nullable=true)
      */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $mailchimpId;
 
     public function getMailchimpId(): ?int

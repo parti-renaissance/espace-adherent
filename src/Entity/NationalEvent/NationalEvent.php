@@ -5,6 +5,7 @@ namespace App\Entity\NationalEvent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityNameSlugTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\NationalEvent\NationalEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -12,81 +13,58 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\NationalEvent\NationalEventRepository")
- */
+#[ORM\Entity(repositoryClass: NationalEventRepository::class)]
 class NationalEvent
 {
     use EntityIdentityTrait;
     use EntityNameSlugTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
     #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column(type: 'datetime')]
     public ?\DateTime $startDate = null;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
     #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column(type: 'datetime')]
     public ?\DateTime $endDate = null;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     public ?\DateTime $ticketStartDate = null;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     public ?\DateTime $ticketEndDate = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     public ?string $textIntro = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     public ?string $textHelp = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     public ?string $textConfirmation = null;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     *
      * @Assert\NotBlank(groups={"Admin"})
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     public ?string $textTicketEmail = null;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\NotBlank(groups={"Admin"})
      */
+    #[ORM\Column(nullable: true)]
     public ?string $subjectTicketEmail = null;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     *
      * @Assert\NotBlank(groups={"Admin"})
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     public ?string $imageTicketEmail = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     public ?string $intoImagePath = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     public ?string $source = null;
 
     /**

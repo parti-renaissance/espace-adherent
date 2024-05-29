@@ -2,60 +2,50 @@
 
 namespace App\Entity\VotingPlatform;
 
+use App\Repository\VotingPlatform\VoteResultRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\VoteResultRepository")
- *
- * @ORM\Table(name="voting_platform_vote_result", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="unique_vote", columns={"voter_key", "election_round_id"}),
- * })
- */
+#[ORM\Table(name: 'voting_platform_vote_result')]
+#[ORM\UniqueConstraint(name: 'unique_vote', columns: ['voter_key', 'election_round_id'])]
+#[ORM\Entity(repositoryClass: VoteResultRepository::class)]
 class VoteResult
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $voterKey;
 
     /**
      * @var ElectionRound
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\ElectionRound")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectionRound::class)]
     private $electionRound;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $votedAt;
 
     /**
      * @var VoteChoice[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\VoteChoice", mappedBy="voteResult", cascade={"all"})
      */
+    #[ORM\OneToMany(mappedBy: 'voteResult', targetEntity: VoteChoice::class, cascade: ['all'])]
     private $voteChoices;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $zoneCode;
 
     public function __construct(ElectionRound $electionRound, string $voterKey, ?string $zoneCode)

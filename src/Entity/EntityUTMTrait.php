@@ -7,15 +7,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 trait EntityUTMTrait
 {
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column(nullable: true)]
     public ?string $utmSource = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['national_event_inscription:webhook'])]
+    #[ORM\Column(nullable: true)]
     public ?string $utmCampaign = null;
 }

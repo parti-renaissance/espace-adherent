@@ -4,21 +4,19 @@ namespace App\Entity\Timeline;
 
 use App\Entity\AbstractTranslatableEntity;
 use App\Entity\AlgoliaIndexedEntityInterface;
+use App\Repository\Timeline\ProfileRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="timeline_profiles")
- * @ORM\Entity(repositoryClass="App\Repository\Timeline\ProfileRepository")
- */
+#[ORM\Table(name: 'timeline_profiles')]
+#[ORM\Entity(repositoryClass: ProfileRepository::class)]
 class Profile extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {
     /**
      * @var int
-     *
-     * @ORM\Column(type="bigint")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'bigint')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     public function __toString(): string

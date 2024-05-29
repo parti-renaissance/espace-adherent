@@ -5,6 +5,7 @@ namespace App\Entity\JeMengage;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\ImageTrait;
+use App\Repository\JeMengage\HeaderBlockRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -12,66 +13,57 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="jemengage_header_blocks")
- * @ORM\Entity(repositoryClass="App\Repository\JeMengage\HeaderBlockRepository")
- *
  * @UniqueEntity("name", message="header_block.name.unique")
  */
+#[ORM\Table(name: 'jemengage_header_blocks')]
+#[ORM\Entity(repositoryClass: HeaderBlockRepository::class)]
 class HeaderBlock implements ExposedImageOwnerInterface
 {
     use EntityTimestampableTrait;
     use ImageTrait;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private ?int $id = null;
 
     /**
-     * @ORM\Column(length=100, unique=true)
-     *
      * @Assert\NotBlank(message="header_block.name.not_blank")
      * @Assert\Length(max="100", maxMessage="header_block.name.max_length")
      */
     #[Groups(['header_block_read'])]
+    #[ORM\Column(length: 100, unique: true)]
     private ?string $name = null;
 
     /**
-     * @ORM\Column(length=130, unique=true)
      * @Gedmo\Slug(fields={"name"})
      */
+    #[ORM\Column(length: 130, unique: true)]
     private ?string $slug = null;
 
     /**
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank(message="header_block.prefix.not_blank")
      * @Assert\Length(max="50", maxMessage="header_block.prefix.max_length")
      */
     #[Groups(['header_block_read'])]
+    #[ORM\Column(length: 50)]
     private ?string $prefix = null;
 
     /**
-     * @ORM\Column(length=100, nullable=true)
-     *
      * @Assert\Length(max="100", maxMessage="header_block.slogan.max_length")
      */
     #[Groups(['header_block_read'])]
+    #[ORM\Column(length: 100, nullable: true)]
     private ?string $slogan = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     #[Groups(['header_block_read'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $content = null;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
-     *
-     * Assert\@Assert\GreaterThan("now")
+     * @Assert\GreaterThan("now")
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $deadlineDate = null;
 
     public function __construct(

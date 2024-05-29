@@ -7,25 +7,20 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="designation_poll_question_choice")
- */
+#[ORM\Table(name: 'designation_poll_question_choice')]
+#[ORM\Entity]
 class QuestionChoice
 {
     use EntityIdentityTrait;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     public ?string $label = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Poll\PollQuestion", inversedBy="choices")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: PollQuestion::class, inversedBy: 'choices')]
     public ?PollQuestion $question = null;
 
     public function __construct()

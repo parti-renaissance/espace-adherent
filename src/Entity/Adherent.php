@@ -41,6 +41,7 @@ use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Entity\ThematicCommunity\ThematicCommunity;
+use App\EntityListener\RevokeReferentTeamMemberRolesListener;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Exception\AdherentException;
 use App\Exception\AdherentTokenException;
@@ -52,6 +53,7 @@ use App\Membership\MembershipRequest\MembershipInterface;
 use App\Membership\MembershipSourceEnum;
 use App\OAuth\Model\User as InMemoryOAuthUser;
 use App\Renaissance\Membership\Admin\AdherentCreateCommand;
+use App\Repository\AdherentRepository;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
@@ -80,15 +82,8 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="adherents")
- * @ORM\Entity(repositoryClass="App\Repository\AdherentRepository")
- * @ORM\EntityListeners({
- *     "App\EntityListener\RevokeReferentTeamMemberRolesListener",
- * })
- *
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
  * @UniqueMembership(groups={"Admin"})
- *
  * @UniqueTerritorialCouncilMember(qualities={"referent", "referent_jam"})
  *
  * @ApiResource(
@@ -120,6 +115,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={},
  * )
  */
+#[ORM\Table(name: 'adherents')]
+#[ORM\Entity(repositoryClass: AdherentRepository::class)]
+#[ORM\EntityListeners([RevokeReferentTeamMemberRolesListener::class])]
 class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface, TranslatedTagInterface
 {
     use EntityCrudTrait;
@@ -137,33 +135,24 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public const DISABLED = 'DISABLED';
 
     /**
-     * @ORM\Column(length=25, unique=true, nullable=true)
-     *
      * @Assert\Length(allowEmptyString=true, min=3, max=25, groups={"Default", "anonymize"})
      * @Assert\Regex(pattern="/^[a-z0-9 _-]+$/i", message="adherent.nickname.invalid_syntax", groups={"anonymize"})
      * @Assert\Regex(pattern="/^[a-zÀ-ÿ0-9 .!_-]+$/i", message="adherent.nickname.invalid_extended_syntax")
      */
     #[Groups(['user_profile'])]
+    #[ORM\Column(length: 25, unique: true, nullable: true)]
     private $nickname;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": 0})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private bool $nicknameUsed = false;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private $password;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private $oldPassword;
 
     /**
-     * @ORM\Column(length=6, nullable=true)
-     *
      * @Assert\NotBlank(message="common.gender.not_blank", groups={"adhesion_complete_profile"})
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
@@ -172,220 +161,178 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * )
      */
     #[Groups(['api_candidacy_read', 'profile_read', 'phoning_campaign_call_read', 'phoning_campaign_history_read_list', 'pap_campaign_history_read_list', 'pap_campaign_replies_list', 'phoning_campaign_replies_list', 'survey_replies_list', 'committee_candidacy:read', 'committee_election:read', 'national_event_inscription:webhook'])]
+    #[ORM\Column(length: 6, nullable: true)]
     private $gender;
 
-    /**
-     * @ORM\Column(length=80, nullable=true)
-     */
     #[Groups(['profile_read'])]
+    #[ORM\Column(length: 80, nullable: true)]
     private $customGender;
 
-    /**
-     * @ORM\Column(unique=true)
-     */
     #[Groups(['user_profile', 'profile_read', 'elected_representative_read', 'adherent_autocomplete', 'my_team_read_list', 'message_read'])]
+    #[ORM\Column(unique: true)]
     private $emailAddress;
 
     /**
-     * @ORM\Column(type="phone_number", nullable=true)
-     *
      * @AssertPhoneNumber(message="common.phone_number.invalid", options={"groups": {"additional_info", "adhesion:further_information"}})
      * @Assert\Expression("not this.hasSmsSubscriptionType() or this.getPhone()", message="Vous avez accepté de recevoir des informations du parti par SMS ou téléphone, cependant, vous n'avez pas précisé votre numéro de téléphone.", groups={"adhesion:further_information"})
      */
     #[Groups(['profile_read', 'phoning_campaign_call_read', 'elected_representative_read', 'national_event_inscription:webhook'])]
+    #[ORM\Column(type: 'phone_number', nullable: true)]
     private $phone;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $phoneVerifiedAt = null;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
-     *
      * @Assert\NotBlank(message="adherent.birthdate.not_blank", groups={"additional_info", "adhesion:further_information"})
      * @Assert\Range(max="-15 years", maxMessage="adherent.birthdate.minimum_required_age", groups={"additional_info", "adhesion:further_information"})
      */
     #[Groups(['profile_read', 'national_event_inscription:webhook'])]
+    #[ORM\Column(type: 'date', nullable: true)]
     private $birthdate;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['profile_read'])]
+    #[ORM\Column(nullable: true)]
     private $position;
 
-    /**
-     * @ORM\Column(length=10, options={"default": "DISABLED"})
-     */
+    #[ORM\Column(length: 10, options: ['default' => 'DISABLED'])]
     private string $status = self::DISABLED;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
     #[Groups(['adherent_autocomplete', 'national_event_inscription:webhook'])]
+    #[ORM\Column(type: 'datetime')]
     private $registeredAt;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $activatedAt;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $activationRemindedAt;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $membershipRemindedAt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="update")
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $lastLoggedAt;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $lastLoginGroup = null;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $interests = [];
 
     /**
      * @var SubscriptionType[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\SubscriptionType", cascade={"persist"})
      */
     #[Groups(['profile_read'])]
+    #[ORM\ManyToMany(targetEntity: SubscriptionType::class, cascade: ['persist'])]
     private $subscriptionTypes;
 
     /**
      * @var ReferentManagedArea|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\ReferentManagedArea", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToOne(targetEntity: ReferentManagedArea::class, cascade: ['all'], orphanRemoval: true)]
     private $managedArea;
 
     /**
      * Defines to which referent team the adherent belongs.
      *
      * @var ReferentTeamMember|null
-     *
-     * @ORM\OneToOne(targetEntity="ReferentTeamMember", mappedBy="member", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToOne(mappedBy: 'member', targetEntity: ReferentTeamMember::class, cascade: ['all'], orphanRemoval: true)]
     private $referentTeamMember;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AdherentZoneBasedRole", fetch="EAGER", mappedBy="adherent", cascade={"persist"}, orphanRemoval=true)
-     *
      * @AssertZoneBasedRoles
      */
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentZoneBasedRole::class, cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
     private Collection $zoneBasedRoles;
 
     /**
      * @var CoordinatorManagedArea|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\CoordinatorManagedArea", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToOne(targetEntity: CoordinatorManagedArea::class, cascade: ['all'], orphanRemoval: true)]
     private $coordinatorCommitteeArea;
 
     /**
      * @var AssessorManagedArea|null
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\AssessorManagedArea", cascade={"all"}, orphanRemoval=true)
-     *
      * @Assert\Valid
      */
+    #[ORM\OneToOne(targetEntity: AssessorManagedArea::class, cascade: ['all'], orphanRemoval: true)]
     private $assessorManagedArea;
 
     /**
      * @var AssessorRoleAssociation|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\AssessorRoleAssociation", cascade={"all"})
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(targetEntity: AssessorRoleAssociation::class, cascade: ['all'])]
     private $assessorRole;
 
     /**
      * @var BoardMember|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\BoardMember\BoardMember", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToOne(mappedBy: 'adherent', targetEntity: BoardMember::class, cascade: ['all'], orphanRemoval: true)]
     private $boardMember;
 
     /**
      * @var JecouteManagedArea|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\JecouteManagedArea", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToOne(targetEntity: JecouteManagedArea::class, cascade: ['all'], orphanRemoval: true)]
     private $jecouteManagedArea;
 
     /**
      * @var TerritorialCouncilMembership|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToOne(mappedBy: 'adherent', targetEntity: TerritorialCouncilMembership::class, cascade: ['all'], orphanRemoval: true)]
     private $territorialCouncilMembership;
 
     /**
      * @var AdherentInstanceQuality[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Instance\AdherentInstanceQuality", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentInstanceQuality::class, cascade: ['all'], orphanRemoval: true)]
     private $instanceQualities;
 
     /**
      * @var PoliticalCommitteeMembership|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\TerritorialCouncil\PoliticalCommitteeMembership", mappedBy="adherent", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToOne(mappedBy: 'adherent', targetEntity: PoliticalCommitteeMembership::class, cascade: ['all'], orphanRemoval: true)]
     private $politicalCommitteeMembership;
 
     /**
      * @var CommitteeMembership[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="CommitteeMembership", mappedBy="adherent", cascade={"remove"})
      */
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: CommitteeMembership::class, cascade: ['remove'])]
     private $memberships;
 
     /**
      * @var Committee[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Committee", mappedBy="animator", fetch="EXTRA_LAZY")
      */
+    #[ORM\OneToMany(mappedBy: 'animator', targetEntity: Committee::class, fetch: 'EXTRA_LAZY')]
     private $animatorCommittees;
 
     /**
      * @var CommitteeFeedItem[]|Collection|iterable
-     *
-     * @ORM\OneToMany(targetEntity="CommitteeFeedItem", mappedBy="author", cascade={"remove"})
      */
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: CommitteeFeedItem::class, cascade: ['remove'])]
     private $committeeFeedItems;
 
     /**
      * @var District|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\District", cascade={"persist"})
      */
+    #[ORM\OneToOne(targetEntity: District::class, cascade: ['persist'])]
     private $managedDistrict;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
     #[Groups(['profile_read'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $adherent = false;
 
     /**
@@ -400,454 +347,350 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     /**
      * Activation token was already sent after 48h of registration
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $remindSent = false;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $globalNotificationSentAt = null;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
     #[Groups(['adherent_elect_read'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private array $mandates = [];
 
     /**
      * @var Media|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Media", cascade={"persist"})
-     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", nullable=true)
      */
+    #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist'])]
     private $media;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $displayMedia = true;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      *
      * @Assert\Url(groups="Admin")
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="legislative_candidate.facebook_page_url.invalid", groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
      */
     #[Groups(['profile_read'])]
+    #[ORM\Column(nullable: true)]
     private $facebookPageUrl;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      *
      * @Assert\Url(groups="Admin")
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="legislative_candidate.twitter_page_url.invalid", groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
      */
     #[Groups(['profile_read'])]
+    #[ORM\Column(nullable: true)]
     private $twitterPageUrl;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      *
      * @Assert\Url(groups="Admin")
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?linkedin.com\/#", message="legislative_candidate.linkedin_page_url.invalid", groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
      */
     #[Groups(['profile_read'])]
+    #[ORM\Column(nullable: true)]
     private $linkedinPageUrl;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url(groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
      */
     #[Groups(['profile_read'])]
+    #[ORM\Column(nullable: true)]
     private $telegramPageUrl;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
     #[Groups(['profile_read'])]
+    #[ORM\Column(nullable: true)]
     private $job;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
     #[Groups(['profile_read'])]
+    #[ORM\Column(nullable: true)]
     private $activityArea;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=2, nullable=true)
-     *
      * @Assert\NotBlank(groups={"adhesion_complete_profile"})
      * @Assert\Country(message="common.nationality.invalid", groups={"adhesion_complete_profile"})
      */
     #[Groups(['profile_read'])]
+    #[ORM\Column(length: 2, nullable: true)]
     private $nationality;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": 0})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $canaryTester = false;
 
     /**
      * Mailchimp unsubscribed status
      *
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": 0})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $emailUnsubscribed = false;
 
     /**
      * Mailchimp unsubscribed date
      *
      * @var \DateTimeInterface|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $emailUnsubscribedAt;
 
     /**
      * @var SenatorialCandidateManagedArea|null
      *
      * @Assert\Valid
-     * @ORM\OneToOne(targetEntity="App\Entity\SenatorialCandidateManagedArea", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToOne(targetEntity: SenatorialCandidateManagedArea::class, cascade: ['all'], orphanRemoval: true)]
     private $senatorialCandidateManagedArea;
 
     /**
      * @var CandidateManagedArea|null
      *
      * @Assert\Valid
-     * @ORM\OneToOne(targetEntity="App\Entity\ManagedArea\CandidateManagedArea", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToOne(targetEntity: CandidateManagedArea::class, cascade: ['all'], orphanRemoval: true)]
     private $candidateManagedArea;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": 0})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private bool $nationalRole = false;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": 0})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private bool $nationalCommunicationRole = false;
 
     /**
      * @var Collection|AdherentCharterInterface[]
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\AdherentCharter\AbstractAdherentCharter", mappedBy="adherent", cascade={"all"})
      */
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentCharter\AbstractAdherentCharter::class, cascade: ['all'])]
     private $charters;
 
     /**
      * @var SenatorArea|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\SenatorArea", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToOne(targetEntity: SenatorArea::class, cascade: ['all'], orphanRemoval: true)]
     private $senatorArea;
 
     /**
      * @var ConsularManagedArea|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\ConsularManagedArea", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToOne(targetEntity: ConsularManagedArea::class, cascade: ['all'], orphanRemoval: true)]
     private $consularManagedArea;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": 0})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $electionResultsReporter = false;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $certifiedAt;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $source;
 
     /**
      * @var CertificationRequest[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity=CertificationRequest::class, mappedBy="adherent", cascade={"all"}, fetch="EXTRA_LAZY")
-     * @ORM\OrderBy({"createdAt": "ASC"})
      */
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: CertificationRequest::class, cascade: ['all'], fetch: 'EXTRA_LAZY')]
+    #[ORM\OrderBy(['createdAt' => 'ASC'])]
     private $certificationRequests;
 
     /**
      * @var DelegatedAccess[]|ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\MyTeam\DelegatedAccess", mappedBy="delegated", cascade={"all"})
      */
+    #[ORM\OneToMany(mappedBy: 'delegated', targetEntity: DelegatedAccess::class, cascade: ['all'])]
     private $receivedDelegatedAccesses;
 
     /**
      * @var AdherentCommitment
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\AdherentCommitment", mappedBy="adherent", cascade={"all"})
      */
+    #[ORM\OneToOne(mappedBy: 'adherent', targetEntity: AdherentCommitment::class, cascade: ['all'])]
     private $commitment;
 
     /**
      * @var ThematicCommunity[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ThematicCommunity\ThematicCommunity")
      */
+    #[ORM\ManyToMany(targetEntity: ThematicCommunity::class)]
     private $handledThematicCommunities;
 
     /**
      * @var AdherentMandateInterface[]|Collection
      *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\AdherentMandate\AbstractAdherentMandate",
-     *     mappedBy="adherent",
-     *     fetch="EXTRA_LAZY",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
-     *
      * @Assert\Valid
      */
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentMandate\AbstractAdherentMandate::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private $adherentMandates;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $notifiedForElection = false;
 
     /**
      * @var ProvisionalSupervisor[]
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\ProvisionalSupervisor", mappedBy="adherent", cascade={"all"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      */
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: ProvisionalSupervisor::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private $provisionalSupervisors;
 
     /**
      * @var Member[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Team\Member", mappedBy="adherent", fetch="EXTRA_LAZY")
      */
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: Member::class, fetch: 'EXTRA_LAZY')]
     private $teamMemberships;
 
     /**
-     * @ORM\Embedded(class="App\Entity\PostAddress", columnPrefix="address_")
-     *
      * @var PostAddress
      */
     #[Groups(['profile_read'])]
+    #[ORM\Embedded(class: PostAddress::class, columnPrefix: 'address_')]
     protected $postAddress;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $voteInspector = false;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $mailchimpStatus = ContactStatusEnum::SUBSCRIBED;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $phoningManagerRole = false;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $papNationalManagerRole = false;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $papUserRole = false;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     * @ORM\JoinColumn(nullable=true)
-     */
+    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
     private ?Zone $activismZone = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $lastMembershipDonation = null;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     *
      * @Assert\Expression(
      *     expression="!(value == false and this.isTerritoireProgresMembership() == false and this.isAgirMembership() == false)",
      *     message="adherent.exclusive_membership.no_accepted",
      *     groups={"adhesion_complete_profile"}
      * )
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $exclusiveMembership = false;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $territoireProgresMembership = false;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $otherPartyMembership = false;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $agirMembership = false;
 
     private ?string $authAppCode = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     public ?string $emailStatusComment = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     public ?string $lastMailchimpFailedSyncResponse = null;
 
     /**
      * @var Registration[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity=Registration::class, mappedBy="adherent", cascade={"all"}, fetch="EXTRA_LAZY")
      */
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: Registration::class, cascade: ['all'], fetch: 'EXTRA_LAZY')]
     private Collection $campusRegistrations;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['adherent_elect_read'])]
+    #[ORM\Column(nullable: true)]
     private ?string $contributionStatus = null;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     *
      * @Assert\Expression("!value || (!this.findActifNationalMandates() and this.findActifLocalMandates())", message="adherent.elect.exempt_invalid_status", groups={"adherent_elect_update"})
      */
     #[Groups(['adherent_elect_read', 'adherent_elect_update'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $exemptFromCotisation = false;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
     #[Groups(['adherent_elect_read'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $contributedAt = null;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Contribution\Contribution")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(targetEntity: Contribution::class)]
     private ?Contribution $lastContribution = null;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Contribution\Contribution",
-     *     mappedBy="adherent",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     fetch="EXTRA_LAZY"
-     * )
-     */
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: Contribution::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private Collection $contributions;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Contribution\Payment",
-     *     mappedBy="adherent",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     fetch="EXTRA_LAZY"
-     * )
-     * @ORM\OrderBy({"date": "DESC"})
-     */
     #[Groups(['adherent_elect_read'])]
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: Payment::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OrderBy(['date' => 'DESC'])]
     private Collection $payments;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Contribution\RevenueDeclaration",
-     *     mappedBy="adherent",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     fetch="EXTRA_LAZY"
-     * )
-     * @ORM\OrderBy({"createdAt": "DESC"})
-     */
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: RevenueDeclaration::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OrderBy(['createdAt' => 'DESC'])]
     private Collection $revenueDeclarations;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
     #[Groups(['national_event_inscription:webhook', 'jemarche_user_profile'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     public array $tags = [];
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $v2 = false;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private array $finishedAdhesionSteps = [];
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": true})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     public bool $acceptMemberCard = true;
 
     public function __construct()
@@ -1614,20 +1457,18 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function setReferentTeamMember(?ReferentTeamMember $referentTeam): void
     {
-        if ($referentTeam) {
-            $referentTeam->setMember($this);
-        }
+        $referentTeam?->setMember($this);
         $this->referentTeamMember = $referentTeam;
     }
 
     public function getReferentOfReferentTeam(): ?Adherent
     {
-        return $this->referentTeamMember ? $this->referentTeamMember->getReferent() : null;
+        return $this->referentTeamMember?->getReferent();
     }
 
     public function getMemberOfReferentTeam(): ?Adherent
     {
-        return $this->referentTeamMember ? $this->referentTeamMember->getMember() : null;
+        return $this->referentTeamMember?->getMember();
     }
 
     /**

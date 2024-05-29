@@ -12,10 +12,9 @@ trait EntityZoneTrait
 {
     /**
      * @var ZoneCollection|Zone[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
      */
     #[Groups(['phoning_campaign_read', 'phoning_campaign_write', 'read_api', 'managed_users_list', 'managed_user_read'])]
+    #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
     protected Collection $zones;
 
     /**
@@ -35,10 +34,10 @@ trait EntityZoneTrait
         $this->zones = new ZoneCollection($zones);
     }
 
-    public function addZone(Zone $Zone): void
+    public function addZone(Zone $zone): void
     {
-        if (!$this->zones->contains($Zone)) {
-            $this->zones->add($Zone);
+        if (!$this->zones->contains($zone)) {
+            $this->zones->add($zone);
         }
     }
 

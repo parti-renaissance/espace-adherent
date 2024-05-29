@@ -4,6 +4,7 @@ namespace App\Entity\TerritorialCouncil;
 
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
+use App\Repository\TerritorialCouncil\PoliticalCommitteeMembershipRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -14,54 +15,42 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\PoliticalCommitteeMembershipRepository")
- *
  * @UniqueEntity(fields={"adherent", "politicalCommittee"})
  */
+#[ORM\Entity(repositoryClass: PoliticalCommitteeMembershipRepository::class)]
 class PoliticalCommitteeMembership
 {
     use EntityIdentityTrait;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Adherent", inversedBy="politicalCommitteeMembership")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\OneToOne(inversedBy: 'politicalCommitteeMembership', targetEntity: Adherent::class)]
     private $adherent;
 
     /**
      * @var PoliticalCommittee|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\PoliticalCommittee", inversedBy="memberships", fetch="EAGER")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: PoliticalCommittee::class, fetch: 'EAGER', inversedBy: 'memberships')]
     private $politicalCommittee;
 
     /**
      * @var Collection|PoliticalCommitteeQuality[]
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\TerritorialCouncil\PoliticalCommitteeQuality",
-     *     cascade={"all"},
-     *     mappedBy="politicalCommitteeMembership",
-     *     orphanRemoval=true
-     * )
      */
+    #[ORM\OneToMany(mappedBy: 'politicalCommitteeMembership', targetEntity: PoliticalCommitteeQuality::class, cascade: ['all'], orphanRemoval: true)]
     private $qualities;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Assert\NotNull
      */
+    #[ORM\Column(type: 'datetime')]
     private $joinedAt;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isAdditional;
 
     public function __construct(

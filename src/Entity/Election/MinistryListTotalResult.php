@@ -4,35 +4,30 @@ namespace App\Entity\Election;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class MinistryListTotalResult
 {
     use ListFieldTrait;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", options={"default": 0})
      */
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $total = 0;
 
     /**
      * @var MinistryVoteResult|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Election\MinistryVoteResult", inversedBy="listTotalResults")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: MinistryVoteResult::class, inversedBy: 'listTotalResults')]
     private $ministryVoteResult;
 
     public function getId(): ?int

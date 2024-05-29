@@ -4,19 +4,17 @@ namespace App\Entity\Election;
 
 use App\Entity\City;
 use App\Entity\ElectionRound;
+use App\Repository\Election\CityVoteResultRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Election\CityVoteResultRepository")
- */
+#[ORM\Entity(repositoryClass: CityVoteResultRepository::class)]
 class CityVoteResult extends BaseWithListCollectionResult
 {
     /**
      * @var City
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\City")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\OneToOne(targetEntity: City::class)]
     private $city;
 
     public function __construct(City $city, ElectionRound $electionRound)

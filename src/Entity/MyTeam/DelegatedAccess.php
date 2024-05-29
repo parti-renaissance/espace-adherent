@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\MyTeam\DelegatedAccessRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,10 +16,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\MyTeam\DelegatedAccessRepository")
- * @ORM\Table(name="my_team_delegated_access")
  * @UniqueEntity(fields={"delegator", "delegated", "type"}, message="Vous avez déjà délégué des accès à cet adhérent.")
  */
+#[ORM\Table(name: 'my_team_delegated_access')]
+#[ORM\Entity(repositoryClass: DelegatedAccessRepository::class)]
 class DelegatedAccess
 {
     use EntityIdentityTrait;
@@ -84,65 +85,57 @@ class DelegatedAccess
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
-     *
      * @Assert\NotBlank(message="Veuillez renseigner un rôle.")
      * @Assert\Length(max=50)
      */
+    #[ORM\Column(type: 'string')]
     private $role;
 
     /**
      * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $delegator;
 
     /**
      * @var Adherent
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="receivedDelegatedAccesses")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
      * @Assert\NotBlank(message="Veuillez sélectionner un adhérent.")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'receivedDelegatedAccesses')]
     private $delegated;
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $accesses;
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $scopeFeatures;
 
     /**
      * @var Committee[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Committee")
-     * @ORM\JoinTable(name="my_team_delegate_access_committee")
      */
+    #[ORM\JoinTable(name: 'my_team_delegate_access_committee')]
+    #[ORM\ManyToMany(targetEntity: Committee::class)]
     private $restrictedCommittees;
 
     /**
      * @var array|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $restrictedCities = [];
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="type", type="string")
      */
+    #[ORM\Column(name: 'type', type: 'string')]
     private $type;
 
     public function __construct(?UuidInterface $uuid = null)

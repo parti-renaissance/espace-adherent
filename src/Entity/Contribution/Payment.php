@@ -6,52 +6,39 @@ use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Ohme\PaymentStatusEnum;
+use App\Repository\Contribution\PaymentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Contribution\PaymentRepository")
- * @ORM\Table(name="contribution_payment")
- */
+#[ORM\Table(name: 'contribution_payment')]
+#[ORM\Entity(repositoryClass: PaymentRepository::class)]
 class Payment
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     public ?string $ohmeId = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
     #[Groups(['adherent_elect_read'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTimeInterface $date = null;
 
-    /**
-     * @ORM\Column(length=50)
-     */
     #[Groups(['adherent_elect_read'])]
+    #[ORM\Column(length: 50)]
     public ?string $method = null;
 
-    /**
-     * @ORM\Column(length=50, nullable=true)
-     */
+    #[ORM\Column(length: 50, nullable: true)]
     public ?string $status = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
     #[Groups(['adherent_elect_read'])]
+    #[ORM\Column(type: 'integer')]
     public ?int $amount = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="payments")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'payments')]
     public ?Adherent $adherent = null;
 
     public function __construct(?UuidInterface $uuid = null)

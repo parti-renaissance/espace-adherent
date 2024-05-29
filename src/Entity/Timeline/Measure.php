@@ -4,16 +4,15 @@ namespace App\Entity\Timeline;
 
 use App\Entity\AbstractTranslatableEntity;
 use App\Entity\AlgoliaIndexedEntityInterface;
+use App\Repository\Timeline\MeasureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="timeline_measures")
- * @ORM\Entity(repositoryClass="App\Repository\Timeline\MeasureRepository")
- */
+#[ORM\Table(name: 'timeline_measures')]
+#[ORM\Entity(repositoryClass: MeasureRepository::class)]
 class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {
     public const TITLE_MAX_LENGTH = 100;
@@ -32,85 +31,66 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="bigint")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'bigint')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url
      */
+    #[ORM\Column(nullable: true)]
     private $link;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank
      * @Assert\Choice(choices=Measure::STATUSES)
      */
+    #[ORM\Column(length: 50)]
     private $status;
 
     /**
      * @var \DateTime|null
      *
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $major;
 
     /**
      * @var Profile[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Timeline\Profile")
-     * @ORM\JoinTable(
-     *     name="timeline_measures_profiles",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="measure_id", referencedColumnName="id")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="profile_id", referencedColumnName="id")
-     *     }
-     * )
      */
+    #[ORM\JoinTable(name: 'timeline_measures_profiles')]
+    #[ORM\JoinColumn(name: 'measure_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'profile_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: Profile::class)]
     private $profiles;
 
     /**
      * @var Theme[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Timeline\Theme", inversedBy="measures")
-     * @ORM\JoinTable(
-     *     name="timeline_themes_measures",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="measure_id", referencedColumnName="id")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="theme_id", referencedColumnName="id")
-     *     }
-     * )
      */
+    #[ORM\JoinTable(name: 'timeline_themes_measures')]
+    #[ORM\JoinColumn(name: 'measure_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'theme_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'measures')]
     private $themes;
 
     /**
      * @var Manifesto
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Timeline\Manifesto")
-     * @ORM\JoinColumn(nullable=false)
      */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Manifesto::class)]
     private $manifesto;
 
     private $savedThemes;

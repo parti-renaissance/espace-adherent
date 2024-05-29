@@ -8,9 +8,8 @@ trait EntitySoftDeletableTrait
 {
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $deletedAt;
 
     public function getDeletedAt(): ?\DateTime

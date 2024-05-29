@@ -8,15 +8,13 @@ use App\Entity\PostAddress;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="thematic_community_membership_contact")
- */
+#[ORM\Table(name: 'thematic_community_membership_contact')]
+#[ORM\Entity]
 class ContactMembership extends ThematicCommunityMembership
 {
     public function getFirstName(): ?string
     {
-        return $this->contact ? $this->contact->getFirstName() : null;
+        return $this->contact?->getFirstName();
     }
 
     public function setFirstName(string $firstName): void
@@ -26,7 +24,7 @@ class ContactMembership extends ThematicCommunityMembership
 
     public function getLastName(): ?string
     {
-        return $this->contact ? $this->contact->getLastName() : null;
+        return $this->contact?->getLastName();
     }
 
     public function setLastName(string $lastName): void
@@ -36,7 +34,7 @@ class ContactMembership extends ThematicCommunityMembership
 
     public function getEmail(): ?string
     {
-        return $this->contact ? $this->contact->getEmail() : null;
+        return $this->contact?->getEmail();
     }
 
     public function setEmail(string $email): void
@@ -46,7 +44,7 @@ class ContactMembership extends ThematicCommunityMembership
 
     public function getGender(): ?string
     {
-        return $this->contact ? $this->contact->getGender() : null;
+        return $this->contact?->getGender();
     }
 
     public function setGender(string $gender): void
@@ -56,7 +54,7 @@ class ContactMembership extends ThematicCommunityMembership
 
     public function getCustomGender(): ?string
     {
-        return $this->contact ? $this->contact->getCustomGender() : null;
+        return $this->contact?->getCustomGender();
     }
 
     public function setCustomGender(string $customGender): void
@@ -66,7 +64,7 @@ class ContactMembership extends ThematicCommunityMembership
 
     public function getBirthDate(): ?\DateTime
     {
-        return $this->contact ? $this->contact->getBirthDate() : null;
+        return $this->contact?->getBirthDate();
     }
 
     public function setBirthDate(?\DateTime $birthDate): void
@@ -76,7 +74,7 @@ class ContactMembership extends ThematicCommunityMembership
 
     public function getPhone(): ?PhoneNumber
     {
-        return $this->contact ? $this->contact->getPhone() : null;
+        return $this->contact?->getPhone();
     }
 
     public function setPhone(?PhoneNumber $phone): void
@@ -86,7 +84,7 @@ class ContactMembership extends ThematicCommunityMembership
 
     public function getPosition(): ?string
     {
-        return $this->contact ? $this->contact->getPosition() : null;
+        return $this->contact?->getPosition();
     }
 
     public function setPosition(string $position): void
@@ -106,12 +104,12 @@ class ContactMembership extends ThematicCommunityMembership
 
     public function getCityName(): ?string
     {
-        return $this->contact ? $this->contact->getCityName() : null;
+        return $this->contact?->getCityName();
     }
 
     public function getPostalCode(): ?string
     {
-        return $this->contact ? $this->contact->getPostalCode() : null;
+        return $this->contact?->getPostalCode();
     }
 
     public function hasSmsSubscriptionType(): bool

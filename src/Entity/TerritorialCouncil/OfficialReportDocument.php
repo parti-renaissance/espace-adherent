@@ -7,10 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Sluggable\Util\Urlizer;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="territorial_council_official_report_document")
- */
+#[ORM\Table(name: 'territorial_council_official_report_document')]
+#[ORM\Entity]
 class OfficialReportDocument
 {
     public const MIME_TYPE_PDF = 'application/pdf';
@@ -23,63 +21,54 @@ class OfficialReportDocument
 
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     protected $id;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=36)
      */
+    #[ORM\Column(length: 36)]
     private $filename;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=10)
      */
+    #[ORM\Column(length: 10)]
     private $extension;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=30)
      */
+    #[ORM\Column(length: 30)]
     private $mimeType;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="smallint", length=1, options={"unsigned": true})
      */
+    #[ORM\Column(type: 'smallint', length: 1, options: ['unsigned' => true])]
     private $version;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Gedmo\Timestampable(on="create")
      */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     /**
      * @var Adherent|null
      *
      * @Gedmo\Blameable(on="create")
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     protected $createdBy;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\OfficialReport", inversedBy="documents", cascade={"all"})
-     */
+    #[ORM\ManyToOne(targetEntity: OfficialReport::class, cascade: ['all'], inversedBy: 'documents')]
     private $report;
 
     public function __construct(

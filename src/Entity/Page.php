@@ -2,18 +2,18 @@
 
 namespace App\Entity;
 
+use App\Repository\PageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="pages")
- * @ORM\Entity(repositoryClass="App\Repository\PageRepository")
- *
  * @UniqueEntity(fields={"slug"})
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
+#[ORM\Table(name: 'pages')]
+#[ORM\Entity(repositoryClass: PageRepository::class)]
 class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface
 {
     use EntityTimestampableTrait;
@@ -35,37 +35,33 @@ class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDe
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="bigint")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'bigint')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100, unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
      */
+    #[ORM\Column(length: 100, unique: true)]
     private $slug;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(options={"default": "default"})
-     *
      * @Assert\Choice(choices=Page::LAYOUTS)
      */
+    #[ORM\Column(options: ['default' => 'default'])]
     private $layout = self::LAYOUT_DEFAULT;
 
     /**
      * @var Media|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Media", cascade={"persist"})
      */
+    #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist'])]
     private $headerMedia;
 
     public function getId(): ?int

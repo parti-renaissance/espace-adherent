@@ -5,6 +5,7 @@ namespace App\Entity\TerritorialCouncil;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\UuidEntityInterface;
+use App\Repository\TerritorialCouncil\TerritorialCouncilMembershipRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,56 +16,44 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\TerritorialCouncilMembershipRepository")
- *
  * @UniqueEntity(fields={"adherent", "territorialCouncil"})
  */
+#[ORM\Entity(repositoryClass: TerritorialCouncilMembershipRepository::class)]
 class TerritorialCouncilMembership implements UuidEntityInterface
 {
     use EntityIdentityTrait;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Adherent", inversedBy="territorialCouncilMembership")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE", unique=true)
-     */
     #[Groups(['api_candidacy_read'])]
+    #[ORM\JoinColumn(unique: true, nullable: false, onDelete: 'CASCADE')]
+    #[ORM\OneToOne(inversedBy: 'territorialCouncilMembership', targetEntity: Adherent::class)]
     private $adherent;
 
     /**
      * @var TerritorialCouncil|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncil", inversedBy="memberships", fetch="EAGER")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: TerritorialCouncil::class, fetch: 'EAGER', inversedBy: 'memberships')]
     private $territorialCouncil;
 
     /**
      * @var Collection|TerritorialCouncilQuality[]
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilQuality",
-     *     cascade={"all"},
-     *     mappedBy="territorialCouncilMembership",
-     *     orphanRemoval=true
-     * )
      */
     #[Groups(['api_candidacy_read'])]
+    #[ORM\OneToMany(mappedBy: 'territorialCouncilMembership', targetEntity: TerritorialCouncilQuality::class, cascade: ['all'], orphanRemoval: true)]
     private $qualities;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Assert\NotNull
      */
+    #[ORM\Column(type: 'datetime')]
     private $joinedAt;
 
     /**
      * @var Candidacy[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\TerritorialCouncil\Candidacy", mappedBy="membership")
      */
+    #[ORM\OneToMany(mappedBy: 'membership', targetEntity: Candidacy::class)]
     protected $candidacies;
 
     public function __construct(

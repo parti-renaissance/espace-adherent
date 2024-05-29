@@ -7,9 +7,7 @@ use App\Geocoder\GeocodableInterface;
 use App\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Embeddable
- */
+#[ORM\Embeddable]
 class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoPointInterface
 {
     use EntityAddressTrait;

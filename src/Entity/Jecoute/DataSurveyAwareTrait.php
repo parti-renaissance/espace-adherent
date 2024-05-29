@@ -8,11 +8,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 trait DataSurveyAwareTrait
 {
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Jecoute\DataSurvey", cascade={"persist"}, orphanRemoval=true)
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     *
      * @Assert\Valid
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(targetEntity: DataSurvey::class, cascade: ['persist'], orphanRemoval: true)]
     private ?DataSurvey $dataSurvey = null;
 
     public function getDataSurvey(): ?DataSurvey

@@ -4,21 +4,15 @@ namespace App\Entity\AdherentMessage\Filter;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class MessageFilter extends AbstractUserFilter
 {
     use BasicUserFiltersTrait;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $contactOnlyVolunteers = false;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $contactOnlyRunningMates = false;
 
     public function getContactOnlyVolunteers(): bool

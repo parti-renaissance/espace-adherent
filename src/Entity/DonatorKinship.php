@@ -5,43 +5,36 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class DonatorKinship
 {
     /**
      * The unique auto incremented primary key.
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Donator::class, inversedBy="kinships")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Donator::class, inversedBy: 'kinships')]
     private $donator;
 
     /**
      * @Assert\NotBlank(message="Veuillez spécifier un Donateur à associer.")
-     *
-     * @ORM\ManyToOne(targetEntity=Donator::class)
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Donator::class)]
     private $related;
 
     /**
-     * @ORM\Column(length=100, nullable=false)
-     *
      * @Assert\NotBlank(message="Veuillez spécifier un lien de parenté.")
      * @Assert\Length(
      *     min=2,
      *     max=100,
      * )
      */
+    #[ORM\Column(length: 100, nullable: false)]
     private $kinship;
 
     public function __construct(?Donator $donator = null, ?Donator $related = null, ?string $kinship = null)

@@ -11,43 +11,34 @@ use Ramsey\Uuid\UuidInterface;
 use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\MappedSuperclass
- */
+#[ORM\MappedSuperclass]
 abstract class BaseLocalElectionCandidacy extends BaseCandidacy
 {
     use Sortable;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\LocalElection\LocalElection")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: LocalElection::class)]
     public ?LocalElection $election = null;
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     */
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private ?Adherent $adherent = null;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     private ?string $firstName = null;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     private ?string $lastName = null;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Email
      */
+    #[ORM\Column]
     private ?string $email = null;
 
     public function __construct(?LocalElection $election = null, ?string $gender = null, ?UuidInterface $uuid = null)

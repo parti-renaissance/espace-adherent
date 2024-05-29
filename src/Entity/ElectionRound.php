@@ -2,64 +2,59 @@
 
 namespace App\Entity;
 
+use App\Repository\ElectionRoundRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="election_rounds")
- * @ORM\Entity(repositoryClass="App\Repository\ElectionRoundRepository")
- *
  * @UniqueEntity({"election", "label"})
  */
+#[ORM\Table(name: 'election_rounds')]
+#[ORM\Entity(repositoryClass: ElectionRoundRepository::class)]
 class ElectionRound
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $label = '';
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(nullable: true)]
     private $description;
 
     /**
      * @var Election|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Election", inversedBy="rounds")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
      * @Assert\NotNull
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Election::class, inversedBy: 'rounds')]
     private $election;
 
     /**
      * @var \DateTimeInterface|null
      *
-     * @ORM\Column(type="date")
-     *
      * @Assert\NotNull
      * @Assert\GreaterThan("now")
      */
+    #[ORM\Column(type: 'date')]
     private $date;
 
     public function __toString(): string

@@ -8,16 +8,14 @@ trait EntityMediaTrait
 {
     /**
      * @var Media|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Media", cascade={"persist"})
      */
+    #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist'])]
     private $media;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $displayMedia = true;
 
     public function getMedia(): ?Media

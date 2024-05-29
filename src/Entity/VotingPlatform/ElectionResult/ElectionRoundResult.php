@@ -12,34 +12,29 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="voting_platform_election_round_result")
- */
+#[ORM\Table(name: 'voting_platform_election_round_result')]
+#[ORM\Entity]
 class ElectionRoundResult
 {
     use EntityIdentityTrait;
 
     /**
      * @var ElectionRound
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\VotingPlatform\ElectionRound")
      */
+    #[ORM\OneToOne(targetEntity: ElectionRound::class)]
     private $electionRound;
 
     /**
      * @var ElectionResult
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\ElectionResult\ElectionResult", inversedBy="electionRoundResults")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectionResult::class, inversedBy: 'electionRoundResults')]
     private $electionResult;
 
     /**
      * @var ElectionPoolResult[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\ElectionResult\ElectionPoolResult", mappedBy="electionRoundResult", cascade={"all"})
      */
+    #[ORM\OneToMany(mappedBy: 'electionRoundResult', targetEntity: ElectionPoolResult::class, cascade: ['all'])]
     private $electionPoolResults;
 
     public function __construct(ElectionRound $electionRound, ?UuidInterface $uuid = null)

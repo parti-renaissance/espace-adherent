@@ -5,29 +5,25 @@ namespace App\Entity\AdherentMessage\Filter;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="adherent_message_filters")
- * @ORM\InheritanceType("SINGLE_TABLE")
- */
+#[ORM\Table(name: 'adherent_message_filters')]
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
 abstract class AbstractAdherentFilter implements SegmentFilterInterface
 {
     use EntityTimestampableTrait;
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $synchronized = false;
 
     public function setSynchronized(bool $value): void

@@ -8,9 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\MappedSuperclass
- */
+#[ORM\MappedSuperclass]
 abstract class BaseEventCategory implements EventCategoryInterface
 {
     public const ENABLED = 'ENABLED';
@@ -18,20 +16,18 @@ abstract class BaseEventCategory implements EventCategoryInterface
 
     /**
      * @ApiProperty(identifier=false)
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     protected $id;
 
     /**
-     * @ORM\Column(length=100, unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
      */
     #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
+    #[ORM\Column(length: 100, unique: true)]
     protected $name = '';
 
     /**
@@ -39,24 +35,20 @@ abstract class BaseEventCategory implements EventCategoryInterface
      *
      * @var string|null
      *
-     * @ORM\Column(length=100, unique=true)
      * @Gedmo\Slug(fields={"name"}, unique=true)
      *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
      */
     #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
+    #[ORM\Column(length: 100, unique: true)]
     protected $slug;
 
-    /**
-     * @ORM\Column(length=10, options={"default": "ENABLED"})
-     */
+    #[ORM\Column(length: 10, options: ['default' => 'ENABLED'])]
     protected $status;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     public ?string $description = null;
 
     public function __construct(?string $name = null, ?string $status = self::ENABLED, ?string $slug = null)

@@ -3,6 +3,7 @@
 namespace App\Entity\Formation;
 
 use App\Entity\PositionTrait;
+use App\Repository\Formation\PathRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,28 +12,24 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Formation\PathRepository")
- * @ORM\Table(name="formation_paths")
- *
  * @UniqueEntity(fields={"title"}, message="path.title.unique_entity")
  */
+#[ORM\Table(name: 'formation_paths')]
+#[ORM\Entity(repositoryClass: PathRepository::class)]
 class Path
 {
     use PositionTrait;
 
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column
      *
      * @Assert\NotBlank(message="path.title.not_blank")
      * @Assert\Length(
@@ -42,33 +39,31 @@ class Path
      *     minMessage="path.title.max_length"
      * )
      */
+    #[ORM\Column]
     private $title;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(unique=true)
-     *
      * @Gedmo\Slug(fields={"title"})
      */
+    #[ORM\Column(unique: true)]
     protected $slug;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank(message="path.description.not_blank")
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="path.description.min_length")
      */
+    #[ORM\Column(type: 'text')]
     private $description;
 
     /**
      * @var Axe[]|null
-     *
-     * @ORM\OneToMany(targetEntity="Axe", mappedBy="path")
-     * @ORM\OrderBy({"id": "ASC"})
      */
+    #[ORM\OneToMany(mappedBy: 'path', targetEntity: Axe::class)]
+    #[ORM\OrderBy(['id' => 'ASC'])]
     private $axes;
 
     public function __toString()

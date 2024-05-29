@@ -5,6 +5,7 @@ namespace App\Entity\ReferentOrganizationalChart;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Referent;
+use App\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository;
 use App\Validator\ValidAdherentCoReferent;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,10 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ReferentOrganizationalChart\ReferentPersonLinkRepository")
- *
  * @ValidAdherentCoReferent
  */
+#[ORM\Entity(repositoryClass: ReferentPersonLinkRepository::class)]
 class ReferentPersonLink
 {
     public const CO_REFERENT = 'co_referent';
@@ -27,99 +27,87 @@ class ReferentPersonLink
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", nullable=true)
      */
+    #[ORM\Column(type: 'string', nullable: true)]
     private $firstName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", nullable=true)
      */
+    #[ORM\Column(type: 'string', nullable: true)]
     private $lastName;
 
     /**
      * @var string
      *
      * @Assert\Email
-     * @ORM\Column(type="string", nullable=true)
      */
+    #[ORM\Column(type: 'string', nullable: true)]
     private $email;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", nullable=true)
      */
+    #[ORM\Column(type: 'string', nullable: true)]
     private $phone;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", nullable=true)
      */
+    #[ORM\Column(type: 'string', nullable: true)]
     private $postalAddress;
 
     /**
      * @var PersonOrganizationalChartItem
-     *
-     * @ORM\ManyToOne(targetEntity="PersonOrganizationalChartItem", inversedBy="referentPersonLinks", cascade={"persist"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: PersonOrganizationalChartItem::class, cascade: ['persist'], inversedBy: 'referentPersonLinks')]
     private $personOrganizationalChartItem;
 
     /**
      * @var Referent
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Referent", inversedBy="referentPersonLinks", cascade={"persist"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Referent::class, cascade: ['persist'], inversedBy: 'referentPersonLinks')]
     private $referent;
 
     /**
      * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", cascade={"persist"}, fetch="EAGER")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, cascade: ['persist'], fetch: 'EAGER')]
     private $adherent;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=50, nullable=true)
      */
+    #[ORM\Column(length: 50, nullable: true)]
     private $coReferent;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isJecouteManager = false;
 
     /**
      * @var Committee[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Committee")
      */
+    #[ORM\ManyToMany(targetEntity: Committee::class)]
     private $restrictedCommittees;
 
     /**
      * @var array|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $restrictedCities = [];
 
     public function __construct(PersonOrganizationalChartItem $personOrganizationalChartItem, Referent $referent)

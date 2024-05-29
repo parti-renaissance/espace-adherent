@@ -8,27 +8,23 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="programmatic_foundation_tag")
- *
  * @UniqueEntity("label")
  */
+#[ORM\Table(name: 'programmatic_foundation_tag')]
+#[ORM\Entity]
 class Tag
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
-     * @ORM\Column(length=100, unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
      */
     #[Groups(['approach_list_read'])]
+    #[ORM\Column(length: 100, unique: true)]
     private $label;
 
     public function __construct(string $label = '')

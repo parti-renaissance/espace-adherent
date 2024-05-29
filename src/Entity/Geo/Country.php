@@ -5,10 +5,8 @@ namespace App\Entity\Geo;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="geo_country")
- */
+#[ORM\Table(name: 'geo_country')]
+#[ORM\Entity]
 class Country implements ZoneableInterface
 {
     use GeoTrait;
@@ -16,9 +14,8 @@ class Country implements ZoneableInterface
 
     /**
      * @var ForeignDistrict|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\ForeignDistrict", inversedBy="countries")
      */
+    #[ORM\ManyToOne(targetEntity: ForeignDistrict::class, inversedBy: 'countries')]
     private $foreignDistrict;
 
     public function __construct(string $code, string $name)

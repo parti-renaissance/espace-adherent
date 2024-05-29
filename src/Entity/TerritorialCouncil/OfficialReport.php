@@ -4,6 +4,7 @@ namespace App\Entity\TerritorialCouncil;
 
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
+use App\Repository\TerritorialCouncil\OfficialReportRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,10 +14,8 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\TerritorialCouncil\OfficialReportRepository"))
- * @ORM\Table(name="territorial_council_official_report")
- */
+#[ORM\Entity(repositoryClass: OfficialReportRepository::class)]
+#[ORM\Table(name: 'territorial_council_official_report')]
 class OfficialReport
 {
     use EntityIdentityTrait;
@@ -25,11 +24,10 @@ class OfficialReport
     /**
      * @var string|null
      *
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=50)
      */
+    #[ORM\Column(length: 50)]
     private $name;
 
     /**
@@ -45,45 +43,40 @@ class OfficialReport
 
     /**
      * @Assert\NotNull
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\PoliticalCommittee")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: PoliticalCommittee::class)]
     private $politicalCommittee;
 
     /**
      * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity=Adherent::class)
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $author;
 
     /**
      * @var Adherent|null
      *
      * @Gedmo\Blameable(on="create")
-     *
-     * @ORM\ManyToOne(targetEntity=Adherent::class)
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     protected $createdBy;
 
     /**
      * @var Adherent|null
      *
      * @Gedmo\Blameable(on="update")
-     *
-     * @ORM\ManyToOne(targetEntity=Adherent::class)
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     protected $updatedBy;
 
     /**
      * @var OfficialReportDocument[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity=OfficialReportDocument::class, mappedBy="report", cascade={"all"})
      */
+    #[ORM\OneToMany(mappedBy: 'report', targetEntity: OfficialReportDocument::class, cascade: ['all'])]
     private $documents;
 
     public function __construct()
@@ -169,7 +162,7 @@ class OfficialReport
         $document = null;
         $docs = $this->documents->toArray();
         array_walk($docs, function (OfficialReportDocument $doc) use (&$document) {
-            $version = $document ? $document->getVersion() : null;
+            $version = $document?->getVersion();
             if ($doc->getVersion() > $version) {
                 $document = $doc;
             }

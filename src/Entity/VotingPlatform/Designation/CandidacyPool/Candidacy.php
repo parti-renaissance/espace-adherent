@@ -12,51 +12,40 @@ use Ramsey\Uuid\UuidInterface;
 use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table("designation_candidacy_pool_candidacy")
- */
+#[ORM\Table('designation_candidacy_pool_candidacy')]
+#[ORM\Entity]
 class Candidacy extends BaseCandidacy
 {
     use Sortable;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\CandidacyPool\CandidacyPool")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: CandidacyPool::class)]
     public ?CandidacyPool $candidacyPool = null;
 
     /**
      * @var CandidaciesGroup|null
      *
      * @Gedmo\SortableGroup
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\CandidacyPool\CandidaciesGroup", inversedBy="candidacies")
      */
+    #[ORM\ManyToOne(targetEntity: CandidaciesGroup::class, inversedBy: 'candidacies')]
     protected $candidaciesGroup;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     */
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private ?Adherent $adherent = null;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     private ?string $firstName = null;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     private ?string $lastName = null;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $isSubstitute = false;
 
     public function __construct(?CandidacyPool $election = null, ?string $gender = null, ?UuidInterface $uuid = null)

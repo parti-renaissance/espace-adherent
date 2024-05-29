@@ -15,9 +15,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\MappedSuperclass
- */
+#[ORM\MappedSuperclass]
 abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntityInterface
 {
     use EntityIdentityTrait;
@@ -25,38 +23,33 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
     use ImageTrait;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank(groups={"Admin", "api_committee_candidacy_validation"}, message="Civilité de l'adhérent ne peut pas être vide")
      */
+    #[ORM\Column]
     private ?string $gender;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $biography;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     protected $status = CandidacyInterface::STATUS_DRAFT;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     protected $faithStatement;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     protected $isPublicFaithStatement = false;
 
     /**

@@ -6,24 +6,20 @@ use Cake\Chronos\MutableDate;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class MoocVideoElement extends BaseMoocElement
 {
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="mooc.youtubeid_syntax")
      * @Assert\Length(allowEmptyString=true, min=2, max=11)
      */
+    #[ORM\Column(nullable: true)]
     private $youtubeId;
 
     /**
-     * @ORM\Column(type="time", nullable=true)
-     *
      * @Assert\Time
      */
+    #[ORM\Column(type: 'time', nullable: true)]
     private $duration;
 
     public function __construct(

@@ -6,17 +6,11 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(
- *     name="adherent_certification_histories",
- *     indexes={
- *         @ORM\Index(name="adherent_certification_histories_adherent_id_idx", columns={"adherent_id"}),
- *         @ORM\Index(name="adherent_certification_histories_administrator_id_idx", columns={"administrator_id"}),
- *         @ORM\Index(name="adherent_certification_histories_date_idx", columns={"date"})
- *     }
- * )
- * @ORM\Entity
- */
+#[ORM\Table(name: 'adherent_certification_histories')]
+#[ORM\Index(columns: ['adherent_id'], name: 'adherent_certification_histories_adherent_id_idx')]
+#[ORM\Index(columns: ['administrator_id'], name: 'adherent_certification_histories_administrator_id_idx')]
+#[ORM\Index(columns: ['date'], name: 'adherent_certification_histories_date_idx')]
+#[ORM\Entity]
 class AdherentCertificationHistory
 {
     private const ACTION_CERTIFY = 'certify';
@@ -29,41 +23,36 @@ class AdherentCertificationHistory
 
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $adherent;
 
     /**
      * @var Administrator|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $administrator;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=20)
      */
+    #[ORM\Column(length: 20)]
     private $action;
 
     /**
      * @var \DateTimeImmutable
-     *
-     * @ORM\Column(type="datetime_immutable")
      */
+    #[ORM\Column(type: 'datetime_immutable')]
     private $date;
 
     private function __construct(Adherent $adherent, ?Administrator $administrator, string $action)

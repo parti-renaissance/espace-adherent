@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\QrCodeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -9,48 +10,40 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\QrCodeRepository")
- *
  * @UniqueEntity("name")
  */
+#[ORM\Entity(repositoryClass: QrCodeRepository::class)]
 class QrCode
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
     /**
-     * @ORM\Column(unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(unique: true)]
     private ?string $name;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      * @Assert\Url
      */
+    #[ORM\Column(type: 'text')]
     private ?string $redirectUrl;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Choice(choices=App\QrCode\QrCodeHostEnum::ALL)
      */
+    #[ORM\Column]
     private ?string $host;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private int $count;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private ?Administrator $createdBy = null;
 
     public function __construct(

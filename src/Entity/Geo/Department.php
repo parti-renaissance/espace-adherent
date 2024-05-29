@@ -3,13 +3,12 @@
 namespace App\Entity\Geo;
 
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\Geo\DepartmentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Geo\DepartmentRepository")
- * @ORM\Table(name="geo_department")
- */
+#[ORM\Table(name: 'geo_department')]
+#[ORM\Entity(repositoryClass: DepartmentRepository::class)]
 class Department implements ZoneableInterface
 {
     use GeoTrait;
@@ -17,11 +16,10 @@ class Department implements ZoneableInterface
 
     /**
      * @var Region
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Region", inversedBy="departments")
-     * @ORM\JoinColumn(nullable=false)
      */
     #[Groups(['department_read'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Region::class, inversedBy: 'departments')]
     private $region;
 
     public function __construct(string $code, string $name, Region $region)

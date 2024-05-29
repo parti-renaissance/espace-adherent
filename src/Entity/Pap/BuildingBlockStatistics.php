@@ -8,26 +8,20 @@ use App\Pap\BuildingStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="pap_building_block_statistics")
- */
+#[ORM\Table(name: 'pap_building_block_statistics')]
+#[ORM\Entity]
 class BuildingBlockStatistics implements CampaignStatisticsInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use StatusTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\BuildingBlock", inversedBy="statistics")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: BuildingBlock::class, inversedBy: 'statistics')]
     private BuildingBlock $buildingBlock;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\Campaign")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Campaign::class)]
     private Campaign $campaign;
 
     public function __construct(BuildingBlock $buildingBlock, Campaign $campaign, ?string $status = null)

@@ -6,42 +6,37 @@ use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\BaseCandidaciesGroup;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use App\Entity\VotingPlatform\Designation\ElectionEntityInterface;
+use App\Repository\Instance\NationalCouncil\CandidacyRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Instance\NationalCouncil\CandidacyRepository")
- * @ORM\Table(name="national_council_candidacy")
- */
+#[ORM\Table(name: 'national_council_candidacy')]
+#[ORM\Entity(repositoryClass: CandidacyRepository::class)]
 class Candidacy extends BaseCandidacy
 {
     /**
      * @var Election
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Instance\NationalCouncil\Election", inversedBy="candidacies")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Election::class, inversedBy: 'candidacies')]
     private $election;
 
     /**
      * @var CandidaciesGroup|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Instance\NationalCouncil\CandidaciesGroup", inversedBy="candidacies", cascade={"persist"})
      */
+    #[ORM\ManyToOne(targetEntity: CandidaciesGroup::class, cascade: ['persist'], inversedBy: 'candidacies')]
     protected $candidaciesGroup;
 
     /**
      * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", fetch="EAGER")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, fetch: 'EAGER')]
     private $adherent;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $quality;
 
     public function __construct(Election $election, Adherent $adherent)

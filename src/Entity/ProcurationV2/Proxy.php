@@ -12,6 +12,7 @@ use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
 use App\Procuration\V2\ProxyStatusEnum;
+use App\Repository\Procuration\ProxyRepository;
 use App\Validator\Procuration\AssociatedSlots;
 use App\Validator\Procuration\ExcludedAssociations;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,9 +23,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="procuration_v2_proxies")
- * @ORM\Entity(repositoryClass="App\Repository\Procuration\ProxyRepository")
- *
  * @AssociatedSlots
  * @ExcludedAssociations
  *
@@ -67,47 +65,43 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(SearchFilter::class, properties={"status": "exact"})
  * @ApiFilter(OrTextSearchFilter::class, properties={"firstNames": "lastName", "lastName": "firstNames", "email": "email"})
  */
+#[ORM\Table(name: 'procuration_v2_proxies')]
+#[ORM\Entity(repositoryClass: ProxyRepository::class)]
 class Proxy extends AbstractProcuration
 {
     /**
-     * @ORM\Column(length=9, nullable=true)
-     *
      * @Assert\Length(min=7, max=9)
      * @Assert\Regex(pattern="/^[0-9]+$/i")
      */
+    #[ORM\Column(length: 9, nullable: true)]
     public ?string $electorNumber = null;
 
     /**
-     * @ORM\Column(type="smallint", options={"default": 1, "unsigned": true})
-     *
      * @Assert\Expression(
      *     expression="value >= 1 and ((!this.isFDE() and value == 1) or (this.isFDE() and value <= 3))",
      *     message="procuration.proxy.slots.invalid"
      * )
      */
     #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]
+    #[ORM\Column(type: 'smallint', options: ['default' => 1, 'unsigned' => true])]
     public int $slots = 1;
 
     /**
-     * @ORM\Column(enumType=ProxyStatusEnum::class)
-     *
      * @Assert\Choice(callback={"App\Procuration\V2\ProxyStatusEnum", "getAvailableStatuses"}, groups={"procuration_update_status"})
      */
     #[Groups(['procuration_matched_proxy', 'procuration_proxy_list', 'procuration_update_status'])]
+    #[ORM\Column(enumType: ProxyStatusEnum::class)]
     public ProxyStatusEnum $status = ProxyStatusEnum::PENDING;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProcurationV2\Request", mappedBy="proxy", cascade={"all"})
-     */
     #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]
+    #[ORM\OneToMany(mappedBy: 'proxy', targetEntity: Request::class, cascade: ['all'])]
     public Collection $requests;
 
     /**
      * Ids of main and parents zones built from votePlace zone or from voteZone zone.
      * This field helps to improve matching DB query in ProxyRepository
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private ?array $zoneIds = null;
 
     public function __construct(

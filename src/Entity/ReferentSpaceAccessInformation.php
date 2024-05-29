@@ -2,38 +2,31 @@
 
 namespace App\Entity;
 
+use App\Repository\ReferentSpaceAccessInformationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ReferentSpaceAccessInformationRepository")
- */
+#[ORM\Entity(repositoryClass: ReferentSpaceAccessInformationRepository::class)]
 class ReferentSpaceAccessInformation
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var \DateTimeImmutable|null
-     *
-     * @ORM\Column(type="datetime_immutable", nullable=true)
      */
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $previousDate;
 
     /**
      * @var \DateTimeImmutable|null
-     *
-     * @ORM\Column(type="datetime_immutable", nullable=true)
      */
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private $lastDate;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(name="adherent_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     */
+    #[ORM\JoinColumn(name: 'adherent_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    #[ORM\OneToOne(targetEntity: Adherent::class)]
     private $adherent;
 
     public function __construct(Adherent $adherent, \DateTimeImmutable $lastDate, \DateTimeImmutable $previousDate)

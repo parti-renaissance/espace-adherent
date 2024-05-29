@@ -8,10 +8,8 @@ use App\Event\EventInvitation;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
-/**
- * @ORM\Table(name="events_invitations")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'events_invitations')]
+#[ORM\Entity]
 class EventInvite
 {
     use EntityIdentityTrait;
@@ -19,38 +17,33 @@ class EventInvite
 
     /**
      * @var BaseEvent|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event\BaseEvent")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=true)
      */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: BaseEvent::class)]
     private $event;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $email = '';
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="text")
      */
+    #[ORM\Column(type: 'text')]
     private $message = '';
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="simple_array")
      */
+    #[ORM\Column(type: 'simple_array')]
     private $guests = [];
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     public function __construct(BaseEvent $event)

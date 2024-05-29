@@ -7,6 +7,7 @@ use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\Pap\FloorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,11 +17,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Pap\FloorRepository")
- * @ORM\Table(name="pap_floor", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="floor_unique", columns={"number", "building_block_id"})
- * })
- *
  * @ApiResource(
  *     attributes={
  *         "normalization_context": {
@@ -33,6 +29,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={},
  * )
  */
+#[ORM\Table(name: 'pap_floor')]
+#[ORM\UniqueConstraint(name: 'floor_unique', columns: ['number', 'building_block_id'])]
+#[ORM\Entity(repositoryClass: FloorRepository::class)]
 class Floor implements EntityAdherentBlameableInterface, CampaignStatisticsOwnerInterface
 {
     use EntityAdherentBlameableTrait;
@@ -42,28 +41,19 @@ class Floor implements EntityAdherentBlameableInterface, CampaignStatisticsOwner
 
     /**
      * @Assert\NotNull
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pap\BuildingBlock", inversedBy="floors")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: BuildingBlock::class, inversedBy: 'floors')]
     private BuildingBlock $buildingBlock;
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true})
-     */
     #[Groups(['pap_building_block_list'])]
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
     private int $number;
 
     /**
      * @var FloorStatistics[]|Collection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="FloorStatistics",
-     *     mappedBy="floor",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
      */
+    #[ORM\OneToMany(mappedBy: 'floor', targetEntity: FloorStatistics::class, cascade: ['all'], orphanRemoval: true)]
     private Collection $statistics;
 
     public function __construct(int $number, BuildingBlock $buildingBlock, ?UuidInterface $uuid = null)

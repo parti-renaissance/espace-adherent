@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\VotingPlatform\Designation\AbstractElectionEntity;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Repository\CommitteeElectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,41 +27,36 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     },
  *     collectionOperations={}
  * )
- *
- * @ORM\Entity(repositoryClass="App\Repository\CommitteeElectionRepository")
  */
+#[ORM\Entity(repositoryClass: CommitteeElectionRepository::class)]
 class CommitteeElection extends AbstractElectionEntity
 {
     /**
      * @var Committee
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Committee", inversedBy="committeeElections")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     #[Groups(['committee_election:read'])]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Committee::class, inversedBy: 'committeeElections')]
     private $committee;
 
     /**
      * @var CommitteeCandidacy[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\CommitteeCandidacy", mappedBy="committeeElection")
      */
+    #[ORM\OneToMany(mappedBy: 'committeeElection', targetEntity: CommitteeCandidacy::class)]
     private $candidacies;
 
     /**
      * @var CommitteeCandidaciesGroup[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\CommitteeCandidaciesGroup", mappedBy="election", cascade={"persist"})
-     * @ORM\OrderBy({"createdAt": "ASC"})
      */
     #[Groups(['committee_election:read'])]
+    #[ORM\OneToMany(mappedBy: 'election', targetEntity: CommitteeCandidaciesGroup::class, cascade: ['persist'])]
+    #[ORM\OrderBy(['createdAt' => 'ASC'])]
     private $candidaciesGroups;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": 0})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $adherentNotified = false;
 
     public function __construct(?Designation $designation = null, ?UuidInterface $uuid = null)

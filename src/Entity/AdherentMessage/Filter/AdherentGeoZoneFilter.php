@@ -6,9 +6,7 @@ use App\Entity\Geo\Zone;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class AdherentGeoZoneFilter extends AbstractUserFilter
 {
     use BasicUserFiltersTrait;
@@ -16,10 +14,9 @@ class AdherentGeoZoneFilter extends AbstractUserFilter
     /**
      * @var Zone
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
     private $zone;
 
     public function __construct(?Zone $zone = null)

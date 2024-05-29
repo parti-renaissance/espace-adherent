@@ -4,58 +4,49 @@ namespace App\Entity\VotingPlatform;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Repository\VotingPlatform\VoterRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\VoterRepository")
- *
- * @ORM\Table(name="voting_platform_voter")
- */
+#[ORM\Table(name: 'voting_platform_voter')]
+#[ORM\Entity(repositoryClass: VoterRepository::class)]
 class Voter
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
      * @var Adherent|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(targetEntity: Adherent::class)]
     private $adherent;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     /**
      * @var VotersList[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\VotingPlatform\VotersList", mappedBy="voters")
      */
+    #[ORM\ManyToMany(targetEntity: VotersList::class, mappedBy: 'voters')]
     private $votersLists;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isGhost = false;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $isPollVoter = false;
 
     public function __construct(?Adherent $adherent = null)

@@ -16,6 +16,8 @@ use App\Entity\EntityScopeVisibilityTrait;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\PositionTrait;
+use App\EntityListener\AdherentFormationListener;
+use App\Repository\AdherentFormation\FormationRepository;
 use App\Validator\AdherentFormation\FormationContent;
 use App\Validator\Scope\ScopeVisibility;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -93,15 +95,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(ScopeVisibilityFilter::class)
  *
- * @ORM\Entity(repositoryClass="App\Repository\AdherentFormation\FormationRepository");
- * @ORM\Table(name="adherent_formation")
- * @ORM\EntityListeners({"App\EntityListener\AdherentFormationListener"})
- *
  * @UniqueEntity(fields={"zone", "title"}, message="adherent_formation.zone_title.unique_entity")
  *
  * @ScopeVisibility
  * @FormationContent
  */
+#[ORM\Table(name: 'adherent_formation')]
+#[ORM\Entity(repositoryClass: FormationRepository::class)]
+#[ORM\EntityListeners([AdherentFormationListener::class])]
 class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
@@ -112,29 +113,26 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     use PositionTrait;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank(message="Veuillez renseigner un titre.")
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
      */
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
+    #[ORM\Column]
     private ?string $title = null;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     *
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
      */
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Choice(choices=FormationContentTypeEnum::ALL)
      */
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
+    #[ORM\Column]
     private string $contentType = FormationContentTypeEnum::FILE;
 
     /**
@@ -165,42 +163,33 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
      */
     private ?UploadedFile $file = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $filePath = null;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url
      */
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
+    #[ORM\Column(nullable: true)]
     private ?string $link = null;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $published = false;
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true})
-     */
     #[Groups(['formation_read', 'formation_list_read'])]
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
     private int $printCount = 0;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $valid = false;
 
     /**
      * @var Collection|Adherent[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Adherent", fetch="EXTRA_LAZY")
-     * @ORM\JoinTable(name="adherent_formation_print_by_adherents", joinColumns={@ORM\JoinColumn(onDelete="CASCADE")})
      */
+    #[ORM\JoinTable(name: 'adherent_formation_print_by_adherents')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: Adherent::class, fetch: 'EXTRA_LAZY')]
     private Collection $printByAdherents;
 
     public function __construct(?UuidInterface $uuid = null)

@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\VotingPlatform\Designation\BaseCandidaciesGroup;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
+use App\Repository\CommitteeCandidaciesGroupRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -39,13 +40,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @ORM\Entity(repositoryClass="App\Repository\CommitteeCandidaciesGroupRepository")
- *
  * @Assert\Expression(
  *     expression="!this.isVotePeriodStarted()",
  *     message="Vous ne pouvez pas créer de liste sur une élection en cours"
  * )
  */
+#[ORM\Entity(repositoryClass: CommitteeCandidaciesGroupRepository::class)]
 class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
 {
     use EntityTimestampableTrait;
@@ -56,8 +56,6 @@ class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
     private $id;
 
     /**
-     * @ORM\Column(type="uuid", unique=true)
-     *
      * @ApiProperty(
      *     identifier=true,
      *     attributes={
@@ -70,24 +68,23 @@ class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
      * )
      */
     #[Groups(['committee_election:read', 'committee_candidacies_group:read', 'committee_candidacy:read'])]
+    #[ORM\Column(type: 'uuid', unique: true)]
     protected UuidInterface $uuid;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\CommitteeElection", inversedBy="candidaciesGroups")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['committee_candidacies_group:write', 'committee_candidacies_group:read'])]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: CommitteeElection::class, inversedBy: 'candidaciesGroups')]
     protected ?CommitteeElection $election = null;
 
     /**
      * @var CandidacyInterface[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\CommitteeCandidacy", mappedBy="candidaciesGroup", cascade={"persist"}, orphanRemoval=true)
-     * @ORM\OrderBy({"createdAt": "ASC"})
      */
     #[Groups(['committee_candidacies_group:read', 'committee_election:read'])]
+    #[ORM\OneToMany(mappedBy: 'candidaciesGroup', targetEntity: CommitteeCandidacy::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['createdAt' => 'ASC'])]
     protected $candidacies;
 
     public function __construct(?UuidInterface $uuid = null)

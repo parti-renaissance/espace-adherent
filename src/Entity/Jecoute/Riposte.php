@@ -9,6 +9,8 @@ use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\IndexableEntityInterface;
+use App\EntityListener\AlgoliaIndexListener;
+use App\EntityListener\DynamicLinkListener;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Validator\RiposteOpenGraph;
@@ -19,14 +21,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="jecoute_riposte")
- *
- * @ORM\EntityListeners({
- *     "App\EntityListener\DynamicLinkListener",
- *     "App\EntityListener\AlgoliaIndexListener",
- * })
- *
  * @ApiResource(
  *     attributes={
  *         "order": {"createdAt": "DESC"},
@@ -73,6 +67,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @RiposteOpenGraph
  */
+#[ORM\Table(name: 'jecoute_riposte')]
+#[ORM\Entity]
+#[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
 class Riposte implements AuthorInterface, IndexableEntityInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;
@@ -88,101 +85,90 @@ class Riposte implements AuthorInterface, IndexableEntityInterface, DynamicLinkO
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
+    #[ORM\Column]
     private $title;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
+    #[ORM\Column(type: 'text')]
     private $body;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Url
      */
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
+    #[ORM\Column]
     private $sourceUrl;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default": true})
-     *
      * @Assert\Type("bool")
      */
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $withNotification;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default": true})
-     *
      * @Assert\Type("bool")
      */
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $enabled;
 
     /**
      * @var array|null
-     *
-     * @ORM\Column(type="json")
      */
     #[Groups(['riposte_list_read', 'riposte_read'])]
+    #[ORM\Column(type: 'json')]
     protected $openGraph;
 
     /**
      * @var Administrator|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $createdBy;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
      */
     #[Groups(['riposte_read_dc'])]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     private $nbViews = 0;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
      */
     #[Groups(['riposte_read_dc'])]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     private $nbDetailViews = 0;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
      */
     #[Groups(['riposte_read_dc'])]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     private $nbSourceViews = 0;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true, "default": 0})
      */
     #[Groups(['riposte_read_dc'])]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
     private $nbRipostes = 0;
 
     public function __construct(?UuidInterface $uuid = null, $withNotification = true, $enabled = true)

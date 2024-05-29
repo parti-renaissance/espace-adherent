@@ -6,9 +6,7 @@ use App\Entity\Adherent;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class TerritorialCouncilMembershipLog
 {
     public const TYPE_INFO = 'info';
@@ -19,67 +17,51 @@ class TerritorialCouncilMembershipLog
         self::TYPE_WARNING,
     ];
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
-    /**
-     * @ORM\Column(length=20)
-     */
+    #[ORM\Column(length: 20)]
     private $type;
 
-    /**
-     * @ORM\Column(length=500)
-     */
+    #[ORM\Column(length: 500)]
     private $description;
 
     /**
      * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $adherent;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     private $qualityName;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private $actualTerritorialCouncil;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $actualQualityNames = [];
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $foundTerritorialCouncils = [];
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Gedmo\Timestampable(on="create")
      */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isResolved = false;
 
     public function __construct(

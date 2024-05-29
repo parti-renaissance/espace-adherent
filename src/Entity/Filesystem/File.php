@@ -4,6 +4,7 @@ namespace App\Entity\Filesystem;
 
 use App\Entity\Administrator;
 use App\Entity\EntityIdentityTrait;
+use App\Repository\Filesystem\FileRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,14 +17,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Filesystem\FileRepository")
- * @ORM\Table(name="filesystem_file", indexes={
- *     @ORM\Index(columns={"type"}),
- *     @ORM\Index(columns={"name"})
- * })
- *
  * @UniqueEntity(fields={"name"}, repositoryMethod="findDirectoryByName", message="file.validation.name.not_unique")
  */
+#[ORM\Table(name: 'filesystem_file')]
+#[ORM\Index(columns: ['type'])]
+#[ORM\Index(columns: ['name'])]
+#[ORM\Entity(repositoryClass: FileRepository::class)]
 class File
 {
     use EntityIdentityTrait;
@@ -32,29 +31,27 @@ class File
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=100)
      */
     #[Groups(['autocomplete'])]
+    #[ORM\Column(length: 100)]
     private $name;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(unique=true)
      * @Gedmo\Slug(fields={"name"}, unique=true)
      */
+    #[ORM\Column(unique: true)]
     private $slug;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=20)
-     *
      * @Assert\Choice(callback={"App\Entity\Filesystem\FileTypeEnum", "toArray"})
      */
+    #[ORM\Column(length: 20)]
     private $type = FileTypeEnum::FILE;
 
     /**
@@ -90,96 +87,85 @@ class File
      * @var Administrator|null
      *
      * @Gedmo\Blameable(on="create")
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $createdBy;
 
     /**
      * @var Administrator|null
      *
      * @Gedmo\Blameable(on="update")
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private $updatedBy;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": true})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $displayed = true;
 
     /**
      * @var FilePermission[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Filesystem\FilePermission", mappedBy="file", cascade={"all"}, orphanRemoval=true)
-     *
      * @Assert\Valid
      */
+    #[ORM\OneToMany(mappedBy: 'file', targetEntity: FilePermission::class, cascade: ['all'], orphanRemoval: true)]
     private $permissions;
 
     /**
      * @var File|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Filesystem\File", inversedBy="children", cascade={"persist"})
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=true)
-     *
      * @Assert\Valid
      */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: File::class, cascade: ['persist'], inversedBy: 'children')]
     private $parent;
 
     /**
      * @var File[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Filesystem\File", mappedBy="parent", fetch="EXTRA_LAZY")
      */
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: File::class, fetch: 'EXTRA_LAZY')]
     private $children;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255, maxMessage="file.validation.filename_length")
      */
+    #[ORM\Column(nullable: true)]
     private $originalFilename;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=10, nullable=true)
-     *
      * @Assert\Length(max=10)
      */
+    #[ORM\Column(length: 10, nullable: true)]
     private $extension;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=75, nullable=true)
-     *
      * @Assert\Length(max=75)
      */
+    #[ORM\Column(length: 75, nullable: true)]
     private $mimeType;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true}, nullable=true)
      */
+    #[ORM\Column(type: 'integer', nullable: true, options: ['unsigned' => true])]
     private $size;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true, nullable=true)
-     *
      * @Assert\Url
      */
+    #[ORM\Column(nullable: true)]
     private $externalLink;
 
     public function __construct()
@@ -368,16 +354,12 @@ class File
 
     public function getFullname(): ?string
     {
-        switch ($this->type) {
-            case FileTypeEnum::FILE:
-                return sprintf('%s.%s', $this->getName(), $this->getExtension());
-            case FileTypeEnum::DIRECTORY:
-                return sprintf('/%s', $this->getName());
-            case FileTypeEnum::EXTERNAL_LINK:
-                return sprintf('%s (un lien externe)', $this->getName());
-            default:
-                return null;
-        }
+        return match ($this->type) {
+            FileTypeEnum::FILE => sprintf('%s.%s', $this->getName(), $this->getExtension()),
+            FileTypeEnum::DIRECTORY => sprintf('/%s', $this->getName()),
+            FileTypeEnum::EXTERNAL_LINK => sprintf('%s (un lien externe)', $this->getName()),
+            default => null,
+        };
     }
 
     public function getFullPath(): ?string

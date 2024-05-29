@@ -9,24 +9,18 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="besoindeurope_inscription_requests")
- */
+#[ORM\Table(name: 'besoindeurope_inscription_requests')]
+#[ORM\Entity]
 class InscriptionRequest
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityUTMTrait;
 
-    /**
-     * @ORM\Column
-     */
+    #[ORM\Column]
     public ?string $email = null;
 
-    /**
-     * @ORM\Column(length=50, nullable=true)
-     */
+    #[ORM\Column(length: 50, nullable: true)]
     public ?string $clientIp = null;
 
     public function __construct(?UuidInterface $uuid = null)

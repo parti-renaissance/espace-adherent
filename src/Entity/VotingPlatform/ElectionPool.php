@@ -5,59 +5,41 @@ namespace App\Entity\VotingPlatform;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- *
- * @ORM\Table(name="voting_platform_election_pool")
- */
+#[ORM\Table(name: 'voting_platform_election_pool')]
+#[ORM\Entity]
 class ElectionPool
 {
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=500)
      */
+    #[ORM\Column(length: 500)]
     private $code;
 
     /**
      * @var Election
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Election", inversedBy="electionPools")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Election::class, inversedBy: 'electionPools')]
     private $election;
 
     /**
      * @var CandidateGroup[]|ArrayCollection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\VotingPlatform\CandidateGroup",
-     *     mappedBy="electionPool",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
      */
+    #[ORM\OneToMany(mappedBy: 'electionPool', targetEntity: CandidateGroup::class, cascade: ['all'], orphanRemoval: true)]
     private $candidateGroups;
 
     /**
      * @var ElectionRound[]|ArrayCollection
-     *
-     * @ORM\ManyToMany(
-     *     targetEntity="App\Entity\VotingPlatform\ElectionRound",
-     *     mappedBy="electionPools",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
      */
+    #[ORM\ManyToMany(targetEntity: ElectionRound::class, mappedBy: 'electionPools', cascade: ['all'], orphanRemoval: true)]
     private $electionRounds;
 
     public function __construct(string $code)

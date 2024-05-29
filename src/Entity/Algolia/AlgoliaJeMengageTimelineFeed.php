@@ -18,20 +18,18 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity
- *
  * @internal
  */
+#[ORM\Entity]
 class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntityInterface
 {
     /**
      * @var UuidInterface|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     protected $objectID;
 
     public function __construct($entity, array $entityIdentifierValues)

@@ -7,75 +7,52 @@ use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\GoCardless\Subscription;
+use App\Repository\Contribution\ContributionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Contribution\ContributionRepository")
- * @ORM\Table(name="contribution")
- */
+#[ORM\Table(name: 'contribution')]
+#[ORM\Entity(repositoryClass: ContributionRepository::class)]
 class Contribution
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $startDate = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $endDate = null;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     public ?string $gocardlessCustomerId = null;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     public ?string $gocardlessBankAccountId = null;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": true})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     public ?bool $gocardlessBankAccountEnabled = null;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     public ?string $gocardlessMandateId = null;
 
-    /**
-     * @ORM\Column(length=20)
-     */
     #[SerializedName('status')]
+    #[ORM\Column(length: 20)]
     public ?string $gocardlessMandateStatus = null;
 
-    /**
-     * @ORM\Column(length=50)
-     */
+    #[ORM\Column(length: 50)]
     public ?string $gocardlessSubscriptionId = null;
 
-    /**
-     * @ORM\Column(length=20)
-     */
+    #[ORM\Column(length: 20)]
     public ?string $gocardlessSubscriptionStatus = null;
 
-    /**
-     * @ORM\Column(length=20)
-     */
+    #[ORM\Column(length: 20)]
     public ?string $type = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="contributions")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'contributions')]
     public ?Adherent $adherent = null;
 
     public function __construct(?UuidInterface $uuid = null)

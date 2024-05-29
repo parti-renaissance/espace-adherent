@@ -9,6 +9,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use App\OAuth\SecretGenerator;
+use App\Repository\OAuth\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
@@ -17,10 +18,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- *
- * @ORM\Entity(repositoryClass="App\Repository\OAuth\ClientRepository")
- * @ORM\Table(name="oauth_clients")
  */
+#[ORM\Table(name: 'oauth_clients')]
+#[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client implements EntitySoftDeletedInterface
 {
     use EntityIdentityTrait;
@@ -29,16 +29,14 @@ class Client implements EntitySoftDeletedInterface
 
     /**
      * @Assert\Length(max=32, maxMessage="client.name.constraint.length.max")
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $name;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Choice(callback={"App\AppCodeEnum", "toArray"})
      */
+    #[ORM\Column(nullable: true)]
     private ?string $code = null;
 
     /**
@@ -48,45 +46,35 @@ class Client implements EntitySoftDeletedInterface
      *     minMessage="La description doit faire au moins {{ limit }} caractères.",
      *     maxMessage="La description ne doit pas dépasser {{ limit }} caractères."
      * )
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $description;
 
     /**
      * @Assert\Count(min=1, minMessage="Veuillez spécifier au moins une adresse de redirection.")
-     *
-     * @ORM\Column(type="json")
      */
+    #[ORM\Column(type: 'json')]
     private $redirectUris;
 
-    /**
-     * @ORM\Column
-     */
+    #[ORM\Column]
     private $secret;
 
     /**
-     * @ORM\Column(type="simple_array")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'simple_array')]
     private $allowedGrantTypes;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $supportedScopes = [];
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default": true})
-     */
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => true])]
     private $askUserForAuthorization = true;
 
     /**
      * @var string[]|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $requestedRoles;
 
     public function __construct(

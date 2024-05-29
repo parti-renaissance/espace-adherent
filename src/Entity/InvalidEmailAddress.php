@@ -6,17 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class InvalidEmailAddress
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @ORM\Column
-     */
+    #[ORM\Column]
     private string $emailHash;
 
     public function __construct(string $emailHash, ?UuidInterface $uuid = null)

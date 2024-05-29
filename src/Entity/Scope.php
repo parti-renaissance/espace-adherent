@@ -2,62 +2,57 @@
 
 namespace App\Entity;
 
+use App\Repository\ScopeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ScopeRepository")
- *
  * @UniqueEntity("code")
  */
+#[ORM\Entity(repositoryClass: ScopeRepository::class)]
 class Scope
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Choice(choices=App\Scope\ScopeEnum::ALL)
      */
+    #[ORM\Column(unique: true)]
     private $code;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=100)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
      */
+    #[ORM\Column(length: 100)]
     private $name;
 
     /**
      * @var array
      *
-     * @ORM\Column(type="simple_array", nullable=true)
-     *
      * @Assert\Choice(choices=App\Scope\FeatureEnum::ALL, multiple=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $features;
 
     /**
      * @var array
      *
-     * @ORM\Column(type="simple_array", nullable=true)
-     *
      * @Assert\Choice(choices=App\Scope\AppEnum::ALL, multiple=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $apps;
 
     public function __construct(?string $code = null, ?string $name = null, ?array $features = null, ?array $apps = null)

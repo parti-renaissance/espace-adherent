@@ -5,36 +5,31 @@ namespace App\Entity\VotingPlatform;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- *
- * @ORM\Table(name="voting_platform_voters_list")
- */
+#[ORM\Table(name: 'voting_platform_voters_list')]
+#[ORM\Entity]
 class VotersList
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     /**
      * @var Election
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\VotingPlatform\Election", inversedBy="votersList")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\OneToOne(inversedBy: 'votersList', targetEntity: Election::class)]
     private $election;
 
     /**
      * @var Voter[]|ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\VotingPlatform\Voter", cascade={"all"}, inversedBy="votersLists", fetch="EXTRA_LAZY")
-     * @ORM\JoinTable(name="voting_platform_voters_list_voter", joinColumns={@ORM\JoinColumn(onDelete="CASCADE")})
      */
+    #[ORM\JoinTable(name: 'voting_platform_voters_list_voter')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: Voter::class, inversedBy: 'votersLists', cascade: ['all'], fetch: 'EXTRA_LAZY')]
     private $voters;
 
     public function __construct(Election $election)

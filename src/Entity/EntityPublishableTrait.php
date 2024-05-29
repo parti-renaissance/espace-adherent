@@ -8,9 +8,8 @@ trait EntityPublishableTrait
 {
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $published = false;
 
     public function isPublished(): bool

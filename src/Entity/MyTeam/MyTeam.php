@@ -7,6 +7,7 @@ use App\Api\Filter\MyTeamScopeFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\MyTeam\MyTeamRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,8 +17,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\MyTeam\MyTeamRepository")
- *
  * @ApiResource(
  *     attributes={
  *         "filters": {MyTeamScopeFilter::class},
@@ -41,39 +40,32 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: MyTeamRepository::class)]
 class MyTeam
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
      * @Assert\NotNull
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private Adherent $owner;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Choice(choices=App\Scope\ScopeEnum::ALL)
      */
     #[Groups(['my_team_read_list'])]
+    #[ORM\Column]
     private string $scope;
 
     /**
      * @var Member[]|Collection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\MyTeam\Member",
-     *     mappedBy="team",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
      */
     #[Groups(['my_team_read_list'])]
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: Member::class, cascade: ['all'], orphanRemoval: true)]
     private Collection $members;
 
     public function __construct(Adherent $owner, string $scope, ?UuidInterface $uuid = null)

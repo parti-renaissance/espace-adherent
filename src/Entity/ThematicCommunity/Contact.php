@@ -11,10 +11,8 @@ use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="thematic_community_contact")
- */
+#[ORM\Table(name: 'thematic_community_contact')]
+#[ORM\Entity]
 class Contact
 {
     use EntityIdentityTrait;
@@ -23,93 +21,81 @@ class Contact
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     private $firstName;
 
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     private $lastName;
 
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Email
      */
+    #[ORM\Column]
     private $email;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $gender;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $customGender;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="date", nullable=true)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'date', nullable: true)]
     private $birthDate;
 
     /**
      * @var PhoneNumber
      *
-     * @ORM\Column(type="phone_number", nullable=true)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'phone_number', nullable: true)]
     private $phone;
 
     /**
      * @var string
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(nullable: true)]
     private $activityArea;
 
     /**
      * @var string
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(nullable: true)]
     private $jobArea;
 
     /**
      * @var string
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(nullable: true)]
     private $job;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private $position;
 
     public function __construct()

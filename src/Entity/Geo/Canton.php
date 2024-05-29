@@ -7,10 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="geo_canton")
- */
+#[ORM\Table(name: 'geo_canton')]
+#[ORM\Entity]
 class Canton implements ZoneableInterface
 {
     use GeoTrait;
@@ -18,17 +16,15 @@ class Canton implements ZoneableInterface
 
     /**
      * @var Department
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Department")
-     * @ORM\JoinColumn(nullable=false)
      */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Department::class)]
     private $department;
 
     /**
      * @var City[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\City", mappedBy="cantons")
      */
+    #[ORM\ManyToMany(targetEntity: City::class, mappedBy: 'cantons')]
     private $cities;
 
     public function __construct(string $code, string $name, Department $department)

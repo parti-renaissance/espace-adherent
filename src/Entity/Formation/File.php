@@ -7,13 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(
- *     name="formation_files",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="formation_file_slug_extension", columns={"slug", "extension"})}
- * )
- */
+#[ORM\Table(name: 'formation_files')]
+#[ORM\UniqueConstraint(name: 'formation_file_slug_extension', columns: ['slug', 'extension'])]
+#[ORM\Entity]
 class File extends BaseFile
 {
     public const PREFIX_PATH = 'files/formations';
@@ -50,10 +46,9 @@ class File extends BaseFile
 
     /**
      * @var Module
-     *
-     * @ORM\ManyToOne(targetEntity="Module", inversedBy="files")
-     * @ORM\OrderBy({"id": "ASC"})
      */
+    #[ORM\ManyToOne(targetEntity: Module::class, inversedBy: 'files')]
+    #[ORM\OrderBy(['id' => 'ASC'])]
     private $module;
 
     public function getPrefixPath(): string

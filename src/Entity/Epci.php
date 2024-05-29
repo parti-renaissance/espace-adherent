@@ -4,158 +4,135 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Epci
 {
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $status;
 
     /**
      * @var float
-     *
-     * @ORM\Column(type="float")
      */
+    #[ORM\Column(type: 'float')]
     private $surface;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=10)
      */
+    #[ORM\Column(length: 10)]
     private $departmentCode;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $departmentName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=10)
      */
+    #[ORM\Column(length: 10)]
     private $regionCode;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $regionName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=10)
      */
+    #[ORM\Column(length: 10)]
     private $cityInsee;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=10)
      */
+    #[ORM\Column(length: 10)]
     private $cityCode;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $cityName;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $cityFullName;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $cityDep;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $citySiren;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $codeArr;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $codeCant;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", options={"unsigned": true}, nullable=true)
      */
+    #[ORM\Column(type: 'integer', nullable: true, options: ['unsigned' => true])]
     private $population;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $epciDep;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $epciSiren;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $name;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $insee;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $fiscal;
 
     public function __construct(

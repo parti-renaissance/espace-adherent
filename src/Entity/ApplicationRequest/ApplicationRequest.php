@@ -18,9 +18,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\MappedSuperclass
- */
+#[ORM\MappedSuperclass]
 abstract class ApplicationRequest implements ReferentTaggableEntity
 {
     use EntityIdentityTrait;
@@ -28,17 +26,14 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     use EntityTimestampableTrait;
 
     /**
-     * @ORM\Column(length=6, nullable=true)
-     *
      * @Assert\NotBlank(message="common.gender.not_blank")
      * @Assert\Choice(choices=App\ValueObject\Genders::CHOICES)
      */
+    #[ORM\Column(length: 6, nullable: true)]
     private $gender;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column
      *
      * @Assert\NotBlank(message="application_request.first_name.not_blank")
      * @Assert\Length(
@@ -48,12 +43,11 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *     maxMessage="application_request.first_name.max_length"
      * )
      */
+    #[ORM\Column]
     protected $firstName;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column
      *
      * @Assert\NotBlank(message="application_request.last_name.not_blank")
      * @Assert\Length(
@@ -63,12 +57,11 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *     maxMessage="application_request.last_name.max_length"
      * )
      */
+    #[ORM\Column]
     protected $lastName;
 
     /**
      * @var array
-     *
-     * @ORM\Column(type="simple_array")
      *
      * @Assert\Count(
      *     min=1,
@@ -77,37 +70,35 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *     maxMessage="application_request.favorite_cities.max_length"
      * )
      */
+    #[ORM\Column(type: 'simple_array')]
     protected $favoriteCities = [];
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank(message="application_request.email_address.not_blank")
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
+    #[ORM\Column]
     protected $emailAddress;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=150)
-     *
      * @Assert\NotBlank(message="common.address.required")
      * @Assert\Length(max=150, maxMessage="common.address.max_length")
      */
+    #[ORM\Column(length: 150)]
     protected $address;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=15, nullable=true)
-     *
      * @Assert\NotBlank(message="common.postal_code.not_blank")
      * @Assert\Length(max=15)
      */
+    #[ORM\Column(length: 15, nullable: true)]
     protected $postalCode;
 
     /**
@@ -115,97 +106,87 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
      *
      * @var string|null
      *
-     * @ORM\Column(length=20, nullable=true)
-     *
      * @Assert\Length(max=20)
      */
+    #[ORM\Column(length: 20, nullable: true)]
     protected $city;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank(message="common.city_name.not_blank")
      * @Assert\Length(max=50)
      * @Assert\Expression(expression="(this.getCountry() === 'FR' and this.getCity()) or value", message="common.city_name.not_blank")
      */
+    #[ORM\Column(length: 50)]
     protected $cityName;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=2)
-     *
      * @Assert\NotBlank
      * @Assert\Country(message="common.country.invalid")
      */
+    #[ORM\Column(length: 2)]
     protected $country = AddressInterface::FRANCE;
 
     /**
      * @var PhoneNumber|null
      *
-     * @ORM\Column(type="phone_number", nullable=true)
-     *
      * @Assert\NotBlank(message="common.phone_number.required")
      * @AssertPhoneNumber
      */
+    #[ORM\Column(type: 'phone_number', nullable: true)]
     protected $phone;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank(message="application_request.profession.required")
      * @Assert\Length(max=255, maxMessage="application_request.profession.max_length")
      */
+    #[ORM\Column]
     protected $profession;
 
     /**
      * @var Theme[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ApplicationRequest\Theme")
-     *
      * @Assert\Count(min=1, minMessage="application_request.favorite_themes.min")
      */
+    #[ORM\ManyToMany(targetEntity: Theme::class)]
     protected $favoriteThemes;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     protected $customFavoriteTheme;
 
     /**
      * @var Adherent|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $adherent;
 
     /**
      * @var ApplicationRequestTag[]|Collection
      *
      * @Assert\Valid(groups={"ApplicationRequestTag"})
-     * @ORM\ManyToMany(targetEntity="App\Entity\ApplicationRequest\ApplicationRequestTag")
      */
+    #[ORM\ManyToMany(targetEntity: ApplicationRequestTag::class)]
     protected $tags;
 
     /**
      * @var string
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     protected $takenForCity;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": true})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $displayed = true;
 
     public function __construct(?UuidInterface $uuid = null)

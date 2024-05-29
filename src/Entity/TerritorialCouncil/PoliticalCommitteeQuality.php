@@ -8,42 +8,36 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- *
  * @UniqueEntity(fields={"politicalCommitteeMembership", "name"})
  */
+#[ORM\Entity]
 class PoliticalCommitteeQuality
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     /**
      * @var PoliticalCommitteeMembership|null
-     *
-     * @ORM\ManyToOne(targetEntity="PoliticalCommitteeMembership", inversedBy="qualities")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: PoliticalCommitteeMembership::class, inversedBy: 'qualities')]
     private $politicalCommitteeMembership;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $name;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Assert\NotNull
      */
+    #[ORM\Column(type: 'datetime')]
     private $joinedAt;
 
     public function __construct(string $name, ?\DateTime $joinedAt = null)

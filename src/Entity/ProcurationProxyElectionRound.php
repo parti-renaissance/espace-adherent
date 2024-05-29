@@ -4,41 +4,28 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="procuration_proxies_to_election_rounds", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="procuration_proxy_election_round_unique", columns={"procuration_proxy_id", "election_round_id"}),
- * })
- */
+#[ORM\Table(name: 'procuration_proxies_to_election_rounds')]
+#[ORM\UniqueConstraint(name: 'procuration_proxy_election_round_unique', columns: ['procuration_proxy_id', 'election_round_id'])]
+#[ORM\Entity]
 class ProcurationProxyElectionRound
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProcurationProxy", inversedBy="procurationProxyElectionRounds")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ProcurationProxy::class, inversedBy: 'procurationProxyElectionRounds')]
     private ProcurationProxy $procurationProxy;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ElectionRound")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectionRound::class)]
     private ElectionRound $electionRound;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": true})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private bool $frenchRequestAvailable = true;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": true})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private bool $foreignRequestAvailable = true;
 
     public function __construct(ProcurationProxy $procurationProxy, ElectionRound $electionRound)

@@ -4,25 +4,21 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class SenatorArea
 {
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var ReferentTag|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\ReferentTag")
      */
+    #[ORM\ManyToOne(targetEntity: ReferentTag::class)]
     private $departmentTag;
 
     public function getId(): int

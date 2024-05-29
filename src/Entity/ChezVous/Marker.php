@@ -5,57 +5,50 @@ namespace App\Entity\ChezVous;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="chez_vous_markers")
- */
+#[ORM\Table(name: 'chez_vous_markers')]
+#[ORM\Entity]
 class Marker
 {
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="255")
      */
+    #[ORM\Column]
     private $type;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(type="geo_point")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'geo_point')]
     private $latitude;
 
     /**
      * @var float|null
      *
-     * @ORM\Column(type="geo_point")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'geo_point')]
     private $longitude;
 
     /**
      * @var City|null
      *
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="markers")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: City::class, inversedBy: 'markers')]
     private $city;
 
     public function __construct(?City $city = null, ?string $type = null, ?float $latitude = null, ?float $longitude = null)

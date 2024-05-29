@@ -2,6 +2,7 @@
 
 namespace App\Entity\Jecoute;
 
+use App\Repository\Jecoute\ChoiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,44 +11,38 @@ use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="jecoute_choice")
- * @ORM\Entity(repositoryClass="App\Repository\Jecoute\ChoiceRepository")
- */
+#[ORM\Table(name: 'jecoute_choice')]
+#[ORM\Entity(repositoryClass: ChoiceRepository::class)]
 class Choice
 {
     use Sortable;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
     #[Groups(['survey_list', 'survey_read_dc'])]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var Question
      *
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="choices")
      * @Gedmo\SortableGroup
      */
+    #[ORM\ManyToOne(targetEntity: Question::class, inversedBy: 'choices')]
     private $question;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=80)
      */
     #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
+    #[ORM\Column]
     private $content;
 
     /**
      * @var DataAnswer[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Jecoute\DataAnswer", fetch="EXTRA_LAZY", mappedBy="selectedChoices")
      */
+    #[ORM\ManyToMany(targetEntity: DataAnswer::class, mappedBy: 'selectedChoices', fetch: 'EXTRA_LAZY')]
     private $dataAnswers;
 
     public function __construct(?string $content = null)

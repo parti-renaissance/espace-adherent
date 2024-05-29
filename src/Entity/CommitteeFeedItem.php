@@ -4,15 +4,14 @@ namespace App\Entity;
 
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
+use App\Repository\CommitteeFeedItemRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CommitteeFeedItemRepository")
- */
+#[ORM\Entity(repositoryClass: CommitteeFeedItemRepository::class)]
 class CommitteeFeedItem implements UserDocumentInterface
 {
     use EntityIdentityTrait;
@@ -21,63 +20,45 @@ class CommitteeFeedItem implements UserDocumentInterface
     public const MESSAGE = 'message';
     public const EVENT = 'event';
 
-    /**
-     * @ORM\Column(length=18)
-     */
+    #[ORM\Column(length: 18)]
     private $itemType;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Committee::class)]
     private $committee;
 
     /**
      * @var Adherent Any host of the committee
-     *
-     * @ORM\ManyToOne(targetEntity="Adherent", inversedBy="committeeFeedItems")
      */
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'committeeFeedItems')]
     private $author;
 
     /**
      * @var CommitteeEvent
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event\BaseEvent", fetch="EAGER")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=true)
      */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: BaseEvent::class, fetch: 'EAGER')]
     private $event;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $content;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": true})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $published = true;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     /**
      * @var UserDocument[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\UserDocument", cascade={"all"}, orphanRemoval=true)
-     * @ORM\JoinTable(
-     *     name="committee_feed_item_user_documents",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="committee_feed_item_id", referencedColumnName="id", onDelete="CASCADE")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="user_document_id", referencedColumnName="id", onDelete="CASCADE")
-     *     }
-     * )
      */
+    #[ORM\JoinTable(name: 'committee_feed_item_user_documents')]
+    #[ORM\JoinColumn(name: 'committee_feed_item_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'user_document_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: UserDocument::class, cascade: ['all'], orphanRemoval: true)]
     protected Collection $documents;
 
     private function __construct(

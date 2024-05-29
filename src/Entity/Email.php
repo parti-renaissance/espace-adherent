@@ -3,13 +3,12 @@
 namespace App\Entity;
 
 use App\Mailer\Message\Message;
+use App\Repository\EmailRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Table(name="emails")
- * @ORM\Entity(repositoryClass="App\Repository\EmailRepository")
- */
+#[ORM\Table(name: 'emails')]
+#[ORM\Entity(repositoryClass: EmailRepository::class)]
 class Email
 {
     use EntityIdentityTrait;
@@ -17,40 +16,32 @@ class Email
 
     /**
      * The message class namespace.
-     *
-     * @ORM\Column(length=55, nullable=true)
      */
+    #[ORM\Column(length: 55, nullable: true)]
     private $messageClass;
 
-    /**
-     * @ORM\Column(length=100)
-     */
+    #[ORM\Column(length: 100)]
     private $sender;
 
-    /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $recipients;
 
     /**
      * The API request JSON payload.
-     *
-     * @ORM\Column(type="text")
      */
+    #[ORM\Column(type: 'text')]
     private $requestPayload;
 
     /**
      * The successful API response JSON payload.
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $responsePayload;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $deliveredAt;
 
     public function __construct(

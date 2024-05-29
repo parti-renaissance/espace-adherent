@@ -4,6 +4,7 @@ namespace App\Entity\Mooc;
 
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Image;
+use App\Repository\MoocRepository;
 use App\Validator\ImageObject as AssertImageObject;
 use Cake\Chronos\MutableDate;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,122 +16,107 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\MoocRepository")
- *
  * @UniqueEntity("title")
  * @Assert\Expression(
  *     expression="(this.getArticleImage() and null === this.getYoutubeId()) or (this.getYoutubeId() and null === this.getArticleImage())",
  *     message="mooc.two_media"
  * )
  */
+#[ORM\Entity(repositoryClass: MoocRepository::class)]
 class Mooc
 {
     use EntityTimestampableTrait;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
     #[Groups(['mooc_list'])]
+    #[ORM\Column]
     private $title;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
     #[Groups(['mooc_list'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
     /**
-     * @ORM\Column(unique=true)
      * @Gedmo\Slug(fields={"title"}, unique=true)
      */
     #[Groups(['mooc_list'])]
+    #[ORM\Column(unique: true)]
     private $slug;
 
     /**
      * @var Chapter[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="Chapter", mappedBy="mooc", cascade={"all"})
-     * @ORM\OrderBy({"position": "ASC"})
-     *
      * @Assert\Valid
      */
+    #[ORM\OneToMany(mappedBy: 'mooc', targetEntity: Chapter::class, cascade: ['all'])]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     private $chapters;
 
     /**
-     * @ORM\Column(length=800, nullable=true)
-     *
      * @Assert\Length(allowEmptyString=true, min=5, max=800)
      */
+    #[ORM\Column(length: 800, nullable: true)]
     private $content;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="mooc.youtubeid_syntax")
      * @Assert\Length(allowEmptyString=true, min=2, max=11)
      */
+    #[ORM\Column(nullable: true)]
     private $youtubeId;
 
     /**
      * @var \DateTimeInterface|null
      *
-     * @ORM\Column(type="time", nullable=true)
-     *
      * @Assert\Time
      */
+    #[ORM\Column(type: 'time', nullable: true)]
     private $youtubeDuration;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $shareTwitterText;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $shareFacebookText;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $shareEmailSubject;
 
     /**
-     * @ORM\Column(length=500)
-     *
      * @Assert\NotBlank
      * @Assert\Length(allowEmptyString=true, min=5, max=500)
      */
+    #[ORM\Column(length: 500)]
     protected $shareEmailBody;
 
     /**
      * @var Image|null
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"all"}, orphanRemoval=true)
-     *
      * @AssertImageObject(
      *     mimeTypes={"image/jpeg", "image/png"},
      *     maxSize="1M",
@@ -138,13 +124,12 @@ class Mooc
      *     maxHeight="720"
      * )
      */
+    #[ORM\OneToOne(targetEntity: Image::class, cascade: ['all'], orphanRemoval: true)]
     protected $articleImage;
 
     /**
      * @var Image|null
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"all"}, orphanRemoval=true)
-     *
      * @AssertImageObject(
      *     mimeTypes={"image/jpeg", "image/png"},
      *     maxSize="1M",
@@ -152,6 +137,7 @@ class Mooc
      *     maxHeight="720"
      * )
      */
+    #[ORM\OneToOne(targetEntity: Image::class, cascade: ['all'], orphanRemoval: true)]
     protected $listImage;
 
     public function __construct(

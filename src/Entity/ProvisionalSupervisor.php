@@ -4,37 +4,31 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="committee_provisional_supervisor")
- *
- * @ORM\Entity
- */
+#[ORM\Table(name: 'committee_provisional_supervisor')]
+#[ORM\Entity]
 class ProvisionalSupervisor
 {
     use EntityTimestampableTrait;
 
     /**
      * @var int|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="provisionalSupervisors")
      */
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'provisionalSupervisors')]
     private $adherent;
 
     /**
      * @var Committee
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Committee", inversedBy="provisionalSupervisors")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Committee::class, inversedBy: 'provisionalSupervisors')]
     private $committee;
 
     public function __construct(Adherent $adherent, Committee $committee)

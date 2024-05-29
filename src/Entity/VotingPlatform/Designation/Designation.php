@@ -20,6 +20,7 @@ use App\Entity\VotingPlatform\Designation\CandidacyPool\CandidacyPool;
 use App\Entity\VotingPlatform\Designation\Poll\Poll;
 use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
 use App\Entity\ZoneableEntity;
+use App\Repository\VotingPlatform\DesignationRepository;
 use App\VotingPlatform\Designation\CreatePartialDesignationCommand;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -77,9 +78,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ApiFilter(InZoneOfScopeFilter::class)
- *
- * @ORM\Entity(repositoryClass="App\Repository\VotingPlatform\DesignationRepository")
  */
+#[ORM\Entity(repositoryClass: DesignationRepository::class)]
 class Designation implements EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, ZoneableEntity
 {
     use EntityIdentityTrait;
@@ -108,70 +108,59 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\NotBlank(groups={"Admin"})
      */
+    #[ORM\Column(nullable: true)]
     private $label;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\NotBlank(groups={"api_designation_write", "api_designation_write_limited"})
      */
     #[Groups(['designation_read', 'designation_write', 'designation_list', 'designation_write_limited', 'committee_election:read'])]
+    #[ORM\Column(nullable: true)]
     public ?string $customTitle = null;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column
      *
      * @Assert\NotBlank(groups={"Default", "api_designation_write"})
      * @Assert\Choice(choices=DesignationTypeEnum::MAIN_TYPES, groups={"Default"})
      * @Assert\Choice(choices=DesignationTypeEnum::API_AVAILABLE_TYPES, groups={"api_designation_write"})
      */
     #[Groups(['designation_read', 'designation_write', 'designation_list'])]
+    #[ORM\Column]
     private $type;
 
     /**
      * @var string[]|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $globalZones;
 
     /**
      * @var ReferentTag[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentTag")
      */
+    #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
     private $referentTags;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $candidacyStartDate;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $candidacyEndDate;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
     #[Groups(['designation_read', 'committee_election:read'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $electionCreationDate = null;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      *
      * @Assert\GreaterThan(
      *     "now",
@@ -180,12 +169,11 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      * )
      */
     #[Groups(['designation_read', 'designation_write', 'designation_list', 'committee_election:read'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $voteStartDate;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      *
      * @Assert\Expression(
      *     "value > this.getVoteStartDate()",
@@ -194,16 +182,16 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      * )
      */
     #[Groups(['designation_read', 'designation_write', 'committee_election:read'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $voteEndDate;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="smallint", options={"unsigned": true})
-     *
      * @Assert\NotBlank
      * @Assert\GreaterThanOrEqual(0)
      */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
     private $resultDisplayDelay = 14;
 
     /**
@@ -211,10 +199,9 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      *
      * @var float
      *
-     * @ORM\Column(type="float", options={"unsigned": true, "default": 0})
-     *
      * @Assert\GreaterThanOrEqual(0)
      */
+    #[ORM\Column(type: 'float', options: ['unsigned' => true, 'default' => 0])]
     private $resultScheduleDelay = 0;
 
     /**
@@ -222,109 +209,87 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      *
      * @var int
      *
-     * @ORM\Column(type="smallint", options={"unsigned": true})
-     *
      * @Assert\NotBlank
      * @Assert\GreaterThan(0)
      */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
     private $additionalRoundDuration = 5;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="smallint", options={"unsigned": true})
-     *
      * @Assert\NotBlank
      * @Assert\GreaterThanOrEqual(0)
      */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
     private $lockPeriodThreshold = 3;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $limited = false;
 
     /**
      * @var string
-     *
-     * @ORM\Column(options={"default": self::DENOMINATION_DESIGNATION})
      */
+    #[ORM\Column(options: ['default' => self::DENOMINATION_DESIGNATION])]
     private $denomination = self::DENOMINATION_DESIGNATION;
 
     /**
      * @var array|null
-     *
-     * @ORM\Column(type="simple_array", nullable=true)
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $pools;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
     #[Groups(['designation_read', 'designation_write', 'designation_write_limited'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $notifications = 15;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private bool $isBlankVoteEnabled = true;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\VotingPlatform\Designation\Poll\Poll")
-     *
      * @Assert\Expression("!(this.isLocalPollType() || this.isConsultationType()) or value", message="Vous devez préciser le questionnaire qui sera utilisé pour cette élection.")
      */
+    #[ORM\ManyToOne(targetEntity: Poll::class)]
     public ?Poll $poll = null;
 
     /**
      * @var CandidacyPool[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\VotingPlatform\Designation\CandidacyPool\CandidacyPool", mappedBy="designation", cascade={"persist"}, fetch="EXTRA_LAZY")
      */
+    #[ORM\OneToMany(mappedBy: 'designation', targetEntity: CandidacyPool::class, cascade: ['persist'], fetch: 'EXTRA_LAZY')]
     private $candidacyPools;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\CmsBlock")
-     */
+    #[ORM\ManyToOne(targetEntity: CmsBlock::class)]
     public ?CmsBlock $wordingWelcomePage = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\CmsBlock")
-     */
+    #[ORM\ManyToOne(targetEntity: CmsBlock::class)]
     public ?CmsBlock $wordingRegulationPage = null;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
-     *
      * @Assert\Expression("!this.isLocalElectionType() or value", message="Vous devez préciser le nombre des sièges à distribuer.")
      */
+    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     public ?int $seats = null;
 
     /**
-     * @ORM\Column(type="smallint", nullable=true, options={"unsigned": true})
-     *
      * @Assert\GreaterThan(0)
      * @Assert\LessThanOrEqual(100)
      */
+    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     public ?int $majorityPrime = null;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
-     *
      * @Assert\Expression("!this.isLocalElectionType() or !this.majorityPrime or null != value", message="Vous devez préciser le mode d'arrondi pour la prime majoritaire.")
      */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     public ?bool $majorityPrimeRoundSupMode = null;
 
     /**
-     * @ORM\Column(type="uuid", nullable=true)
-     *
      * @Assert\Expression(
      *     "!this.isCommitteeSupervisorType() or value",
      *     message="Un identifiant est requis pour ce champs.",
@@ -332,9 +297,10 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      * )
      */
     #[Groups(['designation_read', 'designation_write'])]
+    #[ORM\Column(type: 'uuid', nullable: true)]
     private ?UuidInterface $electionEntityIdentifier = null;
 
-    /** @ORM\Column(type="boolean", options={"default": false}) */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $isCanceled = false;
 
     public function __construct(?string $label = null, ?UuidInterface $uuid = null)
@@ -675,14 +641,11 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
     public function getPoolTypes(): array
     {
-        switch ($this->getType()) {
-            case DesignationTypeEnum::COMMITTEE_ADHERENT:
-                return ElectionPoolCodeEnum::COMMITTEE_ADHERENT;
-            case DesignationTypeEnum::COPOL:
-                return ElectionPoolCodeEnum::COPOL;
-        }
-
-        return [];
+        return match ($this->getType()) {
+            DesignationTypeEnum::COMMITTEE_ADHERENT => ElectionPoolCodeEnum::COMMITTEE_ADHERENT,
+            DesignationTypeEnum::COPOL => ElectionPoolCodeEnum::COPOL,
+            default => [],
+        };
     }
 
     public function isCommitteeTypes(): bool

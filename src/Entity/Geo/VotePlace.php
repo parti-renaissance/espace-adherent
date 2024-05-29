@@ -5,30 +5,22 @@ namespace App\Entity\Geo;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="geo_vote_place")
- */
+#[ORM\Table(name: 'geo_vote_place')]
+#[ORM\Entity]
 class VotePlace implements ZoneableInterface
 {
     use GeoTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\City")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: City::class)]
     public ?City $city = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\District")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: District::class)]
     public ?District $district = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Canton")
-     */
+    #[ORM\ManyToOne(targetEntity: Canton::class)]
     public ?Canton $canton = null;
 
     public function __construct(string $code, string $name, City $city, District $district)

@@ -8,29 +8,26 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="territorial_council_candidacy_invitation")
- *
  * @ValidTerritorialCouncilCandidacyForCopolInvitation(groups={"copol_election"})
  */
+#[ORM\Table(name: 'territorial_council_candidacy_invitation')]
+#[ORM\Entity]
 class CandidacyInvitation extends BaseCandidacyInvitation
 {
     /**
      * @var Candidacy
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\Candidacy", inversedBy="invitations")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Candidacy::class, inversedBy: 'invitations')]
     protected $candidacy;
 
     /**
      * @var TerritorialCouncilMembership
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncilMembership")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     *
      * @Assert\NotBlank(groups={"Default", "national_council_election", "copol_election"})
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: TerritorialCouncilMembership::class)]
     protected $membership;
 
     public function getMembership(): ?TerritorialCouncilMembership

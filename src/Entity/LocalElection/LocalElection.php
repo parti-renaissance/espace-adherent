@@ -4,21 +4,19 @@ namespace App\Entity\LocalElection;
 
 use App\Entity\VotingPlatform\Designation\AbstractElectionEntity;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Repository\LocalElection\LocalElectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\LocalElection\LocalElectionRepository")
- */
+#[ORM\Entity(repositoryClass: LocalElectionRepository::class)]
 class LocalElection extends AbstractElectionEntity
 {
     /**
      * @var CandidaciesGroup[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\LocalElection\CandidaciesGroup", mappedBy="election", cascade={"persist"})
      */
+    #[ORM\OneToMany(mappedBy: 'election', targetEntity: CandidaciesGroup::class, cascade: ['persist'])]
     private $candidaciesGroups;
 
     public function __construct(?Designation $designation = null, ?UuidInterface $uuid = null)

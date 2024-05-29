@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\PushToken\PushTokenSourceEnum;
+use App\Repository\PushTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -40,10 +41,9 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *     }
  * )
  *
- * @ORM\Entity(repositoryClass="App\Repository\PushTokenRepository")
- *
  * @UniqueEntity("identifier")
  */
+#[ORM\Entity(repositoryClass: PushTokenRepository::class)]
 class PushToken
 {
     use EntityIdentityTrait;
@@ -52,32 +52,27 @@ class PushToken
     /**
      * @var UuidInterface
      *
-     * @ORM\Column(type="uuid", unique=true)
-     *
      * @ApiProperty(identifier=false)
      */
+    #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
 
     /**
      * @var Adherent|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $adherent;
 
     /**
      * @var Device|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Device")
-     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Device::class)]
     private $device;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(unique=true)
      *
      * @ApiProperty(identifier=true)
      *
@@ -85,17 +80,17 @@ class PushToken
      * @Assert\Length(max=255)
      */
     #[Groups(['push_token_write'])]
+    #[ORM\Column(unique: true)]
     private $identifier;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Choice(choices=PushTokenSourceEnum::ALL)
      */
     #[Groups(['push_token_write'])]
+    #[ORM\Column]
     private $source;
 
     public function __construct(

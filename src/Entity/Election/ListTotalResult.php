@@ -4,41 +4,35 @@ namespace App\Entity\Election;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class ListTotalResult
 {
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var VoteResultList|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Election\VoteResultList")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: VoteResultList::class)]
     private $list;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer", options={"default": 0})
      */
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $total = 0;
 
     /**
      * @var BaseWithListCollectionResult|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Election\BaseWithListCollectionResult", inversedBy="listTotalResults")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: BaseWithListCollectionResult::class, inversedBy: 'listTotalResults')]
     private $voteResult;
 
     public function __construct(?VoteResultList $list = null)

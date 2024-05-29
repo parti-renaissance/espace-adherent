@@ -4,22 +4,16 @@ namespace App\Entity\ApplicationRequest;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="application_request_tag")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'application_request_tag')]
+#[ORM\Entity]
 class ApplicationRequestTag
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @ORM\Column
-     */
+    #[ORM\Column]
     private $name;
 
     public function __construct(?string $name = null)

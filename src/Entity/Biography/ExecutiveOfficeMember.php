@@ -4,46 +4,37 @@ namespace App\Entity\Biography;
 
 use App\Entity\EntitySourceableInterface;
 use App\Entity\EntitySourceableTrait;
+use App\Repository\Biography\ExecutiveOfficeMemberRepository;
 use App\Validator\UniqueExecutiveOfficeMemberRole;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\Biography\ExecutiveOfficeMemberRepository")
- * @ORM\Table(name="biography_executive_office_member")
- *
  * @UniqueExecutiveOfficeMemberRole
  */
+#[ORM\Table(name: 'biography_executive_office_member')]
+#[ORM\Entity(repositoryClass: ExecutiveOfficeMemberRepository::class)]
 class ExecutiveOfficeMember extends AbstractBiography implements EntitySourceableInterface
 {
     use EntitySourceableTrait;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $job;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $role;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $president = false;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": 0})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $executiveOfficer = false;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $deputyGeneralDelegate = false;
 
     public function __construct(

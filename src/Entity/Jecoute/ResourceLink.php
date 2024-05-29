@@ -7,6 +7,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\ImageTrait;
+use App\Repository\Jecoute\ResourceLinkRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -28,10 +29,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={}
  * )
- *
- * @ORM\Entity(repositoryClass="App\Repository\Jecoute\ResourceLinkRepository")
- * @ORM\Table(name="jecoute_resource_link")
  */
+#[ORM\Table(name: 'jecoute_resource_link')]
+#[ORM\Entity(repositoryClass: ResourceLinkRepository::class)]
 class ResourceLink implements ExposedImageOwnerInterface
 {
     use EntityIdentityTrait;
@@ -40,21 +40,19 @@ class ResourceLink implements ExposedImageOwnerInterface
     use Sortable;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
     #[Groups(['jecoute_resource_links_read'])]
+    #[ORM\Column]
     private ?string $label;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      * @Assert\Url
      */
     #[Groups(['jecoute_resource_links_read'])]
+    #[ORM\Column(type: 'text')]
     private ?string $url;
 
     /**

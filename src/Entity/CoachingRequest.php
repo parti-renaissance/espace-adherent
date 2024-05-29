@@ -5,36 +5,31 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Embeddable
- */
+#[ORM\Embeddable]
 class CoachingRequest
 {
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=1000)
      */
+    #[ORM\Column(nullable: true)]
     private $problemDescription;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=1000)
      */
+    #[ORM\Column(nullable: true)]
     private $proposedSolution;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=1000)
      */
+    #[ORM\Column(nullable: true)]
     private $requiredMeans;
 
     public function __construct(

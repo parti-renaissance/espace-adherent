@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\MediaRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -10,91 +11,79 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="medias")
- * @ORM\Entity(repositoryClass="App\Repository\MediaRepository")
- *
  * @UniqueEntity(fields={"path"})
  */
+#[ORM\Table(name: 'medias')]
+#[ORM\Entity(repositoryClass: MediaRepository::class)]
 class Media
 {
     /**
      * @var int
-     *
-     * @ORM\Column(type="bigint")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'bigint')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column]
     private $name;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(unique: true)]
     private $path;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer")
      */
+    #[ORM\Column(type: 'integer')]
     private $width;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer")
      */
+    #[ORM\Column(type: 'integer')]
     private $height;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="bigint")
      */
+    #[ORM\Column(type: 'bigint')]
     private $size;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=50)
      */
+    #[ORM\Column(length: 50)]
     private $mimeType;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Gedmo\Timestampable(on="create")
      */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Gedmo\Timestampable(on="update")
      */
+    #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": 1})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private $compressedDisplay = true;
 
     /**

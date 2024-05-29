@@ -14,6 +14,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityScopeVisibilityTrait;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityTimestampableTrait;
+use App\Repository\GeneralMeeting\GeneralMeetingReportRepository;
 use App\Validator\Scope\ScopeVisibility;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -83,13 +84,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(ScopeVisibilityFilter::class)
  *
- * @ORM\Entity(repositoryClass="App\Repository\GeneralMeeting\GeneralMeetingReportRepository");
- * @ORM\Table(name="general_meeting_report")
- *
  * @UniqueEntity(fields={"zone", "title"}, message="general_meeting_report.zone_title.unique_entity")
  *
  * @ScopeVisibility
  */
+#[ORM\Table(name: 'general_meeting_report')]
+#[ORM\Entity(repositoryClass: GeneralMeetingReportRepository::class)]
 class GeneralMeetingReport implements EntityScopeVisibilityWithZoneInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
@@ -99,29 +99,26 @@ class GeneralMeetingReport implements EntityScopeVisibilityWithZoneInterface, En
     use EntityScopeVisibilityTrait;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank(message="Veuillez renseigner un titre.")
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="Le titre doit faire au moins 2 caractères.")
      */
     #[Groups(['general_meeting_report_list_read', 'general_meeting_report_read', 'general_meeting_report_write'])]
+    #[ORM\Column]
     private ?string $title = null;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     *
      * @Assert\Length(allowEmptyString=true, min=2, minMessage="La description doit faire au moins 2 caractères.")
      */
     #[Groups(['general_meeting_report_list_read', 'general_meeting_report_read', 'general_meeting_report_write'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
      * @Assert\NotBlank
      * @Assert\LessThanOrEqual("now")
      */
     #[Groups(['general_meeting_report_list_read', 'general_meeting_report_read', 'general_meeting_report_write'])]
+    #[ORM\Column(type: 'datetime')]
     private ?\DateTime $date = null;
 
     /**
@@ -152,9 +149,7 @@ class GeneralMeetingReport implements EntityScopeVisibilityWithZoneInterface, En
      */
     private ?UploadedFile $file = null;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $filePath = null;
 
     public function __construct(?UuidInterface $uuid = null)

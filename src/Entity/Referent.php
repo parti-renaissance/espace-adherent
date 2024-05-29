@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
+use App\Repository\ReferentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,10 +12,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ReferentRepository")
- *
  * @UniqueEntity(fields="slug", groups="Admin")
  */
+#[ORM\Entity(repositoryClass: ReferentRepository::class)]
 class Referent implements EntityMediaInterface
 {
     use EntityPersonNameTrait;
@@ -23,16 +23,12 @@ class Referent implements EntityMediaInterface
     public const ENABLED = 'ENABLED';
     public const DISABLED = 'DISABLED';
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true})
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
-     * @ORM\Column(length=6)
-     *
      * @Assert\NotBlank(groups="Admin")
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
@@ -40,86 +36,69 @@ class Referent implements EntityMediaInterface
      *     groups="Admin"
      * )
      */
+    #[ORM\Column(length: 6)]
     private $gender;
 
     /**
-     * @ORM\Column(length=100, nullable=true)
-     *
      * @Assert\Email(groups="Admin")
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups="Admin")
      */
+    #[ORM\Column(length: 100, nullable: true)]
     private $emailAddress;
 
     /**
-     * @ORM\Column(length=100, unique=true)
      * @Gedmo\Slug(fields={"firstName", "lastName"})
-     *
      * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="legislative_candidate.slug.invalid", groups="Admin")
      */
+    #[ORM\Column(length: 100, unique: true)]
     private $slug;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url(groups="Admin")
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="legislative_candidate.facebook_page_url.invalid", groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
      */
+    #[ORM\Column(nullable: true)]
     private $facebookPageUrl;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url(groups="Admin")
      * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="legislative_candidate.twitter_page_url.invalid", groups="Admin")
      * @Assert\Length(max=255, groups="Admin")
      */
+    #[ORM\Column(nullable: true)]
     private $twitterPageUrl;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $geojson;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
     /**
-     * @ORM\Column
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     private $areaLabel = '';
 
     /**
      * @var ReferentArea[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\ReferentArea", fetch="EAGER")
-     * @ORM\JoinTable(
-     *     name="referent_areas",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="referent_id", referencedColumnName="id")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="area_id", referencedColumnName="id")
-     *     }
-     * )
-     *
      * @Assert\Count(min=1, groups={"Admin"})
      */
+    #[ORM\JoinTable(name: 'referent_areas')]
+    #[ORM\JoinColumn(name: 'referent_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'area_id', referencedColumnName: 'id')]
+    #[ORM\ManyToMany(targetEntity: ReferentArea::class, fetch: 'EAGER')]
     private $areas;
 
-    /**
-     * @ORM\Column(length=10, options={"default": "DISABLED"})
-     */
+    #[ORM\Column(length: 10, options: ['default' => 'DISABLED'])]
     private $status = self::ENABLED;
 
     /**
      * @var Collection|ReferentPersonLink[]
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\ReferentOrganizationalChart\ReferentPersonLink", mappedBy="referent", cascade={"persist"})
      */
+    #[ORM\OneToMany(mappedBy: 'referent', targetEntity: ReferentPersonLink::class, cascade: ['persist'])]
     private $referentPersonLinks;
 
     public function __construct()

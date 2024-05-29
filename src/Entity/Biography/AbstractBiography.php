@@ -13,9 +13,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\MappedSuperclass
- */
+#[ORM\MappedSuperclass]
 abstract class AbstractBiography implements ImageOwnerInterface
 {
     use EntityIdentityTrait;
@@ -23,69 +21,57 @@ abstract class AbstractBiography implements ImageOwnerInterface
     use ImageTrait;
 
     /**
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(length: 50)]
     protected $firstName;
 
     /**
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(length: 50)]
     protected $lastName;
 
     /**
-     * @ORM\Column(unique=true)
-     *
      * @Gedmo\Slug(fields={"firstName", "lastName"})
      */
+    #[ORM\Column(unique: true)]
     protected $slug;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": 0})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     protected $published;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255)
      */
+    #[ORM\Column(nullable: true)]
     protected $description;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     protected $content;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url
      */
+    #[ORM\Column(nullable: true)]
     protected $facebookProfile;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url
      */
+    #[ORM\Column(nullable: true)]
     protected $twitterProfile;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url
      */
+    #[ORM\Column(nullable: true)]
     protected $instagramProfile;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url
      */
+    #[ORM\Column(nullable: true)]
     protected $linkedInProfile;
 
     /**

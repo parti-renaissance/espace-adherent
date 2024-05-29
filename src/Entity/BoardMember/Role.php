@@ -2,47 +2,42 @@
 
 namespace App\Entity\BoardMember;
 
+use App\Repository\BoardMember\RoleRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\BoardMember\RoleRepository")
- * @ORM\Table(name="roles")
- *
  * @UniqueEntity("code")
  * @UniqueEntity("name")
  */
+#[ORM\Table(name: 'roles')]
+#[ORM\Entity(repositoryClass: RoleRepository::class)]
 class Role
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", options={"unsigned": true})
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private $id;
 
     /**
-     * @ORM\Column(length=20, unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="20")
      */
+    #[ORM\Column(length: 20, unique: true)]
     private $code;
 
     /**
-     * @ORM\Column(length=100, unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="100")
      */
+    #[ORM\Column(length: 100, unique: true)]
     private $name = '';
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\BoardMember\BoardMember", mappedBy="roles")
-     *
      * @var BoardMember[]
      */
+    #[ORM\ManyToMany(targetEntity: BoardMember::class, mappedBy: 'roles')]
     private $boardMembers;
 
     public function __construct(?string $code = null, ?string $name = null)

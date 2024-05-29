@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
+use App\Repository\TonMacronChoiceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Table(name="ton_macron_choices")
- * @ORM\Entity(repositoryClass="App\Repository\TonMacronChoiceRepository")
- */
+#[ORM\Table(name: 'ton_macron_choices')]
+#[ORM\Entity(repositoryClass: TonMacronChoiceRepository::class)]
 class TonMacronChoice
 {
     use EntityIdentityTrait;
@@ -34,24 +33,16 @@ class TonMacronChoice
         self::STEP_SELF_REASONS => 4,
     ];
 
-    /**
-     * @ORM\Column(type="smallint", length=1, options={"unsigned": true})
-     */
+    #[ORM\Column(type: 'smallint', length: 1, options: ['unsigned' => true])]
     private $step;
 
-    /**
-     * @ORM\Column(length=30, unique=true)
-     */
+    #[ORM\Column(length: 30, unique: true)]
     private $contentKey;
 
-    /**
-     * @ORM\Column(length=100)
-     */
+    #[ORM\Column(length: 100)]
     private $label;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private $content;
 
     public static function getStepsOrderForEmail(): array

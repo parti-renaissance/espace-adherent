@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\UserDocumentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
@@ -9,10 +10,8 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="user_documents")
- * @ORM\Entity(repositoryClass="App\Repository\UserDocumentRepository")
- */
+#[ORM\Table(name: 'user_documents')]
+#[ORM\Entity(repositoryClass: UserDocumentRepository::class)]
 class UserDocument
 {
     use EntityIdentityTrait;
@@ -38,56 +37,50 @@ class UserDocument
     /**
      * @var string|null
      *
-     * @ORM\Column(length=200)
-     *
      * @Assert\Length(max=200, maxMessage="document.validation.filename_length")
      */
+    #[ORM\Column(length: 200)]
     private $originalName;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=10)
-     *
      * @Assert\Length(max=10)
      */
+    #[ORM\Column(length: 10)]
     private $extension;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer")
      *
      * @Assert\LessThan(
      *     value=5242880,
      *     message="document.validation.max_filesize"
      * )
      */
+    #[ORM\Column(type: 'integer')]
     private $size;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $mimeType;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=25)
-     *
      * @Assert\Choice(callback="allTypes")
      */
+    #[ORM\Column(length: 25)]
     private $type;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
-     *
      * @Gedmo\Timestampable(on="create")
      */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     private function __construct(string $type, string $name, string $extension, int $size, string $createdAt = 'now')

@@ -2,18 +2,16 @@
 
 namespace App\Entity;
 
+use App\Repository\DonatorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="donators", indexes={
- *     @ORM\Index(columns={"email_address", "first_name", "last_name"}),
- * })
- * @ORM\Entity(repositoryClass="App\Repository\DonatorRepository")
- */
+#[ORM\Table(name: 'donators')]
+#[ORM\Index(columns: ['email_address', 'first_name', 'last_name'])]
+#[ORM\Entity(repositoryClass: DonatorRepository::class)]
 class Donator
 {
     use EntityIdentityTrait;
@@ -21,110 +19,93 @@ class Donator
 
     /**
      * The unique account identifier.
-     *
-     * @ORM\Column(unique=true)
      */
+    #[ORM\Column(unique: true)]
     private $identifier;
 
     /**
      * @var Adherent|null
-     *
-     * @ORM\ManyToOne(targetEntity="Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $adherent;
 
     /**
-     * @ORM\Column(length=50, nullable=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(
      *     min=1,
      *     max=50,
      * )
      */
+    #[ORM\Column(length: 50, nullable: true)]
     private $lastName;
 
     /**
-     * @ORM\Column(length=100, nullable=true)
-     *
      * @Assert\NotBlank
      * @Assert\Length(
      *     min=2,
      *     max=100,
      * )
      */
+    #[ORM\Column(length: 100, nullable: true)]
     private $firstName;
 
     /**
-     * @ORM\Column(length=50, nullable=true)
-     *
      * @Assert\NotBlank(message="common.birthcity.not_blank")
      * @Assert\Length(max=50)
      */
+    #[ORM\Column(length: 50, nullable: true)]
     private $city;
 
-    /**
-     * @ORM\Column(length=2)
-     */
+    #[ORM\Column(length: 2)]
     private $country;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
+    #[ORM\Column(nullable: true)]
     private $emailAddress;
 
-    /**
-     * @ORM\Column(length=6, nullable=true)
-     */
+    #[ORM\Column(length: 6, nullable: true)]
     private $gender;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
 
     /**
      * @var Donation[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="Donation", mappedBy="donator", cascade={"all"})
-     * @ORM\OrderBy({"createdAt": "DESC"})
      */
+    #[ORM\OneToMany(mappedBy: 'donator', targetEntity: Donation::class, cascade: ['all'])]
+    #[ORM\OrderBy(['createdAt' => 'DESC'])]
     private $donations;
 
     /**
      * @var Donation|null
-     *
-     * @ORM\OneToOne(targetEntity="Donation")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(targetEntity: Donation::class)]
     private $lastSuccessfulDonation;
 
     /**
      * @var Donation|null
-     *
-     * @ORM\OneToOne(targetEntity="Donation")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(targetEntity: Donation::class)]
     private $referenceDonation;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\DonatorTag")
-     */
+    #[ORM\ManyToMany(targetEntity: DonatorTag::class)]
     private $tags;
 
     /**
      * @var DonatorKinship[]|Collection
      *
-     * @ORM\OneToMany(targetEntity=DonatorKinship::class, mappedBy="donator", cascade={"all"})
-     *
      * @Assert\Valid
      */
+    #[ORM\OneToMany(mappedBy: 'donator', targetEntity: DonatorKinship::class, cascade: ['all'])]
     private $kinships;
 
     public function __construct(

@@ -5,19 +5,16 @@ namespace App\Entity\Mooc;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class MoocQuizElement extends BaseMoocElement
 {
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Url
      */
+    #[ORM\Column]
     private $typeformUrl;
 
     public function __construct(

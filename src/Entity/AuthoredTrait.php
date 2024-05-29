@@ -9,11 +9,10 @@ trait AuthoredTrait
 {
     /**
      * @var Adherent|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", fetch="EAGER")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     #[Groups(['action_read', 'action_read_list', 'action_write'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, fetch: 'EAGER')]
     private $author;
 
     public function getAuthor(): ?Adherent

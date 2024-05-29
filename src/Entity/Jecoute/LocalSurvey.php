@@ -6,45 +6,38 @@ use App\Entity\Adherent;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\Geo\Zone;
 use App\Jecoute\SurveyTypeEnum;
+use App\Repository\Jecoute\LocalSurveyRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\Jecoute\LocalSurveyRepository")
- */
+#[ORM\Entity(repositoryClass: LocalSurveyRepository::class)]
 class LocalSurvey extends Survey implements EntityScopeVisibilityWithZoneInterface
 {
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255)
-     *
      * @deprecated
      */
     #[Groups(['survey_list', 'survey_read_dc'])]
+    #[ORM\Column(nullable: true)]
     private $city;
 
     /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     *
      * @deprecated
      */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private $tags = [];
 
     /**
      * @var Zone|null
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['survey_list', 'survey_list_dc', 'survey_read_dc', 'survey_write_dc'])]
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
     private $zone;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $blockedChanges = false;
 
     public static function create(Adherent $user): self

@@ -6,9 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait EntitySourceableTrait
 {
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     protected ?bool $forRenaissance = false;
 
     public function isForRenaissance(): ?bool

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\CommitmentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -9,9 +10,7 @@ use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CommitmentRepository")
- */
+#[ORM\Entity(repositoryClass: CommitmentRepository::class)]
 class Commitment implements ImageOwnerInterface
 {
     use EntityIdentityTrait;
@@ -20,24 +19,21 @@ class Commitment implements ImageOwnerInterface
     use Sortable;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column]
     public ?string $title = null;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'text')]
     public ?string $shortDescription = null;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\Column(type: 'text')]
     public ?string $description = null;
 
     /**

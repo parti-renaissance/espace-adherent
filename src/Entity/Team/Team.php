@@ -16,6 +16,7 @@ use App\Entity\EntityScopeVisibilityTrait;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
+use App\Repository\Team\TeamRepository;
 use App\Validator\Scope\ScopeVisibility;
 use App\Validator\UniqueInCollection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -74,13 +75,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(ScopeVisibilityFilter::class)
  *
- * @ORM\Entity(repositoryClass="App\Repository\Team\TeamRepository")
- * @ORM\Table(
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(columns={"name", "zone_id"})
- *     }
- * )
- *
  * @UniqueEntity(
  *     fields={"name", "zone"},
  *     ignoreNull=false,
@@ -90,6 +84,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ScopeVisibility
  */
+#[ORM\Table]
+#[ORM\UniqueConstraint(columns: ['name', 'zone_id'])]
+#[ORM\Entity(repositoryClass: TeamRepository::class)]
 class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, EntityScopeVisibilityWithZoneInterface
 {
     use EntityIdentityTrait;
@@ -99,8 +96,6 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
     use EntityScopeVisibilityTrait;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank(message="team.name.not_blank")
      * @Assert\Length(
      *     min=2,
@@ -110,23 +105,17 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
      * )
      */
     #[Groups(['team_read', 'team_list_read', 'team_write', 'phoning_campaign_read', 'phoning_campaign_list'])]
+    #[ORM\Column]
     private ?string $name;
 
     /**
      * @var Member[]|Collection
      *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Team\Member",
-     *     mappedBy="team",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     fetch="EXTRA_LAZY"
-     * )
-     * @ORM\OrderBy({"createdAt": "DESC"})
-     *
      * @Assert\Valid
      * @UniqueInCollection(propertyPath="adherent", message="team.members.adherent_already_in_collection")
      */
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: Member::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OrderBy(['createdAt' => 'DESC'])]
     private Collection $members;
 
     #[Groups(['team_list_read'])]

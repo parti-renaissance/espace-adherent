@@ -11,50 +11,41 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(uniqueConstraints={
- *     @ORM\UniqueConstraint(name="adherent_instance_quality_unique", columns={"adherent_id", "instance_quality_id"}),
- * })
- */
+#[ORM\Table]
+#[ORM\UniqueConstraint(name: 'adherent_instance_quality_unique', columns: ['adherent_id', 'instance_quality_id'])]
+#[ORM\Entity]
 class AdherentInstanceQuality
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="instanceQualities")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'instanceQualities')]
     private $adherent;
 
     /**
      * @var InstanceQuality
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Instance\InstanceQuality", fetch="EAGER")
-     * @ORM\JoinColumn(nullable=false)
      */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: InstanceQuality::class, fetch: 'EAGER')]
     private $instanceQuality;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     private $date;
 
     /**
      * @var Zone|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Geo\Zone")
      */
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
     private $zone;
 
     /**
      * @var TerritorialCouncil|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\TerritorialCouncil\TerritorialCouncil")
      */
+    #[ORM\ManyToOne(targetEntity: TerritorialCouncil::class)]
     private $territorialCouncil;
 
     public function __construct(

@@ -2,11 +2,10 @@
 
 namespace App\Entity;
 
+use App\Repository\MailchimpSegmentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\MailchimpSegmentRepository")
- */
+#[ORM\Entity(repositoryClass: MailchimpSegmentRepository::class)]
 class MailchimpSegment
 {
     public const LIST_MAIN = 'main';
@@ -19,32 +18,28 @@ class MailchimpSegment
 
     /**
      * @var int
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $list;
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $label;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $externalId;
 
     public function __construct(string $list, string $label, ?string $externalId = null)

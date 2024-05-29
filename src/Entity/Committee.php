@@ -19,6 +19,7 @@ use App\Entity\VotingPlatform\Designation\EntityElectionHelperTrait;
 use App\Exception\CommitteeAlreadyApprovedException;
 use App\Geocoder\GeoPointInterface;
 use App\Report\ReportType;
+use App\Repository\CommitteeRepository;
 use App\Validator\ZoneType as AssertZoneType;
 use App\ValueObject\Genders;
 use App\ValueObject\Link;
@@ -93,16 +94,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ApiFilter(InZoneOfScopeFilter::class)
- *
- * @ORM\Table(
- *     name="committees",
- *     indexes={
- *         @ORM\Index(columns={"status"}),
- *         @ORM\Index(columns={"version"}),
- *     }
- * )
- * @ORM\Entity(repositoryClass="App\Repository\CommitteeRepository")
  */
+#[ORM\Table(name: 'committees')]
+#[ORM\Index(columns: ['status'])]
+#[ORM\Index(columns: ['version'])]
+#[ORM\Entity(repositoryClass: CommitteeRepository::class)]
 class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface, AddressHolderInterface, ZoneableEntity, ExposedObjectInterface, EntityAdherentBlameableInterface, GeoPointInterface, CoordinatorAreaInterface, ReportableInterface, EntityAdministratorBlameableInterface
 {
     use EntityNullablePostAddressTrait;
@@ -136,100 +132,81 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
 
     /**
      * The group current status.
-     *
-     * @ORM\Column(length=20)
      */
+    #[ORM\Column(length: 20)]
     protected $status;
 
     /**
      * The timestamp when an administrator approved this group.
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $approvedAt;
 
     /**
      * The timestamp when an administrator refused this group.
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $refusedAt;
 
     /**
      * The adherent UUID who created this group.
-     *
-     * @ORM\Column(type="uuid", nullable=true)
      */
+    #[ORM\Column(type: 'uuid', nullable: true)]
     private $createdBy;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $closedAt;
 
-    /**
-     * @ORM\Column(type="phone_number", nullable=true)
-     */
+    #[ORM\Column(type: 'phone_number', nullable: true)]
     private $phone;
 
     /**
      * The cached number of members (followers and hosts/administrators).
-     *
-     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
      */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     private int $membersCount = 0;
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
-     */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     private int $sympathizersCount = 0;
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true, "default": 0})
-     */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => 0])]
     private int $membersEmCount = 0;
 
     /**
      * The group description.
-     *
-     * @ORM\Column(type="text")
      */
     #[Groups(['committee:list', 'committee:write', 'committee:write_limited'])]
+    #[ORM\Column(type: 'text')]
     private $description;
 
     /**
      * The committee Facebook page URL.
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $facebookPageUrl;
 
     /**
      * The committee Twitter nickname.
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $twitterNickname;
 
     /**
      * Is also used to block address modification.
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $nameLocked = false;
 
     /**
      * @var CommitteeElection[]
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\CommitteeElection", mappedBy="committee", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToMany(mappedBy: 'committee', targetEntity: CommitteeElection::class, cascade: ['all'], orphanRemoval: true)]
     private $committeeElections;
 
     /**
      * @var ProvisionalSupervisor[]
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\ProvisionalSupervisor", mappedBy="committee", cascade={"all"}, orphanRemoval=true)
      */
+    #[ORM\OneToMany(mappedBy: 'committee', targetEntity: ProvisionalSupervisor::class, cascade: ['all'], orphanRemoval: true)]
     private $provisionalSupervisors;
 
     /**
@@ -239,32 +216,27 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
 
     /**
      * @var CommitteeAdherentMandate|Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\AdherentMandate\CommitteeAdherentMandate", mappedBy="committee", fetch="EXTRA_LAZY")
      */
+    #[ORM\OneToMany(mappedBy: 'committee', targetEntity: CommitteeAdherentMandate::class, fetch: 'EXTRA_LAZY')]
     private $adherentMandates;
 
-    /**
-     * @ORM\Column(type="smallint", options={"unsigned": true, "default": "2"})
-     */
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => '2'])]
     public int $version = 2;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone", cascade={"persist"})
-     *
      * @Assert\Count(min=1, minMessage="Le comité doit contenir au moins une zone.", groups={"api_committee_edition"})
      * @AssertZoneType(types=Zone::COMMITTEE_TYPES, groups={"api_committee_edition"})
      */
     #[Groups(['committee:read', 'committee:write'])]
+    #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
     protected Collection $zones;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", inversedBy="animatorCommittees")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     *
      * @Assert\Expression("!this.animator or this.animator.isRenaissanceAdherent()", message="Président doit être un adhérent Renaissance.")
      */
     #[Groups(['committee:read', 'committee:update_animator'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'animatorCommittees')]
     public ?Adherent $animator = null;
 
     public function __construct(
@@ -817,7 +789,7 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
 
     public function getCreatedBy(): ?string
     {
-        return $this->createdBy ? $this->createdBy->toString() : null;
+        return $this->createdBy?->toString();
     }
 
     public function isCreatedBy(UuidInterface $uuid): bool

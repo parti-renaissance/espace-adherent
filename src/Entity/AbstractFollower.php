@@ -4,9 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\MappedSuperclass
- */
+#[ORM\MappedSuperclass]
 abstract class AbstractFollower implements FollowerInterface
 {
     use EntityTimestampableTrait;
@@ -14,10 +12,9 @@ abstract class AbstractFollower implements FollowerInterface
 
     /**
      * @var Adherent|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     protected $adherent;
 
     abstract public function getFollowed(): FollowedInterface;

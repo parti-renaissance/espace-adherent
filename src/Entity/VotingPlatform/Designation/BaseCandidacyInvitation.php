@@ -10,9 +10,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-/**
- * @ORM\MappedSuperclass
- */
+#[ORM\MappedSuperclass]
 abstract class BaseCandidacyInvitation implements CandidacyInvitationInterface
 {
     use EntityIdentityTrait;
@@ -20,9 +18,8 @@ abstract class BaseCandidacyInvitation implements CandidacyInvitationInterface
 
     /**
      * @var string
-     *
-     * @ORM\Column
      */
+    #[ORM\Column]
     private $status = self::STATUS_PENDING;
 
     /**
@@ -37,16 +34,14 @@ abstract class BaseCandidacyInvitation implements CandidacyInvitationInterface
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $acceptedAt;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $declinedAt;
 
     public function __construct(?UuidInterface $uuid = null)

@@ -171,8 +171,7 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event2, $this->getReference('adherent-7'))));
 
         for ($i = 1; $i <= 5; ++$i) {
-            $manager->persist($event = new DefaultEvent());
-
+            $event = new DefaultEvent();
             $event->setName('Event interne '.$i);
             $event->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
             $event->setPublished(true);
@@ -187,6 +186,8 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
             $event->setPostAddress($this->createPostAddress('74 Avenue des Champs-Élysées, 75008 Paris', '75008-75108', null, 48.862725, 2.287592));
             $event->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
             $event->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
+
+            $manager->persist($event);
         }
 
         $manager->flush();

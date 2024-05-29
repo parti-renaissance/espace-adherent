@@ -13,46 +13,39 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="local_election_candidacies_group")
- */
+#[ORM\Table(name: 'local_election_candidacies_group')]
+#[ORM\Entity]
 class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministratorBlameableInterface
 {
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\LocalElection\LocalElection", inversedBy="candidaciesGroups")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: LocalElection::class, inversedBy: 'candidaciesGroups')]
     public ?LocalElection $election = null;
 
     /**
      * @var CandidacyInterface[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\LocalElection\Candidacy", mappedBy="candidaciesGroup", cascade={"persist"}, orphanRemoval=true)
-     * @ORM\OrderBy({"position": "ASC"})
-     *
      * @Assert\Valid
      */
+    #[ORM\OneToMany(mappedBy: 'candidaciesGroup', targetEntity: Candidacy::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     protected $candidacies;
 
     /**
      * @var CandidacyInterface[]|Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\LocalElection\SubstituteCandidacy", mappedBy="candidaciesGroup", cascade={"persist"}, orphanRemoval=true)
-     * @ORM\OrderBy({"position": "ASC"})
-     *
      * @Assert\Valid
      */
+    #[ORM\OneToMany(mappedBy: 'candidaciesGroup', targetEntity: SubstituteCandidacy::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     protected $substituteCandidacies;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     public ?string $faithStatementFileName = null;
 
     /**

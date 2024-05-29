@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Repository\NewsletterSubscriptionRepository;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -17,13 +18,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @AssertUniqueEntity(fields={"email"}, message="newsletter.already_registered")
  *
- * @ORM\Table(name="newsletter_subscriptions")
- * @ORM\Entity(repositoryClass="App\Repository\NewsletterSubscriptionRepository")
- *
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  *
  * @AssertRecaptcha(groups={"Subscription"})
  */
+#[ORM\Table(name: 'newsletter_subscriptions')]
+#[ORM\Entity(repositoryClass: NewsletterSubscriptionRepository::class)]
 class NewsletterSubscription implements NewsletterSubscriptionInterface, EntitySoftDeletedInterface, RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
@@ -34,18 +34,15 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface, EntityS
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=100, unique=true)
-     *
      * @Assert\NotBlank(message="newsletter.email.not_blank")
      * @Assert\Email(message="newsletter.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
+    #[ORM\Column(type: 'string', length: 100, unique: true)]
     private $email;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=11, nullable=true)
      *
      * @Assert\Length(
      *     min=2,
@@ -54,36 +51,33 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface, EntityS
      *     maxMessage="newsletter.postalCode.invalid"
      * )
      */
+    #[ORM\Column(type: 'string', length: 11, nullable: true)]
     private $postalCode;
 
     /**
      * The address country code (ISO2).
      *
      * @var string
-     *
-     * @ORM\Column(length=2, nullable=true)
      */
+    #[ORM\Column(length: 2, nullable: true)]
     private $country;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $fromEvent;
 
     /**
      * @var \DateTimeInterface|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $confirmedAt;
 
     /**
      * @var UuidInterface
-     *
-     * @ORM\Column(type="uuid", unique=true, nullable=true)
      */
+    #[ORM\Column(type: 'uuid', unique: true, nullable: true)]
     private $token;
 
     /**

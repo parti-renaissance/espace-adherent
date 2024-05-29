@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\EntityAdministratorTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
+use App\Repository\Jecoute\RegionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -15,11 +16,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="jecoute_region")
- * @ORM\Entity(repositoryClass="App\Repository\Jecoute\RegionRepository")
- *
  * @UniqueEntity(fields={"zone"}, message="jecoute_region.zone.not_unique")
  */
+#[ORM\Table(name: 'jecoute_region')]
+#[ORM\Entity(repositoryClass: RegionRepository::class)]
 class Region
 {
     use EntityTimestampableTrait;
@@ -29,67 +29,60 @@ class Region
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var UuidInterface
-     *
-     * @ORM\Column(type="uuid", unique=true)
      */
+    #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\Length(max=120)
      * @Assert\NotBlank
      */
     #[Groups(['jecoute_region_read'])]
+    #[ORM\Column]
     protected $subtitle;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      */
     #[Groups(['jecoute_region_read'])]
+    #[ORM\Column(type: 'text')]
     private $description;
 
     /**
      * @var string|null
      *
-     * @ORM\Column
-     *
      * @Assert\Choice(callback={"App\Jecoute\RegionColorEnum", "all"})
      * @Assert\NotBlank
      */
     #[Groups(['jecoute_region_read'])]
+    #[ORM\Column]
     protected $primaryColor;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url
      */
     #[Groups(['jecoute_region_read'])]
+    #[ORM\Column(nullable: true)]
     protected $externalLink;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $banner;
 
     /**
@@ -108,9 +101,8 @@ class Region
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      */
+    #[ORM\Column(nullable: true)]
     private $logo;
 
     /**
@@ -128,28 +120,25 @@ class Region
     /**
      * @var Zone|null
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Geo\Zone")
-     * @ORM\JoinColumn(nullable=false)
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\OneToOne(targetEntity: Zone::class)]
     private $zone;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default": true})
-     *
      * @Assert\Type("bool")
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $enabled;
 
     /**
      * @var Adherent|null
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent", fetch="EAGER")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class, fetch: 'EAGER')]
     private $author;
 
     public function __construct(

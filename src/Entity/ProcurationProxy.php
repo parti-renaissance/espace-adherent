@@ -7,6 +7,7 @@ use App\Entity\Geo\Zone;
 use App\Procuration\ProcurationDisableReasonEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Repository\ProcurationProxyRepository;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\ZoneType as AssertZoneType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,11 +20,10 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="procuration_proxies")
- * @ORM\Entity(repositoryClass="App\Repository\ProcurationProxyRepository")
- *
  * @AssertRecaptcha(groups={"front"})
  */
+#[ORM\Table(name: 'procuration_proxies')]
+#[ORM\Entity(repositoryClass: ProcurationProxyRepository::class)]
 class ProcurationProxy implements RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
@@ -54,41 +54,35 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      * The associated found request(s).
      *
      * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\ProcurationRequest", mappedBy="foundProxy")
      */
+    #[ORM\OneToMany(mappedBy: 'foundProxy', targetEntity: ProcurationRequest::class)]
     private $foundRequests;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(type="smallint")
      */
+    #[ORM\Column(type: 'smallint')]
     private $reliability = self::RELIABILITY_UNKNOWN;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=30, nullable=true)
-     *
      * @Assert\Length(max=30)
      */
+    #[ORM\Column(length: 30, nullable: true)]
     private $reliabilityDescription = '';
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255, groups={"front"})
      * @Assert\NotBlank(groups={"front"}, message="procuration.voter_number.not_blank")
      */
+    #[ORM\Column(nullable: true)]
     private $voterNumber;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=6, nullable=true)
      *
      * @Assert\NotBlank(message="common.gender.not_blank", groups={"front"})
      * @Assert\Choice(
@@ -97,12 +91,11 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      *     groups={"front"}
      * )
      */
+    #[ORM\Column(length: 6, nullable: true)]
     private $gender;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=50, nullable=true)
      *
      * @Assert\NotBlank(message="procuration.last_name.not_blank", groups={"front"})
      * @Assert\Length(
@@ -113,12 +106,11 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      *     groups={"front"}
      * )
      */
+    #[ORM\Column(length: 50, nullable: true)]
     private $lastName;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(length=100, nullable=true)
      *
      * @Assert\NotBlank(groups={"front"})
      * @Assert\Length(
@@ -129,22 +121,20 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      *     groups={"front"}
      * )
      */
+    #[ORM\Column(length: 100, nullable: true)]
     private $firstNames;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=150)
-     *
      * @Assert\NotBlank(message="common.address.required", groups={"front"})
      * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"front"})
      */
+    #[ORM\Column(length: 150)]
     private $address = '';
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Length(max=15, groups={"front"})
      * @Assert\Expression(
@@ -153,30 +143,27 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      *     groups={"front"}
      * )
      */
+    #[ORM\Column(length: 15, nullable: true)]
     private $postalCode = '';
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=15, nullable=true, name="city_insee")
-     *
      * @Assert\Length(max=15, groups={"front"})
      */
+    #[ORM\Column(name: 'city_insee', length: 15, nullable: true)]
     private $city;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255, groups={"front"})
      */
+    #[ORM\Column(nullable: true)]
     private $cityName;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(nullable=true)
      *
      * @Assert\Length(max=255, groups={"front"})
      * @Assert\Expression(
@@ -185,43 +172,39 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      *     groups={"front"}
      * )
      */
+    #[ORM\Column(nullable: true)]
     private $state;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=2)
-     *
      * @Assert\NotBlank(groups={"front"})
      * @Assert\Country(message="common.country.invalid", groups={"front"})
      */
+    #[ORM\Column(length: 2)]
     private $country = AddressInterface::FRANCE;
 
     /**
      * @var PhoneNumber
      *
-     * @ORM\Column(type="phone_number", nullable=true)
-     *
      * @Assert\NotBlank(message="common.phone_number.required", groups={"front"})
      * @AssertPhoneNumber(options={"groups": {"front"}})
      */
+    #[ORM\Column(type: 'phone_number', nullable: true)]
     private $phone;
 
     /**
      * @var string
      *
-     * @ORM\Column
-     *
      * @Assert\NotBlank(groups={"front"})
      * @Assert\Email(message="common.email.invalid", groups={"front"})
      * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"front"})
      */
+    #[ORM\Column]
     private $emailAddress = '';
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="date", nullable=true)
      *
      * @Assert\NotBlank(message="procuration.birthdate.not_blank", groups={"front"})
      * @Assert\Range(
@@ -232,12 +215,11 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      *     groups={"front"}
      * )
      */
+    #[ORM\Column(type: 'date', nullable: true)]
     private $birthdate;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=15, nullable=true)
      *
      * @Assert\Length(max=15, groups={"front"})
      * @Assert\Expression(
@@ -246,65 +228,58 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      *     groups={"front"}
      * )
      */
+    #[ORM\Column(length: 15, nullable: true)]
     private $votePostalCode = '';
 
     /**
      * @var string|null
      *
-     * @ORM\Column(length=15, nullable=true, name="vote_city_insee")
-     *
      * @Assert\Length(max=15, groups={"front"})
      */
+    #[ORM\Column(name: 'vote_city_insee', length: 15, nullable: true)]
     private $voteCity;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255, groups={"front"})
      */
+    #[ORM\Column(nullable: true)]
     private $voteCityName;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=2)
-     *
      * @Assert\NotBlank(groups={"front"})
      * @Assert\Country(message="common.country.invalid", groups={"front"})
      */
+    #[ORM\Column(length: 2)]
     private $voteCountry = AddressInterface::FRANCE;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank(groups={"front"})
      * @Assert\Length(max=50, groups={"front"})
      */
+    #[ORM\Column(length: 50)]
     private $voteOffice = '';
 
     /**
      * @var ProcurationProxyElectionRound[]|Collection
-     *
-     * @ORM\OneToMany(targetEntity="ProcurationProxyElectionRound", mappedBy="procurationProxy", orphanRemoval=true, cascade={"all"})
      */
+    #[ORM\OneToMany(mappedBy: 'procurationProxy', targetEntity: ProcurationProxyElectionRound::class, cascade: ['all'], orphanRemoval: true)]
     private $procurationProxyElectionRounds;
 
     private $electionRounds;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: 'boolean')]
     private $disabled = false;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $disabledReason = null;
 
     /**
@@ -324,35 +299,28 @@ class ProcurationProxy implements RecaptchaChallengeInterface
      *     "this.getFoundRequests().count() <= value",
      *     message="procuration.proxies_count.already_associated"
      * )
-     *
-     * @ORM\Column(type="smallint", options={"default": 1, "unsigned": true})
      */
+    #[ORM\Column(type: 'smallint', options: ['default' => 1, 'unsigned' => true])]
     public $proxiesCount = 1;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public $reachable = false;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private $backupOtherVoteCities;
 
     /**
      * @var Collection|Zone[]
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone")
-     *
      * @AssertZoneType(types={"city", "borough"}, groups={"front"})
      */
+    #[ORM\ManyToMany(targetEntity: Zone::class)]
     private Collection $otherVoteCities;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $remindedAt = null;
 
     public function __construct(?UuidInterface $uuid = null)

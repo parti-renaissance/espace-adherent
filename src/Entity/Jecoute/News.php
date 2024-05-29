@@ -21,6 +21,8 @@ use App\Entity\IndexableEntityInterface;
 use App\Entity\UserDocument;
 use App\Entity\UserDocumentInterface;
 use App\Entity\UserDocumentTrait;
+use App\EntityListener\AlgoliaIndexListener;
+use App\EntityListener\DynamicLinkListener;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Jecoute\JecouteSpaceEnum;
@@ -124,26 +126,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  * })
  * @ApiFilter(ScopeVisibilityFilter::class)
  *
- * @ORM\Table(name="jecoute_news")
- * @ORM\Entity
- * @ORM\AssociationOverrides({
- *     @ORM\AssociationOverride(name="author",
- *         joinColumns={
- *             @ORM\JoinColumn(onDelete="SET NULL")
- *         }
- *     )
- * })
- *
- * @ORM\EntityListeners({
- *     "App\EntityListener\DynamicLinkListener",
- *     "App\EntityListener\AlgoliaIndexListener",
- * })
- *
  * @ReferentNews
  * @NewsTarget(groups="Admin")
  * @NewsText
  * @ScopeVisibility
  */
+#[ORM\Table(name: 'jecoute_news')]
+#[ORM\Entity]
+#[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'author', joinColumns: [new ORM\JoinColumn(onDelete: 'SET NULL')])])]
+#[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
 class News implements AuthoredInterface, AuthorInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, DynamicLinkObjectInterface
 {
     use EntityTimestampableTrait;
@@ -154,49 +145,41 @@ class News implements AuthoredInterface, AuthorInterface, UserDocumentInterface,
 
     /**
      * @ApiProperty(identifier=false)
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private ?int $id = null;
 
     /**
      * @ApiProperty(identifier=true)
-     *
-     * @ORM\Column(type="uuid", unique=true)
      */
     #[Groups(['jecoute_news_read', 'jecoute_news_read_dc'])]
+    #[ORM\Column(type: 'uuid', unique: true)]
     private UuidInterface $uuid;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\Length(max=120)
      * @Assert\NotBlank
      */
     #[Groups(['jecoute_news_read', 'jecoute_news_write', 'jecoute_news_read_dc'])]
+    #[ORM\Column]
     private ?string $title;
 
-    /**
-     * @ORM\Column(type="text")
-     */
     #[Groups(['jecoute_news_read', 'jecoute_news_write', 'jecoute_news_read_dc'])]
+    #[ORM\Column(type: 'text')]
     private ?string $text;
 
     private ?string $enrichedText = null;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Url
      */
     #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
+    #[ORM\Column(nullable: true)]
     private ?string $externalLink;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=30)
      * @Assert\Expression(
      *     "value !== null or (this.isEnriched() === false or null === this.getExternalLink())",
@@ -204,65 +187,45 @@ class News implements AuthoredInterface, AuthorInterface, UserDocumentInterface,
      * )
      */
     #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
+    #[ORM\Column(nullable: true)]
     private ?string $linkLabel;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $topic;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Administrator")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private ?Administrator $createdBy = null;
 
     #[Groups(['jecoute_news_write_national'])]
     private bool $global = false;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": 0})
-     */
     #[Groups(['jecoute_news_read_dc', 'jecoute_news_write'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private bool $notification;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": 1})
-     */
     #[Groups(['jecoute_news_read_dc', 'jecoute_news_write'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     private bool $published;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": 0})
-     */
     #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private bool $pinned;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": 0})
-     */
     #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private bool $enriched;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
+    #[ORM\Column(nullable: true)]
     private ?string $space = null;
 
     /**
      * @var UserDocument[]|Collection
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\UserDocument", cascade={"all"}, orphanRemoval=true)
-     * @ORM\JoinTable(
-     *     name="jecoute_news_user_documents",
-     *     joinColumns={
-     *         @ORM\JoinColumn(name="jecoute_news_id", referencedColumnName="id", onDelete="CASCADE")
-     *     },
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="user_document_id", referencedColumnName="id", onDelete="CASCADE")
-     *     }
-     * )
      */
+    #[ORM\JoinTable(name: 'jecoute_news_user_documents')]
+    #[ORM\JoinColumn(name: 'jecoute_news_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'user_document_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToMany(targetEntity: UserDocument::class, cascade: ['all'], orphanRemoval: true)]
     protected Collection $documents;
 
     public function __construct(

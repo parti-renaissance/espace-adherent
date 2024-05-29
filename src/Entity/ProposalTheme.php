@@ -2,35 +2,31 @@
 
 namespace App\Entity;
 
+use App\Repository\ProposalThemeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="proposals_themes")
- * @ORM\Entity(repositoryClass="App\Repository\ProposalThemeRepository")
- */
+#[ORM\Table(name: 'proposals_themes')]
+#[ORM\Entity(repositoryClass: ProposalThemeRepository::class)]
 class ProposalTheme
 {
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=50)
      */
+    #[ORM\Column(length: 50)]
     private $name;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=10)
      */
+    #[ORM\Column(length: 10)]
     private $color;
 
     public function __construct(string $name = '', string $color = '000000')

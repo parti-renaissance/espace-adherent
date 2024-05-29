@@ -6,17 +6,14 @@ use App\Entity\Committee;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class CommitteeFilter extends AbstractUserFilter
 {
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Committee")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     *
      * @Assert\NotBlank
      */
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Committee::class)]
     private ?Committee $committee = null;
 
     public function __construct(?Committee $committee = null)

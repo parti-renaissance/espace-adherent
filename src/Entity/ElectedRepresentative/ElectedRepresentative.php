@@ -15,6 +15,7 @@ use App\Entity\EntityUserListDefinitionTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\ReferentTag;
 use App\Entity\ZoneableEntity;
+use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -62,10 +63,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @ORM\Entity(repositoryClass="App\Repository\ElectedRepresentative\ElectedRepresentativeRepository")
- *
  * @UniqueEntity(fields={"adherent"}, message="elected_representative.invalid_adherent")
  */
+#[ORM\Entity(repositoryClass: ElectedRepresentativeRepository::class)]
 class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, ZoneableEntity, AuthoredInterface
 {
     use EntityIdentityTrait;
@@ -77,29 +77,25 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     /**
      * @var string
      *
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="50")
      */
     #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read', 'elected_representative_list', 'elected_mandate_read'])]
+    #[ORM\Column(length: 50)]
     private $lastName;
 
     /**
      * @var string
      *
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank
      * @Assert\Length(max="50")
      */
     #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read', 'elected_representative_list', 'elected_mandate_read'])]
+    #[ORM\Column(length: 50)]
     private $firstName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(length=10, nullable=true)
      *
      * @Assert\Choice(
      *     callback={"App\ValueObject\Genders", "all"},
@@ -107,12 +103,11 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      * )
      */
     #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read', 'elected_representative_list'])]
+    #[ORM\Column(length: 10, nullable: true)]
     private $gender;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(type="date")
      *
      * @Assert\NotBlank
      * @Assert\Range(
@@ -123,202 +118,132 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      * )
      */
     #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read'])]
+    #[ORM\Column(type: 'date')]
     private $birthDate;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max="255")
      */
     #[Groups(['elected_representative_write', 'elected_representative_read'])]
+    #[ORM\Column(nullable: true)]
     private $birthPlace;
 
     /**
      * @var string|null
      *
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     #[Groups(['elected_representative_write'])]
+    #[ORM\Column(nullable: true)]
     private $contactEmail;
 
     /**
      * @var PhoneNumber|null
      *
-     * @ORM\Column(type="phone_number", nullable=true)
-     *
      * @AssertPhoneNumber
      */
     #[Groups(['elected_representative_write', 'elected_representative_read', 'elected_representative_list'])]
+    #[ORM\Column(type: 'phone_number', nullable: true)]
     private $contactPhone;
 
     /**
      * @var bool|null
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
     #[Groups(['elected_representative_write', 'elected_representative_read'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $hasFollowedTraining = false;
 
     /**
      * Mailchimp unsubscribed date
      *
      * @var \DateTimeInterface|null
-     *
-     * @ORM\Column(type="datetime", nullable=true)
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $emailUnsubscribedAt;
 
     /**
      * Mailchimp unsubscribed status
      *
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": 0})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private $emailUnsubscribed = false;
 
-    /**
-     * @ORM\Column(nullable=true)
-     */
     #[Groups(['elected_representative_read', 'elected_representative_list'])]
+    #[ORM\Column(nullable: true)]
     private ?string $contributionStatus = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
     #[Groups(['elected_representative_read', 'elected_representative_list'])]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $contributedAt = null;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ElectedRepresentative\Contribution")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
     #[Groups(['elected_representative_list', 'elected_representative_read'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(targetEntity: Contribution::class)]
     private ?Contribution $lastContribution = null;
 
     /**
      * @var Adherent|null
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     #[Groups(['elected_representative_write', 'elected_representative_read'])]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[ORM\OneToOne(targetEntity: Adherent::class)]
     private $adherent;
 
     /**
      * @var SocialNetworkLink[]|Collection
      *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\ElectedRepresentative\SocialNetworkLink",
-     *     mappedBy="electedRepresentative",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     fetch="EAGER"
-     * )
-     *
      * @Assert\Valid
      */
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: SocialNetworkLink::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
     private $socialNetworkLinks;
 
     /**
      * @var Mandate[]|Collection
      *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\ElectedRepresentative\Mandate",
-     *     mappedBy="electedRepresentative",
-     *     cascade={"all"},
-     *     orphanRemoval=true
-     * )
-     *
      * @Assert\Valid
      */
     #[Groups(['elected_representative_read'])]
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: Mandate::class, cascade: ['all'], orphanRemoval: true)]
     private $mandates;
 
     /**
      * PoliticalFunction[]|Collection
      *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\ElectedRepresentative\PoliticalFunction",
-     *     mappedBy="electedRepresentative",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     fetch="EAGER"
-     * )
-     *
      * @Assert\Valid
      */
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: PoliticalFunction::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
     private $politicalFunctions;
 
     /**
      * @var ElectedRepresentativeLabel[]|Collection
      *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\ElectedRepresentative\ElectedRepresentativeLabel",
-     *     mappedBy="electedRepresentative",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     fetch="EAGER"
-     * )
-     *
      * @Assert\Valid
      */
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: ElectedRepresentativeLabel::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
     private $labels;
 
     /**
      * Sponsorship[]|Collection
      *
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\ElectedRepresentative\Sponsorship",
-     *     mappedBy="electedRepresentative",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     fetch="EAGER"
-     * )
-     *
      * @Assert\Valid
      */
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: Sponsorship::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
     private $sponsorships;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\ElectedRepresentative\Contribution",
-     *     mappedBy="electedRepresentative",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     fetch="EXTRA_LAZY"
-     * )
-     */
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: Contribution::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private Collection $contributions;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\ElectedRepresentative\Payment",
-     *     mappedBy="electedRepresentative",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     fetch="EXTRA_LAZY"
-     * )
-     * @ORM\OrderBy({"date": "DESC"})
-     */
     #[Groups(['elected_representative_read'])]
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: Payment::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OrderBy(['date' => 'DESC'])]
     private Collection $payments;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\ElectedRepresentative\RevenueDeclaration",
-     *     mappedBy="electedRepresentative",
-     *     cascade={"all"},
-     *     orphanRemoval=true,
-     *     fetch="EXTRA_LAZY"
-     * )
-     * @ORM\OrderBy({"createdAt": "DESC"})
-     */
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: RevenueDeclaration::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OrderBy(['createdAt' => 'DESC'])]
     private Collection $revenueDeclarations;
 
     public function __construct(?UuidInterface $uuid = null)
@@ -664,7 +589,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
     public function getAge(): ?int
     {
-        return $this->birthDate ? $this->birthDate->diff(new \DateTime())->y : null;
+        return $this->birthDate?->diff(new \DateTime())->y;
     }
 
     #[Groups(['elected_representative_change_diff', 'elected_representative_read'])]
@@ -749,7 +674,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         );
     }
 
-    public function addZone(Zone $Zone): void
+    public function addZone(Zone $zone): void
     {
     }
 

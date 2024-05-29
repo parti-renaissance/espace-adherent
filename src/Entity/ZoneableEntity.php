@@ -12,7 +12,7 @@ interface ZoneableEntity
      */
     public function getZones(): Collection;
 
-    public function addZone(Zone $Zone): void;
+    public function addZone(Zone $zone): void;
 
     public function removeZone(Zone $zone): void;
 

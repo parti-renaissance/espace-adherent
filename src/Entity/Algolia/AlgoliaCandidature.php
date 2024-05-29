@@ -12,20 +12,18 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * @ORM\Entity
- *
  * @internal
  */
+#[ORM\Entity]
 class AlgoliaCandidature extends Aggregator implements AlgoliaIndexedEntityInterface
 {
     /**
      * @var UuidInterface|null
-     *
-     * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     protected $id;
 
     public function __construct($entity, array $entityIdentifierValues)

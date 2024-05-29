@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Repository\ContactRepository;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
@@ -41,12 +42,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @ORM\Entity(repositoryClass="App\Repository\ContactRepository")
- *
  * @UniqueEntity(fields={"emailAddress"})
- *
  * @AssertRecaptcha(api="friendly_captcha", groups={"contact_create"})
  */
+#[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact implements RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
@@ -55,8 +54,6 @@ class Contact implements RecaptchaChallengeInterface
     use RecaptchaChallengeTrait;
 
     /**
-     * @ORM\Column(length=50)
-     *
      * @Assert\NotBlank
      * @Assert\Length(
      *     min=2,
@@ -66,11 +63,10 @@ class Contact implements RecaptchaChallengeInterface
      * )
      */
     #[Groups(['contact_create', 'contact_read'])]
+    #[ORM\Column(length: 50)]
     private ?string $firstName;
 
     /**
-     * @ORM\Column(length=50, nullable=true)
-     *
      * @Assert\Length(
      *     min=2,
      *     max=50,
@@ -79,56 +75,49 @@ class Contact implements RecaptchaChallengeInterface
      * )
      */
     #[Groups(['contact_update'])]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $lastName;
 
     /**
-     * @ORM\Column(unique=true)
-     *
      * @Assert\NotBlank
      * @Assert\Email(message="common.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     #[Groups(['contact_create', 'contact_read'])]
+    #[ORM\Column(unique: true)]
     private ?string $emailAddress;
 
     /**
-     * @ORM\Column(type="phone_number", nullable=true)
-     *
      * @AssertPhoneNumber
      */
     #[Groups(['contact_update'])]
+    #[ORM\Column(type: 'phone_number', nullable: true)]
     private ?PhoneNumber $phone = null;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
-     *
      * @Assert\Range(
      *     min="-120 years",
      *     max="now"
      * )
      */
     #[Groups(['contact_update'])]
+    #[ORM\Column(type: 'date', nullable: true)]
     private ?\DateTimeInterface $birthdate = null;
 
     /**
-     * @ORM\Column(type="simple_array", nullable=true)
-     *
      * @Assert\Choice(
      *     choices=App\Membership\Contact\InterestEnum::ALL,
      *     multiple=true
      *  )
      */
     #[Groups(['contact_update'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private array $interests = [];
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $interestsUpdatedAt = null;
 
     /**
-     * @ORM\Column
-     *
      * @Assert\NotBlank
      * @Assert\Choice(
      *     choices=App\Membership\Contact\SourceEnum::ALL,
@@ -136,37 +125,29 @@ class Contact implements RecaptchaChallengeInterface
      * )
      */
     #[Groups(['contact_create'])]
+    #[ORM\Column]
     private ?string $source;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
     #[Groups(['contact_update'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $mailContact = false;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     */
     #[Groups(['contact_update'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $phoneContact = false;
 
     /**
-     * @ORM\Column(type="boolean", options={"default": false})
-     *
      * @Assert\IsTrue(message="contact.cgu_accepted.is_true")
      */
     #[Groups(['contact_create', 'contact_update'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $cguAccepted = false;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $processedAt = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     */
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private ?Adherent $adherent = null;
 
     public function __construct(

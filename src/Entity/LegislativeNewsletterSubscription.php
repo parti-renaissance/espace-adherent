@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Geo\Zone;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
+use App\Repository\LegislativeNewsletterSubscriptionRepository;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\ZoneType as AssertZoneType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -35,12 +36,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={},
  * )
  *
- * @ORM\Table
- * @ORM\Entity(repositoryClass="App\Repository\LegislativeNewsletterSubscriptionRepository")
- *
  * @AssertUniqueEntity(fields={"emailAddress"}, message="legislative_newsletter.already_registered")
  * @AssertRecaptcha(api="friendly_captcha", groups={"legislative_newsletter_subscriptions_write"})
  */
+#[ORM\Table]
+#[ORM\Entity(repositoryClass: LegislativeNewsletterSubscriptionRepository::class)]
 class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
@@ -48,26 +48,22 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     use RecaptchaChallengeTrait;
 
     /**
-     * @ORM\Column(nullable=true)
-     *
      * @Assert\Length(max=255)
      */
     #[Groups(['legislative_newsletter_subscriptions_write'])]
+    #[ORM\Column(nullable: true)]
     private ?string $firstName = null;
 
     /**
-     * @ORM\Column(unique=true)
-     *
      * @Assert\NotBlank(message="newsletter.email.not_blank")
      * @Assert\Email(message="newsletter.email.invalid")
      * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     #[Groups(['legislative_newsletter_subscriptions_write'])]
+    #[ORM\Column(unique: true)]
     private ?string $emailAddress = null;
 
     /**
-     * @ORM\Column(type="string", length=11)
-     *
      * @Assert\NotBlank
      * @Assert\Length(
      *     min=2,
@@ -77,15 +73,15 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
      * )
      */
     #[Groups(['legislative_newsletter_subscriptions_write'])]
+    #[ORM\Column(type: 'string', length: 11)]
     private ?string $postalCode = null;
 
     /**
      * @var Collection|Zone[]
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Geo\Zone")
-     *
      * @AssertZoneType(types={"district", "foreign_district"})
      */
+    #[ORM\ManyToMany(targetEntity: Zone::class)]
     private Collection $fromZones;
 
     /**
@@ -94,14 +90,10 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     #[Groups(['legislative_newsletter_subscriptions_write'])]
     private bool $personalDataCollection = false;
 
-    /**
-     * @ORM\Column(type="uuid", unique=true)
-     */
+    #[ORM\Column(type: 'uuid', unique: true)]
     private UuidInterface $token;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $confirmedAt = null;
 
     public function __construct(

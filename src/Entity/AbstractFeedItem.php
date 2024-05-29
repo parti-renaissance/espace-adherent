@@ -7,23 +7,18 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\MappedSuperclass
- */
+#[ORM\MappedSuperclass]
 abstract class AbstractFeedItem
 {
     use EntityIdentityTrait;
 
     /**
      * @var Adherent
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Adherent")
      */
+    #[ORM\ManyToOne(targetEntity: Adherent::class)]
     protected $author;
 
     /**
-     * @ORM\Column(type="text")
-     *
      * @Assert\NotBlank
      * @AssertWysiwygLength(
      *     min=10,
@@ -32,20 +27,19 @@ abstract class AbstractFeedItem
      *     maxMessage="common.message.max_length"
      * )
      */
+    #[ORM\Column(type: 'text')]
     protected $content;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(type="datetime")
      */
+    #[ORM\Column(type: 'datetime')]
     protected $createdAt;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean", options={"default": false})
      */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $isLocked = false;
 
     public function __construct(Adherent $author, string $content, string $createdAt = 'now')
