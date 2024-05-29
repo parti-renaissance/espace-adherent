@@ -2,7 +2,10 @@
 
 namespace App\Entity\Action;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Collection\ZoneCollection;
 use App\Entity\Adherent;
 use App\Entity\AuthoredTrait;
@@ -76,6 +79,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     }
  * )
+ *
+ * @ApiFilter(SearchFilter::class, properties={"type": "exact"})
+ * @ApiFilter(DateFilter::class, properties={"date"})
  */
 #[ORM\Table(name: 'vox_action')]
 #[ORM\Entity(repositoryClass: ActionRepository::class)]
