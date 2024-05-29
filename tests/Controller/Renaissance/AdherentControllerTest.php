@@ -7,12 +7,10 @@ use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
 use App\Entity\Reporting\EmailSubscriptionHistory;
-use App\Entity\SubscriptionType;
 use App\Entity\Unregistration;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage;
 use App\Repository\EmailRepository;
 use App\Repository\UnregistrationRepository;
-use App\Subscription\SubscriptionTypeEnum;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
@@ -421,12 +419,5 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
         $this->emailRepository = null;
 
         parent::tearDown();
-    }
-
-    private function getSubscriptionTypesFormValues(array $codes): array
-    {
-        return array_map(static function (SubscriptionType $type) use ($codes) {
-            return \in_array($type->getCode(), $codes, true) ? $type->getId() : false;
-        }, $this->getSubscriptionTypeRepository()->findByCodes(SubscriptionTypeEnum::ADHERENT_TYPES));
     }
 }

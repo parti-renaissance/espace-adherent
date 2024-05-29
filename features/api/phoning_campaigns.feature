@@ -1221,7 +1221,7 @@ Feature:
                          "name": "first_name"
                      },
                      {
-                         "content": "http://test.enmarche.code/reabonnement-email/@uuid@/@string@",
+                         "content": "http://test.renaissance.code/espace-adherent/preferences-des-emails?autorun=1",
                          "name": "email_subscribe_url"
                      },
                      {

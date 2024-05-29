@@ -8,19 +8,16 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Reporting\EmailSubscriptionHistory;
-use App\Entity\SubscriptionType;
 use App\Entity\Unregistration;
 use App\Mailer\Message\AdherentContactMessage;
 use App\Mailer\Message\CommitteeCreationConfirmationMessage;
 use App\Repository\CommitteeRepository;
 use App\Repository\EmailRepository;
 use App\Repository\UnregistrationRepository;
-use App\Subscription\SubscriptionTypeEnum;
 use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractEnMarcheWebTestCase;
@@ -123,7 +120,6 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
     {
         yield 'Mes informations personnelles' => ['/parametres/mon-compte'];
         yield 'Mes centres d\'intérêt' => ['/espace-adherent/mon-compte/centres-d-interet'];
-        yield 'Notifications' => ['/parametres/mon-compte/preferences-des-emails'];
         yield 'Mot de passe' => ['/parametres/mon-compte/changer-mot-de-passe'];
         yield 'Certification' => ['/espace-adherent/mon-compte/certification'];
     }
@@ -421,123 +417,6 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         ]);
 
         $this->assertClientIsRedirectedTo('/parametres/mon-compte/changer-mot-de-passe', $this->client);
-    }
-
-    public function testAdherentSetEmailNotifications(): void
-    {
-        $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
-
-        $this->assertFalse($adherent->hasSubscribedLocalHostEmails());
-        $this->assertNotEmpty($adherent->getSubscriptionTypeCodes());
-
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/preferences-des-emails');
-
-        $subscriptions = $crawler->filter('input[name="adherent_email_subscription[subscriptionTypes][]"]');
-
-        $this->assertCount(9, $subscriptions);
-
-        // Submit the email subscriptions form with invalid data
-        // We need to use a POST request because the crawler does not
-        // accept any invalid choice, thus cannot submit invalid form
-        $crawler = $this->client->request(Request::METHOD_POST, '/parametres/mon-compte/preferences-des-emails', [
-            'adherent_email_subscription' => [
-                'subscriptionTypes' => ['heah'],
-                '_token' => $crawler->filter('input[name="adherent_email_subscription[_token]"]')->attr('value'),
-            ],
-        ]);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $errors = $crawler->filter('.form__errors > li');
-        self::assertSame(1, $errors->count());
-        self::assertSame('Cette valeur n\'est pas valide.', $errors->eq(0)->text());
-
-        // Submit the emails subscription form with valid data
-        Chronos::setTestNow('+1 day');
-        $this->client->submit($form = $crawler->selectButton('adherent_email_subscription[submit]')->form(), [
-            'adherent_email_subscription' => [
-                'subscriptionTypes' => $this->getSubscriptionTypesFormValues($form->get('adherent_email_subscription[subscriptionTypes]'), [
-                    SubscriptionTypeEnum::LOCAL_HOST_EMAIL,
-                    SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL,
-                    SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL,
-                    SubscriptionTypeEnum::REFERENT_EMAIL,
-                    SubscriptionTypeEnum::DEPUTY_EMAIL,
-                ]),
-            ],
-        ]);
-
-        $this->assertClientIsRedirectedTo('/parametres/mon-compte/preferences-des-emails', $this->client);
-
-        $this->manager->clear();
-        $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
-        $histories = $this->findEmailSubscriptionHistoryByAdherent($adherent);
-        $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
-        $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::REFERENT_EMAIL);
-
-        $this->assertCount(9, $histories);
-        $this->assertCount(1, $historiesHost);
-        $this->assertCount(1, $historiesReferents);
-        self::assertSame('subscribe', $historiesHost[0]->getAction());
-        self::assertSame('subscribe', $historiesReferents[0]->getAction());
-        $this->assertTrue($adherent->hasSubscribedLocalHostEmails());
-        $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL));
-        $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL));
-        $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::REFERENT_EMAIL));
-        $this->assertTrue($adherent->hasSubscriptionType(SubscriptionTypeEnum::DEPUTY_EMAIL));
-
-        // Unsubscribe from 'subscribed_emails_local_host' and 'subscribed_emails_referents'
-        Chronos::setTestNow('+1 week');
-        $this->client->submit($form = $crawler->selectButton('adherent_email_subscription[submit]')->form(), [
-            'adherent_email_subscription' => [
-                'subscriptionTypes' => $this->getSubscriptionTypesFormValues($form->get('adherent_email_subscription[subscriptionTypes]'), [
-                    SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL,
-                    SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL,
-                ]),
-            ],
-        ]);
-
-        $this->assertClientIsRedirectedTo('/parametres/mon-compte/preferences-des-emails', $this->client);
-
-        $this->manager->clear();
-        $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
-        $histories = $this->findEmailSubscriptionHistoryByAdherent($adherent);
-        $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
-        $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::REFERENT_EMAIL);
-
-        $this->assertCount(12, $histories);
-        $this->assertCount(2, $historiesHost);
-        $this->assertCount(2, $historiesReferents);
-
-        Chronos::setTestNow('+2 weeks'); // To make sure the date order of the SQL query is correct
-        // Re-subscribe to 'subscribed_emails_local_host' and 'subscribed_emails_referents'
-        $this->client->submit($form = $crawler->selectButton('adherent_email_subscription[submit]')->form(), [
-            'adherent_email_subscription' => [
-                'subscriptionTypes' => $this->getSubscriptionTypesFormValues($form->get('adherent_email_subscription[subscriptionTypes]'), [
-                    SubscriptionTypeEnum::LOCAL_HOST_EMAIL,
-                    SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL,
-                    SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL,
-                    SubscriptionTypeEnum::REFERENT_EMAIL,
-                    SubscriptionTypeEnum::DEPUTY_EMAIL,
-                ]),
-            ],
-        ]);
-
-        $this->assertClientIsRedirectedTo('/parametres/mon-compte/preferences-des-emails', $this->client);
-
-        $this->manager->clear();
-
-        $histories = $this->findEmailSubscriptionHistoryByAdherent($adherent);
-        $historiesHost = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
-        $historiesReferents = $this->findAllEmailSubscriptionHistoryByAdherentAndType($adherent, SubscriptionTypeEnum::REFERENT_EMAIL);
-
-        $this->assertCount(15, $histories);
-        $this->assertCount(3, $historiesHost);
-        $this->assertCount(3, $historiesReferents);
-        self::assertSame('subscribe', $historiesHost[0]->getAction());
-        self::assertSame('subscribe', $historiesReferents[0]->getAction());
-        Chronos::setTestNow();
     }
 
     /**
@@ -930,16 +809,5 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         $this->subscriptionTypeRepository = null;
 
         parent::tearDown();
-    }
-
-    private function getSubscriptionTypesFormValues(array $checkboxes, array $codes): array
-    {
-        $choices = array_filter(array_map(static function (SubscriptionType $type) use ($codes) {
-            return \in_array($type->getCode(), $codes, true) ? $type->getId() : false;
-        }, $this->subscriptionTypeRepository->findByCodes(SubscriptionTypeEnum::ADHERENT_TYPES)));
-
-        return array_map(function (ChoiceFormField $choice) use ($choices) {
-            return \in_array(current($choice->availableOptionValues()), $choices);
-        }, $checkboxes);
     }
 }
