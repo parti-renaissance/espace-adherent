@@ -2,41 +2,30 @@
 
 namespace App\Adherent\Handler;
 
-use App\Adherent\AdherentTokenGenerator;
 use App\Adherent\Command\SendResubscribeEmailCommand;
 use App\Mailer\MailerService;
-use App\Mailer\Message\AdherentResubscribeEmailMessage;
+use App\Mailer\Message\Renaissance\AdherentResubscribeEmailMessage;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
 class SendResubscribeEmailCommandHandler implements MessageHandlerInterface
 {
-    private MailerService $mailer;
-    private AdherentTokenGenerator $adherentTokenGenerator;
-    private UrlGeneratorInterface $urlGenerator;
-
     public function __construct(
-        MailerService $transactionalMailer,
-        AdherentTokenGenerator $adherentTokenGenerator,
-        UrlGeneratorInterface $urlGenerator
+        private readonly MailerService $transactionalMailer,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly LoginLinkHandlerInterface $loginLinkHandler,
     ) {
-        $this->mailer = $transactionalMailer;
-        $this->adherentTokenGenerator = $adherentTokenGenerator;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function __invoke(SendResubscribeEmailCommand $command): void
     {
-        $adherent = $command->getAdherent();
+        $adherent = $command->adherent;
 
-        $token = $this->adherentTokenGenerator->generateEmailSubscriptionToken($adherent, $command->getTriggerSource());
+        $link = $this->loginLinkHandler->createLoginLink($adherent, targetPath: $this->urlGenerator->generate('app_user_set_email_notifications', [
+            'autorun' => true,
+        ]));
 
-        $this->mailer->sendMessage(AdherentResubscribeEmailMessage::create(
-            $adherent,
-            $this->urlGenerator->generate('app_adherent_profile_email_subscribe', [
-                'adherent_uuid' => $adherent->getUuid(),
-                'email_subscribe_token' => $token->getValue(),
-            ], UrlGeneratorInterface::ABSOLUTE_URL)
-        ));
+        $this->transactionalMailer->sendMessage(AdherentResubscribeEmailMessage::create($adherent, $link));
     }
 }

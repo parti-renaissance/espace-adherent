@@ -71,6 +71,10 @@
                     event.preventDefault();
                     Main.runMailchimpResubscribeEmail({});
                 })
+
+                {% if app.request.query.has('autorun') %}
+                    Main.runMailchimpResubscribeEmail({});
+                {% endif %}
             });
         </script>
     {% endif %}

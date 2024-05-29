@@ -10,7 +10,6 @@ use App\Adherent\Certification\CertificationPermissions;
 use App\Adherent\Command\SendResubscribeEmailCommand;
 use App\Adherent\UnregistrationManager;
 use App\Entity\Adherent;
-use App\Entity\AdherentEmailSubscribeToken;
 use App\Form\Admin\Adherent\CreateRenaissanceType;
 use App\Form\Admin\Adherent\UnregistrationType;
 use App\Form\Admin\Adherent\VerifyEmailType;
@@ -229,7 +228,7 @@ class AdminAdherentCRUDController extends CRUDController
         if ($request->isMethod(Request::METHOD_POST)) {
             $this->validateCsrfToken($request, 'admin.adherent.send_email');
 
-            $bus->dispatch(new SendResubscribeEmailCommand($adherent, AdherentEmailSubscribeToken::TRIGGER_SOURCE_ADMIN));
+            $bus->dispatch(new SendResubscribeEmailCommand($adherent));
 
             $this->addFlash('sonata_flash_success', 'Email a bien été envoyé');
 

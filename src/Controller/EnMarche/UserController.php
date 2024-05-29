@@ -11,15 +11,11 @@ use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\Unregistration;
 use App\Form\AdherentChangePasswordType;
-use App\Form\AdherentEmailSubscriptionType;
 use App\Form\AdherentProfileType;
 use App\Form\UnregistrationType;
 use App\Membership\AdherentChangePasswordHandler;
-use App\Membership\Event\UserEvent;
 use App\Membership\MembershipRequestHandler;
-use App\Membership\UserEvents;
 use App\OAuth\App\AuthAppUrlManager;
-use App\Subscription\SubscriptionHandler;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[Route(path: '/parametres/mon-compte')]
 class UserController extends AbstractController
@@ -107,59 +102,6 @@ class UserController extends AbstractController
             [
                 'form' => $form->createView(),
             ]
-        );
-    }
-
-    /**
-     * This action enables an adherent to choose his/her email notifications.
-     */
-    #[Route(path: '/preferences-des-emails', name: 'app_user_set_email_notifications', methods: ['GET', 'POST'])]
-    public function setEmailNotificationsAction(
-        Request $request,
-        EventDispatcherInterface $dispatcher,
-        SubscriptionHandler $subscriptionHandler,
-        AuthAppUrlManager $appUrlManager,
-        string $app_domain
-    ): Response {
-        $appCode = $appUrlManager->getAppCodeFromRequest($request);
-        $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
-
-        /** @var Adherent $adherent */
-        $adherent = $this->getUser();
-
-        if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
-            return $this->render('adherent/renaissance_profile.html.twig');
-        }
-
-        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('renaissance_site');
-        }
-
-        $oldEmailsSubscriptions = $adherent->getSubscriptionTypes();
-
-        $dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_BEFORE_UPDATE);
-
-        $form = $this
-            ->createForm(AdherentEmailSubscriptionType::class, $adherent, [
-                'is_adherent' => $adherent->isAdherent(),
-                'validation_groups' => 'subscriptions_update',
-            ])
-            ->handleRequest($request)
-        ;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $subscriptionHandler->handleChanges($adherent, $oldEmailsSubscriptions);
-
-            $this->addFlash('info', 'adherent.set_emails_notifications.success');
-
-            return $this->redirectToRoute('app_user_set_email_notifications', ['app_domain' => $app_domain]);
-        }
-
-        return $this->render(
-            $isRenaissanceApp
-                ? 'renaissance/adherent/email_notifications/form.html.twig'
-                : 'user/set_email_notifications.html.twig',
-            ['form' => $form->createView()]
         );
     }
 

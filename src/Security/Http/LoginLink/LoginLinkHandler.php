@@ -19,29 +19,34 @@ class LoginLinkHandler implements LoginLinkHandlerInterface
     ) {
     }
 
-    public function createLoginLink(UserInterface $user, ?Request $request = null, ?string $appCode = null): LoginLinkDetails
+    public function createLoginLink(UserInterface $user, ?Request $request = null, ?string $appCode = null, ?string $targetPath = null): LoginLinkDetails
     {
         $link = $this->decorated->createLoginLink($user, $request);
 
-        if (AppCodeEnum::isBesoinDEuropeApp($appCode)) {
-            if (!$request || !$targetPath = $request->getSession()->get('_security.main.target_path')) {
-                $targetPath = $this->urlGenerator->generate('vox_app_redirect');
-            }
-            $urlParts = parse_url($link->getUrl().'&_failure_path=/connexion&_target_path='.urlencode($targetPath));
+        $queryParams = [
+            '_failure_path' => '/connexion',
+            '_target_path' => $targetPath,
+        ];
 
-            return new LoginLinkDetails(
-                sprintf(
-                    '%s://%s%s?%s',
-                    $urlParts['scheme'],
-                    $this->appUrlManager->getUrlGenerator($appCode)->getAppHost(),
-                    $urlParts['path'],
-                    $urlParts['query']
-                ),
-                $link->getExpiresAt()
-            );
+        if (AppCodeEnum::isBesoinDEuropeApp($appCode)) {
+            if (!$request || !$queryParams['_target_path'] = $request->getSession()->get('_security.main.target_path')) {
+                $queryParams['_target_path'] = $this->urlGenerator->generate('vox_app_redirect');
+            }
+            $host = $this->appUrlManager->getUrlGenerator($appCode)->getAppHost();
         }
 
-        return $link;
+        $urlParts = parse_url($link->getUrl().'&'.http_build_query($queryParams));
+
+        return new LoginLinkDetails(
+            sprintf(
+                '%s://%s%s?%s',
+                $urlParts['scheme'],
+                $host ?? $urlParts['host'],
+                $urlParts['path'],
+                $urlParts['query']
+            ),
+            $link->getExpiresAt()
+        );
     }
 
     public function consumeLoginLink(Request $request): UserInterface
