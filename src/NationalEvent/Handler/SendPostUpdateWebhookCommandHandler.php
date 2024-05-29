@@ -41,7 +41,7 @@ class SendPostUpdateWebhookCommandHandler
         $response = $this->nationalEventTicketClient->request('POST', '/api/tickets', [
             'json' => [
                 'code' => $uuid = $eventInscription->getUuid()->toString(),
-                'event' => '/api/events/13',
+                'event' => '/api/events/14',
                 'blacklist' => InscriptionStatusEnum::REFUSED === $eventInscription->status,
                 'custom' => [
                     'prenom' => $eventInscription->firstName,
@@ -53,7 +53,7 @@ class SendPostUpdateWebhookCommandHandler
         ]);
 
         if (201 !== $response->getStatusCode()) {
-            $this->nationalEventTicketClient->request('PATCH', '/api/events/13/tickets/'.$uuid, [
+            $this->nationalEventTicketClient->request('PATCH', '/api/events/14/tickets/'.$uuid, [
                 'json' => [
                     'blacklist' => InscriptionStatusEnum::REFUSED === $eventInscription->status,
                     'custom' => [
