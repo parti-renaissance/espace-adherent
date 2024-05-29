@@ -2,7 +2,7 @@
 # Adapted from https://github.com/dunglas/symfony-docker
 
 ARG CADDY_VERSION=2
-ARG PHP_VERSION=8.2
+ARG PHP_VERSION=8.3
 ARG NODE_VERSION=18
 
 FROM node:${NODE_VERSION}-alpine AS node
