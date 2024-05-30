@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a68059b1adf5eff15a9d98d2173e80f7",
+    "content-hash": "388a98854f7ebe50c1b10f43d5bb0312",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -8842,7 +8842,7 @@
         },
         {
             "name": "odolbeau/phone-number-bundle",
-            "version": "v3.10.1",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/odolbeau/phone-number-bundle.git",
@@ -8909,7 +8909,7 @@
             ],
             "support": {
                 "issues": "https://github.com/odolbeau/phone-number-bundle/issues",
-                "source": "https://github.com/odolbeau/phone-number-bundle/tree/v3.10.1"
+                "source": "https://github.com/odolbeau/phone-number-bundle/tree/v4.0.0"
             },
             "time": "2023-12-06T19:54:58+00:00"
         },

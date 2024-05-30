@@ -78,7 +78,7 @@
         "nelmio/cors-bundle": "^2.2",
         "ninsuo/symfony-collection": "^2.1",
         "nyholm/psr7": "^1.5",
-        "odolbeau/phone-number-bundle": "^3.3",
+        "odolbeau/phone-number-bundle": "^4.0",
         "openai-php/client": "^0.9.1",
         "phpoffice/phpspreadsheet": "^2.1",
         "predis/predis": "^1.1.0",
