@@ -116,6 +116,7 @@ class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity, Inde
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $description = null;
 
+    #[Groups(['action_read'])]
     #[ORM\OneToMany(mappedBy: 'action', targetEntity: ActionParticipant::class, cascade: ['persist'], fetch: 'EXTRA_LAZY')]
     private Collection $participants;
 
@@ -151,6 +152,11 @@ class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity, Inde
     public function getFirstParticipants(): array
     {
         return $this->participants->matching(Criteria::create()->setMaxResults(3)->orderBy(['createdAt' => 'ASC']))->toArray();
+    }
+
+    public function getParticipants(): array
+    {
+        return $this->participants->toArray();
     }
 
     public function cancel(): void
