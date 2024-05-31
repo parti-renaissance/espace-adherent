@@ -47,6 +47,7 @@ class GetTimelineFeedsController extends AbstractController
         $tagFilters = [[
             TimelineFeedTypeEnum::NEWS,
             TimelineFeedTypeEnum::EVENT,
+            TimelineFeedTypeEnum::ACTION,
         ]];
 
         if ($user instanceof DeviceApiUser) {
