@@ -83,6 +83,7 @@ services:
             $systemPayKey: '%env(SYSTEMPAY_KEY)%'
             $appEnvironment: '%env(APP_ENVIRONMENT)%'
             $googlePlaceApiKey: '%env(GMAPS_PRIVATE_API_KEY)%'
+            $voxHost: '%env(VOX_HOST)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:

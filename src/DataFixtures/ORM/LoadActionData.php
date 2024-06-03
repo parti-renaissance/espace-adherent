@@ -14,7 +14,7 @@ class LoadActionData extends AbstractLoadPostAddressData implements DependentFix
     {
         $coordinates = array_values(DummyGeocoder::$coordinates);
 
-        $types = array_values(ActionTypeEnum::LABELS);
+        $types = array_keys(ActionTypeEnum::LABELS);
 
         $adherents = [
             $this->getReference('adherent-1'),

@@ -24,7 +24,7 @@ class EventReminderNotification extends AbstractMulticastNotification
             $tokens
         );
 
-        $notification->setDeepLink($event);
+        $notification->setDeepLinkFromObject($event);
 
         return $notification;
     }

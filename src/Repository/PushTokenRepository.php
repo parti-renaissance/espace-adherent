@@ -2,11 +2,14 @@
 
 namespace App\Repository;
 
+use App\Entity\Action\Action;
+use App\Entity\Action\ActionParticipant;
 use App\Entity\Adherent;
 use App\Entity\Device;
 use App\Entity\Geo\Zone;
 use App\Entity\PushToken;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -99,6 +102,19 @@ class PushTokenRepository extends ServiceEntityRepository
             'z'
         );
 
-        return $queryBuilder->getQuery()->getResult();
+        return $queryBuilder->getQuery()->getSingleColumnResult();
+    }
+
+    public function findAllForActionInscriptions(Action $action): array
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.identifier')
+            ->innerJoin('t.adherent', 'a')
+            ->innerJoin(ActionParticipant::class, 'ap', Join::WITH, 'ap.adherent = a')
+            ->where('ap.action = :action')
+            ->setParameter('action', $action)
+            ->getQuery()
+            ->getSingleColumnResult()
+        ;
     }
 }

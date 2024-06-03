@@ -51,10 +51,15 @@ abstract class AbstractNotification implements NotificationInterface
         ))->format($date);
     }
 
-    public function setDeepLink(DynamicLinkObjectInterface $object): void
+    public function setDeepLinkFromObject(DynamicLinkObjectInterface $object): void
     {
         if ($object->getDynamicLink()) {
-            $this->addData('deeplink', $object->getDynamicLink());
+            $this->setDeepLink($object->getDynamicLink());
         }
+    }
+
+    public function setDeepLink(string $deeplink): void
+    {
+        $this->addData('deeplink', $deeplink);
     }
 }
