@@ -5,6 +5,7 @@ namespace App\Api\Listener;
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\Action\Action;
 use App\JeMarche\Command\ActionCreatedNotificationCommand;
+use App\JeMarche\Command\ActionUpdatedNotificationCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
@@ -26,18 +27,24 @@ class PostActionEditListener implements EventSubscriberInterface
     {
         $action = $viewEvent->getControllerResult();
 
-        if (!$action instanceof Action) {
+        if (
+            !$viewEvent->isMainRequest()
+            || !$action instanceof Action
+            || $action->isCancelled()
+        ) {
             return;
         }
 
-        if (!$viewEvent->isMainRequest() || !$viewEvent->getRequest()->isMethod(Request::METHOD_POST)) {
+        if (!\in_array($requestMethod = $viewEvent->getRequest()->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT])) {
             return;
         }
 
-        if ($action->isCancelled()) {
-            return;
+        if (Request::METHOD_POST === $requestMethod) {
+            // Action creation
+            $this->messageBus->dispatch(new ActionCreatedNotificationCommand($action->getUuid()));
+        } elseif (Request::METHOD_PUT === $requestMethod) {
+            // Action update
+            $this->messageBus->dispatch(new ActionUpdatedNotificationCommand($action->getUuid()));
         }
-
-        $this->messageBus->dispatch(new ActionCreatedNotificationCommand($action->getUuid()));
     }
 }

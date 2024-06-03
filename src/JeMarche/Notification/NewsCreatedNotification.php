@@ -15,7 +15,7 @@ class NewsCreatedNotification extends AbstractTopicNotification
             $news->getTopic()
         );
 
-        $notification->setDeepLink($news);
+        $notification->setDeepLinkFromObject($news);
 
         return $notification;
     }

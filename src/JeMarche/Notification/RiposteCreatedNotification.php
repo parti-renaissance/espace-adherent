@@ -15,7 +15,7 @@ class RiposteCreatedNotification extends AbstractTopicNotification
             $topic
         );
 
-        $notification->setDeepLink($riposte);
+        $notification->setDeepLinkFromObject($riposte);
 
         return $notification;
     }

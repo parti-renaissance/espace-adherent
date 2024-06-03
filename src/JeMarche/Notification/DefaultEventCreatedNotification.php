@@ -20,7 +20,7 @@ class DefaultEventCreatedNotification extends AbstractTopicNotification
             $topic
         );
 
-        $notification->setDeepLink($event);
+        $notification->setDeepLinkFromObject($event);
 
         return $notification;
     }
