@@ -50,18 +50,18 @@ Feature:
             },
             "zones": [
                 {
-                    "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
-                    "type": "city",
-                    "code": "92024",
-                    "name": "Clichy",
-                    "created_at": "@string@.isDateTime()",
-                    "updated_at": "@string@.isDateTime()"
-                },
-                {
                     "uuid": "e3f0ee1a-906e-11eb-a875-0242ac150002",
                     "type": "district",
                     "code": "92-5",
                     "name": "Hauts-de-Seine (5)",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                },
+                {
+                    "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
+                    "type": "city",
+                    "code": "92024",
+                    "name": "Clichy",
                     "created_at": "@string@.isDateTime()",
                     "updated_at": "@string@.isDateTime()"
                 }
@@ -104,18 +104,18 @@ Feature:
             },
             "zones": [
                 {
-                    "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
-                    "type": "city",
-                    "code": "92024",
-                    "name": "Clichy",
-                    "created_at": "@string@.isDateTime()",
-                    "updated_at": "@string@.isDateTime()"
-                },
-                {
                     "uuid": "e3f0ee1a-906e-11eb-a875-0242ac150002",
                     "type": "district",
                     "code": "92-5",
                     "name": "Hauts-de-Seine (5)",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                },
+                {
+                    "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
+                    "type": "city",
+                    "code": "92024",
+                    "name": "Clichy",
                     "created_at": "@string@.isDateTime()",
                     "updated_at": "@string@.isDateTime()"
                 }

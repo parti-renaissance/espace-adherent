@@ -9,7 +9,6 @@ use App\Repository\PushTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -26,7 +25,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *     },
  *     collectionOperations={
  *         "post": {
- *             "path": "/v3/push-token"
+ *             "path": "/v3/push-token",
+ *             "controller": "App\Controller\Api\PushToken\CreateController",
  *         }
  *     },
  *     itemOperations={
@@ -40,8 +40,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *         },
  *     }
  * )
- *
- * @UniqueEntity("identifier")
  */
 #[ORM\Entity(repositoryClass: PushTokenRepository::class)]
 class PushToken
