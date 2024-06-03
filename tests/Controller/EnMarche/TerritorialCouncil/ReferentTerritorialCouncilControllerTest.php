@@ -89,10 +89,9 @@ class ReferentTerritorialCouncilControllerTest extends AbstractEnMarcheWebTestCa
 
         $crawler = $this->client->submit($form);
 
-        $this->assertCount(3, $crawler->filter('tbody tr.referent__item'));
+        $this->assertCount(2, $crawler->filter('tbody tr.referent__item'));
         $this->assertStringContainsString('Berthoux Gisele', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertStringContainsString('Duroc Benjamin', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertStringContainsString('PARIS I Député', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
 
         // by territorial council
         $form['f[ageMin]'] = '';

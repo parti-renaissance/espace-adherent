@@ -94,8 +94,8 @@ class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity, Inde
     use EntityTimestampableTrait;
     use AuthoredTrait;
 
-    public const STATUS_SCHEDULED = 'scheduled';
-    public const STATUS_CANCELLED = 'cancelled';
+    public const string STATUS_SCHEDULED = 'scheduled';
+    public const string STATUS_CANCELLED = 'cancelled';
 
     /**
      * @Assert\NotBlank
@@ -151,7 +151,7 @@ class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity, Inde
     #[Groups(['action_read_list'])]
     public function getFirstParticipants(): array
     {
-        return $this->participants->matching(Criteria::create()->setMaxResults(3)->orderBy(['createdAt' => 'ASC']))->toArray();
+        return array_values($this->participants->matching(Criteria::create()->setMaxResults(3)->orderBy(['createdAt' => 'ASC']))->toArray());
     }
 
     public function getParticipants(): array

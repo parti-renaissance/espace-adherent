@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Adherent;
 use App\Entity\Device;
+use App\Entity\Geo\Zone;
 use App\Entity\PushToken;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -73,5 +74,31 @@ class PushTokenRepository extends ServiceEntityRepository
         ;
 
         return array_map('current', $tokens);
+    }
+
+    public function findByIdentifier(string $identifier): ?PushToken
+    {
+        return $this->findOneBy(['identifier' => $identifier]);
+    }
+
+    public function findAllForZone(Zone $zone): array
+    {
+        $queryBuilder = $this
+            ->createQueryBuilder('t')
+            ->select('t.identifier')
+            ->innerJoin('t.adherent', 'a')
+        ;
+
+        $this->withGeoZones(
+            [$zone],
+            $queryBuilder,
+            'a',
+            Adherent::class,
+            'a2',
+            'zones',
+            'z'
+        );
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }
