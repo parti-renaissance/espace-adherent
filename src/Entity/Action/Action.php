@@ -135,6 +135,12 @@ class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity, Inde
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTime $canceledAt = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $notifiedAtFirstNotification = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $notifiedAtSecondNotification = null;
+
     public function __construct()
     {
         $this->uuid = Uuid::uuid4();
