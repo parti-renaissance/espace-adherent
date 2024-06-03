@@ -12,10 +12,10 @@ class ActionTypeEnum extends Enum
     public const string COLLAGE = 'collage';
 
     public const array LABELS = [
-        self::PAP => 'Porte à porte',
-        self::BOITAGE => 'Boitage',
-        self::TRACTAGE => 'Tractage',
-        self::COLLAGE => 'Collage',
+        self::PAP => 'porte à porte',
+        self::BOITAGE => 'boitage',
+        self::TRACTAGE => 'tractage',
+        self::COLLAGE => 'collage',
     ];
 
     public const array EMOJIS = [

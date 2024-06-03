@@ -3,7 +3,7 @@
 namespace App\Controller\Api\Action;
 
 use App\Entity\Action\Action;
-use App\JeMarche\Command\ActionCancelledNotificationCommand;
+use App\JeMarche\Command\NotifyForActionCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +23,7 @@ class CancelActionController extends AbstractController
         $action->cancel();
         $manager->flush();
 
-        $bus->dispatch(new ActionCancelledNotificationCommand($action->getUuid()));
+        $bus->dispatch(new NotifyForActionCommand($action->getUuid(), NotifyForActionCommand::EVENT_CANCEL));
 
         return $this->json('OK');
     }

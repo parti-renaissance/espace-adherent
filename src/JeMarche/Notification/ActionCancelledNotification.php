@@ -19,7 +19,7 @@ class ActionCancelledNotification extends AbstractMulticastNotification
 
     private static function createTitle(Action $action): string
     {
-        $typeLabel = sprintf('%s %s', ActionTypeEnum::EMOJIS[$action->type], ActionTypeEnum::LABELS[$action->type]);
+        $typeLabel = sprintf('%s %s', ActionTypeEnum::EMOJIS[$action->type], ucfirst(ActionTypeEnum::LABELS[$action->type]));
 
         return sprintf(
             '[ANNULATION] %s le %d %s à %s',
@@ -34,7 +34,7 @@ class ActionCancelledNotification extends AbstractMulticastNotification
     {
         return sprintf(
             'Le %s du %s auquel vous êtes inscrit vient d\'être annulé.',
-            mb_strtolower(ActionTypeEnum::LABELS[$action->type]),
+            ActionTypeEnum::LABELS[$action->type],
             static::formatDate($action->date, 'EEEE d MMMM à HH\'h\'mm'),
         );
     }
