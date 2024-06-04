@@ -29,6 +29,13 @@ final class OrTextSearchFilter extends AbstractFilter
 
         $columnsConfig = [];
         foreach ($this->properties as $firstColumn => $secondColumn) {
+            if (str_contains($firstColumn, '.')) {
+                $joinTableFromFirstColumn = explode('.', $firstColumn, 2);
+                $queryBuilder->leftJoin($alias.'.'.$joinTableFromFirstColumn[0], $aliasFirstColumnJoinTable = $alias.'_'.$joinTableFromFirstColumn[0]);
+                $columnsConfig[] = ["$aliasFirstColumnJoinTable.$joinTableFromFirstColumn[1]", "$aliasFirstColumnJoinTable.$joinTableFromFirstColumn[1]"];
+                continue;
+            }
+
             $columnsConfig[] = ["$alias.$firstColumn", "$alias.$secondColumn"];
         }
 
