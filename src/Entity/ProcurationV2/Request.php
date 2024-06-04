@@ -92,7 +92,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(InZoneOfScopeFilter::class)
  * @ApiFilter(OrderFilter::class, properties={"createdAt"})
  * @ApiFilter(SearchFilter::class, properties={"status": "exact"})
- * @ApiFilter(OrTextSearchFilter::class, properties={"firstNames": "lastName", "lastName": "firstNames", "email": "email"})
+ * @ApiFilter(OrTextSearchFilter::class, properties={"firstNames": "lastName", "lastName": "firstNames", "email": "email", "voteZone.name": "voteZone.name"})
  */
 #[ORM\Table(name: 'procuration_v2_requests')]
 #[ORM\Entity(repositoryClass: RequestRepository::class)]
