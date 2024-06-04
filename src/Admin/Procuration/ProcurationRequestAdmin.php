@@ -2,29 +2,21 @@
 
 namespace App\Admin\Procuration;
 
+use App\Admin\AbstractAdmin;
 use App\Form\Admin\Procuration\InitialRequestTypeEnumType;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ProcurationRequestAdmin extends AbstractAdmin
 {
-    protected function configureRoutes(RouteCollectionInterface $collection): void
+    protected function configureFormFields(FormMapper $form): void
     {
-        $collection->clearExcept('list');
-    }
-
-    protected function configureDefaultSortValues(array &$sortValues): void
-    {
-        parent::configureDefaultSortValues($sortValues);
-
-        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
-        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+        $form->add('email', TextType::class, ['label' => 'Adresse email']);
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -39,6 +31,12 @@ class ProcurationRequestAdmin extends AbstractAdmin
             ])
             ->add('createdAt', null, [
                 'label' => 'Date',
+            ])
+            ->add(ListMapper::NAME_ACTIONS, null, [
+                'actions' => [
+                    'edit' => [],
+                    'delete' => [],
+                ],
             ])
         ;
     }

@@ -71,4 +71,9 @@ class ProcurationRequest
     {
         return InitialRequestTypeEnum::PROXY === $this->type;
     }
+
+    public function __toString(): string
+    {
+        return (string) $this->email;
+    }
 }
