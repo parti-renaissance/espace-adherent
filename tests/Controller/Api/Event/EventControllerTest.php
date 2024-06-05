@@ -79,4 +79,11 @@ class EventControllerTest extends AbstractApiTestCase
         $this->assertCountMails(1, BesoinDEuropeEventUpdateMessage::class);
         $this->assertMail(BesoinDEuropeEventUpdateMessage::class, 'president-ad@renaissance-dev.fr', ['template_name' => 'besoin-d-europe-event-update']);
     }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->disableRepublicanSilence();
+    }
 }

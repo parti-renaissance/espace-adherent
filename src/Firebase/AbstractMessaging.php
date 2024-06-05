@@ -6,6 +6,7 @@ use App\Entity\Notification as NotificationEntity;
 use App\Firebase\Notification\MulticastNotificationInterface;
 use App\Firebase\Notification\NotificationInterface;
 use App\Firebase\Notification\TopicNotificationInterface;
+use App\RepublicanSilence\RepublicanSilenceManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Kreait\Firebase\Contract\Messaging as BaseMessaging;
 use Kreait\Firebase\Messaging\CloudMessage;
@@ -15,17 +16,19 @@ abstract class AbstractMessaging
 {
     private const MULTICAST_MAX_TOKENS = 500;
 
-    private $messaging;
-    private $entityManager;
-
-    public function __construct(BaseMessaging $messaging, EntityManagerInterface $entityManager)
-    {
-        $this->messaging = $messaging;
-        $this->entityManager = $entityManager;
+    public function __construct(
+        private readonly BaseMessaging $messaging,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly RepublicanSilenceManager $republicanSilenceManager,
+    ) {
     }
 
     public function send(NotificationInterface $notification): void
     {
+        if ($this->republicanSilenceManager->hasStartedSilence()) {
+            return;
+        }
+
         $notificationEntity = NotificationEntity::create($notification);
 
         $this->entityManager->persist($notificationEntity);
