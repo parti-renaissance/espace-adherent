@@ -3,6 +3,7 @@
 namespace App\Normalizer;
 
 use App\Entity\Adherent;
+use App\Entity\AuthorInstanceInterface;
 use App\Entity\AuthorInterface;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
@@ -16,24 +17,28 @@ final class AuthorDenormalizer implements DenormalizerInterface, DenormalizerAwa
 
     private const ALREADY_CALLED = 'AUTHOR_DENORMALIZER_ALREADY_CALLED';
 
-    private Security $security;
-    private ScopeGeneratorResolver $scopeGeneratorResolver;
-
-    public function __construct(Security $security, ScopeGeneratorResolver $scopeGeneratorResolver)
-    {
-        $this->security = $security;
-        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
+    public function __construct(
+        private readonly Security $security,
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+    ) {
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
         $context[self::ALREADY_CALLED] = true;
 
+        /** @var AuthorInterface $data */
         $data = $this->denormalizer->denormalize($data, $class, $format, $context);
 
         if (!$data->getId()) {
             $scope = $this->scopeGeneratorResolver->generate();
             $data->setAuthor($scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $this->security->getUser());
+
+            if ($scope && $data instanceof AuthorInstanceInterface) {
+                $data->setAuthorRole($scope->getRoleName());
+                $data->setAuthorInstance($scope->getScopeInstance());
+                $data->setAuthorZone(implode(', ', $scope->getZoneNames()));
+            }
         }
 
         return $data;

@@ -2,7 +2,7 @@
 
 namespace App\Entity\Pap;
 
-use App\Entity\Adherent;
+use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
 use App\Repository\Pap\BuildingEventRepository;
@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class BuildingEvent implements AuthorInterface
 {
     use EntityIdentityTrait;
+    use AuthoredTrait;
 
     /**
      * @Assert\NotBlank
@@ -61,13 +62,6 @@ class BuildingEvent implements AuthorInterface
      */
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $createdAt = null;
-
-    /**
-     * @var Adherent|null
-     */
-    #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Adherent::class, fetch: 'EAGER')]
-    private $author;
 
     #[Groups(['pap_building_event_write'])]
     #[ORM\Column(nullable: true)]
@@ -150,15 +144,5 @@ class BuildingEvent implements AuthorInterface
     public function setCreatedAt(\DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
-    }
-
-    public function getAuthor(): ?Adherent
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?Adherent $author): void
-    {
-        $this->author = $author;
     }
 }

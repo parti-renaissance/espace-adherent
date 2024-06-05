@@ -2,6 +2,7 @@
 
 namespace App\Normalizer\Indexer;
 
+use App\Entity\Adherent;
 use App\Entity\Jecoute\Riposte;
 
 class RiposteNormalizer extends AbstractJeMengageTimelineFeedNormalizer
@@ -36,9 +37,9 @@ class RiposteNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Riposte $object */
-    protected function getAuthor(object $object): ?string
+    protected function getAuthorObject(object $object): ?Adherent
     {
-        return $object->getAuthor() ? $object->getAuthor()->getFullName() : null;
+        return $object->getAuthor();
     }
 
     /** @param Riposte $object */

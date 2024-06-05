@@ -13,6 +13,7 @@ use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Api\Filter\AdherentMessageScopeFilter;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AbstractAdherentMessageFilter;
+use App\Entity\AuthoredTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\UnlayerJsonContentTrait;
@@ -127,6 +128,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     use EntityIdentityTrait;
     use UnlayerJsonContentTrait;
     use EntityTimestampableTrait;
+    use AuthoredTrait;
 
     /**
      * @var Adherent
@@ -136,7 +138,7 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     #[Groups(['message_read_list', 'message_read'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    private $author;
+    protected $author;
 
     /**
      * @var string

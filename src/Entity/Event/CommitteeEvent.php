@@ -63,7 +63,7 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
     ) {
         parent::__construct($uuid);
 
-        $this->organizer = $organizer;
+        $this->author = $organizer;
         $this->committee = $committee;
         $this->setName($name);
         $this->slug = $slug;
@@ -120,15 +120,6 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
     public function isReferentEvent(): bool
     {
         return null === $this->getCommittee();
-    }
-
-    public function getOrganizerUuid(): ?string
-    {
-        if (!$organizer = $this->getOrganizer()) {
-            return null;
-        }
-
-        return $organizer->getUuidAsString();
     }
 
     public function needNotifyForRegistration(): bool

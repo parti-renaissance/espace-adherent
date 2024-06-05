@@ -2,6 +2,7 @@
 
 namespace App\Normalizer\Indexer;
 
+use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -41,9 +42,9 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param BaseEvent $object */
-    protected function getAuthor(object $object): ?string
+    protected function getAuthorObject(object $object): ?Adherent
     {
-        return $object->getAuthor() ? $object->getAuthor()->getFullName() : null;
+        return $object->getAuthor();
     }
 
     /** @param BaseEvent $object */
@@ -113,7 +114,7 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 
         $zonesCodes = [];
 
-        foreach ($object->zones as $zone) {
+        foreach ($object->getZones() as $zone) {
             $zonesCodes[] = $this->buildZoneCodes($zone);
         }
 

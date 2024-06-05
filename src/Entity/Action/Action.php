@@ -8,8 +8,8 @@ use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Collection\ZoneCollection;
 use App\Entity\Adherent;
-use App\Entity\AuthoredTrait;
-use App\Entity\AuthorInterface;
+use App\Entity\AuthorInstanceInterface;
+use App\Entity\AuthorInstanceTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -86,13 +86,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'vox_action')]
 #[ORM\Entity(repositoryClass: ActionRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
-class Action implements AuthorInterface, GeoPointInterface, ZoneableEntity, IndexableEntityInterface
+class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEntity, IndexableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityPostAddressTrait;
     use EntityZoneTrait;
     use EntityTimestampableTrait;
-    use AuthoredTrait;
+    use AuthorInstanceTrait;
 
     public const string STATUS_SCHEDULED = 'scheduled';
     public const string STATUS_CANCELLED = 'cancelled';

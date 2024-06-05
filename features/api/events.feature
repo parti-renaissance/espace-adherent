@@ -116,7 +116,10 @@ Feature:
                 "organizer": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
-                    "last_name": "Picard"
+                    "last_name": "Picard",
+                    "role": null,
+                    "instance": null,
+                    "zone": null
                 },
                 "participants_count": 1,
                 "status": "SCHEDULED",
@@ -160,7 +163,10 @@ Feature:
                 "organizer": {
                     "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
                     "first_name": "Francis",
-                    "last_name": "Brioul"
+                    "last_name": "Brioul",
+                    "role": null,
+                    "instance": null,
+                    "zone": null
                 },
                 "participants_count": 0,
                 "status": "SCHEDULED",
@@ -227,7 +233,10 @@ Feature:
                 "organizer": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
-                    "last_name": "Picard"
+                    "last_name": "Picard",
+                    "role": null,
+                    "instance": null,
+                    "zone": null
                 },
                 "participants_count": 1,
                 "status": "SCHEDULED",
@@ -271,7 +280,10 @@ Feature:
                 "organizer": {
                     "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
                     "first_name": "Francis",
-                    "last_name": "Brioul"
+                    "last_name": "Brioul",
+                    "role": null,
+                    "instance": null,
+                    "zone": null
                 },
                 "participants_count": 0,
                 "status": "SCHEDULED",
@@ -315,7 +327,10 @@ Feature:
                 "organizer": {
                     "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
                     "first_name": "Francis",
-                    "last_name": "Brioul"
+                    "last_name": "Brioul",
+                    "role": null,
+                    "instance": null,
+                    "zone": null
                 },
                 "participants_count": 0,
                 "status": "SCHEDULED",
@@ -375,7 +390,10 @@ Feature:
                 "organizer": {
                     "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
                     "first_name": "Gisele",
-                    "last_name": "Berthoux"
+                    "last_name": "Berthoux",
+                    "role": null,
+                    "instance": null,
+                    "zone": null
                 },
                 "participants_count": 2,
                 "status": "SCHEDULED",
@@ -419,7 +437,10 @@ Feature:
                 "organizer": {
                     "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                     "first_name": "Referent",
-                    "last_name": "Referent"
+                    "last_name": "Referent",
+                    "role": null,
+                    "instance": null,
+                    "zone": null
                 },
                 "participants_count": 0,
                 "status": "SCHEDULED",
@@ -454,7 +475,10 @@ Feature:
                 "organizer": {
                     "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                     "first_name": "Referent",
-                    "last_name": "Referent"
+                    "last_name": "Referent",
+                    "role": null,
+                    "instance": null,
+                    "zone": null
                 },
                 "participants_count": 0,
                 "status": "SCHEDULED",
@@ -515,7 +539,10 @@ Feature:
                 "organizer": {
                     "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
                     "first_name": "Jacques",
-                    "last_name": "Picard"
+                    "last_name": "Picard",
+                    "role": null,
+                    "instance": null,
+                    "zone": null
                 },
                 "participants_count": 1,
                 "status": "SCHEDULED",
@@ -549,7 +576,10 @@ Feature:
                 "organizer": {
                     "uuid": "@uuid@",
                     "first_name": "Adherent 56",
-                    "last_name": "Fa56ke"
+                    "last_name": "Fa56ke",
+                    "role": null,
+                    "instance": null,
+                    "zone": null
                 },
                 "participants_count": 3,
                 "status": "SCHEDULED",
@@ -603,7 +633,10 @@ Feature:
                 "organizer": {
                     "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
                     "first_name": "Francis",
-                    "last_name": "Brioul"
+                    "last_name": "Brioul",
+                    "role": null,
+                    "instance": null,
+                    "zone": null
                 },
                 "participants_count": 0,
                 "status": "SCHEDULED",
@@ -660,7 +693,10 @@ Feature:
                 "organizer": {
                     "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                     "first_name": "Referent",
-                    "last_name": "Referent"
+                    "last_name": "Referent",
+                    "role": null,
+                    "instance": null,
+                    "zone": null
                 },
                 "participants_count": 0,
                 "status": "CANCELLED",
@@ -695,7 +731,10 @@ Feature:
                 "organizer": {
                     "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                     "first_name": "Referent",
-                    "last_name": "Referent"
+                    "last_name": "Referent",
+                    "role": null,
+                    "instance": null,
+                    "zone": null
                 },
                 "participants_count": 0,
                 "status": "SCHEDULED",
@@ -730,7 +769,10 @@ Feature:
                 "organizer": {
                     "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
                     "first_name": "Referent",
-                    "last_name": "Referent"
+                    "last_name": "Referent",
+                    "role": null,
+                    "instance": null,
+                    "zone": null
                 },
                 "participants_count": 0,
                 "status": "SCHEDULED",
@@ -788,7 +830,10 @@ Feature:
         "organizer": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
-            "last_name": "Picard"
+            "last_name": "Picard",
+            "role": null,
+            "instance": null,
+            "zone": null
         },
         "participants_count": 0,
         "status": "SCHEDULED",
@@ -842,7 +887,10 @@ Feature:
         "organizer": {
             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
             "first_name": "Referent",
-            "last_name": "Referent"
+            "last_name": "Referent",
+            "role": null,
+            "instance": null,
+            "zone": null
         },
         "participants_count": 0,
         "status": "CANCELLED",
@@ -895,7 +943,10 @@ Feature:
         "organizer": {
             "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
             "first_name": "Jacques",
-            "last_name": "Picard"
+            "last_name": "Picard",
+            "role": null,
+            "instance": null,
+            "zone": null
         },
         "participants_count": 0,
         "status": "SCHEDULED",
@@ -1058,7 +1109,10 @@ Feature:
         "organizer": {
             "uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
             "first_name": "Député",
-            "last_name": "PARIS I"
+            "last_name": "PARIS I",
+            "role": "Délégué",
+            "instance": "Circonscription",
+            "zone": "Paris (1) (75-1)"
         },
         "participants_count": 1,
         "status": "SCHEDULED",
@@ -1135,7 +1189,10 @@ Feature:
         "organizer": {
             "uuid": "@uuid@",
             "first_name": "Adherent 55",
-            "last_name": "Fa55ke"
+            "last_name": "Fa55ke",
+            "role": "Responsable",
+            "instance": "Comité local",
+            "zone": "Comité des 3 communes"
         },
         "committee": {
             "uuid": "5e00c264-1d4b-43b8-862e-29edc38389b3",
@@ -1427,7 +1484,10 @@ Feature:
         "organizer": {
             "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
             "first_name": "Referent",
-            "last_name": "Referent"
+            "last_name": "Referent",
+            "role": null,
+            "instance": null,
+            "zone": null
         },
         "participants_count": 0,
         "status": "SCHEDULED",
@@ -1775,7 +1835,10 @@ Feature:
         "organizer": {
             "uuid": "ab03c939-8f70-40a8-b2cd-d147ec7fd09e",
             "first_name": "Jean-Baptiste",
-            "last_name": "Fortin"
+            "last_name": "Fortin",
+            "role": "@string@",
+            "instance": "@string@",
+            "zone": "@string@"
         },
         "participants_count": 1,
         "status": "SCHEDULED",
@@ -1840,7 +1903,10 @@ Feature:
         "organizer": {
             "first_name": "Jean-Baptiste",
             "last_name": "Fortin",
-            "uuid": "ab03c939-8f70-40a8-b2cd-d147ec7fd09e"
+            "uuid": "ab03c939-8f70-40a8-b2cd-d147ec7fd09e",
+            "role": null,
+            "instance": null,
+            "zone": null
         },
         "participants_count": 0,
         "status": "SCHEDULED",

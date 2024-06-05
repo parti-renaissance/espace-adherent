@@ -2,6 +2,7 @@
 
 namespace App\Normalizer\Indexer;
 
+use App\Entity\Adherent;
 use App\Entity\Jecoute\Survey;
 
 class SurveyNormalizer extends AbstractJeMengageTimelineFeedNormalizer
@@ -42,9 +43,9 @@ class SurveyNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Survey $object */
-    protected function getAuthor(object $object): ?string
+    protected function getAuthorObject(object $object): ?Adherent
     {
-        return $object->getCreator() ? $object->getCreator()->getFullName() : null;
+        return $object->getCreator();
     }
 
     /** @param Survey $object */

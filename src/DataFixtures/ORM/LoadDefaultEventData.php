@@ -42,7 +42,7 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $event1->setTimeZone('Europe/Paris');
         $event1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $event1->setPostAddress($this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759));
-        $event1->setOrganizer($referent);
+        $event1->setAuthor($referent);
 
         $event2 = new DefaultEvent(Uuid::fromString(self::EVENT_2_UUID));
         $event2->setName('Nouvel événement online privé et électoral');
@@ -54,7 +54,7 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $event2->setStatus(BaseEvent::STATUS_SCHEDULED);
         $event2->setMode(BaseEvent::MODE_ONLINE);
         $event2->setTimeZone('Europe/Paris');
-        $event2->setOrganizer($referent);
+        $event2->setAuthor($referent);
         $event2->setPrivate(true);
         $event2->setElectoral(true);
         $event2->setPostAddress($this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759));
@@ -70,7 +70,7 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $event3->setStatus(BaseEvent::STATUS_SCHEDULED);
         $event3->setMode(BaseEvent::MODE_ONLINE);
         $event3->setTimeZone('Europe/Paris');
-        $event3->setOrganizer($referent);
+        $event3->setAuthor($referent);
         $event3->setPostAddress($this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759));
         $event3->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
         $event3->cancel();
@@ -85,7 +85,7 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $event4->setStatus(BaseEvent::STATUS_SCHEDULED);
         $event4->setMode(BaseEvent::MODE_MEETING);
         $event4->setTimeZone('Europe/Paris');
-        $event4->setOrganizer($senatorialCandidate);
+        $event4->setAuthor($senatorialCandidate);
         $event4->setPostAddress($this->createPostAddress('74 Avenue des Champs-Élysées, 75008 Paris', '75008-75108', null, 48.862725, 2.287592));
         $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
@@ -101,7 +101,7 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $event5->setStatus(BaseEvent::STATUS_SCHEDULED);
         $event5->setMode(BaseEvent::MODE_ONLINE);
         $event5->setTimeZone('Europe/Paris');
-        $event5->setOrganizer($adherent5);
+        $event5->setAuthor($adherent5);
         $event5->setPostAddress($this->createPostAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684));
         $event5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
         $event5->incrementParticipantsCount();
@@ -120,7 +120,7 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $event6->setMode(BaseEvent::MODE_ONLINE);
         $event6->setTimeZone('Europe/Paris');
         $event6->setVisioUrl('https://parti-renaissance.fr');
-        $event6->setOrganizer($adherent5);
+        $event6->setAuthor($adherent5);
         $event6->setPostAddress($this->createPostAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684));
         $event6->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
         $event6->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92014'));
@@ -138,7 +138,7 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $event7->setStatus(BaseEvent::STATUS_SCHEDULED);
         $event7->setMode(BaseEvent::MODE_ONLINE);
         $event7->setTimeZone('Europe/Paris');
-        $event7->setOrganizer($adherent5);
+        $event7->setAuthor($adherent5);
         $event7->setPostAddress($this->createPostAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684));
         $event7->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
         $event7->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92014'));
@@ -182,7 +182,7 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
             $event->setMode(0 === $i % 2 ? BaseEvent::MODE_MEETING : BaseEvent::MODE_ONLINE);
             $event->setTimeZone('Europe/Paris');
             $event->visibility = EventVisibilityEnum::PRIVATE;
-            $event->setOrganizer($senatorialCandidate);
+            $event->setAuthor($senatorialCandidate);
             $event->setPostAddress($this->createPostAddress('74 Avenue des Champs-Élysées, 75008 Paris', '75008-75108', null, 48.862725, 2.287592));
             $event->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
             $event->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));

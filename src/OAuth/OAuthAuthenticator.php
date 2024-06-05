@@ -2,6 +2,7 @@
 
 namespace App\OAuth;
 
+use App\Entity\Adherent;
 use App\OAuth\Model\ClientApiUser;
 use App\OAuth\Model\DeviceApiUser;
 use App\Repository\AdherentRepository;
@@ -118,6 +119,9 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
+        if (($user = $token->getUser()) instanceof Adherent) {
+            $user->setAuthAppVersion($request->headers->get('X-App-Version'));
+        }
     }
 
     public function supportsRememberMe()

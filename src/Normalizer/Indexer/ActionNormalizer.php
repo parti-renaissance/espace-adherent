@@ -3,6 +3,7 @@
 namespace App\Normalizer\Indexer;
 
 use App\Entity\Action\Action;
+use App\Entity\Adherent;
 
 class ActionNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
@@ -54,9 +55,9 @@ class ActionNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Action $object */
-    protected function getAuthor(object $object): ?string
+    protected function getAuthorObject(object $object): ?Adherent
     {
-        return $object->getAuthor() ? $object->getAuthor()->getFullName() : null;
+        return $object->getAuthor();
     }
 
     /** @param Action $object */

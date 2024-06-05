@@ -39,7 +39,7 @@ final class MyCreatedEventsFilter extends AbstractFilter
 
         $alias = $queryBuilder->getRootAliases()[0];
         $queryBuilder
-            ->andWhere(sprintf('%s.organizer = :organizer', $alias))
+            ->andWhere(sprintf('%s.author = :organizer', $alias))
             ->setParameter('organizer', $user)
         ;
     }

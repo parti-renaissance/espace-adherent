@@ -8,35 +8,30 @@ use App\Event\EventCleaner;
 use App\Event\EventVisibilityEnum;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use App\Repository\EventRegistrationRepository;
-use Symfony\Component\Security\Core\Security;
 
 class EventProcessor extends AbstractFeedProcessor
 {
-    private ?Adherent $currentUser = null;
-
     public function __construct(
         private readonly EventCleaner $eventCleaner,
-        private readonly Security $security,
         private readonly EventRegistrationRepository $eventRegistrationRepository,
     ) {
     }
 
-    public function process(array $item, array &$context): array
+    public function process(array $item, Adherent $user): array
     {
-        $item = $this->cleanEventDataIfNeed($item, $context);
-        $item = $this->appendEventRegistrationDate($item);
+        $item = $this->cleanEventDataIfNeed($item, $user);
+        $item = $this->appendEventRegistrationDate($item, $user);
 
         return $item;
     }
 
-    public function supports(array $item): bool
+    public function supports(array $item, Adherent $user): bool
     {
         return ($item['type'] ?? null) === TimelineFeedTypeEnum::EVENT;
     }
 
-    private function cleanEventDataIfNeed(array $item, array &$context): array
+    private function cleanEventDataIfNeed(array $item, Adherent $user): array
     {
-        $user = $this->getCurrentUser();
         $needClean = EventVisibilityEnum::isForAdherent($visibility = $item['visibility'] ?? EventVisibilityEnum::ADHERENT_DUES->value)
             && (
                 (EventVisibilityEnum::ADHERENT->value === $visibility && !$user->hasTag(TagEnum::ADHERENT))
@@ -53,20 +48,11 @@ class EventProcessor extends AbstractFeedProcessor
         return $item;
     }
 
-    private function getCurrentUser(): Adherent
-    {
-        if ($this->currentUser) {
-            return $this->currentUser;
-        }
-
-        return $this->currentUser = $this->security->getUser();
-    }
-
-    private function appendEventRegistrationDate(array $item): array
+    private function appendEventRegistrationDate(array $item, Adherent $user): array
     {
         $item['user_registered_at'] = $this->eventRegistrationRepository->findAdherentRegistration(
             $item['objectID'],
-            $this->getCurrentUser()->getUuidAsString()
+            $user->getUuidAsString()
         )?->getCreatedAt();
 
         return $item;

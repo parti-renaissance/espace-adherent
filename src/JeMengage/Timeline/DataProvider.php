@@ -6,7 +6,6 @@ use App\Algolia\SearchService;
 use App\Entity\Adherent;
 use App\Entity\Algolia\AlgoliaJeMengageTimelineFeed;
 use App\JeMengage\Timeline\FeedProcessor\FeedProcessorInterface;
-use App\JeMengage\Timeline\FeedProcessor\NullProcessor;
 
 class DataProvider
 {
@@ -32,23 +31,15 @@ class DataProvider
 
     private function processItems(Adherent $user, array $items): array
     {
-        $context = [];
         foreach ($items as &$item) {
-            $item = $this->getProcessor($item)->process($item, $context);
-        }
-
-        return $items;
-    }
-
-    private function getProcessor(array $item): FeedProcessorInterface
-    {
-        /** @var FeedProcessorInterface $processor */
-        foreach ($this->processors as $processor) {
-            if ($processor->supports($item)) {
-                return $processor;
+            foreach ($this->processors as $processor) {
+                /** @var FeedProcessorInterface $processor */
+                if ($processor->supports($item, $user)) {
+                    $item = $processor->process($item, $user);
+                }
             }
         }
 
-        return new NullProcessor();
+        return $items;
     }
 }

@@ -33,7 +33,7 @@ class DefaultEventRepository extends EventRepository
         $qb = $this->createQueryBuilder('event')
             ->select('event', 'category', 'organizer')
             ->leftJoin('event.category', 'category')
-            ->leftJoin('event.organizer', 'organizer')
+            ->leftJoin('event.author', 'organizer')
             ->where('event.published = :published')
             ->orderBy('event.beginAt', 'DESC')
             ->addOrderBy('event.name', 'ASC')
@@ -67,7 +67,7 @@ class DefaultEventRepository extends EventRepository
     ): PaginatorInterface {
         $qb = $this
             ->createQueryBuilder('event')
-            ->andWhere('event.organizer = :organizer')
+            ->andWhere('event.author = :organizer')
             ->setParameter('organizer', $organizer)
             ->orderBy('event.createdAt', 'DESC')
         ;

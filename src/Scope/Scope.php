@@ -136,4 +136,28 @@ class Scope
     {
         return array_column($this->attributes['committees'] ?? [], 'uuid');
     }
+
+    public function getRoleName(): string
+    {
+        return $this->delegatedAccess?->getRole() ?? ScopeEnum::ROLE_NAMES[$this->code] ?? $this->getName();
+    }
+
+    public function getScopeInstance(): ?string
+    {
+        return ScopeEnum::SCOPE_INSTANCES[$this->getMainCode()] ?? null;
+    }
+
+    public function getZoneNames(): array
+    {
+        if (ScopeEnum::ANIMATOR === $this->getMainCode()) {
+            $zones = array_column($this->attributes['committees'] ?? [], 'name');
+        } else {
+            $zones = array_map(fn (Zone $zone) => match ($zone->getType()) {
+                Zone::DISTRICT => $zone->getName().' ('.$zone->getCode().')',
+                default => $zone->getName(),
+            }, $this->zones);
+        }
+
+        return $zones;
+    }
 }

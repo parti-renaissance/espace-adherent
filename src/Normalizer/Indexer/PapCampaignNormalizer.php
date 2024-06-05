@@ -2,6 +2,7 @@
 
 namespace App\Normalizer\Indexer;
 
+use App\Entity\Adherent;
 use App\Entity\Pap\Campaign;
 
 class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
@@ -48,7 +49,7 @@ class PapCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param Campaign $object */
-    protected function getAuthor(object $object): ?string
+    protected function getAuthorObject(object $object): ?Adherent
     {
         return null;
     }
