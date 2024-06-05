@@ -64,6 +64,7 @@ class IncrementRiposteStatsCounterControllerTest extends AbstractApiTestCase
     {
         parent::setUp();
 
+        $this->disableRepublicanSilence();
         $this->riposteRepository = $this->getRepository(Riposte::class);
     }
 

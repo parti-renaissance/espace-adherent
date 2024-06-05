@@ -6,11 +6,11 @@ use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\RepublicanSilence\ZoneExtractor\ZoneExtractorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Environment;
@@ -48,6 +48,9 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
 
         // All message actions
         'app_message_*' => ZoneExtractorInterface::NONE,
+
+        // All API endpoints
+        '/api/v3/' => ZoneExtractorInterface::NONE,
     ];
 
     private TokenStorageInterface $tokenStorage;
@@ -79,7 +82,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
 
     public function onRequest(RequestEvent $event): void
     {
-        if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
@@ -92,13 +95,17 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
             $user = $delegatedAccess->getDelegator();
         }
 
-        $route = $event->getRequest()->attributes->get('_route');
+        $route = ($request = $event->getRequest())->attributes->get('_route');
 
-        if (null === $type = $this->getRouteType($route)) {
+        if (null === $type = $this->getRouteType($route, $request->getPathInfo())) {
             return;
         }
 
         if (ZoneExtractorInterface::NONE === $type) {
+            if (!\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT, Request::METHOD_DELETE])) {
+                return;
+            }
+
             if ($this->republicanSilenceManager->hasStartedSilence()) {
                 $this->setResponse($event);
             }
@@ -117,15 +124,21 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         }
     }
 
-    private function getRouteType(string $currentRoute): ?int
+    private function getRouteType(string $currentRoute, string $path): ?int
     {
-        foreach (self::ROUTES as $routeName => $type) {
-            if ($currentRoute === $routeName) {
-                return $type;
-            }
+        foreach (self::ROUTES as $routeNameOrPath => $type) {
+            if (str_starts_with($routeNameOrPath, '/')) {
+                if (str_starts_with($path, $routeNameOrPath)) {
+                    return $type;
+                }
+            } else {
+                if ($currentRoute === $routeNameOrPath) {
+                    return $type;
+                }
 
-            if ('*' === substr($routeName, -1) && str_contains($currentRoute, rtrim($routeName, '*'))) {
-                return $type;
+                if (str_ends_with($routeNameOrPath, '*') && str_contains($currentRoute, rtrim($routeNameOrPath, '*'))) {
+                    return $type;
+                }
             }
         }
 
@@ -149,6 +162,14 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
 
     private function setResponse(RequestEvent $event): void
     {
+        $request = $event->getRequest();
+
+        if (str_starts_with($request->getPathInfo(), '/api/')) {
+            $event->setResponse(new JsonResponse(['message' => 'En raison du silence républicain, cette action est momentanément désactivée.'], Response::HTTP_UNAVAILABLE_FOR_LEGAL_REASONS));
+
+            return;
+        }
+
         $event->setResponse(new Response($this->templateEngine->render('republican_silence/landing.html.twig')));
     }
 }

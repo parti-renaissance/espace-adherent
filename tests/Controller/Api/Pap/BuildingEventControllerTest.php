@@ -110,6 +110,7 @@ class BuildingEventControllerTest extends AbstractApiTestCase
     {
         parent::setUp();
 
+        $this->disableRepublicanSilence();
         $this->buildingEventRepository = $this->getBuildingEventRepository();
         $this->campaignRepository = $this->getPapCampaignRepository();
         $this->buildingRepository = $this->getBuildingRepository();
