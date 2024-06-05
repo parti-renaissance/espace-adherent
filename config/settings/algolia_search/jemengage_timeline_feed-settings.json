@@ -24,6 +24,7 @@
         "is_local",
         "media_type",
         "mode",
+        "participants_count",
         "post_address",
         "time_zone",
         "title",

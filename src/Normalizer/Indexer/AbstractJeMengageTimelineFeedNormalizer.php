@@ -31,6 +31,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'adherent_ids' => $this->getAdherentIds($object),
             'deeplink' => $this->getDeepLink($object),
             'mode' => $this->getMode($object),
+            'participants_count' => $this->getParticipantsCount($object),
             'visibility' => $this->getVisibility($object),
             'cta_label' => $this->getCtaLabel($object),
             'cta_link' => $this->getCtaLink($object),
@@ -151,5 +152,10 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
         }
 
         return array_values(array_unique($codes));
+    }
+
+    protected function getParticipantsCount(object $object): ?int
+    {
+        return null;
     }
 }
