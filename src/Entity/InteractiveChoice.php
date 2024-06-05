@@ -14,7 +14,6 @@ use Ramsey\Uuid\UuidInterface;
 abstract class InteractiveChoice
 {
     use EntityIdentityTrait;
-    use EntityCrudTrait;
 
     #[ORM\Column(type: 'smallint', length: 1, options: ['unsigned' => true])]
     protected $step;

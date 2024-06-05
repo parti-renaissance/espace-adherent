@@ -120,7 +120,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\EntityListeners([RevokeReferentTeamMemberRolesListener::class])]
 class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface, TranslatedTagInterface
 {
-    use EntityCrudTrait;
     use EntityIdentityTrait;
     use EntityPersonNameTrait;
     use EntityPostAddressTrait;
@@ -444,11 +443,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(length: 2, nullable: true)]
     private $nationality;
 
-    /**
-     * @var bool
-     */
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
-    private $canaryTester = false;
+    public bool $canaryTester = false;
 
     /**
      * Mailchimp unsubscribed status
@@ -1110,6 +1106,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getBirthdate(): ?\DateTime
     {
         return $this->birthdate;
+    }
+
+    public function setBirthdate(?\DateTime $birthdate): void
+    {
+        $this->birthdate = $birthdate;
     }
 
     #[Groups(['export', 'phoning_campaign_history_read_list', 'pap_campaign_history_read_list', 'pap_campaign_replies_list', 'phoning_campaign_replies_list', 'survey_replies_list'])]
@@ -2778,6 +2779,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         if ($quality) {
             $this->instanceQualities->removeElement($quality);
         }
+    }
+
+    public function getInstanceQualities(): Collection
+    {
+        return $this->instanceQualities;
     }
 
     public function hasNationalCouncilQualities(): bool

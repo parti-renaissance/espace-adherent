@@ -112,16 +112,6 @@ class Referent implements EntityMediaInterface
         return $this->id;
     }
 
-    public function setFirstName(string $firstName): void
-    {
-        $this->firstName = $firstName;
-    }
-
-    public function setLastName(string $lastName): void
-    {
-        $this->lastName = $lastName;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
