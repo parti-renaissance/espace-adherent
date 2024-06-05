@@ -74,4 +74,10 @@ class ActionNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 
         return array_values(array_unique(array_merge(...$zonesCodes)));
     }
+
+    /** @param Action $object */
+    protected function getParticipantsCount(object $object): ?int
+    {
+        return $object->getParticipantsCount();
+    }
 }
