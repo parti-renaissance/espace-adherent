@@ -43,7 +43,6 @@ default:
                 - Tests\App\Behat\Context\NotificationContext
                 - Tests\App\Behat\Context\FeatureContext
                 - Tests\App\Behat\Context\DonationContext
-                - Tests\App\Behat\Context\RepublicanSilenceContext
         javascript:
             filters:
                 tags: "@javascript"
