@@ -282,7 +282,6 @@ class MyTeamMemberControllerTest extends AbstractApiTestCase
     {
         parent::setUp();
 
-        $this->disableRepublicanSilence();
         $this->memberRepository = $this->getMyTeamMemberRepository();
         $this->delegatedAccessRepository = $this->getDelegatedAccessRepository();
     }
