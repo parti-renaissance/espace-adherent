@@ -89,7 +89,7 @@ class EventRepository extends ServiceEntityRepository
             ->select('e', 'a', 'c', 'o')
             ->leftJoin('e.category', 'a')
             ->leftJoin('e.committee', 'c')
-            ->leftJoin('e.organizer', 'o')
+            ->leftJoin('e.author', 'o')
             ->where('e.slug = :slug')
             ->andWhere('e.published = :published')
             ->andWhere('c.status = :status')
@@ -139,7 +139,7 @@ class EventRepository extends ServiceEntityRepository
         $qb = $this
             ->createQueryBuilder('event')
             ->addSelect('adherent')
-            ->join('event.organizer', 'adherent')
+            ->join('event.author', 'adherent')
             ->where('event.beginAt < :end_date AND event.finishAt > :start_date')
             ->andWhere('event.status = :status')
             ->setParameters([
@@ -193,7 +193,7 @@ class EventRepository extends ServiceEntityRepository
             ->select('e', 'a', 'c', 'o')
             ->leftJoin('e.category', 'a')
             ->leftJoin('e.committee', 'c')
-            ->leftJoin('e.organizer', 'o')
+            ->leftJoin('e.author', 'o')
             ->where('e.slug = :slug')
             ->setParameter('slug', $slug)
             ->andWhere('e.published = :published')
@@ -219,7 +219,7 @@ class EventRepository extends ServiceEntityRepository
         return $this->configurePaginator(
             $this
                 ->createQueryBuilder('e')
-                ->andWhere('e.organizer = :organizer')
+                ->andWhere('e.author = :organizer')
                 ->setParameter('organizer', $organizer)
                 ->orderBy('e.createdAt', 'DESC'),
             $page,
@@ -237,7 +237,7 @@ class EventRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('event')
             ->select('event', 'organizer')
-            ->leftJoin('event.organizer', 'organizer')
+            ->leftJoin('event.author', 'organizer')
             ->where('event.published = :published')
             ->orderBy('event.beginAt', 'DESC')
             ->addOrderBy('event.name', 'ASC')
@@ -254,7 +254,7 @@ class EventRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('e')->select('e', 'ec', 'c', 'o');
         $qb->leftJoin('e.category', 'ec')
             ->leftJoin('e.committee', 'c')
-            ->leftJoin('e.organizer', 'o')
+            ->leftJoin('e.author', 'o')
             ->where('e.published = :published')
             ->andWhere('e.renaissanceEvent = :for_re')
             ->andWhere('e.status = :event_status')
@@ -308,7 +308,7 @@ class EventRepository extends ServiceEntityRepository
             ->select('e', 'a', 'c', 'o')
             ->leftJoin('e.category', 'a')
             ->leftJoin('e.committee', 'c')
-            ->leftJoin('e.organizer', 'o')
+            ->leftJoin('e.author', 'o')
             ->where('c.status = :status')
             ->andWhere('e.published = :published')
             ->setParameter('status', Committee::APPROVED)
@@ -319,7 +319,7 @@ class EventRepository extends ServiceEntityRepository
     public function searchAllEvents(SearchParametersFilter $search): array
     {
         $sql = <<<'SQL'
-            SELECT events.uuid AS event_uuid, events.organizer_id AS event_organizer_id, events.committee_id AS event_committee_id,
+            SELECT events.uuid AS event_uuid, events.author_id AS event_organizer_id, events.committee_id AS event_committee_id,
             events.name AS event_name, events.category_id AS event_category_id, events.description AS event_description,
             events.begin_at AS event_begin_at, events.finish_at AS event_finish_at,
             events.capacity AS event_capacity, events.is_for_legislatives AS event_is_for_legislatives,
@@ -344,7 +344,7 @@ class EventRepository extends ServiceEntityRepository
             adherents.address_longitude AS adherent_address_longitude, adherents.position AS adherent_position,
             (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(events.address_latitude)) * COS(RADIANS(events.address_longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(events.address_latitude)))) AS distance
             FROM events
-            LEFT JOIN adherents ON adherents.id = events.organizer_id
+            LEFT JOIN adherents ON adherents.id = events.author_id
             LEFT JOIN committees ON committees.id = events.committee_id
             LEFT JOIN events_categories AS event_category ON event_category.id = events.category_id AND events.type IN (:base_event_types)
             WHERE (events.address_latitude IS NOT NULL
@@ -425,7 +425,7 @@ class EventRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('e');
         if ($anonymize) {
             $qb->update()
-                ->set('e.organizer', ':new_value')
+                ->set('e.author', ':new_value')
                 ->setParameter('new_value', null)
             ;
         } else {
@@ -433,7 +433,7 @@ class EventRepository extends ServiceEntityRepository
         }
 
         $qb
-            ->where('e.organizer = :organizer')
+            ->where('e.author = :organizer')
             ->setParameter('organizer', $organizer)
         ;
 

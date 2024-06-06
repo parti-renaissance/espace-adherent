@@ -2,6 +2,8 @@
 
 namespace App\Normalizer\Indexer;
 
+use App\Entity\Adherent;
+use App\Entity\AuthorInstanceInterface;
 use App\Entity\Geo\Zone;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
@@ -47,7 +49,18 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
 
     abstract protected function getDate(object $object): ?\DateTime;
 
-    abstract protected function getAuthor(object $object): ?string;
+    abstract protected function getAuthorObject(object $object): ?Adherent;
+
+    final protected function getAuthor(object $object): array
+    {
+        return [
+            'first_name' => $this->getAuthorObject($object)?->getFirstName(),
+            'last_name' => $this->getAuthorObject($object)?->getLastName(),
+            'role' => $this->getAuthorRole($object),
+            'instance' => $this->getAuthorInstance($object),
+            'zone' => $this->getAuthorZone($object),
+        ];
+    }
 
     private function getType(): string
     {
@@ -136,6 +149,33 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
 
     protected function getMediaType(object $object): ?string
     {
+        return null;
+    }
+
+    protected function getAuthorRole(object $object): ?string
+    {
+        if ($object instanceof AuthorInstanceInterface) {
+            return $object->getAuthorRole();
+        }
+
+        return null;
+    }
+
+    protected function getAuthorInstance(object $object): ?string
+    {
+        if ($object instanceof AuthorInstanceInterface) {
+            return $object->getAuthorInstance();
+        }
+
+        return null;
+    }
+
+    protected function getAuthorZone(object $object): ?string
+    {
+        if ($object instanceof AuthorInstanceInterface) {
+            return $object->getAuthorZone();
+        }
+
         return null;
     }
 

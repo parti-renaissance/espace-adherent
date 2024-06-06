@@ -636,6 +636,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private bool $agirMembership = false;
 
     private ?string $authAppCode = null;
+    private ?string $authAppVersion = null;
 
     #[ORM\Column(nullable: true)]
     public ?string $emailStatusComment = null;
@@ -2882,6 +2883,16 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setAuthAppCode(?string $authAppCode): void
     {
         $this->authAppCode = $authAppCode;
+    }
+
+    public function getAuthAppVersion(): int
+    {
+        return (int) str_replace(['v', '.'], '', (string) $this->authAppVersion);
+    }
+
+    public function setAuthAppVersion(?string $authAppVersion): void
+    {
+        $this->authAppVersion = $authAppVersion;
     }
 
     public function setActivismZone(?Zone $zone): void

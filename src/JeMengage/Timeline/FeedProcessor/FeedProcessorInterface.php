@@ -2,9 +2,11 @@
 
 namespace App\JeMengage\Timeline\FeedProcessor;
 
+use App\Entity\Adherent;
+
 interface FeedProcessorInterface
 {
-    public function process(array $item, array &$context): array;
+    public function process(array $item, Adherent $user): array;
 
-    public function supports(array $item): bool;
+    public function supports(array $item, Adherent $user): bool;
 }

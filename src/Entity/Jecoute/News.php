@@ -10,9 +10,8 @@ use App\Api\Filter\JecouteNewsScopeFilter;
 use App\Api\Filter\JecouteNewsZipCodeFilter;
 use App\Api\Filter\ScopeVisibilityFilter;
 use App\Entity\Administrator;
-use App\Entity\AuthoredInterface;
-use App\Entity\AuthoredTrait;
-use App\Entity\AuthorInterface;
+use App\Entity\AuthorInstanceInterface;
+use App\Entity\AuthorInstanceTrait;
 use App\Entity\EntityScopeVisibilityTrait;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityTimestampableTrait;
@@ -135,10 +134,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'author', joinColumns: [new ORM\JoinColumn(onDelete: 'SET NULL')])])]
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
-class News implements AuthoredInterface, AuthorInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, DynamicLinkObjectInterface
+class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, DynamicLinkObjectInterface
 {
     use EntityTimestampableTrait;
-    use AuthoredTrait;
+    use AuthorInstanceTrait;
     use EntityScopeVisibilityTrait;
     use DynamicLinkObjectTrait;
     use UserDocumentTrait;

@@ -18,8 +18,8 @@ use App\Api\Filter\OrderEventsBySubscriptionsFilter;
 use App\Collection\ZoneCollection;
 use App\Entity\AddressHolderInterface;
 use App\Entity\Adherent;
-use App\Entity\AuthorInterface;
-use App\Entity\EntityCrudTrait;
+use App\Entity\AuthorInstanceInterface;
+use App\Entity\AuthorInstanceTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityNullablePostAddressTrait;
 use App\Entity\EntityReferentTagTrait;
@@ -187,16 +187,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap([EventTypeEnum::TYPE_DEFAULT => DefaultEvent::class, EventTypeEnum::TYPE_COMMITTEE => CommitteeEvent::class])]
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
-abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInterface, ExposedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, ExposedObjectInterface
+abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInstanceInterface, ExposedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, ExposedObjectInterface
 {
     use EntityIdentityTrait;
-    use EntityCrudTrait;
     use EntityNullablePostAddressTrait;
     use EntityReferentTagTrait;
     use EntityZoneTrait;
     use EntityTimestampableTrait;
     use ImageTrait;
     use DynamicLinkObjectTrait;
+    use AuthorInstanceTrait;
 
     public const STATUS_SCHEDULED = 'SCHEDULED';
     public const STATUS_CANCELLED = 'CANCELLED';
@@ -310,16 +310,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
     #[ORM\Column(type: 'datetime')]
     protected $finishAt;
-
-    /**
-     * @var Adherent|null
-     *
-     * @Assert\NotBlank
-     */
-    #[Groups(['event_read', 'event_list_read'])]
-    #[ORM\JoinColumn(onDelete: 'RESTRICT')]
-    #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    protected $organizer;
 
     /**
      * @var int
@@ -501,19 +491,15 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
         return (clone $this->finishAt)->setTimezone(new \DateTimeZone($this->getTimeZone()));
     }
 
-    public function setOrganizer(?Adherent $organizer): void
-    {
-        $this->organizer = $organizer;
-    }
-
+    #[Groups(['event_read', 'event_list_read'])]
     public function getOrganizer(): ?Adherent
     {
-        return $this->organizer;
+        return $this->getAuthor();
     }
 
     public function getOrganizerName(): ?string
     {
-        return $this->organizer ? $this->organizer->getFirstName() : '';
+        return $this->author ? $this->author->getFirstName() : '';
     }
 
     public function getParticipantsCount(): int
@@ -631,16 +617,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     public function getUuidAsString(): string
     {
         return $this->getUuid()->toString();
-    }
-
-    public function setAuthor(Adherent $adherent): void
-    {
-        $this->organizer = $adherent;
-    }
-
-    public function getAuthor(): ?Adherent
-    {
-        return $this->organizer;
     }
 
     public function getMode(): ?string

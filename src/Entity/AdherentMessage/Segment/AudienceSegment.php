@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\AdherentMessage\DynamicSegmentInterface;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
+use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
 use App\Entity\DynamicSegmentTrait;
 use App\Entity\EntityIdentityTrait;
@@ -55,6 +56,7 @@ class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
 {
     use EntityIdentityTrait;
     use DynamicSegmentTrait;
+    use AuthoredTrait;
 
     /**
      * @var AudienceFilter|null
@@ -74,7 +76,7 @@ class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
      */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    private $author;
+    protected $author;
 
     public function __construct(?UuidInterface $uuid = null)
     {

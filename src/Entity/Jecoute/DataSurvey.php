@@ -3,7 +3,7 @@
 namespace App\Entity\Jecoute;
 
 use App\Controller\Api\Jecoute\JemarcheDataSurveyReplyController;
-use App\Entity\Adherent;
+use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Pap\CampaignHistory as PapCampaignHistory;
@@ -23,11 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class DataSurvey implements AuthorInterface
 {
     use EntityIdentityTrait;
-
-    #[Groups(['survey_replies_list'])]
-    #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    private $author;
+    use AuthoredTrait;
 
     /**
      * @var string|null
@@ -91,16 +87,6 @@ class DataSurvey implements AuthorInterface
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setAuthor(Adherent $author): void
-    {
-        $this->author = $author;
-    }
-
-    public function getAuthor(): ?Adherent
-    {
-        return $this->author;
     }
 
     public function getAuthorPostalCode(): ?string

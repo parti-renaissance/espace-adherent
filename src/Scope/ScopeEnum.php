@@ -52,4 +52,26 @@ class ScopeEnum extends Enum
         self::PAP_NATIONAL_MANAGER,
         self::PHONING_NATIONAL_MANAGER,
     ];
+
+    public const ROLE_NAMES = [
+        self::PRESIDENT_DEPARTMENTAL_ASSEMBLY => 'Président',
+        self::DEPUTY => 'Délégué',
+        self::REGIONAL_DELEGATE => 'Délégué',
+        self::ANIMATOR => 'Responsable',
+        self::NATIONAL => 'Responsable',
+        self::FDE_COORDINATOR => 'Coordinateur',
+        self::REGIONAL_COORDINATOR => 'Coordinateur',
+        self::LEGISLATIVE_CANDIDATE => 'Candidat',
+    ];
+
+    public const SCOPE_INSTANCES = [
+        self::PRESIDENT_DEPARTMENTAL_ASSEMBLY => 'Assemblée départementale',
+        self::DEPUTY => 'Circonscription',
+        self::REGIONAL_DELEGATE => 'Région',
+        self::ANIMATOR => 'Comité local',
+        self::NATIONAL => 'National',
+        self::FDE_COORDINATOR => 'Français de l\'Étranger',
+        self::REGIONAL_COORDINATOR => 'Région',
+        self::LEGISLATIVE_CANDIDATE => 'Circonscription',
+    ];
 }

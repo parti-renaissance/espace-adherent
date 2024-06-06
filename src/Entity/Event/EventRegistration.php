@@ -3,7 +3,6 @@
 namespace App\Entity\Event;
 
 use App\Entity\Adherent;
-use App\Entity\EntityCrudTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityPersonNameTrait;
 use App\Repository\EventRegistrationRepository;
@@ -16,7 +15,6 @@ use Ramsey\Uuid\UuidInterface;
 #[ORM\Entity(repositoryClass: EventRegistrationRepository::class)]
 class EventRegistration
 {
-    use EntityCrudTrait;
     use EntityIdentityTrait;
     use EntityPersonNameTrait;
 

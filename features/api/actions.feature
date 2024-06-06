@@ -46,7 +46,10 @@ Feature:
             "author": {
                 "uuid": "@uuid@",
                 "first_name": "Damien",
-                "last_name": "Durock"
+                "last_name": "Durock",
+                "role": null,
+                "zone": null,
+                "instance": null
             },
             "zones": [
                 {
@@ -100,7 +103,10 @@ Feature:
             "author": {
                 "uuid": "@uuid@",
                 "first_name": "Damien",
-                "last_name": "Durock"
+                "last_name": "Durock",
+                "role": null,
+                "zone": null,
+                "instance": null
             },
             "zones": [
                 {

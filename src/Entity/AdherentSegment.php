@@ -34,6 +34,7 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
 {
     use EntityIdentityTrait;
     use StaticSegmentTrait;
+    use AuthoredTrait;
 
     /**
      * @var string
@@ -71,7 +72,7 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
      */
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    private $author;
+    protected $author;
 
     /**
      * @var bool

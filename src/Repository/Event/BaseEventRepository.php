@@ -47,9 +47,9 @@ class BaseEventRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('event')
             ->select('event', 'organizer')
-            ->leftJoin('event.organizer', 'organizer')
+            ->leftJoin('event.author', 'organizer')
             ->where('event.published = :published')
-            ->where('event.renaissanceEvent = :re_event')
+            ->andWhere('event.renaissanceEvent = :re_event')
             ->orderBy('event.beginAt', 'DESC')
             ->addOrderBy('event.name', 'ASC')
             ->setParameter('published', true)
@@ -82,7 +82,7 @@ class BaseEventRepository extends ServiceEntityRepository
     ): PaginatorInterface {
         $qb = $this
             ->createQueryBuilder('event')
-            ->andWhere('event.organizer = :organizer')
+            ->andWhere('event.author = :organizer')
             ->setParameter('organizer', $organizer)
             ->orderBy('event.createdAt', 'DESC')
         ;
@@ -106,7 +106,7 @@ class BaseEventRepository extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('event')
             ->select('event', 'organizer')
-            ->leftJoin('event.organizer', 'organizer')
+            ->leftJoin('event.author', 'organizer')
             ->where('event.slug = :slug')
             ->andWhere('event.published = :published')
             ->setParameters([

@@ -2,6 +2,7 @@
 
 namespace App\RepublicanSilence;
 
+use App\Entity\Geo\Zone;
 use App\Entity\RepublicanSilence;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\RepublicanSilenceRepository;
@@ -38,7 +39,10 @@ class RepublicanSilenceManager
         $silences = $this->getRepublicanSilencesForDate(new \DateTime());
 
         if (null === $zones) {
-            return !empty($silences);
+            return !empty(array_filter(
+                $silences,
+                fn (RepublicanSilence $silence) => $silence->getZones()->isEmpty() || !$silence->getZones()->filter(fn (Zone $zone) => 'FR' === $zone->getCode())->isEmpty()
+            ));
         }
 
         foreach ($silences as $silence) {
