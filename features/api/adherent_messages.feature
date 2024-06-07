@@ -7,7 +7,7 @@ Feature:
 
   Scenario: As a logged-in user I can not update adherent message filter with not my segment
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/filter" with body:
+    When I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/filter?scope=referent" with body:
     """
     {
       "segment": "f6c36dd7-0517-4caf-ba6f-ec6822f2ec12"
@@ -31,7 +31,7 @@ Feature:
 
   Scenario: As a logged-in user I can update adherent message filter with segment
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/filter" with body:
+    When I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/filter?scope=referent" with body:
     """
     {
       "segment": "830d230f-67fb-4217-9986-1a3ed7d3d5e7"

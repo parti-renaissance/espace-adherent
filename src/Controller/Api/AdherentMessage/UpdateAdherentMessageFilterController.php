@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Security("is_granted('ROLE_MESSAGE_REDACTOR') and (data.getAuthor() == user or user.hasDelegatedFromUser(data.getAuthor(), 'messages'))")]
+#[Security("is_granted('IS_FEATURE_GRANTED', 'messages') and (data.getAuthor() == user or user.hasDelegatedFromUser(data.getAuthor(), 'messages'))")]
 class UpdateAdherentMessageFilterController extends AbstractController
 {
     public function __construct(

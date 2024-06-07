@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-#[Security("is_granted('ROLE_MESSAGE_REDACTOR') and (message.getAuthor() == user or user.hasDelegatedFromUser(message.getAuthor(), 'messages'))")]
+#[Security("is_granted('IS_FEATURE_GRANTED', 'messages') and (message.getAuthor() == user or user.hasDelegatedFromUser(message.getAuthor(), 'messages'))")]
 class SendTestAdherentMessageController extends AbstractController
 {
     private $manager;
