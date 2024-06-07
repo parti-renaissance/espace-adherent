@@ -79,7 +79,7 @@
         "ninsuo/symfony-collection": "^2.1",
         "nyholm/psr7": "^1.5",
         "odolbeau/phone-number-bundle": "^3.3",
-        "openai-php/client": "^0.9.1",
+        "openai-php/client": "^0.10.1",
         "phpoffice/phpspreadsheet": "^2.1",
         "predis/predis": "^1.1.0",
         "ramsey/uuid": "^4.1",
