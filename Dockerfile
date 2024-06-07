@@ -2,7 +2,8 @@
 # Adapted from https://github.com/dunglas/symfony-docker
 
 ARG CADDY_VERSION=2
-ARG PHP_VERSION=8.3
+# Fix the version of PHP to avoid this bug https://github.com/php/php-src/issues/14480
+ARG PHP_VERSION=8.3.7
 ARG NODE_VERSION=18
 
 FROM node:${NODE_VERSION}-alpine AS node
