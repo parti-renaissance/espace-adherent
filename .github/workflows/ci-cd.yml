@@ -15,7 +15,7 @@ env:
   TAG: ${{ github.ref_name }}
 
   NODE_VERSION: 18.x
-  PHP_VERSION: 8.3
+  PHP_VERSION: 8.3.7
 
   REGISTRY: ${{ secrets.GCP_HOST_GCR }}/${{ secrets.GCP_REGISTRY_PROJECT_ID }}/${{ secrets.REGISTRY_NAME }}
   REGISTRY_HOST: ${{ secrets.GCP_HOST_GCR }}
