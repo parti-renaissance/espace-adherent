@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     shortName="AdherentMessage",
  *     attributes={
- *         "security": "is_granted('ROLE_MESSAGE_REDACTOR')",
+ *         "security": "is_granted('IS_FEATURE_GRANTED', 'messages')",
  *         "normalization_context": {"groups": {"message_read_list"}},
  *         "denormalization_context": {"groups": {"message_write"}},
  *         "pagination_client_enabled": true,
@@ -51,26 +51,25 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "GET",
  *             "path": "/v3/adherent_messages/kpi",
  *             "controller": "App\Controller\Api\AdherentMessage\GetAdherentMessageKpiController",
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and is_granted('REQUEST_SCOPE_GRANTED')",
  *         },
  *     },
  *     itemOperations={
  *         "get": {
  *             "path": "/v3/adherent_messages/{uuid}",
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'messages') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"message_read"}},
  *         },
  *         "get_content": {
  *             "method": "GET",
  *             "path": "/v3/adherent_messages/{uuid}/content",
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'messages') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"message_read_content"}},
  *         },
  *         "put": {
  *             "path": "/v3/adherent_messages/{uuid}",
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'messages') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
  *             "requirements": {"uuid": "%pattern_uuid%"},
  *             "normalization_context": {"groups": {"message_read"}},
  *         },
@@ -105,7 +104,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "delete": {
  *             "path": "/v3/adherent_messages/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and not object.isSent() and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
+ *             "security": "is_granted('IS_FEATURE_GRANTED', 'messages') and not object.isSent() and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
  *         }
  *     }
  * )

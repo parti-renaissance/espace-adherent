@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-#[Security("is_granted('ROLE_MESSAGE_REDACTOR') and (data.getAuthor() == user or user.hasDelegatedFromUser(data.getAuthor(), 'messages'))")]
+#[Security("is_granted('IS_FEATURE_GRANTED', 'messages') and (data.getAuthor() == user or user.hasDelegatedFromUser(data.getAuthor(), 'messages'))")]
 class DuplicateMessageController extends AbstractController
 {
     public function __construct(private readonly AdherentMessageManager $manager)
