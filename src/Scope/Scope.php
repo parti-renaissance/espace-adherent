@@ -20,7 +20,7 @@ class Scope
     #[Groups(['scopes', 'scope'])]
     private array $apps;
 
-    #[Groups(['scope'])]
+    #[Groups(['scopes', 'scope'])]
     private array $features;
 
     #[Groups(['scope'])]

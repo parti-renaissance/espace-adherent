@@ -25,7 +25,8 @@ Feature:
         ],
         "apps": [
           "data_corner"
-        ]
+        ],
+        "features": ["dashboard", "contacts", "messages", "events", "mobile_app", "elections", "ripostes", "survey", "elected_representative", "adherent_formations", "general_meeting_reports", "documents"]
       },
       {
         "code": "national_communication",
@@ -40,7 +41,8 @@ Feature:
         ],
         "apps": [
           "data_corner"
-        ]
+        ],
+        "features": ["news"]
       },
       {
         "code": "national",
@@ -55,7 +57,8 @@ Feature:
         ],
         "apps": [
           "data_corner"
-        ]
+        ],
+        "features": ["dashboard", "contacts", "contacts_export", "events", "my_team", "mobile_app", "news", "elections", "ripostes", "pap", "pap_v2", "team", "phoning_campaign", "survey", "adherent_formations", "committee", "general_meeting_reports", "documents", "designation", "statutory_message", "procurations", "actions"]
       },
       {
         "code": "pap_national_manager",
@@ -70,7 +73,8 @@ Feature:
         ],
         "apps": [
           "data_corner"
-        ]
+        ],
+        "features": ["pap"]
       },
       {
         "code": "pap",
@@ -79,7 +83,8 @@ Feature:
         "zones": [],
         "apps": [
           "jemarche"
-        ]
+        ],
+        "features": []
       },
       {
         "code": "phoning_national_manager",
@@ -94,7 +99,8 @@ Feature:
         ],
         "apps": [
           "data_corner"
-        ]
+        ],
+        "features": ["team", "phoning_campaign"]
       },
       {
         "code": "phoning",
@@ -103,7 +109,8 @@ Feature:
         "zones": [],
         "apps": [
           "jemarche"
-        ]
+        ],
+        "features": []
       }
     ]
     """
@@ -222,6 +229,12 @@ Feature:
         ],
         "apps": [
           "data_corner"
+        ],
+        "features": [
+            "dashboard",
+            "messages",
+            "events",
+            "mobile_app"
         ]
       },
       {
@@ -237,6 +250,12 @@ Feature:
         ],
         "apps": [
           "data_corner"
+        ],
+        "features": [
+            "dashboard",
+            "contacts",
+            "messages",
+            "mobile_app"
         ]
       },
       {
@@ -252,6 +271,11 @@ Feature:
         ],
         "apps": [
           "data_corner"
+        ],
+        "features": [
+            "dashboard",
+            "contacts",
+            "mobile_app"
         ]
       },
       {
@@ -265,7 +289,16 @@ Feature:
             "name": "Île-de-France"
           }
         ],
-        "apps": ["data_corner"]
+        "apps": ["data_corner"],
+        "features": [
+            "dashboard",
+            "contacts",
+            "messages",
+            "events",
+            "mobile_app",
+            "ripostes",
+            "survey"
+        ]
       },
       {
         "apps": [
@@ -280,6 +313,11 @@ Feature:
             "name": "Hauts-de-Seine",
             "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
           }
+        ],
+        "features": [
+            "dashboard",
+            "mobile_app",
+            "elected_representative"
         ]
       },
       {
@@ -325,6 +363,13 @@ Feature:
             "name": "Suisse",
             "uuid": "e3efcea1-906e-11eb-a875-0242ac150002"
           }
+        ],
+        "features": [
+            "dashboard",
+            "contacts",
+            "messages",
+            "events",
+            "mobile_app"
         ]
       },
       {
@@ -340,6 +385,11 @@ Feature:
               "name": "Hauts-de-Seine",
               "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
           }
+        ],
+        "features": [
+            "dashboard",
+            "contacts",
+            "mobile_app"
         ]
       },
       {
@@ -355,7 +405,14 @@ Feature:
                   "name": "Paris (1)",
                   "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002"
               }
-          ]
+          ],
+        "features": [
+            "dashboard",
+            "contacts",
+            "events",
+            "mobile_app",
+            "news"
+        ]
       }
     ]
     """
