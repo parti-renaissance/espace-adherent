@@ -200,6 +200,15 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 ->add('status', null, [
                     'label' => 'Etat du compte',
                 ])
+                ->add('registeredAt', null, [
+                    'label' => 'Créé le',
+                ])
+                ->add('activatedAt', null, [
+                    'label' => 'Activé le',
+                ])
+                ->add('lastLoggedAt', null, [
+                    'label' => 'Dernière connexion',
+                ])
                 ->add('certifiedAt', null, [
                     'label' => 'Certifié le',
                 ])
