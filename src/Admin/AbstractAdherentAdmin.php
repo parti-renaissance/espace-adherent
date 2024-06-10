@@ -839,11 +839,11 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ])
             ->add('ageMin', CallbackFilter::class, [
                 'label' => 'Âge minimum',
-                'show_filter' => false,
                 'field_type' => IntegerType::class,
                 'field_options' => [
                     'attr' => [
                         'min' => 1,
+                        'max' => 200,
                     ],
                 ],
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
@@ -864,10 +864,10 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ])
             ->add('ageMax', CallbackFilter::class, [
                 'label' => 'Âge maximum',
-                'show_filter' => false,
                 'field_type' => IntegerType::class,
                 'field_options' => [
                     'attr' => [
+                        'min' => 1,
                         'max' => 200,
                     ],
                 ],
