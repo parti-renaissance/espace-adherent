@@ -110,7 +110,6 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
     use EntityAdministratorBlameableTrait;
     use CoordinatorAreaTrait;
     use EntityIdentityTrait;
-    use EntityCrudTrait;
     use EntityTimestampableTrait;
     use EntityNameSlugTrait;
 
@@ -183,13 +182,13 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
      * The committee Facebook page URL.
      */
     #[ORM\Column(nullable: true)]
-    private $facebookPageUrl;
+    public ?string $facebookPageUrl = null;
 
     /**
      * The committee Twitter nickname.
      */
     #[ORM\Column(nullable: true)]
-    private $twitterNickname;
+    public ?string $twitterNickname = null;
 
     /**
      * Is also used to block address modification.

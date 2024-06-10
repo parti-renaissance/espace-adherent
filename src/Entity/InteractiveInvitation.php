@@ -15,7 +15,6 @@ use Ramsey\Uuid\UuidInterface;
 abstract class InteractiveInvitation
 {
     use EntityIdentityTrait;
-    use EntityCrudTrait;
 
     protected $friendFirstName;
 

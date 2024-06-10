@@ -12,7 +12,6 @@ use Ramsey\Uuid\UuidInterface;
 class TonMacronChoice
 {
     use EntityIdentityTrait;
-    use EntityCrudTrait;
 
     public const MAIL_INTRODUCTION_KEY = 'S00C01';
     public const MAIL_CONCLUSION_KEY = 'S00C02';

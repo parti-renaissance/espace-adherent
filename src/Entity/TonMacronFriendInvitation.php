@@ -14,7 +14,6 @@ use Ramsey\Uuid\UuidInterface;
 class TonMacronFriendInvitation
 {
     use EntityIdentityTrait;
-    use EntityCrudTrait;
 
     #[ORM\Column(length: 50)]
     private $friendFirstName;

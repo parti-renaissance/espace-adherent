@@ -37,9 +37,19 @@ trait EntityPersonNameTrait
         return (string) $this->firstName;
     }
 
+    public function setFirstName(string $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
     public function getLastName(): string
     {
         return (string) $this->lastName;
+    }
+
+    public function setLastName(string $lastName): void
+    {
+        $this->lastName = $lastName;
     }
 
     #[Groups(['export', 'cause_read'])]

@@ -26,7 +26,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Donation implements GeoPointInterface
 {
     use EntityIdentityTrait;
-    use EntityCrudTrait;
     use EntityPostAddressTrait;
     use EntityScopeVisibilityTrait;
 

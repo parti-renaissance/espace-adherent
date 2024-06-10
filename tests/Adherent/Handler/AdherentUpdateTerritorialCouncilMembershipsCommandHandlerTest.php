@@ -518,15 +518,15 @@ class AdherentUpdateTerritorialCouncilMembershipsCommandHandlerTest extends Abst
 
             public function addAdherentMandate(AdherentMandateInterface $mandate): void
             {
-                if (!$this->adherentMandates->contains($mandate)) {
-                    $this->adherentMandates->add($mandate);
+                if (!$this->getAdherentMandates()->contains($mandate)) {
+                    $this->getAdherentMandates()->add($mandate);
                 }
             }
 
             public function addMembership(CommitteeMembership $committeeMembership): void
             {
-                if (!$this->memberships->contains($committeeMembership)) {
-                    $this->memberships->add($committeeMembership);
+                if (!$this->getMemberships()->contains($committeeMembership)) {
+                    $this->getMemberships()->add($committeeMembership);
                 }
             }
         };
