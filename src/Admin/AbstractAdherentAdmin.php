@@ -78,6 +78,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -823,6 +824,56 @@ class AbstractAdherentAdmin extends AbstractAdmin
 
                             break;
                     }
+
+                    return true;
+                },
+            ])
+            ->add('ageMin', CallbackFilter::class, [
+                'label' => 'Âge minimum',
+                'show_filter' => false,
+                'field_type' => IntegerType::class,
+                'field_options' => [
+                    'attr' => [
+                        'min' => 1,
+                    ],
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $ageMin = $value->getValue();
+                    $now = new \DateTimeImmutable();
+
+                    $qb
+                        ->andWhere("$alias.birthdate <= :min_age_birth_date")
+                        ->setParameter('min_age_birth_date', $now->sub(new \DateInterval(sprintf('P%dY', $ageMin))))
+                    ;
+
+                    return true;
+                },
+            ])
+            ->add('ageMax', CallbackFilter::class, [
+                'label' => 'Âge maximum',
+                'show_filter' => false,
+                'field_type' => IntegerType::class,
+                'field_options' => [
+                    'attr' => [
+                        'max' => 200,
+                    ],
+                ],
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $ageMax = $value->getValue();
+                    $now = new \DateTimeImmutable();
+
+                    $qb
+                        ->andWhere("$alias.birthdate >= :max_age_birth_date")
+                        ->setParameter('max_age_birth_date', $now->sub(new \DateInterval(sprintf('P%dY', $ageMax))))
+                    ;
 
                     return true;
                 },
