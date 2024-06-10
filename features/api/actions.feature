@@ -7,7 +7,7 @@ Feature:
 
     Scenario: As a logged-in VOX user I can create and update an actions
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
-        And I send a "POST" request to "/api/v3/actions" with body:
+        And I send a "POST" request to "/api/v3/actions?scope=president_departmental_assembly" with body:
         """
         {
             "type": "pap",
@@ -47,9 +47,9 @@ Feature:
                 "uuid": "@uuid@",
                 "first_name": "Damien",
                 "last_name": "Durock",
-                "role": null,
-                "zone": null,
-                "instance": null
+                "role": "Président",
+                "zone": "Hauts-de-Seine",
+                "instance": "Assemblée départementale"
             },
             "zones": [
                 {
@@ -68,11 +68,12 @@ Feature:
                     "created_at": "@string@.isDateTime()",
                     "updated_at": "@string@.isDateTime()"
                 }
-            ]
+            ],
+            "editable": true
         }
         """
         When I save this response
-        And I send a "PUT" request to "/api/v3/actions/:last_response.uuid:" with body:
+        And I send a "PUT" request to "/api/v3/actions/:last_response.uuid:?scope=president_departmental_assembly" with body:
         """
         {
             "type": "boitage"
@@ -104,9 +105,9 @@ Feature:
                 "uuid": "@uuid@",
                 "first_name": "Damien",
                 "last_name": "Durock",
-                "role": null,
-                "zone": null,
-                "instance": null
+                "role": "Président",
+                "zone": "Hauts-de-Seine",
+                "instance": "Assemblée départementale"
             },
             "zones": [
                 {
@@ -125,7 +126,8 @@ Feature:
                     "created_at": "@string@.isDateTime()",
                     "updated_at": "@string@.isDateTime()"
                 }
-            ]
+            ],
+            "editable": true
         }
         """
 

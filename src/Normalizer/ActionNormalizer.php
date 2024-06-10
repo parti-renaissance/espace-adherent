@@ -6,6 +6,8 @@ use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Action\Action;
 use App\Entity\Adherent;
 use App\Repository\Action\ActionParticipantRepository;
+use App\Security\Voter\CanManageActionVoter;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -22,6 +24,7 @@ class ActionNormalizer implements NormalizerInterface, NormalizerAwareInterface
     public function __construct(
         private readonly Security $security,
         private readonly ActionParticipantRepository $actionParticipantRepository,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 
@@ -41,6 +44,8 @@ class ActionNormalizer implements NormalizerInterface, NormalizerAwareInterface
                 $action['user_registered_at'] = $registrationDate?->format(\DateTimeInterface::RFC3339);
             }
         }
+
+        $action['editable'] = $this->authorizationChecker->isGranted(CanManageActionVoter::PERMISSION, $object);
 
         return $action;
     }
