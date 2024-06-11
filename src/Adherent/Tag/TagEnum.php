@@ -19,6 +19,7 @@ class TagEnum extends Enum
     public const SYMPATHISANT_ADHESION_INCOMPLETE = 'sympathisant:adhesion_incomplete';
     public const SYMPATHISANT_AUTRE_PARTI = 'sympathisant:autre_parti';
     public const SYMPATHISANT_BESOIN_D_EUROPE = 'sympathisant:besoin_d_europe';
+    public const SYMPATHISANT_LEGISLATIVE24 = 'sympathisant:legislative24';
 
     public const ELU = 'elu';
     public const ELU_ATTENTE_DECLARATION = 'elu:attente_declaration';

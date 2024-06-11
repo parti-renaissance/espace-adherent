@@ -110,12 +110,12 @@ class AdherentFactory
             status: Adherent::ENABLED
         );
 
-        $adherent->tags = [TagEnum::SYMPATHISANT_BESOIN_D_EUROPE];
+        $adherent->tags = [TagEnum::SYMPATHISANT_LEGISLATIVE24];
         $adherent->setPapUserRole(true);
         $adherent->join();
         $adherent->setV2(true);
         $adherent->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);
-        $adherent->setSource(MembershipSourceEnum::BESOIN_D_EUROPE);
+        $adherent->setSource(MembershipSourceEnum::LEGISLATIVE);
 
         $adherent->setExclusiveMembership((bool) $inscriptionRequest->partyMembership);
 
