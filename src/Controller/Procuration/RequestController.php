@@ -36,7 +36,7 @@ class RequestController extends AbstractController
             return $response;
         }
 
-        $requestCommand = $this->getRequestCommand($request);
+        $requestCommand = $this->getRequestCommand($request, $election);
 
         $form = $this
             ->createForm(RequestType::class, $requestCommand, [
@@ -74,10 +74,14 @@ class RequestController extends AbstractController
         ]);
     }
 
-    private function getRequestCommand(Request $request): RequestCommand
+    private function getRequestCommand(Request $request, Election $election): RequestCommand
     {
         $requestCommand = new RequestCommand();
         $requestCommand->clientIp = $request->getClientIp();
+
+        if (1 === $election->rounds->count()) {
+            $requestCommand->rounds->add($election->rounds->first());
+        }
 
         return $requestCommand;
     }

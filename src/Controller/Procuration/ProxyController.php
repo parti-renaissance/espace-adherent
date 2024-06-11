@@ -36,7 +36,7 @@ class ProxyController extends AbstractController
             return $response;
         }
 
-        $proxyCommand = $this->getProxyCommand($request);
+        $proxyCommand = $this->getProxyCommand($request, $election);
 
         $form = $this
             ->createForm(ProxyType::class, $proxyCommand, [
@@ -74,10 +74,14 @@ class ProxyController extends AbstractController
         ]);
     }
 
-    public function getProxyCommand(Request $request): ProxyCommand
+    public function getProxyCommand(Request $request, Election $election): ProxyCommand
     {
         $proxy = new ProxyCommand();
         $proxy->clientIp = $request->getClientIp();
+
+        if (1 === $election->rounds->count()) {
+            $proxy->rounds->add($election->rounds->first());
+        }
 
         return $proxy;
     }
