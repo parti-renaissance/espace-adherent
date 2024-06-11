@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20240610141209 extends AbstractMigration
+final class Version20240611175556 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -26,7 +26,7 @@ final class Version20240610141209 extends AbstractMigration
         $this->addSql('ALTER TABLE
           proxy_round
         ADD
-          CONSTRAINT FK_1C924019DB26A4E FOREIGN KEY (proxy_id) REFERENCES procuration_v2_proxies (id)');
+          CONSTRAINT FK_1C924019DB26A4E FOREIGN KEY (proxy_id) REFERENCES procuration_v2_proxies (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE
           proxy_round
         ADD
@@ -34,7 +34,7 @@ final class Version20240610141209 extends AbstractMigration
         $this->addSql('ALTER TABLE
           request_round
         ADD
-          CONSTRAINT FK_98F95611427EB8A5 FOREIGN KEY (request_id) REFERENCES procuration_v2_requests (id)');
+          CONSTRAINT FK_98F95611427EB8A5 FOREIGN KEY (request_id) REFERENCES procuration_v2_requests (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE
           request_round
         ADD
