@@ -18,7 +18,7 @@ class ProcurationFactory
     public function createRequestFromCommand(RequestCommand $command): Request
     {
         return new Request(
-            $command->round,
+            $command->rounds->toArray(),
             $command->email,
             $command->gender,
             $command->firstNames,
@@ -40,7 +40,7 @@ class ProcurationFactory
     public function createProxyFromCommand(ProxyCommand $command): Proxy
     {
         $proxy = new Proxy(
-            $command->round,
+            $command->rounds->toArray(),
             $command->email,
             $command->gender,
             $command->firstNames,

@@ -82,8 +82,8 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Vote', ['class' => 'col-md-6'])
-                ->add('round', null, [
-                    'label' => 'Tour concerné',
+                ->add('rounds', null, [
+                    'label' => 'Tours concernés',
                 ])
                 ->add('distantVotePlace', null, [
                     'label' => 'Vote là ou il vit',
@@ -115,6 +115,9 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
         $list
             ->addIdentifier('id', null, [
                 'label' => 'ID',
+            ])
+            ->add('rounds', null, [
+                'label' => 'Tours',
             ])
             ->add('_fullName', null, [
                 'label' => 'Identité',
@@ -182,6 +185,12 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
             ->add('id', null, [
                 'label' => 'ID',
                 'show_filter' => false,
+            ])
+            ->add('rounds', null, [
+                'label' => 'Tours concernés',
+                'field_options' => [
+                    'multiple' => true,
+                ],
             ])
             ->add('firstNames', null, [
                 'label' => 'Prénoms',

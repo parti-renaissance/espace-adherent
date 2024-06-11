@@ -5,7 +5,6 @@ namespace App\DataFixtures\ORM;
 use App\Address\PostAddressFactory;
 use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\Request;
-use App\Entity\ProcurationV2\Round;
 use App\Utils\PhoneNumberUtils;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -27,7 +26,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
     public function load(ObjectManager $manager)
     {
         $manager->persist($this->createRequest(
-            $round = $this->getReference('procuration-v2-round-1'),
+            $rounds = [$this->getReference('procuration-v2-europeennes-2024-round-1')],
             'jack.doe@test.dev',
             Genders::MALE,
             'Jack, Didier',
@@ -44,7 +43,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         ));
 
         $manager->persist($this->createRequest(
-            $round,
+            $rounds,
             'pascal.dae@test.dev',
             Genders::MALE,
             'Pascal, Roger',
@@ -66,7 +65,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         for ($i = 1; $i <= 10; ++$i) {
             $manager->persist(
                 $request = $this->createRequest(
-                    $round,
+                    $rounds,
                     $this->faker->email(),
                     0 === $i % 2 ? Genders::MALE : Genders::FEMALE,
                     $this->faker->firstName(),
@@ -85,6 +84,60 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             $request->setUpdatedAt($date);
         }
 
+        $manager->persist($this->createRequest(
+            [$this->getReference('procuration-v2-legislatives-2024-round-1')],
+            'jack.doe@test.dev',
+            Genders::MALE,
+            'Jack, Didier',
+            'Doe',
+            '1990-05-15',
+            '+33644332211',
+            'FR',
+            '06000',
+            'Nice',
+            '58 Boulevard de la Madeleine',
+            false,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_city_06088'),
+            $this->getReference('zone_vote_place_nice_1')
+        ));
+
+        $manager->persist($this->createRequest(
+            [$this->getReference('procuration-v2-legislatives-2024-round-2')],
+            'pierre.doe@test.dev',
+            Genders::MALE,
+            'Pierre',
+            'Doe',
+            '1990-05-15',
+            '+33644332211',
+            'FR',
+            '06000',
+            'Nice',
+            '58 Boulevard de la Madeleine',
+            false,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_city_06088'),
+            $this->getReference('zone_vote_place_nice_1')
+        ));
+
+        $manager->persist($this->createRequest(
+            [
+                $this->getReference('procuration-v2-legislatives-2024-round-1'),
+                $this->getReference('procuration-v2-legislatives-2024-round-2'),
+            ],
+            'chris.doe@test.dev',
+            Genders::MALE,
+            'Chris',
+            'Doe',
+            '1990-05-15',
+            '+33644332211',
+            'FR',
+            '06000',
+            'Nice',
+            '58 Boulevard de la Madeleine',
+            false,
+            LoadGeoZoneData::getZoneReference($manager, 'zone_city_06088'),
+            $this->getReference('zone_vote_place_nice_1')
+        ));
+
         $manager->flush();
     }
 
@@ -97,7 +150,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
     }
 
     private function createRequest(
-        Round $round,
+        array $rounds,
         string $email,
         string $gender,
         string $firstNames,
@@ -116,7 +169,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         bool $joinNewsletter = false
     ): Request {
         return new Request(
-            $round,
+            $rounds,
             $email,
             $gender,
             $firstNames,

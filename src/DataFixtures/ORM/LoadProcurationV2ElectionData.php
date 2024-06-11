@@ -24,7 +24,15 @@ class LoadProcurationV2ElectionData extends Fixture
         $election->addRound($round = $this->createRound('Premier tour', '2024-06-09'));
 
         $manager->persist($election);
-        $this->setReference('procuration-v2-round-1', $round);
+        $this->setReference('procuration-v2-europeennes-2024-round-1', $round);
+
+        $election2 = $this->createElection('Législatives 2024', 'legislatives-2024');
+        $election2->addRound($round1 = $this->createRound('Premier tour', '2024-06-30'));
+        $election2->addRound($round2 = $this->createRound('Deuxième tour', '2024-07-07'));
+
+        $manager->persist($election2);
+        $this->setReference('procuration-v2-legislatives-2024-round-1', $round1);
+        $this->setReference('procuration-v2-legislatives-2024-round-2', $round2);
 
         $manager->flush();
     }

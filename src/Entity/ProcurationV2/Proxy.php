@@ -105,7 +105,7 @@ class Proxy extends AbstractProcuration
     private ?array $zoneIds = null;
 
     public function __construct(
-        Round $round,
+        array $rounds,
         string $email,
         string $gender,
         string $firstNames,
@@ -123,7 +123,7 @@ class Proxy extends AbstractProcuration
         ?\DateTimeInterface $createdAt = null
     ) {
         parent::__construct(
-            $round,
+            $rounds,
             $email,
             $gender,
             $firstNames,

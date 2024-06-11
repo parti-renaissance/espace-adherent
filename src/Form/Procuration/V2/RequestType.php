@@ -22,6 +22,8 @@ class RequestType extends AbstractProcurationType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+        parent::configureOptions($resolver);
+
         $resolver->setDefaults([
             'data_class' => RequestCommand::class,
         ]);

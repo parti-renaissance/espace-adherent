@@ -18,6 +18,10 @@
     {% block fde_additional_form '' %}
 {% endset %}
 
+{% set round_additional_form %}
+    {% block round_additional_form'' %}
+{% endset %}
+
 {% set additional_form %}
     {% block inner_content_section '' %}
 {% endset %}
@@ -171,6 +175,8 @@
 
                     {{ fde_additional_form }}
 
+
+
                     <fieldset>
                         <template x-if="showManualBDV || (votePlaceUuid && isNotInFrance)">
                             <twig:Atoms:ReLabel x-text="`Mon bureau de vote ${isNotInFrance ? '(optionnel)' : ''}`"></twig:Atoms:ReLabel>
@@ -208,9 +214,12 @@
                         {{ form_errors(form.votePlace) }}
                     </fieldset>
 
+                    {{ round_additional_form }}
+                    {{ form_errors(form.rounds) }}
+
                     <fieldset>
                         {{ form_row(form.joinNewsletter, {
-                            label: "Je m’abonne à la newsletter pour ne rien rater des actualités de Besoin d'Europe (optionnel)",
+                            label: "Je m’abonne à la newsletter pour ne rien rater des actualités (optionnel)",
                         }) }}
                     </fieldset>
                 </fieldset>

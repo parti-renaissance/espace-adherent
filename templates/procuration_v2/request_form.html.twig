@@ -23,6 +23,13 @@
     {{ election.requestLegal|markdown }}
 {% endblock %}
 
+{% block round_additional_form %}
+   <fieldset>
+       <twig:Atoms:ReLabel>Je donne ma procuration pour :</twig:Atoms:ReLabel>
+       {{  form_row(form.rounds) }}
+   </fieldset>
+{% endblock %}
+
 {% block fde_additional_form %}
     <template x-if="isNotInFrance">
         <p class="text-[#555555] opacity-50">
