@@ -27,7 +27,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
     public function load(ObjectManager $manager)
     {
         $proxy = $this->createProxy(
-            $round = $this->getReference('procuration-v2-round-1'),
+            $rounds = [$this->getReference('procuration-v2-europeennes-2024-round-1')],
             'john.durand@test.dev',
             Genders::MALE,
             'John, Patrick',
@@ -46,7 +46,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         $manager->persist($proxy);
 
         $manager->persist($this->createProxy(
-            $round,
+            $rounds,
             'jane.martin@test.dev',
             Genders::FEMALE,
             'Jane, Janine',
@@ -66,7 +66,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         $zone = LoadGeoZoneData::getZone($manager, 'zone_city_92024');
         for ($i = 1; $i <= 10; ++$i) {
             $manager->persist($proxy = $this->createProxy(
-                $round,
+                $rounds,
                 $this->faker->email(),
                 0 === $i % 2 ? Genders::MALE : Genders::FEMALE,
                 $this->faker->firstName(),
@@ -84,6 +84,59 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             $proxy->setUpdatedAt($date);
         }
 
+        $manager->persist($this->createProxy(
+            [$this->getReference('procuration-v2-legislatives-2024-round-1')],
+            'john.durand@test.dev',
+            Genders::MALE,
+            'John, Patrick',
+            'Durand',
+            '1992-03-14',
+            '+33611223344',
+            'FR',
+            '06000',
+            'Nice',
+            '57 Boulevard de la Madeleine',
+            false,
+            LoadGeoZoneData::getZone($manager, 'zone_city_06088'),
+            $this->getReference('zone_vote_place_nice_1')
+        ));
+
+        $manager->persist($this->createProxy(
+            [$this->getReference('procuration-v2-legislatives-2024-round-2')],
+            'jacques.durand@test.dev',
+            Genders::MALE,
+            'Jacques, Charles',
+            'Durand',
+            '1992-03-14',
+            '+33611223344',
+            'FR',
+            '06000',
+            'Nice',
+            '57 Boulevard de la Madeleine',
+            false,
+            LoadGeoZoneData::getZone($manager, 'zone_city_06088'),
+            $this->getReference('zone_vote_place_nice_1')
+        ));
+
+        $manager->persist($this->createProxy(
+            [
+                $this->getReference('procuration-v2-legislatives-2024-round-1'),
+                $this->getReference('procuration-v2-legislatives-2024-round-2')
+            ],
+            'pierre.durand@test.dev',
+            Genders::MALE,
+            'Pierre',
+            'Durand',
+            '1992-03-14',
+            '+33611223344',
+            'FR',
+            '06000',
+            'Nice',
+            '57 Boulevard de la Madeleine',
+            false,
+            LoadGeoZoneData::getZone($manager, 'zone_city_06088'),
+            $this->getReference('zone_vote_place_nice_1')
+        ));
         $manager->flush();
     }
 
@@ -97,7 +150,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
     }
 
     private function createProxy(
-        Round $round,
+        array $rounds,
         string $email,
         string $gender,
         string $firstNames,
@@ -117,7 +170,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         int $slots = 1
     ): Proxy {
         $proxy = new Proxy(
-            $round,
+            $rounds,
             $email,
             $gender,
             $firstNames,

@@ -1,0 +1,97 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block sonata_head_title 'Procurations par département/pays' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.dataTable').DataTable({
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/French.json"
+                },
+                scrollX: true,
+                searching: false,
+                paging: false,
+                dom: 'frt<"table-footer"iB>',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        className: 'btn btn-default',
+                        filename: 'Procurations par département/pays {{ current_year }}',
+                        title: null,
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        className: 'btn btn-default',
+                        filename: 'Procurations par département/pays {{ current_year }}',
+                        title: null,
+                    }
+                ]
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap.min.css" />
+
+    <style>
+        .table-footer {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+    </style>
+{% endblock %}
+
+{% set current_year = "now"|date("Y") %}
+
+{% block sonata_page_content_header %}
+    <h1>
+        Procurations par département/pays pour l'année <strong>{{ current_year }}</strong>
+    </h1>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered table-hover dataTable">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting">Département</th>
+                                            <th class="sorting">Nom</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for zone in stats_per_department %}
+                                            <tr>
+                                                <td>{{ zone.code }}</td>
+                                                <td>{{ zone.name }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

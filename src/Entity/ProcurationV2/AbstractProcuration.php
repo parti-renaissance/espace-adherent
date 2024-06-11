@@ -122,12 +122,11 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $adherent;
 
-    #[ORM\JoinColumn(nullable: false)]
-    #[ORM\ManyToOne(targetEntity: Round::class)]
-    public Round $round;
+    #[ORM\ManyToMany(targetEntity: Round::class)]
+    public Collection $rounds;
 
     public function __construct(
-        Round $round,
+        array $rounds,
         string $email,
         string $gender,
         string $firstNames,
@@ -145,7 +144,7 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
         ?\DateTimeInterface $createdAt = null
     ) {
         $this->uuid = Uuid::uuid4();
-        $this->round = $round;
+        $this->rounds = new ArrayCollection($rounds);
         $this->email = $email;
         $this->gender = $gender;
         $this->firstNames = $firstNames;

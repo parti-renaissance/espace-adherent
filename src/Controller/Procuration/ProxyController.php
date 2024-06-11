@@ -4,7 +4,6 @@ namespace App\Controller\Procuration;
 
 use App\Controller\Procuration\Api\PersistEmailController;
 use App\Entity\ProcurationV2\Election;
-use App\Entity\ProcurationV2\Round;
 use App\Form\Procuration\V2\ProxyType;
 use App\Procuration\V2\Command\ProxyCommand;
 use App\Procuration\V2\ProcurationHandler;
@@ -29,9 +28,7 @@ class ProxyController extends AbstractController
 
     public function __invoke(Request $request, Election $election): Response
     {
-        $upcomingRound = $election->getUpcomingRound();
-
-        if (!$upcomingRound) {
+        if (!$election->getUpcomingRound()) {
             throw $this->createNotFoundException();
         }
 
@@ -39,10 +36,12 @@ class ProxyController extends AbstractController
             return $response;
         }
 
-        $proxyCommand = $this->getProxyCommand($upcomingRound, $request);
+        $proxyCommand = $this->getProxyCommand($request);
 
         $form = $this
-            ->createForm(ProxyType::class, $proxyCommand)
+            ->createForm(ProxyType::class, $proxyCommand, [
+                'election' => $election,
+            ])
             ->handleRequest($request)
         ;
 
@@ -71,15 +70,13 @@ class ProxyController extends AbstractController
             'form' => $form,
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
             'election' => $election,
-            'upcoming_round' => $upcomingRound,
             'step' => $this->step,
         ]);
     }
 
-    public function getProxyCommand(Round $round, Request $request): ProxyCommand
+    public function getProxyCommand(Request $request): ProxyCommand
     {
         $proxy = new ProxyCommand();
-        $proxy->round = $round;
         $proxy->clientIp = $request->getClientIp();
 
         return $proxy;

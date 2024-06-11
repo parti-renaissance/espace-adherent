@@ -3,22 +3,41 @@
 namespace App\Form\Procuration\V2;
 
 use App\Address\AddressInterface;
+use App\Entity\ProcurationV2\Election;
+use App\Entity\ProcurationV2\Round;
 use App\Form\AcceptPersonalDataCollectType;
 use App\Form\AutocompleteAddressType;
 use App\Form\BirthdateType;
 use App\Form\CivilityType;
 use App\Form\ZoneUuidType;
+use Doctrine\ORM\EntityRepository;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractProcurationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $election = $options['election'];
+
         $builder
+            ->add('rounds', EntityType::class, [
+                'required' => true,
+                'multiple' => true,
+                'expanded' => true,
+                'class' => Round::class,
+                'query_builder' => function (EntityRepository $er) use ($election) {
+                    return $er->createQueryBuilder('round')
+                        ->where('round.election = :election')
+                        ->setParameter('election', $election)
+                    ;
+                },
+            ])
             ->add('email', TextType::class)
             ->add('acceptCgu', AcceptPersonalDataCollectType::class, [
                 'mapped' => false,
@@ -51,6 +70,17 @@ abstract class AbstractProcurationType extends AbstractType
             ->add('joinNewsletter', CheckboxType::class, [
                 'required' => false,
             ])
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setDefaults([
+                'election' => null,
+            ])
+            ->setRequired('election')
+            ->setAllowedTypes('election', Election::class)
         ;
     }
 }

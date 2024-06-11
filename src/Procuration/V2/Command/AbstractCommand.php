@@ -6,7 +6,7 @@ use App\Address\Address;
 use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
-use App\Entity\ProcurationV2\Round;
+use Doctrine\Common\Collections\ArrayCollection;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -98,9 +98,14 @@ abstract class AbstractCommand
     public ?Adherent $adherent = null;
 
     /**
-     * @Assert\NotBlank(message="procuration.round.not_blank")
+     * @Asset\Count(min=1, message="procuration.rounds.min")
      */
-    public ?Round $round = null;
+    public ArrayCollection $rounds;
+
+    public function __construct()
+    {
+        $this->rounds = new ArrayCollection();
+    }
 
     public function isFDE(): bool
     {

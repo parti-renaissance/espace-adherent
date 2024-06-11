@@ -60,6 +60,15 @@ class AdminMenuListener implements EventSubscriberInterface
             ];
         }
 
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN_PROCURATION_STATS')) {
+            $items[] = [
+                'label' => 'Procurations par département',
+                'route' => 'admin_app_stats_procuration_per_department',
+                'route_params' => null,
+                'route_absolute' => false,
+            ];
+        }
+
         $this->addItem($event->getMenu(), 'Stats', $items, 'fa fa-bar-chart', true);
     }
 

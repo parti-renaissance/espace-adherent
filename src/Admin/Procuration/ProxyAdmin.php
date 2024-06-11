@@ -110,6 +110,7 @@ class ProxyAdmin extends AbstractProcurationAdmin
             ])
             ->reorder([
                 'id',
+                'rounds',
                 '_fullName',
                 'email',
                 'phone',

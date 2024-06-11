@@ -4,7 +4,6 @@ namespace App\Controller\Procuration;
 
 use App\Controller\Procuration\Api\PersistEmailController;
 use App\Entity\ProcurationV2\Election;
-use App\Entity\ProcurationV2\Round;
 use App\Form\Procuration\V2\RequestType;
 use App\Procuration\V2\Command\RequestCommand;
 use App\Procuration\V2\ProcurationHandler;
@@ -29,9 +28,7 @@ class RequestController extends AbstractController
 
     public function __invoke(Request $request, Election $election): Response
     {
-        $upcomingRound = $election->getUpcomingRound();
-
-        if (!$upcomingRound) {
+        if (!$election->getUpcomingRound()) {
             throw $this->createNotFoundException();
         }
 
@@ -39,10 +36,12 @@ class RequestController extends AbstractController
             return $response;
         }
 
-        $requestCommand = $this->getRequestCommand($upcomingRound, $request);
+        $requestCommand = $this->getRequestCommand($request);
 
         $form = $this
-            ->createForm(RequestType::class, $requestCommand)
+            ->createForm(RequestType::class, $requestCommand, [
+                'election' => $election,
+            ])
             ->handleRequest($request)
         ;
 
@@ -71,15 +70,13 @@ class RequestController extends AbstractController
             'form' => $form,
             'email_validation_token' => $this->csrfTokenManager->getToken('email_validation_token'),
             'election' => $election,
-            'upcoming_round' => $upcomingRound,
             'step' => $this->step,
         ]);
     }
 
-    private function getRequestCommand(Round $round, Request $request): RequestCommand
+    private function getRequestCommand(Request $request): RequestCommand
     {
         $requestCommand = new RequestCommand();
-        $requestCommand->round = $round;
         $requestCommand->clientIp = $request->getClientIp();
 
         return $requestCommand;

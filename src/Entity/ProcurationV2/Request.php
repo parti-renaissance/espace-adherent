@@ -125,7 +125,7 @@ class Request extends AbstractProcuration
     private Collection $matchingHistories;
 
     public function __construct(
-        Round $round,
+        array $rounds,
         string $email,
         string $gender,
         string $firstNames,
@@ -144,7 +144,7 @@ class Request extends AbstractProcuration
         ?\DateTimeInterface $createdAt = null
     ) {
         parent::__construct(
-            $round,
+            $rounds,
             $email,
             $gender,
             $firstNames,

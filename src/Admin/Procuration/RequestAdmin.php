@@ -95,6 +95,7 @@ class RequestAdmin extends AbstractProcurationAdmin
             ])
             ->reorder([
                 'id',
+                'rounds',
                 '_fullName',
                 'email',
                 'phone',

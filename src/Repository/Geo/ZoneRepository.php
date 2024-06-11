@@ -582,4 +582,27 @@ class ZoneRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    /**
+     * @return Zone[]
+     */
+    public function getAllForProcurationsStats(): array
+    {
+        return $this->createQueryBuilder('zone')
+            ->addSelect('parent')
+            ->where('zone.type IN (:zone_types)')
+            ->andWhere('zone.code NOT IN (:omitted_codes)')
+            ->leftJoin('zone.parents', 'parent', Join::WITH, 'parent.type = :type_region')
+            ->setParameters([
+                'zone_types' => [
+                    Zone::DEPARTMENT,
+                    Zone::COUNTRY,
+                ],
+                'type_region' => Zone::REGION,
+                'omitted_codes' => ['69M', '69D', '2A', '2B', '64B', '64PB'],
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
