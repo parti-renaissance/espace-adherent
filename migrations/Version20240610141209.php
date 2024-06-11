@@ -40,7 +40,38 @@ final class Version20240610141209 extends AbstractMigration
         ADD
           CONSTRAINT FK_98F95611A6005CA0 FOREIGN KEY (round_id) REFERENCES procuration_v2_rounds (id) ON DELETE CASCADE');
 
-        // todo: migrate existing data (proxy & request)
+        $this->addSql(<<<'SQL'
+                INSERT INTO proxy_round (proxy_id, round_id)
+                SELECT
+                    proxy.id,
+                    round.id
+                FROM procuration_v2_proxies AS proxy
+                INNER JOIN procuration_v2_rounds AS round
+                    ON round.id = proxy.round_id
+                INNER JOIN procuration_v2_elections AS election
+                    ON election.id = round.election_id
+                WHERE election.slug = :election_slug
+            SQL,
+            [
+                'election_slug' => 'europeennes',
+            ]
+        );
+        $this->addSql(<<<'SQL'
+                INSERT INTO request_round (request_id, round_id)
+                SELECT
+                    request.id,
+                    round.id
+                FROM procuration_v2_requests AS request
+                INNER JOIN procuration_v2_rounds AS round
+                    ON round.id = request.round_id
+                INNER JOIN procuration_v2_elections AS election
+                    ON election.id = round.election_id
+                WHERE election.slug = :election_code
+            SQL,
+            [
+                'election_slug' => 'europeennes',
+            ]
+        );
 
         $this->addSql('ALTER TABLE procuration_v2_proxies DROP FOREIGN KEY FK_4D04EBA4A6005CA0');
         $this->addSql('DROP INDEX IDX_4D04EBA4A6005CA0 ON procuration_v2_proxies');
