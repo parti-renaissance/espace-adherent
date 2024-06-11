@@ -303,6 +303,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.hub_item" class="App\Admin\HubItemAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Hub candidat" group="Élections"/>
+
+            <argument />
+            <argument>App\Entity\HubItem</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.report" class="App\Admin\ReportAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Signalements" group="Territoires" />
 
@@ -1766,6 +1774,7 @@
             <tag name="sonata.admin.extension" target="app.admin.consultation" />
             <tag name="sonata.admin.extension" target="app.admin.chatbot_chatbot" />
             <tag name="sonata.admin.extension" target="app.admin.procuration_v2.election" />
+            <tag name="sonata.admin.extension" target="app.admin.hub_item" />
         </service>
 
         <service id="app.admin.entity_scope_visibility_extension" class="App\Admin\Extension\EntityScopeVisibilityAdminExtension">

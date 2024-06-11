@@ -9,13 +9,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 trait PositionTrait
 {
     /**
-     * @var int
-     *
      * @Gedmo\SortablePosition
      */
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     #[ORM\Column(type: 'smallint', options: ['default' => 0])]
-    private $position = 0;
+    private int $position = 0;
 
     public function getPosition(): int
     {
