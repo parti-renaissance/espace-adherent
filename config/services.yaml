@@ -18,6 +18,7 @@ parameters:
     avecvous_host:                        "%env(AVECVOUS_HOST)%"
     national_event_host:                  "%env(NATIONAL_EVENT_HOST)%"
     user_besoindeurope_host:              "%env(USER_BESOINDEUROPE_HOST)%"
+    user_legislative_host:                "%env(USER_LEGISLATIVE_HOST)%"
     vox_host:                             "%env(VOX_HOST)%"
     besoindeurope_host:                   "%env(BESOINDEUROPE_HOST)%"
     avecvous_qrcode_host:                 "%env(AVECVOUS_QRCODE_HOST)%"

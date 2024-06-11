@@ -299,9 +299,13 @@ app_renaissance:
     type: "annotation"
 
 app_besoindeurope:
-    host: "%user_besoindeurope_host%"
+    host: "{app_domain}"
     resource: "../src/Controller/BesoinDEurope"
     type: "annotation"
+    defaults:
+        app_domain: "%user_legislative_host%"
+    requirements:
+        app_domain: "%user_besoindeurope_host%|%user_legislative_host%"
 
 app_bde_national_event:
     host: "%national_event_host%"
@@ -401,7 +405,7 @@ app_validate_email:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_renaissance_host%|%national_event_host%|%procuration_host%|%user_besoindeurope_host%"
+        app_domain: "%app_renaissance_host%|%national_event_host%|%procuration_host%|%user_besoindeurope_host%|%user_legislative_host%"
 
 app_zone_autocomplete:
     host: "{app_domain}"
