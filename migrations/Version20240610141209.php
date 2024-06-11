@@ -66,7 +66,7 @@ final class Version20240610141209 extends AbstractMigration
                     ON round.id = request.round_id
                 INNER JOIN procuration_v2_elections AS election
                     ON election.id = round.election_id
-                WHERE election.slug = :election_code
+                WHERE election.slug = :election_slug
             SQL,
             [
                 'election_slug' => 'europeennes',

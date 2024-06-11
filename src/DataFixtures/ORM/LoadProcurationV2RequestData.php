@@ -5,7 +5,6 @@ namespace App\DataFixtures\ORM;
 use App\Address\PostAddressFactory;
 use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\Request;
-use App\Entity\ProcurationV2\Round;
 use App\Utils\PhoneNumberUtils;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -122,7 +121,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         $manager->persist($this->createRequest(
             [
                 $this->getReference('procuration-v2-legislatives-2024-round-1'),
-                $this->getReference('procuration-v2-legislatives-2024-round-2')
+                $this->getReference('procuration-v2-legislatives-2024-round-2'),
             ],
             'chris.doe@test.dev',
             Genders::MALE,

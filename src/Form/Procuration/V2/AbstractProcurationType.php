@@ -37,6 +37,9 @@ abstract class AbstractProcurationType extends AbstractType
                         ->setParameter('election', $election)
                     ;
                 },
+                'choice_label' => function (Round $round): string {
+                    return $round->name;
+                },
             ])
             ->add('email', TextType::class)
             ->add('acceptCgu', AcceptPersonalDataCollectType::class, [
