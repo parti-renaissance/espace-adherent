@@ -35,6 +35,14 @@
     </p>
 {% endblock %}
 
+{% block round_additional_form %}
+    <fieldset>
+        <twig:Atoms:ReLabel>Je prends une procuration pour :</twig:Atoms:ReLabel>
+        {{  form_row(form.rounds) }}
+    </fieldset>
+{% endblock %}
+
+
 {% block inner_content_section %}
     <fieldset>
         <twig:Atoms:ReLabel>Mon numéro d’électeur</twig:Atoms:ReLabel>
