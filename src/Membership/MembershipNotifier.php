@@ -62,8 +62,8 @@ class MembershipNotifier implements LoggerAwareInterface
             return;
         }
 
-        if (MembershipSourceEnum::BESOIN_D_EUROPE === $adherent->getSource()) {
-            $this->transactionalMailer->sendMessage(Message\BesoinDEurope\BesoinDEuropeAccountCreatedMessage::create($adherent));
+        if (MembershipSourceEnum::LEGISLATIVE === $adherent->getSource()) {
+            $this->transactionalMailer->sendMessage(Message\Ensemble\EnsembleAccountCreatedMessage::create($adherent));
         }
     }
 
