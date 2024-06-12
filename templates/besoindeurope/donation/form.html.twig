@@ -1,8 +1,8 @@
-{% extends 'besoindeurope/base_besoindeurope.html.twig' %}
+{% extends 'besoindeurope/base_legislative.html.twig' %}
 
 {% block page_title 'Financer la campagne' %}
 
-{% block open_graph_image "https://doc.besoindeurope.fr/images/sharer/don.jpg" %}
+{% block open_graph_image "https://assets.parti-renaissance.fr/sharer/don.png" %}
 {% block open_graph_description "Derrière chaque action locale, chaque événement, chaque tract et affiche de campagne produit, il y a vos dons." %}
 {% block canonical_url url('app_bde_donation') %}
 
@@ -41,7 +41,7 @@
                                 <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep({amounts: [10, 30, 60, 150, 500, 1000]})" id="step_1">
                                     <h1 class="font-sharp font-semibold text-[32px]/[29.8px] text-black neg-letter-spacing--4">Aidez nous à financer<br/><span class="text-[#00E08C]">la campagne</span></h1>
 
-                                    <p>Tout doit être fait pour mobiliser nos électeurs jusqu'au 9 juin. Grâce à vos dons, nous pourrons démultiplier nos actions locales, nos réunions publiques, nos affiches et nos tracts pour convaincre davantage.</p>
+                                    <p>Tout doit être fait pour mobiliser nos électeurs jusqu'au 30 juin. Grâce à vos dons, nous pourrons démultiplier nos actions locales, nos réunions publiques, nos affiches et nos tracts pour convaincre davantage.</p>
 
                                     <twig:Atoms:ReLinkedToggle color="green" name="amount" id="donation_amount_picker" grid label="Choix du montant">
                                         <template x-for="amt in getAmounts()">

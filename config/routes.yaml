@@ -358,6 +358,14 @@ app_besoindeurope_login:
     defaults:
         app: besoindeurope
 
+app_besoindeurope_re_login:
+    host: "%user_besoindeurope_host%"
+    path: "/connexion-avec-renaissance"
+    controller: App\Controller\EnMarche\Security\SecurityController::loginAction
+    defaults:
+        app: besoindeurope
+        with_renaissance: true
+
 app_legislative_login:
     host: "%user_legislative_host%"
     path: "/connexion"
