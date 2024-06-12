@@ -23,7 +23,7 @@ class PersistInscriptionEmailCommandHandler
     public function __invoke(PersistInscriptionEmailCommand $command): ?string
     {
         if ($adherent = $this->adherentRepository->findOneByEmail($command->getEmail())) {
-            $this->membershipNotifier->sendConnexionDetailsMessage($adherent, AppCodeEnum::BESOIN_D_EUROPE);
+            $this->membershipNotifier->sendConnexionDetailsMessage($adherent, AppCodeEnum::LEGISLATIVE);
 
             return null;
         }

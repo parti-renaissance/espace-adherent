@@ -110,7 +110,7 @@ class MembershipNotifier implements LoggerAwareInterface
 
         if (AppCodeEnum::isMobileApp($appCode)) {
             $urlGenerator = $this->appUrlManager->getUrlGenerator($appCode);
-            $this->transactionalMailer->sendMessage(Message\BesoinDEurope\BesoinDEuropeAccountAlreadyExistsMessage::create(
+            $this->transactionalMailer->sendMessage(Message\Ensemble\EnsembleAccountAlreadyExistsMessage::create(
                 $adherent,
                 $url,
                 $this->urlGenerator->generate('app_forgot_password', ['app_domain' => $urlGenerator->getAppHost()], UrlGeneratorInterface::ABSOLUTE_URL),
