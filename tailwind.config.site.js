@@ -115,6 +115,7 @@ module.exports = {
             fontFamily: {
                 maax: ['Maax', ...defaultTheme.fontFamily.sans],
                 din: ['Din', 'sans-serif'],
+                machinepro: ['MachinePro', 'sans-serif'],
                 value: ['Value', 'sans-serif'],
                 sharp: ['Sharp Grotesk', 'sans-serif'],
                 space: ['Space Grotesk', 'sans-serif'],

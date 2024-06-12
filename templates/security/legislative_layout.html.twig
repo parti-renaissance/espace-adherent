@@ -1,0 +1,41 @@
+{% extends 'besoindeurope/base_legislative.html.twig' %}
+
+{% block header '' %}
+
+{% block body_classes 'min-h-screen' %}
+
+{% set with_renaissance = app.request.attributes.get('with_renaissance', false) %}
+
+{% block content %}
+    <section class="flex flex-col bg-white mt-[40px] pb-[3.25rem] re_new_ui {{ not with_renaissance ? 'bde-theme' }}">
+        {% if with_renaissance %}
+            <a href="{{ path('renaissance_site') }}" class="flex justify-center items-center self-center rounded-full bg-[#F4F4F7] mb-6 lg:mb-[4.38rem] w-[80px] h-[80px] lg:w-[120px] lg:h-[120px] hover:animate-pulse" title="Site Renaissance">
+                <img src="{{ asset('/images/renaissance/logo-circle-dark.svg') }}" alt="logo" class="w-3/4" />
+            </a>
+        {% else %}
+            <a href="{{ path('legislative_site') }}" class="flex justify-center items-center self-center mb-6 lg:mb-[4.38rem] w-[80px] lg:w-[200px] lg:h-[120px] hover:animate-pulse" title="Site Ensemble">
+                <img src="{{ asset('/images/ensemble/logo.png') }}" alt="logo" />
+            </a>
+        {% endif %}
+
+        <div class="flex flex-col items-center justify-center h-full w-full">
+            <div class="w-full p-8 m-auto max-w-[500px]">
+                {% include 'renaissance/partials/flashes.html.twig' with { wrapper_class: 'mb-6 lg:mb-16' } %}
+                <h1 class="mb-6  text-center font-maax text-ui_gray-80 tracking-tighter font-medium text-xl">
+                    {% block security_block_title '' %}
+                </h1>
+
+                {% block security_content '' %}
+            </div>
+        </div>
+
+        <footer class="text-center mt-24 text-ui_gray-40">
+            {% if with_renaissance %}
+                Renaissance
+            {% else %}
+                ENSEMBLE
+            {% endif %}
+            © {{ "now"|date('Y') }}
+        </footer>
+    </section>
+{% endblock %}
