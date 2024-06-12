@@ -28,7 +28,7 @@ class LoginLinkHandler implements LoginLinkHandlerInterface
             '_target_path' => $targetPath,
         ];
 
-        if (AppCodeEnum::isBesoinDEuropeApp($appCode)) {
+        if (AppCodeEnum::isMobileApp($appCode)) {
             if (!$request || !$queryParams['_target_path'] = $request->getSession()->get('_security.main.target_path')) {
                 $queryParams['_target_path'] = $this->urlGenerator->generate('vox_app_redirect');
             }

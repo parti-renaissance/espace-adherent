@@ -5,7 +5,7 @@ namespace App\Controller\Renaissance;
 use App\AppCodeEnum;
 use App\Entity\Administrator;
 use App\Mailer\MailerService;
-use App\Mailer\Message\BesoinDEurope\BesoinDEuropeMagicLinkMessage;
+use App\Mailer\Message\Ensemble\EnsembleMagicLinkMessage;
 use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
 use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\AdherentRepository;
@@ -50,8 +50,8 @@ class MagicLinkController extends AbstractController
             if ($adherent = $adherentRepository->findOneActiveByEmail($email)) {
                 $loginLink = $loginLinkHandler->createLoginLink($adherent, $request, $appCode);
 
-                if (AppCodeEnum::isBesoinDEuropeApp($appCode)) {
-                    $transactionalMailer->sendMessage(BesoinDEuropeMagicLinkMessage::create($adherent, $loginLink->getUrl()));
+                if (AppCodeEnum::isMobileApp($appCode)) {
+                    $transactionalMailer->sendMessage(EnsembleMagicLinkMessage::create($adherent, $loginLink->getUrl()));
                 } else {
                     $transactionalMailer->sendMessage(RenaissanceMagicLinkMessage::create($adherent, $loginLink->getUrl()));
                 }

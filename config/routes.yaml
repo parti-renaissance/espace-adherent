@@ -335,14 +335,18 @@ vox_app_redirect:
         app_domain: "%user_besoindeurope_host%|%user_legislative_host%"
 
 user_besoindeurope_redirect:
-    host: "{app_domain}"
+    host: "%user_besoindeurope_host%"
     path: /
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
     defaults:
-        app_domain: "%user_legislative_host%"
         route: 'app_besoindeurope_login'
-    requirements:
-        app_domain: "%user_besoindeurope_host%|%user_legislative_host%"
+
+user_legislative_redirect:
+    host: "%user_legislative_host%"
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        route: 'app_legislative_login'
 
 app_renaissance_login:
     host: "%app_renaissance_host%"

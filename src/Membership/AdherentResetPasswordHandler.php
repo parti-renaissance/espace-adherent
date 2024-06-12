@@ -71,7 +71,7 @@ class AdherentResetPasswordHandler
 
         $this->manager->flush();
 
-        if (AppCodeEnum::isBesoinDEuropeApp($appCode)) {
+        if (AppCodeEnum::isMobileApp($appCode)) {
             $this->mailer->sendMessage(BesoinDEuropeResetPasswordConfirmationMessage::createFromAdherent($adherent));
         } elseif (MembershipSourceEnum::RENAISSANCE === $appCode && !$isCreation) {
             $this->mailer->sendMessage(RenaissanceResetPasswordConfirmationMessage::createFromAdherent($adherent));
