@@ -98,7 +98,7 @@ abstract class AbstractCommand
     public ?Adherent $adherent = null;
 
     /**
-     * @Asset\Count(min=1, message="procuration.rounds.min")
+     * @Assert\Count(min=1, minMessage="procuration.rounds.min")
      */
     public ArrayCollection $rounds;
 

@@ -288,6 +288,7 @@ procuration.vote_zone.not_blank: Veuillez renseigner la zone où vous votez (pay
 procuration.vote_place.not_blank: Veuillez renseigner le bureau de vote.
 
 procuration.round.not_blank: Veuillez renseigner un tour d'élection pour cette demande.
+procuration.rounds.min: Veuillez sélectionner au moins un tour.
 
 procuration.proxy.max_slots: Ce mandataire ne peut pas porter plus de {{ max_slots }} procuration(s).
 procuration.proxy.slots.invalid: Un mandataire peut porter jusqu'à 2 procurations, ou 3 pour les FDE.
