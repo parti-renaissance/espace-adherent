@@ -1,0 +1,85 @@
+{% extends 'security/legislative_layout.html.twig' %}
+
+{% block page_title 'Connexion' %}
+
+{% block open_graph_image "https://doc.besoindeurope.fr/images/sharer/connexion.jpg" %}
+{% block open_graph_description "Connexion aux outils de campagne des législatives." %}
+{% block canonical_url url('app_legislative_login') %}
+
+{% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
+
+{% block security_block_title %}
+    Connexion
+{% endblock %}
+
+{% block security_content %}
+    {{ form_start(form, { action: path('app_user_login_check', { app_domain: user_legislative_host }), attr: { class: 'grid grid-cols-1 gap-6' } }) }}
+        {% if error %}
+            <twig:ReParagraphStatus status="error" icon>
+                {{- error.messageKey|trans(error.messageData)|raw -}}
+            </twig:ReParagraphStatus>
+        {% endif %}
+
+        <div class="gap-4 flex flex-col">
+            {{ form_row(form._login_email, {
+                attr: {
+                    placeholder: 'Adresse email',
+                    validate:"['required']",
+                    autocomplete: 'email',
+                }, label: false}) }}
+
+            {{ form_row(form._login_password, { attr: {
+                placeholder: 'Mot de passe',
+                validate:"['required']",
+            }, label: false }) }}
+        </div>
+
+        {{ form_row(form._remember_me, { label: 'Se souvenir de moi' }) }}
+
+        <twig:ReButton color="black" class="w-full">Me connecter</twig:ReButton>
+    {{ form_end(form) }}
+
+    <div class="grid grid-cols-1 gap-6 mt-6">
+        <div class="flex justify-between">
+            {% if with_renaissance %}
+                <a href="{{ path('app_forgot_password', {app_domain: app_renaissance_host}) }}" class="font-maax hover:underline  text-[16px] lg:text-base font-normal tracking-tight">Mot de passe oublié ?</a>
+            {% else %}
+                <a href="{{ path('app_bde_inscription') }}" class="font-maax hover:underline text-[16px] lg:text-base font-normal tracking-tight">Créer un compte</a>
+                <a href="{{ path('app_forgot_password', {app_domain: user_legislative_host}) }}" class="font-maax hover:underline  text-[16px] lg:text-base font-normal tracking-tight">Mot de passe oublié ?</a>
+            {% endif %}
+        </div>
+
+        <hr class="border-dashed mt-6 mb-6"/>
+
+        {% if with_renaissance %}
+            <twig:ReButton
+                    tag="a"
+                    color="blue"
+                    href="{{ path('app_legislative_login') }}"
+                    class="text-sm lg:text-base rounded-full bg-[#00AEEF] border-[#00AEEF]"
+                >
+                    <span class="text-white">Me connecter</span>
+            </twig:ReButton>
+        {% else %}
+            <twig:ReButton
+                tag="a"
+                color="blue"
+                href="{{ path('app_legislative_re_login') }}"
+                class="text-sm lg:text-base rounded-full bg-[#00AEEF] border-[#00AEEF]"
+            >
+                <span class="flex items-center gap-x-2.5">
+                    <img src="{{ asset('images/renaissance/logo-circle.svg') }}" alt="Renaissance logo" style="height: 16px" />
+                    <span class="text-white">Continuer avec Renaissance</span>
+                </span>
+            </twig:ReButton>
+        {% endif %}
+
+        <twig:ReButton
+            tag="a"
+            href="{{ path('app_user_get_magic_link', {app_domain: user_legislative_host}) }}"
+            class="text-sm lg:text-base rounded-full text-[#00AEEF] border-[#00AEEF]"
+            icon="link-circle-bde"
+            stroke
+        >Me connecter avec un lien</twig:ReButton>
+    </div>
+{% endblock %}

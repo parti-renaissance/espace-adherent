@@ -35,6 +35,7 @@ twig:
         besoindeurope_host:         "%env(BESOINDEUROPE_HOST)%"
         legislative_host:           "%env(LEGISLATIVE_HOST)%"
         user_besoindeurope_host:    "%env(USER_BESOINDEUROPE_HOST)%"
+        user_legislative_host:      "%env(USER_LEGISLATIVE_HOST)%"
         ticket_besoindeurope_host:  "%env(GCLOUD_NATIONAL_EVENT_BUCKET)%"
 
     form_themes:

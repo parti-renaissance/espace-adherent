@@ -25,7 +25,7 @@ app_forgot_password:
     defaults:
         app_domain: "%app_renaissance_host%"
     requirements:
-        app_domain: "%app_renaissance_host%|%jemengage_auth_host%|%user_besoindeurope_host%"
+        app_domain: "%app_renaissance_host%|%jemengage_auth_host%|%user_besoindeurope_host%|%user_legislative_host%"
 
 app_user_login_check:
     host: "{app_domain}"
@@ -35,7 +35,7 @@ app_user_login_check:
     defaults:
         app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_host%|%jemengage_auth_host%|%app_renaissance_host%|%user_besoindeurope_host%"
+        app_domain: "%app_host%|%jemengage_auth_host%|%app_renaissance_host%|%user_besoindeurope_host%|%user_legislative_host%"
 
 logout:
     host: "{app_domain}"
@@ -45,7 +45,7 @@ logout:
     defaults:
         app_domain: '%app_renaissance_host%'
     requirements:
-        app_domain: "%app_host%|%jemengage_auth_host%|%app_renaissance_host%|%user_besoindeurope_host%"
+        app_domain: "%app_host%|%jemengage_auth_host%|%app_renaissance_host%|%user_besoindeurope_host%|%user_legislative_host%"
 
 app_adherent_reset_password:
     host: "{app_domain}"
@@ -55,7 +55,7 @@ app_adherent_reset_password:
     defaults:
         app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_host%|%jemengage_auth_host%|%app_renaissance_host%|%user_besoindeurope_host%"
+        app_domain: "%app_host%|%jemengage_auth_host%|%app_renaissance_host%|%user_besoindeurope_host%|%user_legislative_host%"
 
 app_user_get_magic_link:
     host: "{app_domain}"
@@ -65,7 +65,7 @@ app_user_get_magic_link:
     defaults:
         app_domain: '%app_renaissance_host%'
     requirements:
-        app_domain: "%app_renaissance_host%|%user_besoindeurope_host%"
+        app_domain: "%app_renaissance_host%|%user_besoindeurope_host%|%user_legislative_host%"
 
 app_user_connect_with_magic_link:
     host: "{app_domain}"
@@ -75,7 +75,7 @@ app_user_connect_with_magic_link:
     defaults:
         app_domain: '%app_renaissance_host%'
     requirements:
-        app_domain: "%app_renaissance_host%|%user_besoindeurope_host%"
+        app_domain: "%app_renaissance_host%|%user_besoindeurope_host%|%user_legislative_host%"
 
 app_jemengage:
     host: '%jemengage_auth_host%'
@@ -92,7 +92,7 @@ app_assets:
     defaults:
         app_domain: "%app_renaissance_host%"
     requirements:
-        app_domain: "%app_host%|%app_renaissance_host%|%national_event_host%|%user_besoindeurope_host%"
+        app_domain: "%app_host%|%app_renaissance_host%|%national_event_host%|%user_besoindeurope_host%|%user_legislative_host%"
 
 #
 # Mooc
@@ -133,10 +133,6 @@ api_platform:
     type: api_platform
     prefix: "%api_path_prefix%"
 
-swagger_ui:
-    path: "%api_path_prefix%/swagger"
-    controller: api_platform.swagger.action.ui
-
 #
 # API Legislatives
 #
@@ -162,7 +158,7 @@ app_oauth:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%app_renaissance_host%|%api_renaissance_host%|%jemengage_auth_host%|%user_besoindeurope_host%"
+        app_domain: "%app_host%|%app_renaissance_host%|%api_renaissance_host%|%jemengage_auth_host%|%user_besoindeurope_host%|%user_legislative_host%"
 
 #
 # Admin panel
@@ -320,22 +316,33 @@ besoindeurope_site:
     host: "%besoindeurope_host%"
     path: "/"
 
+legislative_site:
+    host: "%legislatives_host%"
+    path: "/"
+
 vox_app:
     host: "%vox_host%"
     path: "/"
 
 vox_app_redirect:
     methods: GET
-    host: "%user_besoindeurope_host%"
+    host: "{app_domain}"
     path: /app
     controller: App\Controller\BesoinDEurope\RedirectAppController
+    defaults:
+        app_domain: "%user_legislative_host%"
+    requirements:
+        app_domain: "%user_besoindeurope_host%|%user_legislative_host%"
 
 user_besoindeurope_redirect:
-    host: "%user_besoindeurope_host%"
+    host: "{app_domain}"
     path: /
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
     defaults:
+        app_domain: "%user_legislative_host%"
         route: 'app_besoindeurope_login'
+    requirements:
+        app_domain: "%user_besoindeurope_host%|%user_legislative_host%"
 
 app_renaissance_login:
     host: "%app_renaissance_host%"
@@ -351,12 +358,19 @@ app_besoindeurope_login:
     defaults:
         app: besoindeurope
 
-app_besoindeurope_re_login:
-    host: "%user_besoindeurope_host%"
+app_legislative_login:
+    host: "%user_legislative_host%"
+    path: "/connexion"
+    controller: App\Controller\EnMarche\Security\SecurityController::loginAction
+    defaults:
+        app: legislative
+
+app_legislative_re_login:
+    host: "%user_legislative_host%"
     path: "/connexion-avec-renaissance"
     controller: App\Controller\EnMarche\Security\SecurityController::loginAction
     defaults:
-        app: besoindeurope
+        app: legislative
         with_renaissance: true
 
 user_validate_new_email:
