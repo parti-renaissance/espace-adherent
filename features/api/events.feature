@@ -1239,7 +1239,7 @@ Feature:
         "template_content": [],
         "message": {
             "subject": "29 janvier - 16h30 : Nouvel événement de Comité des 3 communes : Nouveau événement",
-            "from_email": "no-reply@parti-renaissance.fr",
+            "from_email": "ne-pas-repondre@parti-renaissance.fr",
             "global_merge_vars": [
                 {
                     "name": "animator_firstname",

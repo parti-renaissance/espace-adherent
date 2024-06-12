@@ -5,6 +5,7 @@ namespace App\Membership\EventListener;
 use App\Mailer\MailerService;
 use App\Mailer\Message\AdherentResetPasswordMessage;
 use App\Mailer\Message\BesoinDEurope\BesoinDEuropeResetPasswordMessage;
+use App\Mailer\Message\Ensemble\EnsembleResetPasswordMessage;
 use App\Mailer\Message\JeMengage\JeMengageResetPasswordMessage;
 use App\Mailer\Message\Renaissance\RenaissanceResetPasswordMessage;
 use App\Membership\Event\UserResetPasswordEvent;
@@ -35,6 +36,7 @@ class UserResetPasswordSubscriber implements EventSubscriberInterface
             MembershipSourceEnum::RENAISSANCE => RenaissanceResetPasswordMessage::createFromAdherent($user, $resetPasswordUrl),
             MembershipSourceEnum::BESOIN_D_EUROPE => BesoinDEuropeResetPasswordMessage::createFromAdherent($user, $resetPasswordUrl),
             MembershipSourceEnum::PLATFORM => AdherentResetPasswordMessage::createFromAdherent($user, $resetPasswordUrl),
+            MembershipSourceEnum::LEGISLATIVE => EnsembleResetPasswordMessage::createFromAdherent($user, $resetPasswordUrl),
             default => throw new \InvalidArgumentException(sprintf('Invalid adherent source "%s"', $source)),
         };
 

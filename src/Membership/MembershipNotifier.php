@@ -108,7 +108,7 @@ class MembershipNotifier implements LoggerAwareInterface
     {
         $url = $this->linkHandler->createLoginLink($adherent, null, $appCode);
 
-        if (AppCodeEnum::isBesoinDEuropeApp($appCode)) {
+        if (AppCodeEnum::isMobileApp($appCode)) {
             $urlGenerator = $this->appUrlManager->getUrlGenerator($appCode);
             $this->transactionalMailer->sendMessage(Message\BesoinDEurope\BesoinDEuropeAccountAlreadyExistsMessage::create(
                 $adherent,

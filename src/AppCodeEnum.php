@@ -34,8 +34,8 @@ final class AppCodeEnum extends Enum
         return self::RENAISSANCE === $code;
     }
 
-    public static function isBesoinDEuropeApp(?string $appCode): bool
+    public static function isMobileApp(?string $appCode): bool
     {
-        return self::BESOIN_D_EUROPE === $appCode;
+        return \in_array($appCode, [self::BESOIN_D_EUROPE, self::LEGISLATIVE]);
     }
 }

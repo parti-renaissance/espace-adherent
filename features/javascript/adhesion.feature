@@ -74,7 +74,7 @@ Feature:
             "template_content": [],
             "message": {
                 "subject": "Confirmez votre adresse email",
-                "from_email": "no-reply@parti-renaissance.fr",
+                "from_email": "ne-pas-repondre@parti-renaissance.fr",
                 "global_merge_vars": [
                     {
                         "name": "first_name",
@@ -216,7 +216,7 @@ Feature:
             "template_content": [],
             "message": {
                 "subject": "Vous êtes déjà adhérent",
-                "from_email": "no-reply@parti-renaissance.fr",
+                "from_email": "ne-pas-repondre@parti-renaissance.fr",
                 "global_merge_vars": [
                     {
                         "name": "first_name",
@@ -305,7 +305,7 @@ Feature:
             "template_content": [],
             "message": {
                 "subject": "Confirmez votre adresse email",
-                "from_email": "no-reply@parti-renaissance.fr",
+                "from_email": "ne-pas-repondre@parti-renaissance.fr",
                 "global_merge_vars": [
                     {
                         "name": "first_name",

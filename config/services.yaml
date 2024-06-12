@@ -456,6 +456,9 @@ services:
                 App\Mailer\Message\BesoinDEurope\BesoinDEuropeMessageInterface:
                     name: Besoin d'Europe
                     email: "%env(EU_SENDER_EMAIL)%"
+                App\Mailer\Message\Ensemble\EnsembleMessageInterface:
+                    name: ENSEMBLE
+                    email: "%env(LEGISLATIVE_SENDER_EMAIL)%"
 
     App\Security\SimpleCsrfTokenManager: ~
 
