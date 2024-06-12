@@ -27,8 +27,8 @@ class ConfirmNewsletterController extends AbstractController
             $eventDispatcher->dispatch(new NewsletterEvent($subscription), Events::CONFIRMATION);
         }
 
-        if (NewsletterTypeEnum::SITE_EU === $subscription->source) {
-            return $this->render('besoindeurope/national_event/newsletter_confirmation.html.twig');
+        if (\in_array($subscription->source, [NewsletterTypeEnum::SITE_PROCURATION, NewsletterTypeEnum::SITE_EU, NewsletterTypeEnum::FROM_EVENT], true)) {
+            return $this->redirect($this->generateUrl('legislative_site').'confirmation-newsletter');
         }
 
         $this->addFlash('success', 'Votre inscription à la newsletter a bien été confirmée.');

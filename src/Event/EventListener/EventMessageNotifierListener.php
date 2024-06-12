@@ -11,9 +11,9 @@ use App\Event\EventEvent;
 use App\Event\EventRegistrationEvent;
 use App\Events;
 use App\Mailer\MailerService;
-use App\Mailer\Message\BesoinDEurope\BesoinDEuropeEventCancellationMessage;
-use App\Mailer\Message\BesoinDEurope\BesoinDEuropeEventRegistrationConfirmationMessage;
-use App\Mailer\Message\BesoinDEurope\BesoinDEuropeEventUpdateMessage;
+use App\Mailer\Message\Ensemble\EnsembleEventCancellationMessage;
+use App\Mailer\Message\Ensemble\EnsembleEventRegistrationConfirmationMessage;
+use App\Mailer\Message\Ensemble\EnsembleEventUpdateMessage;
 use App\Mailer\Message\Renaissance\RenaissanceEventNotificationMessage;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -88,9 +88,8 @@ class EventMessageNotifierListener implements EventSubscriberInterface
 
         foreach (array_chunk($subscriptions, MailerService::PAYLOAD_MAXSIZE) as $chunk) {
             $this->transactionalMailer->sendMessage(
-                BesoinDEuropeEventCancellationMessage::create(
+                EnsembleEventCancellationMessage::create(
                     $chunk,
-                    $event->getAuthor(),
                     $event,
                     $this->generateUrl('vox_app').'/evenements',
                 )
@@ -106,7 +105,7 @@ class EventMessageNotifierListener implements EventSubscriberInterface
 
         $registration = $event->getRegistration();
 
-        $this->transactionalMailer->sendMessage(BesoinDEuropeEventRegistrationConfirmationMessage::createFromRegistration(
+        $this->transactionalMailer->sendMessage(EnsembleEventRegistrationConfirmationMessage::createFromRegistration(
             $registration,
             $this->generateUrl('vox_app').'/evenements/'.$registration->getEvent()->getUuidAsString(),
         ));
@@ -136,9 +135,8 @@ class EventMessageNotifierListener implements EventSubscriberInterface
             }
 
             foreach (array_chunk($subscriptions, MailerService::PAYLOAD_MAXSIZE) as $chunk) {
-                $this->transactionalMailer->sendMessage(BesoinDEuropeEventUpdateMessage::create(
+                $this->transactionalMailer->sendMessage(EnsembleEventUpdateMessage::create(
                     $chunk,
-                    $event->getOrganizer(),
                     $event,
                     $this->generateUrl('vox_app').'/evenements/'.$event->getUuidAsString(),
                 ));

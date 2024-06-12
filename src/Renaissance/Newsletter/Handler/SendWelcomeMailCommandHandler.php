@@ -4,7 +4,7 @@ namespace App\Renaissance\Newsletter\Handler;
 
 use App\Entity\Renaissance\NewsletterSubscription;
 use App\Mailer\MailerService;
-use App\Mailer\Message\BesoinDEurope\EuNewsletterSubscriptionConfirmationMessage;
+use App\Mailer\Message\Ensemble\EnsembleNewsletterSubscriptionConfirmationMessage;
 use App\Mailer\Message\Message;
 use App\Mailer\Message\Renaissance\RenaissanceNewsletterSubscriptionConfirmationMessage;
 use App\Newsletter\NewsletterTypeEnum;
@@ -17,7 +17,7 @@ class SendWelcomeMailCommandHandler implements MessageHandlerInterface
     public function __construct(
         private readonly MailerService $transactionalMailer,
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly string $nationalEventHost,
+        private readonly string $userLegislativeHost,
     ) {
     }
 
@@ -37,12 +37,12 @@ class SendWelcomeMailCommandHandler implements MessageHandlerInterface
             NewsletterTypeEnum::FROM_EVENT,
             NewsletterTypeEnum::SITE_PROCURATION,
         ], true)) {
-            return EuNewsletterSubscriptionConfirmationMessage::create(
+            return EnsembleNewsletterSubscriptionConfirmationMessage::create(
                 $subscription->email,
                 $this->urlGenerator->generate('app_renaissance_newsletter_confirm', [
                     'uuid' => $subscription->getUuid()->toString(),
                     'confirm_token' => $subscription->token->toString(),
-                    'app_domain' => $this->nationalEventHost,
+                    'app_domain' => $this->userLegislativeHost,
                 ], UrlGeneratorInterface::ABSOLUTE_URL)
             );
         }

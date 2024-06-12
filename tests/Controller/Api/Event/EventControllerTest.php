@@ -7,7 +7,7 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadClientData;
 use App\Entity\Event\BaseEvent;
 use App\Event\EventTypeEnum;
-use App\Mailer\Message\BesoinDEurope\BesoinDEuropeEventUpdateMessage;
+use App\Mailer\Message\Ensemble\EnsembleEventUpdateMessage;
 use App\OAuth\Model\GrantTypeEnum;
 use App\OAuth\Model\Scope;
 use PHPUnit\Framework\Attributes\Group;
@@ -76,7 +76,7 @@ class EventControllerTest extends AbstractApiTestCase
         self::assertSame('My best edited event !', $response['name']);
         self::assertSame('online', $response['mode']);
 
-        $this->assertCountMails(1, BesoinDEuropeEventUpdateMessage::class);
-        $this->assertMail(BesoinDEuropeEventUpdateMessage::class, 'president-ad@renaissance-dev.fr', ['template_name' => 'besoin-d-europe-event-update']);
+        $this->assertCountMails(1, EnsembleEventUpdateMessage::class);
+        $this->assertMail(EnsembleEventUpdateMessage::class, 'president-ad@renaissance-dev.fr', ['template_name' => 'ensemble-event-update']);
     }
 }

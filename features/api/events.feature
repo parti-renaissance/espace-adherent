@@ -1521,14 +1521,14 @@ Feature:
     }
     """
     And I should have 1 email
-    And I should have 1 email "BesoinDEuropeEventUpdateMessage" for "francis.brioul@yahoo.com" with payload:
+    And I should have 1 email "EnsembleEventUpdateMessage" for "francis.brioul@yahoo.com" with payload:
     """
     {
-       "template_name": "besoin-d-europe-event-update",
+       "template_name": "ensemble-event-update",
        "template_content": [],
        "message": {
-          "subject": "",
-          "from_email": "ne-pas-repondre@besoindeurope.fr",
+          "subject": "Un événement a été modifié",
+          "from_email": "ne-pas-repondre@parti-renaissance.fr",
           "global_merge_vars": [
              {
                 "name": "event_name",
@@ -1589,7 +1589,7 @@ Feature:
                 ]
              }
           ],
-          "from_name": "Besoin d'Europe",
+          "from_name": "ENSEMBLE",
           "to": [
              {
                 "email": "referent@en-marche-dev.fr",
@@ -1625,14 +1625,14 @@ Feature:
     When I send a "PUT" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/cancel?scope=<scope>"
     Then the response status code should be 200
     And I should have 1 email
-    And I should have 1 email "BesoinDEuropeEventCancellationMessage" for "francis.brioul@yahoo.com" with payload:
+    And I should have 1 email "EnsembleEventCancellationMessage" for "francis.brioul@yahoo.com" with payload:
     """
     {
-       "template_name": "besoin-d-europe-event-cancellation",
+       "template_name": "ensemble-event-cancellation",
        "template_content": [],
        "message": {
-          "subject": "",
-          "from_email": "ne-pas-repondre@besoindeurope.fr",
+          "subject": "Événement annulé",
+          "from_email": "ne-pas-repondre@parti-renaissance.fr",
           "global_merge_vars": [
              {
                 "name": "event_name",
@@ -1681,7 +1681,7 @@ Feature:
                 ]
              }
           ],
-          "from_name": "Besoin d'Europe",
+          "from_name": "ENSEMBLE",
           "to": [
              {
                 "email": "referent@en-marche-dev.fr",
