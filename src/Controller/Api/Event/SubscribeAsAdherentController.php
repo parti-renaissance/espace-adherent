@@ -15,6 +15,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -25,7 +28,8 @@ class SubscribeAsAdherentController extends AbstractController
         private readonly EventRegistrationFactory $eventRegistrationFactory,
         private readonly ValidatorInterface $validator,
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly EventRegistrationRepository $eventRegistrationRepository
+        private readonly EventRegistrationRepository $eventRegistrationRepository,
+        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -52,7 +56,14 @@ class SubscribeAsAdherentController extends AbstractController
             return $this->json('OK', Response::HTTP_OK);
         }
 
-        $errors = $this->validator->validate($command = new EventRegistrationCommand($event, $adherent));
+        $command = new EventRegistrationCommand($event, $adherent);
+
+        $this->serializer->deserialize($request->getContent(), EventRegistrationCommand::class, JsonEncoder::FORMAT, [
+            AbstractNormalizer::GROUPS => ['event_registration_write'],
+            AbstractNormalizer::OBJECT_TO_POPULATE => $command,
+        ]);
+
+        $errors = $this->validator->validate($command);
 
         if ($errors->count()) {
             return $this->json($errors, Response::HTTP_BAD_REQUEST);

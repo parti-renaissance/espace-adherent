@@ -19,6 +19,7 @@ parameters:
     national_event_host:                  "%env(NATIONAL_EVENT_HOST)%"
     user_besoindeurope_host:              "%env(USER_BESOINDEUROPE_HOST)%"
     user_legislative_host:                "%env(USER_LEGISLATIVE_HOST)%"
+    legislative_host:                     "%env(LEGISLATIVE_HOST)%"
     vox_host:                             "%env(VOX_HOST)%"
     besoindeurope_host:                   "%env(BESOINDEUROPE_HOST)%"
     avecvous_qrcode_host:                 "%env(AVECVOUS_QRCODE_HOST)%"
@@ -66,7 +67,6 @@ services:
             $jemengageHost: '%jemengage_host%'
             $jemengageAuthHost: '%jemengage_auth_host%'
             $avecvousHost: '%avecvous_host%'
-            $nationalEventHost: '%national_event_host%'
             $userBesoinDEuropeHost: '%user_besoindeurope_host%'
             $userLegislativeHost: '%user_legislative_host%'
             $ovhSmsWebhookKey: '%env(OVHCLOUD_SMS_WEBHOOK_KEY)%'

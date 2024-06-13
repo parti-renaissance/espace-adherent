@@ -317,7 +317,7 @@ besoindeurope_site:
     path: "/"
 
 legislative_site:
-    host: "%legislatives_host%"
+    host: "%legislative_host%"
     path: "/"
 
 vox_app:
@@ -451,7 +451,7 @@ app_renaissance_newsletter_confirm:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_renaissance_host%|%national_event_host%"
+        app_domain: "%app_renaissance_host%|%national_event_host%|%user_legislative_host%"
 
 app_article:
     host: "{app_domain}"
