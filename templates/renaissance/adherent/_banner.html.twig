@@ -1,5 +1,7 @@
 {% set consultation_designation = find_active_designations(app.user, [constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::CONSULTATION')], 1, true)|first %}
 
+{% include 'renaissance/banner/campagne.html.twig' %}
+
 {% if consultation_designation %}
     {% include 'renaissance/banner/consultation_in_progress.html.twig' %}
 {% endif %}

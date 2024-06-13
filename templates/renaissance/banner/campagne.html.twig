@@ -1,0 +1,15 @@
+<div class="adherent-banner rounded-2xl mb-10 p-6 text-black" style="background: linear-gradient(92deg, #FFF 3.67%, #ECECEC 94.68%);">
+    <div class="flex flex-col-reverse sm:flex-row justify-between">
+        <div class="flex flex-col">
+            <h2 class="text-2xl font-medium">Élections Législatives</h2>
+
+            <p class="text-2xl">C'est ici que ça se passe !</p>
+
+            <twig:ReButton tag="a" color='gray' class="mt-6 w-fit" href="{{ path('vox_app_redirect', {app_domain: app_renaissance_host}) }}">Accéder à la campagne</twig:ReButton>
+        </div>
+
+        <div class="mb-6 sm:mb-0">
+            <img src="{{ asset('images/icons/icn_ensemble.svg') }}" alt="Ensemble" class="h-100 object-contain" />
+        </div>
+    </div>
+</div>
