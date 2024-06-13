@@ -35,6 +35,7 @@ class SendWelcomeMailCommandHandler implements MessageHandlerInterface
         if (\in_array($subscription->source, [
             NewsletterTypeEnum::SITE_EU,
             NewsletterTypeEnum::FROM_EVENT,
+            NewsletterTypeEnum::SITE_ENSEMBLE,
             NewsletterTypeEnum::SITE_PROCURATION,
         ], true)) {
             return EnsembleNewsletterSubscriptionConfirmationMessage::create(

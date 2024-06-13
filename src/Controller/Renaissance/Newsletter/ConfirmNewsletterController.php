@@ -27,7 +27,7 @@ class ConfirmNewsletterController extends AbstractController
             $eventDispatcher->dispatch(new NewsletterEvent($subscription), Events::CONFIRMATION);
         }
 
-        if (\in_array($subscription->source, [NewsletterTypeEnum::SITE_PROCURATION, NewsletterTypeEnum::SITE_EU, NewsletterTypeEnum::FROM_EVENT], true)) {
+        if (\in_array($subscription->source, [NewsletterTypeEnum::SITE_ENSEMBLE, NewsletterTypeEnum::SITE_PROCURATION, NewsletterTypeEnum::SITE_EU, NewsletterTypeEnum::FROM_EVENT], true)) {
             return $this->redirect($this->generateUrl('legislative_site').'confirmation-newsletter');
         }
 
