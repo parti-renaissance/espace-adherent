@@ -332,7 +332,7 @@ vox_app_redirect:
     defaults:
         app_domain: "%user_legislative_host%"
     requirements:
-        app_domain: "%user_besoindeurope_host%|%user_legislative_host%"
+        app_domain: "%user_besoindeurope_host%|%user_legislative_host%|%app_renaissance_host%"
 
 user_besoindeurope_redirect:
     host: "%user_besoindeurope_host%"
