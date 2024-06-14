@@ -15,6 +15,6 @@ class LegislativeCandidateAdherentMessage extends AbstractAdherentMessage implem
 
     protected function getFromNameSuffix(): string
     {
-        return ' | Avec vous';
+        return ' • ENSEMBLE';
     }
 }

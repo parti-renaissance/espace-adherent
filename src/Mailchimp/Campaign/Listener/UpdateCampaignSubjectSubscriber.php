@@ -41,8 +41,6 @@ class UpdateCampaignSubjectSubscriber implements EventSubscriberInterface
                 $prefix = '[Conseil territorial]';
                 break;
             case AdherentMessageTypeEnum::LEGISLATIVE_CANDIDATE:
-                $prefix = '[Candidat aux législatives]';
-                break;
             case AdherentMessageTypeEnum::CANDIDATE:
                 $prefix = '[Candidat]';
                 break;
