@@ -5,7 +5,6 @@ namespace App\Membership;
 use App\Entity\Adherent;
 use App\Entity\AdherentChangeEmailToken;
 use App\Mailer\MailerService;
-use App\Mailer\Message\AdherentChangeEmailMessage;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentChangeEmailMessage;
 use App\Membership\Event\UserEmailEvent;
 use App\Membership\Event\UserEvent;
@@ -69,11 +68,7 @@ class AdherentChangeEmailHandler
     {
         $confirmationLink = $this->createConfirmationLink($adherent, $token);
 
-        $this->mailer->sendMessage(
-            $adherent->isRenaissanceUser()
-                ? RenaissanceAdherentChangeEmailMessage::createFromAdherent($adherent, $token->getEmail(), $confirmationLink)
-                : AdherentChangeEmailMessage::createFromAdherent($adherent, $token->getEmail(), $confirmationLink)
-        );
+        $this->mailer->sendMessage(RenaissanceAdherentChangeEmailMessage::createFromAdherent($adherent, $token->getEmail(), $confirmationLink));
     }
 
     private function createConfirmationLink(Adherent $adherent, AdherentChangeEmailToken $token): string
