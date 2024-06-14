@@ -5,7 +5,7 @@
 
     {% if requests is not empty %}
         <ol>
-            {% for request in object.requests %}
+            {% for request in requests %}
                 <li>
                     {{ ('common.civility.' ~ (request.gender == constant('App\\ValueObject\\Genders::FEMALE') ? 'mrs' : 'mr'))|trans  }}
                     <i>{{ request.firstNames }}</i> <b>{{ request.lastName }}</b>
