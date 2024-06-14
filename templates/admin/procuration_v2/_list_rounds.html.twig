@@ -1,0 +1,16 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set rounds = object.rounds %}
+
+    {% if rounds is not empty %}
+        <ol>
+            {% for round in rounds %}
+                <li>
+                    {{ round.name }}
+                    <i>({{ round.date|format_datetime('medium', 'none') }})</i>
+                </li>
+            {% endfor %}
+        </ol>
+    {% endif %}
+{% endblock %}

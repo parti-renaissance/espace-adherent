@@ -5,6 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Address\PostAddressFactory;
 use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\Proxy;
+use App\Entity\ProcurationV2\ProxySlot;
 use App\Utils\PhoneNumberUtils;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -188,6 +189,12 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         $proxy->electorNumber = $electorNumber;
         $proxy->slots = $slots;
         $proxy->refreshZoneIds();
+
+        foreach ($rounds as $round) {
+            for ($i = 1; $i <= $slots; ++$i) {
+                $proxy->proxySlots->add(new ProxySlot($round, $proxy));
+            }
+        }
 
         return $proxy;
     }

@@ -84,6 +84,7 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
             ->with('Vote', ['class' => 'col-md-6'])
                 ->add('rounds', null, [
                     'label' => 'Tours concernés',
+                    'disabled' => true,
                 ])
                 ->add('distantVotePlace', null, [
                     'label' => 'Vote là ou il vit',
@@ -118,6 +119,7 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
             ])
             ->add('rounds', null, [
                 'label' => 'Tours',
+                'template' => 'admin/procuration_v2/_list_rounds.html.twig',
             ])
             ->add('_fullName', null, [
                 'label' => 'Identité',

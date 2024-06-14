@@ -33,6 +33,7 @@ class ProxyAdmin extends AbstractProcurationAdmin
                 ])
                 ->add('slots', ChoiceType::class, [
                     'label' => 'Votes disponibles',
+                    'disabled' => true,
                     'expanded' => true,
                     'choices' => [
                         '1' => 1,
