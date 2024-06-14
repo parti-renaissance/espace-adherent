@@ -124,8 +124,6 @@ class MailchimpObjectIdMapping
         switch ($source) {
             case AudienceTypeEnum::JEMENGAGE:
                 return $this->getJeMengageListId();
-            case AudienceTypeEnum::LEGISLATIVE_CANDIDATE_NEWSLETTER:
-                return $this->getNewsletterLegislativeCandidateListId();
             default:
                 return $this->getMainListId();
         }

@@ -12,7 +12,8 @@ class LegislativeCandidateFieldsFilterBuilder implements FilterBuilderInterface
 {
     public function supports(string $scope, ?string $feature = null): bool
     {
-        return ScopeEnum::LEGISLATIVE_CANDIDATE === $scope && FeatureEnum::MESSAGES === $feature;
+        // temporarily disable this filter, need setup conditionBuilder to filter in global NL audience
+        return false && ScopeEnum::LEGISLATIVE_CANDIDATE === $scope && FeatureEnum::MESSAGES === $feature;
     }
 
     public function build(string $scope, ?string $feature = null): array
