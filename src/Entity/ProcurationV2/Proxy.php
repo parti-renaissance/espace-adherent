@@ -97,6 +97,10 @@ class Proxy extends AbstractProcuration
     #[ORM\OneToMany(mappedBy: 'proxy', targetEntity: Request::class, cascade: ['all'])]
     public Collection $requests;
 
+    #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]
+    #[ORM\OneToMany(mappedBy: 'proxy', targetEntity: ProxySlot::class, cascade: ['all'])]
+    public Collection $proxySlots;
+
     /**
      * Ids of main and parents zones built from votePlace zone or from voteZone zone.
      * This field helps to improve matching DB query in ProxyRepository
@@ -142,6 +146,7 @@ class Proxy extends AbstractProcuration
         );
 
         $this->requests = new ArrayCollection();
+        $this->proxySlots = new ArrayCollection();
     }
 
     public function hasRequest(Request $request): bool

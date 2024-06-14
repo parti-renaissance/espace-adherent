@@ -5,6 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Address\PostAddressFactory;
 use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\Request;
+use App\Entity\ProcurationV2\RequestSlot;
 use App\Utils\PhoneNumberUtils;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -168,7 +169,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         bool $fromFrance = true,
         bool $joinNewsletter = false
     ): Request {
-        return new Request(
+        $request = new Request(
             $rounds,
             $email,
             $gender,
@@ -185,5 +186,11 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             null,
             $joinNewsletter
         );
+
+        foreach ($rounds as $round) {
+            $request->requestSlots->add(new RequestSlot($round, $request));
+        }
+
+        return $request;
     }
 }
