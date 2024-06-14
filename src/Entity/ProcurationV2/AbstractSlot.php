@@ -26,6 +26,5 @@ abstract class AbstractSlot
     ) {
         $this->uuid = Uuid::uuid4();
         $this->round = $round;
-        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
     }
 }
