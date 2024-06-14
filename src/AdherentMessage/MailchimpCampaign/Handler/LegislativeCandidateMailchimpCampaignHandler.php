@@ -30,13 +30,6 @@ class LegislativeCandidateMailchimpCampaignHandler extends AbstractMailchimpCamp
             ]];
         }
 
-        if (null === $audienceType || AudienceTypeEnum::LEGISLATIVE_CANDIDATE_NEWSLETTER === $audienceType) {
-            $conditions[] = [[
-                'type' => self::MAILCHIMP_LIST_TYPE,
-                'value' => AudienceTypeEnum::LEGISLATIVE_CANDIDATE_NEWSLETTER,
-            ]];
-        }
-
         return $conditions;
     }
 }
