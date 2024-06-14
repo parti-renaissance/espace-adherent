@@ -14,7 +14,8 @@ class GetMatchedProxiesController
 {
     public function __invoke(SymfonyRequest $httpRequest, Request $request, RoundRepository $roundRepository, ProxyRepository $repository): PaginatorInterface
     {
-        if (empty($data['round']) || !Uuid::isValid($roundUuid = $httpRequest->query->get('round'))) {
+        $roundUuid = $httpRequest->query->get('round');
+        if (empty($roundUuid) || !Uuid::isValid($roundUuid)) {
             throw new BadRequestHttpException('Identifiant de tour manquant ou invalide');
         }
 
