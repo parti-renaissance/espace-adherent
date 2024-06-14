@@ -29,6 +29,7 @@ class CampaignRequestBuilder
             ->setTitle($this->createCampaignLabel($campaign))
             ->setSegmentOptions($message->getFilter() ? $this->segmentConditionsBuilder->buildFromMailchimpCampaign($campaign) : [])
             ->setFromName($message->getFromName())
+            ->setReplyTo('contact@parti-renaissance.fr')
         ;
     }
 

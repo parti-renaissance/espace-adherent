@@ -31,7 +31,6 @@ use App\Mailchimp\Campaign\CampaignRequestBuilder;
 use App\Mailchimp\Campaign\ContentSection\BasicMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\CommitteeMessageSectionBuilder;
 use App\Mailchimp\Campaign\ContentSection\DeputyMessageSectionBuilder;
-use App\Mailchimp\Campaign\Listener\SetCampaignReplyToSubscriber;
 use App\Mailchimp\Campaign\Listener\UpdateCampaignSubjectSubscriber;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentGeoZoneConditionBuilder;
@@ -87,7 +86,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'template_id' => 3,
                     'subject_line' => '[Comité] Subject',
                     'title' => 'Full Name - '.date('d/m/Y'),
-                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'reply_to' => 'contact@parti-renaissance.fr',
                     'from_name' => 'Full Name | Renaissance',
                 ],
                 'recipients' => [
@@ -159,7 +158,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'template_id' => 1,
                     'subject_line' => '[Référent] Subject',
                     'title' => 'Full Name - '.date('d/m/Y').' - code1',
-                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'reply_to' => 'contact@parti-renaissance.fr',
                     'from_name' => 'Full Name | Renaissance',
                 ],
                 'recipients' => [
@@ -202,7 +201,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'template_id' => 1,
                     'subject_line' => '[Référent] Subject',
                     'title' => 'Full Name - '.date('d/m/Y').' - code2',
-                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'reply_to' => 'contact@parti-renaissance.fr',
                     'from_name' => 'Full Name | Renaissance',
                 ],
                 'recipients' => [
@@ -270,7 +269,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'template_id' => 2,
                     'subject_line' => '[Délégué de circonscription] Subject',
                     'title' => 'Full Name - '.date('d/m/Y').' - code1',
-                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'reply_to' => 'contact@parti-renaissance.fr',
                     'from_name' => 'Full Name | Renaissance',
                 ],
                 'recipients' => [
@@ -343,7 +342,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'template_id' => 6,
                     'subject_line' => '[Sénateur] Subject',
                     'title' => 'Full Name - '.date('d/m/Y').' - code1',
-                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'reply_to' => 'contact@parti-renaissance.fr',
                     'from_name' => 'Full Name | Renaissance',
                 ],
                 'recipients' => [
@@ -421,7 +420,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'template_id' => 7,
                     'subject_line' => '[Candidat] Subject',
                     'title' => 'Full Name - '.date('d/m/Y'),
-                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'reply_to' => 'contact@parti-renaissance.fr',
                     'from_name' => 'Full Name | Renaissance',
                 ],
                 'recipients' => [
@@ -487,7 +486,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'template_id' => 8,
                     'subject_line' => 'Subject',
                     'title' => 'Full Name - '.date('d/m/Y'),
-                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'reply_to' => 'contact@parti-renaissance.fr',
                     'from_name' => 'Full Name | Renaissance',
                 ],
                 'recipients' => [
@@ -543,7 +542,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'template_id' => 10,
                     'subject_line' => '[Responsable local] Subject',
                     'title' => 'Full Name - '.date('d/m/Y'),
-                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'reply_to' => 'contact@parti-renaissance.fr',
                     'from_name' => 'First Name | Campagne 2022',
                 ],
                 'recipients' => [
@@ -605,7 +604,7 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'template_id' => 11,
                     'subject_line' => '[Coordinateur Régional] Subject',
                     'title' => 'Full Name - '.date('d/m/Y'),
-                    'reply_to' => 'ne-pas-repondre@parti-renaissance.fr',
+                    'reply_to' => 'contact@parti-renaissance.fr',
                     'from_name' => 'Full Name | Renaissance',
                 ],
                 'recipients' => [
@@ -796,7 +795,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
     private function createEventDispatcher(): EventDispatcherInterface
     {
         $eventDispatcher = new EventDispatcher();
-        $eventDispatcher->addSubscriber(new SetCampaignReplyToSubscriber());
         $eventDispatcher->addSubscriber(new UpdateCampaignSubjectSubscriber());
 
         return $eventDispatcher;
