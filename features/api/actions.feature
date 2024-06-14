@@ -131,24 +131,6 @@ Feature:
         }
         """
 
-    Scenario: As a logged-in VOX simple user without scope I cannot create an actions
-        Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
-        And I send a "POST" request to "/api/v3/actions" with body:
-        """
-        {
-            "type": "pap",
-            "date": "2024-06-01 10:00:00",
-            "description": "<p>Bonjour, voici une description</p><ul><li>élément 1</li><li>élément 2</li></ul>",
-            "post_address": {
-                "address": "92 bd Victor Hugo",
-                "postal_code": "92110",
-                "city_name": "Clichy",
-                "country": "FR"
-            }
-        }
-        """
-        Then the response status code should be 403
-
     Scenario: As a logged-in VOX user I can get actions around me
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
         And I send a "GET" request to "/api/v3/actions?latitude=48.866667&longitude=2.333333"

@@ -42,7 +42,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "put": {
  *             "path": "/v3/actions/{uuid}",
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'actions') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'actions'))",
+ *             "security": "object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'actions')",
  *         },
  *         "cancel": {
  *             "path": "/v3/actions/{uuid}/cancel",
@@ -75,7 +75,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *         "post": {
  *             "path": "/v3/actions",
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'actions')",
  *         },
  *     }
  * )
