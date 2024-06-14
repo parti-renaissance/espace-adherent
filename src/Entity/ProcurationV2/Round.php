@@ -9,7 +9,6 @@ use App\Repository\Procuration\RoundRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'procuration_v2_rounds')]
@@ -24,7 +23,6 @@ class Round
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
-    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_matched_proxy', 'procuration_proxy_list'])]
     #[ORM\Column]
     public ?string $name = null;
 
@@ -37,7 +35,6 @@ class Round
     /**
      * @Assert\NotBlank
      */
-    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_matched_proxy', 'procuration_proxy_list'])]
     #[ORM\Column(type: 'date')]
     public ?\DateTimeInterface $date = null;
 

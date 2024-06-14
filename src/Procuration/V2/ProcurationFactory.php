@@ -4,9 +4,7 @@ namespace App\Procuration\V2;
 
 use App\Address\PostAddressFactory;
 use App\Entity\ProcurationV2\Proxy;
-use App\Entity\ProcurationV2\ProxySlot;
 use App\Entity\ProcurationV2\Request;
-use App\Entity\ProcurationV2\RequestSlot;
 use App\Procuration\V2\Command\ProxyCommand;
 use App\Procuration\V2\Command\RequestCommand;
 
@@ -19,7 +17,7 @@ class ProcurationFactory
 
     public function createRequestFromCommand(RequestCommand $command): Request
     {
-        $request = new Request(
+        return new Request(
             $command->rounds->toArray(),
             $command->email,
             $command->gender,
@@ -37,12 +35,6 @@ class ProcurationFactory
             $command->joinNewsletter,
             $command->clientIp
         );
-
-        foreach ($command->rounds as $round) {
-            $request->requestSlots->add(new RequestSlot($round, $request));
-        }
-
-        return $request;
     }
 
     public function createProxyFromCommand(ProxyCommand $command): Proxy
@@ -67,12 +59,6 @@ class ProcurationFactory
 
         $proxy->electorNumber = $command->electorNumber;
         $proxy->slots = $command->slots;
-
-        foreach ($command->rounds as $round) {
-            for ($i = 1; $i <= $command->slots; ++$i) {
-                $proxy->proxySlots->add(new ProxySlot($round, $proxy));
-            }
-        }
 
         return $proxy;
     }

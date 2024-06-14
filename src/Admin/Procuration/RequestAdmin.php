@@ -39,7 +39,6 @@ class RequestAdmin extends AbstractProcurationAdmin
                 ->add('proxy', ModelAutocompleteType::class, [
                     'label' => 'Mandataire associé',
                     'required' => false,
-                    'disabled' => true,
                     'minimum_input_length' => 2,
                     'items_per_page' => 20,
                     'property' => [
