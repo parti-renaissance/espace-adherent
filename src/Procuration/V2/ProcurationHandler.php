@@ -4,6 +4,7 @@ namespace App\Procuration\V2;
 
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
+use App\Entity\ProcurationV2\Round;
 use App\Procuration\V2\Command\ProxyCommand;
 use App\Procuration\V2\Command\RequestCommand;
 use App\Procuration\V2\Event\ProcurationEvent;
@@ -68,9 +69,10 @@ class ProcurationHandler
         $this->entityManager->flush();
     }
 
-    public function match(Request $request, Proxy $proxy, bool $emailCopy): void
+    public function match(Request $request, Proxy $proxy, Round $round, bool $emailCopy): void
     {
         $proxy->addRequest($request);
+        $proxy->matchSlot($round, $request);
         $this->entityManager->flush();
 
         $this->updateRequestStatus($request);
@@ -81,13 +83,14 @@ class ProcurationHandler
         $this->notifier->sendMatchConfirmation($request, $proxy, $emailCopy ? $history->matcher : null);
     }
 
-    public function unmatch(Request $request, bool $emailCopy): void
+    public function unmatch(Request $request, Round $round, bool $emailCopy): void
     {
         if (!$proxy = $request->proxy) {
             return;
         }
 
         $proxy->removeRequest($request);
+        $proxy->unmatchSlot($round, $request);
         $this->entityManager->flush();
 
         $this->updateRequestStatus($request);

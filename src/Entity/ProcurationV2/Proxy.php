@@ -9,6 +9,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\InZoneOfScopeFilter;
 use App\Api\Filter\OrTextSearchFilter;
 use App\Entity\Adherent;
+use App\Entity\Chatbot\Message;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
 use App\Procuration\V2\ProxyStatusEnum;
@@ -204,5 +205,52 @@ class Proxy extends AbstractProcuration
             fn (Zone $zone) => $zone->getId(),
             ($this->votePlace ?? $this->voteZone)->getWithParents()
         );
+    }
+
+    public function matchSlot(Round $round, Request $request): void
+    {
+        /** @var ProxySlot|null $proxySlot */
+        $proxySlot = $this->proxySlots->filter(
+            static function (ProxySlot $proxySlot) use ($round): bool {
+                return $round === $proxySlot->round;
+            }
+        )->first() ?? null;
+
+        /** @var RequestSlot|null $requestSlot */
+        $requestSlot = $request->requestSlots->filter(
+            static function (RequestSlot $requestSlot) use ($round): bool {
+                return $round === $requestSlot->round && null === $requestSlot->proxySlot;
+            }
+        )->first() ?? null;
+
+        if ($proxySlot && $requestSlot) {
+            $requestSlot->proxySlot = $proxySlot;
+            $proxySlot->requestSlot = $requestSlot;
+        }
+    }
+
+    public function unmatchSlot(Round $round, Request $request): void
+    {
+        /** @var ProxySlot|null $proxySlot */
+        $proxySlot = $this->proxySlots->filter(
+            function (ProxySlot $proxySlot) use ($round, $request): bool {
+                return $round === $proxySlot->round && $request === $proxySlot->requestSlot?->request;
+            }
+        )->first() ?? null;
+
+        if ($proxySlot) {
+            $proxySlot->requestSlot = null;
+        }
+
+        /** @var RequestSlot|null $requestSlot */
+        $requestSlot = $request->requestSlots->filter(
+            function (RequestSlot $requestSlot) use ($round): bool {
+                return $round === $requestSlot->round && $this === $requestSlot->proxySlot?->proxy;
+            }
+        )->first() ?? null;
+
+        if ($requestSlot) {
+            $requestSlot->proxySlot = null;
+        }
     }
 }
