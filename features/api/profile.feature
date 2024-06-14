@@ -671,14 +671,14 @@ Feature:
     }
     """
     Then the response status code should be 200
-    And I should have 1 email "AdherentChangeEmailMessage" for "new.mail@example.com" with payload:
+    And I should have 1 email "RenaissanceAdherentChangeEmailMessage" for "new.mail@example.com" with payload:
     """
     {
-      "template_name": "adherent-change-email",
+      "template_name": "renaissance-adherent-change-email",
       "template_content": [],
       "message": {
         "subject": "Validez votre nouvelle adresse email",
-        "from_email": "contact@en-marche.fr",
+        "from_email": "ne-pas-repondre@parti-renaissance.fr",
         "merge_vars": [
           {
             "rcpt": "new.mail@example.com",
@@ -694,7 +694,7 @@ Feature:
             ]
           }
         ],
-        "from_name": "La République En Marche !",
+        "from_name": "Renaissance",
         "to": [
           {
             "email": "new.mail@example.com",
