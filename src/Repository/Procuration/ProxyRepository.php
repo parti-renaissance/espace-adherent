@@ -6,12 +6,14 @@ use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
+use App\Entity\ProcurationV2\RequestSlot;
 use App\Entity\ProcurationV2\Round;
 use App\Procuration\V2\ProxyStatusEnum;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ProxyRepository extends ServiceEntityRepository
@@ -84,10 +86,11 @@ class ProxyRepository extends ServiceEntityRepository
         $queryBuilder
             ->addSelect($caseSelect)
             ->innerJoin('proxy.proxySlots', 'proxy_slot')
+            ->leftJoin(RequestSlot::class, 'request_slot', Join::WITH, 'request_slot.proxySlot = proxy_slot')
             ->andWhere('proxy.status = :status')
             ->andWhere($orx)
             ->andWhere('proxy_slot.round = :round')
-            ->andWhere('proxy_slot.requestSlot IS NULL')
+            ->andWhere('request_slot IS NULL')
             ->orderBy('score', 'desc')
             ->setParameter('status', ProxyStatusEnum::PENDING)
             ->setParameter('round', $round)
