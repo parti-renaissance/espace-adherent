@@ -117,10 +117,6 @@ class Request extends AbstractProcuration
     #[ORM\ManyToOne(targetEntity: Proxy::class, inversedBy: 'requests')]
     public ?Proxy $proxy = null;
 
-    #[Groups(['procuration_request_read', 'procuration_request_list'])]
-    #[ORM\OneToMany(mappedBy: 'request', targetEntity: RequestSlot::class, cascade: ['all'])]
-    public Collection $requestSlots;
-
     /**
      * @var MatchingHistory[]|Collection
      */
@@ -168,7 +164,6 @@ class Request extends AbstractProcuration
 
         $this->fromFrance = $fromFrance;
         $this->matchingHistories = new ArrayCollection();
-        $this->requestSlots = new ArrayCollection();
     }
 
     public function setProxy(?Proxy $proxy): void
