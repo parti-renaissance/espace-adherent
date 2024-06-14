@@ -136,7 +136,7 @@
         "symfony/thanks": "^1.2",
         "symfony/translation": "^5.4",
         "symfony/twig-bundle": "^5.4",
-        "symfony/ux-twig-component": "~2.16.0",
+        "symfony/ux-twig-component": "~2.18.1",
         "symfony/validator": "^5.4",
         "symfony/workflow": "^5.4",
         "symfony/yaml": "^5.4",
