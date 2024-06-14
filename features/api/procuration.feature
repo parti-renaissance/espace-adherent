@@ -5,7 +5,6 @@ Feature:
   As a client of different apps
   I should be able to access proxies API
 
-    @debug
   Scenario Outline: As a referent I can get a list of proxies corresponding to my zones
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "GET" request to "/api/v3/procuration/proxies?scope=<scope>&page_size=2"
