@@ -7,7 +7,7 @@
     <server name="APP_ENV" value="test" force="true"/>
   </php>
   <testsuites>
-    <testsuite name="En Marche Test Suite">
+    <testsuite name="Renaissance Test Suite">
       <directory>tests</directory>
     </testsuite>
   </testsuites>
