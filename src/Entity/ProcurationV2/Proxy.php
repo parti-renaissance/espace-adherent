@@ -212,7 +212,7 @@ class Proxy extends AbstractProcuration
         /** @var ProxySlot|null $proxySlot */
         $proxySlot = $this->proxySlots->filter(
             static function (ProxySlot $proxySlot) use ($round): bool {
-                return $round === $proxySlot->round;
+                return $round === $proxySlot->round && null === $proxySlot->requestSlot;
             }
         )->first() ?? null;
 
