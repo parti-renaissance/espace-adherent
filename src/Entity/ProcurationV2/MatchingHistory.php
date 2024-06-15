@@ -33,6 +33,10 @@ class MatchingHistory
     #[ORM\ManyToOne(targetEntity: Proxy::class)]
     public Proxy $proxy;
 
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Round::class)]
+    public Round $round;
+
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     public ?Adherent $matcher = null;
@@ -45,22 +49,24 @@ class MatchingHistory
         MatchingHistoryActionEnum $status,
         Request $request,
         Proxy $proxy,
+        Round $round,
         bool $emailCopy
     ) {
         $this->status = $status;
         $this->request = $request;
         $this->proxy = $proxy;
+        $this->round = $round;
         $this->emailCopy = $emailCopy;
         $this->createdAt = new \DateTimeImmutable();
     }
 
-    public static function createMatch(Request $request, Proxy $proxy, bool $emailCopy): self
+    public static function createMatch(Request $request, Proxy $proxy, Round $round, bool $emailCopy): self
     {
-        return new self(MatchingHistoryActionEnum::MATCH, $request, $proxy, $emailCopy);
+        return new self(MatchingHistoryActionEnum::MATCH, $request, $proxy, $round, $emailCopy);
     }
 
-    public static function createUnmatch(Request $request, Proxy $proxy, bool $emailCopy): self
+    public static function createUnmatch(Request $request, Proxy $proxy, Round $round, bool $emailCopy): self
     {
-        return new self(MatchingHistoryActionEnum::UNMATCH, $request, $proxy, $emailCopy);
+        return new self(MatchingHistoryActionEnum::UNMATCH, $request, $proxy, $round, $emailCopy);
     }
 }

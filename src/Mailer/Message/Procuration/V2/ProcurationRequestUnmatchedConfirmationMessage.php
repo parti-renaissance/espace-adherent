@@ -5,12 +5,13 @@ namespace App\Mailer\Message\Procuration\V2;
 use App\Entity\Adherent;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
+use App\Entity\ProcurationV2\Round;
 use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
 final class ProcurationRequestUnmatchedConfirmationMessage extends AbstractProcurationMessage
 {
-    public static function create(Request $request, Proxy $proxy, ?Adherent $matcher = null): Message
+    public static function create(Request $request, Proxy $proxy, Round $round, ?Adherent $matcher = null): Message
     {
         $message = new self(
             Uuid::uuid4(),
@@ -22,6 +23,8 @@ final class ProcurationRequestUnmatchedConfirmationMessage extends AbstractProcu
                 'mandant_last_name' => self::escape($request->lastName),
                 'voter_first_name' => self::escape($proxy->firstNames),
                 'voter_last_name' => self::escape($proxy->lastName),
+                'round_name' => self::escape($round->name),
+                'round_date' => self::formatDate($round->date, 'd/m/Y'),
             ]
         );
 

@@ -7,6 +7,7 @@ use App\Entity\Administrator;
 use App\Entity\ProcurationV2\MatchingHistory;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
+use App\Entity\ProcurationV2\Round;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;
 
@@ -18,9 +19,9 @@ class MatchingHistoryHandler
     ) {
     }
 
-    public function createMatch(Request $request, Proxy $proxy, bool $emailCopy): MatchingHistory
+    public function createMatch(Request $request, Proxy $proxy, Round $round, bool $emailCopy): MatchingHistory
     {
-        $history = MatchingHistory::createMatch($request, $proxy, $emailCopy);
+        $history = MatchingHistory::createMatch($request, $proxy, $round, $emailCopy);
 
         $this->addMatcher($history);
 
@@ -29,9 +30,9 @@ class MatchingHistoryHandler
         return $history;
     }
 
-    public function createUnmatch(Request $request, Proxy $proxy, bool $emailCopy): MatchingHistory
+    public function createUnmatch(Request $request, Proxy $proxy, Round $round, bool $emailCopy): MatchingHistory
     {
-        $history = MatchingHistory::createUnmatch($request, $proxy, $emailCopy);
+        $history = MatchingHistory::createUnmatch($request, $proxy, $round, $emailCopy);
 
         $this->addMatcher($history);
 

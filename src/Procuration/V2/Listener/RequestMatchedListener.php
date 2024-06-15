@@ -2,7 +2,6 @@
 
 namespace App\Procuration\V2\Listener;
 
-use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
 use App\Procuration\V2\Event\ProcurationEvent;
 use App\Procuration\V2\Event\ProcurationEvents;
@@ -12,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class RequestMatchedListener implements EventSubscriberInterface
 {
-    private ?Proxy $proxyBeforeUpdate = null;
+    private array $proxiesBeforeUpdate = [];
 
     public function __construct(
         private readonly ProcurationNotifier $procurationNotifier,
@@ -36,7 +35,12 @@ class RequestMatchedListener implements EventSubscriberInterface
             return;
         }
 
-        $this->proxyBeforeUpdate = $request->proxy;
+        foreach ($request->requestSlots as $requestSlot) {
+            $this->proxiesBeforeUpdate[$requestSlot->getUuid()->toString()] = [
+                'proxy' => $requestSlot->proxySlot?->proxy,
+                'round' => $requestSlot->round,
+            ];
+        }
     }
 
     public function onAfterUpdate(ProcurationEvent $event): void
@@ -47,24 +51,47 @@ class RequestMatchedListener implements EventSubscriberInterface
             return;
         }
 
-        $proxy = $request->proxy;
-
-        if (
-            null !== $this->proxyBeforeUpdate
-            && $proxy !== $this->proxyBeforeUpdate
-        ) {
-            $this->matchingHistoryHandler->createUnmatch($request, $this->proxyBeforeUpdate, false);
-
-            $this->procurationNotifier->sendUnmatchConfirmation($request, $this->proxyBeforeUpdate);
+        $proxiesAfterUpdate = [];
+        foreach ($request->requestSlots as $requestSlot) {
+            $proxiesAfterUpdate[$requestSlot->getUuid()->toString()] = [
+                'proxy' => $requestSlot->proxySlot?->proxy,
+                'round' => $requestSlot->round,
+            ];
         }
 
-        if (
-            null !== $proxy
-            && $proxy !== $this->proxyBeforeUpdate
-        ) {
-            $this->matchingHistoryHandler->createMatch($request, $proxy, false);
+        foreach ($this->proxiesBeforeUpdate as $requestSlotUuid => $proxy) {
+            if (
+                $proxy
+                && (
+                    !\array_key_exists($requestSlotUuid, $proxiesAfterUpdate)
+                    || $proxy !== $proxiesAfterUpdate[$requestSlotUuid]['proxy']
+                )
+            ) {
+                $round = $proxiesAfterUpdate[$requestSlotUuid]['round'];
 
-            $this->procurationNotifier->sendMatchConfirmation($request, $proxy);
+                $this->matchingHistoryHandler->createUnmatch($request, $proxy, $round, false);
+
+                $this->procurationNotifier->sendUnmatchConfirmation($request, $proxy, $round);
+            }
+        }
+
+        foreach ($request->requestSlots as $requestSlot) {
+            $requestSlotUuid = $requestSlot->getUuid()->toString();
+            $proxy = $requestSlot->proxySlot?->proxy;
+
+            if (
+                $proxy
+                && (
+                    !\array_key_exists($requestSlotUuid, $this->proxiesBeforeUpdate)
+                    || $proxy !== $this->proxiesBeforeUpdate[$requestSlotUuid]['proxy']
+                )
+            ) {
+                $round = $this->proxiesBeforeUpdate[$requestSlotUuid]['round'];
+
+                $this->matchingHistoryHandler->createMatch($request, $proxy, $round, false);
+
+                $this->procurationNotifier->sendMatchConfirmation($request, $proxy, $round);
+            }
         }
     }
 }
