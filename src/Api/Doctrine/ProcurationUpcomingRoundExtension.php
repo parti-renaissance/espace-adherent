@@ -6,6 +6,7 @@ use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use App\Entity\ProcurationV2\AbstractProcuration;
+use App\Entity\ProcurationV2\Proxy;
 use Doctrine\ORM\QueryBuilder;
 
 class ProcurationUpcomingRoundExtension implements QueryCollectionExtensionInterface
@@ -24,7 +25,17 @@ class ProcurationUpcomingRoundExtension implements QueryCollectionExtensionInter
         $rootAlias = $queryBuilder->getRootAliases()[0];
 
         $queryBuilder
-            ->innerJoin("$rootAlias.rounds", 'round')
+            ->innerJoin(
+                sprintf(
+                    '%s.%s',
+                    $rootAlias,
+                    is_a($resourceClass, Proxy::class, true)
+                        ? 'proxySlots'
+                        : 'requestSlots'
+                ),
+                'slot'
+            )
+            ->innerJoin('slot.round', 'round')
             ->andWhere('round.date > NOW()')
         ;
     }

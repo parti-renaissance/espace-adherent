@@ -1,6 +1,5 @@
 @api
 @renaissance
-@debug
 Feature:
   In order to get and manipulate proxies
   As a client of different apps
@@ -14,45 +13,45 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 11,
+            "total_items": 3,
             "items_per_page": 2,
             "count": 2,
             "current_page": 1,
-            "last_page": 6
+            "last_page": 2
         },
         "items": [
             {
                 "slots": 1,
                 "status": "pending",
                 "requests": [],
-                "gender": "female",
-                "first_names": "Jane, Janine",
+                "gender": "male",
+                "first_names": "John, Patrick",
                 "last_name": "Durand",
-                "birthdate": "1991-03-14",
+                "birthdate": "1992-03-14",
                 "vote_zone": {
                     "uuid": "@uuid@",
-                    "type": "country",
-                    "code": "CH",
-                    "name": "Suisse",
-                    "created_at": "2020-12-04"
+                    "type": "city",
+                    "code": "92024",
+                    "name": "Clichy",
+                    "created_at": "@string@.isDateTime()"
                 },
                 "uuid": "@uuid@",
                 "created_at": "@string@.isDateTime()",
                 "post_address": {
-                    "address": "12 Pilgerweg",
-                    "postal_code": "8057",
+                    "address": "57 Boulevard de la Madeleine",
+                    "postal_code": "06000",
                     "city": null,
-                    "city_name": "Kilchberg",
-                    "country": "CH",
+                    "city_name": "Nice",
+                    "country": "FR",
                     "additional_address": null
                 },
-                "age": 33,
+                "age": "@number@",
                 "id": "@string@",
                 "tags": [{
                     "label": "Citoyen",
                     "type": "citoyen"
                 }],
-                "vote_place_name": "BDV CH 1",
+                "vote_place_name": "Bureau de vote CLICHY 1",
                 "proxy_slots": [
                     {
                         "uuid": "@uuid@",
@@ -71,9 +70,9 @@ Feature:
                 "slots": 1,
                 "status": "pending",
                 "requests": [],
-                "gender": "female",
-                "first_names": "@string@",
-                "last_name": "@string@",
+                "gender": "male",
+                "first_names": "Jacques, Charles",
+                "last_name": "Durand",
                 "birthdate": "@string@",
                 "vote_zone": {
                     "uuid": "@uuid@",
@@ -85,10 +84,10 @@ Feature:
                 "uuid": "@uuid@",
                 "created_at": "@string@.isDateTime()",
                 "post_address": {
-                    "address": "68 rue du Rocher",
-                    "postal_code": "75008",
+                    "address": "57 Boulevard de la Madeleine",
+                    "postal_code": "06000",
                     "city": null,
-                    "city_name": "Paris",
+                    "city_name": "Nice",
                     "country": "FR",
                     "additional_address": null
                 },
@@ -98,7 +97,7 @@ Feature:
                     "label": "Citoyen",
                     "type": "citoyen"
                 }],
-                "vote_place_name": null,
+                "vote_place_name": "Bureau de vote CLICHY 1",
                 "proxy_slots": [
                     {
                         "uuid": "@uuid@",
@@ -106,7 +105,7 @@ Feature:
                         "round": {
                             "uuid": "@uuid@",
                             "created_at": "@string@.isDateTime()",
-                            "name": "Premier tour",
+                            "name": "Deuxième tour",
                             "date": "@string@.isDateTime()"
                         },
                         "request": null
@@ -116,7 +115,7 @@ Feature:
         ]
     }
     """
-    When I send a "GET" request to "/api/v3/procuration/proxies?scope=<scope>&page_size=2&search=Janine%20Dur"
+    When I send a "GET" request to "/api/v3/procuration/proxies?scope=<scope>&page_size=2&search=Jacques%20Dur"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -133,34 +132,34 @@ Feature:
                 "slots": 1,
                 "status": "pending",
                 "requests": [],
-                "gender": "female",
-                "first_names": "Jane, Janine",
+                "gender": "male",
+                "first_names": "Jacques, Charles",
                 "last_name": "Durand",
-                "birthdate": "1991-03-14",
+                "birthdate": "@string@",
                 "vote_zone": {
                     "uuid": "@uuid@",
-                    "type": "country",
-                    "code": "CH",
-                    "name": "Suisse",
-                    "created_at": "2020-12-04"
+                    "type": "city",
+                    "code": "92024",
+                    "name": "Clichy",
+                    "created_at": "@string@"
                 },
                 "uuid": "@uuid@",
                 "created_at": "@string@.isDateTime()",
                 "post_address": {
-                    "address": "12 Pilgerweg",
-                    "postal_code": "8057",
+                    "address": "57 Boulevard de la Madeleine",
+                    "postal_code": "06000",
                     "city": null,
-                    "city_name": "Kilchberg",
-                    "country": "CH",
+                    "city_name": "Nice",
+                    "country": "FR",
                     "additional_address": null
                 },
-                "age": 33,
+                "age": "@number@",
                 "id": "@string@",
                 "tags": [{
                     "label": "Citoyen",
                     "type": "citoyen"
                 }],
-                "vote_place_name": "BDV CH 1",
+                "vote_place_name": "Bureau de vote CLICHY 1",
                 "proxy_slots": [
                     {
                         "uuid": "@uuid@",
@@ -168,7 +167,7 @@ Feature:
                         "round": {
                             "uuid": "@uuid@",
                             "created_at": "@string@.isDateTime()",
-                            "name": "Premier tour",
+                            "name": "Deuxième tour",
                             "date": "@string@.isDateTime()"
                         },
                         "request": null
@@ -191,46 +190,46 @@ Feature:
         """
         {
             "metadata": {
-                "total_items": 11,
+                "total_items": 3,
                 "items_per_page": 1,
                 "count": 1,
                 "current_page": 1,
-                "last_page": 11
+                "last_page": 3
             },
             "items": [
                 {
                     "status": "pending",
                     "proxy": null,
                     "gender": "male",
-                    "first_names": "Pascal, Roger",
-                    "last_name": "Dae",
+                    "first_names": "Jack, Didier",
+                    "last_name": "Doe",
                     "birthdate": "@string@.isDateTime()",
                     "vote_zone": {
                         "uuid": "@uuid@",
-                        "type": "country",
-                        "code": "CH",
-                        "name": "Suisse",
+                        "type": "city",
+                        "code": "92024",
+                        "name": "Clichy",
                         "created_at": "@string@.isDateTime()"
                     },
                     "uuid": "@uuid@",
                     "created_at": "@string@.isDateTime()",
                     "post_address": {
-                        "address": "13 Pilgerweg",
-                        "postal_code": "8057",
+                        "address": "58 Boulevard de la Madeleine",
+                        "postal_code": "06000",
                         "city": null,
-                        "city_name": "Kilchberg",
-                        "country": "CH",
+                        "city_name": "Nice",
+                        "country": "FR",
                         "additional_address": null
                     },
-                    "age": 34,
+                    "age": "@number@",
                     "id": "@string@",
                     "tags": [{
                         "label": "Citoyen",
                         "type": "citoyen"
                     }],
-                    "vote_place_name": "BDV CH 1",
-                    "from_france": false,
-                    "available_proxies_count": 1,
+                    "vote_place_name": "Bureau de vote CLICHY 1",
+                    "from_france": true,
+                    "available_proxies_count": 3,
                     "matched_at": null,
                     "matcher": null,
                     "request_slots": [
