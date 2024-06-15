@@ -17,6 +17,6 @@ final class ProcurationProxyConfirmationMessage extends AbstractProcurationMessa
             '[Procuration] Demande prise en compte'
         );
 
-        return self::updateNoReplySenderInfo($message);
+        return self::updateSenderInfo($message);
     }
 }
