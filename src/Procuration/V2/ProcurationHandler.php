@@ -78,9 +78,9 @@ class ProcurationHandler
         $this->updateRequestStatus($request);
         $this->updateProxyStatus($proxy);
 
-        $history = $this->matchingHistoryHandler->createMatch($request, $proxy, $emailCopy);
+        $history = $this->matchingHistoryHandler->createMatch($request, $proxy, $round, $emailCopy);
 
-        $this->notifier->sendMatchConfirmation($request, $proxy, $emailCopy ? $history->matcher : null);
+        $this->notifier->sendMatchConfirmation($request, $proxy, $round, $emailCopy ? $history->matcher : null);
     }
 
     public function unmatch(Request $request, Round $round, bool $emailCopy): void
@@ -96,8 +96,8 @@ class ProcurationHandler
         $this->updateRequestStatus($request);
         $this->updateProxyStatus($proxy);
 
-        $history = $this->matchingHistoryHandler->createUnmatch($request, $proxy, $emailCopy);
+        $history = $this->matchingHistoryHandler->createUnmatch($request, $proxy, $round, $emailCopy);
 
-        $this->notifier->sendUnmatchConfirmation($request, $proxy, $emailCopy ? $history->matcher : null);
+        $this->notifier->sendUnmatchConfirmation($request, $proxy, $round, $emailCopy ? $history->matcher : null);
     }
 }
