@@ -1,5 +1,6 @@
 @api
 @renaissance
+@debug
 Feature:
   In order to get and manipulate proxies
   As a client of different apps

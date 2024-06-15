@@ -24,6 +24,11 @@ class LoadGeoZoneData extends Fixture implements DependentFixtureInterface
         $manager->persist($votePlace);
         $this->setReference('zone_vote_place_nice_1', $votePlace);
 
+        $votePlace = new Zone(Zone::VOTE_PLACE, 'BDV-TEST-2', 'Bureau de vote CLICHY 1');
+        $votePlace->addParent($this->getZone($manager, 'zone_city_92024'));
+        $manager->persist($votePlace);
+        $this->setReference('zone_vote_place_clichy_1', $votePlace);
+
         $manager->flush();
     }
 
