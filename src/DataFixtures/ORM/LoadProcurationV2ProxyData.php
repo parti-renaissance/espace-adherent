@@ -97,8 +97,8 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             'Nice',
             '57 Boulevard de la Madeleine',
             false,
-            LoadGeoZoneData::getZone($manager, 'zone_city_06088'),
-            $this->getReference('zone_vote_place_nice_1')
+            LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
+            $this->getReference('zone_vote_place_clichy_1')
         ));
 
         $manager->persist($this->createProxy(
@@ -114,8 +114,8 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             'Nice',
             '57 Boulevard de la Madeleine',
             false,
-            LoadGeoZoneData::getZone($manager, 'zone_city_06088'),
-            $this->getReference('zone_vote_place_nice_1')
+            LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
+            $this->getReference('zone_vote_place_clichy_1')
         ));
 
         $manager->persist($this->createProxy(
@@ -134,8 +134,8 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             'Nice',
             '57 Boulevard de la Madeleine',
             false,
-            LoadGeoZoneData::getZone($manager, 'zone_city_06088'),
-            $this->getReference('zone_vote_place_nice_1')
+            LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
+            $this->getReference('zone_vote_place_clichy_1')
         ));
         $manager->flush();
     }
