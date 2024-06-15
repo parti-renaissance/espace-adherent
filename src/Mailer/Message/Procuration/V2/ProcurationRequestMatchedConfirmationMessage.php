@@ -36,8 +36,9 @@ final class ProcurationRequestMatchedConfirmationMessage extends AbstractProcura
                 'voter_birthdate' => self::escape($proxy->birthdate->format('d/m/Y')),
                 'voter_phone' => PhoneNumberUtils::format($proxy->phone),
                 'voter_email' => self::escape($proxy->email),
+                'election_name' => self::escape($round->election->name),
                 'round_name' => self::escape($round->name),
-                'round_date' => self::formatDate($round->date, 'd/m/Y'),
+                'round_date' => self::formatDate($round->date, 'd MMMM y'),
             ]
         );
 

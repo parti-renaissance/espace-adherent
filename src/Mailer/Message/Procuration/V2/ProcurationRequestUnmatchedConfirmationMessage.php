@@ -23,8 +23,9 @@ final class ProcurationRequestUnmatchedConfirmationMessage extends AbstractProcu
                 'mandant_last_name' => self::escape($request->lastName),
                 'voter_first_name' => self::escape($proxy->firstNames),
                 'voter_last_name' => self::escape($proxy->lastName),
+                'election_name' => self::escape($round->election->name),
                 'round_name' => self::escape($round->name),
-                'round_date' => self::formatDate($round->date, 'd/m/Y'),
+                'round_date' => self::formatDate($round->date, 'd MMMM y'),
             ]
         );
 
