@@ -6,7 +6,6 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use App\Api\Filter\InZoneOfScopeFilter;
 use App\Api\Filter\OrTextSearchFilter;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
@@ -89,7 +88,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  *
- * @ApiFilter(InZoneOfScopeFilter::class)
  * @ApiFilter(OrderFilter::class, properties={"createdAt"})
  * @ApiFilter(SearchFilter::class, properties={"status": "exact"})
  * @ApiFilter(OrTextSearchFilter::class, properties={"firstNames": "lastName", "lastName": "firstNames", "email": "email", "voteZone.name": "voteZone.name"})
