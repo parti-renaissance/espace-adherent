@@ -5,6 +5,7 @@ namespace App\Mailer\Message\Procuration\V2;
 use App\Entity\Adherent;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
+use App\Entity\ProcurationV2\Round;
 use App\Mailer\Message\Message;
 use App\Utils\PhoneNumberUtils;
 use App\ValueObject\Genders;
@@ -12,7 +13,7 @@ use Ramsey\Uuid\Uuid;
 
 final class ProcurationRequestMatchedConfirmationMessage extends AbstractProcurationMessage
 {
-    public static function create(Request $request, Proxy $proxy, ?Adherent $matcher = null): Message
+    public static function create(Request $request, Proxy $proxy, Round $round, ?Adherent $matcher = null): Message
     {
         $message = new self(
             Uuid::uuid4(),
@@ -35,6 +36,8 @@ final class ProcurationRequestMatchedConfirmationMessage extends AbstractProcura
                 'voter_birthdate' => self::escape($proxy->birthdate->format('d/m/Y')),
                 'voter_phone' => PhoneNumberUtils::format($proxy->phone),
                 'voter_email' => self::escape($proxy->email),
+                'round_name' => self::escape($round->name),
+                'round_date' => self::formatDate($round->date, 'd/m/Y'),
             ]
         );
 

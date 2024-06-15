@@ -49,9 +49,9 @@ class ProcurationHandler
 
     public function updateRequestStatus(Request $request): void
     {
-        if ($request->isPending() && $request->proxy instanceof Proxy) {
+        if ($request->isPending() && !$request->hasFreeSlot()) {
             $request->markAsCompleted();
-        } elseif ($request->isCompleted() && !$request->proxy instanceof Proxy) {
+        } elseif ($request->isCompleted() && $request->hasFreeSlot()) {
             $request->markAsPending();
         }
 

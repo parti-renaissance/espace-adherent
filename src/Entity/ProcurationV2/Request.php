@@ -117,6 +117,9 @@ class Request extends AbstractProcuration
     #[ORM\ManyToOne(targetEntity: Proxy::class, inversedBy: 'requests')]
     public ?Proxy $proxy = null;
 
+    /**
+     * @var Collection|RequestSlot[]
+     */
     #[Groups(['procuration_request_read', 'procuration_request_list'])]
     #[ORM\OneToMany(mappedBy: 'request', targetEntity: RequestSlot::class, cascade: ['all'])]
     public Collection $requestSlots;
@@ -201,6 +204,17 @@ class Request extends AbstractProcuration
     public function markAsCompleted(): void
     {
         $this->status = RequestStatusEnum::COMPLETED;
+    }
+
+    public function hasFreeSlot(): bool
+    {
+        foreach ($this->requestSlots as $requestSlot) {
+            if (!$requestSlot->proxySlot) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list_request', 'procuration_matched_proxy'])]

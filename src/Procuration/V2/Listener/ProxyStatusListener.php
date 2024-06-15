@@ -12,12 +12,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ProxyStatusListener implements EventSubscriberInterface
 {
-    private Collection $requests;
+    private Collection $matchedRequests;
 
     public function __construct(
         private readonly ProcurationHandler $procurationHandler
     ) {
-        $this->requests = new ArrayCollection();
+        $this->matchedRequests = new ArrayCollection();
     }
 
     public static function getSubscribedEvents(): array
@@ -36,7 +36,13 @@ class ProxyStatusListener implements EventSubscriberInterface
             return;
         }
 
-        $this->requests = clone $proxy->requests;
+        foreach ($proxy->proxySlots as $proxySlot) {
+            $request = $proxySlot->requestSlot?->request;
+
+            if ($request && !$this->matchedRequests->contains($request)) {
+                $this->matchedRequests->add($request);
+            }
+        }
     }
 
     public function onAfterUpdate(ProcurationEvent $event): void
@@ -47,15 +53,17 @@ class ProxyStatusListener implements EventSubscriberInterface
             return;
         }
 
-        foreach ($proxy->requests as $request) {
-            if (!$this->requests->contains($request)) {
-                $this->requests->add($request);
+        foreach ($proxy->proxySlots as $proxySlot) {
+            $request = $proxySlot->requestSlot?->request;
+
+            if ($request && !$this->matchedRequests->contains($request)) {
+                $this->matchedRequests->add($request);
             }
         }
 
         $this->procurationHandler->updateProxyStatus($proxy);
 
-        foreach ($this->requests as $request) {
+        foreach ($this->matchedRequests as $request) {
             $this->procurationHandler->updateRequestStatus($request);
         }
     }

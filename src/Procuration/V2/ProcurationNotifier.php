@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\ProcurationV2\ProcurationRequest;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
+use App\Entity\ProcurationV2\Round;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Procuration\V2\ProcurationInitialProxyReminderMessage;
 use App\Mailer\Message\Procuration\V2\ProcurationInitialRequestReminderMessage;
@@ -30,14 +31,14 @@ class ProcurationNotifier
         $this->transactionalMailer->sendMessage(ProcurationProxyConfirmationMessage::create($proxy));
     }
 
-    public function sendMatchConfirmation(Request $request, Proxy $proxy, ?Adherent $matcher = null): void
+    public function sendMatchConfirmation(Request $request, Proxy $proxy, Round $round, ?Adherent $matcher = null): void
     {
-        $this->transactionalMailer->sendMessage(ProcurationRequestMatchedConfirmationMessage::create($request, $proxy, $matcher));
+        $this->transactionalMailer->sendMessage(ProcurationRequestMatchedConfirmationMessage::create($request, $proxy, $round, $matcher));
     }
 
-    public function sendUnmatchConfirmation(Request $request, Proxy $proxy, ?Adherent $matcher = null): void
+    public function sendUnmatchConfirmation(Request $request, Proxy $proxy, Round $round, ?Adherent $matcher = null): void
     {
-        $this->transactionalMailer->sendMessage(ProcurationRequestUnmatchedConfirmationMessage::create($request, $proxy, $matcher));
+        $this->transactionalMailer->sendMessage(ProcurationRequestUnmatchedConfirmationMessage::create($request, $proxy, $round, $matcher));
     }
 
     public function sendInitialRequestReminder(ProcurationRequest $procurationRequest): void

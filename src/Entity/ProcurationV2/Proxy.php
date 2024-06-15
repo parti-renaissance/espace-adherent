@@ -98,6 +98,9 @@ class Proxy extends AbstractProcuration
     #[ORM\OneToMany(mappedBy: 'proxy', targetEntity: Request::class, cascade: ['all'])]
     public Collection $requests;
 
+    /**
+     * @var Collection|ProxySlot[]
+     */
     #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]
     #[ORM\OneToMany(mappedBy: 'proxy', targetEntity: ProxySlot::class, cascade: ['all'])]
     public Collection $proxySlots;
@@ -196,7 +199,13 @@ class Proxy extends AbstractProcuration
 
     public function hasFreeSlot(): bool
     {
-        return $this->requests->count() < $this->slots;
+        foreach ($this->proxySlots as $proxySlot) {
+            if (!$proxySlot->requestSlot) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function refreshZoneIds(): void
