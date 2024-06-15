@@ -2,11 +2,12 @@
 
 namespace App\Entity\ProcurationV2;
 
+use App\Repository\Procuration\RequestSlotRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Table(name: 'procuration_v2_request_slot')]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: RequestSlotRepository::class)]
 class RequestSlot extends AbstractSlot
 {
     #[ORM\ManyToOne(inversedBy: 'requestSlots', targetEntity: Request::class)]
