@@ -64,6 +64,7 @@ class TagEnum extends Enum
             self::SYMPATHISANT_COMPTE_AVECVOUS_JEMENGAGE,
             self::SYMPATHISANT_AUTRE_PARTI,
             self::SYMPATHISANT_BESOIN_D_EUROPE,
+            self::SYMPATHISANT_LEGISLATIVE24,
         ]);
     }
 
