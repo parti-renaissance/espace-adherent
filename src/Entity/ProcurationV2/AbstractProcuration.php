@@ -87,7 +87,7 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
     /**
      * @AssertPhoneNumber(message="common.phone_number.invalid")
      */
-    #[Groups(['procuration_request_read', 'procuration_matched_proxy'])]
+    #[Groups(['procuration_request_read', 'procuration_matched_proxy', 'procuration_proxy_list'])]
     #[ORM\Column(type: 'phone_number', nullable: true)]
     public ?PhoneNumber $phone;
 
