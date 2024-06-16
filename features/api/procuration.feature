@@ -71,7 +71,7 @@ Feature:
                 "status": "pending",
                 "requests": [],
                 "gender": "male",
-                "first_names": "Jacques, Charles",
+                "first_names": "Pierre",
                 "last_name": "Durand",
                 "birthdate": "@string@",
                 "vote_zone": {
@@ -99,6 +99,17 @@ Feature:
                 }],
                 "vote_place_name": "Bureau de vote CLICHY 1",
                 "proxy_slots": [
+                    {
+                        "uuid": "@uuid@",
+                        "created_at": "@string@.isDateTime()",
+                        "round": {
+                            "uuid": "@uuid@",
+                            "created_at": "@string@.isDateTime()",
+                            "name": "Premier tour",
+                            "date": "@string@.isDateTime()"
+                        },
+                        "request": null
+                    },
                     {
                         "uuid": "@uuid@",
                         "created_at": "@string@.isDateTime()",
