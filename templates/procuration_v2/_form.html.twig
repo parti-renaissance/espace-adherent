@@ -163,11 +163,9 @@
                 </p>
 
                 <fieldset class="flex flex-col gap-8 relative">
-                    <div class="hidden">
-                        {{ form_row(form.distantVotePlace, {
-                            label: 'Je vote dans une autre ville ou un autre pays ?',
-                        }) }}
-                    </div>
+                    {{ form_row(form.distantVotePlace, {
+                        label: 'Je vote dans une autre ville ou un autre pays ?',
+                    }) }}
 
                     <fieldset>
                         {{ form_row(form.voteZone) }}
