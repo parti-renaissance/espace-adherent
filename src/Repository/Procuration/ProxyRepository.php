@@ -3,6 +3,7 @@
 namespace App\Repository\Procuration;
 
 use ApiPlatform\State\Pagination\PaginatorInterface;
+use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
@@ -97,5 +98,21 @@ class ProxyRepository extends ServiceEntityRepository
         ;
 
         return $this->configurePaginator($queryBuilder, $page);
+    }
+
+    public function hasUpcomingProxy(Adherent $adherent): bool
+    {
+        $result = $this->createQueryBuilder('proxy')
+            ->select('COUNT(DISTINCT proxy)')
+            ->andWhere('proxy.adherent = :adherent')
+            ->innerJoin('proxy.proxySlots', 'proxy_slot')
+            ->innerJoin('proxy_slot.round', 'round')
+            ->andWhere('round.date > NOW()')
+            ->setParameter('adherent', $adherent)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        return $result > 0;
     }
 }
