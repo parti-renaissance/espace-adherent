@@ -71,7 +71,6 @@ class ProcurationHandler
 
     public function match(Request $request, Proxy $proxy, Round $round, bool $emailCopy): void
     {
-        $proxy->addRequest($request);
         $proxy->matchSlot($round, $request);
         $this->entityManager->flush();
 
@@ -85,11 +84,19 @@ class ProcurationHandler
 
     public function unmatch(Request $request, Round $round, bool $emailCopy): void
     {
-        if (!$proxy = $request->proxy) {
+        $proxy = null;
+        foreach ($request->requestSlots as $requestSlot) {
+            if ($round === $requestSlot->round) {
+                $proxy = $requestSlot->proxySlot?->proxy;
+
+                break;
+            }
+        }
+
+        if (!$proxy) {
             return;
         }
 
-        $proxy->removeRequest($request);
         $proxy->unmatchSlot($round, $request);
         $this->entityManager->flush();
 
