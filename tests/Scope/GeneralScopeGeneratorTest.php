@@ -149,6 +149,7 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                     'contacts_export',
                     'messages',
                     'events',
+                    'my_team',
                     'mobile_app',
                     'news',
                     'elections',
