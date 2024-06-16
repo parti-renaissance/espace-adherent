@@ -81,17 +81,12 @@ Feature:
     {
         "type": "https://tools.ietf.org/html/rfc2616#section-10",
         "title": "An error occurred",
-        "detail": "role: Ce poste n'est pas valide.\nscope_features: Une ou plusieurs des accès délégués ne sont pas valides.",
+        "detail": "role: Ce poste n'est pas valide.",
         "violations": [
             {
                 "code": "@uuid@",
                 "propertyPath": "role",
                 "message": "Ce poste n'est pas valide."
-            },
-            {
-                "code": "@uuid@",
-                "propertyPath": "scope_features",
-                "message": "Une ou plusieurs des accès délégués ne sont pas valides."
             }
         ]
     }
@@ -359,6 +354,7 @@ Feature:
                             "contacts_export",
                             "messages",
                             "events",
+                            "my_team",
                             "mobile_app",
                             "news",
                             "elections",

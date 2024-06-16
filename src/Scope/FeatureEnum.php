@@ -64,13 +64,4 @@ class FeatureEnum extends Enum
         self::DASHBOARD,
         self::MOBILE_APP,
     ];
-
-    public const FORBIDDEN_FOR_DELEGATED_ACCESSES = [
-        self::MY_TEAM,
-    ];
-
-    public static function getAvailableForDelegatedAccess(): array
-    {
-        return array_diff(self::ALL, self::FORBIDDEN_FOR_DELEGATED_ACCESSES);
-    }
 }

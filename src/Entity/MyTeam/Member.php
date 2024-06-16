@@ -86,7 +86,7 @@ class Member
 
     /**
      * @Assert\Choice(
-     *     callback={"App\Scope\FeatureEnum", "getAvailableForDelegatedAccess"},
+     *     choices=App\Scope\FeatureEnum::ALL,
      *     multiple=true,
      *     multipleMessage="my_team.member.scope_features.invalid_choice"
      * )
