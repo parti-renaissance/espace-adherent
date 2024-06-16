@@ -27,6 +27,8 @@ Feature:
                 "gender": "male",
                 "first_names": "John, Patrick",
                 "last_name": "Durand",
+                "email": "john.durand@test.dev",
+                "phone": "+33 6 11 22 33 44",
                 "birthdate": "1992-03-14",
                 "vote_zone": {
                     "uuid": "@uuid@",
@@ -73,6 +75,8 @@ Feature:
                 "gender": "male",
                 "first_names": "Pierre",
                 "last_name": "Durand",
+                "email": "pierre.durand@test.dev",
+                "phone": "+33 6 11 22 33 44",
                 "birthdate": "@string@",
                 "vote_zone": {
                     "uuid": "@uuid@",
@@ -146,6 +150,8 @@ Feature:
                 "gender": "male",
                 "first_names": "Jacques, Charles",
                 "last_name": "Durand",
+                "email": "jacques.durand@test.dev",
+                "phone": "+33 6 11 22 33 44",
                 "birthdate": "@string@",
                 "vote_zone": {
                     "uuid": "@uuid@",
