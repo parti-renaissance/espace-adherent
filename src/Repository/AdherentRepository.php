@@ -1334,18 +1334,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 ->andWhere('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName), \' \', LOWER(a.emailAddress)) LIKE :name')
                 ->setParameter('name', '%'.trim($filter->q).'%')
             ;
-
-            if (!empty($filter->managedZones)) {
-                $this->withGeoZones(
-                    $filter->managedZones,
-                    $qb,
-                    'a',
-                    Adherent::class,
-                    'a2',
-                    'zones',
-                    'z2'
-                );
-            }
         }
 
         if ($filter->committee || $filter->managedCommitteeUuids) {

@@ -82,7 +82,7 @@ Feature:
     ]
     """
 
-  Scenario Outline: As a (delegated) referent I can search an adherent with autocomplete search in my managed zone
+  Scenario Outline: As a (delegated) referent I can search an adherent with autocomplete search
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/adherents/autocomplete?q=bert&scope=<scope>"
     Then the response status code should be 200
@@ -103,7 +103,16 @@ Feature:
     Then the response status code should be 200
     And the JSON should be equal to:
     """
-    []
+    [
+        {
+            "first_name": "Jacques",
+            "last_name": "Picard",
+            "postal_code": "75008",
+            "registered_at": "@string@.isDateTime()",
+            "uuid": "@uuid@",
+            "email_address": "jacques.picard@en-marche.fr"
+        }
+    ]
     """
     Examples:
       | user                      | scope                                          |
