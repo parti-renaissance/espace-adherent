@@ -184,24 +184,24 @@ Feature:
 
     Scenario Outline: As a referent I can get a list of requests corresponding to my zones
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        When I send a "GET" request to "/api/v3/procuration/requests?scope=<scope>&page_size=1"
+        When I send a "GET" request to "/api/v3/procuration/requests?scope=<scope>&page_size=1&search=chris"
         Then the response status code should be 200
         And the JSON should be equal to:
         """
         {
             "metadata": {
-                "total_items": 3,
+                "total_items": 1,
                 "items_per_page": 1,
                 "count": 1,
                 "current_page": 1,
-                "last_page": 3
+                "last_page": 1
             },
             "items": [
                 {
                     "status": "pending",
                     "proxy": null,
                     "gender": "male",
-                    "first_names": "Jack, Didier",
+                    "first_names": "Chris",
                     "last_name": "Doe",
                     "birthdate": "@string@.isDateTime()",
                     "vote_zone": {
@@ -240,6 +240,17 @@ Feature:
                                 "uuid": "@uuid@",
                                 "created_at": "@string@.isDateTime()",
                                 "name": "Premier tour",
+                                "date": "@string@.isDateTime()"
+                            },
+                            "proxy": null
+                        },
+                        {
+                            "uuid": "@uuid@",
+                            "created_at": "@string@.isDateTime()",
+                            "round": {
+                                "uuid": "@uuid@",
+                                "created_at": "@string@.isDateTime()",
+                                "name": "Deuxième tour",
                                 "date": "@string@.isDateTime()"
                             },
                             "proxy": null

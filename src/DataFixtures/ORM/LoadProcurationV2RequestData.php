@@ -121,8 +121,8 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
 
         $manager->persist($this->createRequest(
             [
-                $this->getReference('procuration-v2-legislatives-2024-round-1'),
                 $this->getReference('procuration-v2-legislatives-2024-round-2'),
+                $this->getReference('procuration-v2-legislatives-2024-round-1'),
             ],
             'chris.doe@test.dev',
             Genders::MALE,
