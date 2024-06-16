@@ -2,7 +2,6 @@
 
 namespace App\Event;
 
-use App\Entity\Event\CommitteeEvent;
 use App\Events;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -37,13 +36,5 @@ class EventRegistrationCommandHandler
             $event->getSlug(),
             $sendMail
         ), Events::EVENT_REGISTRATION_CREATED);
-
-        if ($event instanceof CommitteeEvent) {
-            $this->dispatcher->dispatch(new CommitteeEventEvent(
-                null,
-                $event,
-                $event->getCommittee()
-            ), Events::EVENT_UPDATED);
-        }
     }
 }
