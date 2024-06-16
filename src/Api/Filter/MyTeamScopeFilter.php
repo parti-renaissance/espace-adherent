@@ -26,8 +26,8 @@ final class MyTeamScopeFilter extends AbstractScopeFilter
         $queryBuilder
             ->andWhere("$alias.owner = :user AND $alias.scope = :scope")
             ->setParameters([
-                'user' => $currentUser,
-                'scope' => $scope->getCode(),
+                'user' => $scope->getDelegator() ?? $currentUser,
+                'scope' => $scope->getMainCode(),
             ])
         ;
     }
