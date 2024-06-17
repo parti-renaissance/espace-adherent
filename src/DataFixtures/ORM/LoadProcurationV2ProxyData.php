@@ -102,23 +102,6 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         ));
 
         $manager->persist($this->createProxy(
-            [$this->getReference('procuration-v2-legislatives-2024-round-2')],
-            'jacques.durand@test.dev',
-            Genders::MALE,
-            'Jacques, Charles',
-            'Durand',
-            '1992-03-14',
-            '+33611223344',
-            'FR',
-            '06000',
-            'Nice',
-            '57 Boulevard de la Madeleine',
-            false,
-            LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
-            $this->getReference('zone_vote_place_clichy_1')
-        ));
-
-        $manager->persist($this->createProxy(
             [
                 $this->getReference('procuration-v2-legislatives-2024-round-1'),
                 $this->getReference('procuration-v2-legislatives-2024-round-2'),
@@ -137,6 +120,24 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
             $this->getReference('zone_vote_place_clichy_1')
         ));
+
+        $manager->persist($this->createProxy(
+            [$this->getReference('procuration-v2-legislatives-2024-round-2')],
+            'jacques.durand@test.dev',
+            Genders::MALE,
+            'Jacques, Charles',
+            'Durand',
+            '1992-03-14',
+            '+33611223344',
+            'FR',
+            '06000',
+            'Nice',
+            '57 Boulevard de la Madeleine',
+            false,
+            LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
+            $this->getReference('zone_vote_place_clichy_1')
+        ));
+
         $manager->flush();
     }
 
