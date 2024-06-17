@@ -36,10 +36,7 @@ class ProcurationUpcomingRoundExtension implements QueryCollectionExtensionInter
                 'slot'
             )
             ->innerJoin('slot.round', 'round')
-            ->addSelect('round.date AS HIDDEN round_date')
             ->andWhere('round.date > NOW()')
-            ->orderBy("$rootAlias.createdAt", 'ASC')
-            ->addOrderBy('round_date', 'ASC')
         ;
     }
 }

@@ -7,8 +7,6 @@ use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\AbstractProcuration;
-use App\Repository\Procuration\ProxyRepository;
-use App\Repository\Procuration\RequestRepository;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -41,9 +39,6 @@ class ProcurationExtension implements QueryCollectionExtensionInterface
         $scope = $scopeGenerator->generate($this->security->getUser());
 
         $zones = $scope->getZones();
-
-        /** @var ProxyRepository|RequestRepository $repository */
-        $repository = $this->entityManager->getRepository($resourceClass);
 
         $zoneQueryBuilder = $this->entityManager
             ->createQueryBuilder()

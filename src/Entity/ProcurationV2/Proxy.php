@@ -20,6 +20,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -99,7 +100,6 @@ class Proxy extends AbstractProcuration
     /**
      * @var Collection|ProxySlot[]
      */
-    #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]
     #[ORM\OneToMany(mappedBy: 'proxy', targetEntity: ProxySlot::class, cascade: ['all'])]
     public Collection $proxySlots;
 
@@ -259,5 +259,16 @@ class Proxy extends AbstractProcuration
         if ($requestSlot) {
             $requestSlot->proxySlot = null;
         }
+    }
+
+    #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]
+    #[SerializedName('proxy_slots')]
+    public function getOrderedProxySlots(): array
+    {
+        $slots = $this->proxySlots->toArray();
+
+        uasort($slots, fn (ProxySlot $a, ProxySlot $b) => $a->round->date <=> $b->round->date);
+
+        return array_values($slots);
     }
 }
