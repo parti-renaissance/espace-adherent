@@ -36,7 +36,7 @@ class RequestMatchedListener implements EventSubscriberInterface
         }
 
         foreach ($request->requestSlots as $requestSlot) {
-            $this->proxiesBeforeUpdate[$requestSlot->getUuid()->toString()] = [
+            $this->proxiesBeforeUpdate[$requestSlot->round->getUuid()->toString()] = [
                 'proxy' => $requestSlot->proxySlot?->proxy,
                 'round' => $requestSlot->round,
             ];
@@ -53,40 +53,40 @@ class RequestMatchedListener implements EventSubscriberInterface
 
         $proxiesAfterUpdate = [];
         foreach ($request->requestSlots as $requestSlot) {
-            $proxiesAfterUpdate[$requestSlot->getUuid()->toString()] = [
+            $proxiesAfterUpdate[$requestSlot->round->getUuid()->toString()] = [
                 'proxy' => $requestSlot->proxySlot?->proxy,
                 'round' => $requestSlot->round,
             ];
         }
 
-        foreach ($this->proxiesBeforeUpdate as $requestSlotUuid => $proxy) {
+        foreach ($this->proxiesBeforeUpdate as $roundUuid => $row) {
             if (
-                $proxy
+                $row['proxy']
                 && (
-                    !\array_key_exists($requestSlotUuid, $proxiesAfterUpdate)
-                    || $proxy !== $proxiesAfterUpdate[$requestSlotUuid]['proxy']
+                    !\array_key_exists($roundUuid, $proxiesAfterUpdate)
+                    || $row['proxy'] !== $proxiesAfterUpdate[$roundUuid]['proxy']
                 )
             ) {
-                $round = $proxiesAfterUpdate[$requestSlotUuid]['round'];
+                $round = $proxiesAfterUpdate[$roundUuid]['round'];
 
-                $this->matchingHistoryHandler->createUnmatch($request, $proxy, $round, false);
+                $this->matchingHistoryHandler->createUnmatch($request, $row['proxy'], $round, false);
 
-                $this->procurationNotifier->sendUnmatchConfirmation($request, $proxy, $round);
+                $this->procurationNotifier->sendUnmatchConfirmation($request, $row['proxy'], $round);
             }
         }
 
         foreach ($request->requestSlots as $requestSlot) {
-            $requestSlotUuid = $requestSlot->getUuid()->toString();
+            $roundUuid = $requestSlot->round->getUuid()->toString();
             $proxy = $requestSlot->proxySlot?->proxy;
 
             if (
                 $proxy
                 && (
-                    !\array_key_exists($requestSlotUuid, $this->proxiesBeforeUpdate)
-                    || $proxy !== $this->proxiesBeforeUpdate[$requestSlotUuid]['proxy']
+                    !\array_key_exists($roundUuid, $this->proxiesBeforeUpdate)
+                    || $proxy !== $this->proxiesBeforeUpdate[$roundUuid]['proxy']
                 )
             ) {
-                $round = $this->proxiesBeforeUpdate[$requestSlotUuid]['round'];
+                $round = $this->proxiesBeforeUpdate[$roundUuid]['round'];
 
                 $this->matchingHistoryHandler->createMatch($request, $proxy, $round, false);
 
