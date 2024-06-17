@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -118,7 +119,6 @@ class Request extends AbstractProcuration
     /**
      * @var Collection|RequestSlot[]
      */
-    #[Groups(['procuration_request_read', 'procuration_request_list'])]
     #[ORM\OneToMany(mappedBy: 'request', targetEntity: RequestSlot::class, cascade: ['all'])]
     public Collection $requestSlots;
 
@@ -235,5 +235,16 @@ class Request extends AbstractProcuration
         }
 
         return null;
+    }
+
+    #[Groups(['procuration_request_read', 'procuration_request_list'])]
+    #[SerializedName('request_slots')]
+    public function getOrderedRequestSlots(): array
+    {
+        $slots = $this->requestSlots->toArray();
+
+        uasort($slots, fn (RequestSlot $a, RequestSlot $b) => $a->round->date <=> $b->round->date);
+
+        return array_values($slots);
     }
 }

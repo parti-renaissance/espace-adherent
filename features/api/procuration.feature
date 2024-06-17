@@ -73,9 +73,9 @@ Feature:
                 "status": "pending",
                 "requests": [],
                 "gender": "male",
-                "first_names": "Pierre",
+                "first_names": "Jacques, Charles",
                 "last_name": "Durand",
-                "email": "pierre.durand@test.dev",
+                "email": "jacques.durand@test.dev",
                 "phone": "+33 6 11 22 33 44",
                 "birthdate": "@string@",
                 "vote_zone": {
@@ -103,17 +103,6 @@ Feature:
                 }],
                 "vote_place_name": "Bureau de vote CLICHY 1",
                 "proxy_slots": [
-                    {
-                        "uuid": "@uuid@",
-                        "created_at": "@string@.isDateTime()",
-                        "round": {
-                            "uuid": "@uuid@",
-                            "created_at": "@string@.isDateTime()",
-                            "name": "Premier tour",
-                            "date": "@string@.isDateTime()"
-                        },
-                        "request": null
-                    },
                     {
                         "uuid": "@uuid@",
                         "created_at": "@string@.isDateTime()",

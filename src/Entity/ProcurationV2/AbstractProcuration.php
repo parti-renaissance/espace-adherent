@@ -11,7 +11,6 @@ use App\Entity\EntityPostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
-use App\Entity\ZoneableEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,7 +22,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\MappedSuperclass]
-abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInterface
+abstract class AbstractProcuration implements TranslatedTagInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
