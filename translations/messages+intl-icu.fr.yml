@@ -514,6 +514,7 @@ procuration.slots.choice_2: Je souhaite porter deux procurations
 procuration.slots.choice_3: Je souhaite porter trois procurations
 
 procuration.request.status.pending: En attente
+procuration.request.status.duplicate: Doublon
 procuration.request.status.completed: Complété
 procuration.request.status.manual: Traité manuellement
 procuration.request.status.excluded: Exclu
