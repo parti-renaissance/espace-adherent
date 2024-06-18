@@ -225,4 +225,8 @@ abstract class AbstractProcuration implements ZoneableEntity, TranslatedTagInter
     {
         return $this->voteZone->isCountry() && AddressInterface::FRANCE !== $this->voteZone->getCode();
     }
+
+    abstract public function hasFreeSlot(): bool;
+
+    abstract public function hasMatchedSlot(): bool;
 }

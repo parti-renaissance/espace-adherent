@@ -4,8 +4,6 @@ namespace App\Procuration\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\ProcurationV2\AbstractProcuration;
-use App\Entity\ProcurationV2\Proxy;
-use App\Entity\ProcurationV2\Request;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,14 +28,13 @@ class CheckUpdatedStatusListener implements EventSubscriberInterface
             return;
         }
 
-        if (!($object = $request->get('data')) instanceof AbstractProcuration) {
+        $object = $request->get('data');
+
+        if (!$object instanceof AbstractProcuration) {
             return;
         }
 
-        if (
-            ($object instanceof Request && $object->proxy)
-            || ($object instanceof Proxy && $object->requests->count())
-        ) {
+        if ($object->hasMatchedSlot()) {
             $event->setResponse(new JsonResponse([
                 'status' => 'error',
                 'message' => 'Le statut d\'une demande complétée ne peut pas être modifié.',

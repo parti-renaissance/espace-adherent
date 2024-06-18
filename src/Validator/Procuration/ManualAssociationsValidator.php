@@ -2,7 +2,6 @@
 
 namespace App\Validator\Procuration;
 
-use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -25,7 +24,7 @@ class ManualAssociationsValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, Request::class);
         }
 
-        if ($value->isManual() && $value->proxy instanceof Proxy) {
+        if ($value->isManual() && $value->hasMatchedSlot()) {
             $this
                 ->context
                 ->buildViolation($constraint->message)

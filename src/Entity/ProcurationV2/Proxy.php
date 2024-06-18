@@ -13,7 +13,6 @@ use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
 use App\Procuration\V2\ProxyStatusEnum;
 use App\Repository\Procuration\ProxyRepository;
-use App\Validator\Procuration\AssociatedSlots;
 use App\Validator\Procuration\ExcludedAssociations;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,7 +22,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssociatedSlots
  * @ExcludedAssociations
  *
  * @ApiResource(
@@ -92,10 +90,6 @@ class Proxy extends AbstractProcuration
     #[ORM\Column(enumType: ProxyStatusEnum::class)]
     public ProxyStatusEnum $status = ProxyStatusEnum::PENDING;
 
-    #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]
-    #[ORM\OneToMany(mappedBy: 'proxy', targetEntity: Request::class, cascade: ['all'])]
-    public Collection $requests;
-
     /**
      * @var Collection|ProxySlot[]
      */
@@ -147,27 +141,7 @@ class Proxy extends AbstractProcuration
             $createdAt
         );
 
-        $this->requests = new ArrayCollection();
         $this->proxySlots = new ArrayCollection();
-    }
-
-    public function hasRequest(Request $request): bool
-    {
-        return $this->requests->contains($request);
-    }
-
-    public function addRequest(Request $request): void
-    {
-        if (!$this->requests->contains($request)) {
-            $request->proxy = $this;
-            $this->requests->add($request);
-        }
-    }
-
-    public function removeRequest(Request $request): void
-    {
-        $this->requests->removeElement($request);
-        $request->proxy = null;
     }
 
     public function isPending(): bool
@@ -199,6 +173,17 @@ class Proxy extends AbstractProcuration
     {
         foreach ($this->proxySlots as $proxySlot) {
             if (!$proxySlot->requestSlot) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasMatchedSlot(): bool
+    {
+        foreach ($this->proxySlots as $proxySlot) {
+            if ($proxySlot->requestSlot) {
                 return true;
             }
         }

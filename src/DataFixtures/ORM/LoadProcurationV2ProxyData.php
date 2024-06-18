@@ -84,7 +84,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             $proxy->setUpdatedAt($date);
         }
 
-        $manager->persist($this->createProxy(
+        $manager->persist($proxy = $this->createProxy(
             [$this->getReference('procuration-v2-legislatives-2024-round-1')],
             'john.durand@test.dev',
             Genders::MALE,
@@ -100,6 +100,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
             $this->getReference('zone_vote_place_clichy_1')
         ));
+        $this->setReference('proxy_slot_1', $proxy->proxySlots->first());
 
         $manager->persist($this->createProxy(
             [$this->getReference('procuration-v2-legislatives-2024-round-2')],
