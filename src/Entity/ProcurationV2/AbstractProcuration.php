@@ -124,6 +124,9 @@ abstract class AbstractProcuration implements TranslatedTagInterface
     #[ORM\ManyToMany(targetEntity: Round::class)]
     public Collection $rounds;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $statusDetail = null;
+
     public function __construct(
         array $rounds,
         string $email,
@@ -190,23 +193,6 @@ abstract class AbstractProcuration implements TranslatedTagInterface
         return new ArrayCollection([$this->voteZone]);
     }
 
-    public function clearZones(): void
-    {
-    }
-
-    public function removeZone(Zone $zone): void
-    {
-    }
-
-    public function addZone(Zone $zone): void
-    {
-    }
-
-    public static function getZonesPropertyName(): string
-    {
-        return 'voteZone';
-    }
-
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     public function getVotePlaceName(): ?string
     {
@@ -225,7 +211,15 @@ abstract class AbstractProcuration implements TranslatedTagInterface
         return $this->voteZone->isCountry() && AddressInterface::FRANCE !== $this->voteZone->getCode();
     }
 
+    /** @return Round[] */
+    public function getRounds(): array
+    {
+        return array_map(fn (AbstractSlot $slot) => $slot->round, $this->getOrderedSlots());
+    }
+
     abstract public function hasFreeSlot(): bool;
 
     abstract public function hasMatchedSlot(): bool;
+
+    abstract public function getOrderedSlots(): array;
 }

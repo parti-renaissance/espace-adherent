@@ -8,6 +8,7 @@ enum RequestStatusEnum: string
     case COMPLETED = 'completed';
     case MANUAL = 'manual';
     case EXCLUDED = 'excluded';
+    case DUPLICATE = 'duplicate';
 
     public static function getAvailableStatuses(): array
     {

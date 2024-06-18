@@ -235,12 +235,18 @@ class Request extends AbstractProcuration
 
     #[Groups(['procuration_request_read', 'procuration_request_list'])]
     #[SerializedName('request_slots')]
-    public function getOrderedRequestSlots(): array
+    public function getOrderedSlots(): array
     {
         $slots = $this->requestSlots->toArray();
 
         uasort($slots, fn (RequestSlot $a, RequestSlot $b) => $a->round->date <=> $b->round->date);
 
         return array_values($slots);
+    }
+
+    public function markAsDuplicate(?string $detail): void
+    {
+        $this->status = RequestStatusEnum::DUPLICATE;
+        $this->statusDetail = $detail;
     }
 }
