@@ -23,7 +23,6 @@ Feature:
             {
                 "slots": 1,
                 "status": "pending",
-                "requests": [],
                 "gender": "male",
                 "first_names": "John, Patrick",
                 "last_name": "Durand",
@@ -64,14 +63,21 @@ Feature:
                             "name": "Premier tour",
                             "date": "@string@.isDateTime()"
                         },
-                        "request": null
+                        "request": {
+                            "first_names": "Jack, Didier",
+                            "gender": "male",
+                            "id": "@string@",
+                            "last_name": "Doe",
+                            "matched_at": null,
+                            "matcher": null,
+                            "uuid": "@uuid@"
+                        }
                     }
                 ]
             },
             {
                 "slots": 1,
                 "status": "pending",
-                "requests": [],
                 "gender": "male",
                 "first_names": "Pierre",
                 "last_name": "Durand",
@@ -146,7 +152,6 @@ Feature:
             {
                 "slots": 1,
                 "status": "pending",
-                "requests": [],
                 "gender": "male",
                 "first_names": "Jacques, Charles",
                 "last_name": "Durand",
@@ -216,7 +221,6 @@ Feature:
             "items": [
                 {
                     "status": "pending",
-                    "proxy": null,
                     "gender": "male",
                     "first_names": "Chris",
                     "last_name": "Doe",
