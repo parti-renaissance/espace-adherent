@@ -306,6 +306,10 @@ class AbstractAdherentAdmin extends AbstractAdmin
                             'label' => 'Je suis membre d’agir, la droite constructive’',
                             'required' => false,
                         ])
+                        ->add('modemMembership', null, [
+                            'label' => 'Je suis membre de MoDem',
+                            'required' => false,
+                        ])
                     ->end()
                     ->with('Comité local', ['class' => 'col-md-6'])
                         ->add('committee', ModelType::class, [

@@ -5,6 +5,7 @@ namespace App\Normalizer;
 use App\Entity\Projection\ManagedUser;
 use App\Scope\ScopeGeneratorResolver;
 use App\Subscription\SubscriptionTypeEnum;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -18,7 +19,8 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly ScopeGeneratorResolver $scopeGeneratorResolver
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+        private readonly Security $security,
     ) {
     }
 
@@ -32,6 +34,10 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         $data['email_subscription'] = null;
 
         $scopeGenerator = $this->scopeGeneratorResolver->resolve();
+
+        if ($this->security->getUser()->modemMembership) {
+            $data['email'] = null;
+        }
 
         if ($scopeGenerator && !empty($subscriptionType = SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scopeGenerator->getCode()] ?? null)) {
             $data['email_subscription'] = \in_array($subscriptionType, $object->getSubscriptionTypes(), true);

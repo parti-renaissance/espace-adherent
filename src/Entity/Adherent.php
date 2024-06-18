@@ -631,6 +631,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $agirMembership = false;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $modemMembership = false;
+
     private ?string $authAppCode = null;
     private ?string $authAppVersion = null;
 
