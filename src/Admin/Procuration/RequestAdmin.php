@@ -6,12 +6,9 @@ use App\Entity\ProcurationV2\Request;
 use App\Form\Admin\Procuration\RequestStatusEnumType;
 use App\Procuration\V2\Event\ProcurationEvent;
 use App\Procuration\V2\Event\ProcurationEvents;
-use App\Procuration\V2\ProxyStatusEnum;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -35,28 +32,6 @@ class RequestAdmin extends AbstractProcurationAdmin
             ->with('Traitement', ['class' => 'col-md-6'])
                 ->add('status', RequestStatusEnumType::class, [
                     'label' => 'Statut',
-                ])
-                ->add('proxy', ModelAutocompleteType::class, [
-                    'label' => 'Mandataire associé',
-                    'required' => false,
-                    'disabled' => true,
-                    'minimum_input_length' => 2,
-                    'items_per_page' => 20,
-                    'property' => [
-                        'search',
-                    ],
-                    'btn_add' => false,
-                    'callback' => function (AdminInterface $admin, $property, $value) {
-                        $datagrid = $admin->getDatagrid();
-                        $qb = $datagrid->getQuery();
-                        $alias = $qb->getRootAlias();
-                        $qb
-                            ->andWhere($alias.'.status = :status_pending')
-                            ->setParameter('status_pending', ProxyStatusEnum::PENDING)
-                        ;
-
-                        $datagrid->setValue('search', null, $value);
-                    },
                 ])
             ->end()
         ;
@@ -86,9 +61,9 @@ class RequestAdmin extends AbstractProcurationAdmin
         parent::configureListFields($list);
 
         $list
-            ->add('proxy', null, [
-                'label' => 'Mandataire',
-                'template' => 'admin/procuration_v2/_list_request_proxy.html.twig',
+            ->add('requestSlots', null, [
+                'label' => 'Mandataire(s)',
+                'template' => 'admin/procuration_v2/_list_request_slots.html.twig',
             ])
             ->add('status', null, [
                 'label' => 'Statut',
@@ -102,7 +77,7 @@ class RequestAdmin extends AbstractProcurationAdmin
                 'phone',
                 'adherent',
                 'voteZone',
-                'proxy',
+                'requestSlots',
                 'status',
                 'createdAt',
                 ListMapper::NAME_ACTIONS,

@@ -109,14 +109,6 @@ class Request extends AbstractProcuration
     public bool $fromFrance;
 
     /**
-     * @Assert\Valid
-     */
-    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list'])]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Proxy::class, inversedBy: 'requests')]
-    public ?Proxy $proxy = null;
-
-    /**
      * @var Collection|RequestSlot[]
      */
     #[ORM\OneToMany(mappedBy: 'request', targetEntity: RequestSlot::class, cascade: ['all'])]
@@ -172,13 +164,6 @@ class Request extends AbstractProcuration
         $this->requestSlots = new ArrayCollection();
     }
 
-    public function setProxy(?Proxy $proxy): void
-    {
-        $this->proxy = $proxy;
-
-        $proxy?->addRequest($this);
-    }
-
     public function isPending(): bool
     {
         return RequestStatusEnum::PENDING === $this->status;
@@ -208,6 +193,17 @@ class Request extends AbstractProcuration
     {
         foreach ($this->requestSlots as $requestSlot) {
             if (!$requestSlot->proxySlot) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasMatchedSlot(): bool
+    {
+        foreach ($this->requestSlots as $requestSlot) {
+            if ($requestSlot->proxySlot) {
                 return true;
             }
         }

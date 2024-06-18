@@ -85,7 +85,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             $request->setUpdatedAt($date);
         }
 
-        $manager->persist($this->createRequest(
+        $request = $this->createRequest(
             [$this->getReference('procuration-v2-legislatives-2024-round-1')],
             'jack.doe@test.dev',
             Genders::MALE,
@@ -100,7 +100,9 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             false,
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
             $this->getReference('zone_vote_place_clichy_1')
-        ));
+        );
+        $request->requestSlots->first()->proxySlot = $this->getReference('proxy_slot_1');
+        $manager->persist($request);
 
         $manager->persist($this->createRequest(
             [$this->getReference('procuration-v2-legislatives-2024-round-2')],
@@ -147,6 +149,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         return [
             LoadGeoZoneData::class,
             LoadProcurationV2ElectionData::class,
+            LoadProcurationV2ProxyData::class,
         ];
     }
 

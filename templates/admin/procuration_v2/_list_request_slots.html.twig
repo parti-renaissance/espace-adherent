@@ -1,0 +1,35 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% set request_slots = object.requestSlots %}
+
+    {% if request_slots is not empty %}
+        <ol>
+            {% for request_slot in request_slots %}
+                <li>
+                    Tour: <i>{{ request_slot.round.name }}</i>
+                    <br>
+                    Mandataire associé:
+                    {% if request_slot.proxySlot %}
+                        {% set proxy = request_slot.proxySlot.proxy %}
+
+                        <b>
+                            {{ ('common.civility.' ~ (proxy.gender == constant('App\\ValueObject\\Genders::FEMALE') ? 'mrs' : 'mr'))|trans  }}
+                            {{ proxy.firstNames }} {{ proxy.lastName }}
+                        </b>
+
+                        <a href="{{ path('admin_app_procurationv2_proxy_edit', {id: proxy.id}) }}">
+                            <i class="icon fa fa-external-link"></i>
+                        </a>
+
+                        <br>
+
+                        <b>[{{ proxy.id }}]</b> <i>{{ proxy.email }}</i>
+                    {% else %}
+                        <b>Aucun</b>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ol>
+    {% endif %}
+{% endblock %}
