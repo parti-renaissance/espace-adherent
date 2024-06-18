@@ -7,11 +7,6 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20240614123828 extends AbstractMigration
 {
-    public function getDescription(): string
-    {
-        return '';
-    }
-
     public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE procuration_v2_proxy_slot (

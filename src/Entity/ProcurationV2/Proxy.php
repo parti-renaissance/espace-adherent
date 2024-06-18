@@ -248,12 +248,18 @@ class Proxy extends AbstractProcuration
 
     #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]
     #[SerializedName('proxy_slots')]
-    public function getOrderedProxySlots(): array
+    public function getOrderedSlots(): array
     {
         $slots = $this->proxySlots->toArray();
 
         uasort($slots, fn (ProxySlot $a, ProxySlot $b) => $a->round->date <=> $b->round->date);
 
         return array_values($slots);
+    }
+
+    public function markAsDuplicate(?string $detail): void
+    {
+        $this->status = ProxyStatusEnum::DUPLICATE;
+        $this->statusDetail = $detail;
     }
 }
