@@ -43,12 +43,12 @@ class DuplicationDetectorListener implements EventSubscriberInterface
         ];
 
         if ($procuration instanceof Request) {
-            if (!$duplicates = $this->requestRepository->findDuplicate(...$params)) {
-                $otherSideDuplicates = $this->proxyRepository->findDuplicate(...$params);
+            if (!$duplicates = $this->requestRepository->findDuplicate($procuration->getId(), ...$params)) {
+                $otherSideDuplicates = $this->proxyRepository->findDuplicate(null, ...$params);
             }
         } elseif ($procuration instanceof Proxy) {
-            if (!$duplicates = $this->proxyRepository->findDuplicate(...$params)) {
-                $otherSideDuplicates = $this->requestRepository->findDuplicate(...$params);
+            if (!$duplicates = $this->proxyRepository->findDuplicate($procuration->getId(), ...$params)) {
+                $otherSideDuplicates = $this->requestRepository->findDuplicate(null, ...$params);
             }
         }
 

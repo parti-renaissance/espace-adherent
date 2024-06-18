@@ -116,9 +116,9 @@ class ProxyRepository extends ServiceEntityRepository
         return $result > 0;
     }
 
-    public function findDuplicate(string $firstNames, string $lastName, \DateTime $birthdate, array $rounds): array
+    public function findDuplicate(?int $id, string $firstNames, string $lastName, \DateTime $birthdate, array $rounds): array
     {
-        return $this->createQueryBuilder('proxy')
+        $queryBuilder = $this->createQueryBuilder('proxy')
             ->innerJoin('proxy.proxySlots', 'proxy_slot')
             ->andWhere('proxy.firstNames = :first_names')
             ->andWhere('proxy.lastName = :last_name')
@@ -130,8 +130,15 @@ class ProxyRepository extends ServiceEntityRepository
                 'birthdate' => $birthdate,
                 'rounds' => $rounds,
             ])
-            ->getQuery()
-            ->getResult()
         ;
+
+        if ($id) {
+            $queryBuilder
+                ->andWhere('proxy.id != :id')
+                ->setParameter('id', $id)
+            ;
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }

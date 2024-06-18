@@ -33,9 +33,9 @@ class RequestRepository extends ServiceEntityRepository
         return $result > 0;
     }
 
-    public function findDuplicate(string $firstNames, string $lastName, \DateTime $birthdate, array $rounds): array
+    public function findDuplicate(?int $id, string $firstNames, string $lastName, \DateTime $birthdate, array $rounds): array
     {
-        return $this->createQueryBuilder('request')
+        $queryBuilder = $this->createQueryBuilder('request')
             ->innerJoin('request.requestSlots', 'request_slot')
             ->andWhere('request.firstNames = :first_names')
             ->andWhere('request.lastName = :last_name')
@@ -47,8 +47,15 @@ class RequestRepository extends ServiceEntityRepository
                 'birthdate' => $birthdate,
                 'rounds' => $rounds,
             ])
-            ->getQuery()
-            ->getResult()
         ;
+
+        if ($id) {
+            $queryBuilder
+                ->andWhere('request.id != :id')
+                ->setParameter('id', $id)
+            ;
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 }
