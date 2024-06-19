@@ -8,7 +8,6 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\OrTextSearchFilter;
 use App\Entity\Adherent;
-use App\Entity\Chatbot\Message;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
 use App\Procuration\V2\ProxyStatusEnum;
@@ -61,7 +60,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(OrderFilter::class, properties={"createdAt"})
  * @ApiFilter(SearchFilter::class, properties={"status": "exact"})
- * @ApiFilter(OrTextSearchFilter::class, properties={"firstNames": "lastName", "lastName": "firstNames", "email": "email", "voteZone.name": "voteZone.name", "votePlace.name": "votePlace.name"})
+ * @ApiFilter(OrTextSearchFilter::class, properties={"firstNames": "lastName", "lastName": "firstNames", "email": "email", "voteZone.name": "votePlace.name"})
  */
 #[ORM\Table(name: 'procuration_v2_proxies')]
 #[ORM\Entity(repositoryClass: ProxyRepository::class)]
@@ -172,7 +171,7 @@ class Proxy extends AbstractProcuration
     public function hasFreeSlot(): bool
     {
         foreach ($this->proxySlots as $proxySlot) {
-            if (!$proxySlot->requestSlot) {
+            if (!$proxySlot->requestSlot && !$proxySlot->manual) {
                 return true;
             }
         }
@@ -184,6 +183,17 @@ class Proxy extends AbstractProcuration
     {
         foreach ($this->proxySlots as $proxySlot) {
             if ($proxySlot->requestSlot) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasManualSlot(): bool
+    {
+        foreach ($this->proxySlots as $proxySlot) {
+            if ($proxySlot->manual) {
                 return true;
             }
         }

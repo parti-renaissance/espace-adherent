@@ -13,9 +13,12 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
+use Ramsey\Uuid\Uuid;
 
 class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInterface
 {
+    public const UUID_PROXY_SLOT_1 = 'b024ff2a-c74b-442c-8339-7df9d0c104b6';
+
     private Generator $faker;
 
     public function __construct(
@@ -104,7 +107,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
 
         $manager->persist($this->createProxy(
             [
-                $this->getReference('procuration-v2-legislatives-2024-round-1'),
+                $round1 = $this->getReference('procuration-v2-legislatives-2024-round-1'),
                 $this->getReference('procuration-v2-legislatives-2024-round-2'),
             ],
             'pierre.durand@test.dev',
@@ -119,7 +122,14 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             '57 Boulevard de la Madeleine',
             false,
             LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
-            $this->getReference('zone_vote_place_clichy_1')
+            $this->getReference('zone_vote_place_clichy_1'),
+            null,
+            false,
+            '123456789',
+            1,
+            [
+                $round1->name => self::UUID_PROXY_SLOT_1,
+            ]
         ));
 
         $manager->persist($this->createProxy(
@@ -169,7 +179,8 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         ?string $customVotePlace = null,
         bool $joinNewsletter = false,
         string $electorNumber = '123456789',
-        int $slots = 1
+        int $slots = 1,
+        array $slotsUuidMapping = []
     ): Proxy {
         $proxy = new Proxy(
             $rounds,
@@ -194,7 +205,11 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
 
         foreach ($rounds as $round) {
             for ($i = 1; $i <= $slots; ++$i) {
-                $proxy->proxySlots->add(new ProxySlot($round, $proxy));
+                $uuid = \array_key_exists($round->name, $slotsUuidMapping)
+                    ? Uuid::fromString($slotsUuidMapping[$round->name])
+                    : null;
+
+                $proxy->proxySlots->add(new ProxySlot($round, $proxy, $uuid));
             }
         }
 

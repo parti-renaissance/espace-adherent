@@ -192,7 +192,7 @@ class Request extends AbstractProcuration
     public function hasFreeSlot(): bool
     {
         foreach ($this->requestSlots as $requestSlot) {
-            if (!$requestSlot->proxySlot) {
+            if (!$requestSlot->proxySlot && !$requestSlot->manual) {
                 return true;
             }
         }
@@ -204,6 +204,17 @@ class Request extends AbstractProcuration
     {
         foreach ($this->requestSlots as $requestSlot) {
             if ($requestSlot->proxySlot) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasManualSlot(): bool
+    {
+        foreach ($this->requestSlots as $requestSlot) {
+            if ($requestSlot->manual) {
                 return true;
             }
         }

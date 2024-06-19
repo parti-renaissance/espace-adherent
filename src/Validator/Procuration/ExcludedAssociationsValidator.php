@@ -24,7 +24,7 @@ class ExcludedAssociationsValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, Proxy::class);
         }
 
-        if ($value->isExcluded() && $value->hasMatchedSlot()) {
+        if ($value->isExcluded() && ($value->hasMatchedSlot() || $value->hasManualSlot())) {
             $this
                 ->context
                 ->buildViolation($constraint->message)
