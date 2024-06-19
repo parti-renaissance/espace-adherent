@@ -17,12 +17,12 @@ abstract class AbstractSlot
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
 
-    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Round::class)]
     public Round $round;
 
-    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'request_slot_update_status', 'proxy_slot_update_status'])]
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_slot_read', 'procuration_request_slot_read', 'procuration_request_slot_write', 'procuration_proxy_slot_write'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $manual = false;
 

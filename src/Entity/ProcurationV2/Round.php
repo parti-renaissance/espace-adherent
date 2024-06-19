@@ -24,7 +24,7 @@ class Round
      * @Assert\NotBlank
      * @Assert\Length(max=255)
      */
-    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_matched_proxy', 'procuration_proxy_list'])]
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_matched_proxy', 'procuration_proxy_list', 'procuration_request_slot_read', 'procuration_proxy_slot_read'])]
     #[ORM\Column]
     public ?string $name = null;
 
@@ -37,7 +37,7 @@ class Round
     /**
      * @Assert\NotBlank
      */
-    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_matched_proxy', 'procuration_proxy_list'])]
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_matched_proxy', 'procuration_proxy_list', 'procuration_request_slot_read', 'procuration_proxy_slot_read'])]
     #[ORM\Column(type: 'date')]
     public ?\DateTimeInterface $date = null;
 

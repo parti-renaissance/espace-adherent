@@ -100,7 +100,7 @@ class Request extends AbstractProcuration
     /**
      * @Assert\Choice(callback={"App\Procuration\V2\RequestStatusEnum", "getAvailableStatuses"}, groups={"procuration_update_status"})
      */
-    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_update_status'])]
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_update_status', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
     #[ORM\Column(enumType: RequestStatusEnum::class)]
     public RequestStatusEnum $status = RequestStatusEnum::PENDING;
 
