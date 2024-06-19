@@ -14,8 +14,8 @@ class ManualSlotValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof ExcludedAssociations) {
-            throw new UnexpectedTypeException($constraint, ExcludedAssociations::class);
+        if (!$constraint instanceof ManualSlot) {
+            throw new UnexpectedTypeException($constraint, ManualSlot::class);
         }
 
         if (null === $value) {
