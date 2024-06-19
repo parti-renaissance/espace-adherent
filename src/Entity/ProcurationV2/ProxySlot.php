@@ -12,14 +12,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     attributes={
  *         "routePrefix": "/v3/procuration",
  *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'procurations')",
- *         "denormalization_context": {"groups": {"proxy_slot_update_status"}},
- *         "normalization_context": {"groups": {"proxy_slot_read"}},
+ *         "normalization_context": {"groups": {"procuration_proxy_slot_read"}},
  *     },
  *     itemOperations={
  *         "put": {
  *             "path": "/proxy_slots/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "_api_respond": false,
+ *             "denormalization_context": {"groups": {"procuration_proxy_slot_write"}},
  *         },
  *     },
  *     collectionOperations={},
@@ -29,6 +28,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity]
 class ProxySlot extends AbstractSlot
 {
+    #[Groups(['procuration_proxy_slot_read'])]
     #[ORM\ManyToOne(inversedBy: 'proxySlots', targetEntity: Proxy::class)]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     public Proxy $proxy;
@@ -43,7 +43,7 @@ class ProxySlot extends AbstractSlot
         $this->proxy = $proxy;
     }
 
-    #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]
+    #[Groups(['procuration_matched_proxy', 'procuration_proxy_list', 'procuration_proxy_slot_read'])]
     public function getRequest(): ?Request
     {
         return $this->requestSlot?->request;

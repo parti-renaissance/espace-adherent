@@ -301,6 +301,24 @@ Feature:
         }
         """
         Then the response status code should be 200
+        And the JSON should be equal to:
+        """
+        {
+            "proxy": {
+                "uuid": "@uuid@",
+                "status": "pending"
+            },
+            "round": {
+                "name": "Premier tour",
+                "date": "@string@.isDateTime()",
+                "uuid": "@uuid@"
+            },
+            "manual": true,
+            "uuid": "b024ff2a-c74b-442c-8339-7df9d0c104b6",
+            "request": null
+        }
+
+        """
         Examples:
             | user                      | scope                                          |
             | referent@en-marche-dev.fr | referent                                       |
@@ -315,6 +333,23 @@ Feature:
         }
         """
         Then the response status code should be 200
+        And the JSON should be equal to:
+        """
+        {
+            "uuid": "f406fc52-248b-4e30-bcb6-355516a45ad9",
+            "manual": true,
+            "proxy": null,
+            "request": {
+                "uuid": "@uuid@",
+                "status": "pending"
+            },
+            "round": {
+                "uuid": "@uuid@",
+                "name": "Premier tour",
+                "date": "@string@.isDateTime()"
+            }
+        }
+        """
         Examples:
             | user                      | scope                                          |
             | referent@en-marche-dev.fr | referent                                       |
