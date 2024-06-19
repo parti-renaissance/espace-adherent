@@ -46,6 +46,12 @@ function initPlaces(google) {
     };
 }
 
+function refreshToken() {
+    if (window.googleServices) {
+        window.googleServices.sessionToken = new google.maps.places.AutocompleteSessionToken();
+    }
+}
+
 /**
  * Wrapper to configure autocompleteService and getPlacePredictions
  * @param {GoogleServices} googleServices
@@ -239,6 +245,8 @@ export function fillInAddress({
         });
 }
 
+let lastDetail = null;
+
 /**
  * @param {{
  *     apiKey: string,
@@ -249,10 +257,14 @@ export function fillInAddress({
  */
 function watchAutocompleteInput(props) {
     document.addEventListener(`autocomplete_change:${props.autocompleteInputId}`, ({ detail }) => {
+        if (detail && ((lastDetail === detail) || ('prefilled' === detail))) {
+            return;
+        }
         if (!detail) {
             clearAssociatedFields(props);
             return;
         }
+
         props.services.placesService.getDetails({
             placeId: detail,
             sessionToken: props.services.sessionToken,
@@ -271,6 +283,8 @@ function watchAutocompleteInput(props) {
                     },
                 }));
             }
+            lastDetail = detail;
+            refreshToken();
         });
     });
 }
