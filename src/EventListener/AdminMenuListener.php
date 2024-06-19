@@ -29,9 +29,7 @@ class AdminMenuListener implements EventSubscriberInterface
             $this->addCreateAdherentMenu($event);
         }
 
-        if ($this->authorizationChecker->isGranted('ROLE_ADMIN_STATS_ALL')) {
-            $this->addStatsMenu($event);
-        }
+        $this->addStatsMenu($event);
     }
 
     private function addCreateAdherentMenu(ConfigureMenuEvent $event): void
@@ -60,7 +58,18 @@ class AdminMenuListener implements EventSubscriberInterface
             ];
         }
 
-        $this->addItem($event->getMenu(), 'Stats', $items, 'fa fa-bar-chart', true);
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN_PROCURATION_STATS')) {
+            $items[] = [
+                'label' => 'Procurations',
+                'route' => 'admin_app_stats_procuration_round_list',
+                'route_params' => null,
+                'route_absolute' => false,
+            ];
+        }
+
+        if (!empty($items)) {
+            $this->addItem($event->getMenu(), 'Stats', $items, 'fa fa-bar-chart', true);
+        }
     }
 
     private function addItem(ItemInterface $menu, string $groupLabel, array $items, string $groupIcon = 'fa fa-folder', bool $prepend = false): void

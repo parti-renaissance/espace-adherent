@@ -174,6 +174,11 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::ADHERENTS
         );
         yield $this->createRole(
+            'ROLE_ADMIN_PROCURATION_STATS',
+            'Statistiques des procurations',
+            AdministratorRoleGroupEnum::ELECTIONS
+        );
+        yield $this->createRole(
             'ROLE_ADMIN_ADHERENTS_READONLY',
             'Administrateur des adhérents en lecture seule',
             AdministratorRoleGroupEnum::ADHERENTS
