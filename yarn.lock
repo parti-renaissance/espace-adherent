@@ -1844,9 +1844,9 @@ algoliasearch@^4.23.3:
     "@algolia/transporter" "4.23.3"
 
 alpinejs@^3.13.10:
-  version "3.13.10"
-  resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-3.13.10.tgz#76aacd24c79d03b568aff28a8c12205aa9906d0c"
-  integrity sha512-86RB307VWICex0vG15Eq0x058cNNsvS57ohrjN6n/TJAVSFV+zXOK/E34nNHDHc6Poq+yTNCLqEzPqEkRBTMRQ==
+  version "3.14.1"
+  resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-3.14.1.tgz#549e056c3b75e57c0f23076a13cde09da684ba0a"
+  integrity sha512-ICar8UsnRZAYvv/fCNfNeKMXNoXGUfwHrjx7LqXd08zIP95G2d9bAOuaL97re+1mgt/HojqHsfdOLo/A5LuWgQ==
   dependencies:
     "@vue/reactivity" "~3.1.1"
 
