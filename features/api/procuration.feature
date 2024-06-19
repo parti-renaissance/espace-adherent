@@ -335,7 +335,20 @@ Feature:
         Then the response status code should be 200
         And the JSON should be equal to:
         """
-        []
+        {
+            "uuid": "f406fc52-248b-4e30-bcb6-355516a45ad9",
+            "manual": true,
+            "proxy": null,
+            "request": {
+                "uuid": "@uuid@",
+                "status": "pending"
+            },
+            "round": {
+                "uuid": "@uuid@",
+                "name": "Premier tour",
+                "date": "@string@.isDateTime()"
+            }
+        }
         """
         Examples:
             | user                      | scope                                          |
