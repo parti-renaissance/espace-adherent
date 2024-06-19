@@ -221,5 +221,7 @@ abstract class AbstractProcuration implements TranslatedTagInterface
 
     abstract public function hasMatchedSlot(): bool;
 
+    abstract public function hasManualSlot(): bool;
+
     abstract public function getOrderedSlots(): array;
 }

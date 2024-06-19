@@ -13,9 +13,12 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
+use Ramsey\Uuid\Uuid;
 
 class LoadProcurationV2RequestData extends Fixture implements DependentFixtureInterface
 {
+    public const UUID_REQUEST_SLOT_1 = 'f406fc52-248b-4e30-bcb6-355516a45ad9';
+
     private Generator $faker;
 
     public function __construct(
@@ -124,7 +127,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         $manager->persist($this->createRequest(
             [
                 $this->getReference('procuration-v2-legislatives-2024-round-2'),
-                $this->getReference('procuration-v2-legislatives-2024-round-1'),
+                $round1 = $this->getReference('procuration-v2-legislatives-2024-round-1'),
             ],
             'chris.doe@test.dev',
             Genders::MALE,
@@ -138,7 +141,13 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             '58 Boulevard de la Madeleine',
             false,
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
-            $this->getReference('zone_vote_place_clichy_1')
+            $this->getReference('zone_vote_place_clichy_1'),
+            null,
+            true,
+            false,
+            [
+                $round1->name => self::UUID_REQUEST_SLOT_1,
+            ]
         ));
 
         $manager->flush();
@@ -170,7 +179,8 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         ?Zone $votePlace = null,
         ?string $customVotePlace = null,
         bool $fromFrance = true,
-        bool $joinNewsletter = false
+        bool $joinNewsletter = false,
+        array $slotsUuidMapping = []
     ): Request {
         $request = new Request(
             $rounds,
@@ -191,7 +201,11 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         );
 
         foreach ($rounds as $round) {
-            $request->requestSlots->add(new RequestSlot($round, $request));
+            $uuid = \array_key_exists($round->name, $slotsUuidMapping)
+                ? Uuid::fromString($slotsUuidMapping[$round->name])
+                : null;
+
+            $request->requestSlots->add(new RequestSlot($round, $request, $uuid));
         }
 
         return $request;

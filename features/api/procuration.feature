@@ -71,7 +71,8 @@ Feature:
                             "matched_at": null,
                             "matcher": null,
                             "uuid": "@uuid@"
-                        }
+                        },
+                        "manual": false
                     }
                 ]
             },
@@ -118,7 +119,8 @@ Feature:
                             "name": "Premier tour",
                             "date": "@string@.isDateTime()"
                         },
-                        "request": null
+                        "request": null,
+                        "manual": false
                     },
                     {
                         "uuid": "@uuid@",
@@ -129,7 +131,8 @@ Feature:
                             "name": "Deuxième tour",
                             "date": "@string@.isDateTime()"
                         },
-                        "request": null
+                        "request": null,
+                        "manual": false
                     }
                 ]
             }
@@ -192,7 +195,8 @@ Feature:
                             "name": "Deuxième tour",
                             "date": "@string@.isDateTime()"
                         },
-                        "request": null
+                        "request": null,
+                        "manual": false
                     }
                 ]
             }
@@ -263,7 +267,8 @@ Feature:
                                 "name": "Premier tour",
                                 "date": "@string@.isDateTime()"
                             },
-                            "proxy": null
+                            "proxy": null,
+                            "manual": false
                         },
                         {
                             "uuid": "@uuid@",
@@ -274,13 +279,42 @@ Feature:
                                 "name": "Deuxième tour",
                                 "date": "@string@.isDateTime()"
                             },
-                            "proxy": null
+                            "proxy": null,
+                            "manual": false
                         }
                     ]
                 }
             ]
         }
         """
+        Examples:
+            | user                      | scope                                          |
+            | referent@en-marche-dev.fr | referent                                       |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a referent I can update proxy slots status
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "PUT" request to "/api/v3/procuration/proxy_slots/b024ff2a-c74b-442c-8339-7df9d0c104b6?scope=<scope>" with body:
+        """
+        {
+            "manual": true
+        }
+        """
+        Then the response status code should be 200
+        Examples:
+            | user                      | scope                                          |
+            | referent@en-marche-dev.fr | referent                                       |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+
+    Scenario Outline: As a referent I can update request slots status
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "PUT" request to "/api/v3/procuration/request_slots/f406fc52-248b-4e30-bcb6-355516a45ad9?scope=<scope>" with body:
+        """
+        {
+            "manual": true
+        }
+        """
+        Then the response status code should be 200
         Examples:
             | user                      | scope                                          |
             | referent@en-marche-dev.fr | referent                                       |
