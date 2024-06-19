@@ -33,14 +33,14 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
         $data['email_subscription'] = null;
 
-        $scopeGenerator = $this->scopeGeneratorResolver->resolve();
+        if ($scope = $this->scopeGeneratorResolver->generate()) {
+            if ($scope->getMainUser()->modemMembership) {
+                $data['email'] = null;
+            }
 
-        if ($this->security->getUser()->modemMembership) {
-            $data['email'] = null;
-        }
-
-        if ($scopeGenerator && !empty($subscriptionType = SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scopeGenerator->getCode()] ?? null)) {
-            $data['email_subscription'] = \in_array($subscriptionType, $object->getSubscriptionTypes(), true);
+            if (!empty($subscriptionType = SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope->getMainCode()] ?? null)) {
+                $data['email_subscription'] = \in_array($subscriptionType, $object->getSubscriptionTypes(), true);
+            }
         }
 
         if (array_intersect(['managed_users_list', 'managed_user_read'], $context['groups'] ?? [])) {
