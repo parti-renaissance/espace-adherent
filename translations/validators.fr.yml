@@ -295,6 +295,7 @@ procuration.proxy.slots.invalid: Un mandataire peut porter jusqu'à 2 procuratio
 
 procuration.proxy.excluded_no_association: Veuillez désassocier le(s) mandant(s) avant d'exclure ce mandataire.
 procuration.request.manual_no_association: Veuillez désassocier le mandataire avant de traiter manuellement cette demande.
+procuration.slot.manual_no_association: Ce tour est déjà associé et ne peut être traité manuellement. Veuillez désassocier ce tour avant de le traiter manuellement.
 
 #
 # Event

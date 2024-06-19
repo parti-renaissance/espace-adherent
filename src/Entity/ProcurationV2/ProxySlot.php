@@ -3,11 +3,14 @@
 namespace App\Entity\ProcurationV2;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Validator\Procuration\ManualSlot;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ManualSlot
+ *
  * @ApiResource(
  *     attributes={
  *         "routePrefix": "/v3/procuration",
