@@ -91,9 +91,11 @@ class ProxyRepository extends ServiceEntityRepository
             ->andWhere('proxy.status = :status')
             ->andWhere($orx)
             ->andWhere('proxy_slot.round = :round')
+            ->andWhere('proxy_slot.manual = :manual')
             ->andWhere('request_slot IS NULL')
             ->orderBy('score', 'desc')
             ->setParameter('status', ProxyStatusEnum::PENDING)
+            ->setParameter('manual', false)
             ->setParameter('round', $round)
         ;
 
