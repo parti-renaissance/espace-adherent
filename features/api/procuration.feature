@@ -71,7 +71,8 @@ Feature:
                             "matched_at": null,
                             "matcher": null,
                             "uuid": "@uuid@"
-                        }
+                        },
+                        "manual": false
                     }
                 ]
             },
@@ -118,7 +119,8 @@ Feature:
                             "name": "Premier tour",
                             "date": "@string@.isDateTime()"
                         },
-                        "request": null
+                        "request": null,
+                        "manual": false
                     },
                     {
                         "uuid": "@uuid@",
@@ -129,7 +131,8 @@ Feature:
                             "name": "Deuxième tour",
                             "date": "@string@.isDateTime()"
                         },
-                        "request": null
+                        "request": null,
+                        "manual": false
                     }
                 ]
             }
@@ -192,7 +195,8 @@ Feature:
                             "name": "Deuxième tour",
                             "date": "@string@.isDateTime()"
                         },
-                        "request": null
+                        "request": null,
+                        "manual": false
                     }
                 ]
             }
@@ -263,7 +267,8 @@ Feature:
                                 "name": "Premier tour",
                                 "date": "@string@.isDateTime()"
                             },
-                            "proxy": null
+                            "proxy": null,
+                            "manual": false
                         },
                         {
                             "uuid": "@uuid@",
@@ -274,7 +279,8 @@ Feature:
                                 "name": "Deuxième tour",
                                 "date": "@string@.isDateTime()"
                             },
-                            "proxy": null
+                            "proxy": null,
+                            "manual": false
                         }
                     ]
                 }
