@@ -23,10 +23,9 @@ window.Kernel = class {
                         dsn: sentryDsn,
                         release,
                         environment,
-                        integrations: [new Sentry.BrowserTracing()],
+                        integrations: [Sentry.browserTracingIntegration()],
                         ignoreErrors: ['Non-Error promise rejection captured'],
                         tracesSampleRate: 0.025,
-                        denyUrls: ['axept.io'],
                     });
 
                     if (user) {
