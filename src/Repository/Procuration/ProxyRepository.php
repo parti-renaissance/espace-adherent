@@ -7,14 +7,13 @@ use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
-use App\Entity\ProcurationV2\RequestSlot;
 use App\Entity\ProcurationV2\Round;
 use App\Procuration\V2\ProxyStatusEnum;
+use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Repository\GeoZoneTrait;
 use App\Repository\PaginatorTrait;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ProxyRepository extends ServiceEntityRepository
@@ -55,7 +54,7 @@ class ProxyRepository extends ServiceEntityRepository
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
-    public function findAvailableProxies(Request $request, Round $round, int $page): PaginatorInterface
+    public function findAvailableProxies(Request $request, Round $round, string $search, ?Zone $zone, int $page): PaginatorInterface
     {
         $queryBuilder = $this->createQueryBuilder('proxy');
         $orx = $queryBuilder->expr()->orX();
@@ -87,7 +86,9 @@ class ProxyRepository extends ServiceEntityRepository
         $queryBuilder
             ->addSelect($caseSelect)
             ->innerJoin('proxy.proxySlots', 'proxy_slot')
-            ->leftJoin(RequestSlot::class, 'request_slot', Join::WITH, 'request_slot.proxySlot = proxy_slot')
+            ->leftJoin('proxy_slot.requestSlot', 'request_slot')
+            ->leftJoin('proxy.voteZone', 'vote_zone')
+            ->leftJoin('proxy.votePlace', 'vote_place')
             ->andWhere('proxy.status = :status')
             ->andWhere($orx)
             ->andWhere('proxy_slot.round = :round')
@@ -99,7 +100,26 @@ class ProxyRepository extends ServiceEntityRepository
             ->setParameter('round', $round)
         ;
 
-        return $this->configurePaginator($queryBuilder, $page);
+        if ($search) {
+            MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
+                $queryBuilder,
+                $search,
+                [
+                    ['proxy.firstNames', 'proxy.lastName'],
+                    ['proxy.lastName', 'proxy.firstNames'],
+                    ['proxy.email', 'proxy.email'],
+                ]
+            );
+        }
+
+        if ($zone) {
+            $queryBuilder
+                ->andWhere('FIND_IN_SET(:zone_id, proxy.zoneIds) > 0')
+                ->setParameter('zone_id', $zone->getId())
+            ;
+        }
+
+        return $this->configurePaginator($queryBuilder, $page, 100);
     }
 
     public function hasUpcomingProxy(Adherent $adherent): bool
