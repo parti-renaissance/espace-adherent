@@ -71,12 +71,30 @@ Feature:
                             "uuid": "@uuid@"
                         },
                         "manual": false,
-                        "matcher": {
-                            "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
-                            "first_name": "Referent",
-                            "last_name": "Referent"
+                        "actions": [
+                            {
+                                "date": "@string@.isDateTime()",
+                                "type": "@string@.oneOf(contains('match'), contains('unmatch'), contains('status_update'))",
+                                "author": {
+                                    "uuid": "@uuid@",
+                                    "first_name": "@string@",
+                                    "last_name": "@string@"
+                                },
+                                "author_role": "@string@
+                            }
+                        ]
+                    }
+                ],
+                "actions": [
+                    {
+                        "date": "@string@.isDateTime()",
+                        "type": "status_update",
+                        "author": {
+                            "uuid": "@uuid@",
+                            "first_name": "@string@",
+                            "last_name": "@string@"
                         },
-                        "matched_at": "@string@.isDateTime()"
+                        "author_role": "@string@
                     }
                 ]
             },
@@ -125,8 +143,18 @@ Feature:
                         },
                         "request": null,
                         "manual": false,
-                        "matcher": null,
-                        "matched_at": null
+                        "actions": [
+                            {
+                                "date": "@string@.isDateTime()",
+                                "type": "@string@.oneOf(contains('match'), contains('unmatch'), contains('status_update'))",
+                                "author": {
+                                    "uuid": "@uuid@",
+                                    "first_name": "@string@",
+                                    "last_name": "@string@"
+                                },
+                                "author_role": "@string@
+                            }
+                        ]
                     },
                     {
                         "uuid": "@uuid@",
@@ -139,8 +167,30 @@ Feature:
                         },
                         "request": null,
                         "manual": false,
-                        "matcher": null,
-                        "matched_at": null
+                        "actions": [
+                            {
+                                "date": "@string@.isDateTime()",
+                                "type": "@string@.oneOf(contains('match'), contains('unmatch'), contains('status_update'))",
+                                "author": {
+                                    "uuid": "@uuid@",
+                                    "first_name": "@string@",
+                                    "last_name": "@string@"
+                                },
+                                "author_role": "@string@
+                            }
+                        ]
+                    }
+                ],
+                "actions": [
+                    {
+                        "date": "@string@.isDateTime()",
+                        "type": "status_update",
+                        "author": {
+                            "uuid": "@uuid@",
+                            "first_name": "@string@",
+                            "last_name": "@string@"
+                        },
+                        "author_role": "@string@
                     }
                 ]
             }
@@ -205,8 +255,30 @@ Feature:
                         },
                         "request": null,
                         "manual": false,
-                        "matcher": null,
-                        "matched_at": null
+                        "actions": [
+                            {
+                                "date": "@string@.isDateTime()",
+                                "type": "@string@.oneOf(contains('match'), contains('unmatch'), contains('status_update'))",
+                                "author": {
+                                    "uuid": "@uuid@",
+                                    "first_name": "@string@",
+                                    "last_name": "@string@"
+                                },
+                                "author_role": "@string@
+                            }
+                        ]
+                    }
+                ],
+                "actions": [
+                    {
+                        "date": "@string@.isDateTime()",
+                        "type": "status_update",
+                        "author": {
+                            "uuid": "@uuid@",
+                            "first_name": "@string@",
+                            "last_name": "@string@"
+                        },
+                        "author_role": "@string@
                     }
                 ]
             }
@@ -277,8 +349,18 @@ Feature:
                             },
                             "proxy": null,
                             "manual": false,
-                            "matcher": null,
-                            "matched_at": null
+                            "actions": [
+                                {
+                                    "date": "@string@.isDateTime()",
+                                    "type": "@string@.oneOf(contains('match'), contains('unmatch'), contains('status_update'))",
+                                    "author": {
+                                        "uuid": "@uuid@",
+                                        "first_name": "@string@",
+                                        "last_name": "@string@"
+                                    },
+                                    "author_role": "@string@
+                                }
+                            ]
                         },
                         {
                             "uuid": "@uuid@",
@@ -291,10 +373,32 @@ Feature:
                             },
                             "proxy": null,
                             "manual": false,
-                            "matcher": null,
-                            "matched_at": null
+                            "actions": [
+                                {
+                                    "date": "@string@.isDateTime()",
+                                    "type": "@string@.oneOf(contains('match'), contains('unmatch'), contains('status_update'))",
+                                    "author": {
+                                        "uuid": "@uuid@",
+                                        "first_name": "@string@",
+                                        "last_name": "@string@"
+                                    },
+                                    "author_role": "@string@
+                                }
+                            ]
                         }
-                    ]
+                    ],
+                    "actions": [
+                    {
+                        "date": "@string@.isDateTime()",
+                        "type": "status_update",
+                        "author": {
+                            "uuid": "@uuid@",
+                            "first_name": "@string@",
+                            "last_name": "@string@"
+                        },
+                        "author_role": "@string@
+                    }
+                ]
                 }
             ]
         }
@@ -328,8 +432,17 @@ Feature:
             "manual": true,
             "uuid": "b024ff2a-c74b-442c-8339-7df9d0c104b6",
             "request": null,
-            "matcher": null,
-            "matched_at": null
+            "actions": [
+                {
+                    "date": "@string@.isDateTime()",
+                    "type": "@string@.oneOf(contains('match'), contains('unmatch'), contains('status_update'))",
+                    "author": {
+                        "uuid": "@uuid@",
+                        "first_name": "@string@",
+                        "last_name": "@string@"
+                    }
+                }
+            ]
         }
 
         """
@@ -362,8 +475,17 @@ Feature:
                 "name": "Premier tour",
                 "date": "@string@.isDateTime()"
             },
-            "matcher": null,
-            "matched_at": null
+            "actions": [
+                {
+                    "date": "@string@.isDateTime()",
+                    "type": "@string@.oneOf(contains('match'), contains('unmatch'), contains('status_update'))",
+                    "author": {
+                        "uuid": "@uuid@",
+                        "first_name": "@string@",
+                        "last_name": "@string@"
+                    }
+                }
+            ]
         }
         """
         Examples:
