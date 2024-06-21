@@ -68,11 +68,15 @@ Feature:
                             "gender": "male",
                             "id": "@string@",
                             "last_name": "Doe",
-                            "matched_at": null,
-                            "matcher": null,
                             "uuid": "@uuid@"
                         },
-                        "manual": false
+                        "manual": false,
+                        "matcher": {
+                            "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+                            "first_name": "Referent",
+                            "last_name": "Referent"
+                        },
+                        "matched_at": "@string@.isDateTime()"
                     }
                 ]
             },
@@ -120,7 +124,9 @@ Feature:
                             "date": "@string@.isDateTime()"
                         },
                         "request": null,
-                        "manual": false
+                        "manual": false,
+                        "matcher": null,
+                        "matched_at": null
                     },
                     {
                         "uuid": "@uuid@",
@@ -132,7 +138,9 @@ Feature:
                             "date": "@string@.isDateTime()"
                         },
                         "request": null,
-                        "manual": false
+                        "manual": false,
+                        "matcher": null,
+                        "matched_at": null
                     }
                 ]
             }
@@ -196,7 +204,9 @@ Feature:
                             "date": "@string@.isDateTime()"
                         },
                         "request": null,
-                        "manual": false
+                        "manual": false,
+                        "matcher": null,
+                        "matched_at": null
                     }
                 ]
             }
@@ -255,8 +265,6 @@ Feature:
                     "vote_place_name": "Bureau de vote CLICHY 1",
                     "from_france": true,
                     "available_proxies_count": 3,
-                    "matched_at": null,
-                    "matcher": null,
                     "request_slots": [
                         {
                             "uuid": "@uuid@",
@@ -268,7 +276,9 @@ Feature:
                                 "date": "@string@.isDateTime()"
                             },
                             "proxy": null,
-                            "manual": false
+                            "manual": false,
+                            "matcher": null,
+                            "matched_at": null
                         },
                         {
                             "uuid": "@uuid@",
@@ -280,7 +290,9 @@ Feature:
                                 "date": "@string@.isDateTime()"
                             },
                             "proxy": null,
-                            "manual": false
+                            "manual": false,
+                            "matcher": null,
+                            "matched_at": null
                         }
                     ]
                 }
@@ -315,7 +327,9 @@ Feature:
             },
             "manual": true,
             "uuid": "b024ff2a-c74b-442c-8339-7df9d0c104b6",
-            "request": null
+            "request": null,
+            "matcher": null,
+            "matched_at": null
         }
 
         """
@@ -347,7 +361,9 @@ Feature:
                 "uuid": "@uuid@",
                 "name": "Premier tour",
                 "date": "@string@.isDateTime()"
-            }
+            },
+            "matcher": null,
+            "matched_at": null
         }
         """
         Examples:

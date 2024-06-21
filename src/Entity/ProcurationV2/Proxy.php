@@ -211,7 +211,7 @@ class Proxy extends AbstractProcuration
         );
     }
 
-    public function matchSlot(Round $round, Request $request): void
+    public function matchSlot(Round $round, Request $request, ?Adherent $matcher = null): void
     {
         /** @var ProxySlot|null $proxySlot */
         $proxySlot = $this->proxySlots->filter(
@@ -228,8 +228,8 @@ class Proxy extends AbstractProcuration
         )->first() ?? null;
 
         if ($proxySlot && $requestSlot) {
-            $requestSlot->proxySlot = $proxySlot;
-            $proxySlot->requestSlot = $requestSlot;
+            $requestSlot->match($proxySlot, $matcher);
+            $proxySlot->match($requestSlot, $matcher);
         }
     }
 
@@ -243,7 +243,7 @@ class Proxy extends AbstractProcuration
         )->first() ?? null;
 
         if ($proxySlot) {
-            $proxySlot->requestSlot = null;
+            $proxySlot->unmatch();
         }
 
         /** @var RequestSlot|null $requestSlot */
@@ -254,7 +254,7 @@ class Proxy extends AbstractProcuration
         )->first() ?? null;
 
         if ($requestSlot) {
-            $requestSlot->proxySlot = null;
+            $requestSlot->unmatch();
         }
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Procuration\V2;
 
+use App\Entity\Adherent;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
 use App\Entity\ProcurationV2\Round;
@@ -10,11 +11,13 @@ use App\Procuration\V2\Command\RequestCommand;
 use App\Procuration\V2\Event\ProcurationEvent;
 use App\Procuration\V2\Event\ProcurationEvents;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ProcurationHandler
 {
     public function __construct(
+        private readonly Security $security,
         private readonly ProcurationFactory $factory,
         private readonly EntityManagerInterface $entityManager,
         private readonly ProcurationNotifier $notifier,
@@ -71,7 +74,7 @@ class ProcurationHandler
 
     public function match(Request $request, Proxy $proxy, Round $round, bool $emailCopy): void
     {
-        $proxy->matchSlot($round, $request);
+        $proxy->matchSlot($round, $request, $this->getAdherent());
         $this->entityManager->flush();
 
         $this->updateRequestStatus($request);
@@ -106,5 +109,12 @@ class ProcurationHandler
         $history = $this->matchingHistoryHandler->createUnmatch($request, $proxy, $round, $emailCopy);
 
         $this->notifier->sendUnmatchConfirmation($request, $proxy, $round, $emailCopy ? $history->matcher : null);
+    }
+
+    private function getAdherent(): ?Adherent
+    {
+        $user = $this->security->getUser();
+
+        return $user instanceof Adherent ? $user : null;
     }
 }

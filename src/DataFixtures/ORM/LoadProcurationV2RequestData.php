@@ -104,7 +104,14 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
             $this->getReference('zone_vote_place_clichy_1')
         );
-        $request->requestSlots->first()->proxySlot = $this->getReference('proxy_slot_1');
+
+        $requestSlot = $request->requestSlots->first();
+        $proxySlot = $this->getReference('proxy_slot_1');
+        $matcher = $this->getReference('adherent-8');
+
+        $requestSlot->match($proxySlot, $matcher);
+        $proxySlot->match($requestSlot, $matcher);
+
         $manager->persist($request);
 
         $manager->persist($this->createRequest(
@@ -157,6 +164,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
     {
         return [
             LoadGeoZoneData::class,
+            LoadAdherentData::class,
             LoadProcurationV2ElectionData::class,
             LoadProcurationV2ProxyData::class,
         ];
