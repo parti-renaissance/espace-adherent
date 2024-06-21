@@ -35,7 +35,10 @@ class CheckUpdatedStatusListener implements EventSubscriberInterface
         $request = $event->getRequest();
         $operationName = $request->attributes->get('_api_operation_name');
 
-        if (!\in_array($operationName, ['api_requests_update_status_item'], true)) {
+        if (!\in_array($operationName, [
+            'api_requests_update_status_item',
+            'api_proxies_update_status_item',
+        ], true)) {
             return;
         }
 
@@ -48,7 +51,7 @@ class CheckUpdatedStatusListener implements EventSubscriberInterface
         if ($object->hasMatchedSlot()) {
             $event->setResponse(new JsonResponse([
                 'status' => 'error',
-                'message' => 'Le statut d\'une demande complétée ne peut pas être modifié.',
+                'message' => 'Le statut ne peut pas être modifié si un slot est déjà matché.',
             ], Response::HTTP_BAD_REQUEST));
         }
     }
