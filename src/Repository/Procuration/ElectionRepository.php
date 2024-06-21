@@ -12,4 +12,15 @@ class ElectionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Election::class);
     }
+
+    public function findAllOrderedByRoundDates(): array
+    {
+        return $this->createQueryBuilder('election')
+            ->innerJoin('election.rounds', 'round')
+            ->addSelect('round')
+            ->addOrderBy('round.date', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

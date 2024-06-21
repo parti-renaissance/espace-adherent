@@ -1,0 +1,223 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block sonata_head_title 'Statistiques procurations - ' ~ round.election.name ~ ' - ' ~ round.name ~ ' (' ~ round.date|format_datetime('medium', 'none') ~')' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.dataTable').DataTable({
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/French.json"
+                },
+                scrollX: true,
+                searching: false,
+                paging: false,
+                order: [],
+                dom: 'frt<"table-footer"iB>',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        className: 'btn btn-default',
+                        filename: 'Statistiques procurations - {{ round.election.name }} - {{ round.name }} ({{ round.date|format_datetime('medium', 'none') }})',
+                        title: null,
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        className: 'btn btn-default',
+                        filename: 'Statistiques procurations - {{ round.election.name }} - {{ round.name }} ({{ round.date|format_datetime('medium', 'none') }})',
+                        title: null,
+                    }
+                ]
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap.min.css" />
+
+    <style>
+        .table-footer {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+    </style>
+{% endblock %}
+
+{% block sonata_breadcrumb %}
+    <div class="hidden-xs">
+        <ol class="nav navbar-top-links breadcrumb">
+            <li>
+                <a href="{{ path('sonata_admin_dashboard') }}">
+                    <i class="fa fa-home"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('admin_app_stats_procuration_round_list') }}">
+                    Statistiques procurations
+                </a>
+            </li>
+            <li class="active">
+                <span>{{ round.election.name }} - {{ round.name }}</span>
+            </li>
+        </ol>
+    </div>
+{% endblock sonata_breadcrumb %}
+
+{% block sonata_page_content_header %}
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand">
+                    Statistiques procurations - {{ round.election.name }} - {{ round.name }} ({{ round.date|format_datetime('medium', 'none') }})
+                </a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="sonata-action-element" href="{{ path('admin_app_stats_procuration_round_list') }}">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                        Retour
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-blue-active">
+                <span class="info-box-icon"><i class="fa fa-user-plus"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Mandataires</span>
+                    <span class="info-box-number">{{ global_stats.total_proxy }}</span>
+                    <span class="progress-description">
+                        ({{ global_stats.total_proxy_slot }} procurations)
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-aqua">
+                <span class="info-box-icon"><i class="fa fa-address-card"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Mandants</span>
+                    <span class="info-box-number">{{ global_stats.total_request_slot }}</span>
+                </div>
+            </div>
+        </div>
+
+        {% set percentPending = global_stats.total_request_slot > 0 ? (global_stats.total_pending_request_slot * 100.0 / global_stats.total_request_slot) : 0 %}
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-yellow">
+                <span class="info-box-icon"><i class="fa fa-search"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Mandants en attente</span>
+                    <span class="info-box-number">{{ global_stats.total_pending_request_slot }}</span>
+                    <div class="progress">
+                        <div class="progress-bar bg-info" style="width: {{ percentPending }}%"></div>
+                    </div>
+                    <span class="progress-description">
+                        {{ percentPending|number_format(1, ',', ' ')|replace({',0': ''}) }} %
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        {% set percentCompleted = global_stats.total_request_slot > 0 ? (global_stats.total_completed_request_slot * 100.0 / global_stats.total_request_slot) : 0 %}
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box bg-green">
+                <span class="info-box-icon"><i class="fa fa-handshake"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Mandants traités</span>
+                    <span class="info-box-number">{{ global_stats.total_completed_request_slot }}</span>
+                    <div class="progress">
+                        <div class="progress-bar bg-info" style="width: {{ percentCompleted }}%"></div>
+                    </div>
+                    <span class="progress-description">
+                        {{ percentCompleted|number_format(1, ',', ' ')|replace({',0': ''}) }} %
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered table-hover dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="3">Zone</th>
+                                            <th colspan="3">Mandants</th>
+                                            <th>Mandataires</th>
+                                            <th colspan="3">Procurations à porter</th>
+                                        </tr>
+                                        <tr role="row">
+                                            <th class="sorting">Type</th>
+                                            <th class="sorting">Nom</th>
+                                            <th class="sorting">Code</th>
+                                            <th class="sorting">Total</th>
+                                            <th class="sorting">En attente</th>
+                                            <th class="sorting">Traités</th>
+                                            <th class="sorting">Total</th>
+                                            <th class="sorting">Total</th>
+                                            <th class="sorting">Disponibles</th>
+                                            <th class="sorting">Matchées</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for stats in zones_stats %}
+                                            <tr>
+                                                <td>
+                                                    {% if stats.zone_type == 'department' %}
+                                                        {% set labelClass = 'primary' %}
+                                                    {% elseif stats.zone_type == 'borough' %}
+                                                        {% set labelClass = 'warning' %}
+                                                    {% else %}
+                                                        {% set labelClass = 'success' %}
+                                                    {% endif %}
+                                                    <span class="label label-{{ labelClass }}" style="padding: 2px 4px;">
+                                                        {{ ('geo_zone.' ~ stats.zone_type)|trans }}
+                                                    </span>
+                                                </td>
+                                                <td><b>{{ stats.zone_name }}</b></td>
+                                                <td><b>{{ stats.zone_code }}</b></td>
+                                                <td>{{ stats.total_request_slot }}</td>
+                                                <td>{{ stats.total_pending_request_slot }}</td>
+                                                <td>{{ stats.total_completed_request_slot }}</td>
+                                                <td>{{ stats.total_proxy }}</td>
+                                                <td>{{ stats.total_proxy_slot }}</td>
+                                                <td>{{ stats.total_pending_proxy_slot }}</td>
+                                                <td>{{ stats.total_completed_proxy_slot }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

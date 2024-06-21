@@ -1,0 +1,74 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block sonata_head_title 'Statistiques procurations - Liste des tours' %}
+
+{% block sonata_breadcrumb %}
+    <div class="hidden-xs">
+        <ol class="nav navbar-top-links breadcrumb">
+            <li>
+                <a href="{{ path('sonata_admin_dashboard') }}">
+                    <i class="fa fa-home"></i>
+                </a>
+            </li>
+            <li class="active">
+                <span>
+                    Statistiques procurations
+                </span>
+            </li>
+        </ol>
+    </div>
+{% endblock sonata_breadcrumb %}
+
+{% block sonata_page_content_header %}
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand">
+                    Statistiques procurations - Liste des tours
+                </a>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block sonata_admin_content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Élections</th>
+                                        <th>Tour</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for election in elections %}
+                                        {% for round in election.rounds %}
+                                            <tr>
+                                                <td>{{ election.name }}</td>
+                                                <td>{{ round.name }}</td>
+                                                <td>{{ round.date|format_datetime('full', 'none') }}</td>
+                                                <td>
+                                                    <a href="{{ path('admin_app_stats_procuration_round_stats', { uuid: round.uuid }) }}" class="btn btn-xs btn-default" title="Statistiques">
+                                                        <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                                                        Statistiques
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
