@@ -224,28 +224,6 @@ class Request extends AbstractProcuration
         return false;
     }
 
-    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list_request', 'procuration_matched_proxy'])]
-    public function getMatcher(): ?Adherent
-    {
-        /** @var MatchingHistory $last */
-        if ($last = $this->matchingHistories->last()) {
-            return $last->matcher;
-        }
-
-        return null;
-    }
-
-    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list_request', 'procuration_matched_proxy'])]
-    public function getMatchedAt(): ?\DateTimeInterface
-    {
-        /** @var MatchingHistory $last */
-        if ($last = $this->matchingHistories->last()) {
-            return $last->createdAt;
-        }
-
-        return null;
-    }
-
     #[Groups(['procuration_request_read', 'procuration_request_list'])]
     #[SerializedName('request_slots')]
     public function getOrderedSlots(): array

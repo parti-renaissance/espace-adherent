@@ -3,6 +3,7 @@
 namespace App\Entity\ProcurationV2;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Entity\Adherent;
 use App\Repository\Procuration\RequestSlotRepository;
 use App\Validator\Procuration\ManualSlot;
 use Doctrine\ORM\Mapping as ORM;
@@ -52,5 +53,19 @@ class RequestSlot extends AbstractSlot
     public function getProxy(): ?Proxy
     {
         return $this->proxySlot?->proxy;
+    }
+
+    public function match(ProxySlot $proxySlot, ?Adherent $matcher = null): void
+    {
+        $this->proxySlot = $proxySlot;
+        $this->matcher = $matcher;
+        $this->matchedAt = new \DateTime();
+    }
+
+    public function unmatch(): void
+    {
+        $this->proxySlot = null;
+        $this->matcher = null;
+        $this->matchedAt = null;
     }
 }
