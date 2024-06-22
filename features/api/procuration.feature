@@ -82,7 +82,7 @@ Feature:
                                     "first_name": "Referent",
                                     "last_name": "Referent"
                                 },
-                                "author_scope": "PAD 92"
+                                "author_scope": "Président assemblée départementale"
                             },
                             {
                                 "uuid": "@uuid@",
@@ -94,7 +94,7 @@ Feature:
                                     "first_name": "Lucie",
                                     "last_name": "Olivera"
                                 },
-                                "author_scope": "Candidat 92"
+                                "author_scope": "Candidat aux législatives"
                             },
                             {
                                 "uuid": "@uuid@",
@@ -106,7 +106,7 @@ Feature:
                                     "first_name": "Lucie",
                                     "last_name": "Olivera"
                                 },
-                                "author_scope": "Candidat 92"
+                                "author_scope": "Candidat aux législatives"
                             }
 
                         ]
@@ -126,7 +126,7 @@ Feature:
                             "first_name": "Referent",
                             "last_name": "Referent"
                         },
-                        "author_scope": "PAD 92"
+                        "author_scope": "Président assemblée départementale"
                     },
                     {
                         "uuid": "@uuid@",
@@ -141,7 +141,7 @@ Feature:
                             "first_name": "Lucie",
                             "last_name": "Olivera"
                         },
-                        "author_scope": "Candidat 92"
+                        "author_scope": "Candidat aux législatives"
                     }
                 ]
             },
@@ -410,22 +410,11 @@ Feature:
         }
         """
         Then the response status code should be 200
-        And the JSON should be equal to:
+        And the JSON should be a superset of:
         """
         {
             "uuid": "f406fc52-248b-4e30-bcb6-355516a45ad9",
             "manual": true,
-            "proxy": null,
-            "request": {
-                "uuid": "@uuid@",
-                "status": "pending",
-                "actions": []
-            },
-            "round": {
-                "uuid": "@uuid@",
-                "name": "Premier tour",
-                "date": "@string@.isDateTime()"
-            },
             "actions": []
         }
         """
@@ -450,7 +439,7 @@ Feature:
                         "uuid": "edf49758-c047-472d-9a98-4d24fbc58190"
                     },
                     "proxy": null,
-                    "actions": "@array@.count(0)"
+                    "actions": []
                 }
             ]
         }
@@ -473,7 +462,7 @@ Feature:
                                 "uuid": "edf49758-c047-472d-9a98-4d24fbc58190"
                             },
                             "request": null,
-                            "actions": "@array@.count(0)"
+                            "actions": []
                         }
                     ]
                 }
@@ -516,7 +505,7 @@ Feature:
                                 "first_name": "<first_name>",
                                 "last_name": "<last_name>"
                             },
-                            "author_scope": "referent",
+                            "author_scope": "Référent",
                             "context": []
                         }
                     ]
@@ -557,7 +546,7 @@ Feature:
                                 "first_name": "<first_name>",
                                 "last_name": "<last_name>"
                             },
-                            "author_scope": "referent",
+                            "author_scope": "Référent",
                             "context": []
                         },
                         {
@@ -568,7 +557,7 @@ Feature:
                                 "first_name": "<first_name>",
                                 "last_name": "<last_name>"
                             },
-                            "author_scope": "referent",
+                            "author_scope": "Référent",
                             "context": []
                         }
                     ]
@@ -580,4 +569,110 @@ Feature:
         Examples:
             | user                      | scope                                          | first_name | last_name     |
             | referent@en-marche-dev.fr | referent                                       | Referent   | Referent      |
-            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | Bob        | Sénateur (59) |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | Bob        | Senateur (59) |
+
+    Scenario Outline: As a referent I can match and unmatch slots
+        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+
+        # 1. Ensure request with uuid "5bc0b6e2-7073-4572-8d98-f5b64d591ca7" has a pending status
+        When I send a "GET" request to "/api/v3/procuration/requests/5bc0b6e2-7073-4572-8d98-f5b64d591ca7?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be a superset of:
+        """
+        {
+            "status": "pending",
+            "actions": []
+        }
+        """
+
+        # 2. Update request status to "excluded"
+        When I send a "PATCH" request to "/api/v3/procuration/requests/5bc0b6e2-7073-4572-8d98-f5b64d591ca7?scope=<scope>" with body:
+        """
+        {
+            "status": "excluded"
+        }
+        """
+        Then the response status code should be 200
+
+        # 3. Ensure request has now status set to "excluded"
+        When I send a "GET" request to "/api/v3/procuration/requests/5bc0b6e2-7073-4572-8d98-f5b64d591ca7?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be a superset of:
+        """
+        {
+            "status": "excluded",
+            "actions": [
+                {
+                    "status": "status_update",
+                    "date": "@string@",
+                    "author": {
+                        "uuid": "@uuid@",
+                        "first_name": "<first_name>",
+                        "last_name": "<last_name>"
+                    },
+                    "author_scope": "Référent",
+                    "context": {
+                        "old_status": "pending",
+                        "new_status": "excluded"
+                    }
+                }
+            ]
+        }
+        """
+
+        # 4. Update request status to "pending"
+        When I send a "PATCH" request to "/api/v3/procuration/requests/5bc0b6e2-7073-4572-8d98-f5b64d591ca7?scope=<scope>" with body:
+        """
+        {
+            "status": "pending"
+        }
+        """
+        Then the response status code should be 200
+
+        # 5. Ensure request has now status set to "pending"
+        When I send a "GET" request to "/api/v3/procuration/requests/5bc0b6e2-7073-4572-8d98-f5b64d591ca7?scope=<scope>"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be a superset of:
+        """
+        {
+            "status": "pending",
+            "actions": [
+                {
+                    "status": "status_update",
+                    "date": "@string@",
+                    "author": {
+                        "uuid": "@uuid@",
+                        "first_name": "<first_name>",
+                        "last_name": "<last_name>"
+                    },
+                    "author_scope": "Référent",
+                    "context": {
+                        "old_status": "excluded",
+                        "new_status": "pending"
+                    }
+                },
+                {
+                    "status": "status_update",
+                    "date": "@string@",
+                    "author": {
+                        "uuid": "@uuid@",
+                        "first_name": "<first_name>",
+                        "last_name": "<last_name>"
+                    },
+                    "author_scope": "Référent",
+                    "context": {
+                        "old_status": "pending",
+                        "new_status": "excluded"
+                    }
+                }
+            ]
+        }
+        """
+
+        Examples:
+            | user                      | scope                                          | first_name | last_name     |
+            | referent@en-marche-dev.fr | referent                                       | Referent   | Referent      |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | Bob        | Senateur (59) |

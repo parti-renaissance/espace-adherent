@@ -35,7 +35,7 @@ class LoadProcurationV2SlotActionData extends Fixture implements DependentFixtur
             $proxySlot1->proxy,
             new \DateTime('-10 minutes'),
             $matcher1,
-            'Candidat 92',
+            'legislative_candidate',
             [
                 'old_status' => 'pending',
                 'new_status' => 'excluded',
@@ -46,7 +46,7 @@ class LoadProcurationV2SlotActionData extends Fixture implements DependentFixtur
             $proxySlot1->proxy,
             new \DateTime('-9 minutes'),
             $matcher2,
-            'PAD 92',
+            'president_departmental_assembly',
             [
                 'old_status' => 'excluded',
                 'new_status' => 'pending',
@@ -59,7 +59,7 @@ class LoadProcurationV2SlotActionData extends Fixture implements DependentFixtur
             $proxySlot1,
             new \DateTime('-8 minutes'),
             $matcher1,
-            'Candidat 92',
+            'legislative_candidate',
             [
                 'old_status' => 'pending',
                 'new_status' => 'manual',
@@ -70,7 +70,7 @@ class LoadProcurationV2SlotActionData extends Fixture implements DependentFixtur
             $proxySlot1,
             new \DateTime('-7 minutes'),
             $matcher2,
-            'PAP 92',
+            'president_departmental_assembly',
             [
                 'old_status' => 'manual',
                 'new_status' => 'pending',
@@ -78,9 +78,9 @@ class LoadProcurationV2SlotActionData extends Fixture implements DependentFixtur
         ));
 
         // Create match history between $requestSlot1 and $proxySlot1
-        $this->createMatchHistory($requestSlot1, $proxySlot1, $matcher1, 'Candidat 92', new \DateTime('-5 minutes'));
-        $this->createUnmatchHistory($requestSlot1, $proxySlot1, $matcher1, 'Candidat 92', new \DateTime('-4 minutes'));
-        $this->createMatchHistory($requestSlot1, $proxySlot1, $matcher2, 'PAD 92', new \DateTime('-3 minutes'));
+        $this->createMatchHistory($requestSlot1, $proxySlot1, $matcher1, 'legislative_candidate', new \DateTime('-5 minutes'));
+        $this->createUnmatchHistory($requestSlot1, $proxySlot1, $matcher1, 'legislative_candidate', new \DateTime('-4 minutes'));
+        $this->createMatchHistory($requestSlot1, $proxySlot1, $matcher2, 'president_departmental_assembly', new \DateTime('-3 minutes'));
 
         // Match $requestSlot1 and $proxySlot1
         $requestSlot1->proxySlot = $proxySlot1;

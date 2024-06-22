@@ -265,7 +265,7 @@ class Request extends AbstractProcuration
     {
         $actions = $this->actions->toArray();
 
-        uasort($actions, fn (RequestAction $a, RequestAction $b) => $b->date <=> $a->date);
+        uasort($actions, [AbstractAction::class, 'sort']);
 
         return \array_slice(array_values($actions), 0, $limit);
     }

@@ -244,7 +244,7 @@ class Proxy extends AbstractProcuration
     {
         $actions = $this->actions->toArray();
 
-        uasort($actions, fn (ProxyAction $a, ProxyAction $b) => $b->date <=> $a->date);
+        uasort($actions, [AbstractAction::class, 'sort']);
 
         return \array_slice(array_values($actions), 0, $limit);
     }
