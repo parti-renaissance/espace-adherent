@@ -3,12 +3,14 @@
 namespace App\Entity\ProcurationV2;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Entity\Adherent;
 use App\Repository\Procuration\RequestSlotRepository;
 use App\Validator\Procuration\ManualSlot;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ManualSlot
@@ -42,11 +44,19 @@ class RequestSlot extends AbstractSlot
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     public ?ProxySlot $proxySlot = null;
 
+    /**
+     * @var RequestSlotAction[]|Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'requestSlot', targetEntity: RequestSlotAction::class, cascade: ['all'])]
+    #[ORM\OrderBy(['date' => 'DESC'])]
+    public Collection $actions;
+
     public function __construct(Round $round, Request $request, ?UuidInterface $uuid = null)
     {
         parent::__construct($round, $uuid);
 
         $this->request = $request;
+        $this->actions = new ArrayCollection();
     }
 
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_request_slot_read'])]
@@ -55,17 +65,24 @@ class RequestSlot extends AbstractSlot
         return $this->proxySlot?->proxy;
     }
 
-    public function match(ProxySlot $proxySlot, ?Adherent $matcher = null): void
+    public function match(ProxySlot $proxySlot): void
     {
         $this->proxySlot = $proxySlot;
-        $this->matcher = $matcher;
-        $this->matchedAt = new \DateTime();
     }
 
     public function unmatch(): void
     {
         $this->proxySlot = null;
-        $this->matcher = null;
-        $this->matchedAt = null;
+    }
+
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
+    #[SerializedName('actions')]
+    public function getOrderedActions(int $limit = 3): array
+    {
+        $actions = $this->actions->toArray();
+
+        uasort($actions, fn (RequestSlotAction $a, RequestSlotAction $b) => $b->date <=> $a->date);
+
+        return \array_slice(array_values($actions), 0, $limit);
     }
 }

@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -123,9 +124,17 @@ class Request extends AbstractProcuration
      */
     #[ORM\OneToMany(mappedBy: 'request', targetEntity: MatchingHistory::class)]
     #[ORM\OrderBy(['createdAt' => 'ASC'])]
-    private Collection $matchingHistories;
+    public Collection $matchingHistories;
+
+    /**
+     * @var RequestAction[]|Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'request', targetEntity: RequestAction::class, cascade: ['all'])]
+    #[ORM\OrderBy(['date' => 'DESC'])]
+    public Collection $actions;
 
     public function __construct(
+        UuidInterface $uuid,
         array $rounds,
         string $email,
         string $gender,
@@ -145,6 +154,7 @@ class Request extends AbstractProcuration
         ?\DateTimeInterface $createdAt = null
     ) {
         parent::__construct(
+            $uuid,
             $rounds,
             $email,
             $gender,
@@ -166,6 +176,7 @@ class Request extends AbstractProcuration
         $this->fromFrance = $fromFrance;
         $this->matchingHistories = new ArrayCollection();
         $this->requestSlots = new ArrayCollection();
+        $this->actions = new ArrayCollection();
     }
 
     public function isPending(): bool
@@ -246,5 +257,16 @@ class Request extends AbstractProcuration
     {
         $this->status = RequestStatusEnum::DUPLICATE;
         $this->statusDetail = $detail;
+    }
+
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
+    #[SerializedName('actions')]
+    public function getOrderedActions(int $limit = 3): array
+    {
+        $actions = $this->actions->toArray();
+
+        uasort($actions, fn (RequestAction $a, RequestAction $b) => $b->date <=> $a->date);
+
+        return \array_slice(array_values($actions), 0, $limit);
     }
 }

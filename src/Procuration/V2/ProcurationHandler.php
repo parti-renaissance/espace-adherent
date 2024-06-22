@@ -2,22 +2,22 @@
 
 namespace App\Procuration\V2;
 
-use App\Entity\Adherent;
 use App\Entity\ProcurationV2\Proxy;
+use App\Entity\ProcurationV2\ProxySlot;
 use App\Entity\ProcurationV2\Request;
+use App\Entity\ProcurationV2\RequestSlot;
 use App\Entity\ProcurationV2\Round;
 use App\Procuration\V2\Command\ProxyCommand;
 use App\Procuration\V2\Command\RequestCommand;
 use App\Procuration\V2\Event\ProcurationEvent;
 use App\Procuration\V2\Event\ProcurationEvents;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ProcurationHandler
 {
     public function __construct(
-        private readonly Security $security,
+        private readonly ProcurationActionHandler $actionHandler,
         private readonly ProcurationFactory $factory,
         private readonly EntityManagerInterface $entityManager,
         private readonly ProcurationNotifier $notifier,
@@ -74,8 +74,7 @@ class ProcurationHandler
 
     public function match(Request $request, Proxy $proxy, Round $round, bool $emailCopy): void
     {
-        $proxy->matchSlot($round, $request, $this->getAdherent());
-        $this->entityManager->flush();
+        $this->matchSlots($request, $proxy, $round);
 
         $this->updateRequestStatus($request);
         $this->updateProxyStatus($proxy);
@@ -100,8 +99,7 @@ class ProcurationHandler
             return;
         }
 
-        $proxy->unmatchSlot($round, $request);
-        $this->entityManager->flush();
+        $this->unmatchSlots($request, $proxy, $round);
 
         $this->updateRequestStatus($request);
         $this->updateProxyStatus($proxy);
@@ -111,10 +109,59 @@ class ProcurationHandler
         $this->notifier->sendUnmatchConfirmation($request, $proxy, $round, $emailCopy ? $history->matcher : null);
     }
 
-    private function getAdherent(): ?Adherent
+    private function matchSlots(Request $request, Proxy $proxy, Round $round): void
     {
-        $user = $this->security->getUser();
+        /** @var RequestSlot|null $requestSlot */
+        $requestSlot = $request->requestSlots->filter(
+            static function (RequestSlot $requestSlot) use ($round): bool {
+                return $round === $requestSlot->round && null === $requestSlot->proxySlot;
+            }
+        )->first() ?? null;
 
-        return $user instanceof Adherent ? $user : null;
+        /** @var ProxySlot|null $proxySlot */
+        $proxySlot = $proxy->proxySlots->filter(
+            static function (ProxySlot $proxySlot) use ($round): bool {
+                return $round === $proxySlot->round && null === $proxySlot->requestSlot;
+            }
+        )->first() ?? null;
+
+        if (!$requestSlot || !$proxySlot) {
+            return;
+        }
+
+        $requestSlot->match($proxySlot);
+        $proxySlot->match($requestSlot);
+
+        $this->entityManager->flush();
+
+        $this->actionHandler->createMatchActions($requestSlot, $proxySlot);
+    }
+
+    private function unmatchSlots(Request $request, Proxy $proxy, Round $round): void
+    {
+        /** @var ProxySlot|null $proxySlot */
+        $proxySlot = $proxy->proxySlots->filter(
+            function (ProxySlot $proxySlot) use ($round, $request): bool {
+                return $round === $proxySlot->round && $request === $proxySlot->requestSlot?->request;
+            }
+        )->first() ?? null;
+
+        /** @var RequestSlot|null $requestSlot */
+        $requestSlot = $request->requestSlots->filter(
+            function (RequestSlot $requestSlot) use ($round, $proxy): bool {
+                return $round === $requestSlot->round && $proxy === $requestSlot->proxySlot?->proxy;
+            }
+        )->first() ?? null;
+
+        if (!$requestSlot || !$proxySlot) {
+            return;
+        }
+
+        $requestSlot->unmatch();
+        $proxySlot->unmatch();
+
+        $this->entityManager->flush();
+
+        $this->actionHandler->createUnmatchActions($requestSlot, $proxySlot);
     }
 }

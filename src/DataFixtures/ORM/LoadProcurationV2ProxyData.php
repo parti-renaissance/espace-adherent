@@ -14,9 +14,12 @@ use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInterface
 {
+    public const UUID_PROXY_1 = '21b2fb24-cf5e-4fbb-af36-efa74605dc99';
+    public const UUID_PROXY_2 = 'c1ddce73-84dd-45a0-8eed-2078a3de8625';
     public const UUID_PROXY_SLOT_1 = 'b024ff2a-c74b-442c-8339-7df9d0c104b6';
 
     private Generator $faker;
@@ -30,6 +33,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
     public function load(ObjectManager $manager)
     {
         $proxy = $this->createProxy(
+            null,
             $rounds = [$this->getReference('procuration-v2-europeennes-2024-round-1')],
             'john.durand@test.dev',
             Genders::MALE,
@@ -49,6 +53,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         $manager->persist($proxy);
 
         $manager->persist($this->createProxy(
+            null,
             $rounds,
             'jane.martin@test.dev',
             Genders::FEMALE,
@@ -69,6 +74,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         $zone = LoadGeoZoneData::getZone($manager, 'zone_city_92024');
         for ($i = 1; $i <= 10; ++$i) {
             $manager->persist($proxy = $this->createProxy(
+                null,
                 $rounds,
                 $this->faker->email(),
                 0 === $i % 2 ? Genders::MALE : Genders::FEMALE,
@@ -88,6 +94,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         }
 
         $manager->persist($proxy = $this->createProxy(
+            Uuid::fromString(self::UUID_PROXY_1),
             [$this->getReference('procuration-v2-legislatives-2024-round-1')],
             'john.durand@test.dev',
             Genders::MALE,
@@ -106,6 +113,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         $this->setReference('proxy_slot_1', $proxy->proxySlots->first());
 
         $manager->persist($this->createProxy(
+            null,
             [
                 $round1 = $this->getReference('procuration-v2-legislatives-2024-round-1'),
                 $this->getReference('procuration-v2-legislatives-2024-round-2'),
@@ -133,6 +141,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         ));
 
         $manager->persist($this->createProxy(
+            Uuid::fromString(self::UUID_PROXY_2),
             [$this->getReference('procuration-v2-legislatives-2024-round-2')],
             'jacques.durand@test.dev',
             Genders::MALE,
@@ -162,6 +171,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
     }
 
     private function createProxy(
+        ?UuidInterface $uuid,
         array $rounds,
         string $email,
         string $gender,
@@ -183,6 +193,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         array $slotsUuidMapping = []
     ): Proxy {
         $proxy = new Proxy(
+            $uuid ?? Uuid::uuid4(),
             $rounds,
             $email,
             $gender,

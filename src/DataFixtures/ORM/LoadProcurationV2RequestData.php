@@ -14,9 +14,12 @@ use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class LoadProcurationV2RequestData extends Fixture implements DependentFixtureInterface
 {
+    public const UUID_REQUEST_1 = '40f856da-8f9d-4133-b74b-d090063605c7';
+    public const UUID_REQUEST_2 = '5bc0b6e2-7073-4572-8d98-f5b64d591ca7';
     public const UUID_REQUEST_SLOT_1 = 'f406fc52-248b-4e30-bcb6-355516a45ad9';
 
     private Generator $faker;
@@ -30,6 +33,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
     public function load(ObjectManager $manager)
     {
         $manager->persist($this->createRequest(
+            null,
             $rounds = [$this->getReference('procuration-v2-europeennes-2024-round-1')],
             'jack.doe@test.dev',
             Genders::MALE,
@@ -47,6 +51,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         ));
 
         $manager->persist($this->createRequest(
+            null,
             $rounds,
             'pascal.dae@test.dev',
             Genders::MALE,
@@ -69,6 +74,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         for ($i = 1; $i <= 10; ++$i) {
             $manager->persist(
                 $request = $this->createRequest(
+                    null,
                     $rounds,
                     $this->faker->email(),
                     0 === $i % 2 ? Genders::MALE : Genders::FEMALE,
@@ -88,7 +94,8 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             $request->setUpdatedAt($date);
         }
 
-        $request = $this->createRequest(
+        $manager->persist($request = $this->createRequest(
+            Uuid::fromString(self::UUID_REQUEST_1),
             [$this->getReference('procuration-v2-legislatives-2024-round-1')],
             'jack.doe@test.dev',
             Genders::MALE,
@@ -103,18 +110,11 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             false,
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
             $this->getReference('zone_vote_place_clichy_1')
-        );
-
-        $requestSlot = $request->requestSlots->first();
-        $proxySlot = $this->getReference('proxy_slot_1');
-        $matcher = $this->getReference('adherent-8');
-
-        $requestSlot->match($proxySlot, $matcher);
-        $proxySlot->match($requestSlot, $matcher);
-
-        $manager->persist($request);
+        ));
+        $this->setReference('request_slot_1', $request->requestSlots->first());
 
         $manager->persist($this->createRequest(
+            Uuid::fromString(self::UUID_REQUEST_2),
             [$this->getReference('procuration-v2-legislatives-2024-round-2')],
             'pierre.doe@test.dev',
             Genders::MALE,
@@ -132,6 +132,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         ));
 
         $manager->persist($this->createRequest(
+            null,
             [
                 $this->getReference('procuration-v2-legislatives-2024-round-2'),
                 $round1 = $this->getReference('procuration-v2-legislatives-2024-round-1'),
@@ -171,6 +172,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
     }
 
     private function createRequest(
+        ?UuidInterface $uuid,
         array $rounds,
         string $email,
         string $gender,
@@ -191,6 +193,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         array $slotsUuidMapping = []
     ): Request {
         $request = new Request(
+            $uuid ?? Uuid::uuid4(),
             $rounds,
             $email,
             $gender,

@@ -3,11 +3,13 @@
 namespace App\Entity\ProcurationV2;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Entity\Adherent;
 use App\Validator\Procuration\ManualSlot;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ManualSlot
@@ -40,11 +42,18 @@ class ProxySlot extends AbstractSlot
     #[ORM\OneToOne(mappedBy: 'proxySlot', targetEntity: RequestSlot::class)]
     public ?RequestSlot $requestSlot = null;
 
+    /**
+     * @var ProxySlotAction[]|Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'proxySlot', targetEntity: ProxySlotAction::class, cascade: ['all'])]
+    public Collection $actions;
+
     public function __construct(Round $round, Proxy $proxy, ?UuidInterface $uuid = null)
     {
         parent::__construct($round, $uuid);
 
         $this->proxy = $proxy;
+        $this->actions = new ArrayCollection();
     }
 
     #[Groups(['procuration_matched_proxy', 'procuration_proxy_list', 'procuration_proxy_slot_read'])]
@@ -53,17 +62,24 @@ class ProxySlot extends AbstractSlot
         return $this->requestSlot?->request;
     }
 
-    public function match(RequestSlot $requestSlot, ?Adherent $matcher = null): void
+    public function match(RequestSlot $requestSlot): void
     {
         $this->requestSlot = $requestSlot;
-        $this->matcher = $matcher;
-        $this->matchedAt = new \DateTime();
     }
 
     public function unmatch(): void
     {
         $this->requestSlot = null;
-        $this->matcher = null;
-        $this->matchedAt = null;
+    }
+
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
+    #[SerializedName('actions')]
+    public function getOrderedActions(int $limit = 3): array
+    {
+        $actions = $this->actions->toArray();
+
+        uasort($actions, fn (ProxySlotAction $a, ProxySlotAction $b) => $b->date <=> $a->date);
+
+        return \array_slice(array_values($actions), 0, $limit);
     }
 }

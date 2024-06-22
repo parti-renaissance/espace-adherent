@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
-use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -128,6 +128,7 @@ abstract class AbstractProcuration implements TranslatedTagInterface
     public ?string $statusDetail = null;
 
     public function __construct(
+        UuidInterface $uuid,
         array $rounds,
         string $email,
         string $gender,
@@ -145,7 +146,7 @@ abstract class AbstractProcuration implements TranslatedTagInterface
         ?string $clientIp = null,
         ?\DateTimeInterface $createdAt = null
     ) {
-        $this->uuid = Uuid::uuid4();
+        $this->uuid = $uuid;
         $this->rounds = new ArrayCollection($rounds);
         $this->email = $email;
         $this->gender = $gender;
