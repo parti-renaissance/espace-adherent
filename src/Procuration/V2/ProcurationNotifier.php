@@ -10,6 +10,7 @@ use App\Entity\ProcurationV2\Round;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Procuration\V2\ProcurationInitialProxyReminderMessage;
 use App\Mailer\Message\Procuration\V2\ProcurationInitialRequestReminderMessage;
+use App\Mailer\Message\Procuration\V2\ProcurationMatchReminderMessage;
 use App\Mailer\Message\Procuration\V2\ProcurationProxyConfirmationMessage;
 use App\Mailer\Message\Procuration\V2\ProcurationRequestConfirmationMessage;
 use App\Mailer\Message\Procuration\V2\ProcurationRequestMatchedConfirmationMessage;
@@ -48,5 +49,10 @@ class ProcurationNotifier
             : ProcurationInitialProxyReminderMessage::create($procurationRequest);
 
         $this->transactionalMailer->sendMessage($message);
+    }
+
+    public function sendMatchReminder(Request $request, Proxy $proxy, Round $round, ?Adherent $matcher = null): void
+    {
+        $this->transactionalMailer->sendMessage(ProcurationMatchReminderMessage::create($request, $proxy, $round, $matcher));
     }
 }
