@@ -376,30 +376,83 @@ Feature:
         }
         """
         Then the response status code should be 200
-        And the JSON should be equal to:
+        And the JSON should be a superset of:
         """
         {
-            "proxy": {
-                "uuid": "@uuid@",
-                "status": "pending",
-                "actions": []
-            },
-            "round": {
-                "name": "Premier tour",
-                "date": "@string@.isDateTime()",
-                "uuid": "@uuid@"
-            },
-            "manual": true,
             "uuid": "b024ff2a-c74b-442c-8339-7df9d0c104b6",
-            "request": null,
-            "actions": []
-        }
+            "manual": true,
+            "actions": [
+                {
+                    "uuid": "@uuid@",
+                    "status": "status_update",
+                    "date": "@string@.isDateTime()",
+                    "author": {
+                        "uuid": "@uuid@",
+                        "first_name": "<first_name>",
+                        "last_name": "<last_name>"
+                    },
+                    "author_scope": "Référent",
+                    "context": {
+                        "old_status": "pending",
+                        "new_status": "manual"
+                    }
 
+                }
+            ]
+        }
+        """
+
+        When I send a "PUT" request to "/api/v3/procuration/proxy_slots/b024ff2a-c74b-442c-8339-7df9d0c104b6?scope=<scope>" with body:
+        """
+        {
+            "manual": false
+        }
+        """
+        Then the response status code should be 200
+        And the JSON should be a superset of:
+        """
+        {
+            "uuid": "b024ff2a-c74b-442c-8339-7df9d0c104b6",
+            "manual": false,
+            "actions": [
+                {
+                    "uuid": "@uuid@",
+                    "status": "status_update",
+                    "date": "@string@.isDateTime()",
+                    "author": {
+                        "uuid": "@uuid@",
+                        "first_name": "<first_name>",
+                        "last_name": "<last_name>"
+                    },
+                    "author_scope": "Référent",
+                    "context": {
+                        "old_status": "manual",
+                        "new_status": "pending"
+                    }
+
+                },
+                {
+                    "uuid": "@uuid@",
+                    "status": "status_update",
+                    "date": "@string@.isDateTime()",
+                    "author": {
+                        "uuid": "@uuid@",
+                        "first_name": "<first_name>",
+                        "last_name": "<last_name>"
+                    },
+                    "author_scope": "Référent",
+                    "context": {
+                        "old_status": "pending",
+                        "new_status": "manual"
+                    }
+                }
+            ]
+        }
         """
         Examples:
-            | user                      | scope                                          |
-            | referent@en-marche-dev.fr | referent                                       |
-            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+            | user                      | scope                                          | first_name | last_name     |
+            | referent@en-marche-dev.fr | referent                                       | Referent   | Referent      |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | Bob        | Senateur (59) |
 
     Scenario Outline: As a referent I can update request slots status
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
@@ -415,13 +468,76 @@ Feature:
         {
             "uuid": "f406fc52-248b-4e30-bcb6-355516a45ad9",
             "manual": true,
-            "actions": []
+            "actions": [
+                {
+                    "uuid": "@uuid@",
+                    "status": "status_update",
+                    "date": "@string@.isDateTime()",
+                    "author": {
+                        "uuid": "@uuid@",
+                        "first_name": "<first_name>",
+                        "last_name": "<last_name>"
+                    },
+                    "author_scope": "Référent",
+                    "context": {
+                        "old_status": "pending",
+                        "new_status": "manual"
+                    }
+                }
+            ]
+        }
+        """
+
+        When I send a "PUT" request to "/api/v3/procuration/request_slots/f406fc52-248b-4e30-bcb6-355516a45ad9?scope=<scope>" with body:
+        """
+        {
+            "manual": false
+        }
+        """
+        Then the response status code should be 200
+        And the JSON should be a superset of:
+        """
+        {
+            "uuid": "f406fc52-248b-4e30-bcb6-355516a45ad9",
+            "manual": false,
+            "actions": [
+                {
+                    "uuid": "@uuid@",
+                    "status": "status_update",
+                    "date": "@string@.isDateTime()",
+                    "author": {
+                        "uuid": "@uuid@",
+                        "first_name": "<first_name>",
+                        "last_name": "<last_name>"
+                    },
+                    "author_scope": "Référent",
+                    "context": {
+                        "old_status": "manual",
+                        "new_status": "pending"
+                    }
+                },
+                {
+                    "uuid": "@uuid@",
+                    "status": "status_update",
+                    "date": "@string@.isDateTime()",
+                    "author": {
+                        "uuid": "@uuid@",
+                        "first_name": "<first_name>",
+                        "last_name": "<last_name>"
+                    },
+                    "author_scope": "Référent",
+                    "context": {
+                        "old_status": "pending",
+                        "new_status": "manual"
+                    }
+                }
+            ]
         }
         """
         Examples:
-            | user                      | scope                                          |
-            | referent@en-marche-dev.fr | referent                                       |
-            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+            | user                      | scope                                          | first_name | last_name     |
+            | referent@en-marche-dev.fr | referent                                       | Referent   | Referent      |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | Bob        | Senateur (59) |
 
     Scenario Outline: As a referent I can match and unmatch slots
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"

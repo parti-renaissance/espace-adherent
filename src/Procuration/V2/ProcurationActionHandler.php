@@ -113,6 +113,44 @@ class ProcurationActionHandler
         $this->entityManager->flush();
     }
 
+    public function createRequestSlotStatusUpdateAction(
+        RequestSlot $requestSlot,
+        string $newStatus,
+        string $oldStatus
+    ): void {
+        $requestSlot->actions->add(
+            $this->createRequestSlotAction(
+                SlotActionStatusEnum::STATUS_UPDATE,
+                $requestSlot,
+                $this->getAuthor(),
+                $this->getAuthorScope(),
+                [
+                    'old_status' => $oldStatus,
+                    'new_status' => $newStatus,
+                ]
+            )
+        );
+    }
+
+    public function createProxySlotStatusUpdateAction(
+        ProxySlot $proxySlot,
+        string $newStatus,
+        string $oldStatus
+    ): void {
+        $proxySlot->actions->add(
+            $this->createProxySlotAction(
+                SlotActionStatusEnum::STATUS_UPDATE,
+                $proxySlot,
+                $this->getAuthor(),
+                $this->getAuthorScope(),
+                [
+                    'old_status' => $oldStatus,
+                    'new_status' => $newStatus,
+                ]
+            )
+        );
+    }
+
     private function createRequestAction(
         ProcurationActionStatusEnum $status,
         Request $request,
