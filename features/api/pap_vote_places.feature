@@ -27,7 +27,6 @@ Feature:
             "addresses": 2,
             "distance": 1.7064951008410147
         },
-
         {},
         {
             "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3",
