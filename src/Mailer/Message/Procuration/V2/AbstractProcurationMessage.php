@@ -3,6 +3,7 @@
 namespace App\Mailer\Message\Procuration\V2;
 
 use App\Mailer\Message\Message;
+use App\ValueObject\Genders;
 
 abstract class AbstractProcurationMessage extends Message
 {
@@ -15,5 +16,14 @@ abstract class AbstractProcurationMessage extends Message
         $message->setSenderName(static::SENDER_NAME);
 
         return $message;
+    }
+
+    protected static function getCivilityName(string $gender, string $lastName): string
+    {
+        return sprintf(
+            '%s %s',
+            Genders::FEMALE === $gender ? 'Mme' : 'M.',
+            $lastName
+        );
     }
 }

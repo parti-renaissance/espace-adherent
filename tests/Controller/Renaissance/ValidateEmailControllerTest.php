@@ -2,6 +2,7 @@
 
 namespace Tests\App\Controller\Renaissance;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
@@ -12,7 +13,7 @@ class ValidateEmailControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
-    /** @dataProvider getEmails */
+    #[DataProvider('getEmails')]
     public function testValidateEmailEndpoint(string $email, int $status): void
     {
         $crawler = $this->client->request('GET', '/adhesion');

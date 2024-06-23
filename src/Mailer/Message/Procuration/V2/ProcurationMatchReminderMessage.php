@@ -10,7 +10,7 @@ use App\Mailer\Message\Message;
 use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
 
-final class ProcurationRequestMatchedConfirmationMessage extends AbstractProcurationMessage
+final class ProcurationMatchReminderMessage extends AbstractProcurationMessage
 {
     public static function create(Request $request, Proxy $proxy, Round $round, ?Adherent $matcher = null): Message
     {
@@ -19,7 +19,7 @@ final class ProcurationRequestMatchedConfirmationMessage extends AbstractProcura
             $request->email,
             null,
             sprintf(
-                'Mise en relation : %s et %s',
+                '[Rappel] Mise en relation : %s et %s',
                 self::getCivilityName($request->gender, $request->lastName),
                 self::getCivilityName($proxy->gender, $proxy->lastName)
             ),
