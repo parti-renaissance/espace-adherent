@@ -3,6 +3,7 @@
 namespace Controller\Renaissance\Adhesion;
 
 use App\Entity\Renaissance\Adhesion\AdherentRequest;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
@@ -13,7 +14,7 @@ class PersistEmailControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
-    /** @dataProvider getEmails */
+    #[DataProvider('getEmails')]
     public function testPersistEmailEndpoint(string $email, int $status): void
     {
         $this->client->jsonRequest('POST', '/api/persist-email', ['email' => $email, 'recaptcha' => 'fake', 'utm_source' => 'test', 'utm_campaign' => 'phpunit']);
