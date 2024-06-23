@@ -25,7 +25,10 @@ class ActionNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $data = $this->normalizer->normalize($object, $format, $context);
 
         if (\array_key_exists('author_scope', $data)) {
-            $data['author_scope'] = $this->translator->trans('role.'.$data['author_scope']);
+            $translationKey = 'role.'.$data['author_scope'];
+            $translatedKey = $this->translator->trans('role.'.$data['author_scope']);
+
+            $data['author_scope'] = $translatedKey !== $translationKey ? $translatedKey : $data['author_scope'];
         }
 
         return $data;
