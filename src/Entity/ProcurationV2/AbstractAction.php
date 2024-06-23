@@ -45,16 +45,4 @@ abstract class AbstractAction
         $this->uuid = $uuid;
         $this->date = $date;
     }
-
-    public static function sort(self $a, self $b): int
-    {
-        $aDate = $a->date->format($format = 'Y-m-d H:i:s');
-        $bDate = $b->date->format($format);
-
-        if ($aDate === $bDate) {
-            return $b->getId() <=> $a->getId();
-        }
-
-        return $b->date <=> $a->date;
-    }
 }

@@ -28,6 +28,7 @@ abstract class AbstractProcuration implements TranslatedTagInterface
     use EntityTimestampableTrait;
     use EntityPostAddressTrait;
     use EntityAdministratorBlameableTrait;
+    use OrderedActionsTrait;
 
     /**
      * @Assert\Email(message="common.email.invalid")
@@ -163,6 +164,7 @@ abstract class AbstractProcuration implements TranslatedTagInterface
         $this->joinNewsletter = $joinNewsletter;
         $this->clientIp = $clientIp;
         $this->createdAt = $createdAt ?? new \DateTimeImmutable();
+        $this->actions = new ArrayCollection();
     }
 
     public function __toString(): string

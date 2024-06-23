@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ManualSlot
@@ -70,16 +69,5 @@ class ProxySlot extends AbstractSlot
     public function unmatch(): void
     {
         $this->requestSlot = null;
-    }
-
-    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
-    #[SerializedName('actions')]
-    public function getOrderedActions(int $limit = 3): array
-    {
-        $actions = $this->actions->toArray();
-
-        uasort($actions, [AbstractAction::class, 'sort']);
-
-        return \array_slice(array_values($actions), 0, $limit);
     }
 }
