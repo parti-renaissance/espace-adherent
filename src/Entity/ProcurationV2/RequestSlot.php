@@ -51,7 +51,6 @@ class RequestSlot extends AbstractSlot
     #[ORM\OrderBy(['date' => 'DESC'])]
     public Collection $actions;
 
-    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTimeInterface $matchRemindedAt = null;
 
