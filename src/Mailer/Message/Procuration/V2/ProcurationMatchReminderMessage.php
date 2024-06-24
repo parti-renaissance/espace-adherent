@@ -18,11 +18,7 @@ final class ProcurationMatchReminderMessage extends AbstractProcurationMessage
             Uuid::uuid4(),
             $request->email,
             null,
-            sprintf(
-                '[Rappel] Mise en relation : %s et %s',
-                self::getCivilityName($request->gender, $request->lastName),
-                self::getCivilityName($proxy->gender, $proxy->lastName)
-            ),
+            '[PROCURATIONS] Avez-vous fait les démarches ?',
             [
                 'mandant_first_name' => self::escape($request->firstNames),
                 'mandant_last_name' => self::escape($request->lastName),
