@@ -309,7 +309,7 @@ class RestContext extends BehatchRestContext
         if (preg_match('#^/?(api|oauth)/#', $url) && !str_contains($url, 'oauth/v2/auth')) {
             $this->iAddHeaderEqualTo('Accept', 'application/json');
 
-            if (\in_array($method, ['PUT', 'POST'], true)) {
+            if (\in_array($method, ['PUT', 'POST', 'PATCH'], true)) {
                 $this->iAddHeaderEqualTo('Content-type', 'application/json');
                 if (null === $body) {
                     $body = new PyStringNode(['{}'], 1);

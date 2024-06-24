@@ -11,7 +11,6 @@ Feature:
   Scenario: As a logged-in user I can retrieve and update my profile information
     Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
     When I send a "GET" request to "/api/v3/profile/me"
-    And print last JSON response
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
@@ -95,12 +94,10 @@ Feature:
     {
       "violations": [
         {
-          "code": null,
           "propertyPath": "address",
           "message": "Cette valeur n'est pas un code postal français valide."
         },
         {
-          "code": null,
           "propertyPath": "address",
           "message": "Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte."
         }

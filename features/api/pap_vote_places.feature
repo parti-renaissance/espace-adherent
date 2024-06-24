@@ -19,19 +19,21 @@ Feature:
             "addresses": 2,
             "distance": 0.09452285753944736
         },
+        {},
         {
             "uuid": "8788d1df-9807-45db-a79a-3e1c03df141b",
-            "latitude": 48.878029,
-            "longitude": 2.317807,
+            "latitude": 48.877132,
+            "longitude": 2.341905,
             "addresses": 2,
-            "distance": 0.12802214131322467
+            "distance": 1.7064951008410147
         },
+        {},
         {
             "uuid": "dcaec65c-0856-4c27-adf5-6d51593601e3",
-            "latitude": 48.858952,
-            "longitude": 2.277345,
+            "latitude": 48.862911,
+            "longitude": 2.341939,
             "addresses": 2,
-            "distance": 3.805952025713274
+            "distance": 2.465618433481793
         }
     ]
     """

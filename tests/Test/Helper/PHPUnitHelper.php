@@ -2,7 +2,9 @@
 
 namespace Tests\App\Test\Helper;
 
+use Coduo\PHPMatcher\PHPUnit\PHPMatcherConstraint;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\TestCase;
 
 class PHPUnitHelper
 {
@@ -14,10 +16,18 @@ class PHPUnitHelper
             if (\is_array($value)) {
                 self::assertArraySubset($value, $actual[$key]);
 
-                return;
+                continue;
             }
 
-            Assert::assertSame($value, $actual[$key]);
+            TestCase::assertThat(
+                \is_array($actual[$key]) ? $actual[$key] : self::getValueAsString($actual[$key]),
+                new PHPMatcherConstraint(self::getValueAsString($value))
+            );
         }
+    }
+
+    private static function getValueAsString($value): string
+    {
+        return \is_bool($value) ? json_encode($value) : (string) $value;
     }
 }
