@@ -12,6 +12,7 @@ use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
 use App\Procuration\V2\RequestStatusEnum;
 use App\Repository\Procuration\RequestRepository;
+use App\Validator\Procuration\ExcludedAssociations;
 use App\Validator\Procuration\ManualAssociations;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ManualAssociations
+ * @ExcludedAssociations
  *
  * @ApiResource(
  *     attributes={
@@ -179,6 +181,11 @@ class Request extends AbstractProcuration
     public function isManual(): bool
     {
         return RequestStatusEnum::MANUAL === $this->status;
+    }
+
+    public function isExcluded(): bool
+    {
+        return RequestStatusEnum::EXCLUDED === $this->status;
     }
 
     public function markAsPending(): void

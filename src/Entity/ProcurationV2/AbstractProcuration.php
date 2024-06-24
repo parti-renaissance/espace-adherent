@@ -217,6 +217,8 @@ abstract class AbstractProcuration implements TranslatedTagInterface
         return array_map(fn (AbstractSlot $slot) => $slot->round, $this->getOrderedSlots());
     }
 
+    abstract public function isExcluded(): bool;
+
     abstract public function hasFreeSlot(): bool;
 
     abstract public function hasMatchedSlot(): bool;

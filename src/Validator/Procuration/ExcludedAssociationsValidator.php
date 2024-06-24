@@ -2,7 +2,7 @@
 
 namespace App\Validator\Procuration;
 
-use App\Entity\ProcurationV2\Proxy;
+use App\Entity\ProcurationV2\AbstractProcuration;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -20,8 +20,8 @@ class ExcludedAssociationsValidator extends ConstraintValidator
             return;
         }
 
-        if (!$value instanceof Proxy) {
-            throw new UnexpectedValueException($value, Proxy::class);
+        if (!$value instanceof AbstractProcuration) {
+            throw new UnexpectedValueException($value, AbstractProcuration::class);
         }
 
         if ($value->isExcluded() && ($value->hasMatchedSlot() || $value->hasManualSlot())) {
