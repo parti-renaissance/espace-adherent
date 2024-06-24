@@ -8,6 +8,7 @@ use App\Entity\ProcurationV2\RequestSlot;
 use App\Entity\ProcurationV2\Round;
 use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class RequestSlotRepository extends ServiceEntityRepository
@@ -37,5 +38,26 @@ class RequestSlotRepository extends ServiceEntityRepository
         ;
 
         return $count > 0;
+    }
+
+    public function findAllMatchedToRemindQueryBuilder(Round $round, \DateTime $matchedBefore = null): QueryBuilder
+    {
+        $qb = $this
+            ->createQueryBuilder('request_slot')
+            ->select('PARTIAL request_slot.{id, uuid}')
+            ->where('request_slot.round = :round')
+            ->andWhere('request_slot.proxySlot IS NOT NULL')
+            ->andWhere('request_slot.matchRemindedAt IS NULL')
+            ->setParameter('round', $round)
+        ;
+
+        if ($matchedBefore) {
+            $qb
+                ->andWhere('request_slot.updatedAt <= :matched_before')
+                ->setParameter('matched_before', $matchedBefore)
+            ;
+        }
+
+        return $qb;
     }
 }

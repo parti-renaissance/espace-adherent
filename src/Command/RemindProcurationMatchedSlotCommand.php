@@ -165,14 +165,7 @@ class RemindProcurationMatchedSlotCommand extends Command
         return new Paginator(
             $this
                 ->requestSlotRepository
-                ->createQueryBuilder('request_slot')
-                ->select('PARTIAL request_slot.{id, uuid}')
-                ->where('request_slot.round = :round')
-                ->andWhere('request_slot.proxySlot IS NOT NULL')
-                ->andWhere('request_slot.matchRemindedAt IS NULL')
-                ->andWhere('request_slot.updatedAt <= :matched_before')
-                ->setParameter('round', $round)
-                ->setParameter('matched_before', $matchedBefore)
+                ->findAllMatchedToRemindQueryBuilder($round, $matchedBefore)
                 ->getQuery()
         );
     }
