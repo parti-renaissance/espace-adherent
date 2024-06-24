@@ -113,4 +113,9 @@ abstract class AbstractCommand
             && $this->voteZone->isCountry()
             && AddressInterface::FRANCE !== $this->voteZone->getCode();
     }
+
+    public function setEmail(?string $email): void
+    {
+        $this->email = mb_strtolower($email);
+    }
 }
