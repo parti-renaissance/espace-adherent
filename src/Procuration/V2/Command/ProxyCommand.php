@@ -8,7 +8,7 @@ class ProxyCommand extends AbstractCommand
 {
     /**
      * @Assert\Length(
-     *     min=7,
+     *     min=5,
      *     max=9
      * )
      * @Assert\Regex(pattern="/^[0-9]+$/i")
