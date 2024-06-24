@@ -12,6 +12,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\MappedSuperclass]
+#[ORM\Index(columns: ['manual'])]
 abstract class AbstractSlot
 {
     use EntityIdentityTrait;
@@ -21,7 +22,7 @@ abstract class AbstractSlot
 
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[ORM\ManyToOne(targetEntity: Round::class)]
+    #[ORM\ManyToOne(targetEntity: Round::class, fetch: 'EXTRA_LAZY')]
     public Round $round;
 
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_slot_read', 'procuration_request_slot_read', 'procuration_request_slot_write', 'procuration_proxy_slot_write'])]

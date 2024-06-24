@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'procurations')",
  *         "pagination_client_items_per_page": true,
  *         "pagination_maximum_items_per_page": 100,
- *         "pagination_items_per_page": 100,
+ *         "pagination_items_per_page": 50,
  *         "normalization_context": {
  *             "groups": {"procuration_request_list"},
  *         },
@@ -99,6 +99,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(OrTextSearchFilter::class, properties={"firstNames": "lastName", "lastName": "firstNames", "email": "email", "voteZone.name": "voteZone.name", "votePlace.name": "votePlace.name"})
  */
 #[ORM\Table(name: 'procuration_v2_requests')]
+#[ORM\Index(columns: ['status'])]
+#[ORM\Index(columns: ['created_at'])]
 #[ORM\Entity(repositoryClass: RequestRepository::class)]
 class Request extends AbstractProcuration
 {
@@ -116,7 +118,7 @@ class Request extends AbstractProcuration
     /**
      * @var Collection|RequestSlot[]
      */
-    #[ORM\OneToMany(mappedBy: 'request', targetEntity: RequestSlot::class, cascade: ['all'])]
+    #[ORM\OneToMany(mappedBy: 'request', targetEntity: RequestSlot::class, cascade: ['all'], fetch: 'EXTRA_LAZY')]
     public Collection $requestSlots;
 
     /**

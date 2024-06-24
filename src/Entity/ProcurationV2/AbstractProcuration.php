@@ -96,7 +96,7 @@ abstract class AbstractProcuration implements TranslatedTagInterface
 
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[ORM\ManyToOne(targetEntity: Zone::class, fetch: 'EXTRA_LAZY')]
     public Zone $voteZone;
 
     #[ORM\JoinColumn(nullable: true)]

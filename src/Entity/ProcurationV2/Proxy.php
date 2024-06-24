@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'procurations')",
  *         "pagination_client_items_per_page": true,
  *         "pagination_maximum_items_per_page": 100,
- *         "pagination_items_per_page": 100,
+ *         "pagination_items_per_page": 50,
  *         "normalization_context": {
  *             "groups": {"procuration_proxy_list"},
  *         },
@@ -66,6 +66,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(OrTextSearchFilter::class, properties={"firstNames": "lastName", "lastName": "firstNames", "email": "email", "voteZone.name": "votePlace.name"})
  */
 #[ORM\Table(name: 'procuration_v2_proxies')]
+#[ORM\Index(columns: ['status'])]
+#[ORM\Index(columns: ['created_at'])]
 #[ORM\Entity(repositoryClass: ProxyRepository::class)]
 class Proxy extends AbstractProcuration
 {
@@ -96,7 +98,7 @@ class Proxy extends AbstractProcuration
     /**
      * @var Collection|ProxySlot[]
      */
-    #[ORM\OneToMany(mappedBy: 'proxy', targetEntity: ProxySlot::class, cascade: ['all'])]
+    #[ORM\OneToMany(mappedBy: 'proxy', targetEntity: ProxySlot::class, cascade: ['all'], fetch: 'EXTRA_LAZY')]
     public Collection $proxySlots;
 
     /**

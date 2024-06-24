@@ -119,7 +119,7 @@ class ProxyRepository extends ServiceEntityRepository
             ;
         }
 
-        return $this->configurePaginator($queryBuilder, $page, 100);
+        return $this->configurePaginator($queryBuilder, $page, 50);
     }
 
     public function hasUpcomingProxy(Adherent $adherent): bool

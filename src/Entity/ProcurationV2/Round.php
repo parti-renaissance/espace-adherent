@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'procuration_v2_rounds')]
+#[ORM\Index(columns: ['date'])]
 #[ORM\Entity(repositoryClass: RoundRepository::class)]
 class Round
 {
