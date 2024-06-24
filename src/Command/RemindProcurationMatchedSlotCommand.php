@@ -38,6 +38,7 @@ class RemindProcurationMatchedSlotCommand extends Command
     {
         $this
             ->addOption('round', null, InputOption::VALUE_REQUIRED, 'Upcoming Round ID to remind.')
+            ->addOption('matched-before', null, InputOption::VALUE_REQUIRED, 'Datetime before matching was made.')
             ->addOption('batch-size', null, InputOption::VALUE_REQUIRED, '', 500)
         ;
     }
@@ -82,7 +83,15 @@ class RemindProcurationMatchedSlotCommand extends Command
 
         $this->io->section('Fetch procurations to remind');
 
-        $paginator = $this->getRequestSlotsToRemindQueryBuilder($round);
+        try {
+            $matchedBefore = new \DateTime($input->getOption('matched-before') ?? 'now');
+        } catch (\Exception $e) {
+            $this->io->error('Provided option "matched-before" is an invalid datetime format.');
+
+            return self::INVALID;
+        }
+
+        $paginator = $this->getRequestSlotsToRemindQueryBuilder($round, $matchedBefore);
         $total = $paginator->count();
 
         if (0 === $total) {
@@ -151,7 +160,7 @@ class RemindProcurationMatchedSlotCommand extends Command
     /**
      * @return Paginator|RequestSlot[]
      */
-    private function getRequestSlotsToRemindQueryBuilder(Round $round): Paginator
+    private function getRequestSlotsToRemindQueryBuilder(Round $round, \DateTime $matchedBefore): Paginator
     {
         return new Paginator(
             $this
@@ -161,7 +170,9 @@ class RemindProcurationMatchedSlotCommand extends Command
                 ->where('request_slot.round = :round')
                 ->andWhere('request_slot.proxySlot IS NOT NULL')
                 ->andWhere('request_slot.matchRemindedAt IS NULL')
+                ->andWhere('request_slot.updatedAt <= :matched_before')
                 ->setParameter('round', $round)
+                ->setParameter('matched_before', $matchedBefore)
                 ->getQuery()
         );
     }
