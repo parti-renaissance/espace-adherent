@@ -40,7 +40,7 @@ class RequestSlotRepository extends ServiceEntityRepository
         return $count > 0;
     }
 
-    public function findAllMatchedToRemindQueryBuilder(Round $round, \DateTime $matchedBefore = null): QueryBuilder
+    public function findAllMatchedToRemindQueryBuilder(Round $round, ?\DateTime $matchedBefore = null): QueryBuilder
     {
         $qb = $this
             ->createQueryBuilder('request_slot')
