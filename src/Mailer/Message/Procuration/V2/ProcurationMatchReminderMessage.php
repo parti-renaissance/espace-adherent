@@ -27,6 +27,7 @@ final class ProcurationMatchReminderMessage extends AbstractProcurationMessage
                 'mandant_first_name' => self::escape($request->firstNames),
                 'mandant_last_name' => self::escape($request->lastName),
                 'mandant_vote_place' => self::escape($request->getVotePlaceName() ?? ''),
+                'mandant_birthdate' => self::escape($request->birthdate->format('d/m/Y')),
                 'mandant_phone' => PhoneNumberUtils::format($request->phone),
                 'mandant_email' => self::escape($request->email),
                 'voter_first_name' => self::escape($proxy->firstNames),
