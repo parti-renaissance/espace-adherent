@@ -2,10 +2,10 @@
 
 namespace App\Entity\ProcurationV2;
 
-use App\Entity\Adherent;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -17,6 +17,7 @@ abstract class AbstractSlot
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
+    use OrderedActionsTrait;
 
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -27,20 +28,12 @@ abstract class AbstractSlot
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $manual = false;
 
-    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    public ?Adherent $matcher = null;
-
-    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTimeInterface $matchedAt = null;
-
     public function __construct(
         Round $round,
         ?UuidInterface $uuid = null
     ) {
         $this->round = $round;
         $this->uuid = $uuid ?? Uuid::uuid4();
+        $this->actions = new ArrayCollection();
     }
 }

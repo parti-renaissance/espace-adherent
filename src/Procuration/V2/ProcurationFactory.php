@@ -9,6 +9,7 @@ use App\Entity\ProcurationV2\Request;
 use App\Entity\ProcurationV2\RequestSlot;
 use App\Procuration\V2\Command\ProxyCommand;
 use App\Procuration\V2\Command\RequestCommand;
+use Ramsey\Uuid\Uuid;
 
 class ProcurationFactory
 {
@@ -20,6 +21,7 @@ class ProcurationFactory
     public function createRequestFromCommand(RequestCommand $command): Request
     {
         $request = new Request(
+            Uuid::uuid4(),
             $command->rounds->toArray(),
             $command->email,
             $command->gender,
@@ -48,6 +50,7 @@ class ProcurationFactory
     public function createProxyFromCommand(ProxyCommand $command): Proxy
     {
         $proxy = new Proxy(
+            Uuid::uuid4(),
             $command->rounds->toArray(),
             $command->email,
             $command->gender,

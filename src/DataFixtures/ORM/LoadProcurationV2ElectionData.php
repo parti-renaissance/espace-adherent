@@ -8,9 +8,14 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class LoadProcurationV2ElectionData extends Fixture
 {
+    public const UUID_LEGISLATIVES_ROUND_1 = 'f048f91c-0d04-4211-9c78-515644fdc100';
+    public const UUID_LEGISLATIVES_ROUND_2 = 'edf49758-c047-472d-9a98-4d24fbc58190';
+
     private Generator $faker;
 
     public function __construct()
@@ -27,8 +32,16 @@ class LoadProcurationV2ElectionData extends Fixture
         $this->setReference('procuration-v2-europeennes-2024-round-1', $round);
 
         $election2 = $this->createElection('Législatives 2024', 'legislatives-2024');
-        $election2->addRound($round1 = $this->createRound('Premier tour', (new \DateTime('+14 days'))->format('Y-m-d')));
-        $election2->addRound($round2 = $this->createRound('Deuxième tour', (new \DateTime('+21 days'))->format('Y-m-d')));
+        $election2->addRound($round1 = $this->createRound(
+            'Premier tour',
+            (new \DateTime('+14 days'))->format('Y-m-d'),
+            Uuid::fromString(self::UUID_LEGISLATIVES_ROUND_1)
+        ));
+        $election2->addRound($round2 = $this->createRound(
+            'Deuxième tour',
+            (new \DateTime('+21 days'))->format('Y-m-d'),
+            Uuid::fromString(self::UUID_LEGISLATIVES_ROUND_2)
+        ));
 
         $manager->persist($election2);
         $this->setReference('procuration-v2-legislatives-2024-round-1', $round1);
@@ -68,9 +81,10 @@ class LoadProcurationV2ElectionData extends Fixture
 
     private function createRound(
         string $name,
-        string $date
+        string $date,
+        ?UuidInterface $uuid = null
     ): Round {
-        $round = new Round();
+        $round = new Round($uuid);
         $round->name = $name;
         $round->description = $this->faker->text();
         $round->date = new \DateTimeImmutable($date);

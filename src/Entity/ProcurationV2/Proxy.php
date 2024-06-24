@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -105,7 +106,14 @@ class Proxy extends AbstractProcuration
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private ?array $zoneIds = null;
 
+    /**
+     * @var ProxyAction[]|Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'proxy', targetEntity: ProxyAction::class, cascade: ['all'])]
+    public Collection $actions;
+
     public function __construct(
+        UuidInterface $uuid,
         array $rounds,
         string $email,
         string $gender,
@@ -124,6 +132,7 @@ class Proxy extends AbstractProcuration
         ?\DateTimeInterface $createdAt = null
     ) {
         parent::__construct(
+            $uuid,
             $rounds,
             $email,
             $gender,
@@ -143,6 +152,7 @@ class Proxy extends AbstractProcuration
         );
 
         $this->proxySlots = new ArrayCollection();
+        $this->actions = new ArrayCollection();
     }
 
     public function isPending(): bool
@@ -209,53 +219,6 @@ class Proxy extends AbstractProcuration
             fn (Zone $zone) => $zone->getId(),
             ($this->votePlace ?? $this->voteZone)->getWithParents()
         );
-    }
-
-    public function matchSlot(Round $round, Request $request, ?Adherent $matcher = null): void
-    {
-        /** @var ProxySlot|null $proxySlot */
-        $proxySlot = $this->proxySlots->filter(
-            static function (ProxySlot $proxySlot) use ($round): bool {
-                return $round === $proxySlot->round && null === $proxySlot->requestSlot;
-            }
-        )->first() ?? null;
-
-        /** @var RequestSlot|null $requestSlot */
-        $requestSlot = $request->requestSlots->filter(
-            static function (RequestSlot $requestSlot) use ($round): bool {
-                return $round === $requestSlot->round && null === $requestSlot->proxySlot;
-            }
-        )->first() ?? null;
-
-        if ($proxySlot && $requestSlot) {
-            $requestSlot->match($proxySlot, $matcher);
-            $proxySlot->match($requestSlot, $matcher);
-        }
-    }
-
-    public function unmatchSlot(Round $round, Request $request): void
-    {
-        /** @var ProxySlot|null $proxySlot */
-        $proxySlot = $this->proxySlots->filter(
-            function (ProxySlot $proxySlot) use ($round, $request): bool {
-                return $round === $proxySlot->round && $request === $proxySlot->requestSlot?->request;
-            }
-        )->first() ?? null;
-
-        if ($proxySlot) {
-            $proxySlot->unmatch();
-        }
-
-        /** @var RequestSlot|null $requestSlot */
-        $requestSlot = $request->requestSlots->filter(
-            function (RequestSlot $requestSlot) use ($round): bool {
-                return $round === $requestSlot->round && $this === $requestSlot->proxySlot?->proxy;
-            }
-        )->first() ?? null;
-
-        if ($requestSlot) {
-            $requestSlot->unmatch();
-        }
     }
 
     #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]

@@ -3,9 +3,10 @@
 namespace App\Entity\ProcurationV2;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Entity\Adherent;
 use App\Repository\Procuration\RequestSlotRepository;
 use App\Validator\Procuration\ManualSlot;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -42,11 +43,19 @@ class RequestSlot extends AbstractSlot
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     public ?ProxySlot $proxySlot = null;
 
+    /**
+     * @var RequestSlotAction[]|Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'requestSlot', targetEntity: RequestSlotAction::class, cascade: ['all'])]
+    #[ORM\OrderBy(['date' => 'DESC'])]
+    public Collection $actions;
+
     public function __construct(Round $round, Request $request, ?UuidInterface $uuid = null)
     {
         parent::__construct($round, $uuid);
 
         $this->request = $request;
+        $this->actions = new ArrayCollection();
     }
 
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_request_slot_read'])]
@@ -55,17 +64,13 @@ class RequestSlot extends AbstractSlot
         return $this->proxySlot?->proxy;
     }
 
-    public function match(ProxySlot $proxySlot, ?Adherent $matcher = null): void
+    public function match(ProxySlot $proxySlot): void
     {
         $this->proxySlot = $proxySlot;
-        $this->matcher = $matcher;
-        $this->matchedAt = new \DateTime();
     }
 
     public function unmatch(): void
     {
         $this->proxySlot = null;
-        $this->matcher = null;
-        $this->matchedAt = null;
     }
 }

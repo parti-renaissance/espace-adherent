@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Entity\ProcurationV2;
+
+use App\Procuration\V2\ProcurationActionStatusEnum;
+use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+
+#[ORM\Table(name: 'procuration_v2_proxy_action')]
+#[ORM\Entity]
+class ProxyAction extends AbstractProcurationAction
+{
+    #[ORM\ManyToOne(targetEntity: Proxy::class, inversedBy: 'actions')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    public Proxy $proxy;
+
+    public function __construct(UuidInterface $uuid, \DateTimeInterface $date, ProcurationActionStatusEnum $status, Proxy $proxy)
+    {
+        parent::__construct($uuid, $date, $status);
+
+        $this->proxy = $proxy;
+    }
+
+    private static function create(ProcurationActionStatusEnum $status, Proxy $proxy): self
+    {
+        return new self(
+            Uuid::uuid4(),
+            new \DateTime(),
+            $status,
+            $proxy
+        );
+    }
+
+    public static function createStatusUpdate(Proxy $proxy): self
+    {
+        return self::create(ProcurationActionStatusEnum::STATUS_UPDATE, $proxy);
+    }
+}
