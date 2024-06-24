@@ -35,7 +35,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class RequestSlot extends AbstractSlot
 {
     #[Groups(['procuration_request_slot_read'])]
-    #[ORM\ManyToOne(inversedBy: 'requestSlots', targetEntity: Request::class)]
+    #[ORM\ManyToOne(targetEntity: Request::class, fetch: 'EXTRA_LAZY', inversedBy: 'requestSlots')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     public Request $request;
 
