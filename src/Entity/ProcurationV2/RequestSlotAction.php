@@ -46,4 +46,9 @@ class RequestSlotAction extends AbstractSlotAction
     {
         return self::create(SlotActionStatusEnum::STATUS_UPDATE, $requestSlot);
     }
+
+    public function isMatchAction(): bool
+    {
+        return SlotActionStatusEnum::MATCH === $this->status;
+    }
 }

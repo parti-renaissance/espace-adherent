@@ -3,6 +3,7 @@
 namespace App\Entity\ProcurationV2;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Entity\Adherent;
 use App\Repository\Procuration\RequestSlotRepository;
 use App\Validator\Procuration\ManualSlot;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -50,6 +51,9 @@ class RequestSlot extends AbstractSlot
     #[ORM\OrderBy(['date' => 'DESC'])]
     public Collection $actions;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTimeInterface $matchRemindedAt = null;
+
     public function __construct(Round $round, Request $request, ?UuidInterface $uuid = null)
     {
         parent::__construct($round, $uuid);
@@ -72,5 +76,35 @@ class RequestSlot extends AbstractSlot
     public function unmatch(): void
     {
         $this->proxySlot = null;
+    }
+
+    public function isMatchReminded(): bool
+    {
+        return null !== $this->matchRemindedAt;
+    }
+
+    public function remindMatch(): void
+    {
+        $this->matchRemindedAt = new \DateTime();
+    }
+
+    public function getMatcher(): ?Adherent
+    {
+        /** @var RequestSlotAction|null $lastMatchAction */
+        $lastMatchAction = null;
+
+        foreach ($this->actions as $action) {
+            if (
+                $action->isMatchAction()
+                && (
+                    !$lastMatchAction
+                    || $lastMatchAction->date < $action->date
+                )
+            ) {
+                $lastMatchAction = $action;
+            }
+        }
+
+        return $lastMatchAction?->author;
     }
 }

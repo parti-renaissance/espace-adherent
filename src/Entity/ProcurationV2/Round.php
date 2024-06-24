@@ -57,4 +57,9 @@ class Round
     {
         return sprintf('%s - %s', $this->election->name, $this->name);
     }
+
+    public function isUpcoming(): bool
+    {
+        return $this->date && $this->date > new \DateTime();
+    }
 }
