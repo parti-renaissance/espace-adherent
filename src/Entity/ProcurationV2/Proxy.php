@@ -70,7 +70,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Proxy extends AbstractProcuration
 {
     /**
-     * @Assert\Length(min=7, max=9)
+     * @Assert\Length(min=5, max=9)
      * @Assert\Regex(pattern="/^[0-9]+$/i")
      */
     #[ORM\Column(length: 9, nullable: true)]
