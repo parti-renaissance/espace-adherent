@@ -3,8 +3,8 @@
 {% block app_title 'ENSEMBLE' %}
 {% block meta_description "ENSEMBLE est la coalition de la Majorité présidentielle regroupant Renaissance, MoDem et Horizons pour les législatives du 30 juin et du 7 juillet 2024." %}
 
-{% set homepage_url = 'https://' ~ legislative_host %}
-{% set default_sharer_image = url('asset_url', {path: 'static/national/besoindeurope.webp', app_domain: national_event_host}) %}
+{% block canonical_url 'https://' ~ legislative_host %}
+{% set default_sharer_image = 'https://doc.ensemble-2024.fr/images/ensemble.webp' %}
 
 {% block open_graph %}
     <meta property="og:image" content="{% block open_graph_image default_sharer_image %}" />
