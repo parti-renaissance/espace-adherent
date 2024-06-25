@@ -65,7 +65,6 @@ doctrine:
             string_functions:
                 json_contains: App\Query\Mysql\JsonContains
                 left: App\Query\Mysql\Left
-                sluggify: App\Query\Mysql\Sluggify
                 find_in_set: DoctrineExtensions\Query\Mysql\FindInSet
                 substring_index: DoctrineExtensions\Query\Mysql\SubstringIndex
                 group_concat: DoctrineExtensions\Query\Mysql\GroupConcat
