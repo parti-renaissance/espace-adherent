@@ -46,7 +46,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             'Nice',
             '58 Boulevard de la Madeleine',
             false,
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_06088'),
+            LoadGeoZoneData::getZone($manager, 'zone_city_06088'),
             $this->getReference('zone_vote_place_nice_1')
         ));
 
@@ -64,13 +64,13 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             'Kilchberg',
             '13 Pilgerweg',
             false,
-            LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'),
+            LoadGeoZoneData::getZone($manager, 'zone_country_CH'),
             null,
             'BDV CH 1',
             false
         ));
 
-        $zone = LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024');
+        $zone = LoadGeoZoneData::getZone($manager, 'zone_city_92024');
         for ($i = 1; $i <= 10; ++$i) {
             $manager->persist(
                 $request = $this->createRequest(
@@ -108,7 +108,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             'Nice',
             '58 Boulevard de la Madeleine',
             false,
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
+            LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
             $this->getReference('zone_vote_place_clichy_1')
         ));
         $this->setReference('request_slot_1', $request->requestSlots->first());
@@ -127,7 +127,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             'Nice',
             '58 Boulevard de la Madeleine',
             false,
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
+            LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
             $this->getReference('zone_vote_place_clichy_1')
         ));
 
@@ -148,7 +148,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             'Nice',
             '58 Boulevard de la Madeleine',
             false,
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
+            LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
             $this->getReference('zone_vote_place_clichy_1'),
             null,
             true,
@@ -210,6 +210,8 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             null,
             $joinNewsletter
         );
+
+        $request->refreshZoneIds();
 
         foreach ($rounds as $round) {
             $uuid = \array_key_exists($round->name, $slotsUuidMapping)

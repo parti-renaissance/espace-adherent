@@ -128,6 +128,13 @@ abstract class AbstractProcuration implements TranslatedTagInterface
     #[ORM\Column(nullable: true)]
     public ?string $statusDetail = null;
 
+    /**
+     * Ids of main and parents zones built from votePlace zone or from voteZone zone.
+     * This field helps to improve matching DB query
+     */
+    #[ORM\Column(type: 'simple_array', nullable: true)]
+    private ?array $zoneIds = null;
+
     public function __construct(
         UuidInterface $uuid,
         array $rounds,
@@ -218,6 +225,14 @@ abstract class AbstractProcuration implements TranslatedTagInterface
     public function getRounds(): array
     {
         return array_map(fn (AbstractSlot $slot) => $slot->round, $this->getOrderedSlots());
+    }
+
+    public function refreshZoneIds(): void
+    {
+        $this->zoneIds = array_map(
+            fn (Zone $zone) => $zone->getId(),
+            ($this->votePlace ?? $this->voteZone)->getWithParents()
+        );
     }
 
     abstract public function isExcluded(): bool;
