@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use App\Api\Filter\OrTextSearchFilter;
+use App\Api\Filter\ProcurationZoneFilter;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
@@ -64,6 +65,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(OrderFilter::class, properties={"createdAt"})
  * @ApiFilter(SearchFilter::class, properties={"status": "exact"})
  * @ApiFilter(OrTextSearchFilter::class, properties={"firstNames": "lastName", "lastName": "firstNames", "email": "email", "voteZone.name": "votePlace.name"})
+ * @ApiFilter(ProcurationZoneFilter::class)
  */
 #[ORM\Table(name: 'procuration_v2_proxies')]
 #[ORM\Index(columns: ['status'])]
@@ -100,13 +102,6 @@ class Proxy extends AbstractProcuration
      */
     #[ORM\OneToMany(mappedBy: 'proxy', targetEntity: ProxySlot::class, cascade: ['all'], fetch: 'EXTRA_LAZY')]
     public Collection $proxySlots;
-
-    /**
-     * Ids of main and parents zones built from votePlace zone or from voteZone zone.
-     * This field helps to improve matching DB query in ProxyRepository
-     */
-    #[ORM\Column(type: 'simple_array', nullable: true)]
-    private ?array $zoneIds = null;
 
     /**
      * @var ProxyAction[]|Collection
@@ -213,14 +208,6 @@ class Proxy extends AbstractProcuration
         }
 
         return false;
-    }
-
-    public function refreshZoneIds(): void
-    {
-        $this->zoneIds = array_map(
-            fn (Zone $zone) => $zone->getId(),
-            ($this->votePlace ?? $this->voteZone)->getWithParents()
-        );
     }
 
     #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]
