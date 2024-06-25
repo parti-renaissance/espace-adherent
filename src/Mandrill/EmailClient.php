@@ -30,7 +30,7 @@ class EmailClient implements EmailClientInterface
     {
         $response = $this->mandrillClient->request('POST', 'messages/send-template.json', ['json' => $this->prepareBody($email, $resend)]);
 
-        return $this->filterResponse($response, 'Unable to send email to recipients.');
+        return $this->filterResponse($response);
     }
 
     public function renderEmail(EmailTemplateInterface $email): string
@@ -50,10 +50,10 @@ class EmailClient implements EmailClientInterface
         return $body;
     }
 
-    private function filterResponse(ResponseInterface $response, string $error = 'Mailer error'): string
+    private function filterResponse(ResponseInterface $response): string
     {
         if (Response::HTTP_OK !== $response->getStatusCode()) {
-            throw new MailerException($error);
+            throw new MailerException($response->getContent(false));
         }
 
         return $response->getContent();
