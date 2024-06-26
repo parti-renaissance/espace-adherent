@@ -3644,16 +3644,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v3.16.0",
+            "version": "v3.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine-extensions/DoctrineExtensions.git",
-                "reference": "7832a3059bdaf14433a2a2515d533c6a16e58520"
+                "reference": "e85560ed96f977b8c29428a99222cb2ef2f0e80d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine-extensions/DoctrineExtensions/zipball/7832a3059bdaf14433a2a2515d533c6a16e58520",
-                "reference": "7832a3059bdaf14433a2a2515d533c6a16e58520",
+                "url": "https://api.github.com/repos/doctrine-extensions/DoctrineExtensions/zipball/e85560ed96f977b8c29428a99222cb2ef2f0e80d",
+                "reference": "e85560ed96f977b8c29428a99222cb2ef2f0e80d",
                 "shasum": ""
             },
             "require": {
@@ -3749,7 +3749,7 @@
             "support": {
                 "email": "gediminas.morkevicius@gmail.com",
                 "issues": "https://github.com/doctrine-extensions/DoctrineExtensions/issues",
-                "source": "https://github.com/doctrine-extensions/DoctrineExtensions/tree/v3.16.0",
+                "source": "https://github.com/doctrine-extensions/DoctrineExtensions/tree/v3.16.1",
                 "wiki": "https://github.com/Atlantic18/DoctrineExtensions/tree/main/doc"
             },
             "funding": [
@@ -3770,7 +3770,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-24T17:48:42+00:00"
+            "time": "2024-06-25T16:22:14+00:00"
         },
         {
             "name": "gehrisandro/tailwind-merge-php",
