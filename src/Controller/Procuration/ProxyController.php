@@ -8,6 +8,7 @@ use App\Form\Procuration\V2\ProxyType;
 use App\Procuration\V2\Command\ProxyCommand;
 use App\Procuration\V2\ProcurationHandler;
 use App\Security\Http\Session\AnonymousFollowerSession;
+use Cocur\Slugify\Slugify;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,9 +49,11 @@ class ProxyController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $session = $request->getSession();
 
+            $slugify = Slugify::create();
+
             if (
                 !$session->has(PersistEmailController::SESSION_KEY)
-                || $proxyCommand->email !== $session->get(PersistEmailController::SESSION_KEY)
+                || $slugify->slugify($proxyCommand->email) !== $slugify->slugify($session->get(PersistEmailController::SESSION_KEY))
             ) {
                 $session->remove(PersistEmailController::SESSION_KEY);
 
