@@ -13,6 +13,7 @@ trait OrderedActionsTrait
      */
     public Collection $actions;
 
+    /** @return AbstractSlotAction[] */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
     #[SerializedName('actions')]
     public function getOrderedActions(int $limit = 3): array

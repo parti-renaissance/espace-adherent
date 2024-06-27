@@ -235,6 +235,12 @@ abstract class AbstractProcuration implements TranslatedTagInterface
         );
     }
 
+    #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
+    public function getDistrict(): ?Zone
+    {
+        return ($this->votePlace ?? $this->voteZone)->getParentsOfType(Zone::DISTRICT)[0] ?? null;
+    }
+
     abstract public function isExcluded(): bool;
 
     abstract public function hasFreeSlot(): bool;
