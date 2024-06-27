@@ -248,9 +248,9 @@ class Zone implements GeoInterface, UuidEntityInterface
      */
     public function getParentsOfType(string $type): array
     {
-        return array_filter($this->parents->toArray(), function (Zone $zone) use ($type) {
+        return array_values(array_filter($this->parents->toArray(), function (Zone $zone) use ($type) {
             return $type === $zone->getType();
-        });
+        }));
     }
 
     public function hasChild(Zone $child): bool
