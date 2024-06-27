@@ -93,7 +93,7 @@ class Proxy extends AbstractProcuration
     /**
      * @Assert\Choice(callback={"App\Procuration\V2\ProxyStatusEnum", "getAvailableStatuses"}, groups={"procuration_update_status"})
      */
-    #[Groups(['procuration_matched_proxy', 'procuration_proxy_list', 'procuration_update_status', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
+    #[Groups(['procuration_matched_proxy', 'procuration_proxy_list', 'procuration_update_status', 'procuration_proxy_slot_read', 'procuration_request_slot_read', 'procuration_request_read'])]
     #[ORM\Column(enumType: ProxyStatusEnum::class)]
     public ProxyStatusEnum $status = ProxyStatusEnum::PENDING;
 

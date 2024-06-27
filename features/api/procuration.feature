@@ -36,6 +36,7 @@ Feature:
                     "name": "Clichy",
                     "created_at": "@string@.isDateTime()"
                 },
+                "district": null,
                 "uuid": "@uuid@",
                 "created_at": "@string@.isDateTime()",
                 "post_address": {
@@ -57,6 +58,12 @@ Feature:
                     {
                         "uuid": "@uuid@",
                         "created_at": "@string@.isDateTime()",
+                        "matched_at": "@string@.isDateTime()",
+                        "matcher": {
+                            "uuid": "@uuid@",
+                            "first_name": "Referent",
+                            "last_name": "Referent"
+                        },
                         "round": {
                             "uuid": "@uuid@",
                             "created_at": "@string@.isDateTime()",
@@ -161,6 +168,7 @@ Feature:
                     "name": "Clichy",
                     "created_at": "@string@"
                 },
+                "district": null,
                 "uuid": "@uuid@",
                 "created_at": "@string@.isDateTime()",
                 "post_address": {
@@ -182,6 +190,8 @@ Feature:
                     {
                         "uuid": "@uuid@",
                         "created_at": "@string@.isDateTime()",
+                        "matched_at": null,
+                        "matcher": null,
                         "round": {
                             "uuid": "@uuid@",
                             "created_at": "@string@.isDateTime()",
@@ -195,6 +205,8 @@ Feature:
                     {
                         "uuid": "@uuid@",
                         "created_at": "@string@.isDateTime()",
+                        "matched_at": null,
+                        "matcher": null,
                         "round": {
                             "uuid": "@uuid@",
                             "created_at": "@string@.isDateTime()",
@@ -240,6 +252,7 @@ Feature:
                     "name": "Clichy",
                     "created_at": "@string@"
                 },
+                "district": null,
                 "uuid": "@uuid@",
                 "created_at": "@string@.isDateTime()",
                 "post_address": {
@@ -261,6 +274,8 @@ Feature:
                     {
                         "uuid": "@uuid@",
                         "created_at": "@string@.isDateTime()",
+                        "matched_at": null,
+                        "matcher": null,
                         "round": {
                             "uuid": "@uuid@",
                             "created_at": "@string@.isDateTime()",
@@ -310,6 +325,7 @@ Feature:
                         "name": "Clichy",
                         "created_at": "@string@.isDateTime()"
                     },
+                    "district": null,
                     "uuid": "@uuid@",
                     "created_at": "@string@.isDateTime()",
                     "post_address": {
@@ -333,6 +349,8 @@ Feature:
                         {
                             "uuid": "@uuid@",
                             "created_at": "@string@.isDateTime()",
+                            "matched_at": null,
+                            "matcher": null,
                             "round": {
                                 "uuid": "@uuid@",
                                 "created_at": "@string@.isDateTime()",
@@ -346,6 +364,8 @@ Feature:
                         {
                             "uuid": "@uuid@",
                             "created_at": "@string@.isDateTime()",
+                            "matched_at": null,
+                            "matcher": null,
                             "round": {
                                 "uuid": "@uuid@",
                                 "created_at": "@string@.isDateTime()",
