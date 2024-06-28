@@ -2,10 +2,13 @@
 
 namespace App\Admin\Procuration;
 
+use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Entity\ProcurationV2\Proxy;
+use App\Entity\ProcurationV2\ProxySlot;
 use App\Form\Admin\Procuration\ProxyStatusEnumType;
 use App\Procuration\V2\Event\ProcurationEvent;
 use App\Procuration\V2\Event\ProcurationEvents;
+use App\Utils\PhpConfigurator;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -104,5 +107,38 @@ class ProxyAdmin extends AbstractProcurationAdmin
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
+    }
+
+    protected function configureExportFields(): array
+    {
+        PhpConfigurator::disableMemoryLimit();
+
+        $translator = $this->getTranslator();
+
+        return [IteratorCallbackDataSource::CALLBACK => static function (array $procuration) use ($translator) {
+            /** @var Proxy $proxy */
+            $proxy = $procuration[0];
+
+            try {
+                return array_merge(
+                    static::getExportCommonFields($proxy, $translator),
+                    [
+                        'Statut' => $translator->trans('procuration.proxy.status.'.$proxy->status->value),
+                        'Numéro d\'électeur' => $proxy->electorNumber,
+                        'Associations' => implode(', ', array_map(static function (ProxySlot $slot) {
+                            return sprintf(
+                                '%s: %s',
+                                $slot->round->name,
+                                $slot->requestSlot
+                                    ? (string) $slot->requestSlot->request
+                                    : ($slot->manual ? 'Traité manuellement' : 'En attente')
+                            );
+                        }, $proxy->proxySlots->toArray())),
+                    ]
+                );
+            } catch (\Exception $e) {
+                return static::getExportErrorFields($proxy);
+            }
+        }];
     }
 }
