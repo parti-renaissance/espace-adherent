@@ -368,7 +368,7 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
             'Ville' => $procuration->getCityName(),
             'Pays' => $procuration->getCountry(),
             'Adhérent' => $adherent instanceof Adherent ? 'oui' : 'non',
-            'Téléphone adhérent' => $adherent instanceof Adherent ? PhoneNumberUtils::format($adherent->getPhone()) : null,
+            'Téléphone adhérent' => PhoneNumberUtils::format($adherent?->getPhone()),
             'Lieu de vote' => (string) $procuration->voteZone,
             'Bureau de vote' => $procuration->getVotePlaceName(),
             'Créé le' => $procuration->getCreatedAt()->format('Y/m/d H:i:s'),
