@@ -37,6 +37,9 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 'label' => 'Type',
                 'template' => 'admin/procuration_v2/_list_initial_request_type.html.twig',
             ])
+            ->add('adherent', null, [
+                'label' => 'Adhérent',
+            ])
             ->add('createdAt', null, [
                 'label' => 'Date',
             ])
@@ -63,9 +66,6 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 'field_options' => [
                     'multiple' => true,
                 ],
-            ])
-            ->add('adherent', null, [
-                'label' => 'Adhérent',
             ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
