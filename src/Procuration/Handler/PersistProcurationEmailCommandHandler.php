@@ -4,6 +4,7 @@ namespace App\Procuration\Handler;
 
 use App\Entity\ProcurationV2\ProcurationRequest;
 use App\Procuration\Command\PersistProcurationEmailCommand;
+use App\Repository\AdherentRepository;
 use App\Repository\Procuration\ProcurationRequestRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -13,7 +14,8 @@ class PersistProcurationEmailCommandHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly ProcurationRequestRepository $procurationRequestRepository
+        private readonly ProcurationRequestRepository $procurationRequestRepository,
+        private readonly AdherentRepository $adherentRepository
     ) {
     }
 
@@ -31,6 +33,7 @@ class PersistProcurationEmailCommandHandler
         $initialRequest->utmCampaign = $command->utmCampaign;
         $initialRequest->utmSource = $command->utmSource;
         $initialRequest->clientIp = $command->clientIp;
+        $initialRequest->adherent = $this->adherentRepository->findOneByEmail($command->getEmail());
 
         $this->entityManager->flush();
 
