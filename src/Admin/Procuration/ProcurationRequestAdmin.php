@@ -3,7 +3,11 @@
 namespace App\Admin\Procuration;
 
 use App\Admin\AbstractAdmin;
+use App\Admin\Exporter\IterableCallbackDataSourceTrait;
+use App\Admin\Exporter\IteratorCallbackDataSource;
+use App\Entity\ProcurationV2\ProcurationRequest;
 use App\Form\Admin\Procuration\InitialRequestTypeEnumType;
+use App\Utils\PhpConfigurator;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -14,6 +18,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ProcurationRequestAdmin extends AbstractAdmin
 {
+    use IterableCallbackDataSourceTrait;
+
     protected function configureFormFields(FormMapper $form): void
     {
         $form->add('email', TextType::class, ['label' => 'Adresse email']);
@@ -62,5 +68,25 @@ class ProcurationRequestAdmin extends AbstractAdmin
                 'show_filter' => true,
             ])
         ;
+    }
+
+    protected function configureExportFields(): array
+    {
+        PhpConfigurator::disableMemoryLimit();
+
+        $translator = $this->getTranslator();
+
+        return [IteratorCallbackDataSource::CALLBACK => static function (array $procuration) use ($translator) {
+            /** @var ProcurationRequest $procurationRequest */
+            $procurationRequest = $procuration[0];
+
+            return [
+                'ID' => $procurationRequest->getId(),
+                'UUID' => $procurationRequest->getUuid()->toString(),
+                'Adresse email' => $procurationRequest->email,
+                'Type' => $translator->trans('procuration.initial_request.type.'.$procurationRequest->type->value),
+                'Créé le' => $procurationRequest->getCreatedAt()->format('Y/m/d H:i:s'),
+            ];
+        }];
     }
 }

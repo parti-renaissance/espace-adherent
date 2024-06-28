@@ -2,10 +2,13 @@
 
 namespace App\Admin\Procuration;
 
+use App\Admin\Exporter\IteratorCallbackDataSource;
 use App\Entity\ProcurationV2\Request;
+use App\Entity\ProcurationV2\RequestSlot;
 use App\Form\Admin\Procuration\RequestStatusEnumType;
 use App\Procuration\V2\Event\ProcurationEvent;
 use App\Procuration\V2\Event\ProcurationEvents;
+use App\Utils\PhpConfigurator;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -105,5 +108,37 @@ class RequestAdmin extends AbstractProcurationAdmin
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
+    }
+
+    protected function configureExportFields(): array
+    {
+        PhpConfigurator::disableMemoryLimit();
+
+        $translator = $this->getTranslator();
+
+        return [IteratorCallbackDataSource::CALLBACK => static function (array $procuration) use ($translator) {
+            /** @var Request $request */
+            $request = $procuration[0];
+
+            try {
+                return array_merge(
+                    static::getExportCommonFields($request, $translator),
+                    [
+                        'Statut' => $translator->trans('procuration.request.status.'.$request->status->value),
+                        'Associations' => implode(', ', array_map(static function (RequestSlot $slot) {
+                            return sprintf(
+                                '%s: %s',
+                                $slot->round->name,
+                                $slot->proxySlot
+                                    ? (string) $slot->proxySlot->proxy
+                                    : ($slot->manual ? 'Traité manuellement' : 'En attente')
+                            );
+                        }, $request->requestSlots->toArray())),
+                    ]
+                );
+            } catch (\Exception $e) {
+                return static::getExportErrorFields($request);
+            }
+        }];
     }
 }

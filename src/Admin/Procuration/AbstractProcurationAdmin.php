@@ -3,10 +3,15 @@
 namespace App\Admin\Procuration;
 
 use App\Address\AddressInterface;
+use App\Admin\Exporter\IterableCallbackDataSourceTrait;
 use App\Admin\Filter\ZoneAutocompleteFilter;
+use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
+use App\Entity\ProcurationV2\AbstractProcuration;
+use App\Entity\ProcurationV2\Round;
 use App\Form\GenderType;
 use App\Query\Utils\MultiColumnsSearchHelper;
+use App\Utils\PhoneNumberUtils;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
@@ -25,12 +30,15 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Translation\TranslatorInterface;
 
 abstract class AbstractProcurationAdmin extends AbstractAdmin
 {
+    use IterableCallbackDataSourceTrait;
+
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection->clearExcept(['list', 'edit']);
+        $collection->clearExcept(['list', 'edit', 'export']);
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void
@@ -334,5 +342,51 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
             ->andWhere("$alias.active = 1")
             ->setParameter('zone_types', $types)
         ;
+    }
+
+    protected static function getExportCommonFields(
+        AbstractProcuration $procuration,
+        TranslatorInterface $translator
+    ): array {
+        $adherent = $procuration->adherent;
+
+        return [
+            'ID' => $procuration->getId(),
+            'UUID' => $procuration->getUuid()->toString(),
+            'Élections' => $procuration->rounds->first()->election->name,
+            'Tours' => implode(', ', array_map(function (Round $round) {
+                return sprintf('%s (%s)', $round->name, $round->date->format('d/m/Y'));
+            }, $procuration->rounds->toArray())),
+            'Civilité' => $translator->trans('common.civility.'.$procuration->gender),
+            'Nom' => $procuration->lastName,
+            'Prénom(s)' => $procuration->firstNames,
+            'Adresse email' => $procuration->email,
+            'Date de naissance' => $procuration->birthdate->format('d/m/Y'),
+            'Téléphone' => PhoneNumberUtils::format($procuration->phone),
+            'Addresse' => $procuration->getAddress(),
+            'Code postal' => $procuration->getPostalCode(),
+            'Ville' => $procuration->getCityName(),
+            'Pays' => $procuration->getCountry(),
+            'Adhérent' => $adherent instanceof Adherent ? 'oui' : 'non',
+            'Téléphone adhérent' => $adherent instanceof Adherent ? PhoneNumberUtils::format($adherent->getPhone()) : null,
+            'Lieu de vote' => (string) $procuration->voteZone,
+            'Bureau de vote' => $procuration->getVotePlaceName(),
+            'Créé le' => $procuration->getCreatedAt()->format('Y/m/d H:i:s'),
+        ];
+    }
+
+    protected static function getExportErrorFields(
+        AbstractProcuration $procuration
+    ): array {
+        return [
+            'ID' => $procuration->getId(),
+            'UUID' => $procuration->getUuid()->toString(),
+            'Adresse email' => $procuration->email,
+            'Nom' => $procuration->lastName,
+            'Prénom(s)' => $procuration->firstNames,
+            'Date de naissance' => $procuration->birthdate->format('d/m/Y'),
+            'Lieu de vote' => (string) $procuration->voteZone,
+            'Bureau de vote' => $procuration->getVotePlaceName(),
+        ];
     }
 }
