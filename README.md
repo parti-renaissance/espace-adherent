@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://storage.googleapis.com/en-marche-fr/E-MAILING/2017/images/REM/Logo-LREM-noir.jpg">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Renaissance_ALT.png">
 </div>
 
 Powered by : 
