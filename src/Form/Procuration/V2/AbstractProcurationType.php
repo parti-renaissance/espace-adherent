@@ -35,6 +35,7 @@ abstract class AbstractProcurationType extends AbstractType
                     return $er->createQueryBuilder('round')
                         ->where('round.election = :election')
                         ->setParameter('election', $election)
+                        ->andWhere('round.date > NOW()')
                     ;
                 },
                 'choice_label' => function (Round $round): string {
