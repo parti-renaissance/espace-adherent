@@ -4388,16 +4388,16 @@
         },
         {
             "name": "google/cloud-recaptcha-enterprise",
-            "version": "v1.12.2",
+            "version": "v1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise.git",
-                "reference": "527f87941f581c442f2d0ee7bc5cb3478ac11a8c"
+                "reference": "e2d8b080aab4f262a0bc529d538b6932042c3a1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/527f87941f581c442f2d0ee7bc5cb3478ac11a8c",
-                "reference": "527f87941f581c442f2d0ee7bc5cb3478ac11a8c",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/e2d8b080aab4f262a0bc529d538b6932042c3a1c",
+                "reference": "e2d8b080aab4f262a0bc529d538b6932042c3a1c",
                 "shasum": ""
             },
             "require": {
@@ -4432,9 +4432,9 @@
             ],
             "description": "Google Cloud Recaptcha Enterprise Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.12.2"
+                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.13.0"
             },
-            "time": "2024-06-01T03:14:01+00:00"
+            "time": "2024-06-28T21:34:53+00:00"
         },
         {
             "name": "google/cloud-storage",
@@ -4751,16 +4751,16 @@
         },
         {
             "name": "google/protobuf",
-            "version": "v4.27.0",
+            "version": "v4.27.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "28cf84ac822e2c8f82edd7c84cc792cacb822faa"
+                "reference": "1b9bfead0ea8108e6ab411258fc38417b62d4bf6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/28cf84ac822e2c8f82edd7c84cc792cacb822faa",
-                "reference": "28cf84ac822e2c8f82edd7c84cc792cacb822faa",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/1b9bfead0ea8108e6ab411258fc38417b62d4bf6",
+                "reference": "1b9bfead0ea8108e6ab411258fc38417b62d4bf6",
                 "shasum": ""
             },
             "require": {
@@ -4789,9 +4789,9 @@
                 "proto"
             ],
             "support": {
-                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v4.27.0"
+                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v4.27.2"
             },
-            "time": "2024-05-22T21:40:13+00:00"
+            "time": "2024-06-25T19:14:44+00:00"
         },
         {
             "name": "grpc/grpc",
