@@ -37,8 +37,12 @@
 
 {% block round_additional_form %}
     <fieldset>
+        {{ form_row(form.acceptVoteNearby, {label: 'Si il n\'y a plus de candidat ENSEMBLE en lice au 2e tour, je souhaite porter une procuration dans une circonscription législative proche de la mienne'}) }}
+    </fieldset>
+
+    <fieldset>
         <twig:Atoms:ReLabel>Je prends une procuration pour :</twig:Atoms:ReLabel>
-        {{  form_row(form.rounds) }}
+        {{ form_row(form.rounds) }}
     </fieldset>
 {% endblock %}
 

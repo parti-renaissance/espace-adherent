@@ -80,6 +80,10 @@ class Proxy extends AbstractProcuration
     #[ORM\Column(length: 9, nullable: true)]
     public ?string $electorNumber = null;
 
+    #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $acceptVoteNearby = false;
+
     /**
      * @Assert\Expression(
      *     expression="value >= 1 and ((!this.isFDE() and value == 1) or (this.isFDE() and value <= 3))",
