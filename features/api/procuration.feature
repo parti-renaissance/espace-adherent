@@ -29,6 +29,7 @@ Feature:
                 "email": "john.durand@test.dev",
                 "phone": "+33 6 11 22 33 44",
                 "birthdate": "1992-03-14",
+                "accept_vote_nearby": false,
                 "vote_zone": {
                     "uuid": "@uuid@",
                     "type": "city",
@@ -161,6 +162,7 @@ Feature:
                 "email": "pierre.durand@test.dev",
                 "phone": "+33 6 11 22 33 44",
                 "birthdate": "@string@",
+                "accept_vote_nearby": false,
                 "vote_zone": {
                     "uuid": "@uuid@",
                     "type": "city",
@@ -245,6 +247,7 @@ Feature:
                 "email": "jacques.durand@test.dev",
                 "phone": "+33 6 11 22 33 44",
                 "birthdate": "@string@",
+                "accept_vote_nearby": false,
                 "vote_zone": {
                     "uuid": "@uuid@",
                     "type": "city",

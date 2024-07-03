@@ -18,6 +18,13 @@ class ProxyType extends AbstractProcurationType
             ->add('electorNumber', TextType::class, [
                 'required' => false,
             ])
+            ->add('acceptVoteNearby', ChoiceType::class, [
+                'expanded' => true,
+                'choices' => [
+                    'global.yes' => true,
+                    'global.no' => false,
+                ],
+            ])
             ->add('slots', ChoiceType::class, [
                 'expanded' => true,
                 'choices' => [
