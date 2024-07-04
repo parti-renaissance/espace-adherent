@@ -2,7 +2,6 @@
 
 namespace App\Admin\NationalEvent;
 
-use App\Address\AddressInterface;
 use App\Adherent\Tag\TagTranslator;
 use App\Admin\AbstractAdmin;
 use App\Admin\Exporter\IterableCallbackDataSourceTrait;
@@ -14,6 +13,7 @@ use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\NationalEvent\EventInscription;
 use App\Form\CivilityType;
 use App\Form\NationalEvent\QualityChoiceType;
+use App\Form\TelNumberType;
 use App\NationalEvent\InscriptionStatusEnum;
 use App\NationalEvent\QualityEnum;
 use App\Query\Utils\MultiColumnsSearchHelper;
@@ -21,7 +21,6 @@ use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use App\ValueObject\Genders;
 use Doctrine\ORM\QueryBuilder;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -111,11 +110,8 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 ->add('postalCode', null, ['label' => 'Code postal'])
                 ->add('birthdate', null, ['label' => 'Date de naissance', 'widget' => 'single_text'])
                 ->add('qualities', QualityChoiceType::class, ['label' => 'Qualités'])
-                ->add('phone', PhoneNumberType::class, [
-                    'label' => 'Téléphone',
-                    'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+                ->add('phone', TelNumberType::class, [
                     'required' => false,
-                    'preferred_country_choices' => [AddressInterface::FRANCE],
                 ])
             ->end()
             ->with('Informations additionnelles', ['class' => 'col-md-6'])

@@ -10,9 +10,9 @@ use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\AbstractProcuration;
 use App\Entity\ProcurationV2\Round;
 use App\Form\GenderType;
+use App\Form\TelNumberType;
 use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Utils\PhoneNumberUtils;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -73,9 +73,7 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
                 ->add('email', null, [
                     'label' => 'Adresse email',
                 ])
-                ->add('phone', PhoneNumberType::class, [
-                    'label' => 'Téléphone',
-                    'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+                ->add('phone', TelNumberType::class, [
                     'required' => false,
                 ])
                 ->add('postAddress.address', TextType::class, ['label' => 'Rue'])

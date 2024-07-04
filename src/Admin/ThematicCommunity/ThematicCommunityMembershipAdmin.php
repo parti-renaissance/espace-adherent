@@ -10,11 +10,11 @@ use App\Entity\ThematicCommunity\ThematicCommunityMembership;
 use App\Entity\ThematicCommunity\ThematicCommunityToUserListDefinitionEnum;
 use App\Entity\UserListDefinition;
 use App\Form\GenderType;
+use App\Form\TelNumberType;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -126,10 +126,8 @@ class ThematicCommunityMembershipAdmin extends AbstractAdmin
                     'label' => 'Email',
                     'disabled' => !$isContactMembership,
                 ])
-                ->add('phone', PhoneNumberType::class, [
-                    'label' => 'Téléphone',
+                ->add('phone', TelNumberType::class, [
                     'disabled' => !$isContactMembership,
-                    'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 ])
                 ->add('postAddress.postalCode', TextType::class, [
                     'label' => 'Code postal',

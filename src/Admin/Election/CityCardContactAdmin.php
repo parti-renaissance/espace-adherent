@@ -2,8 +2,7 @@
 
 namespace App\Admin\Election;
 
-use App\Address\AddressInterface;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
+use App\Form\TelNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -18,12 +17,8 @@ class CityCardContactAdmin extends AbstractAdmin
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])
-            ->add('phone', PhoneNumberType::class, [
-                'label' => 'Téléphone',
+            ->add('phone', TelNumberType::class, [
                 'required' => false,
-                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                'default_region' => AddressInterface::FRANCE,
-                'preferred_country_choices' => [AddressInterface::FRANCE],
             ])
             ->add('caller', TextType::class, [
                 'label' => 'Qui appelle?',

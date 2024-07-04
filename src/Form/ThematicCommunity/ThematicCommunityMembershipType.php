@@ -3,7 +3,6 @@
 namespace App\Form\ThematicCommunity;
 
 use App\Address\Address;
-use App\Address\AddressInterface;
 use App\Entity\ThematicCommunity\ThematicCommunityMembership;
 use App\Entity\ThematicCommunity\ThematicCommunityToUserListDefinitionEnum;
 use App\Entity\UserListDefinition;
@@ -11,9 +10,9 @@ use App\Form\ActivityPositionType;
 use App\Form\AddressType;
 use App\Form\DatePickerType;
 use App\Form\GenderType;
+use App\Form\TelNumberType;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityRepository;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -71,12 +70,8 @@ class ThematicCommunityMembershipType extends AbstractType
                         new Constraints\Email(),
                     ],
                 ])
-                ->add('phone', PhoneNumberType::class, [
-                    'label' => 'Téléphone',
+                ->add('phone', TelNumberType::class, [
                     'required' => false,
-                    'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                    'default_region' => AddressInterface::FRANCE,
-                    'preferred_country_choices' => [AddressInterface::FRANCE],
                 ])
                 ->add('birthDate', DatePickerType::class, [
                     'label' => 'Date de naissance',

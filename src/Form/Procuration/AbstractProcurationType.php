@@ -3,8 +3,8 @@
 namespace App\Form\Procuration;
 
 use App\Form\GenderType;
+use App\Form\TelNumberType;
 use App\Procuration\ElectionContext;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -48,9 +48,8 @@ abstract class AbstractProcurationType extends AbstractType
             ->add('state', TextType::class, [
                 'required' => false,
             ])
-            ->add('phone', PhoneNumberType::class, [
+            ->add('phone', TelNumberType::class, [
                 'required' => false,
-                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
             ])
             ->add('emailAddress', EmailType::class)
             ->add('birthdate', BirthdayType::class, [

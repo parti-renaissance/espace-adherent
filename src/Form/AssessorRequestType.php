@@ -9,7 +9,6 @@ use App\Assessor\AssessorRequestEnum;
 use App\Entity\AssessorOfficeEnum;
 use App\FranceCities\FranceCities;
 use App\VotePlace\VotePlaceManager;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -55,9 +54,7 @@ class AssessorRequestType extends AbstractType
                         'required' => false,
                     ])
                     ->add('voterNumber', TextType::class)
-                    ->add('phone', PhoneNumberType::class, [
-                        'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                    ])
+                    ->add('phone', TelNumberType::class)
                     ->add('emailAddress', EmailType::class)
                     ->add('birthdate', BirthdayType::class, [
                         'placeholder' => [

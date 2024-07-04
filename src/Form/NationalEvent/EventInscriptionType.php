@@ -2,11 +2,11 @@
 
 namespace App\Form\NationalEvent;
 
-use App\Address\AddressInterface;
 use App\Event\Request\EventInscriptionRequest;
 use App\Form\AcceptPersonalDataCollectType;
 use App\Form\BirthdateType;
 use App\Form\CivilityType;
+use App\Form\TelNumberType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -26,11 +26,8 @@ class EventInscriptionType extends AbstractType
             ->add('firstName', TextType::class)
             ->add('lastName', TextType::class)
             ->add('birthdate', BirthdateType::class, ['years' => array_combine($years = range(date('Y') - 1, date('Y') - 120), $years)])
-            ->add('phone', PhoneNumberType::class, [
+            ->add('phone', TelNumberType::class, [
                 'required' => false,
-                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                'preferred_country_choices' => [AddressInterface::FRANCE],
-                'default_region' => AddressInterface::FRANCE,
                 'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT,
             ])
             ->add('postalCode', TextType::class)
