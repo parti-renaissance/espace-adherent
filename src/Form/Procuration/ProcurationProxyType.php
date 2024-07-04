@@ -5,8 +5,8 @@ namespace App\Form\Procuration;
 use App\Entity\Geo\Zone;
 use App\Entity\ProcurationProxy;
 use App\Form\DataTransformer\CityNameDataTransformer;
+use App\Form\TelNumberType;
 use App\Form\ZoneAutoCompleteType;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -52,9 +52,7 @@ class ProcurationProxyType extends AbstractProcurationType
                     'types' => [Zone::CITY, Zone::BOROUGH],
                 ],
             ])
-            ->add('phone', PhoneNumberType::class, [
-                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-            ])
+            ->add('phone', TelNumberType::class)
             ->add('voterNumber', TextType::class)
             ->add('voteCountry', CountryType::class)
             ->add('votePostalCode', TextType::class, [

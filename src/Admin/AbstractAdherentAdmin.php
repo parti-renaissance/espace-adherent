@@ -36,6 +36,7 @@ use App\Form\EventListener\BoardMemberListener;
 use App\Form\EventListener\CommitteeMembershipListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
+use App\Form\TelNumberType;
 use App\FranceCities\FranceCities;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Instance\InstanceQualityScopeEnum;
@@ -53,7 +54,6 @@ use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -282,9 +282,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         ->add('nationality', CountryType::class, [
                             'label' => 'Nationalité',
                         ])
-                        ->add('phone', PhoneNumberType::class, [
-                            'label' => 'Téléphone',
-                            'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
+                        ->add('phone', TelNumberType::class, [
                             'required' => false,
                         ])
                         ->add('birthdate', DatePickerType::class, [

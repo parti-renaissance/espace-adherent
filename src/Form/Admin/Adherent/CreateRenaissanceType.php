@@ -6,11 +6,11 @@ use App\Address\AddressInterface;
 use App\Form\AddressType;
 use App\Form\BirthdateType;
 use App\Form\CivilityType;
+use App\Form\TelNumberType;
 use App\Renaissance\Membership\Admin\AdherentCreateCommand;
 use App\Renaissance\Membership\Admin\CotisationAmountChoiceEnum;
 use App\Renaissance\Membership\Admin\CotisationTypeChoiceEnum;
 use App\Renaissance\Membership\Admin\MembershipTypeEnum;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -48,9 +48,8 @@ class CreateRenaissanceType extends AbstractType
                 'child_error_bubbling' => false,
             ])
             ->add('email', EmailType::class, ['disabled' => true])
-            ->add('phone', PhoneNumberType::class, [
+            ->add('phone', TelNumberType::class, [
                 'required' => false,
-                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 'country_options' => [
                     'preferred_choices' => [AddressInterface::FRANCE],
                     'invalid_message' => 'common.country.invalid',

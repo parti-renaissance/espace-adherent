@@ -6,7 +6,6 @@ use App\Address\AddressInterface;
 use App\AdherentProfile\AdherentProfile;
 use App\Entity\ActivityAreaEnum;
 use App\Entity\JobEnum;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -74,9 +73,8 @@ class AdherentProfileType extends AbstractType
                 'max_date' => new \DateTime('-15 years'),
                 'min_date' => new \DateTime('-120 years'),
             ])
-            ->add('phone', PhoneNumberType::class, [
+            ->add('phone', TelNumberType::class, [
                 'required' => false,
-                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 'preferred_country_choices' => $countryCode ? [$countryCode] : [AddressInterface::FRANCE],
             ])
             ->add('facebookPageUrl', UrlType::class, [

@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Repository\SubscriptionTypeRepository;
 use App\Subscription\SubscriptionTypeEnum;
@@ -30,11 +29,8 @@ class AdhesionFurtherInformationType extends AbstractType
                 'expanded' => true,
             ])
             ->add('birthdate', BirthdateType::class)
-            ->add('phone', PhoneNumberType::class, [
+            ->add('phone', TelNumberType::class, [
                 'required' => false,
-                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                'preferred_country_choices' => [AddressInterface::FRANCE],
-                'default_region' => AddressInterface::FRANCE,
                 'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT,
             ])
             ->add('acceptSmsNotification', CheckboxType::class, ['required' => false, 'mapped' => false])

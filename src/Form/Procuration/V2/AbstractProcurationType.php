@@ -2,13 +2,13 @@
 
 namespace App\Form\Procuration\V2;
 
-use App\Address\AddressInterface;
 use App\Entity\ProcurationV2\Election;
 use App\Entity\ProcurationV2\Round;
 use App\Form\AcceptPersonalDataCollectType;
 use App\Form\AutocompleteAddressType;
 use App\Form\BirthdateType;
 use App\Form\CivilityType;
+use App\Form\TelNumberType;
 use App\Form\ZoneUuidType;
 use Doctrine\ORM\EntityRepository;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
@@ -50,10 +50,7 @@ abstract class AbstractProcurationType extends AbstractType
             ->add('firstNames', TextType::class)
             ->add('lastName', TextType::class)
             ->add('birthdate', BirthdateType::class)
-            ->add('phone', PhoneNumberType::class, [
-                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                'preferred_country_choices' => [AddressInterface::FRANCE],
-                'default_region' => AddressInterface::FRANCE,
+            ->add('phone', TelNumberType::class, [
                 'country_display_type' => PhoneNumberType::DISPLAY_COUNTRY_SHORT,
             ])
             ->add('address', AutocompleteAddressType::class, [

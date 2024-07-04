@@ -6,7 +6,7 @@ use App\Address\AddressInterface;
 use App\Entity\ElectionRound;
 use App\Entity\ProcurationProxy;
 use App\Form\GenderType;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
+use App\Form\TelNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -63,10 +63,7 @@ class ProcurationProxyAdmin extends AbstractAdmin
                 ->add('emailAddress', null, [
                     'label' => 'Adresse email',
                 ])
-                ->add('phone', PhoneNumberType::class, [
-                    'label' => 'Téléphone',
-                    'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                ])
+                ->add('phone', TelNumberType::class)
                 ->add('birthdate', DatePickerType::class, [
                     'label' => 'Date de naissance',
                 ])

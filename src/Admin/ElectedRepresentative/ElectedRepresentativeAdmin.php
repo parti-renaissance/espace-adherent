@@ -2,7 +2,6 @@
 
 namespace App\Admin\ElectedRepresentative;
 
-use App\Address\AddressInterface;
 use App\Admin\Filter\ZoneAutocompleteFilter;
 use App\ElectedRepresentative\Contribution\ContributionStatusEnum;
 use App\ElectedRepresentative\ElectedRepresentativeEvent;
@@ -19,10 +18,10 @@ use App\Form\AdherentEmailType;
 use App\Form\AdherentMandateType;
 use App\Form\ElectedRepresentative\SponsorshipType;
 use App\Form\GenderType;
+use App\Form\TelNumberType;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -211,12 +210,9 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                     'label' => 'Autre email de contact',
                     'required' => false,
                 ])
-                ->add('contactPhone', PhoneNumberType::class, [
+                ->add('contactPhone', TelNumberType::class, [
                     'required' => false,
                     'label' => 'Autre téléphone de contact',
-                    'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                    'default_region' => AddressInterface::FRANCE,
-                    'preferred_country_choices' => [AddressInterface::FRANCE],
                     'attr' => ['class' => 'phone'],
                 ])
                 ->add('birthDate', DatePickerType::class, [

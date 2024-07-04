@@ -3,7 +3,7 @@
 namespace App\Admin\ApplicationRequest;
 
 use App\Form\GenderType;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
+use App\Form\TelNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -172,10 +172,7 @@ abstract class AbstractApplicationRequestAdmin extends AbstractAdmin
                 ->add('country', CountryType::class, [
                     'label' => 'Pays',
                 ])
-                ->add('phone', PhoneNumberType::class, [
-                    'label' => 'Téléphone',
-                    'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                ])
+                ->add('phone', TelNumberType::class)
                 ->add('displayed', CheckboxType::class, [
                     'label' => 'Affiché',
                     'required' => false,

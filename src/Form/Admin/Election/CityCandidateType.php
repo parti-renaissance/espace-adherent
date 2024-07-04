@@ -2,10 +2,9 @@
 
 namespace App\Form\Admin\Election;
 
-use App\Address\AddressInterface;
 use App\Entity\Election\CityCandidate;
+use App\Form\TelNumberType;
 use App\ValueObject\Genders;
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -45,11 +44,8 @@ class CityCandidateType extends AbstractType
                     'placeholder' => 'Email',
                 ],
             ])
-            ->add('phone', PhoneNumberType::class, [
+            ->add('phone', TelNumberType::class, [
                 'required' => false,
-                'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
-                'default_region' => AddressInterface::FRANCE,
-                'preferred_country_choices' => [AddressInterface::FRANCE],
                 'attr' => [
                     'placeholder' => 'Téléphone',
                 ],
