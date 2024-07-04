@@ -116,6 +116,6 @@ abstract class AbstractCommand
 
     public function setEmail(?string $email): void
     {
-        $this->email = mb_strtolower($email);
+        $this->email = mb_strtolower(trim($email));
     }
 }
