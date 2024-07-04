@@ -36,7 +36,7 @@ class EmailValidationRequest implements RecaptchaChallengeInterface
 
     public function setEmail(?string $email): void
     {
-        $this->email = strtolower($email);
+        $this->email = mb_strtolower(trim($email));
     }
 
     public function getEmail(): ?string
