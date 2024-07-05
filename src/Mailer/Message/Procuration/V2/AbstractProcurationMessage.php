@@ -8,7 +8,7 @@ use App\ValueObject\Genders;
 abstract class AbstractProcurationMessage extends Message
 {
     protected const SENDER_NAME = 'Procurations • ENSEMBLE';
-    protected const SENDER_EMAIL = 'procurations@parti-renaissance.fr';
+    protected const SENDER_EMAIL = 'contact@parti-renaissance.fr';
 
     protected static function updateSenderInfo(Message $message): Message
     {

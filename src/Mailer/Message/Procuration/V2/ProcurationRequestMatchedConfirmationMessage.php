@@ -48,7 +48,6 @@ final class ProcurationRequestMatchedConfirmationMessage extends AbstractProcura
             $message->addCC($matcher->getEmailAddress());
         }
 
-        $message->addBCC(self::SENDER_EMAIL);
         $message->setReplyTo($proxy->email);
         $message->setPreserveRecipients(true);
 
