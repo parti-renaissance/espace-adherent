@@ -44,7 +44,6 @@ final class ProcurationMatchReminderMessage extends AbstractProcurationMessage
             $message->addCC($matcher->getEmailAddress());
         }
 
-        $message->addBCC(self::SENDER_EMAIL);
         $message->setReplyTo($proxy->email);
         $message->setPreserveRecipients(true);
 
