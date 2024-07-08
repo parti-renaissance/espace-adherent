@@ -22,8 +22,6 @@ use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
-use App\Entity\AdherentMandate\NationalCouncilAdherentMandate;
-use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\Campus\Registration;
 use App\Entity\Contribution\Contribution;
@@ -31,15 +29,10 @@ use App\Entity\Contribution\Payment;
 use App\Entity\Contribution\RevenueDeclaration;
 use App\Entity\Filesystem\FilePermissionEnum;
 use App\Entity\Geo\Zone;
-use App\Entity\Instance\AdherentInstanceQuality;
-use App\Entity\Instance\InstanceQuality;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\DelegatedAccessEnum;
 use App\Entity\Team\Member;
-use App\Entity\TerritorialCouncil\PoliticalCommitteeMembership;
-use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
-use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\EntityListener\RevokeReferentTeamMemberRolesListener;
 use App\Exception\AdherentAlreadyEnabledException;
@@ -58,7 +51,6 @@ use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
-use App\Validator\TerritorialCouncil\UniqueTerritorialCouncilMember;
 use App\Validator\UniqueMembership;
 use App\Validator\ZoneBasedRoles as AssertZoneBasedRoles;
 use App\ValueObject\Genders;
@@ -84,7 +76,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @UniqueEntity(fields={"nickname"}, groups={"anonymize"})
  * @UniqueMembership(groups={"Admin"})
- * @UniqueTerritorialCouncilMember(qualities={"referent", "referent_jam"})
  *
  * @ApiResource(
  *     routePrefix="/v3",
@@ -287,24 +278,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     #[ORM\OneToOne(targetEntity: JecouteManagedArea::class, cascade: ['all'], orphanRemoval: true)]
     private $jecouteManagedArea;
-
-    /**
-     * @var TerritorialCouncilMembership|null
-     */
-    #[ORM\OneToOne(mappedBy: 'adherent', targetEntity: TerritorialCouncilMembership::class, cascade: ['all'], orphanRemoval: true)]
-    private $territorialCouncilMembership;
-
-    /**
-     * @var AdherentInstanceQuality[]|Collection
-     */
-    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentInstanceQuality::class, cascade: ['all'], orphanRemoval: true)]
-    private $instanceQualities;
-
-    /**
-     * @var PoliticalCommitteeMembership|null
-     */
-    #[ORM\OneToOne(mappedBy: 'adherent', targetEntity: PoliticalCommitteeMembership::class, cascade: ['all'], orphanRemoval: true)]
-    private $politicalCommitteeMembership;
 
     /**
      * @var CommitteeMembership[]|Collection
@@ -705,7 +678,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->handledThematicCommunities = new ArrayCollection();
         $this->adherentMandates = new ArrayCollection();
         $this->provisionalSupervisors = new ArrayCollection();
-        $this->instanceQualities = new ArrayCollection();
         $this->teamMemberships = new ArrayCollection();
         $this->zoneBasedRoles = new ArrayCollection();
         $this->referentTags = new ArrayCollection();
@@ -934,10 +906,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isThematicCommunityChief()) {
             $roles[] = 'ROLE_THEMATIC_COMMUNITY_CHIEF';
-        }
-
-        if ($this->hasNationalCouncilQualities()) {
-            $roles[] = 'ROLE_NATIONAL_COUNCIL_MEMBER';
         }
 
         if ($this->isPhoningCampaignTeamMember()) {
@@ -1599,106 +1567,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->jecouteManagedArea = null;
     }
 
-    public function getTerritorialCouncilMembership(): ?TerritorialCouncilMembership
-    {
-        return $this->territorialCouncilMembership;
-    }
-
-    public function setTerritorialCouncilMembership(?TerritorialCouncilMembership $territorialCouncilMembership): void
-    {
-        $this->territorialCouncilMembership = $territorialCouncilMembership;
-
-        if ($territorialCouncilMembership) {
-            $this->territorialCouncilMembership->setAdherent($this);
-        }
-    }
-
-    public function hasTerritorialCouncilMembership(): bool
-    {
-        return $this->territorialCouncilMembership instanceof TerritorialCouncilMembership;
-    }
-
-    public function isTerritorialCouncilMember(): bool
-    {
-        return $this->territorialCouncilMembership instanceof TerritorialCouncilMembership
-            && $this->territorialCouncilMembership->getTerritorialCouncil()->isActive();
-    }
-
-    public function isTerritorialCouncilPresident(): bool
-    {
-        return $this->isTerritorialCouncilMember()
-            && $this->territorialCouncilMembership->isPresident();
-    }
-
-    public function revokeTerritorialCouncilMembership(): void
-    {
-        if (!$this->territorialCouncilMembership) {
-            return;
-        }
-
-        $this->territorialCouncilMembership->revoke();
-        $this->territorialCouncilMembership = null;
-    }
-
-    public function getPoliticalCommitteeMembership(): ?PoliticalCommitteeMembership
-    {
-        return $this->politicalCommitteeMembership;
-    }
-
-    public function setPoliticalCommitteeMembership(?PoliticalCommitteeMembership $politicalCommitteeMembership): void
-    {
-        $this->politicalCommitteeMembership = $politicalCommitteeMembership;
-
-        if ($politicalCommitteeMembership) {
-            $this->politicalCommitteeMembership->setAdherent($this);
-        }
-    }
-
-    public function hasPoliticalCommitteeMembership(): bool
-    {
-        return $this->politicalCommitteeMembership instanceof PoliticalCommitteeMembership;
-    }
-
-    public function isPoliticalCommitteeMember(): bool
-    {
-        return $this->politicalCommitteeMembership instanceof PoliticalCommitteeMembership
-            && $this->politicalCommitteeMembership->getPoliticalCommittee()->isActive();
-    }
-
-    public function revokePoliticalCommitteeMembership(): void
-    {
-        if (!$this->politicalCommitteeMembership) {
-            return;
-        }
-
-        $this->politicalCommitteeMembership->revoke();
-        $this->politicalCommitteeMembership = null;
-    }
-
-    public function isMayorOrLeader(): bool
-    {
-        return $this->politicalCommitteeMembership
-            && $this->politicalCommitteeMembership->hasOneOfQualities([TerritorialCouncilQualityEnum::MAYOR, TerritorialCouncilQualityEnum::LEADER]);
-    }
-
-    public function getManagedAreaMarkerLatitude(): ?string
-    {
-        if (!$this->managedArea) {
-            return '';
-        }
-
-        return $this->managedArea->getMarkerLatitude();
-    }
-
-    public function getManagedAreaMarkerLongitude(): ?string
-    {
-        if (!$this->managedArea) {
-            return '';
-        }
-
-        return $this->managedArea->getMarkerLongitude();
-    }
-
     public function isProcurationsManager(): bool
     {
         return $this->hasZoneBasedRole(ScopeEnum::PROCURATIONS_MANAGER);
@@ -2079,7 +1947,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function __clone()
     {
         $this->subscriptionTypes = new ArrayCollection($this->subscriptionTypes->toArray());
-        $this->territorialCouncilMembership = $this->territorialCouncilMembership ? clone $this->territorialCouncilMembership : null;
         $this->postAddress = clone $this->postAddress;
     }
 
@@ -2619,17 +2486,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     }
 
     /**
-     * @return NationalCouncilAdherentMandate[]
-     */
-    public function findNationalCouncilMandates(bool $active): array
-    {
-        return $this->adherentMandates->filter(function (AdherentMandateInterface $mandate) use ($active) {
-            return $mandate instanceof NationalCouncilAdherentMandate
-                && (false === $active || null === $mandate->getFinishAt());
-        })->toArray();
-    }
-
-    /**
      * @return ElectedRepresentativeAdherentMandate[]
      */
     public function findElectedRepresentativeMandates(bool $active): array
@@ -2663,15 +2519,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
                 $mandate instanceof ElectedRepresentativeAdherentMandate
                 && null === $mandate->getFinishAt()
                 && !$mandate->isLocal();
-        })->toArray();
-    }
-
-    public function findTerritorialCouncilMandates(?string $quality = null, bool $active = false): array
-    {
-        return $this->adherentMandates->filter(function (AdherentMandateInterface $mandate) use ($quality, $active) {
-            return $mandate instanceof TerritorialCouncilAdherentMandate
-                && (null === $quality || $mandate->getQuality() === $quality)
-                && (false === $active || null === $mandate->getFinishAt());
         })->toArray();
     }
 
@@ -2749,72 +2596,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isRenaissanceSympathizer(): bool
     {
         return $this->hasTag(TagEnum::SYMPATHISANT);
-    }
-
-    public function addInstanceQuality($quality, ?\DateTime $data = null): AdherentInstanceQuality
-    {
-        if ($quality instanceof InstanceQuality) {
-            if ($adherentInstanceQuality = $this->findInstanceQuality($quality)) {
-                return $adherentInstanceQuality;
-            }
-
-            $quality = new AdherentInstanceQuality($this, $quality, $data ?? new \DateTime());
-        }
-
-        if (!$quality instanceof AdherentInstanceQuality) {
-            throw new \InvalidArgumentException();
-        }
-
-        if (!$this->instanceQualities->contains($quality)) {
-            $quality->setAdherent($this);
-            $this->instanceQualities->add($quality);
-        }
-
-        return $quality;
-    }
-
-    public function removeInstanceQuality($quality): void
-    {
-        if ($quality instanceof InstanceQuality) {
-            $quality = $this->findInstanceQuality($quality);
-        }
-
-        if ($quality) {
-            $this->instanceQualities->removeElement($quality);
-        }
-    }
-
-    public function getInstanceQualities(): Collection
-    {
-        return $this->instanceQualities;
-    }
-
-    public function hasNationalCouncilQualities(): bool
-    {
-        return 0 < $this->instanceQualities->filter(function (AdherentInstanceQuality $adherentQuality) {
-            return $adherentQuality->hasNationalCouncilScope();
-        })->count();
-    }
-
-    /**
-     * @return AdherentInstanceQuality[]
-     */
-    public function getNationalCouncilQualities(): array
-    {
-        return $this->instanceQualities->filter(function (AdherentInstanceQuality $adherentQuality) {
-            return $adherentQuality->hasNationalCouncilScope();
-        })->toArray();
-    }
-
-    private function findInstanceQuality(InstanceQuality $quality): ?AdherentInstanceQuality
-    {
-        foreach ($this->instanceQualities as $adherentInstanceQuality) {
-            if ($adherentInstanceQuality->getInstanceQuality()->equals($quality)) {
-                return $adherentInstanceQuality;
-            }
-        }
-
-        return null;
     }
 
     public function getTeamMemberships(): Collection

@@ -51,8 +51,6 @@ common.adherent.others: Autres
 common.message_edited: Votre message a bien été édité.
 common.message_deleted: Votre message a bien été supprimé.
 common.select_date: Choisissez une date
-common.territorial_council: Conseil territorial
-common.political_committee: Comité politique
 common.blue: Bleu
 common.green: Vert
 common.red: Rouge
@@ -418,15 +416,7 @@ referent.coreferent_access: Accès adhérents
 referent.limited_coreferent_access: Accès adhérents (limité)
 referent.email.unchangeable: Pour pouvoir modifier l'e-mail, veuillez décocher la case donnant les droits d'accès à la rubrique <i>Adhérents</i> et sauvegarder la modification.
 referent.save: Enregistrer
-referent.territorial_council.committee: Comité
-referent.territorial_council.city: Ville
-referent.territorial_council.quality: Qualité
-referent.territorial_council.political_committee_member: Est au CoPol ?
 referent.zones: Zones gérées
-referent.territorial_council.filter.territorial_councils: Choisissez des zones gérées
-referent.territorial_council.filter.committees: Choisissez des comités
-referent.territorial_council.filter.cities: Choisissez des villes
-referent.territorial_council.filter.qualities: Choisissez des qualités
 
 #
 # J'écoute
@@ -1163,12 +1153,6 @@ senatorial_candidate.popup.file_url: https://storage.googleapis.com/en-marche-fr
 #
 # TerritorialCouncil
 #
-territorial_council.referent: Président du Conseil territorial (unique)
-territorial_council.referent_jam: Référent JAM membre du Conseil territorial (unique)
-territorial_council.government_member: Membre du gouvernement membre du Conseil territorial
-territorial_council.admin.description: |
-    Sélectionnez un Conseil territorial pour donner le droit de vote à cet adhérent sur la qualité souhaitée.
-    Un seul adhérent par Conseil territorial et Comité Politique pourra être nommé Référent ou Référent JAM.
 territorial_council.membership.quality.referent: Président(e) du Conseil territorial
 territorial_council.membership.quality.government_member: Membre du Gouvernement
 territorial_council.membership.quality.referent_jam: Référent(e) JAM
@@ -1203,13 +1187,6 @@ territorial_council.membership.qualities.borough_councilor: Conseillers d'arrond
 territorial_council.membership.qualities.consular_councilor: Conseillers FDE
 territorial_council.membership.qualities.committee_supervisor: Animateurs locaux
 territorial_council.membership.qualities.elected_candidate_adherent: Adhérents désignés
-territorial_council.adherent_has_no_membership: L'adhérent ({email}) n'est pas un membre du Conseil territorial "{territorialCouncil}"
-
-#
-# TerritorialCouncilMembershipLog
-#
-territorial_council_membership_log.is_resolved: Ce log est déjà résolu.
-territorial_council_membership_log.is_not_resolved: Ce log n'est pas encore résolu.
 
 #
 # Political committee
@@ -1232,9 +1209,6 @@ political_committee.membership.quality.borough_councilor: Conseiller(ère) d'arr
 political_committee.membership.quality.consular_councilor: Conseiller(ère) FDE désigné(e)
 political_committee.membership.quality.committee_supervisor: Animateur(trice) local(e) désigné(e) au CoPol
 political_committee.membership.quality.elected_candidate_adherent: Adhérent(e) désigné(e) au CoPol
-political_committee.membership.adherent_has_already: L'adhérent ({email}) est déjà un membre du Comité politique "{politicalCommittee}"
-political_committee.membership.adherent_has_no_membership: L'adhérent ({email}) n'est pas un membre du Comité politique du Conseil territorial "{territorialCouncil}"
-political_committee.membership.has_max_number_of_mayor_and_leader: Vous ne pouvez nommer que {max} maire ou président du groupe d'opposition LaREM dans le Comité politique "{politicalCommittee}".
 
 #
 # Adherent commitment
@@ -1299,7 +1273,6 @@ adherent_mandate.committee.not_valid_gender: Le genre "{gender}" de l'adhérent 
 adherent_mandate.committee.inappropriate_gender: Le genre de l'adhérent ne correspond pas au genre du mandat.
 adherent_mandate.committee.adherent_with_active_mandate: L'adhérent ({email}) est déjà un adhérent désigné dans un comité "{committee}".
 adherent_mandate.committee.committee_has_already_active_mandate: Le comité "{committee}" a déjà un adhérent désigné ({gender}).
-adherent_mandate.adherent_has_territorial_council_membership: L'adhérent ({email}) est déjà membre du Conseil territorial "{territorialCouncil}".
 adherent_mandate.conseiller_municipal: "Conseiller(e) municipal(e)"
 adherent_mandate.membre_EPCI: "Membre d'EPCI"
 adherent_mandate.conseiller_departemental: "Conseiller(e) départemental(e)"

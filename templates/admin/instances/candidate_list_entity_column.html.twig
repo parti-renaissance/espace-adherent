@@ -1,15 +1,13 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {{ object.type == 'territorial_council' ? 'CoTerr :' }}
-
-    {% if object.type in ['committee', 'committee_supervisor', 'territorial_council'] %}
-        <a href="{{ path(object.type in ['committee', 'committee_supervisor'] ? 'admin_app_committee_list' : 'admin_app_territorialcouncil_territorialcouncil_list', {filter: {id: {value: object.election_entity.id}}}) }}">
+    {% if object.type in ['committee', 'committee_supervisor'] %}
+        <a href="{{ path('admin_app_committee_list', {filter: {id: {value: object.election_entity.id}}}) }}">
     {% endif %}
 
     {{ object.election_entity.name }}
 
-    {% if object.type in ['committee', 'committee_supervisor', 'territorial_council'] %}
+    {% if object.type in ['committee', 'committee_supervisor'] %}
         </a>
     {% endif %}
 {% endblock %}

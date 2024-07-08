@@ -31,7 +31,6 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
             ->leftJoin('o.electionEntity', 'election_entity')
             ->leftJoin('o.votersList', 'voters_list')
             ->leftJoin('election_entity.committee', 'committee')
-            ->leftJoin('election_entity.territorialCouncil', 'territorial_council')
             ->leftJoin('o.designation', 'designation')
             ->leftJoin('pool.candidateGroups', 'candidate_group')
             ->addSelect(
@@ -41,7 +40,6 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
                 'election_entity',
                 'designation',
                 'committee',
-                'territorial_council',
                 'election_result',
                 'voters_list',
             )
@@ -75,17 +73,6 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
             ])
             ->add('electionEntity.committee', ModelFilter::class, [
                 'label' => 'Comité',
-                'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
-                'field_options' => [
-                    'model_manager' => $this->getModelManager(),
-                    'minimum_input_length' => 1,
-                    'items_per_page' => 20,
-                    'property' => 'name',
-                ],
-            ])
-            ->add('electionEntity.territorialCouncil', ModelFilter::class, [
-                'label' => 'CoTerr',
                 'show_filter' => true,
                 'field_type' => ModelAutocompleteType::class,
                 'field_options' => [

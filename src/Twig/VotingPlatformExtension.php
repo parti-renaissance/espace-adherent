@@ -13,8 +13,6 @@ class VotingPlatformExtension extends AbstractExtension
     {
         return [
             new TwigFunction('get_voting_platform_election_for_committee', [VotingPlatformRuntime::class, 'findElectionForCommittee']),
-            new TwigFunction('get_voting_platform_election_for_territorial_council_election', [VotingPlatformRuntime::class, 'findElectionForTerritorialCouncilElection']),
-            new TwigFunction('get_voting_platform_election_for_national_council_election', [VotingPlatformRuntime::class, 'findElectionForNationalCouncilElection']),
             new TwigFunction('get_voting_platform_election_for_designation', [VotingPlatformRuntime::class, 'findElectionForDesignation']),
             new TwigFunction('get_my_vote_for_election', [VotingPlatformRuntime::class, 'findMyVoteForElection']),
             new TwigFunction('has_voted_for_designation', [VotingPlatformRuntime::class, 'hasVotedForDesignation']),
@@ -33,9 +31,6 @@ class VotingPlatformExtension extends AbstractExtension
         $key = 'voting_platform.pool_title.';
 
         switch ($pool->getElection()->getDesignationType()) {
-            case DesignationTypeEnum::COPOL:
-                $key = 'territorial_council.membership.qualities.';
-                break;
             case DesignationTypeEnum::COMMITTEE_ADHERENT:
                 $key = 'common.';
                 break;

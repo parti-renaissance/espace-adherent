@@ -8,7 +8,6 @@ use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
-use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Repository\AdherentMandate\AdherentMandateRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: AdherentMandateRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
-#[ORM\DiscriminatorMap(['committee' => CommitteeAdherentMandate::class, 'territorial_council' => TerritorialCouncilAdherentMandate::class, 'national_council' => NationalCouncilAdherentMandate::class, 'elected_representative' => ElectedRepresentativeAdherentMandate::class])]
+#[ORM\DiscriminatorMap(['committee' => CommitteeAdherentMandate::class, 'elected_representative' => ElectedRepresentativeAdherentMandate::class])]
 abstract class AbstractAdherentMandate implements AdherentMandateInterface
 {
     use EntityIdentityTrait;
@@ -72,13 +71,6 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Committee::class, inversedBy: 'adherentMandates')]
     protected $committee;
-
-    /**
-     * @var TerritorialCouncil
-     */
-    #[ORM\JoinColumn(onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: TerritorialCouncil::class)]
-    protected $territorialCouncil;
 
     /**
      * @var string|null
@@ -173,16 +165,6 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
     public function setCommittee(Committee $committee): void
     {
         $this->committee = $committee;
-    }
-
-    public function getTerritorialCouncil(): ?TerritorialCouncil
-    {
-        return $this->territorialCouncil;
-    }
-
-    public function setTerritorialCouncil(TerritorialCouncil $territorialCouncil): void
-    {
-        $this->territorialCouncil = $territorialCouncil;
     }
 
     public function getQuality(): ?string

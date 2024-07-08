@@ -3,7 +3,6 @@
 namespace App\VotingPlatform\Event;
 
 use App\Entity\CommitteeMembership;
-use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\CandidacyInvitationInterface;
 
@@ -14,8 +13,8 @@ class CandidacyInvitationEvent extends BaseCandidacyEvent
     private $previouslyInvitedMemberships;
 
     /**
-     * @param CandidacyInvitationInterface[]                       $invitations
-     * @param TerritorialCouncilMembership[]|CommitteeMembership[] $previouslyInvitedMemberships
+     * @param CandidacyInvitationInterface[] $invitations
+     * @param CommitteeMembership[]          $previouslyInvitedMemberships
      */
     public function __construct(
         CandidacyInterface $candidacy,
@@ -44,7 +43,7 @@ class CandidacyInvitationEvent extends BaseCandidacyEvent
     }
 
     /**
-     * @return TerritorialCouncilMembership[]|CommitteeMembership[]
+     * @return CommitteeMembership[]
      */
     public function getPreviouslyInvitedMemberships(): array
     {

@@ -3,7 +3,6 @@
 namespace App\Command;
 
 use App\Entity\CommitteeMembership;
-use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Doctrine\ORM\QueryBuilder;
@@ -23,11 +22,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
 class MailchimpSyncAllMembershipsCommand extends Command
 {
     private const COMMITTEE_TYPE = 'committee';
-    private const TERRITORIAL_COUNCIL_TYPE = 'territorial_council';
 
     private static $allTypes = [
         self::COMMITTEE_TYPE,
-        self::TERRITORIAL_COUNCIL_TYPE,
     ];
 
     private $entityManager;
@@ -83,14 +80,12 @@ class MailchimpSyncAllMembershipsCommand extends Command
         $offset = 0;
 
         do {
-            /** @var CommitteeMembership|TerritorialCouncilMembership $membership */
+            /** @var CommitteeMembership $membership */
             foreach ($paginator->getIterator() as $membership) {
                 $object = null;
 
                 switch ($type) {
                     case self::COMMITTEE_TYPE: $object = $membership->getCommittee();
-                        break;
-                    case self::TERRITORIAL_COUNCIL_TYPE: $object = $membership->getTerritorialCouncil();
                         break;
                 }
 
@@ -137,16 +132,6 @@ class MailchimpSyncAllMembershipsCommand extends Command
                     ->addSelect('PARTIAL adherent.{id, uuid}')
                     ->innerJoin('membership.adherent', 'adherent')
                     ->innerJoin('membership.committee', 'object')
-                ;
-                break;
-
-            case self::TERRITORIAL_COUNCIL_TYPE:
-                $qb = $this->entityManager
-                    ->getRepository(TerritorialCouncilMembership::class)
-                    ->createQueryBuilder('membership')
-                    ->addSelect('PARTIAL adherent.{id, uuid}')
-                    ->innerJoin('membership.adherent', 'adherent')
-                    ->innerJoin('membership.territorialCouncil', 'object')
                 ;
                 break;
         }

@@ -41,7 +41,6 @@ class VoteResultRepository extends ServiceEntityRepository
         int $adherentId,
         int $designationId,
         ?int $committeeId = null,
-        ?int $territorialCouncilId = null
     ): array {
         $qb = $this->createQueryBuilder('vote_result')
             ->select('election_round.id AS election_round_id', 'COUNT(1) AS total')
@@ -66,14 +65,6 @@ class VoteResultRepository extends ServiceEntityRepository
                 ->innerJoin('election_entity.committee', 'committee')
                 ->andWhere('committee.id = :committee_id')
                 ->setParameter('committee_id', $committeeId)
-            ;
-        }
-
-        if ($territorialCouncilId) {
-            $qb
-                ->innerJoin('election_entity.territorialCouncil', 'territorial_council')
-                ->andWhere('territorial_council.id = :territorial_council_id')
-                ->setParameter('territorial_council_id', $territorialCouncilId)
             ;
         }
 

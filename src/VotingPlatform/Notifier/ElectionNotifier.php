@@ -161,14 +161,6 @@ class ElectionNotifier
     {
         $designation = $election->getDesignation();
 
-        if ($designation->isCopolType()) {
-            return $this->urlGenerator->generate('app_territorial_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        }
-
-        if ($designation->isExecutiveOfficeType()) {
-            return $this->urlGenerator->generate('app_national_council_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        }
-
         if ($designation->isPollType()) {
             return $this->urlGenerator->generate('app_poll_election_index', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL);
         }

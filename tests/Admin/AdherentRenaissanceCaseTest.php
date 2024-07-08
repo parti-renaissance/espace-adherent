@@ -61,7 +61,6 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         yield 'RCL' => ['adherent-male-55@en-marche-dev.fr'];
         yield 'Délégué de circonscription' => ['deputy@en-marche-dev.fr'];
         yield 'Candidat comité' => ['adherent-male-a@en-marche-dev.fr'];
-        yield 'Candidat coterr' => ['senatorial-candidate@en-marche-dev.fr'];
     }
 
     #[DataProvider('provideTerminateMembershipSuccess')]
@@ -319,50 +318,6 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         }
 
         self::assertSame(6, $countError);
-    }
-
-    public function testAnAdminWithoutRoleCannotUpdateCustomInstanceQuality()
-    {
-        $this->authenticateAsAdmin($this->client);
-
-        $adherent = $this->adherentRepository->findOneByUuid(LoadAdherentData::ADHERENT_19_UUID);
-        $crawler = $this->client->request(Request::METHOD_GET, $editUrl = sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()));
-        $form = $crawler->selectButton('Mettre à jour')->form();
-        $formName = str_replace(
-            sprintf('%s?uniqid=', $editUrl),
-            '',
-            $form->getFormNode()->getAttribute('action')
-        );
-        self::assertFalse($form->has($formName.'[instanceQualities]'));
-    }
-
-    public function testAnSuperAdminCanUpdateCustomInstanceQuality()
-    {
-        $adherent = $this->adherentRepository->findOneByUuid(LoadAdherentData::ADHERENT_19_UUID);
-
-        $this->makeEMClient();
-
-        $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
-        $this->client->request('GET', '/conseil-national');
-        $this->assertStatusCode(403, $this->client);
-
-        $this->makeRenaissanceClient();
-        $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
-
-        $crawler = $this->client->request('GET', $editUrl = sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()));
-
-        $form = $crawler->selectButton('Mettre à jour')->form();
-        $formName = str_replace(sprintf('%s?uniqid=', $editUrl), '', $form->getFormNode()->getAttribute('action'));
-
-        $form[$formName.'[instanceQualities]'] = 9;
-        $this->client->submit($form);
-        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-
-        $this->makeEMClient();
-        $this->authenticateAsAdherent($this->client, $adherent->getEmailAddress());
-
-        $this->client->request('GET', '/conseil-national');
-        $this->assertStatusCode(200, $this->client);
     }
 
     public function testCorrespondentDelegatedAccessChangedWhenAdherentLostAndRegainHisAccess()

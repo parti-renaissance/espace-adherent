@@ -1325,7 +1325,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             LoadSubscriptionTypeData::class,
             LoadElectionVotePlaceData::class,
             LoadCityData::class,
-            LoadTerritorialCouncilData::class,
             LoadThematicCommunityData::class,
             LoadGeoZoneData::class,
         ];

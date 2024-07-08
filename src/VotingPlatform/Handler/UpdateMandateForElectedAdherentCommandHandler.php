@@ -5,8 +5,6 @@ namespace App\VotingPlatform\Handler;
 use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
 use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
-use App\Entity\AdherentMandate\NationalCouncilAdherentMandate;
-use App\Entity\AdherentMandate\TerritorialCouncilAdherentMandate;
 use App\Entity\VotingPlatform\Election;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\VotingPlatform\AdherentMandate\AdherentMandateFactory;
@@ -66,29 +64,6 @@ class UpdateMandateForElectedAdherentCommandHandler implements MessageHandlerInt
                 );
 
                 break;
-
-            case DesignationTypeEnum::COPOL:
-                $repository = $this->entityManager->getRepository(TerritorialCouncilAdherentMandate::class);
-
-                $qualities = $election->getDesignation()->getPoolTypes();
-
-                $repository->closeMandates(
-                    $election->getElectionEntity()->getTerritorialCouncil(),
-                    $election->getVoteEndDate(),
-                    $qualities
-                );
-
-                break;
-
-            case DesignationTypeEnum::NATIONAL_COUNCIL:
-                $repository = $this->entityManager->getRepository(NationalCouncilAdherentMandate::class);
-
-                $repository->closeMandates(
-                    $election->getElectionEntity()->getTerritorialCouncil(),
-                    $election->getVoteEndDate()
-                );
-
-                break;
         }
     }
 
@@ -123,9 +98,6 @@ class UpdateMandateForElectedAdherentCommandHandler implements MessageHandlerInt
 
         array_map(function (array $row) use ($election) {
             $this->entityManager->persist($mandate = $this->mandateFactory->create($election, $row['candidate'], $row['quality']));
-            if (!empty($row['additionally_elected']) && $mandate instanceof TerritorialCouncilAdherentMandate) {
-                $mandate->setIsAdditionallyElected(true);
-            }
         }, $candidates);
 
         $this->entityManager->flush();

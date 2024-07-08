@@ -8,7 +8,6 @@ use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
 use App\Entity\AdherentMessage\Filter\JecouteFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
-use App\Entity\AdherentMessage\Filter\ReferentInstancesFilter;
 use App\Scope\Scope;
 
 abstract class FilterFactory
@@ -29,8 +28,6 @@ abstract class FilterFactory
                 return static::createCommitteeFilter();
             case AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE:
                 return static::createReferentElectedRepresentativeFilter($user);
-            case AdherentMessageTypeEnum::REFERENT_INSTANCES:
-                return static::createReferentTerritorialCouncilFilter($user);
             case AdherentMessageTypeEnum::CANDIDATE:
                 return static::createCandidateFilter($user);
             case AdherentMessageTypeEnum::CANDIDATE_JECOUTE:
@@ -86,17 +83,6 @@ abstract class FilterFactory
         }
 
         return new ReferentElectedRepresentativeFilter($managedArea->getTags()->first());
-    }
-
-    private static function createReferentTerritorialCouncilFilter(Adherent $user): ReferentInstancesFilter
-    {
-        $managedArea = $user->getManagedArea();
-
-        if (!$managedArea) {
-            throw new \InvalidArgumentException(sprintf('[AdherentMessage] The user "%s" is not a referent', $user->getEmailAddress()));
-        }
-
-        return new ReferentInstancesFilter();
     }
 
     private static function createCandidateFilter(Adherent $user): AdherentGeoZoneFilter

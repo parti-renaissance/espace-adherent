@@ -22,13 +22,10 @@ use App\Entity\BoardMember\BoardMember;
 use App\Entity\BoardMember\Role;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
-use App\Entity\Instance\InstanceQuality;
 use App\Entity\SubscriptionType;
 use App\Entity\TerritorialCouncil\TerritorialCouncilQualityEnum;
 use App\Form\ActivityPositionType;
 use App\Form\AdherentMandateType;
-use App\Form\Admin\AdherentInstanceQualityType;
-use App\Form\Admin\AdherentTerritorialCouncilMembershipType;
 use App\Form\Admin\AdherentZoneBasedRoleType;
 use App\Form\Admin\ElectedRepresentativeAdherentMandateType;
 use App\Form\Admin\JecouteManagedAreaType;
@@ -39,15 +36,12 @@ use App\Form\GenderType;
 use App\Form\TelNumberType;
 use App\FranceCities\FranceCities;
 use App\History\EmailSubscriptionHistoryHandler;
-use App\Instance\InstanceQualityScopeEnum;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\AdherentEvents;
 use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Query\Utils\MultiColumnsSearchHelper;
-use App\Repository\Instance\InstanceQualityRepository;
-use App\TerritorialCouncil\PoliticalCommitteeManager;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use App\ValueObject\Genders;
@@ -93,10 +87,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
 
     protected $dispatcher;
     protected $emailSubscriptionHistoryManager;
-    /** @var PoliticalCommitteeManager */
-    protected $politicalCommitteeManager;
-    /** @var InstanceQualityRepository */
-    protected $instanceQualityRepository;
     protected AdherentProfileHandler $adherentProfileHandler;
     protected LoggerInterface $logger;
     protected FranceCities $franceCities;
@@ -117,7 +107,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
         $baseControllerName,
         EventDispatcherInterface $dispatcher,
         EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager,
-        PoliticalCommitteeManager $politicalCommitteeManager,
         AdherentProfileHandler $adherentProfileHandler,
         LoggerInterface $logger,
         FranceCities $franceCities,
@@ -128,7 +117,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
 
         $this->dispatcher = $dispatcher;
         $this->emailSubscriptionHistoryManager = $emailSubscriptionHistoryManager;
-        $this->politicalCommitteeManager = $politicalCommitteeManager;
         $this->adherentProfileHandler = $adherentProfileHandler;
         $this->logger = $logger;
         $this->franceCities = $franceCities;
@@ -471,30 +459,8 @@ class AbstractAdherentAdmin extends AbstractAdmin
                             'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
                         ])
                     ->end()
-                    ->with('Membre du Conseil territorial et CoPol', [
-                        'class' => 'col-md-6 territorial-council-member-info',
-                        'description' => 'territorial_council.admin.description',
-                    ])
-                        ->add('territorialCouncilMembership', AdherentTerritorialCouncilMembershipType::class, [
-                            'label' => false,
-                            'invalid_message' => 'Un adhérent ne peut être membre que d\'un seul Conseil territorial.',
-                        ])
-                    ->end()
+                ->end()
             ;
-
-            if ($this->isGranted('CONSEIL')) {
-                $form
-                    ->with('Conseil national', ['class' => 'col-md-6'])
-                        ->add('instanceQualities', AdherentInstanceQualityType::class, [
-                            'by_reference' => false,
-                            'label' => false,
-                        ])
-                        ->add('voteInspector', null, ['label' => 'Inspecteur de vote', 'required' => false])
-                    ->end()
-                ;
-            }
-
-            $form->end();
         }
 
         $form
@@ -968,44 +934,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     return true;
                 },
             ])
-            ->add('instanceQualities', CallbackFilter::class, [
-                'label' => 'Membre du Conseil national',
-                'field_type' => ChoiceType::class,
-                'field_options' => [
-                    'choices' => array_merge([
-                        'Oui' => true,
-                        'Non' => false,
-                    ], array_combine($qualities = $this->instanceQualityRepository->getAllCustomQualities(), $qualities)),
-                    'group_by' => function ($choice) {
-                        if (\is_bool($choice)) {
-                            return 'Général';
-                        }
-
-                        return 'Qualités personnalisées';
-                    },
-                ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (null === $value->getValue()) {
-                        return false;
-                    }
-
-                    $qb
-                        ->leftJoin("$alias.instanceQualities", 'adherent_instance_quality')
-                        ->leftJoin('adherent_instance_quality.instanceQuality', 'instance_quality', Expr\Join::WITH, 'FIND_IN_SET(:national_council_scope, instance_quality.scopes) > 0')
-                        ->andWhere('instance_quality.id '.(0 === $value->getValue() ? 'IS NULL' : 'IS NOT NULL'))
-                        ->setParameter('national_council_scope', InstanceQualityScopeEnum::NATIONAL_COUNCIL)
-                    ;
-
-                    if ($value->getValue() instanceof InstanceQuality) {
-                        $qb
-                            ->andWhere('instance_quality = :instance_quality')
-                            ->setParameter('instance_quality', $value->getValue())
-                        ;
-                    }
-
-                    return true;
-                },
-            ])
         ;
     }
 
@@ -1030,7 +958,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
 
         $this->dispatcher->dispatch(new AdherentEvent($object), AdherentEvents::PROFILE_UPDATED);
         $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $this->beforeUpdate->getSubscriptionTypes());
-        $this->politicalCommitteeManager->handleTerritorialCouncilMembershipUpdate($object, $this->beforeUpdate->getTerritorialCouncilMembership());
 
         $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
         $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATED);
@@ -1150,12 +1077,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
     }
 
     /** @required */
-    public function setInstanceQualityRepository(InstanceQualityRepository $instanceQualityRepository): void
-    {
-        $this->instanceQualityRepository = $instanceQualityRepository;
-    }
-
-    /** @required */
     public function setCommitteeMembershipManager(CommitteeMembershipManager $committeeMembershipManager): void
     {
         $this->committeeMembershipManager = $committeeMembershipManager;
@@ -1175,10 +1096,8 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ->addSelect(
                 '_adherent_mandate',
                 '_committee_membership',
-                '_coterr_membership',
                 '_thematic_communities',
                 '_delegated_access',
-                '_political_committee_membership',
                 '_zone_based_role',
                 '_zone_based_role_zone',
                 '_commitment',
@@ -1188,10 +1107,8 @@ class AbstractAdherentAdmin extends AbstractAdmin
             )
             ->leftJoin($alias.'.adherentMandates', '_adherent_mandate')
             ->leftJoin($alias.'.memberships', '_committee_membership')
-            ->leftJoin($alias.'.territorialCouncilMembership', '_coterr_membership')
             ->leftJoin($alias.'.handledThematicCommunities', '_thematic_communities')
             ->leftJoin($alias.'.receivedDelegatedAccesses', '_delegated_access')
-            ->leftJoin($alias.'.politicalCommitteeMembership', '_political_committee_membership')
             ->leftJoin($alias.'.zoneBasedRoles', '_zone_based_role')
             ->leftJoin('_zone_based_role.zones', '_zone_based_role_zone')
             ->leftJoin($alias.'.commitment', '_commitment')

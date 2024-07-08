@@ -10,7 +10,6 @@ use App\Form\AdherentMessage\AdvancedMessageFilterType;
 use App\Form\AdherentMessage\JecouteFilterType;
 use App\Form\AdherentMessage\ReferentElectedRepresentativeFilterType;
 use App\Form\AdherentMessage\ReferentFilterType;
-use App\Form\AdherentMessage\ReferentInstancesFilterType;
 use App\Form\AdherentMessage\SimpleMessageFilterType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -50,9 +49,6 @@ class FilterFormFactory
 
             case AdherentMessageTypeEnum::REFERENT_ELECTED_REPRESENTATIVE:
                 return $this->formFactory->create(ReferentElectedRepresentativeFilterType::class, $data);
-
-            case AdherentMessageTypeEnum::REFERENT_INSTANCES:
-                return $this->formFactory->create(ReferentInstancesFilterType::class, $data);
 
             case AdherentMessageTypeEnum::CANDIDATE:
                 return $this->formFactory->create(AdherentGeoZoneFilterType::class, $data, [
