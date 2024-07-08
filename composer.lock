@@ -4322,16 +4322,16 @@
         },
         {
             "name": "google/cloud-core",
-            "version": "v1.58.2",
+            "version": "v1.59.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-core.git",
-                "reference": "56df58d70cca3c429e2cfd32270e42596f6c002f"
+                "reference": "56d31be2663780a7ed0736bee60d01f047bf15c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/56df58d70cca3c429e2cfd32270e42596f6c002f",
-                "reference": "56df58d70cca3c429e2cfd32270e42596f6c002f",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/56d31be2663780a7ed0736bee60d01f047bf15c0",
+                "reference": "56d31be2663780a7ed0736bee60d01f047bf15c0",
                 "shasum": ""
             },
             "require": {
@@ -4382,9 +4382,9 @@
             ],
             "description": "Google Cloud PHP shared dependency, providing functionality useful to all components.",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.58.2"
+                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.59.0"
             },
-            "time": "2024-06-01T03:14:01+00:00"
+            "time": "2024-06-07T22:33:41+00:00"
         },
         {
             "name": "google/cloud-recaptcha-enterprise",
@@ -6094,16 +6094,16 @@
         },
         {
             "name": "kreait/firebase-bundle",
-            "version": "5.3.0",
+            "version": "5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kreait/firebase-bundle.git",
-                "reference": "f0d5e0abdbbb868ca38c86db188a21c9e2836876"
+                "reference": "1a88de2476883cbb064b4c87ccf8b00f1f31eaff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kreait/firebase-bundle/zipball/f0d5e0abdbbb868ca38c86db188a21c9e2836876",
-                "reference": "f0d5e0abdbbb868ca38c86db188a21c9e2836876",
+                "url": "https://api.github.com/repos/kreait/firebase-bundle/zipball/1a88de2476883cbb064b4c87ccf8b00f1f31eaff",
+                "reference": "1a88de2476883cbb064b4c87ccf8b00f1f31eaff",
                 "shasum": ""
             },
             "require": {
@@ -6148,7 +6148,7 @@
             ],
             "support": {
                 "issues": "https://github.com/kreait/firebase-bundle/issues",
-                "source": "https://github.com/kreait/firebase-bundle/tree/5.3.0"
+                "source": "https://github.com/kreait/firebase-bundle/tree/5.4.0"
             },
             "funding": [
                 {
@@ -6156,20 +6156,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-05-28T21:06:51+00:00"
+            "time": "2024-07-08T08:56:06+00:00"
         },
         {
             "name": "kreait/firebase-php",
-            "version": "7.12.0",
+            "version": "7.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kreait/firebase-php.git",
-                "reference": "6535aeedb5786d7dd330e83eba4599a9d405c4c7"
+                "reference": "08494211572a61f2534740dd4de4614a23f4f9a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kreait/firebase-php/zipball/6535aeedb5786d7dd330e83eba4599a9d405c4c7",
-                "reference": "6535aeedb5786d7dd330e83eba4599a9d405c4c7",
+                "url": "https://api.github.com/repos/kreait/firebase-php/zipball/08494211572a61f2534740dd4de4614a23f4f9a4",
+                "reference": "08494211572a61f2534740dd4de4614a23f4f9a4",
                 "shasum": ""
             },
             "require": {
@@ -6208,7 +6208,8 @@
                 "phpunit/phpunit": "^10.5.20",
                 "rector/rector": "^1.0.5",
                 "shipmonk/composer-dependency-analyser": "^1.5.3",
-                "symfony/var-dumper": "^6.3.5 || ^7.0.7"
+                "symfony/var-dumper": "^6.3.5 || ^7.0.7",
+                "vlucas/phpdotenv": "^5.6"
             },
             "suggest": {
                 "google/cloud-firestore": "^1.0 to use the Firestore component"
@@ -6254,7 +6255,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-05-26T12:44:04+00:00"
+            "time": "2024-07-02T20:53:38+00:00"
         },
         {
             "name": "kreait/firebase-tokens",
@@ -23720,21 +23721,20 @@
         },
         {
             "name": "symfony/process",
-            "version": "v5.4.40",
+            "version": "v7.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "deedcb3bb4669cae2148bc920eafd2b16dc7c046"
+                "reference": "febf90124323a093c7ee06fdb30e765ca3c20028"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/deedcb3bb4669cae2148bc920eafd2b16dc7c046",
-                "reference": "deedcb3bb4669cae2148bc920eafd2b16dc7c046",
+                "url": "https://api.github.com/repos/symfony/process/zipball/febf90124323a093c7ee06fdb30e765ca3c20028",
+                "reference": "febf90124323a093c7ee06fdb30e765ca3c20028",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
-                "symfony/polyfill-php80": "^1.16"
+                "php": ">=8.2"
             },
             "type": "library",
             "autoload": {
@@ -23762,7 +23762,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v5.4.40"
+                "source": "https://github.com/symfony/process/tree/v7.1.1"
             },
             "funding": [
                 {
@@ -23778,7 +23778,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:33:22+00:00"
+            "time": "2024-05-31T14:57:53+00:00"
         },
         {
             "name": "symfony/web-profiler-bundle",
