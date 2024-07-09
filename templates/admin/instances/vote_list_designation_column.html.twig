@@ -3,9 +3,7 @@
 {% block field %}
     {% set filters = {designation: {value: value.id}} %}
 
-    {% if object.election.designation.isCopolType() %}
-        {% set filters = filters|merge({electionEntity__territorialCouncil: {value: object.election.electionEntity.territorialCouncil.id}}) %}
-    {% elseif object.election.designation.isCommitteeTypes() %}
+    {% if object.election.designation.isCommitteeTypes() %}
         {% set filters = filters|merge({electionEntity__committee: {value: object.election.electionEntity.committee.id}}) %}
     {% endif %}
 

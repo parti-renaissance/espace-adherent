@@ -11,7 +11,6 @@ use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
-use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\ValueObject\Genders;
@@ -117,29 +116,6 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
             ->method('findActiveMandate')
             ->with($adherent, $committee)
             ->willReturn($activeMandate)
-        ;
-
-        $this->mandateManager->createMandate($adherent, $committee);
-    }
-
-    public function testCannotCreateMandateIfAdherentIsMemberOfTerritorialCouncil()
-    {
-        $this->expectException(CommitteeAdherentMandateException::class);
-
-        $adherent = $this->createNewAdherent(Genders::FEMALE);
-        $adherent->setTerritorialCouncilMembership(new TerritorialCouncilMembership());
-        $committee = $this->createCommittee();
-
-        $this->translator
-            ->expects($this->once())
-            ->method('trans')
-            ->with('adherent_mandate.adherent_has_territorial_council_membership', $this->anything())
-        ;
-        $this->mandateRepository
-            ->expects($this->once())
-            ->method('findActiveMandate')
-            ->with($adherent, $committee)
-            ->willReturn(null)
         ;
 
         $this->mandateManager->createMandate($adherent, $committee);

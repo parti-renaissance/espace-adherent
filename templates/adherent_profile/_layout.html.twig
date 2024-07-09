@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% set is_instance_member = is_granted('TERRITORIAL_COUNCIL_MEMBER') or is_granted('ROLE_NATIONAL_COUNCIL_MEMBER') or is_granted('POLITICAL_COMMITTEE_MEMBER') %}
-
 {% block flash_message %}
     {% for label, messages in app.flashes %}
         {% for message in messages %}
@@ -89,9 +87,6 @@
                                     <span class="trigger-container"></span>
                                 </div>
                                 <ul class="menu-section__items"{% if isActivityRoute %} style="display: block;"{% endif %}>
-                                    {% if is_instance_member %}
-                                        <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'instances'}) }}">Mes instances</a></li>
-                                    {% endif %}
                                     <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}">Mes comités</a></li>
                                     <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'events'}) }}">Mes événements</a></li>
                                     <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'donations'}) }}">Mes dons</a></li>

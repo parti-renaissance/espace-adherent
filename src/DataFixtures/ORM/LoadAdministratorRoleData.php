@@ -508,17 +508,6 @@ class LoadAdministratorRoleData extends Fixture
             'Administrateur des portes frappées',
             AdministratorRoleGroupEnum::MOBILISATION
         );
-        // Instances
-        yield $this->createRole(
-            'ROLE_ADMIN_INSTANCES_TERRITORIAL_COUNCILS',
-            'Administrateur des Coterr et Copol',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_INSTANCES_TERRITORIAL_COUNCIL_MEMBERSHIPS',
-            'Administrateur des membres',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
         yield $this->createRole(
             'ROLE_ADMIN_INSTANCES_VOTING_PLATFORM_DESIGNATIONS',
             'Administrateur des désignations statutaires',
@@ -532,11 +521,6 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_INSTANCES_VOTING_PLATFORM_DESIGNATION_CANDIDACY_POOLS',
             'Administrateur des candidatures (désignations)',
-            AdministratorRoleGroupEnum::ELECTIONS_INTERNES
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_INSTANCES_TERRITORIAL_COUNCIL_MEMBERSHIP_LOGS',
-            'Administrateur des logs',
             AdministratorRoleGroupEnum::ELECTIONS_INTERNES
         );
         yield $this->createRole(

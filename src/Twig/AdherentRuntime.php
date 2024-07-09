@@ -131,10 +131,6 @@ class AdherentRuntime implements RuntimeExtensionInterface
             $labels[] = $adherent->isFemale() ? 'Co-animatrice' : 'Co-animateur';
         }
 
-        if ($adherent->isTerritorialCouncilMember() || $adherent->hasNationalCouncilQualities()) {
-            $labels[] = 'Membre des instances';
-        }
-
         if ($this->committeeMandateRepository->hasActiveMandate($adherent)) {
             $labels[] = $adherent->isFemale() ? 'Adhérente désignée' : 'Adhérent désigné';
         }

@@ -1,9 +1,7 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {% if object.designation.isCopolType() %}
-        CoTerr : <a href="{{ path('admin_app_territorialcouncil_territorialcouncil_list', {filter: {id: {value: object.electionEntity.territorialCouncil.id}}}) }}">{{ object.electionEntity.name }}</a>
-    {% elseif object.designation.isCommitteeTypes() and object.electionEntity.committee %}
+    {% if object.designation.isCommitteeTypes() and object.electionEntity.committee %}
         <a href="{{ path('admin_app_committee_list', {filter: {id: {value: object.electionEntity.committee.id}}}) }}">{{ object.electionEntity.name }}</a>
     {% endif %}
 {% endblock %}

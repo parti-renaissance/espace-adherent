@@ -4,8 +4,6 @@ namespace App\Twig;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\Instance\NationalCouncil\Election as NationalCouncilElection;
-use App\Entity\TerritorialCouncil\Election as TerritorialCouncilElection;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionPool;
@@ -60,16 +58,6 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
         return null;
     }
 
-    public function findElectionForTerritorialCouncilElection(TerritorialCouncilElection $coTerrElection): ?Election
-    {
-        return $this->electionRepository->findOneForTerritorialCouncil($coTerrElection->getTerritorialCouncil(), $coTerrElection->getDesignation());
-    }
-
-    public function findElectionForNationalCouncilElection(NationalCouncilElection $nationalCouncilElection): ?Election
-    {
-        return $this->findElectionForDesignation($nationalCouncilElection->getDesignation());
-    }
-
     public function findElectionForDesignation(Designation $designation): ?Election
     {
         return $this->electionRepository->findOneByDesignation($designation);
@@ -99,9 +87,8 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
         int $adherentId,
         int $designationId,
         ?int $committeeId = null,
-        ?int $territorialCouncilId = null
     ): array {
-        return $this->voteResultRepository->getResultsForCandidate($adherentId, $designationId, $committeeId, $territorialCouncilId);
+        return $this->voteResultRepository->getResultsForCandidate($adherentId, $designationId, $committeeId);
     }
 
     public function findCommitteeForRecentCandidate(Designation $designation, Adherent $adherent): ?Committee

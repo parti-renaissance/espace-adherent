@@ -318,35 +318,6 @@ class App {
         });
     }
 
-    runTerritorialCouncilCandidacy(qualityFieldSelector, submitButtonSelector, wrapperSelector) {
-        import('pages/territorial_council_candidacy').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('api'), qualityFieldSelector, submitButtonSelector, wrapperSelector);
-        });
-    }
-
-    runNationalCouncilCandidacy(
-        qualityFieldSelector,
-        submitButtonSelector,
-        wrapperSelector,
-        messages,
-        availableGenders,
-        neededQualities,
-        invitations
-    ) {
-        import('pages/national_council_candidacy').catch((error) => { throw error; }).then((module) => {
-            module.default(
-                this.get('api'),
-                qualityFieldSelector,
-                submitButtonSelector,
-                wrapperSelector,
-                messages,
-                availableGenders,
-                neededQualities,
-                invitations
-            );
-        });
-    }
-
     runCommitteeCandidacy(slug, submitButtonSelector, wrapperSelector) {
         import('pages/committee_candidacy').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('api'), slug, submitButtonSelector, wrapperSelector);

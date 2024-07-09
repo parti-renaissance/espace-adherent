@@ -26,14 +26,6 @@
                     Aux élus
                 </a>
             </li>
-            <li class="{{ is_active_route(app.request, 'app_message_referent_instances_*') ? 'active' }}">
-                <a href="{{ path('app_message_referent_instances_list') }}" class="messaging council">
-                    <svg width="16" height="16" viewBox="0 0 16 16">
-                        <use xlink:href="/images/icons/icons.svg#messaging"></use>
-                    </svg>
-                    Aux instances
-                </a>
-            </li>
         </ul>
     {% endif %}
 
@@ -96,26 +88,6 @@
     {% endif %}
 
     {% if isReferent %}
-        <ul>
-            <li class="menu-section">Instances</li>
-
-            <li class="{{ is_active_route(app.request, 'app_territorial_council_referent_members*') ? 'active' }}">
-                <a href="{{ path('app_territorial_council_referent_members_list') }}">Membres</a>
-            </li>
-
-            <li class="{{ is_active_route(app.request, 'app_territorial_council_referent_designation*') ? 'active' }}">
-                <a href="{{ path('app_territorial_council_referent_designations_list') }}">Désignations</a>
-            </li>
-
-            <li class="{{ is_active_route(app.request, 'app_instances_convocation_referent_*') ? 'active' }}">
-                <a href="{{ path('app_instances_convocation_referent_list') }}">Convocations</a>
-            </li>
-
-            <li class="{{ is_active_route(app.request, 'app_instances_official_report_referent_*') ? 'active' }}">
-                <a href="{{ path('app_instances_official_report_referent_list') }}">Procès-verbaux</a>
-            </li>
-        </ul>
-
         {% if enable_assessor_space %}
             <ul>
                 <li class="menu-section">Élections</li>

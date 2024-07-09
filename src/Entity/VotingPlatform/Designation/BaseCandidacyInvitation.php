@@ -4,7 +4,6 @@ namespace App\Entity\VotingPlatform\Designation;
 
 use App\Entity\CommitteeMembership;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Ramsey\Uuid\Uuid;
@@ -28,7 +27,7 @@ abstract class BaseCandidacyInvitation implements CandidacyInvitationInterface
     protected $candidacy;
 
     /**
-     * @var TerritorialCouncilMembership|CommitteeMembership
+     * @var CommitteeMembership
      */
     protected $membership;
 

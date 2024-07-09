@@ -28,10 +28,8 @@ use App\Entity\Pap\CampaignHistory as PapCampaignHistory;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Phoning\CampaignHistory;
 use App\Entity\SmsCampaign\SmsCampaign;
-use App\Entity\TerritorialCouncil\TerritorialCouncil;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\VotersList;
-use App\Instance\InstanceQualityScopeEnum;
 use App\Membership\MembershipSourceEnum;
 use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
 use App\Phoning\CampaignHistoryStatusEnum;
@@ -769,30 +767,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    public function findByTerritorialCouncilAndQuality(
-        TerritorialCouncil $territorialCouncil,
-        string $quality,
-        ?Adherent $exceptOf = null
-    ): ?Adherent {
-        $qb = $this->createQueryBuilder('a')
-            ->leftJoin('a.territorialCouncilMembership', 'tcm')
-            ->leftJoin('tcm.qualities', 'quality')
-            ->where('tcm.territorialCouncil = :tc')
-            ->andWhere('quality.name = :quality')
-            ->setParameter('tc', $territorialCouncil)
-            ->setParameter('quality', $quality)
-        ;
-
-        if ($exceptOf) {
-            $qb
-                ->andWhere('a.id != :adherent')
-                ->setParameter('adherent', $exceptOf)
-            ;
-        }
-
-        return $qb->getQuery()->getOneOrNullResult();
-    }
-
     public function findSimilarProfilesForElectedRepresentative(ElectedRepresentative $electedRepresentative)
     {
         return $this->createQueryBuilder('a')
@@ -902,23 +876,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
 
         return $result > 0;
-    }
-
-    /** @return Adherent[] */
-    public function findAllWithNationalCouncilQualities(): array
-    {
-        return $this->createQueryBuilder('adherent')
-            ->select('PARTIAL adherent.{id}')
-            ->innerJoin('adherent.instanceQualities', 'adherent_instance_quality')
-            ->innerJoin('adherent_instance_quality.instanceQuality', 'instance_quality', Join::WITH, 'FIND_IN_SET(:national_council_scope, instance_quality.scopes) > 0')
-            ->where('adherent.status = :adherent_status AND adherent.adherent = true')
-            ->setParameters([
-                'national_council_scope' => InstanceQualityScopeEnum::NATIONAL_COUNCIL,
-                'adherent_status' => Adherent::ENABLED,
-            ])
-            ->getQuery()
-            ->getResult()
-        ;
     }
 
     private function createCommitteeSupervisorsQueryBuilder(Committee $committee): QueryBuilder
@@ -1485,8 +1442,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->addSelect('rda')
             ->addSelect('scma')
             ->addSelect('ref_tags')
-            ->addSelect('tcm', 'tc')
-            ->addSelect('pcm', 'pc')
             ->addSelect('commitment')
             ->addSelect('mandates')
             ->addSelect('zone_based_role')
@@ -1501,10 +1456,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->leftJoin($alias.'.boardMember', 'bm')
             ->leftJoin($alias.'.receivedDelegatedAccesses', 'rda')
             ->leftJoin($alias.'.senatorialCandidateManagedArea', 'scma')
-            ->leftJoin($alias.'.territorialCouncilMembership', 'tcm')
-            ->leftJoin('tcm.territorialCouncil', 'tc')
-            ->leftJoin('tc.politicalCommittee', 'pc')
-            ->leftJoin($alias.'.politicalCommitteeMembership', 'pcm')
             ->leftJoin($alias.'.commitment', 'commitment')
             ->leftJoin($alias.'.adherentMandates', 'mandates')
             ->leftJoin($alias.'.zoneBasedRoles', 'zone_based_role')

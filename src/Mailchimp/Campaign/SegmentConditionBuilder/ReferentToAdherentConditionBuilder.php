@@ -3,7 +3,6 @@
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use App\Entity\AdherentMessage\Filter\ReferentInstancesFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -13,9 +12,7 @@ class ReferentToAdherentConditionBuilder extends AbstractStaticSegmentConditionB
 {
     public function support(SegmentFilterInterface $filter): bool
     {
-        return
-            ($filter instanceof ReferentUserFilter && false === $filter->getContactOnlyVolunteers() && false === $filter->getContactOnlyRunningMates())
-            || ($filter instanceof ReferentInstancesFilter);
+        return $filter instanceof ReferentUserFilter && false === $filter->getContactOnlyVolunteers() && false === $filter->getContactOnlyRunningMates();
     }
 
     protected function getSegmentId(AdherentMessageFilterInterface $filter, MailchimpCampaign $campaign): int

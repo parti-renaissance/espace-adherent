@@ -511,22 +511,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.territorial_council_membership_log" class="App\Admin\TerritorialCouncil\TerritorialCouncilMembershipLogAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Logs" group="Élections internes" />
-
-            <argument />
-            <argument>App\Entity\TerritorialCouncil\TerritorialCouncilMembershipLog</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.political_committee" class="App\Admin\TerritorialCouncil\PoliticalCommitteeAdmin">
-            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
-
-            <argument />
-            <argument>App\Entity\TerritorialCouncil\PoliticalCommittee</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.designation.election" class="App\Admin\Designation\VotingPlatformElectionAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Elections" group="Élections internes" />
 
@@ -538,14 +522,6 @@
                 <argument>show</argument>
                 <argument>admin/instances/election_dashboard.html.twig</argument>
             </call>
-        </service>
-
-        <service id="app.admin.designation.candidature" class="App\Admin\Designation\CandidateAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Candidatures" group="Élections internes" />
-
-            <argument />
-            <argument>App\Entity\Algolia\AlgoliaCandidature</argument>
-            <argument />
         </service>
 
         <service id="app.admin.designation.vote" class="App\Admin\Designation\VotingPlatformVoteAdmin">
@@ -1295,32 +1271,6 @@
             <argument />
             <argument>App\Entity\UserListDefinition</argument>
             <argument />
-        </service>
-
-        <service id="app.admin.territorial_council" class="App\Admin\TerritorialCouncil\TerritorialCouncilAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="CoTerr et CoPol" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\TerritorialCouncil\TerritorialCouncil</argument>
-            <argument />
-
-            <call method="addChild">
-                <argument type="service" id="app.admin.territorial_council_membership" />
-                <argument type="string">membership</argument>
-            </call>
-        </service>
-
-        <service id="app.admin.territorial_council_membership" class="App\Admin\TerritorialCouncil\TerritorialCouncilMembershipAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Membres CoTerr et CoPol" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\TerritorialCouncil\TerritorialCouncilMembership</argument>
-            <argument />
-
-            <call method="setTemplate">
-                <argument>list</argument>
-                <argument>admin/territorial_council/list.html.twig</argument>
-            </call>
         </service>
 
         <!--

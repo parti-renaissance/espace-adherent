@@ -63,16 +63,6 @@ class CommitteeAdherentMandateManager
             );
         }
 
-        if ($adherent->hasTerritorialCouncilMembership()) {
-            $this->throwException(
-                'adherent_mandate.adherent_has_territorial_council_membership',
-                [
-                    'email' => $adherent->getEmailAddress(),
-                    'territorialCouncil' => $committee,
-                ]
-            );
-        }
-
         if ((Genders::FEMALE === $adherent->getGender() && $committee->hasFemaleAdherentMandate())
             || (Genders::MALE === $adherent->getGender() && $committee->hasMaleAdherentMandate())) {
             $this->throwException(

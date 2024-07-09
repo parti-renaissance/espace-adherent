@@ -5,8 +5,6 @@ namespace Tests\App\Security\Voter;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
 use App\Entity\CommitteeMembership;
-use App\Entity\TerritorialCouncil\Candidacy;
-use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Security\Voter\AdherentUnregistrationVoter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -69,8 +67,7 @@ class AdherentUnregistrationVoterTest extends TestCase
         bool $isAnimator,
         bool $isDeputy,
         bool $isRegionalDelegate,
-        bool $hasCommitteeCandidacy,
-        bool $hasCoterrCandidacy
+        bool $hasCommitteeCandidacy
     ): void {
         $adherent = $this->createAdherentMock();
 
@@ -104,16 +101,6 @@ class AdherentUnregistrationVoterTest extends TestCase
             ->willReturn($memberships)
         ;
 
-        $territorialCouncilMembership = $this->createMock(TerritorialCouncilMembership::class);
-        $territorialCouncilMembership->expects($this->any())
-            ->method('getActiveCandidacy')
-            ->willReturn($hasCoterrCandidacy ? $this->createMock(Candidacy::class) : null)
-        ;
-        $adherent->expects($this->any())
-            ->method('getTerritorialCouncilMembership')
-            ->willReturn($territorialCouncilMembership)
-        ;
-
         $this->assertSame(
             VoterInterface::ACCESS_DENIED,
             $this->voter->vote($this->createTokenMock(), $adherent, [AdherentUnregistrationVoter::PERMISSION_UNREGISTER])
@@ -127,7 +114,6 @@ class AdherentUnregistrationVoterTest extends TestCase
         yield [false, false, true, false, false, false];
         yield [false, false, false, true, false, false];
         yield [false, false, false, false, true, false];
-        yield [false, false, false, false, false, true];
         yield [true, true, true, true, true, true];
     }
 

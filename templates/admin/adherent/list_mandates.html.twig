@@ -2,12 +2,8 @@
 
 {% block field %}
     {% for mandate in object.activeAdherentMandates %}
-        {% if mandate is instanceof('App\\Entity\\AdherentMandate\\TerritorialCouncilAdherentMandate') %}
-            <span class="label label-warning">{{ ('political_committee.membership.quality.'~mandate.quality)|trans }}</span><br>
-        {% elseif mandate is instanceof('App\\Entity\\AdherentMandate\\CommitteeAdherentMandate') %}
+        {% if mandate is instanceof('App\\Entity\\AdherentMandate\\CommitteeAdherentMandate') %}
             <span class="label label-warning">{{ 'territorial_council.membership.quality.elected_candidate_adherent'|trans }}</span><br>
-        {% elseif mandate is instanceof('App\\Entity\\AdherentMandate\\NationalCouncilAdherentMandate') %}
-            <span class="label label-warning">Désigné au Conseil national</span><br>
         {% endif %}
     {% endfor %}
 

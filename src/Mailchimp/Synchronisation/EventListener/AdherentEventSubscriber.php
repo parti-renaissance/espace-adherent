@@ -11,11 +11,8 @@ use App\Events;
 use App\Mailchimp\Synchronisation\Command\AddAdherentToStaticSegmentCommand;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
-use App\Mailchimp\Synchronisation\Command\RemoveAdherentFromStaticSegmentCommand;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
-use App\TerritorialCouncil\Event\MembershipEvent;
-use App\TerritorialCouncil\Events as TerritorialCouncilEvents;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -43,9 +40,6 @@ class AdherentEventSubscriber implements EventSubscriberInterface
             UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE => 'onCommitteePrivilegeChange',
             Events::COMMITTEE_NEW_FOLLOWER => 'onCommitteePrivilegeChange',
 
-            TerritorialCouncilEvents::TERRITORIAL_COUNCIL_MEMBERSHIP_CREATE => 'onTerritorialCouncilMembershipCreation',
-            TerritorialCouncilEvents::TERRITORIAL_COUNCIL_MEMBERSHIP_REMOVE => 'onTerritorialCouncilMembershipDeletion',
-
             AdherentCertificationEvents::ADHERENT_CERTIFIED => 'onAfterUpdate',
             AdherentCertificationEvents::ADHERENT_UNCERTIFIED => 'onAfterUpdate',
         ];
@@ -54,16 +48,6 @@ class AdherentEventSubscriber implements EventSubscriberInterface
     public function onBeforeUpdate(UserEvent $event): void
     {
         $this->adherentEmail = $event->getUser()->getEmailAddress();
-    }
-
-    public function onTerritorialCouncilMembershipCreation(MembershipEvent $event): void
-    {
-        $this->dispatchAddAdherentToStaticSegmentCommand($event->getAdherent(), $event->getTerritorialCouncil());
-    }
-
-    public function onTerritorialCouncilMembershipDeletion(MembershipEvent $event): void
-    {
-        $this->dispatchRemoveAdherentFromStaticSegmentCommand($event->getAdherent(), $event->getTerritorialCouncil());
     }
 
     public function onAfterUpdate(UserEvent $event): void
@@ -103,21 +87,6 @@ class AdherentEventSubscriber implements EventSubscriberInterface
         }
 
         $this->dispatch(new AddAdherentToStaticSegmentCommand(
-            $adherent->getUuid(),
-            $object->getUuid(),
-            $object::class
-        ));
-    }
-
-    private function dispatchRemoveAdherentFromStaticSegmentCommand(
-        Adherent $adherent,
-        StaticSegmentInterface $object
-    ): void {
-        if (!$object->getMailchimpId()) {
-            $this->dispatch(new CreateStaticSegmentCommand($object->getUuid(), $object::class));
-        }
-
-        $this->dispatch(new RemoveAdherentFromStaticSegmentCommand(
             $adherent->getUuid(),
             $object->getUuid(),
             $object::class

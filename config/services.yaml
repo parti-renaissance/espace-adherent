@@ -98,8 +98,6 @@ services:
             tags: ['app.adherent_message.transaction.message_modifier']
         App\AdherentMessage\Sender\SenderInterface:
             tags: ['app.adherent_message.sender']
-        App\TerritorialCouncil\Handlers\TerritorialCouncilMembershipHandlerInterface:
-            tags: ['app.adherent.territorial_council_membership.handler']
         Symfony\Component\Messenger\Handler\MessageHandlerInterface:
             tags: ['messenger.message_handler']
         App\Redirection\Dynamic\RedirectToInterface:
@@ -108,8 +106,6 @@ services:
             tags: ['app.voting_platform.mandate_factory']
         App\VotingPlatform\Election\ResultCalculator\ResultCalculatorInterface:
             tags: [ 'app.voting_platform.result_calculator' ]
-        App\Instance\InstanceQualityUpdater\QualityUpdaterInterface:
-            tags: ['app.instance.quality_updater']
         App\Scope\Generator\ScopeGeneratorInterface:
             tags: ['app.adherent.scope_generator']
         App\JMEFilter\FilterBuilder\FilterBuilderInterface:
@@ -175,10 +171,6 @@ services:
     App\Adherent\Certification\CertificationRequestProcessCommandHandler:
         arguments:
             $handlers: !tagged_iterator 'app.adherent.certification_request.handler'
-
-    App\Adherent\Handler\AdherentUpdateTerritorialCouncilMembershipsCommandHandler:
-        arguments:
-            $handlers: !tagged_iterator {tag: 'app.adherent.territorial_council_membership.handler', default_priority_method: 'getPriority'}
 
     App\Statistics\Acquisition\Aggregator:
         arguments: [!tagged_iterator {tag: 'app.acquisition_statistics.calculator', default_priority_method: getPriority}]
@@ -371,10 +363,6 @@ services:
 
     App\VotingPlatform\Election\ResultCalculator:
         arguments: [ !tagged_iterator { tag: 'app.voting_platform.result_calculator', default_priority_method: 'getPriority' } ]
-
-    App\Instance\Handler\UpdateInstanceQualitiesCommandHandler:
-        arguments:
-            $qualityUpdaters: !tagged_iterator 'app.instance.quality_updater'
 
     App\OvhCloud\Driver:
         arguments:

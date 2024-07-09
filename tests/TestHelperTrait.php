@@ -43,11 +43,6 @@ use App\Entity\Reporting\CommitteeMembershipHistory;
 use App\Entity\Reporting\EmailSubscriptionHistory;
 use App\Entity\RepublicanSilence;
 use App\Entity\SubscriptionType;
-use App\Entity\TerritorialCouncil\OfficialReport;
-use App\Entity\TerritorialCouncil\PoliticalCommittee;
-use App\Entity\TerritorialCouncil\PoliticalCommitteeFeedItem;
-use App\Entity\TerritorialCouncil\TerritorialCouncil;
-use App\Entity\TerritorialCouncil\TerritorialCouncilFeedItem;
 use App\Entity\TonMacronChoice;
 use App\Entity\TonMacronFriendInvitation;
 use App\Entity\Transaction;
@@ -87,11 +82,6 @@ use App\Repository\ProcurationProxyRepository;
 use App\Repository\ProcurationRequestRepository;
 use App\Repository\ReferentSpaceAccessInformationRepository;
 use App\Repository\SubscriptionTypeRepository;
-use App\Repository\TerritorialCouncil\OfficialReportRepository;
-use App\Repository\TerritorialCouncil\PoliticalCommitteeFeedItemRepository;
-use App\Repository\TerritorialCouncil\PoliticalCommitteeRepository;
-use App\Repository\TerritorialCouncil\TerritorialCouncilFeedItemRepository;
-use App\Repository\TerritorialCouncil\TerritorialCouncilRepository;
 use App\Repository\TonMacronChoiceRepository;
 use App\Repository\TonMacronFriendInvitationRepository;
 use App\Repository\TransactionRepository;
@@ -333,31 +323,6 @@ trait TestHelperTrait
     public function getElectedRepresentativeRepository(): ElectedRepresentativeRepository
     {
         return $this->getRepository(ElectedRepresentative::class);
-    }
-
-    public function getTerritorialCouncilRepository(): TerritorialCouncilRepository
-    {
-        return $this->getRepository(TerritorialCouncil::class);
-    }
-
-    public function getPoliticalCommitteeRepository(): PoliticalCommitteeRepository
-    {
-        return $this->getRepository(PoliticalCommittee::class);
-    }
-
-    public function getTerritorialCouncilFeedItemRepository(): TerritorialCouncilFeedItemRepository
-    {
-        return $this->getRepository(TerritorialCouncilFeedItem::class);
-    }
-
-    public function getPoliticalCommitteeFeedItemRepository(): PoliticalCommitteeFeedItemRepository
-    {
-        return $this->getRepository(PoliticalCommitteeFeedItem::class);
-    }
-
-    public function getOfficialReportRepository(): OfficialReportRepository
-    {
-        return $this->getRepository(OfficialReport::class);
     }
 
     public function getFileRepository(): FileRepository

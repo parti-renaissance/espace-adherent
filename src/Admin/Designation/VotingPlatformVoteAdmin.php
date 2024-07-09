@@ -63,17 +63,6 @@ class VotingPlatformVoteAdmin extends AbstractAdmin
                     'property' => 'name',
                 ],
             ])
-            ->add('electionRound.election.electionEntity.territorialCouncil', ModelFilter::class, [
-                'label' => 'CoTerr',
-                'show_filter' => true,
-                'field_type' => ModelAutocompleteType::class,
-                'field_options' => [
-                    'model_manager' => $this->getModelManager(),
-                    'minimum_input_length' => 1,
-                    'items_per_page' => 20,
-                    'property' => 'name',
-                ],
-            ])
             ->add('voter.adherent.firstName', null, [
                 'label' => 'Prénom',
                 'show_filter' => true,

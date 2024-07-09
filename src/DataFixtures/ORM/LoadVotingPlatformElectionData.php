@@ -5,9 +5,6 @@ namespace App\DataFixtures\ORM;
 use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
 use App\Entity\LocalElection\LocalElection;
-use App\Entity\TerritorialCouncil\Candidacy;
-use App\Entity\TerritorialCouncil\TerritorialCouncil;
-use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
 use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\Election;
@@ -151,17 +148,6 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $votersList = $this->loadVoters($election);
         $this->loadResults($round, $votersList);
         $election->startSecondRound($round->getElectionPools());
-
-        // -------------------------------------------
-
-        $election = new Election(
-            $this->getReference('designation-7'),
-            Uuid::fromString(self::ELECTION_UUID8),
-            [new ElectionRound()]
-        );
-        $this->manager->persist($election);
-        $election->setElectionEntity(new ElectionEntity(null, $coTerr = $this->getReference('coTerr_92')));
-        $this->loadTerritorialCouncilElectionCandidates($election, $coTerr);
 
         // -------------------------------------------
 
@@ -402,81 +388,6 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         $this->resultCalculator->computeElectionResult($electionRound->getElection());
     }
 
-    private function loadTerritorialCouncilElectionCandidates(
-        Election $election,
-        TerritorialCouncil $territorialCouncil
-    ): void {
-        $currentElection = $territorialCouncil->getCurrentElection();
-        /** @var TerritorialCouncilMembership[] $memberships */
-        $memberships = $territorialCouncil->getMemberships()->toArray();
-        $voterList = new VotersList($election);
-        $this->manager->persist($voterList);
-        $pools = [];
-
-        foreach ($memberships as $membership) {
-            $adherent = $membership->getAdherent();
-            $voterList->addVoter($this->voters[$adherent->getId()] ?? $this->voters[$adherent->getId()] = new Voter($adherent));
-
-            $this->voters[$adherent->getId()]->isPollVoter = true;
-
-            if ($candidacy = $membership->getCandidacyForElection($currentElection)) {
-                if ($candidacy->isConfirmed()) {
-                    $pools[$candidacy->getQuality()][] = $candidacy;
-                }
-            }
-        }
-
-        $currentRound = $election->getCurrentRound();
-
-        foreach ($pools as $key => $candidacies) {
-            $pool = new ElectionPool($key);
-
-            foreach ($candidacies as $candidacy) {
-                /** @var Candidacy $candidacy */
-                if ($candidacy->isTaken()) {
-                    continue;
-                }
-
-                $group = new CandidateGroup();
-
-                $group->addCandidate($candidate = new Candidate(
-                    $candidacy->getFirstName(),
-                    $candidacy->getLastName(),
-                    $candidacy->getGender(),
-                    $candidacy->getAdherent()
-                ));
-                $candidate->setImagePath($candidacy->getImagePath());
-                $candidate->setFaithStatement($candidacy->getFaithStatement());
-                $candidate->setBiography($candidacy->getBiography());
-                $candidacy->take();
-
-                if ($candidaciesGroup = $candidacy->getCandidaciesGroup()) {
-                    foreach ($candidaciesGroup->getCandidacies() as $candidacy) {
-                        if ($candidacy->isTaken()) {
-                            continue;
-                        }
-
-                        $group->addCandidate($candidate = new Candidate(
-                            $candidacy->getFirstName(),
-                            $candidacy->getLastName(),
-                            $candidacy->getGender(),
-                            $candidacy->getAdherent()
-                        ));
-                        $candidate->setImagePath($candidacy->getImagePath());
-                        $candidate->setFaithStatement($candidacy->getFaithStatement());
-                        $candidate->setBiography($candidacy->getBiography());
-                        $candidacy->take();
-                    }
-                }
-
-                $pool->addCandidateGroup($group);
-            }
-
-            $currentRound->addElectionPool($pool);
-            $election->addElectionPool($pool);
-        }
-    }
-
     private function loadLocalElectionCandidates(Election $election, LocalElection $localElection): void
     {
         $pool = new ElectionPool(DesignationTypeEnum::LOCAL_ELECTION);
@@ -540,7 +451,6 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
             LoadCommitteeV1CandidacyData::class,
             LoadCommitteeV2CandidacyData::class,
             LoadDesignationData::class,
-            LoadTerritorialCouncilCandidacyData::class,
             LoadLocalElectionData::class,
         ];
     }

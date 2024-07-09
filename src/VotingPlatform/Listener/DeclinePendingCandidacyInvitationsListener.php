@@ -4,8 +4,6 @@ namespace App\VotingPlatform\Listener;
 
 use App\Committee\Election\CandidacyManager as CommitteeCandidacyManager;
 use App\Entity\CommitteeMembership;
-use App\Entity\TerritorialCouncil\TerritorialCouncilMembership;
-use App\TerritorialCouncil\CandidacyManager as CoTerrCandidacyManager;
 use App\VotingPlatform\Event\CandidacyInvitationEvent;
 use App\VotingPlatform\Events;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,18 +13,15 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class DeclinePendingCandidacyInvitationsListener implements EventSubscriberInterface
 {
     private $committeeCandidacyManager;
-    private $coTerrCandidacyManager;
     private $entityManager;
     private $eventDispatcher;
 
     public function __construct(
         CommitteeCandidacyManager $committeeCandidacyManager,
-        CoTerrCandidacyManager $coTerrCandidacyManager,
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->committeeCandidacyManager = $committeeCandidacyManager;
-        $this->coTerrCandidacyManager = $coTerrCandidacyManager;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -44,21 +39,13 @@ class DeclinePendingCandidacyInvitationsListener implements EventSubscriberInter
         $membership = $invitation->getMembership();
         $election = $event->getCandidacy()->getElection();
 
-        if ($election->getDesignation()->isCopolType()) {
-            /** @var CoTerrCandidacyManager $manager */
-            $manager = $this->coTerrCandidacyManager;
-        } else {
-            /** @var CommitteeCandidacyManager $manager */
-            $manager = $this->committeeCandidacyManager;
-        }
-
         // Decline my other invitations
-        foreach ($manager->getInvitationsToDecline($membership, $election) as $invitation) {
-            $manager->declineInvitation($invitation);
+        foreach ($this->committeeCandidacyManager->getInvitationsToDecline($membership, $election) as $invitation) {
+            $this->committeeCandidacyManager->declineInvitation($invitation);
         }
 
         // Remove my sent invitations
-        /** @var CommitteeMembership|TerritorialCouncilMembership $membership */
+        /** @var CommitteeMembership $membership */
         $this->entityManager->refresh($membership);
 
         $candidacy = $membership->getCandidacyForElection($election);

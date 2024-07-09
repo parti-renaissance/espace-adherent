@@ -182,8 +182,6 @@ class AdherentController extends AbstractController
             if ($fromType && $fromId) {
                 if ('committee' === $fromType) {
                     $from = $entityManager->getRepository(Committee::class)->findOneByUuid($fromId);
-                } elseif ('territorial_council' === $fromType || 'political_committee' === $fromType) {
-                    $from = true;
                 } else {
                     $from = $entityManager->getRepository(CommitteeEvent::class)->findOneByUuid($fromId);
                 }
@@ -212,12 +210,6 @@ class AdherentController extends AbstractController
                     return $this->redirectToRoute('app_committee_event_show', [
                         'slug' => $from->getSlug(),
                     ]);
-                }
-
-                if ('territorial_council' === $fromType) {
-                    return $this->redirectToRoute('app_territorial_council_index');
-                } elseif ('political_committee' === $fromType) {
-                    return $this->redirectToRoute('app_political_committee_index');
                 }
 
                 return $this->redirectToRoute('homepage');

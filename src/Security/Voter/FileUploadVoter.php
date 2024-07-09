@@ -42,8 +42,6 @@ class FileUploadVoter extends AbstractAdherentVoter
                 return $adherent->isReferent() || $adherent->isSupervisor() || $adherent->isHost();
             case UserDocument::TYPE_ADHERENT_MESSAGE:
                 return $this->authorizationChecker->isGranted('ROLE_MESSAGE_REDACTOR');
-            case UserDocument::TYPE_TERRITORIAL_COUNCIL_FEED:
-                return $adherent->isTerritorialCouncilPresident();
             case UserDocument::TYPE_NEWS:
                 if (!$scope = $this->scopeGeneratorResolver->generate()) {
                     return false;
