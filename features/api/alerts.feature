@@ -13,7 +13,7 @@ Feature:
                 "title": "Élection en cours !!",
                 "description": "# Élection\nvous avez **5 jours** pour voter.",
                 "cta_label": "Consulter",
-                "cta_url": "http://test.renaissance.code/espace-adherent"
+                "cta_url": "http://test.renaissance.code/election-sas/@uuid@"
             }
         ]
         """
