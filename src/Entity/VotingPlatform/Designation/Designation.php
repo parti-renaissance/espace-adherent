@@ -303,6 +303,15 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $isCanceled = false;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $alertTitle = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $alertCtaLabel = null;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $alertDescription = null;
+
     public function __construct(?string $label = null, ?UuidInterface $uuid = null)
     {
         $this->label = $label;

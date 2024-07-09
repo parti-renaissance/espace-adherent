@@ -274,6 +274,9 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->setCandidacyEndDate(new \DateTime('-1 month'));
         $designation->setVoteStartDate(new \DateTime('-1 day'));
         $designation->setVoteEndDate(new \DateTime('+10 days'));
+        $designation->alertTitle = 'Élection en cours !!';
+        $designation->alertDescription = "# Élection\nvous avez **5 jours** pour voter.";
+        $designation->alertCtaLabel = 'Consulter';
         $designation->wordingWelcomePage = $this->getReference('cms-block-territorial-assembly-election-welcome-page');
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
 
