@@ -9,6 +9,7 @@ use App\Entity\VotingPlatform\Designation\CandidacyPool\CandidacyPool;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Form\Admin\DesignationGlobalZoneType;
 use App\Form\Admin\DesignationTypeType;
+use App\Form\Admin\SimpleMDEContent;
 use App\Form\Admin\VotingPlatform\DesignationNotificationType;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\QueryBuilder;
@@ -26,6 +27,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -184,6 +186,22 @@ class DesignationAdmin extends AbstractAdmin
                         'label' => false,
                         'required' => false,
                         'btn_add' => 'Créer',
+                    ])
+                ->end()
+                ->with('Alerte', ['class' => 'col-md-6', 'help' => 'Affichée sur le fil d\'actualité'])
+                    ->add('alertTitle', TextType::class, [
+                        'required' => false,
+                        'label' => 'Titre',
+                    ])
+                    ->add('alertCTALabel', TextType::class, [
+                        'required' => false,
+                        'label' => 'CTA Label',
+                    ])
+                    ->add('alertDescription', SimpleMDEContent::class, [
+                        'required' => false,
+                        'label' => 'Description',
+                        'help' => 'help.markdown',
+                        'help_html' => true,
                     ])
                 ->end()
             ->end()
