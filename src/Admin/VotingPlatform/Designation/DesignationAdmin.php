@@ -193,7 +193,7 @@ class DesignationAdmin extends AbstractAdmin
                         'required' => false,
                         'label' => 'Titre',
                     ])
-                    ->add('alertCTALabel', TextType::class, [
+                    ->add('alertCtaLabel', TextType::class, [
                         'required' => false,
                         'label' => 'CTA Label',
                     ])
