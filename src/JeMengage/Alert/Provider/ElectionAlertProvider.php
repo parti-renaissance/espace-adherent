@@ -32,8 +32,8 @@ class ElectionAlertProvider implements AlertProviderInterface
                 return new Alert(
                     $designation->alertTitle,
                     $designation->alertDescription,
-                    'Consulter',
-                    $this->urlGenerator->generate('app_renaissance_adherent_space', [], UrlGeneratorInterface::ABSOLUTE_URL)
+                    $designation->alertCtaLabel,
+                    $this->urlGenerator->generate('app_sas_election_index', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL)
                 );
             }
         }
