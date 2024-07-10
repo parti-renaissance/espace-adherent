@@ -1,9 +1,0 @@
-<nav class="manager-sidebar__menu">
-    <ul>
-        {% if is_granted('ROLE_THEMATIC_COMMUNITY_CHIEF') %}
-            <li class="{{ is_active_route(app.request, 'app_thematic_community_members_list') ? 'active' }}">
-                <a href="{{ path('app_thematic_community_members_list') }}">Membres</a>
-            </li>
-        {% endif %}
-    </ul>
-</nav>

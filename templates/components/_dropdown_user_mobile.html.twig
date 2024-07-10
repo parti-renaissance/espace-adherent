@@ -156,9 +156,6 @@
                     <li><a href="{{ path('app_search_committees') }}">Comités</a></li>
                     <li><a href="https://pourunecause.fr">Je m'engage pour une cause</a></li>
                     <li><a href="{{ path('app_static_page', { slug: 'toutes-politiques' }) }}">Toutes Politiques</a></li>
-                    {% if is_canary_enabled() %}
-                        <li><a href="{{ path('app_thematic_community_index') }}">Communautés thématiques</a></li>
-                    {% endif %}
                     <li><a href="{{ mooc_host }}">Formation</a></li>
                     <li><a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a></li>
                     <li><a href="{{ path('app_donation_index') }}">Faire un don</a></li>

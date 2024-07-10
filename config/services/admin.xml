@@ -1628,40 +1628,6 @@
 
         <!--
         ######################################################
-        # Archives » Communautés thématiques
-        ######################################################
-        -->
-
-        <service id="app.admin.thematic_community" class="App\Admin\ThematicCommunity\ThematicCommunityAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Communautés" group="Archives » Communautés thématiques" />
-
-            <argument />
-            <argument>App\Entity\ThematicCommunity\ThematicCommunity</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.thematic_community_membership" class="App\Admin\ThematicCommunity\ThematicCommunityMembershipAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Membres" group="Archives » Communautés thématiques" />
-
-            <argument />
-            <argument>App\Entity\ThematicCommunity\ThematicCommunityMembership</argument>
-            <argument />
-
-            <call method="setSubClasses">
-                <argument type="collection">
-                    <argument key="contact">App\Entity\ThematicCommunity\ContactMembership</argument>
-                    <argument key="adherent">App\Entity\ThematicCommunity\AdherentMembership</argument>
-                </argument>
-            </call>
-
-            <call method="setTemplate">
-                <argument>edit</argument>
-                <argument>admin/thematic_community/member/edit.html.twig</argument>
-            </call>
-        </service>
-
-        <!--
-        ######################################################
         # Extension
         ######################################################
         -->
@@ -1749,7 +1715,6 @@
             <tag name="sonata.admin.extension" target="app.admin.biography_executive_office_member" />
             <tag name="sonata.admin.extension" target="app.admin.renaissance_biography_executive_office_member" />
             <tag name="sonata.admin.extension" target="app.admin.je_mengage.header_block" />
-            <tag name="sonata.admin.extension" target="app.admin.thematic_community" />
             <tag name="sonata.admin.extension" target="app.admin.commitment" />
         </service>
     </services>

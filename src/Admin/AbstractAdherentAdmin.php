@@ -1096,7 +1096,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ->addSelect(
                 '_adherent_mandate',
                 '_committee_membership',
-                '_thematic_communities',
                 '_delegated_access',
                 '_zone_based_role',
                 '_zone_based_role_zone',
@@ -1107,7 +1106,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
             )
             ->leftJoin($alias.'.adherentMandates', '_adherent_mandate')
             ->leftJoin($alias.'.memberships', '_committee_membership')
-            ->leftJoin($alias.'.handledThematicCommunities', '_thematic_communities')
             ->leftJoin($alias.'.receivedDelegatedAccesses', '_delegated_access')
             ->leftJoin($alias.'.zoneBasedRoles', '_zone_based_role')
             ->leftJoin('_zone_based_role.zones', '_zone_based_role_zone')

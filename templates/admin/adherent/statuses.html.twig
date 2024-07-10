@@ -94,10 +94,6 @@
     {% if object.isElectionResultsReporter %}
         {% set labels = labels|merge(['Rapporteur résultats']) %}
     {% endif %}
-
-    {% if object.isThematicCommunityChief %}
-        {% set labels = labels|merge(['Responsable Thématique']) %}
-    {% endif %}
 {% endif %}
 
 {% if object.hasNationalRole %}
