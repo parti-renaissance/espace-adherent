@@ -2,7 +2,7 @@
 
 namespace App\Mailer\Handler;
 
-use App\Mailer\Command\SendMessageCommand;
+use App\Mailer\Command\SendMessageCommandInterface;
 use App\Mailer\EmailClientInterface;
 use App\Repository\EmailRepository;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -15,7 +15,7 @@ class SendMessageCommandHandler implements MessageHandlerInterface
     ) {
     }
 
-    public function __invoke(SendMessageCommand $command): void
+    public function __invoke(SendMessageCommandInterface $command): void
     {
         if (!$email = $this->emailRepository->findOneByUuid($command->getUuid())) {
             return;

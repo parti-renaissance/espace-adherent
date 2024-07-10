@@ -3,6 +3,7 @@
 namespace App\Mailer\Transport;
 
 use App\Mailer\AbstractEmailTemplate;
+use App\Mailer\Command\AsyncSendMessageCommand;
 use App\Mailer\Command\SendMessageCommand;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -12,8 +13,12 @@ class MessengerTransport implements TransportInterface
     {
     }
 
-    public function sendTemplateEmail(AbstractEmailTemplate $email): void
+    public function sendTemplateEmail(AbstractEmailTemplate $email, bool $async = true): void
     {
-        $this->bus->dispatch(new SendMessageCommand($email->getUuid()));
+        if ($async) {
+            $this->bus->dispatch(new AsyncSendMessageCommand($email->getUuid()));
+        } else {
+            $this->bus->dispatch(new SendMessageCommand($email->getUuid()));
+        }
     }
 }

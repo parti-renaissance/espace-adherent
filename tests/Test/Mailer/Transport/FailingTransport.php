@@ -8,7 +8,7 @@ use App\Mailer\Transport\TransportInterface;
 
 class FailingTransport implements TransportInterface
 {
-    public function sendTemplateEmail(AbstractEmailTemplate $email): void
+    public function sendTemplateEmail(AbstractEmailTemplate $email, bool $async = true): void
     {
         throw new MailerException('Unable to send email to recipients.');
     }
