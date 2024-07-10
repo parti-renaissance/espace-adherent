@@ -81,5 +81,5 @@ framework:
             App\Mailchimp\CampaignMessageInterface: mailchimp_campaign
             App\Mailchimp\SynchronizeMessageInterface: mailchimp_sync
             App\Pap\Command\AsynchronousMessageInterface: pap
-            App\Mailer\Command\SendMessageCommand: mailer
+            App\Mailer\Command\AsyncSendMessageCommand: mailer
             App\Messenger\Message\AsynchronousMessageInterface: default

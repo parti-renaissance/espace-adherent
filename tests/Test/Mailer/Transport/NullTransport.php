@@ -15,7 +15,7 @@ class NullTransport implements TransportInterface
         $this->logger = $logger;
     }
 
-    public function sendTemplateEmail(AbstractEmailTemplate $email): void
+    public function sendTemplateEmail(AbstractEmailTemplate $email, bool $async = true): void
     {
         if ($this->logger) {
             $this->logger->info('[mailer] sending email.', [

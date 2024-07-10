@@ -2,8 +2,8 @@
 
 namespace App\NationalEvent\Command;
 
-use App\Messenger\Message\UuidDefaultAsyncMessage;
+use App\Messenger\Message\AbstractUuidMessage;
 
-class SendTicketCommand extends UuidDefaultAsyncMessage
+class SendTicketCommand extends AbstractUuidMessage
 {
 }

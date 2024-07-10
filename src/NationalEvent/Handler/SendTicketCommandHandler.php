@@ -27,8 +27,10 @@ class SendTicketCommandHandler
             return;
         }
 
+        $this->entityManager->refresh($eventInscription);
+
         // generate QR code
-        $this->transactionalMailer->sendMessage(NationalEventTicketMessage::create($eventInscription));
+        $this->transactionalMailer->sendMessage(NationalEventTicketMessage::create($eventInscription), false);
 
         $eventInscription->ticketSentAt = new \DateTime();
 

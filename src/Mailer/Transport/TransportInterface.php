@@ -9,5 +9,5 @@ interface TransportInterface
     /**
      * Delivers the email to the recipients.
      */
-    public function sendTemplateEmail(AbstractEmailTemplate $email): void;
+    public function sendTemplateEmail(AbstractEmailTemplate $email, bool $async = true): void;
 }

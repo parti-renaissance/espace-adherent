@@ -30,7 +30,7 @@ class MailerService
         $this->emailClient = $emailClient;
     }
 
-    public function sendMessage(Message $message): bool
+    public function sendMessage(Message $message, bool $async = true): bool
     {
         $this->dispatcher->dispatch(new MailerEvent($message), MailerEvents::BEFORE_EMAIL_BUILD);
 
@@ -39,7 +39,7 @@ class MailerService
         $delivered = true;
         try {
             $this->dispatcher->dispatch(new MailerEvent($message, $email), MailerEvents::DELIVERY_MESSAGE);
-            $this->transport->sendTemplateEmail($email);
+            $this->transport->sendTemplateEmail($email, $async);
             $this->dispatcher->dispatch(new MailerEvent($message, $email), MailerEvents::DELIVERY_SUCCESS);
         } catch (MailerException $exception) {
             $delivered = false;

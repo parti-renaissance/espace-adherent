@@ -3,7 +3,7 @@
 namespace Tests\App\Mailer\Transport;
 
 use App\Entity\Email;
-use App\Mailer\Command\SendMessageCommand;
+use App\Mailer\Command\AsyncSendMessageCommand;
 use App\Mailer\Handler\SendMessageCommandHandler;
 use App\Mailer\Message\Message;
 use App\Mailer\Transport\MessengerTransport;
@@ -86,7 +86,7 @@ class MessengerTransportTest extends TestCase
     private function getBus(MessageHandlerInterface $handler): MessageBusInterface
     {
         return new MessageBus([new HandleMessageMiddleware(new HandlersLocator([
-            SendMessageCommand::class => [$handler],
+            AsyncSendMessageCommand::class => [$handler],
         ]))]);
     }
 }

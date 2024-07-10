@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Mailer\Command\SendMessageCommand;
+use App\Mailer\Command\AsyncSendMessageCommand;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -34,7 +34,7 @@ class MailerPublishCommand extends Command
             throw new \InvalidArgumentException('Invalid UUID');
         }
 
-        $this->bus->dispatch(new SendMessageCommand(Uuid::fromString($uuid)));
+        $this->bus->dispatch(new AsyncSendMessageCommand(Uuid::fromString($uuid)));
 
         return self::SUCCESS;
     }

@@ -48,14 +48,16 @@
                                 </a>
                             {% endif %}
 
-                            <a href="#" class="btn btn-danger {{ count_without_qrcodes > 0 ? 'disabled' }}" data-toggle="modal" data-target="#confirm-send-all">
-                                Envoyer les billets à tous ({{ count_without_ticket + count_with_ticket }} billets)
-                            </a>
-
-                            {% if count_without_ticket and (count_without_ticket + count_with_ticket) != count_without_ticket %}
-                                <a href="#" class="btn btn-info {{ count_without_qrcodes > 0 ? 'disabled' }}" data-toggle="modal" data-target="#confirm-send-only-missing">
-                                    Envoyer les billets à ceux pas reçus ({{ count_without_ticket }} billets)
+                            {% if count_without_ticket + count_with_ticket > 0 %}
+                                <a href="#" class="btn btn-danger {{ count_without_qrcodes > 0 ? 'disabled' }}" data-toggle="modal" data-target="#confirm-send-all">
+                                    Envoyer les billets à tous ({{ count_without_ticket + count_with_ticket }} billets)
                                 </a>
+
+                                {% if count_without_ticket and (count_without_ticket + count_with_ticket) != count_without_ticket %}
+                                    <a href="#" class="btn btn-info {{ count_without_qrcodes > 0 ? 'disabled' }}" data-toggle="modal" data-target="#confirm-send-only-missing">
+                                        Envoyer les billets à ceux pas reçus ({{ count_without_ticket }} billets)
+                                    </a>
+                                {% endif %}
                             {% endif %}
 
                             <div class="text-left">
