@@ -1210,8 +1210,8 @@ Feature:
         "template_content": [],
         "message": {
             "subject": "[Désignations] Une candidature a été retirée",
-            "from_email": "contact@en-marche.fr",
-            "from_name": "La République En Marche !",
+            "from_email": "contact@parti-renaissance.fr",
+            "from_name": "Renaissance",
             "merge_vars": [
              {
                  "rcpt": "adherent-male-39@en-marche-dev.fr",
