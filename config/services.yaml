@@ -130,7 +130,6 @@ services:
         resource: '../src/*'
         exclude:
             - '../src/Admin'
-            - '../src/Algolia'
             - '../src/DependencyInjection'
             - '../src/Entity'
             - '../src/Exception'
@@ -144,10 +143,6 @@ services:
             $appVersion: '%env(APP_VERSION)%'
             $symfonyAssetExtension: '@twig.extension.assets'
             $mimeTypes: '@mime_types'
-
-    App\Algolia\:
-        resource: '../src/Algolia/'
-        exclude: '../src/Algolia/Sonata/{Pager,ProxyQuery}'
 
     App\Controller\:
         resource: ../src/Controller/

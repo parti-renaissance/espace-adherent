@@ -13,7 +13,6 @@ use App\Entity\AdherentCharter\PhoningCampaignCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
 use App\Entity\AdherentCharter\SenatorCharter;
 use App\Entity\AdherentCharter\SenatorialCandidateCharter;
-use App\Entity\AdherentCharter\ThematicCommunityChiefCharter;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class AdherentCharterCollection extends ArrayCollection
@@ -67,13 +66,6 @@ class AdherentCharterCollection extends ArrayCollection
         });
     }
 
-    public function hasThematicCommunityChiefCharterAccepted(): bool
-    {
-        return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
-            return $charter instanceof ThematicCommunityChiefCharter;
-        });
-    }
-
     public function hasPhoningCampaignCharterAccepted(): bool
     {
         return $this->exists(static function (int $index, AdherentCharterInterface $charter) {
@@ -111,9 +103,6 @@ class AdherentCharterCollection extends ArrayCollection
 
             case AdherentCharterTypeEnum::TYPE_CANDIDATE:
                 return $this->hasCandidateCharterAccepted();
-
-            case AdherentCharterTypeEnum::TYPE_THEMATIC_COMMUNITY_CHIEF:
-                return $this->hasThematicCommunityChiefCharterAccepted();
 
             case AdherentCharterTypeEnum::TYPE_PHONING_CAMPAIGN:
                 return $this->hasPhoningCampaignCharterAccepted();

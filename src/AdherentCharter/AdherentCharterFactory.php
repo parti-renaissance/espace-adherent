@@ -12,7 +12,6 @@ use App\Entity\AdherentCharter\PhoningCampaignCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
 use App\Entity\AdherentCharter\SenatorCharter;
 use App\Entity\AdherentCharter\SenatorialCandidateCharter;
-use App\Entity\AdherentCharter\ThematicCommunityChiefCharter;
 
 abstract class AdherentCharterFactory
 {
@@ -33,8 +32,6 @@ abstract class AdherentCharterFactory
                 return new LegislativeCandidateCharter();
             case AdherentCharterTypeEnum::TYPE_CANDIDATE:
                 return new CandidateCharter();
-            case AdherentCharterTypeEnum::TYPE_THEMATIC_COMMUNITY_CHIEF:
-                return new ThematicCommunityChiefCharter();
             case AdherentCharterTypeEnum::TYPE_PHONING_CAMPAIGN:
                 return new PhoningCampaignCharter();
             case AdherentCharterTypeEnum::TYPE_PAP_CAMPAIGN:

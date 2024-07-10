@@ -33,7 +33,6 @@ use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\DelegatedAccessEnum;
 use App\Entity\Team\Member;
-use App\Entity\ThematicCommunity\ThematicCommunity;
 use App\EntityListener\RevokeReferentTeamMemberRolesListener;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Exception\AdherentException;
@@ -513,12 +512,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $commitment;
 
     /**
-     * @var ThematicCommunity[]|Collection
-     */
-    #[ORM\ManyToMany(targetEntity: ThematicCommunity::class)]
-    private $handledThematicCommunities;
-
-    /**
      * @var AdherentMandateInterface[]|Collection
      *
      * @Assert\Valid
@@ -675,7 +668,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->charters = new AdherentCharterCollection();
         $this->certificationRequests = new ArrayCollection();
         $this->receivedDelegatedAccesses = new ArrayCollection();
-        $this->handledThematicCommunities = new ArrayCollection();
         $this->adherentMandates = new ArrayCollection();
         $this->provisionalSupervisors = new ArrayCollection();
         $this->teamMemberships = new ArrayCollection();
@@ -904,10 +896,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_CANDIDATE_DEPARTMENTAL';
         }
 
-        if ($this->isThematicCommunityChief()) {
-            $roles[] = 'ROLE_THEMATIC_COMMUNITY_CHIEF';
-        }
-
         if ($this->isPhoningCampaignTeamMember()) {
             $roles[] = 'ROLE_PHONING_CAMPAIGN_MEMBER';
         }
@@ -979,7 +967,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isDepartmentalCandidate()
             || $this->isDelegatedCandidate()
             || $this->isLegislativeCandidate()
-            || $this->isThematicCommunityChief()
             || $this->isCorrespondent()
             || $this->isPresidentDepartmentalAssembly()
             || $this->isDelegatedPresidentDepartmentalAssembly()
@@ -2421,33 +2408,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setVoteInspector(bool $voteInspector): void
     {
         $this->voteInspector = $voteInspector;
-    }
-
-    public function getHandledThematicCommunities(): Collection
-    {
-        return $this->handledThematicCommunities;
-    }
-
-    public function setHandledThematicCommunities(Collection $handledThematicCommunities): void
-    {
-        $this->handledThematicCommunities = $handledThematicCommunities;
-    }
-
-    public function addHandledThematicCommunity(ThematicCommunity $thematicCommunity): void
-    {
-        if (!$this->handledThematicCommunities->contains($thematicCommunity)) {
-            $this->handledThematicCommunities->add($thematicCommunity);
-        }
-    }
-
-    public function removeHandledThematicCommunity(ThematicCommunity $thematicCommunity): void
-    {
-        $this->handledThematicCommunities->removeElement($thematicCommunity);
-    }
-
-    public function isThematicCommunityChief(): bool
-    {
-        return $this->handledThematicCommunities->count() > 0;
     }
 
     public function getAdherentMandates(): Collection

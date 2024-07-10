@@ -43,8 +43,6 @@ class CharterVoter extends AbstractAdherentVoter
                 return $adherent->isSenator();
             case AdherentCharterTypeEnum::TYPE_SENATORIAL_CANDIDATE:
                 return $adherent->isSenatorialCandidate();
-            case AdherentCharterTypeEnum::TYPE_THEMATIC_COMMUNITY_CHIEF:
-                return $adherent->isThematicCommunityChief();
         }
 
         return true;

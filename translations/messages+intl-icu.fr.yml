@@ -155,7 +155,6 @@ role.national: Rôle national
 role.national_communication: Rôle national communication
 role.election_results_reporter: Rapporteur résultats
 role.senatorial_candidate: Candidat Sénatoriales 2020
-role.thematic_community_chief: Responsable Thématique
 role.candidate_regional_headed: Tête de liste aux régionales
 role.candidate_regional_leader: Chef de file aux régionales
 role.candidate_departmental: Candidat aux départementales
@@ -913,13 +912,6 @@ retirement_simulator.profession.other: autre
 #
 user_list_definition.type.elected_representative.label: Élu
 user_list_definition.type.adherent.label: Adhérent
-user_list_definition.type.thematic_community.label: Communauté thématique
-user_list_definition.type.thematic_community_health.label: "[Communauté thématique] Santé"
-user_list_definition.type.thematic_community_education.label: "[Communauté thématique] Éducation"
-user_list_definition.type.thematic_community_ecology.label: "[Communauté thématique] Écologie"
-user_list_definition.type.thematic_community_europe.label: "[Communauté thématique] Europe"
-user_list_definition.type.thematic_community_tpe_pme.label: "[Communauté thématique] TPE-PME"
-user_list_definition.type.thematic_community_agriculture.label: "[Communauté thématique] Agriculture"
 
 #
 # ElectedRepresentative
@@ -1281,33 +1273,6 @@ adherent_mandate.membre_assemblee_corse: "Membre de l'Assemblée de Corse"
 adherent_mandate.depute: "Député(e)"
 adherent_mandate.senateur: "Sénateur(rice)"
 adherent_mandate.euro_depute: "Député(e) européen(ne)"
-
-#
-# Thematic community
-#
-admin.thematic_community.membership.motivations.thinking: Vous impliquer dans des groupes de réflexion
-admin.thematic_community.membership.motivations.information: Vous informer sur l'actualité et les réformes
-admin.thematic_community.membership.motivations.on_spot: Participer à des actions de terrain
-admin.thematic_community_membership.type.adherent: Adhérent
-admin.thematic_community_membership.type.electedRepresentative: Élu
-admin.thematic_community_membership.type.contact: Contact
-
-thematic_community_chief.popup.title: Charte de bonne utilisation des outils numériques
-thematic_community_chief.popup.subtitle: à l'usage des Responsables Communautés Thématiques
-thematic_community_chief.popup.file_url: https://storage.googleapis.com/en-marche-fr/TECH/charte_numerique_responsables_ct.pdf
-
-thematic_community.label.sante: Pour la santé
-thematic_community.label.ecole: Pour l'école
-thematic_community.label.ecologie: Pour la transition écologique
-thematic_community.label.pme: Pour les petites et moyennes entreprises
-thematic_community.label.agriculture-et-alimentation: Pour l'agriculture et l'alimentation
-thematic_community.label.europe: Pour l'Europe
-
-# this field label can change in function of the community
-thematic_community.userListDefinitions.label.ecole: Vous êtes
-thematic_community.userListDefinitions.label.ecologie: Vos thèmes d'intérêt
-thematic_community.userListDefinitions.label.pme: Quel est le secteur d'activité de votre entreprise ?
-thematic_community.userListDefinitions.label.agriculture-et-alimentation: Quelle est votre relation avec le monde de l'agriculture et/ou de l'alimentation ?
 
 #
 # Page

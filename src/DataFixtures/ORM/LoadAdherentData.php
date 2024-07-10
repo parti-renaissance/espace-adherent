@@ -374,8 +374,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent13->addReferentTag($this->getReference('referent_tag_ch'));
         $adherent13->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
         $adherent13->setMandates([MandateTypeEnum::DEPUTE_EUROPEEN]);
-        $adherent13->addHandledThematicCommunity($this->getReference('tc-sante'));
-        $adherent13->addHandledThematicCommunity($this->getReference('tc-education'));
         $adherent13->certify();
         $this->addReference('adherent-13', $adherent13);
 
@@ -1325,7 +1323,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             LoadSubscriptionTypeData::class,
             LoadElectionVotePlaceData::class,
             LoadCityData::class,
-            LoadThematicCommunityData::class,
             LoadGeoZoneData::class,
         ];
     }
