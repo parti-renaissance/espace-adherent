@@ -422,14 +422,14 @@ Feature:
       "template_content": [],
       "message": {
         "subject": "Votre adhésion à La République En Marche !",
-        "from_email": "contact@en-marche.fr",
+        "from_email": "contact@parti-renaissance.fr",
         "global_merge_vars": [
           {
             "name": "first_name",
             "content": "Ernestino"
           }
         ],
-        "from_name": "La République En Marche !",
+        "from_name": "Renaissance",
         "to": [
           {
             "email": "ernestino@bonsoirini.fr",
@@ -489,14 +489,14 @@ Feature:
       "template_content": [],
       "message": {
         "subject": "Votre adhésion à La République En Marche !",
-        "from_email": "contact@en-marche.fr",
+        "from_email": "contact@parti-renaissance.fr",
         "global_merge_vars": [
           {
             "name": "first_name",
             "content": "Ernestino"
           }
         ],
-        "from_name": "La République En Marche !",
+        "from_name": "Renaissance",
         "to": [
           {
             "email": "ernestino@bonsoirini.fr",
@@ -610,14 +610,14 @@ Feature:
       "template_content": [],
       "message": {
         "subject": "Votre adhésion à La République En Marche !",
-        "from_email": "contact@en-marche.fr",
+        "from_email": "contact@parti-renaissance.fr",
         "global_merge_vars": [
           {
             "name": "first_name",
             "content": "Ernestino"
           }
         ],
-        "from_name": "La République En Marche !",
+        "from_name": "Renaissance",
         "to": [
           {
             "email": "ernestino@bonsoirini.fr",
