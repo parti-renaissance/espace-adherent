@@ -200,7 +200,13 @@ class DesignationRepository extends ServiceEntityRepository
             $votingPlatformElectionQueryBuilder->andWhere('d3.type IN (:d3_types)');
             $queryBuilder->setParameter('d3_types', $types);
         }
-        $conditions->add(sprintf('designation.id IN (%s)', $votingPlatformElectionQueryBuilder->getDQL()));
+
+        if ($withVoteActiveOnly) {
+            $queryBuilder->andWhere(sprintf('designation.id IN (%s)', $votingPlatformElectionQueryBuilder->getDQL()));
+        } else {
+            $conditions->add(sprintf('designation.id IN (%s)', $votingPlatformElectionQueryBuilder->getDQL()));
+        }
+
         $queryBuilder->andWhere($conditions);
 
         return $queryBuilder->getQuery()->getResult();
