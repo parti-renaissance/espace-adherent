@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 trait EntityContentTrait
@@ -13,7 +12,6 @@ trait EntityContentTrait
      */
     #[Assert\Length(max: 100)]
     #[Assert\NotBlank]
-    #[Groups(['article_list_read', 'article_read'])]
     #[ORM\Column(length: 100)]
     private $title;
 
@@ -30,7 +28,6 @@ trait EntityContentTrait
      */
     #[Assert\Length(min: 10, max: 255, options: ['allowEmptyString' => true])]
     #[Assert\NotBlank]
-    #[Groups(['article_read'])]
     #[ORM\Column]
     private $description;
 
@@ -38,7 +35,6 @@ trait EntityContentTrait
      * @var string|null
      */
     #[Assert\Length(min: 10, max: 255)]
-    #[Groups(['article_read'])]
     #[ORM\Column(nullable: true)]
     private $twitterDescription;
 
@@ -53,7 +49,6 @@ trait EntityContentTrait
      * @var string|null
      */
     #[Assert\NotBlank]
-    #[Groups(['article_read'])]
     #[ORM\Column(type: 'text')]
     private $content;
 

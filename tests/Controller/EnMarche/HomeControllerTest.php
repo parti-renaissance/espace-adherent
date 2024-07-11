@@ -38,14 +38,6 @@ class HomeControllerTest extends AbstractEnMarcheWebTestCase
         $this->client->request(Request::METHOD_GET, '/dynamic-redirection-302');
 
         $this->assertClientIsRedirectedTo('/comites', $this->client);
-
-        $this->client->request(Request::METHOD_GET, '/dynamic-redirection/');
-
-        $this->assertClientIsRedirectedTo('/articles', $this->client, false, true);
-
-        $this->client->request(Request::METHOD_GET, '/dynamic-redirection');
-
-        $this->assertClientIsRedirectedTo('/articles', $this->client, false, true);
     }
 
     #[DataProvider('provideUrlsAndRedirections')]
@@ -64,6 +56,5 @@ class HomeControllerTest extends AbstractEnMarcheWebTestCase
     {
         yield 'Emmanuel Macron' => ['/emmanuel-macron/', '/emmanuel-macron'];
         yield 'Le mouvement' => ['/le-mouvement/', '/le-mouvement'];
-        yield 'Actualités' => ['/articles/actualites/', '/articles/actualites'];
     }
 }

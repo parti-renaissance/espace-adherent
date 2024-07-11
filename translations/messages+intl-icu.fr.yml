@@ -749,17 +749,6 @@ subscription_type.group.communication_emails: Informations nationales
 subscription_type.group.territories_emails: Informations locales
 
 #
-# Actualités
-#
-actualites.label.tout: articles
-actualites.label.actualites: actualités
-actualites.label.videos: vidéos
-actualites.label.discours: discours
-actualites.label.medias: médias
-actualites.label.communiques: communiqués
-actualites.label.opinions: opinions
-
-#
 # Payment messages
 #
 payment.message.generic: Votre don n'a pas été effectué, soit car vous l'avez annulé soit car une erreur s'est produite.

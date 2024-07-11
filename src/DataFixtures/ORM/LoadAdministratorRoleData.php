@@ -62,11 +62,6 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
-            'ROLE_ADMIN_RENAISSANCE_ARTICLES',
-            'Administrateur des actualités',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
             'ROLE_ADMIN_RENAISSANCE_HOME_BLOCKS',
             'Administrateur des blocs d\'articles',
             AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
@@ -96,16 +91,6 @@ class LoadAdministratorRoleData extends Fixture
             'ROLE_ADMIN_COMMUNICATION_MEDIAS',
             'Administrateur des médias (Upload)',
             AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_COMMUNICATION_ARTICLES',
-            'Administrateur des articles',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_COMMUNICATION_ARTICLE_CATEGORIES',
-            'Administrateur des catégories d\'articles',
-            AdministratorRoleGroupEnum::ARCHIVES,
         );
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_PAGES',

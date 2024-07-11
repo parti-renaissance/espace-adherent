@@ -64,10 +64,6 @@
         <meta name="twitter:description" content="{% block meta_twitter_description block('meta_description') %}" />
         <meta name="twitter:image" content="{{ block('open_graph_image')|raw }}" />
 
-        {% block meta_rss %}
-            <link rel="alternate" type="application/rss+xml" title="La République En Marche !" href="{{ url('articles_feed') }}" />
-        {% endblock %}
-
         {% block json_ld %}
         <script type="application/ld+json">
             {

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Article;
 use App\Entity\Clarification;
 use App\Entity\CustomSearchResult;
 use App\Entity\Proposal;
@@ -96,7 +95,7 @@ class AssetsController extends AbstractController
     }
 
     #[Cache(maxage: 900, smaxage: 900)]
-    #[Route(path: '/algolia/{type}/{slug}', requirements: ['type' => 'proposal|custom|article|clarification'], methods: ['GET'])]
+    #[Route(path: '/algolia/{type}/{slug}', requirements: ['type' => 'proposal|custom|clarification'], methods: ['GET'])]
     public function algoliaAction(Server $glide, Request $request, string $type, string $slug): Response
     {
         $glide->setResponseFactory(new SymfonyResponseFactory($request));
@@ -132,7 +131,7 @@ class AssetsController extends AbstractController
         return 'images/'.$entity->getMedia()->getPath();
     }
 
-    private function getTypeRepository(string $type): ServiceEntityRepositoryInterface
+    private function getTypeRepository(string $type): ?ServiceEntityRepositoryInterface
     {
         if ('proposal' === $type) {
             return $this->manager->getRepository(Proposal::class);
@@ -142,11 +141,7 @@ class AssetsController extends AbstractController
             return $this->manager->getRepository(Clarification::class);
         }
 
-        if ('article' === $type) {
-            return $this->manager->getRepository(Article::class);
-        }
-
-        return $this->manager->getRepository(Article::class);
+        return null;
     }
 
     /**

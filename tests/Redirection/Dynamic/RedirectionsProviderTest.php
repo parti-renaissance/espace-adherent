@@ -14,7 +14,6 @@ class RedirectionsProviderTest extends TestCase
         // Valid value
         $toRoute = $provider->get($provider::TO_ROUTE);
         $this->assertNotEmpty($toRoute);
-        $this->assertArrayHasKey('/article/', $toRoute);
 
         // Invalid value
         $foo = $provider->get('foo');

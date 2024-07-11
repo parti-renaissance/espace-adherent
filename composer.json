@@ -95,7 +95,6 @@
         "sonata-project/doctrine-orm-admin-bundle": "^4.0",
         "sonata-project/exporter": "3.3.0",
         "stof/doctrine-extensions-bundle": "^1.9",
-        "suin/php-rss-writer": "^1.5",
         "symfony/amqp-messenger": "^5.4",
         "symfony/asset": "^5.4",
         "symfony/cache": "^5.4",

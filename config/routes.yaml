@@ -453,15 +453,6 @@ app_renaissance_newsletter_confirm:
     requirements:
         app_domain: "%app_renaissance_host%|%national_event_host%|%user_legislative_host%"
 
-app_article:
-    host: "{app_domain}"
-    type: "annotation"
-    resource: "../src/Controller/EnMarche/ArticleController.php"
-    defaults:
-        app_domain: "%app_host%"
-    requirements:
-        app_domain: "%app_host%|%app_renaissance_host%"
-
 app_profile:
     host: "{app_domain}"
     type: "annotation"

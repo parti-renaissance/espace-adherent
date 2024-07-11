@@ -152,17 +152,6 @@
         </div>
     </section>
 
-    <!-- Articles section -->
-    {% if articles %}
-        <section class="px-4 py-12 mx-auto overflow-hidden max-w-7xl md:py-16 lg:py-20">
-            <div class="grid gap-5 md:grid-cols-3 md:gap-8 carousel-widget">
-                {% for article in articles %}
-                    {% include 'article/partial/article-item.html.twig' %}
-                {% endfor %}
-            </div>
-        </section>
-    {% endif %}
-
     <section class="px-4 py-12 md:py-15 bg-lighter-blue">
         <div class="xl:container md:flex md:gap-x-28 lg:gap-x-38">
             <div class="flex-1 md:sticky md:top-8 md:w-1/3">

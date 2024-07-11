@@ -2,7 +2,6 @@
 
 namespace Tests\App\Command;
 
-use App\Entity\Article;
 use App\Entity\ChezVous\City;
 use App\Entity\Clarification;
 use App\Entity\CustomSearchResult;
@@ -32,7 +31,6 @@ class AlgoliaSynchronizeCommandTest extends AbstractCommandTestCase
     public static function dataProviderTestCommand(): array
     {
         return [
-            ['article', Article::class, 191],
             ['proposal', Proposal::class, 3],
             ['clarification', Clarification::class, 21],
             ['custom_search_result', CustomSearchResult::class, 2],
