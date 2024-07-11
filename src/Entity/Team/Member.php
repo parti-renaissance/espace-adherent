@@ -28,11 +28,10 @@ class Member
 
     /**
      * @var Adherent|null
-     *
-     * @Assert\NotBlank(message="team.member.adherent.not_blank")
      */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'teamMemberships')]
+    #[Assert\NotBlank(message: 'team.member.adherent.not_blank')]
     private $adherent;
 
     public function __construct(?UuidInterface $uuid = null, ?Adherent $adherent = null, ?Team $team = null)

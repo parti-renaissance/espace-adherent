@@ -5,6 +5,8 @@ namespace App\Entity\Pap;
 use App\Entity\AuthoredTrait;
 use App\Entity\AuthorInterface;
 use App\Entity\EntityIdentityTrait;
+use App\Pap\BuildingEventActionEnum;
+use App\Pap\BuildingEventTypeEnum;
 use App\Repository\Pap\BuildingEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -19,48 +21,34 @@ class BuildingEvent implements AuthorInterface
     use EntityIdentityTrait;
     use AuthoredTrait;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(
-     *     callback={"App\Pap\BuildingEventActionEnum", "toArray"}
-     * )
-     */
     #[Groups(['pap_building_event_write'])]
     #[ORM\Column(length: 25)]
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: [BuildingEventActionEnum::class, 'toArray'])]
     private ?string $action = null;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(
-     *     callback={"App\Pap\BuildingEventTypeEnum", "toArray"}
-     * )
-     */
     #[Groups(['pap_building_event_write'])]
     #[ORM\Column(length: 25)]
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: [BuildingEventTypeEnum::class, 'toArray'])]
     private ?string $type = null;
 
     #[Groups(['pap_building_event_write'])]
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $identifier = null;
 
-    /**
-     * @Assert\NotNull
-     */
     #[ORM\ManyToOne(targetEntity: Building::class)]
+    #[Assert\NotNull]
     private Building $building;
 
-    /**
-     * @Assert\NotNull
-     */
     #[Groups(['pap_building_event_write'])]
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Campaign::class)]
+    #[Assert\NotNull]
     private ?Campaign $campaign = null;
 
-    /**
-     * @Gedmo\Timestampable(on="create")
-     */
     #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'create')]
     private ?\DateTimeInterface $createdAt = null;
 
     #[Groups(['pap_building_event_write'])]

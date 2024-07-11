@@ -24,26 +24,19 @@ abstract class Poll
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="poll.question.not_blank")
-     * @Assert\Length(
-     *     min=2,
-     *     max=255,
-     *     minMessage="poll.question.min_length",
-     *     maxMessage="poll.question.max_length"
-     * )
      */
     #[Groups(['poll_read'])]
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'poll.question.not_blank')]
+    #[Assert\Length(min: 2, max: 255, minMessage: 'poll.question.min_length', maxMessage: 'poll.question.max_length')]
     private $question;
 
     /**
      * @var \DateTimeInterface
-     *
-     * @Assert\NotNull(message="poll.finish_at.not_null")
      */
     #[Groups(['poll_read'])]
     #[ORM\Column(type: 'datetime')]
+    #[Assert\NotNull(message: 'poll.finish_at.not_null')]
     private $finishAt;
 
     /**

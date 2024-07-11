@@ -39,27 +39,24 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
 
     /**
      * @var string|null
-     *
-     * @Assert\Url
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url]
     private $link;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices=Measure::STATUSES)
      */
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: Measure::STATUSES)]
     private $status;
 
     /**
      * @var \DateTime|null
-     *
-     * @Gedmo\Timestampable(on="update")
      */
     #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'update')]
     private $updatedAt;
 
     /**

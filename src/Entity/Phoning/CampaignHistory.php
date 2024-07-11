@@ -12,7 +12,9 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\DataSurveyAwareInterface;
 use App\Entity\Jecoute\DataSurveyAwareTrait;
+use App\Phoning\CampaignHistoryEngagementEnum;
 use App\Phoning\CampaignHistoryStatusEnum;
+use App\Phoning\CampaignHistoryTypeEnum;
 use App\Repository\Phoning\CampaignHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -98,27 +100,19 @@ class CampaignHistory implements DataSurveyAwareInterface
 
     /**
      * @var string
-     *
-     * @Assert\Choice(
-     *     callback={"App\Phoning\CampaignHistoryTypeEnum", "toArray"},
-     *     message="phoning.campaign_history.type.invalid_choice"
-     * )
      */
     #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
     #[ORM\Column(length: 10, nullable: true)]
+    #[Assert\Choice(callback: [CampaignHistoryTypeEnum::class, 'toArray'], message: 'phoning.campaign_history.type.invalid_choice')]
     private $type;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotNull
-     * @Assert\Choice(
-     *     choices=App\Phoning\CampaignHistoryStatusEnum::AFTER_CALL_STATUS,
-     *     message="phoning.campaign_history.status.invalid_choice"
-     * )
      */
     #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read', 'phoning_campaign_history_read_list'])]
     #[ORM\Column(length: 25)]
+    #[Assert\NotNull]
+    #[Assert\Choice(choices: CampaignHistoryStatusEnum::AFTER_CALL_STATUS, message: 'phoning.campaign_history.status.invalid_choice')]
     private $status;
 
     /**
@@ -130,11 +124,10 @@ class CampaignHistory implements DataSurveyAwareInterface
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255)]
     private $profession;
 
     /**
@@ -153,52 +146,40 @@ class CampaignHistory implements DataSurveyAwareInterface
 
     /**
      * @var string|null
-     *
-     * @Assert\Choice(
-     *     callback={"App\Phoning\CampaignHistoryEngagementEnum", "toArray"},
-     *     message="phoning.campaign_history.engagement.invalid_choice"
-     * )
      */
     #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\Choice(callback: [CampaignHistoryEngagementEnum::class, 'toArray'], message: 'phoning.campaign_history.engagement.invalid_choice')]
     private $engagement;
 
     /**
      * @var int|null
-     *
-     * @Assert\Range(min="1", max="5")
      */
     #[Groups(['phoning_campaign_history_write', 'phoning_campaign_history_read_list'])]
     #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
+    #[Assert\Range(min: '1', max: '5')]
     private $note;
 
     /**
      * @var \DateTime
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'survey_replies_list'])]
     #[ORM\Column(type: 'datetime')]
+    #[Assert\NotBlank]
     private $beginAt;
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\Expression(
-     *     "value === null or value > this.getBeginAt()",
-     *     message="phoning.campaign_history.finish_at.invalid"
-     * )
      */
     #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'survey_replies_list'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Assert\Expression('value === null or value > this.getBeginAt()', message: 'phoning.campaign_history.finish_at.invalid')]
     private $finishAt;
 
-    /**
-     * @Assert\Valid
-     */
     #[Groups(['phoning_campaign_history_read_list'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\OneToOne(inversedBy: 'phoningCampaignHistory', targetEntity: DataSurvey::class, cascade: ['persist'], orphanRemoval: true)]
+    #[Assert\Valid]
     private ?DataSurvey $dataSurvey = null;
 
     public function __construct(Campaign $campaign, ?UuidInterface $uuid = null)

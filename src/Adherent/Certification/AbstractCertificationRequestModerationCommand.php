@@ -13,9 +13,8 @@ abstract class AbstractCertificationRequestModerationCommand
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=500)
      */
+    #[Assert\Length(max: 500)]
     private $comment;
 
     public function __construct(CertificationRequest $certificationRequest, ?Administrator $administrator = null)

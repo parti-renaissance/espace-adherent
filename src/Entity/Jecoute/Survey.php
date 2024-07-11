@@ -118,23 +118,20 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=70)
-     */
     #[Groups(['survey_list', 'survey_list_dc', 'survey_write_dc', 'survey_read_dc', 'phoning_campaign_read', 'phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'pap_campaign_replies_list', 'pap_campaign_history_read_list'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 70)]
     private $name;
 
     /**
      * @var SurveyQuestion[]|Collection
-     *
-     * @Assert\Count(min="1", minMessage="survey.questions.min_count")
-     * @Assert\Valid
      */
     #[Groups(['survey_write_dc'])]
     #[ORM\OneToMany(mappedBy: 'survey', targetEntity: SurveyQuestion::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
+    #[Assert\Count(min: '1', minMessage: 'survey.questions.min_count')]
+    #[Assert\Valid]
     private $questions;
 
     #[Groups(['survey_list_dc', 'survey_read_dc', 'survey_write_dc'])]

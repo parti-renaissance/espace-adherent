@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\Geo\Zone;
 use App\Entity\UserListDefinition;
+use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,18 +14,16 @@ class ListFilter
 {
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[Groups(['filter_write'])]
+    #[Assert\Length(max: 255)]
     private $firstName;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[Groups(['filter_write'])]
+    #[Assert\Length(max: 255)]
     private $lastName;
 
     /**
@@ -58,9 +57,8 @@ class ListFilter
 
     /**
      * @var string|null
-     *
-     * @Assert\Choice(choices=ElectedRepresentativeTypeEnum::ALL)
      */
+    #[Assert\Choice(choices: ElectedRepresentativeTypeEnum::ALL)]
     private $contactType;
 
     /**
@@ -77,42 +75,33 @@ class ListFilter
 
     /**
      * @var Zone[]
-     *
-     * @Assert\Expression(
-     *     expression="this.getManagedZones() or this.getZones()",
-     *     message="referent.managed_zone.empty"
-     * )
      */
+    #[Assert\Expression(expression: 'this.getManagedZones() or this.getZones()', message: 'referent.managed_zone.empty')]
     private $managedZones;
 
     /**
      * @var Zone[]
-     *
-     * @Assert\NotNull
      */
     #[Groups(['filter_write'])]
+    #[Assert\NotNull]
     private $zones = [];
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"lastName"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['lastName'])]
     private $sort = 'lastName';
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"a", "d"})
      */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['a', 'd'])]
     private $order = 'a';
 
-    /**
-     * @Assert\Choice(choices=App\Renaissance\Membership\RenaissanceMembershipFilterEnum::CHOICES)
-     */
     #[Groups(['filter_write'])]
+    #[Assert\Choice(choices: RenaissanceMembershipFilterEnum::CHOICES)]
     private ?string $renaissanceMembership = null;
 
     public ?Adherent $createdOrUpdatedByAdherent = null;

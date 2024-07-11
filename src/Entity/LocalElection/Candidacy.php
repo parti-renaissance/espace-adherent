@@ -13,9 +13,8 @@ class Candidacy extends BaseLocalElectionCandidacy
 {
     /**
      * @var CandidaciesGroup|null
-     *
-     * @Gedmo\SortableGroup
      */
     #[ORM\ManyToOne(targetEntity: CandidaciesGroup::class, inversedBy: 'candidacies')]
+    #[Gedmo\SortableGroup]
     protected $candidaciesGroup;
 }

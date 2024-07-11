@@ -9,6 +9,7 @@ use App\Entity\EntityReferentTagTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\ReferentTaggableEntity;
 use App\Intl\FranceCitiesBundle;
+use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,135 +26,107 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     use EntityReferentTagTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @Assert\NotBlank(message="common.gender.not_blank")
-     * @Assert\Choice(choices=App\ValueObject\Genders::CHOICES)
-     */
     #[ORM\Column(length: 6, nullable: true)]
+    #[Assert\NotBlank(message: 'common.gender.not_blank')]
+    #[Assert\Choice(choices: Genders::CHOICES)]
     private $gender;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="application_request.first_name.not_blank")
-     * @Assert\Length(
-     *     min=2,
-     *     max=100,
-     *     minMessage="application_request.first_name.min_length",
-     *     maxMessage="application_request.first_name.max_length"
-     * )
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'application_request.first_name.not_blank')]
+    #[Assert\Length(min: 2, max: 100, minMessage: 'application_request.first_name.min_length', maxMessage: 'application_request.first_name.max_length')]
     protected $firstName;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="application_request.last_name.not_blank")
-     * @Assert\Length(
-     *     min=1,
-     *     max=50,
-     *     minMessage="application_request.last_name.min_length",
-     *     maxMessage="application_request.last_name.max_length"
-     * )
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'application_request.last_name.not_blank')]
+    #[Assert\Length(min: 1, max: 50, minMessage: 'application_request.last_name.min_length', maxMessage: 'application_request.last_name.max_length')]
     protected $lastName;
 
     /**
      * @var array
-     *
-     * @Assert\Count(
-     *     min=1,
-     *     max=2,
-     *     minMessage="application_request.favorite_cities.min_length",
-     *     maxMessage="application_request.favorite_cities.max_length"
-     * )
      */
     #[ORM\Column(type: 'simple_array')]
+    #[Assert\Count(min: 1, max: 2, minMessage: 'application_request.favorite_cities.min_length', maxMessage: 'application_request.favorite_cities.max_length')]
     protected $favoriteCities = [];
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="application_request.email_address.not_blank")
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'application_request.email_address.not_blank')]
+    #[Assert\Email(message: 'common.email.invalid')]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     protected $emailAddress;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="common.address.required")
-     * @Assert\Length(max=150, maxMessage="common.address.max_length")
      */
     #[ORM\Column(length: 150)]
+    #[Assert\NotBlank(message: 'common.address.required')]
+    #[Assert\Length(max: 150, maxMessage: 'common.address.max_length')]
     protected $address;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="common.postal_code.not_blank")
-     * @Assert\Length(max=15)
      */
     #[ORM\Column(length: 15, nullable: true)]
+    #[Assert\NotBlank(message: 'common.postal_code.not_blank')]
+    #[Assert\Length(max: 15)]
     protected $postalCode;
 
     /**
      * The address city code (postal code + INSEE code).
      *
      * @var string|null
-     *
-     * @Assert\Length(max=20)
      */
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\Length(max: 20)]
     protected $city;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="common.city_name.not_blank")
-     * @Assert\Length(max=50)
-     * @Assert\Expression(expression="(this.getCountry() === 'FR' and this.getCity()) or value", message="common.city_name.not_blank")
      */
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'common.city_name.not_blank')]
+    #[Assert\Length(max: 50)]
+    #[Assert\Expression(expression: "(this.getCountry() === 'FR' and this.getCity()) or value", message: 'common.city_name.not_blank')]
     protected $cityName;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Country(message="common.country.invalid")
      */
     #[ORM\Column(length: 2)]
+    #[Assert\NotBlank]
+    #[Assert\Country(message: 'common.country.invalid')]
     protected $country = AddressInterface::FRANCE;
 
     /**
      * @var PhoneNumber|null
      *
-     * @Assert\NotBlank(message="common.phone_number.required")
      * @AssertPhoneNumber
      */
     #[ORM\Column(type: 'phone_number', nullable: true)]
+    #[Assert\NotBlank(message: 'common.phone_number.required')]
     protected $phone;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="application_request.profession.required")
-     * @Assert\Length(max=255, maxMessage="application_request.profession.max_length")
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'application_request.profession.required')]
+    #[Assert\Length(max: 255, maxMessage: 'application_request.profession.max_length')]
     protected $profession;
 
     /**
      * @var Theme[]|Collection
-     *
-     * @Assert\Count(min=1, minMessage="application_request.favorite_themes.min")
      */
     #[ORM\ManyToMany(targetEntity: Theme::class)]
+    #[Assert\Count(min: 1, minMessage: 'application_request.favorite_themes.min')]
     protected $favoriteThemes;
 
     /**
@@ -171,10 +144,9 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
 
     /**
      * @var ApplicationRequestTag[]|Collection
-     *
-     * @Assert\Valid(groups={"ApplicationRequestTag"})
      */
     #[ORM\ManyToMany(targetEntity: ApplicationRequestTag::class)]
+    #[Assert\Valid(groups: ['ApplicationRequestTag'])]
     protected $tags;
 
     /**

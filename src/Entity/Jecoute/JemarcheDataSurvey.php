@@ -6,6 +6,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Device;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\Jecoute\AgeRangeEnum;
+use App\Jecoute\GenderEnum;
+use App\Jecoute\ProfessionEnum;
 use App\Repository\Jecoute\JemarcheDataSurveyRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -88,25 +91,19 @@ class JemarcheDataSurvey implements DataSurveyAwareInterface
     #[ORM\Column(type: 'text', nullable: true)]
     private $postalCode;
 
-    /**
-     * @Assert\Choice(callback={"App\Jecoute\ProfessionEnum", "all"})
-     */
     #[Groups(['jemarche_data_survey_write'])]
     #[ORM\Column(length: 30, nullable: true)]
+    #[Assert\Choice(callback: [ProfessionEnum::class, 'all'])]
     private $profession;
 
-    /**
-     * @Assert\Choice(callback={"App\Jecoute\AgeRangeEnum", "all"})
-     */
     #[Groups(['jemarche_data_survey_write'])]
     #[ORM\Column(length: 15, nullable: true)]
+    #[Assert\Choice(callback: [AgeRangeEnum::class, 'all'])]
     private $ageRange;
 
-    /**
-     * @Assert\Choice(callback={"App\Jecoute\GenderEnum", "all"})
-     */
     #[Groups(['jemarche_data_survey_write'])]
     #[ORM\Column(length: 15, nullable: true)]
+    #[Assert\Choice(callback: [GenderEnum::class, 'all'])]
     private $gender;
 
     #[Groups(['jemarche_data_survey_write'])]
@@ -127,11 +124,9 @@ class JemarcheDataSurvey implements DataSurveyAwareInterface
     #[ORM\Column(type: 'geo_point', nullable: true)]
     private $longitude;
 
-    /**
-     * @Assert\Valid
-     */
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\OneToOne(inversedBy: 'jemarcheDataSurvey', targetEntity: DataSurvey::class, cascade: ['persist'], orphanRemoval: true)]
+    #[Assert\Valid]
     private ?DataSurvey $dataSurvey = null;
 
     public function __construct(?UuidInterface $uuid = null)

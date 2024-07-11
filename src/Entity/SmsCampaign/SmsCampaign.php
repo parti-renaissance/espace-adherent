@@ -23,28 +23,25 @@ class SmsCampaign
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
     private $title;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=149)
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 149)]
     private $content;
 
     /**
      * @var AudienceSnapshot
-     *
-     * @Assert\NotBlank
      */
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\OneToOne(targetEntity: AudienceSnapshot::class, cascade: ['persist'], orphanRemoval: true)]
+    #[Assert\NotBlank]
     private $audience;
 
     /**

@@ -20,21 +20,14 @@ class DonatorKinship
     #[ORM\ManyToOne(targetEntity: Donator::class, inversedBy: 'kinships')]
     private $donator;
 
-    /**
-     * @Assert\NotBlank(message="Veuillez spécifier un Donateur à associer.")
-     */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Donator::class)]
+    #[Assert\NotBlank(message: 'Veuillez spécifier un Donateur à associer.')]
     private $related;
 
-    /**
-     * @Assert\NotBlank(message="Veuillez spécifier un lien de parenté.")
-     * @Assert\Length(
-     *     min=2,
-     *     max=100,
-     * )
-     */
     #[ORM\Column(length: 100, nullable: false)]
+    #[Assert\NotBlank(message: 'Veuillez spécifier un lien de parenté.')]
+    #[Assert\Length(min: 2, max: 100)]
     private $kinship;
 
     public function __construct(?Donator $donator = null, ?Donator $related = null, ?string $kinship = null)

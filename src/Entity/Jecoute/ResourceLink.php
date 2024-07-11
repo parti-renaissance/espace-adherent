@@ -39,28 +39,19 @@ class ResourceLink implements ExposedImageOwnerInterface
     use ImageTrait;
     use Sortable;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
     #[Groups(['jecoute_resource_links_read'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private ?string $label;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Url
-     */
     #[Groups(['jecoute_resource_links_read'])]
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
+    #[Assert\Url]
     private ?string $url;
 
-    /**
-     * @Assert\Image(
-     *     mimeTypes={"image/jpeg", "image/png"},
-     *     maxSize="5M",
-     * )
-     */
+    #[Assert\Image(mimeTypes: ['image/jpeg', 'image/png'], maxSize: '5M')]
     protected $image;
 
     public function __construct(?UuidInterface $uuid = null, ?string $label = null, ?string $url = null)

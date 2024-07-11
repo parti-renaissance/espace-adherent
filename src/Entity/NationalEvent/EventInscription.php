@@ -44,11 +44,9 @@ class EventInscription
     #[ORM\ManyToOne(targetEntity: NationalEvent::class)]
     public NationalEvent $event;
 
-    /**
-     * @Assert\Choice(callback={"App\NationalEvent\InscriptionStatusEnum", "toArray"})
-     */
     #[Groups(['national_event_inscription:webhook', 'event_inscription_update_status'])]
     #[ORM\Column(options: ['default' => 'pending'])]
+    #[Assert\Choice(callback: [InscriptionStatusEnum::class, 'toArray'])]
     public string $status = InscriptionStatusEnum::PENDING;
 
     #[Groups(['national_event_inscription:webhook'])]

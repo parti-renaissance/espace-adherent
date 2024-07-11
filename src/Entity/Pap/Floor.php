@@ -39,11 +39,9 @@ class Floor implements EntityAdherentBlameableInterface, CampaignStatisticsOwner
     use EntityTimestampableTrait;
     use CampaignStatisticsTrait;
 
-    /**
-     * @Assert\NotNull
-     */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: BuildingBlock::class, inversedBy: 'floors')]
+    #[Assert\NotNull]
     private BuildingBlock $buildingBlock;
 
     #[Groups(['pap_building_block_list'])]

@@ -95,10 +95,9 @@ class Donation implements GeoPointInterface
 
     /**
      * @var \DateTimeInterface
-     *
-     * @Gedmo\Timestampable(on="update")
      */
     #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'update')]
     private $updatedAt;
 
     #[ORM\Column(nullable: true)]
@@ -124,16 +123,8 @@ class Donation implements GeoPointInterface
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\File(
-     *     maxSize="5M",
-     *     mimeTypes={
-     *         "application/pdf",
-     *         "application/x-pdf",
-     *         "image/*"
-     *     }
-     * )
      */
+    #[Assert\File(maxSize: '5M', mimeTypes: ['application/pdf', 'application/x-pdf', 'image/*'])]
     private $file;
 
     private $removeFile = false;

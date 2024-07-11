@@ -10,9 +10,8 @@ class CommitteeDesignationsListFilter
 {
     /**
      * @var Zone[]
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     private $zones;
 
     /**

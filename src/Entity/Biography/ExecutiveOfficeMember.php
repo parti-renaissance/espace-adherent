@@ -19,10 +19,8 @@ class ExecutiveOfficeMember extends AbstractBiography implements EntitySourceabl
 {
     use EntitySourceableTrait;
 
-    /**
-     * @Assert\Length(max=255)
-     */
     #[ORM\Column]
+    #[Assert\Length(max: 255)]
     private $job;
 
     #[ORM\Column(nullable: true)]

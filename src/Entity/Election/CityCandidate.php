@@ -2,6 +2,7 @@
 
 namespace App\Entity\Election;
 
+use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
@@ -21,28 +22,25 @@ class CityCandidate
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $name;
 
     /**
      * @var string|null
-     *
-     * @Assert\Choice(choices=App\ValueObject\Genders::CHOICES)
      */
     #[ORM\Column(length: 6, nullable: true)]
+    #[Assert\Choice(choices: Genders::CHOICES)]
     private $gender;
 
     /**
      * @var string|null
-     *
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Email(message: 'common.email.invalid')]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     private $email;
 
     /**
@@ -55,34 +53,30 @@ class CityCandidate
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255)]
     private $profile;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255)]
     private $investitureType;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255)]
     private $politicalScheme;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255)]
     private $alliances;
 
     /**
@@ -93,10 +87,9 @@ class CityCandidate
 
     /**
      * @var int|null
-     *
-     * @Assert\GreaterThanOrEqual(0)
      */
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Assert\GreaterThanOrEqual(0)]
     private $eligibleAdvisersCount;
 
     public function __construct(

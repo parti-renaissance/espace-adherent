@@ -35,35 +35,27 @@ class JeMarcheReport implements RecaptchaChallengeInterface
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(callback="getTypes")
      */
     #[ORM\Column(length: 30)]
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: 'getTypes')]
     private $type = '';
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Email(message: 'common.email.invalid')]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     private $emailAddress = '';
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="jemarche.postal_code.not_blank")
-     * @Assert\Length(
-     *     min=2,
-     *     max=11,
-     *     minMessage="jemarche.postal_code.invalid",
-     *     maxMessage="jemarche.postal_code.invalid"
-     * )
      */
     #[ORM\Column(length: 11)]
+    #[Assert\NotBlank(message: 'jemarche.postal_code.not_blank')]
+    #[Assert\Length(min: 2, max: 11, minMessage: 'jemarche.postal_code.invalid', maxMessage: 'jemarche.postal_code.invalid')]
     private $postalCode = '';
 
     /**
@@ -90,19 +82,17 @@ class JeMarcheReport implements RecaptchaChallengeInterface
 
     /**
      * @var int|null
-     *
-     * @Assert\GreaterThanOrEqual(value=0, message="jemarche.not_conviced.greater_than_or_equal_0")
-     * @Assert\LessThanOrEqual(value=65535, message="jemarche.not_conviced.less_than_or_equal_65000")
      */
     #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
+    #[Assert\GreaterThanOrEqual(value: 0, message: 'jemarche.not_conviced.greater_than_or_equal_0')]
+    #[Assert\LessThanOrEqual(value: 65535, message: 'jemarche.not_conviced.less_than_or_equal_65000')]
     private $notConvinced;
 
     /**
      * @var string
-     *
-     * @Assert\Length(max=2500, maxMessage="jemarche.reaction.max_2500")
      */
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Length(max: 2500, maxMessage: 'jemarche.reaction.max_2500')]
     private $reaction = '';
 
     public static function createWithCaptcha(string $recaptcha): self
@@ -113,9 +103,7 @@ class JeMarcheReport implements RecaptchaChallengeInterface
         return $report;
     }
 
-    /**
-     * @Assert\Callback
-     */
+    #[Assert\Callback]
     public function validateOneFieldNotBlank(ExecutionContextInterface $context): void
     {
         if (!$this->notConvinced && !$this->almostConvinced && !$this->convinced) {

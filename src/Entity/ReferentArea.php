@@ -7,10 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields="areaCode", message="legislative_district_zone.area_code.unique", groups="Admin")
- */
 #[ORM\Entity(repositoryClass: ReferentAreaRepository::class)]
+#[UniqueEntity(fields: ['areaCode'], message: 'legislative_district_zone.area_code.unique', groups: ['Admin'])]
 class ReferentArea
 {
     private const TYPE_DEPARTMENT = 'departement';
@@ -33,28 +31,18 @@ class ReferentArea
     #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @Assert\NotBlank(groups="Admin")
-     */
     #[ORM\Column(length: 6, unique: true)]
+    #[Assert\NotBlank(groups: ['Admin'])]
     private $areaCode;
 
-    /**
-     * @Assert\NotBlank(groups="Admin")
-     * @Assert\Choice(
-     *     callback="getAreaTypeChoices",
-     *     message="legislative_district_zone.area_type.invalid",
-     *     groups="Admin"
-     * )
-     */
     #[ORM\Column(length: 20)]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[Assert\Choice(callback: 'getAreaTypeChoices', message: 'legislative_district_zone.area_type.invalid', groups: ['Admin'])]
     private $areaType = self::TYPE_DEPARTMENT;
 
-    /**
-     * @Assert\NotBlank(groups="Admin")
-     * @Assert\Length(allowEmptyString=true, min=2, max=100, groups="Admin")
-     */
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[Assert\Length(min: 2, max: 100, groups: ['Admin'], options: ['allowEmptyString' => true])]
     private $name;
 
     #[ORM\Column(type: 'text')]
@@ -206,9 +194,7 @@ class ReferentArea
         $this->setKeywords($keywords);
     }
 
-    /**
-     * @Assert\Count(min=1, groups="Admin")
-     */
+    #[Assert\Count(min: 1, groups: ['Admin'])]
     public function getKeywords(): array
     {
         if (empty($this->keywords)) {

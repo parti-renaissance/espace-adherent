@@ -26,21 +26,19 @@ class OrderArticle implements EntityContentInterface, EntitySoftDeletedInterface
 
     /**
      * @var int
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column(type: 'smallint')]
+    #[Assert\NotBlank]
     private $position;
 
     /**
      * @var OrderSection[]|Collection
-     *
-     * @Assert\Count(min=1)
      */
     #[ORM\JoinTable(name: 'order_section_order_article')]
     #[ORM\JoinColumn(name: 'order_article_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'order_section_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\ManyToMany(targetEntity: OrderSection::class, inversedBy: 'articles')]
+    #[Assert\Count(min: 1)]
     private $sections;
 
     /**

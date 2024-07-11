@@ -9,42 +9,28 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 trait AddressTrait
 {
-    /**
-     * @Assert\Length(max=150, maxMessage="common.address.max_length")
-     */
+    #[Assert\Length(max: 150, maxMessage: 'common.address.max_length')]
     protected ?string $address = null;
 
-    /**
-     * @Assert\Length(max=150, maxMessage="common.address.max_length")
-     */
+    #[Assert\Length(max: 150, maxMessage: 'common.address.max_length')]
     protected ?string $additionalAddress = null;
 
-    /**
-     * @Assert\NotBlank(message="common.postal_code.not_blank")
-     * @Assert\Length(max=15)
-     */
+    #[Assert\NotBlank(message: 'common.postal_code.not_blank')]
+    #[Assert\Length(max: 15)]
     protected ?string $postalCode = null;
 
-    /**
-     * @Assert\Length(max=15)
-     */
+    #[Assert\Length(max: 15)]
     protected ?string $city = null;
 
-    /**
-     * @Assert\Length(max=255)
-     */
+    #[Assert\Length(max: 255)]
     protected ?string $cityName = null;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Country(message="common.country.invalid")
-     */
+    #[Assert\NotBlank]
+    #[Assert\Country(message: 'common.country.invalid')]
     protected ?string $country = null;
 
-    /**
-     * @Assert\Length(max=255)
-     */
     #[Groups(['profile_write'])]
+    #[Assert\Length(max: 255)]
     protected ?string $region = null;
 
     public function getAddress(): ?string

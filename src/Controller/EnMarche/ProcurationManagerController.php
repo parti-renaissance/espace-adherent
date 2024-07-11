@@ -196,7 +196,7 @@ class ProcurationManagerController extends AbstractController
     }
 
     #[Route(path: '/demande/{id}/associer/{proxyId}', requirements: ['id' => '\d+', 'proxyId' => '\d+'], name: 'app_procuration_manager_request_associate', methods: ['GET', 'POST'])]
-    #[ParamConverter('proxy', class: 'App\Entity\ProcurationProxy', options: ['id' => 'proxyId'])]
+    #[ParamConverter('proxy', class: ProcurationProxy::class, options: ['id' => 'proxyId'])]
     public function requestAssociateAction(
         Request $sfRequest,
         ProcurationRequest $procurationRequest,

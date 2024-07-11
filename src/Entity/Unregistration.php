@@ -64,18 +64,15 @@ class Unregistration
     #[ORM\Column(length: 15, nullable: true)]
     private $postalCode;
 
-    /**
-     * @Assert\NotBlank(message="adherent.unregistration.reasons")
-     */
     #[ORM\Column(type: 'json', nullable: true)]
+    #[Assert\NotBlank(message: 'adherent.unregistration.reasons')]
     private $reasons;
 
     /**
      * @var string
-     *
-     * @Assert\Length(allowEmptyString=true, min=10, max=1000)
      */
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Length(min: 10, max: 1000)]
     private $comment;
 
     #[ORM\Column(type: 'datetime')]

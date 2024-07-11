@@ -22,56 +22,32 @@ class Address implements AddressInterface, GeocodableInterface
 {
     use AddressTrait;
 
-    /**
-     * @Assert\NotBlank(message="common.address.required", groups={"Default", "Update"})
-     * @Assert\Expression(
-     *     expression="value or 'FR' != this.getCountry()",
-     *     message="common.address.required",
-     *     groups={"fill_personal_info"}
-     * )
-     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"Default", "Update", "fill_personal_info"})
-     */
     #[Groups(['profile_write', 'membership:write'])]
+    #[Assert\NotBlank(message: 'common.address.required', groups: ['Default', 'Update'])]
+    #[Assert\Expression(expression: "value or 'FR' != this.getCountry()", message: 'common.address.required', groups: ['fill_personal_info'])]
+    #[Assert\Length(max: 150, maxMessage: 'common.address.max_length', groups: ['Default', 'Update', 'fill_personal_info'])]
     protected ?string $address = null;
 
-    /**
-     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"Default", "Update", "fill_personal_info"})
-     */
     #[Groups(['profile_write', 'membership:write'])]
+    #[Assert\Length(max: 150, maxMessage: 'common.address.max_length', groups: ['Default', 'Update', 'fill_personal_info'])]
     protected ?string $additionalAddress = null;
 
-    /**
-     * @Assert\Expression(
-     *     expression="value or 'FR' != this.getCountry()",
-     *     message="common.postal_code.not_blank",
-     *     groups={"Default", "Registration", "Update", "fill_personal_info"}
-     * )
-     * @Assert\Length(max=15, maxMessage="common.postal_code.max_length", groups={"Default", "Registration", "Update", "fill_personal_info"})
-     */
     #[Groups(['profile_write', 'membership:write'])]
+    #[Assert\Expression(expression: "value or 'FR' != this.getCountry()", message: 'common.postal_code.not_blank', groups: ['Default', 'Registration', 'Update', 'fill_personal_info'])]
+    #[Assert\Length(max: 15, maxMessage: 'common.postal_code.max_length', groups: ['Default', 'Registration', 'Update', 'fill_personal_info'])]
     protected ?string $postalCode = null;
 
-    /**
-     * @Assert\Length(max=15, groups={"Default", "Update", "fill_personal_info"})
-     */
     #[Groups(['profile_write', 'membership:write'])]
+    #[Assert\Length(max: 15, groups: ['Default', 'Update', 'fill_personal_info'])]
     protected ?string $city = null;
 
-    /**
-     * @Assert\Length(max=255, groups={"Default", "Update", "fill_personal_info"})
-     * @Assert\Expression(
-     *     expression="value or ('FR' === this.getCountry() and this.getCity())",
-     *     message="common.city_name.not_blank",
-     *     groups={"Update", "fill_personal_info"}
-     * )
-     */
     #[Groups(['profile_write', 'membership:write'])]
+    #[Assert\Length(max: 255, groups: ['Default', 'Update', 'fill_personal_info'])]
+    #[Assert\Expression(expression: "value or ('FR' === this.getCountry() and this.getCity())", message: 'common.city_name.not_blank', groups: ['Update', 'fill_personal_info'])]
     protected ?string $cityName = null;
 
-    /**
-     * @Assert\NotBlank(message="common.country.not_blank", groups={"Default", "Registration", "Update", "fill_personal_info"})
-     * @Assert\Country(message="common.country.invalid", groups={"Default", "Registration", "Update", "fill_personal_info"})
-     */
     #[Groups(['profile_write', 'membership:write'])]
+    #[Assert\NotBlank(message: 'common.country.not_blank', groups: ['Default', 'Registration', 'Update', 'fill_personal_info'])]
+    #[Assert\Country(message: 'common.country.invalid', groups: ['Default', 'Registration', 'Update', 'fill_personal_info'])]
     protected ?string $country = null;
 }

@@ -73,22 +73,20 @@ class PushToken
      * @var string|null
      *
      * @ApiProperty(identifier=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[Groups(['push_token_write'])]
     #[ORM\Column(unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $identifier;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices=PushTokenSourceEnum::ALL)
      */
     #[Groups(['push_token_write'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: PushTokenSourceEnum::ALL)]
     private $source;
 
     public function __construct(
@@ -163,9 +161,7 @@ class PushToken
         $this->device = $device;
     }
 
-    /**
-     * @Assert\Callback
-     */
+    #[Assert\Callback]
     public function validateOneFieldNotBlank(ExecutionContextInterface $context): void
     {
         if (!$this->adherent && !$this->device) {

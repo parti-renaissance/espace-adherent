@@ -12,11 +12,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity("name", message="header_block.name.unique")
- */
 #[ORM\Table(name: 'jemengage_header_blocks')]
 #[ORM\Entity(repositoryClass: HeaderBlockRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'header_block.name.unique')]
 class HeaderBlock implements ExposedImageOwnerInterface
 {
     use EntityTimestampableTrait;
@@ -27,43 +25,33 @@ class HeaderBlock implements ExposedImageOwnerInterface
     #[ORM\GeneratedValue]
     private ?int $id = null;
 
-    /**
-     * @Assert\NotBlank(message="header_block.name.not_blank")
-     * @Assert\Length(max="100", maxMessage="header_block.name.max_length")
-     */
     #[Groups(['header_block_read'])]
     #[ORM\Column(length: 100, unique: true)]
+    #[Assert\NotBlank(message: 'header_block.name.not_blank')]
+    #[Assert\Length(max: '100', maxMessage: 'header_block.name.max_length')]
     private ?string $name = null;
 
-    /**
-     * @Gedmo\Slug(fields={"name"})
-     */
     #[ORM\Column(length: 130, unique: true)]
+    #[Gedmo\Slug(fields: ['name'])]
     private ?string $slug = null;
 
-    /**
-     * @Assert\NotBlank(message="header_block.prefix.not_blank")
-     * @Assert\Length(max="50", maxMessage="header_block.prefix.max_length")
-     */
     #[Groups(['header_block_read'])]
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'header_block.prefix.not_blank')]
+    #[Assert\Length(max: '50', maxMessage: 'header_block.prefix.max_length')]
     private ?string $prefix = null;
 
-    /**
-     * @Assert\Length(max="100", maxMessage="header_block.slogan.max_length")
-     */
     #[Groups(['header_block_read'])]
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Length(max: '100', maxMessage: 'header_block.slogan.max_length')]
     private ?string $slogan = null;
 
     #[Groups(['header_block_read'])]
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $content = null;
 
-    /**
-     * @Assert\GreaterThan("now")
-     */
     #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Assert\GreaterThan('now')]
     private ?\DateTime $deadlineDate = null;
 
     public function __construct(

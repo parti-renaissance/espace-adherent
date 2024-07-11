@@ -39,13 +39,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         }
  *     }
  * )
- *
- * @Assert\Expression(
- *     expression="!this.isVotePeriodStarted()",
- *     message="Vous ne pouvez pas créer de liste sur une élection en cours"
- * )
  */
 #[ORM\Entity(repositoryClass: CommitteeCandidaciesGroupRepository::class)]
+#[Assert\Expression(expression: '!this.isVotePeriodStarted()', message: 'Vous ne pouvez pas créer de liste sur une élection en cours')]
 class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
 {
     use EntityTimestampableTrait;
@@ -71,12 +67,10 @@ class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
     #[ORM\Column(type: 'uuid', unique: true)]
     protected UuidInterface $uuid;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[Groups(['committee_candidacies_group:write', 'committee_candidacies_group:read'])]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: CommitteeElection::class, inversedBy: 'candidaciesGroups')]
+    #[Assert\NotBlank]
     protected ?CommitteeElection $election = null;
 
     /**

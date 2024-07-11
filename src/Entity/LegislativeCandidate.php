@@ -3,16 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\LegislativeCandidateRepository;
+use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields="slug", groups="Admin")
- */
 #[ORM\Table(name: 'legislative_candidates')]
 #[ORM\Entity(repositoryClass: LegislativeCandidateRepository::class)]
+#[UniqueEntity(fields: ['slug'], groups: ['Admin'])]
 class LegislativeCandidate implements EntityMediaInterface
 {
     use EntityPersonNameTrait;
@@ -35,76 +34,53 @@ class LegislativeCandidate implements EntityMediaInterface
 
     /**
      * @var int|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
     private $position = 0;
 
-    /**
-     * @Assert\NotBlank(groups="Admin")
-     * @Assert\Choice(
-     *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     groups="Admin"
-     * )
-     */
     #[ORM\Column(length: 6)]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice', groups: ['Admin'])]
     private $gender;
 
-    /**
-     * @Assert\Email(groups="Admin")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups="Admin")
-     */
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Email(groups: ['Admin'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['Admin'])]
     private $emailAddress;
 
-    /**
-     * @Gedmo\Slug(fields={"districtName"})
-     * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="legislative_candidate.slug.invalid", groups="Admin")
-     */
     #[ORM\Column(length: 100, unique: true)]
+    #[Assert\Regex(pattern: '/^[a-z0-9-]+$/', message: 'legislative_candidate.slug.invalid', groups: ['Admin'])]
+    #[Gedmo\Slug(fields: ['districtName'])]
     private $slug;
 
-    /**
-     * @Assert\Url(groups="Admin")
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="legislative_candidate.facebook_page_url.invalid", groups="Admin")
-     * @Assert\Length(max=255, groups="Admin")
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url(groups: ['Admin'])]
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?facebook.com\/#', message: 'legislative_candidate.facebook_page_url.invalid', groups: ['Admin'])]
+    #[Assert\Length(max: 255, groups: ['Admin'])]
     private $facebookPageUrl;
 
-    /**
-     * @Assert\Url(groups="Admin")
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="legislative_candidate.twitter_page_url.invalid", groups="Admin")
-     * @Assert\Length(max=255, groups="Admin")
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url(groups: ['Admin'])]
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?twitter.com\/#', message: 'legislative_candidate.twitter_page_url.invalid', groups: ['Admin'])]
+    #[Assert\Length(max: 255, groups: ['Admin'])]
     private $twitterPageUrl;
 
-    /**
-     * @Assert\Url(groups="Admin")
-     * @Assert\Length(max=255, groups="Admin")
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url(groups: ['Admin'])]
+    #[Assert\Length(max: 255, groups: ['Admin'])]
     private $donationPageUrl;
 
-    /**
-     * @Assert\Url(groups="Admin")
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url(groups: ['Admin'])]
     private $websiteUrl;
 
-    /**
-     * @Assert\NotBlank(groups="Admin")
-     */
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(groups: ['Admin'])]
     private $districtName;
 
-    /**
-     * @Assert\NotBlank(groups="Admin")
-     */
     #[ORM\Column(type: 'smallint')]
+    #[Assert\NotBlank(groups: ['Admin'])]
     private $districtNumber;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -113,25 +89,19 @@ class LegislativeCandidate implements EntityMediaInterface
     #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
-    /**
-     * @Assert\NotBlank(groups="Admin")
-     * @Assert\Valid
-     */
     #[ORM\ManyToOne(targetEntity: LegislativeDistrictZone::class, fetch: 'EAGER')]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[Assert\Valid]
     private $districtZone;
 
-    /**
-     * @Assert\NotBlank(groups="Admin")
-     * @Assert\Choice(callback="getCareerChoices", message="legislative_candidate.carreer.invalid", groups="Admin")
-     */
     #[ORM\Column]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[Assert\Choice(callback: 'getCareerChoices', message: 'legislative_candidate.carreer.invalid', groups: ['Admin'])]
     private $career;
 
-    /**
-     * @Assert\NotBlank(groups="Admin")
-     * @Assert\Choice(callback="getStatuses", groups="Admin")
-     */
     #[ORM\Column(length: 20, options: ['default' => 'none'])]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[Assert\Choice(callback: 'getStatuses', groups: ['Admin'])]
     private $status = self::STATUS_NONE;
 
     public static function getCareerChoices(): array

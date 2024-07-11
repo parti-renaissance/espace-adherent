@@ -223,19 +223,17 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
     public int $version = 2;
 
     /**
-     * @Assert\Count(min=1, minMessage="Le comité doit contenir au moins une zone.", groups={"api_committee_edition"})
      * @AssertZoneType(types=Zone::COMMITTEE_TYPES, groups={"api_committee_edition"})
      */
     #[Groups(['committee:read', 'committee:write'])]
     #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
+    #[Assert\Count(min: 1, minMessage: 'Le comité doit contenir au moins une zone.', groups: ['api_committee_edition'])]
     protected Collection $zones;
 
-    /**
-     * @Assert\Expression("!this.animator or this.animator.isRenaissanceAdherent()", message="Président doit être un adhérent Renaissance.")
-     */
     #[Groups(['committee:read', 'committee:update_animator'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'animatorCommittees')]
+    #[Assert\Expression('!this.animator or this.animator.isRenaissanceAdherent()', message: 'Président doit être un adhérent Renaissance.')]
     public ?Adherent $animator = null;
 
     public function __construct(

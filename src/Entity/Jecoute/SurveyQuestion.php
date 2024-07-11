@@ -30,19 +30,17 @@ class SurveyQuestion implements AuthoredInterface
 
     /**
      * @var Survey
-     *
-     * @Gedmo\SortableGroup
      */
     #[ORM\ManyToOne(targetEntity: Survey::class, cascade: ['persist'], inversedBy: 'questions')]
+    #[Gedmo\SortableGroup]
     private $survey;
 
     /**
      * @var Question
-     *
-     * @Assert\Valid
      */
     #[Groups(['survey_write_dc'])]
     #[ORM\ManyToOne(targetEntity: Question::class, cascade: ['persist'])]
+    #[Assert\Valid]
     private $question;
 
     #[ORM\OneToMany(mappedBy: 'surveyQuestion', targetEntity: DataAnswer::class)]

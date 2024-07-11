@@ -21,32 +21,24 @@ class EventRegistrationCommand
      */
     private $adherent;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(allowEmptyString=true, min=2, max=50)
-     */
     #[Groups(['event_registration_write'])]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 50, options: ['allowEmptyString' => true])]
     private $firstName;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(allowEmptyString=true, min=1, max=50)
-     */
     #[Groups(['event_registration_write'])]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 50, options: ['allowEmptyString' => true])]
     private $lastName;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Email
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
-     */
     #[Groups(['event_registration_write'])]
+    #[Assert\NotBlank]
+    #[Assert\Email]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     private $emailAddress;
 
-    /**
-     * @Assert\Length(allowEmptyString=true, min=5, max=5)
-     */
     #[Groups(['event_registration_write'])]
+    #[Assert\Length(min: 5, max: 5)]
     private $postalCode;
 
     #[Groups(['event_registration_write'])]
@@ -142,9 +134,7 @@ class EventRegistrationCommand
         return $this->adherent?->getAuthAppCode();
     }
 
-    /**
-     * @Assert\IsTrue(message="event.full")
-     */
+    #[Assert\IsTrue(message: 'event.full')]
     public function isNotFull(): bool
     {
         return !$this->event->isFull();

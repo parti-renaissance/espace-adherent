@@ -43,22 +43,16 @@ class NationalEvent
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $textConfirmation = null;
 
-    /**
-     * @Assert\NotBlank(groups={"Admin"})
-     */
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\NotBlank(groups: ['Admin'])]
     public ?string $textTicketEmail = null;
 
-    /**
-     * @Assert\NotBlank(groups={"Admin"})
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank(groups: ['Admin'])]
     public ?string $subjectTicketEmail = null;
 
-    /**
-     * @Assert\NotBlank(groups={"Admin"})
-     */
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\NotBlank(groups: ['Admin'])]
     public ?string $imageTicketEmail = null;
 
     #[ORM\Column(nullable: true)]
@@ -67,9 +61,7 @@ class NationalEvent
     #[ORM\Column(nullable: true)]
     public ?string $source = null;
 
-    /**
-     * @Assert\File(maxSize="5M", binaryFormat=false, mimeTypes={"image/*"})
-     */
+    #[Assert\File(maxSize: '5M', binaryFormat: false, mimeTypes: ['image/*'])]
     public ?UploadedFile $file = null;
 
     public function __construct(?UuidInterface $uuid = null)

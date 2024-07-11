@@ -15,14 +15,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity("title")
- * @Assert\Expression(
- *     expression="(this.getArticleImage() and null === this.getYoutubeId()) or (this.getYoutubeId() and null === this.getArticleImage())",
- *     message="mooc.two_media"
- * )
- */
 #[ORM\Entity(repositoryClass: MoocRepository::class)]
+#[Assert\Expression(expression: '(this.getArticleImage() and null === this.getYoutubeId()) or (this.getYoutubeId() and null === this.getArticleImage())', message: 'mooc.two_media')]
+#[UniqueEntity(fields: ['title'])]
 class Mooc
 {
     use EntityTimestampableTrait;
@@ -32,12 +27,10 @@ class Mooc
     #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
     #[Groups(['mooc_list'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $title;
 
     /**
@@ -47,71 +40,56 @@ class Mooc
     #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
-    /**
-     * @Gedmo\Slug(fields={"title"}, unique=true)
-     */
     #[Groups(['mooc_list'])]
     #[ORM\Column(unique: true)]
+    #[Gedmo\Slug(fields: ['title'], unique: true)]
     private $slug;
 
     /**
      * @var Chapter[]|Collection
-     *
-     * @Assert\Valid
      */
     #[ORM\OneToMany(mappedBy: 'mooc', targetEntity: Chapter::class, cascade: ['all'])]
     #[ORM\OrderBy(['position' => 'ASC'])]
+    #[Assert\Valid]
     private $chapters;
 
-    /**
-     * @Assert\Length(allowEmptyString=true, min=5, max=800)
-     */
     #[ORM\Column(length: 800, nullable: true)]
+    #[Assert\Length(min: 5, max: 800)]
     private $content;
 
     /**
      * @var string|null
-     *
-     * @Assert\Regex(pattern="/^[A-Za-z0-9_-]+$/", message="mooc.youtubeid_syntax")
-     * @Assert\Length(allowEmptyString=true, min=2, max=11)
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Regex(pattern: '/^[A-Za-z0-9_-]+$/', message: 'mooc.youtubeid_syntax')]
+    #[Assert\Length(min: 2, max: 11)]
     private $youtubeId;
 
     /**
      * @var \DateTimeInterface|null
-     *
-     * @Assert\Time
      */
     #[ORM\Column(type: 'time', nullable: true)]
+    #[Assert\Time]
     private $youtubeDuration;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $shareTwitterText;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $shareFacebookText;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $shareEmailSubject;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(allowEmptyString=true, min=5, max=500)
-     */
     #[ORM\Column(length: 500)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 5, max: 500, options: ['allowEmptyString' => true])]
     protected $shareEmailBody;
 
     /**

@@ -30,18 +30,16 @@ class Image
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=10)
      */
     #[ORM\Column(length: 10)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 10)]
     private $extension;
 
     /**
      * @var File|null
-     *
-     * @Assert\File(maxSize="10M", binaryFormat=false, mimeTypes={"image/*"})
      */
+    #[Assert\File(maxSize: '10M', binaryFormat: false, mimeTypes: ['image/*'])]
     private $file;
 
     private $deleted = false;

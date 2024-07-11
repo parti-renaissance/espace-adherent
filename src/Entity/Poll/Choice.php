@@ -25,15 +25,11 @@ class Choice
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="poll_choice.value.not_blank")
-     * @Assert\Length(
-     *     max=255,
-     *     maxMessage="poll_choice.value.max_length"
-     * )
      */
     #[Groups(['poll_read'])]
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'poll_choice.value.not_blank')]
+    #[Assert\Length(max: 255, maxMessage: 'poll_choice.value.max_length')]
     private $value;
 
     /**

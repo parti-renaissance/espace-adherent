@@ -21,162 +21,85 @@ class AssessorRequestCommand implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
 
-    /**
-     * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"fill_personal_info"})
-     * @Assert\Choice(
-     *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     groups={"fill_personal_info"}
-     * )
-     */
+    #[Assert\NotBlank(message: 'common.gender.invalid_choice', groups: ['fill_personal_info'])]
+    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice', groups: ['fill_personal_info'])]
     private $gender;
 
-    /**
-     * @Assert\NotBlank(message="assessor.last_name.not_blank", groups={"fill_personal_info"})
-     * @Assert\Length(
-     *     min=1,
-     *     max=50,
-     *     minMessage="assessor.last_name.min_length",
-     *     maxMessage="assessor.last_name.max_length",
-     *     groups={"fill_personal_info"}
-     * )
-     */
+    #[Assert\NotBlank(message: 'assessor.last_name.not_blank', groups: ['fill_personal_info'])]
+    #[Assert\Length(min: 1, max: 50, minMessage: 'assessor.last_name.min_length', maxMessage: 'assessor.last_name.max_length', groups: ['fill_personal_info'])]
     private $lastName;
 
-    /**
-     * @Assert\NotBlank(message="assessor.first_name.not_blank", groups={"fill_personal_info"})
-     * @Assert\Length(
-     *     min=2,
-     *     max=100,
-     *     minMessage="assessor.first_name.min_length",
-     *     maxMessage="assessor.first_name.max_length",
-     *     groups={"fill_personal_info"}
-     * )
-     */
+    #[Assert\NotBlank(message: 'assessor.first_name.not_blank', groups: ['fill_personal_info'])]
+    #[Assert\Length(min: 2, max: 100, minMessage: 'assessor.first_name.min_length', maxMessage: 'assessor.first_name.max_length', groups: ['fill_personal_info'])]
     private $firstName;
 
-    /**
-     * @Assert\NotBlank(message="common.birthdate.not_blank", groups={"fill_personal_info"})
-     * @Assert\Range(
-     *     min="-120 years",
-     *     max="-18 years",
-     *     minMessage="assessor.birthdate.maximum_required_age",
-     *     maxMessage="assessor.birthdate.minimum_required_age",
-     *     groups={"fill_personal_info"}
-     * )
-     */
+    #[Assert\NotBlank(message: 'common.birthdate.not_blank', groups: ['fill_personal_info'])]
+    #[Assert\Range(min: '-120 years', max: '-18 years', minMessage: 'assessor.birthdate.maximum_required_age', maxMessage: 'assessor.birthdate.minimum_required_age', groups: ['fill_personal_info'])]
     private $birthdate;
 
-    /**
-     * @Assert\NotBlank(message="common.birthcity.not_blank", groups={"fill_personal_info"})
-     * @Assert\Length(max=50, groups={"fill_personal_info"})
-     */
+    #[Assert\NotBlank(message: 'common.birthcity.not_blank', groups: ['fill_personal_info'])]
+    #[Assert\Length(max: 50, groups: ['fill_personal_info'])]
     private $birthCity;
 
-    /**
-     * @Assert\NotBlank(message="common.address.required", groups={"fill_personal_info"})
-     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"fill_personal_info"})
-     */
+    #[Assert\NotBlank(message: 'common.address.required', groups: ['fill_personal_info'])]
+    #[Assert\Length(max: 150, maxMessage: 'common.address.max_length', groups: ['fill_personal_info'])]
     private $address;
 
-    /**
-     * @Assert\NotBlank(message="common.postal_code.not_blank", groups={"fill_personal_info"})
-     * @Assert\Length(max=15, groups={"fill_personal_info"})
-     */
+    #[Assert\NotBlank(message: 'common.postal_code.not_blank', groups: ['fill_personal_info'])]
+    #[Assert\Length(max: 15, groups: ['fill_personal_info'])]
     private $postalCode;
 
-    /**
-     * @Assert\NotBlank(message="common.city_name.not_blank", groups={"fill_personal_info"})
-     * @Assert\Length(max=50, groups={"fill_personal_info"})
-     */
+    #[Assert\NotBlank(message: 'common.city_name.not_blank', groups: ['fill_personal_info'])]
+    #[Assert\Length(max: 50, groups: ['fill_personal_info'])]
     private $city;
 
-    /**
-     * @Assert\NotBlank(groups={"fill_personal_info"})
-     * @Assert\Country(message="common.country.invalid", groups={"fill_personal_info"})
-     */
+    #[Assert\NotBlank(groups: ['fill_personal_info'])]
+    #[Assert\Country(message: 'common.country.invalid', groups: ['fill_personal_info'])]
     private $country = AddressInterface::FRANCE;
 
-    /**
-     * @Assert\NotBlank(message="assessor.vote_city.not_blank", groups={"fill_personal_info"})
-     * @Assert\Length(max=50, groups={"fill_personal_info"})
-     */
+    #[Assert\NotBlank(message: 'assessor.vote_city.not_blank', groups: ['fill_personal_info'])]
+    #[Assert\Length(max: 50, groups: ['fill_personal_info'])]
     private $voteCity;
 
-    /**
-     * @Assert\Length(max=10, groups={"fill_personal_info"})
-     */
+    #[Assert\Length(max: 10, groups: ['fill_personal_info'])]
     private $officeNumber;
 
-    /**
-     * @Assert\NotBlank(groups={"fill_personal_info"})
-     * @Assert\Email(message="common.email.invalid", groups={"fill_personal_info"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"fill_personal_info"})
-     */
+    #[Assert\NotBlank(groups: ['fill_personal_info'])]
+    #[Assert\Email(message: 'common.email.invalid', groups: ['fill_personal_info'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['fill_personal_info'])]
     private $emailAddress;
 
     /**
-     * @Assert\NotBlank(message="common.phone_number.required", groups={"fill_personal_info"})
      * @AssertPhoneNumber(options={"groups": {"fill_personal_info"}})
      */
+    #[Assert\NotBlank(message: 'common.phone_number.required', groups: ['fill_personal_info'])]
     private $phone;
 
-    /**
-     * @Assert\NotBlank(message="assessor.voter_number.not_blank", groups={"fill_personal_info"})
-     * @Assert\Length(max=255, groups={"fill_personal_info"})
-     */
+    #[Assert\NotBlank(message: 'assessor.voter_number.not_blank', groups: ['fill_personal_info'])]
+    #[Assert\Length(max: 255, groups: ['fill_personal_info'])]
     private $voterNumber;
 
-    /**
-     * @Assert\Expression(
-     *     "(this.isFrenchAssessorRequest() and value != null) or (!this.isFrenchAssessorRequest() and value == null)",
-     *     message="assessor.assessor_city.not_blank",
-     *     groups={"fill_assessor_info"}
-     * )
-     * @Assert\Length(max=50, groups={"fill_assessor_info"})
-     */
+    #[Assert\Expression('(this.isFrenchAssessorRequest() and value != null) or (!this.isFrenchAssessorRequest() and value == null)', message: 'assessor.assessor_city.not_blank', groups: ['fill_assessor_info'])]
+    #[Assert\Length(max: 50, groups: ['fill_assessor_info'])]
     private $assessorCity;
 
-    /**
-     * @Assert\Expression(
-     *     "(this.isFrenchAssessorRequest() and value != null) or (!this.isFrenchAssessorRequest() and value == null)",
-     *     message="assessor.assessor_postal_code.not_blank",
-     *     groups={"fill_assessor_info"}
-     * )
-     * @Assert\Length(max=15, groups={"fill_assessor_info"})
-     */
+    #[Assert\Expression('(this.isFrenchAssessorRequest() and value != null) or (!this.isFrenchAssessorRequest() and value == null)', message: 'assessor.assessor_postal_code.not_blank', groups: ['fill_assessor_info'])]
+    #[Assert\Length(max: 15, groups: ['fill_assessor_info'])]
     private $assessorPostalCode;
 
-    /**
-     * @Assert\NotBlank(groups={"fill_assessor_info"})
-     * @Assert\Country(message="common.country.invalid", groups={"fill_assessor_info"})
-     */
+    #[Assert\NotBlank(groups: ['fill_assessor_info'])]
+    #[Assert\Country(message: 'common.country.invalid', groups: ['fill_assessor_info'])]
     private $assessorCountry = AddressInterface::FRANCE;
 
-    /**
-     * @Assert\NotBlank(message="assessor.office.invalid_choice", groups={"fill_assessor_info"})
-     * @Assert\Choice(
-     *     callback={"App\Entity\AssessorOfficeEnum", "toArray"},
-     *     message="assessor.office.invalid_choice",
-     *     groups={"fill_assessor_info"}
-     * )
-     */
+    #[Assert\NotBlank(message: 'assessor.office.invalid_choice', groups: ['fill_assessor_info'])]
+    #[Assert\Choice(callback: [AssessorOfficeEnum::class, 'toArray'], message: 'assessor.office.invalid_choice', groups: ['fill_assessor_info'])]
     private $office = AssessorOfficeEnum::HOLDER;
 
-    /**
-     * @Assert\NotBlank(message="assessor.vote_place_wishes.not_blank", groups={"fill_assessor_info"})
-     */
+    #[Assert\NotBlank(message: 'assessor.vote_place_wishes.not_blank', groups: ['fill_assessor_info'])]
     private $votePlaceWishes = [];
 
-    /**
-     * @Assert\NotBlank(message="assessor.election_rounds.not_blank", groups={"fill_assessor_info"})
-     * @Assert\Choice(
-     *     callback={"App\Assessor\AssessorRequestElectionRoundsEnum", "toArray"},
-     *     message="assessor.election_rounds.invalid_choice",
-     *     multiple=true,
-     *     groups={"fill_assessor_info"}
-     * )
-     */
+    #[Assert\NotBlank(message: 'assessor.election_rounds.not_blank', groups: ['fill_assessor_info'])]
+    #[Assert\Choice(callback: [AssessorRequestElectionRoundsEnum::class, 'toArray'], message: 'assessor.election_rounds.invalid_choice', multiple: true, groups: ['fill_assessor_info'])]
     private $electionRounds;
 
     public $reachable = false;

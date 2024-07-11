@@ -23,28 +23,25 @@ class CustomSearchResult implements EntityMediaInterface
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=100)
-     * @Assert\NotBlank
      */
     #[ORM\Column(length: 100)]
+    #[Assert\Length(max: 100)]
+    #[Assert\NotBlank]
     private $title;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(allowEmptyString=true, min=10, max=255)
-     * @Assert\NotBlank
      */
     #[ORM\Column]
+    #[Assert\Length(min: 10, max: 255, options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank]
     private $description;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255)]
     private $keywords;
 
     /**

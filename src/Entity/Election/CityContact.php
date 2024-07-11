@@ -21,19 +21,17 @@ class CityContact
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $name;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[ORM\Column(name: '`function`', nullable: true)]
+    #[Assert\Length(max: 255)]
     private $function;
 
     /**
@@ -46,10 +44,9 @@ class CityContact
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255)]
     private $caller;
 
     /**

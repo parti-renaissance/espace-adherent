@@ -14,16 +14,14 @@ class CommitteeMergeCommand
 {
     /**
      * @var Committee|null
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $sourceCommittee;
 
     /**
      * @var Committee|null
-     *
-     * @Assert\NotNull
      */
+    #[Assert\NotNull]
     private $destinationCommittee;
 
     /**

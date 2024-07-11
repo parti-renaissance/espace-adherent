@@ -13,10 +13,8 @@ class QuestionChoice
 {
     use EntityIdentityTrait;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
     public ?string $label = null;
 
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]

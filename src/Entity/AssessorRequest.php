@@ -31,193 +31,147 @@ class AssessorRequest implements RecaptchaChallengeInterface
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="common.gender.invalid_choice")
-     * @Assert\Choice(
-     *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice"
-     * )
      */
     #[ORM\Column(length: 6)]
+    #[Assert\NotBlank(message: 'common.gender.invalid_choice')]
+    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice')]
     private $gender;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="assessor.last_name.not_blank")
-     * @Assert\Length(
-     *     min=1,
-     *     max=50,
-     *     minMessage="assessor.last_name.min_length",
-     *     maxMessage="assessor.last_name.max_length"
-     * )
      */
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'assessor.last_name.not_blank')]
+    #[Assert\Length(min: 1, max: 50, minMessage: 'assessor.last_name.min_length', maxMessage: 'assessor.last_name.max_length')]
     private $lastName;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="assessor.first_name.not_blank")
-     * @Assert\Length(
-     *     min=2,
-     *     max=100,
-     *     minMessage="assessor.first_name.min_length",
-     *     maxMessage="assessor.first_name.max_length"
-     * )
      */
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: 'assessor.first_name.not_blank')]
+    #[Assert\Length(min: 2, max: 100, minMessage: 'assessor.first_name.min_length', maxMessage: 'assessor.first_name.max_length')]
     private $firstName;
 
     /**
      * @var \DateTime
-     *
-     * @Assert\NotBlank(message="common.birthdate.not_blank")
-     * @Assert\Range(
-     *     min="-120 years",
-     *     max="-18 years",
-     *     minMessage="assessor.birthdate.maximum_required_age",
-     *     maxMessage="assessor.birthdate.minimum_required_age"
-     * )
      */
     #[ORM\Column(type: 'date')]
+    #[Assert\NotBlank(message: 'common.birthdate.not_blank')]
+    #[Assert\Range(min: '-120 years', max: '-18 years', minMessage: 'assessor.birthdate.maximum_required_age', maxMessage: 'assessor.birthdate.minimum_required_age')]
     private $birthdate;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="common.birthcity.not_blank")
-     * @Assert\Length(max=50)
      */
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'common.birthcity.not_blank')]
+    #[Assert\Length(max: 50)]
     private $birthCity;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="common.address.required")
-     * @Assert\Length(max=150, maxMessage="common.address.max_length")
      */
     #[ORM\Column(length: 150)]
+    #[Assert\NotBlank(message: 'common.address.required')]
+    #[Assert\Length(max: 150, maxMessage: 'common.address.max_length')]
     private $address;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=15)
      */
     #[ORM\Column(length: 15, nullable: true)]
+    #[Assert\Length(max: 15)]
     private $postalCode;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="common.city_name.not_blank")
-     * @Assert\Length(max=50)
      */
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'common.city_name.not_blank')]
+    #[Assert\Length(max: 50)]
     private $city;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="common.country.not_blank")
-     * @Assert\Country(message="common.country.invalid")
      */
     #[ORM\Column(length: 2, options: ['default' => 'FR'])]
+    #[Assert\NotBlank(message: 'common.country.not_blank')]
+    #[Assert\Country(message: 'common.country.invalid')]
     private $country = AddressInterface::FRANCE;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="assessor.vote_city.not_blank")
-     * @Assert\Length(max=50)
      */
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'assessor.vote_city.not_blank')]
+    #[Assert\Length(max: 50)]
     private $voteCity;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=10)
      */
     #[ORM\Column(length: 10, nullable: true)]
+    #[Assert\Length(max: 10)]
     private $officeNumber;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Email(message: 'common.email.invalid')]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     private $emailAddress;
 
     /**
      * @var PhoneNumber
      *
-     * @Assert\NotBlank(message="common.phone_number.required")
      * @AssertPhoneNumber
      */
     #[ORM\Column(type: 'phone_number')]
+    #[Assert\NotBlank(message: 'common.phone_number.required')]
     private $phone;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="assessor.voter_number.not_blank")
-     * @Assert\Length(max="255")
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'assessor.voter_number.not_blank')]
+    #[Assert\Length(max: '255')]
     private $voterNumber;
 
     /**
      * @var string|null
-     *
-     * @Assert\Expression(
-     *     "(this.isFrenchAssessorRequest() and value != null) or (!this.isFrenchAssessorRequest() and value == null)",
-     *     message="assessor.assessor_city.not_blank",
-     *     groups={"fill_assessor_info"}
-     * )
-     * @Assert\NotBlank(message="assessor.assessor_city.not_blank")
-     * @Assert\Length(max=50)
      */
     #[ORM\Column(length: 50, nullable: true)]
+    #[Assert\Expression('(this.isFrenchAssessorRequest() and value != null) or (!this.isFrenchAssessorRequest() and value == null)', message: 'assessor.assessor_city.not_blank', groups: ['fill_assessor_info'])]
+    #[Assert\NotBlank(message: 'assessor.assessor_city.not_blank')]
+    #[Assert\Length(max: 50)]
     private $assessorCity;
 
     /**
      * @var string|null
-     *
-     * @Assert\Expression(
-     *     "(this.isFrenchAssessorRequest() and value != null) or (!this.isFrenchAssessorRequest() and value == null)",
-     *     message="assessor.assessor_postal_code.not_blank",
-     *     groups={"fill_assessor_info"}
-     * )
-     * @Assert\Length(max=15)
      */
     #[ORM\Column(length: 15, nullable: true)]
+    #[Assert\Expression('(this.isFrenchAssessorRequest() and value != null) or (!this.isFrenchAssessorRequest() and value == null)', message: 'assessor.assessor_postal_code.not_blank', groups: ['fill_assessor_info'])]
+    #[Assert\Length(max: 15)]
     private $assessorPostalCode;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Country(message="common.country.invalid")
      */
     #[ORM\Column(length: 2)]
+    #[Assert\NotBlank]
+    #[Assert\Country(message: 'common.country.invalid')]
     private $assessorCountry = AddressInterface::FRANCE;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="assessor.office.invalid_choice")
-     * @Assert\Choice(
-     *     callback={"App\Entity\AssessorOfficeEnum", "toArray"},
-     *     message="assessor.office.invalid_choice"
-     * )
      */
     #[ORM\Column(length: 15)]
+    #[Assert\NotBlank(message: 'assessor.office.invalid_choice')]
+    #[Assert\Choice(callback: [AssessorOfficeEnum::class, 'toArray'], message: 'assessor.office.invalid_choice')]
     private $office = AssessorOfficeEnum::HOLDER;
 
     /**
@@ -228,11 +182,10 @@ class AssessorRequest implements RecaptchaChallengeInterface
 
     /**
      * @var ElectionVotePlace[]|ArrayCollection
-     *
-     * @Assert\NotBlank(message="assessor.vote_place_wishes.not_blank", groups={"fill_assessor_info"})
      */
     #[ORM\JoinTable(name: 'assessor_requests_vote_place_wishes')]
     #[ORM\ManyToMany(targetEntity: ElectionVotePlace::class)]
+    #[Assert\NotBlank(message: 'assessor.vote_place_wishes.not_blank', groups: ['fill_assessor_info'])]
     private $votePlaceWishes;
 
     /**
@@ -249,15 +202,10 @@ class AssessorRequest implements RecaptchaChallengeInterface
 
     /**
      * @var array
-     *
-     * @Assert\NotBlank(message="assessor.election_rounds.not_blank")
-     * @Assert\Choice(
-     *     callback={"App\Assessor\AssessorRequestElectionRoundsEnum", "toArray"},
-     *     message="assessor.election_rounds.invalid_choice",
-     *     multiple=true
-     * )
      */
     #[ORM\Column(type: 'simple_array')]
+    #[Assert\NotBlank(message: 'assessor.election_rounds.not_blank')]
+    #[Assert\Choice(callback: [AssessorRequestElectionRoundsEnum::class, 'toArray'], message: 'assessor.election_rounds.invalid_choice', multiple: true)]
     private $electionRounds;
 
     /**

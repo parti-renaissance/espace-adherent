@@ -22,26 +22,22 @@ abstract class BaseEventCategory implements EventCategoryInterface
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     protected $id;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
-     */
     #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
     #[ORM\Column(length: 100, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '100')]
     protected $name = '';
 
     /**
      * @ApiProperty(identifier=true)
      *
      * @var string|null
-     *
-     * @Gedmo\Slug(fields={"name"}, unique=true)
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
      */
     #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
     #[ORM\Column(length: 100, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
+    #[Gedmo\Slug(fields: ['name'], unique: true)]
     protected $slug;
 
     #[ORM\Column(length: 10, options: ['default' => 'ENABLED'])]

@@ -3,6 +3,7 @@
 namespace App\TonMacron;
 
 use App\Entity\TonMacronChoice;
+use App\ValueObject\Genders;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -39,94 +40,73 @@ final class InvitationProcessor
         self::TRANSITION_SEND,
     ];
 
-    /**
-     * @Assert\NotBlank(groups={"fill_info"})
-     * @Assert\Type("string", groups={"fill_info"})
-     * @Assert\Length(max=50, groups={"fill_info"})
-     */
+    #[Assert\NotBlank(groups: ['fill_info'])]
+    #[Assert\Type('string', groups: ['fill_info'])]
+    #[Assert\Length(max: 50, groups: ['fill_info'])]
     public $friendFirstName = '';
 
-    /**
-     * @Assert\NotBlank(groups={"fill_info"})
-     * @Assert\Type("integer", groups={"fill_info"})
-     * @Assert\Range(min=17, groups={"fill_info"})
-     */
+    #[Assert\NotBlank(groups: ['fill_info'])]
+    #[Assert\Type('integer', groups: ['fill_info'])]
+    #[Assert\Range(min: 17, groups: ['fill_info'])]
     public $friendAge = 0;
 
-    /**
-     * @Assert\NotBlank(groups={"fill_info"})
-     * @Assert\Choice(callback={"App\ValueObject\Genders", "all"}, groups={"fill_info"})
-     */
+    #[Assert\NotBlank(groups: ['fill_info'])]
+    #[Assert\Choice(callback: [Genders::class, 'all'], groups: ['fill_info'])]
     public $friendGender;
 
     /**
      * @var TonMacronChoice|null
-     *
-     * @Assert\Type("App\Entity\TonMacronChoice", groups={"fill_info"})
      */
+    #[Assert\Type(TonMacronChoice::class, groups: ['fill_info'])]
     public $friendPosition;
 
-    /**
-     * @Assert\NotBlank(groups={"fill_project"})
-     * @Assert\Type("App\Entity\TonMacronChoice", groups={"fill_project"})
-     */
+    #[Assert\NotBlank(groups: ['fill_project'])]
+    #[Assert\Type(TonMacronChoice::class, groups: ['fill_project'])]
     public $friendProject;
 
     /**
-     * @Assert\Count(min=2, max=2, exactMessage="ton_macron.invitation.friend_interests.count", groups={"fill_interests"})
      * @Assert\All({
      *     @Assert\Type("App\Entity\TonMacronChoice")
      * }, groups={"fill_interests"})
      */
+    #[Assert\Count(min: 2, max: 2, exactMessage: 'ton_macron.invitation.friend_interests.count', groups: ['fill_interests'])]
     public $friendInterests = [];
 
     /**
-     * @Assert\Count(min=2, max=2, exactMessage="ton_macron.invitation.self_reasons.count", groups={"fill_reasons"})
      * @Assert\All({
      *     @Assert\Type("App\Entity\TonMacronChoice")
      * }, groups={"fill_reasons"})
      */
+    #[Assert\Count(min: 2, max: 2, exactMessage: 'ton_macron.invitation.self_reasons.count', groups: ['fill_reasons'])]
     public $selfReasons;
 
-    /**
-     * @Assert\NotBlank(groups={"send"})
-     * @Assert\Type("string", groups={"send"})
-     * @Assert\Length(max=100, groups={"send"})
-     */
+    #[Assert\NotBlank(groups: ['send'])]
+    #[Assert\Type('string', groups: ['send'])]
+    #[Assert\Length(max: 100, groups: ['send'])]
     public $messageSubject = '';
 
-    /**
-     * @Assert\NotBlank(groups={"send"})
-     * @Assert\Type("string", groups={"send"})
-     */
+    #[Assert\NotBlank(groups: ['send'])]
+    #[Assert\Type('string', groups: ['send'])]
     public $messageContent = '';
 
-    /**
-     * @Assert\NotBlank(groups={"send"})
-     * @Assert\Type("string", groups={"send"})
-     * @Assert\Length(max=50, groups={"send"})
-     */
+    #[Assert\NotBlank(groups: ['send'])]
+    #[Assert\Type('string', groups: ['send'])]
+    #[Assert\Length(max: 50, groups: ['send'])]
     public $selfFirstName = '';
 
-    /**
-     * @Assert\NotBlank(groups={"send"})
-     * @Assert\Type("string", groups={"send"})
-     * @Assert\Length(max=50, groups={"send"})
-     */
+    #[Assert\NotBlank(groups: ['send'])]
+    #[Assert\Type('string', groups: ['send'])]
+    #[Assert\Length(max: 50, groups: ['send'])]
     public $selfLastName = '';
 
-    /**
-     * @Assert\NotBlank(groups={"send"})
-     * @Assert\Email(groups={"send"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"send"})
-     */
+    #[Assert\NotBlank(groups: ['send'])]
+    #[Assert\Email(groups: ['send'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['send'])]
     public $selfEmail = '';
 
-    /**
-     * @Assert\NotBlank(groups={"send"})
-     * @Assert\Email(groups={"send"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"send"})
-     */
+    #[Assert\NotBlank(groups: ['send'])]
+    #[Assert\Email(groups: ['send'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['send'])]
     public $friendEmail = '';
 
     /**

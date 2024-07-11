@@ -13,16 +13,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ValidateAccountRequest implements MembershipInterface
 {
-    /**
-     * @Assert\NotBlank(groups={"validate-code"})
-     * @Assert\Length(allowEmptyString=true, min=4, max=4, groups={"validate-code"})
-     */
+    #[Assert\NotBlank(groups: ['validate-code'])]
+    #[Assert\Length(min: 4, max: 4, groups: ['validate-code'], options: ['allowEmptyString' => true])]
     public ?string $code = null;
 
     /**
-     * @Assert\NotBlank(groups={"change-email"})
      * @StrictEmail(dnsCheck=false, groups={"change-email"})
      */
+    #[Assert\NotBlank(groups: ['change-email'])]
     public ?string $emailAddress = null;
 
     public function __construct(private readonly string $source = MembershipSourceEnum::RENAISSANCE)

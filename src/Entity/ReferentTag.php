@@ -9,13 +9,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @UniqueEntity("name")
- * @UniqueEntity("code")
- *
  * @deprecated
  */
 #[ORM\Table(name: 'referent_tags')]
 #[ORM\Entity(repositoryClass: ReferentTagRepository::class)]
+#[UniqueEntity(fields: ['name'])]
+#[UniqueEntity(fields: ['code'])]
 class ReferentTag
 {
     public const TYPE_DEPARTMENT = 'department';
@@ -31,21 +30,19 @@ class ReferentTag
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
      */
     #[ORM\Column(length: 100, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '100')]
     private $name;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
-     * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="referent_tag.code.invalid")
      */
     #[ORM\Column(length: 100, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
+    #[Assert\Regex(pattern: '/^[a-z0-9-]+$/', message: 'referent_tag.code.invalid')]
     private $code;
 
     /**

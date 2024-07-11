@@ -25,18 +25,15 @@ class Choice
 
     /**
      * @var Question
-     *
-     * @Gedmo\SortableGroup
      */
     #[ORM\ManyToOne(targetEntity: Question::class, inversedBy: 'choices')]
+    #[Gedmo\SortableGroup]
     private $question;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=80)
-     */
     #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 80)]
     private $content;
 
     /**

@@ -218,8 +218,8 @@ class CandidatureController extends AbstractController
     }
 
     #[Route(path: '/mes-invitations/{uuid}/accepter', name: '_invitation_accept', methods: ['GET', 'POST'])]
-    #[ParamConverter('committee', class: 'App\Entity\Committee', options: ['mapping' => ['slug' => 'slug']])]
-    #[ParamConverter('votePlace', class: 'App\Entity\CommitteeCandidacyInvitation', options: ['mapping' => ['uuid' => 'uuid']])]
+    #[ParamConverter('committee', class: Committee::class, options: ['mapping' => ['slug' => 'slug']])]
+    #[ParamConverter('votePlace', class: CommitteeCandidacyInvitation::class, options: ['mapping' => ['uuid' => 'uuid']])]
     #[Security('invitation.getMembership() == user.getMembershipFor(committee)')]
     public function acceptInvitationAction(
         Committee $committee,
@@ -267,8 +267,8 @@ class CandidatureController extends AbstractController
     }
 
     #[Route(path: '/mes-invitations/{uuid}/decliner', name: '_invitation_decline', methods: ['GET'])]
-    #[ParamConverter('committee', class: 'App\Entity\Committee', options: ['mapping' => ['slug' => 'slug']])]
-    #[ParamConverter('votePlace', class: 'App\Entity\CommitteeCandidacyInvitation', options: ['mapping' => ['uuid' => 'uuid']])]
+    #[ParamConverter('committee', class: Committee::class, options: ['mapping' => ['slug' => 'slug']])]
+    #[ParamConverter('votePlace', class: CommitteeCandidacyInvitation::class, options: ['mapping' => ['uuid' => 'uuid']])]
     #[Security('invitation.getMembership() == user.getMembershipFor(committee)')]
     public function declineInvitationAction(Committee $committee, CommitteeCandidacyInvitation $invitation): Response
     {

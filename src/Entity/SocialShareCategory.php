@@ -18,17 +18,13 @@ class SocialShareCategory
     #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
-     */
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     private $name;
 
-    /**
-     * @Gedmo\Slug(fields={"name"})
-     */
     #[ORM\Column]
+    #[Gedmo\Slug(fields: ['name'])]
     private $slug;
 
     public function __construct(string $name = '', int $position = 1)

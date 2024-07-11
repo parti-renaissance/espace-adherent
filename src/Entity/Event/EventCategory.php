@@ -25,21 +25,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         },
  *     }
  * )
- *
- * @UniqueEntity("name")
  */
 #[ORM\Table(name: 'events_categories')]
 #[ORM\Entity(repositoryClass: EventCategoryRepository::class)]
+#[UniqueEntity(fields: ['name'])]
 class EventCategory extends BaseEventCategory
 {
     /**
      * @var EventGroupCategory|null
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: EventGroupCategory::class, inversedBy: 'eventCategories')]
+    #[Assert\NotBlank]
     private $eventGroupCategory;
 
     public function getEventGroupCategory(): ?EventGroupCategory

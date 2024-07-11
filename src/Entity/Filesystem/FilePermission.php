@@ -27,11 +27,10 @@ class FilePermission
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(callback={"App\Entity\Filesystem\FilePermissionEnum", "toArray"})
      */
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: [FilePermissionEnum::class, 'toArray'])]
     private $name;
 
     public function getId(): ?int

@@ -29,10 +29,9 @@ class VoteResultListCollection
 
     /**
      * @var VoteResultList[]|Collection
-     *
-     * @Assert\Count(min=1)
      */
     #[ORM\OneToMany(mappedBy: 'listCollection', targetEntity: VoteResultList::class, cascade: ['all'], orphanRemoval: true)]
+    #[Assert\Count(min: 1)]
     private $lists;
 
     /**

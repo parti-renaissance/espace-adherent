@@ -34,27 +34,23 @@ class DataSurvey implements AuthorInterface
 
     /**
      * @var \DateTime
-     *
-     * @Gedmo\Timestampable(on="create")
      */
     #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'create')]
     private $postedAt;
 
     /**
      * @var DataAnswer[]|Collection
-     *
-     * @Assert\Valid
      */
     #[Groups(['data_survey_write'])]
     #[ORM\OneToMany(mappedBy: 'dataSurvey', targetEntity: DataAnswer::class, cascade: ['persist', 'remove'])]
+    #[Assert\Valid]
     private $answers;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'pap_campaign_replies_list', JemarcheDataSurveyReplyController::DESERIALIZE_GROUP, 'pap_campaign_history_read_list'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Survey::class)]
+    #[Assert\NotBlank]
     private $survey;
 
     /**

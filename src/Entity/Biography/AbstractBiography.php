@@ -20,71 +20,48 @@ abstract class AbstractBiography implements ImageOwnerInterface
     use EntityTimestampableTrait;
     use ImageTrait;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
     protected $firstName;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
     protected $lastName;
 
-    /**
-     * @Gedmo\Slug(fields={"firstName", "lastName"})
-     */
     #[ORM\Column(unique: true)]
+    #[Gedmo\Slug(fields: ['firstName', 'lastName'])]
     protected $slug;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     protected $published;
 
-    /**
-     * @Assert\Length(max=255)
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255)]
     protected $description;
 
     #[ORM\Column(type: 'text', nullable: true)]
     protected $content;
 
-    /**
-     * @Assert\Url
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url]
     protected $facebookProfile;
 
-    /**
-     * @Assert\Url
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url]
     protected $twitterProfile;
 
-    /**
-     * @Assert\Url
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url]
     protected $instagramProfile;
 
-    /**
-     * @Assert\Url
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url]
     protected $linkedInProfile;
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\Image(
-     *     mimeTypes={"image/jpeg", "image/png"},
-     *     maxSize="1M",
-     *     maxWidth="1200",
-     *     maxHeight="1200",
-     *     minWidth="300",
-     * )
      */
+    #[Assert\Image(mimeTypes: ['image/jpeg', 'image/png'], maxSize: '1M', maxWidth: '1200', maxHeight: '1200', minWidth: '300')]
     protected $image;
 
     public function __construct(

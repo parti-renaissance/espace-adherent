@@ -42,13 +42,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  *
  * @ApiFilter(SearchFilter::class, properties={"title": "partial", "category.slug": "exact"})
- *
- * @UniqueEntity(fields={"slug"})
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 #[ORM\Table(name: 'articles')]
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 #[ORM\EntityListeners([ArticleListener::class])]
+#[UniqueEntity(fields: ['slug'])]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class Article implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface, EntitySourceableInterface
 {
     use EntityTimestampableTrait;
@@ -71,21 +70,19 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
 
     /**
      * @var ArticleCategory|null
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['article_list_read', 'article_read'])]
     #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: ArticleCategory::class)]
+    #[Assert\NotBlank]
     private $category;
 
     /**
      * @var \DateTime
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['article_list_read', 'article_read'])]
     #[ORM\Column(type: 'datetime')]
+    #[Assert\NotBlank]
     private $publishedAt;
 
     /**
@@ -96,23 +93,22 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
 
     /**
      * @var Media
-     *
-     * @Assert\NotBlank
-     * @Assert\Valid
      */
     #[Groups(['article_list_read', 'article_read'])]
     #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist'])]
+    #[Assert\NotBlank]
+    #[Assert\Valid]
     private $media;
 
     /**
      * @var string|null
      *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
      * @ApiProperty(identifier=true)
      */
     #[Groups(['article_list_read', 'article_read'])]
     #[ORM\Column(length: 100, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     private $slug;
 
     public function __construct()

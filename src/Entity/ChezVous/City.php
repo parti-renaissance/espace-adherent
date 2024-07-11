@@ -11,12 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity("slug")
- * @UniqueEntity("inseeCode")
- */
 #[ORM\Table(name: 'chez_vous_cities')]
 #[ORM\Entity(repositoryClass: CityRepository::class)]
+#[UniqueEntity(fields: ['slug'])]
+#[UniqueEntity(fields: ['inseeCode'])]
 class City implements AlgoliaIndexedEntityInterface
 {
     /**
@@ -29,53 +27,47 @@ class City implements AlgoliaIndexedEntityInterface
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
      */
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '100')]
     private $name;
 
     /**
      * @var string[]|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column(type: 'json')]
+    #[Assert\NotBlank]
     private $postalCodes = [];
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="10")
      */
     #[ORM\Column(length: 10, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '10')]
     private $inseeCode;
 
     /**
      * @var float|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column(type: 'geo_point')]
+    #[Assert\NotBlank]
     private $latitude;
 
     /**
      * @var float|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column(type: 'geo_point')]
+    #[Assert\NotBlank]
     private $longitude;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
      */
     #[ORM\Column(length: 100, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '100')]
     private $slug;
 
     /**
@@ -87,18 +79,16 @@ class City implements AlgoliaIndexedEntityInterface
 
     /**
      * @var Measure[]|Collection
-     *
-     * @Assert\Valid
      */
     #[ORM\OneToMany(mappedBy: 'city', targetEntity: Measure::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[Assert\Valid]
     private $measures;
 
     /**
      * @var Marker[]|Collection
-     *
-     * @Assert\Valid
      */
     #[ORM\OneToMany(mappedBy: 'city', targetEntity: Marker::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[Assert\Valid]
     private $markers;
 
     public function __construct(

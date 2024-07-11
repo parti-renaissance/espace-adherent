@@ -13,10 +13,9 @@ class AdherentZoneFilter extends AbstractUserFilter
 
     /**
      * @var ReferentTag
-     *
-     * @Assert\NotBlank
      */
     #[ORM\ManyToOne(targetEntity: ReferentTag::class)]
+    #[Assert\NotBlank]
     private $referentTag;
 
     public function __construct(?ReferentTag $referentTag = null)

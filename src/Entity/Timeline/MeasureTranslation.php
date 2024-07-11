@@ -8,12 +8,10 @@ use Knp\DoctrineBehaviors\Model\Translatable\TranslationTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields={"locale", "title"}, errorPath="title")
- */
 #[ORM\Table(name: 'timeline_measure_translations')]
 #[ORM\Entity]
 #[ORM\EntityListeners([MeasureTranslationListener::class])]
+#[UniqueEntity(fields: ['locale', 'title'], errorPath: 'title')]
 class MeasureTranslation implements TranslationInterface
 {
     use TranslationTrait;
@@ -28,11 +26,10 @@ class MeasureTranslation implements TranslationInterface
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=Measure::TITLE_MAX_LENGTH)
      */
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: Measure::TITLE_MAX_LENGTH)]
     private $title;
 
     public function getTitle(): ?string

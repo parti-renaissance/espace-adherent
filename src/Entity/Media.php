@@ -10,11 +10,9 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields={"path"})
- */
 #[ORM\Table(name: 'medias')]
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
+#[UniqueEntity(fields: ['path'])]
 class Media
 {
     /**
@@ -27,20 +25,18 @@ class Media
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $name;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[ORM\Column(unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $path;
 
     /**
@@ -69,18 +65,16 @@ class Media
 
     /**
      * @var \DateTime
-     *
-     * @Gedmo\Timestampable(on="create")
      */
     #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'create')]
     private $createdAt;
 
     /**
      * @var \DateTime
-     *
-     * @Gedmo\Timestampable(on="update")
      */
     #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'update')]
     private $updatedAt;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
@@ -88,21 +82,8 @@ class Media
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\File(
-     *     maxSize="5M",
-     *     binaryFormat=false,
-     *     mimeTypes={
-     *         "image/jpeg",
-     *         "image/gif",
-     *         "image/png",
-     *         "video/mpeg",
-     *         "video/mp4",
-     *         "video/quicktime",
-     *         "video/webm",
-     *     }
-     * )
      */
+    #[Assert\File(maxSize: '5M', binaryFormat: false, mimeTypes: ['image/jpeg', 'image/gif', 'image/png', 'video/mpeg', 'video/mp4', 'video/quicktime', 'video/webm'])]
     private $file;
 
     public function __toString()

@@ -21,36 +21,32 @@ class LiveLink
 
     /**
      * @var int|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column(type: 'smallint')]
+    #[Assert\NotBlank]
     private $position;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $title;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $link;
 
     /**
      * @var \DateTime
-     *
-     * @Gedmo\Timestampable(on="update")
      */
     #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'update')]
     private $updatedAt;
 
     public function __toString()

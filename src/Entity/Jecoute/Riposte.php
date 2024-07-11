@@ -84,49 +84,44 @@ class Riposte implements AuthorInterface, IndexableEntityInterface, DynamicLinkO
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $title;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $body;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Url
      */
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Url]
     private $sourceUrl;
 
     /**
      * @var bool
-     *
-     * @Assert\Type("bool")
      */
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    #[Assert\Type('bool')]
     private $withNotification;
 
     /**
      * @var bool
-     *
-     * @Assert\Type("bool")
      */
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    #[Assert\Type('bool')]
     private $enabled;
 
     /**

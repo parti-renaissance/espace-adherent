@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use App\Action\ActionTypeEnum;
 use App\Collection\ZoneCollection;
 use App\Entity\Adherent;
 use App\Entity\AuthorInstanceInterface;
@@ -96,19 +97,15 @@ class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEnti
     public const string STATUS_SCHEDULED = 'scheduled';
     public const string STATUS_CANCELLED = 'cancelled';
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(callback={"App\Action\ActionTypeEnum", "toArray"})
-     */
     #[Groups(['action_read', 'action_read_list', 'action_write'])]
     #[ORM\Column(name: '`type`')]
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: [ActionTypeEnum::class, 'toArray'])]
     public ?string $type = null;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[Groups(['action_read', 'action_read_list', 'action_write'])]
     #[ORM\Column(type: 'datetime')]
+    #[Assert\NotBlank]
     public ?\DateTime $date = null;
 
     #[Groups(['action_read', 'action_write'])]

@@ -10,6 +10,7 @@ use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Repository\ProcurationProxyRepository;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\ZoneType as AssertZoneType;
+use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -66,203 +67,151 @@ class ProcurationProxy implements RecaptchaChallengeInterface
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=30)
      */
     #[ORM\Column(length: 30, nullable: true)]
+    #[Assert\Length(max: 30)]
     private $reliabilityDescription = '';
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255, groups={"front"})
-     * @Assert\NotBlank(groups={"front"}, message="procuration.voter_number.not_blank")
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255, groups: ['front'])]
+    #[Assert\NotBlank(groups: ['front'], message: 'procuration.voter_number.not_blank')]
     private $voterNumber;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="common.gender.not_blank", groups={"front"})
-     * @Assert\Choice(
-     *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     groups={"front"}
-     * )
      */
     #[ORM\Column(length: 6, nullable: true)]
+    #[Assert\NotBlank(message: 'common.gender.not_blank', groups: ['front'])]
+    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice', groups: ['front'])]
     private $gender;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="procuration.last_name.not_blank", groups={"front"})
-     * @Assert\Length(
-     *     min=1,
-     *     max=50,
-     *     minMessage="procuration.last_name.min_length",
-     *     maxMessage="procuration.last_name.max_length",
-     *     groups={"front"}
-     * )
      */
     #[ORM\Column(length: 50, nullable: true)]
+    #[Assert\NotBlank(message: 'procuration.last_name.not_blank', groups: ['front'])]
+    #[Assert\Length(min: 1, max: 50, minMessage: 'procuration.last_name.min_length', maxMessage: 'procuration.last_name.max_length', groups: ['front'])]
     private $lastName;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(groups={"front"})
-     * @Assert\Length(
-     *     min=2,
-     *     max=100,
-     *     minMessage="procuration.first_names.min_length",
-     *     maxMessage="procuration.first_names.max_length",
-     *     groups={"front"}
-     * )
      */
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\NotBlank(groups: ['front'])]
+    #[Assert\Length(min: 2, max: 100, minMessage: 'procuration.first_names.min_length', maxMessage: 'procuration.first_names.max_length', groups: ['front'])]
     private $firstNames;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="common.address.required", groups={"front"})
-     * @Assert\Length(max=150, maxMessage="common.address.max_length", groups={"front"})
      */
     #[ORM\Column(length: 150)]
+    #[Assert\NotBlank(message: 'common.address.required', groups: ['front'])]
+    #[Assert\Length(max: 150, maxMessage: 'common.address.max_length', groups: ['front'])]
     private $address = '';
 
     /**
      * @var string
-     *
-     * @Assert\Length(max=15, groups={"front"})
-     * @Assert\Expression(
-     *     "this.getCountry() != constant('App\\Address\\Address::FRANCE') or value != null",
-     *     message="procuration.postal_code.not_empty",
-     *     groups={"front"}
-     * )
      */
     #[ORM\Column(length: 15, nullable: true)]
+    #[Assert\Length(max: 15, groups: ['front'])]
+    #[Assert\Expression("this.getCountry() != constant('App\\\\Address\\\\Address::FRANCE') or value != null", message: 'procuration.postal_code.not_empty', groups: ['front'])]
     private $postalCode = '';
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=15, groups={"front"})
      */
     #[ORM\Column(name: 'city_insee', length: 15, nullable: true)]
+    #[Assert\Length(max: 15, groups: ['front'])]
     private $city;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255, groups={"front"})
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255, groups: ['front'])]
     private $cityName;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255, groups={"front"})
-     * @Assert\Expression(
-     *     "not (this.getCountry() == constant('App\\Address\\Address::FRANCE') and value != null)",
-     *     message="procuration.state.not_empty",
-     *     groups={"front"}
-     * )
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255, groups: ['front'])]
+    #[Assert\Expression("not (this.getCountry() == constant('App\\\\Address\\\\Address::FRANCE') and value != null)", message: 'procuration.state.not_empty', groups: ['front'])]
     private $state;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(groups={"front"})
-     * @Assert\Country(message="common.country.invalid", groups={"front"})
      */
     #[ORM\Column(length: 2)]
+    #[Assert\NotBlank(groups: ['front'])]
+    #[Assert\Country(message: 'common.country.invalid', groups: ['front'])]
     private $country = AddressInterface::FRANCE;
 
     /**
      * @var PhoneNumber
      *
-     * @Assert\NotBlank(message="common.phone_number.required", groups={"front"})
      * @AssertPhoneNumber(options={"groups": {"front"}})
      */
     #[ORM\Column(type: 'phone_number', nullable: true)]
+    #[Assert\NotBlank(message: 'common.phone_number.required', groups: ['front'])]
     private $phone;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(groups={"front"})
-     * @Assert\Email(message="common.email.invalid", groups={"front"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"front"})
      */
     #[ORM\Column]
+    #[Assert\NotBlank(groups: ['front'])]
+    #[Assert\Email(message: 'common.email.invalid', groups: ['front'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['front'])]
     private $emailAddress = '';
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\NotBlank(message="procuration.birthdate.not_blank", groups={"front"})
-     * @Assert\Range(
-     *     min="-120 years",
-     *     max="-17 years",
-     *     minMessage="procuration.birthdate.maximum_required_age",
-     *     maxMessage="procuration.birthdate.minimum_required_age",
-     *     groups={"front"}
-     * )
      */
     #[ORM\Column(type: 'date', nullable: true)]
+    #[Assert\NotBlank(message: 'procuration.birthdate.not_blank', groups: ['front'])]
+    #[Assert\Range(min: '-120 years', max: '-17 years', minMessage: 'procuration.birthdate.maximum_required_age', maxMessage: 'procuration.birthdate.minimum_required_age', groups: ['front'])]
     private $birthdate;
 
     /**
      * @var string
-     *
-     * @Assert\Length(max=15, groups={"front"})
-     * @Assert\Expression(
-     *     "(this.getVoteCountry() == constant('App\\Address\\Address::FRANCE') and value != null) or (this.getVoteCountry() != constant('App\\Address\\Address::FRANCE') and value == null)",
-     *     message="procuration.postal_code.not_empty",
-     *     groups={"front"}
-     * )
      */
     #[ORM\Column(length: 15, nullable: true)]
+    #[Assert\Length(max: 15, groups: ['front'])]
+    #[Assert\Expression("(this.getVoteCountry() == constant('App\\\\Address\\\\Address::FRANCE') and value != null) or (this.getVoteCountry() != constant('App\\\\Address\\\\Address::FRANCE') and value == null)", message: 'procuration.postal_code.not_empty', groups: ['front'])]
     private $votePostalCode = '';
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=15, groups={"front"})
      */
     #[ORM\Column(name: 'vote_city_insee', length: 15, nullable: true)]
+    #[Assert\Length(max: 15, groups: ['front'])]
     private $voteCity;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255, groups={"front"})
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255, groups: ['front'])]
     private $voteCityName;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(groups={"front"})
-     * @Assert\Country(message="common.country.invalid", groups={"front"})
      */
     #[ORM\Column(length: 2)]
+    #[Assert\NotBlank(groups: ['front'])]
+    #[Assert\Country(message: 'common.country.invalid', groups: ['front'])]
     private $voteCountry = AddressInterface::FRANCE;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(groups={"front"})
-     * @Assert\Length(max=50, groups={"front"})
      */
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(groups: ['front'])]
+    #[Assert\Length(max: 50, groups: ['front'])]
     private $voteOffice = '';
 
     /**
@@ -284,23 +233,11 @@ class ProcurationProxy implements RecaptchaChallengeInterface
 
     /**
      * @var int
-     *
-     * @Assert\Range(
-     *     min=1,
-     *     max=3,
-     *     groups={"front", "Default"}
-     * )
-     * @Assert\Expression(
-     *     "(this.getVoteCountry() == constant('App\\Address\\Address::FRANCE') and value <= 2) or (this.getVoteCountry() != constant('App\\Address\\Address::FRANCE') and value <= 3)",
-     *     message="procuration.vote_country.conditions",
-     *     groups={"front", "Default"}
-     * )
-     * @Assert\Expression(
-     *     "this.getFoundRequests().count() <= value",
-     *     message="procuration.proxies_count.already_associated"
-     * )
      */
     #[ORM\Column(type: 'smallint', options: ['default' => 1, 'unsigned' => true])]
+    #[Assert\Range(min: 1, max: 3, groups: ['front', 'Default'])]
+    #[Assert\Expression("(this.getVoteCountry() == constant('App\\\\Address\\\\Address::FRANCE') and value <= 2) or (this.getVoteCountry() != constant('App\\\\Address\\\\Address::FRANCE') and value <= 3)", message: 'procuration.vote_country.conditions', groups: ['front', 'Default'])]
+    #[Assert\Expression('this.getFoundRequests().count() <= value', message: 'procuration.proxies_count.already_associated')]
     public $proxiesCount = 1;
 
     /**

@@ -10,20 +10,18 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity as AssertUniqueEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @AssertUniqueEntity(fields={"email"}, message="newsletter.already_registered")
- *
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- *
  * @AssertRecaptcha(groups={"Subscription"})
  */
 #[ORM\Table(name: 'newsletter_subscriptions')]
 #[ORM\Entity(repositoryClass: NewsletterSubscriptionRepository::class)]
+#[UniqueEntity(fields: ['email'], message: 'newsletter.already_registered')]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class NewsletterSubscription implements NewsletterSubscriptionInterface, EntitySoftDeletedInterface, RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
@@ -33,25 +31,18 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface, EntityS
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="newsletter.email.not_blank")
-     * @Assert\Email(message="newsletter.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     #[ORM\Column(type: 'string', length: 100, unique: true)]
+    #[Assert\NotBlank(message: 'newsletter.email.not_blank')]
+    #[Assert\Email(message: 'newsletter.email.invalid')]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     private $email;
 
     /**
      * @var string
-     *
-     * @Assert\Length(
-     *     min=2,
-     *     max=11,
-     *     minMessage="newsletter.postalCode.invalid",
-     *     maxMessage="newsletter.postalCode.invalid"
-     * )
      */
     #[ORM\Column(type: 'string', length: 11, nullable: true)]
+    #[Assert\Length(min: 2, max: 11, minMessage: 'newsletter.postalCode.invalid', maxMessage: 'newsletter.postalCode.invalid')]
     private $postalCode;
 
     /**

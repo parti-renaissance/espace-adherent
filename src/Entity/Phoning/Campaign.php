@@ -129,12 +129,11 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[Groups(['phoning_campaign_read', 'phoning_campaign_read_with_score', 'phoning_campaign_list', 'phoning_campaign_write', 'phoning_campaign_history_read_list', 'phoning_campaign_replies_list'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $title;
 
     /**
@@ -146,49 +145,43 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
 
     /**
      * @var int|null
-     *
-     * @Assert\NotBlank
-     * @Assert\GreaterThan(value="0")
      */
     #[Groups(['phoning_campaign_read', 'phoning_campaign_read_with_score', 'phoning_campaign_list', 'phoning_campaign_write'])]
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
+    #[Assert\GreaterThan(value: '0')]
     private $goal;
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\NotBlank(groups={"regular_campaign"})
      */
     #[Groups(['phoning_campaign_read', 'phoning_campaign_read_with_score', 'phoning_campaign_list', 'phoning_campaign_write'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Assert\NotBlank(groups: ['regular_campaign'])]
     private $finishAt;
 
     /**
      * @var Team|null
-     *
-     * @Assert\NotBlank(groups={"regular_campaign"})
      */
     #[Groups(['phoning_campaign_read', 'phoning_campaign_list', 'phoning_campaign_write'])]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Team::class)]
+    #[Assert\NotBlank(groups: ['regular_campaign'])]
     private $team;
 
     /**
      * @var AudienceSnapshot|null
-     *
-     * @Assert\NotBlank(groups={"regular_campaign"})
      */
     #[Groups(['audience_read', 'phoning_campaign_read', 'phoning_campaign_write'])]
     #[ORM\JoinColumn]
     #[ORM\OneToOne(targetEntity: AudienceSnapshot::class, cascade: ['all'], orphanRemoval: true)]
+    #[Assert\NotBlank(groups: ['regular_campaign'])]
     private $audience;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[Groups(['phoning_campaign_read', 'phoning_campaign_write'])]
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Survey::class)]
+    #[Assert\NotBlank]
     private $survey;
 
     /**

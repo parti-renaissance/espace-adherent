@@ -73,32 +73,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProxyRepository::class)]
 class Proxy extends AbstractProcuration
 {
-    /**
-     * @Assert\Length(min=5, max=9)
-     * @Assert\Regex(pattern="/^[0-9]+$/i")
-     */
     #[ORM\Column(length: 9, nullable: true)]
+    #[Assert\Length(min: 5, max: 9)]
+    #[Assert\Regex(pattern: '/^[0-9]+$/i')]
     public ?string $electorNumber = null;
 
     #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $acceptVoteNearby = false;
 
-    /**
-     * @Assert\Expression(
-     *     expression="value >= 1 and ((!this.isFDE() and value == 1) or (this.isFDE() and value <= 3))",
-     *     message="procuration.proxy.slots.invalid"
-     * )
-     */
     #[Groups(['procuration_matched_proxy', 'procuration_proxy_list'])]
     #[ORM\Column(type: 'smallint', options: ['default' => 1, 'unsigned' => true])]
+    #[Assert\Expression(expression: 'value >= 1 and ((!this.isFDE() and value == 1) or (this.isFDE() and value <= 3))', message: 'procuration.proxy.slots.invalid')]
     public int $slots = 1;
 
-    /**
-     * @Assert\Choice(callback={"App\Procuration\V2\ProxyStatusEnum", "getAvailableStatuses"}, groups={"procuration_update_status"})
-     */
     #[Groups(['procuration_matched_proxy', 'procuration_proxy_list', 'procuration_update_status', 'procuration_proxy_slot_read', 'procuration_request_slot_read', 'procuration_request_read'])]
     #[ORM\Column(enumType: ProxyStatusEnum::class)]
+    #[Assert\Choice(callback: [ProxyStatusEnum::class, 'getAvailableStatuses'], groups: ['procuration_update_status'])]
     public ProxyStatusEnum $status = ProxyStatusEnum::PENDING;
 
     /**

@@ -12,11 +12,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields={"emailAddress"})
- */
 #[ORM\Table(name: 'administrators')]
 #[ORM\Entity(repositoryClass: AdministratorRepository::class)]
+#[UniqueEntity(fields: ['emailAddress'])]
 class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthenticatedUserInterface
 {
     /**
@@ -29,12 +27,11 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
 
     /**
      * @var string|null
-     *
-     * @Assert\Email
-     * @Assert\NotBlank
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     #[ORM\Column(unique: true)]
+    #[Assert\Email]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     private $emailAddress;
 
     /**

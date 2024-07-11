@@ -12,26 +12,20 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields={"code"})
- */
 #[ORM\Entity(repositoryClass: ChatbotRepository::class)]
+#[UniqueEntity(fields: ['code'])]
 class Chatbot
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column(unique: true)]
+    #[Assert\NotBlank]
     public ?string $code = null;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
     public ?string $assistantId = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

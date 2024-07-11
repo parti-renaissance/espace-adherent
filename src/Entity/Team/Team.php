@@ -75,18 +75,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(ScopeVisibilityFilter::class)
  *
- * @UniqueEntity(
- *     fields={"name", "zone"},
- *     ignoreNull=false,
- *     message="team.name.already_exists",
- *     errorPath="name"
- * )
- *
  * @ScopeVisibility
  */
 #[ORM\Table]
 #[ORM\UniqueConstraint(columns: ['name', 'zone_id'])]
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
+#[UniqueEntity(fields: ['name', 'zone'], message: 'team.name.already_exists', errorPath: 'name', ignoreNull: false)]
 class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, EntityScopeVisibilityWithZoneInterface
 {
     use EntityIdentityTrait;
@@ -95,27 +89,20 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
     use EntityAdherentBlameableTrait;
     use EntityScopeVisibilityTrait;
 
-    /**
-     * @Assert\NotBlank(message="team.name.not_blank")
-     * @Assert\Length(
-     *     min=2,
-     *     max=255,
-     *     minMessage="team.name.min_length",
-     *     maxMessage="team.name.max_length"
-     * )
-     */
     #[Groups(['team_read', 'team_list_read', 'team_write', 'phoning_campaign_read', 'phoning_campaign_list'])]
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'team.name.not_blank')]
+    #[Assert\Length(min: 2, max: 255, minMessage: 'team.name.min_length', maxMessage: 'team.name.max_length')]
     private ?string $name;
 
     /**
      * @var Member[]|Collection
      *
-     * @Assert\Valid
      * @UniqueInCollection(propertyPath="adherent", message="team.members.adherent_already_in_collection")
      */
     #[ORM\OneToMany(mappedBy: 'team', targetEntity: Member::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['createdAt' => 'DESC'])]
+    #[Assert\Valid]
     private Collection $members;
 
     #[Groups(['team_list_read'])]
