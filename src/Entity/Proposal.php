@@ -26,10 +26,9 @@ class Proposal implements EntityContentInterface, EntitySoftDeletedInterface, In
 
     /**
      * @var int
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column(type: 'smallint')]
+    #[Assert\NotBlank]
     private $position;
 
     /**
@@ -46,10 +45,9 @@ class Proposal implements EntityContentInterface, EntitySoftDeletedInterface, In
 
     /**
      * @var Media|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\ManyToOne(targetEntity: Media::class)]
+    #[Assert\NotBlank]
     private $media;
 
     /**

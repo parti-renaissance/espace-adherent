@@ -13,9 +13,7 @@ class ElectionContext
 
     public const CONTROLLER_ACTION_REQUIREMENT = self::ACTION_REQUEST.'|'.self::ACTION_PROPOSAL;
 
-    /**
-     * @Assert\Count(min=1, minMessage="procuration.election_context.min_count")
-     */
+    #[Assert\Count(min: 1, minMessage: 'procuration.election_context.min_count')]
     private $elections = [];
 
     private $cachedElectionIds = [];

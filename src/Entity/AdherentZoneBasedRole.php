@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Adherent\Authorization\ZoneBasedRoleTypeEnum;
 use App\Collection\ZoneCollection;
 use App\Entity\Geo\Zone;
 use App\Scope\ScopeEnum;
@@ -16,18 +17,14 @@ class AdherentZoneBasedRole
     use EntityTimestampableTrait;
     use EntityZoneTrait;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(choices=App\Adherent\Authorization\ZoneBasedRoleTypeEnum::ALL)
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ZoneBasedRoleTypeEnum::ALL)]
     private ?string $type;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'zoneBasedRoles')]
+    #[Assert\NotBlank]
     private ?Adherent $adherent = null;
 
     public function __construct(?string $type = null)

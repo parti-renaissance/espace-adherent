@@ -7,12 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @UniqueEntity(fields={"slug"})
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
 #[ORM\Table(name: 'clarifications')]
 #[ORM\Entity(repositoryClass: ClarificationRepository::class)]
+#[UniqueEntity(fields: ['slug'])]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class Clarification implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface
 {
     use EntityTimestampableTrait;

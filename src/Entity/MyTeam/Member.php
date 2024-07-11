@@ -6,7 +6,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
+use App\MyTeam\RoleEnum;
 use App\Repository\MyTeam\MemberRepository;
+use App\Scope\FeatureEnum;
 use App\Validator\MyTeamMember as AssertMemberValid;
 use App\Validator\MyTeamMemberScopeFeatures as AssertScopeFeaturesValid;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,8 +19,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @UniqueEntity(fields={"team", "adherent"}, errorPath="adherent", message="my_team.member.adherent.already_in_collection")
- *
  * @ApiResource(
  *     shortName="MyTeamMember",
  *     attributes={
@@ -54,9 +54,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
+#[ORM\Entity(repositoryClass: MemberRepository::class)]
 #[ORM\Table(name: 'my_team_member')]
 #[ORM\UniqueConstraint(name: 'team_member_unique', columns: ['team_id', 'adherent_id'])]
-#[ORM\Entity(repositoryClass: MemberRepository::class)]
+#[UniqueEntity(fields: ['team', 'adherent'], message: 'my_team.member.adherent.already_in_collection', errorPath: 'adherent')]
 class Member
 {
     use EntityIdentityTrait;
@@ -68,32 +69,26 @@ class Member
     private ?MyTeam $team = null;
 
     /**
-     * @Assert\NotBlank(message="my_team.member.adherent.not_blank")
      * @AssertMemberValid
      */
     #[Groups(['my_team_member_read', 'my_team_member_write', 'my_team_read_list'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'teamMemberships')]
+    #[Assert\NotBlank(message: 'my_team.member.adherent.not_blank')]
     private ?Adherent $adherent;
 
-    /**
-     * @Assert\NotBlank(message="my_team.member.role.not_blank")
-     * @Assert\Choice(callback={"App\MyTeam\RoleEnum", "getAll"}, message="my_team.member.role.invalid_choice")
-     */
     #[Groups(['my_team_member_read', 'my_team_member_write', 'my_team_read_list'])]
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'my_team.member.role.not_blank')]
+    #[Assert\Choice(callback: [RoleEnum::class, 'getAll'], message: 'my_team.member.role.invalid_choice')]
     private ?string $role;
 
     /**
-     * @Assert\Choice(
-     *     choices=App\Scope\FeatureEnum::ALL,
-     *     multiple=true,
-     *     multipleMessage="my_team.member.scope_features.invalid_choice"
-     * )
      * @AssertScopeFeaturesValid
      */
     #[Groups(['my_team_member_read', 'my_team_member_write', 'my_team_read_list'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
+    #[Assert\Choice(choices: FeatureEnum::ALL, multiple: true, multipleMessage: 'my_team.member.scope_features.invalid_choice')]
     private array $scopeFeatures;
 
     public function __construct(

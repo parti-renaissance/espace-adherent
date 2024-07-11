@@ -29,30 +29,25 @@ class Question
     #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
     #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $content;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(callback={"App\Jecoute\SurveyQuestionTypeEnum", "all"})
-     */
     #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: [SurveyQuestionTypeEnum::class, 'all'])]
     private $type;
 
     /**
      * @var Choice[]|Collection
-     *
-     * @Assert\Valid
      */
     #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: Choice::class, cascade: ['all'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
+    #[Assert\Valid]
     private $choices;
 
     public function __construct(?string $content = null, ?string $type = null)

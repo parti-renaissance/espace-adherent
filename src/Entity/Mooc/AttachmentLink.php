@@ -17,17 +17,13 @@ class AttachmentLink
     #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $title;
 
-    /**
-     * @Assert\Url
-     */
     #[ORM\Column]
+    #[Assert\Url]
     private $link;
 
     public function __construct(?string $title = null, ?string $link = null)

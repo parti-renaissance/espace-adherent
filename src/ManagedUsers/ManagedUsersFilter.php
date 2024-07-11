@@ -2,8 +2,11 @@
 
 namespace App\ManagedUsers;
 
+use App\Adherent\MandateTypeEnum;
+use App\Adherent\Tag\TagEnum;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
+use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,21 +27,15 @@ class ManagedUsersFilter
     #[Groups(['filter_write'])]
     public ?int $ageMax = null;
 
-    /**
-     * @Assert\Length(max=255)
-     */
     #[Groups(['filter_write'])]
+    #[Assert\Length(max: 255)]
     public ?string $firstName = null;
 
-    /**
-     * @Assert\Length(max=255)
-     */
     #[Groups(['filter_write'])]
+    #[Assert\Length(max: 255)]
     public ?string $lastName = null;
 
-    /**
-     * @Assert\Length(max=255)
-     */
+    #[Assert\Length(max: 255)]
     public ?string $city = null;
 
     #[Groups(['filter_write'])]
@@ -59,41 +56,29 @@ class ManagedUsersFilter
 
     public ?bool $includeCommitteeHosts = null;
 
-    /**
-     * @Assert\Choice(callback={"App\Adherent\Tag\TagEnum", "getAdherentTags"})
-     */
     #[Groups(['filter_write'])]
+    #[Assert\Choice(callback: [TagEnum::class, 'getAdherentTags'])]
     public ?string $adherentTags = null;
 
-    /**
-     * @Assert\Choice(callback={"App\Adherent\Tag\TagEnum", "getElectTags"})
-     */
     #[Groups(['filter_write'])]
+    #[Assert\Choice(callback: [TagEnum::class, 'getElectTags'])]
     public ?string $electTags = null;
 
     #[Groups(['filter_write'])]
     public ?string $staticTags = null;
 
-    /**
-     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, multiple=true)
-     */
     #[Groups(['filter_write'])]
+    #[Assert\Choice(choices: MandateTypeEnum::ALL, multiple: true)]
     public array $mandates = [];
 
-    /**
-     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL, multiple=true)
-     */
     #[Groups(['filter_write'])]
+    #[Assert\Choice(choices: MandateTypeEnum::ALL, multiple: true)]
     public array $declaredMandates = [];
 
     /**
      * @var Zone[]
-     *
-     * @Assert\Expression(
-     *     expression="this.getManagedZones() or this.getZones()",
-     *     message="referent.managed_zone.empty"
-     * )
      */
+    #[Assert\Expression(expression: 'this.getManagedZones() or this.getZones()', message: 'referent.managed_zone.empty')]
     public array $managedZones;
 
     /**
@@ -110,16 +95,12 @@ class ManagedUsersFilter
 
     public ?string $subscriptionType;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"createdAt", "lastName"})
-     */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['createdAt', 'lastName'])]
     public string $sort = 'createdAt';
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"a", "d"})
-     */
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['a', 'd'])]
     public string $order = 'd';
 
     public ?Committee $committee = null;
@@ -140,10 +121,8 @@ class ManagedUsersFilter
     #[Groups(['filter_write'])]
     public ?bool $isCertified = null;
 
-    /**
-     * @Assert\Choice(choices=App\Renaissance\Membership\RenaissanceMembershipFilterEnum::CHOICES)
-     */
     #[Groups(['filter_write'])]
+    #[Assert\Choice(choices: RenaissanceMembershipFilterEnum::CHOICES)]
     public ?string $renaissanceMembership = null;
 
     #[Groups(['filter_write'])]

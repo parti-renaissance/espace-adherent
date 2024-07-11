@@ -15,10 +15,9 @@ trait EntitySpanTrait
 
     /**
      * @var \DateTimeInterface|null
-     *
-     * @Assert\LessThanOrEqual("today")
      */
     #[ORM\Column(type: 'date')]
+    #[Assert\LessThanOrEqual('today')]
     private $startedAt;
 
     /**
@@ -81,9 +80,7 @@ trait EntitySpanTrait
         return ($length ?: '1 mois').($this->onGoing ? ', en cours' : '');
     }
 
-    /**
-     * @Assert\IsTrue(message="summary.spanable_item.length.invalid")
-     */
+    #[Assert\IsTrue(message: 'summary.spanable_item.length.invalid')]
     public function hasValidDuration(): bool
     {
         return !$this->onGoing && $this->endedAt || $this->onGoing && (!$this->endedAt || $this->endedAt > new \DateTime());

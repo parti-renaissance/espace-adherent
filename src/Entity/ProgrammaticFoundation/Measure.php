@@ -12,39 +12,27 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(
- *     fields={"position", "subApproach"},
- *     errorPath="position",
- *     message="programmatic_foundation.unique_position.measure"
- * )
- */
 #[ORM\Table(name: 'programmatic_foundation_measure')]
 #[ORM\Entity]
+#[UniqueEntity(fields: ['position', 'subApproach'], message: 'programmatic_foundation.unique_position.measure', errorPath: 'position')]
 class Measure
 {
     use EntityIdentityTrait;
     use TimestampableEntity;
 
-    /**
-     * @Assert\GreaterThan(value=0, message="programmatic_foundation.position.greater_than_zero")
-     */
     #[Groups(['approach_list_read'])]
     #[ORM\Column(type: 'smallint')]
+    #[Assert\GreaterThan(value: 0, message: 'programmatic_foundation.position.greater_than_zero')]
     private $position;
 
-    /**
-     * @Assert\NotBlank(message="programmatic_foundation.title.not_empty")
-     */
     #[Groups(['approach_list_read'])]
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'programmatic_foundation.title.not_empty')]
     private $title;
 
-    /**
-     * @Assert\NotBlank(message="programmatic_foundation.content.not_empty")
-     */
     #[Groups(['approach_list_read'])]
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank(message: 'programmatic_foundation.content.not_empty')]
     private $content;
 
     #[Groups(['approach_list_read'])]
@@ -55,10 +43,8 @@ class Measure
     #[ORM\Column(type: 'boolean')]
     private $isExpanded;
 
-    /**
-     * @Assert\NotNull(message="programmatic_foundation.parent.required.measure")
-     */
     #[ORM\ManyToOne(targetEntity: SubApproach::class, inversedBy: 'measures')]
+    #[Assert\NotNull(message: 'programmatic_foundation.parent.required.measure')]
     private $subApproach;
 
     #[Groups(['approach_list_read'])]

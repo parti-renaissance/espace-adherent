@@ -10,11 +10,9 @@ use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields={"slug", "mooc"})
- */
 #[ORM\Table(name: 'mooc_chapter')]
 #[ORM\Entity]
+#[UniqueEntity(fields: ['slug', 'mooc'])]
 class Chapter
 {
     use Sortable;
@@ -24,43 +22,35 @@ class Chapter
     #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $title;
 
-    /**
-     * @Gedmo\Slug(fields={"title"}, unique=true)
-     */
     #[ORM\Column(unique: true)]
+    #[Gedmo\Slug(fields: ['title'], unique: true)]
     private $slug;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $published;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column(type: 'datetime')]
+    #[Assert\NotBlank]
     private $publishedAt;
 
     /**
      * @var Mooc
-     *
-     * @Gedmo\SortableGroup
      */
     #[ORM\ManyToOne(targetEntity: Mooc::class, inversedBy: 'chapters')]
+    #[Gedmo\SortableGroup]
     private $mooc;
 
     /**
      * @var BaseMoocElement[]|Collection
-     *
-     * @Assert\Valid
      */
     #[ORM\OneToMany(mappedBy: 'chapter', targetEntity: BaseMoocElement::class, cascade: ['all'])]
     #[ORM\OrderBy(['position' => 'ASC'])]
+    #[Assert\Valid]
     private $elements;
 
     public function __construct(?string $title = null, bool $published = false, ?\DateTime $publishedAt = null)

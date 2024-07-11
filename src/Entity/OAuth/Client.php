@@ -2,6 +2,7 @@
 
 namespace App\Entity\OAuth;
 
+use App\AppCodeEnum;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntitySoftDeletableTrait;
 use App\Entity\EntitySoftDeletedInterface;
@@ -16,53 +17,36 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
- */
 #[ORM\Table(name: 'oauth_clients')]
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
+#[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class Client implements EntitySoftDeletedInterface
 {
     use EntityIdentityTrait;
     use EntitySoftDeletableTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @Assert\Length(max=32, maxMessage="client.name.constraint.length.max")
-     */
     #[ORM\Column]
+    #[Assert\Length(max: 32, maxMessage: 'client.name.constraint.length.max')]
     private $name;
 
-    /**
-     * @Assert\Choice(callback={"App\AppCodeEnum", "toArray"})
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Choice(callback: [AppCodeEnum::class, 'toArray'])]
     private ?string $code = null;
 
-    /**
-     * @Assert\Length(
-     *     min=10,
-     *     max=200,
-     *     minMessage="La description doit faire au moins {{ limit }} caractères.",
-     *     maxMessage="La description ne doit pas dépasser {{ limit }} caractères."
-     * )
-     */
     #[ORM\Column]
+    #[Assert\Length(min: 10, max: 200, minMessage: 'La description doit faire au moins {{ limit }} caractères.', maxMessage: 'La description ne doit pas dépasser {{ limit }} caractères.')]
     private $description;
 
-    /**
-     * @Assert\Count(min=1, minMessage="Veuillez spécifier au moins une adresse de redirection.")
-     */
     #[ORM\Column(type: 'json')]
+    #[Assert\Count(min: 1, minMessage: 'Veuillez spécifier au moins une adresse de redirection.')]
     private $redirectUris;
 
     #[ORM\Column]
     private $secret;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column(type: 'simple_array')]
+    #[Assert\NotBlank]
     private $allowedGrantTypes;
 
     #[ORM\Column(type: 'simple_array', nullable: true)]

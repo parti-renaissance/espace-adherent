@@ -34,26 +34,21 @@ class BoardMember
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="board_member.area.invalid_choice", groups={"elections"})
-     * @Assert\Choice(
-     *     callback={"App\Entity\BoardMember\BoardMember", "getAreas"},
-     *     message="board_member.area.invalid_choice"
-     * )
      */
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'board_member.area.invalid_choice', groups: ['elections'])]
+    #[Assert\Choice(callback: [BoardMember::class, 'getAreas'], message: 'board_member.area.invalid_choice')]
     private $area;
 
     /**
      * @var Role[]|Collection
-     *
-     * @Assert\NotNull
      */
     #[ORM\JoinTable(name: 'board_member_roles')]
     #[ORM\JoinColumn(name: 'board_member_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'boardMembers', cascade: ['persist'])]
     #[ORM\OrderBy(['name' => 'ASC'])]
+    #[Assert\NotNull]
     private $roles;
 
     /**

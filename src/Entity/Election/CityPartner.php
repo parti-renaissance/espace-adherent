@@ -27,19 +27,17 @@ class CityPartner
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $label;
 
     /**
      * @var string|null
-     *
-     * @Assert\Choice(choices=CityPartner::CONSENSUS_CHOICES)
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Choice(choices: CityPartner::CONSENSUS_CHOICES)]
     private $consensus;
 
     /**

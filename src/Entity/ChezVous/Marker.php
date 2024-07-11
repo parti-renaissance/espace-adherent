@@ -19,36 +19,32 @@ class Marker
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="255")
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '255')]
     private $type;
 
     /**
      * @var float|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column(type: 'geo_point')]
+    #[Assert\NotBlank]
     private $latitude;
 
     /**
      * @var float|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column(type: 'geo_point')]
+    #[Assert\NotBlank]
     private $longitude;
 
     /**
      * @var City|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: City::class, inversedBy: 'markers')]
+    #[Assert\NotBlank]
     private $city;
 
     public function __construct(?City $city = null, ?string $type = null, ?float $latitude = null, ?float $longitude = null)

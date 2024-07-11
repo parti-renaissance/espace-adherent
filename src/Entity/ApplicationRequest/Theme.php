@@ -20,10 +20,9 @@ class Theme
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
     private $name;
 
     /**

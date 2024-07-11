@@ -12,12 +12,11 @@ trait EntityDesignationTrait
 {
     /**
      * @var Designation
-     *
-     * @Assert\NotBlank(groups={"Admin"})
-     * @Assert\Valid(groups={"Admin"})
      */
     #[Groups(['committee_election:read'])]
     #[ORM\ManyToOne(targetEntity: Designation::class, cascade: ['persist'], fetch: 'EAGER')]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[Assert\Valid(groups: ['Admin'])]
     protected $designation;
 
     public function getDesignation(): ?Designation

@@ -8,12 +8,10 @@ use Knp\DoctrineBehaviors\Model\Translatable\TranslationTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields={"locale", "title"}, errorPath="title")
- * @UniqueEntity(fields={"locale", "slug"}, errorPath="slug")
- */
 #[ORM\Table(name: 'timeline_profile_translations')]
 #[ORM\Entity]
+#[UniqueEntity(fields: ['locale', 'title'], errorPath: 'title')]
+#[UniqueEntity(fields: ['locale', 'slug'], errorPath: 'slug')]
 class ProfileTranslation implements TranslationInterface
 {
     use TranslationTrait;
@@ -28,28 +26,25 @@ class ProfileTranslation implements TranslationInterface
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
      */
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     private $title;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=100)
      */
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 100)]
     private $slug;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $description;
 
     public function getTitle(): ?string

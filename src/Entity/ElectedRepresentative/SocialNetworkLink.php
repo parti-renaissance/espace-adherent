@@ -7,16 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(
- *     fields={"type", "electedRepresentative"},
- *     errorPath="type",
- *     message="Il existe déjà un lien vers ce réseau social pour cet(te) élu(e)"
- * )
- */
+#[ORM\Entity]
 #[ORM\Table(name: 'elected_representative_social_network_link')]
 #[ORM\UniqueConstraint(name: 'social_network_elected_representative_unique', columns: ['type', 'elected_representative_id'])]
-#[ORM\Entity]
+#[UniqueEntity(fields: ['type', 'electedRepresentative'], message: 'Il existe déjà un lien vers ce réseau social pour cet(te) élu(e)', errorPath: 'type')]
 class SocialNetworkLink
 {
     /**
@@ -29,30 +23,27 @@ class SocialNetworkLink
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Url
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Url]
     private $url;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\SocialLinkTypeEnum", "toArray"})
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: [SocialLinkTypeEnum::class, 'toArray'])]
     private $type;
 
     /**
      * @var ElectedRepresentative
-     *
-     * @Assert\NotBlank
-     * @Assert\Valid
      */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: ElectedRepresentative::class, inversedBy: 'socialNetworkLinks')]
+    #[Assert\NotBlank]
+    #[Assert\Valid]
     private $electedRepresentative;
 
     public function __construct(

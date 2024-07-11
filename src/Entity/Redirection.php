@@ -23,37 +23,33 @@ class Redirection
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=10000)
      */
     #[ORM\Column(name: 'url_from', type: 'text')]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 10000)]
     private $from;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=10000)
      */
     #[ORM\Column(name: 'url_to', type: 'text')]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 10000)]
     private $to;
 
     /**
      * @var int|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={301, 302})
      */
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: [301, 302])]
     private $type;
 
     /**
      * @var \DateTime
-     *
-     * @Gedmo\Timestampable(on="update")
      */
     #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'update')]
     private $updatedAt;
 
     public function __toString()

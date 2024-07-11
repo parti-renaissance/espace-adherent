@@ -14,11 +14,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields={"code"})
- */
 #[ORM\Table(name: 'election_vote_place')]
 #[ORM\Entity(repositoryClass: VotePlaceRepository::class)]
+#[UniqueEntity(fields: ['code'])]
 class VotePlace
 {
     use EntityIdentityTrait;
@@ -26,11 +24,9 @@ class VotePlace
     use EntityNullablePostAddressTrait;
     public const MAX_ASSESSOR_REQUESTS = 2;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     public ?string $name = null;
 
     #[ORM\Column(nullable: true)]

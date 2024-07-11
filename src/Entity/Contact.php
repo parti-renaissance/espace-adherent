@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Membership\Contact\InterestEnum;
+use App\Membership\Contact\SourceEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Repository\ContactRepository;
@@ -42,10 +44,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  *
- * @UniqueEntity(fields={"emailAddress"})
  * @AssertRecaptcha(api="friendly_captcha", groups={"contact_create"})
  */
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
+#[UniqueEntity(fields: ['emailAddress'])]
 class Contact implements RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
@@ -53,38 +55,22 @@ class Contact implements RecaptchaChallengeInterface
     use EntityTimestampableTrait;
     use RecaptchaChallengeTrait;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *     min=2,
-     *     max=50,
-     *     minMessage="common.first_name.min_length",
-     *     maxMessage="common.first_name.max_length"
-     * )
-     */
     #[Groups(['contact_create', 'contact_read'])]
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length')]
     private ?string $firstName;
 
-    /**
-     * @Assert\Length(
-     *     min=2,
-     *     max=50,
-     *     minMessage="common.last_name.min_length",
-     *     maxMessage="common.last_name.max_length"
-     * )
-     */
     #[Groups(['contact_update'])]
     #[ORM\Column(length: 50, nullable: true)]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'common.last_name.min_length', maxMessage: 'common.last_name.max_length')]
     private ?string $lastName;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
-     */
     #[Groups(['contact_create', 'contact_read'])]
     #[ORM\Column(unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Email(message: 'common.email.invalid')]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     private ?string $emailAddress;
 
     /**
@@ -94,38 +80,23 @@ class Contact implements RecaptchaChallengeInterface
     #[ORM\Column(type: 'phone_number', nullable: true)]
     private ?PhoneNumber $phone = null;
 
-    /**
-     * @Assert\Range(
-     *     min="-120 years",
-     *     max="now"
-     * )
-     */
     #[Groups(['contact_update'])]
     #[ORM\Column(type: 'date', nullable: true)]
+    #[Assert\Range(min: '-120 years', max: 'now')]
     private ?\DateTimeInterface $birthdate = null;
 
-    /**
-     * @Assert\Choice(
-     *     choices=App\Membership\Contact\InterestEnum::ALL,
-     *     multiple=true
-     *  )
-     */
     #[Groups(['contact_update'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
+    #[Assert\Choice(choices: InterestEnum::ALL, multiple: true)]
     private array $interests = [];
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $interestsUpdatedAt = null;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(
-     *     choices=App\Membership\Contact\SourceEnum::ALL,
-     *     message="contact.source.choice"
-     * )
-     */
     #[Groups(['contact_create'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: SourceEnum::ALL, message: 'contact.source.choice')]
     private ?string $source;
 
     #[Groups(['contact_update'])]
@@ -136,11 +107,9 @@ class Contact implements RecaptchaChallengeInterface
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $phoneContact = false;
 
-    /**
-     * @Assert\IsTrue(message="contact.cgu_accepted.is_true")
-     */
     #[Groups(['contact_create', 'contact_update'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    #[Assert\IsTrue(message: 'contact.cgu_accepted.is_true')]
     private bool $cguAccepted = false;
 
     #[ORM\Column(type: 'datetime', nullable: true)]

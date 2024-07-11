@@ -59,35 +59,29 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         }
  *     }
  * )
- *
- * @UniqueEntity(fields={"zone"}, message="department_site.zone.not_unique")
- * @UniqueEntity(fields={"slug"})
  */
 #[ORM\Entity(repositoryClass: DepartmentSiteRepository::class)]
+#[UniqueEntity(fields: ['zone'], message: 'department_site.zone.not_unique')]
+#[UniqueEntity(fields: ['slug'])]
 class DepartmentSite
 {
     use EntityIdentityTrait;
     use UnlayerJsonContentTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[Groups(['department_site_read', 'department_site_write'])]
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private ?string $content = null;
 
     /**
-     * @Assert\NotBlank
-     * @Assert\Expression(
-     *     "value and (value.getType() === constant('App\\Entity\\Geo\\Zone::DEPARTMENT') or (value.getType() === constant('App\\Entity\\Geo\\Zone::CUSTOM') and value.getCode() === constant('App\\Entity\\Geo\\Zone::FDE_CODE')))",
-     *     message="department_site.zone.type.not_valid"
-     * )
      * @AssertZoneInScopeZones
      */
     #[Groups(['department_site_read', 'department_site_read_list', 'department_site_write'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\OneToOne(targetEntity: Zone::class)]
+    #[Assert\NotBlank]
+    #[Assert\Expression("value and (value.getType() === constant('App\\\\Entity\\\\Geo\\\\Zone::DEPARTMENT') or (value.getType() === constant('App\\\\Entity\\\\Geo\\\\Zone::CUSTOM') and value.getCode() === constant('App\\\\Entity\\\\Geo\\\\Zone::FDE_CODE')))", message: 'department_site.zone.type.not_valid')]
     private ?Zone $zone = null;
 
     #[ORM\Column(unique: true)]

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\ReferentOrganizationalChart\ReferentPersonLink;
 use App\Repository\ReferentRepository;
+use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,10 +12,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields="slug", groups="Admin")
- */
 #[ORM\Entity(repositoryClass: ReferentRepository::class)]
+#[UniqueEntity(fields: ['slug'], groups: ['Admin'])]
 class Referent implements EntityMediaInterface
 {
     use EntityPersonNameTrait;
@@ -28,45 +27,31 @@ class Referent implements EntityMediaInterface
     #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @Assert\NotBlank(groups="Admin")
-     * @Assert\Choice(
-     *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     groups="Admin"
-     * )
-     */
     #[ORM\Column(length: 6)]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice', groups: ['Admin'])]
     private $gender;
 
-    /**
-     * @Assert\Email(groups="Admin")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups="Admin")
-     */
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Email(groups: ['Admin'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['Admin'])]
     private $emailAddress;
 
-    /**
-     * @Gedmo\Slug(fields={"firstName", "lastName"})
-     * @Assert\Regex(pattern="/^[a-z0-9-]+$/", message="legislative_candidate.slug.invalid", groups="Admin")
-     */
     #[ORM\Column(length: 100, unique: true)]
+    #[Assert\Regex(pattern: '/^[a-z0-9-]+$/', message: 'legislative_candidate.slug.invalid', groups: ['Admin'])]
+    #[Gedmo\Slug(fields: ['firstName', 'lastName'])]
     private $slug;
 
-    /**
-     * @Assert\Url(groups="Admin")
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?facebook.com\/#", message="legislative_candidate.facebook_page_url.invalid", groups="Admin")
-     * @Assert\Length(max=255, groups="Admin")
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url(groups: ['Admin'])]
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?facebook.com\/#', message: 'legislative_candidate.facebook_page_url.invalid', groups: ['Admin'])]
+    #[Assert\Length(max: 255, groups: ['Admin'])]
     private $facebookPageUrl;
 
-    /**
-     * @Assert\Url(groups="Admin")
-     * @Assert\Regex(pattern="#^https?\:\/\/(?:www\.)?twitter.com\/#", message="legislative_candidate.twitter_page_url.invalid", groups="Admin")
-     * @Assert\Length(max=255, groups="Admin")
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url(groups: ['Admin'])]
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?twitter.com\/#', message: 'legislative_candidate.twitter_page_url.invalid', groups: ['Admin'])]
+    #[Assert\Length(max: 255, groups: ['Admin'])]
     private $twitterPageUrl;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -75,21 +60,18 @@ class Referent implements EntityMediaInterface
     #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
     private $areaLabel = '';
 
     /**
      * @var ReferentArea[]|Collection
-     *
-     * @Assert\Count(min=1, groups={"Admin"})
      */
     #[ORM\JoinTable(name: 'referent_areas')]
     #[ORM\JoinColumn(name: 'referent_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'area_id', referencedColumnName: 'id')]
     #[ORM\ManyToMany(targetEntity: ReferentArea::class, fetch: 'EAGER')]
+    #[Assert\Count(min: 1, groups: ['Admin'])]
     private $areas;
 
     #[ORM\Column(length: 10, options: ['default' => 'DISABLED'])]

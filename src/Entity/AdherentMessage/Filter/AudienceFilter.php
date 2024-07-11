@@ -3,6 +3,7 @@
 namespace App\Entity\AdherentMessage\Filter;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Adherent\MandateTypeEnum;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntity;
@@ -36,21 +37,20 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
 
     /**
      * @var Zone|null
-     *
-     * @Assert\Expression("this.getSegment() or this.getZone() or this.getCommittee()", message="Cette valeur ne doit pas être vide.")
      */
     #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[Assert\Expression('this.getSegment() or this.getZone() or this.getCommittee()', message: 'Cette valeur ne doit pas être vide.')]
     private $zone;
 
     /**
      * @var string|null
      *
-     * @Assert\Expression("this.getSegment() or this.getScope()", message="Cette valeur ne doit pas être vide.")
      * @ValidScope
      */
     #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     #[ORM\Column]
+    #[Assert\Expression('this.getSegment() or this.getScope()', message: 'Cette valeur ne doit pas être vide.')]
     private $scope;
 
     /**
@@ -69,18 +69,14 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $isCommitteeMember = null;
 
-    /**
-     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL)
-     */
     #[Groups(['adherent_message_update_filter'])]
     #[ORM\Column(nullable: true)]
+    #[Assert\Choice(choices: MandateTypeEnum::ALL)]
     private ?string $mandateType = null;
 
-    /**
-     * @Assert\Choice(choices=App\Adherent\MandateTypeEnum::ALL)
-     */
     #[Groups(['adherent_message_update_filter'])]
     #[ORM\Column(nullable: true)]
+    #[Assert\Choice(choices: MandateTypeEnum::ALL)]
     private ?string $declaredMandate = null;
 
     #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]

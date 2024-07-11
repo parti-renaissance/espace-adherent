@@ -8,10 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @UniqueEntity("name")
- */
 #[ORM\Entity(repositoryClass: EventGroupCategoryRepository::class)]
+#[UniqueEntity(fields: ['name'])]
 class EventGroupCategory extends BaseEventCategory
 {
     public const CAMPAIGN_EVENTS = 'evenements-de-campagne';

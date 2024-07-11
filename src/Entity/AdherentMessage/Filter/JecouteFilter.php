@@ -13,18 +13,16 @@ class JecouteFilter extends AbstractAdherentMessageFilter implements AdherentSeg
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(allowEmptyString=true, min=5, max=5)
      */
     #[ORM\Column(length: 10, nullable: true)]
+    #[Assert\Length(min: 5, max: 5)]
     private $postalCode;
 
     /**
      * @var Zone
-     *
-     * @Assert\NotBlank
      */
     #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[Assert\NotBlank]
     private $zone;
 
     public function __construct(?Zone $zone = null)

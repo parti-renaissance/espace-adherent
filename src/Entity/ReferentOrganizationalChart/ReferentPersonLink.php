@@ -47,10 +47,9 @@ class ReferentPersonLink
 
     /**
      * @var string
-     *
-     * @Assert\Email
      */
     #[ORM\Column(type: 'string', nullable: true)]
+    #[Assert\Email]
     private $email;
 
     /**

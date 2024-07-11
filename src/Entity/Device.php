@@ -64,11 +64,10 @@ class Device
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=15)
      */
     #[Groups(['user_profile', 'device_write'])]
     #[ORM\Column(length: 15, nullable: true)]
+    #[Assert\Length(max: 15)]
     private $postalCode;
 
     /**

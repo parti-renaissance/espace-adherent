@@ -17,21 +17,17 @@ class PollQuestion
     use EntityIdentityTrait;
     use Sortable;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column(length: 500)]
+    #[Assert\NotBlank]
     public ?string $content = null;
 
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Poll::class, inversedBy: 'questions')]
     public ?Poll $poll = null;
 
-    /**
-     * @Assert\Count(min=2)
-     * @Assert\Valid
-     */
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: QuestionChoice::class, cascade: ['persist'], orphanRemoval: true)]
+    #[Assert\Count(min: 2)]
+    #[Assert\Valid]
     private Collection $choices;
 
     public function __construct()

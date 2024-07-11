@@ -29,48 +29,34 @@ class Invite implements RecaptchaChallengeInterface
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *     min=2,
-     *     max=50,
-     *     minMessage="common.first_name.min_length",
-     *     maxMessage="common.first_name.max_length"
-     * )
      */
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length')]
     private $firstName;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *     min=1,
-     *     max=50,
-     *     minMessage="common.last_name.min_length",
-     *     maxMessage="common.last_name.max_length"
-     * )
      */
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 50, minMessage: 'common.last_name.min_length', maxMessage: 'common.last_name.max_length')]
     private $lastName;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Email(message: 'common.email.invalid')]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     private $email;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="invitation.message.not_blank")
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank(message: 'invitation.message.not_blank')]
     private $message;
 
     /**

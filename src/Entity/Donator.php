@@ -30,41 +30,27 @@ class Donator
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $adherent;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *     min=1,
-     *     max=50,
-     * )
-     */
     #[ORM\Column(length: 50, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 50)]
     private $lastName;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *     min=2,
-     *     max=100,
-     * )
-     */
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 100)]
     private $firstName;
 
-    /**
-     * @Assert\NotBlank(message="common.birthcity.not_blank")
-     * @Assert\Length(max=50)
-     */
     #[ORM\Column(length: 50, nullable: true)]
+    #[Assert\NotBlank(message: 'common.birthcity.not_blank')]
+    #[Assert\Length(max: 50)]
     private $city;
 
     #[ORM\Column(length: 2)]
     private $country;
 
-    /**
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Email(message: 'common.email.invalid')]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     private $emailAddress;
 
     #[ORM\Column(length: 6, nullable: true)]
@@ -102,10 +88,9 @@ class Donator
 
     /**
      * @var DonatorKinship[]|Collection
-     *
-     * @Assert\Valid
      */
     #[ORM\OneToMany(mappedBy: 'donator', targetEntity: DonatorKinship::class, cascade: ['all'])]
+    #[Assert\Valid]
     private $kinships;
 
     public function __construct(

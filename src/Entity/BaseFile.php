@@ -20,18 +20,15 @@ abstract class BaseFile implements EntityFileInterface
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
     private $title;
 
-    /**
-     * @Gedmo\Slug(fields={"title"})
-     */
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     #[ORM\Column]
+    #[Gedmo\Slug(fields: ['title'])]
     private $slug;
 
     /**
@@ -50,9 +47,8 @@ abstract class BaseFile implements EntityFileInterface
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\File(maxSize="5M")
      */
+    #[Assert\File(maxSize: '5M')]
     protected $file;
 
     public function __construct(

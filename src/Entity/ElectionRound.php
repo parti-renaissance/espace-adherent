@@ -7,11 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity({"election", "label"})
- */
 #[ORM\Table(name: 'election_rounds')]
 #[ORM\Entity(repositoryClass: ElectionRoundRepository::class)]
+#[UniqueEntity(fields: ['election', 'label'])]
 class ElectionRound
 {
     /**
@@ -24,37 +22,33 @@ class ElectionRound
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $label = '';
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255)]
     private $description;
 
     /**
      * @var Election|null
-     *
-     * @Assert\NotNull
      */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Election::class, inversedBy: 'rounds')]
+    #[Assert\NotNull]
     private $election;
 
     /**
      * @var \DateTimeInterface|null
-     *
-     * @Assert\NotNull
-     * @Assert\GreaterThan("now")
      */
     #[ORM\Column(type: 'date')]
+    #[Assert\NotNull]
+    #[Assert\GreaterThan('now')]
     private $date;
 
     public function __toString(): string

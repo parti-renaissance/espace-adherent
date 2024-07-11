@@ -18,32 +18,22 @@ class Commitment implements ImageOwnerInterface
     use ImageTrait;
     use Sortable;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
     public ?string $title = null;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     public ?string $shortDescription = null;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     public ?string $description = null;
 
     /**
      * @var UploadedFile|null
-     *
-     * @Assert\Image(
-     *     maxSize="5M",
-     *     mimeTypes={"image/jpeg", "image/png"}
-     * )
      */
+    #[Assert\Image(maxSize: '5M', mimeTypes: ['image/jpeg', 'image/png'])]
     protected $image;
 
     public function __construct(?UuidInterface $uuid = null)

@@ -8,12 +8,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields={"position"})
- * @UniqueEntity(fields={"positionName"})
- */
 #[ORM\Table(name: 'home_blocks')]
 #[ORM\Entity(repositoryClass: HomeBlockRepository::class)]
+#[UniqueEntity(fields: ['position'])]
+#[UniqueEntity(fields: ['positionName'])]
 class HomeBlock
 {
     public const TYPE_ARTICLE = 'article';
@@ -36,53 +34,47 @@ class HomeBlock
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=30)
      */
     #[ORM\Column(length: 30, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 30)]
     private $positionName;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=70)
      */
     #[ORM\Column(length: 70)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 70)]
     private $title;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=100)
      */
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Length(max: 100)]
     private $subtitle;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice({"video", "article", "banner"})
      */
     #[ORM\Column(length: 10)]
+    #[Assert\NotBlank]
+    #[Assert\Choice(['video', 'article', 'banner'])]
     private $type = self::TYPE_ARTICLE;
 
     /**
      * @var Media|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\ManyToOne(targetEntity: Media::class)]
+    #[Assert\NotBlank]
     private $media;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
     private $link;
 
     /**
@@ -117,34 +109,30 @@ class HomeBlock
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=70)
      */
     #[ORM\Column(length: 70, nullable: true)]
+    #[Assert\Length(max: 70)]
     private $titleCta;
 
     /**
      * @var string|null
-     *
-     * @Assert\Choice(callback={"\App\Admin\Color", "all"})
      */
     #[ORM\Column(length: 6, nullable: true)]
+    #[Assert\Choice(callback: ['\App\Admin\Color', 'all'])]
     private $colorCta;
 
     /**
      * @var string|null
-     *
-     * @Assert\Choice(callback={"\App\Admin\Color", "all"})
      */
     #[ORM\Column(length: 6, nullable: true)]
+    #[Assert\Choice(callback: ['\App\Admin\Color', 'all'])]
     private $bgColor;
 
     /**
      * @var \DateTime
-     *
-     * @Gedmo\Timestampable(on="update")
      */
     #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'update')]
     private $updatedAt;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

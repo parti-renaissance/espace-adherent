@@ -157,12 +157,10 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
     #[ORM\Column(type: 'uuid', unique: true)]
     private UuidInterface $uuid;
 
-    /**
-     * @Assert\Length(max=120)
-     * @Assert\NotBlank
-     */
     #[Groups(['jecoute_news_read', 'jecoute_news_write', 'jecoute_news_read_dc'])]
     #[ORM\Column]
+    #[Assert\Length(max: 120)]
+    #[Assert\NotBlank]
     private ?string $title;
 
     #[Groups(['jecoute_news_read', 'jecoute_news_write', 'jecoute_news_read_dc'])]
@@ -171,22 +169,15 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
 
     private ?string $enrichedText = null;
 
-    /**
-     * @Assert\Url
-     */
     #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
     #[ORM\Column(nullable: true)]
+    #[Assert\Url]
     private ?string $externalLink;
 
-    /**
-     * @Assert\Length(max=30)
-     * @Assert\Expression(
-     *     "value !== null or (this.isEnriched() === false or null === this.getExternalLink())",
-     *     message="news.link_label.required"
-     * )
-     */
     #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 30)]
+    #[Assert\Expression('value !== null or (this.isEnriched() === false or null === this.getExternalLink())', message: 'news.link_label.required')]
     private ?string $linkLabel;
 
     #[ORM\Column(nullable: true)]

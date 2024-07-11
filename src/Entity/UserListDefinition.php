@@ -21,27 +21,24 @@ class UserListDefinition
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(callback={"App\Entity\UserListDefinitionEnum", "getTypes"})
      */
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: [UserListDefinitionEnum::class, 'getTypes'])]
     private $type;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
     private $code;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
     private $label;
 
     #[ORM\Column(length: 7, nullable: true)]

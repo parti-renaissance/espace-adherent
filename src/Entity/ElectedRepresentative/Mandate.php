@@ -3,6 +3,7 @@
 namespace App\Entity\ElectedRepresentative;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Election\VoteListNuanceEnum;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Geo\Zone as GeoZone;
 use App\Repository\ElectedRepresentative\MandateRepository;
@@ -59,12 +60,11 @@ class Mandate
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\MandateTypeEnum", "toArray"})
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read', 'elected_representative_list'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: [MandateTypeEnum::class, 'toArray'])]
     private $type;
 
     /**
@@ -84,14 +84,10 @@ class Mandate
 
     /**
      * @var GeoZone|null
-     *
-     * @Assert\Expression(
-     *     "value !== null or (value == null and this.getType() === constant('App\\Entity\\ElectedRepresentative\\MandateTypeEnum::EURO_DEPUTY'))",
-     *     message="Le périmètre géographique est obligatoire."
-     * )
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read', 'elected_representative_list'])]
     #[ORM\ManyToOne(targetEntity: GeoZone::class)]
+    #[Assert\Expression("value !== null or (value == null and this.getType() === constant('App\\\\Entity\\\\ElectedRepresentative\\\\MandateTypeEnum::EURO_DEPUTY'))", message: 'Le périmètre géographique est obligatoire.')]
     private $geoZone;
 
     /**
@@ -103,65 +99,53 @@ class Mandate
 
     /**
      * @var \DateTime
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     #[ORM\Column(type: 'date')]
+    #[Assert\NotBlank]
     private $beginAt;
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\Expression(
-     *     "value === null or value > this.getBeginAt()",
-     *     message="La date de fin du mandat doit être postérieure à la date de début."
-     * )
-     * @Assert\Expression(
-     *     "not (value !== null and this.isOnGoing())",
-     *     message="La date de fin ne peut être saisie que dans le cas où le mandat n'est pas en cours."
-     * )
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     #[ORM\Column(type: 'date', nullable: true)]
+    #[Assert\Expression('value === null or value > this.getBeginAt()', message: 'La date de fin du mandat doit être postérieure à la date de début.')]
+    #[Assert\Expression('not (value !== null and this.isOnGoing())', message: "La date de fin ne peut être saisie que dans le cas où le mandat n'est pas en cours.")]
     private $finishAt;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(callback={"App\Election\VoteListNuanceEnum", "toArray"})
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     #[ORM\Column(length: 10)]
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: [VoteListNuanceEnum::class, 'toArray'])]
     private $politicalAffiliation;
 
     /**
      * @var string|null
-     *
-     * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\LaREMSupportEnum", "toArray"})
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     #[ORM\Column(nullable: true)]
+    #[Assert\Choice(callback: [LaREMSupportEnum::class, 'toArray'])]
     private $laREMSupport;
 
     /**
      * @var ElectedRepresentative
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: ElectedRepresentative::class, inversedBy: 'mandates')]
+    #[Assert\NotBlank]
     private $electedRepresentative;
 
     /**
      * @var PoliticalFunction[]|Collection
-     *
-     * @Assert\Valid
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     #[ORM\OneToMany(mappedBy: 'mandate', targetEntity: PoliticalFunction::class, cascade: ['all'], orphanRemoval: true)]
+    #[Assert\Valid]
     private $politicalFunctions;
 
     /**

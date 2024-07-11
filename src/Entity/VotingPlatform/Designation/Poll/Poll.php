@@ -17,18 +17,14 @@ class Poll
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
     public ?string $label = null;
 
-    /**
-     * @Assert\Count(min=1)
-     * @Assert\Valid
-     */
     #[ORM\OneToMany(mappedBy: 'poll', targetEntity: PollQuestion::class, cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
+    #[Assert\Count(min: 1)]
+    #[Assert\Valid]
     private Collection $questions;
 
     public function __construct()

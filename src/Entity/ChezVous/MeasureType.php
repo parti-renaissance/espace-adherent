@@ -2,16 +2,15 @@
 
 namespace App\Entity\ChezVous;
 
+use App\ChezVous\MeasureChoiceLoader;
 use App\Repository\ChezVous\MeasureTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity("code")
- */
 #[ORM\Table(name: 'chez_vous_measure_types')]
 #[ORM\Entity(repositoryClass: MeasureTypeRepository::class)]
+#[UniqueEntity(fields: ['code'])]
 class MeasureType
 {
     /**
@@ -24,21 +23,19 @@ class MeasureType
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     * @Assert\Choice(callback={"App\ChezVous\MeasureChoiceLoader", "getTypeChoices"})
      */
     #[ORM\Column(unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    #[Assert\Choice(callback: [MeasureChoiceLoader::class, 'getTypeChoices'])]
     private $code;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $label;
 
     /**
@@ -49,34 +46,30 @@ class MeasureType
 
     /**
      * @var string|null
-     *
-     * @Assert\Url
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url]
     private $sourceLink;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255)]
     private $sourceLabel;
 
     /**
      * @var string|null
-     *
-     * @Assert\Url
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url]
     private $oldolfLink;
 
     /**
      * @var string|null
-     *
-     * @Assert\Url
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url]
     private $eligibilityLink;
 
     public function __construct(string $code, string $label)

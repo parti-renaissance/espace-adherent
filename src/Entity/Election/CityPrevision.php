@@ -27,42 +27,37 @@ class CityPrevision
 
     /**
      * @var string|null
-     *
-     * @Assert\Choice(choices=CityPrevision::STRATEGY_CHOICES)
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Choice(choices: CityPrevision::STRATEGY_CHOICES)]
     private $strategy;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255)]
     private $name;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255)]
     private $alliances;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255)]
     private $allies;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=255)
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255)]
     private $validatedBy;
 
     public function __construct(

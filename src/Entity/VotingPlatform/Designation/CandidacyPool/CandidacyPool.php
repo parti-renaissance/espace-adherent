@@ -17,10 +17,8 @@ class CandidacyPool
 {
     use EntityIdentityTrait;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
     public ?string $label = null;
 
     #[ORM\ManyToOne(targetEntity: Designation::class, cascade: ['persist'], fetch: 'EAGER', inversedBy: 'candidacyPools')]
@@ -28,11 +26,10 @@ class CandidacyPool
 
     /**
      * @var CandidaciesGroup[]|Collection
-     *
-     * @Assert\Valid
-     * @Assert\Count(min=1)
      */
     #[ORM\OneToMany(mappedBy: 'candidacyPool', targetEntity: CandidaciesGroup::class, cascade: ['persist'], fetch: 'EAGER')]
+    #[Assert\Valid]
+    #[Assert\Count(min: 1)]
     private $candidaciesGroups;
 
     public function __construct(?UuidInterface $uuid = null)

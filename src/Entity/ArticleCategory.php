@@ -39,45 +39,40 @@ class ArticleCategory
 
     /**
      * @var int|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column(type: 'smallint')]
+    #[Assert\NotBlank]
     private $position;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=50)
      */
     #[Groups(['article_category_read', 'article_list_read', 'article_read'])]
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 50)]
     private $name;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['article_category_read', 'article_list_read', 'article_read'])]
     #[ORM\Column(length: 100, unique: true)]
+    #[Assert\NotBlank]
     private $slug;
 
     /**
      * @var string|null
-     *
-     * @Assert\Url
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url]
     private $ctaLink;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max="100")
      */
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Length(max: '100')]
     private $ctaLabel;
 
     /**

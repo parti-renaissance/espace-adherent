@@ -19,30 +19,24 @@ class SubscriptionRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[Groups(['newsletter:write'])]
+    #[Assert\NotBlank]
     public ?string $postalCode = null;
 
     /**
-     * @Assert\NotBlank
      * @StrictEmail(dnsCheck=false)
      */
     #[Groups(['newsletter:write'])]
+    #[Assert\NotBlank]
     public ?string $email = null;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(callback="getValidSources")
-     */
     #[Groups(['newsletter:write'])]
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: 'getValidSources')]
     public ?string $source = null;
 
-    /**
-     * @Assert\IsTrue
-     */
     #[Groups(['newsletter:write'])]
+    #[Assert\IsTrue]
     public ?bool $cguAccepted = false;
 
     public function getValidSources(): array

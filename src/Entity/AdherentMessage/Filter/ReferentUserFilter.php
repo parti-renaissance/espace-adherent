@@ -27,10 +27,9 @@ class ReferentUserFilter extends AbstractUserFilter
 
     /**
      * @var ReferentTag[]|Collection
-     *
-     * @Assert\NotNull
      */
     #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
+    #[Assert\NotNull]
     private $referentTags;
 
     public function __construct(array $referentTags)

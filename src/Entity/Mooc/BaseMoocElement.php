@@ -14,12 +14,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @UniqueEntity(fields={"slug", "chapter"})
  */
+#[ORM\Entity]
 #[ORM\Table(name: 'mooc_elements')]
 #[ORM\UniqueConstraint(name: 'mooc_element_slug', columns: ['slug', 'chapter_id'])]
-#[ORM\Entity]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap([MoocElementTypeEnum::VIDEO => MoocVideoElement::class, MoocElementTypeEnum::QUIZ => MoocQuizElement::class, MoocElementTypeEnum::IMAGE => MoocImageElement::class])]
+#[UniqueEntity(fields: ['slug', 'chapter'])]
 abstract class BaseMoocElement
 {
     use EntityTimestampableTrait;
@@ -32,17 +33,14 @@ abstract class BaseMoocElement
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     protected $title;
 
-    /**
-     * @Gedmo\Slug(fields={"title"}, unique=true)
-     */
     #[ORM\Column]
+    #[Gedmo\Slug(fields: ['title'], unique: true)]
     protected $slug;
 
     /**
@@ -53,59 +51,48 @@ abstract class BaseMoocElement
 
     /**
      * @var Chapter
-     *
-     * @Gedmo\SortableGroup
-     * @Assert\Valid
      */
     #[ORM\ManyToOne(targetEntity: Chapter::class, cascade: ['persist'], inversedBy: 'elements')]
+    #[Assert\Valid]
+    #[Gedmo\SortableGroup]
     protected $chapter;
 
     /**
      * @var Collection|AttachmentLink[]
-     *
-     * @Assert\Valid
      */
     #[ORM\JoinTable(name: 'mooc_element_attachment_link')]
     #[ORM\ManyToMany(targetEntity: AttachmentLink::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['id' => 'ASC'])]
+    #[Assert\Valid]
     protected $links;
 
     /**
      * @var Collection|AttachmentFile[]
-     *
-     * @Assert\Valid
      */
     #[ORM\JoinTable(name: 'mooc_element_attachment_file')]
     #[ORM\ManyToMany(targetEntity: AttachmentFile::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['id' => 'ASC'])]
+    #[Assert\Valid]
     protected $files;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $shareTwitterText;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $shareFacebookText;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $shareEmailSubject;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(allowEmptyString=true, min=5, max=500)
-     */
     #[ORM\Column(length: 500)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 5, max: 500, options: ['allowEmptyString' => true])]
     protected $shareEmailBody;
 
     public function __construct(

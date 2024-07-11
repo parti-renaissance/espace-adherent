@@ -18,33 +18,25 @@ class FacebookVideo
     #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @Assert\Length(max=255)
-     * @Assert\NotBlank
-     * @Assert\Url
-     */
     #[ORM\Column]
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Url]
     private $facebookUrl;
 
-    /**
-     * @Assert\Length(max=255)
-     * @Assert\Url
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255)]
+    #[Assert\Url]
     private $twitterUrl;
 
-    /**
-     * @Assert\Length(max=255)
-     * @Assert\NotBlank
-     */
     #[ORM\Column]
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
     private $description;
 
-    /**
-     * @Assert\Length(max=100)
-     * @Assert\NotBlank
-     */
     #[ORM\Column(length: 100)]
+    #[Assert\Length(max: 100)]
+    #[Assert\NotBlank]
     private $author;
 
     #[ORM\Column(type: 'integer')]

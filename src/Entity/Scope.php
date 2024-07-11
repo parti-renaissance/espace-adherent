@@ -3,14 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\ScopeRepository;
+use App\Scope\AppEnum;
+use App\Scope\FeatureEnum;
+use App\Scope\ScopeEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity("code")
- */
 #[ORM\Entity(repositoryClass: ScopeRepository::class)]
+#[UniqueEntity(fields: ['code'])]
 class Scope
 {
     /**
@@ -23,36 +24,32 @@ class Scope
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(choices=App\Scope\ScopeEnum::ALL)
      */
     #[ORM\Column(unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ScopeEnum::ALL)]
     private $code;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
      */
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '100')]
     private $name;
 
     /**
      * @var array
-     *
-     * @Assert\Choice(choices=App\Scope\FeatureEnum::ALL, multiple=true)
      */
     #[ORM\Column(type: 'simple_array', nullable: true)]
+    #[Assert\Choice(choices: FeatureEnum::ALL, multiple: true)]
     private $features;
 
     /**
      * @var array
-     *
-     * @Assert\Choice(choices=App\Scope\AppEnum::ALL, multiple=true)
      */
     #[ORM\Column(type: 'simple_array', nullable: true)]
+    #[Assert\Choice(choices: AppEnum::ALL, multiple: true)]
     private $apps;
 
     public function __construct(?string $code = null, ?string $name = null, ?array $features = null, ?array $apps = null)

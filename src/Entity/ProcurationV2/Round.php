@@ -21,32 +21,24 @@ class Round
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
-     */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_matched_proxy', 'procuration_proxy_list', 'procuration_request_slot_read', 'procuration_proxy_slot_read'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     public ?string $name = null;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     public ?string $description = null;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_matched_proxy', 'procuration_proxy_list', 'procuration_request_slot_read', 'procuration_proxy_slot_read'])]
     #[ORM\Column(type: 'date')]
+    #[Assert\NotBlank]
     public ?\DateTimeInterface $date = null;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Election::class, inversedBy: 'rounds')]
+    #[Assert\NotBlank]
     public ?Election $election = null;
 
     public function __construct(?UuidInterface $uuid = null)

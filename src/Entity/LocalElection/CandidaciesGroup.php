@@ -20,37 +20,31 @@ class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministrat
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: LocalElection::class, inversedBy: 'candidaciesGroups')]
+    #[Assert\NotBlank]
     public ?LocalElection $election = null;
 
     /**
      * @var CandidacyInterface[]|Collection
-     *
-     * @Assert\Valid
      */
     #[ORM\OneToMany(mappedBy: 'candidaciesGroup', targetEntity: Candidacy::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
+    #[Assert\Valid]
     protected $candidacies;
 
     /**
      * @var CandidacyInterface[]|Collection
-     *
-     * @Assert\Valid
      */
     #[ORM\OneToMany(mappedBy: 'candidaciesGroup', targetEntity: SubstituteCandidacy::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
+    #[Assert\Valid]
     protected $substituteCandidacies;
 
     #[ORM\Column(nullable: true)]
     public ?string $faithStatementFileName = null;
 
-    /**
-     * @Assert\File(maxSize="5M", binaryFormat=false, mimeTypes={"application/pdf"})
-     */
+    #[Assert\File(maxSize: '5M', binaryFormat: false, mimeTypes: ['application/pdf'])]
     public ?UploadedFile $file = null;
 
     public function __construct()

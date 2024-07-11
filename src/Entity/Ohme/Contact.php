@@ -12,12 +12,10 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @UniqueEntity(fields={"ohmeIdentifier"})
- */
 #[ORM\Table(name: 'ohme_contact')]
 #[ORM\Index(columns: ['ohme_identifier'])]
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
+#[UniqueEntity(fields: ['ohmeIdentifier'])]
 class Contact
 {
     use EntityIdentityTrait;

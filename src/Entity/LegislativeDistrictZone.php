@@ -7,11 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields="areaCode", message="legislative_district_zone.area_code.unique", groups="Admin")
- */
 #[ORM\Table(name: 'legislative_district_zones')]
 #[ORM\Entity(repositoryClass: LegislativeDistrictZoneRepository::class)]
+#[UniqueEntity(fields: ['areaCode'], message: 'legislative_district_zone.area_code.unique', groups: ['Admin'])]
 class LegislativeDistrictZone
 {
     private const TYPE_DEPARTMENT = 'departement';
@@ -31,36 +29,22 @@ class LegislativeDistrictZone
     #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @Assert\NotBlank(groups="Admin")
-     * @Assert\Regex(
-     *     pattern="/^([0-1]\d{3}|002[A-B])$/",
-     *     message="legislative_district_zone.area_code.invalid",
-     *     groups="Admin"
-     * )
-     */
     #[ORM\Column(length: 4, unique: true)]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[Assert\Regex(pattern: '/^([0-1]\d{3}|002[A-B])$/', message: 'legislative_district_zone.area_code.invalid', groups: ['Admin'])]
     private $areaCode;
 
-    /**
-     * @Assert\NotBlank(groups="Admin")
-     * @Assert\Choice(
-     *     callback="getAreaTypeChoices",
-     *     message="legislative_district_zone.area_type.invalid",
-     *     groups="Admin"
-     * )
-     */
     #[ORM\Column(length: 20)]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[Assert\Choice(callback: 'getAreaTypeChoices', message: 'legislative_district_zone.area_type.invalid', groups: ['Admin'])]
     private $areaType = self::TYPE_DEPARTMENT;
 
     #[ORM\Column(name: '`rank`', type: 'smallint', options: ['unsigned' => true])]
     private $rank;
 
-    /**
-     * @Assert\NotBlank(groups="Admin")
-     * @Assert\Length(allowEmptyString=true, min=2, max=100, groups="Admin")
-     */
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[Assert\Length(min: 2, max: 100, groups: ['Admin'], options: ['allowEmptyString' => true])]
     private $name;
 
     #[ORM\Column(type: 'text')]
@@ -249,9 +233,7 @@ class LegislativeDistrictZone
         $this->setKeywords($keywords);
     }
 
-    /**
-     * @Assert\Count(min=1, groups="Admin")
-     */
+    #[Assert\Count(min: 1, groups: ['Admin'])]
     public function getKeywords(): array
     {
         if (empty($this->keywords)) {

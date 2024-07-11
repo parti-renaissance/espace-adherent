@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Table(name: 'cities')]
 #[ORM\Entity(repositoryClass: CityRepository::class)]
+#[UniqueEntity(fields: ['inseeCode'], message: 'city.insee_code.unique')]
 class City
 {
     /**
@@ -24,29 +25,26 @@ class City
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="city.name.not_blank")
-     * @Assert\Length(max="100", maxMessage="city.name.max_length")
      */
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: 'city.name.not_blank')]
+    #[Assert\Length(max: '100', maxMessage: 'city.name.max_length')]
     private $name;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="city.insee_code.not_blank")
-     * @Assert\Length(max="10", maxMessage="city.insee_code.max_length")
      */
     #[ORM\Column(length: 10, unique: true)]
+    #[Assert\NotBlank(message: 'city.insee_code.not_blank')]
+    #[Assert\Length(max: '10', maxMessage: 'city.insee_code.max_length')]
     private $inseeCode;
 
     /**
      * @var array|null
-     *
-     * @Assert\NotBlank(message="city.postal_code.not_blank")
-     * @Assert\Count(min="1")
      */
     #[ORM\Column(type: 'simple_array')]
+    #[Assert\NotBlank(message: 'city.postal_code.not_blank')]
+    #[Assert\Count(min: '1')]
     private $postalCodes;
 
     /**

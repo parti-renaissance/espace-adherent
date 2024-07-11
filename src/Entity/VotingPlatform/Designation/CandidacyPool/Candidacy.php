@@ -24,25 +24,20 @@ class Candidacy extends BaseCandidacy
 
     /**
      * @var CandidaciesGroup|null
-     *
-     * @Gedmo\SortableGroup
      */
     #[ORM\ManyToOne(targetEntity: CandidaciesGroup::class, inversedBy: 'candidacies')]
+    #[Gedmo\SortableGroup]
     protected $candidaciesGroup;
 
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private ?Adherent $adherent = null;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
     private ?string $firstName = null;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
     private ?string $lastName = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

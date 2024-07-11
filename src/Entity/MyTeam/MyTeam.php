@@ -8,6 +8,7 @@ use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Repository\MyTeam\MyTeamRepository;
+use App\Scope\ScopeEnum;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -46,19 +47,15 @@ class MyTeam
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    /**
-     * @Assert\NotNull
-     */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
+    #[Assert\NotNull]
     private Adherent $owner;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(choices=App\Scope\ScopeEnum::ALL)
-     */
     #[Groups(['my_team_read_list'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ScopeEnum::ALL)]
     private string $scope;
 
     /**

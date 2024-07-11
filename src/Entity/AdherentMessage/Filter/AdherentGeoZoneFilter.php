@@ -13,10 +13,9 @@ class AdherentGeoZoneFilter extends AbstractUserFilter
 
     /**
      * @var Zone
-     *
-     * @Assert\NotBlank
      */
     #[ORM\ManyToOne(targetEntity: Zone::class)]
+    #[Assert\NotBlank]
     private $zone;
 
     public function __construct(?Zone $zone = null)

@@ -10,12 +10,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @MeasurePayload
- *
- * @UniqueEntity(fields={"city", "type"}, errorPath="type")
  */
 #[ORM\Table(name: 'chez_vous_measures')]
 #[ORM\UniqueConstraint(name: 'chez_vous_measures_city_type_unique', columns: ['city_id', 'type_id'])]
 #[ORM\Entity(repositoryClass: MeasureRepository::class)]
+#[UniqueEntity(fields: ['city', 'type'], errorPath: 'type')]
 class Measure
 {
     /**
@@ -34,20 +33,18 @@ class Measure
 
     /**
      * @var City|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: City::class, inversedBy: 'measures')]
+    #[Assert\NotBlank]
     private $city;
 
     /**
      * @var MeasureType|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: MeasureType::class)]
+    #[Assert\NotBlank]
     private $type;
 
     public function __construct(?City $city = null, ?MeasureType $type = null, ?array $payload = null)

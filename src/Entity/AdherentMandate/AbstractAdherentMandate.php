@@ -29,33 +29,27 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
 
     /**
      * @var Adherent
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'adherentMandates')]
+    #[Assert\NotBlank]
     protected $adherent;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="common.gender.invalid_choice")
-     * @Assert\Choice(
-     *     choices=Genders::MALE_FEMALE,
-     *     message="common.gender.invalid_choice"
-     * )
      */
     #[ORM\Column(length: 6, nullable: true)]
+    #[Assert\NotBlank(message: 'common.gender.invalid_choice')]
+    #[Assert\Choice(choices: Genders::MALE_FEMALE, message: 'common.gender.invalid_choice')]
     protected $gender;
 
     /**
      * @var \DateTime
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
     #[ORM\Column(type: 'datetime')]
+    #[Assert\NotBlank]
     protected $beginAt;
 
     /**

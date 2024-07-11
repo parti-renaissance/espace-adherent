@@ -29,63 +29,45 @@ class SocialShare
     #[ORM\GeneratedValue]
     private $id;
 
-    /**
-     * @Assert\Length(max=100)
-     */
     #[ORM\Column(length: 100)]
+    #[Assert\Length(max: 100)]
     private $name = '';
 
-    /**
-     * @Gedmo\Slug(fields={"name"})
-     */
     #[ORM\Column]
+    #[Gedmo\Slug(fields: ['name'])]
     private $slug;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice({"image", "video", "pdf"})
-     */
     #[ORM\Column(length: 10)]
+    #[Assert\NotBlank]
+    #[Assert\Choice(['image', 'video', 'pdf'])]
     private $type = self::TYPE_IMAGE;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max=200)
-     */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 200)]
     private $description;
 
-    /**
-     * @Assert\Url
-     * @Assert\Length(max=255)
-     */
     #[ORM\Column]
+    #[Assert\Url]
+    #[Assert\Length(max: 255)]
     private $defaultUrl = '';
 
-    /**
-     * @Assert\Url
-     * @Assert\Length(max=255)
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url]
+    #[Assert\Length(max: 255)]
     private $facebookUrl = '';
 
-    /**
-     * @Assert\Url
-     * @Assert\Length(max=255)
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Url]
+    #[Assert\Length(max: 255)]
     private $twitterUrl = '';
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\ManyToOne(targetEntity: SocialShareCategory::class)]
+    #[Assert\NotBlank]
     private $socialShareCategory;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist'])]
+    #[Assert\NotBlank]
     private $media;
 
     #[ORM\Column(type: 'boolean')]

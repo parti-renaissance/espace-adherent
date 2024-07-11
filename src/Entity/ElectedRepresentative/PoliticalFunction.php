@@ -20,21 +20,19 @@ class PoliticalFunction
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(callback={"App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum", "toArray"})
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read', 'elected_representative_list'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: [PoliticalFunctionNameEnum::class, 'toArray'])]
     private $name;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max="255")
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: '255')]
     private $clarification;
 
     /**
@@ -46,45 +44,35 @@ class PoliticalFunction
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     #[ORM\Column(type: 'date')]
+    #[Assert\NotBlank]
     private $beginAt;
 
     /**
      * @var \DateTime|null
-     *
-     * @Assert\Expression(
-     *     "value == null or value > this.getBeginAt()",
-     *     message="La date de fin doit être postérieure à la date de début."
-     * )
-     * @Assert\Expression(
-     *     "not (value !== null and this.isOnGoing())",
-     *     message="La date de fin ne peut être saisie que dans le cas où la fonction n'est pas en cours."
-     * )
      */
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
     #[ORM\Column(type: 'date', nullable: true)]
+    #[Assert\Expression('value == null or value > this.getBeginAt()', message: 'La date de fin doit être postérieure à la date de début.')]
+    #[Assert\Expression('not (value !== null and this.isOnGoing())', message: "La date de fin ne peut être saisie que dans le cas où la fonction n'est pas en cours.")]
     private $finishAt;
 
     /**
      * @var ElectedRepresentative|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: ElectedRepresentative::class, inversedBy: 'politicalFunctions')]
+    #[Assert\NotBlank]
     private $electedRepresentative;
 
     /**
      * @var Mandate|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Mandate::class, inversedBy: 'politicalFunctions')]
+    #[Assert\NotBlank]
     private $mandate;
 
     public function __construct(

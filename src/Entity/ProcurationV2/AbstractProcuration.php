@@ -11,6 +11,7 @@ use App\Entity\EntityPostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
+use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,58 +31,30 @@ abstract class AbstractProcuration implements TranslatedTagInterface
     use EntityAdministratorBlameableTrait;
     use OrderedActionsTrait;
 
-    /**
-     * @Assert\Email(message="common.email.invalid")
-     * @Assert\Length(max=255, maxMessage="common.email.max_length")
-     */
     #[Groups(['procuration_request_read', 'procuration_matched_proxy', 'procuration_proxy_list'])]
     #[ORM\Column]
+    #[Assert\Email(message: 'common.email.invalid')]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     public string $email;
 
-    /**
-     * @Assert\Choice(
-     *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice"
-     * )
-     */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_proxy_list_request', 'procuration_request_list_proxy'])]
     #[ORM\Column(length: 6)]
+    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice')]
     public string $gender;
 
-    /**
-     * @Assert\Length(
-     *     min=2,
-     *     max=255,
-     *     minMessage="procuration.first_names.min_length",
-     *     maxMessage="procuration.first_names.max_length"
-     * )
-     */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_proxy_list_request', 'procuration_request_list_proxy', 'procuration_matched_proxy'])]
     #[ORM\Column]
+    #[Assert\Length(min: 2, max: 255, minMessage: 'procuration.first_names.min_length', maxMessage: 'procuration.first_names.max_length')]
     public string $firstNames;
 
-    /**
-     * @Assert\Length(
-     *     min=1,
-     *     max=100,
-     *     minMessage="procuration.last_name.min_length",
-     *     maxMessage="procuration.last_name.max_length"
-     * )
-     */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_proxy_list_request', 'procuration_request_list_proxy', 'procuration_matched_proxy'])]
     #[ORM\Column(length: 100)]
+    #[Assert\Length(min: 1, max: 100, minMessage: 'procuration.last_name.min_length', maxMessage: 'procuration.last_name.max_length')]
     public string $lastName;
 
-    /**
-     * @Assert\Range(
-     *     min="-120 years",
-     *     max="-17 years",
-     *     minMessage="procuration.birthdate.maximum_required_age",
-     *     maxMessage="procuration.birthdate.minimum_required_age"
-     * )
-     */
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     #[ORM\Column(type: 'date')]
+    #[Assert\Range(min: '-120 years', max: '-17 years', minMessage: 'procuration.birthdate.maximum_required_age', maxMessage: 'procuration.birthdate.minimum_required_age')]
     public \DateTimeInterface $birthdate;
 
     /**
@@ -103,13 +76,8 @@ abstract class AbstractProcuration implements TranslatedTagInterface
     #[ORM\ManyToOne(targetEntity: Zone::class)]
     public ?Zone $votePlace;
 
-    /**
-     * @Assert\Length(
-     *     max=255,
-     *     maxMessage="procuration.custom_vote_place.max_length"
-     * )
-     */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: 255, maxMessage: 'procuration.custom_vote_place.max_length')]
     public ?string $customVotePlace;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

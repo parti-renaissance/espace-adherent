@@ -34,29 +34,23 @@ class UserDocument
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=200, maxMessage="document.validation.filename_length")
      */
     #[ORM\Column(length: 200)]
+    #[Assert\Length(max: 200, maxMessage: 'document.validation.filename_length')]
     private $originalName;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max=10)
      */
     #[ORM\Column(length: 10)]
+    #[Assert\Length(max: 10)]
     private $extension;
 
     /**
      * @var int|null
-     *
-     * @Assert\LessThan(
-     *     value=5242880,
-     *     message="document.validation.max_filesize"
-     * )
      */
     #[ORM\Column(type: 'integer')]
+    #[Assert\LessThan(value: 5242880, message: 'document.validation.max_filesize')]
     private $size;
 
     /**
@@ -67,18 +61,16 @@ class UserDocument
 
     /**
      * @var string
-     *
-     * @Assert\Choice(callback="allTypes")
      */
     #[ORM\Column(length: 25)]
+    #[Assert\Choice(callback: 'allTypes')]
     private $type;
 
     /**
      * @var \DateTime
-     *
-     * @Gedmo\Timestampable(on="create")
      */
     #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'create')]
     private $createdAt;
 
     private function __construct(string $type, string $name, string $extension, int $size, string $createdAt = 'now')

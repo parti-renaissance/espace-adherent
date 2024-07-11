@@ -13,6 +13,7 @@ use App\Validator\MaxFiscalYearDonation;
 use App\Validator\MaxMonthDonation;
 use App\Validator\PayboxSubscription as AssertPayboxSubscription;
 use App\Validator\UniqueDonationSubscription;
+use App\ValueObject\Genders;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -34,74 +35,39 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
     public const MAX_AMOUNT = 7500;
     public const MAX_AMOUNT_SUBSCRIPTION = 625;
 
-    /**
-     * @Assert\NotBlank(groups={"Default", "choose_donation_amount"})
-     * @Assert\Expression(
-     *     expression="(this.isSubscription() and value >= 5 and value <= 625) or (!this.isSubscription() and value >= 10 and value <= 7500)",
-     *     message="donation.amount.invalid",
-     *     groups={"Default", "choose_donation_amount"}
-     * )
-     */
+    #[Assert\NotBlank(groups: ['Default', 'choose_donation_amount'])]
+    #[Assert\Expression(expression: '(this.isSubscription() and value >= 5 and value <= 625) or (!this.isSubscription() and value >= 10 and value <= 7500)', message: 'donation.amount.invalid', groups: ['Default', 'choose_donation_amount'])]
     private $amount;
 
-    /**
-     * @Assert\NotBlank(message="common.gender.invalid_choice", groups={"Default", "fill_personal_info"})
-     * @Assert\Choice(
-     *     callback={"App\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     groups={"Default", "fill_personal_info"}
-     * )
-     */
+    #[Assert\NotBlank(message: 'common.gender.invalid_choice', groups: ['Default', 'fill_personal_info'])]
+    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice', groups: ['Default', 'fill_personal_info'])]
     public $gender;
 
-    /**
-     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
-     * @Assert\Length(
-     *     min=2,
-     *     max=50,
-     *     minMessage="common.first_name.min_length",
-     *     maxMessage="common.first_name.max_length",
-     *     groups={"Default", "fill_personal_info"}
-     * )
-     */
+    #[Assert\NotBlank(groups: ['Default', 'fill_personal_info'])]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length', groups: ['Default', 'fill_personal_info'])]
     public $firstName;
 
-    /**
-     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
-     * @Assert\Length(
-     *     min=1,
-     *     max=50,
-     *     minMessage="common.last_name.min_length",
-     *     maxMessage="common.last_name.max_length",
-     *     groups={"Default", "fill_personal_info"}
-     * )
-     */
+    #[Assert\NotBlank(groups: ['Default', 'fill_personal_info'])]
+    #[Assert\Length(min: 1, max: 50, minMessage: 'common.last_name.min_length', maxMessage: 'common.last_name.max_length', groups: ['Default', 'fill_personal_info'])]
     public $lastName;
 
-    /**
-     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
-     * @Assert\Email(message="common.email.invalid", groups={"Default", "fill_personal_info"})
-     * @Assert\Length(max=255, maxMessage="common.email.max_length", groups={"Default", "fill_personal_info"})
-     */
+    #[Assert\NotBlank(groups: ['Default', 'fill_personal_info'])]
+    #[Assert\Email(message: 'common.email.invalid', groups: ['Default', 'fill_personal_info'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['Default', 'fill_personal_info'])]
     private $emailAddress = '';
 
     /**
      * @var Address
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     private $address;
 
-    /**
-     * @Assert\NotBlank(groups={"Default", "fill_personal_info"})
-     * @Assert\Country(message="common.nationality.invalid", groups={"Default", "fill_personal_info"})
-     * @Assert\Expression("this.getNationality() == 'FR' or this.getAddress().getCountry() == 'FR'", groups={"Default"}, message="donation.french_address_or_nationality_donation")
-     */
+    #[Assert\NotBlank(groups: ['Default', 'fill_personal_info'])]
+    #[Assert\Country(message: 'common.nationality.invalid', groups: ['Default', 'fill_personal_info'])]
+    #[Assert\Expression("this.getNationality() == 'FR' or this.getAddress().getCountry() == 'FR'", groups: ['Default'], message: 'donation.french_address_or_nationality_donation')]
     private $nationality;
 
-    /**
-     * @Assert\Regex(pattern="/^[\d]{6}$/", message="donation.code.invalid")
-     */
+    #[Assert\Regex(pattern: '/^[\d]{6}$/', message: 'donation.code.invalid')]
     private $code;
 
     private $clientIp;

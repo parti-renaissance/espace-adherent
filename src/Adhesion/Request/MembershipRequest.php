@@ -8,6 +8,7 @@ use App\Entity\Adherent;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Validator\MaxFiscalYearDonation;
 use App\Validator\StrictEmail;
+use App\ValueObject\Genders;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -16,74 +17,44 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MembershipRequest implements DonationRequestInterface
 {
     /**
-     * @Assert\NotBlank
      * @StrictEmail(dnsCheck=false)
      */
+    #[Assert\NotBlank]
     public ?string $email = null;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(callback={"App\ValueObject\Genders", "all"}, message="common.invalid_choice")
-     */
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.invalid_choice')]
     public ?string $civility = null;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *     allowEmptyString=true,
-     *     min=2,
-     *     max=50,
-     *     minMessage="common.first_name.min_length",
-     *     maxMessage="common.first_name.max_length"
-     * )
-     */
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length', options: ['allowEmptyString' => true])]
     public ?string $firstName = null;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(
-     *     allowEmptyString=true,
-     *     min=1,
-     *     max=50,
-     *     minMessage="common.last_name.min_length",
-     *     maxMessage="common.last_name.max_length"
-     * )
-     */
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 50, minMessage: 'common.last_name.min_length', maxMessage: 'common.last_name.max_length', options: ['allowEmptyString' => true])]
     public ?string $lastName = null;
 
-    /**
-     * @Assert\Valid
-     */
+    #[Assert\Valid]
     public ?Address $address = null;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Country(message="common.nationality.invalid")
-     */
+    #[Assert\NotBlank]
+    #[Assert\Country(message: 'common.nationality.invalid')]
     public ?string $nationality = null;
 
-    /**
-     * @Assert\Type("bool")
-     */
+    #[Assert\Type('bool')]
     public ?bool $exclusiveMembership = null;
 
-    /**
-     * @Assert\AtLeastOneOf({
-     *     @Assert\Expression("this.exclusiveMembership"),
-     *     @Assert\Choice({1, 2, 3}),
-     * }, message="Ce champ est requis.", includeInternalMessages=false)
-     */
+    #[Assert\AtLeastOneOf([
+        new Assert\Expression('this.exclusiveMembership'),
+        new Assert\Choice([1, 2, 3]),
+    ], message: 'Ce champ est requis.')]
     public ?int $partyMembership = null;
 
-    /**
-     * @Assert\IsTrue(groups={"adhesion"})
-     */
+    #[Assert\IsTrue(groups: ['adhesion'])]
     public bool $isPhysicalPerson = false;
 
-    /**
-     * @Assert\NotBlank(groups={"adhesion:amount"}, message="Afin d'adhérer à Renaissance vous devez payer la valeur minimale de notre adhésion.")
-     * @Assert\GreaterThanOrEqual(value=10, message="Le montant de la cotisation n'est pas valide", groups={"adhesion:amount"})
-     */
+    #[Assert\NotBlank(groups: ['adhesion:amount'], message: "Afin d'adhérer à Renaissance vous devez payer la valeur minimale de notre adhésion.")]
+    #[Assert\GreaterThanOrEqual(value: 10, message: "Le montant de la cotisation n'est pas valide", groups: ['adhesion:amount'])]
     public ?int $amount = null;
 
     public bool $allowNotifications = false;

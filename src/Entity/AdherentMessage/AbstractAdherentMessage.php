@@ -131,41 +131,37 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
 
     /**
      * @var Adherent
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['message_read_list', 'message_read'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
+    #[Assert\NotBlank]
     protected $author;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[Groups(['message_read', 'message_read_list', 'message_write'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $label;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[Groups(['message_read', 'message_read_list', 'message_write', 'message_read_content'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $subject;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['message_write', 'message_read_content'])]
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $content;
 
     /**

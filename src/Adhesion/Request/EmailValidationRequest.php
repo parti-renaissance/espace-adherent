@@ -18,17 +18,15 @@ class EmailValidationRequest implements RecaptchaChallengeInterface
     use RecaptchaChallengeTrait;
 
     /**
-     * @Assert\NotBlank(groups={"Default", "adhesion-email:persist", "procuration-email:persist", "bde-email:persist"}, message="L'adresse email est nécessaire pour continuer.")
      * @StrictEmail(captainVerifyCheck=true, groups={"Default"})
      * @StrictEmail(dnsCheck=false, groups={"adhesion-email:persist", "procuration-email:persist", "bde-email:persist"})
      */
     #[Groups(['adhesion-email:validate', 'adhesion-email:persist', 'procuration-email:persist', 'bde-email:validate', 'bde-email:persist'])]
+    #[Assert\NotBlank(groups: ['Default', 'adhesion-email:persist', 'procuration-email:persist', 'bde-email:persist'], message: "L'adresse email est nécessaire pour continuer.")]
     private ?string $email = null;
 
-    /**
-     * @Assert\NotBlank(groups={"procuration-email:persist"})
-     */
     #[Groups(['procuration-email:persist'])]
+    #[Assert\NotBlank(groups: ['procuration-email:persist'])]
     public ?InitialRequestTypeEnum $type = null;
 
     #[Groups(['adhesion-email:validate', 'bde-email:validate'])]

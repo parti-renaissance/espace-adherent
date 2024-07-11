@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\AdherentMessage\StaticSegmentInterface;
+use App\AdherentSegment\AdherentSegmentTypeEnum;
 use App\EntityListener\AdherentSegmentListener;
 use App\Repository\AdherentSegmentRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,40 +39,36 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['public', 'write'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
     private $label;
 
     /**
      * @var array
-     *
-     * @Assert\NotBlank
-     * @Assert\Count(min=1)
      */
     #[Groups(['write'])]
     #[ORM\Column(type: 'simple_array')]
+    #[Assert\NotBlank]
+    #[Assert\Count(min: 1)]
     private $memberIds = [];
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Choice(callback={"App\AdherentSegment\AdherentSegmentTypeEnum", "toArray"})
      */
     #[Groups(['write'])]
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Choice(callback: [AdherentSegmentTypeEnum::class, 'toArray'])]
     private $segmentType;
 
     /**
      * @var Adherent|null
-     *
-     * @Assert\NotBlank
      */
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
+    #[Assert\NotBlank]
     protected $author;
 
     /**

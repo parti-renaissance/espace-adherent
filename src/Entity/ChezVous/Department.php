@@ -9,11 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity("code")
- */
 #[ORM\Table(name: 'chez_vous_departments')]
 #[ORM\Entity(repositoryClass: DepartmentRepository::class)]
+#[UniqueEntity(fields: ['code'])]
 class Department
 {
     /**
@@ -26,29 +24,26 @@ class Department
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
      */
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '100')]
     private $name;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="100")
      */
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '100')]
     private $label;
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max="10")
      */
     #[ORM\Column(length: 10, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '10')]
     private $code;
 
     /**

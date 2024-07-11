@@ -9,11 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity("name")
- */
 #[ORM\Table(name: 'elections')]
 #[ORM\Entity(repositoryClass: ElectionRepository::class)]
+#[UniqueEntity(fields: ['name'])]
 class Election
 {
     /**
@@ -26,19 +24,17 @@ class Election
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
-     * @Assert\Length(max=255)
      */
     #[ORM\Column(unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     private $name = '';
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     private $introduction = '';
 
     /**
@@ -55,10 +51,9 @@ class Election
 
     /**
      * @var ElectionRound[]|Collection
-     *
-     * @Assert\Count(min=1, minMessage="election.rounds.min_count")
      */
     #[ORM\OneToMany(mappedBy: 'election', targetEntity: ElectionRound::class, cascade: ['all'], orphanRemoval: true)]
+    #[Assert\Count(min: 1, minMessage: 'election.rounds.min_count')]
     private $rounds;
 
     public function __construct()

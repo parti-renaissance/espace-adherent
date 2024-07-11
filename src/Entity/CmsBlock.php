@@ -7,10 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity("name", message="cms_block.name.unique")
- */
 #[ORM\Entity(repositoryClass: CmsBlockRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'cms_block.name.unique')]
 class CmsBlock implements EntityAdministratorBlameableInterface
 {
     use EntityTimestampableTrait;
@@ -26,19 +24,17 @@ class CmsBlock implements EntityAdministratorBlameableInterface
 
     /**
      * @var string|null
-     *
-     * @Assert\NotBlank(message="cms_block.name.not_blank")
-     * @Assert\Length(max="100", maxMessage="cms_block.name.max_length")
      */
     #[ORM\Column(length: 100, unique: true)]
+    #[Assert\NotBlank(message: 'cms_block.name.not_blank')]
+    #[Assert\Length(max: '100', maxMessage: 'cms_block.name.max_length')]
     private $name;
 
     /**
      * @var string|null
-     *
-     * @Assert\Length(max="255", maxMessage="cms_block.description.max_length")
      */
     #[ORM\Column(nullable: true)]
+    #[Assert\Length(max: '255', maxMessage: 'cms_block.description.max_length')]
     private $description;
 
     /**

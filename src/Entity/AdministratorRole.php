@@ -7,11 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields={"code"}, message="administrator_role.unique_entity.name")
- * @UniqueEntity(fields={"groupCode", "label"}, message="administrator_role.unique_entity.group_label")
- */
 #[ORM\Entity(repositoryClass: AdministratorRoleRepository::class)]
+#[UniqueEntity(fields: ['code'], message: 'administrator_role.unique_entity.name')]
+#[UniqueEntity(fields: ['groupCode', 'label'], message: 'administrator_role.unique_entity.group_label')]
 class AdministratorRole
 {
     #[ORM\Id]
@@ -19,34 +17,26 @@ class AdministratorRole
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     public ?int $id = null;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max="256")
-     */
     #[ORM\Column(unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '256')]
     public ?string $code = null;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Length(max="256")
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: '256')]
     public ?string $label = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     public bool $enabled = false;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Type(type=AdministratorRoleGroupEnum::class)
-     */
     #[ORM\Column(enumType: AdministratorRoleGroupEnum::class)]
+    #[Assert\NotBlank]
+    #[Assert\Type(type: AdministratorRoleGroupEnum::class)]
     public ?AdministratorRoleGroupEnum $groupCode = null;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
     public ?string $description = null;
 
     public function __toString(): string

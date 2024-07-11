@@ -83,8 +83,8 @@ class AssessorManagerController extends AbstractController
     }
 
     #[Route(path: '/demande/{uuid}/associer/{votePlaceId}', requirements: ['uuid' => '%pattern_uuid%', 'votePlaceId' => '\d+'], name: 'app_assessor_manager_request_associate', methods: ['GET', 'POST'])]
-    #[ParamConverter('assessorRequest', class: 'App\Entity\AssessorRequest', options: ['mapping' => ['uuid' => 'uuid']])]
-    #[ParamConverter('votePlace', class: 'App\Entity\Election\VotePlace', options: ['id' => 'votePlaceId'])]
+    #[ParamConverter('assessorRequest', class: AssessorRequest::class, options: ['mapping' => ['uuid' => 'uuid']])]
+    #[ParamConverter('votePlace', class: VotePlace::class, options: ['id' => 'votePlaceId'])]
     #[IsGranted('MANAGE_ASSESSOR', subject: 'assessorRequest')]
     public function assessorRequestAssociateAction(
         Request $request,

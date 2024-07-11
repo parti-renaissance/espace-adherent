@@ -21,16 +21,12 @@ class ProcurationRequest
     use EntityTimestampableTrait;
     use EntityUTMTrait;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column]
+    #[Assert\NotBlank]
     public ?string $email = null;
 
-    /**
-     * @Assert\NotBlank
-     */
     #[ORM\Column(enumType: InitialRequestTypeEnum::class)]
+    #[Assert\NotBlank]
     public ?InitialRequestTypeEnum $type = null;
 
     #[ORM\Column(length: 50, nullable: true)]

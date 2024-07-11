@@ -19,7 +19,6 @@ abstract class AbstractFeedItem
     protected $author;
 
     /**
-     * @Assert\NotBlank
      * @AssertWysiwygLength(
      *     min=10,
      *     max=6000,
@@ -28,6 +27,7 @@ abstract class AbstractFeedItem
      * )
      */
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank]
     protected $content;
 
     /**

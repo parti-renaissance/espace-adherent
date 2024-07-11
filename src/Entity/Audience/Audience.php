@@ -58,11 +58,10 @@ class Audience extends AbstractAudience
 {
     /**
      * @var string
-     *
-     * @Assert\NotBlank
      */
     #[Groups(['audience_read', 'audience_write', 'audience_list_read'])]
     #[ORM\Column]
+    #[Assert\NotBlank]
     private $name;
 
     public function getName(): ?string
@@ -75,9 +74,7 @@ class Audience extends AbstractAudience
         $this->name = $name;
     }
 
-    /**
-     * @Assert\IsTrue(groups={"api_scope_context"}, message="audience.zones.empty")
-     */
+    #[Assert\IsTrue(groups: ['api_scope_context'], message: 'audience.zones.empty')]
     public function isValidZones(): bool
     {
         return !$this->zones->isEmpty();
