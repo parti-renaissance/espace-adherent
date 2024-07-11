@@ -193,6 +193,9 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
         $designation->poll = $this->getReference('designation-poll-1');
         $designation->wordingWelcomePage = $this->getReference('cms-block-local-poll-welcome-page');
+        $designation->alertTitle = 'Élection en cours !!';
+        $designation->alertDescription = "# Élection\nvous avez **5 jours** pour voter.";
+        $designation->alertCtaLabel = 'Consulter';
 
         $this->setReference('designation-14', $designation);
         $manager->persist($designation);
