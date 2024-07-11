@@ -17,14 +17,14 @@ class AdherentZoneBasedRole
     use EntityTimestampableTrait;
     use EntityZoneTrait;
 
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Choice(choices: ZoneBasedRoleTypeEnum::ALL)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private ?string $type;
 
+    #[Assert\NotBlank]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'zoneBasedRoles')]
-    #[Assert\NotBlank]
     private ?Adherent $adherent = null;
 
     public function __construct(?string $type = null)

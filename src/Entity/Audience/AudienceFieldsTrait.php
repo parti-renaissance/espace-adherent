@@ -13,25 +13,25 @@ trait AudienceFieldsTrait
     /**
      * @var string|null
      */
+    #[Assert\Length(max: 50)]
     #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Length(max: 50)]
     private $firstName;
 
     /**
      * @var string|null
      */
+    #[Assert\Length(max: 50)]
     #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Length(max: 50)]
     private $lastName;
 
     /**
      * @var string|null
      */
+    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice')]
     #[Groups(['audience_read', 'audience_write', 'phoning_campaign_read', 'phoning_campaign_write'])]
     #[ORM\Column(length: 6, nullable: true)]
-    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice')]
     private $gender;
 
     /**

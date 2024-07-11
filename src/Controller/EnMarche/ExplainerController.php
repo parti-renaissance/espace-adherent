@@ -24,8 +24,8 @@ class ExplainerController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{slug}', name: 'app_explainer_article_show', methods: ['GET'])]
     #[Entity('article', expr: 'repository.findPublishedArticle(slug)')]
+    #[Route(path: '/{slug}', name: 'app_explainer_article_show', methods: ['GET'])]
     public function proposalAction(OrderArticle $article): Response
     {
         return $this->render('explainer/article.html.twig', ['article' => $article]);

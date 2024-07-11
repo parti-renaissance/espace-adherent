@@ -41,8 +41,8 @@ class AssetsController extends AbstractController
         $this->manager = $manager;
     }
 
-    #[Route(path: '/assets/{path}', requirements: ['path' => '.+'], name: 'asset_url', methods: ['GET'])]
     #[Cache(maxage: 900, smaxage: 900)]
+    #[Route(path: '/assets/{path}', requirements: ['path' => '.+'], name: 'asset_url', methods: ['GET'])]
     public function assetAction(Server $glide, FilesystemOperator $defaultStorage, string $path, Request $request): Response
     {
         if (!$defaultStorage->has($path)) {
@@ -84,8 +84,8 @@ class AssetsController extends AbstractController
         return $response;
     }
 
-    #[Route(path: '/video/homepage.{format}', requirements: ['format' => 'mov|mp4'], name: 'homepage_video_url', methods: ['GET'])]
     #[Cache(maxage: 60, smaxage: 60)]
+    #[Route(path: '/video/homepage.{format}', requirements: ['format' => 'mov|mp4'], name: 'homepage_video_url', methods: ['GET'])]
     public function videoAction(FilesystemOperator $defaultStorage, string $format): Response
     {
         return new Response(
@@ -95,8 +95,8 @@ class AssetsController extends AbstractController
         );
     }
 
-    #[Route(path: '/algolia/{type}/{slug}', requirements: ['type' => 'proposal|custom|article|clarification'], methods: ['GET'])]
     #[Cache(maxage: 900, smaxage: 900)]
+    #[Route(path: '/algolia/{type}/{slug}', requirements: ['type' => 'proposal|custom|article|clarification'], methods: ['GET'])]
     public function algoliaAction(Server $glide, Request $request, string $type, string $slug): Response
     {
         $glide->setResponseFactory(new SymfonyResponseFactory($request));
@@ -167,8 +167,8 @@ class AssetsController extends AbstractController
         return $imagePath;
     }
 
-    #[Route(path: '/image-transformer.jpg', name: 'asset_timeline', methods: ['GET'])]
     #[Cache(maxage: 900, smaxage: 900)]
+    #[Route(path: '/image-transformer.jpg', name: 'asset_timeline', methods: ['GET'])]
     public function timelineImageAction(Request $request, TimelineImageFactory $imageFactory): Response
     {
         $locale = 'fr';

@@ -7,13 +7,13 @@ use App\Entity\Administrator;
 use App\Repository\Reporting\DeclaredMandateHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'adherent_declared_mandate_history')]
 #[ORM\Entity(repositoryClass: DeclaredMandateHistoryRepository::class)]
+#[ORM\Table(name: 'adherent_declared_mandate_history')]
 class DeclaredMandateHistory
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private ?int $id = null;
 
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]

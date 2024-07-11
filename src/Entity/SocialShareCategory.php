@@ -7,24 +7,24 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'social_share_categories')]
 #[ORM\Entity(repositoryClass: SocialShareCategoryRepository::class)]
+#[ORM\Table(name: 'social_share_categories')]
 class SocialShareCategory
 {
     use PositionTrait;
 
     #[ORM\Column(type: 'bigint')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 100)]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 100)]
     private $name;
 
-    #[ORM\Column]
     #[Gedmo\Slug(fields: ['name'])]
+    #[ORM\Column]
     private $slug;
 
     public function __construct(string $name = '', int $position = 1)

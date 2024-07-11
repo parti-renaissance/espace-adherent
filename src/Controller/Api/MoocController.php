@@ -18,8 +18,8 @@ class MoocController extends AbstractController
         return $this->json($moocRepository->findAllOrdered(), Response::HTTP_OK, [], ['groups' => ['mooc_list']]);
     }
 
-    #[Route(path: '/{slug}', name: 'api_mooc', methods: ['GET'])]
     #[Entity('mooc', expr: 'repository.findOneBySlug(slug)')]
+    #[Route(path: '/{slug}', name: 'api_mooc', methods: ['GET'])]
     public function moocAction(Mooc $mooc): Response
     {
         return $this->json($mooc, Response::HTTP_OK, [], ['groups' => ['mooc_read']]);

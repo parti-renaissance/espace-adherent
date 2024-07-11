@@ -7,13 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap(['city' => CityVoteResult::class, 'vote_place' => VotePlaceResult::class])]
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: 'vote_result')]
 #[ORM\UniqueConstraint(name: 'city_vote_result_city_round_unique', columns: ['city_id', 'election_round_id'])]
 #[ORM\UniqueConstraint(name: 'vote_place_result_city_round_unique', columns: ['vote_place_id', 'election_round_id'])]
-#[ORM\Entity]
-#[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
-#[ORM\DiscriminatorMap(['city' => CityVoteResult::class, 'vote_place' => VotePlaceResult::class])]
 abstract class BaseWithListCollectionResult extends BaseVoteResult
 {
     /**

@@ -40,35 +40,35 @@ class AdherentSegment implements AuthorInterface, StaticSegmentInterface
     /**
      * @var string
      */
+    #[Assert\NotBlank]
     #[Groups(['public', 'write'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
     private $label;
 
     /**
      * @var array
      */
+    #[Assert\Count(min: 1)]
+    #[Assert\NotBlank]
     #[Groups(['write'])]
     #[ORM\Column(type: 'simple_array')]
-    #[Assert\NotBlank]
-    #[Assert\Count(min: 1)]
     private $memberIds = [];
 
     /**
      * @var string
      */
+    #[Assert\Choice(callback: [AdherentSegmentTypeEnum::class, 'toArray'])]
+    #[Assert\NotBlank]
     #[Groups(['write'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\NotBlank]
-    #[Assert\Choice(callback: [AdherentSegmentTypeEnum::class, 'toArray'])]
     private $segmentType;
 
     /**
      * @var Adherent|null
      */
+    #[Assert\NotBlank]
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    #[Assert\NotBlank]
     protected $author;
 
     /**

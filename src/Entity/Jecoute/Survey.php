@@ -95,12 +95,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @SurveyScopeTarget
  */
-#[ORM\Table(name: 'jecoute_survey')]
-#[ORM\Entity(repositoryClass: SurveyRepository::class)]
-#[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap([SurveyTypeEnum::LOCAL => LocalSurvey::class, SurveyTypeEnum::NATIONAL => NationalSurvey::class])]
+#[ORM\Entity(repositoryClass: SurveyRepository::class)]
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\Table(name: 'jecoute_survey')]
 abstract class Survey implements IndexableEntityInterface, EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, DynamicLinkObjectInterface, EntityScopeVisibilityInterface
 {
     use EntityIdentityTrait;
@@ -118,20 +118,20 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
 
+    #[Assert\Length(max: 70)]
+    #[Assert\NotBlank]
     #[Groups(['survey_list', 'survey_list_dc', 'survey_write_dc', 'survey_read_dc', 'phoning_campaign_read', 'phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'pap_campaign_replies_list', 'pap_campaign_history_read_list'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 70)]
     private $name;
 
     /**
      * @var SurveyQuestion[]|Collection
      */
+    #[Assert\Count(min: '1', minMessage: 'survey.questions.min_count')]
+    #[Assert\Valid]
     #[Groups(['survey_write_dc'])]
     #[ORM\OneToMany(mappedBy: 'survey', targetEntity: SurveyQuestion::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
-    #[Assert\Count(min: '1', minMessage: 'survey.questions.min_count')]
-    #[Assert\Valid]
     private $questions;
 
     #[Groups(['survey_list_dc', 'survey_read_dc', 'survey_write_dc'])]

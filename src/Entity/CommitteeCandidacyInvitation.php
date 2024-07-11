@@ -20,9 +20,9 @@ class CommitteeCandidacyInvitation extends BaseCandidacyInvitation
     /**
      * @var CommitteeMembership
      */
+    #[Assert\NotBlank(groups: ['Default', 'invitation_edit'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: CommitteeMembership::class)]
-    #[Assert\NotBlank(groups: ['Default', 'invitation_edit'])]
     protected $membership;
 
     public function getMembership(): ?CommitteeMembership

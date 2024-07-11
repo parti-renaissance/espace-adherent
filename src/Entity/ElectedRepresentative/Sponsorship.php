@@ -5,39 +5,39 @@ namespace App\Entity\ElectedRepresentative;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'elected_representative_sponsorship')]
 #[ORM\Entity]
+#[ORM\Table(name: 'elected_representative_sponsorship')]
 class Sponsorship
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var int|null
      */
-    #[ORM\Column(type: 'integer')]
-    #[Assert\NotBlank]
     #[Assert\Choice(callback: 'getYears')]
+    #[Assert\NotBlank]
+    #[ORM\Column(type: 'integer')]
     private $presidentialElectionYear;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: '255')]
+    #[ORM\Column(nullable: true)]
     private $candidate;
 
     /**
      * @var ElectedRepresentative|null
      */
+    #[Assert\NotBlank]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: ElectedRepresentative::class, inversedBy: 'sponsorships')]
-    #[Assert\NotBlank]
     private $electedRepresentative;
 
     public function __construct(

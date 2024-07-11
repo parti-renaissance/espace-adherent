@@ -6,8 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'facebook_profiles')]
 #[ORM\Entity]
+#[ORM\Table(name: 'facebook_profiles')]
 class FacebookProfile
 {
     use EntityIdentityTrait;

@@ -5,8 +5,8 @@ namespace App\Entity\Election;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'election_city_partner')]
 #[ORM\Entity]
+#[ORM\Table(name: 'election_city_partner')]
 class CityPartner
 {
     public const CONSENSUS = 'consensus';
@@ -21,23 +21,23 @@ class CityPartner
      * @var int|null
      */
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $label;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Choice(choices: CityPartner::CONSENSUS_CHOICES)]
+    #[ORM\Column(nullable: true)]
     private $consensus;
 
     /**

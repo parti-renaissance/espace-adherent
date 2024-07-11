@@ -5,17 +5,17 @@ namespace App\Entity\Filesystem;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ORM\Entity]
 #[ORM\Table(name: 'filesystem_file_permission')]
 #[ORM\UniqueConstraint(name: 'file_permission_unique', columns: ['file_id', 'name'])]
-#[ORM\Entity]
 class FilePermission
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
@@ -28,9 +28,9 @@ class FilePermission
     /**
      * @var string
      */
-    #[ORM\Column(length: 50)]
-    #[Assert\NotBlank]
     #[Assert\Choice(callback: [FilePermissionEnum::class, 'toArray'])]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 50)]
     private $name;
 
     public function getId(): ?int

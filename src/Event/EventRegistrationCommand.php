@@ -21,24 +21,24 @@ class EventRegistrationCommand
      */
     private $adherent;
 
-    #[Groups(['event_registration_write'])]
-    #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 50, options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank]
+    #[Groups(['event_registration_write'])]
     private $firstName;
 
-    #[Groups(['event_registration_write'])]
-    #[Assert\NotBlank]
     #[Assert\Length(min: 1, max: 50, options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank]
+    #[Groups(['event_registration_write'])]
     private $lastName;
 
-    #[Groups(['event_registration_write'])]
-    #[Assert\NotBlank]
     #[Assert\Email]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[Assert\NotBlank]
+    #[Groups(['event_registration_write'])]
     private $emailAddress;
 
-    #[Groups(['event_registration_write'])]
     #[Assert\Length(min: 5, max: 5)]
+    #[Groups(['event_registration_write'])]
     private $postalCode;
 
     #[Groups(['event_registration_write'])]

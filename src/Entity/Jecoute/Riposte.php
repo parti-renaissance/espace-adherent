@@ -67,9 +67,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @RiposteOpenGraph
  */
-#[ORM\Table(name: 'jecoute_riposte')]
 #[ORM\Entity]
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
+#[ORM\Table(name: 'jecoute_riposte')]
 class Riposte implements AuthorInterface, IndexableEntityInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;
@@ -85,43 +85,43 @@ class Riposte implements AuthorInterface, IndexableEntityInterface, DynamicLinkO
     /**
      * @var string|null
      */
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     private $title;
 
     /**
      * @var string|null
      */
+    #[Assert\NotBlank]
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank]
     private $body;
 
     /**
      * @var string|null
      */
-    #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
-    #[ORM\Column]
     #[Assert\NotBlank]
     #[Assert\Url]
+    #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
+    #[ORM\Column]
     private $sourceUrl;
 
     /**
      * @var bool
      */
+    #[Assert\Type('bool')]
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
-    #[Assert\Type('bool')]
     private $withNotification;
 
     /**
      * @var bool
      */
+    #[Assert\Type('bool')]
     #[Groups(['riposte_list_read', 'riposte_read', 'riposte_write'])]
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
-    #[Assert\Type('bool')]
     private $enabled;
 
     /**

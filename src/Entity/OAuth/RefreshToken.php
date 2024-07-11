@@ -6,8 +6,8 @@ use App\Repository\OAuth\RefreshTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'oauth_refresh_tokens')]
 #[ORM\Entity(repositoryClass: RefreshTokenRepository::class)]
+#[ORM\Table(name: 'oauth_refresh_tokens')]
 class RefreshToken extends AbstractToken
 {
     #[ORM\JoinColumn(onDelete: 'CASCADE')]

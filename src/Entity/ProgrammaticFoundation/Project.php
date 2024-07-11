@@ -12,8 +12,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'programmatic_foundation_project')]
 #[ORM\Entity]
+#[ORM\Table(name: 'programmatic_foundation_project')]
 #[UniqueEntity(fields: ['position', 'measure'], message: 'programmatic_foundation.unique_position.project', errorPath: 'position')]
 class Project
 {
@@ -32,33 +32,33 @@ class Project
         self::CITY_OTHER,
     ];
 
+    #[Assert\GreaterThan(value: 0, message: 'programmatic_foundation.position.greater_than_zero')]
     #[Groups(['approach_list_read'])]
     #[ORM\Column(type: 'smallint')]
-    #[Assert\GreaterThan(value: 0, message: 'programmatic_foundation.position.greater_than_zero')]
     private $position;
 
+    #[Assert\NotBlank(message: 'programmatic_foundation.title.not_empty')]
     #[Groups(['approach_list_read'])]
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'programmatic_foundation.title.not_empty')]
     private $title;
 
+    #[Assert\NotBlank(message: 'programmatic_foundation.content.not_empty')]
     #[Groups(['approach_list_read'])]
     #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank(message: 'programmatic_foundation.content.not_empty')]
     private $content;
 
+    #[Assert\Choice(choices: Project::CITY_TYPES)]
+    #[Assert\NotBlank(message: 'programmatic_foundation.city.not_empty')]
     #[Groups(['approach_list_read'])]
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'programmatic_foundation.city.not_empty')]
-    #[Assert\Choice(choices: Project::CITY_TYPES)]
     private $city;
 
     #[Groups(['approach_list_read'])]
     #[ORM\Column(type: 'boolean')]
     private $isExpanded;
 
-    #[ORM\ManyToOne(targetEntity: Measure::class, inversedBy: 'projects')]
     #[Assert\NotNull(message: 'programmatic_foundation.parent.required.project')]
+    #[ORM\ManyToOne(targetEntity: Measure::class, inversedBy: 'projects')]
     private $measure;
 
     #[Groups(['approach_list_read'])]

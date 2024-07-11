@@ -5,8 +5,8 @@ namespace App\Entity\Geo;
 use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'geo_borough')]
 #[ORM\Entity]
+#[ORM\Table(name: 'geo_borough')]
 class Borough implements ZoneableInterface
 {
     use GeoTrait;

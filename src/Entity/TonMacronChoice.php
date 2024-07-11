@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'ton_macron_choices')]
 #[ORM\Entity(repositoryClass: TonMacronChoiceRepository::class)]
+#[ORM\Table(name: 'ton_macron_choices')]
 class TonMacronChoice
 {
     use EntityIdentityTrait;

@@ -36,9 +36,9 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
     /**
      * @var UserDocument[]|Collection
      */
-    #[ORM\JoinTable(name: 'event_user_documents')]
-    #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'user_document_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinTable(name: 'event_user_documents')]
     #[ORM\ManyToMany(targetEntity: UserDocument::class, cascade: ['persist'])]
     protected Collection $documents;
 

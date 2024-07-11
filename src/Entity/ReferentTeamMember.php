@@ -6,13 +6,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'referent_team_member')]
 #[ORM\Entity]
+#[ORM\Table(name: 'referent_team_member')]
 class ReferentTeamMember
 {
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

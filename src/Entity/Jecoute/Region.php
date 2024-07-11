@@ -16,8 +16,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'jecoute_region')]
 #[ORM\Entity(repositoryClass: RegionRepository::class)]
+#[ORM\Table(name: 'jecoute_region')]
 #[UniqueEntity(fields: ['zone'], message: 'jecoute_region.zone.not_unique')]
 class Region
 {
@@ -30,8 +30,8 @@ class Region
      * @var int|null
      */
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
@@ -43,35 +43,35 @@ class Region
     /**
      * @var string|null
      */
-    #[Groups(['jecoute_region_read'])]
-    #[ORM\Column]
     #[Assert\Length(max: 120)]
     #[Assert\NotBlank]
+    #[Groups(['jecoute_region_read'])]
+    #[ORM\Column]
     protected $subtitle;
 
     /**
      * @var string|null
      */
+    #[Assert\NotBlank]
     #[Groups(['jecoute_region_read'])]
     #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank]
     private $description;
 
     /**
      * @var string|null
      */
-    #[Groups(['jecoute_region_read'])]
-    #[ORM\Column]
     #[Assert\Choice(callback: [RegionColorEnum::class, 'all'])]
     #[Assert\NotBlank]
+    #[Groups(['jecoute_region_read'])]
+    #[ORM\Column]
     protected $primaryColor;
 
     /**
      * @var string|null
      */
+    #[Assert\Url]
     #[Groups(['jecoute_region_read'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Url]
     protected $externalLink;
 
     /**
@@ -103,16 +103,16 @@ class Region
     /**
      * @var Zone|null
      */
+    #[Assert\NotBlank]
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\OneToOne(targetEntity: Zone::class)]
-    #[Assert\NotBlank]
     private $zone;
 
     /**
      * @var bool
      */
-    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     #[Assert\Type('bool')]
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $enabled;
 
     /**

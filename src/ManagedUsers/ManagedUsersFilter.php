@@ -27,12 +27,12 @@ class ManagedUsersFilter
     #[Groups(['filter_write'])]
     public ?int $ageMax = null;
 
-    #[Groups(['filter_write'])]
     #[Assert\Length(max: 255)]
+    #[Groups(['filter_write'])]
     public ?string $firstName = null;
 
-    #[Groups(['filter_write'])]
     #[Assert\Length(max: 255)]
+    #[Groups(['filter_write'])]
     public ?string $lastName = null;
 
     #[Assert\Length(max: 255)]
@@ -56,23 +56,23 @@ class ManagedUsersFilter
 
     public ?bool $includeCommitteeHosts = null;
 
-    #[Groups(['filter_write'])]
     #[Assert\Choice(callback: [TagEnum::class, 'getAdherentTags'])]
+    #[Groups(['filter_write'])]
     public ?string $adherentTags = null;
 
-    #[Groups(['filter_write'])]
     #[Assert\Choice(callback: [TagEnum::class, 'getElectTags'])]
+    #[Groups(['filter_write'])]
     public ?string $electTags = null;
 
     #[Groups(['filter_write'])]
     public ?string $staticTags = null;
 
-    #[Groups(['filter_write'])]
     #[Assert\Choice(choices: MandateTypeEnum::ALL, multiple: true)]
+    #[Groups(['filter_write'])]
     public array $mandates = [];
 
-    #[Groups(['filter_write'])]
     #[Assert\Choice(choices: MandateTypeEnum::ALL, multiple: true)]
+    #[Groups(['filter_write'])]
     public array $declaredMandates = [];
 
     /**
@@ -95,12 +95,12 @@ class ManagedUsersFilter
 
     public ?string $subscriptionType;
 
-    #[Assert\NotBlank]
     #[Assert\Choice(choices: ['createdAt', 'lastName'])]
+    #[Assert\NotBlank]
     public string $sort = 'createdAt';
 
-    #[Assert\NotBlank]
     #[Assert\Choice(choices: ['a', 'd'])]
+    #[Assert\NotBlank]
     public string $order = 'd';
 
     public ?Committee $committee = null;
@@ -121,8 +121,8 @@ class ManagedUsersFilter
     #[Groups(['filter_write'])]
     public ?bool $isCertified = null;
 
-    #[Groups(['filter_write'])]
     #[Assert\Choice(choices: RenaissanceMembershipFilterEnum::CHOICES)]
+    #[Groups(['filter_write'])]
     public ?string $renaissanceMembership = null;
 
     #[Groups(['filter_write'])]

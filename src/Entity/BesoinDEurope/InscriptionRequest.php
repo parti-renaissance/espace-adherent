@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'besoindeurope_inscription_requests')]
 #[ORM\Entity]
+#[ORM\Table(name: 'besoindeurope_inscription_requests')]
 class InscriptionRequest
 {
     use EntityIdentityTrait;

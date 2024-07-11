@@ -15,18 +15,18 @@ abstract class AbstractMembershipRequest implements MembershipInterface
     /**
      * @BannedAdherent
      */
-    #[Groups(['membership:write'])]
-    #[Assert\NotBlank]
     #[Assert\Email(message: 'common.email.invalid')]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[Assert\NotBlank]
+    #[Groups(['membership:write'])]
     protected ?string $emailAddress = null;
 
-    #[Groups(['membership:write'])]
     #[Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length')]
+    #[Groups(['membership:write'])]
     public ?string $firstName = null;
 
-    #[Groups(['membership:write'])]
     #[Assert\IsTrue(message: 'common.cgu.not_accepted', groups: ['Default', 'membership_request_amount'])]
+    #[Groups(['membership:write'])]
     public bool $cguAccepted = false;
 
     #[Groups(['membership:write'])]

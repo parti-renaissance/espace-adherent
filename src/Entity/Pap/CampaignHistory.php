@@ -75,8 +75,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(DateFilter::class, properties={"createdAt", "beginAt"})
  * @ApiFilter(OrderFilter::class, properties={"createdAt"})
  */
-#[ORM\Table(name: 'pap_campaign_history')]
 #[ORM\Entity(repositoryClass: CampaignHistoryRepository::class)]
+#[ORM\Table(name: 'pap_campaign_history')]
 class CampaignHistory implements DataSurveyAwareInterface
 {
     use DataSurveyAwareTrait;
@@ -88,22 +88,22 @@ class CampaignHistory implements DataSurveyAwareInterface
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private ?Adherent $questioner = null;
 
+    #[Assert\NotNull]
     #[Groups(['pap_campaign_history_write', 'pap_campaign_history_read_list'])]
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Campaign::class, inversedBy: 'campaignHistories')]
-    #[Assert\NotNull]
     private ?Campaign $campaign = null;
 
+    #[Assert\NotNull]
     #[Groups(['pap_campaign_history_write', 'pap_campaign_history_read_list'])]
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Building::class)]
-    #[Assert\NotNull]
     private ?Building $building = null;
 
+    #[Assert\Choice(choices: CampaignHistoryStatusEnum::ALL, message: 'pap.campaign_history.status.invalid_choice')]
+    #[Assert\NotNull]
     #[Groups(['pap_campaign_history_read', 'pap_campaign_history_write', 'pap_campaign_history_read_list'])]
     #[ORM\Column(length: 25)]
-    #[Assert\NotNull]
-    #[Assert\Choice(choices: CampaignHistoryStatusEnum::ALL, message: 'pap.campaign_history.status.invalid_choice')]
     private ?string $status = null;
 
     #[Groups(['pap_campaign_history_write', 'pap_building_history', 'pap_campaign_history_read_list'])]
@@ -126,25 +126,25 @@ class CampaignHistory implements DataSurveyAwareInterface
     #[ORM\Column(nullable: true)]
     private ?string $lastName = null;
 
-    #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list'])]
-    #[ORM\Column(nullable: true)]
     #[Assert\Email]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list'])]
+    #[ORM\Column(nullable: true)]
     private ?string $emailAddress = null;
 
+    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice')]
     #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list'])]
     #[ORM\Column(length: 15, nullable: true)]
-    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice')]
     private ?string $gender = null;
 
+    #[Assert\Choice(callback: [AgeRangeEnum::class, 'all'])]
     #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list'])]
     #[ORM\Column(length: 15, nullable: true)]
-    #[Assert\Choice(callback: [AgeRangeEnum::class, 'all'])]
     private ?string $ageRange = null;
 
+    #[Assert\Choice(callback: [ProfessionEnum::class, 'all'])]
     #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list'])]
     #[ORM\Column(length: 30, nullable: true)]
-    #[Assert\Choice(callback: [ProfessionEnum::class, 'all'])]
     private ?string $profession = null;
 
     #[Groups(['pap_campaign_history_write'])]
@@ -163,18 +163,18 @@ class CampaignHistory implements DataSurveyAwareInterface
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $toJoin = null;
 
+    #[Assert\NotBlank]
     #[Groups(['pap_campaign_history_write', 'pap_campaign_replies_list', 'survey_replies_list'])]
     #[ORM\Column(type: 'datetime')]
-    #[Assert\NotBlank]
     private ?\DateTimeInterface $beginAt = null;
 
     #[Groups(['pap_campaign_replies_list', 'survey_replies_list'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $finishAt = null;
 
+    #[Assert\Valid]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\OneToOne(inversedBy: 'papCampaignHistory', targetEntity: DataSurvey::class, cascade: ['persist'], orphanRemoval: true)]
-    #[Assert\Valid]
     private ?DataSurvey $dataSurvey = null;
 
     public function __construct(?UuidInterface $uuid = null)

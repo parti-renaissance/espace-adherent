@@ -7,8 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'geo_city_community')]
 #[ORM\Entity]
+#[ORM\Table(name: 'geo_city_community')]
 class CityCommunity implements ZoneableInterface
 {
     use GeoTrait;

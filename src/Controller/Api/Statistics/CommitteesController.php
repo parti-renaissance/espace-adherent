@@ -11,8 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/statistics/committees')]
 #[IsGranted('ROLE_OAUTH_SCOPE_READ:STATS')]
+#[Route(path: '/statistics/committees')]
 class CommitteesController extends AbstractStatisticsController
 {
     #[Route(path: '/count-for-referent-area', name: 'app_statistics_committees_count_for_referent_area', methods: ['GET'])]

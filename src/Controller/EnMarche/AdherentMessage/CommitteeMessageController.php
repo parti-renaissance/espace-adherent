@@ -28,8 +28,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/espace-animateur/{committee_slug}/messagerie', name: 'app_message_committee_')]
 #[ParamConverter('committee', options: ['mapping' => ['committee_slug' => 'slug']])]
+#[Route(path: '/espace-animateur/{committee_slug}/messagerie', name: 'app_message_committee_')]
 #[Security("is_granted('HOST_COMMITTEE', committee) and committee.isApproved()")]
 class CommitteeMessageController extends AbstractController
 {
@@ -104,8 +104,8 @@ class CommitteeMessageController extends AbstractController
         return $this->renderTemplate('message/create.html.twig', $committee, ['form' => $form->createView()]);
     }
 
-    #[Route(path: '/{uuid}/modifier', requirements: ['uuid' => '%pattern_uuid%'], name: 'update', methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
+    #[Route(path: '/{uuid}/modifier', requirements: ['uuid' => '%pattern_uuid%'], name: 'update', methods: ['GET', 'POST'])]
     public function updateMessageAction(
         Request $request,
         CommitteeAdherentMessage $message,
@@ -142,8 +142,8 @@ class CommitteeMessageController extends AbstractController
         return $this->renderTemplate('message/update.html.twig', $committee, ['form' => $form->createView()]);
     }
 
-    #[Route(path: '/{uuid}/filtrer', name: 'filter', methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
+    #[Route(path: '/{uuid}/filtrer', name: 'filter', methods: ['GET', 'POST'])]
     public function filterMessageAction(
         Request $request,
         CommitteeAdherentMessage $message,
@@ -194,8 +194,8 @@ class CommitteeMessageController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{uuid}/visualiser', name: 'preview', methods: ['GET'])]
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
+    #[Route(path: '/{uuid}/visualiser', name: 'preview', methods: ['GET'])]
     public function previewMessageAction(CommitteeAdherentMessage $message, Committee $committee): Response
     {
         if (!$message->isSynchronized()) {
@@ -205,8 +205,8 @@ class CommitteeMessageController extends AbstractController
         return $this->renderTemplate('message/preview.html.twig', $committee, ['message' => $message]);
     }
 
-    #[Route(path: '/{uuid}/supprimer', name: 'delete', methods: ['GET'])]
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
+    #[Route(path: '/{uuid}/supprimer', name: 'delete', methods: ['GET'])]
     public function deleteMessageAction(
         CommitteeAdherentMessage $message,
         ObjectManager $manager,
@@ -220,8 +220,8 @@ class CommitteeMessageController extends AbstractController
         return $this->redirectToRoute('app_message_committee_list', ['committee_slug' => $committee->getSlug()]);
     }
 
-    #[Route(path: '/{uuid}/send', name: 'send', methods: ['GET'])]
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
+    #[Route(path: '/{uuid}/send', name: 'send', methods: ['GET'])]
     public function sendMessageAction(
         CommitteeAdherentMessage $message,
         AdherentMessageManager $manager,
@@ -277,8 +277,8 @@ class CommitteeMessageController extends AbstractController
         return $this->redirectToRoute('app_message_committee_list', ['committee_slug' => $committee->getSlug()]);
     }
 
-    #[Route(path: '/{uuid}/tester', name: 'test', methods: ['GET'])]
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
+    #[Route(path: '/{uuid}/tester', name: 'test', methods: ['GET'])]
     public function sendTestMessageAction(
         CommitteeAdherentMessage $message,
         Manager $manager,

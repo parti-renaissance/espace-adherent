@@ -7,8 +7,8 @@ use App\Repository\OAuth\AuthorizationCodeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'oauth_auth_codes')]
 #[ORM\Entity(repositoryClass: AuthorizationCodeRepository::class)]
+#[ORM\Table(name: 'oauth_auth_codes')]
 class AuthorizationCode extends AbstractGrantToken
 {
     #[ORM\Column(type: 'text')]

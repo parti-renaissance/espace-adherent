@@ -8,8 +8,8 @@ use App\Pap\BuildingStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
-#[ORM\Table(name: 'pap_building_block_statistics')]
 #[ORM\Entity]
+#[ORM\Table(name: 'pap_building_block_statistics')]
 class BuildingBlockStatistics implements CampaignStatisticsInterface
 {
     use EntityIdentityTrait;

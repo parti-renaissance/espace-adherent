@@ -15,9 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/espace-adherent/formations/{uuid}/contenu', name: 'app_renaissance_adherent_formation_content', methods: ['GET'])]
 #[Entity('formation', expr: 'repository.findOnePublished(uuid)')]
 #[IsGranted('RENAISSANCE_ADHERENT')]
+#[Route(path: '/espace-adherent/formations/{uuid}/contenu', name: 'app_renaissance_adherent_formation_content', methods: ['GET'])]
 class ContentController extends AbstractController
 {
     public function __construct(

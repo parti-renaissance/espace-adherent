@@ -36,8 +36,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-#[ORM\Table(name: 'devices')]
 #[ORM\Entity(repositoryClass: DeviceRepository::class)]
+#[ORM\Table(name: 'devices')]
 class Device
 {
     use EntityIdentityTrait;
@@ -65,9 +65,9 @@ class Device
     /**
      * @var string|null
      */
+    #[Assert\Length(max: 15)]
     #[Groups(['user_profile', 'device_write'])]
     #[ORM\Column(length: 15, nullable: true)]
-    #[Assert\Length(max: 15)]
     private $postalCode;
 
     /**

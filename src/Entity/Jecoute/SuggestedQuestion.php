@@ -5,8 +5,8 @@ namespace App\Entity\Jecoute;
 use App\Repository\Jecoute\SuggestedQuestionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'jecoute_suggested_question')]
 #[ORM\Entity(repositoryClass: SuggestedQuestionRepository::class)]
+#[ORM\Table(name: 'jecoute_suggested_question')]
 class SuggestedQuestion extends Question
 {
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

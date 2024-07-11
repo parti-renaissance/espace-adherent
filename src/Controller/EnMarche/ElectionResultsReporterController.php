@@ -11,8 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/espace-rapporteur-resultats', name: 'app_election_results_reporter_space')]
 #[IsGranted('ROLE_ELECTION_RESULTS_REPORTER')]
+#[Route(path: '/espace-rapporteur-resultats', name: 'app_election_results_reporter_space')]
 class ElectionResultsReporterController extends AbstractController
 {
     #[Route(path: '/communes', name: '_cities_list', methods: ['GET'])]

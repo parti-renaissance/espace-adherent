@@ -9,8 +9,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'board_member')]
 #[ORM\Entity(repositoryClass: BoardMemberRepository::class)]
+#[ORM\Table(name: 'board_member')]
 class BoardMember
 {
     public const AREA_FRANCE_METROPOLITAN = 'metropolitan';
@@ -24,8 +24,8 @@ class BoardMember
     ];
 
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
@@ -35,28 +35,28 @@ class BoardMember
     /**
      * @var string
      */
-    #[ORM\Column(length: 50)]
-    #[Assert\NotBlank(message: 'board_member.area.invalid_choice', groups: ['elections'])]
     #[Assert\Choice(callback: [BoardMember::class, 'getAreas'], message: 'board_member.area.invalid_choice')]
+    #[Assert\NotBlank(message: 'board_member.area.invalid_choice', groups: ['elections'])]
+    #[ORM\Column(length: 50)]
     private $area;
 
     /**
      * @var Role[]|Collection
      */
-    #[ORM\JoinTable(name: 'board_member_roles')]
-    #[ORM\JoinColumn(name: 'board_member_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[Assert\NotNull]
     #[ORM\InverseJoinColumn(name: 'role_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'board_member_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinTable(name: 'board_member_roles')]
     #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'boardMembers', cascade: ['persist'])]
     #[ORM\OrderBy(['name' => 'ASC'])]
-    #[Assert\NotNull]
     private $roles;
 
     /**
      * @var BoardMember[]|Collection
      */
-    #[ORM\JoinTable(name: 'saved_board_members')]
-    #[ORM\JoinColumn(name: 'board_member_owner_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'board_member_saved_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'board_member_owner_id', referencedColumnName: 'id')]
+    #[ORM\JoinTable(name: 'saved_board_members')]
     #[ORM\ManyToMany(targetEntity: BoardMember::class, inversedBy: 'owners', cascade: ['persist'])]
     private $savedMembers;
 

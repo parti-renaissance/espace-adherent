@@ -11,23 +11,23 @@ class DonatorKinship
     /**
      * The unique auto incremented primary key.
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Id]
     private $id;
 
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Donator::class, inversedBy: 'kinships')]
     private $donator;
 
+    #[Assert\NotBlank(message: 'Veuillez spécifier un Donateur à associer.')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Donator::class)]
-    #[Assert\NotBlank(message: 'Veuillez spécifier un Donateur à associer.')]
     private $related;
 
-    #[ORM\Column(length: 100, nullable: false)]
-    #[Assert\NotBlank(message: 'Veuillez spécifier un lien de parenté.')]
     #[Assert\Length(min: 2, max: 100)]
+    #[Assert\NotBlank(message: 'Veuillez spécifier un lien de parenté.')]
+    #[ORM\Column(length: 100, nullable: false)]
     private $kinship;
 
     public function __construct(?Donator $donator = null, ?Donator $related = null, ?string $kinship = null)

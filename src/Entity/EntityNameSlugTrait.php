@@ -12,9 +12,9 @@ trait EntityNameSlugTrait
     /**
      * @var string
      */
+    #[Assert\NotBlank(groups: ['api_committee_edition'])]
     #[Groups(['adherent_committees_modal', 'jecoute_region_read', 'cause_read', 'cause_write', 'event_read', 'committee:list', 'committee:write', 'committee:write_limited', 'national_event_inscription:webhook'])]
     #[ORM\Column]
-    #[Assert\NotBlank(groups: ['api_committee_edition'])]
     protected $name;
 
     /**
@@ -26,9 +26,9 @@ trait EntityNameSlugTrait
     /**
      * @var string
      */
+    #[Gedmo\Slug(fields: ['canonicalName'])]
     #[Groups(['adherent_committees_modal', 'jecoute_region_read', 'cause_read', 'event_list_read', 'event_read'])]
     #[ORM\Column]
-    #[Gedmo\Slug(fields: ['canonicalName'])]
     protected $slug;
 
     public function getName(): string

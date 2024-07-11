@@ -21,8 +21,8 @@ abstract class AbstractEmailExtractCommand
     /**
      * @var string[]|array
      */
-    #[Assert\NotBlank]
     #[Assert\Choice(callback: 'getFieldChoices', multiple: true)]
+    #[Assert\NotBlank]
     private $fields = [];
 
     public function getEmails(): array

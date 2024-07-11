@@ -17,37 +17,37 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @SurveyQuestionTypeChoice
  */
-#[ORM\Table(name: 'jecoute_question')]
-#[ORM\Entity]
-#[InheritanceType('JOINED')]
 #[DiscriminatorColumn(name: 'discr', type: 'string')]
 #[DiscriminatorMap(['question' => Question::class, 'suggested_question' => SuggestedQuestion::class])]
+#[InheritanceType('JOINED')]
+#[ORM\Entity]
+#[ORM\Table(name: 'jecoute_question')]
 class Question
 {
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
     #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     private $content;
 
+    #[Assert\Choice(callback: [SurveyQuestionTypeEnum::class, 'all'])]
+    #[Assert\NotBlank]
     #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Choice(callback: [SurveyQuestionTypeEnum::class, 'all'])]
     private $type;
 
     /**
      * @var Choice[]|Collection
      */
+    #[Assert\Valid]
     #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: Choice::class, cascade: ['all'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
-    #[Assert\Valid]
     private $choices;
 
     public function __construct(?string $content = null, ?string $type = null)

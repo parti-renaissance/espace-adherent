@@ -69,25 +69,25 @@ class DepartmentSite
     use UnlayerJsonContentTrait;
     use EntityTimestampableTrait;
 
+    #[Assert\NotBlank]
     #[Groups(['department_site_read', 'department_site_write'])]
     #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank]
     private ?string $content = null;
 
     /**
      * @AssertZoneInScopeZones
      */
+    #[Assert\Expression("value and (value.getType() === constant('App\\\\Entity\\\\Geo\\\\Zone::DEPARTMENT') or (value.getType() === constant('App\\\\Entity\\\\Geo\\\\Zone::CUSTOM') and value.getCode() === constant('App\\\\Entity\\\\Geo\\\\Zone::FDE_CODE')))", message: 'department_site.zone.type.not_valid')]
+    #[Assert\NotBlank]
     #[Groups(['department_site_read', 'department_site_read_list', 'department_site_write'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\OneToOne(targetEntity: Zone::class)]
-    #[Assert\NotBlank]
-    #[Assert\Expression("value and (value.getType() === constant('App\\\\Entity\\\\Geo\\\\Zone::DEPARTMENT') or (value.getType() === constant('App\\\\Entity\\\\Geo\\\\Zone::CUSTOM') and value.getCode() === constant('App\\\\Entity\\\\Geo\\\\Zone::FDE_CODE')))", message: 'department_site.zone.type.not_valid')]
     private ?Zone $zone = null;
 
-    #[ORM\Column(unique: true)]
-    #[Groups(['department_site_read', 'department_site_read_list', 'department_site_post_write'])]
     #[Gedmo\Slug(fields: ['content'])]
     #[Gedmo\SlugHandler(class: DepartmentSiteSlugHandler::class)]
+    #[Groups(['department_site_read', 'department_site_read_list', 'department_site_post_write'])]
+    #[ORM\Column(unique: true)]
     private ?string $slug = null;
 
     public function __construct(?UuidInterface $uuid = null)

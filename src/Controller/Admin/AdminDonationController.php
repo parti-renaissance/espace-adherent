@@ -10,8 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/donation')]
 #[IsGranted('ROLE_ADMIN_FINANCE')]
+#[Route(path: '/donation')]
 class AdminDonationController extends AbstractController
 {
     #[Route(path: '/file/{id}', name: 'app_admin_donation_file', methods: 'GET')]

@@ -7,16 +7,16 @@ use App\Entity\AlgoliaIndexedEntityInterface;
 use App\Repository\Timeline\ProfileRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'timeline_profiles')]
 #[ORM\Entity(repositoryClass: ProfileRepository::class)]
+#[ORM\Table(name: 'timeline_profiles')]
 class Profile extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {
     /**
      * @var int
      */
     #[ORM\Column(type: 'bigint')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     public function __toString(): string

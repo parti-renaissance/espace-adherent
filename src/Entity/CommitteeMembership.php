@@ -15,11 +15,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * Each instance of CommitteeMembership means an Adherent is a member of a Committee.
  */
-#[ORM\Table(name: 'committees_memberships')]
+#[ORM\Entity(repositoryClass: CommitteeMembershipRepository::class)]
 #[ORM\Index(columns: ['privilege'], name: 'committees_memberships_role_idx')]
+#[ORM\Table(name: 'committees_memberships')]
 #[ORM\UniqueConstraint(name: 'adherent_has_joined_committee', columns: ['adherent_id', 'committee_id'])]
 #[ORM\UniqueConstraint(name: 'adherent_votes_in_committee', columns: ['adherent_id', 'enable_vote'])]
-#[ORM\Entity(repositoryClass: CommitteeMembershipRepository::class)]
 class CommitteeMembership implements UuidEntityInterface
 {
     use EntityIdentityTrait;

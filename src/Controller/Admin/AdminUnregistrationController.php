@@ -16,8 +16,8 @@ class AdminUnregistrationController extends AbstractController
 {
     public const PER_PAGE = 1000;
 
-    #[Route(path: '/export', name: 'app_admin_unregistration_export', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN_UNREGISTRATIONS')]
+    #[Route(path: '/export', name: 'app_admin_unregistration_export', methods: ['GET'])]
     public function exportUnregistrationsAction(UnregistrationRepository $repository): Response
     {
         return $this->render('admin/adherent/unregistration_export.html.twig', [
@@ -33,8 +33,8 @@ class AdminUnregistrationController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/export/partial', name: 'app_admin_unregistration_export_partial', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN_UNREGISTRATIONS')]
+    #[Route(path: '/export/partial', name: 'app_admin_unregistration_export_partial', methods: ['GET'])]
     public function exportUnregistrationsPartialAction(
         Request $request,
         UnregistrationRepository $repository,

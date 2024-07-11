@@ -39,11 +39,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     "type": "exact"
  * })
  */
-#[ORM\Table(name: 'geo_zone')]
-#[ORM\Index(columns: ['type'])]
-#[ORM\UniqueConstraint(name: 'geo_zone_code_type_unique', columns: ['code', 'type'])]
-#[ORM\Entity(repositoryClass: ZoneRepository::class)]
 #[ORM\AttributeOverrides([new ORM\AttributeOverride(name: 'code', column: new ORM\Column(unique: false))])]
+#[ORM\Entity(repositoryClass: ZoneRepository::class)]
+#[ORM\Index(columns: ['type'])]
+#[ORM\Table(name: 'geo_zone')]
+#[ORM\UniqueConstraint(name: 'geo_zone_code_type_unique', columns: ['code', 'type'])]
 class Zone implements GeoInterface, UuidEntityInterface
 {
     use GeoTrait;
@@ -135,9 +135,9 @@ class Zone implements GeoInterface, UuidEntityInterface
     /**
      * @var Collection|self[]
      */
-    #[ORM\JoinTable(name: 'geo_zone_parent')]
-    #[ORM\JoinColumn(name: 'child_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'parent_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'child_id', referencedColumnName: 'id')]
+    #[ORM\JoinTable(name: 'geo_zone_parent')]
     #[ORM\ManyToMany(targetEntity: Zone::class, inversedBy: 'children')]
     private $parents;
 

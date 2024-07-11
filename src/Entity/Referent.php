@@ -23,35 +23,35 @@ class Referent implements EntityMediaInterface
     public const DISABLED = 'DISABLED';
 
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
-    #[ORM\Column(length: 6)]
-    #[Assert\NotBlank(groups: ['Admin'])]
     #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice', groups: ['Admin'])]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[ORM\Column(length: 6)]
     private $gender;
 
-    #[ORM\Column(length: 100, nullable: true)]
     #[Assert\Email(groups: ['Admin'])]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['Admin'])]
+    #[ORM\Column(length: 100, nullable: true)]
     private $emailAddress;
 
-    #[ORM\Column(length: 100, unique: true)]
     #[Assert\Regex(pattern: '/^[a-z0-9-]+$/', message: 'legislative_candidate.slug.invalid', groups: ['Admin'])]
     #[Gedmo\Slug(fields: ['firstName', 'lastName'])]
+    #[ORM\Column(length: 100, unique: true)]
     private $slug;
 
-    #[ORM\Column(nullable: true)]
-    #[Assert\Url(groups: ['Admin'])]
-    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?facebook.com\/#', message: 'legislative_candidate.facebook_page_url.invalid', groups: ['Admin'])]
     #[Assert\Length(max: 255, groups: ['Admin'])]
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?facebook.com\/#', message: 'legislative_candidate.facebook_page_url.invalid', groups: ['Admin'])]
+    #[Assert\Url(groups: ['Admin'])]
+    #[ORM\Column(nullable: true)]
     private $facebookPageUrl;
 
-    #[ORM\Column(nullable: true)]
-    #[Assert\Url(groups: ['Admin'])]
-    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?twitter.com\/#', message: 'legislative_candidate.twitter_page_url.invalid', groups: ['Admin'])]
     #[Assert\Length(max: 255, groups: ['Admin'])]
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?twitter.com\/#', message: 'legislative_candidate.twitter_page_url.invalid', groups: ['Admin'])]
+    #[Assert\Url(groups: ['Admin'])]
+    #[ORM\Column(nullable: true)]
     private $twitterPageUrl;
 
     #[ORM\Column(type: 'text', nullable: true)]
@@ -60,18 +60,18 @@ class Referent implements EntityMediaInterface
     #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     private $areaLabel = '';
 
     /**
      * @var ReferentArea[]|Collection
      */
-    #[ORM\JoinTable(name: 'referent_areas')]
-    #[ORM\JoinColumn(name: 'referent_id', referencedColumnName: 'id')]
-    #[ORM\InverseJoinColumn(name: 'area_id', referencedColumnName: 'id')]
-    #[ORM\ManyToMany(targetEntity: ReferentArea::class, fetch: 'EAGER')]
     #[Assert\Count(min: 1, groups: ['Admin'])]
+    #[ORM\InverseJoinColumn(name: 'area_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'referent_id', referencedColumnName: 'id')]
+    #[ORM\JoinTable(name: 'referent_areas')]
+    #[ORM\ManyToMany(targetEntity: ReferentArea::class, fetch: 'EAGER')]
     private $areas;
 
     #[ORM\Column(length: 10, options: ['default' => 'DISABLED'])]

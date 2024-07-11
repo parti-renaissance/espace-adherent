@@ -6,24 +6,24 @@ use App\Entity\EntityTimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'mooc_attachment_link')]
 #[ORM\Entity]
+#[ORM\Table(name: 'mooc_attachment_link')]
 class AttachmentLink
 {
     use EntityTimestampableTrait;
 
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $title;
 
-    #[ORM\Column]
     #[Assert\Url]
+    #[ORM\Column]
     private $link;
 
     public function __construct(?string $title = null, ?string $link = null)

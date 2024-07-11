@@ -32,6 +32,8 @@ return (new PhpCsFixer\Config())
         'array_syntax' => ['syntax' => 'short'],
         'ordered_imports' => ['sort_algorithm' => 'alpha'],
         'App/doctrine_migration_clean' => true,
+        'attribute_empty_parentheses' => true,
+        'ordered_attributes' => true,
     ])
     ->setRiskyAllowed(true)
     ->setFinder($finder)

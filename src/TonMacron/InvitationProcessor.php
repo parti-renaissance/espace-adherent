@@ -40,18 +40,18 @@ final class InvitationProcessor
         self::TRANSITION_SEND,
     ];
 
+    #[Assert\Length(max: 50, groups: ['fill_info'])]
     #[Assert\NotBlank(groups: ['fill_info'])]
     #[Assert\Type('string', groups: ['fill_info'])]
-    #[Assert\Length(max: 50, groups: ['fill_info'])]
     public $friendFirstName = '';
 
     #[Assert\NotBlank(groups: ['fill_info'])]
-    #[Assert\Type('integer', groups: ['fill_info'])]
     #[Assert\Range(min: 17, groups: ['fill_info'])]
+    #[Assert\Type('integer', groups: ['fill_info'])]
     public $friendAge = 0;
 
-    #[Assert\NotBlank(groups: ['fill_info'])]
     #[Assert\Choice(callback: [Genders::class, 'all'], groups: ['fill_info'])]
+    #[Assert\NotBlank(groups: ['fill_info'])]
     public $friendGender;
 
     /**
@@ -80,33 +80,33 @@ final class InvitationProcessor
     #[Assert\Count(min: 2, max: 2, exactMessage: 'ton_macron.invitation.self_reasons.count', groups: ['fill_reasons'])]
     public $selfReasons;
 
+    #[Assert\Length(max: 100, groups: ['send'])]
     #[Assert\NotBlank(groups: ['send'])]
     #[Assert\Type('string', groups: ['send'])]
-    #[Assert\Length(max: 100, groups: ['send'])]
     public $messageSubject = '';
 
     #[Assert\NotBlank(groups: ['send'])]
     #[Assert\Type('string', groups: ['send'])]
     public $messageContent = '';
 
+    #[Assert\Length(max: 50, groups: ['send'])]
     #[Assert\NotBlank(groups: ['send'])]
     #[Assert\Type('string', groups: ['send'])]
-    #[Assert\Length(max: 50, groups: ['send'])]
     public $selfFirstName = '';
 
+    #[Assert\Length(max: 50, groups: ['send'])]
     #[Assert\NotBlank(groups: ['send'])]
     #[Assert\Type('string', groups: ['send'])]
-    #[Assert\Length(max: 50, groups: ['send'])]
     public $selfLastName = '';
 
-    #[Assert\NotBlank(groups: ['send'])]
     #[Assert\Email(groups: ['send'])]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['send'])]
+    #[Assert\NotBlank(groups: ['send'])]
     public $selfEmail = '';
 
-    #[Assert\NotBlank(groups: ['send'])]
     #[Assert\Email(groups: ['send'])]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['send'])]
+    #[Assert\NotBlank(groups: ['send'])]
     public $friendEmail = '';
 
     /**

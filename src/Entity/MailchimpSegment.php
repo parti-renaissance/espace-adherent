@@ -19,9 +19,9 @@ class MailchimpSegment
     /**
      * @var int
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

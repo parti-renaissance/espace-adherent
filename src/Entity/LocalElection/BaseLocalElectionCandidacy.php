@@ -22,17 +22,17 @@ abstract class BaseLocalElectionCandidacy extends BaseCandidacy
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private ?Adherent $adherent = null;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     private ?string $firstName = null;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     private ?string $lastName = null;
 
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Email]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private ?string $email = null;
 
     public function __construct(?LocalElection $election = null, ?string $gender = null, ?UuidInterface $uuid = null)

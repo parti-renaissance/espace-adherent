@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'medias')]
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
+#[ORM\Table(name: 'medias')]
 #[UniqueEntity(fields: ['path'])]
 class Media
 {
@@ -19,24 +19,24 @@ class Media
      * @var int
      */
     #[ORM\Column(type: 'bigint')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $name;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(unique: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column(unique: true)]
     private $path;
 
     /**
@@ -66,15 +66,15 @@ class Media
     /**
      * @var \DateTime
      */
-    #[ORM\Column(type: 'datetime')]
     #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     /**
      * @var \DateTime
      */
-    #[ORM\Column(type: 'datetime')]
     #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]

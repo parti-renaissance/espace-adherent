@@ -15,15 +15,15 @@ class ListFilter
     /**
      * @var string|null
      */
-    #[Groups(['filter_write'])]
     #[Assert\Length(max: 255)]
+    #[Groups(['filter_write'])]
     private $firstName;
 
     /**
      * @var string|null
      */
-    #[Groups(['filter_write'])]
     #[Assert\Length(max: 255)]
+    #[Groups(['filter_write'])]
     private $lastName;
 
     /**
@@ -82,26 +82,26 @@ class ListFilter
     /**
      * @var Zone[]
      */
-    #[Groups(['filter_write'])]
     #[Assert\NotNull]
+    #[Groups(['filter_write'])]
     private $zones = [];
 
     /**
      * @var string
      */
-    #[Assert\NotBlank]
     #[Assert\Choice(choices: ['lastName'])]
+    #[Assert\NotBlank]
     private $sort = 'lastName';
 
     /**
      * @var string
      */
-    #[Assert\NotBlank]
     #[Assert\Choice(choices: ['a', 'd'])]
+    #[Assert\NotBlank]
     private $order = 'a';
 
-    #[Groups(['filter_write'])]
     #[Assert\Choice(choices: RenaissanceMembershipFilterEnum::CHOICES)]
+    #[Groups(['filter_write'])]
     private ?string $renaissanceMembership = null;
 
     public ?Adherent $createdOrUpdatedByAdherent = null;

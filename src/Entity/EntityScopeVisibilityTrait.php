@@ -10,10 +10,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 trait EntityScopeVisibilityTrait
 {
+    #[Assert\Choice(choices: ScopeVisibilityEnum::ALL, message: 'scope.visibility.choice')]
+    #[Assert\NotBlank(message: 'scope.visibility.not_blank')]
     #[Groups(['team_read', 'team_list_read', 'pap_campaign_read', 'pap_campaign_read_after_write', 'phoning_campaign_read', 'phoning_campaign_list', 'jecoute_news_read_dc', 'jecoute_news_read', 'formation_read', 'formation_list_read', 'general_meeting_report_read', 'general_meeting_report_list_read'])]
     #[ORM\Column(length: 30)]
-    #[Assert\NotBlank(message: 'scope.visibility.not_blank')]
-    #[Assert\Choice(choices: ScopeVisibilityEnum::ALL, message: 'scope.visibility.choice')]
     private string $visibility = ScopeVisibilityEnum::NATIONAL;
 
     #[Groups(['team_read', 'team_list_read', 'team_write', 'pap_campaign_read', 'pap_campaign_write', 'pap_campaign_read_after_write', 'phoning_campaign_read', 'phoning_campaign_list', 'phoning_campaign_write', 'jecoute_news_read_dc', 'jecoute_news_write', 'formation_read', 'formation_list_read', 'formation_write', 'general_meeting_report_list_read', 'general_meeting_report_read', 'general_meeting_report_write'])]

@@ -117,11 +117,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @phpstan-consistent-constructor
  */
-#[ORM\Table(name: 'adherent_messages')]
-#[ORM\Entity(repositoryClass: AdherentMessageRepository::class)]
-#[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap(AdherentMessageTypeEnum::CLASSES)]
+#[ORM\Entity(repositoryClass: AdherentMessageRepository::class)]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\Table(name: 'adherent_messages')]
 abstract class AbstractAdherentMessage implements AdherentMessageInterface
 {
     use EntityIdentityTrait;
@@ -132,36 +132,36 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     /**
      * @var Adherent
      */
+    #[Assert\NotBlank]
     #[Groups(['message_read_list', 'message_read'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    #[Assert\NotBlank]
     protected $author;
 
     /**
      * @var string
      */
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
     #[Groups(['message_read', 'message_read_list', 'message_write'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     private $label;
 
     /**
      * @var string
      */
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
     #[Groups(['message_read', 'message_read_list', 'message_write', 'message_read_content'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     private $subject;
 
     /**
      * @var string
      */
+    #[Assert\NotBlank]
     #[Groups(['message_write', 'message_read_content'])]
     #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank]
     private $content;
 
     /**

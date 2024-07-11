@@ -7,8 +7,8 @@ use App\Entity\Adherent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/espace-senateur', name: 'app_senator_elected_representatives_')]
 #[IsGranted('ROLE_SENATOR')]
+#[Route(path: '/espace-senateur', name: 'app_senator_elected_representatives_')]
 class SenatorElectedRepresentativeController extends AbstractElectedRepresentativeController
 {
     protected function getSpaceType(): string

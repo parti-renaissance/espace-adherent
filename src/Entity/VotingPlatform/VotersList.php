@@ -5,16 +5,16 @@ namespace App\Entity\VotingPlatform;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'voting_platform_voters_list')]
 #[ORM\Entity]
+#[ORM\Table(name: 'voting_platform_voters_list')]
 class VotersList
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
@@ -27,8 +27,8 @@ class VotersList
     /**
      * @var Voter[]|ArrayCollection
      */
-    #[ORM\JoinTable(name: 'voting_platform_voters_list_voter')]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\JoinTable(name: 'voting_platform_voters_list_voter')]
     #[ORM\ManyToMany(targetEntity: Voter::class, inversedBy: 'votersLists', cascade: ['all'], fetch: 'EXTRA_LAZY')]
     private $voters;
 

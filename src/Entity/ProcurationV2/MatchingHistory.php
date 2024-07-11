@@ -7,13 +7,13 @@ use App\Entity\Administrator;
 use App\Procuration\V2\MatchingHistoryActionEnum;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'procuration_v2_matching_history')]
 #[ORM\Entity]
+#[ORM\Table(name: 'procuration_v2_matching_history')]
 class MatchingHistory
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     protected ?int $id = null;
 
     #[ORM\Column(enumType: MatchingHistoryActionEnum::class)]

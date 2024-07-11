@@ -6,11 +6,11 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'adherent_certification_histories')]
+#[ORM\Entity]
 #[ORM\Index(columns: ['adherent_id'], name: 'adherent_certification_histories_adherent_id_idx')]
 #[ORM\Index(columns: ['administrator_id'], name: 'adherent_certification_histories_administrator_id_idx')]
 #[ORM\Index(columns: ['date'], name: 'adherent_certification_histories_date_idx')]
-#[ORM\Entity]
+#[ORM\Table(name: 'adherent_certification_histories')]
 class AdherentCertificationHistory
 {
     private const ACTION_CERTIFY = 'certify';
@@ -24,9 +24,9 @@ class AdherentCertificationHistory
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

@@ -94,8 +94,8 @@ abstract class AbstractMessageController extends AbstractController
         return $this->renderTemplate('message/create.html.twig', ['form' => $form->createView()]);
     }
 
-    #[Route(path: '/{uuid}/modifier', name: 'update', methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
+    #[Route(path: '/{uuid}/modifier', name: 'update', methods: ['GET', 'POST'])]
     public function updateMessageAction(
         Request $request,
         AbstractAdherentMessage $message,
@@ -127,8 +127,8 @@ abstract class AbstractMessageController extends AbstractController
         return $this->renderTemplate('message/update.html.twig', ['form' => $form->createView()]);
     }
 
-    #[Route(path: '/{uuid}/visualiser', name: 'preview', methods: ['GET'])]
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
+    #[Route(path: '/{uuid}/visualiser', name: 'preview', methods: ['GET'])]
     public function previewMessageAction(AbstractAdherentMessage $message): Response
     {
         $this->checkAccess();
@@ -140,8 +140,8 @@ abstract class AbstractMessageController extends AbstractController
         return $this->renderTemplate('message/preview.html.twig', ['message' => $message]);
     }
 
-    #[Route(path: '/{uuid}/supprimer', name: 'delete', methods: ['GET'])]
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
+    #[Route(path: '/{uuid}/supprimer', name: 'delete', methods: ['GET'])]
     public function deleteMessageAction(AbstractAdherentMessage $message, ObjectManager $manager): Response
     {
         $this->checkAccess();
@@ -154,8 +154,8 @@ abstract class AbstractMessageController extends AbstractController
         return $this->redirectToMessageRoute('list');
     }
 
-    #[Route(path: '/{uuid}/filtrer', name: 'filter', methods: ['GET', 'POST'])]
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
+    #[Route(path: '/{uuid}/filtrer', name: 'filter', methods: ['GET', 'POST'])]
     public function filterMessageAction(
         Request $request,
         AbstractAdherentMessage $message,
@@ -244,8 +244,8 @@ abstract class AbstractMessageController extends AbstractController
         return $this->renderTemplate($this->getTemplate('send_success'), ['message' => $message]);
     }
 
-    #[Route(path: '/{uuid}/tester', name: 'test', methods: ['GET'])]
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
+    #[Route(path: '/{uuid}/tester', name: 'test', methods: ['GET'])]
     public function sendTestMessageAction(AbstractAdherentMessage $message, AdherentMessageManager $manager): Response
     {
         $this->checkAccess();

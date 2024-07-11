@@ -11,13 +11,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @DataSurveyAnswerTypeChoice
  */
-#[ORM\Table(name: 'jecoute_data_answer')]
 #[ORM\Entity]
+#[ORM\Table(name: 'jecoute_data_answer')]
 class DataAnswer
 {
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     #[Groups(['data_survey_write'])]
@@ -36,9 +36,9 @@ class DataAnswer
      * @var Choice[]|Collection
      */
     #[Groups(['data_survey_write'])]
-    #[ORM\JoinTable(name: 'jecoute_data_answer_selected_choices')]
-    #[ORM\JoinColumn(name: 'data_answer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'choice_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'data_answer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinTable(name: 'jecoute_data_answer_selected_choices')]
     #[ORM\ManyToMany(targetEntity: Choice::class, inversedBy: 'dataAnswers', fetch: 'EAGER')]
     #[ORM\OrderBy(['id' => 'ASC'])]
     private $selectedChoices;

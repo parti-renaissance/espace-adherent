@@ -20,8 +20,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @AssertRecaptcha
  */
-#[ORM\Table(name: 'invitations')]
 #[ORM\Entity(repositoryClass: InviteRepository::class)]
+#[ORM\Table(name: 'invitations')]
 class Invite implements RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
@@ -30,33 +30,33 @@ class Invite implements RecaptchaChallengeInterface
     /**
      * @var string
      */
-    #[ORM\Column(length: 50)]
-    #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length')]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 50)]
     private $firstName;
 
     /**
      * @var string
      */
-    #[ORM\Column(length: 50)]
-    #[Assert\NotBlank]
     #[Assert\Length(min: 1, max: 50, minMessage: 'common.last_name.min_length', maxMessage: 'common.last_name.max_length')]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 50)]
     private $lastName;
 
     /**
      * @var string
      */
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Email(message: 'common.email.invalid')]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $email;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank(message: 'invitation.message.not_blank')]
+    #[ORM\Column(type: 'text')]
     private $message;
 
     /**

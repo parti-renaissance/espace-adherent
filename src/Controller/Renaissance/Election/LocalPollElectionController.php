@@ -11,8 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/election-locale', name: 'app_renaissance_local_election_home', methods: 'GET')]
 #[IsGranted('ROLE_RENAISSANCE_USER')]
+#[Route(path: '/election-locale', name: 'app_renaissance_local_election_home', methods: 'GET')]
 class LocalPollElectionController extends AbstractController
 {
     public function __invoke(Request $request, ElectionManager $electionManager): Response

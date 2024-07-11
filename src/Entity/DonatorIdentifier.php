@@ -5,16 +5,16 @@ namespace App\Entity;
 use App\Repository\DonatorIdentifierRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'donator_identifier')]
 #[ORM\Entity(repositoryClass: DonatorIdentifierRepository::class)]
+#[ORM\Table(name: 'donator_identifier')]
 class DonatorIdentifier
 {
     /**
      * The unique auto incremented primary key.
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Id]
     private $id;
 
     /**

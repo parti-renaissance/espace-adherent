@@ -91,19 +91,19 @@ class JemarcheDataSurvey implements DataSurveyAwareInterface
     #[ORM\Column(type: 'text', nullable: true)]
     private $postalCode;
 
+    #[Assert\Choice(callback: [ProfessionEnum::class, 'all'])]
     #[Groups(['jemarche_data_survey_write'])]
     #[ORM\Column(length: 30, nullable: true)]
-    #[Assert\Choice(callback: [ProfessionEnum::class, 'all'])]
     private $profession;
 
+    #[Assert\Choice(callback: [AgeRangeEnum::class, 'all'])]
     #[Groups(['jemarche_data_survey_write'])]
     #[ORM\Column(length: 15, nullable: true)]
-    #[Assert\Choice(callback: [AgeRangeEnum::class, 'all'])]
     private $ageRange;
 
+    #[Assert\Choice(callback: [GenderEnum::class, 'all'])]
     #[Groups(['jemarche_data_survey_write'])]
     #[ORM\Column(length: 15, nullable: true)]
-    #[Assert\Choice(callback: [GenderEnum::class, 'all'])]
     private $gender;
 
     #[Groups(['jemarche_data_survey_write'])]
@@ -124,9 +124,9 @@ class JemarcheDataSurvey implements DataSurveyAwareInterface
     #[ORM\Column(type: 'geo_point', nullable: true)]
     private $longitude;
 
+    #[Assert\Valid]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\OneToOne(inversedBy: 'jemarcheDataSurvey', targetEntity: DataSurvey::class, cascade: ['persist'], orphanRemoval: true)]
-    #[Assert\Valid]
     private ?DataSurvey $dataSurvey = null;
 
     public function __construct(?UuidInterface $uuid = null)

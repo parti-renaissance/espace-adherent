@@ -15,11 +15,11 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'adherent_mandate')]
-#[ORM\Entity(repositoryClass: AdherentMandateRepository::class)]
-#[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap(['committee' => CommitteeAdherentMandate::class, 'elected_representative' => ElectedRepresentativeAdherentMandate::class])]
+#[ORM\Entity(repositoryClass: AdherentMandateRepository::class)]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\Table(name: 'adherent_mandate')]
 abstract class AbstractAdherentMandate implements AdherentMandateInterface
 {
     use EntityIdentityTrait;
@@ -30,26 +30,26 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
     /**
      * @var Adherent
      */
+    #[Assert\NotBlank]
     #[Groups(['elected_mandate_write', 'elected_mandate_read'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'adherentMandates')]
-    #[Assert\NotBlank]
     protected $adherent;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 6, nullable: true)]
-    #[Assert\NotBlank(message: 'common.gender.invalid_choice')]
     #[Assert\Choice(choices: Genders::MALE_FEMALE, message: 'common.gender.invalid_choice')]
+    #[Assert\NotBlank(message: 'common.gender.invalid_choice')]
+    #[ORM\Column(length: 6, nullable: true)]
     protected $gender;
 
     /**
      * @var \DateTime
      */
+    #[Assert\NotBlank]
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
     #[ORM\Column(type: 'datetime')]
-    #[Assert\NotBlank]
     protected $beginAt;
 
     /**

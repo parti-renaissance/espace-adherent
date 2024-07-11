@@ -17,19 +17,19 @@ class QrCode
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    #[ORM\Column(unique: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column(unique: true)]
     private ?string $name;
 
-    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
     #[Assert\Url]
+    #[ORM\Column(type: 'text')]
     private ?string $redirectUrl;
 
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Choice(choices: QrCodeHostEnum::ALL)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private ?string $host;
 
     #[ORM\Column(type: 'integer')]

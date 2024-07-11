@@ -7,8 +7,8 @@ use App\Repository\CommitteeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/espace-referent/mon-equipe', name: 'app_referent_my_team_', methods: ['GET'])]
 #[IsGranted('ROLE_REFERENT')]
+#[Route(path: '/espace-referent/mon-equipe', name: 'app_referent_my_team_', methods: ['GET'])]
 class ReferentMyTeamController extends AbstractMyTeamController
 {
     protected function getSpaceType(): string

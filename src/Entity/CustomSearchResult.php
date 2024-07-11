@@ -6,8 +6,8 @@ use App\Repository\CustomSearchResultRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'custom_search_results')]
 #[ORM\Entity(repositoryClass: CustomSearchResultRepository::class)]
+#[ORM\Table(name: 'custom_search_results')]
 class CustomSearchResult implements EntityMediaInterface
 {
     use EntityTimestampableTrait;
@@ -17,31 +17,31 @@ class CustomSearchResult implements EntityMediaInterface
      * @var int
      */
     #[ORM\Column(type: 'bigint')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 100)]
     #[Assert\Length(max: 100)]
     #[Assert\NotBlank]
+    #[ORM\Column(length: 100)]
     private $title;
 
     /**
      * @var string|null
      */
-    #[ORM\Column]
     #[Assert\Length(min: 10, max: 255, options: ['allowEmptyString' => true])]
     #[Assert\NotBlank]
+    #[ORM\Column]
     private $description;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 255)]
+    #[ORM\Column(nullable: true)]
     private $keywords;
 
     /**

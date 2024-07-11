@@ -29,8 +29,8 @@ class ReferentPersonLink
      * @var int
      */
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
@@ -48,8 +48,8 @@ class ReferentPersonLink
     /**
      * @var string
      */
-    #[ORM\Column(type: 'string', nullable: true)]
     #[Assert\Email]
+    #[ORM\Column(type: 'string', nullable: true)]
     private $email;
 
     /**

@@ -13,9 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'jemengage_deep_link')]
 #[ORM\Entity]
 #[ORM\EntityListeners([DynamicLinkListener::class])]
+#[ORM\Table(name: 'jemengage_deep_link')]
 class DeepLink implements EntityAdministratorBlameableInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;
@@ -23,14 +23,14 @@ class DeepLink implements EntityAdministratorBlameableInterface, DynamicLinkObje
     use EntityAdministratorBlameableTrait;
     use DynamicLinkObjectTrait;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     public ?string $label = null;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
-    #[Assert\Url(protocols: ['https'], message: 'Protocole autorisé : https')]
     #[Assert\Regex('#^https://.*\.?parti-renaissance\.fr/.+$#', message: "Le domaine n'est pas autorisé ou le chemin n'est pas rempli")]
+    #[Assert\Url(protocols: ['https'], message: 'Protocole autorisé : https')]
+    #[ORM\Column]
     public ?string $link = null;
 
     #[ORM\Column(nullable: true)]

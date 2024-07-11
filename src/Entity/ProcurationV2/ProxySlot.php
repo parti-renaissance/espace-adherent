@@ -29,13 +29,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     collectionOperations={},
  * )
  */
-#[ORM\Table(name: 'procuration_v2_proxy_slot')]
 #[ORM\Entity]
+#[ORM\Table(name: 'procuration_v2_proxy_slot')]
 class ProxySlot extends AbstractSlot
 {
     #[Groups(['procuration_proxy_slot_read'])]
-    #[ORM\ManyToOne(inversedBy: 'proxySlots', targetEntity: Proxy::class)]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(inversedBy: 'proxySlots', targetEntity: Proxy::class)]
     public Proxy $proxy;
 
     #[ORM\OneToOne(mappedBy: 'proxySlot', targetEntity: RequestSlot::class)]

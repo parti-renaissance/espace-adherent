@@ -17,18 +17,18 @@ class EventInvitation implements RecaptchaChallengeInterface
     use RecaptchaChallengeTrait;
 
     #[Assert\Email(message: 'common.email.invalid')]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[Assert\NotBlank]
     public $email = '';
 
-    #[Assert\Type('string')]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 50, maxMessage: 'common.first_name.max_length')]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
     public $firstName = '';
 
-    #[Assert\Type('string')]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 50, maxMessage: 'common.first_name.max_length')]
+    #[Assert\NotBlank]
+    #[Assert\Type('string')]
     public $lastName = '';
 
     #[Assert\Length(max: 200, maxMessage: 'event.invitation.message.max_length')]
@@ -41,8 +41,8 @@ class EventInvitation implements RecaptchaChallengeInterface
      *     @Assert\Length(max=255, maxMessage="common.email.max_length")
      * })
      */
-    #[Assert\Type('array')]
     #[Assert\Count(min: 1, minMessage: 'event.invitation.guests.min')]
+    #[Assert\Type('array')]
     public $guests = [];
 
     public function filter(): void

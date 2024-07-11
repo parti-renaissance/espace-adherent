@@ -4,14 +4,14 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity]
 #[ORM\Table(name: 'procuration_proxies_to_election_rounds')]
 #[ORM\UniqueConstraint(name: 'procuration_proxy_election_round_unique', columns: ['procuration_proxy_id', 'election_round_id'])]
-#[ORM\Entity]
 class ProcurationProxyElectionRound
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private ?int $id = null;
 
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]

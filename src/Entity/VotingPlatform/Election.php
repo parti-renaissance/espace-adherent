@@ -16,8 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'voting_platform_election')]
 #[ORM\Entity(repositoryClass: ElectionRepository::class)]
+#[ORM\Table(name: 'voting_platform_election')]
 class Election
 {
     use EntityIdentityTrait;

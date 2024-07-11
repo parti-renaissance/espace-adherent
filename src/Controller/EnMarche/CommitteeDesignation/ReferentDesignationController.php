@@ -20,13 +20,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/espace-referent/comites/{committee_slug}/designations', name: 'app_referent_designations')]
 #[ParamConverter('committee', options: ['mapping' => ['committee_slug' => 'slug']])]
+#[Route(path: '/espace-referent/comites/{committee_slug}/designations', name: 'app_referent_designations')]
 #[Security("is_granted('ROLE_REFERENT') or is_granted('ROLE_DELEGATED_REFERENT')")]
 class ReferentDesignationController extends AbstractDesignationController
 {
-    #[Route(path: '/creer-une-partielle', name: '_create_partial', methods: ['GET', 'POST'])]
     #[IsGranted('MANAGE_ZONEABLE_ITEM__REFERENT', subject: 'committee')]
+    #[Route(path: '/creer-une-partielle', name: '_create_partial', methods: ['GET', 'POST'])]
     public function createPartialAction(
         Request $request,
         Committee $committee,

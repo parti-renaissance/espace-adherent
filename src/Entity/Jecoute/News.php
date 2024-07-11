@@ -130,10 +130,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @NewsText
  * @ScopeVisibility
  */
-#[ORM\Table(name: 'jecoute_news')]
-#[ORM\Entity]
 #[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'author', joinColumns: [new ORM\JoinColumn(onDelete: 'SET NULL')])])]
+#[ORM\Entity]
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
+#[ORM\Table(name: 'jecoute_news')]
 class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, DynamicLinkObjectInterface
 {
     use EntityTimestampableTrait;
@@ -146,8 +146,8 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
      * @ApiProperty(identifier=false)
      */
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private ?int $id = null;
 
     /**
@@ -157,10 +157,10 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
     #[ORM\Column(type: 'uuid', unique: true)]
     private UuidInterface $uuid;
 
-    #[Groups(['jecoute_news_read', 'jecoute_news_write', 'jecoute_news_read_dc'])]
-    #[ORM\Column]
     #[Assert\Length(max: 120)]
     #[Assert\NotBlank]
+    #[Groups(['jecoute_news_read', 'jecoute_news_write', 'jecoute_news_read_dc'])]
+    #[ORM\Column]
     private ?string $title;
 
     #[Groups(['jecoute_news_read', 'jecoute_news_write', 'jecoute_news_read_dc'])]
@@ -169,15 +169,15 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
 
     private ?string $enrichedText = null;
 
+    #[Assert\Url]
     #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Url]
     private ?string $externalLink;
 
+    #[Assert\Expression('value !== null or (this.isEnriched() === false or null === this.getExternalLink())', message: 'news.link_label.required')]
+    #[Assert\Length(max: 30)]
     #[Groups(['jecoute_news_read', 'jecoute_news_read_dc', 'jecoute_news_write'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Length(max: 30)]
-    #[Assert\Expression('value !== null or (this.isEnriched() === false or null === this.getExternalLink())', message: 'news.link_label.required')]
     private ?string $linkLabel;
 
     #[ORM\Column(nullable: true)]
@@ -212,9 +212,9 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
     /**
      * @var UserDocument[]|Collection
      */
-    #[ORM\JoinTable(name: 'jecoute_news_user_documents')]
-    #[ORM\JoinColumn(name: 'jecoute_news_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'user_document_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'jecoute_news_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinTable(name: 'jecoute_news_user_documents')]
     #[ORM\ManyToMany(targetEntity: UserDocument::class, cascade: ['all'], orphanRemoval: true)]
     protected Collection $documents;
 

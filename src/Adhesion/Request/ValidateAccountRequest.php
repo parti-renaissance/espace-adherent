@@ -13,8 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ValidateAccountRequest implements MembershipInterface
 {
-    #[Assert\NotBlank(groups: ['validate-code'])]
     #[Assert\Length(min: 4, max: 4, groups: ['validate-code'], options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank(groups: ['validate-code'])]
     public ?string $code = null;
 
     /**

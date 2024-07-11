@@ -16,8 +16,8 @@ trait EntitySpanTrait
     /**
      * @var \DateTimeInterface|null
      */
-    #[ORM\Column(type: 'date')]
     #[Assert\LessThanOrEqual('today')]
+    #[ORM\Column(type: 'date')]
     private $startedAt;
 
     /**

@@ -13,20 +13,20 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'procuration_v2_initial_requests')]
 #[ORM\Entity(repositoryClass: ProcurationRequestRepository::class)]
+#[ORM\Table(name: 'procuration_v2_initial_requests')]
 class ProcurationRequest
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityUTMTrait;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     public ?string $email = null;
 
-    #[ORM\Column(enumType: InitialRequestTypeEnum::class)]
     #[Assert\NotBlank]
+    #[ORM\Column(enumType: InitialRequestTypeEnum::class)]
     public ?InitialRequestTypeEnum $type = null;
 
     #[ORM\Column(length: 50, nullable: true)]

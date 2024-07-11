@@ -9,8 +9,8 @@ class Password
     /**
      * @var string|null
      */
-    #[Assert\NotBlank(message: 'adherent.plain_password.not_blank')]
     #[Assert\Length(min: 8, minMessage: 'adherent.plain_password.min_length', options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank(message: 'adherent.plain_password.not_blank')]
     private $password;
 
     public function getPassword(): ?string

@@ -50,11 +50,11 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  *     },
  * )
  */
-#[ORM\Table(name: 'projection_managed_users')]
+#[ORM\Entity(repositoryClass: ManagedUserRepository::class, readOnly: true)]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Index(columns: ['original_id'])]
 #[ORM\Index(columns: ['zones_ids'])]
-#[ORM\Entity(repositoryClass: ManagedUserRepository::class, readOnly: true)]
+#[ORM\Table(name: 'projection_managed_users')]
 class ManagedUser implements TranslatedTagInterface
 {
     use EntityZoneTrait;
@@ -66,9 +66,9 @@ class ManagedUser implements TranslatedTagInterface
      *
      * @ApiProperty(identifier=false)
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'bigint', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
@@ -334,8 +334,8 @@ class ManagedUser implements TranslatedTagInterface
      * @var ZoneCollection|Zone[]
      */
     #[Groups(['phoning_campaign_read', 'phoning_campaign_write', 'read_api', 'managed_users_list', 'managed_user_read'])]
-    #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
     #[ORM\JoinTable(name: 'projection_managed_users_zone')]
+    #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
     protected Collection $zones;
 
     public function __construct(

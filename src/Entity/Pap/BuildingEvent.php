@@ -14,41 +14,41 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'pap_building_event')]
 #[ORM\Entity(repositoryClass: BuildingEventRepository::class)]
+#[ORM\Table(name: 'pap_building_event')]
 class BuildingEvent implements AuthorInterface
 {
     use EntityIdentityTrait;
     use AuthoredTrait;
 
+    #[Assert\Choice(callback: [BuildingEventActionEnum::class, 'toArray'])]
+    #[Assert\NotBlank]
     #[Groups(['pap_building_event_write'])]
     #[ORM\Column(length: 25)]
-    #[Assert\NotBlank]
-    #[Assert\Choice(callback: [BuildingEventActionEnum::class, 'toArray'])]
     private ?string $action = null;
 
+    #[Assert\Choice(callback: [BuildingEventTypeEnum::class, 'toArray'])]
+    #[Assert\NotBlank]
     #[Groups(['pap_building_event_write'])]
     #[ORM\Column(length: 25)]
-    #[Assert\NotBlank]
-    #[Assert\Choice(callback: [BuildingEventTypeEnum::class, 'toArray'])]
     private ?string $type = null;
 
     #[Groups(['pap_building_event_write'])]
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $identifier = null;
 
-    #[ORM\ManyToOne(targetEntity: Building::class)]
     #[Assert\NotNull]
+    #[ORM\ManyToOne(targetEntity: Building::class)]
     private Building $building;
 
+    #[Assert\NotNull]
     #[Groups(['pap_building_event_write'])]
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Campaign::class)]
-    #[Assert\NotNull]
     private ?Campaign $campaign = null;
 
-    #[ORM\Column(type: 'datetime')]
     #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $createdAt = null;
 
     #[Groups(['pap_building_event_write'])]

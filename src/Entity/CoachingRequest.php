@@ -11,22 +11,22 @@ class CoachingRequest
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 1000)]
+    #[ORM\Column(nullable: true)]
     private $problemDescription;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 1000)]
+    #[ORM\Column(nullable: true)]
     private $proposedSolution;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 1000)]
+    #[ORM\Column(nullable: true)]
     private $requiredMeans;
 
     public function __construct(

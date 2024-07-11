@@ -10,19 +10,19 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'committees_membership_histories')]
+#[ORM\Entity]
 #[ORM\Index(columns: ['adherent_uuid'], name: 'committees_membership_histories_adherent_uuid_idx')]
 #[ORM\Index(columns: ['action'], name: 'committees_membership_histories_action_idx')]
 #[ORM\Index(columns: ['date'], name: 'committees_membership_histories_date_idx')]
-#[ORM\Entity]
+#[ORM\Table(name: 'committees_membership_histories')]
 class CommitteeMembershipHistory
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     protected $id;
 
     /**

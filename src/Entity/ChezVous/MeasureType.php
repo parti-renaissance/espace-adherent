@@ -8,34 +8,34 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'chez_vous_measure_types')]
 #[ORM\Entity(repositoryClass: MeasureTypeRepository::class)]
+#[ORM\Table(name: 'chez_vous_measure_types')]
 #[UniqueEntity(fields: ['code'])]
 class MeasureType
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(unique: true)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     #[Assert\Choice(callback: [MeasureChoiceLoader::class, 'getTypeChoices'])]
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column(unique: true)]
     private $code;
 
     /**
      * @var string|null
      */
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $label;
 
     /**
@@ -47,29 +47,29 @@ class MeasureType
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Url]
+    #[ORM\Column(nullable: true)]
     private $sourceLink;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 255)]
+    #[ORM\Column(nullable: true)]
     private $sourceLabel;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Url]
+    #[ORM\Column(nullable: true)]
     private $oldolfLink;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Url]
+    #[ORM\Column(nullable: true)]
     private $eligibilityLink;
 
     public function __construct(string $code, string $label)

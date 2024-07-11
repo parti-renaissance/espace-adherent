@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-#[ORM\Table(name: 'clarifications')]
-#[ORM\Entity(repositoryClass: ClarificationRepository::class)]
-#[UniqueEntity(fields: ['slug'])]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: ClarificationRepository::class)]
+#[ORM\Table(name: 'clarifications')]
+#[UniqueEntity(fields: ['slug'])]
 class Clarification implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface
 {
     use EntityTimestampableTrait;
@@ -23,8 +23,8 @@ class Clarification implements EntityMediaInterface, EntityContentInterface, Ent
      * @var int
      */
     #[ORM\Column(type: 'bigint')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

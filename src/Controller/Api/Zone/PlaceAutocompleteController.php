@@ -9,8 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-#[Route(path: '/v3/place')]
 #[IsGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')]
+#[Route(path: '/v3/place')]
 class PlaceAutocompleteController extends AbstractController
 {
     public function __construct(

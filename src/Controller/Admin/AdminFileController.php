@@ -14,8 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/filesystem', name: 'app_admin_files_', methods: ['GET'])]
 #[IsGranted('ROLE_ADMIN_TERRITOIRES_FILES')]
+#[Route(path: '/filesystem', name: 'app_admin_files_', methods: ['GET'])]
 class AdminFileController extends AbstractController
 {
     #[Route(path: '/file-directory/autocompletion', name: 'autocomplete_file_directory', condition: 'request.isXmlHttpRequest()', methods: ['GET'])]

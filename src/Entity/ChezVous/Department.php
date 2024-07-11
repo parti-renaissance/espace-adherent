@@ -9,41 +9,41 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'chez_vous_departments')]
 #[ORM\Entity(repositoryClass: DepartmentRepository::class)]
+#[ORM\Table(name: 'chez_vous_departments')]
 #[UniqueEntity(fields: ['code'])]
 class Department
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: '100')]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 100)]
     private $name;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 100, nullable: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: '100')]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 100, nullable: true)]
     private $label;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 10, unique: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: '10')]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 10, unique: true)]
     private $code;
 
     /**

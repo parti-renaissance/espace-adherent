@@ -10,8 +10,8 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Table(name: 'chatbot_message')]
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
+#[ORM\Table(name: 'chatbot_message')]
 class Message
 {
     use EntityIdentityTrait;

@@ -59,9 +59,9 @@ class Audience extends AbstractAudience
     /**
      * @var string
      */
+    #[Assert\NotBlank]
     #[Groups(['audience_read', 'audience_write', 'audience_list_read'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
     private $name;
 
     public function getName(): ?string

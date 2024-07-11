@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'social_shares')]
 #[ORM\Entity(repositoryClass: SocialShareRepository::class)]
+#[ORM\Table(name: 'social_shares')]
 class SocialShare
 {
     use EntityTimestampableTrait;
@@ -25,49 +25,49 @@ class SocialShare
     ];
 
     #[ORM\Column(type: 'bigint')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
-    #[ORM\Column(length: 100)]
     #[Assert\Length(max: 100)]
+    #[ORM\Column(length: 100)]
     private $name = '';
 
-    #[ORM\Column]
     #[Gedmo\Slug(fields: ['name'])]
+    #[ORM\Column]
     private $slug;
 
-    #[ORM\Column(length: 10)]
-    #[Assert\NotBlank]
     #[Assert\Choice(['image', 'video', 'pdf'])]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 10)]
     private $type = self::TYPE_IMAGE;
 
-    #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 200)]
+    #[Assert\NotBlank]
+    #[ORM\Column(type: 'text')]
     private $description;
 
-    #[ORM\Column]
-    #[Assert\Url]
     #[Assert\Length(max: 255)]
+    #[Assert\Url]
+    #[ORM\Column]
     private $defaultUrl = '';
 
-    #[ORM\Column(nullable: true)]
-    #[Assert\Url]
     #[Assert\Length(max: 255)]
+    #[Assert\Url]
+    #[ORM\Column(nullable: true)]
     private $facebookUrl = '';
 
-    #[ORM\Column(nullable: true)]
-    #[Assert\Url]
     #[Assert\Length(max: 255)]
+    #[Assert\Url]
+    #[ORM\Column(nullable: true)]
     private $twitterUrl = '';
 
-    #[ORM\ManyToOne(targetEntity: SocialShareCategory::class)]
     #[Assert\NotBlank]
+    #[ORM\ManyToOne(targetEntity: SocialShareCategory::class)]
     private $socialShareCategory;
 
-    #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist'])]
     #[Assert\NotBlank]
+    #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist'])]
     private $media;
 
     #[ORM\Column(type: 'boolean')]

@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'legislative_district_zones')]
 #[ORM\Entity(repositoryClass: LegislativeDistrictZoneRepository::class)]
+#[ORM\Table(name: 'legislative_district_zones')]
 #[UniqueEntity(fields: ['areaCode'], message: 'legislative_district_zone.area_code.unique', groups: ['Admin'])]
 class LegislativeDistrictZone
 {
@@ -25,26 +25,26 @@ class LegislativeDistrictZone
     ];
 
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
-    #[ORM\Column(length: 4, unique: true)]
     #[Assert\NotBlank(groups: ['Admin'])]
     #[Assert\Regex(pattern: '/^([0-1]\d{3}|002[A-B])$/', message: 'legislative_district_zone.area_code.invalid', groups: ['Admin'])]
+    #[ORM\Column(length: 4, unique: true)]
     private $areaCode;
 
-    #[ORM\Column(length: 20)]
-    #[Assert\NotBlank(groups: ['Admin'])]
     #[Assert\Choice(callback: 'getAreaTypeChoices', message: 'legislative_district_zone.area_type.invalid', groups: ['Admin'])]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[ORM\Column(length: 20)]
     private $areaType = self::TYPE_DEPARTMENT;
 
     #[ORM\Column(name: '`rank`', type: 'smallint', options: ['unsigned' => true])]
     private $rank;
 
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(groups: ['Admin'])]
     #[Assert\Length(min: 2, max: 100, groups: ['Admin'], options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[ORM\Column(length: 100)]
     private $name;
 
     #[ORM\Column(type: 'text')]

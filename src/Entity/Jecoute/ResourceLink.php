@@ -30,8 +30,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={}
  * )
  */
-#[ORM\Table(name: 'jecoute_resource_link')]
 #[ORM\Entity(repositoryClass: ResourceLinkRepository::class)]
+#[ORM\Table(name: 'jecoute_resource_link')]
 class ResourceLink implements ExposedImageOwnerInterface
 {
     use EntityIdentityTrait;
@@ -39,16 +39,16 @@ class ResourceLink implements ExposedImageOwnerInterface
     use ImageTrait;
     use Sortable;
 
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
     #[Groups(['jecoute_resource_links_read'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     private ?string $label;
 
-    #[Groups(['jecoute_resource_links_read'])]
-    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
     #[Assert\Url]
+    #[Groups(['jecoute_resource_links_read'])]
+    #[ORM\Column(type: 'text')]
     private ?string $url;
 
     #[Assert\Image(mimeTypes: ['image/jpeg', 'image/png'], maxSize: '5M')]

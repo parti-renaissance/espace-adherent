@@ -21,15 +21,15 @@ class CertificationRequestBlockCommand extends AbstractCertificationRequestModer
     /**
      * @var string|null
      */
-    #[Assert\NotBlank]
     #[Assert\Choice(choices: CertificationRequestBlockCommand::BLOCK_REASONS)]
+    #[Assert\NotBlank]
     private $reason;
 
     /**
      * @var string|null
      */
-    #[Assert\Length(max: 500)]
     #[Assert\Expression(expression: "constant('App\\\\Adherent\\\\Certification\\\\CertificationRequestBlockCommand::BLOCK_REASON_OTHER') !== this.getReason() or value", message: 'Veuillez spécifier une raison de blocage.')]
+    #[Assert\Length(max: 500)]
     private $customReason;
 
     public function getReason(): ?string

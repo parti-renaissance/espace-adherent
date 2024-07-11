@@ -4,13 +4,13 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'coordinator_managed_areas')]
 #[ORM\Entity]
+#[ORM\Table(name: 'coordinator_managed_areas')]
 class CoordinatorManagedArea
 {
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

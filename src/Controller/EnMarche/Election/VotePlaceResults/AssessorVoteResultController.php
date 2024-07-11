@@ -9,8 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/espace-assesseur', name: 'app_vote_results_assessor')]
 #[IsGranted('ROLE_ASSESSOR')]
+#[Route(path: '/espace-assesseur', name: 'app_vote_results_assessor')]
 class AssessorVoteResultController extends AbstractVoteResultController
 {
     #[Route(path: '/resultats', name: '_index', methods: ['GET', 'POST'])]

@@ -15,8 +15,8 @@ class MailchimpCampaignReport implements Timestampable
      * @var int|null
      */
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

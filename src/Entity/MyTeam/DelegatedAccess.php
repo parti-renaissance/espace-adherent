@@ -15,8 +15,8 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'my_team_delegated_access')]
 #[ORM\Entity(repositoryClass: DelegatedAccessRepository::class)]
+#[ORM\Table(name: 'my_team_delegated_access')]
 #[UniqueEntity(fields: ['delegator', 'delegated', 'type'], message: 'Vous avez déjà délégué des accès à cet adhérent.')]
 class DelegatedAccess
 {
@@ -83,9 +83,9 @@ class DelegatedAccess
     /**
      * @var string
      */
-    #[ORM\Column(type: 'string')]
-    #[Assert\NotBlank(message: 'Veuillez renseigner un rôle.')]
     #[Assert\Length(max: 50)]
+    #[Assert\NotBlank(message: 'Veuillez renseigner un rôle.')]
+    #[ORM\Column(type: 'string')]
     private $role;
 
     /**
@@ -98,9 +98,9 @@ class DelegatedAccess
     /**
      * @var Adherent
      */
+    #[Assert\NotBlank(message: 'Veuillez sélectionner un adhérent.')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'receivedDelegatedAccesses')]
-    #[Assert\NotBlank(message: 'Veuillez sélectionner un adhérent.')]
     private $delegated;
 
     /**

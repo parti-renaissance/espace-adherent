@@ -9,13 +9,13 @@ use App\Repository\ReportRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
-#[ORM\Table(name: 'reports')]
-#[ORM\Index(columns: ['status'], name: 'report_status_idx')]
-#[ORM\Index(columns: ['type'], name: 'report_type_idx')]
-#[ORM\Entity(repositoryClass: ReportRepository::class)]
-#[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap(['committee' => CommitteeReport::class, 'community_event' => CommunityEventReport::class])]
+#[ORM\Entity(repositoryClass: ReportRepository::class)]
+#[ORM\Index(columns: ['status'], name: 'report_status_idx')]
+#[ORM\Index(columns: ['type'], name: 'report_type_idx')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\Table(name: 'reports')]
 abstract class Report
 {
     use EntityIdentityTrait;

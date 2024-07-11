@@ -28,9 +28,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={},
  * )
  */
+#[ORM\Entity]
 #[ORM\Table(name: 'pap_building_block')]
 #[ORM\UniqueConstraint(name: 'building_block_unique', columns: ['name', 'building_id'])]
-#[ORM\Entity]
 class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatisticsOwnerInterface
 {
     use EntityAdherentBlameableTrait;

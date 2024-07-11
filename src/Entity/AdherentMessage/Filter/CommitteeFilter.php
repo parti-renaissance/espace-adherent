@@ -9,9 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 class CommitteeFilter extends AbstractUserFilter
 {
+    #[Assert\NotBlank]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Committee::class)]
-    #[Assert\NotBlank]
     private ?Committee $committee = null;
 
     public function __construct(?Committee $committee = null)

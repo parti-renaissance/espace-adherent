@@ -7,25 +7,25 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'roles')]
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
+#[ORM\Table(name: 'roles')]
 #[UniqueEntity(fields: ['code'])]
 #[UniqueEntity(fields: ['name'])]
 class Role
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Id]
     private $id;
 
-    #[ORM\Column(length: 20, unique: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: '20')]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 20, unique: true)]
     private $code;
 
-    #[ORM\Column(length: 100, unique: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: '100')]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 100, unique: true)]
     private $name = '';
 
     /**

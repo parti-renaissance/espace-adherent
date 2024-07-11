@@ -5,16 +5,16 @@ namespace App\Entity\Reporting;
 use App\Entity\Administrator;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'administrator_role_history')]
 #[ORM\Entity]
+#[ORM\Table(name: 'administrator_role_history')]
 class AdministratorRoleHistory
 {
     private const ACTION_ADD = 'add';
     private const ACTION_REMOVE = 'remove';
 
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private ?int $id = null;
 
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]

@@ -29,8 +29,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route(path: '/comites/{slug}')]
 #[IsGranted('HOST_COMMITTEE', subject: 'committee')]
+#[Route(path: '/comites/{slug}')]
 class CommitteeManagerController extends AbstractController
 {
     private $manager;
@@ -160,9 +160,9 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
+    #[Entity('member', expr: 'repository.findByUuid(member_uuid)')]
     #[Route(path: '/promouvoir-suppleant/{member_uuid}', name: 'app_committee_promote_host', methods: ['GET', 'POST'])]
     #[Security("is_granted('SUPERVISE_COMMITTEE', committee) and is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', committee)")]
-    #[Entity('member', expr: 'repository.findByUuid(member_uuid)')]
     public function promoteHostAction(Request $request, Committee $committee, Adherent $member): Response
     {
         if (!$this->manager->isPromotableHost($member, $committee)) {
@@ -194,9 +194,9 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/retirer-suppleant/{member_uuid}', name: 'app_committee_demote_host', methods: ['GET', 'POST'])]
-    #[IsGranted('SUPERVISE_COMMITTEE', subject: 'committee')]
     #[Entity('member', expr: 'repository.findByUuid(member_uuid)')]
+    #[IsGranted('SUPERVISE_COMMITTEE', subject: 'committee')]
+    #[Route(path: '/retirer-suppleant/{member_uuid}', name: 'app_committee_demote_host', methods: ['GET', 'POST'])]
     public function demoteHostAction(Request $request, Committee $committee, Adherent $member): Response
     {
         if (!$this->manager->isDemotableHost($member, $committee)) {

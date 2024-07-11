@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'timeline_measures')]
 #[ORM\Entity(repositoryClass: MeasureRepository::class)]
+#[ORM\Table(name: 'timeline_measures')]
 class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {
     public const TITLE_MAX_LENGTH = 100;
@@ -33,30 +33,30 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
      * @var int
      */
     #[ORM\Column(type: 'bigint')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Url]
+    #[ORM\Column(nullable: true)]
     private $link;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 50)]
-    #[Assert\NotBlank]
     #[Assert\Choice(choices: Measure::STATUSES)]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 50)]
     private $status;
 
     /**
      * @var \DateTime|null
      */
-    #[ORM\Column(type: 'datetime')]
     #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
     /**
@@ -68,18 +68,18 @@ class Measure extends AbstractTranslatableEntity implements AlgoliaIndexedEntity
     /**
      * @var Profile[]|Collection
      */
-    #[ORM\JoinTable(name: 'timeline_measures_profiles')]
-    #[ORM\JoinColumn(name: 'measure_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'profile_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'measure_id', referencedColumnName: 'id')]
+    #[ORM\JoinTable(name: 'timeline_measures_profiles')]
     #[ORM\ManyToMany(targetEntity: Profile::class)]
     private $profiles;
 
     /**
      * @var Theme[]|Collection
      */
-    #[ORM\JoinTable(name: 'timeline_themes_measures')]
-    #[ORM\JoinColumn(name: 'measure_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'theme_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'measure_id', referencedColumnName: 'id')]
+    #[ORM\JoinTable(name: 'timeline_themes_measures')]
     #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'measures')]
     private $themes;
 

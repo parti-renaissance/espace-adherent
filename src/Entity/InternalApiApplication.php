@@ -16,16 +16,16 @@ class InternalApiApplication
     /**
      * @var string
      */
-    #[ORM\Column(length: 200)]
     #[Assert\Length(max: 200, maxMessage: 'internal_api_application.validation.application_name_length')]
+    #[ORM\Column(length: 200)]
     private $applicationName;
 
     /**
      * @var string
      */
-    #[ORM\Column(length: 200)]
     #[Assert\NotBlank]
     #[Assert\Url]
+    #[ORM\Column(length: 200)]
     private $hostname;
 
     /**

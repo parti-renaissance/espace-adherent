@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'unregistrations')]
 #[ORM\Entity(repositoryClass: UnregistrationRepository::class)]
+#[ORM\Table(name: 'unregistrations')]
 class Unregistration
 {
     public const REASON_EMAILS = 'unregistration_reasons.emails';
@@ -44,9 +44,9 @@ class Unregistration
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Id]
     private $id;
 
     /**
@@ -64,15 +64,15 @@ class Unregistration
     #[ORM\Column(length: 15, nullable: true)]
     private $postalCode;
 
-    #[ORM\Column(type: 'json', nullable: true)]
     #[Assert\NotBlank(message: 'adherent.unregistration.reasons')]
+    #[ORM\Column(type: 'json', nullable: true)]
     private $reasons;
 
     /**
      * @var string
      */
-    #[ORM\Column(type: 'text', nullable: true)]
     #[Assert\Length(min: 10, max: 1000)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $comment;
 
     #[ORM\Column(type: 'datetime')]

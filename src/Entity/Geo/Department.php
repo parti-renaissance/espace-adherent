@@ -7,8 +7,8 @@ use App\Repository\Geo\DepartmentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Table(name: 'geo_department')]
 #[ORM\Entity(repositoryClass: DepartmentRepository::class)]
+#[ORM\Table(name: 'geo_department')]
 class Department implements ZoneableInterface
 {
     use GeoTrait;

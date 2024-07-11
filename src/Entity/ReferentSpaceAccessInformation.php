@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 class ReferentSpaceAccessInformation
 {
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

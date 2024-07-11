@@ -61,19 +61,19 @@ class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
     /**
      * @var AudienceFilter|null
      */
+    #[Assert\NotNull]
+    #[Assert\Valid]
     #[Groups(['audience_segment_read', 'audience_segment_write'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\OneToOne(targetEntity: AudienceFilter::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
-    #[Assert\Valid]
-    #[Assert\NotNull]
     private $filter;
 
     /**
      * @var Adherent|null
      */
+    #[Assert\NotBlank]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    #[Assert\NotBlank]
     protected $author;
 
     public function __construct(?UuidInterface $uuid = null)

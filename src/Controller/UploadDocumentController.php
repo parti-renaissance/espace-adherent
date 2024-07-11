@@ -19,8 +19,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UploadDocumentController extends AbstractController
 {
-    #[Route(path: '/upload/{type}', name: 'app_filebrowser_upload', methods: ['POST'])]
     #[IsGranted('FILE_UPLOAD', subject: 'type')]
+    #[Route(path: '/upload/{type}', name: 'app_filebrowser_upload', methods: ['POST'])]
     public function filebrowserUploadAction(
         string $type,
         Request $request,
@@ -55,8 +55,8 @@ class UploadDocumentController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/api/v3/upload/{type}', name: 'api_filebrowser_upload_v3', methods: ['POST'])]
     #[IsGranted('FILE_UPLOAD', subject: 'type')]
+    #[Route(path: '/api/v3/upload/{type}', name: 'api_filebrowser_upload_v3', methods: ['POST'])]
     public function filebrowserUploadForApi(string $type, Request $request, UserDocumentManager $manager): Response
     {
         if (!\in_array($type, UserDocument::ALL_TYPES)) {
@@ -85,8 +85,8 @@ class UploadDocumentController extends AbstractController
         return $this->json(['url' => $url, 'message' => $message], Response::HTTP_OK);
     }
 
-    #[Route(path: '/ck-upload/{type}', name: 'app_filebrowser_upload_ckeditor5', methods: ['POST'])]
     #[IsGranted('FILE_UPLOAD', subject: 'type')]
+    #[Route(path: '/ck-upload/{type}', name: 'app_filebrowser_upload_ckeditor5', methods: ['POST'])]
     public function ckFileUploadAction(string $type, Request $request, UserDocumentManager $manager): Response
     {
         if (!\in_array($type, UserDocument::ALL_TYPES)) {

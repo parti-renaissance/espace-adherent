@@ -11,25 +11,25 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table('designation_candidacy_pool_candidacies_group')]
 #[ORM\Entity]
+#[ORM\Table('designation_candidacy_pool_candidacies_group')]
 class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministratorBlameableInterface
 {
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
 
+    #[Assert\NotBlank]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: CandidacyPool::class, inversedBy: 'candidaciesGroups')]
-    #[Assert\NotBlank]
     public ?CandidacyPool $candidacyPool = null;
 
     /**
      * @var CandidacyInterface[]|Collection
      */
+    #[Assert\Count(min: 1)]
+    #[Assert\Valid]
     #[ORM\OneToMany(mappedBy: 'candidaciesGroup', targetEntity: Candidacy::class, cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
-    #[Assert\Valid]
-    #[Assert\Count(min: 1)]
     protected $candidacies;
 
     public function addCandidacy(CandidacyInterface $candidacy): void

@@ -22,8 +22,8 @@ class ProgramController extends AbstractController
         return $this->redirectToRoute('program_index', [], Response::HTTP_MOVED_PERMANENTLY);
     }
 
-    #[Route(path: '/emmanuel-macron/le-programme', name: 'program_index', methods: ['GET'])]
     #[Entity('page', expr: "repository.findOneBySlug('emmanuel-macron-propositions')")]
+    #[Route(path: '/emmanuel-macron/le-programme', name: 'program_index', methods: ['GET'])]
     public function indexAction(Page $page, ProposalRepository $repository): Response
     {
         return $this->render('program/index.html.twig', [
@@ -32,8 +32,8 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/emmanuel-macron/le-programme/{slug}', name: 'program_proposal', methods: ['GET'])]
     #[Entity('proposal', expr: 'repository.findPublishedProposal(slug)')]
+    #[Route(path: '/emmanuel-macron/le-programme/{slug}', name: 'program_proposal', methods: ['GET'])]
     public function proposalAction(Proposal $proposal): Response
     {
         return $this->render('program/proposal.html.twig', ['proposal' => $proposal]);

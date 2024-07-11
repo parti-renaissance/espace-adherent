@@ -17,8 +17,8 @@ abstract class BaseVoteResult
      * @var int
      */
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
@@ -55,17 +55,17 @@ abstract class BaseVoteResult
     /**
      * @var Adherent|null
      */
+    #[Gedmo\Blameable(on: 'create')]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    #[Gedmo\Blameable(on: 'create')]
     protected $createdBy;
 
     /**
      * @var Adherent|null
      */
+    #[Gedmo\Blameable(on: 'update')]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    #[Gedmo\Blameable(on: 'update')]
     protected $updatedBy;
 
     public function __construct(ElectionRound $electionRound)

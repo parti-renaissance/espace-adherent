@@ -32,8 +32,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={},
  * )
  */
-#[ORM\Table('national_event_inscription')]
 #[ORM\Entity(repositoryClass: EventInscriptionRepository::class)]
+#[ORM\Table('national_event_inscription')]
 class EventInscription
 {
     use EntityIdentityTrait;
@@ -44,9 +44,9 @@ class EventInscription
     #[ORM\ManyToOne(targetEntity: NationalEvent::class)]
     public NationalEvent $event;
 
+    #[Assert\Choice(callback: [InscriptionStatusEnum::class, 'toArray'])]
     #[Groups(['national_event_inscription:webhook', 'event_inscription_update_status'])]
     #[ORM\Column(options: ['default' => 'pending'])]
-    #[Assert\Choice(callback: [InscriptionStatusEnum::class, 'toArray'])]
     public string $status = InscriptionStatusEnum::PENDING;
 
     #[Groups(['national_event_inscription:webhook'])]

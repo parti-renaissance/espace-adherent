@@ -7,21 +7,21 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'referent_managed_areas')]
 #[ORM\Entity]
+#[ORM\Table(name: 'referent_managed_areas')]
 class ReferentManagedArea
 {
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var ReferentTag[]|Collection
      */
-    #[ORM\JoinTable(name: 'referent_managed_areas_tags')]
-    #[ORM\JoinColumn(name: 'referent_managed_area_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'referent_tag_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'referent_managed_area_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinTable(name: 'referent_managed_areas_tags')]
     #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
     private $tags;
 

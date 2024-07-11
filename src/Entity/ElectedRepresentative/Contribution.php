@@ -13,8 +13,8 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-#[ORM\Table(name: 'elected_representative_contribution')]
 #[ORM\Entity(repositoryClass: ContributionRepository::class)]
+#[ORM\Table(name: 'elected_representative_contribution')]
 class Contribution
 {
     use EntityIdentityTrait;
@@ -41,8 +41,8 @@ class Contribution
     public ?string $gocardlessMandateId = null;
 
     #[Groups(['elected_representative_list', 'elected_representative_read'])]
-    #[SerializedName('status')]
     #[ORM\Column(length: 20)]
+    #[SerializedName('status')]
     public ?string $gocardlessMandateStatus = null;
 
     #[ORM\Column(length: 50)]

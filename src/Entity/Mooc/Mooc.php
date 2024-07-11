@@ -15,22 +15,22 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: MoocRepository::class)]
 #[Assert\Expression(expression: '(this.getArticleImage() and null === this.getYoutubeId()) or (this.getYoutubeId() and null === this.getArticleImage())', message: 'mooc.two_media')]
+#[ORM\Entity(repositoryClass: MoocRepository::class)]
 #[UniqueEntity(fields: ['title'])]
 class Mooc
 {
     use EntityTimestampableTrait;
 
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
     #[Groups(['mooc_list'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     private $title;
 
     /**
@@ -40,56 +40,56 @@ class Mooc
     #[ORM\Column(type: 'text', nullable: true)]
     private $description;
 
+    #[Gedmo\Slug(fields: ['title'], unique: true)]
     #[Groups(['mooc_list'])]
     #[ORM\Column(unique: true)]
-    #[Gedmo\Slug(fields: ['title'], unique: true)]
     private $slug;
 
     /**
      * @var Chapter[]|Collection
      */
+    #[Assert\Valid]
     #[ORM\OneToMany(mappedBy: 'mooc', targetEntity: Chapter::class, cascade: ['all'])]
     #[ORM\OrderBy(['position' => 'ASC'])]
-    #[Assert\Valid]
     private $chapters;
 
-    #[ORM\Column(length: 800, nullable: true)]
     #[Assert\Length(min: 5, max: 800)]
+    #[ORM\Column(length: 800, nullable: true)]
     private $content;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
-    #[Assert\Regex(pattern: '/^[A-Za-z0-9_-]+$/', message: 'mooc.youtubeid_syntax')]
     #[Assert\Length(min: 2, max: 11)]
+    #[Assert\Regex(pattern: '/^[A-Za-z0-9_-]+$/', message: 'mooc.youtubeid_syntax')]
+    #[ORM\Column(nullable: true)]
     private $youtubeId;
 
     /**
      * @var \DateTimeInterface|null
      */
-    #[ORM\Column(type: 'time', nullable: true)]
     #[Assert\Time]
+    #[ORM\Column(type: 'time', nullable: true)]
     private $youtubeDuration;
 
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $shareTwitterText;
 
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $shareFacebookText;
 
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $shareEmailSubject;
 
-    #[ORM\Column(length: 500)]
-    #[Assert\NotBlank]
     #[Assert\Length(min: 5, max: 500, options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 500)]
     protected $shareEmailBody;
 
     /**

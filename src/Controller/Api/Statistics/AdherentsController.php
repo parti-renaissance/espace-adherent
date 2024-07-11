@@ -12,8 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/statistics/adherents')]
 #[IsGranted('ROLE_OAUTH_SCOPE_READ:STATS')]
+#[Route(path: '/statistics/adherents')]
 class AdherentsController extends AbstractStatisticsController
 {
     #[Route(path: '/count', name: 'app_statistics_adherents_count', methods: ['GET'])]

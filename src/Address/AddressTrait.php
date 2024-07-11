@@ -15,8 +15,8 @@ trait AddressTrait
     #[Assert\Length(max: 150, maxMessage: 'common.address.max_length')]
     protected ?string $additionalAddress = null;
 
-    #[Assert\NotBlank(message: 'common.postal_code.not_blank')]
     #[Assert\Length(max: 15)]
+    #[Assert\NotBlank(message: 'common.postal_code.not_blank')]
     protected ?string $postalCode = null;
 
     #[Assert\Length(max: 15)]
@@ -25,12 +25,12 @@ trait AddressTrait
     #[Assert\Length(max: 255)]
     protected ?string $cityName = null;
 
-    #[Assert\NotBlank]
     #[Assert\Country(message: 'common.country.invalid')]
+    #[Assert\NotBlank]
     protected ?string $country = null;
 
-    #[Groups(['profile_write'])]
     #[Assert\Length(max: 255)]
+    #[Groups(['profile_write'])]
     protected ?string $region = null;
 
     public function getAddress(): ?string

@@ -28,22 +28,22 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-#[ORM\Table(name: 'programmatic_foundation_approach')]
 #[ORM\Entity]
+#[ORM\Table(name: 'programmatic_foundation_approach')]
 #[UniqueEntity(fields: ['position'], message: 'programmatic_foundation.unique_position.approach')]
 class Approach
 {
     use EntityIdentityTrait;
     use TimestampableEntity;
 
+    #[Assert\GreaterThan(value: 0, message: 'programmatic_foundation.position.greater_than_zero')]
     #[Groups(['approach_list_read'])]
     #[ORM\Column(type: 'smallint')]
-    #[Assert\GreaterThan(value: 0, message: 'programmatic_foundation.position.greater_than_zero')]
     private $position;
 
+    #[Assert\NotBlank(message: 'programmatic_foundation.title.not_empty')]
     #[Groups(['approach_list_read'])]
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'programmatic_foundation.title.not_empty')]
     private $title;
 
     #[Groups(['approach_list_read'])]

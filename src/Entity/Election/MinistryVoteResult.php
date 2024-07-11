@@ -9,9 +9,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity(repositoryClass: MinistryVoteResultRepository::class)]
 #[ORM\Table]
 #[ORM\UniqueConstraint(name: 'ministry_vote_result_city_round_unique', columns: ['city_id', 'election_round_id'])]
-#[ORM\Entity(repositoryClass: MinistryVoteResultRepository::class)]
 class MinistryVoteResult extends BaseVoteResult
 {
     /**

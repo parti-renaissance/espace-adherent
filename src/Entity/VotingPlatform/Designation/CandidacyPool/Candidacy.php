@@ -12,8 +12,8 @@ use Ramsey\Uuid\UuidInterface;
 use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table('designation_candidacy_pool_candidacy')]
 #[ORM\Entity]
+#[ORM\Table('designation_candidacy_pool_candidacy')]
 class Candidacy extends BaseCandidacy
 {
     use Sortable;
@@ -25,19 +25,19 @@ class Candidacy extends BaseCandidacy
     /**
      * @var CandidaciesGroup|null
      */
-    #[ORM\ManyToOne(targetEntity: CandidaciesGroup::class, inversedBy: 'candidacies')]
     #[Gedmo\SortableGroup]
+    #[ORM\ManyToOne(targetEntity: CandidaciesGroup::class, inversedBy: 'candidacies')]
     protected $candidaciesGroup;
 
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private ?Adherent $adherent = null;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     private ?string $firstName = null;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     private ?string $lastName = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

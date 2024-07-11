@@ -9,9 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'donators')]
-#[ORM\Index(columns: ['email_address', 'first_name', 'last_name'])]
 #[ORM\Entity(repositoryClass: DonatorRepository::class)]
+#[ORM\Index(columns: ['email_address', 'first_name', 'last_name'])]
+#[ORM\Table(name: 'donators')]
 class Donator
 {
     use EntityIdentityTrait;
@@ -30,27 +30,27 @@ class Donator
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     private $adherent;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(min: 1, max: 50)]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 50, nullable: true)]
     private $lastName;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 100)]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 100, nullable: true)]
     private $firstName;
 
-    #[ORM\Column(length: 50, nullable: true)]
-    #[Assert\NotBlank(message: 'common.birthcity.not_blank')]
     #[Assert\Length(max: 50)]
+    #[Assert\NotBlank(message: 'common.birthcity.not_blank')]
+    #[ORM\Column(length: 50, nullable: true)]
     private $city;
 
     #[ORM\Column(length: 2)]
     private $country;
 
-    #[ORM\Column(nullable: true)]
     #[Assert\Email(message: 'common.email.invalid')]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[ORM\Column(nullable: true)]
     private $emailAddress;
 
     #[ORM\Column(length: 6, nullable: true)]
@@ -89,8 +89,8 @@ class Donator
     /**
      * @var DonatorKinship[]|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'donator', targetEntity: DonatorKinship::class, cascade: ['all'])]
     #[Assert\Valid]
+    #[ORM\OneToMany(mappedBy: 'donator', targetEntity: DonatorKinship::class, cascade: ['all'])]
     private $kinships;
 
     public function __construct(

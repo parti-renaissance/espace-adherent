@@ -11,8 +11,8 @@ trait ListFieldTrait
     /**
      * @var string|null
      */
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     private $label;
 
     /**

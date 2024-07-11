@@ -11,8 +11,8 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-#[ORM\Table(name: 'voting_platform_candidate_group')]
 #[ORM\Entity(repositoryClass: CandidateGroupRepository::class)]
+#[ORM\Table(name: 'voting_platform_candidate_group')]
 class CandidateGroup
 {
     use EntityIdentityTrait;

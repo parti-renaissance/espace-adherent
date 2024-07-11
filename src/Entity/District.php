@@ -11,17 +11,17 @@ use Doctrine\ORM\Mapping as ORM;
  *  - France: https://www.data.gouv.fr/s/resources/contours-precis-des-circonscriptions-legislatives/20170511-183720/circonscriptions-legislatives.json
  *  - Other countries: https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson
  */
+#[ORM\Entity(repositoryClass: DistrictRepository::class)]
 #[ORM\Table(name: 'districts')]
 #[ORM\UniqueConstraint(name: 'district_department_code_number', columns: ['department_code', 'number'])]
-#[ORM\Entity(repositoryClass: DistrictRepository::class)]
 class District
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

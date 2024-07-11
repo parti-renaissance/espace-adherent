@@ -18,8 +18,8 @@ class Image
      * @var int
      */
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
@@ -31,9 +31,9 @@ class Image
     /**
      * @var string
      */
-    #[ORM\Column(length: 10)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 10)]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 10)]
     private $extension;
 
     /**

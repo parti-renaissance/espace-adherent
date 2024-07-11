@@ -15,26 +15,26 @@ class RepublicanSilence
     /**
      * @var int
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var \DateTime
      */
+    #[Assert\NotBlank]
     #[Groups(['read_api'])]
     #[ORM\Column(type: 'datetime')]
-    #[Assert\NotBlank]
     private $beginAt;
 
     /**
      * @var \DateTime
      */
+    #[Assert\Expression('value > this.getBeginAt()', message: 'committee.event.invalid_date_range')]
+    #[Assert\NotBlank]
     #[Groups(['read_api'])]
     #[ORM\Column(type: 'datetime')]
-    #[Assert\NotBlank]
-    #[Assert\Expression('value > this.getBeginAt()', message: 'committee.event.invalid_date_range')]
     private $finishAt;
 
     public function __construct()

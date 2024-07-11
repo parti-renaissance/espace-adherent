@@ -18,16 +18,16 @@ class Commitment implements ImageOwnerInterface
     use ImageTrait;
     use Sortable;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     public ?string $title = null;
 
-    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'text')]
     public ?string $shortDescription = null;
 
-    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'text')]
     public ?string $description = null;
 
     /**

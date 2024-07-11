@@ -31,17 +31,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     collectionOperations={},
  * )
  */
-#[ORM\Table(name: 'procuration_v2_request_slot')]
 #[ORM\Entity(repositoryClass: RequestSlotRepository::class)]
+#[ORM\Table(name: 'procuration_v2_request_slot')]
 class RequestSlot extends AbstractSlot
 {
     #[Groups(['procuration_request_slot_read'])]
-    #[ORM\ManyToOne(targetEntity: Request::class, fetch: 'EXTRA_LAZY', inversedBy: 'requestSlots')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Request::class, fetch: 'EXTRA_LAZY', inversedBy: 'requestSlots')]
     public Request $request;
 
-    #[ORM\OneToOne(inversedBy: 'requestSlot', targetEntity: ProxySlot::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[ORM\OneToOne(inversedBy: 'requestSlot', targetEntity: ProxySlot::class)]
     public ?ProxySlot $proxySlot = null;
 
     /**

@@ -5,24 +5,24 @@ namespace App\Entity\ElectedRepresentative;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'elected_representative_label')]
 #[ORM\Entity]
+#[ORM\Table(name: 'elected_representative_label')]
 class ElectedRepresentativeLabel
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 50)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 50)]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 50)]
     private $name;
 
     /**
@@ -34,24 +34,24 @@ class ElectedRepresentativeLabel
     /**
      * @var int|null
      */
-    #[ORM\Column(type: 'integer', nullable: true)]
     #[Assert\Choice(callback: 'getYears')]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $beginYear;
 
     /**
      * @var int|null
      */
-    #[ORM\Column(type: 'integer', nullable: true)]
-    #[Assert\Expression('value == null or value > this.getBeginYear()', message: "La date de fin de l'étiquette doit être postérieure à la date de début.")]
     #[Assert\Choice(callback: 'getYears')]
+    #[Assert\Expression('value == null or value > this.getBeginYear()', message: "La date de fin de l'étiquette doit être postérieure à la date de début.")]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $finishYear;
 
     /**
      * @var ElectedRepresentative
      */
+    #[Assert\NotBlank]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: ElectedRepresentative::class, inversedBy: 'labels')]
-    #[Assert\NotBlank]
     private $electedRepresentative;
 
     public function __construct(

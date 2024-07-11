@@ -11,8 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LegacyController extends AbstractController
 {
-    #[Route(path: '/espaceperso/evenement/{id}-{slug}', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[Entity('event', expr: 'repository.find(id)')]
+    #[Route(path: '/espaceperso/evenement/{id}-{slug}', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function redirectEventAction(CommitteeEvent $event): Response
     {
         return $this->redirectToRoute('app_committee_event_show', [
@@ -20,8 +20,8 @@ class LegacyController extends AbstractController
         ], Response::HTTP_MOVED_PERMANENTLY);
     }
 
-    #[Route(path: '/espaceperso/comite/{id}-{slug}', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[Entity('committee', expr: 'repository.find(id)')]
+    #[Route(path: '/espaceperso/comite/{id}-{slug}', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function redirectCommitteeAction(Committee $committee): Response
     {
         return $this->redirectToRoute('app_committee_show', [

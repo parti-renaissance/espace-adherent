@@ -7,46 +7,46 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'live_links')]
 #[ORM\Entity(repositoryClass: LiveLinkRepository::class)]
+#[ORM\Table(name: 'live_links')]
 class LiveLink
 {
     /**
      * @var int
      */
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var int|null
      */
-    #[ORM\Column(type: 'smallint')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'smallint')]
     private $position;
 
     /**
      * @var string|null
      */
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $title;
 
     /**
      * @var string|null
      */
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $link;
 
     /**
      * @var \DateTime
      */
-    #[ORM\Column(type: 'datetime')]
     #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
     public function __toString()

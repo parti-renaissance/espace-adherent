@@ -14,16 +14,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: LocalPollRepository::class)]
 class LocalPoll extends Poll implements AuthoredInterface
 {
+    #[Assert\NotBlank]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    #[Assert\NotBlank]
     private $author;
 
     /**
      * @var Zone|null
      */
-    #[ORM\ManyToOne(targetEntity: Zone::class)]
     #[Assert\NotBlank]
+    #[ORM\ManyToOne(targetEntity: Zone::class)]
     private $zone;
 
     public function __construct(

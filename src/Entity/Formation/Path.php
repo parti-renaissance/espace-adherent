@@ -11,8 +11,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'formation_paths')]
 #[ORM\Entity(repositoryClass: PathRepository::class)]
+#[ORM\Table(name: 'formation_paths')]
 #[UniqueEntity(fields: ['title'], message: 'path.title.unique_entity')]
 class Path
 {
@@ -21,32 +21,32 @@ class Path
     /**
      * @var int|null
      */
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
     #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column]
-    #[Assert\NotBlank(message: 'path.title.not_blank')]
     #[Assert\Length(min: 2, max: 150, minMessage: 'path.title.max_length')]
+    #[Assert\NotBlank(message: 'path.title.not_blank')]
+    #[ORM\Column]
     private $title;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(unique: true)]
     #[Gedmo\Slug(fields: ['title'])]
+    #[ORM\Column(unique: true)]
     protected $slug;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank(message: 'path.description.not_blank')]
     #[Assert\Length(min: 2, minMessage: 'path.description.min_length', options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank(message: 'path.description.not_blank')]
+    #[ORM\Column(type: 'text')]
     private $description;
 
     /**

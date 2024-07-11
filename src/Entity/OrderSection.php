@@ -8,16 +8,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'order_sections')]
 #[ORM\Entity(repositoryClass: OrderSectionRepository::class)]
+#[ORM\Table(name: 'order_sections')]
 class OrderSection
 {
     /**
      * @var int
      */
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
@@ -29,8 +29,8 @@ class OrderSection
     /**
      * @var int
      */
-    #[ORM\Column(type: 'smallint')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'smallint')]
     private $position;
 
     /**

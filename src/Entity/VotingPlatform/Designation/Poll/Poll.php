@@ -10,21 +10,21 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'designation_poll')]
 #[ORM\Entity]
+#[ORM\Table(name: 'designation_poll')]
 class Poll
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     public ?string $label = null;
 
-    #[ORM\OneToMany(mappedBy: 'poll', targetEntity: PollQuestion::class, cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
-    #[ORM\OrderBy(['position' => 'ASC'])]
     #[Assert\Count(min: 1)]
     #[Assert\Valid]
+    #[ORM\OneToMany(mappedBy: 'poll', targetEntity: PollQuestion::class, cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
     private Collection $questions;
 
     public function __construct()

@@ -83,9 +83,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(SearchFilter::class, properties={"type": "exact"})
  * @ApiFilter(DateFilter::class, properties={"date"})
  */
-#[ORM\Table(name: 'vox_action')]
 #[ORM\Entity(repositoryClass: ActionRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
+#[ORM\Table(name: 'vox_action')]
 class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEntity, IndexableEntityInterface
 {
     use EntityIdentityTrait;
@@ -97,15 +97,15 @@ class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEnti
     public const string STATUS_SCHEDULED = 'scheduled';
     public const string STATUS_CANCELLED = 'cancelled';
 
+    #[Assert\Choice(callback: [ActionTypeEnum::class, 'toArray'])]
+    #[Assert\NotBlank]
     #[Groups(['action_read', 'action_read_list', 'action_write'])]
     #[ORM\Column(name: '`type`')]
-    #[Assert\NotBlank]
-    #[Assert\Choice(callback: [ActionTypeEnum::class, 'toArray'])]
     public ?string $type = null;
 
+    #[Assert\NotBlank]
     #[Groups(['action_read', 'action_read_list', 'action_write'])]
     #[ORM\Column(type: 'datetime')]
-    #[Assert\NotBlank]
     public ?\DateTime $date = null;
 
     #[Groups(['action_read', 'action_write'])]

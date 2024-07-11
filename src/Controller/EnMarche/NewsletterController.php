@@ -71,8 +71,8 @@ class NewsletterController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/newsletter/confirmation/{uuid}/{confirm_token}', name: 'app_newsletter_confirmation', methods: ['GET'])]
     #[Entity('subscription', expr: 'repository.findOneNotConfirmedByUuidAndToken(uuid, confirm_token)')]
+    #[Route(path: '/newsletter/confirmation/{uuid}/{confirm_token}', name: 'app_newsletter_confirmation', methods: ['GET'])]
     public function subscriptionConfirmationAction(
         NewsletterSubscription $subscription,
         NewsletterSubscriptionHandler $newsletterSubscriptionHandler

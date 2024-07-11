@@ -7,17 +7,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity(repositoryClass: VoteResultRepository::class)]
 #[ORM\Table(name: 'voting_platform_vote_result')]
 #[ORM\UniqueConstraint(name: 'unique_vote', columns: ['voter_key', 'election_round_id'])]
-#[ORM\Entity(repositoryClass: VoteResultRepository::class)]
 class VoteResult
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

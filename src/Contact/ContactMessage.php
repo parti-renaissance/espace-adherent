@@ -16,8 +16,8 @@ class ContactMessage implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
 
-    #[Assert\NotBlank]
     #[Assert\Length(min: 10, max: 1500, minMessage: 'adherent.contact.min_length', maxMessage: 'adherent.contact.max_length')]
+    #[Assert\NotBlank]
     private $content;
 
     private $from;

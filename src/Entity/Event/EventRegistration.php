@@ -9,10 +9,10 @@ use App\Repository\EventRegistrationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'events_registrations')]
+#[ORM\Entity(repositoryClass: EventRegistrationRepository::class)]
 #[ORM\Index(columns: ['email_address'], name: 'event_registration_email_address_idx')]
 #[ORM\Index(columns: ['adherent_uuid'], name: 'event_registration_adherent_uuid_idx')]
-#[ORM\Entity(repositoryClass: EventRegistrationRepository::class)]
+#[ORM\Table(name: 'events_registrations')]
 class EventRegistration
 {
     use EntityIdentityTrait;

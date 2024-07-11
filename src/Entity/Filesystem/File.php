@@ -16,10 +16,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'filesystem_file')]
+#[ORM\Entity(repositoryClass: FileRepository::class)]
 #[ORM\Index(columns: ['type'])]
 #[ORM\Index(columns: ['name'])]
-#[ORM\Entity(repositoryClass: FileRepository::class)]
+#[ORM\Table(name: 'filesystem_file')]
 #[UniqueEntity(fields: ['name'], message: 'file.validation.name.not_unique', repositoryMethod: 'findDirectoryByName')]
 class File
 {
@@ -29,24 +29,24 @@ class File
     /**
      * @var string|null
      */
+    #[Assert\Length(max: 100)]
+    #[Assert\NotBlank]
     #[Groups(['autocomplete'])]
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 100)]
     private $name;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(unique: true)]
     #[Gedmo\Slug(fields: ['name'], unique: true)]
+    #[ORM\Column(unique: true)]
     private $slug;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 20)]
     #[Assert\Choice(callback: [FileTypeEnum::class, 'toArray'])]
+    #[ORM\Column(length: 20)]
     private $type = FileTypeEnum::FILE;
 
     /**
@@ -58,17 +58,17 @@ class File
     /**
      * @var Administrator|null
      */
+    #[Gedmo\Blameable(on: 'create')]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
-    #[Gedmo\Blameable(on: 'create')]
     private $createdBy;
 
     /**
      * @var Administrator|null
      */
+    #[Gedmo\Blameable(on: 'update')]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
-    #[Gedmo\Blameable(on: 'update')]
     private $updatedBy;
 
     /**
@@ -80,16 +80,16 @@ class File
     /**
      * @var FilePermission[]|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'file', targetEntity: FilePermission::class, cascade: ['all'], orphanRemoval: true)]
     #[Assert\Valid]
+    #[ORM\OneToMany(mappedBy: 'file', targetEntity: FilePermission::class, cascade: ['all'], orphanRemoval: true)]
     private $permissions;
 
     /**
      * @var File|null
      */
+    #[Assert\Valid]
     #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: File::class, cascade: ['persist'], inversedBy: 'children')]
-    #[Assert\Valid]
     private $parent;
 
     /**
@@ -101,22 +101,22 @@ class File
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'file.validation.filename_length')]
+    #[ORM\Column(nullable: true)]
     private $originalFilename;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 10, nullable: true)]
     #[Assert\Length(max: 10)]
+    #[ORM\Column(length: 10, nullable: true)]
     private $extension;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 75, nullable: true)]
     #[Assert\Length(max: 75)]
+    #[ORM\Column(length: 75, nullable: true)]
     private $mimeType;
 
     /**
@@ -128,8 +128,8 @@ class File
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Url]
+    #[ORM\Column(nullable: true)]
     private $externalLink;
 
     public function __construct()

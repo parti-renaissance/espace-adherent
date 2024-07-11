@@ -13,8 +13,8 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
-#[ORM\Table(name: 'contribution')]
 #[ORM\Entity(repositoryClass: ContributionRepository::class)]
+#[ORM\Table(name: 'contribution')]
 class Contribution
 {
     use EntityIdentityTrait;
@@ -38,8 +38,8 @@ class Contribution
     #[ORM\Column(length: 50)]
     public ?string $gocardlessMandateId = null;
 
-    #[SerializedName('status')]
     #[ORM\Column(length: 20)]
+    #[SerializedName('status')]
     public ?string $gocardlessMandateStatus = null;
 
     #[ORM\Column(length: 50)]

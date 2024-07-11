@@ -7,9 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ORM\Entity]
 #[ORM\Table(name: 'formation_files')]
 #[ORM\UniqueConstraint(name: 'formation_file_slug_extension', columns: ['slug', 'extension'])]
-#[ORM\Entity]
 class File extends BaseFile
 {
     public const PREFIX_PATH = 'files/formations';

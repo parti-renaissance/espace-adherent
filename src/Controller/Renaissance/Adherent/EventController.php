@@ -31,8 +31,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route(path: '/espace-adherent/evenements', name: 'app_renaissance_event')]
 #[IsGranted('ROLE_RENAISSANCE_USER')]
+#[Route(path: '/espace-adherent/evenements', name: 'app_renaissance_event')]
 class EventController extends AbstractController
 {
     private const ITEMS_PER_PAGE = 6;
@@ -91,15 +91,15 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{slug}/afficher', name: '_show', methods: ['GET'])]
     #[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
+    #[Route(path: '/{slug}/afficher', name: '_show', methods: ['GET'])]
     public function showAction(BaseEvent $event): Response
     {
         return $this->render('renaissance/adherent/events/show.html.twig', ['event' => $event]);
     }
 
-    #[Route(path: '/{slug}/inscription', name: '_registration', methods: ['GET'])]
     #[Entity('event', expr: 'repository.findOneActiveBySlug(slug)')]
+    #[Route(path: '/{slug}/inscription', name: '_registration', methods: ['GET'])]
     public function registrationAction(
         BaseEvent $event,
         ValidatorInterface $validator,
@@ -142,8 +142,8 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_renaissance_event_show', ['slug' => $event->getSlug()]);
     }
 
-    #[Route(path: '/{slug}/invitation', name: '_invitation', methods: ['GET', 'POST'])]
     #[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
+    #[Route(path: '/{slug}/invitation', name: '_invitation', methods: ['GET', 'POST'])]
     public function invitationAction(Request $request, BaseEvent $event, EventInvitationHandler $handler): Response
     {
         $eventInvitation = EventInvitation::createFromAdherent(
@@ -173,8 +173,8 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{slug}/desinscription', name: '_unregistration', methods: ['GET'])]
     #[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
+    #[Route(path: '/{slug}/desinscription', name: '_unregistration', methods: ['GET'])]
     public function unregistrationAction(BaseEvent $event): Response
     {
         if (!$adherentEventRegistration = $this->manager->searchRegistration($event, $this->getUser()->getEmailAddress(), null)) {
@@ -188,8 +188,8 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_renaissance_event_show', ['slug' => $event->getSlug()]);
     }
 
-    #[Route(path: '/{slug}/ical', name: '_ical', methods: ['GET'])]
     #[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
+    #[Route(path: '/{slug}/ical', name: '_ical', methods: ['GET'])]
     public function icalAction(BaseEvent $event, SerializerInterface $serializer): Response
     {
         $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$event->getSlug().'.ics';
@@ -201,8 +201,8 @@ class EventController extends AbstractController
         return $response;
     }
 
-    #[Route(path: '/{slug}/contact', name: '_contact_organizer', methods: ['GET', 'POST'])]
     #[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
+    #[Route(path: '/{slug}/contact', name: '_contact_organizer', methods: ['GET', 'POST'])]
     public function contactAction(
         Request $request,
         BaseEvent $event,

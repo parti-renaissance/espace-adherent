@@ -8,8 +8,8 @@ use App\Event\EventInvitation;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
-#[ORM\Table(name: 'events_invitations')]
 #[ORM\Entity]
+#[ORM\Table(name: 'events_invitations')]
 class EventInvite
 {
     use EntityIdentityTrait;

@@ -22,8 +22,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/espace-responsable-procuration')]
 #[IsGranted('ROLE_PROCURATION_MANAGER')]
+#[Route(path: '/espace-responsable-procuration')]
 class ProcurationManagerController extends AbstractController
 {
     #[Route(name: 'app_procuration_manager_requests', methods: ['GET'])]
@@ -195,8 +195,8 @@ class ProcurationManagerController extends AbstractController
         }
     }
 
-    #[Route(path: '/demande/{id}/associer/{proxyId}', requirements: ['id' => '\d+', 'proxyId' => '\d+'], name: 'app_procuration_manager_request_associate', methods: ['GET', 'POST'])]
     #[ParamConverter('proxy', class: ProcurationProxy::class, options: ['id' => 'proxyId'])]
+    #[Route(path: '/demande/{id}/associer/{proxyId}', requirements: ['id' => '\d+', 'proxyId' => '\d+'], name: 'app_procuration_manager_request_associate', methods: ['GET', 'POST'])]
     public function requestAssociateAction(
         Request $sfRequest,
         ProcurationRequest $procurationRequest,

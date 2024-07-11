@@ -13,8 +13,8 @@ class EventContactMembersCommand
     /** @var Adherent */
     private $sender;
 
-    #[Assert\NotBlank]
     #[Assert\Length(max: 80)]
+    #[Assert\NotBlank]
     private $subject;
 
     #[Assert\NotBlank]

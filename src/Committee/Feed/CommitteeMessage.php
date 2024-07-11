@@ -27,8 +27,8 @@ class CommitteeMessage
     private $sendNotification;
     private $createdAt;
 
-    #[Assert\NotBlank(groups: ['notification'])]
     #[Assert\Length(max: 80, groups: ['notification'])]
+    #[Assert\NotBlank(groups: ['notification'])]
     private $subject;
 
     public function __construct(

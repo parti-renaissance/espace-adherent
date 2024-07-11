@@ -8,10 +8,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'pages')]
-#[ORM\Entity(repositoryClass: PageRepository::class)]
-#[UniqueEntity(fields: ['slug'])]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: PageRepository::class)]
+#[ORM\Table(name: 'pages')]
+#[UniqueEntity(fields: ['slug'])]
 class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface
 {
     use EntityTimestampableTrait;
@@ -35,23 +35,23 @@ class Page implements EntityMediaInterface, EntityContentInterface, EntitySoftDe
      * @var int|null
      */
     #[ORM\Column(type: 'bigint')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 100, unique: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 100)]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 100, unique: true)]
     private $slug;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(options: ['default' => 'default'])]
     #[Assert\Choice(choices: Page::LAYOUTS)]
+    #[ORM\Column(options: ['default' => 'default'])]
     private $layout = self::LAYOUT_DEFAULT;
 
     /**

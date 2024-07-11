@@ -5,16 +5,16 @@ namespace App\Entity\VotingPlatform;
 use App\Entity\Committee;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'voting_platform_election_entity')]
 #[ORM\Entity]
+#[ORM\Table(name: 'voting_platform_election_entity')]
 class ElectionEntity
 {
     /**
      * @var int
      */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

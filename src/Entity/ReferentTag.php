@@ -11,8 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @deprecated
  */
-#[ORM\Table(name: 'referent_tags')]
 #[ORM\Entity(repositoryClass: ReferentTagRepository::class)]
+#[ORM\Table(name: 'referent_tags')]
 #[UniqueEntity(fields: ['name'])]
 #[UniqueEntity(fields: ['code'])]
 class ReferentTag
@@ -23,26 +23,26 @@ class ReferentTag
     public const TYPE_BOROUGH = 'borough';
     public const TYPE_METROPOLIS = 'metropolis';
 
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 100, unique: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: '100')]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 100, unique: true)]
     private $name;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 100, unique: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 100)]
+    #[Assert\NotBlank]
     #[Assert\Regex(pattern: '/^[a-z0-9-]+$/', message: 'referent_tag.code.invalid')]
+    #[ORM\Column(length: 100, unique: true)]
     private $code;
 
     /**

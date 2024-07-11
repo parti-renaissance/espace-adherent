@@ -38,8 +38,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @AssertRecaptcha(api="friendly_captcha", groups={"legislative_newsletter_subscriptions_write"})
  */
-#[ORM\Table]
 #[ORM\Entity(repositoryClass: LegislativeNewsletterSubscriptionRepository::class)]
+#[ORM\Table]
 #[UniqueEntity(fields: ['emailAddress'], message: 'legislative_newsletter.already_registered')]
 class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
 {
@@ -47,22 +47,22 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     use EntityTimestampableTrait;
     use RecaptchaChallengeTrait;
 
+    #[Assert\Length(max: 255)]
     #[Groups(['legislative_newsletter_subscriptions_write'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Length(max: 255)]
     private ?string $firstName = null;
 
-    #[Groups(['legislative_newsletter_subscriptions_write'])]
-    #[ORM\Column(unique: true)]
-    #[Assert\NotBlank(message: 'newsletter.email.not_blank')]
     #[Assert\Email(message: 'newsletter.email.invalid')]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[Assert\NotBlank(message: 'newsletter.email.not_blank')]
+    #[Groups(['legislative_newsletter_subscriptions_write'])]
+    #[ORM\Column(unique: true)]
     private ?string $emailAddress = null;
 
+    #[Assert\Length(min: 2, max: 11, minMessage: 'newsletter.postalCode.invalid', maxMessage: 'newsletter.postalCode.invalid')]
+    #[Assert\NotBlank]
     #[Groups(['legislative_newsletter_subscriptions_write'])]
     #[ORM\Column(type: 'string', length: 11)]
-    #[Assert\NotBlank]
-    #[Assert\Length(min: 2, max: 11, minMessage: 'newsletter.postalCode.invalid', maxMessage: 'newsletter.postalCode.invalid')]
     private ?string $postalCode = null;
 
     /**
@@ -73,8 +73,8 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
     #[ORM\ManyToMany(targetEntity: Zone::class)]
     private Collection $fromZones;
 
-    #[Groups(['legislative_newsletter_subscriptions_write'])]
     #[Assert\IsTrue(message: 'common.personal_data_collection.required')]
+    #[Groups(['legislative_newsletter_subscriptions_write'])]
     private bool $personalDataCollection = false;
 
     #[ORM\Column(type: 'uuid', unique: true)]

@@ -8,8 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'chatbot_run')]
 #[ORM\Entity]
+#[ORM\Table(name: 'chatbot_run')]
 class Run
 {
     use EntityIdentityTrait;

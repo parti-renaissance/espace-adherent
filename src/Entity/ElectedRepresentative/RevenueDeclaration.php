@@ -8,8 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'elected_representative_revenue_declaration')]
 #[ORM\Entity]
+#[ORM\Table(name: 'elected_representative_revenue_declaration')]
 class RevenueDeclaration
 {
     use EntityIdentityTrait;

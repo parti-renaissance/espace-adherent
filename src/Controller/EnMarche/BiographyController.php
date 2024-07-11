@@ -23,8 +23,8 @@ class BiographyController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/le-mouvement/notre-organisation/{slug}', name: 'app_our_organization_show', methods: ['GET'])]
     #[Entity('executiveOfficeMember', expr: 'repository.findOnePublishedBySlug(slug)')]
+    #[Route(path: '/le-mouvement/notre-organisation/{slug}', name: 'app_our_organization_show', methods: ['GET'])]
     public function executiveOfficeMemberAction(ExecutiveOfficeMember $executiveOfficeMember): Response
     {
         return $this->render('biography/executive_office_member/show.html.twig', [

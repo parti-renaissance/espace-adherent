@@ -5,10 +5,10 @@ namespace App\Entity;
 use App\Repository\AdherentResetPasswordTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity(repositoryClass: AdherentResetPasswordTokenRepository::class)]
 #[ORM\Table(name: 'adherent_reset_password_tokens')]
 #[ORM\UniqueConstraint(name: 'adherent_reset_password_token_unique', columns: ['value'])]
 #[ORM\UniqueConstraint(name: 'adherent_reset_password_token_account_unique', columns: ['value', 'adherent_uuid'])]
-#[ORM\Entity(repositoryClass: AdherentResetPasswordTokenRepository::class)]
 class AdherentResetPasswordToken extends AdherentToken
 {
     /**

@@ -13,14 +13,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @UniqueExecutiveOfficeMemberRole
  */
-#[ORM\Table(name: 'biography_executive_office_member')]
 #[ORM\Entity(repositoryClass: ExecutiveOfficeMemberRepository::class)]
+#[ORM\Table(name: 'biography_executive_office_member')]
 class ExecutiveOfficeMember extends AbstractBiography implements EntitySourceableInterface
 {
     use EntitySourceableTrait;
 
-    #[ORM\Column]
     #[Assert\Length(max: 255)]
+    #[ORM\Column]
     private $job;
 
     #[ORM\Column(nullable: true)]

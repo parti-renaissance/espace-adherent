@@ -140,10 +140,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @AssertStartedPapCampaignValid
  * @AssertVotePlacesValid
  */
-#[ORM\Table(name: 'pap_campaign')]
-#[ORM\Index(columns: ['begin_at', 'finish_at'])]
 #[ORM\Entity(repositoryClass: CampaignRepository::class)]
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class, PapCampaignListener::class])]
+#[ORM\Index(columns: ['begin_at', 'finish_at'])]
+#[ORM\Table(name: 'pap_campaign')]
 class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZonesInterface, EntityAdherentBlameableInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;
@@ -156,10 +156,10 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
     /**
      * @var string|null
      */
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
     #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     private $title;
 
     /**
@@ -172,28 +172,28 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
     /**
      * @var int|null
      */
+    #[Assert\GreaterThan(value: '0')]
+    #[Assert\NotBlank]
     #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
     #[ORM\Column(type: 'integer')]
-    #[Assert\NotBlank]
-    #[Assert\GreaterThan(value: '0')]
     private $goal;
 
     /**
      * @var \DateTime|null
      */
+    #[Assert\GreaterThanOrEqual(value: 'today', message: 'pap.campaign.invalid_start_date', groups: ['pap_campaign_creation'])]
+    #[Assert\NotBlank(groups: ['regular_campaign'])]
     #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
-    #[Assert\NotBlank(groups: ['regular_campaign'])]
-    #[Assert\GreaterThanOrEqual(value: 'today', message: 'pap.campaign.invalid_start_date', groups: ['pap_campaign_creation'])]
     private $beginAt;
 
     /**
      * @var \DateTime|null
      */
+    #[Assert\Expression('value > this.getBeginAt()', message: 'pap.campaign.invalid_end_date')]
+    #[Assert\NotBlank(groups: ['regular_campaign'])]
     #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_write', 'pap_campaign_read_after_write'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
-    #[Assert\NotBlank(groups: ['regular_campaign'])]
-    #[Assert\Expression('value > this.getBeginAt()', message: 'pap.campaign.invalid_end_date')]
     private $finishAt;
 
     /**
@@ -201,10 +201,10 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
      *
      * @ApiSubresource
      */
+    #[Assert\NotBlank]
     #[Groups(['pap_campaign_write', 'pap_campaign_read', 'pap_campaign_read_after_write'])]
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Survey::class)]
-    #[Assert\NotBlank]
     private $survey;
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true, 'default' => 0])]
@@ -244,10 +244,10 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private bool $enabled;
 
+    #[Assert\Choice(choices: ScopeVisibilityEnum::ALL, message: 'scope.visibility.choice')]
+    #[Assert\NotBlank(message: 'scope.visibility.not_blank')]
     #[Groups(['pap_campaign_read', 'pap_campaign_read_list', 'pap_campaign_read_after_write'])]
     #[ORM\Column(length: 30)]
-    #[Assert\NotBlank(message: 'scope.visibility.not_blank')]
-    #[Assert\Choice(choices: ScopeVisibilityEnum::ALL, message: 'scope.visibility.choice')]
     protected string $visibility = ScopeVisibilityEnum::NATIONAL;
 
     #[ORM\JoinTable(name: 'pap_campaign_zone')]

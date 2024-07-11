@@ -8,8 +8,8 @@ use Knp\DoctrineBehaviors\Model\Translatable\TranslationTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'timeline_theme_translations')]
 #[ORM\Entity]
+#[ORM\Table(name: 'timeline_theme_translations')]
 #[UniqueEntity(fields: ['locale', 'title'], errorPath: 'title')]
 #[UniqueEntity(fields: ['locale', 'slug'], errorPath: 'slug')]
 class ThemeTranslation implements TranslationInterface
@@ -19,32 +19,32 @@ class ThemeTranslation implements TranslationInterface
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     protected $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 100)]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 100)]
     private $title;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 100)]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 100)]
     private $slug;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'text')]
     private $description;
 
     public function getTitle(): ?string

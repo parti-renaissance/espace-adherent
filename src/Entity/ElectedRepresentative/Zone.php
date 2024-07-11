@@ -10,10 +10,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Table(name: 'elected_representative_zone')]
-#[ORM\Index(columns: ['code'], name: 'elected_repr_zone_code')]
-#[ORM\UniqueConstraint(name: 'elected_representative_zone_name_category_unique', columns: ['name', 'category_id'])]
 #[ORM\Entity(repositoryClass: ZoneRepository::class)]
+#[ORM\Index(columns: ['code'], name: 'elected_repr_zone_code')]
+#[ORM\Table(name: 'elected_representative_zone')]
+#[ORM\UniqueConstraint(name: 'elected_representative_zone_name_category_unique', columns: ['name', 'category_id'])]
 class Zone
 {
     use EntityReferentTagTrait;
@@ -22,9 +22,9 @@ class Zone
      * @var int|null
      */
     #[Groups(['autocomplete'])]
-    #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
@@ -44,9 +44,9 @@ class Zone
     /**
      * @var Collection|ReferentTag[]
      */
-    #[ORM\JoinTable(name: 'elected_representative_zone_referent_tag')]
-    #[ORM\JoinColumn(name: 'elected_representative_zone_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'referent_tag_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'elected_representative_zone_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinTable(name: 'elected_representative_zone_referent_tag')]
     #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
     protected $referentTags;
 
@@ -59,9 +59,9 @@ class Zone
     /**
      * @var Collection
      */
-    #[ORM\JoinTable(name: 'elected_representative_zone_parent')]
-    #[ORM\JoinColumn(name: 'child_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'parent_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'child_id', referencedColumnName: 'id')]
+    #[ORM\JoinTable(name: 'elected_representative_zone_parent')]
     #[ORM\ManyToMany(targetEntity: Zone::class, inversedBy: 'children')]
     private $parents;
 
