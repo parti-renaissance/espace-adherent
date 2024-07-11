@@ -57,7 +57,6 @@ services:
             $mailchimpElectedRepresentativeListId: '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
             $electedRepresentativeContributionProcessWorkflow: '@state_machine.contribution_request'
             $votingProcessWorkflow: '@state_machine.voting_process'
-            $tonMacronInvitationStateMachine: '@state_machine.ton_macron_invitation'
             $patternUuid: '%pattern_uuid%'
             $adherentInterests: '%adherent_interests%'
             $mailchimpWebhookKey: '%env(MAILCHIMP_WEBHOOK_KEY)%'

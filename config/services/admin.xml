@@ -1415,59 +1415,6 @@
         ######################################################
         -->
 
-        <service id="app.admin.ton_macron_choice" class="App\Admin\TonMacronChoiceAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Ton Macron » Choix" group="Archives" />
-
-            <argument />
-            <argument>App\Entity\TonMacronChoice</argument>
-            <argument />
-
-            <call method="setTemplate">
-                <argument>list</argument>
-                <argument>admin/ton_macron/choice_list.html.twig</argument>
-            </call>
-        </service>
-
-        <service id="app.admin.ton_macron_friend_invitation" class="App\Admin\TonMacronFriendInvitationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Ton Macron » Invitations" group="Archives" />
-
-            <argument />
-            <argument>App\Entity\TonMacronFriendInvitation</argument>
-            <argument />
-
-            <call method="setTemplate">
-                <argument>list</argument>
-                <argument>admin/ton_macron/invitation_list.html.twig</argument>
-            </call>
-        </service>
-
-        <service id="app.admin.my_europe_choice" class="App\Admin\MyEuropeChoiceAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Mon Europe » Choix" group="Archives" />
-
-            <argument />
-            <argument>App\Entity\MyEuropeChoice</argument>
-            <argument />
-
-            <call method="setTemplate">
-                <argument>list</argument>
-                <argument>admin/interactive/choice_list.html.twig</argument>
-            </call>
-        </service>
-
-        <service id="app.admin.my_europe_invitation" class="App\Admin\MyEuropeInvitationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Mon Europe » Invitations" group="Archives" />
-
-            <argument />
-            <argument>App\Entity\MyEuropeInvitation</argument>
-            <argument />
-
-            <call method="setTemplate">
-                <argument>list</argument>
-                <argument>admin/interactive/invitation_list.html.twig</argument>
-            </call>
-        </service>
-
-
         <service id="app.admin.article_category" class="App\Admin\ArticleCategoryAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Contenu » Catégories" group="Archives" />
 
