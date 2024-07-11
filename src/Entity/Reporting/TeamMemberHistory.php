@@ -8,12 +8,12 @@ use App\Entity\Team\Team;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Table]
+#[ORM\Entity]
 #[ORM\Index(columns: ['adherent_id'], name: 'team_member_history_adherent_id_idx')]
 #[ORM\Index(columns: ['administrator_id'], name: 'team_member_history_administrator_id_idx')]
 #[ORM\Index(columns: ['team_manager_id'], name: 'team_member_history_team_manager_id_idx')]
 #[ORM\Index(columns: ['date'], name: 'team_member_history_date_idx')]
-#[ORM\Entity]
+#[ORM\Table]
 class TeamMemberHistory
 {
     public const ACTION_ADD = 'add';
@@ -27,9 +27,9 @@ class TeamMemberHistory
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

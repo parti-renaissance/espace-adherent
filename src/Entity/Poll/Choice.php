@@ -13,8 +13,8 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'poll_choice')]
 #[ORM\Entity(repositoryClass: ChoiceRepository::class)]
+#[ORM\Table(name: 'poll_choice')]
 class Choice
 {
     use EntityIdentityTrait;
@@ -26,10 +26,10 @@ class Choice
     /**
      * @var string
      */
+    #[Assert\Length(max: 255, maxMessage: 'poll_choice.value.max_length')]
+    #[Assert\NotBlank(message: 'poll_choice.value.not_blank')]
     #[Groups(['poll_read'])]
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'poll_choice.value.not_blank')]
-    #[Assert\Length(max: 255, maxMessage: 'poll_choice.value.max_length')]
     private $value;
 
     /**

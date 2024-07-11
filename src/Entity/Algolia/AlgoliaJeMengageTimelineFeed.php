@@ -26,10 +26,10 @@ class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntity
     /**
      * @var UuidInterface|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Id]
     protected $objectID;
 
     public function __construct($entity, array $entityIdentifierValues)

@@ -6,23 +6,23 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'donation_tags')]
 #[ORM\Entity]
+#[ORM\Table(name: 'donation_tags')]
 #[UniqueEntity(fields: ['label'])]
 class DonationTag
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Id]
     private $id;
 
-    #[ORM\Column(length: 100, unique: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: '100')]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 100, unique: true)]
     private $label;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     private $color;
 
     public function __construct(?string $label = null, ?string $color = null)

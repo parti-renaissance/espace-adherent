@@ -12,11 +12,11 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'poll')]
-#[ORM\Entity]
-#[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap([PollTypeEnum::LOCAL => LocalPoll::class, PollTypeEnum::NATIONAL => NationalPoll::class])]
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\Table(name: 'poll')]
 abstract class Poll
 {
     use EntityIdentityTrait;
@@ -25,18 +25,18 @@ abstract class Poll
     /**
      * @var string
      */
+    #[Assert\Length(min: 2, max: 255, minMessage: 'poll.question.min_length', maxMessage: 'poll.question.max_length')]
+    #[Assert\NotBlank(message: 'poll.question.not_blank')]
     #[Groups(['poll_read'])]
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'poll.question.not_blank')]
-    #[Assert\Length(min: 2, max: 255, minMessage: 'poll.question.min_length', maxMessage: 'poll.question.max_length')]
     private $question;
 
     /**
      * @var \DateTimeInterface
      */
+    #[Assert\NotNull(message: 'poll.finish_at.not_null')]
     #[Groups(['poll_read'])]
     #[ORM\Column(type: 'datetime')]
-    #[Assert\NotNull(message: 'poll.finish_at.not_null')]
     private $finishAt;
 
     /**

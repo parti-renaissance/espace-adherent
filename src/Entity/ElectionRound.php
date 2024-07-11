@@ -7,48 +7,48 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'election_rounds')]
 #[ORM\Entity(repositoryClass: ElectionRoundRepository::class)]
+#[ORM\Table(name: 'election_rounds')]
 #[UniqueEntity(fields: ['election', 'label'])]
 class ElectionRound
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string
      */
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $label = '';
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 255)]
+    #[ORM\Column(nullable: true)]
     private $description;
 
     /**
      * @var Election|null
      */
+    #[Assert\NotNull]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Election::class, inversedBy: 'rounds')]
-    #[Assert\NotNull]
     private $election;
 
     /**
      * @var \DateTimeInterface|null
      */
-    #[ORM\Column(type: 'date')]
-    #[Assert\NotNull]
     #[Assert\GreaterThan('now')]
+    #[Assert\NotNull]
+    #[ORM\Column(type: 'date')]
     private $date;
 
     public function __toString(): string

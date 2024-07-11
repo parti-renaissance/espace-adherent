@@ -25,12 +25,12 @@ class BaseEventCommand
     private $uuid;
     private $author;
 
-    #[Assert\NotBlank]
     #[Assert\Length(min: 5, max: 100, options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank]
     private $name;
 
-    #[Assert\NotBlank]
     #[Assert\Length(min: 10, options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank]
     private $description;
 
     #[Assert\NotBlank]
@@ -40,8 +40,8 @@ class BaseEventCommand
     #[Assert\NotBlank]
     private $beginAt;
 
-    #[Assert\NotBlank]
     #[Assert\Expression('value > this.getBeginAt()', message: 'committee.event.invalid_date_range')]
+    #[Assert\NotBlank]
     private $finishAt;
 
     #[Assert\NotBlank]

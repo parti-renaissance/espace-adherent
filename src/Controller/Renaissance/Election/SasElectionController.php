@@ -8,8 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/election-sas/{uuid}', name: 'app_sas_election')]
 #[IsGranted('ROLE_RENAISSANCE_USER')]
+#[Route(path: '/election-sas/{uuid}', name: 'app_sas_election')]
 class SasElectionController extends AbstractController
 {
     #[Route(path: '', name: '_index')]

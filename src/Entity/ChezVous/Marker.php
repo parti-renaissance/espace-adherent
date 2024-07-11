@@ -5,46 +5,46 @@ namespace App\Entity\ChezVous;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'chez_vous_markers')]
 #[ORM\Entity]
+#[ORM\Table(name: 'chez_vous_markers')]
 class Marker
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: '255')]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $type;
 
     /**
      * @var float|null
      */
-    #[ORM\Column(type: 'geo_point')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'geo_point')]
     private $latitude;
 
     /**
      * @var float|null
      */
-    #[ORM\Column(type: 'geo_point')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'geo_point')]
     private $longitude;
 
     /**
      * @var City|null
      */
+    #[Assert\NotBlank]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: City::class, inversedBy: 'markers')]
-    #[Assert\NotBlank]
     private $city;
 
     public function __construct(?City $city = null, ?string $type = null, ?float $latitude = null, ?float $longitude = null)

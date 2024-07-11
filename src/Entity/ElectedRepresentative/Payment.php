@@ -9,8 +9,8 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Table(name: 'elected_representative_payment')]
 #[ORM\Entity]
+#[ORM\Table(name: 'elected_representative_payment')]
 class Payment
 {
     use EntityIdentityTrait;

@@ -108,23 +108,23 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\NotBlank(groups: ['Admin'])]
+    #[ORM\Column(nullable: true)]
     private $label;
 
+    #[Assert\NotBlank(groups: ['api_designation_write', 'api_designation_write_limited'])]
     #[Groups(['designation_read', 'designation_write', 'designation_list', 'designation_write_limited', 'committee_election:read'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\NotBlank(groups: ['api_designation_write', 'api_designation_write_limited'])]
     public ?string $customTitle = null;
 
     /**
      * @var string|null
      */
-    #[Groups(['designation_read', 'designation_write', 'designation_list'])]
-    #[ORM\Column]
-    #[Assert\NotBlank(groups: ['Default', 'api_designation_write'])]
     #[Assert\Choice(choices: DesignationTypeEnum::MAIN_TYPES, groups: ['Default'])]
     #[Assert\Choice(choices: DesignationTypeEnum::API_AVAILABLE_TYPES, groups: ['api_designation_write'])]
+    #[Assert\NotBlank(groups: ['Default', 'api_designation_write'])]
+    #[Groups(['designation_read', 'designation_write', 'designation_list'])]
+    #[ORM\Column]
     private $type;
 
     /**
@@ -158,25 +158,25 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     /**
      * @var \DateTime|null
      */
+    #[Assert\GreaterThan('now', message: 'La date de début doit être dans le futur.', groups: ['Admin_creation', 'api_designation_write'])]
     #[Groups(['designation_read', 'designation_write', 'designation_list', 'committee_election:read'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
-    #[Assert\GreaterThan('now', message: 'La date de début doit être dans le futur.', groups: ['Admin_creation', 'api_designation_write'])]
     private $voteStartDate;
 
     /**
      * @var \DateTime|null
      */
+    #[Assert\Expression('value > this.getVoteStartDate()', message: 'La date de clôture doit être postérieur à la date de début', groups: ['Default', 'api_designation_write'])]
     #[Groups(['designation_read', 'designation_write', 'committee_election:read'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
-    #[Assert\Expression('value > this.getVoteStartDate()', message: 'La date de clôture doit être postérieur à la date de début', groups: ['Default', 'api_designation_write'])]
     private $voteEndDate;
 
     /**
      * @var int
      */
-    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
-    #[Assert\NotBlank]
     #[Assert\GreaterThanOrEqual(0)]
+    #[Assert\NotBlank]
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
     private $resultDisplayDelay = 14;
 
     /**
@@ -184,8 +184,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      *
      * @var float
      */
-    #[ORM\Column(type: 'float', options: ['unsigned' => true, 'default' => 0])]
     #[Assert\GreaterThanOrEqual(0)]
+    #[ORM\Column(type: 'float', options: ['unsigned' => true, 'default' => 0])]
     private $resultScheduleDelay = 0;
 
     /**
@@ -193,17 +193,17 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      *
      * @var int
      */
-    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
-    #[Assert\NotBlank]
     #[Assert\GreaterThan(0)]
+    #[Assert\NotBlank]
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
     private $additionalRoundDuration = 5;
 
     /**
      * @var int
      */
-    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
-    #[Assert\NotBlank]
     #[Assert\GreaterThanOrEqual(0)]
+    #[Assert\NotBlank]
+    #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
     private $lockPeriodThreshold = 3;
 
     /**
@@ -234,8 +234,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\Column(type: 'boolean')]
     private bool $isBlankVoteEnabled = true;
 
-    #[ORM\ManyToOne(targetEntity: Poll::class)]
     #[Assert\Expression('!(this.isLocalPollType() || this.isConsultationType()) or value', message: 'Vous devez préciser le questionnaire qui sera utilisé pour cette élection.')]
+    #[ORM\ManyToOne(targetEntity: Poll::class)]
     public ?Poll $poll = null;
 
     /**
@@ -250,22 +250,22 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\ManyToOne(targetEntity: CmsBlock::class)]
     public ?CmsBlock $wordingRegulationPage = null;
 
-    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     #[Assert\Expression('!this.isLocalElectionType() or value', message: 'Vous devez préciser le nombre des sièges à distribuer.')]
+    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     public ?int $seats = null;
 
-    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     #[Assert\GreaterThan(0)]
     #[Assert\LessThanOrEqual(100)]
+    #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     public ?int $majorityPrime = null;
 
-    #[ORM\Column(type: 'boolean', nullable: true)]
     #[Assert\Expression('!this.isLocalElectionType() or !this.majorityPrime or null != value', message: "Vous devez préciser le mode d'arrondi pour la prime majoritaire.")]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     public ?bool $majorityPrimeRoundSupMode = null;
 
+    #[Assert\Expression('!this.isCommitteeSupervisorType() or value', message: 'Un identifiant est requis pour ce champs.', groups: ['api_designation_write'])]
     #[Groups(['designation_read', 'designation_write'])]
     #[ORM\Column(type: 'uuid', nullable: true)]
-    #[Assert\Expression('!this.isCommitteeSupervisorType() or value', message: 'Un identifiant est requis pour ce champs.', groups: ['api_designation_write'])]
     private ?UuidInterface $electionEntityIdentifier = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

@@ -43,16 +43,16 @@ class NationalEvent
     #[ORM\Column(type: 'text', nullable: true)]
     public ?string $textConfirmation = null;
 
-    #[ORM\Column(type: 'text', nullable: true)]
     #[Assert\NotBlank(groups: ['Admin'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     public ?string $textTicketEmail = null;
 
-    #[ORM\Column(nullable: true)]
     #[Assert\NotBlank(groups: ['Admin'])]
+    #[ORM\Column(nullable: true)]
     public ?string $subjectTicketEmail = null;
 
-    #[ORM\Column(type: 'text', nullable: true)]
     #[Assert\NotBlank(groups: ['Admin'])]
+    #[ORM\Column(type: 'text', nullable: true)]
     public ?string $imageTicketEmail = null;
 
     #[ORM\Column(nullable: true)]

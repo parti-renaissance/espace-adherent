@@ -17,33 +17,33 @@ class SocialNetworkLink
      * @var int
      */
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string
      */
-    #[ORM\Column]
     #[Assert\NotBlank]
     #[Assert\Url]
+    #[ORM\Column]
     private $url;
 
     /**
      * @var string
      */
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Choice(callback: [SocialLinkTypeEnum::class, 'toArray'])]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $type;
 
     /**
      * @var ElectedRepresentative
      */
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: ElectedRepresentative::class, inversedBy: 'socialNetworkLinks')]
     #[Assert\NotBlank]
     #[Assert\Valid]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: ElectedRepresentative::class, inversedBy: 'socialNetworkLinks')]
     private $electedRepresentative;
 
     public function __construct(

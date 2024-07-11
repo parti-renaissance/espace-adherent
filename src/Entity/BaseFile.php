@@ -9,26 +9,26 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\MappedSuperclass]
 #[ORM\EntityListeners([FileListener::class])]
+#[ORM\MappedSuperclass]
 abstract class BaseFile implements EntityFileInterface
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string
      */
+    #[Assert\NotBlank]
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
     private $title;
 
+    #[Gedmo\Slug(fields: ['title'])]
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     #[ORM\Column]
-    #[Gedmo\Slug(fields: ['title'])]
     private $slug;
 
     /**

@@ -10,19 +10,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'committee_merge_histories')]
+#[ORM\Entity]
 #[ORM\Index(columns: ['source_committee_id'], name: 'committee_merge_histories_source_committee_id_idx')]
 #[ORM\Index(columns: ['destination_committee_id'], name: 'committee_merge_histories_destination_committee_id_idx')]
 #[ORM\Index(columns: ['date'], name: 'committee_merge_histories_date_idx')]
-#[ORM\Entity]
+#[ORM\Table(name: 'committee_merge_histories')]
 class CommitteeMergeHistory
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
@@ -55,9 +55,9 @@ class CommitteeMergeHistory
     /**
      * @var CommitteeMembership[]|Collection
      */
-    #[ORM\JoinTable(name: 'committee_merge_histories_merged_memberships')]
-    #[ORM\JoinColumn(name: 'committee_merge_history_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'committee_membership_id', referencedColumnName: 'id', unique: true, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'committee_merge_history_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinTable(name: 'committee_merge_histories_merged_memberships')]
     #[ORM\ManyToMany(targetEntity: CommitteeMembership::class)]
     private $mergedMemberships;
 

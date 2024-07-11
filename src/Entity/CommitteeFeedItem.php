@@ -55,9 +55,9 @@ class CommitteeFeedItem implements UserDocumentInterface
     /**
      * @var UserDocument[]|Collection
      */
-    #[ORM\JoinTable(name: 'committee_feed_item_user_documents')]
-    #[ORM\JoinColumn(name: 'committee_feed_item_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'user_document_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'committee_feed_item_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinTable(name: 'committee_feed_item_user_documents')]
     #[ORM\ManyToMany(targetEntity: UserDocument::class, cascade: ['all'], orphanRemoval: true)]
     protected Collection $documents;
 

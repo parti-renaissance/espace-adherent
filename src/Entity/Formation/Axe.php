@@ -12,8 +12,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'formation_axes')]
 #[ORM\Entity]
+#[ORM\Table(name: 'formation_axes')]
 #[UniqueEntity(fields: ['title'], message: 'Il existe déjà un axe de formation avec ce titre.')]
 class Axe implements EntityMediaInterface
 {
@@ -24,46 +24,46 @@ class Axe implements EntityMediaInterface
      * @var int|null
      */
     #[ORM\Column(type: 'bigint')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column]
-    #[Assert\NotBlank(message: 'Veuillez renseigner un titre.')]
     #[Assert\Length(min: 2, max: 150, minMessage: 'Le titre doit pas faire plus de 150 caractères.')]
+    #[Assert\NotBlank(message: 'Veuillez renseigner un titre.')]
+    #[ORM\Column]
     private $title;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(unique: true)]
     #[Gedmo\Slug(fields: ['title'])]
+    #[ORM\Column(unique: true)]
     protected $slug;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank(message: 'Veuillez renseigner une description.')]
     #[Assert\Length(min: 2, minMessage: 'La description doit faire au moins 2 caractères.', options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank(message: 'Veuillez renseigner une description.')]
+    #[ORM\Column(type: 'text')]
     private $description;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank(message: 'Veuillez renseigner un contenu.')]
+    #[ORM\Column(type: 'text')]
     private $content;
 
     /**
      * @var Path
      */
+    #[Assert\NotBlank]
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: Path::class, inversedBy: 'axes')]
-    #[Assert\NotBlank]
     private $path;
 
     /**

@@ -16,8 +16,8 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Table(name: 'voting_platform_election_pool_result')]
 #[ORM\Entity]
+#[ORM\Table(name: 'voting_platform_election_pool_result')]
 class ElectionPoolResult
 {
     use EntityIdentityTrait;

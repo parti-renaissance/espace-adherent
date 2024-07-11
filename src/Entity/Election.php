@@ -9,32 +9,32 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'elections')]
 #[ORM\Entity(repositoryClass: ElectionRepository::class)]
+#[ORM\Table(name: 'elections')]
 #[UniqueEntity(fields: ['name'])]
 class Election
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string
      */
-    #[ORM\Column(unique: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column(unique: true)]
     private $name = '';
 
     /**
      * @var string
      */
-    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'text')]
     private $introduction = '';
 
     /**
@@ -52,8 +52,8 @@ class Election
     /**
      * @var ElectionRound[]|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'election', targetEntity: ElectionRound::class, cascade: ['all'], orphanRemoval: true)]
     #[Assert\Count(min: 1, minMessage: 'election.rounds.min_count')]
+    #[ORM\OneToMany(mappedBy: 'election', targetEntity: ElectionRound::class, cascade: ['all'], orphanRemoval: true)]
     private $rounds;
 
     public function __construct()

@@ -7,8 +7,8 @@ use App\Repository\EmailRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'emails')]
 #[ORM\Entity(repositoryClass: EmailRepository::class)]
+#[ORM\Table(name: 'emails')]
 class Email
 {
     use EntityIdentityTrait;

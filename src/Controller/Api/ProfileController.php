@@ -35,8 +35,8 @@ class ProfileController extends AbstractController
         'uncertified_profile_write',
     ];
 
-    #[Route(path: '/me', name: '_show', methods: ['GET'])]
     #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
+    #[Route(path: '/me', name: '_show', methods: ['GET'])]
     public function show(SerializerInterface $serializer): JsonResponse
     {
         /** @var Adherent $user */
@@ -91,8 +91,8 @@ class ProfileController extends AbstractController
         return JsonResponse::fromJsonString($errors, JsonResponse::HTTP_BAD_REQUEST);
     }
 
-    #[Route(path: '/configuration', name: '_configuration', methods: ['GET'])]
     #[IsGranted('ROLE_OAUTH_SCOPE_WRITE:PROFILE')]
+    #[Route(path: '/configuration', name: '_configuration', methods: ['GET'])]
     public function configuration(AdherentProfileConfiguration $adherentProfileConfiguration): JsonResponse
     {
         return new JsonResponse($adherentProfileConfiguration->build());

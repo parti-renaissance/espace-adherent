@@ -47,15 +47,15 @@ class MyTeam
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
+    #[Assert\NotNull]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    #[Assert\NotNull]
     private Adherent $owner;
 
+    #[Assert\Choice(choices: ScopeEnum::ALL)]
+    #[Assert\NotBlank]
     #[Groups(['my_team_read_list'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Choice(choices: ScopeEnum::ALL)]
     private string $scope;
 
     /**

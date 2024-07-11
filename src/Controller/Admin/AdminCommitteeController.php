@@ -48,8 +48,8 @@ class AdminCommitteeController extends AbstractController
     /**
      * Refuses the committee.
      */
-    #[Route(path: '/{id}/refuse', name: 'app_admin_committee_refuse', methods: ['GET|POST'])]
     #[IsGranted('ROLE_ADMIN_TERRITOIRES_COMMITTEES')]
+    #[Route(path: '/{id}/refuse', name: 'app_admin_committee_refuse', methods: ['GET|POST'])]
     public function refuseAction(
         Request $request,
         Committee $committee,
@@ -79,8 +79,8 @@ class AdminCommitteeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}/members', name: 'app_admin_committee_members', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN_TERRITOIRES_COMMITTEES')]
+    #[Route(path: '/{id}/members', name: 'app_admin_committee_members', methods: ['GET'])]
     public function membersAction(CommitteeManager $manager, Committee $committee): Response
     {
         return $this->render('admin/committee/members.html.twig', [
@@ -91,8 +91,8 @@ class AdminCommitteeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{id}/mandates', name: 'app_admin_committee_mandates', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN_TERRITOIRES_COMMITTEES')]
+    #[Route(path: '/{id}/mandates', name: 'app_admin_committee_mandates', methods: ['GET'])]
     public function mandatesAction(Committee $committee): Response
     {
         return $this->render('admin/committee/mandates/list.html.twig', [
@@ -218,8 +218,8 @@ class AdminCommitteeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{committee}/members/{adherent}/set-privilege/{privilege}', name: 'app_admin_committee_change_privilege', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN_TERRITOIRES_COMMITTEES')]
+    #[Route(path: '/{committee}/members/{adherent}/set-privilege/{privilege}', name: 'app_admin_committee_change_privilege', methods: ['GET'])]
     public function changePrivilegeAction(
         CommitteeManager $manager,
         Request $request,
@@ -247,8 +247,8 @@ class AdminCommitteeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{committee}/members/{adherent}/{action}-mandate', name: 'app_admin_committee_change_mandate', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN_TERRITOIRES_COMMITTEE_DESIGNATION')]
+    #[Route(path: '/{committee}/members/{adherent}/{action}-mandate', name: 'app_admin_committee_change_mandate', methods: ['GET'])]
     public function changeMandateAction(
         Request $request,
         Committee $committee,

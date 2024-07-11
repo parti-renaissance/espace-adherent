@@ -9,16 +9,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'voting_platform_election_round')]
 #[ORM\Entity(repositoryClass: ElectionRoundRepository::class)]
+#[ORM\Table(name: 'voting_platform_election_round')]
 class ElectionRound
 {
     /**
      * @var int
      */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

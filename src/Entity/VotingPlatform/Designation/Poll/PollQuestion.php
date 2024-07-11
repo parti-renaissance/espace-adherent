@@ -10,24 +10,24 @@ use Ramsey\Uuid\Uuid;
 use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'designation_poll_question')]
 #[ORM\Entity]
+#[ORM\Table(name: 'designation_poll_question')]
 class PollQuestion
 {
     use EntityIdentityTrait;
     use Sortable;
 
-    #[ORM\Column(length: 500)]
     #[Assert\NotBlank]
+    #[ORM\Column(length: 500)]
     public ?string $content = null;
 
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Poll::class, inversedBy: 'questions')]
     public ?Poll $poll = null;
 
-    #[ORM\OneToMany(mappedBy: 'question', targetEntity: QuestionChoice::class, cascade: ['persist'], orphanRemoval: true)]
     #[Assert\Count(min: 2)]
     #[Assert\Valid]
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: QuestionChoice::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $choices;
 
     public function __construct()

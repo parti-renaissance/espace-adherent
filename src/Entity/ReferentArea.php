@@ -27,22 +27,22 @@ class ReferentArea
     ];
 
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
-    #[ORM\Column(length: 6, unique: true)]
     #[Assert\NotBlank(groups: ['Admin'])]
+    #[ORM\Column(length: 6, unique: true)]
     private $areaCode;
 
-    #[ORM\Column(length: 20)]
-    #[Assert\NotBlank(groups: ['Admin'])]
     #[Assert\Choice(callback: 'getAreaTypeChoices', message: 'legislative_district_zone.area_type.invalid', groups: ['Admin'])]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[ORM\Column(length: 20)]
     private $areaType = self::TYPE_DEPARTMENT;
 
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(groups: ['Admin'])]
     #[Assert\Length(min: 2, max: 100, groups: ['Admin'], options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank(groups: ['Admin'])]
+    #[ORM\Column(length: 100)]
     private $name;
 
     #[ORM\Column(type: 'text')]

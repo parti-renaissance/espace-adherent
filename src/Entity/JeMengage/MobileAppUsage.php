@@ -4,13 +4,13 @@ namespace App\Entity\JeMengage;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'jemengage_mobile_app_usage')]
 #[ORM\Entity]
+#[ORM\Table(name: 'jemengage_mobile_app_usage')]
 class MobileAppUsage
 {
     #[ORM\Column(type: 'bigint')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column(type: 'date')]

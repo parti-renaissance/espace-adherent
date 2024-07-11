@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/espace-elus/cotisation/informations', name: 'app_renaissance_contribution_fill_informations', methods: ['GET|POST'])]
 #[IsGranted(AdherentRoleEnum::ONGOING_ELECTED_REPRESENTATIVE)]
+#[Route(path: '/espace-elus/cotisation/informations', name: 'app_renaissance_contribution_fill_informations', methods: ['GET|POST'])]
 class FillInformationsController extends AbstractContributionController
 {
     public function __invoke(Request $request, ContributionRequestHandler $contributionRequestHandler): Response

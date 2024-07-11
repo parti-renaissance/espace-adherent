@@ -41,16 +41,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  */
-#[ORM\Table(name: 'pap_building')]
 #[ORM\Entity(repositoryClass: BuildingRepository::class)]
+#[ORM\Table(name: 'pap_building')]
 class Building implements CampaignStatisticsOwnerInterface
 {
     use EntityIdentityTrait;
     use CampaignStatisticsTrait;
 
+    #[Assert\Choice(callback: [BuildingTypeEnum::class, 'toArray'], message: 'pap.building.type.invalid_choice')]
     #[Groups(['pap_address_list', 'pap_building_read', 'pap_building_write', 'pap_address_read', 'pap_building_statistics_read'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Choice(callback: [BuildingTypeEnum::class, 'toArray'], message: 'pap.building.type.invalid_choice')]
     private ?string $type = null;
 
     #[Groups(['pap_campaign_history_read_list', 'pap_building_statistics_read'])]

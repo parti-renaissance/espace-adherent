@@ -27,15 +27,15 @@ class PageController extends AbstractController
         return $this->render('page/campus/internet.html.twig');
     }
 
-    #[Route(path: '/emmanuel-macron', name: 'page_emmanuel_macron', methods: ['GET'])]
     #[Entity('page', expr: "repository.findOneBySlug('emmanuel-macron')")]
+    #[Route(path: '/emmanuel-macron', name: 'page_emmanuel_macron', methods: ['GET'])]
     public function emmanuelMacronAction(Page $page): Response
     {
         return $this->render('page/emmanuel-macron/ce-que-je-suis.html.twig', ['page' => $page]);
     }
 
-    #[Route(path: '/emmanuel-macron/revolution', name: 'page_emmanuel_macron_revolution', methods: ['GET'])]
     #[Entity('page', expr: "repository.findOneBySlug('emmanuel-macron/revolution')")]
+    #[Route(path: '/emmanuel-macron/revolution', name: 'page_emmanuel_macron_revolution', methods: ['GET'])]
     public function emmanuelMacronRevolutionAction(Page $page): Response
     {
         return $this->render('page/emmanuel-macron/revolution.html.twig', ['page' => $page]);
@@ -49,8 +49,8 @@ class PageController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/le-mouvement', name: 'page_le_mouvement', methods: ['GET'])]
     #[Entity('page', expr: "repository.findOneBySlug('le-mouvement')")]
+    #[Route(path: '/le-mouvement', name: 'page_le_mouvement', methods: ['GET'])]
     public function mouvementValeursAction(Page $page): Response
     {
         return $this->render('page/le-mouvement/nos-valeurs.html.twig', ['page' => $page]);
@@ -62,29 +62,29 @@ class PageController extends AbstractController
         return $this->redirect('https://legislatives.en-marche.fr', Response::HTTP_MOVED_PERMANENTLY);
     }
 
-    #[Route(path: '/le-mouvement/les-comites', name: 'page_le_mouvement_les_comites', methods: ['GET'])]
     #[Entity('page', expr: "repository.findOneBySlug('le-mouvement/les-comites')")]
+    #[Route(path: '/le-mouvement/les-comites', name: 'page_le_mouvement_les_comites', methods: ['GET'])]
     public function mouvementComitesAction(Page $page): Response
     {
         return $this->render('page/le-mouvement/les-comites.html.twig', ['page' => $page]);
     }
 
-    #[Route(path: '/le-mouvement/devenez-benevole', name: 'page_le_mouvement_devenez_benevole', methods: ['GET'])]
     #[Entity('page', expr: "repository.findOneBySlug('le-mouvement/devenez-benevole')")]
+    #[Route(path: '/le-mouvement/devenez-benevole', name: 'page_le_mouvement_devenez_benevole', methods: ['GET'])]
     public function mouvementBenevoleAction(Page $page): Response
     {
         return $this->render('page/le-mouvement/devenez-benevole.html.twig', ['page' => $page]);
     }
 
-    #[Route(path: '/mentions-legales', name: 'page_mentions_legales', methods: ['GET'])]
     #[Entity('page', expr: "repository.findOneBySlug('mentions-legales')")]
+    #[Route(path: '/mentions-legales', name: 'page_mentions_legales', methods: ['GET'])]
     public function mentionsLegalesAction(Page $page): Response
     {
         return $this->render('page/mentions-legales.html.twig', ['page' => $page]);
     }
 
-    #[Route(path: '/politique-cookies', name: 'page_politique_cookies', methods: ['GET'])]
     #[Entity('page', expr: "repository.findOneBySlug('politique-cookies')")]
+    #[Route(path: '/politique-cookies', name: 'page_politique_cookies', methods: ['GET'])]
     public function politiqueCookiesAction(Page $page): Response
     {
         return $this->render('page/politique-cookies.html.twig', ['page' => $page]);
@@ -102,22 +102,22 @@ class PageController extends AbstractController
         return $this->render('page/burex-lists.html.twig');
     }
 
-    #[Route(path: '/1000-talents', name: 'page_1000_talents', methods: ['GET'])]
     #[Entity('page', expr: "repository.findOneBySlug('1000-talents')")]
+    #[Route(path: '/1000-talents', name: 'page_1000_talents', methods: ['GET'])]
     public function page1000TalentsAction(Page $page): Response
     {
         return $this->render('page/talents/1000-talents/home.html.twig', ['page' => $page]);
     }
 
-    #[Route(path: '/cestduconcret', name: 'page_concrete', methods: ['GET'])]
     #[Entity('page', expr: "repository.findOneBySlug('concrete')")]
+    #[Route(path: '/cestduconcret', name: 'page_concrete', methods: ['GET'])]
     public function concreteAction(Page $page): Response
     {
         return $this->render('page/concrete/home.html.twig', ['page' => $page]);
     }
 
-    #[Route(path: '/action-talents', name: 'page_action_talents', methods: ['GET'])]
     #[Entity('page', expr: "repository.findOneBySlug('action-talents')")]
+    #[Route(path: '/action-talents', name: 'page_action_talents', methods: ['GET'])]
     public function actionTalentsAction(Page $page): Response
     {
         return $this->render('page/talents/action-talents/home.html.twig', ['page' => $page]);
@@ -129,15 +129,15 @@ class PageController extends AbstractController
         return $this->render('page/grande-marche-europe/grande-marche-europe.html.twig');
     }
 
-    #[Route(path: '/action-talents/candidater', name: 'page_action_talents_apply', methods: ['GET'])]
     #[Entity('page', expr: "repository.findOneBySlug('action-talents/candidater')")]
+    #[Route(path: '/action-talents/candidater', name: 'page_action_talents_apply', methods: ['GET'])]
     public function actionTalentsApplicationAction(Page $page): Response
     {
         return $this->render('page/talents/action-talents/apply.html.twig', ['page' => $page]);
     }
 
-    #[Route(path: '/nos-offres', name: 'page_jobs', methods: ['GET'])]
     #[Entity('page', expr: "repository.findOneBySlug('nos-offres')")]
+    #[Route(path: '/nos-offres', name: 'page_jobs', methods: ['GET'])]
     public function jobsAction(Page $page): Response
     {
         return $this->render('page/jobs.html.twig', ['page' => $page]);

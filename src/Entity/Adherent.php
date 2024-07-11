@@ -104,9 +104,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={},
  * )
  */
-#[ORM\Table(name: 'adherents')]
 #[ORM\Entity(repositoryClass: AdherentRepository::class)]
 #[ORM\EntityListeners([RevokeReferentTeamMemberRolesListener::class])]
+#[ORM\Table(name: 'adherents')]
 #[UniqueEntity(fields: ['nickname'], groups: ['anonymize'])]
 class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface, TranslatedTagInterface
 {
@@ -123,11 +123,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public const TO_DELETE = 'TO_DELETE';
     public const DISABLED = 'DISABLED';
 
-    #[Groups(['user_profile'])]
-    #[ORM\Column(length: 25, unique: true, nullable: true)]
     #[Assert\Length(min: 3, max: 25, groups: ['Default', 'anonymize'])]
     #[Assert\Regex(pattern: '/^[a-z0-9 _-]+$/i', message: 'adherent.nickname.invalid_syntax', groups: ['anonymize'])]
     #[Assert\Regex(pattern: '/^[a-zÀ-ÿ0-9 .!_-]+$/i', message: 'adherent.nickname.invalid_extended_syntax')]
+    #[Groups(['user_profile'])]
+    #[ORM\Column(length: 25, unique: true, nullable: true)]
     private $nickname;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
@@ -139,10 +139,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(nullable: true)]
     private $oldPassword;
 
+    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice', groups: ['adhesion_complete_profile'])]
+    #[Assert\NotBlank(message: 'common.gender.not_blank', groups: ['adhesion_complete_profile'])]
     #[Groups(['api_candidacy_read', 'profile_read', 'phoning_campaign_call_read', 'phoning_campaign_history_read_list', 'pap_campaign_history_read_list', 'pap_campaign_replies_list', 'phoning_campaign_replies_list', 'survey_replies_list', 'committee_candidacy:read', 'committee_election:read', 'national_event_inscription:webhook'])]
     #[ORM\Column(length: 6, nullable: true)]
-    #[Assert\NotBlank(message: 'common.gender.not_blank', groups: ['adhesion_complete_profile'])]
-    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice', groups: ['adhesion_complete_profile'])]
     private $gender;
 
     #[Groups(['profile_read'])]
@@ -156,18 +156,18 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @AssertPhoneNumber(message="common.phone_number.invalid", options={"groups": {"additional_info", "adhesion:further_information"}})
      */
+    #[Assert\Expression('not this.hasSmsSubscriptionType() or this.getPhone()', message: "Vous avez accepté de recevoir des informations du parti par SMS ou téléphone, cependant, vous n'avez pas précisé votre numéro de téléphone.", groups: ['adhesion:further_information'])]
     #[Groups(['profile_read', 'phoning_campaign_call_read', 'elected_representative_read', 'national_event_inscription:webhook'])]
     #[ORM\Column(type: 'phone_number', nullable: true)]
-    #[Assert\Expression('not this.hasSmsSubscriptionType() or this.getPhone()', message: "Vous avez accepté de recevoir des informations du parti par SMS ou téléphone, cependant, vous n'avez pas précisé votre numéro de téléphone.", groups: ['adhesion:further_information'])]
     private $phone;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTime $phoneVerifiedAt = null;
 
-    #[Groups(['profile_read', 'national_event_inscription:webhook'])]
-    #[ORM\Column(type: 'date', nullable: true)]
     #[Assert\NotBlank(message: 'adherent.birthdate.not_blank', groups: ['additional_info', 'adhesion:further_information'])]
     #[Assert\Range(max: '-15 years', maxMessage: 'adherent.birthdate.minimum_required_age', groups: ['additional_info', 'adhesion:further_information'])]
+    #[Groups(['profile_read', 'national_event_inscription:webhook'])]
+    #[ORM\Column(type: 'date', nullable: true)]
     private $birthdate;
 
     #[Groups(['profile_read'])]
@@ -193,8 +193,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $membershipRemindedAt;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
     #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
@@ -242,8 +242,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var AssessorManagedArea|null
      */
-    #[ORM\OneToOne(targetEntity: AssessorManagedArea::class, cascade: ['all'], orphanRemoval: true)]
     #[Assert\Valid]
+    #[ORM\OneToOne(targetEntity: AssessorManagedArea::class, cascade: ['all'], orphanRemoval: true)]
     private $assessorManagedArea;
 
     /**
@@ -338,40 +338,40 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var string|null
      */
+    #[Assert\Length(max: 255, groups: ['Admin'])]
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?facebook.com\/#', message: 'legislative_candidate.facebook_page_url.invalid', groups: ['Admin'])]
+    #[Assert\Url(groups: ['Admin'])]
     #[Groups(['profile_read'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Url(groups: ['Admin'])]
-    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?facebook.com\/#', message: 'legislative_candidate.facebook_page_url.invalid', groups: ['Admin'])]
-    #[Assert\Length(max: 255, groups: ['Admin'])]
     private $facebookPageUrl;
 
     /**
      * @var string|null
      */
+    #[Assert\Length(max: 255, groups: ['Admin'])]
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?twitter.com\/#', message: 'legislative_candidate.twitter_page_url.invalid', groups: ['Admin'])]
+    #[Assert\Url(groups: ['Admin'])]
     #[Groups(['profile_read'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Url(groups: ['Admin'])]
-    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?twitter.com\/#', message: 'legislative_candidate.twitter_page_url.invalid', groups: ['Admin'])]
-    #[Assert\Length(max: 255, groups: ['Admin'])]
     private $twitterPageUrl;
 
     /**
      * @var string|null
      */
+    #[Assert\Length(max: 255, groups: ['Admin'])]
+    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?linkedin.com\/#', message: 'legislative_candidate.linkedin_page_url.invalid', groups: ['Admin'])]
+    #[Assert\Url(groups: ['Admin'])]
     #[Groups(['profile_read'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Url(groups: ['Admin'])]
-    #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?linkedin.com\/#', message: 'legislative_candidate.linkedin_page_url.invalid', groups: ['Admin'])]
-    #[Assert\Length(max: 255, groups: ['Admin'])]
     private $linkedinPageUrl;
 
     /**
      * @var string|null
      */
+    #[Assert\Length(max: 255, groups: ['Admin'])]
+    #[Assert\Url(groups: ['Admin'])]
     #[Groups(['profile_read'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Url(groups: ['Admin'])]
-    #[Assert\Length(max: 255, groups: ['Admin'])]
     private $telegramPageUrl;
 
     /**
@@ -391,10 +391,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var string|null
      */
+    #[Assert\Country(message: 'common.nationality.invalid', groups: ['adhesion_complete_profile'])]
+    #[Assert\NotBlank(groups: ['adhesion_complete_profile'])]
     #[Groups(['profile_read'])]
     #[ORM\Column(length: 2, nullable: true)]
-    #[Assert\NotBlank(groups: ['adhesion_complete_profile'])]
-    #[Assert\Country(message: 'common.nationality.invalid', groups: ['adhesion_complete_profile'])]
     private $nationality;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
@@ -419,15 +419,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var SenatorialCandidateManagedArea|null
      */
-    #[ORM\OneToOne(targetEntity: SenatorialCandidateManagedArea::class, cascade: ['all'], orphanRemoval: true)]
     #[Assert\Valid]
+    #[ORM\OneToOne(targetEntity: SenatorialCandidateManagedArea::class, cascade: ['all'], orphanRemoval: true)]
     private $senatorialCandidateManagedArea;
 
     /**
      * @var CandidateManagedArea|null
      */
-    #[ORM\OneToOne(targetEntity: CandidateManagedArea::class, cascade: ['all'], orphanRemoval: true)]
     #[Assert\Valid]
+    #[ORM\OneToOne(targetEntity: CandidateManagedArea::class, cascade: ['all'], orphanRemoval: true)]
     private $candidateManagedArea;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
@@ -494,8 +494,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var AdherentMandateInterface[]|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentMandate\AbstractAdherentMandate::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[Assert\Valid]
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentMandate\AbstractAdherentMandate::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private $adherentMandates;
 
     /**
@@ -557,8 +557,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $lastMembershipDonation = null;
 
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     #[Assert\Expression(expression: '!(value == false and this.isTerritoireProgresMembership() == false and this.isAgirMembership() == false)', message: 'adherent.exclusive_membership.no_accepted', groups: ['adhesion_complete_profile'])]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $exclusiveMembership = false;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
@@ -592,9 +592,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(nullable: true)]
     private ?string $contributionStatus = null;
 
+    #[Assert\Expression('!value || (!this.findActifNationalMandates() and this.findActifLocalMandates())', message: 'adherent.elect.exempt_invalid_status', groups: ['adherent_elect_update'])]
     #[Groups(['adherent_elect_read', 'adherent_elect_update'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    #[Assert\Expression('!value || (!this.findActifNationalMandates() and this.findActifLocalMandates())', message: 'adherent.elect.exempt_invalid_status', groups: ['adherent_elect_update'])]
     public bool $exemptFromCotisation = false;
 
     #[Groups(['adherent_elect_read'])]

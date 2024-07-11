@@ -12,8 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/newsletters')]
 class NewsletterController extends AbstractController
 {
-    #[Route(path: '/confirmation/{uuid}/{validation_token}', name: 'app_legislatives_newsletter_confirmation', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%', 'validation_token' => '%pattern_uuid%'])]
     #[Entity('subscription', expr: 'repository.findOneNotConfirmedByUuidAndToken(uuid, validation_token)')]
+    #[Route(path: '/confirmation/{uuid}/{validation_token}', name: 'app_legislatives_newsletter_confirmation', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%', 'validation_token' => '%pattern_uuid%'])]
     public function newsletterConfirmation(
         LegislativeNewsletterSubscription $subscription,
         LegislativeNewsletterSubscriptionHandler $legislativeNewsletterSubscriptionHandler

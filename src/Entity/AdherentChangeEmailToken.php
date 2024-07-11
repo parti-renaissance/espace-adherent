@@ -5,9 +5,9 @@ namespace App\Entity;
 use App\Repository\AdherentChangeEmailTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table]
-#[ORM\Index(columns: ['email', 'used_at', 'expired_at'])]
 #[ORM\Entity(repositoryClass: AdherentChangeEmailTokenRepository::class)]
+#[ORM\Index(columns: ['email', 'used_at', 'expired_at'])]
+#[ORM\Table]
 class AdherentChangeEmailToken extends AdherentToken
 {
     /**

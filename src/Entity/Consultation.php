@@ -15,18 +15,18 @@ class Consultation
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
 
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: '100')]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private ?string $title = null;
 
-    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'text')]
     private ?string $content = null;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
     #[Assert\Url(protocols: ['https'], message: 'Protocole autorisé : https')]
+    #[ORM\Column]
     private ?string $url = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]

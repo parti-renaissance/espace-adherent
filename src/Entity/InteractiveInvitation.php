@@ -7,11 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'interactive_invitations')]
-#[ORM\Entity(repositoryClass: InteractiveInvitationRepository::class)]
-#[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap(['my_europe' => MyEuropeInvitation::class])]
+#[ORM\Entity(repositoryClass: InteractiveInvitationRepository::class)]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\Table(name: 'interactive_invitations')]
 abstract class InteractiveInvitation
 {
     use EntityIdentityTrait;
@@ -50,9 +50,9 @@ abstract class InteractiveInvitation
     #[ORM\Column(type: 'datetime')]
     protected $createdAt;
 
-    #[ORM\JoinTable(name: 'interactive_invitation_has_choices')]
-    #[ORM\JoinColumn(name: 'invitation_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'choice_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'invitation_id', referencedColumnName: 'id')]
+    #[ORM\JoinTable(name: 'interactive_invitation_has_choices')]
     #[ORM\ManyToMany(targetEntity: InteractiveChoice::class, fetch: 'EAGER')]
     protected $choices;
 

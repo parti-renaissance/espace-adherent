@@ -9,16 +9,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'voting_platform_voter')]
 #[ORM\Entity(repositoryClass: VoterRepository::class)]
+#[ORM\Table(name: 'voting_platform_voter')]
 class Voter
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

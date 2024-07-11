@@ -17,36 +17,36 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'oauth_clients')]
-#[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: ClientRepository::class)]
+#[ORM\Table(name: 'oauth_clients')]
 class Client implements EntitySoftDeletedInterface
 {
     use EntityIdentityTrait;
     use EntitySoftDeletableTrait;
     use EntityTimestampableTrait;
 
-    #[ORM\Column]
     #[Assert\Length(max: 32, maxMessage: 'client.name.constraint.length.max')]
+    #[ORM\Column]
     private $name;
 
-    #[ORM\Column(nullable: true)]
     #[Assert\Choice(callback: [AppCodeEnum::class, 'toArray'])]
+    #[ORM\Column(nullable: true)]
     private ?string $code = null;
 
-    #[ORM\Column]
     #[Assert\Length(min: 10, max: 200, minMessage: 'La description doit faire au moins {{ limit }} caractères.', maxMessage: 'La description ne doit pas dépasser {{ limit }} caractères.')]
+    #[ORM\Column]
     private $description;
 
-    #[ORM\Column(type: 'json')]
     #[Assert\Count(min: 1, minMessage: 'Veuillez spécifier au moins une adresse de redirection.')]
+    #[ORM\Column(type: 'json')]
     private $redirectUris;
 
     #[ORM\Column]
     private $secret;
 
-    #[ORM\Column(type: 'simple_array')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'simple_array')]
     private $allowedGrantTypes;
 
     #[ORM\Column(type: 'simple_array', nullable: true)]

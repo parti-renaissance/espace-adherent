@@ -17,9 +17,9 @@ class LocalSurvey extends Survey implements EntityScopeVisibilityWithZoneInterfa
     /**
      * @deprecated
      */
+    #[Assert\Length(max: 255)]
     #[Groups(['survey_list', 'survey_read_dc'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Length(max: 255)]
     private $city;
 
     /**
@@ -31,9 +31,9 @@ class LocalSurvey extends Survey implements EntityScopeVisibilityWithZoneInterfa
     /**
      * @var Zone|null
      */
+    #[Assert\NotBlank]
     #[Groups(['survey_list', 'survey_list_dc', 'survey_read_dc', 'survey_write_dc'])]
     #[ORM\ManyToOne(targetEntity: Zone::class)]
-    #[Assert\NotBlank]
     private $zone;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

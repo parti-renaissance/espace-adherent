@@ -13,8 +13,8 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Table(name: 'chatbot_thread')]
 #[ORM\Entity(repositoryClass: ThreadRepository::class)]
+#[ORM\Table(name: 'chatbot_thread')]
 class Thread
 {
     use EntityIdentityTrait;

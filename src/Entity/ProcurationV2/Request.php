@@ -100,15 +100,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(OrTextSearchFilter::class, properties={"firstNames": "lastName", "lastName": "firstNames", "email": "email", "voteZone.name": "voteZone.name", "votePlace.name": "votePlace.name"})
  * @ApiFilter(ProcurationZoneFilter::class)
  */
-#[ORM\Table(name: 'procuration_v2_requests')]
+#[ORM\Entity(repositoryClass: RequestRepository::class)]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Index(columns: ['created_at'])]
-#[ORM\Entity(repositoryClass: RequestRepository::class)]
+#[ORM\Table(name: 'procuration_v2_requests')]
 class Request extends AbstractProcuration
 {
+    #[Assert\Choice(callback: [RequestStatusEnum::class, 'getAvailableStatuses'], groups: ['procuration_update_status'])]
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_update_status', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
     #[ORM\Column(enumType: RequestStatusEnum::class)]
-    #[Assert\Choice(callback: [RequestStatusEnum::class, 'getAvailableStatuses'], groups: ['procuration_update_status'])]
     public RequestStatusEnum $status = RequestStatusEnum::PENDING;
 
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list'])]

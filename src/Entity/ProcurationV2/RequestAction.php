@@ -7,12 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'procuration_v2_request_action')]
 #[ORM\Entity]
+#[ORM\Table(name: 'procuration_v2_request_action')]
 class RequestAction extends AbstractProcurationAction
 {
-    #[ORM\ManyToOne(targetEntity: Request::class, inversedBy: 'actions')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: Request::class, inversedBy: 'actions')]
     public Request $request;
 
     public function __construct(UuidInterface $uuid, \DateTimeInterface $date, ProcurationActionStatusEnum $status, Request $request)

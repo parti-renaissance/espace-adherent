@@ -19,15 +19,15 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 255)]
+    #[ORM\Column(nullable: true)]
     private $firstName;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 255)]
+    #[ORM\Column(nullable: true)]
     private $lastName;
 
     /**
@@ -57,8 +57,8 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
     /**
      * @var ReferentTag|null
      */
-    #[ORM\ManyToOne(targetEntity: ReferentTag::class)]
     #[Assert\NotNull]
+    #[ORM\ManyToOne(targetEntity: ReferentTag::class)]
     private $referentTag;
 
     public function __construct(?ReferentTag $referentTag = null)

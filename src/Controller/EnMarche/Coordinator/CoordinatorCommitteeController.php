@@ -15,8 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/espace-coordinateur/comites')]
 #[IsGranted('ROLE_REGIONAL_COORDINATOR')]
+#[Route(path: '/espace-coordinateur/comites')]
 class CoordinatorCommitteeController extends AbstractController
 {
     #[Route(path: '/list', name: 'app_coordinator_committees', methods: ['GET'])]

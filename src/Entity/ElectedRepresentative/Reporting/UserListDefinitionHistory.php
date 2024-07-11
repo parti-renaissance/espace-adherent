@@ -9,8 +9,8 @@ use App\Entity\UserListDefinition;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Table(name: 'elected_representative_user_list_definition_history')]
 #[ORM\Entity]
+#[ORM\Table(name: 'elected_representative_user_list_definition_history')]
 class UserListDefinitionHistory
 {
     private const ACTION_ADD = 'add';
@@ -24,9 +24,9 @@ class UserListDefinitionHistory
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

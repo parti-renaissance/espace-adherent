@@ -4,13 +4,13 @@ namespace App\Entity\ApplicationRequest;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'application_request_tag')]
 #[ORM\Entity]
+#[ORM\Table(name: 'application_request_tag')]
 class ApplicationRequestTag
 {
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     #[ORM\Column]

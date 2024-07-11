@@ -11,29 +11,29 @@ use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'jecoute_choice')]
 #[ORM\Entity(repositoryClass: ChoiceRepository::class)]
+#[ORM\Table(name: 'jecoute_choice')]
 class Choice
 {
     use Sortable;
 
     #[Groups(['survey_list', 'survey_read_dc'])]
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var Question
      */
-    #[ORM\ManyToOne(targetEntity: Question::class, inversedBy: 'choices')]
     #[Gedmo\SortableGroup]
+    #[ORM\ManyToOne(targetEntity: Question::class, inversedBy: 'choices')]
     private $question;
 
+    #[Assert\Length(max: 80)]
+    #[Assert\NotBlank]
     #[Groups(['survey_list', 'survey_read_dc', 'survey_write_dc'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 80)]
     private $content;
 
     /**

@@ -74,19 +74,19 @@ class PushToken
      *
      * @ApiProperty(identifier=true)
      */
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
     #[Groups(['push_token_write'])]
     #[ORM\Column(unique: true)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     private $identifier;
 
     /**
      * @var string|null
      */
+    #[Assert\Choice(choices: PushTokenSourceEnum::ALL)]
+    #[Assert\NotBlank]
     #[Groups(['push_token_write'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Choice(choices: PushTokenSourceEnum::ALL)]
     private $source;
 
     public function __construct(

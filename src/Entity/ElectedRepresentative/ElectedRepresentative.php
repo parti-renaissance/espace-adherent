@@ -77,53 +77,53 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     /**
      * @var string
      */
+    #[Assert\Length(max: '50')]
+    #[Assert\NotBlank]
     #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read', 'elected_representative_list', 'elected_mandate_read'])]
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: '50')]
     private $lastName;
 
     /**
      * @var string
      */
+    #[Assert\Length(max: '50')]
+    #[Assert\NotBlank]
     #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read', 'elected_representative_list', 'elected_mandate_read'])]
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: '50')]
     private $firstName;
 
     /**
      * @var string
      */
+    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice')]
     #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read', 'elected_representative_list'])]
     #[ORM\Column(length: 10, nullable: true)]
-    #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice')]
     private $gender;
 
     /**
      * @var \DateTime
      */
-    #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read'])]
-    #[ORM\Column(type: 'date')]
     #[Assert\NotBlank]
     #[Assert\Range(min: '-120 years', max: '-18 years', minMessage: "L'élu doit être âgé de moins de 120 ans", maxMessage: "L'age minimum pour être un élu est de 18 ans")]
+    #[Groups(['elected_representative_change_diff', 'elected_representative_write', 'elected_representative_read'])]
+    #[ORM\Column(type: 'date')]
     private $birthDate;
 
     /**
      * @var string|null
      */
+    #[Assert\Length(max: '255')]
     #[Groups(['elected_representative_write', 'elected_representative_read'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Length(max: '255')]
     private $birthPlace;
 
     /**
      * @var string|null
      */
-    #[Groups(['elected_representative_write'])]
-    #[ORM\Column(nullable: true)]
     #[Assert\Email(message: 'common.email.invalid')]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[Groups(['elected_representative_write'])]
+    #[ORM\Column(nullable: true)]
     private $contactEmail;
 
     /**
@@ -182,37 +182,37 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     /**
      * @var SocialNetworkLink[]|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: SocialNetworkLink::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
     #[Assert\Valid]
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: SocialNetworkLink::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
     private $socialNetworkLinks;
 
     /**
      * @var Mandate[]|Collection
      */
+    #[Assert\Valid]
     #[Groups(['elected_representative_read'])]
     #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: Mandate::class, cascade: ['all'], orphanRemoval: true)]
-    #[Assert\Valid]
     private $mandates;
 
     /**
      * PoliticalFunction[]|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: PoliticalFunction::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
     #[Assert\Valid]
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: PoliticalFunction::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
     private $politicalFunctions;
 
     /**
      * @var ElectedRepresentativeLabel[]|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: ElectedRepresentativeLabel::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
     #[Assert\Valid]
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: ElectedRepresentativeLabel::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
     private $labels;
 
     /**
      * Sponsorship[]|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: Sponsorship::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
     #[Assert\Valid]
+    #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: Sponsorship::class, cascade: ['all'], fetch: 'EAGER', orphanRemoval: true)]
     private $sponsorships;
 
     #[ORM\OneToMany(mappedBy: 'electedRepresentative', targetEntity: Contribution::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]

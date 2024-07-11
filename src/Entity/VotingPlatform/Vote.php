@@ -5,17 +5,17 @@ namespace App\Entity\VotingPlatform;
 use App\Repository\VotingPlatform\VoteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity(repositoryClass: VoteRepository::class)]
 #[ORM\Table(name: 'voting_platform_vote')]
 #[ORM\UniqueConstraint(name: 'unique_vote', columns: ['voter_id', 'election_round_id'])]
-#[ORM\Entity(repositoryClass: VoteRepository::class)]
 class Vote
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

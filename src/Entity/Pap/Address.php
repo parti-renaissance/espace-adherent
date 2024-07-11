@@ -41,10 +41,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     },
  * )
  */
-#[ORM\Table(name: 'pap_address')]
+#[ORM\Entity(repositoryClass: AddressRepository::class)]
 #[ORM\Index(columns: ['offset_x', 'offset_y'])]
 #[ORM\Index(columns: ['latitude', 'longitude'])]
-#[ORM\Entity(repositoryClass: AddressRepository::class)]
+#[ORM\Table(name: 'pap_address')]
 class Address
 {
     use EntityIdentityTrait;

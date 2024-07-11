@@ -59,8 +59,8 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/articles/{categorySlug}/{articleSlug}', name: 'article_view', methods: ['GET'])]
     #[Entity('article', expr: 'repository.findOneBySlugAndCategorySlug(articleSlug, categorySlug)')]
+    #[Route(path: '/articles/{categorySlug}/{articleSlug}', name: 'article_view', methods: ['GET'])]
     public function articleAction(
         Article $article,
         ArticleRepository $repository,

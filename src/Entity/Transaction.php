@@ -5,9 +5,9 @@ namespace App\Entity;
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'donation_transactions')]
-#[ORM\Index(columns: ['paybox_result_code'], name: 'donation_transactions_result_idx')]
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
+#[ORM\Index(columns: ['paybox_result_code'], name: 'donation_transactions_result_idx')]
+#[ORM\Table(name: 'donation_transactions')]
 class Transaction
 {
     public const PAYBOX_SUCCESS = '00000';
@@ -32,8 +32,8 @@ class Transaction
      * @var int
      */
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

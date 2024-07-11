@@ -10,15 +10,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'application_request_volunteer')]
 #[ORM\Entity(repositoryClass: VolunteerRequestRepository::class)]
+#[ORM\Table(name: 'application_request_volunteer')]
 class VolunteerRequest extends ApplicationRequest
 {
     /**
      * @var TechnicalSkill[]|Collection
      */
-    #[ORM\ManyToMany(targetEntity: TechnicalSkill::class)]
     #[Assert\Count(min: 1, minMessage: 'application_request.technical_skills.min')]
+    #[ORM\ManyToMany(targetEntity: TechnicalSkill::class)]
     private $technicalSkills;
 
     /**

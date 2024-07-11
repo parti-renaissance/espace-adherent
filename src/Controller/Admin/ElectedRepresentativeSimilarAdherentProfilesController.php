@@ -26,8 +26,8 @@ class ElectedRepresentativeSimilarAdherentProfilesController extends AbstractCon
         ]);
     }
 
-    #[Route(path: '/elected-representative/{id}/adherent-similar-profiles/{adherent_id}/link', name: 'admin_app_electedrepresentative_adherent_similar_profiles_link', methods: ['GET'])]
     #[ParamConverter('adherent', options: ['mapping' => ['adherent_id' => 'id']])]
+    #[Route(path: '/elected-representative/{id}/adherent-similar-profiles/{adherent_id}/link', name: 'admin_app_electedrepresentative_adherent_similar_profiles_link', methods: ['GET'])]
     public function linkAdherentToElectedRepresentativeAction(
         ElectedRepresentative $electedRepresentative,
         Adherent $adherent,

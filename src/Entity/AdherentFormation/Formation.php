@@ -98,9 +98,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ScopeVisibility
  * @FormationContent
  */
-#[ORM\Table(name: 'adherent_formation')]
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
 #[ORM\EntityListeners([AdherentFormationListener::class])]
+#[ORM\Table(name: 'adherent_formation')]
 #[UniqueEntity(fields: ['zone', 'title'], message: 'adherent_formation.zone_title.unique_entity')]
 class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
@@ -111,21 +111,21 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     use EntityScopeVisibilityTrait;
     use PositionTrait;
 
+    #[Assert\Length(min: 2, minMessage: 'Le titre doit faire au moins 2 caractères.', options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank(message: 'Veuillez renseigner un titre.')]
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'Veuillez renseigner un titre.')]
-    #[Assert\Length(min: 2, minMessage: 'Le titre doit faire au moins 2 caractères.', options: ['allowEmptyString' => true])]
     private ?string $title = null;
 
+    #[Assert\Length(min: 2, minMessage: 'La description doit faire au moins 2 caractères.')]
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     #[ORM\Column(type: 'text', nullable: true)]
-    #[Assert\Length(min: 2, minMessage: 'La description doit faire au moins 2 caractères.')]
     private ?string $description = null;
 
+    #[Assert\Choice(choices: FormationContentTypeEnum::ALL)]
+    #[Assert\NotBlank]
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Choice(choices: FormationContentTypeEnum::ALL)]
     private string $contentType = FormationContentTypeEnum::FILE;
 
     #[Assert\File(maxSize: '5M', binaryFormat: false, mimeTypes: ['image/*', 'video/mpeg', 'video/mp4', 'video/quicktime', 'video/webm', 'application/pdf', 'application/x-pdf', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/rtf', 'text/plain', 'text/csv', 'text/html', 'text/calendar'])]
@@ -134,9 +134,9 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     #[ORM\Column(nullable: true)]
     private ?string $filePath = null;
 
+    #[Assert\Url]
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Url]
     private ?string $link = null;
 
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
@@ -153,8 +153,8 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     /**
      * @var Collection|Adherent[]
      */
-    #[ORM\JoinTable(name: 'adherent_formation_print_by_adherents')]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\JoinTable(name: 'adherent_formation_print_by_adherents')]
     #[ORM\ManyToMany(targetEntity: Adherent::class, fetch: 'EXTRA_LAZY')]
     private Collection $printByAdherents;
 

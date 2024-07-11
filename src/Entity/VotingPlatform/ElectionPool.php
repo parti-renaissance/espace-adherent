@@ -5,16 +5,16 @@ namespace App\Entity\VotingPlatform;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'voting_platform_election_pool')]
 #[ORM\Entity]
+#[ORM\Table(name: 'voting_platform_election_pool')]
 class ElectionPool
 {
     /**
      * @var int
      */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

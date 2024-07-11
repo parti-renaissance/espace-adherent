@@ -11,15 +11,15 @@ class AdherentMessageDataObject
     /**
      * @var string|null
      */
-    #[Assert\NotBlank]
     #[Assert\Length(min: '3', max: '255', options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank]
     private $label;
 
     /**
      * @var string|null
      */
-    #[Assert\NotBlank]
     #[Assert\Length(min: '3', max: '255', options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank]
     private $subject;
 
     /**

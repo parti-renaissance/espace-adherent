@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'proposals')]
 #[ORM\Entity(repositoryClass: ProposalRepository::class)]
+#[ORM\Table(name: 'proposals')]
 class Proposal implements EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface
 {
     use EntityTimestampableTrait;
@@ -20,15 +20,15 @@ class Proposal implements EntityContentInterface, EntitySoftDeletedInterface, In
      * @var int
      */
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var int
      */
-    #[ORM\Column(type: 'smallint')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'smallint')]
     private $position;
 
     /**
@@ -46,8 +46,8 @@ class Proposal implements EntityContentInterface, EntitySoftDeletedInterface, In
     /**
      * @var Media|null
      */
-    #[ORM\ManyToOne(targetEntity: Media::class)]
     #[Assert\NotBlank]
+    #[ORM\ManyToOne(targetEntity: Media::class)]
     private $media;
 
     /**

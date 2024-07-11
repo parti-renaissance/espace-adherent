@@ -8,8 +8,8 @@ use App\Entity\EntityTimestampableTrait;
 use App\Repository\Poll\VoteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'poll_vote')]
 #[ORM\Entity(repositoryClass: VoteRepository::class)]
+#[ORM\Table(name: 'poll_vote')]
 class Vote
 {
     use EntityTimestampableTrait;
@@ -17,9 +17,9 @@ class Vote
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     protected $id;
 
     /**

@@ -26,9 +26,9 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var string|null
      */
-    #[Groups(['profile_write'])]
-    #[Assert\NotBlank(message: 'common.gender.not_blank')]
     #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice', groups: ['Default', 'api_put_validation'])]
+    #[Assert\NotBlank(message: 'common.gender.not_blank')]
+    #[Groups(['profile_write'])]
     private $gender;
 
     /**
@@ -40,48 +40,48 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var string
      */
-    #[Groups(['uncertified_profile_write'])]
-    #[Assert\NotBlank(groups: ['Default', 'api_put_validation'])]
     #[Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length', groups: ['Default', 'api_put_validation'], options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank(groups: ['Default', 'api_put_validation'])]
+    #[Groups(['uncertified_profile_write'])]
     private $firstName;
 
     /**
      * @var string
      */
-    #[Groups(['uncertified_profile_write'])]
-    #[Assert\NotBlank]
     #[Assert\Length(min: 1, max: 50, minMessage: 'common.last_name.min_length', maxMessage: 'common.last_name.max_length', groups: ['Default', 'api_put_validation'], options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank]
+    #[Groups(['uncertified_profile_write'])]
     private $lastName;
 
     /**
      * @var Address
      */
-    #[Groups(['profile_write'])]
     #[Assert\Valid]
+    #[Groups(['profile_write'])]
     private $address;
 
     /**
      * @var string|null
      */
-    #[Groups(['profile_write'])]
     #[Assert\Choice(callback: [ActivityPositionsEnum::class, 'all'], message: 'adherent.activity_position.invalid_choice')]
+    #[Groups(['profile_write'])]
     private $position;
 
     /**
      * @var string|null
      */
-    #[Groups(['profile_write'])]
-    #[Assert\Expression('value or !this.isAdherent', message: 'adherent_profile.nationality.not_blank')]
     #[Assert\Country(message: 'common.nationality.invalid', groups: ['Default', 'api_put_validation'])]
+    #[Assert\Expression('value or !this.isAdherent', message: 'adherent_profile.nationality.not_blank')]
+    #[Groups(['profile_write'])]
     private $nationality;
 
     /**
      * @var string
      */
-    #[Groups(['profile_write'])]
-    #[Assert\NotBlank(message: 'adherent_profile.email.not_blank')]
     #[Assert\Email(message: 'common.email.invalid')]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[Assert\NotBlank(message: 'adherent_profile.email.not_blank')]
+    #[Groups(['profile_write'])]
     private $emailAddress;
 
     /**
@@ -95,51 +95,51 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var \DateTime|null
      */
-    #[Groups(['uncertified_profile_write'])]
     #[Assert\NotBlank(message: 'adherent.birthdate.not_blank')]
     #[Assert\Range(min: '-120 years', max: '-15 years', minMessage: 'adherent.birthdate.maximum_required_age', maxMessage: 'adherent.birthdate.minimum_required_age', groups: ['Default', 'api_put_validation'])]
+    #[Groups(['uncertified_profile_write'])]
     private $birthdate;
 
     /**
      * @var string
      */
-    #[Groups(['profile_write'])]
     #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?facebook.com\/#', message: 'adherent_profile.facebook_page_url.invalid')]
+    #[Groups(['profile_write'])]
     private $facebookPageUrl;
 
     /**
      * @var string
      */
-    #[Groups(['profile_write'])]
     #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?twitter.com\/#', message: 'adherent_profile.twitter_page_url.invalid')]
+    #[Groups(['profile_write'])]
     private $twitterPageUrl;
 
     /**
      * @var string
      */
-    #[Groups(['profile_write'])]
     #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?linkedin.com\/#', message: 'adherent_profile.linkedin_page_url.invalid')]
+    #[Groups(['profile_write'])]
     private $linkedinPageUrl;
 
     /**
      * @var string
      */
-    #[Groups(['profile_write'])]
     #[Assert\Regex(pattern: '#^https?\:\/\/(?:www\.)?t.me\/#', message: 'adherent_profile.telegram_page_url.invalid')]
+    #[Groups(['profile_write'])]
     private $telegramPageUrl;
 
     /**
      * @var string
      */
-    #[Groups(['profile_write'])]
     #[Assert\Choice(choices: JobEnum::JOBS, message: 'adherent.job.invalid_choice')]
+    #[Groups(['profile_write'])]
     private $job;
 
     /**
      * @var string
      */
-    #[Groups(['profile_write'])]
     #[Assert\Choice(choices: ActivityAreaEnum::ACTIVITIES, message: 'adherent.activity_area.invalid_choice')]
+    #[Groups(['profile_write'])]
     private $activityArea;
 
     /**
@@ -159,8 +159,8 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var array
      */
-    #[Groups(['profile_write'])]
     #[Assert\Choice(choices: SubscriptionTypeEnum::ADHERENT_TYPES, multipleMessage: 'adherent_profile.subscription_types.invalid_choice', multiple: true)]
+    #[Groups(['profile_write'])]
     private $subscriptionTypes = [];
 
     public bool $isAdherent = false;

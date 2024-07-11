@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'renaissance_newsletter_subscription')]
 #[ORM\Entity(repositoryClass: NewsletterSubscriptionRepository::class)]
+#[ORM\Table(name: 'renaissance_newsletter_subscription')]
 class NewsletterSubscription implements NewsletterSubscriptionInterface
 {
     use EntityIdentityTrait;

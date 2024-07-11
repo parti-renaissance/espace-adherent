@@ -18,10 +18,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @AssertRecaptcha(groups={"Subscription"})
  */
-#[ORM\Table(name: 'newsletter_subscriptions')]
-#[ORM\Entity(repositoryClass: NewsletterSubscriptionRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'newsletter.already_registered')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ORM\Entity(repositoryClass: NewsletterSubscriptionRepository::class)]
+#[ORM\Table(name: 'newsletter_subscriptions')]
+#[UniqueEntity(fields: ['email'], message: 'newsletter.already_registered')]
 class NewsletterSubscription implements NewsletterSubscriptionInterface, EntitySoftDeletedInterface, RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;
@@ -32,17 +32,17 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface, EntityS
     /**
      * @var string
      */
-    #[ORM\Column(type: 'string', length: 100, unique: true)]
-    #[Assert\NotBlank(message: 'newsletter.email.not_blank')]
     #[Assert\Email(message: 'newsletter.email.invalid')]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[Assert\NotBlank(message: 'newsletter.email.not_blank')]
+    #[ORM\Column(type: 'string', length: 100, unique: true)]
     private $email;
 
     /**
      * @var string
      */
-    #[ORM\Column(type: 'string', length: 11, nullable: true)]
     #[Assert\Length(min: 2, max: 11, minMessage: 'newsletter.postalCode.invalid', maxMessage: 'newsletter.postalCode.invalid')]
+    #[ORM\Column(type: 'string', length: 11, nullable: true)]
     private $postalCode;
 
     /**

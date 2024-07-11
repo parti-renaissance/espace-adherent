@@ -8,8 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'order_articles')]
 #[ORM\Entity(repositoryClass: OrderArticleRepository::class)]
+#[ORM\Table(name: 'order_articles')]
 class OrderArticle implements EntityContentInterface, EntitySoftDeletedInterface
 {
     use EntityTimestampableTrait;
@@ -20,25 +20,25 @@ class OrderArticle implements EntityContentInterface, EntitySoftDeletedInterface
      * @var int
      */
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var int
      */
-    #[ORM\Column(type: 'smallint')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'smallint')]
     private $position;
 
     /**
      * @var OrderSection[]|Collection
      */
-    #[ORM\JoinTable(name: 'order_section_order_article')]
-    #[ORM\JoinColumn(name: 'order_article_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ORM\InverseJoinColumn(name: 'order_section_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ORM\ManyToMany(targetEntity: OrderSection::class, inversedBy: 'articles')]
     #[Assert\Count(min: 1)]
+    #[ORM\InverseJoinColumn(name: 'order_section_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'order_article_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinTable(name: 'order_section_order_article')]
+    #[ORM\ManyToMany(targetEntity: OrderSection::class, inversedBy: 'articles')]
     private $sections;
 
     /**

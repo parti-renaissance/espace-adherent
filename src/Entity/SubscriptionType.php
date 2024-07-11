@@ -8,9 +8,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table]
-#[ORM\Index(columns: ['code'])]
 #[ORM\Entity(repositoryClass: SubscriptionTypeRepository::class)]
+#[ORM\Index(columns: ['code'])]
+#[ORM\Table]
 #[UniqueEntity(fields: ['code'])]
 class SubscriptionType
 {
@@ -18,33 +18,33 @@ class SubscriptionType
      * @var int|null
      */
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
     #[Groups(['profile_read'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     private $label;
 
     /**
      * @var string|null
      */
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
     #[Groups(['profile_read'])]
     #[ORM\Column(unique: true)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     private $code;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 64, unique: true, nullable: true)]
     #[Assert\Length(max: 64)]
+    #[ORM\Column(length: 64, unique: true, nullable: true)]
     private $externalId;
 
     /**

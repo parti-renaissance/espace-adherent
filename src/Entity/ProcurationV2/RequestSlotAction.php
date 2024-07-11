@@ -7,12 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'procuration_v2_request_slot_action')]
 #[ORM\Entity]
+#[ORM\Table(name: 'procuration_v2_request_slot_action')]
 class RequestSlotAction extends AbstractSlotAction
 {
-    #[ORM\ManyToOne(targetEntity: RequestSlot::class, inversedBy: 'actions')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: RequestSlot::class, inversedBy: 'actions')]
     public RequestSlot $requestSlot;
 
     public function __construct(UuidInterface $uuid, \DateTimeInterface $date, SlotActionStatusEnum $status, RequestSlot $requestSlot)

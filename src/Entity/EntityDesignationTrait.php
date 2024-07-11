@@ -13,10 +13,10 @@ trait EntityDesignationTrait
     /**
      * @var Designation
      */
-    #[Groups(['committee_election:read'])]
-    #[ORM\ManyToOne(targetEntity: Designation::class, cascade: ['persist'], fetch: 'EAGER')]
     #[Assert\NotBlank(groups: ['Admin'])]
     #[Assert\Valid(groups: ['Admin'])]
+    #[Groups(['committee_election:read'])]
+    #[ORM\ManyToOne(targetEntity: Designation::class, cascade: ['persist'], fetch: 'EAGER')]
     protected $designation;
 
     public function getDesignation(): ?Designation

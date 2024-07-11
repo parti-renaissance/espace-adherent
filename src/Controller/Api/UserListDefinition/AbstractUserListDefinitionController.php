@@ -30,8 +30,8 @@ abstract class AbstractUserListDefinitionController extends AbstractController
         return $this->json('', Response::HTTP_OK);
     }
 
-    #[Route(path: '/{type}/members', name: 'get_user_list_definition_members_for_type', condition: 'request.isXmlHttpRequest()', methods: ['POST'])]
     #[IsGranted('ABLE_TO_MANAGE_USER_LIST_DEFINITION_TYPE', subject: 'type')]
+    #[Route(path: '/{type}/members', name: 'get_user_list_definition_members_for_type', condition: 'request.isXmlHttpRequest()', methods: ['POST'])]
     public function getUserListDefinitionMembersForType(
         Request $request,
         string $type,

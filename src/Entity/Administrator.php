@@ -12,8 +12,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'administrators')]
 #[ORM\Entity(repositoryClass: AdministratorRepository::class)]
+#[ORM\Table(name: 'administrators')]
 #[UniqueEntity(fields: ['emailAddress'])]
 class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthenticatedUserInterface
 {
@@ -21,17 +21,17 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
      * @var int
      */
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(unique: true)]
     #[Assert\Email]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[Assert\NotBlank]
+    #[ORM\Column(unique: true)]
     private $emailAddress;
 
     /**
@@ -49,9 +49,9 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
     /**
      * @var AdministratorRole[]|Collection
      */
-    #[ORM\JoinTable(name: 'administrators_roles')]
-    #[ORM\JoinColumn(name: 'administrator_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'administrator_role_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'administrator_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinTable(name: 'administrators_roles')]
     #[ORM\ManyToMany(targetEntity: AdministratorRole::class)]
     private Collection $administratorRoles;
 

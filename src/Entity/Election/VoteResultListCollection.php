@@ -17,8 +17,8 @@ class VoteResultListCollection
      * @var int|null
      */
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
@@ -30,8 +30,8 @@ class VoteResultListCollection
     /**
      * @var VoteResultList[]|Collection
      */
-    #[ORM\OneToMany(mappedBy: 'listCollection', targetEntity: VoteResultList::class, cascade: ['all'], orphanRemoval: true)]
     #[Assert\Count(min: 1)]
+    #[ORM\OneToMany(mappedBy: 'listCollection', targetEntity: VoteResultList::class, cascade: ['all'], orphanRemoval: true)]
     private $lists;
 
     /**

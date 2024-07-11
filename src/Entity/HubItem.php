@@ -39,15 +39,15 @@ class HubItem implements EntityAdministratorBlameableInterface
         $this->uuid = Uuid::uuid4();
     }
 
-    #[ORM\Column]
-    #[Groups(['hub_items_list'])]
     #[Assert\NotBlank]
+    #[Groups(['hub_items_list'])]
+    #[ORM\Column]
     public ?string $title = null;
 
-    #[ORM\Column]
-    #[Groups(['hub_items_list'])]
     #[Assert\NotBlank]
     #[Assert\Url]
+    #[Groups(['hub_items_list'])]
+    #[ORM\Column]
     public ?string $url = null;
 
     public function __toString(): string

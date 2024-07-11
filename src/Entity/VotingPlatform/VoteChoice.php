@@ -4,8 +4,8 @@ namespace App\Entity\VotingPlatform;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'voting_platform_vote_choice')]
 #[ORM\Entity]
+#[ORM\Table(name: 'voting_platform_vote_choice')]
 class VoteChoice
 {
     public const BLANK_VOTE_VALUE = -1;
@@ -13,9 +13,9 @@ class VoteChoice
     /**
      * @var int|null
      */
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

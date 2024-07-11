@@ -18,8 +18,8 @@ class AdminTonMacronController extends AbstractController
 {
     public const PER_PAGE = 1000;
 
-    #[Route(path: '/export/choices', name: 'app_admin_tonmacron_export_choices', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN_TON_MACRON')]
+    #[Route(path: '/export/choices', name: 'app_admin_tonmacron_export_choices', methods: ['GET'])]
     public function exportChoicesAction(
         TonMacronSerializer $serializer,
         TonMacronChoiceRepository $repository
@@ -33,8 +33,8 @@ class AdminTonMacronController extends AbstractController
         return $response;
     }
 
-    #[Route(path: '/export/invitations', name: 'app_admin_tonmacron_export_invitations', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN_TON_MACRON')]
+    #[Route(path: '/export/invitations', name: 'app_admin_tonmacron_export_invitations', methods: ['GET'])]
     public function exportInvitationsAction(TonMacronFriendInvitationRepository $repository): Response
     {
         return $this->render('admin/ton_macron/invitation_export.html.twig', [
@@ -55,8 +55,8 @@ class AdminTonMacronController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/export/invitations/partial', name: 'app_admin_tonmacron_export_invitations_partial', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN_TON_MACRON')]
+    #[Route(path: '/export/invitations/partial', name: 'app_admin_tonmacron_export_invitations_partial', methods: ['GET'])]
     public function exportInvitationsPartialAction(
         Request $request,
         TonMacronSerializer $serializer,

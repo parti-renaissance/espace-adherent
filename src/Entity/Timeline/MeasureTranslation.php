@@ -8,9 +8,9 @@ use Knp\DoctrineBehaviors\Model\Translatable\TranslationTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'timeline_measure_translations')]
 #[ORM\Entity]
 #[ORM\EntityListeners([MeasureTranslationListener::class])]
+#[ORM\Table(name: 'timeline_measure_translations')]
 #[UniqueEntity(fields: ['locale', 'title'], errorPath: 'title')]
 class MeasureTranslation implements TranslationInterface
 {
@@ -19,17 +19,17 @@ class MeasureTranslation implements TranslationInterface
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     protected $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: Measure::TITLE_MAX_LENGTH)]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 100)]
     private $title;
 
     public function getTitle(): ?string

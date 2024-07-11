@@ -16,8 +16,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AdherentController extends AbstractController
 {
-    #[Route(path: '/adherents/me/anonymize', name: 'api_adherent_anonymize_me', methods: ['PUT'])]
     #[IsGranted('ROLE_ADHERENT')]
+    #[Route(path: '/adherents/me/anonymize', name: 'api_adherent_anonymize_me', methods: ['PUT'])]
     public function anonymizeAction(
         Request $request,
         SerializerInterface $serializer,

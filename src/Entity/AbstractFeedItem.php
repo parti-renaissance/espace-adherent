@@ -26,8 +26,8 @@ abstract class AbstractFeedItem
      *     maxMessage="common.message.max_length"
      * )
      */
-    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'text')]
     protected $content;
 
     /**

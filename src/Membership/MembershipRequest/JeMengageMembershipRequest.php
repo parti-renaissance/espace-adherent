@@ -12,22 +12,22 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class JeMengageMembershipRequest extends AbstractMembershipRequest
 {
-    #[Groups(['membership:write'])]
-    #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length')]
+    #[Assert\NotBlank]
+    #[Groups(['membership:write'])]
     public ?string $lastName = null;
 
-    #[Groups(['membership:write'])]
-    #[Assert\NotBlank(message: 'common.gender.not_blank')]
     #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice')]
+    #[Assert\NotBlank(message: 'common.gender.not_blank')]
+    #[Groups(['membership:write'])]
     public ?string $gender = null;
 
-    #[Groups(['membership:write'])]
     #[Assert\NotBlank(message: 'common.birthdate.not_blank')]
+    #[Groups(['membership:write'])]
     public ?\DateTimeInterface $birthdate = null;
 
-    #[Groups(['membership:write'])]
     #[Assert\Country(message: 'common.nationality.invalid')]
+    #[Groups(['membership:write'])]
     public ?string $nationality = null;
 
     /**
@@ -36,8 +36,8 @@ class JeMengageMembershipRequest extends AbstractMembershipRequest
     #[Groups(['membership:write'])]
     public ?PhoneNumber $phone = null;
 
-    #[Groups(['membership:write'])]
     #[Assert\Valid]
+    #[Groups(['membership:write'])]
     public ?Address $address = null;
 
     final public function getSource(): string

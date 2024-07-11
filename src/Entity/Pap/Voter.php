@@ -23,8 +23,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={},
  * )
  */
-#[ORM\Table(name: 'pap_voter')]
 #[ORM\Entity(repositoryClass: VoterRepository::class)]
+#[ORM\Table(name: 'pap_voter')]
 class Voter
 {
     use EntityIdentityTrait;

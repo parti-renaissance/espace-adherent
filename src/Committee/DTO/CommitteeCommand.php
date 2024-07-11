@@ -22,12 +22,12 @@ class CommitteeCommand
     /** @var Committee */
     protected $committee;
 
-    #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 50, options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank]
     public $name;
 
-    #[Assert\NotBlank]
     #[Assert\Length(min: 5, max: 140, minMessage: 'committee.description.min_length', maxMessage: 'committee.description.max_length', options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank]
     public $description;
 
     /**
@@ -44,8 +44,8 @@ class CommitteeCommand
     #[Assert\Expression(expression: "(value == null and this.getCommittee()) or (value != '' and value != null)", message: 'common.phone_number.required', groups: ['created_by_adherent'])]
     protected $phone;
 
-    #[Assert\Url]
     #[Assert\Length(max: 255)]
+    #[Assert\Url]
     public $facebookPageUrl;
 
     #[Assert\Length(min: 1, max: 15, options: ['allowEmptyString' => true])]

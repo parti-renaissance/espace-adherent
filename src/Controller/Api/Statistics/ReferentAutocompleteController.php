@@ -11,8 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/statistics/search/autocomplete', name: 'api_statistics_referent_space_search_autocomplete', methods: ['GET'])]
 #[IsGranted('ROLE_OAUTH_SCOPE_READ:STATS')]
+#[Route(path: '/statistics/search/autocomplete', name: 'api_statistics_referent_space_search_autocomplete', methods: ['GET'])]
 class ReferentAutocompleteController extends AbstractStatisticsController
 {
     private const AUTOCOMPLETE_TYPE_CITY = 'city';

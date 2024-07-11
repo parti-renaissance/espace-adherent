@@ -13,32 +13,32 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'local_election_candidacies_group')]
 #[ORM\Entity]
+#[ORM\Table(name: 'local_election_candidacies_group')]
 class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministratorBlameableInterface
 {
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
 
+    #[Assert\NotBlank]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: LocalElection::class, inversedBy: 'candidaciesGroups')]
-    #[Assert\NotBlank]
     public ?LocalElection $election = null;
 
     /**
      * @var CandidacyInterface[]|Collection
      */
+    #[Assert\Valid]
     #[ORM\OneToMany(mappedBy: 'candidaciesGroup', targetEntity: Candidacy::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
-    #[Assert\Valid]
     protected $candidacies;
 
     /**
      * @var CandidacyInterface[]|Collection
      */
+    #[Assert\Valid]
     #[ORM\OneToMany(mappedBy: 'candidaciesGroup', targetEntity: SubstituteCandidacy::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['position' => 'ASC'])]
-    #[Assert\Valid]
     protected $substituteCandidacies;
 
     #[ORM\Column(nullable: true)]

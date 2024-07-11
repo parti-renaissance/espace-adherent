@@ -22,8 +22,8 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
     use EntityTimestampableTrait;
     use ImageTrait;
 
-    #[ORM\Column]
     #[Assert\NotBlank(groups: ['Admin', 'api_committee_candidacy_validation'], message: "Civilité de l'adhérent ne peut pas être vide")]
+    #[ORM\Column]
     private ?string $gender;
 
     /**

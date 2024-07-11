@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'ton_macron_friend_invitations')]
 #[ORM\Entity(repositoryClass: TonMacronFriendInvitationRepository::class)]
+#[ORM\Table(name: 'ton_macron_friend_invitations')]
 class TonMacronFriendInvitation
 {
     use EntityIdentityTrait;
@@ -48,9 +48,9 @@ class TonMacronFriendInvitation
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
-    #[ORM\JoinTable(name: 'ton_macron_friend_invitation_has_choices')]
-    #[ORM\JoinColumn(name: 'invitation_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'choice_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'invitation_id', referencedColumnName: 'id')]
+    #[ORM\JoinTable(name: 'ton_macron_friend_invitation_has_choices')]
     #[ORM\ManyToMany(targetEntity: TonMacronChoice::class, fetch: 'EAGER')]
     private $choices;
 

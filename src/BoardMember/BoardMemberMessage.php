@@ -26,8 +26,8 @@ class BoardMemberMessage
     /**
      * @var string|null
      */
-    #[Assert\NotBlank]
     #[Assert\Length(min: 10, max: 10000, minMessage: 'message.min_length', maxMessage: 'message.max_length')]
+    #[Assert\NotBlank]
     private $content;
 
     public function __construct(Adherent $from, array $recipients)

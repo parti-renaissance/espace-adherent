@@ -8,39 +8,39 @@ use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'election_city_candidate')]
 #[ORM\Entity]
+#[ORM\Table(name: 'election_city_candidate')]
 class CityCandidate
 {
     /**
      * @var int|null
      */
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $name;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 6, nullable: true)]
     #[Assert\Choice(choices: Genders::CHOICES)]
+    #[ORM\Column(length: 6, nullable: true)]
     private $gender;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Email(message: 'common.email.invalid')]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[ORM\Column(nullable: true)]
     private $email;
 
     /**
@@ -54,29 +54,29 @@ class CityCandidate
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 255)]
+    #[ORM\Column(nullable: true)]
     private $profile;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 255)]
+    #[ORM\Column(nullable: true)]
     private $investitureType;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 255)]
+    #[ORM\Column(nullable: true)]
     private $politicalScheme;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 255)]
+    #[ORM\Column(nullable: true)]
     private $alliances;
 
     /**
@@ -88,8 +88,8 @@ class CityCandidate
     /**
      * @var int|null
      */
-    #[ORM\Column(type: 'integer', nullable: true)]
     #[Assert\GreaterThanOrEqual(0)]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $eligibleAdvisersCount;
 
     public function __construct(

@@ -17,9 +17,9 @@ trait EntityIdentityTrait
      * @ApiProperty(identifier=false)
      */
     #[Groups(['autocomplete', 'survey_list'])]
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     protected $id;
 
     /**

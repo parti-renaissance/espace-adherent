@@ -10,8 +10,8 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Table(name: 'contribution_revenue_declaration')]
 #[ORM\Entity]
+#[ORM\Table(name: 'contribution_revenue_declaration')]
 class RevenueDeclaration
 {
     use EntityIdentityTrait;

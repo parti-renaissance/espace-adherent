@@ -95,10 +95,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiFilter(InZoneOfScopeFilter::class)
  */
-#[ORM\Table(name: 'committees')]
+#[ORM\Entity(repositoryClass: CommitteeRepository::class)]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Index(columns: ['version'])]
-#[ORM\Entity(repositoryClass: CommitteeRepository::class)]
+#[ORM\Table(name: 'committees')]
 class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface, AddressHolderInterface, ZoneableEntity, ExposedObjectInterface, EntityAdherentBlameableInterface, GeoPointInterface, CoordinatorAreaInterface, ReportableInterface, EntityAdministratorBlameableInterface
 {
     use EntityNullablePostAddressTrait;
@@ -225,15 +225,15 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
     /**
      * @AssertZoneType(types=Zone::COMMITTEE_TYPES, groups={"api_committee_edition"})
      */
+    #[Assert\Count(min: 1, minMessage: 'Le comité doit contenir au moins une zone.', groups: ['api_committee_edition'])]
     #[Groups(['committee:read', 'committee:write'])]
     #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
-    #[Assert\Count(min: 1, minMessage: 'Le comité doit contenir au moins une zone.', groups: ['api_committee_edition'])]
     protected Collection $zones;
 
+    #[Assert\Expression('!this.animator or this.animator.isRenaissanceAdherent()', message: 'Président doit être un adhérent Renaissance.')]
     #[Groups(['committee:read', 'committee:update_animator'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'animatorCommittees')]
-    #[Assert\Expression('!this.animator or this.animator.isRenaissanceAdherent()', message: 'Président doit être un adhérent Renaissance.')]
     public ?Adherent $animator = null;
 
     public function __construct(

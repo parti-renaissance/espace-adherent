@@ -6,11 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'interactive_choices')]
-#[ORM\Entity]
-#[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap(['my_europe' => MyEuropeChoice::class])]
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\Table(name: 'interactive_choices')]
 abstract class InteractiveChoice
 {
     use EntityIdentityTrait;

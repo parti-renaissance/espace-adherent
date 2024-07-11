@@ -53,21 +53,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ElectedRepresentativeAdherentMandateRepository::class)]
 class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
 {
+    #[Assert\Choice(choices: MandateTypeEnum::ALL)]
+    #[Assert\NotBlank]
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Choice(choices: MandateTypeEnum::ALL)]
     public string $mandateType;
 
+    #[Assert\Length(max: 255)]
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Length(max: 255)]
     public ?string $delegation = null;
 
+    #[Assert\Expression("value !== null or (value == null and this.mandateType === constant('App\\\\Adherent\\\\MandateTypeEnum::DEPUTE_EUROPEEN'))", message: 'Le périmètre géographique est obligatoire.')]
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Zone::class)]
-    #[Assert\Expression("value !== null or (value == null and this.mandateType === constant('App\\\\Adherent\\\\MandateTypeEnum::DEPUTE_EUROPEEN'))", message: 'Le périmètre géographique est obligatoire.')]
     public ?Zone $zone = null;
 
     public static function create(

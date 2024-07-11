@@ -23,8 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-#[ORM\Table(name: 'articles_categories')]
 #[ORM\Entity(repositoryClass: ArticleCategoryRepository::class)]
+#[ORM\Table(name: 'articles_categories')]
 class ArticleCategory
 {
     public const DEFAULT_CATEGORY = 'tout';
@@ -33,46 +33,46 @@ class ArticleCategory
      * @var int
      */
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var int|null
      */
-    #[ORM\Column(type: 'smallint')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'smallint')]
     private $position;
 
     /**
      * @var string
      */
+    #[Assert\Length(max: 50)]
+    #[Assert\NotBlank]
     #[Groups(['article_category_read', 'article_list_read', 'article_read'])]
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 50)]
     private $name;
 
     /**
      * @var string|null
      */
+    #[Assert\NotBlank]
     #[Groups(['article_category_read', 'article_list_read', 'article_read'])]
     #[ORM\Column(length: 100, unique: true)]
-    #[Assert\NotBlank]
     private $slug;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Url]
+    #[ORM\Column(nullable: true)]
     private $ctaLink;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 100, nullable: true)]
     #[Assert\Length(max: '100')]
+    #[ORM\Column(length: 100, nullable: true)]
     private $ctaLabel;
 
     /**

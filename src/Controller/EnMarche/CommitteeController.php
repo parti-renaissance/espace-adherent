@@ -37,8 +37,8 @@ class CommitteeController extends AbstractController
         $this->timelineMaxItems = $timelineMaxItems;
     }
 
-    #[Route(name: 'app_committee_show', methods: ['GET'])]
     #[IsGranted('SHOW_COMMITTEE', subject: 'committee')]
+    #[Route(name: 'app_committee_show', methods: ['GET'])]
     public function showAction(
         Request $request,
         Committee $committee,
@@ -65,10 +65,10 @@ class CommitteeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/timeline/{id}/modifier', name: 'app_committee_timeline_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ADMIN_FEED_COMMITTEE', subject: 'committeeFeedItem')]
     #[ParamConverter('committee', options: ['mapping' => ['slug' => 'slug']])]
     #[ParamConverter('committeeFeedItem', options: ['mapping' => ['id' => 'id']])]
-    #[IsGranted('ADMIN_FEED_COMMITTEE', subject: 'committeeFeedItem')]
+    #[Route(path: '/timeline/{id}/modifier', name: 'app_committee_timeline_edit', methods: ['GET', 'POST'])]
     public function timelineEditAction(
         EntityManagerInterface $manager,
         Request $request,
@@ -94,10 +94,10 @@ class CommitteeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/timeline/{id}/supprimer', name: 'app_committee_timeline_delete', methods: ['DELETE'])]
+    #[IsGranted('ADMIN_FEED_COMMITTEE', subject: 'committeeFeedItem')]
     #[ParamConverter('committee', options: ['mapping' => ['slug' => 'slug']])]
     #[ParamConverter('committeeFeedItem', options: ['mapping' => ['id' => 'id']])]
-    #[IsGranted('ADMIN_FEED_COMMITTEE', subject: 'committeeFeedItem')]
+    #[Route(path: '/timeline/{id}/supprimer', name: 'app_committee_timeline_delete', methods: ['DELETE'])]
     public function timelineDeleteAction(
         EntityManagerInterface $em,
         Request $request,
@@ -118,8 +118,8 @@ class CommitteeController extends AbstractController
         return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
     }
 
-    #[Route(path: '/timeline', name: 'app_committee_timeline', methods: ['GET'])]
     #[IsGranted('SHOW_COMMITTEE', subject: 'committee')]
+    #[Route(path: '/timeline', name: 'app_committee_timeline', methods: ['GET'])]
     public function timelineAction(Request $request, Committee $committee): Response
     {
         $timeline = $this->committeeManager->getTimeline(
@@ -137,8 +137,8 @@ class CommitteeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/rejoindre', name: 'app_committee_follow', condition: "request.request.has('token')", methods: ['POST'])]
     #[IsGranted('FOLLOW_COMMITTEE', subject: 'committee')]
+    #[Route(path: '/rejoindre', name: 'app_committee_follow', condition: "request.request.has('token')", methods: ['POST'])]
     public function followAction(
         Request $request,
         Committee $committee,
@@ -160,8 +160,8 @@ class CommitteeController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/quitter', name: 'app_committee_unfollow', condition: "request.request.has('token')", methods: ['POST'])]
     #[IsGranted('UNFOLLOW_COMMITTEE', subject: 'committee')]
+    #[Route(path: '/quitter', name: 'app_committee_unfollow', condition: "request.request.has('token')", methods: ['POST'])]
     public function unfollowAction(
         Request $request,
         Committee $committee,
@@ -182,9 +182,9 @@ class CommitteeController extends AbstractController
         ]);
     }
 
+    #[IsGranted(ChangeCommitteeVoter::PERMISSION)]
     #[Route(path: '/voter', defaults: ['enable' => true], name: 'app_committee_vote', condition: 'request.isXmlHttpRequest()', methods: ['POST'])]
     #[Route(path: '/ne-plus-voter', defaults: ['enable' => false], name: 'app_committee_unvote', condition: 'request.isXmlHttpRequest()', methods: ['POST'])]
-    #[IsGranted(ChangeCommitteeVoter::PERMISSION)]
     public function toggleCommitteeVoteAction(
         bool $enable,
         Request $request,

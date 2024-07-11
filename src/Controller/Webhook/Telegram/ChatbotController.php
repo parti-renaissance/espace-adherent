@@ -14,8 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use TelegramBot\Api\BotApi;
 use TelegramBot\Api\Types\Update;
 
-#[Route('/telegram/chatbot/{secret}', name: self::ROUTE_NAME, methods: ['POST'])]
 #[Entity('chatbot', expr: 'repository.findOneEnabledBySecret(secret)')]
+#[Route('/telegram/chatbot/{secret}', name: self::ROUTE_NAME, methods: ['POST'])]
 class ChatbotController extends AbstractController
 {
     use CanaryControllerTrait;

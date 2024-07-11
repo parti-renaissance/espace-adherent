@@ -7,20 +7,20 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'programmatic_foundation_tag')]
 #[ORM\Entity]
+#[ORM\Table(name: 'programmatic_foundation_tag')]
 #[UniqueEntity(fields: ['label'])]
 class Tag
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
+    #[Assert\Length(max: '100')]
+    #[Assert\NotBlank]
     #[Groups(['approach_list_read'])]
     #[ORM\Column(length: 100, unique: true)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: '100')]
     private $label;
 
     public function __construct(string $label = '')

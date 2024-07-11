@@ -17,8 +17,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
-#[Route(path: '/espace-membres-conseil')]
 #[IsGranted('ROLE_BOARD_MEMBER')]
+#[Route(path: '/espace-membres-conseil')]
 class BoardMemberController extends AbstractController
 {
     public const TOKEN_ID = 'board_member_search';

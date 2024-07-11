@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'committee_provisional_supervisor')]
 #[ORM\Entity]
+#[ORM\Table(name: 'committee_provisional_supervisor')]
 class ProvisionalSupervisor
 {
     use EntityTimestampableTrait;
@@ -13,9 +13,9 @@ class ProvisionalSupervisor
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

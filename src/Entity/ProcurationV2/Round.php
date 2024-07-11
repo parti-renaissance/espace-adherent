@@ -12,33 +12,33 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'procuration_v2_rounds')]
-#[ORM\Index(columns: ['date'])]
 #[ORM\Entity(repositoryClass: RoundRepository::class)]
+#[ORM\Index(columns: ['date'])]
+#[ORM\Table(name: 'procuration_v2_rounds')]
 class Round
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
 
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_matched_proxy', 'procuration_proxy_list', 'procuration_request_slot_read', 'procuration_proxy_slot_read'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     public ?string $name = null;
 
-    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'text')]
     public ?string $description = null;
 
+    #[Assert\NotBlank]
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_matched_proxy', 'procuration_proxy_list', 'procuration_request_slot_read', 'procuration_proxy_slot_read'])]
     #[ORM\Column(type: 'date')]
-    #[Assert\NotBlank]
     public ?\DateTimeInterface $date = null;
 
+    #[Assert\NotBlank]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Election::class, inversedBy: 'rounds')]
-    #[Assert\NotBlank]
     public ?Election $election = null;
 
     public function __construct(?UuidInterface $uuid = null)

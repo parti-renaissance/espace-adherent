@@ -11,9 +11,9 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ORM\Entity(repositoryClass: MemberRepository::class)]
 #[ORM\Table(name: 'team_member')]
 #[ORM\UniqueConstraint(name: 'team_member_unique', columns: ['team_id', 'adherent_id'])]
-#[ORM\Entity(repositoryClass: MemberRepository::class)]
 class Member
 {
     use EntityIdentityTrait;
@@ -29,9 +29,9 @@ class Member
     /**
      * @var Adherent|null
      */
+    #[Assert\NotBlank(message: 'team.member.adherent.not_blank')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'teamMemberships')]
-    #[Assert\NotBlank(message: 'team.member.adherent.not_blank')]
     private $adherent;
 
     public function __construct(?UuidInterface $uuid = null, ?Adherent $adherent = null, ?Team $team = null)

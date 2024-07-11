@@ -179,15 +179,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @AssertValidEventCategory
  */
-#[ORM\Table(name: '`events`')]
+#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
+#[ORM\DiscriminatorMap([EventTypeEnum::TYPE_DEFAULT => DefaultEvent::class, EventTypeEnum::TYPE_COMMITTEE => CommitteeEvent::class])]
+#[ORM\Entity(repositoryClass: BaseEventRepository::class)]
+#[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
 #[ORM\Index(columns: ['begin_at'])]
 #[ORM\Index(columns: ['finish_at'])]
 #[ORM\Index(columns: ['status'])]
-#[ORM\Entity(repositoryClass: BaseEventRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
-#[ORM\DiscriminatorMap([EventTypeEnum::TYPE_DEFAULT => DefaultEvent::class, EventTypeEnum::TYPE_COMMITTEE => CommitteeEvent::class])]
-#[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
+#[ORM\Table(name: '`events`')]
 abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInstanceInterface, ExposedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, ExposedObjectInterface
 {
     use EntityIdentityTrait;
@@ -227,26 +227,26 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     /**
      * @var ZoneCollection|Zone[]
      */
-    #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
     #[ORM\JoinTable(name: 'event_zone')]
+    #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
     protected Collection $zones;
 
     /**
      * @var Collection|ReferentTag[]
      */
-    #[ORM\JoinTable(name: 'event_referent_tag')]
-    #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'referent_tag_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinTable(name: 'event_referent_tag')]
     #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
     protected $referentTags;
 
     /**
      * @var string|null
      */
+    #[Assert\Length(min: 5, max: 100, options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank]
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank]
-    #[Assert\Length(min: 5, max: 100, options: ['allowEmptyString' => true])]
     protected $name;
 
     /**
@@ -254,51 +254,51 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
      *
      * @var string|null
      */
-    #[ORM\Column(length: 100)]
     #[Assert\NotBlank]
+    #[ORM\Column(length: 100)]
     protected $canonicalName;
 
     /**
      * @var string|null
      */
+    #[Gedmo\Slug(fields: ['beginAt', 'canonicalName'], handlers: [new Gedmo\SlugHandler(class: UniqueEventNameHandler::class)], dateFormat: 'Y-m-d')]
     #[Groups(['event_read'])]
     #[ORM\Column(length: 130, unique: true)]
-    #[Gedmo\Slug(fields: ['beginAt', 'canonicalName'], handlers: [new Gedmo\SlugHandler(class: UniqueEventNameHandler::class)], dateFormat: 'Y-m-d')]
     protected $slug;
 
     /**
      * @var string
      */
+    #[Assert\Length(min: 10, options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank]
     #[Groups(['event_read', 'event_write'])]
     #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank]
-    #[Assert\Length(min: 10, options: ['allowEmptyString' => true])]
     protected $description;
 
     /**
      * @var string
      */
-    #[Groups(['event_read', 'event_write', 'event_list_read'])]
-    #[ORM\Column(length: 50)]
     #[Assert\NotBlank]
     #[Assert\Timezone]
+    #[Groups(['event_read', 'event_write', 'event_list_read'])]
+    #[ORM\Column(length: 50)]
     protected $timeZone = GeoCoder::DEFAULT_TIME_ZONE;
 
     /**
      * @var \DateTimeInterface|null
      */
+    #[Assert\NotBlank]
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
     #[ORM\Column(type: 'datetime')]
-    #[Assert\NotBlank]
     protected $beginAt;
 
     /**
      * @var \DateTimeInterface|null
      */
+    #[Assert\Expression('!value or value > this.getBeginAt()', message: 'committee.event.invalid_date_range')]
+    #[Assert\NotBlank]
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
     #[ORM\Column(type: 'datetime')]
-    #[Assert\NotBlank]
-    #[Assert\Expression('!value or value > this.getBeginAt()', message: 'committee.event.invalid_date_range')]
     protected $finishAt;
 
     /**
@@ -336,14 +336,14 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     /**
      * @var int|null
      */
+    #[Assert\GreaterThan('0', message: 'committee.event.invalid_capacity')]
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
     #[ORM\Column(type: 'integer', nullable: true)]
-    #[Assert\GreaterThan('0', message: 'committee.event.invalid_capacity')]
     protected $capacity;
 
+    #[Assert\Url]
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
     #[ORM\Column(type: 'text', nullable: true)]
-    #[Assert\Url]
     private $visioUrl;
 
     /**
@@ -356,9 +356,9 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     /**
      * @var string|null
      */
+    #[Assert\Choice(choices: self::MODES)]
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Choice(choices: self::MODES)]
     private $mode;
 
     /**
@@ -371,9 +371,9 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     /**
      * @var NullablePostAddress
      */
+    #[Assert\Valid]
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
     #[ORM\Embedded(class: NullablePostAddress::class, columnPrefix: 'address_')]
-    #[Assert\Valid]
     protected $postAddress;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

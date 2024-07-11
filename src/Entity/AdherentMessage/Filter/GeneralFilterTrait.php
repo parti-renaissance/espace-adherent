@@ -18,42 +18,42 @@ trait GeneralFilterTrait
     /**
      * @var int|null
      */
-    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
-    #[ORM\Column(type: 'integer', nullable: true)]
     #[Assert\GreaterThanOrEqual(1)]
     #[Assert\LessThanOrEqual(200)]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $ageMin;
 
     /**
      * @var int|null
      */
-    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
-    #[ORM\Column(type: 'integer', nullable: true)]
     #[Assert\GreaterThanOrEqual(1)]
     #[Assert\LessThanOrEqual(200)]
+    #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $ageMax;
 
     /**
      * @var string|null
      */
+    #[Assert\Length(max: 255)]
     #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Length(max: 255)]
     private $firstName;
 
     /**
      * @var string|null
      */
+    #[Assert\Length(max: 255)]
     #[Groups(['audience_segment_read', 'audience_segment_write', 'adherent_message_update_filter'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Length(max: 255)]
     private $lastName;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 255)]
+    #[ORM\Column(nullable: true)]
     private $city;
 
     /**

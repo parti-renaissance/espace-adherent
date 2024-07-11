@@ -48,9 +48,9 @@ trait EntityAddressTrait
     /**
      * The address country code (ISO2).
      */
+    #[Assert\Country]
     #[Groups(['event_write', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     #[ORM\Column(length: 2, nullable: true)]
-    #[Assert\Country]
     protected ?string $country = null;
 
     #[Groups(['event_write', 'profile_read', 'contact_read_after_write', 'contact_update'])]

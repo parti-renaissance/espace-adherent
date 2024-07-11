@@ -71,24 +71,24 @@ class Member
     /**
      * @AssertMemberValid
      */
+    #[Assert\NotBlank(message: 'my_team.member.adherent.not_blank')]
     #[Groups(['my_team_member_read', 'my_team_member_write', 'my_team_read_list'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'teamMemberships')]
-    #[Assert\NotBlank(message: 'my_team.member.adherent.not_blank')]
     private ?Adherent $adherent;
 
+    #[Assert\Choice(callback: [RoleEnum::class, 'getAll'], message: 'my_team.member.role.invalid_choice')]
+    #[Assert\NotBlank(message: 'my_team.member.role.not_blank')]
     #[Groups(['my_team_member_read', 'my_team_member_write', 'my_team_read_list'])]
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'my_team.member.role.not_blank')]
-    #[Assert\Choice(callback: [RoleEnum::class, 'getAll'], message: 'my_team.member.role.invalid_choice')]
     private ?string $role;
 
     /**
      * @AssertScopeFeaturesValid
      */
+    #[Assert\Choice(choices: FeatureEnum::ALL, multiple: true, multipleMessage: 'my_team.member.scope_features.invalid_choice')]
     #[Groups(['my_team_member_read', 'my_team_member_write', 'my_team_read_list'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
-    #[Assert\Choice(choices: FeatureEnum::ALL, multiple: true, multipleMessage: 'my_team.member.scope_features.invalid_choice')]
     private array $scopeFeatures;
 
     public function __construct(

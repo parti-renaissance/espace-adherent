@@ -5,16 +5,16 @@ namespace App\Entity;
 use App\Repository\ProposalThemeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'proposals_themes')]
 #[ORM\Entity(repositoryClass: ProposalThemeRepository::class)]
+#[ORM\Table(name: 'proposals_themes')]
 class ProposalTheme
 {
     /**
      * @var int
      */
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

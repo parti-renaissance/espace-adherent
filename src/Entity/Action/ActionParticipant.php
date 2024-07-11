@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Table(name: 'vox_action_participant')]
 #[ORM\Entity(repositoryClass: ActionParticipantRepository::class)]
+#[ORM\Table(name: 'vox_action_participant')]
 class ActionParticipant
 {
     use EntityIdentityTrait;

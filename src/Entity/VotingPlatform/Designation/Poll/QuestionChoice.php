@@ -7,14 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'designation_poll_question_choice')]
 #[ORM\Entity]
+#[ORM\Table(name: 'designation_poll_question_choice')]
 class QuestionChoice
 {
     use EntityIdentityTrait;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     public ?string $label = null;
 
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]

@@ -17,15 +17,15 @@ abstract class BaseEventCategory implements EventCategoryInterface
     /**
      * @ApiProperty(identifier=false)
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Id]
     protected $id;
 
+    #[Assert\Length(max: '100')]
+    #[Assert\NotBlank]
     #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
     #[ORM\Column(length: 100, unique: true)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: '100')]
     protected $name = '';
 
     /**
@@ -33,11 +33,11 @@ abstract class BaseEventCategory implements EventCategoryInterface
      *
      * @var string|null
      */
+    #[Assert\Length(max: 100)]
+    #[Assert\NotBlank]
+    #[Gedmo\Slug(fields: ['name'], unique: true)]
     #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
     #[ORM\Column(length: 100, unique: true)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 100)]
-    #[Gedmo\Slug(fields: ['name'], unique: true)]
     protected $slug;
 
     #[ORM\Column(length: 10, options: ['default' => 'ENABLED'])]

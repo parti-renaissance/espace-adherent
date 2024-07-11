@@ -29,8 +29,8 @@ class CreatePartialDesignationCommand
     /**
      * @var string
      */
-    #[Assert\NotBlank]
     #[Assert\Choice(callback: [DesignationTypeEnum::class, 'toArray'], message: "Le type d'élection est invalide")]
+    #[Assert\NotBlank]
     private $designationType;
 
     /**
@@ -54,8 +54,8 @@ class CreatePartialDesignationCommand
     /**
      * @var string|null
      */
-    #[Assert\NotBlank]
     #[Assert\Length(max: 2000, maxMessage: "Oups, votre message semble plus long qu'il n'en a l'air. Essayez de le raccourcir pour continuer.")]
+    #[Assert\NotBlank]
     private $message;
 
     public function __construct(Committee $committee, string $designationType, ?string $pool)

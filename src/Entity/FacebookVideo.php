@@ -6,37 +6,37 @@ use App\Repository\FacebookVideoRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'facebook_videos')]
 #[ORM\Entity(repositoryClass: FacebookVideoRepository::class)]
+#[ORM\Table(name: 'facebook_videos')]
 class FacebookVideo
 {
     use EntityTimestampableTrait;
     use EntityPublishableTrait;
 
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
-    #[ORM\Column]
     #[Assert\Length(max: 255)]
     #[Assert\NotBlank]
     #[Assert\Url]
+    #[ORM\Column]
     private $facebookUrl;
 
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 255)]
     #[Assert\Url]
+    #[ORM\Column(nullable: true)]
     private $twitterUrl;
 
-    #[ORM\Column]
     #[Assert\Length(max: 255)]
     #[Assert\NotBlank]
+    #[ORM\Column]
     private $description;
 
-    #[ORM\Column(length: 100)]
     #[Assert\Length(max: 100)]
     #[Assert\NotBlank]
+    #[ORM\Column(length: 100)]
     private $author;
 
     #[ORM\Column(type: 'integer')]

@@ -18,11 +18,11 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'donations')]
-#[ORM\Index(columns: ['duration'], name: 'donation_duration_idx')]
-#[ORM\Index(columns: ['status'], name: 'donation_status_idx')]
 #[ORM\Entity(repositoryClass: DonationRepository::class)]
 #[ORM\EntityListeners([DonationListener::class])]
+#[ORM\Index(columns: ['duration'], name: 'donation_duration_idx')]
+#[ORM\Index(columns: ['status'], name: 'donation_status_idx')]
+#[ORM\Table(name: 'donations')]
 class Donation implements GeoPointInterface
 {
     use EntityIdentityTrait;
@@ -96,8 +96,8 @@ class Donation implements GeoPointInterface
     /**
      * @var \DateTimeInterface
      */
-    #[ORM\Column(type: 'datetime')]
     #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
     #[ORM\Column(nullable: true)]

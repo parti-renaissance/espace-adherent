@@ -24,10 +24,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={},
  * )
  */
-#[ORM\Table(name: 'pap_building_statistics')]
-#[ORM\Index(columns: ['status'])]
-#[ORM\UniqueConstraint(columns: ['building_id', 'campaign_id'])]
 #[ORM\Entity(repositoryClass: BuildingStatisticsRepository::class)]
+#[ORM\Index(columns: ['status'])]
+#[ORM\Table(name: 'pap_building_statistics')]
+#[ORM\UniqueConstraint(columns: ['building_id', 'campaign_id'])]
 class BuildingStatistics implements CampaignStatisticsInterface
 {
     use EntityIdentityTrait;

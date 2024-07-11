@@ -118,8 +118,7 @@ Feature:
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
     When I send a "POST" request to "/api/v3/department_sites?scope=referent" with body:
     """
-    {
-    }
+    {}
     """
     Then the response status code should be 400
     And the JSON should be equal to:
@@ -127,7 +126,7 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "content: Cette valeur ne doit pas être vide.\nzone: Cette valeur ne doit pas être vide.\nzone: Le type de la zone est invalide.",
+      "detail": "content: Cette valeur ne doit pas être vide.\nzone: Le type de la zone est invalide.\nzone: Cette valeur ne doit pas être vide.",
       "violations": [
         {
           "propertyPath": "content",
@@ -136,12 +135,12 @@ Feature:
         },
         {
           "propertyPath": "zone",
-          "message": "Cette valeur ne doit pas être vide.",
+          "message": "Le type de la zone est invalide.",
           "code": "@uuid@"
         },
         {
           "propertyPath": "zone",
-          "message": "Le type de la zone est invalide.",
+          "message": "Cette valeur ne doit pas être vide.",
           "code": "@uuid@"
         }
       ]

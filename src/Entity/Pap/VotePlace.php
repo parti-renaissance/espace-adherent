@@ -37,9 +37,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @deprecated Use {@see \App\Entity\Election\VotePlace}
  */
-#[ORM\Table(name: 'pap_vote_place')]
-#[ORM\Index(columns: ['latitude', 'longitude'])]
 #[ORM\Entity(repositoryClass: VotePlaceRepository::class)]
+#[ORM\Index(columns: ['latitude', 'longitude'])]
+#[ORM\Table(name: 'pap_vote_place')]
 class VotePlace
 {
     use EntityIdentityTrait;

@@ -29,9 +29,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={},
  * )
  */
+#[ORM\Entity(repositoryClass: FloorRepository::class)]
 #[ORM\Table(name: 'pap_floor')]
 #[ORM\UniqueConstraint(name: 'floor_unique', columns: ['number', 'building_block_id'])]
-#[ORM\Entity(repositoryClass: FloorRepository::class)]
 class Floor implements EntityAdherentBlameableInterface, CampaignStatisticsOwnerInterface
 {
     use EntityAdherentBlameableTrait;
@@ -39,9 +39,9 @@ class Floor implements EntityAdherentBlameableInterface, CampaignStatisticsOwner
     use EntityTimestampableTrait;
     use CampaignStatisticsTrait;
 
+    #[Assert\NotNull]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: BuildingBlock::class, inversedBy: 'floors')]
-    #[Assert\NotNull]
     private BuildingBlock $buildingBlock;
 
     #[Groups(['pap_building_block_list'])]

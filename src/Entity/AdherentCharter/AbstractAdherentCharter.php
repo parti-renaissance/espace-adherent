@@ -5,18 +5,18 @@ namespace App\Entity\AdherentCharter;
 use App\Entity\Adherent;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'adherent_charter')]
-#[ORM\UniqueConstraint(columns: ['adherent_id', 'dtype'])]
 #[ORM\Entity]
 #[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\Table(name: 'adherent_charter')]
+#[ORM\UniqueConstraint(columns: ['adherent_id', 'dtype'])]
 abstract class AbstractAdherentCharter implements AdherentCharterInterface
 {
     /**
      * @var int
      */
     #[ORM\Column(type: 'smallint')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

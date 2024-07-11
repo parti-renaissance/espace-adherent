@@ -20,12 +20,12 @@ class Chatbot
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
 
-    #[ORM\Column(unique: true)]
     #[Assert\NotBlank]
+    #[ORM\Column(unique: true)]
     public ?string $code = null;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     public ?string $assistantId = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

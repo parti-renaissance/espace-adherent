@@ -17,24 +17,24 @@ class CmsBlock implements EntityAdministratorBlameableInterface
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 100, unique: true)]
-    #[Assert\NotBlank(message: 'cms_block.name.not_blank')]
     #[Assert\Length(max: '100', maxMessage: 'cms_block.name.max_length')]
+    #[Assert\NotBlank(message: 'cms_block.name.not_blank')]
+    #[ORM\Column(length: 100, unique: true)]
     private $name;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: '255', maxMessage: 'cms_block.description.max_length')]
+    #[ORM\Column(nullable: true)]
     private $description;
 
     /**

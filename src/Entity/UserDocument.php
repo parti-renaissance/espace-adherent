@@ -10,8 +10,8 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'user_documents')]
 #[ORM\Entity(repositoryClass: UserDocumentRepository::class)]
+#[ORM\Table(name: 'user_documents')]
 class UserDocument
 {
     use EntityIdentityTrait;
@@ -35,22 +35,22 @@ class UserDocument
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 200)]
     #[Assert\Length(max: 200, maxMessage: 'document.validation.filename_length')]
+    #[ORM\Column(length: 200)]
     private $originalName;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 10)]
     #[Assert\Length(max: 10)]
+    #[ORM\Column(length: 10)]
     private $extension;
 
     /**
      * @var int|null
      */
-    #[ORM\Column(type: 'integer')]
     #[Assert\LessThan(value: 5242880, message: 'document.validation.max_filesize')]
+    #[ORM\Column(type: 'integer')]
     private $size;
 
     /**
@@ -62,15 +62,15 @@ class UserDocument
     /**
      * @var string
      */
-    #[ORM\Column(length: 25)]
     #[Assert\Choice(callback: 'allTypes')]
+    #[ORM\Column(length: 25)]
     private $type;
 
     /**
      * @var \DateTime
      */
-    #[ORM\Column(type: 'datetime')]
     #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     private function __construct(string $type, string $name, string $extension, int $size, string $createdAt = 'now')

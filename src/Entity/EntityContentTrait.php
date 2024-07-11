@@ -11,50 +11,50 @@ trait EntityContentTrait
     /**
      * @var string|null
      */
+    #[Assert\Length(max: 100)]
+    #[Assert\NotBlank]
     #[Groups(['article_list_read', 'article_read'])]
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 100)]
     private $title;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 100, unique: true)]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 100)]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 100, unique: true)]
     private $slug;
 
     /**
      * @var string|null
      */
-    #[Groups(['article_read'])]
-    #[ORM\Column]
     #[Assert\Length(min: 10, max: 255, options: ['allowEmptyString' => true])]
     #[Assert\NotBlank]
+    #[Groups(['article_read'])]
+    #[ORM\Column]
     private $description;
 
     /**
      * @var string|null
      */
+    #[Assert\Length(min: 10, max: 255)]
     #[Groups(['article_read'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Length(min: 10, max: 255)]
     private $twitterDescription;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(nullable: true)]
     #[Assert\Length(max: 255)]
+    #[ORM\Column(nullable: true)]
     private $keywords;
 
     /**
      * @var string|null
      */
+    #[Assert\NotBlank]
     #[Groups(['article_read'])]
     #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank]
     private $content;
 
     public function __toString(): string

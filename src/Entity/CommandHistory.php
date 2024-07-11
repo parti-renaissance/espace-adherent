@@ -8,9 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CommandHistoryRepository::class)]
 class CommandHistory
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     public ?int $id = null;
 
     #[ORM\Column(enumType: CommandHistoryTypeEnum::class)]

@@ -68,8 +68,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  * )
  */
-#[ORM\Table(name: 'email_templates')]
 #[ORM\Entity]
+#[ORM\Table(name: 'email_templates')]
 class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
@@ -78,24 +78,24 @@ class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministr
     use EntityAdministratorBlameableTrait;
     use EntityAdherentBlameableTrait;
 
+    #[Assert\Length(max: '255')]
+    #[Assert\NotBlank]
     #[Groups(['email_template_read', 'email_template_write', 'email_template_list_read'])]
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: '255')]
     private ?string $label = null;
 
+    #[Assert\Length(max: '255')]
     #[Groups(['email_template_read'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Length(max: '255')]
     public ?string $subject = null;
 
     #[Groups(['email_template_read'])]
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     public bool $subjectEditable = true;
 
+    #[Assert\NotBlank]
     #[Groups(['email_template_read', 'email_template_write'])]
     #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank]
     private ?string $content = null;
 
     /**
@@ -108,8 +108,8 @@ class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministr
     /**
      * @var string[]|null
      */
-    #[ORM\Column(type: 'simple_array', nullable: true)]
     #[Assert\NotBlank(groups: ['Admin'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
     private ?array $scopes = null;
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]

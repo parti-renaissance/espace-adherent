@@ -16,31 +16,31 @@ use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'jecoute_survey_question')]
 #[ORM\Entity(repositoryClass: SurveyQuestionRepository::class)]
+#[ORM\Table(name: 'jecoute_survey_question')]
 class SurveyQuestion implements AuthoredInterface
 {
     use EntityIdentityTrait;
     use Sortable;
 
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     protected $id;
 
     /**
      * @var Survey
      */
-    #[ORM\ManyToOne(targetEntity: Survey::class, cascade: ['persist'], inversedBy: 'questions')]
     #[Gedmo\SortableGroup]
+    #[ORM\ManyToOne(targetEntity: Survey::class, cascade: ['persist'], inversedBy: 'questions')]
     private $survey;
 
     /**
      * @var Question
      */
+    #[Assert\Valid]
     #[Groups(['survey_write_dc'])]
     #[ORM\ManyToOne(targetEntity: Question::class, cascade: ['persist'])]
-    #[Assert\Valid]
     private $question;
 
     #[ORM\OneToMany(mappedBy: 'surveyQuestion', targetEntity: DataAnswer::class)]

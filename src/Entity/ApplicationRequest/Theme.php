@@ -6,23 +6,23 @@ use App\Repository\ApplicationRequest\ThemeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'application_request_theme')]
 #[ORM\Entity(repositoryClass: ThemeRepository::class)]
+#[ORM\Table(name: 'application_request_theme')]
 class Theme
 {
     /**
      * @var int|null
      */
     #[ORM\Column(type: 'integer')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     private $name;
 
     /**

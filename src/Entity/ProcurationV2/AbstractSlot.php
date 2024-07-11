@@ -13,8 +13,8 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\MappedSuperclass]
 #[ORM\Index(columns: ['manual'])]
+#[ORM\MappedSuperclass]
 abstract class AbstractSlot
 {
     use EntityIdentityTrait;

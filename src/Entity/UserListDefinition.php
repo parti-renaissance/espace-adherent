@@ -6,39 +6,39 @@ use App\Repository\UserListDefinitionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ORM\Entity(repositoryClass: UserListDefinitionRepository::class)]
 #[ORM\Table]
 #[ORM\UniqueConstraint(name: 'user_list_definition_type_code_unique', columns: ['type', 'code'])]
-#[ORM\Entity(repositoryClass: UserListDefinitionRepository::class)]
 class UserListDefinition
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 50)]
-    #[Assert\NotBlank]
     #[Assert\Choice(callback: [UserListDefinitionEnum::class, 'getTypes'])]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 50)]
     private $type;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 100)]
     #[Assert\NotBlank]
+    #[ORM\Column(length: 100)]
     private $code;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 100)]
     #[Assert\NotBlank]
+    #[ORM\Column(length: 100)]
     private $label;
 
     #[ORM\Column(length: 7, nullable: true)]

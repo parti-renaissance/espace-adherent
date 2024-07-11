@@ -15,21 +15,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Assert\Expression('!this.voteZone || !this.voteZone.isInFrance() || this.votePlace || this.customVotePlace', message: 'procuration.vote_place.not_blank')]
 abstract class AbstractCommand
 {
-    #[Assert\NotBlank(message: 'common.gender.invalid_choice')]
     #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice')]
+    #[Assert\NotBlank(message: 'common.gender.invalid_choice')]
     public ?string $gender = null;
 
-    #[Assert\NotBlank(message: 'procuration.first_names.not_blank')]
     #[Assert\Length(min: 2, max: 255, minMessage: 'procuration.first_names.min_length', maxMessage: 'procuration.first_names.max_length')]
+    #[Assert\NotBlank(message: 'procuration.first_names.not_blank')]
     public ?string $firstNames = null;
 
-    #[Assert\NotBlank(message: 'procuration.last_name.not_blank')]
     #[Assert\Length(min: 1, max: 100, minMessage: 'procuration.last_name.min_length', maxMessage: 'procuration.last_name.max_length')]
+    #[Assert\NotBlank(message: 'procuration.last_name.not_blank')]
     public ?string $lastName = null;
 
-    #[Assert\NotBlank(message: 'procuration.email.not_blank')]
     #[Assert\Email(message: 'common.email.invalid')]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[Assert\NotBlank(message: 'procuration.email.not_blank')]
     public ?string $email = null;
 
     #[Assert\NotBlank(message: 'procuration.birthdate.not_blank')]

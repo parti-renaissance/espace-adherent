@@ -19,20 +19,20 @@ class AdherentRequest
     use EntityPostAddressTrait;
     use EntityUTMTrait;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     public ?string $firstName = null;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     public ?string $lastName = null;
 
-    #[ORM\Column]
     #[Assert\NotBlank]
+    #[ORM\Column]
     public ?string $email = null;
 
-    #[ORM\Column(type: 'float')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'float')]
     public ?float $amount = null;
 
     #[ORM\Column(type: 'uuid')]

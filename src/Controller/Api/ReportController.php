@@ -19,8 +19,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ReportController extends AbstractController
 {
-    #[Route(path: '/report/{type}/{uuid}', name: 'api_report', requirements: ['type' => ReportType::TYPES_URI_PATTERN, 'uuid' => '%pattern_uuid%'], methods: ['POST'])]
     #[IsGranted('REPORT')]
+    #[Route(path: '/report/{type}/{uuid}', name: 'api_report', requirements: ['type' => ReportType::TYPES_URI_PATTERN, 'uuid' => '%pattern_uuid%'], methods: ['POST'])]
     public function reportAction(
         Request $request,
         string $type,
@@ -58,8 +58,8 @@ class ReportController extends AbstractController
         return JsonResponse::fromJsonString($errors, Response::HTTP_BAD_REQUEST);
     }
 
-    #[Route(path: '/report/reasons', name: 'api_report_reasons', methods: ['GET'])]
     #[IsGranted('REPORT')]
+    #[Route(path: '/report/reasons', name: 'api_report_reasons', methods: ['GET'])]
     public function reasonsAction(TranslatorInterface $translator): Response
     {
         $reasons = [];

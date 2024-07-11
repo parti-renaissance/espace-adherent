@@ -12,19 +12,19 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Table(name: 'adherent_email_subscription_histories')]
+#[ORM\Entity(repositoryClass: EmailSubscriptionHistoryRepository::class)]
 #[ORM\Index(columns: ['adherent_uuid'], name: 'adherent_email_subscription_histories_adherent_uuid_idx')]
 #[ORM\Index(columns: ['action'], name: 'adherent_email_subscription_histories_adherent_action_idx')]
 #[ORM\Index(columns: ['date'], name: 'adherent_email_subscription_histories_adherent_date_idx')]
-#[ORM\Entity(repositoryClass: EmailSubscriptionHistoryRepository::class)]
+#[ORM\Table(name: 'adherent_email_subscription_histories')]
 class EmailSubscriptionHistory
 {
     /**
      * @var int|null
      */
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**

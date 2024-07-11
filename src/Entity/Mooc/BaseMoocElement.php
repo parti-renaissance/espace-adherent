@@ -14,33 +14,33 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @UniqueEntity(fields={"slug", "chapter"})
  */
-#[ORM\Entity]
-#[ORM\Table(name: 'mooc_elements')]
-#[ORM\UniqueConstraint(name: 'mooc_element_slug', columns: ['slug', 'chapter_id'])]
-#[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap([MoocElementTypeEnum::VIDEO => MoocVideoElement::class, MoocElementTypeEnum::QUIZ => MoocQuizElement::class, MoocElementTypeEnum::IMAGE => MoocImageElement::class])]
+#[ORM\Entity]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\Table(name: 'mooc_elements')]
+#[ORM\UniqueConstraint(name: 'mooc_element_slug', columns: ['slug', 'chapter_id'])]
 #[UniqueEntity(fields: ['slug', 'chapter'])]
 abstract class BaseMoocElement
 {
     use EntityTimestampableTrait;
     use Sortable;
 
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     protected $id;
 
     /**
      * @var string
      */
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     protected $title;
 
-    #[ORM\Column]
     #[Gedmo\Slug(fields: ['title'], unique: true)]
+    #[ORM\Column]
     protected $slug;
 
     /**
@@ -52,47 +52,47 @@ abstract class BaseMoocElement
     /**
      * @var Chapter
      */
-    #[ORM\ManyToOne(targetEntity: Chapter::class, cascade: ['persist'], inversedBy: 'elements')]
     #[Assert\Valid]
     #[Gedmo\SortableGroup]
+    #[ORM\ManyToOne(targetEntity: Chapter::class, cascade: ['persist'], inversedBy: 'elements')]
     protected $chapter;
 
     /**
      * @var Collection|AttachmentLink[]
      */
+    #[Assert\Valid]
     #[ORM\JoinTable(name: 'mooc_element_attachment_link')]
     #[ORM\ManyToMany(targetEntity: AttachmentLink::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['id' => 'ASC'])]
-    #[Assert\Valid]
     protected $links;
 
     /**
      * @var Collection|AttachmentFile[]
      */
+    #[Assert\Valid]
     #[ORM\JoinTable(name: 'mooc_element_attachment_file')]
     #[ORM\ManyToMany(targetEntity: AttachmentFile::class, cascade: ['persist'], orphanRemoval: true)]
     #[ORM\OrderBy(['id' => 'ASC'])]
-    #[Assert\Valid]
     protected $files;
 
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $shareTwitterText;
 
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $shareFacebookText;
 
-    #[ORM\Column]
-    #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[Assert\NotBlank]
+    #[ORM\Column]
     private $shareEmailSubject;
 
-    #[ORM\Column(length: 500)]
-    #[Assert\NotBlank]
     #[Assert\Length(min: 5, max: 500, options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 500)]
     protected $shareEmailBody;
 
     public function __construct(

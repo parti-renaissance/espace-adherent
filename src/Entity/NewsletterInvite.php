@@ -6,8 +6,8 @@ use App\Repository\NewsletterInviteRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
-#[ORM\Table(name: 'newsletter_invitations')]
 #[ORM\Entity(repositoryClass: NewsletterInviteRepository::class)]
+#[ORM\Table(name: 'newsletter_invitations')]
 class NewsletterInvite
 {
     use EntityIdentityTrait;

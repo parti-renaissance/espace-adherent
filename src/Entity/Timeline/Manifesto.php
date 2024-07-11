@@ -8,8 +8,8 @@ use App\Entity\EntityMediaTrait;
 use App\Repository\Timeline\ManifestoRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'timeline_manifestos')]
 #[ORM\Entity(repositoryClass: ManifestoRepository::class)]
+#[ORM\Table(name: 'timeline_manifestos')]
 class Manifesto extends AbstractTranslatableEntity implements AlgoliaIndexedEntityInterface
 {
     use EntityMediaTrait;
@@ -18,8 +18,8 @@ class Manifesto extends AbstractTranslatableEntity implements AlgoliaIndexedEnti
      * @var int
      */
     #[ORM\Column(type: 'bigint')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     public function __toString(): string

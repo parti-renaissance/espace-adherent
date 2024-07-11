@@ -8,8 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'application_request_running_mate')]
 #[ORM\Entity(repositoryClass: RunningMateRequestRepository::class)]
+#[ORM\Table(name: 'application_request_running_mate')]
 class RunningMateRequest extends ApplicationRequest
 {
     /**
@@ -65,22 +65,22 @@ class RunningMateRequest extends ApplicationRequest
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'text')]
     private $favoriteThemeDetails;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'text')]
     private $projectDetails;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
+    #[ORM\Column(type: 'text')]
     private $professionalAssets;
 
     public function hasCurriculumUploaded(): bool

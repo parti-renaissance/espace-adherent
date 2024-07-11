@@ -17,9 +17,9 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'jecoute_data_survey')]
-#[ORM\Index(columns: ['author_postal_code'])]
 #[ORM\Entity(repositoryClass: DataSurveyRepository::class)]
+#[ORM\Index(columns: ['author_postal_code'])]
+#[ORM\Table(name: 'jecoute_data_survey')]
 class DataSurvey implements AuthorInterface
 {
     use EntityIdentityTrait;
@@ -35,22 +35,22 @@ class DataSurvey implements AuthorInterface
     /**
      * @var \DateTime
      */
-    #[ORM\Column(type: 'datetime')]
     #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime')]
     private $postedAt;
 
     /**
      * @var DataAnswer[]|Collection
      */
+    #[Assert\Valid]
     #[Groups(['data_survey_write'])]
     #[ORM\OneToMany(mappedBy: 'dataSurvey', targetEntity: DataAnswer::class, cascade: ['persist', 'remove'])]
-    #[Assert\Valid]
     private $answers;
 
+    #[Assert\NotBlank]
     #[Groups(['phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'pap_campaign_replies_list', JemarcheDataSurveyReplyController::DESERIALIZE_GROUP, 'pap_campaign_history_read_list'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Survey::class)]
-    #[Assert\NotBlank]
     private $survey;
 
     /**

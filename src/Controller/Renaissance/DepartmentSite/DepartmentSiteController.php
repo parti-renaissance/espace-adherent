@@ -20,8 +20,8 @@ class DepartmentSiteController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/{slug}', name: 'view')]
     #[Entity('departmentSite', expr: 'repository.findOneBySlug(slug)')]
+    #[Route(path: '/{slug}', name: 'view')]
     public function departmentSiteAction(DepartmentSite $departmentSite): Response
     {
         return $this->render('renaissance/department_site/department_site.html.twig', [

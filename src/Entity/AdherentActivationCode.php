@@ -5,14 +5,14 @@ namespace App\Entity;
 use App\Repository\AdherentActivationCodeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table]
-#[ORM\Index(columns: ['adherent_id', 'value'])]
 #[ORM\Entity(repositoryClass: AdherentActivationCodeRepository::class)]
+#[ORM\Index(columns: ['adherent_id', 'value'])]
+#[ORM\Table]
 class AdherentActivationCode
 {
-    #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private ?int $id = null;
 
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]

@@ -40,8 +40,8 @@ class CertificationManagerTest extends AbstractKernelTestCase
         self::assertFalse($adherent->isCertified());
     }
 
-    #[Depends('testCreateRequest')]
     #[DataProvider('provideCreateRequest')]
+    #[Depends('testCreateRequest')]
     public function testHandleRequest(string $email): void
     {
         $adherent = $this->adherentRepository->findOneByEmail($email);

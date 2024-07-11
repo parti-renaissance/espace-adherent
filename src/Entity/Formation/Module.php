@@ -13,8 +13,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Table(name: 'formation_modules')]
 #[ORM\Entity(repositoryClass: ModuleRepository::class)]
+#[ORM\Table(name: 'formation_modules')]
 #[UniqueEntity(fields: ['title', 'axe'], message: 'module.title.unique_entity')]
 #[UniqueEntity(fields: ['slug', 'axe'], message: 'module.slug.unique_entity')]
 class Module implements EntityMediaInterface
@@ -26,53 +26,53 @@ class Module implements EntityMediaInterface
      * @var int|null
      */
     #[ORM\Column(type: 'bigint')]
-    #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Id]
     private $id;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(unique: true)]
-    #[Assert\NotBlank(message: 'Veuillez renseigner un titre.')]
     #[Assert\Length(min: 2, minMessage: 'Le titre doit faire au moins 2 caractères.', options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank(message: 'Veuillez renseigner un titre.')]
+    #[ORM\Column(unique: true)]
     private $title;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(unique: true)]
     #[Gedmo\Slug(fields: ['title'])]
+    #[ORM\Column(unique: true)]
     private $slug;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'text')]
-    #[Assert\NotBlank(message: 'Veuillez renseigner une description.')]
     #[Assert\Length(min: 2, minMessage: 'La description doit faire au moins 2 caractères.', options: ['allowEmptyString' => true])]
+    #[Assert\NotBlank(message: 'Veuillez renseigner une description.')]
+    #[ORM\Column(type: 'text')]
     private $description;
 
     /**
      * @var string|null
      */
-    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank(message: 'Veuillez renseigner un contenu.')]
+    #[ORM\Column(type: 'text')]
     private $content;
 
     /**
      * @var Axe|null
      */
-    #[ORM\ManyToOne(targetEntity: Axe::class, inversedBy: 'modules')]
     #[Assert\NotBlank(message: 'Veuillez renseigner un axe.')]
+    #[ORM\ManyToOne(targetEntity: Axe::class, inversedBy: 'modules')]
     private $axe;
 
     /**
      * @var Collection|File[]
      */
+    #[Assert\Valid]
     #[ORM\OneToMany(mappedBy: 'module', targetEntity: File::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[ORM\OrderBy(['id' => 'ASC'])]
-    #[Assert\Valid]
     private $files;
 
     public function __construct()
