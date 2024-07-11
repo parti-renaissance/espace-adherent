@@ -1,8 +1,0 @@
-{% extends 'admin/interactive/invitation_export.html.twig' %}
-
-{% block sonata_admin_content %}
-    {% set urlAdminList = path('admin_app_tonmacronfriendinvitation_list') %}
-    {% set filenameCsv = 'ton-macron-invitations.csv' %}
-    {% set urlAdminExportPartial = path('app_admin_tonmacron_export_invitations_partial') %}
-    {{ parent() }}
-{% endblock %}

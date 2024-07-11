@@ -530,25 +530,6 @@ newsletter.invitation.form.invite_sent: >-
     }
 
 #
-# Ton Macron
-#
-ton_macron.invitation_form.male: Homme
-ton_macron.invitation_form.female: Femme
-ton_macron.invitation_form.friend_first_name: Son prénom
-ton_macron.invitation_form.friend_age: Son âge
-ton_macron.invitation_form.friend_position: Sa situation professionnelle
-ton_macron.invitation_form.submit_fill_info: Continuer
-ton_macron.invitation_form.submit_fill_project: Continuer
-ton_macron.invitation_form.submit_fill_interests: Continuer
-ton_macron.invitation_form.submit_fill_reasons: Continuer
-ton_macron.invitation_form.default_subject: Les 10 raisons pour lesquelles je pense que tu devrais voter Macron
-ton_macron.invitation_form.self_first_name: Votre prénom
-ton_macron.invitation_form.self_last_name: Votre nom
-ton_macron.invitation_form.self_email: Votre email
-ton_macron.invitation_form.friend_email: Email de votre ami
-ton_macron.invitation_form.submit_send: Envoyer
-
-#
 # Legislative candidate
 #
 legislative_candidate.careers.1: Vient de la société civile

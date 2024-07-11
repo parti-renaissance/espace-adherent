@@ -1,7 +1,0 @@
-{% extends 'admin/interactive/choice_list_actions.html.twig' %}
-
-{% block field %}
-    {% set editPath = path('admin_app_tonmacronchoice_edit', { id: object.id }) %}
-    {% set deletePath = path('admin_app_tonmacronchoice_delete', { id: object.id }) %}
-    {{ parent() }}
-{% endblock %}

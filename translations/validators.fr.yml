@@ -305,12 +305,6 @@ event.invitation.message.max_length: Le message contient {{ limit }} caractères
 event.invitation.guests.min: Merci de saisir au moins une adresse email.
 
 #
-# Ton Macron
-#
-ton_macron.invitation.friend_interests.count: Vous devez sélectionner 2 intérêts.
-ton_macron.invitation.self_reasons.count: Vous devez sélectionner 2 raisons.
-
-#
 # Legislatives
 #
 legislative_district_zone.area_code.unique: Ce code de circonscription existe déjà.

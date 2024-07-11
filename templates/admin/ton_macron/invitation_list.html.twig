@@ -1,7 +1,0 @@
-{% extends 'admin/interactive/invitation_list.html.twig' %}
-
-{% block list_filters_actions %}
-    {% set urlAdminExportChoices = path('app_admin_tonmacron_export_choices') %}
-    {% set urlAdminExportInvitations = path('app_admin_tonmacron_export_invitations') %}
-    {{ parent() }}
-{% endblock %}

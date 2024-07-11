@@ -599,16 +599,6 @@ class LoadAdministratorRoleData extends Fixture
         );
         // Archives
         yield $this->createRole(
-            'ROLE_ADMIN_ARCHIVES_TON_MACRON',
-            'Administrateur TonMacron',
-            AdministratorRoleGroupEnum::ARCHIVES
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_ARCHIVES_MY_EUROPE',
-            'Administrateur MonEurope',
-            AdministratorRoleGroupEnum::ARCHIVES
-        );
-        yield $this->createRole(
             'ROLE_ADMIN_ARCHIVES_CONTENU',
             'Administrateur du contenu',
             AdministratorRoleGroupEnum::ARCHIVES

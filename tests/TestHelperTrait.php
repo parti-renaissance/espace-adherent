@@ -24,8 +24,6 @@ use App\Entity\Event\EventRegistration;
 use App\Entity\Filesystem\File;
 use App\Entity\Invite;
 use App\Entity\JeMarcheReport;
-use App\Entity\MyEuropeChoice;
-use App\Entity\MyEuropeInvitation;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\Member;
 use App\Entity\NewsletterInvite;
@@ -43,8 +41,6 @@ use App\Entity\Reporting\CommitteeMembershipHistory;
 use App\Entity\Reporting\EmailSubscriptionHistory;
 use App\Entity\RepublicanSilence;
 use App\Entity\SubscriptionType;
-use App\Entity\TonMacronChoice;
-use App\Entity\TonMacronFriendInvitation;
 use App\Entity\Transaction;
 use App\Entity\UserListDefinition;
 use App\FranceCities\FranceCities;
@@ -68,8 +64,6 @@ use App\Repository\EventRepository;
 use App\Repository\Filesystem\FileRepository;
 use App\Repository\InviteRepository;
 use App\Repository\JeMarcheReportRepository;
-use App\Repository\MyEuropeChoiceRepository;
-use App\Repository\MyEuropeInvitationRepository;
 use App\Repository\MyTeam\DelegatedAccessRepository;
 use App\Repository\MyTeam\MemberRepository;
 use App\Repository\NewsletterInviteRepository;
@@ -82,8 +76,6 @@ use App\Repository\ProcurationProxyRepository;
 use App\Repository\ProcurationRequestRepository;
 use App\Repository\ReferentSpaceAccessInformationRepository;
 use App\Repository\SubscriptionTypeRepository;
-use App\Repository\TonMacronChoiceRepository;
-use App\Repository\TonMacronFriendInvitationRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\UserListDefinitionRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
@@ -278,26 +270,6 @@ trait TestHelperTrait
     public function getEmailRepository(): EmailRepository
     {
         return $this->getRepository(Email::class);
-    }
-
-    public function getTonMacronChoiceRepository(): TonMacronChoiceRepository
-    {
-        return $this->getRepository(TonMacronChoice::class);
-    }
-
-    public function getTonMacronInvitationRepository(): TonMacronFriendInvitationRepository
-    {
-        return $this->getRepository(TonMacronFriendInvitation::class);
-    }
-
-    public function getMyEuropeChoiceRepository(): MyEuropeChoiceRepository
-    {
-        return $this->getRepository(MyEuropeChoice::class);
-    }
-
-    public function getMyEuropeInvitationRepository(): MyEuropeInvitationRepository
-    {
-        return $this->getRepository(MyEuropeInvitation::class);
     }
 
     public function getEmailSubscriptionHistoryRepository(): EmailSubscriptionHistoryRepository
