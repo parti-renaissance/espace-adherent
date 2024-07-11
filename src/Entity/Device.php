@@ -11,33 +11,9 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"device_read"}
- *         },
- *         "denormalization_context": {
- *             "groups": {"device_write"}
- *         },
- *     },
- *     collectionOperations={},
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/device/{deviceUuid}",
- *             "requirements": {"deviceUuid": "[\w-]+"},
- *             "security": "is_granted('ROLE_OAUTH_DEVICE') and object.equals(user.getDevice())"
- *         },
- *         "put": {
- *             "path": "/v3/device/{deviceUuid}",
- *             "requirements": {"deviceUuid": "[\w-]+"},
- *             "security": "is_granted('ROLE_OAUTH_DEVICE') and object.equals(user.getDevice())"
- *         },
- *     }
- * )
- */
 #[ORM\Table(name: 'devices')]
 #[ORM\Entity(repositoryClass: DeviceRepository::class)]
+#[ApiResource(attributes: ['normalization_context' => ['groups' => ['device_read']], 'denormalization_context' => ['groups' => ['device_write']]], collectionOperations: [], itemOperations: ['get' => ['path' => '/v3/device/{deviceUuid}', 'requirements' => ['deviceUuid' => '[\w-]+'], 'security' => "is_granted('ROLE_OAUTH_DEVICE') and object.equals(user.getDevice())"], 'put' => ['path' => '/v3/device/{deviceUuid}', 'requirements' => ['deviceUuid' => '[\w-]+'], 'security' => "is_granted('ROLE_OAUTH_DEVICE') and object.equals(user.getDevice())"]])]
 class Device
 {
     use EntityIdentityTrait;
@@ -46,20 +22,18 @@ class Device
 
     /**
      * @var UuidInterface
-     *
-     * @ApiProperty(identifier=false)
      */
     #[Groups(['user_profile'])]
     #[ORM\Column(type: 'uuid', unique: true)]
+    #[ApiProperty(identifier: false)]
     protected $uuid;
 
     /**
      * @var string
-     *
-     * @ApiProperty(identifier=true)
      */
     #[Groups(['user_profile'])]
     #[ORM\Column(unique: true)]
+    #[ApiProperty(identifier: true)]
     protected $deviceUuid;
 
     /**

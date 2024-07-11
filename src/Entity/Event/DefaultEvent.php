@@ -7,13 +7,8 @@ use App\Event\EventTypeEnum;
 use App\Repository\Event\DefaultEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ApiResource(
- *     collectionOperations={},
- *     itemOperations={"get"},
- * )
- */
 #[ORM\Entity(repositoryClass: DefaultEventRepository::class)]
+#[ApiResource(collectionOperations: [], itemOperations: ['get'])]
 class DefaultEvent extends BaseEvent
 {
     public function getType(): string

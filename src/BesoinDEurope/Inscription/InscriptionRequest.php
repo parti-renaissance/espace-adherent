@@ -10,9 +10,7 @@ use App\Validator\UniqueMembership;
 use App\ValueObject\Genders;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueMembership
- */
+#[UniqueMembership]
 class InscriptionRequest implements MembershipInterface
 {
     /**

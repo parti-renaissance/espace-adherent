@@ -17,33 +17,13 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "pagination_client_items_per_page": true,
- *         "order": {"name": "ASC"},
- *         "normalization_context": {
- *             "groups": {"zone_read"}
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/zones",
- *         },
- *     },
- *     itemOperations={"get"},
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={
- *     "name": "word_start",
- *     "type": "exact"
- * })
- */
 #[ORM\Table(name: 'geo_zone')]
 #[ORM\Index(columns: ['type'])]
 #[ORM\UniqueConstraint(name: 'geo_zone_code_type_unique', columns: ['code', 'type'])]
 #[ORM\Entity(repositoryClass: ZoneRepository::class)]
 #[ORM\AttributeOverrides([new ORM\AttributeOverride(name: 'code', column: new ORM\Column(unique: false))])]
+#[ApiResource(attributes: ['pagination_client_items_per_page' => true, 'order' => ['name' => 'ASC'], 'normalization_context' => ['groups' => ['zone_read']]], collectionOperations: ['get' => ['path' => '/zones']], itemOperations: ['get'])]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'word_start', 'type' => 'exact'])]
 class Zone implements GeoInterface, UuidEntityInterface
 {
     use GeoTrait;
@@ -103,20 +83,10 @@ class Zone implements GeoInterface, UuidEntityInterface
      * The internal primary identity key.
      *
      * @var UuidInterface
-     *
-     * @ApiProperty(
-     *     identifier=true,
-     *     attributes={
-     *         "swagger_context": {
-     *             "type": "string",
-     *             "format": "uuid",
-     *             "example": "b4219d47-3138-5efd-9762-2ef9f9495084"
-     *         }
-     *     }
-     * )
      */
     #[Groups(['zone_read', 'scopes', 'scope', 'jecoute_news_read_dc', 'audience_read', 'audience_segment_read', 'phoning_campaign_read', 'survey_list_dc', 'survey_read_dc', 'team_read', 'team_list_read', 'pap_campaign_read', 'pap_campaign_read_after_write', 'phoning_campaign_read', 'phoning_campaign_list', 'department_site_read', 'department_site_read_list', 'elected_representative_read', 'elected_representative_list', 'formation_list_read', 'formation_read', 'formation_write', 'elected_mandate_read', 'adherent_elect_read', 'general_meeting_report_list_read', 'general_meeting_report_read', 'committee:read', 'managed_users_list', 'managed_user_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read'])]
     #[ORM\Column(type: 'uuid', unique: true)]
+    #[ApiProperty(identifier: true, attributes: ['swagger_context' => ['type' => 'string', 'format' => 'uuid', 'example' => 'b4219d47-3138-5efd-9762-2ef9f9495084']])]
     protected $uuid;
 
     /**

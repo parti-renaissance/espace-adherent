@@ -17,31 +17,8 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "filters": {MyTeamScopeFilter::class},
- *         "normalization_context": {
- *             "groups": {"my_team_read"}
- *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')"
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/my_teams",
- *             "normalization_context": {
- *                 "groups": {"my_team_read_list"}
- *             },
- *         },
- *         "post": {
- *             "defaults": {"_api_receive": false},
- *             "path": "/v3/my_teams",
- *             "controller": "App\Controller\Api\MyTeam\InitializeMyTeamController"
- *         }
- *     }
- * )
- */
 #[ORM\Entity(repositoryClass: MyTeamRepository::class)]
+#[ApiResource(attributes: ['filters' => [MyTeamScopeFilter::class], 'normalization_context' => ['groups' => ['my_team_read']], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')"], collectionOperations: ['get' => ['path' => '/v3/my_teams', 'normalization_context' => ['groups' => ['my_team_read_list']]], 'post' => ['defaults' => ['_api_receive' => false], 'path' => '/v3/my_teams', 'controller' => 'App\Controller\Api\MyTeam\InitializeMyTeamController']])]
 class MyTeam
 {
     use EntityIdentityTrait;

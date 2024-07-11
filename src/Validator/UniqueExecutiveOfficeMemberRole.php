@@ -4,10 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- */
+#[\Attribute]
 class UniqueExecutiveOfficeMemberRole extends Constraint
 {
     public $uniquePresidentMessage = 'executive_office_member.president.unique';

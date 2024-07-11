@@ -10,21 +10,9 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"pap_address_voter_list"},
- *             "iri": true,
- *         },
- *         "pagination_enabled": false,
- *     },
- *     collectionOperations={},
- *     itemOperations={},
- * )
- */
 #[ORM\Table(name: 'pap_voter')]
 #[ORM\Entity(repositoryClass: VoterRepository::class)]
+#[ApiResource(attributes: ['normalization_context' => ['groups' => ['pap_address_voter_list'], 'iri' => true], 'pagination_enabled' => false], collectionOperations: [], itemOperations: [])]
 class Voter
 {
     use EntityIdentityTrait;

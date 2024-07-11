@@ -18,9 +18,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueMembership
- */
+#[UniqueMembership]
 class AdherentProfile implements MembershipInterface
 {
     /**

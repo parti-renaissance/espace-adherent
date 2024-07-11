@@ -66,117 +66,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     messageDate="committee.event.invalid_finish_date"
  * )
  *
- * @ApiResource(
- *     attributes={
- *         "order": {"beginAt": "ASC"},
- *         "denormalization_context": {"groups": {"event_write"}},
- *         "normalization_context": {
- *             "groups": {"event_read", "image_owner_exposed"}
- *         },
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/events/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "normalization_context": {
- *                 "groups": {"event_read", "image_owner_exposed"}
- *             },
- *         },
- *         "get_public": {
- *             "method": "GET",
- *             "path": "/events/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "object.isPublic() or object.isPrivate()",
- *         },
- *         "put": {
- *             "path": "/v3/events/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('CAN_MANAGE_EVENT', object)",
- *         },
- *         "delete": {
- *             "path": "/v3/events/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('CAN_MANAGE_EVENT', object) and is_granted('CAN_DELETE_EVENT', object)",
- *             "swagger_context": {
- *                 "parameters": {
- *                     {
- *                         "name": "uuid",
- *                         "in": "path",
- *                         "type": "uuid",
- *                         "description": "The UUID of the Event.",
- *                         "example": "de7982c4-3729-4f9d-9587-376df25354c3",
- *                     },
- *                 },
- *             },
- *         },
- *         "subscribe": {
- *             "method": "POST|DELETE",
- *             "path": "/v3/events/{uuid}/subscribe",
- *             "security": "is_granted('ROLE_USER')",
- *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\Event\SubscribeAsAdherentController",
- *             "requirements": {"uuid": "%pattern_uuid%"}
- *         },
- *         "subscribe_anonymous": {
- *             "method": "POST",
- *             "path": "/events/{uuid}/subscribe",
- *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\Event\SubscribeAsAnonymousController",
- *             "requirements": {"uuid": "%pattern_uuid%"}
- *         },
- *         "update_image": {
- *             "method": "POST|DELETE",
- *             "path": "/v3/events/{uuid}/image",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\Event\UpdateImageController",
- *         },
- *         "cancel": {
- *             "path": "/v3/events/{uuid}/cancel",
- *             "method": "PUT",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\Event\CancelEventController",
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/events",
- *             "normalization_context": {
- *                 "groups": {"event_list_read", "image_owner_exposed"}
- *             },
- *         },
- *         "get_public": {
- *             "method": "GET",
- *             "path": "/events",
- *             "normalization_context": {
- *                 "groups": {"event_list_read", "image_owner_exposed"}
- *             },
- *         },
- *         "post": {
- *             "security": "is_granted('ROLE_USER')",
- *             "path": "/v3/events",
- *             "denormalization_context": {"groups": {"event_write", "event_write_creation"}},
- *             "validation_groups": {"Default", "api_put_validation", "event_creation"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'events')",
- *         },
- *     },
- * )
- *
- * @ApiFilter(InZoneOfScopeFilter::class)
- * @ApiFilter(MyCreatedEventsFilter::class)
- * @ApiFilter(MySubscribedEventsFilter::class)
- * @ApiFilter(OrderEventsBySubscriptionsFilter::class)
- * @ApiFilter(EventsZipCodeFilter::class)
- * @ApiFilter(DateFilter::class, properties={"finishAt": "strictly_after"})
- * @ApiFilter(SearchFilter::class, properties={
- *     "name": "partial",
- *     "mode": "exact",
- *     "beginAt": "start",
- *     "status": "exact",
- * })
- * @ApiFilter(OrderFilter::class, properties={"createdAt", "beginAt", "finishAt"})
- *
  * @AssertValidEventCategory
  */
 #[ORM\Table(name: '`events`')]
@@ -188,6 +77,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap([EventTypeEnum::TYPE_DEFAULT => DefaultEvent::class, EventTypeEnum::TYPE_COMMITTEE => CommitteeEvent::class])]
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
+#[ApiResource(collectionOperations: ['get' => ['path' => '/v3/events', 'normalization_context' => ['groups' => ['event_list_read', 'image_owner_exposed']]], 'get_public' => ['method' => 'GET', 'path' => '/events', 'normalization_context' => ['groups' => ['event_list_read', 'image_owner_exposed']]], 'post' => ['path' => '/v3/events', 'denormalization_context' => ['groups' => ['event_write', 'event_write_creation']], 'validation_groups' => ['Default', 'api_put_validation', 'event_creation'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'events')"]], itemOperations: ['get' => ['path' => '/v3/events/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'normalization_context' => ['groups' => ['event_read', 'image_owner_exposed']]], 'get_public' => ['method' => 'GET', 'path' => '/events/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => 'object.isPublic() or object.isPrivate()'], 'put' => ['path' => '/v3/events/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('CAN_MANAGE_EVENT', object)"], 'delete' => ['path' => '/v3/events/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('CAN_MANAGE_EVENT', object) and is_granted('CAN_DELETE_EVENT', object)", 'swagger_context' => ['parameters' => [['name' => 'uuid', 'in' => 'path', 'type' => 'uuid', 'description' => 'The UUID of the Event.', 'example' => 'de7982c4-3729-4f9d-9587-376df25354c3']]]], 'subscribe' => ['method' => 'POST|DELETE', 'path' => '/v3/events/{uuid}/subscribe', 'security' => "is_granted('ROLE_USER')", 'defaults' => ['_api_receive' => false], 'controller' => 'App\Controller\Api\Event\SubscribeAsAdherentController', 'requirements' => ['uuid' => '%pattern_uuid%']], 'subscribe_anonymous' => ['method' => 'POST', 'path' => '/events/{uuid}/subscribe', 'defaults' => ['_api_receive' => false], 'controller' => 'App\Controller\Api\Event\SubscribeAsAnonymousController', 'requirements' => ['uuid' => '%pattern_uuid%']], 'update_image' => ['method' => 'POST|DELETE', 'path' => '/v3/events/{uuid}/image', 'requirements' => ['uuid' => '%pattern_uuid%'], 'defaults' => ['_api_receive' => false], 'controller' => 'App\Controller\Api\Event\UpdateImageController'], 'cancel' => ['path' => '/v3/events/{uuid}/cancel', 'method' => 'PUT', 'requirements' => ['uuid' => '%pattern_uuid%'], 'defaults' => ['_api_receive' => false], 'controller' => 'App\Controller\Api\Event\CancelEventController']], attributes: ['order' => ['beginAt' => 'ASC'], 'denormalization_context' => ['groups' => ['event_write']], 'normalization_context' => ['groups' => ['event_read', 'image_owner_exposed']]])]
+#[ApiFilter(InZoneOfScopeFilter::class)]
+#[ApiFilter(MyCreatedEventsFilter::class)]
+#[ApiFilter(MySubscribedEventsFilter::class)]
+#[ApiFilter(OrderEventsBySubscriptionsFilter::class)]
+#[ApiFilter(EventsZipCodeFilter::class)]
+#[ApiFilter(DateFilter::class, properties: ['finishAt' => 'strictly_after'])]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial', 'mode' => 'exact', 'beginAt' => 'start', 'status' => 'exact'])]
+#[ApiFilter(OrderFilter::class, properties: ['createdAt', 'beginAt', 'finishAt'])]
 abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInstanceInterface, ExposedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, ExposedObjectInterface
 {
     use EntityIdentityTrait;
@@ -217,11 +115,10 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
 
     /**
      * @var UuidInterface
-     *
-     * @ApiProperty(identifier=true)
      */
     #[Groups(['event_read', 'event_list_read'])]
     #[ORM\Column(type: 'uuid', unique: true)]
+    #[ApiProperty(identifier: true)]
     protected $uuid;
 
     /**

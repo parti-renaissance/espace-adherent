@@ -15,23 +15,9 @@ use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "order": {"position": "ASC"},
- *         "normalization_context": {"groups": {"jecoute_resource_links_read", "image_owner_exposed"}},
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/jecoute/resource-links",
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
- *         }
- *     },
- *     itemOperations={}
- * )
- */
 #[ORM\Table(name: 'jecoute_resource_link')]
 #[ORM\Entity(repositoryClass: ResourceLinkRepository::class)]
+#[ApiResource(attributes: ['order' => ['position' => 'ASC'], 'normalization_context' => ['groups' => ['jecoute_resource_links_read', 'image_owner_exposed']]], collectionOperations: ['get' => ['path' => '/v3/jecoute/resource-links', 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')"]], itemOperations: [])]
 class ResourceLink implements ExposedImageOwnerInterface
 {
     use EntityIdentityTrait;

@@ -36,63 +36,6 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {"groups": {"survey_list"}},
- *         "filters": {JeMengageSurveyScopeFilter::class},
- *         "order": {"createdAt": "DESC"},
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/surveys/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('SCOPE_CAN_MANAGE', object)",
- *             "normalization_context": {
- *                 "groups": {"survey_read_dc"}
- *             }
- *         },
- *         "put": {
- *             "path": "/v3/surveys/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'survey')",
- *             "denormalization_context": {"groups": {"survey_write_dc"}},
- *             "normalization_context": {"groups": {"survey_read_dc"}},
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/surveys",
- *             "security": "is_granted('IS_FEATURE_GRANTED', ['survey', 'phoning_campaign', 'pap_v2'])",
- *             "normalization_context": {
- *                 "groups": {"survey_list_dc"}
- *             },
- *             "maximum_items_per_page": 1000
- *         },
- *         "post": {
- *             "path": "/v3/surveys",
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'survey')",
- *             "denormalization_context": {
- *                 "groups": {"survey_write_dc"},
- *             },
- *             "normalization_context": {
- *                 "groups": {"survey_read_dc"}
- *             }
- *         },
- *         "get_kpi": {
- *             "method": "GET",
- *             "path": "/v3/surveys/kpi",
- *             "controller": "App\Controller\Api\Jecoute\GetSurveysKpiController",
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'survey')",
- *         },
- *     },
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={
- *     "name": "partial",
- * })
- * @ApiFilter(BooleanFilter::class, properties={"published"})
- * @ApiFilter(SurveyTypeFilter::class)
- *
  * @SurveyScopeTarget
  */
 #[ORM\Table(name: 'jecoute_survey')]
@@ -101,6 +44,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap([SurveyTypeEnum::LOCAL => LocalSurvey::class, SurveyTypeEnum::NATIONAL => NationalSurvey::class])]
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
+#[ApiResource(attributes: ['normalization_context' => ['groups' => ['survey_list']], 'filters' => [JeMengageSurveyScopeFilter::class], 'order' => ['createdAt' => 'DESC']], itemOperations: ['get' => ['path' => '/v3/surveys/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('SCOPE_CAN_MANAGE', object)", 'normalization_context' => ['groups' => ['survey_read_dc']]], 'put' => ['path' => '/v3/surveys/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('IS_FEATURE_GRANTED', 'survey')", 'denormalization_context' => ['groups' => ['survey_write_dc']], 'normalization_context' => ['groups' => ['survey_read_dc']]]], collectionOperations: ['get' => ['path' => '/v3/surveys', 'security' => "is_granted('IS_FEATURE_GRANTED', ['survey', 'phoning_campaign', 'pap_v2'])", 'normalization_context' => ['groups' => ['survey_list_dc']], 'maximum_items_per_page' => 1000], 'post' => ['path' => '/v3/surveys', 'security' => "is_granted('IS_FEATURE_GRANTED', 'survey')", 'denormalization_context' => ['groups' => ['survey_write_dc']], 'normalization_context' => ['groups' => ['survey_read_dc']]], 'get_kpi' => ['method' => 'GET', 'path' => '/v3/surveys/kpi', 'controller' => 'App\Controller\Api\Jecoute\GetSurveysKpiController', 'security' => "is_granted('IS_FEATURE_GRANTED', 'survey')"]])]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial'])]
+#[ApiFilter(BooleanFilter::class, properties: ['published'])]
+#[ApiFilter(SurveyTypeFilter::class)]
 abstract class Survey implements IndexableEntityInterface, EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, DynamicLinkObjectInterface, EntityScopeVisibilityInterface
 {
     use EntityIdentityTrait;
@@ -111,11 +58,10 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
 
     /**
      * @var UuidInterface
-     *
-     * @ApiProperty(identifier=true)
      */
     #[Groups(['data_survey_write', 'data_survey_read', 'jemarche_data_survey_read', 'survey_list', 'survey_list_dc', 'survey_read_dc', 'phoning_campaign_read', 'phoning_campaign_history_read_list', 'pap_campaign_read_after_write', 'pap_campaign_read', 'pap_campaign_history_read_list', 'phoning_campaign_replies_list', 'pap_campaign_replies_list'])]
     #[ORM\Column(type: 'uuid', unique: true)]
+    #[ApiProperty(identifier: true)]
     protected $uuid;
 
     #[Groups(['survey_list', 'survey_list_dc', 'survey_write_dc', 'survey_read_dc', 'phoning_campaign_read', 'phoning_campaign_history_read_list', 'phoning_campaign_replies_list', 'pap_campaign_replies_list', 'pap_campaign_history_read_list'])]

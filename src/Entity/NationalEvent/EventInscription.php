@@ -17,23 +17,9 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "denormalization_context": {"groups": {"event_inscription_update_status"}},
- *         "normalization_context": {"groups": {"event_inscription_read"}},
- *     },
- *     itemOperations={
- *         "put": {
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "_api_respond": false,
- *         },
- *     },
- *     collectionOperations={},
- * )
- */
 #[ORM\Table('national_event_inscription')]
 #[ORM\Entity(repositoryClass: EventInscriptionRepository::class)]
+#[ApiResource(attributes: ['denormalization_context' => ['groups' => ['event_inscription_update_status']], 'normalization_context' => ['groups' => ['event_inscription_read']]], itemOperations: ['put' => ['requirements' => ['uuid' => '%pattern_uuid%'], '_api_respond' => false]], collectionOperations: [])]
 class EventInscription
 {
     use EntityIdentityTrait;

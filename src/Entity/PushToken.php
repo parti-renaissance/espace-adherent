@@ -13,35 +13,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"push_token_read"}
- *         },
- *         "denormalization_context": {
- *             "groups": {"push_token_write"}
- *         },
- *     },
- *     collectionOperations={
- *         "post": {
- *             "path": "/v3/push-token",
- *             "controller": "App\Controller\Api\PushToken\CreateController",
- *         }
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/push-token/{identifier}",
- *             "security": "is_granted('IS_AUTHOR_OF_PUSH_TOKEN', object)"
- *         },
- *         "delete": {
- *             "path": "/v3/push-token/{identifier}",
- *             "security": "is_granted('IS_AUTHOR_OF_PUSH_TOKEN', object)"
- *         },
- *     }
- * )
- */
 #[ORM\Entity(repositoryClass: PushTokenRepository::class)]
+#[ApiResource(attributes: ['normalization_context' => ['groups' => ['push_token_read']], 'denormalization_context' => ['groups' => ['push_token_write']]], collectionOperations: ['post' => ['path' => '/v3/push-token', 'controller' => 'App\Controller\Api\PushToken\CreateController']], itemOperations: ['get' => ['path' => '/v3/push-token/{identifier}', 'security' => "is_granted('IS_AUTHOR_OF_PUSH_TOKEN', object)"], 'delete' => ['path' => '/v3/push-token/{identifier}', 'security' => "is_granted('IS_AUTHOR_OF_PUSH_TOKEN', object)"]])]
 class PushToken
 {
     use EntityIdentityTrait;
@@ -49,10 +22,9 @@ class PushToken
 
     /**
      * @var UuidInterface
-     *
-     * @ApiProperty(identifier=false)
      */
     #[ORM\Column(type: 'uuid', unique: true)]
+    #[ApiProperty(identifier: false)]
     protected $uuid;
 
     /**
@@ -71,13 +43,12 @@ class PushToken
 
     /**
      * @var string|null
-     *
-     * @ApiProperty(identifier=true)
      */
     #[Groups(['push_token_write'])]
     #[ORM\Column(unique: true)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
+    #[ApiProperty(identifier: true)]
     private $identifier;
 
     /**

@@ -13,24 +13,9 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     collectionOperations={
- *         "post": {
- *             "path": "/adherent-segments",
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR')",
- *             "normalization_context": {
- *                 "iri": true,
- *                 "groups": {"public"}
- *             },
- *             "denormalization_context": {"groups": {"write"}}
- *         }
- *     },
- *     itemOperations={}
- * )
- */
 #[ORM\Entity(repositoryClass: AdherentSegmentRepository::class)]
 #[ORM\EntityListeners([AdherentSegmentListener::class])]
+#[ApiResource(collectionOperations: ['post' => ['path' => '/adherent-segments', 'security' => "is_granted('ROLE_MESSAGE_REDACTOR')", 'normalization_context' => ['iri' => true, 'groups' => ['public']], 'denormalization_context' => ['groups' => ['write']]]], itemOperations: [])]
 class AdherentSegment implements AuthorInterface, StaticSegmentInterface
 {
     use EntityIdentityTrait;

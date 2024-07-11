@@ -17,10 +17,10 @@ use App\ValueObject\Genders;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @UniqueDonationSubscription(groups={"Default", "fill_personal_info"})
  * @MaxFiscalYearDonation(groups={"Default", "fill_personal_info"})
  * @MaxMonthDonation(groups={"Default", "choose_donation_amount"})
  */
+#[UniqueDonationSubscription(groups: ['Default', 'fill_personal_info'])]
 class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;

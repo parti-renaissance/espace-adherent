@@ -15,31 +15,12 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(
- *     shortName="PapVotePlace",
- *     attributes={
- *         "pagination_client_enabled": true,
- *         "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))",
- *         "normalization_context": {
- *             "iri": true,
- *             "groups": {"pap_vote_place_read"},
- *         },
- *         "filters": {PapVotePlaceScopeFilter::class},
- *     },
- *     collectionOperations={
- *         "get": {
- *             "method": "GET",
- *             "path": "/v3/pap_vote_places",
- *         },
- *     },
- *     itemOperations={},
- * )
- *
  * @deprecated Use {@see \App\Entity\Election\VotePlace}
  */
 #[ORM\Table(name: 'pap_vote_place')]
 #[ORM\Index(columns: ['latitude', 'longitude'])]
 #[ORM\Entity(repositoryClass: VotePlaceRepository::class)]
+#[ApiResource(shortName: 'PapVotePlace', attributes: ['pagination_client_enabled' => true, 'security' => "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))", 'normalization_context' => ['iri' => true, 'groups' => ['pap_vote_place_read']], 'filters' => [PapVotePlaceScopeFilter::class]], collectionOperations: ['get' => ['method' => 'GET', 'path' => '/v3/pap_vote_places']], itemOperations: [])]
 class VotePlace
 {
     use EntityIdentityTrait;

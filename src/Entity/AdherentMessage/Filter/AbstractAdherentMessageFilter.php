@@ -16,14 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(
- *     itemOperations={},
- *     collectionOperations={},
- *     subresourceOperations={},
- * )
  * @ValidMessageFilterSegment
  */
 #[ORM\Entity]
+#[ApiResource(itemOperations: [], collectionOperations: [], subresourceOperations: [])]
 abstract class AbstractAdherentMessageFilter extends AbstractAdherentFilter implements AdherentMessageFilterInterface
 {
     use EntityZoneTrait;

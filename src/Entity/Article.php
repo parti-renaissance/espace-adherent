@@ -16,38 +16,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "order": {"createdAt": "DESC"},
- *         "normalization_context": {
- *             "iri": true,
- *             "groups": {"article_read"}
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/articles",
- *             "normalization_context": {
- *                 "groups": {"article_list_read"},
- *             },
- *         },
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/articles/{slug}",
- *             "requirements": {"slug": ".+"},
- *         },
- *     },
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={"title": "partial", "category.slug": "exact"})
- */
 #[ORM\Table(name: 'articles')]
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 #[ORM\EntityListeners([ArticleListener::class])]
 #[UniqueEntity(fields: ['slug'])]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
+#[ApiResource(attributes: ['order' => ['createdAt' => 'DESC'], 'normalization_context' => ['iri' => true, 'groups' => ['article_read']]], collectionOperations: ['get' => ['path' => '/articles', 'normalization_context' => ['groups' => ['article_list_read']]]], itemOperations: ['get' => ['path' => '/articles/{slug}', 'requirements' => ['slug' => '.+']]])]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'category.slug' => 'exact'])]
 class Article implements EntityMediaInterface, EntityContentInterface, EntitySoftDeletedInterface, IndexableEntityInterface, EntitySourceableInterface
 {
     use EntityTimestampableTrait;
@@ -60,12 +35,11 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
 
     /**
      * @var int
-     *
-     * @ApiProperty(identifier=false)
      */
     #[ORM\Column(type: 'bigint')]
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ApiProperty(identifier: false)]
     private $id;
 
     /**
@@ -102,13 +76,12 @@ class Article implements EntityMediaInterface, EntityContentInterface, EntitySof
 
     /**
      * @var string|null
-     *
-     * @ApiProperty(identifier=true)
      */
     #[Groups(['article_list_read', 'article_read'])]
     #[ORM\Column(length: 100, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Length(max: 100)]
+    #[ApiProperty(identifier: true)]
     private $slug;
 
     public function __construct()

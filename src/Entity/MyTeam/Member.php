@@ -18,46 +18,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     shortName="MyTeamMember",
- *     attributes={
- *         "normalization_context": {
- *             "iri": true,
- *             "groups": {"my_team_member_read"},
- *         },
- *         "denormalization_context": {
- *             "groups": {"my_team_member_write"}
- *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')"
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/my_team_members/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *         },
- *         "put": {
- *             "path": "/v3/my_team_members/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *         },
- *         "delete": {
- *             "path": "/v3/my_team_members/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "object.getTeam().getOwner() == user and is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')",
- *         }
- *     },
- *     collectionOperations={
- *         "post": {
- *             "path": "/v3/my_team_members",
- *             "denormalization_context": {"groups": {"my_team_member_write", "my_team_member_post"}}
- *         }
- *     }
- * )
- */
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
 #[ORM\Table(name: 'my_team_member')]
 #[ORM\UniqueConstraint(name: 'team_member_unique', columns: ['team_id', 'adherent_id'])]
 #[UniqueEntity(fields: ['team', 'adherent'], message: 'my_team.member.adherent.already_in_collection', errorPath: 'adherent')]
+#[ApiResource(shortName: 'MyTeamMember', attributes: ['normalization_context' => ['iri' => true, 'groups' => ['my_team_member_read']], 'denormalization_context' => ['groups' => ['my_team_member_write']], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')"], itemOperations: ['get' => ['path' => '/v3/my_team_members/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%']], 'put' => ['path' => '/v3/my_team_members/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%']], 'delete' => ['path' => '/v3/my_team_members/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "object.getTeam().getOwner() == user and is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')"]], collectionOperations: ['post' => ['path' => '/v3/my_team_members', 'denormalization_context' => ['groups' => ['my_team_member_write', 'my_team_member_post']]]])]
 class Member
 {
     use EntityIdentityTrait;

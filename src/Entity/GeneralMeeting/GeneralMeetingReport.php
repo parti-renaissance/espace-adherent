@@ -25,70 +25,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     routePrefix="/v3",
- *     attributes={
- *         "order": {"createdAt": "DESC"},
- *         "normalization_context": {
- *             "groups": {"general_meeting_report_read"}
- *         },
- *         "denormalization_context": {
- *             "groups": {"general_meeting_report_write"},
- *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'general_meeting_reports')"
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/general_meeting_reports",
- *             "normalization_context": {
- *                 "groups": {"general_meeting_report_list_read"}
- *             },
- *             "maximum_items_per_page": 1000
- *         },
- *         "post": {
- *             "path": "/general_meeting_reports",
- *         }
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/general_meeting_reports/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'general_meeting_reports') and is_granted('SCOPE_CAN_MANAGE', object)"
- *         },
- *         "put": {
- *             "path": "/general_meeting_reports/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'general_meeting_reports') and is_granted('SCOPE_CAN_MANAGE', object)"
- *         },
- *         "post_file": {
- *             "path": "/general_meeting_reports/{uuid}/file",
- *             "method": "POST",
- *             "controller": "App\Controller\Api\GeneralMeetingReportUploadFileController",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'general_meeting_reports') and is_granted('SCOPE_CAN_MANAGE', object)",
- *         },
- *         "get_file": {
- *             "path": "/general_meeting_reports/{uuid}/file",
- *             "method": "GET",
- *             "controller": "App\Controller\Api\GeneralMeetingReportDownloadFileController",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('RENAISSANCE_ADHERENT') or (is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'general_meeting_reports') and is_granted('SCOPE_CAN_MANAGE', object))",
- *         }
- *     }
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={
- *     "title": "partial",
- *     "visibility": "exact",
- * })
- *
- * @ApiFilter(ScopeVisibilityFilter::class)
- *
  * @ScopeVisibility
  */
 #[ORM\Table(name: 'general_meeting_report')]
 #[ORM\Entity(repositoryClass: GeneralMeetingReportRepository::class)]
 #[UniqueEntity(fields: ['zone', 'title'], message: 'general_meeting_report.title.unique_entity')]
+#[ApiResource(routePrefix: '/v3', attributes: ['order' => ['createdAt' => 'DESC'], 'normalization_context' => ['groups' => ['general_meeting_report_read']], 'denormalization_context' => ['groups' => ['general_meeting_report_write']], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'general_meeting_reports')"], collectionOperations: ['get' => ['path' => '/general_meeting_reports', 'normalization_context' => ['groups' => ['general_meeting_report_list_read']], 'maximum_items_per_page' => 1000], 'post' => ['path' => '/general_meeting_reports']], itemOperations: ['get' => ['path' => '/general_meeting_reports/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'general_meeting_reports') and is_granted('SCOPE_CAN_MANAGE', object)"], 'put' => ['path' => '/general_meeting_reports/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'general_meeting_reports') and is_granted('SCOPE_CAN_MANAGE', object)"], 'post_file' => ['path' => '/general_meeting_reports/{uuid}/file', 'method' => 'POST', 'controller' => 'App\Controller\Api\GeneralMeetingReportUploadFileController', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'general_meeting_reports') and is_granted('SCOPE_CAN_MANAGE', object)"], 'get_file' => ['path' => '/general_meeting_reports/{uuid}/file', 'method' => 'GET', 'controller' => 'App\Controller\Api\GeneralMeetingReportDownloadFileController', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('RENAISSANCE_ADHERENT') or (is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'general_meeting_reports') and is_granted('SCOPE_CAN_MANAGE', object))"]])]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial', 'visibility' => 'exact'])]
+#[ApiFilter(ScopeVisibilityFilter::class)]
 class GeneralMeetingReport implements EntityScopeVisibilityWithZoneInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;

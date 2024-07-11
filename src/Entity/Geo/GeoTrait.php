@@ -14,13 +14,12 @@ trait GeoTrait
 
     /**
      * @var int|null
-     *
-     * @ApiProperty(identifier=false)
      */
     #[Groups(['autocomplete'])]
     #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ApiProperty(identifier: false)]
     private $id;
 
     /**

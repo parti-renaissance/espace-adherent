@@ -35,70 +35,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * This entity represents a committee group.
- *
- * @ApiResource(
- *     routePrefix="/v3",
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"committee:list"},
- *         },
- *         "validation_groups": {"api_committee_edition"},
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee')",
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/committees/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
- *             "normalization_context": {
- *                 "groups": {"committee:list", "committee:read"},
- *             },
- *         },
- *         "put": {
- *             "path": "/committees/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
- *             "denormalization_context": {
- *                 "groups": {"committee:write"},
- *             },
- *             "normalization_context": {
- *                 "groups": {"committee:list", "committee:read"},
- *             },
- *         },
- *         "delete": {
- *             "path": "/committees/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
- *         },
- *         "update_animator": {
- *             "method": "put",
- *             "path": "/committees/{uuid}/animator",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
- *             "denormalization_context": {
- *                 "groups": {"committee:update_animator"},
- *             },
- *             "normalization_context": {
- *                 "groups": {"committee:list", "committee:read"},
- *             },
- *         },
- *     },
- *     collectionOperations={
- *         "get",
- *         "post": {
- *             "denormalization_context": {
- *                 "groups": {"committee:write"},
- *             },
- *         },
- *     }
- * )
- *
- * @ApiFilter(InZoneOfScopeFilter::class)
  */
 #[ORM\Table(name: 'committees')]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Index(columns: ['version'])]
 #[ORM\Entity(repositoryClass: CommitteeRepository::class)]
+#[ApiResource(routePrefix: '/v3', attributes: ['normalization_context' => ['groups' => ['committee:list']], 'validation_groups' => ['api_committee_edition'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee')"], itemOperations: ['get' => ['path' => '/committees/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)", 'normalization_context' => ['groups' => ['committee:list', 'committee:read']]], 'put' => ['path' => '/committees/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)", 'denormalization_context' => ['groups' => ['committee:write']], 'normalization_context' => ['groups' => ['committee:list', 'committee:read']]], 'delete' => ['path' => '/committees/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)"], 'update_animator' => ['method' => 'put', 'path' => '/committees/{uuid}/animator', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)", 'denormalization_context' => ['groups' => ['committee:update_animator']], 'normalization_context' => ['groups' => ['committee:list', 'committee:read']]]], collectionOperations: ['get', 'post' => ['denormalization_context' => ['groups' => ['committee:write']]]])]
+#[ApiFilter(InZoneOfScopeFilter::class)]
 class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface, AddressHolderInterface, ZoneableEntity, ExposedObjectInterface, EntityAdherentBlameableInterface, GeoPointInterface, CoordinatorAreaInterface, ReportableInterface, EntityAdministratorBlameableInterface
 {
     use EntityNullablePostAddressTrait;

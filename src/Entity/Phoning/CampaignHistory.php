@@ -22,53 +22,12 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     shortName="PhoningCampaignHistory",
- *     attributes={
- *         "normalization_context": {
- *             "iri": true,
- *             "groups": {"phoning_campaign_history_read"},
- *         },
- *         "denormalization_context": {"groups": {"phoning_campaign_history_write"}},
- *         "order": {"beginAt": "DESC"},
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/phoning_campaign_histories",
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
- *             "normalization_context": {
- *                 "groups": {"phoning_campaign_history_read_list"}
- *             },
- *         },
- *     },
- *     itemOperations={
- *         "put": {
- *             "path": "/v3/phoning_campaign_histories/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_CAMPAIGN_HISTORY_CALLER', object)",
- *         },
- *         "post_reply": {
- *             "method": "POST",
- *             "path": "/v3/phoning_campaign_histories/{uuid}/reply",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "controller": "App\Controller\Api\Phoning\CampaignHistoryReplyController",
- *             "defaults": {"_api_receive": false},
- *             "normalization_context": {"groups": {"data_survey_read"}},
- *         },
- *     },
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={
- *     "campaign.uuid": "exact",
- *     "campaign.title": "partial",
- *     "status": "exact",
- * })
- * @ApiFilter(AdherentIdentityFilter::class, properties={"adherent", "caller"})
- * @ApiFilter(DateFilter::class, properties={"beginAt"})
- */
 #[ORM\Table(name: 'phoning_campaign_history')]
 #[ORM\Entity(repositoryClass: CampaignHistoryRepository::class)]
+#[ApiResource(shortName: 'PhoningCampaignHistory', attributes: ['normalization_context' => ['iri' => true, 'groups' => ['phoning_campaign_history_read']], 'denormalization_context' => ['groups' => ['phoning_campaign_history_write']], 'order' => ['beginAt' => 'DESC']], collectionOperations: ['get' => ['path' => '/v3/phoning_campaign_histories', 'security' => "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')", 'normalization_context' => ['groups' => ['phoning_campaign_history_read_list']]]], itemOperations: ['put' => ['path' => '/v3/phoning_campaign_histories/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('IS_CAMPAIGN_HISTORY_CALLER', object)"], 'post_reply' => ['method' => 'POST', 'path' => '/v3/phoning_campaign_histories/{uuid}/reply', 'requirements' => ['uuid' => '%pattern_uuid%'], 'controller' => 'App\Controller\Api\Phoning\CampaignHistoryReplyController', 'defaults' => ['_api_receive' => false], 'normalization_context' => ['groups' => ['data_survey_read']]]])]
+#[ApiFilter(SearchFilter::class, properties: ['campaign.uuid' => 'exact', 'campaign.title' => 'partial', 'status' => 'exact'])]
+#[ApiFilter(AdherentIdentityFilter::class, properties: ['adherent', 'caller'])]
+#[ApiFilter(DateFilter::class, properties: ['beginAt'])]
 class CampaignHistory implements DataSurveyAwareInterface
 {
     use EntityIdentityTrait;

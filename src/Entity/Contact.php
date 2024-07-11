@@ -19,35 +19,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     collectionOperations={
- *         "post": {
- *             "denormalization_context": {"groups": {"contact_create"}},
- *             "normalization_context": {"groups": {"contact_read_after_write"}},
- *             "path": "/contacts",
- *             "validation_groups": {"Default", "contact_create"},
- *         }
- *     },
- *     itemOperations={
- *         "get": {
- *             "normalization_context": {"groups": {"contact_read"}},
- *             "path": "/contacts/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *         },
- *         "put": {
- *             "normalization_context": {"groups": {"contact_read_after_write"}},
- *             "denormalization_context": {"groups": {"contact_update"}},
- *             "path": "/contacts/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "validation_groups": {"Default", "contact_update"},
- *         }
- *     }
- * )
- *
  * @AssertRecaptcha(api="friendly_captcha", groups={"contact_create"})
  */
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 #[UniqueEntity(fields: ['emailAddress'])]
+#[ApiResource(collectionOperations: ['post' => ['denormalization_context' => ['groups' => ['contact_create']], 'normalization_context' => ['groups' => ['contact_read_after_write']], 'path' => '/contacts', 'validation_groups' => ['Default', 'contact_create']]], itemOperations: ['get' => ['normalization_context' => ['groups' => ['contact_read']], 'path' => '/contacts/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%']], 'put' => ['normalization_context' => ['groups' => ['contact_read_after_write']], 'denormalization_context' => ['groups' => ['contact_update']], 'path' => '/contacts/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'validation_groups' => ['Default', 'contact_update']]])]
 class Contact implements RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;

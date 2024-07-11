@@ -12,22 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
- *         "normalization_context": {
- *             "groups": {"pap_building_statistics_read"},
- *         },
- *     },
- *     collectionOperations={},
- *     itemOperations={},
- * )
- */
 #[ORM\Table(name: 'pap_building_statistics')]
 #[ORM\Index(columns: ['status'])]
 #[ORM\UniqueConstraint(columns: ['building_id', 'campaign_id'])]
 #[ORM\Entity(repositoryClass: BuildingStatisticsRepository::class)]
+#[ApiResource(attributes: ['security' => "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])", 'normalization_context' => ['groups' => ['pap_building_statistics_read']]], collectionOperations: [], itemOperations: [])]
 class BuildingStatistics implements CampaignStatisticsInterface
 {
     use EntityIdentityTrait;

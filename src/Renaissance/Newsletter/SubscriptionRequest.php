@@ -13,8 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @AssertRecaptcha(api="friendly_captcha")
- * @UniqueRenaissanceNewsletter
  */
+#[UniqueRenaissanceNewsletter]
 class SubscriptionRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;

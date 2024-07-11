@@ -14,25 +14,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ManualSlot
- *
- * @ApiResource(
- *     attributes={
- *         "routePrefix": "/v3/procuration",
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'procurations')",
- *         "normalization_context": {"groups": {"procuration_request_slot_read"}},
- *     },
- *     itemOperations={
- *         "put": {
- *             "path": "/request_slots/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "denormalization_context": {"groups": {"procuration_request_slot_write"}},
- *         },
- *     },
- *     collectionOperations={},
- * )
  */
 #[ORM\Table(name: 'procuration_v2_request_slot')]
 #[ORM\Entity(repositoryClass: RequestSlotRepository::class)]
+#[ApiResource(attributes: ['routePrefix' => '/v3/procuration', 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'procurations')", 'normalization_context' => ['groups' => ['procuration_request_slot_read']]], itemOperations: ['put' => ['path' => '/request_slots/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'denormalization_context' => ['groups' => ['procuration_request_slot_write']]]], collectionOperations: [])]
 class RequestSlot extends AbstractSlot
 {
     #[Groups(['procuration_request_slot_read'])]

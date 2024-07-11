@@ -19,28 +19,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     collectionOperations={
- *         "post": {
- *             "path": "/legislative_newsletter_subscriptions",
- *             "denormalization_context": {
- *                 "groups": {"legislative_newsletter_subscriptions_write"},
- *             },
- *             "normalization_context": {
- *                 "groups": {"legislative_newsletter_subscriptions_read"},
- *                 "iri": true,
- *             },
- *             "validation_groups": {"Default", "legislative_newsletter_subscriptions_write"},
- *         }
- *     },
- *     itemOperations={},
- * )
- *
  * @AssertRecaptcha(api="friendly_captcha", groups={"legislative_newsletter_subscriptions_write"})
  */
 #[ORM\Table]
 #[ORM\Entity(repositoryClass: LegislativeNewsletterSubscriptionRepository::class)]
 #[UniqueEntity(fields: ['emailAddress'], message: 'legislative_newsletter.already_registered')]
+#[ApiResource(collectionOperations: ['post' => ['path' => '/legislative_newsletter_subscriptions', 'denormalization_context' => ['groups' => ['legislative_newsletter_subscriptions_write']], 'normalization_context' => ['groups' => ['legislative_newsletter_subscriptions_read'], 'iri' => true], 'validation_groups' => ['Default', 'legislative_newsletter_subscriptions_write']]], itemOperations: [])]
 class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
 {
     use EntityIdentityTrait;

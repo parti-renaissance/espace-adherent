@@ -16,22 +16,10 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"pap_building_block_list"},
- *             "iri": true,
- *         },
- *         "pagination_enabled": false,
- *     },
- *     collectionOperations={},
- *     itemOperations={},
- * )
- */
 #[ORM\Table(name: 'pap_floor')]
 #[ORM\UniqueConstraint(name: 'floor_unique', columns: ['number', 'building_block_id'])]
 #[ORM\Entity(repositoryClass: FloorRepository::class)]
+#[ApiResource(attributes: ['normalization_context' => ['groups' => ['pap_building_block_list'], 'iri' => true], 'pagination_enabled' => false], collectionOperations: [], itemOperations: [])]
 class Floor implements EntityAdherentBlameableInterface, CampaignStatisticsOwnerInterface
 {
     use EntityAdherentBlameableTrait;

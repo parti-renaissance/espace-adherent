@@ -11,13 +11,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @AssertValidAddress(groups={"Default"})
- * @FrenchAddress(groups={"fill_personal_info"})
  * @AssertGeocodableAddress(groups={"Default"})
  * @AssertGeocodableAddress(
  *     message="admin.common.address.not_geocodable",
  *     groups={"admin_adherent_renaissance_create"}
  * )
  */
+#[FrenchAddress(groups: ['fill_personal_info'])]
 class Address implements AddressInterface, GeocodableInterface
 {
     use AddressTrait;

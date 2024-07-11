@@ -10,11 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueExecutiveOfficeMemberRole
- */
 #[ORM\Table(name: 'biography_executive_office_member')]
 #[ORM\Entity(repositoryClass: ExecutiveOfficeMemberRepository::class)]
+#[UniqueExecutiveOfficeMemberRole]
 class ExecutiveOfficeMember extends AbstractBiography implements EntitySourceableInterface
 {
     use EntitySourceableTrait;

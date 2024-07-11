@@ -19,57 +19,9 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     routePrefix="/v3",
- *     attributes={
- *         "order": {"createdAt": "DESC"},
- *         "security": "is_granted('IS_FEATURE_GRANTED', 'messages')",
- *         "normalization_context": {
- *             "groups": {"email_template_read"}
- *         },
- *         "denormalization_context": {
- *             "groups": {"email_template_write"}
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/email_templates",
- *             "normalization_context": {
- *                 "groups": {"email_template_list_read"}
- *             },
- *         },
- *         "post": {
- *             "path": "/email_templates",
- *             "normalization_context": {
- *                 "groups": {"email_template_read_restricted"}
- *             },
- *         },
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/email_templates/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'messages') and is_granted('CAN_READ_EMAIL_TEMPLATE', object)",
- *         },
- *         "put": {
- *             "path": "/email_templates/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'messages') and object.getCreatedByAdherent() and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), 'messages'))",
- *             "normalization_context": {
- *                 "groups": {"email_template_read_restricted"}
- *             },
- *         },
- *         "delete": {
- *             "path": "/email_templates/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'messages') and object.getCreatedByAdherent() and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), 'messages'))",
- *         },
- *     },
- * )
- */
 #[ORM\Table(name: 'email_templates')]
 #[ORM\Entity]
+#[ApiResource(routePrefix: '/v3', attributes: ['order' => ['createdAt' => 'DESC'], 'security' => "is_granted('IS_FEATURE_GRANTED', 'messages')", 'normalization_context' => ['groups' => ['email_template_read']], 'denormalization_context' => ['groups' => ['email_template_write']]], collectionOperations: ['get' => ['path' => '/email_templates', 'normalization_context' => ['groups' => ['email_template_list_read']]], 'post' => ['path' => '/email_templates', 'normalization_context' => ['groups' => ['email_template_read_restricted']]]], itemOperations: ['get' => ['path' => '/email_templates/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('IS_FEATURE_GRANTED', 'messages') and is_granted('CAN_READ_EMAIL_TEMPLATE', object)"], 'put' => ['path' => '/email_templates/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('IS_FEATURE_GRANTED', 'messages') and object.getCreatedByAdherent() and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), 'messages'))", 'normalization_context' => ['groups' => ['email_template_read_restricted']]], 'delete' => ['path' => '/email_templates/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('IS_FEATURE_GRANTED', 'messages') and object.getCreatedByAdherent() and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), 'messages'))"]])]
 class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;

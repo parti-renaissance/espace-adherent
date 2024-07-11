@@ -14,12 +14,10 @@ abstract class BaseEventCategory implements EventCategoryInterface
     public const ENABLED = 'ENABLED';
     public const DISABLED = 'DISABLED';
 
-    /**
-     * @ApiProperty(identifier=false)
-     */
     #[ORM\Id]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ApiProperty(identifier: false)]
     protected $id;
 
     #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
@@ -29,8 +27,6 @@ abstract class BaseEventCategory implements EventCategoryInterface
     protected $name = '';
 
     /**
-     * @ApiProperty(identifier=true)
-     *
      * @var string|null
      */
     #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
@@ -38,6 +34,7 @@ abstract class BaseEventCategory implements EventCategoryInterface
     #[Assert\NotBlank]
     #[Assert\Length(max: 100)]
     #[Gedmo\Slug(fields: ['name'], unique: true)]
+    #[ApiProperty(identifier: true)]
     protected $slug;
 
     #[ORM\Column(length: 10, options: ['default' => 'ENABLED'])]

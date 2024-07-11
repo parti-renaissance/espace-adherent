@@ -14,14 +14,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     itemOperations={},
- *     collectionOperations={},
- *     subresourceOperations={},
- * )
  * @ManagedZone(zoneGetMethodName="getZone")
  */
 #[ORM\Entity]
+#[ApiResource(itemOperations: [], collectionOperations: [], subresourceOperations: [])]
 class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEntity, CampaignAdherentMessageFilterInterface
 {
     use GeneralFilterTrait {

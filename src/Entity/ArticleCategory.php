@@ -8,23 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "pagination_enabled": false,
- *         "order": {"position": "ASC"},
- *         "normalization_context": {"groups": {"article_category_read"}},
- *     },
- *     itemOperations={"get"},
- *     collectionOperations={
- *         "get": {
- *             "path": "/article_categories",
- *         },
- *     }
- * )
- */
 #[ORM\Table(name: 'articles_categories')]
 #[ORM\Entity(repositoryClass: ArticleCategoryRepository::class)]
+#[ApiResource(attributes: ['pagination_enabled' => false, 'order' => ['position' => 'ASC'], 'normalization_context' => ['groups' => ['article_category_read']]], itemOperations: ['get'], collectionOperations: ['get' => ['path' => '/article_categories']])]
 class ArticleCategory
 {
     public const DEFAULT_CATEGORY = 'tout';

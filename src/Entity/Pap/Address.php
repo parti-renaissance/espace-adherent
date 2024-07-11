@@ -16,35 +16,11 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {
- *             "iri": true,
- *             "groups": {"pap_address_read"}
- *         },
- *     },
- *     collectionOperations={},
- *     itemOperations={
- *         "get": {
- *             "method": "GET",
- *             "path": "/v3/pap/address/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *         },
- *     },
- *     subresourceOperations={
- *         "voters_get_subresource": {
- *             "method": "GET",
- *             "path": "/v3/pap/address/{uuid}/voters",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *         },
- *     },
- * )
- */
 #[ORM\Table(name: 'pap_address')]
 #[ORM\Index(columns: ['offset_x', 'offset_y'])]
 #[ORM\Index(columns: ['latitude', 'longitude'])]
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
+#[ApiResource(attributes: ['normalization_context' => ['iri' => true, 'groups' => ['pap_address_read']]], collectionOperations: [], itemOperations: ['get' => ['method' => 'GET', 'path' => '/v3/pap/address/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%']]], subresourceOperations: ['voters_get_subresource' => ['method' => 'GET', 'path' => '/v3/pap/address/{uuid}/voters', 'requirements' => ['uuid' => '%pattern_uuid%']]])]
 class Address
 {
     use EntityIdentityTrait;
@@ -88,10 +64,8 @@ class Address
     #[ORM\Column(type: 'geo_point', nullable: true)]
     private ?float $longitude;
 
-    /**
-     * @ApiSubresource
-     */
     #[ORM\OneToMany(mappedBy: 'address', targetEntity: Voter::class, cascade: ['all'], fetch: 'EXTRA_LAZY')]
+    #[ApiSubresource]
     private Collection $voters;
 
     #[Groups(['pap_address_list', 'pap_address_read'])]

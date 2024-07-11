@@ -29,43 +29,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"elected_representative_read"}
- *         },
- *         "denormalization_context": {
- *             "groups": {"elected_representative_write"}
- *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/elected_representatives/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('MANAGE_ELECTED_REPRESENTATIVE', object)"
- *         },
- *         "put": {
- *             "path": "/v3/elected_representatives/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('MANAGE_ELECTED_REPRESENTATIVE', object)"
- *         },
- *         "delete": {
- *             "path": "/v3/elected_representatives/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('MANAGE_ELECTED_REPRESENTATIVE', object)"
- *         }
- *     },
- *     collectionOperations={
- *         "post": {
- *             "path": "/v3/elected_representatives",
- *         }
- *     }
- * )
- */
 #[ORM\Entity(repositoryClass: ElectedRepresentativeRepository::class)]
 #[UniqueEntity(fields: ['adherent'], message: 'elected_representative.invalid_adherent')]
+#[ApiResource(attributes: ['normalization_context' => ['groups' => ['elected_representative_read']], 'denormalization_context' => ['groups' => ['elected_representative_write']], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"], itemOperations: ['get' => ['path' => '/v3/elected_representatives/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('MANAGE_ELECTED_REPRESENTATIVE', object)"], 'put' => ['path' => '/v3/elected_representatives/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('MANAGE_ELECTED_REPRESENTATIVE', object)"], 'delete' => ['path' => '/v3/elected_representatives/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('MANAGE_ELECTED_REPRESENTATIVE', object)"]], collectionOperations: ['post' => ['path' => '/v3/elected_representatives']])]
 class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, ZoneableEntity, AuthoredInterface
 {
     use EntityIdentityTrait;

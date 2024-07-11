@@ -15,42 +15,9 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     routePrefix="/v3",
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"elected_mandate_read"}
- *         },
- *         "denormalization_context": {
- *             "groups": {"elected_mandate_write"}
- *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
- *     },
- *     itemOperations={
- *         "put": {
- *             "path": "/elected_adherent_mandates/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
- *         },
- *         "delete": {
- *             "path": "/elected_adherent_mandates/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
- *         }
- *     },
- *     collectionOperations={
- *         "post": {
- *             "path": "/elected_adherent_mandates",
- *         }
- *     }
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={
- *     "adherent.uuid": "exact",
- * })
- */
 #[ORM\Entity(repositoryClass: ElectedRepresentativeAdherentMandateRepository::class)]
+#[ApiResource(routePrefix: '/v3', attributes: ['normalization_context' => ['groups' => ['elected_mandate_read']], 'denormalization_context' => ['groups' => ['elected_mandate_write']], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"], itemOperations: ['put' => ['path' => '/elected_adherent_mandates/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"], 'delete' => ['path' => '/elected_adherent_mandates/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"]], collectionOperations: ['post' => ['path' => '/elected_adherent_mandates']])]
+#[ApiFilter(SearchFilter::class, properties: ['adherent.uuid' => 'exact'])]
 class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate
 {
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'adherent_elect_read'])]

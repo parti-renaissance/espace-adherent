@@ -21,55 +21,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     attributes={
- *         "order": {"createdAt": "DESC"},
- *         "pagination_enabled": false,
- *         "security": "is_granted('IS_FEATURE_GRANTED', 'ripostes')",
- *         "normalization_context": {"groups": {"riposte_read"}},
- *         "denormalization_context": {"groups": {"riposte_write"}},
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/ripostes",
- *             "normalization_context": {"groups": {"riposte_list_read"}},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'ripostes') or (is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
- *         },
- *         "post": {
- *             "path": "/v3/ripostes",
- *         },
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/ripostes/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "normalization_context": {"groups": {"riposte_read"}},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'ripostes') or (is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
- *         },
- *         "put": {
- *             "path": "/v3/ripostes/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"}
- *         },
- *         "delete": {
- *             "path": "/v3/ripostes/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"}
- *         },
- *         "increment": {
- *             "method": "PUT",
- *             "path": "/v3/ripostes/{uuid}/action/{action}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "controller": "App\Controller\Api\Jecoute\IncrementRiposteStatsCounterController",
- *             "defaults": {"_api_receive": false},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'ripostes') or (is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
- *         },
- *     }
- * )
- *
  * @RiposteOpenGraph
  */
 #[ORM\Table(name: 'jecoute_riposte')]
 #[ORM\Entity]
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
+#[ApiResource(attributes: ['order' => ['createdAt' => 'DESC'], 'pagination_enabled' => false, 'security' => "is_granted('IS_FEATURE_GRANTED', 'ripostes')", 'normalization_context' => ['groups' => ['riposte_read']], 'denormalization_context' => ['groups' => ['riposte_write']]], collectionOperations: ['get' => ['path' => '/v3/ripostes', 'normalization_context' => ['groups' => ['riposte_list_read']], 'security' => "is_granted('IS_FEATURE_GRANTED', 'ripostes') or (is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))"], 'post' => ['path' => '/v3/ripostes']], itemOperations: ['get' => ['path' => '/v3/ripostes/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'normalization_context' => ['groups' => ['riposte_read']], 'security' => "is_granted('IS_FEATURE_GRANTED', 'ripostes') or (is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))"], 'put' => ['path' => '/v3/ripostes/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%']], 'delete' => ['path' => '/v3/ripostes/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%']], 'increment' => ['method' => 'PUT', 'path' => '/v3/ripostes/{uuid}/action/{action}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'controller' => 'App\Controller\Api\Jecoute\IncrementRiposteStatsCounterController', 'defaults' => ['_api_receive' => false], 'security' => "is_granted('IS_FEATURE_GRANTED', 'ripostes') or (is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))"]])]
 class Riposte implements AuthorInterface, IndexableEntityInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;

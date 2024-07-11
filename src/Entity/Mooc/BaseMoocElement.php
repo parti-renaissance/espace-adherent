@@ -11,9 +11,6 @@ use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields={"slug", "chapter"})
- */
 #[ORM\Entity]
 #[ORM\Table(name: 'mooc_elements')]
 #[ORM\UniqueConstraint(name: 'mooc_element_slug', columns: ['slug', 'chapter_id'])]

@@ -4,10 +4,7 @@ namespace App\Validator\AdherentFormation;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- */
+#[\Attribute]
 class FormationContent extends Constraint
 {
     public $errorPath = 'file';

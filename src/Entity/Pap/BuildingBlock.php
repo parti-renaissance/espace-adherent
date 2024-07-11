@@ -15,22 +15,10 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"pap_building_block_list"},
- *             "iri": true,
- *         },
- *         "pagination_enabled": false,
- *     },
- *     collectionOperations={},
- *     itemOperations={},
- * )
- */
 #[ORM\Table(name: 'pap_building_block')]
 #[ORM\UniqueConstraint(name: 'building_block_unique', columns: ['name', 'building_id'])]
 #[ORM\Entity]
+#[ApiResource(attributes: ['normalization_context' => ['groups' => ['pap_building_block_list'], 'iri' => true], 'pagination_enabled' => false], collectionOperations: [], itemOperations: [])]
 class BuildingBlock implements EntityAdherentBlameableInterface, CampaignStatisticsOwnerInterface
 {
     use EntityAdherentBlameableTrait;

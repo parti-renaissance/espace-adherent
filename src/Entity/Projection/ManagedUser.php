@@ -24,37 +24,13 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  * This entity is a projection: do not insert, update or delete objects using this class.
  * The table is populated on a regular basis by a background worker to improve performance
  * of SQL queries.
- *
- * @ApiResource(
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/adherents/{adherentUuid}",
- *             "requirements": {"adherentUuid": "%pattern_uuid%"},
- *             "normalization_context": {
- *                 "enable_tag_translator": true,
- *                 "groups": {"managed_user_read"}
- *             },
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/adherents.{format}",
- *             "controller": "App\Controller\Api\AdherentList\AdherentListController",
- *             "requirements": {
- *                 "format": "json|csv|xlsx",
- *             },
- *             "defaults": {
- *                 "format": "json",
- *             },
- *         },
- *     },
- * )
  */
 #[ORM\Table(name: 'projection_managed_users')]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Index(columns: ['original_id'])]
 #[ORM\Index(columns: ['zones_ids'])]
 #[ORM\Entity(repositoryClass: ManagedUserRepository::class, readOnly: true)]
+#[ApiResource(itemOperations: ['get' => ['path' => '/v3/adherents/{adherentUuid}', 'requirements' => ['adherentUuid' => '%pattern_uuid%'], 'normalization_context' => ['enable_tag_translator' => true, 'groups' => ['managed_user_read']]]], collectionOperations: ['get' => ['path' => '/v3/adherents.{format}', 'controller' => 'App\Controller\Api\AdherentList\AdherentListController', 'requirements' => ['format' => 'json|csv|xlsx'], 'defaults' => ['format' => 'json']]])]
 class ManagedUser implements TranslatedTagInterface
 {
     use EntityZoneTrait;
@@ -63,12 +39,11 @@ class ManagedUser implements TranslatedTagInterface
 
     /**
      * @var int
-     *
-     * @ApiProperty(identifier=false)
      */
     #[ORM\Id]
     #[ORM\Column(type: 'bigint', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
+    #[ApiProperty(identifier: false)]
     private $id;
 
     /**
@@ -103,11 +78,10 @@ class ManagedUser implements TranslatedTagInterface
 
     /**
      * @var UuidInterface|null
-     *
-     * @ApiProperty(identifier=true)
      */
     #[Groups(['managed_users_list', 'managed_user_read'])]
     #[ORM\Column(type: 'uuid', nullable: true)]
+    #[ApiProperty(identifier: true)]
     private $adherentUuid;
 
     /**

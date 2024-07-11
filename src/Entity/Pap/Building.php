@@ -16,33 +16,9 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"pap_building_read"},
- *             "iri": true,
- *         },
- *         "denormalization_context": {
- *             "groups": {"pap_building_write"},
- *         },
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/pap/buildings/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')",
- *         },
- *         "put": {
- *             "path": "/v3/pap/buildings/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')",
- *         },
- *     },
- * )
- */
 #[ORM\Table(name: 'pap_building')]
 #[ORM\Entity(repositoryClass: BuildingRepository::class)]
+#[ApiResource(attributes: ['normalization_context' => ['groups' => ['pap_building_read'], 'iri' => true], 'denormalization_context' => ['groups' => ['pap_building_write']]], itemOperations: ['get' => ['path' => '/v3/pap/buildings/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')"], 'put' => ['path' => '/v3/pap/buildings/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')"]])]
 class Building implements CampaignStatisticsOwnerInterface
 {
     use EntityIdentityTrait;
@@ -60,11 +36,10 @@ class Building implements CampaignStatisticsOwnerInterface
 
     /**
      * @var BuildingBlock[]|Collection
-     *
-     * @ApiSubresource
      */
     #[ORM\OneToMany(mappedBy: 'building', targetEntity: BuildingBlock::class, cascade: ['all'], orphanRemoval: true)]
     #[ORM\OrderBy(['name' => 'ASC'])]
+    #[ApiSubresource]
     private Collection $buildingBlocks;
 
     /**

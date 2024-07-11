@@ -29,63 +29,12 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "denormalization_context": {"groups": {"action_write"}},
- *         "normalization_context": {"groups": {"action_read"}},
- *         "pagination_maximum_items_per_page": 300,
- *         "pagination_items_per_page": 300,
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/actions/{uuid}",
- *         },
- *         "put": {
- *             "path": "/v3/actions/{uuid}",
- *             "security": "object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'actions')",
- *         },
- *         "cancel": {
- *             "path": "/v3/actions/{uuid}/cancel",
- *             "method": "PUT",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\Action\CancelActionController",
- *         },
- *         "register": {
- *             "path": "/v3/actions/{uuid}/register",
- *             "method": "POST",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\Action\RegisterController",
- *         },
- *         "unregister": {
- *             "path": "/v3/actions/{uuid}/register",
- *             "method": "DELETE",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\Action\RegisterController",
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/actions",
- *             "normalization_context": {
- *                 "groups": {"action_read_list"},
- *             },
- *         },
- *         "post": {
- *             "path": "/v3/actions",
- *         },
- *     }
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={"type": "exact"})
- * @ApiFilter(DateFilter::class, properties={"date"})
- */
 #[ORM\Table(name: 'vox_action')]
 #[ORM\Entity(repositoryClass: ActionRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
+#[ApiResource(attributes: ['denormalization_context' => ['groups' => ['action_write']], 'normalization_context' => ['groups' => ['action_read']], 'pagination_maximum_items_per_page' => 300, 'pagination_items_per_page' => 300], itemOperations: ['get' => ['path' => '/v3/actions/{uuid}'], 'put' => ['path' => '/v3/actions/{uuid}', 'security' => "object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'actions')"], 'cancel' => ['path' => '/v3/actions/{uuid}/cancel', 'method' => 'PUT', 'requirements' => ['uuid' => '%pattern_uuid%'], 'defaults' => ['_api_receive' => false], 'controller' => 'App\Controller\Api\Action\CancelActionController'], 'register' => ['path' => '/v3/actions/{uuid}/register', 'method' => 'POST', 'requirements' => ['uuid' => '%pattern_uuid%'], 'defaults' => ['_api_receive' => false], 'controller' => 'App\Controller\Api\Action\RegisterController'], 'unregister' => ['path' => '/v3/actions/{uuid}/register', 'method' => 'DELETE', 'requirements' => ['uuid' => '%pattern_uuid%'], 'defaults' => ['_api_receive' => false], 'controller' => 'App\Controller\Api\Action\RegisterController']], collectionOperations: ['get' => ['path' => '/v3/actions', 'normalization_context' => ['groups' => ['action_read_list']]], 'post' => ['path' => '/v3/actions']])]
+#[ApiFilter(SearchFilter::class, properties: ['type' => 'exact'])]
+#[ApiFilter(DateFilter::class, properties: ['date'])]
 class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEntity, IndexableEntityInterface
 {
     use EntityIdentityTrait;

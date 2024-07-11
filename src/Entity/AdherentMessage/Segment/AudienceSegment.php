@@ -17,41 +17,8 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {"groups": {"audience_segment_read"}},
- *         "denormalization_context": {
- *             "groups": {"audience_segment_write"},
- *             "disable_type_enforcement": true,
- *         },
- *     },
- *     collectionOperations={
- *         "post": {
- *             "path": "/v3/audience-segments",
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR')",
- *         },
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/audience-segments/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
- *         },
- *         "put": {
- *             "path": "/v3/audience-segments/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
- *         },
- *         "delete": {
- *             "path": "/v3/audience-segments/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
- *         },
- *     }
- * )
- */
 #[ORM\Entity(repositoryClass: AudienceSegmentRepository::class)]
+#[ApiResource(attributes: ['normalization_context' => ['groups' => ['audience_segment_read']], 'denormalization_context' => ['groups' => ['audience_segment_write'], 'disable_type_enforcement' => true]], collectionOperations: ['post' => ['path' => '/v3/audience-segments', 'security' => "is_granted('ROLE_MESSAGE_REDACTOR')"]], itemOperations: ['get' => ['path' => '/v3/audience-segments/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"], 'put' => ['path' => '/v3/audience-segments/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"], 'delete' => ['path' => '/v3/audience-segments/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"]])]
 class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
 {
     use EntityIdentityTrait;

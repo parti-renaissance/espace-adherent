@@ -3,22 +3,18 @@
 namespace App\Membership\MembershipRequest;
 
 use App\Validator\BannedAdherent;
-use App\Validator\UniqueMembership as AssertUniqueMembership;
+use App\Validator\UniqueMembership;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertUniqueMembership
- */
+#[UniqueMembership()]
 abstract class AbstractMembershipRequest implements MembershipInterface
 {
-    /**
-     * @BannedAdherent
-     */
     #[Groups(['membership:write'])]
     #[Assert\NotBlank]
     #[Assert\Email(message: 'common.email.invalid')]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
+    #[BannedAdherent]
     protected ?string $emailAddress = null;
 
     #[Groups(['membership:write'])]

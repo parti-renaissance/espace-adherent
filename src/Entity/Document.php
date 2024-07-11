@@ -14,45 +14,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     routePrefix="/v3",
- *     attributes={
- *         "order": {"createdAt": "DESC"},
- *         "normalization_context": {
- *             "groups": {"document_read"}
- *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'documents')",
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/documents",
- *             "maximum_items_per_page": 1000
- *         }
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/documents/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'documents')",
- *         },
- *         "get_file": {
- *             "path": "/documents/{uuid}/file",
- *             "method": "GET",
- *             "controller": "App\Controller\Api\DocumentDownloadFileController",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'documents')",
- *         }
- *     }
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={
- *     "title": "partial",
- * })
- */
 #[ORM\Table]
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
 #[UniqueEntity(fields: ['title'], message: 'document.title.unique_entity')]
+#[ApiResource(routePrefix: '/v3', attributes: ['order' => ['createdAt' => 'DESC'], 'normalization_context' => ['groups' => ['document_read']], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'documents')"], collectionOperations: ['get' => ['path' => '/documents', 'maximum_items_per_page' => 1000]], itemOperations: ['get' => ['path' => '/documents/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'documents')"], 'get_file' => ['path' => '/documents/{uuid}/file', 'method' => 'GET', 'controller' => 'App\Controller\Api\DocumentDownloadFileController', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'documents')"]])]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial'])]
 class Document implements EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;

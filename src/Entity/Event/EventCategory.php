@@ -9,26 +9,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "pagination_enabled": false,
- *         "order": {"slug": "ASC"},
- *         "normalization_context": {
- *             "groups": {"event_category_read"}
- *         },
- *     },
- *     itemOperations={"get"},
- *     collectionOperations={
- *         "get": {
- *             "path": "/event_categories",
- *         },
- *     }
- * )
- */
 #[ORM\Table(name: 'events_categories')]
 #[ORM\Entity(repositoryClass: EventCategoryRepository::class)]
 #[UniqueEntity(fields: ['name'])]
+#[ApiResource(attributes: ['pagination_enabled' => false, 'order' => ['slug' => 'ASC'], 'normalization_context' => ['groups' => ['event_category_read']]], itemOperations: ['get'], collectionOperations: ['get' => ['path' => '/event_categories']])]
 class EventCategory extends BaseEventCategory
 {
     /**

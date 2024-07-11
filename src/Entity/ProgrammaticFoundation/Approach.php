@@ -13,24 +13,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     collectionOperations={
- *         "get": {
- *             "path": "/programmatic-foundation/approaches",
- *             "method": "GET",
- *         }
- *     },
- *     attributes={
- *         "normalization_context": {"groups": {"approach_list_read"}},
- *         "pagination_enabled": false,
- *         "order": {"position": "ASC"}
- *     }
- * )
- */
 #[ORM\Table(name: 'programmatic_foundation_approach')]
 #[ORM\Entity]
 #[UniqueEntity(fields: ['position'], message: 'programmatic_foundation.unique_position.approach')]
+#[ApiResource(collectionOperations: ['get' => ['path' => '/programmatic-foundation/approaches', 'method' => 'GET']], attributes: ['normalization_context' => ['groups' => ['approach_list_read']], 'pagination_enabled' => false, 'order' => ['position' => 'ASC']])]
 class Approach
 {
     use EntityIdentityTrait;

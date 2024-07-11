@@ -12,23 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ApiResource(
- *     routePrefix="/v3",
- *     itemOperations={
- *         "get": {
- *             "path": "/committee_elections/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getCommittee())",
- *             "normalization_context": {
- *                 "groups": {"committee_election:read"},
- *             },
- *         },
- *     },
- *     collectionOperations={}
- * )
- */
 #[ORM\Entity(repositoryClass: CommitteeElectionRepository::class)]
+#[ApiResource(routePrefix: '/v3', itemOperations: ['get' => ['path' => '/committee_elections/{uuid}', 'requirements' => ['uuid' => '%pattern_uuid%'], 'security' => "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getCommittee())", 'normalization_context' => ['groups' => ['committee_election:read']]]], collectionOperations: [])]
 class CommitteeElection extends AbstractElectionEntity
 {
     /**
