@@ -3,11 +3,12 @@
 namespace App\Query\Utils;
 
 use Doctrine\ORM\QueryBuilder;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 class MultiColumnsSearchHelper
 {
     public static function updateQueryBuilderForMultiColumnsSearch(
-        QueryBuilder $queryBuilder,
+        QueryBuilder|ProxyQueryInterface $queryBuilder,
         string $searchTerm,
         array $mainColumns,
         array $additionalColumns = [],
