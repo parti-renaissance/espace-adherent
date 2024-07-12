@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "363b8c13a57c89b2a295fed77dac0566",
+    "content-hash": "7aa117c175126659c64f35223bc0a83f",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -12886,55 +12886,6 @@
                 "source": "https://github.com/stof/StofDoctrineExtensionsBundle/tree/v1.12.0"
             },
             "time": "2024-06-10T12:27:27+00:00"
-        },
-        {
-            "name": "suin/php-rss-writer",
-            "version": "1.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/suin/php-rss-writer.git",
-                "reference": "78f45e44a2a7cb0d82e4b9efb6f7b7a075b9051c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/suin/php-rss-writer/zipball/78f45e44a2a7cb0d82e4b9efb6f7b7a075b9051c",
-                "reference": "78f45e44a2a7cb0d82e4b9efb6f7b7a075b9051c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "eher/phpunit": ">=1.6",
-                "mockery/mockery": ">=0.7.2",
-                "suin/xoopsunit": ">=1.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Suin\\RSSWriter": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "suin",
-                    "email": "suinyeze@gmail.com"
-                }
-            ],
-            "description": "Yet another simple RSS writer library for PHP 5.4 or later.",
-            "homepage": "https://github.com/suin/php-rss-writer",
-            "keywords": [
-                "feed",
-                "generator",
-                "php",
-                "rss",
-                "writer"
-            ],
-            "time": "2017-07-13T10:47:50+00:00"
         },
         {
             "name": "symfony/amqp-messenger",

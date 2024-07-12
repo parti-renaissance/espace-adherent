@@ -10,7 +10,6 @@ parameters:
     procurations_reply_to_email:          'contact@parti-renaissance.fr'
     transactional_sender_email:           'contact@parti-renaissance.fr'
     transactional_sender_name:            'Renaissance'
-    feed_ttl:                             60 # in minutes
     app_host:                             "%env(APP_HOST)%"
     legislatives_host:                    "%env(LEGISLATIVES_HOST)%"
     jemengage_host:                       "%env(JEMENGAGE_HOST)%"
@@ -72,7 +71,6 @@ services:
             $dynamicLinksHost: '%env(DYNAMIC_LINKS_HOST)%'
             $jemengageAppPackageId: '%env(JEMENGAGE_APP_PACKAGE_ID)%'
             $invalidEmailHashKey: '%env(INVALID_EMAIL_HASH_KEY)%'
-            $articlePreviewAdminKey: '%env(ARTICLE_PREVIEW_ADMIN_KEY)%'
             $unlayerDefaultTemplateId: '%env(UNLAYER_DEFAULT_TEMPLATE_ID)%'
             $goCardlessApiKey: '%env(GOCARDLESS_API_KEY)%'
             $goCardlessEnvironment: '%env(GOCARDLESS_ENV)%'
@@ -491,3 +489,6 @@ services:
     App\Security\Http\LoginLink\Authentication\DefaultAuthenticationSuccessHandler:
         decorates: 'security.authentication.success_handler.main.login_link'
         arguments: ['@.inner']
+
+    League\CommonMark\CommonMarkConverter:
+        arguments: [[], ~]

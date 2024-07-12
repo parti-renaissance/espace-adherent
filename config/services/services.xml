@@ -82,12 +82,6 @@
         <service id="App\Api\Doctrine\LoadActivePapCampaignExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>
-        <service id="App\Api\Doctrine\ArticleCategoryExtension">
-            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
-        </service>
-        <service id="App\Api\Doctrine\ArticleExtension">
-            <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
-        </service>
         <service id="App\Api\Doctrine\EmailTemplateExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
         </service>

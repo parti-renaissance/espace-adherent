@@ -971,19 +971,6 @@
             <argument/>
         </service>
 
-        <service id="app.admin.renaissance_article" class="App\Admin\Article\RenaissanceArticleAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="RE » Actualités" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\Article</argument>
-            <argument />
-
-            <call method="setTemplate">
-                <argument>outer_list_rows_mosaic</argument>
-                <argument>admin/media/mosaic.html.twig</argument>
-            </call>
-        </service>
-
         <service id="app.admin.renaissance_home_block" class="App\Admin\HomeBlock\RenaissanceHomeBlockAdmin">
             <tag name="sonata.admin" manager-type="orm" label="RE » Blocs d'articles" group="Archives (à dépublier)" />
 
@@ -1018,19 +1005,6 @@
             <call method="setGlide">
                 <argument type="service" id="League\Glide\Server" />
             </call>
-            <call method="setTemplate">
-                <argument>outer_list_rows_mosaic</argument>
-                <argument>admin/media/mosaic.html.twig</argument>
-            </call>
-        </service>
-
-        <service id="app.admin.article" class="App\Admin\Article\ArticleAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Actualités" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\Article</argument>
-            <argument />
-
             <call method="setTemplate">
                 <argument>outer_list_rows_mosaic</argument>
                 <argument>admin/media/mosaic.html.twig</argument>
@@ -1415,14 +1389,6 @@
         ######################################################
         -->
 
-        <service id="app.admin.article_category" class="App\Admin\ArticleCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Contenu » Catégories" group="Archives" />
-
-            <argument />
-            <argument>App\Entity\ArticleCategory</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.custom_search_result" class="App\Admin\CustomSearchResultAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Contenu » Résultats Algolia" group="Archives" />
 
@@ -1473,19 +1439,6 @@
             <argument />
             <argument>App\Entity\OrderSection</argument>
             <argument />
-        </service>
-
-        <service id="app.admin.order_article" class="App\Admin\OrderArticleAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Explications » Articles" group="Archives" />
-
-            <argument />
-            <argument>App\Entity\OrderArticle</argument>
-            <argument />
-
-            <call method="setTemplate">
-                <argument>outer_list_rows_mosaic</argument>
-                <argument>admin/media/mosaic.html.twig</argument>
-            </call>
         </service>
 
         <service id="app.admin.facebook_profile" class="App\Admin\FacebookProfileAdmin">
@@ -1590,7 +1543,6 @@
             <tag name="sonata.admin.extension" target="app.admin.custom_search_result" />
             <tag name="sonata.admin.extension" target="app.admin.proposal" />
             <tag name="sonata.admin.extension" target="app.admin.clarification" />
-            <tag name="sonata.admin.extension" target="app.admin.article" />
         </service>
 
         <service id="app.admin.empty_translation_remover_extension" class="App\Admin\Extension\EmptyTranslationRemoverAdminExtension">

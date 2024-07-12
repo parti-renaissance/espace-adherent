@@ -40,20 +40,4 @@ class FormationControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertStringContainsString('Premier article du deuxième axe', $content);
         $this->assertStringContainsString('Deuxième article du deuxième axe', $content);
     }
-
-    public function testIfArticlesAreClickableInFormationHomepage(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'lolodie.dutemps@hotnix.tld');
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-formation');
-
-        $link = $crawler
-            ->filter('a:contains("Premier article du premier axe")')
-            ->eq(0)
-            ->link()
-        ;
-
-        $this->client->click($link);
-
-        $this->assertStringContainsString('An exhibit of Markdown', $this->client->getResponse()->getContent());
-    }
 }

@@ -97,8 +97,6 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
 
         $writerRoles = $this->getRoles([
             'ROLE_ADMIN_COMMUNICATION_MEDIAS',
-            'ROLE_ADMIN_COMMUNICATION_ARTICLES',
-            'ROLE_ADMIN_COMMUNICATION_ARTICLE_CATEGORIES',
             'ROLE_ADMIN_COMMUNICATION_PAGES',
             'ROLE_ADMIN_ARCHIVES_CONTENU',
             'ROLE_ADMIN_ARCHIVES_JE_PARTAGE',
@@ -155,7 +153,6 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
             'password' => 'renaissance',
             'roles' => $this->getRoles([
                 'ROLE_ADMIN_RENAISSANCE_COMMITMENTS',
-                'ROLE_ADMIN_RENAISSANCE_ARTICLES',
                 'ROLE_ADMIN_RENAISSANCE_HOME_BLOCKS',
                 'ROLE_ADMIN_RENAISSANCE_BIOGRAPHY_EXECUTIVE_OFFICE_MEMBERS',
                 'ROLE_ADMIN_RENAISSANCE_ADHERENT_FORMATIONS',
