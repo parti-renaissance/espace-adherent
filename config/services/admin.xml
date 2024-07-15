@@ -1079,22 +1079,6 @@
             </call>
         </service>
 
-        <service id="app.admin.procuration_request" class="App\Admin\ProcurationRequestAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Procurations V1 » Demandes" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\ProcurationRequest</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.procuration_proxy" class="App\Admin\ProcurationProxyAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Procurations V1 » Propositions" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\ProcurationProxy</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.application_request_technical_skill" class="App\Admin\ApplicationRequest\TechnicalSkillAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Muni » Compétences techniques" group="Archives (à dépublier)" />
 

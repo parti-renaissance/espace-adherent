@@ -103,20 +103,6 @@ export default class ReqwestApiClient {
         });
     }
 
-    getProcurationRequests(queryString, page, callback) {
-        this._createRequest(callback, {
-            url: `/espace-responsable-procuration/plus?page=${page}&${queryString}`,
-            type: 'html',
-        });
-    }
-
-    getProcurationProposals(queryString, page, callback) {
-        this._createRequest(callback, {
-            url: `/espace-responsable-procuration/mandataires/plus?page=${page}&${queryString}`,
-            type: 'html',
-        });
-    }
-
     getUpcomingEvents(callback) {
         let url = '/api/upcoming-events';
         const type = dom('#map-config').getAttribute('data-event-type');

@@ -34,8 +34,6 @@ use App\Entity\Pap\BuildingEvent;
 use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Pap\CampaignHistory;
 use App\Entity\PostAddress;
-use App\Entity\ProcurationProxy;
-use App\Entity\ProcurationRequest;
 use App\Entity\ReferentSpaceAccessInformation;
 use App\Entity\Reporting\CommitteeMembershipHistory;
 use App\Entity\Reporting\EmailSubscriptionHistory;
@@ -72,8 +70,6 @@ use App\Repository\Pap\BuildingEventRepository;
 use App\Repository\Pap\BuildingRepository;
 use App\Repository\Pap\CampaignHistoryRepository;
 use App\Repository\Pap\CampaignRepository as PapCampaignRepository;
-use App\Repository\ProcurationProxyRepository;
-use App\Repository\ProcurationRequestRepository;
 use App\Repository\ReferentSpaceAccessInformationRepository;
 use App\Repository\SubscriptionTypeRepository;
 use App\Repository\TransactionRepository;
@@ -255,16 +251,6 @@ trait TestHelperTrait
     public function getJeMarcheReportRepository(): JeMarcheReportRepository
     {
         return $this->getRepository(JeMarcheReport::class);
-    }
-
-    public function getProcurationRequestRepository(): ProcurationRequestRepository
-    {
-        return $this->getRepository(ProcurationRequest::class);
-    }
-
-    public function getProcurationProxyRepository(): ProcurationProxyRepository
-    {
-        return $this->getRepository(ProcurationProxy::class);
     }
 
     public function getEmailRepository(): EmailRepository
