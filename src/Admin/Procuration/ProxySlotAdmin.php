@@ -2,9 +2,7 @@
 
 namespace App\Admin\Procuration;
 
-use App\Entity\ProcurationV2\Request;
 use App\Query\Utils\MultiColumnsSearchHelper;
-use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -13,10 +11,10 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\BooleanFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ProxySlotAdmin extends AbstractAdmin
 {
@@ -41,14 +39,14 @@ class ProxySlotAdmin extends AbstractAdmin
                         array $properties,
                         string $value
                     ): void {
-                        /** @var QueryBuilder $qb */
+                        /** @var ProxyQueryInterface $qb */
                         $qb = $admin->getDatagrid()->getQuery();
                         $alias = $qb->getRootAliases()[0];
 
                         $qb->join("$alias.request", 'request');
 
                         MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
-                            $qb,
+                            $qb->getQueryBuilder(),
                             $value,
                             [
                                 ['request.firstNames', 'request.lastName'],
@@ -102,6 +100,10 @@ class ProxySlotAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+            ->add('round', null, [
+                'label' => 'Tour',
+                'show_filter' => true,
+            ])
             ->add('manual', BooleanFilter::class, [
                 'label' => 'Traitement manuel',
                 'show_filter' => true,
@@ -131,25 +133,5 @@ class ProxySlotAdmin extends AbstractAdmin
                 ],
             ])
         ;
-    }
-
-    /**
-     * @param Request $object
-     */
-    protected function alterObject(object $object): void
-    {
-    }
-
-    /**
-     * @param Request $object
-     */
-    protected function postUpdate(object $object): void
-    {
-    }
-
-    /** @required */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
-    {
-        $this->eventDispatcher = $eventDispatcher;
     }
 }
