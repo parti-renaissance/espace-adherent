@@ -19,7 +19,6 @@ Feature:
     Then I should be on "/connexion"
     Examples:
       | uri                             |
-      | /espace-responsable-procuration |
       | /espace-referent/utilisateurs   |
 
   Scenario Outline: As a logged-in user I can view secured pages

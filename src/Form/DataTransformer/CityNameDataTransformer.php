@@ -2,8 +2,6 @@
 
 namespace App\Form\DataTransformer;
 
-use App\Entity\ProcurationProxy;
-use App\Entity\ProcurationRequest;
 use App\FranceCities\FranceCities;
 use Symfony\Component\Form\DataTransformerInterface;
 
@@ -29,15 +27,6 @@ class CityNameDataTransformer implements DataTransformerInterface
                 $city = $this->franceCities->getCityByInseeCode($inseeCode);
 
                 $value->setCityName($city ? $city->getName() : null);
-            }
-        }
-
-        if ($value instanceof ProcurationProxy || $value instanceof ProcurationRequest) {
-            if ($value->getVoteCity() && str_contains($value->getVoteCity(), '-')) {
-                [, $voteCityInseeCode] = explode('-', $value->getVoteCity());
-                $VoteCity = $this->franceCities->getCityByInseeCode($voteCityInseeCode);
-
-                $value->setVoteCityName($VoteCity ? $VoteCity->getName() : null);
             }
         }
 

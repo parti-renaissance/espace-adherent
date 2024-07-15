@@ -7,7 +7,6 @@ parameters:
     timeline_max_messages:                30
     search_max_results:                   30
     enable_canary:                        "%env(ENABLE_CANARY)%"
-    procurations_reply_to_email:          'contact@parti-renaissance.fr'
     transactional_sender_email:           'contact@parti-renaissance.fr'
     transactional_sender_name:            'Renaissance'
     app_host:                             "%env(APP_HOST)%"
@@ -294,10 +293,6 @@ services:
 
     App\Validator\RecaptchaValidator:
         arguments: [!tagged_iterator 'app.recaptcha_api_client']
-
-    App\Procuration\ProcurationProxyMessageFactory:
-        arguments:
-            $replyToEmailAddress: '%procurations_reply_to_email%'
 
     Lexik\Bundle\PayboxBundle\Paybox\System\Cancellation\Request: '@lexik_paybox.request_cancellation_handler'
     Lexik\Bundle\PayboxBundle\Paybox\System\Base\Request: '@lexik_paybox.request_handler'
