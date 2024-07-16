@@ -20,8 +20,11 @@
                     class="text-ui_gray-40 text-xs font-medium"
                     x-show="{{ price }} > 30"
                     x-cloak
-                    x-text="`30 € de cotisation + ${(price - 30)} € de don`"
+                    x-text="`30 € de cotisation + ${(price - 30)} €`"
                 ></div>
+                {% if type == 'united' %}
+                    <div class="text-ui_gray-40 text-xs font-medium">Réservé aux étudiants, personnes bénéficiant des minima sociaux ou sans emploi.</div>
+                {% endif %}
 
             </div>
             <twig:ReIcon name="x:isSelected('{{ attributes.all().value }}') ? 'valid' : 'arrow-right'" class="justify-center items-center flex" />
@@ -54,7 +57,7 @@
                 <hr>
                 <p class="text-ui_gray-80 text-base px-7 py-5">
                     <span class="font-normal">
-                        C’est concrêt : avec {{ price }} €, nous pouvons imprimer
+                        C’est concrêt : avec {{ price }} € nous pouvons imprimer
                     </span>
                     <span class="font-medium"> {{ this.printedPosters }} affiches.</span>
                 </p>
