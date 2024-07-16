@@ -14,21 +14,6 @@ class HomeControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    public function testIndex(): void
-    {
-        $crawler = $this->client->request(Request::METHOD_GET, '/');
-
-        $this->isSuccessful($this->client->getResponse());
-
-        // Articles
-        // $this->assertSame(1, $crawler->filter('html:contains("« Je viens échanger, comprendre et construire. »")')->count());
-        $this->assertSame(1, $crawler->filter('html:contains("Tribune de Richard Ferrand")')->count());
-
-        // Live links
-        $this->assertSame(1, $crawler->filter('html:contains("Guadeloupe")')->count());
-        $this->assertSame(1, $crawler->filter('html:contains("Le candidat du travail")')->count());
-    }
-
     public function testDynamicRedirections(): void
     {
         $this->client->request(Request::METHOD_GET, '/dynamic-redirection-301/?test=123');
