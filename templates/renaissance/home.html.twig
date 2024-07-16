@@ -29,11 +29,9 @@
                         </a>
                     {% else %}
                         {% if app.user %}
-                            {% if app.user.isRenaissanceUser %}
-                                <a class="button button-white" href="{{ path('app_renaissance_event_list') }}">
-                                    Mon espace
-                                </a>
-                            {% endif %}
+                            <a class="button button-white" href="{{ path('app_renaissance_event_list') }}">
+                                Mon espace
+                            </a>
 
                             {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                                 <a class="button button-white" href="{{ path('admin_app_adherent_list', {'_switch_user': '_exit'}) }}">Quitter l'impersonnification</a>
@@ -46,7 +44,7 @@
                             </a>
                         {% endif %}
 
-                        {% if not app.user or not app.user.isRenaissanceUser() %}
+                        {% if not app.user or not app.user.hasActiveMembership() %}
                             <a href="{{ path('app_adhesion_index') }}" class="button button-blue">
                                 {{ app.user ? '(Re)' }} Adhérer
                             </a>
@@ -112,7 +110,7 @@
                     </div>
                     {% if not is_granted('ROLE_ADMIN_DASHBOARD') %}
                         <div class="space-y-6 py-6 px-5">
-                            {% if not app.user or not app.user.isRenaissanceUser() %}
+                            {% if not app.user or not app.user.hasActiveMembership() %}
                                 <a href="{{ path('app_adhesion_index') }}" class="flex w-full items-center justify-center rounded-md border border-transparent bg-re-blue-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-re-blue-700">
                                     {{ app.user ? '(Re)' }} Adhérer
                                 </a>

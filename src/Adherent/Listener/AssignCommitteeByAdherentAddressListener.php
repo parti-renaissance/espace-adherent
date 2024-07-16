@@ -38,10 +38,8 @@ class AssignCommitteeByAdherentAddressListener implements EventSubscriberInterfa
     public function onAfterUpdate(UserEvent $event): void
     {
         $adherent = $event->getUser();
-        if (
-            !$adherent->isRenaissanceUser()
-            || !$adherent->isEnabled()
-        ) {
+
+        if (!$adherent->isEnabled()) {
             return;
         }
 

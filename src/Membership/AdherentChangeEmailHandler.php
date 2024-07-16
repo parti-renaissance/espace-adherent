@@ -76,11 +76,8 @@ class AdherentChangeEmailHandler
         $params = [
             'adherent_uuid' => $adherent->getUuidAsString(),
             'change_email_token' => $token->getValue(),
+            'app_domain' => $this->renaissanceHost,
         ];
-
-        if ($adherent->isRenaissanceUser()) {
-            $params['app_domain'] = $this->renaissanceHost;
-        }
 
         return $this->urlGenerator->generate('user_validate_new_email', $params, UrlGeneratorInterface::ABSOLUTE_URL);
     }

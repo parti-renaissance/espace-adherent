@@ -17,10 +17,6 @@ class ShowMyDonationsListController extends AbstractController
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        if (!$adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('renaissance_site');
-        }
-
         return $this->render('renaissance/adherent/my_donations/list.html.twig', [
             'donations_history' => $donationManager->getHistory($adherent),
             'subscribed_donations' => $donationRepository->findAllSubscribedDonationByEmail($adherent->getEmailAddress()),

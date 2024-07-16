@@ -28,10 +28,6 @@ class CancelDonationController extends AbstractController
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        if (!$adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('renaissance_site');
-        }
-
         $donations = $donationRepository->findAllSubscribedDonationByEmail($adherent->getEmailAddress());
 
         if (!$donations) {

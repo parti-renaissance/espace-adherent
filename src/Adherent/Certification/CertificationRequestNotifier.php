@@ -4,10 +4,6 @@ namespace App\Adherent\Certification;
 
 use App\Entity\CertificationRequest;
 use App\Mailer\MailerService;
-use App\Mailer\Message\CertificationRequestApprovedMessage;
-use App\Mailer\Message\CertificationRequestBlockedMessage;
-use App\Mailer\Message\CertificationRequestPendingMessage;
-use App\Mailer\Message\CertificationRequestRefusedMessage;
 use App\Mailer\Message\Renaissance\Certification\RenaissanceCertificationRequestApprovedMessage;
 use App\Mailer\Message\Renaissance\Certification\RenaissanceCertificationRequestBlockedMessage;
 use App\Mailer\Message\Renaissance\Certification\RenaissanceCertificationRequestPendingMessage;
@@ -36,20 +32,12 @@ class CertificationRequestNotifier
 
     public function sendPendingMessage(CertificationRequest $certificationRequest): void
     {
-        $this->mailer->sendMessage(
-            $certificationRequest->getAdherent()->isRenaissanceUser()
-                ? RenaissanceCertificationRequestPendingMessage::create($certificationRequest)
-                : CertificationRequestPendingMessage::create($certificationRequest)
-        );
+        $this->mailer->sendMessage(RenaissanceCertificationRequestPendingMessage::create($certificationRequest));
     }
 
     public function sendApprovalMessage(CertificationRequest $certificationRequest): void
     {
-        $this->mailer->sendMessage(
-            $certificationRequest->getAdherent()->isRenaissanceUser()
-                ? RenaissanceCertificationRequestApprovedMessage::create($certificationRequest)
-                : CertificationRequestApprovedMessage::create($certificationRequest)
-        );
+        $this->mailer->sendMessage(RenaissanceCertificationRequestApprovedMessage::create($certificationRequest));
     }
 
     public function sendRefusalMessage(CertificationRequest $certificationRequest): void
@@ -60,25 +48,15 @@ class CertificationRequestNotifier
 
         $certificationRequestUrl = $this->urlGenerator->generate(
             'app_certification_request_form',
-            $certificationRequest->getAdherent()->isRenaissanceUser()
-                ? ['app_domain' => $this->renaissanceHost]
-                : [],
+            ['app_domain' => $this->renaissanceHost],
             UrlGeneratorInterface::ABSOLUTE_URL
         );
 
-        $this->mailer->sendMessage(
-            $certificationRequest->getAdherent()->isRenaissanceUser()
-                ? RenaissanceCertificationRequestRefusedMessage::create($certificationRequest, $refusalReason, $certificationRequestUrl)
-                : CertificationRequestRefusedMessage::create($certificationRequest, $refusalReason, $certificationRequestUrl)
-        );
+        $this->mailer->sendMessage(RenaissanceCertificationRequestRefusedMessage::create($certificationRequest, $refusalReason, $certificationRequestUrl));
     }
 
     public function sendBlockMessage(CertificationRequest $certificationRequest): void
     {
-        $this->mailer->sendMessage(
-            $certificationRequest->getAdherent()->isRenaissanceUser()
-                ? RenaissanceCertificationRequestBlockedMessage::create($certificationRequest)
-                : CertificationRequestBlockedMessage::create($certificationRequest)
-        );
+        $this->mailer->sendMessage(RenaissanceCertificationRequestBlockedMessage::create($certificationRequest));
     }
 }

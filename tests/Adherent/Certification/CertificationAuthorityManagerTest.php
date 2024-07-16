@@ -5,9 +5,9 @@ namespace Tests\App\Adherent\Certification;
 use App\Adherent\Certification\CertificationAuthorityManager;
 use App\Adherent\Certification\CertificationRequestBlockCommand;
 use App\Adherent\Certification\CertificationRequestRefuseCommand;
-use App\Mailer\Message\CertificationRequestApprovedMessage;
-use App\Mailer\Message\CertificationRequestBlockedMessage;
-use App\Mailer\Message\CertificationRequestRefusedMessage;
+use App\Mailer\Message\Renaissance\Certification\RenaissanceCertificationRequestApprovedMessage;
+use App\Mailer\Message\Renaissance\Certification\RenaissanceCertificationRequestBlockedMessage;
+use App\Mailer\Message\Renaissance\Certification\RenaissanceCertificationRequestRefusedMessage;
 use App\Repository\AdherentRepository;
 use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
@@ -76,7 +76,7 @@ class CertificationAuthorityManagerTest extends AbstractKernelTestCase
         self::assertTrue($adherent->isCertified());
         self::assertTrue($certificationRequest->isApproved());
         self::assertSame($administrator, $certificationRequest->getProcessedBy());
-        $this->assertCountMails(1, CertificationRequestApprovedMessage::class, $email);
+        $this->assertCountMails(1, RenaissanceCertificationRequestApprovedMessage::class, $email);
     }
 
     public function testRefuse(): void
@@ -99,7 +99,7 @@ class CertificationAuthorityManagerTest extends AbstractKernelTestCase
         self::assertFalse($adherent->isCertified());
         self::assertTrue($certificationRequest->isRefused());
         self::assertSame($administrator, $certificationRequest->getProcessedBy());
-        $this->assertCountMails(1, CertificationRequestRefusedMessage::class, $email);
+        $this->assertCountMails(1, RenaissanceCertificationRequestRefusedMessage::class, $email);
     }
 
     public function testBlock(): void
@@ -122,7 +122,7 @@ class CertificationAuthorityManagerTest extends AbstractKernelTestCase
         self::assertFalse($adherent->isCertified());
         self::assertTrue($certificationRequest->isBlocked());
         self::assertSame($administrator, $certificationRequest->getProcessedBy());
-        $this->assertCountMails(1, CertificationRequestBlockedMessage::class, $email);
+        $this->assertCountMails(1, RenaissanceCertificationRequestBlockedMessage::class, $email);
     }
 
     protected function setUp(): void

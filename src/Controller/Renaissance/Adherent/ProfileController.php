@@ -19,10 +19,6 @@ class ProfileController extends AbstractController
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        if (!$adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('renaissance_site');
-        }
-
         $adherentProfile = AdherentProfile::createFromAdherent($adherent);
         $form = $this
             ->createForm(AdherentProfileType::class, $adherentProfile, [

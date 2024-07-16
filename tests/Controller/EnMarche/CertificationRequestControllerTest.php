@@ -4,7 +4,7 @@ namespace Tests\App\Controller\EnMarche;
 
 use App\Adherent\Certification\CertificationRequestProcessCommand;
 use App\Entity\CertificationRequest;
-use App\Mailer\Message\CertificationRequestPendingMessage;
+use App\Mailer\Message\Renaissance\Certification\RenaissanceCertificationRequestPendingMessage;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Tests\App\AbstractEnMarcheWebTestCase;
@@ -99,7 +99,7 @@ class CertificationRequestControllerTest extends AbstractEnMarcheWebTestCase
         ]);
         $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte/certification', $this->client);
 
-        $this->assertCountMails(1, CertificationRequestPendingMessage::class, $email);
+        $this->assertCountMails(1, RenaissanceCertificationRequestPendingMessage::class, $email);
         $this->assertMessageIsDispatched(CertificationRequestProcessCommand::class);
 
         $crawler = $this->client->followRedirect();
