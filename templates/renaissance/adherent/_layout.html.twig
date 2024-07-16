@@ -81,7 +81,7 @@
                     </div>
                     <div>
                         <p class="text-sm leading-5 text-gray-500" id="adherent-since">
-                            {% if app.user.isRenaissanceUser %}
+                            {% if app.user.isRenaissanceAdherent() %}
                                 Inscrit{{ app.user.female ? "e" }} depuis le <span class="capitalize">{{ app.user.registeredAt|format_datetime('none', 'none', 'd MMMM yyyy') }}</span>
                             {% else %}
                                 Non adhérent{{ app.user.female ? "e" }}.

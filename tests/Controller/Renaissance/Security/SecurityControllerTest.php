@@ -45,27 +45,22 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $adherent = $this->adherentRepository->findOneByEmail($email);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo(
-            $isRenaissanceUser ? '/espace-adherent' : '/adhesion',
-            $this->client
-        );
+        $this->assertClientIsRedirectedTo('/espace-adherent', $this->client);
         $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
 
         $this->client->followRedirects();
         $crawler = $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        if ($isRenaissanceUser) {
-            $this->assertSame($fullName, trim($crawler->filter('h6')->first()->text()));
+        $this->assertSame($fullName, trim($crawler->filter('h6')->first()->text()));
 
-            $this->client->followRedirects(false);
-            $this->client->click($crawler->selectLink('Me déconnecter')->link());
-            $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-            $this->assertClientIsRedirectedTo('http://test.renaissance.code/', $this->client);
+        $this->client->followRedirects(false);
+        $this->client->click($crawler->selectLink('Me déconnecter')->link());
+        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
+        $this->assertClientIsRedirectedTo('http://test.renaissance.code/', $this->client);
 
-            $crawler = $this->client->followRedirect();
-            $this->assertSame(0, $crawler->selectLink($fullName)->count());
-        }
+        $crawler = $this->client->followRedirect();
+        $this->assertSame(0, $crawler->selectLink($fullName)->count());
     }
 
     public static function getAdherentEmails(): array

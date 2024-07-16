@@ -5,7 +5,7 @@
         {% if object.enabled %}
             {% if is_granted('ROLE_ALLOWED_TO_SWITCH') %}
                 <div class="btn-group">
-                    <a href="{{ path(object.isRenaissanceUser() ? 'app_renaissance_adherent_space' : 'app_adhesion_index', {'_switch_user': object.emailAddress}) }}" class="btn btn-xs btn-default" title="Impersonnifier">
+                    <a href="{{ path('app_renaissance_adherent_space', {'_switch_user': object.emailAddress}) }}" class="btn btn-xs btn-default" title="Impersonnifier">
                         <i class="fa fa-user-secret" aria-hidden="true"></i>
                         RE
                     </a>

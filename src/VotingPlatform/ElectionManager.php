@@ -24,10 +24,6 @@ class ElectionManager
         ?int $limit = null,
         bool $withVoteActiveOnly = false
     ): array {
-        if (!$adherent->isRenaissanceUser()) {
-            return [];
-        }
-
         $cacheKey = implode('-', array_merge([$adherent->getId(), $withVoteActiveOnly], $types));
 
         if (!empty($this->cache[$cacheKey])) {

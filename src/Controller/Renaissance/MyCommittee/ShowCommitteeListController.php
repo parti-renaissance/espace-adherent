@@ -19,7 +19,7 @@ class ShowCommitteeListController extends AbstractController
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        if (!$adherent->isRenaissanceUser() || ($adherent->isForeignResident() && !$this->isGranted('ROLE_PREVIOUS_ADMIN'))) {
+        if ($adherent->isForeignResident() && !$this->isGranted('ROLE_PREVIOUS_ADMIN')) {
             return $this->redirect($this->generateUrl('app_renaissance_adherent_space', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 

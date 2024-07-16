@@ -32,10 +32,6 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
             return [TagEnum::SYMPATHISANT_COMPTE_AVECVOUS_JEMENGAGE];
         }
 
-        if (!$adherent->isRenaissanceUser()) {
-            return [];
-        }
-
         $mainTag = null;
 
         if (\count($adherent->getConfirmedPayments())) {

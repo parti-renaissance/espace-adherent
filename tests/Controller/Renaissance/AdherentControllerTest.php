@@ -62,7 +62,6 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
 
     public static function provideProfilePage(): \Generator
     {
-        yield 'Mes informations personnelles' => ['/parametres/mon-compte'];
         yield 'Mot de passe' => ['/parametres/mon-compte/changer-mot-de-passe'];
         yield 'Certification' => ['/espace-adherent/mon-compte/certification'];
     }

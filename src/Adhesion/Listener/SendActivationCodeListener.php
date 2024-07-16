@@ -28,7 +28,7 @@ class SendActivationCodeListener implements EventSubscriberInterface
         }
 
         // If the adherent is eligible for membership payment, we don't send the activation code on creation, but after the payment
-        if ($adherent->isRenaissanceUser() && $adherent->isEligibleForMembershipPayment()) {
+        if ($adherent->isEligibleForMembershipPayment()) {
             return;
         }
 

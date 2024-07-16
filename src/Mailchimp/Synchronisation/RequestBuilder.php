@@ -97,7 +97,7 @@ class RequestBuilder implements LoggerAwareInterface
 
     public function updateFromAdherent(Adherent $adherent): self
     {
-        $this
+        return $this
             ->setEmail($adherent->getEmailAddress())
             ->setGender($adherent->getGender())
             ->setFirstName($adherent->getFirstName())
@@ -119,18 +119,11 @@ class RequestBuilder implements LoggerAwareInterface
             ->setMandateTypes($this->mandateRepository->getAdherentMandateTypes($adherent))
             ->setDeclaredMandates($adherent->getMandates() ?? [])
             ->setCampusRegisteredAt($adherent->getValidCampusRegistration())
+            ->setTeamCode($adherent)
+            ->setIsCertified($adherent->isCertified())
+            ->setLoginGroup($adherent->getLastLoginGroup())
+            ->setInterests($this->buildInterestArray($adherent))
         ;
-
-        if (null === $adherent->getSource() || $adherent->isRenaissanceUser() || $adherent->isBesoinDEuropeUser()) {
-            $this
-                ->setTeamCode($adherent)
-                ->setIsCertified($adherent->isCertified())
-                ->setLoginGroup($adherent->getLastLoginGroup())
-                ->setInterests($this->buildInterestArray($adherent))
-            ;
-        }
-
-        return $this;
     }
 
     public function updateFromElectedRepresentative(ElectedRepresentative $electedRepresentative): self
