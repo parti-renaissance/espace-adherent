@@ -52,7 +52,14 @@ Feature:
         "object_state": "partial",
         "begin_at": "@string@.isDateTime()",
         "finish_at": "@string@.isDateTime()",
-        "organizer": null,
+        "organizer": {
+            "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
+            "first_name": "Francis",
+            "last_name": "Brioul",
+            "role": null,
+            "instance": null,
+            "zone":null
+        },
         "participants_count": null,
         "status": "SCHEDULED",
         "capacity": null,
