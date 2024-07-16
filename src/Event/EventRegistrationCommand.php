@@ -2,6 +2,7 @@
 
 namespace App\Event;
 
+use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use Ramsey\Uuid\Uuid;
@@ -138,6 +139,16 @@ class EventRegistrationCommand
     public function isNotFull(): bool
     {
         return !$this->event->isFull();
+    }
+
+    #[Assert\IsTrue(message: 'Cet événement est reservé aux adhérents.')]
+    public function isVisibilityValid(): bool
+    {
+        return !$this->event->isForAdherent() || (
+            $this->adherent && (
+                (EventVisibilityEnum::ADHERENT === $this->event->visibility && $this->adherent->hasTag(TagEnum::ADHERENT))
+                || (EventVisibilityEnum::ADHERENT_DUES === $this->event->visibility && $this->adherent->hasTag(TagEnum::getAdherentYearTag()))
+            ));
     }
 
     public function getPostalCode(): ?string

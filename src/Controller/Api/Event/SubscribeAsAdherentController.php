@@ -37,6 +37,10 @@ class SubscribeAsAdherentController extends AbstractController
             throw $this->createNotFoundException('Event is cancelled');
         }
 
+        if ($event->isFinished()) {
+            return $this->json('Event is finished', Response::HTTP_BAD_REQUEST);
+        }
+
         if ($request->isMethod(Request::METHOD_DELETE)) {
             $eventRegistration = $this->entityManager->getRepository(EventRegistration::class)->findOneBy([
                 'event' => $event,
@@ -63,7 +67,7 @@ class SubscribeAsAdherentController extends AbstractController
             $event->incrementParticipantsCount();
         }
 
-        $registration->setSource(AppCodeEnum::BESOIN_D_EUROPE);
+        $registration->setSource(AppCodeEnum::VOX);
         $this->entityManager->flush();
 
         if ($newRegistration) {
