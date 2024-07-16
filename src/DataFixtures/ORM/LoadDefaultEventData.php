@@ -55,7 +55,7 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $event2->setMode(BaseEvent::MODE_ONLINE);
         $event2->setTimeZone('Europe/Paris');
         $event2->setAuthor($referent);
-        $event2->setPrivate(true);
+        $event2->visibility = EventVisibilityEnum::ADHERENT;
         $event2->setElectoral(true);
         $event2->setPostAddress($this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759));
         $event2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));

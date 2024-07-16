@@ -80,14 +80,14 @@ Feature:
     When I send a "GET" request to "/api/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 31 |
+      | metadata.total_items  | 30 |
 
   Scenario: As a logged-in user I can get events
     When I am logged as "jacques.picard@en-marche.fr"
     And I send a "GET" request to "/api/events"
     Then the response status code should be 200
     And the JSON nodes should match:
-      | metadata.total_items  | 31 |
+      | metadata.total_items  | 30 |
 
   Scenario Outline: As a (delegated) referent I can get the list of events corresponding to my zones
     Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
@@ -430,7 +430,7 @@ Feature:
                 "name": "Nouvel événement online privé et électoral",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
-                "visibility": "private",
+                "visibility": "adherent",
                 "created_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
@@ -762,7 +762,7 @@ Feature:
                 "name": "Nouvel événement online privé et électoral",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
-                "visibility": "private",
+                "visibility": "adherent",
                 "created_at": "@string@.isDateTime()",
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": "@string@.isDateTime()",
@@ -2000,3 +2000,21 @@ Feature:
       | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | DELETE  | /0e5f9f02-fa33-4c2c-a700-4235d752315b         |
       | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | POST    | /0e5f9f02-fa33-4c2c-a700-4235d752315b/image   |
       | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  | DELETE  | /0e5f9f02-fa33-4c2c-a700-4235d752315b/image   |
+
+  Scenario:
+      Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "JeMengage Mobile" with scope "jemarche_app"
+      When I send a "POST" request to "/api/v3/events/2b7238f9-10ca-4a39-b8a4-ad7f438aa95f/subscribe"
+      Then the response status code should be 400
+      And the JSON should be equal to:
+      """
+      {
+        "status": "error",
+        "message": "Validation Failed",
+        "violations": [
+            {
+                "propertyPath": "visibility_valid",
+                "message": "Cet événement est reservé aux adhérents."
+            }
+        ]
+      }
+      """

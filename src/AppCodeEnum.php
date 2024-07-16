@@ -10,6 +10,7 @@ final class AppCodeEnum extends Enum
     public const RENAISSANCE = 'renaissance';
     public const BESOIN_D_EUROPE = 'besoindeurope';
     public const LEGISLATIVE = 'legislative';
+    public const VOX = 'vox';
     public const JEMENGAGE = 'jemengage';
     public const JEMENGAGE_WEB = 'jemengage_web';
     public const JEMENGAGE_MOBILE = 'jemengage_mobile';
