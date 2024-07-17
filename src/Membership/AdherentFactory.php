@@ -110,7 +110,7 @@ class AdherentFactory
             status: Adherent::ENABLED
         );
 
-        $adherent->tags = [TagEnum::SYMPATHISANT_LEGISLATIVE24];
+        $adherent->tags = [TagEnum::SYMPATHISANT_ENSEMBLE2024];
         $adherent->setPapUserRole(true);
         $adherent->join();
         $adherent->setV2(true);
