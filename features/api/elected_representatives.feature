@@ -373,7 +373,7 @@ Feature:
                             "sympathisant": "Sympathisant",
                             "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incomplète",
                             "sympathisant:compte_em": "Sympathisant - Ancien compte En Marche",
-                            "sympathisant:legislative24": "Sympathisant - Législatives 24",
+                            "sympathisant:ensemble2024": "Sympathisant - Ensemble 2024",
                             "sympathisant:compte_avecvous_jemengage": "Sympathisant - Anciens comptes Je m'engage et Avec vous",
                             "sympathisant:autre_parti": "Sympathisant - Adhérent d'un autre parti",
                             "sympathisant:besoin_d_europe": "Sympathisant - Besoin d'Europe"

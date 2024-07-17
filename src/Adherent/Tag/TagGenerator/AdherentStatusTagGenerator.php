@@ -21,7 +21,7 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
     public function generate(Adherent $adherent, array $previousTags): array
     {
         if (MembershipSourceEnum::LEGISLATIVE === $adherent->getSource()) {
-            return [TagEnum::SYMPATHISANT_LEGISLATIVE24];
+            return [TagEnum::SYMPATHISANT_ENSEMBLE2024];
         }
 
         if ($adherent->isBesoinDEuropeUser()) {

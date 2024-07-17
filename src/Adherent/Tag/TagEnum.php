@@ -19,7 +19,7 @@ class TagEnum extends Enum
     public const SYMPATHISANT_ADHESION_INCOMPLETE = 'sympathisant:adhesion_incomplete';
     public const SYMPATHISANT_AUTRE_PARTI = 'sympathisant:autre_parti';
     public const SYMPATHISANT_BESOIN_D_EUROPE = 'sympathisant:besoin_d_europe';
-    public const SYMPATHISANT_LEGISLATIVE24 = 'sympathisant:legislative24';
+    public const SYMPATHISANT_ENSEMBLE2024 = 'sympathisant:ensemble2024';
 
     public const ELU = 'elu';
     public const ELU_ATTENTE_DECLARATION = 'elu:attente_declaration';
@@ -64,7 +64,7 @@ class TagEnum extends Enum
             self::SYMPATHISANT_COMPTE_AVECVOUS_JEMENGAGE,
             self::SYMPATHISANT_AUTRE_PARTI,
             self::SYMPATHISANT_BESOIN_D_EUROPE,
-            self::SYMPATHISANT_LEGISLATIVE24,
+            self::SYMPATHISANT_ENSEMBLE2024,
         ]);
     }
 
