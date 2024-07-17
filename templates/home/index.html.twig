@@ -7,73 +7,6 @@
 {% block content %}
     <main>
         <section class="l__wrapper">
-            <div class="l__row l__tablet--col l__row--v-stretch">
-                {% if blocks[0].media and blocks[0].media.video %}
-                    {% include 'video.html.twig' with {'block': blocks[0], 'width': 1200 } %}
-                {% else %}
-                    <a href="{{ blocks[0].link }}" class="card card__background card--large card--large__desktop l__hide--on-tablet l__col--bottom {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}"
-                       style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}'); height: 370px;">
-                        <div class="background">
-                            <div class="content">
-                                {% if blocks[0].hasDisplayTitles %}
-                                    <h1 class="text--large b__nudge--bottom-small">{{ blocks[0].title }}</h1>
-                                    <div class="text--body">{{ blocks[0].subtitle }}</div>
-                                {% endif %}
-                                <div class="btn btn--no-border">Découvrir</div>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="card card--large card--large__tablet l__hide--on-desktop {{ blocks[0].hasDisplayFilter ? '' : ' card--no-gradient' }}">
-                        <a href="{{ blocks[0].link }}" class="background-container">
-                            <div class="background card__background"
-                                 style="background-image: url('{{ media_asset(blocks[0].media, {'w': 1200, 'q': 70}) }}')"></div>
-                        </a>
-                        {% if blocks[0].hasDisplayTitles %}
-                            <a class="content" href="{{ blocks[0].link }}">
-                                <h2>{{ blocks[0].title }}</h2>
-                                <p class="text--summary">{{ blocks[0].subtitle }}</p>
-                            </a>
-                        {% endif %}
-                    </div>
-                {% endif %}
-
-                <a href="{{ blocks[1].link }}" class="topstory-side card card--large-secondary l__col l__col--bottom space--30 card__background"
-                     style="background-image: url('{{ media_asset(blocks[1].media, {'w': 1000, 'q': 70}) }}');">
-                    <div class="background">
-                        <div class="content">
-                            <h2 class="text--large text--italic text--white">{{ blocks[1].title }}</h2>
-                            <p class="text--white text--summary">{{ blocks[1].subtitle }}</p>
-                            <div class="btn btn--no-border">Voir</div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="content b__nudge--top">
-                <article class="l__row l__row--v-stretch l__tablet--col">
-                    <div class="action action__home {{ blocks[9].bgColor|default('black') }}">
-                        {% if blocks[9].media and blocks[9].media.video %}
-                            {% include 'video.html.twig' with {'block': blocks[9], 'width': 550 } %}
-                        {% else %}
-                            <p class="{{ blocks[9].colorCta }}">{{ blocks[9].title }}</p>
-                            <a href="{{ blocks[9].link }}" class="{{ blocks[9].colorCta }}">
-                                {{ blocks[9].titleCta }}
-                            </a>
-                        {% endif %}
-                    </div>
-                    <div class="action action__home {{ blocks[10].bgColor|default('black') }}">
-                        {% if  blocks[10].media and blocks[10].media.video %}
-                            {% include 'video.html.twig' with {'block': blocks[10], 'width': 550 } %}
-                        {% else %}
-                            <p class="{{ blocks[10].colorCta }}">{{ blocks[10].title }}</p>
-                            <a href="{{ blocks[10].link }}" class="{{ blocks[10].colorCta }}" target="_blank" rel="noreferrer noopener">
-                                {{ blocks[10].titleCta }}
-                            </a>
-                        {% endif %}
-                    </div>
-                </article>
-            </div>
-
             <ul class="list__links list__links--row list__links--no-decor list__links--svgs l__hide--on-mobile space--35-15">
                 <li class="head">Suivez La République En Marche !</li>
                 <li>
@@ -126,31 +59,6 @@
                 </ul>
             </div>
         </section>
-
-        <section class="l__wrapper b__nudge--bottom-larger">
-            <ul class="l__row l__row--wrap l__row--top space--20-0 l__row--h-stretch-around l__mobile--col">
-                {% for block in blocks|slice(2,6) %}
-                {{ include('home/articles.html.twig') }}
-                {% endfor %}
-            </ul>
-        </section>
-
-        {% if blocks|length >= 9 %}
-            <section class="l__wrapper b__nudge--bottom-large">
-                {% if blocks[8].media and blocks[8].media.video %}
-                    {% include 'video.html.twig' with {'block': blocks[8], 'width': 1150 } %}
-                {% else %}
-                    <div class="proteger l__col l__col--center progressive-background"
-                         data-sd="{{ media_asset(blocks[8].media, {'w': 300, 'q': 20}) }}"
-                         data-hd="{{ media_asset(blocks[8].media, {'w': 1800, 'q': 70}) }}"
-                         data-bg-prefix="linear-gradient(120deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35))"
-                         style="background-color: #000000;">
-                        <h2 class="text--extra-large b__nudge--bottom text--limited text--center text--white text--italic">{{ blocks[8].title }}</h2>
-                        <a href="{{ blocks[8].link }}" class="btn btn--no-border">En savoir plus</a>
-                    </div>
-                {% endif %}
-            </section>
-        {% endif %}
 
         <section class="background--blue space--60-0">
             <div class="l__wrapper--500 text--center b__nudge--bottom-larger">

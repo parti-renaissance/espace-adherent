@@ -5,9 +5,7 @@
 {% form_theme newsletter_form 'renaissance/forms/default_form_theme.html.twig' %}
 
 {% block content %}
-    {% set home_block_banner = blocks['Bannière principale accueil'] %}
-
-    <section class="flex flex-col justify-between h-screen pb-12 bg-bottom bg-cover md:pb-15" style="background-image: url('{{ media_asset(home_block_banner.media, {app_domain: app_renaissance_host}) }}')">
+    <section class="flex flex-col justify-between h-screen pb-12 bg-bottom bg-cover md:pb-15" style="background-image: url('{{ path('asset_url', {path: 'images/bain-foule-macron.jpg'}) }}')">
         <nav x-data="{ open: false }" @keydown.escape="open = false" class="relative flex justify-between items-center w-full border-b border-b-white/10 px-4 py-5 md:px-7 md:py-6">
             <a href="{{ path('renaissance_site') }}">
                 {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-4 w-auto text-white lg:h-5' } %}
@@ -137,16 +135,8 @@
 
         <div class="xl:container px-4 mb-2.5">
             <p class="text-white font-bold text-4xl md:text-7xl md:leading-tight mb-12">
-                {{ home_block_banner.title }}
+                Rejoignez Renaissance, le parti d\'Emmanuel Macron.
             </p>
-
-            {% if home_block_banner.link and home_block_banner.titleCta %}
-                <div>
-                    <a class="button button-white" href="{{ home_block_banner.link }}">
-                        {{ home_block_banner.titleCta }}
-                    </a>
-                </div>
-            {% endif %}
         </div>
     </section>
 
