@@ -57,11 +57,6 @@ class LoadAdministratorRoleData extends Fixture
         );
         // Renaissance
         yield $this->createRole(
-            'ROLE_ADMIN_RENAISSANCE_BIOGRAPHY_EXECUTIVE_OFFICE_MEMBERS',
-            'Administrateur des biographies du BurEx',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
             'ROLE_ADMIN_RENAISSANCE_ADHERENT_FORMATIONS',
             'Administrateur des formations adhérent',
             AdministratorRoleGroupEnum::MOBILISATION
@@ -101,11 +96,6 @@ class LoadAdministratorRoleData extends Fixture
             'ROLE_ADMIN_COMMUNICATION_REDIRECTIONS',
             'Administrateur des redirections',
             AdministratorRoleGroupEnum::COMMUNICATION
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_COMMUNICATION_BIOGRAPHY_EXEXECUTIVE_OFFICE_MEMBERS',
-            'Administrateur des biographies BurEx',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_LIVE_LINKS',

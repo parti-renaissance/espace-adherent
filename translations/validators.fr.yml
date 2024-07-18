@@ -367,13 +367,6 @@ message.min_length: Le message doit contenir au moins {{ limit }} caractères.
 message.max_length: Le message doit contenir moins de {{ limit }} caractères.
 
 #
-# Biography
-#
-executive_office_member.president.unique: Le membre {{ fullName }} est déjà président.
-executive_office_member.executive_officer.unique: Le membre {{ fullName }} est déjà délégué général.
-executive_office_member.deputy_general_delegate.unique: Le membre {{ fullName }} est déjà délégué général adjoint.
-
-#
 # Assessor
 #
 

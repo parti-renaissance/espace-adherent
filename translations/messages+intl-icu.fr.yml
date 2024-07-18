@@ -1324,17 +1324,6 @@ scope.visibility.national: Nationale
 #
 Account is disabled.: Votre compte a été désactivé par un administrateur.
 
-executive_office_role.president: Président
-executive_office_role.deputy_general_delegate: Secrétaire général délégué
-executive_office_role.executive_office_member: Burex membre
-executive_office_role.functional_delegate: Délégué fonctionnel
-executive_office_role.executive_officer: Délégué général
-executive_office_role.member_by_right: Membre de droit
-
-executive_office.title.deputy_general_delegate: Secrétaires généraux délégués
-executive_office.title.functional_delegate: Délégués fonctionnels
-executive_office.title.member_by_right: Membres de droit
-
 #
 # Menu
 #
