@@ -188,7 +188,7 @@ class LoadClientData extends Fixture
             'VOX 🇪🇺',
             'BHLfR-MWLVBF@Z.ZBh4EdTFJ15',
             [GrantTypeEnum::AUTHORIZATION_CODE, GrantTypeEnum::REFRESH_TOKEN],
-            ['http://app.besoindeurope.code']
+            ['http://localhost:8081']
         );
         $client13->setCode(AppCodeEnum::BESOIN_D_EUROPE);
         $client13->setAskUserForAuthorization(false);
