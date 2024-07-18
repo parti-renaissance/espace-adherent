@@ -52,7 +52,6 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
             'ROLE_ADMIN_FORMATION_MOOC',
             'ROLE_ADMIN_TECH_SUBSCRIPTION_TYPES',
             'ROLE_ADMIN_TECH_USER_LIST_DEFINITIONS',
-            'ROLE_ADMIN_RENAISSANCE_BIOGRAPHY_EXECUTIVE_OFFICE_MEMBERS',
             'ROLE_ADMIN_APPLICATION_MOBILE_NOTIFICATIONS',
             'ROLE_ADMIN_APPLICATION_MOBILE_NATIONAL_NEWS',
             'ROLE_ADMIN_APPLICATION_MOBILE_REGIONAL_NEWS',
@@ -150,7 +149,6 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
             'email' => 'admin@renaissance.code',
             'password' => 'renaissance',
             'roles' => $this->getRoles([
-                'ROLE_ADMIN_RENAISSANCE_BIOGRAPHY_EXECUTIVE_OFFICE_MEMBERS',
                 'ROLE_ADMIN_RENAISSANCE_ADHERENT_FORMATIONS',
                 'ROLE_ADMIN_RENAISSANCE_DEPARTMENT_SITES',
             ]),

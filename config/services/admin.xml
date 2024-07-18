@@ -963,14 +963,6 @@
         ######################################################
         -->
 
-        <service id="app.admin.renaissance_biography_executive_office_member" class="App\Admin\ExecutiveOfficeMember\RenaissanceExecutiveOfficeMemberAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="RE » Biographies BurEx" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\Biography\ExecutiveOfficeMember</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.media" class="App\Admin\MediaAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Upload" group="Archives (à dépublier)" />
 
@@ -1014,14 +1006,6 @@
             <call method="setGlide">
                 <argument type="service" id="League\Glide\Server" />
             </call>
-        </service>
-
-        <service id="app.admin.biography_executive_office_member" class="App\Admin\ExecutiveOfficeMember\ExecutiveOfficeMemberAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Biographies BurEx" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\Biography\ExecutiveOfficeMember</argument>
-            <argument />
         </service>
 
         <service id="app.admin.live_link" class="App\Admin\LiveLinkAdmin">
@@ -1561,8 +1545,6 @@
 
         <service id="app.admin.simple_image_upload_extension" class="App\Admin\Extension\SimpleImageUploadExtension">
             <tag name="sonata.admin.extension" target="app.admin.jecoute.resource.link" />
-            <tag name="sonata.admin.extension" target="app.admin.biography_executive_office_member" />
-            <tag name="sonata.admin.extension" target="app.admin.renaissance_biography_executive_office_member" />
             <tag name="sonata.admin.extension" target="app.admin.je_mengage.header_block" />
         </service>
     </services>

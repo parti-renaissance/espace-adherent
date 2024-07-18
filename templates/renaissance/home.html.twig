@@ -173,60 +173,6 @@
     </section>
 
     <section class="px-4 py-12 md:py-15">
-        <div class="xl:container">
-            <div class="md:flex md:gap-x-28 lg:gap-x-38 mb-12">
-                <div class="flex-1">
-                    <h2 class="mb-8 text-dark-blue text-4xl">
-                        Le bureau<br/>
-                        <span class="font-bold">exécutif</span>
-                    </h2>
-                    <p class="text-dark-blue text-lg leading-6 lg:text-2xl lg:leading-9">
-                        Une équipe paritaire de femmes et d’hommes engagés, rassemblant toutes les sensibilités de Renaissance et représentative de l’ensemble de nos territoires.
-                    </p>
-                </div>
-
-                <div class="flex-1 hidden md:flex">
-                    <img src="{{ asset('images/renaissance/burex-renaissance.jpg') }}" class="w-full rounded-lg" alt="Burex"/>
-                </div>
-            </div>
-
-            {% set executive_office_groups = [
-                executive_office_members.getSpecialGroup(),
-                executive_office_members.getRegularGroup(),
-                executive_office_members.getFonctionnalDelegateMembers(),
-                executive_office_members.getMembersByRight(),
-            ] %}
-
-            {% for executive_office_group in executive_office_groups %}
-                {% if executive_office_group is not empty %}
-                    {% set member = executive_office_group|first %}
-                    {% set title = ('executive_office.title.'~member.getRole())|trans %}
-
-                   <div class="overflow-hidden space-y-10 mb-6 pb-10 lg:mb-12">
-                       {% if title != 'executive_office.title.'~member.getRole() %}
-                           <h4 class="text-dark-blue text-xl font-medium leading-6 lg:text-2xl lg:leading-9">{{ title }}</h4>
-                       {% endif %}
-
-                       <div class="flex space-x-4 carousel-widget" data-carousel-slides-visible="4">
-                           {% for member in executive_office_group %}
-                               <div>
-                                   <div class="shrink-0 mb-5 lg:mb-6">
-                                       <img src="{{ path('asset_url', {path: member.imagePath, app_domain: app_renaissance_host}) }}" class="object-cover w-full h-auto transition ease-in-out rounded md:hover:scale-105 lg:h-[350px]" alt="{{ member.fullName }}"/>
-                                   </div>
-                                  <div class="text-center text-sm md:text-base">
-                                      <p class="font-medium text-gray-900 md:text-lg">{{ member.fullName }}</p>
-                                      <p class="text-gay-600">{{ member.job }}</p>
-                                  </div>
-                               </div>
-                           {% endfor %}
-                       </div>
-                   </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    </section>
-
-    <section class="px-4 py-12 md:py-15">
         <div class="mx-auto max-w-7xl">
             <div class="md:flex md:gap-12 lg:gap-38 mb-12 lg:mb-25">
                 <div class="md:w-2/5 lg:1/3">

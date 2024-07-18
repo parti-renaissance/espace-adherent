@@ -6,17 +6,6 @@
 {% block navMap %}{% endblock %}
 {% block open_graph_image (homepage_url ~ static_asset('pages-sharers/referents-share.jpg', {'q': 80, 'w': 1200, 'h': 630, 'fit': 'crop'}))|raw %}
 
-{% block redirection %}
-    <div class="background--darker">
-        <div class="l__wrapper space--10-0">
-            <a href="{{ path('app_our_organization') }}" class="back-to-list icon--with-text text--summary link--white">
-                {{ include('components/caret--left.html.twig') }}
-                Retour au site &nbsp;<strong><em>En Marche !</em></strong>
-            </a>
-        </div>
-    </div>
-{% endblock %}
-
 {% block javascripts %}
     <script type="text/javascript">
         Kernel.onLoad(function() {
