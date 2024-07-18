@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\Event;
 
+use App\Adherent\Tag\TagEnum;
 use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
@@ -9,6 +10,7 @@ use App\Entity\Event\EventRegistration;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventRegistrationEvent;
 use App\Event\EventRegistrationFactory;
+use App\Event\EventVisibilityEnum;
 use App\Events;
 use App\Repository\EventRegistrationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,7 +40,10 @@ class SubscribeAsAdherentController extends AbstractController
         }
 
         if ($event->isFinished()) {
-            return $this->json('Event is finished', Response::HTTP_BAD_REQUEST);
+            return $this->json(
+                ['message' => 'Impossible de s\'inscrire à un événement terminé.'],
+                Response::HTTP_BAD_REQUEST
+            );
         }
 
         if ($request->isMethod(Request::METHOD_DELETE)) {
@@ -56,7 +61,23 @@ class SubscribeAsAdherentController extends AbstractController
             return $this->json('OK', Response::HTTP_OK);
         }
 
-        $errors = $this->validator->validate($command = new EventRegistrationCommand($event, $adherent));
+        $command = new EventRegistrationCommand($event, $adherent);
+
+        if ($event->isForAdherent()) {
+            if (EventVisibilityEnum::ADHERENT === $event->visibility && !$adherent->hasTag(TagEnum::ADHERENT)) {
+                return $this->json(
+                    ['message' => 'Cet événement est réservé aux adhérents, adhérez pour y participer.'],
+                    Response::HTTP_BAD_REQUEST
+                );
+            } elseif (EventVisibilityEnum::ADHERENT_DUES === $event->visibility && !$adherent->hasTag(TagEnum::getAdherentYearTag())) {
+                return $this->json(
+                    ['message' => 'Cet événement est réservé aux adhérents à jour de cotisation, cotisez cette année pour y participer.'],
+                    Response::HTTP_BAD_REQUEST
+                );
+            }
+        }
+
+        $errors = $this->validator->validate($command);
 
         if ($errors->count()) {
             return $this->json($errors, Response::HTTP_BAD_REQUEST);

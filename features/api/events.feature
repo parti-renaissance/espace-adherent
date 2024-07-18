@@ -2015,13 +2015,6 @@ Feature:
       And the JSON should be equal to:
       """
       {
-        "status": "error",
-        "message": "Validation Failed",
-        "violations": [
-            {
-                "propertyPath": "visibility_valid",
-                "message": "Cet événement est reservé aux adhérents."
-            }
-        ]
+        "message": "Cet événement est réservé aux adhérents, adhérez pour y participer."
       }
       """
