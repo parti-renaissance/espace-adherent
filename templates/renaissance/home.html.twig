@@ -172,42 +172,6 @@
         </div>
     </section>
 
-    <!-- Values and commitments -->
-    <section class="px-4 py-12 md:py-15 bg-background-gray">
-        <div class="xl:container">
-            <div class="md:flex md:gap-x-28 lg:gap-x-38">
-                <div>
-                    <h2 class="mb-8 text-dark-blue text-4xl">
-                        Nos valeurs<br/>
-                        <span class="font-bold">et nos engagements</span>
-                    </h2>
-                    <p class="mb-8 text-dark-blue">
-                        Ce texte coconstruit avec l’ensemble des fondateurs du parti, engage chaque adhérent de Renaissance.
-                    </p>
-                </div>
-                <div class="mb-8">
-                    <img src="{{ asset('images/renaissance/nos-valeurs.jpg') }}" class="w-full rounded-lg" alt="nos-valeurs"/>
-                </div>
-            </div>
-            <div class="mt-8 columns-2 md:columns-3 lg:columns-4 gap-4 lg:gap-10 lg:mt-10">
-                {% for commitment in commitments %}
-                    {% set slug = commitment.title|slug %}
-                    <div
-                        id="valeur-{{ slug }}"
-                        class="{{ not loop.first ? 'mt-8 ' }} h-fit group bg-white border border-gray-100 active:bg-yellow px-4 py-5 cursor-pointer rounded-md p-8 hover:shadow-gray-200 hover:drop-shadow-lg hover:bg-yellow-400 hover:border-transparent duration-200 slide-over--trigger break-inside-avoid"
-                        data-commitment-title="{{ commitment.title|e('html_attr') }}"
-                        data-commitment-slug="{{ slug }}"
-                        data-commitment-image="{{ url('asset_url', {path: commitment.getImagePath(), app_domain: app_renaissance_host}) }}"
-                        data-commitment-description="{{ commitment.description|e('html_attr') }}"
-                    >
-                        <h3 class="text-re-blue-400 font-medium text-base lg:text-lg mb-2.5 group-hover:text-white">{{ commitment.title }}</h3>
-                        <p class="text-sm text-gray-500 lg:text-base lg:leading-6 group-hover:text-yellow-100">{{ commitment.shortDescription }}</p>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-
     <section class="px-4 py-12 md:py-15">
         <div class="xl:container">
             <div class="md:flex md:gap-x-28 lg:gap-x-38 mb-12">
@@ -503,10 +467,4 @@
 
 {% block final_javascripts %}
     <script type="module" src="{{ asset('js/friendlycaptcha.widget-0.9.14.module.min.js') }}" async defer></script>
-
-    <script type="text/javascript">
-        Bootstrap.onLoad(function () {
-            Main.runHomePage();
-        });
-    </script>
 {% endblock %}
