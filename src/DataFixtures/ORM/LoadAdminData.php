@@ -17,7 +17,6 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
     {
         $adminRoles = $this->getRoles([
             'ROLE_ADMIN_COMMUNICATION_MEDIAS',
-            'ROLE_ADMIN_COMMUNICATION_HOME_BLOCKS',
             'ROLE_ADMIN_COMMUNICATION_LIVE_LINKS',
             'ROLE_ADMIN_ARCHIVES_PROPOSALS',
             'ROLE_ADMIN_ARCHIVES_EXPLICATIONS',
@@ -100,7 +99,6 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
             'ROLE_ADMIN_COMMUNICATION_PAGES',
             'ROLE_ADMIN_ARCHIVES_CONTENU',
             'ROLE_ADMIN_ARCHIVES_JE_PARTAGE',
-            'ROLE_ADMIN_COMMUNICATION_HOME_BLOCKS',
             'ROLE_ADMIN_COMMUNICATION_LIVE_LINKS',
             'ROLE_ADMIN_ARCHIVES_PROPOSALS',
             'ROLE_ADMIN_ARCHIVES_EXPLICATIONS',
@@ -152,8 +150,6 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
             'email' => 'admin@renaissance.code',
             'password' => 'renaissance',
             'roles' => $this->getRoles([
-                'ROLE_ADMIN_RENAISSANCE_COMMITMENTS',
-                'ROLE_ADMIN_RENAISSANCE_HOME_BLOCKS',
                 'ROLE_ADMIN_RENAISSANCE_BIOGRAPHY_EXECUTIVE_OFFICE_MEMBERS',
                 'ROLE_ADMIN_RENAISSANCE_ADHERENT_FORMATIONS',
                 'ROLE_ADMIN_RENAISSANCE_DEPARTMENT_SITES',

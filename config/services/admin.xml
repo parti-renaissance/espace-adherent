@@ -963,14 +963,6 @@
         ######################################################
         -->
 
-        <service id="app.admin.commitment" class="App\Admin\CommitmentAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="RE » Valeurs et engagements" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\Commitment</argument>
-            <argument/>
-        </service>
-
         <service id="app.admin.renaissance_biography_executive_office_member" class="App\Admin\ExecutiveOfficeMember\RenaissanceExecutiveOfficeMemberAdmin">
             <tag name="sonata.admin" manager-type="orm" label="RE » Biographies BurEx" group="Archives (à dépublier)" />
 
@@ -1572,7 +1564,6 @@
             <tag name="sonata.admin.extension" target="app.admin.biography_executive_office_member" />
             <tag name="sonata.admin.extension" target="app.admin.renaissance_biography_executive_office_member" />
             <tag name="sonata.admin.extension" target="app.admin.je_mengage.header_block" />
-            <tag name="sonata.admin.extension" target="app.admin.commitment" />
         </service>
     </services>
 </container>

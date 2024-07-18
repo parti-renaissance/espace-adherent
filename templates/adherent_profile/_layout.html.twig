@@ -51,7 +51,6 @@
                                 'app_user_change_password',
                                 'app_adherent_pin_interests',
                                 'app_user_set_email_notifications',
-                                'app_adherent_commitment',
                             ] ) %}
                             {% set isActivityRoute = is_active_route(app.request, 'app_adherent_profile_activity' ) %}
 
@@ -72,9 +71,6 @@
                                     </li>
                                     <li class="{{ is_active_route(app.request, 'app_adherent_pin_interests') ? 'active' }}">
                                         <a href="{{ path('app_adherent_pin_interests') }}">Centres d'intérêt</a>
-                                    </li>
-                                    <li class="{{ is_active_route(app.request, 'app_adherent_commitment') ? 'active' }}">
-                                        <a href="{{ path('app_adherent_commitment') }}">Engagement</a>
                                     </li>
                                     <li class="{{ is_active_route(app.request, 'app_user_set_email_notifications') ? 'active' }}">
                                         <a href="{{ path('app_user_set_email_notifications') }}">Communication</a>

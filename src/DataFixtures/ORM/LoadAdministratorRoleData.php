@@ -57,16 +57,6 @@ class LoadAdministratorRoleData extends Fixture
         );
         // Renaissance
         yield $this->createRole(
-            'ROLE_ADMIN_RENAISSANCE_COMMITMENTS',
-            'Administrateur des valeurs et engagements',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_RENAISSANCE_HOME_BLOCKS',
-            'Administrateur des blocs d\'articles',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
             'ROLE_ADMIN_RENAISSANCE_BIOGRAPHY_EXECUTIVE_OFFICE_MEMBERS',
             'Administrateur des biographies du BurEx',
             AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
@@ -95,11 +85,6 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_PAGES',
             'Administrateur des pages statiques',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_COMMUNICATION_HOME_BLOCKS',
-            'Administrateur des blocs d\'articles',
             AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
         );
         yield $this->createRole(

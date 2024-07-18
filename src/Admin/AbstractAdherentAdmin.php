@@ -1099,7 +1099,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 '_delegated_access',
                 '_zone_based_role',
                 '_zone_based_role_zone',
-                '_commitment',
                 '_referent_team_member',
                 '_board_member',
                 '_animator_committees',
@@ -1109,7 +1108,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
             ->leftJoin($alias.'.receivedDelegatedAccesses', '_delegated_access')
             ->leftJoin($alias.'.zoneBasedRoles', '_zone_based_role')
             ->leftJoin('_zone_based_role.zones', '_zone_based_role_zone')
-            ->leftJoin($alias.'.commitment', '_commitment')
             ->leftJoin($alias.'.referentTeamMember', '_referent_team_member')
             ->leftJoin($alias.'.boardMember', '_board_member')
             ->leftJoin($alias.'.animatorCommittees', '_animator_committees')

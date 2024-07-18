@@ -40,10 +40,6 @@ class Main {
         return this._di.get(key);
     }
 
-    runHomePage() {
-        import('pages/home_page').then((module) => module.default());
-    }
-
     runDonationFunnelPage() {
         return import('pages/donation_funnel').catch((error) => {
             throw error;

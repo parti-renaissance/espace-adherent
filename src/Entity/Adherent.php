@@ -486,12 +486,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $receivedDelegatedAccesses;
 
     /**
-     * @var AdherentCommitment
-     */
-    #[ORM\OneToOne(mappedBy: 'adherent', targetEntity: AdherentCommitment::class, cascade: ['all'])]
-    private $commitment;
-
-    /**
      * @var AdherentMandateInterface[]|Collection
      */
     #[Assert\Valid]
@@ -2359,16 +2353,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setActivityArea(?string $activityArea): void
     {
         $this->activityArea = $activityArea;
-    }
-
-    public function getCommitment(): ?AdherentCommitment
-    {
-        return $this->commitment;
-    }
-
-    public function setCommitment(AdherentCommitment $commitment): void
-    {
-        $this->commitment = $commitment;
     }
 
     public function isVoteInspector(): bool

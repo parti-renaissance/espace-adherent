@@ -1442,7 +1442,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->addSelect('rda')
             ->addSelect('scma')
             ->addSelect('ref_tags')
-            ->addSelect('commitment')
             ->addSelect('mandates')
             ->addSelect('zone_based_role')
             ->leftJoin($alias.'.assessorManagedArea', 'ama')
@@ -1456,7 +1455,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->leftJoin($alias.'.boardMember', 'bm')
             ->leftJoin($alias.'.receivedDelegatedAccesses', 'rda')
             ->leftJoin($alias.'.senatorialCandidateManagedArea', 'scma')
-            ->leftJoin($alias.'.commitment', 'commitment')
             ->leftJoin($alias.'.adherentMandates', 'mandates')
             ->leftJoin($alias.'.zoneBasedRoles', 'zone_based_role')
         ;

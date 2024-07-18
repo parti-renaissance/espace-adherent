@@ -443,11 +443,6 @@
     {{ block('admin_image_with_url_row') }}
 {% endblock %}
 
-{% block app_admin_commitment_image_file_row %}
-    {% set value = form.parent.vars.value %}
-    {{ block('admin_image_with_url_row') }}
-{% endblock %}
-
 {% block app_admin_national_event_file_row %}
     {% set value = form.parent.vars.value %}
     {% set path = value.intoImagePath ? ('static'~value.intoImagePath) : null %}
