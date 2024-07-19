@@ -257,12 +257,6 @@ app_procuration:
     resource: "../src/Controller/Procuration"
     type: "annotation"
 
-app_assessor:
-    host: "%assessor_host%"
-    resource: "../src/Controller/Assessor"
-    type: "annotation"
-    prefix: "%assessor_path_prefix%"
-
 app_legislative_avecvous:
     host: "%legislatives_avecvous_host%"
     resource: "../src/Controller/Legislatives/Newsletter"

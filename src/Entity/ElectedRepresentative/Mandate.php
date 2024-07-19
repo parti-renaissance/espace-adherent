@@ -3,7 +3,6 @@
 namespace App\Entity\ElectedRepresentative;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Election\VoteListNuanceEnum;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Geo\Zone as GeoZone;
 use App\Repository\ElectedRepresentative\MandateRepository;
@@ -117,10 +116,8 @@ class Mandate
     /**
      * @var string
      */
-    #[Assert\Choice(callback: [VoteListNuanceEnum::class, 'toArray'])]
-    #[Assert\NotBlank]
     #[Groups(['elected_mandate_write', 'elected_mandate_read', 'elected_representative_read'])]
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(length: 10, nullable: true)]
     private $politicalAffiliation;
 
     /**
@@ -352,6 +349,12 @@ class Mandate
 
     public function __toString(): string
     {
-        return sprintf('%s (%s)', array_search($this->type, MandateTypeEnum::CHOICES), $this->politicalAffiliation);
+        $str = array_search($this->type, MandateTypeEnum::CHOICES);
+
+        if (!$this->politicalAffiliation) {
+            return $str;
+        }
+
+        return sprintf('%s (%s)', $str, $this->politicalAffiliation);
     }
 }

@@ -26,7 +26,6 @@ twig:
         app_renaissance_host:       "%env(APP_RENAISSANCE_HOST)%"
         national_event_host:        "%env(NATIONAL_EVENT_HOST)%"
         adherent_interests:         "%adherent_interests%"
-        enable_assessor_space:      "%env(bool:ENABLE_ASSESSOR_SPACE)%"
         axeptio_clid:               "%env(AXEPTIO_CLID)%"
         friendly_captcha_site_key:  "%env(FRIENDLY_CAPTCHA_DEFAULT_SITE_KEY)%"
         friendly_captcha_europe_site_key: "%env(FRIENDLY_CAPTCHA_EUROPE_SITE_KEY)%"

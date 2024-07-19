@@ -6,21 +6,8 @@
     <services>
         <defaults autowire="true" autoconfigure="true" public="false" />
 
-        <!-- Assessor -->
-        <service id="App\Assessor\AssessorRequestHandler">
-            <argument type="service" id="state_machine.assessor_request" />
-        </service>
-
         <!-- ApplicationRequest -->
         <service id="App\ApplicationRequest\Listener\ApplicationRequestChangeSubscriber">
-            <tag name="doctrine.event_subscriber"/>
-        </service>
-
-        <!-- EventListener -->
-        <service id="App\EventListener\ManageReferentTeamMembersListener">
-            <tag name="doctrine.event_subscriber"/>
-        </service>
-        <service id="App\Election\Listener\VoteResultBlameableListener">
             <tag name="doctrine.event_subscriber"/>
         </service>
 

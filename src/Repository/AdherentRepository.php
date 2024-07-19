@@ -723,25 +723,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $stmt->executeQuery()->fetchAllAssociative();
     }
 
-    /**
-     * @return Adherent[]
-     */
-    public function findAssessorsForVotePlaces(array $votePlaces): array
-    {
-        return array_column(
-            $this->createQueryBuilder('a')
-                ->addSelect('pl.id AS votePlaceId')
-                ->innerJoin('a.assessorRole', 'ar')
-                ->innerJoin('ar.votePlace', 'pl')
-                ->where('pl IN (:places)')
-                ->setParameter('places', $votePlaces)
-                ->getQuery()
-                ->getResult(),
-            0,
-            'votePlaceId'
-        );
-    }
-
     public function findDuplicateCertified(
         string $firstName,
         string $lastName,
@@ -1435,7 +1416,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->addSelect('cm')
             ->addSelect('c')
             ->addSelect('bm')
-            ->addSelect('ama')
             ->addSelect('jma')
             ->addSelect('rtm')
             ->addSelect('ma')
@@ -1444,7 +1424,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->addSelect('ref_tags')
             ->addSelect('mandates')
             ->addSelect('zone_based_role')
-            ->leftJoin($alias.'.assessorManagedArea', 'ama')
             ->leftJoin($alias.'.jecouteManagedArea', 'jma')
             ->leftJoin($alias.'.coordinatorCommitteeArea', 'cca')
             ->leftJoin($alias.'.referentTeamMember', 'rtm')

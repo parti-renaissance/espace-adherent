@@ -441,14 +441,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.assessor_request_admin" class="App\Admin\AssessorRequestAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Assesseur(e)s » Demandes" group="Élections" />
-
-            <argument />
-            <argument>App\Entity\AssessorRequest</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.election" class="App\Admin\ElectionAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Assesseurs » Élections" group="Élections" />
 
@@ -1087,53 +1079,6 @@
             <call method="setGlide">
                 <argument type="service" id="League\Glide\Server" />
             </call>
-        </service>
-
-        <service id="app.admin.election_city_card" class="App\Admin\Election\CityCardAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Elections » Villes" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\Election\CityCard</argument>
-            <argument />
-
-            <call method="setTemplate">
-                <argument>edit</argument>
-                <argument>admin/election/city_card/edit.html.twig</argument>
-            </call>
-            <call method="setTemplate">
-                <argument>list</argument>
-                <argument>admin/city_card/list.html.twig</argument>
-            </call>
-        </service>
-        <service id="App\Admin\Election\CityCardAdmin" alias="app.admin.election_city_card" />
-
-        <service id="app.admin.election_city_card_managers" class="App\Admin\Election\CityCardManagersAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Elections » Suivi / Pilotage" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\Election\CityCard</argument>
-            <argument />
-
-            <call method="setTemplate">
-                <argument>edit</argument>
-                <argument>admin/election/city_card/edit_managers.html.twig</argument>
-            </call>
-        </service>
-
-        <service id="app.admin.election_city_card_partner" class="App\Admin\Election\CityCardPartnerAdmin">
-            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
-
-            <argument />
-            <argument>App\Entity\Election\CityPartner</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.election_city_card_contact" class="App\Admin\Election\CityCardContactAdmin">
-            <tag name="sonata.admin" manager-type="orm" show_in_dashboard="false"/>
-
-            <argument />
-            <argument>App\Entity\Election\CityContact</argument>
-            <argument />
         </service>
 
         <service id="app.admin.reporting_committee_merge_history" class="App\Admin\CommitteeMergeHistoryAdmin">

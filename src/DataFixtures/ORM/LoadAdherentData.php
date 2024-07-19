@@ -14,7 +14,6 @@ use App\Entity\AdherentCharter\PhoningCampaignCharter;
 use App\Entity\AdherentCharter\ReferentCharter;
 use App\Entity\AdherentResetPasswordToken;
 use App\Entity\AdherentZoneBasedRole;
-use App\Entity\AssessorRoleAssociation;
 use App\Entity\BoardMember\BoardMember;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\PostAddress;
@@ -428,7 +427,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         ]);
         $adherent16->tags = [TagEnum::getAdherentYearTag()];
         $adherent16->setPosition(ActivityPositionsEnum::EMPLOYED);
-        $adherent16->setAssessorManagedAreaCodesAsString('93, 59, GB');
         $adherent16->setSource(MembershipSourceEnum::RENAISSANCE);
         $adherent16->donatedForMembership();
         $this->addReference('adherent-16', $adherent16);
@@ -721,7 +719,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2019-06-10 09:19:00',
         ]);
         $assessor->certify();
-        $assessor->setAssessorRole(new AssessorRoleAssociation($this->getReference('vote-place-lille-wazemmes')));
         $assessor->setElectionResultsReporter(true);
         $this->addReference('assessor-1', $assessor);
 
@@ -1321,7 +1318,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             LoadBoardMemberRoleData::class,
             LoadReferentTagData::class,
             LoadSubscriptionTypeData::class,
-            LoadElectionVotePlaceData::class,
             LoadCityData::class,
             LoadGeoZoneData::class,
         ];
