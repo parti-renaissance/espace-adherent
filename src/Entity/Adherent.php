@@ -2910,9 +2910,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->finishedAdhesionSteps = array_unique(array_merge($this->finishedAdhesionSteps, [$step]));
     }
 
-    public function isFullyCompletedAdhesion(): bool
+    public function isFullyCompletedAdhesion(bool $isAdherent): bool
     {
-        return empty(array_diff(AdhesionStepEnum::all(), $this->finishedAdhesionSteps));
+        return empty(array_diff(AdhesionStepEnum::all($isAdherent), $this->finishedAdhesionSteps));
     }
 
     public function isFullyCompletedBesoinDEuropeInscription(): bool
