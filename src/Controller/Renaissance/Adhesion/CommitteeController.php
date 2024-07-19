@@ -32,6 +32,13 @@ class CommitteeController extends AbstractController
             return $this->redirectToRoute(AdhesionController::ROUTE_NAME);
         }
 
+        if (!$adherent->isRenaissanceAdherent()) {
+            $adherent->finishAdhesionStep(AdhesionStepEnum::COMMITTEE);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('app_adhesion_finish');
+        }
+
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::COMMITTEE)) {
             return $this->redirectToRoute('app_renaissance_adherent_space');
         }

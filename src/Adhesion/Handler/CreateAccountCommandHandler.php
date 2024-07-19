@@ -39,7 +39,7 @@ class CreateAccountCommandHandler
         /** @var Adherent $currentUser */
         if ($currentUser = $command->currentUser) {
             $currentUser->updateFromMembershipRequest($membershipRequest);
-            $currentUser->finishAdhesionSteps(AdhesionStepEnum::all());
+            $currentUser->finishAdhesionSteps(AdhesionStepEnum::all(true));
         } elseif ($adherent = $this->adherentRepository->findOneByEmail($membershipRequest->email)) {
             $this->membershipNotifier->sendConnexionDetailsMessage($adherent);
 
