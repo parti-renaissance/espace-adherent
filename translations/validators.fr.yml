@@ -367,44 +367,6 @@ message.min_length: Le message doit contenir au moins {{ limit }} caractères.
 message.max_length: Le message doit contenir moins de {{ limit }} caractères.
 
 #
-# Assessor
-#
-
-assessor.first_name.not_blank: Votre prénom est requis.
-assessor.first_name.min_length: Votre prénom doit comporter au moins 2 caractères.
-assessor.first_name.max_length: Vos prénoms ne peuvent pas dépasser 100 caractères.
-
-assessor.last_name.not_blank: Votre nom est requis.
-assessor.last_name.min_length: Votre nom doit comporter au moins {{ limit }} caractères.
-assessor.last_name.max_length: Vos nom ne peuvent pas dépasser {{ limit }} caractères.
-
-assessor.birthdate.minimum_required_age: Vous devez être âgé d'au moins 18 ans pour être assesseur.
-assessor.birthdate.maximum_required_age: Vous devez être âgé de moins de 120 ans pour être assesseur.
-
-assessor.voter_number.not_blank: Le numéro d'électeur est requis.
-
-assessor.office.invalid_choice: Vous devez choisir l'une des fonctions proposées.
-
-assessor.election_rounds.invalid_choice: le tour n'est pas valide
-assessor.election_rounds.not_blank: Vous devez cocher un ou plusieurs tour(s)
-
-assessor.vote_city.not_blank: Vous devez spécifier votre lieu de vote.
-assessor.office_number.not_blank: Vous devez spécifier votre numéro de bureau de vote.
-
-assessor.assessor_city.not_blank: Vous devez spécifier la ville du bureau de vote pour laquelle vous voulez devenir assesseur.
-
-assessor.assessor_postal_code.not_blank: Vous devez spécifier le code postal du bureau de vote pour laquelle vous voulez devenir assesseur.
-
-assessor.vote_place_wishes.not_blank: Vous devez choisir au moins un bureau de vote.
-assessor.unique_vote_place_association: L'adhérent est déjà assesseur dans un autre bureau de vote.
-assessor.adherent_association.adherent_not_found: Adhérent avec cet email n'existe pas
-
-#
-# Vote Place
-#
-vote_place.assessor_request.max: Il y a déjà deux assesseurs pour ce bureau de vote.
-
-#
 # Application Requests
 #
 application_request.first_name.min_length: Votre prénom doit faire au moins {{ limit }} caractères.

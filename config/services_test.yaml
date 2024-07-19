@@ -4,7 +4,6 @@ imports:
 parameters:
     timeline_max_messages: 10
     legislatives_host: "legislatives.%app_host%"
-    assessor_path_prefix: "/assesseur"
     ssl_encryption_key: "%env(SSL_ENCRYPTION_KEY)%"
     ssl_private_key: "%env(SSL_PRIVATE_KEY)%"
 

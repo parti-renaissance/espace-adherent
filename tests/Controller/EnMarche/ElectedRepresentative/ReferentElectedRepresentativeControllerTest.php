@@ -24,14 +24,14 @@ class ReferentElectedRepresentativeControllerTest extends AbstractEnMarcheWebTes
         $this->assertCount(3, $crawler->filter('.status.status__1'));
         $this->assertStringContainsString('92 Département', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertStringContainsString('BOUILLOUX Delphine', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
-        $this->assertStringContainsString('Conseiller(e) municipal(e) (NC)', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
+        $this->assertStringContainsString('Conseiller(e) municipal(e)', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertStringContainsString('Clichy (92024)', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertStringContainsString('Maire', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertStringNotContainsString('Président(e) d\'EPCI', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertStringContainsString('PS (2016)', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertStringContainsString('Non', $crawler->filter('tbody tr.referent__item')->eq(1)->text());
         $this->assertStringContainsString('BOULON Daniel', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
-        $this->assertStringContainsString('Conseiller(e) municipal(e) (DIV)', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
+        $this->assertStringContainsString('Conseiller(e) municipal(e)', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
         $this->assertStringContainsString('Rouen (76540)', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
         $this->assertStringContainsString('G.s (2018) PS (2014 à 2018)', preg_replace('/\s+/', ' ', $crawler->filter('tbody tr.referent__item')->eq(2)->filter('td')->eq(4)->text()));
         $this->assertStringContainsString('Non', $crawler->filter('tbody tr.referent__item')->eq(2)->text());
@@ -148,7 +148,6 @@ class ReferentElectedRepresentativeControllerTest extends AbstractEnMarcheWebTes
         $this->assertStringContainsString('Emmanuel Macron', $crawler->filter('.elected-representative-sponsorships tbody tr')->eq(1)->text());
         $this->assertCount(1, $crawler->filter('.elected-representative-mandates tbody tr'));
         $this->assertStringContainsString('Conseiller(e) municipal(e)', $crawler->filter('.elected-representative-mandates tbody tr')->text());
-        $this->assertStringContainsString('REM', $crawler->filter('.elected-representative-mandates tbody tr')->text());
         $this->assertStringContainsString('Soutien officiel', $crawler->filter('.elected-representative-mandates tbody tr')->text());
         $this->assertStringContainsString('23 juillet 2019', $crawler->filter('.elected-representative-mandates tbody tr')->text());
         $this->assertStringContainsString('Autre membre (2019) Président(e) d\'EPCI (2015)', preg_replace('/\s+/', ' ', $crawler->filter('.elected-representative-mandates tbody tr')->eq(0)->filter('td')->eq(5)->text()));
@@ -172,7 +171,6 @@ class ReferentElectedRepresentativeControllerTest extends AbstractEnMarcheWebTes
         $this->assertCount(2, $crawler->filter('.elected-representative-labels tbody tr'));
         $this->assertCount(0, $crawler->filter('.sponsorships tbody tr'));
         $this->assertCount(1, $crawler->filter('.elected-representative-candidacies tbody tr'));
-        $this->assertStringContainsString('DIV', $crawler->filter('.elected-representative-candidacies tbody tr')->text());
         $this->assertStringContainsString('Pas soutenu', $crawler->filter('.elected-representative-candidacies tbody tr')->text());
         $this->assertStringContainsString('11 janvier 2017', $crawler->filter('.elected-representative-candidacies tbody tr')->text());
     }

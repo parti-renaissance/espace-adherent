@@ -27,16 +27,8 @@
         {% set labels = labels|merge(['Co-Référent']) %}
     {% endif %}
 
-    {% if object.isAssessorManager %}
-        {% set labels = labels|merge(['Responsable assesseurs']) %}
-    {% endif %}
-
     {% if object.isAnimator %}
         {% set labels = labels|merge(['Responsable comité local']) %}
-    {% endif %}
-
-    {% if object.isAssessor %}
-        {% set labels = labels|merge(['Assesseur']) %}
     {% endif %}
 
     {% if object.isJecouteManager %}

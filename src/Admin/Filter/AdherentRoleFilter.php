@@ -48,12 +48,6 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                     $where->add('ac IS NOT NULL');
                 }
 
-                // Assessor Manager
-                if (\in_array(AdherentRoleEnum::ASSESSOR_MANAGER, $value, true)) {
-                    $qb->leftJoin(sprintf('%s.assessorManagedArea', $alias), 'assessorManagedArea');
-                    $where->add('assessorManagedArea IS NOT NULL AND assessorManagedArea.codes IS NOT NULL');
-                }
-
                 // National Role
                 if (\in_array(ScopeEnum::NATIONAL, $value, true)) {
                     $where->add("$alias.nationalRole = :nationalRole");

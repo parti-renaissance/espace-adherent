@@ -88,17 +88,6 @@
     {% endif %}
 
     {% if isReferent %}
-        {% if enable_assessor_space %}
-            <ul>
-                <li class="menu-section">Élections</li>
-                <li class="{{ is_active_route(app.request, ['app_assessors_referent_*', 'app_vote_results_referent_index', 'app_referent_vote_result_list_edit', 'app_referent_city_vote_results_edit']) ? 'active' }}">
-                    <a href="{{ path('app_assessors_referent_attribution_form') }}">Assesseurs</a>
-                </li>
-            </ul>
-        {% endif %}
-    {% endif %}
-
-    {% if isReferent %}
         <ul>
             <li class="menu-section">Mon équipe</li>
 

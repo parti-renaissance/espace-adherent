@@ -67,7 +67,6 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\BooleanType;
 use Sonata\Form\Type\DatePickerType;
 use Sonata\Form\Type\DateRangePickerType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -414,16 +413,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
                             'label' => 'Rôle National communication',
                             'required' => false,
                         ])
-                        ->add('assessorManagedAreaCodesAsString', TextType::class, [
-                            'label' => 'assessors_manager',
-                            'required' => false,
-                            'help_html' => true,
-                            'help' => <<<HELP
-                                Laisser vide si l'adhérent n'est pas responsable assesseur. Utiliser les codes de pays (FR, DE, ...) ou des préfixes de codes postaux.<br/>
-                                Utiliser le tag <strong>ALL</strong> pour cibler toutes les zones géographiques.
-                                HELP
-                            ,
-                        ])
                     ->end()
                     ->with('Responsable d\'appel', ['class' => 'col-md-6'])
                         ->add('phoningManagerRole', null, [
@@ -530,18 +519,6 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         }
                     }
                 })
-            ;
-
-            $form
-                ->get('assessorManagedAreaCodesAsString')
-                ->addModelTransformer(new CallbackTransformer(
-                    function ($data) {
-                        return $data;
-                    },
-                    function ($value) {
-                        return strtoupper($value);
-                    }
-                ))
             ;
         }
     }

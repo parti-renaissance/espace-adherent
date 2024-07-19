@@ -178,7 +178,7 @@ Feature:
                     "on_going": true,
                     "begin_at": "@string@.isDateTime()",
                     "finish_at": null,
-                    "political_affiliation": "REM",
+                    "political_affiliation": null,
                     "la_r_e_m_support": "official",
                     "political_functions": []
                 }
@@ -252,7 +252,7 @@ Feature:
                     "on_going": true,
                     "begin_at": "@string@.isDateTime()",
                     "finish_at": null,
-                    "political_affiliation": "REM",
+                    "political_affiliation": null,
                     "la_r_e_m_support": "official",
                     "political_functions": []
                 }
@@ -528,7 +528,7 @@ Feature:
       "on_going": true,
       "begin_at": "2019-01-11T00:00:00+01:00",
       "finish_at": null,
-      "political_affiliation": "REM",
+      "political_affiliation": null,
       "la_r_e_m_support": "official",
       "elected_representative": {
         "last_name": "92",
@@ -555,7 +555,7 @@ Feature:
       "on_going": true,
       "begin_at": "2023-01-13",
       "finish_at": null,
-      "political_affiliation": "REM",
+      "political_affiliation": null,
       "la_r_e_m_support": "informal",
       "elected_representative": "0c62d201-826b-4da7-8424-e8e17935b400",
       "political_functions": [
@@ -591,7 +591,7 @@ Feature:
       "on_going": true,
       "begin_at": "2023-01-13T00:00:00+01:00",
       "finish_at": null,
-      "political_affiliation": "REM",
+      "political_affiliation": null,
       "la_r_e_m_support": "informal",
       "elected_representative": {
         "last_name": "92",
@@ -635,7 +635,7 @@ Feature:
       "on_going": true,
       "begin_at": "2023-01-13T00:00:00+01:00",
       "finish_at": null,
-      "political_affiliation": "REM",
+      "political_affiliation": null,
       "la_r_e_m_support": "informal",
       "elected_representative": "0c62d201-826b-4da7-8424-e8e17935b400",
       "political_functions": [
@@ -671,7 +671,7 @@ Feature:
       "on_going": true,
       "begin_at": "2023-01-13T00:00:00+01:00",
       "finish_at": null,
-      "political_affiliation": "REM",
+      "political_affiliation": null,
       "la_r_e_m_support": "informal",
       "elected_representative": {
         "last_name": "92",

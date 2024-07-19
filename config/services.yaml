@@ -22,14 +22,12 @@ parameters:
     besoindeurope_host:                   "%env(BESOINDEUROPE_HOST)%"
     avecvous_qrcode_host:                 "%env(AVECVOUS_QRCODE_HOST)%"
     procuration_host:                     "%env(PROCURATION_HOST)%"
-    assessor_host:                        "%env(ASSESSOR_HOST)%"
     legislatives_avecvous_host:           "%env(LEGISLATIVES_AVECVOUS_HOST)%"
     renaissance_host:                     "%env(RENAISSANCE_HOST)%"
     app_renaissance_host:                 "%env(APP_RENAISSANCE_HOST)%"
     webhook_renaissance_host:             "%env(WEBHOOK_RENAISSANCE_HOST)%"
     api_renaissance_host:                 "%env(API_RENAISSANCE_HOST)%"
     renaissance_qrcode_host:              "%env(RENAISSANCE_QRCODE_HOST)%"
-    assessor_path_prefix:                 ""
     nous_reussirons_host:                 "%env(NOUS_REUSSIRONS_HOST)%"
     mooc_base_url:                        "%env(MOOC_BASE_URL)%"
     api_path_prefix:                      "%env(API_PATH_PREFIX)%"
@@ -58,7 +56,6 @@ services:
             $patternUuid: '%pattern_uuid%'
             $adherentInterests: '%adherent_interests%'
             $mailchimpWebhookKey: '%env(MAILCHIMP_WEBHOOK_KEY)%'
-            $enableAssessorSpace: '%env(bool:ENABLE_ASSESSOR_SPACE)%'
             $timelineMaxItems: '%timeline_max_messages%'
             $renaissanceHost: '%app_renaissance_host%'
             $jemengageHost: '%jemengage_host%'

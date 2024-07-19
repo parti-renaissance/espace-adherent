@@ -24,7 +24,6 @@ class AdherentRoles
         ],
         self::GROUP_ELECTIONS => [
             ScopeEnum::CORRESPONDENT,
-            AdherentRoleEnum::ASSESSOR_MANAGER,
             ScopeEnum::PROCURATIONS_MANAGER,
             ScopeEnum::LEGISLATIVE_CANDIDATE,
         ],

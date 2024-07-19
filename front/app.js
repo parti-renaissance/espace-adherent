@@ -246,24 +246,6 @@ class App {
         });
     }
 
-    runAssessorRequest(countryFieldSelector) {
-        import('pages/assessor_request').catch((error) => { throw error; }).then((module) => {
-            module.default(countryFieldSelector);
-        });
-    }
-
-    runAssessorManagerRequests(queryString, totalCount, perPage) {
-        import('pages/assessor_manager_requests').catch((error) => { throw error; }).then((module) => {
-            module.default(queryString, totalCount, perPage, this.get('api'));
-        });
-    }
-
-    runAssessorManagerVotePlaces(queryString, totalCount, perPage) {
-        import('pages/assessor_manager_vote_places').catch((error) => { throw error; }).then((module) => {
-            module.default(queryString, totalCount, perPage, this.get('api'));
-        });
-    }
-
     runMessageList(buttonClass) {
         import('pages/message_list').catch((error) => { throw error; }).then((module) => {
             module.default(buttonClass, this.get('api'));

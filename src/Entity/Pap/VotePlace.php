@@ -34,8 +34,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     },
  *     itemOperations={},
  * )
- *
- * @deprecated Use {@see \App\Entity\Election\VotePlace}
  */
 #[ORM\Entity(repositoryClass: VotePlaceRepository::class)]
 #[ORM\Index(columns: ['latitude', 'longitude'])]

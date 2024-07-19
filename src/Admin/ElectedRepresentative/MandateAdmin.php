@@ -2,7 +2,6 @@
 
 namespace App\Admin\ElectedRepresentative;
 
-use App\Election\VoteListNuanceEnum;
 use App\Entity\ElectedRepresentative\LaREMSupportEnum;
 use App\Entity\Geo\Zone;
 use App\Form\AdherentMandateType;
@@ -34,11 +33,6 @@ class MandateAdmin extends AbstractAdmin
                 'placeholder' => '--',
                 'label' => 'Type',
                 'attr' => ['class' => 'width-125'],
-            ])
-            ->add('politicalAffiliation', ChoiceType::class, [
-                'choices' => VoteListNuanceEnum::getChoices(),
-                'label' => 'Nuance politique',
-                'required' => true,
             ])
             ->add('isElected', ChoiceType::class, [
                 'required' => true,

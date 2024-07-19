@@ -786,63 +786,6 @@ draft: Brouillon
 sent: Envoyé
 
 #
-# Assessor
-#
-assessor.processed.choices: >-
-    {count, plural,
-        one {Vous avez une demande d'assesseur traitée.}
-        other {Vous avez # demandes d'assesseur traitées.}
-    }
-assessor.unprocessed.choices: >-
-    {count, plural,
-        one {Vous avez une demande d'assesseur à traiter.}
-        other {Vous avez # demandes d'assesseur à traiter.}
-    }
-assessor.associate.success: L'assesseur a bien été associé au bureau de vote.
-assessor.deassociate.success: L'assesseur a bien été désassocié du bureau de vote.
-assessor.disabled.success: L'assesseur a bien été désactivé.
-assessor.enabled.success: L'assesseur a bien été réactivé.
-
-#
-# Assessor request
-#
-assessor_request.create.success: Votre demande a bien été prise en compte.
-assessor_request.office.holder.label: Titulaire
-assessor_request.office.substitute.label: Suppléant
-assessor_request.election_rounds.first_round: Le premier tour
-assessor_request.election_rounds.second_round: Le deuxième tour
-
-#
-# Vote Place
-#
-vote_place.unassociated.choices: >-
-    {count, plural,
-        one {Vous avez un bureau de vote à remplir.}
-        other {Vous avez # bureaux de vote à remplir.}
-    }
-vote_place.associated.choices: >-
-    {count, plural,
-        one {Vous avez un bureau de vote complet.}
-        other {Vous avez # bureaux de vote complet.}
-    }
-vote_place.availability:none: 'Aucune'
-vote_place.results.completed: Complété
-vote_place.results.partial: Partiel
-vote_place.results.empty: Vide
-vote.type.feasible: 'Réalisable'
-vote.type.important: 'Essentielle'
-vote.type.innovative: 'Innovante'
-
-#
-# Vote Place Cities
-#
-cities.associated.choices: >-
-    {count, plural,
-        one {Vous avez une commune assignée avec au moins un assesseur.}
-        other {Vous avez # communes assignées avec au moins un assesseur.}
-    }
-
-#
 # Application request
 #
 application_request.tags.edited_successfully: Les tags ont bien été mis à jour

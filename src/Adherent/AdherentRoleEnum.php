@@ -15,8 +15,6 @@ class AdherentRoleEnum extends Enum
     public const ANIMATOR = 'animator';
     public const COMMITTEE_PROVISIONAL_SUPERVISOR = 'committee_provisional_supervisor';
 
-    public const ASSESSOR_MANAGER = 'assessor_manager';
-
     public const ONGOING_ELECTED_REPRESENTATIVE = 'ongoing_eletected_representative';
 
     public const PAP_USER = 'pap_user';

@@ -240,20 +240,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $coordinatorCommitteeArea;
 
     /**
-     * @var AssessorManagedArea|null
-     */
-    #[Assert\Valid]
-    #[ORM\OneToOne(targetEntity: AssessorManagedArea::class, cascade: ['all'], orphanRemoval: true)]
-    private $assessorManagedArea;
-
-    /**
-     * @var AssessorRoleAssociation|null
-     */
-    #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[ORM\OneToOne(targetEntity: AssessorRoleAssociation::class, cascade: ['all'])]
-    private $assessorRole;
-
-    /**
      * @var BoardMember|null
      */
     #[ORM\OneToOne(mappedBy: 'adherent', targetEntity: BoardMember::class, cascade: ['all'], orphanRemoval: true)]
@@ -809,14 +795,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_PROCURATION_MANAGER';
         }
 
-        if ($this->isAssessorManager()) {
-            $roles[] = 'ROLE_ASSESSOR_MANAGER';
-        }
-
-        if ($this->isAssessor()) {
-            $roles[] = 'ROLE_ASSESSOR';
-        }
-
         if ($this->isJecouteManager()) {
             $roles[] = 'ROLE_JECOUTE_MANAGER';
         }
@@ -915,8 +893,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isDelegatedReferent()
             || $this->isRegionalCoordinator()
             || $this->isProcurationsManager()
-            || $this->isAssessorManager()
-            || $this->isAssessor()
             || $this->isJecouteManager()
             || $this->isSupervisor()
             || $this->isHost()
@@ -1407,26 +1383,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             : [];
     }
 
-    public function getAssessorManagedArea(): ?AssessorManagedArea
-    {
-        return $this->assessorManagedArea;
-    }
-
-    public function setAssessorManagedArea(?AssessorManagedArea $assessorManagedArea = null): void
-    {
-        $this->assessorManagedArea = $assessorManagedArea;
-    }
-
-    public function getAssessorRole(): ?AssessorRoleAssociation
-    {
-        return $this->assessorRole;
-    }
-
-    public function setAssessorRole(?AssessorRoleAssociation $assessorRole): void
-    {
-        $this->assessorRole = $assessorRole;
-    }
-
     public function getBoardMember(): ?BoardMember
     {
         return $this->boardMember;
@@ -1509,11 +1465,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->managedArea = null;
     }
 
-    public function revokeAssessorManager(): void
-    {
-        $this->assessorManagedArea = null;
-    }
-
     public function revokeJecouteManager(): void
     {
         $this->jecouteManagedArea = null;
@@ -1524,37 +1475,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->hasZoneBasedRole(ScopeEnum::PROCURATIONS_MANAGER);
     }
 
-    public function isAssessorManager(): bool
-    {
-        return $this->assessorManagedArea instanceof AssessorManagedArea && !empty($this->assessorManagedArea->getCodes());
-    }
-
-    public function isAssessor(): bool
-    {
-        return !empty($this->assessorRole);
-    }
-
     public function canBeProxy(): bool
     {
         return $this->isReferent() || $this->isProcurationsManager();
-    }
-
-    public function getAssessorManagedAreaCodesAsString(): ?string
-    {
-        if (!$this->assessorManagedArea) {
-            return '';
-        }
-
-        return $this->assessorManagedArea->getCodesAsString();
-    }
-
-    public function setAssessorManagedAreaCodesAsString(?string $codes = null): void
-    {
-        if (!$this->assessorManagedArea) {
-            $this->assessorManagedArea = new AssessorManagedArea();
-        }
-
-        $this->assessorManagedArea->setCodesAsString($codes);
     }
 
     public function isCoordinatorCommitteeSector(): bool

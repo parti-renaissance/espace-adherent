@@ -8,7 +8,6 @@ use App\ElectedRepresentative\ElectedRepresentativeEvent;
 use App\ElectedRepresentative\ElectedRepresentativeEvents;
 use App\ElectedRepresentative\ElectedRepresentativeMandatesOrderer;
 use App\ElectedRepresentative\UserListDefinitionHistoryManager;
-use App\Election\VoteListNuanceEnum;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
@@ -109,7 +108,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
                 'label' => 'Prénom',
             ])
             ->add('currentMandates', null, [
-                'label' => 'Mandats actuels (nuance politique)',
+                'label' => 'Mandats actuels',
                 'template' => 'admin/elected_representative/list_mandates.html.twig',
             ])
             ->add('currentZones', null, [
@@ -423,32 +422,6 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
 
                             break;
                     }
-
-                    return true;
-                },
-            ])
-            ->add('mandates.politicalAffiliation', CallbackFilter::class, [
-                'label' => 'Nuance politique',
-                'show_filter' => true,
-                'field_type' => ChoiceType::class,
-                'field_options' => [
-                    'choices' => VoteListNuanceEnum::toArray(),
-                    'multiple' => true,
-                ],
-                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
-                    if (!$value->hasValue()) {
-                        return false;
-                    }
-
-                    $where = new Expr\Orx();
-
-                    foreach ($value->getValue() as $politicalAffiliation) {
-                        $where->add("$alias.politicalAffiliation = :pa_".$politicalAffiliation);
-                        $qb->setParameter('pa_'.$politicalAffiliation, $politicalAffiliation);
-                    }
-
-                    $qb->andWhere($where);
-                    $qb->andWhere("$alias.onGoing = 1");
 
                     return true;
                 },

@@ -1,43 +1,5 @@
 framework:
     workflows:
-        assessor_request:
-            type: state_machine
-            initial_marking: !php/const App\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
-            supports: [App\Assessor\AssessorRequestCommand]
-            marking_store:
-                type: 'method'
-                property: 'marking'
-            places:
-                - !php/const App\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
-                - !php/const App\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
-                - !php/const App\Assessor\AssessorRequestEnum::STATE_SUMMARY
-                - !php/const App\Assessor\AssessorRequestEnum::STATE_REQUEST_SENT
-            transitions:
-                !php/const App\Assessor\AssessorRequestEnum::TRANSITION_FILL_PERSONAL_INFO:
-                    from:
-                        - !php/const App\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
-                    to: !php/const App\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
-
-                !php/const App\Assessor\AssessorRequestEnum::TRANSITION_FILL_ASSESSOR_INFO:
-                    from:
-                        - !php/const App\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
-                    to: !php/const App\Assessor\AssessorRequestEnum::STATE_SUMMARY
-
-                !php/const App\Assessor\AssessorRequestEnum::TRANSITION_VALID_SUMMARY:
-                    from:
-                        - !php/const App\Assessor\AssessorRequestEnum::STATE_SUMMARY
-                    to: !php/const App\Assessor\AssessorRequestEnum::STATE_REQUEST_SENT
-
-                !php/const App\Assessor\AssessorRequestEnum::TRANSITION_BACK_ASSESSOR_INFO:
-                    from:
-                        - !php/const App\Assessor\AssessorRequestEnum::STATE_SUMMARY
-                    to : !php/const App\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
-
-                !php/const App\Assessor\AssessorRequestEnum::TRANSITION_BACK_PERSONAL_INFO:
-                    from:
-                        - !php/const App\Assessor\AssessorRequestEnum::STATE_ASSESSOR_INFO
-                    to : !php/const App\Assessor\AssessorRequestEnum::STATE_PERSONAL_INFO
-
         voting_process:
             type: 'state_machine'
             marking_store:

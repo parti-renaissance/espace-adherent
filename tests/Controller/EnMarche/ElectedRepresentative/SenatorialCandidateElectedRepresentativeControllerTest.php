@@ -22,7 +22,7 @@ class SenatorialCandidateElectedRepresentativeControllerTest extends AbstractEnM
 
         $this->assertCount(1, $crawler->filter('tbody tr.referent__item'));
         $this->assertStringContainsString('Nord Département', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
-        $this->assertStringContainsString('Sénateur(rice) (RN)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
+        $this->assertStringContainsString('Sénateur(rice)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
         $this->assertStringContainsString('Nord (59)', $crawler->filter('tbody tr.referent__item')->eq(0)->text());
     }
 
