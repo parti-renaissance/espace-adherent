@@ -35,11 +35,11 @@ class FinishAdhesionListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$adherent->isV2() || $adherent->isFullyCompletedAdhesion()) {
+        if (!$adherent->isV2() || $adherent->isFullyCompletedAdhesion($adherent->isRenaissanceAdherent())) {
             return;
         }
 
-        if ($nextStepRouteName = AdhesionStepEnum::getNextStep($adherent->getFinishedAdhesionSteps())) {
+        if ($nextStepRouteName = AdhesionStepEnum::getNextStep($adherent->isRenaissanceAdherent(), $adherent->getFinishedAdhesionSteps())) {
             $event->setResponse(new RedirectResponse($this->urlGenerator->generate($nextStepRouteName)));
         }
     }

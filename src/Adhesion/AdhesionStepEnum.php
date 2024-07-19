@@ -15,16 +15,26 @@ final class AdhesionStepEnum
     public const COMMUNICATION = 'communication';
     public const MEMBER_CARD = 'member_card';
 
-    public static function all(): array
+    public static function all(bool $isAdherent): array
     {
+        if ($isAdherent) {
+            return [
+                Adhesion\AdhesionController::ROUTE_NAME => self::MAIN_INFORMATION,
+                Adhesion\ActivateEmailController::ROUTE_NAME => self::ACTIVATION,
+                Adhesion\CreatePasswordController::ROUTE_NAME => self::PASSWORD,
+                Adhesion\FurtherInformationController::ROUTE_NAME => self::FURTHER_INFORMATION,
+                Adhesion\MemberCardController::ROUTE_NAME => self::MEMBER_CARD,
+                Adhesion\CommunicationReminderController::ROUTE_NAME => self::COMMUNICATION,
+                Adhesion\CommitteeController::ROUTE_NAME => self::COMMITTEE,
+            ];
+        }
+
         return [
             Adhesion\AdhesionController::ROUTE_NAME => self::MAIN_INFORMATION,
             Adhesion\ActivateEmailController::ROUTE_NAME => self::ACTIVATION,
             Adhesion\CreatePasswordController::ROUTE_NAME => self::PASSWORD,
             Adhesion\FurtherInformationController::ROUTE_NAME => self::FURTHER_INFORMATION,
-            Adhesion\MemberCardController::ROUTE_NAME => self::MEMBER_CARD,
             Adhesion\CommunicationReminderController::ROUTE_NAME => self::COMMUNICATION,
-            Adhesion\CommitteeController::ROUTE_NAME => self::COMMITTEE,
         ];
     }
 
@@ -39,9 +49,9 @@ final class AdhesionStepEnum
         ];
     }
 
-    public static function getNextStep(array $finishedSteps): ?string
+    public static function getNextStep(bool $isAdherent, array $finishedSteps): ?string
     {
-        return self::getNextStepInCollection(self::all(), $finishedSteps);
+        return self::getNextStepInCollection(self::all($isAdherent), $finishedSteps);
     }
 
     public static function getBesoinDEuropeNextStep(array $finishedSteps): ?string
