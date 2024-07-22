@@ -42,7 +42,7 @@
         "algolia/search-bundle": "^6.0",
         "api-platform/core": "^2.7",
         "beberlei/doctrineextensions": "^1.2",
-        "cakephp/chronos": "^2.1",
+        "cakephp/chronos": "^3.1",
         "cocur/slugify": "^4.0",
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^3.0",
