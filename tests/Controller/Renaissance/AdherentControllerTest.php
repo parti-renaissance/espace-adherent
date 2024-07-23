@@ -49,17 +49,6 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertStringContainsString('Inscrite depuis le 25 janvier 2017', $crawler->filter('#adherent-since')->text());
     }
 
-    #[DataProvider('provideProfilePage')]
-    public function testProfileActionIsNotAccessibleForEMAdherent(string $profilePage): void
-    {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-
-        $this->client->request(Request::METHOD_GET, $profilePage);
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/', $this->client);
-    }
-
     public static function provideProfilePage(): \Generator
     {
         yield 'Mot de passe' => ['/parametres/mon-compte/changer-mot-de-passe'];

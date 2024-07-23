@@ -20,14 +20,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
 
     private $committeeRepository;
 
-    public function testBackButtonNotPresentWhenCommitteeIsPending(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'benjyd@aol.com');
-        $this->client->request(Request::METHOD_GET, '/comites/en-marche-marseille-3/editer');
-
-        $this->assertStringNotContainsString('Tous mes comités', $this->client->getResponse()->getContent());
-    }
-
     public function testBackButtonPresentWhenCommitteeIsAccepted(): void
     {
         $this->authenticateAsAdherent($this->client, 'kiroule.p@blabla.tld');
@@ -154,7 +146,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertStringContainsString('3 adhérents', $crawler->filter('.committee__infos')->text());
+        $this->assertStringContainsString('2 adhérents', $crawler->filter('.committee__infos')->text());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertTrue($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -265,7 +257,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeFollowLink($crawler), 'The guest should not see the "follow link"');
         $this->assertFalse($this->seeUnfollowLink($crawler), 'The guest should not see the "unfollow link"');
-        $this->assertTrue($this->seeMembersCount($crawler, 3), 'The guest should see the members count');
+        $this->assertTrue($this->seeMembersCount($crawler, 2), 'The guest should see the members count');
         $this->assertTrue($this->seeHosts($crawler, 2), 'The guest should see the hosts');
         $this->assertFalse($this->seeHostNav($crawler), 'The guest should not see the host navigation');
         $this->assertSeeSocialLinks($crawler, $this->committeeRepository->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_1_UUID));
@@ -295,7 +287,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $this->assertFalse($this->seeLoginLink($crawler), 'The adherent should not see the "login link"');
         $this->assertTrue($this->seeFollowLink($crawler), 'The adherent should see the "follow link"');
         $this->assertFalse($this->seeUnfollowLink($crawler), 'The adherent should not see the "unfollow link"');
-        $this->assertTrue($this->seeMembersCount($crawler, 3), 'The adherent should see the members count');
+        $this->assertTrue($this->seeMembersCount($crawler, 2), 'The adherent should see the members count');
         $this->assertTrue($this->seeHosts($crawler, 2), 'The adherent should see the hosts');
         $this->assertTrue($this->seeHostsContactLink($crawler, 2), 'The adherent should see the hosts contact link');
         $this->assertFalse($this->seeHostNav($crawler), 'The adherent should not see the host navigation');
@@ -313,7 +305,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $this->assertFalse($this->seeLoginLink($crawler), 'The adherent should not see the "login link"');
         $this->assertFalse($this->seeFollowLink($crawler), 'The follower should not see the "follow link"');
         $this->assertTrue($this->seeUnfollowLink($crawler), 'The follower should see the "unfollow link"');
-        $this->assertTrue($this->seeMembersCount($crawler, 3), 'The follower should see the members count');
+        $this->assertTrue($this->seeMembersCount($crawler, 2), 'The follower should see the members count');
         $this->assertTrue($this->seeHosts($crawler, 2), 'The follower should see the hosts');
         $this->assertTrue($this->seeHostsContactLink($crawler, 2), 'The follower should see the hosts contact link');
         $this->assertFalse($this->seeHostNav($crawler), 'The follower should not see the host navigation');
@@ -331,7 +323,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $this->assertFalse($this->seeLoginLink($crawler), 'The adherent should not see the "login link"');
         $this->assertFalse($this->seeFollowLink($crawler), 'The host should not see the "follow link"');
         $this->assertTrue($this->seeUnfollowLink($crawler), 'The host should see the "unfollow link" because there is another host');
-        $this->assertTrue($this->seeMembersCount($crawler, 3), 'The host should see the members count');
+        $this->assertTrue($this->seeMembersCount($crawler, 2), 'The host should see the members count');
         $this->assertTrue($this->seeHosts($crawler, 2), 'The host should see the hosts');
         $this->assertTrue($this->seeHostsContactLink($crawler, 1), 'The host should see the other contact links');
         $this->assertTrue($this->seeSelfHostContactLink($crawler, 'Gisele Berthoux', 'Co-animatrice'), 'The host should see his own contact link');

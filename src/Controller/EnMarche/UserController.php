@@ -82,13 +82,12 @@ class UserController extends AbstractController
             return $this->render('adherent/renaissance_profile.html.twig');
         }
 
-        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('renaissance_site');
-        }
+        $form = $this
+            ->createForm(AdherentChangePasswordType::class)
+            ->handleRequest($request)
+        ;
 
-        $form = $this->createForm(AdherentChangePasswordType::class);
-
-        if ($form->handleRequest($request)->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $handler->changePassword($adherent, $form->get('password')->getData());
             $this->addFlash('info', 'adherent.update_password.success');
 
@@ -121,10 +120,6 @@ class UserController extends AbstractController
 
         if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
             return $this->render('adherent/renaissance_profile.html.twig');
-        }
-
-        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('renaissance_site');
         }
 
         $unregistrationCommand = new UnregistrationCommand();

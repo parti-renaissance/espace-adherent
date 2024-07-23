@@ -328,7 +328,7 @@ class CommitteeManager
         $this->entityManager->remove($membership);
         $adherent = $membership->getAdherent();
 
-        $committee->updateMembersCount(false, $adherent->isRenaissanceUser(), $adherent->isRenaissanceAdherent());
+        $committee->updateMembersCount(false, $adherent->isRenaissanceSympathizer(), $adherent->isRenaissanceAdherent());
 
         $this->entityManager->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::LEAVE()));
 
