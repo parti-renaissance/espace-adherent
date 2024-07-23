@@ -91,10 +91,6 @@ class AdherentController extends AbstractController
             return $this->render('adherent/renaissance_profile.html.twig');
         }
 
-        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('homepage');
-        }
-
         $form = $this
             ->createForm(AdherentInterestsFormType::class, $adherent)
             ->handleRequest($request)

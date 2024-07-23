@@ -722,21 +722,21 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
 
     public function updateMembersCount(
         bool $incrementAction,
-        bool $isRenaissanceUser,
-        bool $isRenaissanceAdherent
+        bool $isSympathizer,
+        bool $isAdherent
     ): void {
         if ($incrementAction) {
-            if ($isRenaissanceAdherent) {
+            if ($isAdherent) {
                 $this->incrementMembersCount();
-            } elseif ($isRenaissanceUser) {
+            } elseif ($isSympathizer) {
                 $this->incrementSympathizersCount();
             } else {
                 $this->incrementMembersEmCount();
             }
         } else {
-            if ($isRenaissanceAdherent) {
+            if ($isAdherent) {
                 $this->decrementMembersCount();
-            } elseif ($isRenaissanceUser) {
+            } elseif ($isSympathizer) {
                 $this->decrementSympathizersCount();
             } else {
                 $this->decrementMembersEmCount();

@@ -30,7 +30,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
     private $emailRepository;
 
     #[DataProvider('getAdherentEmails')]
-    public function testAuthenticationIsSuccessful(string $email, string $fullName, bool $isRenaissanceUser): void
+    public function testAuthenticationIsSuccessful(string $email, string $fullName): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 

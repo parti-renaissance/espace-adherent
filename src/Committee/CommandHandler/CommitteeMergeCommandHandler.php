@@ -162,7 +162,7 @@ class CommitteeMergeCommandHandler
         /** @var CommitteeMembership[] $memberships */
         foreach ($memberships as $membership) {
             $adherent = $membership->getAdherent();
-            $committee->updateMembersCount(false, $adherent->isRenaissanceUser(), $adherent->isRenaissanceAdherent());
+            $committee->updateMembersCount(false, $adherent->isRenaissanceSympathizer(), $adherent->isRenaissanceAdherent());
 
             $this->em->remove($membership);
 

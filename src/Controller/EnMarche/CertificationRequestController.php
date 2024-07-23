@@ -12,7 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route(path: '/espace-adherent/mon-compte/certification', name: 'app_certification_request_')]
 class CertificationRequestController extends AbstractController
@@ -28,10 +27,6 @@ class CertificationRequestController extends AbstractController
 
         if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
             return $this->render('adherent/renaissance_profile.html.twig');
-        }
-
-        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirectToRoute('renaissance_site');
         }
 
         return $this->render(AppCodeEnum::isRenaissanceApp($appCode)
@@ -55,10 +50,6 @@ class CertificationRequestController extends AbstractController
 
         if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
             return $this->render('adherent/renaissance_profile.html.twig');
-        }
-
-        if ($isRenaissanceApp && !$adherent->isRenaissanceUser()) {
-            return $this->redirect($this->generateUrl('app_renaissance_adherent_space', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 
         if (!$this->isGranted(CertificationPermissions::REQUEST)) {
