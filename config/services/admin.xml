@@ -433,6 +433,22 @@
             <argument />
         </service>
 
+        <service id="app.admin.procuration_v2.request_slot" class="App\Admin\Procuration\RequestSlotAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Procurations » Slots Mandants" group="Élections" />
+
+            <argument />
+            <argument>App\Entity\ProcurationV2\RequestSlot</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.procuration_v2.proxy_slot" class="App\Admin\Procuration\ProxySlotAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Procurations » Slots Mandataires" group="Élections" />
+
+            <argument />
+            <argument>App\Entity\ProcurationV2\ProxySlot</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.vote_place_admin" class="App\Admin\VotePlaceAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Assesseur(e)s » Bureaux de vote" group="Élections" />
 

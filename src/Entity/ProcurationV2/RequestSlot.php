@@ -62,6 +62,15 @@ class RequestSlot extends AbstractSlot
         $this->actions = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return sprintf(
+            '%s [%s]',
+            $this->request,
+            $this->round
+        );
+    }
+
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_request_slot_read'])]
     public function getProxy(): ?Proxy
     {

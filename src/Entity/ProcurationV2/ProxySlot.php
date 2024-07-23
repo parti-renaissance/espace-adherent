@@ -55,6 +55,28 @@ class ProxySlot extends AbstractSlot
         $this->actions = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return sprintf(
+            '%s [%s]',
+            $this->proxy,
+            $this->round
+        );
+    }
+
+    public function setRequestSlot(?RequestSlot $requestSlot): void
+    {
+        if ($this->requestSlot && $requestSlot !== $this->requestSlot) {
+            $this->requestSlot->proxySlot = null;
+        }
+
+        if ($requestSlot) {
+            $requestSlot->proxySlot = $this;
+        }
+
+        $this->requestSlot = $requestSlot;
+    }
+
     #[Groups(['procuration_matched_proxy', 'procuration_proxy_list', 'procuration_proxy_slot_read'])]
     public function getRequest(): ?Request
     {
