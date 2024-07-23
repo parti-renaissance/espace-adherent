@@ -80,7 +80,7 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
             );
 
         if ($needClean) {
-            $eventData = $this->eventCleaner->cleanEventData($eventData);
+            $eventData = $this->eventCleaner->cleanEventData($eventData, $event->isForAdherent() && PrivatePublicContextBuilder::CONTEXT_PUBLIC_ANONYMOUS === $apiContext);
             $eventData['object_state'] = 'partial';
         } else {
             $eventData['object_state'] = 'full';

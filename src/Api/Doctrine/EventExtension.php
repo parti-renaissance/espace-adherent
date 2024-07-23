@@ -86,6 +86,11 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
                     'z3_zone_parent'
                 );
             }
+        } else {
+            $queryBuilder
+                ->andWhere("$alias.visibility IN (:public_visibilities)")
+                ->setParameter('public_visibilities', [EventVisibilityEnum::PUBLIC, EventVisibilityEnum::PRIVATE])
+            ;
         }
     }
 
@@ -98,16 +103,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
             ->setParameter('true', true)
         ;
 
-        if (PrivatePublicContextBuilder::CONTEXT_PUBLIC_ANONYMOUS === $context[PrivatePublicContextBuilder::CONTEXT_KEY]) {
-            $queryBuilder
-                ->andWhere("$alias.visibility IN (:public_visibilities)")
-                ->setParameter('public_visibilities', [EventVisibilityEnum::PUBLIC, EventVisibilityEnum::PRIVATE])
-            ;
-        } elseif (PrivatePublicContextBuilder::CONTEXT_PRIVATE === $context[PrivatePublicContextBuilder::CONTEXT_KEY]) {
-            $eventStatus = null;
-        }
-
-        if ($eventStatus) {
+        if (PrivatePublicContextBuilder::CONTEXT_PRIVATE !== $context[PrivatePublicContextBuilder::CONTEXT_KEY] && $eventStatus) {
             $queryBuilder
                 ->andWhere("$alias.status = :status")
                 ->setParameter('status', $eventStatus)

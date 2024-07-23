@@ -86,7 +86,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *             "method": "GET",
  *             "path": "/events/{uuid}",
  *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "object.isPublic() or object.isPrivate()",
  *         },
  *         "put": {
  *             "path": "/v3/events/{uuid}",
