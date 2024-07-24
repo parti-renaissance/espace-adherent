@@ -93,11 +93,6 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::COMMUNICATION
         );
         yield $this->createRole(
-            'ROLE_ADMIN_COMMUNICATION_LIVE_LINKS',
-            'Administrateur des liens en direct',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_NEWSLETTER_SUBSCRIPTIONS',
             'Administrateur des inscriptions aux newsletters',
             AdministratorRoleGroupEnum::COMMUNICATION

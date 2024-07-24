@@ -982,14 +982,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.live_link" class="App\Admin\LiveLinkAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Liens En Direct" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\LiveLink</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.application_request_technical_skill" class="App\Admin\ApplicationRequest\TechnicalSkillAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Muni » Compétences techniques" group="Archives (à dépublier)" />
 
