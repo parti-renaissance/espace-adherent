@@ -1034,22 +1034,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.legislative_candidate" class="App\Admin\LegislativeCandidateAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Trombi Élus" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\LegislativeCandidate</argument>
-            <argument />
-
-            <call method="setStorage">
-                <argument type="service" id="League\Flysystem\FilesystemOperator" />
-            </call>
-
-            <call method="setGlide">
-                <argument type="service" id="League\Glide\Server" />
-            </call>
-        </service>
-
         <service id="app.admin.referent" class="App\Admin\ReferentAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Trombi Référents" group="Archives (à dépublier)" />
 

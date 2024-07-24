@@ -134,20 +134,6 @@ api_platform:
     prefix: "%api_path_prefix%"
 
 #
-# API Legislatives
-#
-app_legislatives_api:
-    host:     "{app_domain}"
-    resource: "../src/Controller/Api/LegislativesController.php"
-    type:     "annotation"
-    prefix:   "%api_path_prefix%"
-    defaults:
-        _format: 'json'
-        app_domain: "%legislatives_host%"
-    requirements:
-        app_domain: "%app_host%|%legislatives_host%|%app_renaissance_host%"
-
-#
 # OAuth
 #
 app_oauth:
