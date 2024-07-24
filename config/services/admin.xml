@@ -1089,27 +1089,6 @@
             <argument>App\Controller\Admin\AdminCommitteeMergeHistoryController</argument>
         </service>
 
-        <service id="app.admin.referent" class="App\Admin\ReferentAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Trombi Référents" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\Referent</argument>
-            <argument>App\Controller\Admin\AdminReferentController</argument>
-            <argument type="service" id="App\Form\DataTransformer\ReferentAreaTransformer" />
-            <call method="setTemplate">
-                <argument>list</argument>
-                <argument>admin/referent/admin_list.html.twig</argument>
-            </call>
-        </service>
-
-        <service id="app.admin.referent_area" class="App\Admin\ReferentAreaAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Zone des référents" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\ReferentArea</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.city" class="App\Admin\CityAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Communes" group="Archives (à dépublier)" />
 
