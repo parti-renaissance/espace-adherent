@@ -108,11 +108,6 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::COMMUNICATION
         );
         yield $this->createRole(
-            'ROLE_ADMIN_COMMUNICATION_SMS_CAMPAIGNS',
-            'Administrateur des campagnes SMS',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER,
-        );
-        yield $this->createRole(
             'ROLE_ADMIN_COMMUNICATION_QR_CODES',
             'Administrateur des QR Codes',
             AdministratorRoleGroupEnum::COMMUNICATION

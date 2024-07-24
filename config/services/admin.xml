@@ -1008,19 +1008,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.sms_campaign" class="App\Admin\SmsCampaignAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Campagne SMS" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\SmsCampaign\SmsCampaign</argument>
-            <argument>App\Controller\Admin\AdminSmsCampaignCRUDController</argument>
-
-            <call method="setTemplate">
-                <argument>edit</argument>
-                <argument>admin/sms_campaign/edit.html.twig</argument>
-            </call>
-        </service>
-
         <service id="app.admin.application_request_technical_skill" class="App\Admin\ApplicationRequest\TechnicalSkillAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Muni » Compétences techniques" group="Archives (à dépublier)" />
 

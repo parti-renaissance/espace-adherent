@@ -27,7 +27,6 @@ use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Pap\CampaignHistory as PapCampaignHistory;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Phoning\CampaignHistory;
-use App\Entity\SmsCampaign\SmsCampaign;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\VotersList;
 use App\Membership\MembershipSourceEnum;
@@ -907,30 +906,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->setParameter('privilege', CommitteeMembership::COMMITTEE_HOST)
             ->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)
         ;
-    }
-
-    /** @return PaginatorInterface|Adherent[] */
-    public function findForSmsCampaign(
-        SmsCampaign $smsCampaign,
-        bool $uniquePhone,
-        int $page = 1,
-        int $limit = 100
-    ): PaginatorInterface {
-        return $this->configurePaginator($this->createQueryBuilderForSmsCampaign($smsCampaign, $uniquePhone), $page, $limit);
-    }
-
-    public function createQueryBuilderForSmsCampaign(SmsCampaign $smsCampaign, bool $uniquePhone = false): QueryBuilder
-    {
-        $qb = $this->createQueryBuilderForAudience($smsCampaign->getAudience())
-            ->andWhere('adherent.phone LIKE :phone')
-            ->setParameter('phone', '+33%')
-        ;
-
-        if ($uniquePhone) {
-            $qb->groupBy('adherent.phone');
-        }
-
-        return $qb;
     }
 
     public function createQueryBuilderForAudience(AudienceInterface $audience): QueryBuilder
