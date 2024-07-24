@@ -9,10 +9,6 @@ algolia_search:
             class: App\Entity\Proposal
             index_if: isIndexable
 
-        -   name: clarification
-            class: App\Entity\Clarification
-            index_if: isIndexable
-
         -   name: timeline_measure
             class: App\Entity\Timeline\Measure
 

@@ -108,15 +108,6 @@ class LoadPageData extends Fixture
         ]));
 
         $manager->persist($this->pageFactory->createFromArray([
-            'keywords' => 'désintox fake news fausse informations',
-            'title' => 'Désintox',
-            'slug' => 'desintox',
-            'description' => $description,
-            'content' => file_get_contents(__DIR__.'/../desintox.html'),
-            'media' => $media,
-        ]));
-
-        $manager->persist($this->pageFactory->createFromArray([
             'keywords' => 'mentions légales',
             'title' => 'Mentions légales',
             'slug' => 'mentions-legales',
