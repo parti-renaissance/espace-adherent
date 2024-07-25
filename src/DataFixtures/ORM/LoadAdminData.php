@@ -17,7 +17,6 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
     {
         $adminRoles = $this->getRoles([
             'ROLE_ADMIN_COMMUNICATION_MEDIAS',
-            'ROLE_ADMIN_COMMUNICATION_LIVE_LINKS',
             'ROLE_ADMIN_ARCHIVES_PROPOSALS',
             'ROLE_ADMIN_ARCHIVES_EXPLICATIONS',
             'ROLE_ADMIN_ARCHIVES_FACEBOOK_PROFILES',
@@ -97,7 +96,6 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
             'ROLE_ADMIN_COMMUNICATION_PAGES',
             'ROLE_ADMIN_ARCHIVES_CONTENU',
             'ROLE_ADMIN_ARCHIVES_JE_PARTAGE',
-            'ROLE_ADMIN_COMMUNICATION_LIVE_LINKS',
             'ROLE_ADMIN_ARCHIVES_PROPOSALS',
             'ROLE_ADMIN_ARCHIVES_EXPLICATIONS',
             'ROLE_ADMIN_ARCHIVES_FACEBOOK_PROFILES',
