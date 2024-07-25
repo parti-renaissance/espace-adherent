@@ -63,7 +63,6 @@ services:
             $avecvousHost: '%avecvous_host%'
             $userBesoinDEuropeHost: '%user_besoindeurope_host%'
             $userLegislativeHost: '%user_legislative_host%'
-            $ovhSmsWebhookKey: '%env(OVHCLOUD_SMS_WEBHOOK_KEY)%'
             $dynamicLinksHost: '%env(DYNAMIC_LINKS_HOST)%'
             $jemengageAppPackageId: '%env(JEMENGAGE_APP_PACKAGE_ID)%'
             $invalidEmailHashKey: '%env(INVALID_EMAIL_HASH_KEY)%'
@@ -348,14 +347,6 @@ services:
     App\VotingPlatform\Election\ResultCalculator:
         arguments: [ !tagged_iterator { tag: 'app.voting_platform.result_calculator', default_priority_method: 'getPriority' } ]
 
-    App\OvhCloud\Driver:
-        arguments:
-            $applicationKey: '%env(OVHCLOUD_APPLICATION_KEY)%'
-            $applicationSecret: '%env(OVHCLOUD_APPLICATION_SECRET)%'
-            $consumerKey: '%env(OVHCLOUD_CONSUMER_KEY)%'
-            $serviceName: '%env(OVHCLOUD_SERVICE_NAME)%'
-            $senderName: '%env(OVHCLOUD_SMS_SENDER_NAME)%'
-
     App\JMEFilter\FiltersGenerator:
         arguments: [!tagged_iterator 'app.filter.builder']
 
@@ -384,9 +375,6 @@ services:
     App\Api\Serializer\DesignationGroupsContextBuilder:
         decorates: 'api_platform.serializer.context_builder'
         arguments: ['@App\Api\Serializer\DesignationGroupsContextBuilder.inner']
-
-    App\SmsCampaign\Listener\AdherentChangeSmsNotificationListener:
-        tags: [{name: 'monolog.logger'}]
 
     Symfony\Bridge\Monolog\Processor\TokenProcessor:
         tags: ['monolog.processor']

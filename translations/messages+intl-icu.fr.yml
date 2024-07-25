@@ -1236,11 +1236,6 @@ team.type.phoning: Phoning
 team_member_history.action.add: Ajout
 team_member_history.action.remove: Suppression
 
-sms_campaign.status.draft: 📝 Brouillon
-sms_campaign.status.sending: 💌 En cours d'envoi
-sms_campaign.status.done: ✅ Envoyée
-sms_campaign.status.error: ⛔ Erreur
-
 #
 # Help
 #
