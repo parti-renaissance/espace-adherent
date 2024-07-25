@@ -12,7 +12,6 @@ export default class AlgoliaSearch extends React.Component {
 
         this.customResultsIndex = client.initIndex(`app_${props.environment}_custom_search_result`);
         this.proposalsIndex = client.initIndex(`app_${props.environment}_proposal`);
-        this.clarificationsIndex = client.initIndex(`app_${props.environment}_clarification`);
         this.eventsIndex = client.initIndex(`app_${props.environment}_event`);
 
         this.state = {
@@ -55,7 +54,6 @@ export default class AlgoliaSearch extends React.Component {
         const hits = {
             custom: [],
             proposal: [],
-            clarification: [],
             event: [],
         };
 
@@ -80,7 +78,6 @@ export default class AlgoliaSearch extends React.Component {
 
         this.customResultsIndex.search(term, { hitsPerPage: 15 }).then(createResultsHandler('custom'));
         this.proposalsIndex.search(term, { hitsPerPage: 15 }).then(createResultsHandler('proposal'));
-        this.clarificationsIndex.search(term, { hitsPerPage: 15 }).then(createResultsHandler('clarification'));
         this.eventsIndex.search(term, { hitsPerPage: 15 }).then(createResultsHandler('event'));
     }
 
@@ -88,7 +85,6 @@ export default class AlgoliaSearch extends React.Component {
         const aggregated = []
             .concat(hits.custom)
             .concat(hits.proposal)
-            .concat(hits.clarification)
             .concat(hits.event);
         this.setState({
             loading: false,
@@ -114,10 +110,6 @@ export default class AlgoliaSearch extends React.Component {
             return 'Proposition du programme';
         }
 
-        if ('clarification' === hit.type) {
-            return 'Désintox';
-        }
-
         if ('event' === hit.type) {
             return 'Événement';
         }
@@ -128,10 +120,6 @@ export default class AlgoliaSearch extends React.Component {
     _createLinkURL(hit) {
         if ('proposal' === hit.type) {
             return `/emmanuel-macron/le-programme/${hit.slug}`;
-        }
-
-        if ('clarification' === hit.type) {
-            return `/desintox/${hit.slug}`;
         }
 
         if ('event' === hit.type) {

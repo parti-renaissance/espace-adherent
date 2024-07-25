@@ -3,7 +3,6 @@
 namespace Tests\App\Command;
 
 use App\Entity\ChezVous\City;
-use App\Entity\Clarification;
 use App\Entity\CustomSearchResult;
 use App\Entity\Proposal;
 use App\Entity\Timeline\Manifesto;
@@ -32,7 +31,6 @@ class AlgoliaSynchronizeCommandTest extends AbstractCommandTestCase
     {
         return [
             ['proposal', Proposal::class, 3],
-            ['clarification', Clarification::class, 21],
             ['custom_search_result', CustomSearchResult::class, 2],
             // Timeline
             ['timeline_theme', Theme::class, 5],
