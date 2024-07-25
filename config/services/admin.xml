@@ -1068,14 +1068,6 @@
             </call>
         </service>
 
-        <service id="app.admin.reporting_committee_merge_history" class="App\Admin\CommitteeMergeHistoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Fusions de comités" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\Reporting\CommitteeMergeHistory</argument>
-            <argument>App\Controller\Admin\AdminCommitteeMergeHistoryController</argument>
-        </service>
-
         <service id="app.admin.referent" class="App\Admin\ReferentAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Trombi Référents" group="Archives (à dépublier)" />
 
