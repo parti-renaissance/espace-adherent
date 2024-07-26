@@ -19,14 +19,6 @@
 {% endfor %}
 
 {% if object.hasAdvancedPrivileges %}
-    {% if object.isReferent %}
-        {% set labels = labels|merge(['Référent']) %}
-    {% endif %}
-
-    {% if object.isCoReferent %}
-        {% set labels = labels|merge(['Co-Référent']) %}
-    {% endif %}
-
     {% if object.isAnimator %}
         {% set labels = labels|merge(['Responsable comité local']) %}
     {% endif %}
@@ -49,14 +41,6 @@
 
     {% if object.isBoardMember %}
         {% set labels = labels|merge(['Membre du Conseil']) %}
-    {% endif %}
-
-    {% if object.isSenator %}
-        {% set labels = labels|merge(['Sénateur']) %}
-    {% endif %}
-
-    {% if object.isSenatorialCandidate %}
-        {% set labels = labels|merge(['Candidats Sénatoriales 2020']) %}
     {% endif %}
 
     {% if object.isHeadedRegionalCandidate %}

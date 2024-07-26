@@ -92,7 +92,7 @@
             }
         ]
     },
-    "/api/v3/events?scope=referent&name=Grand%20Meeting": {
+    "/api/v3/events?scope=president_departmental_assembly&name=Grand%20Meeting": {
         "metadata": {
             "total_items": 1,
             "items_per_page": 1,

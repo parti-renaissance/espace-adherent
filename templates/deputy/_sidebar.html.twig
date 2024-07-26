@@ -5,7 +5,7 @@
     {% endif %}
 
     {% include('components/_data_corner_button.html.twig') %}
-    
+
     <ul>
         {% if isDeputy or is_granted('HAS_DELEGATED_ACCESS_MESSAGES') %}
             <li class="{{ is_active_route(app.request, 'app_message_deputy_*') ? 'active' }}">
@@ -34,9 +34,6 @@
         {% if isDeputy %}
             <li class="{{ is_active_route(app.request, 'app_deputy_elected_representatives_*') ? 'active' }}">
                 <a href="{{ path('app_deputy_elected_representatives_list') }}">Élus</a>
-            </li>
-            <li class="{{ is_active_route(app.request, 'app_deputy_my_team_*') ? 'active' }}">
-                <a href="{{ path('app_deputy_my_team_list') }}">Mon équipe</a>
             </li>
         {% endif %}
     </ul>

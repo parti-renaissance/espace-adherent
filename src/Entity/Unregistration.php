@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\UnregistrationRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -88,12 +86,6 @@ class Unregistration
     private $isRenaissance;
 
     /**
-     * @var Collection|ReferentTag[]
-     */
-    #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
-    private $referentTags;
-
-    /**
      * @var string
      */
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
@@ -108,7 +100,6 @@ class Unregistration
         ?string $postalCode,
         bool $isAdherent,
         bool $isRenaissance,
-        array $referentTags,
         ?Administrator $admin = null
     ) {
         $this->uuid = $uuid;
@@ -120,7 +111,6 @@ class Unregistration
         $this->unregisteredAt = new \DateTime('now');
         $this->isAdherent = $isAdherent;
         $this->isRenaissance = $isRenaissance;
-        $this->referentTags = new ArrayCollection($referentTags);
         $this->excludedBy = $admin;
     }
 
@@ -182,14 +172,6 @@ class Unregistration
     public function isRenaissance(): bool
     {
         return $this->isRenaissance;
-    }
-
-    /**
-     * @return ReferentTag[]|Collection
-     */
-    public function getReferentTags(): Collection
-    {
-        return $this->referentTags;
     }
 
     public function getExcludedBy(): ?Administrator

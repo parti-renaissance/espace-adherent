@@ -26,12 +26,6 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager)
     {
-        $audienceReferentOnlyRequired = $this->createAudience(
-            self::AUDIENCE_1_UUID,
-            ScopeEnum::REFERENT,
-            'Audience REFERENT avec les paramètres nécessaires',
-            LoadGeoZoneData::getZoneReference($manager, 'zone_department_77')
-        );
         $audienceDeputyOnlyRequired = $this->createAudience(
             self::AUDIENCE_2_UUID,
             ScopeEnum::DEPUTY,
@@ -49,33 +43,6 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
             ScopeEnum::CANDIDATE,
             'Audience CANDIDATE avec les paramètres nécessaires',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_77')
-        );
-
-        $audienceReferentClichy = $this->createAudience(
-            self::AUDIENCE_5_UUID,
-            ScopeEnum::REFERENT,
-            'Audience REFERENT avec quelques paramètres',
-            LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
-            null,
-            null,
-            Genders::FEMALE,
-            20,
-            30,
-            null,
-            null,
-            true,
-            false,
-            true,
-            false
-        );
-        $audienceReferent69 = $this->createAudience(
-            self::AUDIENCE_6_UUID,
-            ScopeEnum::REFERENT,
-            'Audience REFERENT, les femmes à 69',
-            LoadGeoZoneData::getZoneReference($manager, 'zone_department_69'),
-            null,
-            null,
-            Genders::FEMALE
         );
         $audienceDeputyAll = $this->createAudience(
             self::AUDIENCE_7_UUID,
@@ -125,12 +92,9 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
             Genders::MALE
         );
 
-        $manager->persist($audienceReferentOnlyRequired);
         $manager->persist($audienceDeputyOnlyRequired);
         $manager->persist($audienceSenatorOnlyRequired);
         $manager->persist($audienceCandidateOnlyRequired);
-        $manager->persist($audienceReferentClichy);
-        $manager->persist($audienceReferent69);
         $manager->persist($audienceDeputyAll);
         $manager->persist($audienceDeputy2020);
         $manager->persist($audienceCandidate);

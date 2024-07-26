@@ -13,7 +13,6 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityUserListDefinitionTrait;
 use App\Entity\Geo\Zone;
-use App\Entity\ReferentTag;
 use App\Entity\ZoneableEntity;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\ValueObject\Genders;
@@ -606,39 +605,6 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
     public function __toString(): string
     {
         return sprintf('%s %s', $this->firstName, $this->lastName);
-    }
-
-    /**
-     * @return ReferentTag[]|ArrayCollection
-     */
-    public function getActiveReferentTags(): ArrayCollection
-    {
-        $activeTags = new ArrayCollection();
-
-        foreach ($this->getCurrentMandates() as $mandate) {
-            if (!$zone = $mandate->getZone()) {
-                continue;
-            }
-
-            foreach ($zone->getReferentTags() as $referentTag) {
-                if (!$activeTags->contains($referentTag)) {
-                    $activeTags->add($referentTag);
-                }
-            }
-        }
-
-        return $activeTags;
-    }
-
-    public function getActiveReferentTagCodes(): array
-    {
-        $tags = [];
-
-        foreach ($this->getActiveReferentTags() as $referentTag) {
-            $tags[] = $referentTag->getCode();
-        }
-
-        return array_unique($tags);
     }
 
     public function getZones(): Collection

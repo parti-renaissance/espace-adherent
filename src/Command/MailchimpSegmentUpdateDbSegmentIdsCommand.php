@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Entity\Committee;
 use App\Repository\CommitteeRepository;
-use App\Repository\ReferentTagRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -19,7 +18,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 )]
 class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
 {
-    private $referentTagRepository;
     private $committeeRepository;
     private $client;
     private $entityManager;
@@ -28,13 +26,11 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
     private $io;
 
     public function __construct(
-        ReferentTagRepository $referentTagRepository,
         CommitteeRepository $committeeRepository,
         HttpClientInterface $mailchimpClient,
         ObjectManager $entityManager,
         string $mailchimpListId
     ) {
-        $this->referentTagRepository = $referentTagRepository;
         $this->committeeRepository = $committeeRepository;
         $this->client = $mailchimpClient;
         $this->entityManager = $entityManager;
@@ -56,7 +52,6 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
         $limit = 1000;
 
         while ($tags = $this->getTags($offset, $limit)) {
-            $this->updateReferentTags($tags);
             $this->updateCommittees($tags);
 
             $offset += $limit;
@@ -65,30 +60,6 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
         $this->io->progressFinish();
 
         return self::SUCCESS;
-    }
-
-    private function updateReferentTags(array $segments): void
-    {
-        $iterator = $this->referentTagRepository->createQueryBuilder('tag')
-            ->where('tag.externalId IS NULL')
-            ->getQuery()
-            ->iterate()
-        ;
-
-        foreach ($iterator as $refTag) {
-            $refTag = current($refTag);
-
-            foreach ($segments as $tag) {
-                if ($tag['name'] === $refTag->getCode()) {
-                    $refTag->setExternalId($tag['id']);
-                    $this->io->progressAdvance();
-                    break;
-                }
-            }
-        }
-
-        $this->entityManager->flush();
-        $this->entityManager->clear();
     }
 
     private function updateCommittees(array $segments): void

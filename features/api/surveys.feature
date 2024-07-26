@@ -924,113 +924,132 @@ Feature:
     And the JSON should be equal to:
     """
     {
-      "metadata": {
-        "total_items": 6,
-        "items_per_page": 10,
-        "count": 6,
-        "current_page": 1,
-        "last_page": 1
-      },
-      "items": [
-        {
-          "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
-          "type": "national",
-          "name": "Questionnaire national numéro 1",
-          "created_at": "@string@.isDateTime()",
-          "published": true,
-          "creator": null,
-          "nb_questions": 2,
-          "nb_answers": 14
+        "metadata": {
+            "total_items": 7,
+            "items_per_page": 10,
+            "count": 7,
+            "current_page": 1,
+            "last_page": 1
         },
-        {
-          "uuid": "@uuid@",
-          "type": "national",
-          "name": "Le deuxième questionnaire national",
-          "created_at": "@string@.isDateTime()",
-          "published": true,
-          "creator": null,
-          "nb_questions": 1,
-          "nb_answers": 0
-        },
-        {
-          "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
-          "type": "national",
-          "name": "Les enjeux des 10 prochaines années",
-          "created_at": "@string@.isDateTime()",
-          "published": true,
-          "creator": null,
-          "nb_questions": 2,
-          "nb_answers": 6
-        },
-        {
-          "uuid": "138140e9-1dd2-11b2-a08e-41ae5b09da7d",
-          "type": "local",
-          "name": "Questionnaire numéro 1",
-          "created_at": "@string@.isDateTime()",
-          "zone": {
-            "uuid": "@uuid@",
-            "code": "77",
-            "name": "Seine-et-Marne",
-            "created_at": "@string@.isDateTime()"
-          },
-          "published": true,
-          "creator": {
-            "first_name": "Referent",
-            "last_name": "Referent"
-          },
-          "nb_questions": 4,
-          "nb_answers": 3
-        },
-        {
-          "uuid": "dda4cd3a-f7ea-1bc6-9b2f-4bca1f9d02ea",
-          "type": "local",
-          "name": "Un deuxième questionnaire",
-          "created_at": "@string@.isDateTime()",
-          "zone": {
-            "uuid": "@uuid@",
-            "code": "59",
-            "name": "Nord",
-            "created_at": "@string@.isDateTime()"
-          },
-          "published": true,
-          "creator": {
-            "first_name": "Referent75and77",
-            "last_name": "Referent75and77"
-          },
-          "nb_questions": 1,
-          "nb_answers": 0
-        },
-        {
-          "uuid": "0de90b18-47f5-1606-af9d-74eb1fa4a30a",
-          "type": "local",
-          "name": "Un questionnaire avec modification bloquée",
-          "created_at": "@string@.isDateTime()",
-          "zone": {
-            "uuid": "@uuid@",
-            "code": "92",
-            "name": "Hauts-de-Seine",
-            "created_at": "@string@.isDateTime()"
-          },
-          "published": true,
-          "creator": {
-            "first_name": "Referent",
-            "last_name": "Referent"
-          },
-          "nb_questions": 0,
-          "nb_answers": 0
-        }
-      ]
+        "items": [
+            {
+                "uuid": "13814039-1dd2-11b2-9bfd-78ea3dcdf0d9",
+                "created_at": "@string@.isDateTime()",
+                "type": "national",
+                "name": "Questionnaire national numéro 1",
+                "published": true,
+                "nb_questions": 2,
+                "creator": null,
+                "nb_answers": 14
+            },
+            {
+                "uuid": "1f07832c-2a69-1e80-a33a-d5f9460e838f",
+                "created_at": "@string@.isDateTime()",
+                "type": "national",
+                "name": "Le deuxième questionnaire national",
+                "published": true,
+                "nb_questions": 1,
+                "creator": null,
+                "nb_answers": 0
+            },
+            {
+                "uuid": "4c3594d4-fb6f-4e25-ac2e-7ef81694ec47",
+                "created_at": "@string@.isDateTime()",
+                "type": "national",
+                "name": "Les enjeux des 10 prochaines années",
+                "published": true,
+                "nb_questions": 2,
+                "creator": null,
+                "nb_answers": 6
+            },
+            {
+                "zone": {
+                    "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                    "code": "77",
+                    "name": "Seine-et-Marne",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "uuid": "138140e9-1dd2-11b2-a08e-41ae5b09da7d",
+                "created_at": "@string@.isDateTime()",
+                "type": "local",
+                "name": "Questionnaire numéro 1",
+                "published": true,
+                "nb_questions": 4,
+                "creator": {
+                    "first_name": "Referent",
+                    "last_name": "Referent"
+                },
+                "nb_answers": 3
+            },
+            {
+                "zone": {
+                    "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
+                    "code": "59",
+                    "name": "Nord",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "uuid": "dda4cd3a-f7ea-1bc6-9b2f-4bca1f9d02ea",
+                "created_at": "@string@.isDateTime()",
+                "type": "local",
+                "name": "Un deuxième questionnaire",
+                "published": true,
+                "nb_questions": 1,
+                "creator": {
+                    "first_name": "Referent75and77",
+                    "last_name": "Referent75and77"
+                },
+                "nb_answers": 0
+            },
+            {
+                "zone": {
+                    "uuid": "e3efe139-906e-11eb-a875-0242ac150002",
+                    "code": "11",
+                    "name": "Île-de-France",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "uuid": "478a2e65-7e86-1bb9-8078-8b70de061a8a",
+                "created_at": "@string@.isDateTime()",
+                "type": "local",
+                "name": "Un questionnaire de la Région",
+                "published": true,
+                "nb_questions": 0,
+                "creator": {
+                    "first_name": "Jacques",
+                    "last_name": "Picard"
+                },
+                "nb_answers": 0
+            },
+            {
+                "zone": {
+                    "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                    "code": "92",
+                    "name": "Hauts-de-Seine",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "uuid": "0de90b18-47f5-1606-af9d-74eb1fa4a30a",
+                "created_at": "@string@.isDateTime()",
+                "type": "local",
+                "name": "Un questionnaire avec modification bloquée",
+                "published": true,
+                "nb_questions": 0,
+                "creator": {
+                    "first_name": "Referent",
+                    "last_name": "Referent"
+                },
+                "nb_answers": 0
+            }
+        ]
     }
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
 
   Scenario: As a user with local role I can filter surveys by type
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/surveys?scope=referent&page_size=2&type=national"
+    When I send a "GET" request to "/api/v3/surveys?scope=president_departmental_assembly&page_size=2&type=national"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -1067,60 +1086,60 @@ Feature:
     }
     """
 
-    When I send a "GET" request to "/api/v3/surveys?scope=referent&page_size=2&type=local"
+    When I send a "GET" request to "/api/v3/surveys?scope=president_departmental_assembly&page_size=2&type=local"
     Then the response status code should be 200
     And the JSON should be equal to:
-      """
-      {
+    """
+    {
         "metadata": {
-          "total_items": 3,
-          "items_per_page": 2,
-          "count": 2,
-          "current_page": 1,
-          "last_page": 2
+            "total_items": 4,
+            "items_per_page": 2,
+            "count": 2,
+            "current_page": 1,
+            "last_page": 2
         },
         "items": [
-          {
-            "uuid": "138140e9-1dd2-11b2-a08e-41ae5b09da7d",
-            "type": "local",
-            "name": "Questionnaire numéro 1",
-            "created_at": "@string@.isDateTime()",
-            "zone": {
-              "uuid": "@uuid@",
-              "code": "77",
-              "name": "Seine-et-Marne",
-              "created_at": "@string@.isDateTime()"
+            {
+                "zone": {
+                    "uuid": "e3efe5c5-906e-11eb-a875-0242ac150002",
+                    "code": "77",
+                    "name": "Seine-et-Marne",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "uuid": "138140e9-1dd2-11b2-a08e-41ae5b09da7d",
+                "created_at": "@string@.isDateTime()",
+                "type": "local",
+                "name": "Questionnaire numéro 1",
+                "published": true,
+                "nb_questions": 4,
+                "creator": {
+                    "first_name": "Referent",
+                    "last_name": "Referent"
+                },
+                "nb_answers": 3
             },
-            "published": true,
-            "creator": {
-              "first_name": "Referent",
-              "last_name": "Referent"
-            },
-            "nb_questions": 4,
-            "nb_answers": 3
-          },
-          {
-            "uuid": "dda4cd3a-f7ea-1bc6-9b2f-4bca1f9d02ea",
-            "type": "local",
-            "name": "Un deuxième questionnaire",
-            "created_at": "@string@.isDateTime()",
-            "zone": {
-              "uuid": "@uuid@",
-              "code": "59",
-              "name": "Nord",
-              "created_at": "@string@.isDateTime()"
-            },
-            "published": true,
-            "creator": {
-              "first_name": "Referent75and77",
-              "last_name": "Referent75and77"
-            },
-            "nb_questions": 1,
-            "nb_answers": 0
-          }
+            {
+                "zone": {
+                    "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
+                    "code": "59",
+                    "name": "Nord",
+                    "created_at": "@string@.isDateTime()"
+                },
+                "uuid": "dda4cd3a-f7ea-1bc6-9b2f-4bca1f9d02ea",
+                "created_at": "@string@.isDateTime()",
+                "type": "local",
+                "name": "Un deuxième questionnaire",
+                "published": true,
+                "nb_questions": 1,
+                "creator": {
+                    "first_name": "Referent75and77",
+                    "last_name": "Referent75and77"
+                },
+                "nb_answers": 0
+            }
         ]
-      }
-      """
+    }
+    """
 
   Scenario: As a user with national role I cannot read a local survey
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
@@ -1196,7 +1215,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a user with national scope I cannot create a local survey
@@ -1257,7 +1276,7 @@ Feature:
 
   Scenario: As a user with national scope I cannot create a local survey
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "POST" request to "/api/v3/surveys?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/surveys?scope=president_departmental_assembly" with body:
     """
     {
         "type": "national",
@@ -1308,7 +1327,7 @@ Feature:
     }
     """
     Then the response status code should be 400
-    And the JSON node "detail" should be equal to "Vous ne pouvez pas créer ou modifier un questionnaire de type national avec le scope referent."
+    And the JSON node "detail" should be equal to "Vous ne pouvez pas créer ou modifier un questionnaire de type national avec le scope president_departmental_assembly."
 
   Scenario: As a user with national role I can create a national survey
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
@@ -1544,7 +1563,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user with (delegated) referent role I can unpublished a local survey
@@ -1559,7 +1578,7 @@ Feature:
     And the JSON node "published" should be false
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user with (delegated) referent role I can update a local survey
@@ -1684,7 +1703,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a user with national role I can get a national survey replies
@@ -1935,30 +1954,8 @@ Feature:
     And the JSON node items should have 6 element
     Examples:
       | user                            | scope                                          |
-      | referent-75-77@en-marche-dev.fr | referent                                       |
+      | referent-75-77@en-marche-dev.fr | president_departmental_assembly                                       |
       | francis.brioul@yahoo.com        | delegated_689757d2-dea5-49d1-95fe-281fc860ff77 |
-
-  Scenario Outline: As a user with (delegated) referent role I get an empty list, if no national survey replies in my zones
-    Given I am logged with "<user>" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/surveys/4c3594d4-fb6f-4e25-ac2e-7ef81694ec47/replies?scope=<scope>"
-    Then the response status code should be 200
-    And the JSON should be equal to:
-    """
-    {
-      "metadata": {
-        "total_items": 0,
-        "items_per_page": 30,
-        "count": 0,
-        "current_page": 1,
-        "last_page": 1
-      },
-      "items": []
-    }
-    """
-    Examples:
-      | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
-      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a Correspondent user I can get the list of national surveys and my correspondent zone surveys
     Given I am logged with "je-mengage-user-1@en-marche-dev.fr" via OAuth client "JeMengage Web"
@@ -1995,27 +1992,27 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a user with a (delegated) local role I can get surveys KPI
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/surveys/kpi?scope=referent"
+    When I send a "GET" request to "/api/v3/surveys/kpi?scope=president_departmental_assembly"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
     """
     {
-      "local_surveys_count": 4,
-      "local_surveys_published_count": 4,
-      "national_surveys_count": 3,
-      "national_surveys_published_count": 3
+        "national_surveys_count": 3,
+        "national_surveys_published_count": 3,
+        "local_surveys_count": 4,
+        "local_surveys_published_count": 4
     }
     """
 
   Scenario: As a user with a local role I can get the last month jemengage data survey geocode
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/jemarche_data_surveys/kpi?scope=referent"
+    When I send a "GET" request to "/api/v3/jemarche_data_surveys/kpi?scope=president_departmental_assembly"
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:

@@ -2,7 +2,6 @@
 
 namespace App\Form\EventListener;
 
-use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Form\FilterRoleType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -23,7 +22,6 @@ class IncludeExcludeFilterRoleListener implements EventSubscriberInterface
         $includes = [];
         $excludes = [];
 
-        /** @var AdherentZoneFilter $filter */
         $filter = $event->getData();
         foreach (FilterRoleType::ROLES as $role) {
             $roleIncluded = $filter->{'include'.$role}();
@@ -41,7 +39,6 @@ class IncludeExcludeFilterRoleListener implements EventSubscriberInterface
 
     public function formToEntity(FormEvent $event)
     {
-        /** @var AdherentZoneFilter $filter */
         $filter = $event->getData();
         $includedRoles = $event->getForm()->get('includeRoles')->getData() ?? [];
         $excludedRoles = $event->getForm()->get('excludeRoles')->getData() ?? [];

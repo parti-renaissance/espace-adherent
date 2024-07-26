@@ -82,7 +82,6 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture implements De
             $runningMateRequest->setProfessionalAssets($faker->paragraph(10));
             $runningMateRequest->setCreatedAt($faker->dateTimeBetween('-3 week'));
             $runningMateRequest->setUpdatedAt($faker->dateTimeBetween('-1 day'));
-            $runningMateRequest->addReferentTag($this->getReference('referent_tag_59'));
 
             $manager->persist($runningMateRequest);
         }
@@ -94,7 +93,6 @@ class LoadApplicationRequestRunningMateRequestData extends Fixture implements De
     {
         return [
             LoadAdherentData::class,
-            LoadReferentTagData::class,
             LoadApplicationRequestThemeData::class,
             LoadApplicationRequestTagData::class,
         ];

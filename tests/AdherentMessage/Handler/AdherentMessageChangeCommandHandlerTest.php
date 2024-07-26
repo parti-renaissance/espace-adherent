@@ -4,28 +4,20 @@ namespace Tests\App\AdherentMessage\Handler;
 
 use App\AdherentMessage\Command\AdherentMessageChangeCommand;
 use App\AdherentMessage\Handler\AdherentMessageChangeCommandHandler;
-use App\AdherentMessage\MailchimpCampaign\Handler\AdherentZoneMailchimpCampaignHandler;
 use App\AdherentMessage\MailchimpCampaign\Handler\GenericMailchimpCampaignHandler;
-use App\AdherentMessage\MailchimpCampaign\Handler\ReferentMailchimpCampaignHandler;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\CandidateJecouteMessage;
 use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
-use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
-use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\JecouteFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
-use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
-use App\Entity\AdherentMessage\ReferentAdherentMessage;
 use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
-use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
-use App\Entity\ReferentTag;
 use App\Mailchimp\Campaign\CampaignContentRequestBuilder;
 use App\Mailchimp\Campaign\CampaignRequestBuilder;
 use App\Mailchimp\Campaign\ContentSection\BasicMessageSectionBuilder;
@@ -37,14 +29,12 @@ use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentGeoZoneConditionBuild
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentInterestConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentRegistrationDateConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentSegmentConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\AdherentZoneConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\CommitteeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactAgeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactCityConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ContactNameConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\JecouteConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ReferentToAdherentConditionBuilder;
-use App\Mailchimp\Campaign\SegmentConditionBuilder\ReferentToCandidateConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\SubscriptionTypeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\ToElectedRepresentativeConditionBuilder;
 use App\Mailchimp\Campaign\SegmentConditionsBuilder;
@@ -116,275 +106,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'sections' => [
                         'content' => 'Content',
                         'committee_link' => '<a target="_blank" href="https://committee_url" title="Voir le comité">Committee name</a>',
-                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                    ],
-                ],
-            ]]],
-        ];
-
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->willReturnCallback(function (...$args) use (&$series) {
-                $expectedArgs = array_shift($series);
-                $this->assertSame($expectedArgs, $args);
-
-                return $this->createMockResponse(json_encode(['id' => 123]));
-            })
-        ;
-
-        $this->createHandler($message)($this->commandDummy);
-    }
-
-    public function testReferentMessageGeneratesGoodPayloads(): void
-    {
-        $message = $this->preparedMessage(ReferentAdherentMessage::class);
-
-        $message->setFilter(new ReferentUserFilter([
-            $tag1 = new ReferentTag('Tag1', 'code1', new Zone('mock', 'code1', 'Tag1')),
-            $tag2 = new ReferentTag('Tag2', 'code2', new Zone('mock', 'code1', 'Tag2')),
-        ]));
-        $tag1->setExternalId(123);
-        $tag2->setExternalId(456);
-
-        (new ReferentMailchimpCampaignHandler())->handle($message);
-
-        $series = [
-            ['POST', '/3.0/campaigns', ['json' => [
-                'type' => 'regular',
-                'settings' => [
-                    'folder_id' => '1',
-                    'template_id' => 1,
-                    'subject_line' => '[Référent] Subject',
-                    'title' => 'Full Name - '.date('d/m/Y').' - code1',
-                    'reply_to' => 'contact@parti-renaissance.fr',
-                    'from_name' => 'Full Name | Renaissance',
-                ],
-                'recipients' => [
-                    'list_id' => 'main_list_id',
-                    'segment_opts' => [
-                        'match' => 'all',
-                        'conditions' => [
-                            [
-                                'condition_type' => 'StaticSegment',
-                                'op' => 'static_is',
-                                'field' => 'static_segment',
-                                'value' => 123,
-                            ],
-                            [
-                                'condition_type' => 'Interests',
-                                'op' => 'interestcontainsall',
-                                'field' => 'interests-C',
-                                'value' => [1],
-                            ],
-                        ],
-                    ],
-                ],
-            ]]],
-            ['PUT', '/3.0/campaigns/campaign_id1/content', ['json' => [
-                'template' => [
-                    'id' => 1,
-                    'sections' => [
-                        'content' => 'Content',
-                        'full_name' => 'Full Name',
-                        'first_name' => 'First Name',
-                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                    ],
-                ],
-            ]]],
-            ['POST', '/3.0/campaigns', ['json' => [
-                'type' => 'regular',
-                'settings' => [
-                    'folder_id' => '1',
-                    'template_id' => 1,
-                    'subject_line' => '[Référent] Subject',
-                    'title' => 'Full Name - '.date('d/m/Y').' - code2',
-                    'reply_to' => 'contact@parti-renaissance.fr',
-                    'from_name' => 'Full Name | Renaissance',
-                ],
-                'recipients' => [
-                    'list_id' => 'main_list_id',
-                    'segment_opts' => [
-                        'match' => 'all',
-                        'conditions' => [
-                            [
-                                'condition_type' => 'StaticSegment',
-                                'op' => 'static_is',
-                                'field' => 'static_segment',
-                                'value' => 456,
-                            ],
-                            [
-                                'condition_type' => 'Interests',
-                                'op' => 'interestcontainsall',
-                                'field' => 'interests-C',
-                                'value' => [1],
-                            ],
-                        ],
-                    ],
-                ],
-            ]]],
-            ['PUT', '/3.0/campaigns/campaign_id2/content', ['json' => [
-                'template' => [
-                    'id' => 1,
-                    'sections' => [
-                        'content' => 'Content',
-                        'full_name' => 'Full Name',
-                        'first_name' => 'First Name',
-                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                    ],
-                ],
-            ]]],
-        ];
-
-        $this->clientMock
-            ->expects($this->exactly(4))
-            ->method('request')
-            ->willReturnCallback(function (...$args) use (&$series) {
-                $expectedArgs = array_shift($series);
-                $this->assertSame($expectedArgs, $args);
-
-                return $this->createMockResponse(json_encode(['id' => 'campaign_id'.(\count($series) > 1 ? '1' : '2')]));
-            })
-        ;
-
-        $this->createHandler($message)($this->commandDummy);
-    }
-
-    public function testDeputyMessageGeneratesGoodPayloads(): void
-    {
-        $message = $this->preparedMessage(DeputyAdherentMessage::class);
-        $message->setFilter(new AdherentZoneFilter($tag = new ReferentTag('Tag1', 'code1', new Zone('mock', 'code1', 'Tag1'))));
-        $tag->setExternalId(123);
-
-        (new AdherentZoneMailchimpCampaignHandler())->handle($message);
-
-        $series = [
-            ['POST', '/3.0/campaigns', ['json' => [
-                'type' => 'regular',
-                'settings' => [
-                    'folder_id' => '2',
-                    'template_id' => 2,
-                    'subject_line' => '[Délégué de circonscription] Subject',
-                    'title' => 'Full Name - '.date('d/m/Y').' - code1',
-                    'reply_to' => 'contact@parti-renaissance.fr',
-                    'from_name' => 'Full Name | Renaissance',
-                ],
-                'recipients' => [
-                    'list_id' => 'main_list_id',
-                    'segment_opts' => [
-                        'match' => 'all',
-                        'conditions' => [
-                            [
-                                'condition_type' => 'StaticSegment',
-                                'op' => 'static_is',
-                                'field' => 'static_segment',
-                                'value' => 123,
-                            ],
-                            [
-                                'condition_type' => 'Interests',
-                                'op' => 'interestcontainsall',
-                                'field' => 'interests-C',
-                                'value' => [7],
-                            ],
-                        ],
-                    ],
-                ],
-            ]]],
-            ['PUT', '/3.0/campaigns/123/content', ['json' => [
-                'template' => [
-                    'id' => 2,
-                    'sections' => [
-                        'content' => 'Content',
-                        'full_name' => 'Full Name',
-                        'first_name' => 'First Name',
-                        'district_name' => 'District1',
-                        'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                        'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
-                    ],
-                ],
-            ]]],
-        ];
-
-        $this->clientMock
-            ->expects($this->exactly(2))
-            ->method('request')
-            ->willReturnCallback(function (...$args) use (&$series) {
-                $expectedArgs = array_shift($series);
-                $this->assertSame($expectedArgs, $args);
-
-                return $this->createMockResponse(json_encode(['id' => 123]));
-            })
-        ;
-
-        $this->createHandler($message)($this->commandDummy);
-    }
-
-    public function testSenatorMessageGeneratesGoodPayloads(): void
-    {
-        $message = $this->preparedMessage(SenatorAdherentMessage::class);
-        $filter = new AdherentZoneFilter($tag = new ReferentTag('Tag1', 'code1', new Zone('mock', 'code1', 'Tag1'))); // 5 and 6 are included by default
-        $filter->setIncludeCommitteeSupervisors(false); // exclude 3
-        $filter->setIncludeCommitteeHosts(true); // include 4
-
-        $message->setFilter($filter);
-        $tag->setExternalId(123);
-
-        (new AdherentZoneMailchimpCampaignHandler())->handle($message);
-
-        $series = [
-            ['POST', '/3.0/campaigns', ['json' => [
-                'type' => 'regular',
-                'settings' => [
-                    'folder_id' => '6',
-                    'template_id' => 6,
-                    'subject_line' => '[Sénateur] Subject',
-                    'title' => 'Full Name - '.date('d/m/Y').' - code1',
-                    'reply_to' => 'contact@parti-renaissance.fr',
-                    'from_name' => 'Full Name | Renaissance',
-                ],
-                'recipients' => [
-                    'list_id' => 'main_list_id',
-                    'segment_opts' => [
-                        'match' => 'all',
-                        'conditions' => [
-                            [
-                                'condition_type' => 'Interests',
-                                'op' => 'interestcontains',
-                                'field' => 'interests-A',
-                                'value' => [4],
-                            ],
-                            [
-                                'condition_type' => 'Interests',
-                                'op' => 'interestnotcontains',
-                                'field' => 'interests-A',
-                                'value' => [3],
-                            ],
-                            [
-                                'condition_type' => 'StaticSegment',
-                                'op' => 'static_is',
-                                'field' => 'static_segment',
-                                'value' => 123,
-                            ],
-                            [
-                                'condition_type' => 'Interests',
-                                'op' => 'interestcontainsall',
-                                'field' => 'interests-C',
-                                'value' => [8],
-                            ],
-                        ],
-                    ],
-                ],
-            ]]],
-            ['PUT', '/3.0/campaigns/123/content', ['json' => [
-                'template' => [
-                    'id' => 6,
-                    'sections' => [
-                        'content' => 'Content',
-                        'full_name' => 'Full Name',
-                        'first_name' => 'First Name',
                         'reply_to_button' => '<a class="mcnButton" title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                         'reply_to_link' => '<a title="Répondre" href="mailto:adherent@mail.com" target="_blank">Répondre</a>',
                     ],
@@ -742,14 +463,12 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     new AdherentInterestConditionBuilder($this->mailchimpMapping),
                     new AdherentRegistrationDateConditionBuilder(),
                     new AdherentSegmentConditionBuilder($this->mailchimpMapping),
-                    new AdherentZoneConditionBuilder($this->mailchimpMapping),
                     new CommitteeConditionBuilder($this->mailchimpMapping),
                     new ContactNameConditionBuilder(),
                     new ContactAgeConditionBuilder(),
                     new ContactCityConditionBuilder(),
                     new JecouteConditionBuilder(),
                     new ReferentToAdherentConditionBuilder($this->mailchimpMapping),
-                    new ReferentToCandidateConditionBuilder($this->mailchimpMapping),
                     new SubscriptionTypeConditionBuilder($this->mailchimpMapping),
                     new ToElectedRepresentativeConditionBuilder($this->mailchimpMapping),
                 ])

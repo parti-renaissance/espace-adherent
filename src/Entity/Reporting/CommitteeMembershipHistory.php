@@ -4,9 +4,7 @@ namespace App\Entity\Reporting;
 
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
-use App\Entity\ReferentTag;
 use Cake\Chronos\Chronos;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
@@ -42,12 +40,6 @@ class CommitteeMembershipHistory
     private $adherentUuid;
 
     /**
-     * @var Collection|ReferentTag[]
-     */
-    #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
-    private $referentTags;
-
-    /**
      * @var string
      */
     #[ORM\Column(length: 10)]
@@ -76,7 +68,6 @@ class CommitteeMembershipHistory
     ) {
         $this->adherentUuid = $committeeMembership->getAdherentUuid();
         $this->committee = $committeeMembership->getCommittee();
-        $this->referentTags = $this->committee->getReferentTags();
         $this->privilege = $committeeMembership->getPrivilege();
         $this->date = $date ?: new Chronos();
         $this->action = $action->getValue();
@@ -95,14 +86,6 @@ class CommitteeMembershipHistory
     public function getAdherentUuid(): UuidInterface
     {
         return $this->adherentUuid;
-    }
-
-    /**
-     * @return Collection|ReferentTag[]
-     */
-    public function getReferentTags(): Collection
-    {
-        return $this->referentTags;
     }
 
     public function getAction(): string

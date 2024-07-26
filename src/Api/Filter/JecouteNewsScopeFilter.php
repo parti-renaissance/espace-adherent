@@ -32,15 +32,6 @@ final class JecouteNewsScopeFilter extends AbstractScopeFilter
             case ScopeEnum::NATIONAL:
                 $queryBuilder->andWhere(sprintf('%s.space IS NULL', $alias));
                 break;
-            case ScopeEnum::REFERENT:
-                $queryBuilder
-                    ->andWhere(sprintf('%s.zone IN (:zones)', $alias))
-                    ->setParameter(
-                        'zones',
-                        $this->zoneRepository->findForJecouteByReferentTags($user->getManagedArea()->getTags()->toArray())
-                    )
-                ;
-                break;
         }
     }
 

@@ -38,13 +38,11 @@
         </tr>
     </thead>
     <tbody>
-        {% set isReferent = app.user.isReferent %}
-
         {% for user in users %}
             <tr class="referent__item">
                 <td class="adherent-identity">
                     <div class="adherent-name">
-                        {{ user.lastName }} {{ user.firstName }}{{ isReferent and user.certified ? include('components/_certification_logo.html.twig') }}
+                        {{ user.lastName }} {{ user.firstName }}{{ user.certified ? include('components/_certification_logo.html.twig') }}
                     </div>
                     <div class="adherent-caracs">
                         {% if user.gender %}

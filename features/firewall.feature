@@ -14,13 +14,6 @@ Feature:
       | /connexion  |
       | /evenements |
 
-  Scenario Outline: As an anonymous I am redirected to login on secured pages
-    Given I am on "<uri>"
-    Then I should be on "/connexion"
-    Examples:
-      | uri                             |
-      | /espace-referent/utilisateurs   |
-
   Scenario Outline: As a logged-in user I can view secured pages
     Given I am logged as "referent@en-marche-dev.fr"
     And I am on "<uri>"
@@ -29,7 +22,6 @@ Feature:
     Examples:
       | uri                           |
       | /espace-adherent/accueil      |
-      | /espace-referent/utilisateurs |
 
   @renaissance
   Scenario Outline: As an anonymous user I can not view non-secured API pages

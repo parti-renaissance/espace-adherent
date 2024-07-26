@@ -99,10 +99,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['status'])]
 #[ORM\Index(columns: ['version'])]
 #[ORM\Table(name: 'committees')]
-class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSegmentInterface, AddressHolderInterface, ZoneableEntity, ExposedObjectInterface, EntityAdherentBlameableInterface, GeoPointInterface, CoordinatorAreaInterface, ReportableInterface, EntityAdministratorBlameableInterface
+class Committee implements SynchronizedEntity, StaticSegmentInterface, AddressHolderInterface, ZoneableEntity, ExposedObjectInterface, EntityAdherentBlameableInterface, GeoPointInterface, CoordinatorAreaInterface, ReportableInterface, EntityAdministratorBlameableInterface
 {
     use EntityNullablePostAddressTrait;
-    use EntityReferentTagTrait;
     use EntityZoneTrait;
     use EntityElectionHelperTrait;
     use StaticSegmentTrait;
@@ -248,7 +247,6 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
         ?string $approvedAt = null,
         string $createdAt = 'now',
         int $membersCount = 0,
-        array $referentTags = []
     ) {
         if ($approvedAt) {
             $approvedAt = new \DateTimeImmutable($approvedAt);
@@ -273,14 +271,9 @@ class Committee implements SynchronizedEntity, ReferentTaggableEntity, StaticSeg
         $this->description = $description;
         $this->postAddress = $address;
         $this->adherentMandates = new ArrayCollection();
-        $this->referentTags = new ArrayCollection();
         $this->zones = new ZoneCollection();
         $this->committeeElections = new ArrayCollection();
         $this->provisionalSupervisors = new ArrayCollection();
-
-        foreach ($referentTags as $referentTag) {
-            $this->addReferentTag($referentTag);
-        }
     }
 
     #[Groups(['committee:read'])]

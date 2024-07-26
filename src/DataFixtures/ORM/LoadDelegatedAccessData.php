@@ -101,9 +101,9 @@ class LoadDelegatedAccessData extends Fixture implements DependentFixtureInterfa
         // access from referent
         $delegatedAccess7 = new DelegatedAccess(Uuid::fromString(self::ACCESS_UUID_7));
         $delegatedAccess7->setDelegated($this->getReference('senator-59')); // senateur@en-marche-dev.fr
-        $delegatedAccess7->setDelegator($this->getReference('adherent-8')); // referent@en-marche-dev.fr
+        $delegatedAccess7->setDelegator($this->getReference('adherent-8'));
         $delegatedAccess7->setRole('Collaborateur parlementaire');
-        $delegatedAccess7->setType('referent');
+        $delegatedAccess7->setType(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
         $delegatedAccess7->setAccesses([
             DelegatedAccess::ACCESS_ADHERENTS,
             DelegatedAccess::ACCESS_MESSAGES,

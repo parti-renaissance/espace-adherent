@@ -23,37 +23,14 @@ Feature:
       "last_name": "Referent75and77",
       "country": "FR",
       "postal_code": "75001",
-      "managed_area_tag_codes": [
-        "75008",
-        "75009",
-        "75",
-        "77"
-      ],
       "nickname": null,
       "use_nickname": false,
       "certified": false,
-      "detailed_roles": [
-        {
-          "label": "ROLE_REFERENT",
-          "codes": [
-            "75008",
-            "75009",
-            "75",
-            "77"
-          ]
-        }
-      ],
       "emailAddress": "referent-75-77@en-marche-dev.fr",
       "email_subscribed": true,
       "firstName": "Referent75and77",
       "lastName": "Referent75and77",
-      "zipCode": "75001",
-      "managedAreaTagCodes": [
-        "75008",
-        "75009",
-        "75",
-        "77"
-      ]
+      "zipCode": "75001"
     }
     """
 
@@ -74,7 +51,6 @@ Feature:
       "nickname":"kikouslove",
       "use_nickname":true,
       "certified": true,
-      "detailed_roles": [],
       "emailAddress":"jacques.picard@en-marche.fr",
       "email_subscribed": true,
       "firstName":"Jacques",
@@ -194,141 +170,78 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 5,
+            "total_items": 3,
             "items_per_page": 25,
-            "count": 5,
+            "count": 3,
             "current_page": 1,
             "last_page": 1
         },
         "items": [
             {
+                "adherent_uuid": "@uuid@",
+                "email": "francis.brioul@yahoo.com",
                 "address": "2 avenue Jean Jaurès",
                 "postal_code": "77000",
                 "city": "Melun",
                 "country": "FR",
+                "gender": "male",
                 "first_name": "Francis",
                 "last_name": "Brioul",
-                "adherent_uuid": "@uuid@",
-                "birthdate": "@string@.isDateTime()",
-                "gender": "male",
-                "interests": [],
-                "additional_tags": [],
-                "city_code": "77288",
+                "birthdate": "1962-01-07T00:00:00+01:00",
+                "age": 62,
                 "phone": null,
                 "nationality": null,
-                "sms_subscription": false,
-                "email": "francis.brioul@yahoo.com",
-                "email_subscription": false,
-                "renaissance_membership": null,
-                "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null,
-                "committee": null,
-                "committee_uuid": null,
-                "cotisation_dates": [],
-                "campus_registered_at": null,
-                "mandates": [],
-                "declared_mandates": [],
-                "certified": false,
-                "age": "@number@",
                 "tags": [
                     {
                         "type": "role",
-                        "label": "Référent",
+                        "label": "Président assemblée départementale",
                         "tooltip": "Responsable communication"
                     }
                 ],
+                "created_at": "2017-08-12T16:12:13+02:00",
+                "interests": [],
+                "last_membership_donation": null,
+                "committee": null,
+                "committee_uuid": null,
+                "additional_tags": [],
+                "mandates": [],
+                "declared_mandates": [],
+                "cotisation_dates": [],
+                "campus_registered_at": null,
                 "zones": [
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3f0cc51-906e-11eb-a875-0242ac150002",
                         "type": "district",
                         "code": "77-1",
                         "name": "Seine-et-Marne (1)"
                     },
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3f2a958-906e-11eb-a875-0242ac150002",
                         "type": "city",
                         "code": "77288",
                         "name": "Melun"
                     }
-                ]
-            },
-            {
-                "address": "12 Pilgerweg",
-                "postal_code": "8802",
-                "city": "Kilchberg",
-                "country": "CH",
-                "first_name": "Michel",
-                "last_name": "VASSEUR",
-                "adherent_uuid": "@uuid@",
-                "birthdate": "@string@.isDateTime()",
-                "gender": "male",
-                "interests": [
-                    "numerique"
                 ],
-                "additional_tags": [],
-                "city_code": null,
-                "phone": "+33 6 66 66 66 66",
-                "nationality": "FR",
-                "email": "michel.vasseur@example.ch",
-                "email_subscription": true,
-                "sms_subscription": true,
-                "renaissance_membership": null,
-                "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null,
-                "committee": null,
-                "committee_uuid": null,
-                "cotisation_dates": [],
-                "campus_registered_at": null,
-                "mandates": [],
-                "declared_mandates": ["depute_europeen"],
                 "certified": false,
-                "age": "@number@",
-                "tags": [
-                    {
-                        "type": "declared_mandate",
-                        "label": "Député européen"
-                    }
-                ],
-                "zones": [
-                    {
-                        "uuid": "@uuid@",
-                        "type": "country",
-                        "code": "CH",
-                        "name": "Suisse"
-                    }
-                ]
+                "renaissance_membership": null,
+                "city_code": "77288",
+                "sms_subscription": false,
+                "email_subscription": false
             },
             {
+                "adherent_uuid": "@uuid@",
+                "email": "gisele-berthoux@caramail.com",
                 "address": "47 rue Martre",
                 "postal_code": "92110",
                 "city": "Clichy",
                 "country": "FR",
+                "gender": "female",
                 "first_name": "Gisele",
                 "last_name": "Berthoux",
-                "adherent_uuid": "@uuid@",
-                "birthdate": "@string@.isDateTime()",
-                "gender": "female",
-                "interests": [],
-                "additional_tags": [],
-                "city_code": "92024",
+                "birthdate": "1983-12-24T00:00:00+01:00",
+                "age": 40,
                 "phone": "+33 6 66 66 66 66",
                 "nationality": "FR",
-                "sms_subscription": true,
-                "email": "gisele-berthoux@caramail.com",
-                "email_subscription": true,
-                "renaissance_membership": null,
-                "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null,
-                "committee": "Second Comité des 3 communes",
-                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
-                "cotisation_dates": [],
-                "campus_registered_at": null,
-                "mandates": [
-                    "conseiller_municipal"
-                ],
-                "declared_mandates": ["conseiller_municipal"],
-                "certified": true,
-                "age": "@number@",
                 "tags": [
                     {
                         "label": "À jour 2024",
@@ -370,7 +283,7 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "Référent",
+                        "label": "Président assemblée départementale",
                         "tooltip": "Responsable communication"
                     },
                     {
@@ -388,50 +301,54 @@ Feature:
                         "label": "Conseiller municipal"
                     }
                 ],
+                "created_at": "2017-06-02T15:34:12+02:00",
+                "interests": [],
+                "last_membership_donation": null,
+                "committee": "Second Comité des 3 communes",
+                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
+                "additional_tags": [],
+                "mandates": [
+                    "conseiller_municipal"
+                ],
+                "declared_mandates": [
+                    "conseiller_municipal"
+                ],
+                "cotisation_dates": [],
+                "campus_registered_at": null,
                 "zones": [
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
                         "type": "department",
                         "code": "92",
                         "name": "Hauts-de-Seine"
                     },
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
                         "type": "city",
                         "code": "92024",
                         "name": "Clichy"
                     }
-                ]
+                ],
+                "certified": true,
+                "renaissance_membership": null,
+                "city_code": "92024",
+                "sms_subscription": true,
+                "email_subscription": true
             },
             {
-                "address": "2 avenue Jean Jaurès",
-                "city": "Melun",
-                "city_code": null,
-                "country": "FR",
-                "email": "je-mengage-user-1@en-marche-dev.fr",
-                "email_subscription": false,
-                "first_name": "Jules",
                 "adherent_uuid": "@uuid@",
-                "gender": "male",
-                "interests": [],
-                "additional_tags": [],
-                "last_name": "Fullstack",
-                "birthdate": "@string@.isDateTime()",
+                "email": "je-mengage-user-1@en-marche-dev.fr",
+                "address": "2 avenue Jean Jaurès",
                 "postal_code": "77000",
+                "city": "Melun",
+                "country": "FR",
+                "gender": "male",
+                "first_name": "Jules",
+                "last_name": "Fullstack",
+                "birthdate": "1942-01-10T00:00:00+02:00",
+                "age": 82,
                 "phone": null,
                 "nationality": null,
-                "sms_subscription": false,
-                "renaissance_membership": null,
-                "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null,
-                "committee": null,
-                "committee_uuid": null,
-                "cotisation_dates": [],
-                "campus_registered_at": null,
-                "mandates": [],
-                "declared_mandates": ["depute_europeen", "conseiller_municipal"],
-                "certified": false,
-                "age": "@number@",
                 "tags": [
                     {
                         "type": "role",
@@ -447,77 +364,43 @@ Feature:
                         "label": "Conseiller municipal"
                     }
                 ],
+                "created_at": "2017-06-02T15:34:12+02:00",
+                "interests": [],
+                "last_membership_donation": null,
+                "committee": null,
+                "committee_uuid": null,
+                "additional_tags": [],
+                "mandates": [],
+                "declared_mandates": [
+                    "depute_europeen",
+                    "conseiller_municipal"
+                ],
+                "cotisation_dates": [],
+                "campus_registered_at": null,
                 "zones": [
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
                         "type": "department",
                         "code": "92",
                         "name": "Hauts-de-Seine"
                     },
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
                         "type": "department",
                         "code": "59",
                         "name": "Nord"
                     }
-                ]
-            },
-            {
-                "address": "32 Zeppelinstrasse",
-                "postal_code": "8057",
-                "city": "Zürich",
-                "country": "CH",
-                "first_name": "Michelle",
-                "last_name": "Dufour",
-                "adherent_uuid": "@uuid@",
-                "birthdate": "@string@.isDateTime()",
-                "gender": "male",
-                "interests": [
-                    "europe",
-                    "numerique",
-                    "sante"
                 ],
-                "additional_tags": [],
-                "city_code": null,
-                "phone": "+33 6 66 66 66 66",
-                "nationality": "FR",
-                "sms_subscription": true,
-                "email": "michelle.dufour@example.ch",
-                "email_subscription": false,
+                "certified": false,
                 "renaissance_membership": null,
-                "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null,
-                "committee": null,
-                "committee_uuid": null,
-                "cotisation_dates": [],
-                "campus_registered_at": null,
-                "mandates": [],
-                "declared_mandates": ["conseiller_municipal", "maire"],
-                "certified": true,
-                "age": "@number@",
-                "tags": [
-                    {
-                        "type": "declared_mandate",
-                        "label": "Conseiller municipal"
-                    },
-                    {
-                        "type": "declared_mandate",
-                        "label": "Maire"
-                    }
-                ],
-                "zones": [
-                    {
-                        "uuid": "@uuid@",
-                        "type": "country",
-                        "code": "CH",
-                        "name": "Suisse"
-                    }
-                ]
+                "city_code": null,
+                "sms_subscription": false,
+                "email_subscription": false
             }
         ]
     }
     """
-    When I send a "GET" request to "/api/v3/adherents?scope=<scope>&firstName=Francis&lastName=Brioul&gender=male&registered%5Bstart%5D=2016-01-01&registered%5Bend%5D=2042-01-01&age%5Bmin%5D=18&age%5Bmax%5D=100&isCommitteeMember=1&isCertified=0&emailSubscription=0&smsSubscription=0"
+    When I send a "GET" request to "/api/v3/adherents?scope=<scope>&firstName=Gisele&lastName=Berthoux&gender=female&registered%5Bstart%5D=2016-01-01&registered%5Bend%5D=2042-01-01&age%5Bmin%5D=18&age%5Bmax%5D=100"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -531,55 +414,111 @@ Feature:
         },
         "items": [
             {
-                "address": "2 avenue Jean Jaurès",
-                "postal_code": "77000",
-                "city": "Melun",
+                "adherent_uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+                "email": "gisele-berthoux@caramail.com",
+                "address": "47 rue Martre",
+                "postal_code": "92110",
+                "city": "Clichy",
                 "country": "FR",
-                "first_name": "Francis",
-                "last_name": "Brioul",
-                "adherent_uuid": "@uuid@",
-                "birthdate": "@string@.isDateTime()",
-                "gender": "male",
-                "interests": [],
-                "additional_tags": [],
-                "city_code": "77288",
-                "phone": null,
-                "nationality": null,
-                "sms_subscription": false,
-                "email": "francis.brioul@yahoo.com",
-                "email_subscription": false,
-                "renaissance_membership": null,
-                "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null,
-                "committee": null,
-                "committee_uuid": null,
-                "cotisation_dates": [],
-                "campus_registered_at": null,
-                "mandates": [],
-                "declared_mandates": [],
-                "certified": false,
-                "age": "@number@",
+                "gender": "female",
+                "first_name": "Gisele",
+                "last_name": "Berthoux",
+                "birthdate": "1983-12-24T00:00:00+01:00",
+                "age": 40,
+                "phone": "+33 6 66 66 66 66",
+                "nationality": "FR",
                 "tags": [
                     {
-                        "type": "role",
-                        "label": "Référent",
-                        "tooltip": "Responsable communication"
-                    }
-                ],
-                "zones": [
-                    {
-                        "uuid": "@uuid@",
-                        "type": "district",
-                        "code": "77-1",
-                        "name": "Seine-et-Marne (1)"
+                        "label": "À jour 2024",
+                        "type": "adherent"
                     },
                     {
-                        "uuid": "@uuid@",
-                        "type": "city",
-                        "code": "77288",
-                        "name": "Melun"
+                        "label": "Exempté de cotisation",
+                        "type": "elu"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Délégué de circonscription",
+                        "tooltip": "Collaborateur parlementaire"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Sénateur",
+                        "tooltip": "Collaborateur parlementaire"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Délégué de circonscription",
+                        "tooltip": "Collaborateur parlementaire"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Candidat",
+                        "tooltip": "Candidat délégué"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Candidat Sénatoriales 2020",
+                        "tooltip": "Candidat Sénateur délégué"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Président assemblée départementale",
+                        "tooltip": "Responsable élus délégué #1"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Président assemblée départementale",
+                        "tooltip": "Responsable communication"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Responsable local",
+                        "tooltip": "Responsable logistique"
+                    },
+                    {
+                        "type": "role",
+                        "label": "Candidat aux législatives",
+                        "tooltip": "Responsable communication"
+                    },
+                    {
+                        "type": "mandate",
+                        "label": "Conseiller municipal"
                     }
-                ]
+                ],
+                "created_at": "2017-06-02T15:34:12+02:00",
+                "interests": [],
+                "last_membership_donation": null,
+                "committee": "Second Comité des 3 communes",
+                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
+                "additional_tags": [],
+                "mandates": [
+                    "conseiller_municipal"
+                ],
+                "declared_mandates": [
+                    "conseiller_municipal"
+                ],
+                "cotisation_dates": [],
+                "campus_registered_at": null,
+                "zones": [
+                    {
+                        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
+                        "type": "department",
+                        "code": "92",
+                        "name": "Hauts-de-Seine"
+                    },
+                    {
+                        "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
+                        "type": "city",
+                        "code": "92024",
+                        "name": "Clichy"
+                    }
+                ],
+                "certified": true,
+                "renaissance_membership": null,
+                "city_code": "92024",
+                "sms_subscription": true,
+                "email_subscription": true
             }
         ]
     }
@@ -589,57 +528,57 @@ Feature:
     And the JSON should be equal to:
     """
     {
+        "adherent_uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
+        "email": "francis.brioul@yahoo.com",
         "address": "2 avenue Jean Jaurès",
         "postal_code": "77000",
         "city": "Melun",
         "country": "FR",
+        "gender": "male",
         "first_name": "Francis",
         "last_name": "Brioul",
-        "adherent_uuid": "@uuid@",
-        "birthdate": "@string@.isDateTime()",
-        "gender": "male",
-        "interests": [],
+        "birthdate": "1962-01-07T00:00:00+01:00",
+        "age": 62,
         "phone": null,
         "nationality": null,
-        "sms_subscription": false,
-        "email": "francis.brioul@yahoo.com",
-        "email_subscription": false,
-        "created_at": "@string@.isDateTime()",
-        "last_membership_donation": null,
-        "committee": null,
-        "committee_uuid": null,
-        "cotisation_dates": [],
-        "campus_registered_at": null,
-        "mandates": [],
-        "declared_mandates": [],
-        "certified": false,
-        "age": "@number@",
         "tags": [
             {
                 "type": "role",
-                "label": "Référent",
+                "label": "Président assemblée départementale",
                 "tooltip": "Responsable communication"
             }
         ],
+        "created_at": "2017-08-12T16:12:13+02:00",
+        "interests": [],
+        "last_membership_donation": null,
+        "committee": null,
+        "committee_uuid": null,
+        "mandates": [],
+        "declared_mandates": [],
+        "cotisation_dates": [],
+        "campus_registered_at": null,
         "zones": [
             {
-                "uuid": "@uuid@",
+                "uuid": "e3f0cc51-906e-11eb-a875-0242ac150002",
                 "type": "district",
                 "code": "77-1",
                 "name": "Seine-et-Marne (1)"
             },
             {
-                "uuid": "@uuid@",
+                "uuid": "e3f2a958-906e-11eb-a875-0242ac150002",
                 "type": "city",
                 "code": "77288",
                 "name": "Melun"
             }
-        ]
+        ],
+        "certified": false,
+        "sms_subscription": false,
+        "email_subscription": false
     }
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a user with correspondent role I can get adherents of my zones
@@ -658,34 +597,19 @@ Feature:
         },
         "items": [
             {
+                "adherent_uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+                "email": "gisele-berthoux@caramail.com",
                 "address": "47 rue Martre",
                 "postal_code": "92110",
                 "city": "Clichy",
                 "country": "FR",
+                "gender": "female",
                 "first_name": "Gisele",
                 "last_name": "Berthoux",
-                "adherent_uuid": "@uuid@",
-                "birthdate": "@string@.isDateTime()",
-                "gender": "female",
-                "interests": [],
-                "additional_tags": [],
-                "city_code": "92024",
+                "birthdate": "1983-12-24T00:00:00+01:00",
+                "age": 40,
                 "phone": "+33 6 66 66 66 66",
                 "nationality": "FR",
-                "sms_subscription": true,
-                "email": "gisele-berthoux@caramail.com",
-                "email_subscription": true,
-                "renaissance_membership": null,
-                "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null,
-                "committee": "Second Comité des 3 communes",
-                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
-                "cotisation_dates": [],
-                "campus_registered_at": null,
-                "mandates": ["conseiller_municipal"],
-                "declared_mandates": ["conseiller_municipal"],
-                "certified": true,
-                "age": "@number@",
                 "tags": [
                     {
                         "label": "À jour 2024",
@@ -727,7 +651,7 @@ Feature:
                     },
                     {
                         "type": "role",
-                        "label": "Référent",
+                        "label": "Président assemblée départementale",
                         "tooltip": "Responsable communication"
                     },
                     {
@@ -745,50 +669,54 @@ Feature:
                         "label": "Conseiller municipal"
                     }
                 ],
+                "created_at": "2017-06-02T15:34:12+02:00",
+                "interests": [],
+                "last_membership_donation": null,
+                "committee": "Second Comité des 3 communes",
+                "committee_uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
+                "additional_tags": [],
+                "mandates": [
+                    "conseiller_municipal"
+                ],
+                "declared_mandates": [
+                    "conseiller_municipal"
+                ],
+                "cotisation_dates": [],
+                "campus_registered_at": null,
                 "zones": [
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
                         "type": "department",
                         "code": "92",
                         "name": "Hauts-de-Seine"
                     },
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
                         "type": "city",
                         "code": "92024",
                         "name": "Clichy"
                     }
-                ]
+                ],
+                "certified": true,
+                "renaissance_membership": null,
+                "city_code": "92024",
+                "sms_subscription": true,
+                "email_subscription": true
             },
             {
+                "adherent_uuid": "@uuid@",
+                "email": "je-mengage-user-1@en-marche-dev.fr",
                 "address": "2 avenue Jean Jaurès",
                 "postal_code": "77000",
                 "city": "Melun",
                 "country": "FR",
+                "gender": "male",
                 "first_name": "Jules",
                 "last_name": "Fullstack",
-                "adherent_uuid": "@uuid@",
-                "birthdate": "@string@.isDateTime()",
-                "gender": "male",
-                "interests": [],
-                "additional_tags": [],
-                "city_code": null,
+                "birthdate": "1942-01-10T00:00:00+02:00",
+                "age": 82,
                 "phone": null,
                 "nationality": null,
-                "sms_subscription": false,
-                "email": "je-mengage-user-1@en-marche-dev.fr",
-                "email_subscription": false,
-                "renaissance_membership": null,
-                "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null,
-                "committee": null,
-                "committee_uuid": null,
-                "cotisation_dates": [],
-                "campus_registered_at": null,
-                "mandates": [],
-                "declared_mandates": ["depute_europeen", "conseiller_municipal"],
-                "certified": false,
-                "age": "@number@",
                 "tags": [
                     {
                         "type": "role",
@@ -804,20 +732,38 @@ Feature:
                         "label": "Conseiller municipal"
                     }
                 ],
+                "created_at": "2017-06-02T15:34:12+02:00",
+                "interests": [],
+                "last_membership_donation": null,
+                "committee": null,
+                "committee_uuid": null,
+                "additional_tags": [],
+                "mandates": [],
+                "declared_mandates": [
+                    "depute_europeen",
+                    "conseiller_municipal"
+                ],
+                "cotisation_dates": [],
+                "campus_registered_at": null,
                 "zones": [
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
                         "type": "department",
                         "code": "92",
                         "name": "Hauts-de-Seine"
                     },
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3eff020-906e-11eb-a875-0242ac150002",
                         "type": "department",
                         "code": "59",
                         "name": "Nord"
                     }
-                ]
+                ],
+                "certified": false,
+                "renaissance_membership": null,
+                "city_code": null,
+                "sms_subscription": false,
+                "email_subscription": false
             }
         ]
     }
@@ -1132,37 +1078,19 @@ Feature:
         },
         "items": [
             {
+                "adherent_uuid": "918f07e5-676b-49c0-b76d-72ce01cb2404",
+                "email": "deputy@en-marche-dev.fr",
                 "address": "3 Avenue du Général Eisenhower",
                 "postal_code": "75008",
                 "city": "Paris 8ème",
                 "country": "FR",
+                "gender": "male",
                 "first_name": "Député",
                 "last_name": "PARIS I",
-                "adherent_uuid": "@uuid@",
-                "birthdate": "@string@.isDateTime()",
-                "gender": "male",
-                "interests": [
-                    "europe",
-                    "numerique"
-                ],
-                "additional_tags": ["new_adherent", "old_adherent_em", "donator_n", "donator_n-x"],
-                "city_code": "75056",
+                "birthdate": "1982-06-02T00:00:00+02:00",
+                "age": 42,
                 "phone": null,
                 "nationality": null,
-                "sms_subscription": true,
-                "email": "deputy@en-marche-dev.fr",
-                "email_subscription": true,
-                "renaissance_membership": null,
-                "created_at": "@string@.isDateTime()",
-                "last_membership_donation": null,
-                "committee": null,
-                "committee_uuid": null,
-                "cotisation_dates": ["2022-01-01 12:00:00", "2023-01-01 12:00:00"],
-                "campus_registered_at": null,
-                "mandates": [],
-                "declared_mandates": [],
-                "certified": true,
-                "age": "@number@",
                 "tags": [
                     {
                         "type": "role",
@@ -1175,75 +1103,107 @@ Feature:
                         "tooltip": "Responsable communication"
                     }
                 ],
+                "created_at": "2017-06-01T09:26:31+02:00",
+                "interests": [
+                    "europe",
+                    "numerique"
+                ],
+                "last_membership_donation": null,
+                "committee": null,
+                "committee_uuid": null,
+                "additional_tags": [
+                    "new_adherent",
+                    "old_adherent_em",
+                    "donator_n",
+                    "donator_n-x"
+                ],
+                "mandates": [],
+                "declared_mandates": [],
+                "cotisation_dates": [
+                    "2022-01-01 12:00:00",
+                    "2023-01-01 12:00:00"
+                ],
+                "campus_registered_at": null,
                 "zones": [
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
                         "type": "district",
                         "code": "75-1",
                         "name": "Paris (1)"
                     },
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3f2fd15-906e-11eb-a875-0242ac150002",
                         "type": "borough",
                         "code": "75108",
                         "name": "Paris 8ème"
                     }
-                ]
+                ],
+                "certified": true,
+                "renaissance_membership": null,
+                "city_code": "75056",
+                "sms_subscription": true,
+                "email_subscription": true
             },
             {
+                "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "email": "jacques.picard@en-marche.fr",
                 "address": "36 rue de la Paix",
                 "postal_code": "75008",
                 "city": "Paris 8ème",
                 "country": "FR",
+                "gender": "male",
                 "first_name": "Jacques",
                 "last_name": "Picard",
-                "adherent_uuid": "@uuid@",
-                "birthdate": "@string@.isDateTime()",
-                "gender": "male",
+                "birthdate": "1953-04-03T00:00:00+01:00",
+                "age": 71,
+                "phone": "+33 1 87 26 42 36",
+                "nationality": "FR",
+                "tags": [
+                    {
+                        "type": "role",
+                        "label": "Président assemblée départementale",
+                        "tooltip": "Responsable mobilisation"
+                    }
+                ],
+                "created_at": "2017-01-03T08:47:54+01:00",
                 "interests": [
                     "europe",
                     "numerique",
                     "sante"
                 ],
-                "additional_tags": ["new_adherent", "donator_n-x"],
-                "city_code": "75056",
-                "phone": "+33 1 87 26 42 36",
-                "nationality": "FR",
-                "sms_subscription": true,
-                "email": "jacques.picard@en-marche.fr",
-                "email_subscription": true,
-                "renaissance_membership": null,
-                "created_at": "@string@.isDateTime()",
                 "last_membership_donation": null,
                 "committee": null,
                 "committee_uuid": null,
-                "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"],
-                "campus_registered_at": null,
+                "additional_tags": [
+                    "new_adherent",
+                    "donator_n-x"
+                ],
                 "mandates": [],
                 "declared_mandates": [],
-                "certified": true,
-                "age": "@number@",
-                "tags": [
-                    {
-                        "type": "role",
-                        "label": "Référent",
-                        "tooltip": "Responsable mobilisation"
-                    }
+                "cotisation_dates": [
+                    "2022-02-01 12:00:00",
+                    "2023-03-01 12:00:00"
                 ],
+                "campus_registered_at": null,
                 "zones": [
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
                         "type": "district",
                         "code": "75-1",
                         "name": "Paris (1)"
                     },
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3f2fd15-906e-11eb-a875-0242ac150002",
                         "type": "borough",
                         "code": "75108",
                         "name": "Paris 8ème"
                     }
-                ]
+                ],
+                "certified": true,
+                "renaissance_membership": null,
+                "city_code": "75056",
+                "sms_subscription": true,
+                "email_subscription": true
             }
         ]
     }
@@ -1262,59 +1222,65 @@ Feature:
         },
         "items": [
             {
+                "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
+                "email": "jacques.picard@en-marche.fr",
                 "address": "36 rue de la Paix",
                 "postal_code": "75008",
                 "city": "Paris 8ème",
                 "country": "FR",
+                "gender": "male",
                 "first_name": "Jacques",
                 "last_name": "Picard",
-                "adherent_uuid": "@uuid@",
-                "birthdate": "@string@.isDateTime()",
-                "gender": "male",
+                "birthdate": "1953-04-03T00:00:00+01:00",
+                "age": 71,
+                "phone": "+33 1 87 26 42 36",
+                "nationality": "FR",
+                "tags": [
+                    {
+                        "type": "role",
+                        "label": "Président assemblée départementale",
+                        "tooltip": "Responsable mobilisation"
+                    }
+                ],
+                "created_at": "2017-01-03T08:47:54+01:00",
                 "interests": [
                     "europe",
                     "numerique",
                     "sante"
                 ],
-                "additional_tags": ["new_adherent", "donator_n-x"],
-                "city_code": "75056",
-                "phone": "+33 1 87 26 42 36",
-                "nationality": "FR",
-                "sms_subscription": true,
-                "email": "jacques.picard@en-marche.fr",
-                "email_subscription": true,
-                "renaissance_membership": null,
-                "created_at": "@string@.isDateTime()",
                 "last_membership_donation": null,
                 "committee": null,
                 "committee_uuid": null,
-                "cotisation_dates": ["2022-02-01 12:00:00", "2023-03-01 12:00:00"],
-                "campus_registered_at": null,
+                "additional_tags": [
+                    "new_adherent",
+                    "donator_n-x"
+                ],
                 "mandates": [],
                 "declared_mandates": [],
-                "certified": true,
-                "age": "@number@",
-                "tags": [
-                    {
-                        "type": "role",
-                        "label": "Référent",
-                        "tooltip": "Responsable mobilisation"
-                    }
+                "cotisation_dates": [
+                    "2022-02-01 12:00:00",
+                    "2023-03-01 12:00:00"
                 ],
+                "campus_registered_at": null,
                 "zones": [
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3f0bf9d-906e-11eb-a875-0242ac150002",
                         "type": "district",
                         "code": "75-1",
                         "name": "Paris (1)"
                     },
                     {
-                        "uuid": "@uuid@",
+                        "uuid": "e3f2fd15-906e-11eb-a875-0242ac150002",
                         "type": "borough",
                         "code": "75108",
                         "name": "Paris 8ème"
                     }
-                ]
+                ],
+                "certified": true,
+                "renaissance_membership": null,
+                "city_code": "75056",
+                "sms_subscription": true,
+                "email_subscription": true
             }
         ]
     }
@@ -1334,7 +1300,7 @@ Feature:
 
     Scenario: I can count all adherent RE in my zone
         Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        When I send a "GET" request to "/api/v3/adherents/count?scope=referent"
+        When I send a "GET" request to "/api/v3/adherents/count?scope=president_departmental_assembly"
         Then the response status code should be 200
         And the JSON should be equal to:
         """
@@ -1343,7 +1309,7 @@ Feature:
             "sympathizer": 1
         }
         """
-        When I send a "POST" request to "/api/v3/adherents/count?scope=referent" with body:
+        When I send a "POST" request to "/api/v3/adherents/count?scope=president_departmental_assembly" with body:
         """
         ["e3efe6fd-906e-11eb-a875-0242ac150002"]
         """

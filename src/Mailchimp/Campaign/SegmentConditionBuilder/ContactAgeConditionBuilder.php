@@ -3,7 +3,6 @@
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
-use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
@@ -17,8 +16,7 @@ class ContactAgeConditionBuilder implements SegmentConditionBuilderInterface
 {
     public function support(SegmentFilterInterface $filter): bool
     {
-        return $filter instanceof AdherentZoneFilter
-            || $filter instanceof AdherentGeoZoneFilter
+        return $filter instanceof AdherentGeoZoneFilter
             || $filter instanceof ReferentUserFilter
             || $filter instanceof CommitteeFilter
             || $filter instanceof AudienceFilter
@@ -35,7 +33,7 @@ class ContactAgeConditionBuilder implements SegmentConditionBuilderInterface
     }
 
     /**
-     * @param CommitteeFilter|ReferentUserFilter|AdherentZoneFilter|AdherentGeoZoneFilter|AudienceFilter $filter
+     * @param CommitteeFilter|ReferentUserFilter|AdherentGeoZoneFilter|AudienceFilter $filter
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {

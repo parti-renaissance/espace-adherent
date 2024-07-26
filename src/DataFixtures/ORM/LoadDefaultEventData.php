@@ -40,8 +40,8 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $event1->setStatus(BaseEvent::STATUS_SCHEDULED);
         $event1->setMode(BaseEvent::MODE_ONLINE);
         $event1->setTimeZone('Europe/Paris');
-        $event1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
-        $event1->setPostAddress($this->createPostAddress('40 Rue Grande', '77300-77186', null, 48.404765, 2.698759));
+        $event1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
+        $event1->setPostAddress($this->createPostAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684));
         $event1->setAuthor($referent);
 
         $event2 = new DefaultEvent(Uuid::fromString(self::EVENT_2_UUID));
@@ -199,7 +199,6 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
             LoadUserData::class,
             LoadAdherentData::class,
             LoadEventCategoryData::class,
-            LoadReferentTagsZonesLinksData::class,
         ];
     }
 }

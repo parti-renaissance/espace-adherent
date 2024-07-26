@@ -607,7 +607,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a (delegated) legislative candidate I can get the news list
@@ -867,7 +867,7 @@ Feature:
     """
     {
         "uuid": "@uuid@",
-        "title": "[Référent] Une nouvelle actualité d'aujourd'hui",
+        "title": "Une nouvelle actualité d'aujourd'hui",
         "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
         "external_link": "http://test.en-marche.fr",
         "link_label": "Voir",
@@ -889,11 +889,11 @@ Feature:
     And I should have 1 notification "NewsCreatedNotification" with data:
       | key   | value                                             |
       | topic | staging_jemarche_department_77                    |
-      | title | [Référent] Une nouvelle actualité d'aujourd'hui   |
+      | title | Une nouvelle actualité d'aujourd'hui   |
       | body  | Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula. |
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a (delegated) correspondent I can create a news
@@ -1116,7 +1116,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a logged-in user I can update a news of my zone
@@ -1124,7 +1124,7 @@ Feature:
     When I send a "PUT" request to "/api/v3/jecoute/news/6c70f8e8-6bce-4376-8b9e-3ce342880673?scope=<scope>" with body:
     """
     {
-      "title": "[Référent] Nouveau titre",
+      "title": "Nouveau titre",
       "text": "Nouveau texte",
       "external_link": "https://nouveau.en-marche.fr",
       "link_label": "Voir le lien (nouveau)",
@@ -1160,7 +1160,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a logged-in user with National role I can update a news
@@ -1175,7 +1175,7 @@ Feature:
 
   Scenario: As a logged-in user I cannot update a news out of my zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "PUT" request to "/api/v3/jecoute/news/25632c43-c224-4745-84d7-09dfa8249367?scope=referent" with body:
+    When I send a "PUT" request to "/api/v3/jecoute/news/25632c43-c224-4745-84d7-09dfa8249367?scope=president_departmental_assembly" with body:
     """
     {
       "title": "Une nouvelle actualité d'aujourd'hui",
@@ -1192,7 +1192,7 @@ Feature:
 
   Scenario: As a referent I cannot create a local news without a zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/jecoute/news?scope=president_departmental_assembly" with body:
     """
     {
       "title": "Une nouvelle actualité d'aujourd'hui",
@@ -1220,40 +1220,9 @@ Feature:
     }
     """
 
-  Scenario: As a referent I cannot create a local news with a city zone
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
-    """
-    {
-      "title": "Une nouvelle actualité d'aujourd'hui",
-      "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
-      "external_link": "http://test.en-marche.fr",
-      "link_label": "Voir",
-      "zone": "e3f21338-906e-11eb-a875-0242ac150002",
-      "notification": true,
-      "published": true
-    }
-    """
-    Then the response status code should be 400
-    And the JSON should be equal to:
-    """
-    {
-      "type": "https://tools.ietf.org/html/rfc2616#section-10",
-      "title": "An error occurred",
-      "detail": "zone: Cette zone ne correspond pas à une région, un département ou un arrondissement",
-      "violations": [
-        {
-          "code": null,
-          "propertyPath": "zone",
-          "message": "Cette zone ne correspond pas à une région, un département ou un arrondissement"
-        }
-      ]
-    }
-    """
-
   Scenario: As a referent I cannot create a local news with a non managed zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "POST" request to "/api/v3/jecoute/news?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/jecoute/news?scope=president_departmental_assembly" with body:
     """
     {
       "title": "Une nouvelle actualité d'aujourd'hui",

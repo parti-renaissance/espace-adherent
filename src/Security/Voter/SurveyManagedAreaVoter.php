@@ -32,10 +32,6 @@ class SurveyManagedAreaVoter extends AbstractAdherentVoter
         /** @var LocalSurvey $subject */
         $surveyZone = $subject->getZone();
 
-        if ($adherent->isReferent()) {
-            return $this->zoneRepository->isInJecouteZonesWithParents($adherent->getManagedArea()->getTags()->toArray(), $surveyZone);
-        }
-
         if ($adherent->isJecouteManager()) {
             $managedZone = $adherent->getJecouteManagedArea()->getZone();
         }

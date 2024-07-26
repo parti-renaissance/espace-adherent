@@ -172,7 +172,6 @@ class AdherentFactory
             $data['nickname_used'] ?? false,
             Adherent::DISABLED,
             $data['registered_at'] ?? 'now',
-            [],
             null,
             $data['nationality'] ?? null,
             $data['custom_gender'] ?? null

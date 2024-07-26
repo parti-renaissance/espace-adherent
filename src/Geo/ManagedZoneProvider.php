@@ -5,7 +5,6 @@ namespace App\Geo;
 use App\AdherentSpace\AdherentSpaceEnum;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
-use App\Entity\ReferentTag;
 
 class ManagedZoneProvider
 {
@@ -24,32 +23,8 @@ class ManagedZoneProvider
             return [$adherent->getDeputyZone()];
         }
 
-        if (AdherentSpaceEnum::REFERENT === $spaceType) {
-            return $adherent->getManagedArea() ? $adherent->getManagedArea()->getZones()->toArray() : [];
-        }
-
         if (AdherentSpaceEnum::CORRESPONDENT === $spaceType) {
             return [$adherent->getCorrespondentZone()];
-        }
-
-        if (AdherentSpaceEnum::SENATOR === $spaceType) {
-            return $adherent->getSenatorArea() ? [$adherent->getSenatorArea()->getDepartmentTag()->getZone()] : [];
-        }
-
-        if (AdherentSpaceEnum::SENATORIAL_CANDIDATE === $spaceType) {
-            if (!$adherent->getSenatorialCandidateManagedArea()) {
-                return [];
-            }
-
-            $zones = [];
-
-            /* @var ReferentTag $referentTag */
-            $referentTags = $adherent->getSenatorialCandidateManagedArea()->getDepartmentTags();
-            foreach ($referentTags as $referentTag) {
-                $zones[] = $referentTag->getZone();
-            }
-
-            return $zones;
         }
 
         if (\in_array($spaceType, [AdherentSpaceEnum::CANDIDATE, AdherentSpaceEnum::CANDIDATE_JECOUTE], true)) {
@@ -93,10 +68,5 @@ class ManagedZoneProvider
         $intersect = array_intersect($ids, $managedIds);
 
         return \count($intersect) > 0;
-    }
-
-    public function isManagerOfZone(Adherent $adherent, string $spaceType, Zone $zone): bool
-    {
-        return $this->zoneBelongsToSome($zone, $this->getManagedZonesIds($adherent, $spaceType));
     }
 }

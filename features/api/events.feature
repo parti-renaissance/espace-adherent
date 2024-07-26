@@ -104,11 +104,11 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 15,
+            "total_items": 14,
             "items_per_page": 2,
             "count": 2,
             "current_page": 1,
-            "last_page": 8
+            "last_page": 7
         },
         "items": [
             {
@@ -210,7 +210,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a referent I can get an ordered list of events corresponding to my zones
@@ -221,7 +221,7 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 15,
+            "total_items": 14,
             "items_per_page": 3,
             "count": 3,
             "current_page": 1,
@@ -378,7 +378,7 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 15,
+            "total_items": 14,
             "items_per_page": 3,
             "count": 3,
             "current_page": 1,
@@ -491,13 +491,13 @@ Feature:
                 "status": "SCHEDULED",
                 "capacity": 50,
                 "post_address": {
-                    "address": "40 Rue Grande",
-                    "postal_code": "77300",
-                    "city": "77300-77186",
-                    "city_name": "Fontainebleau",
+                    "address": "47 rue Martre",
+                    "postal_code": "92110",
+                    "city": "92110-92024",
+                    "city_name": "Clichy",
                     "country": "FR",
-                    "latitude": 48.404766,
-                    "longitude": 2.698759
+                    "latitude": 48.9016,
+                    "longitude": 2.305268
                 },
                 "created_at": "@string@.isDateTime()",
                 "category": null,
@@ -517,7 +517,7 @@ Feature:
     """
     {
         "metadata": {
-            "total_items": 15,
+            "total_items": 14,
             "items_per_page": 3,
             "count": 3,
             "current_page": 1,
@@ -670,7 +670,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a (delegated) referent I can get a list of events created by me
@@ -747,13 +747,13 @@ Feature:
                 "status": "SCHEDULED",
                 "capacity": 50,
                 "post_address": {
-                    "address": "40 Rue Grande",
-                    "postal_code": "77300",
-                    "city": "77300-77186",
-                    "city_name": "Fontainebleau",
+                    "address": "47 rue Martre",
+                    "postal_code": "92110",
+                    "city": "92110-92024",
+                    "city_name": "Clichy",
                     "country": "FR",
-                    "latitude": 48.404766,
-                    "longitude": 2.698759
+                    "latitude": 48.9016,
+                    "longitude": 2.305268
                 },
                 "created_at": "@string@.isDateTime()",
                 "category": null,
@@ -807,7 +807,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a referent I can get one event
@@ -988,7 +988,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a deputy I cannot create an event with missing or invalid data
@@ -1624,7 +1624,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a (delegated) referent I can cancel my (delegator's) default event
@@ -1716,7 +1716,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a (delegated) referent I cannot delete my (delegator's) event with participants
@@ -1725,7 +1725,7 @@ Feature:
     Then the response status code should be 403
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a (delegated) referent I can get the list of event participants
@@ -1788,7 +1788,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline:  As a (delegated) legislative candidate I can create an event

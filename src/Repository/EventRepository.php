@@ -8,17 +8,12 @@ use App\Entity\Committee;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\BaseEventCategory;
 use App\Entity\Event\CommitteeEvent;
-use App\Entity\ReferentTag;
 use App\Event\EventTypeEnum;
 use App\Event\EventVisibilityEnum;
 use App\Geocoder\Coordinates;
 use App\Search\SearchParametersFilter;
-use App\Statistics\StatisticsParametersFilter;
-use App\Utils\RepositoryUtils;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Connection;
-use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -30,9 +25,7 @@ class EventRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
     use GeoZoneTrait;
-    use GeoFilterTrait;
     use NearbyTrait;
-    use ReferentTrait;
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
     }
@@ -460,155 +453,6 @@ class EventRepository extends ServiceEntityRepository
         ;
 
         return new Paginator($query);
-    }
-
-    public function findCitiesForReferentAutocomplete(Adherent $referent, $value): array
-    {
-        $this->checkReferent($referent);
-
-        $qb = $this->createQueryBuilder('event')
-            ->select('DISTINCT event.postAddress.cityName as city')
-            ->join('event.referentTags', 'tag')
-            ->where('event.status = :status')
-            ->andWhere('event.committee IS NOT NULL')
-            ->andWhere('tag.id IN (:tags)')
-            ->setParameter('status', BaseEvent::STATUS_SCHEDULED)
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->orderBy('city')
-        ;
-
-        if ($value) {
-            $qb
-                ->andWhere('event.postAddress.cityName LIKE :searchedCityName')
-                ->setParameter('searchedCityName', $value.'%')
-            ;
-        }
-
-        return array_column($qb->getQuery()->getArrayResult(), 'city');
-    }
-
-    public function queryCountByMonth(Adherent $referent, int $months = 5): QueryBuilder
-    {
-        return $this->createQueryBuilder('event')
-            ->select('COUNT(DISTINCT event.id) AS count, YEAR_MONTH(event.beginAt) AS yearmonth')
-            ->innerJoin('event.referentTags', 'tag')
-            ->where('tag IN (:tags)')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->andWhere('event.beginAt >= :from')
-            ->andWhere('event.beginAt <= :until')
-            ->setParameter('from', (new Chronos("first day of -$months months"))->setTime(0, 0, 0, 0))
-            ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))
-            ->groupBy('yearmonth')
-        ;
-    }
-
-    public function countParticipantsInReferentManagedAreaByMonthForTheLastSixMonths(Adherent $referent): array
-    {
-        $this->checkReferent($referent);
-
-        $eventsCount = $this->createQueryBuilder('event')
-            ->select('YEAR_MONTH(event.beginAt) AS yearmonth, event.participantsCount as count')
-            ->innerJoin('event.referentTags', 'tag')
-            ->where('tag IN (:tags)')
-            ->andWhere('event.committee IS NOT NULL')
-            ->andWhere("event.status = '".BaseEvent::STATUS_SCHEDULED."'")
-            ->andWhere('event.participantsCount > 0')
-            ->andWhere('event.beginAt >= :from')
-            ->andWhere('event.beginAt <= :until')
-            ->setParameter('from', (new Chronos('first day of -5 months'))->setTime(0, 0, 0, 0))
-            ->setParameter('until', (new Chronos('now'))->setTime(23, 59, 59, 999))
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->groupBy('event.id')
-            ->getQuery()
-            ->useResultCache(true, 3600)
-            ->getArrayResult()
-        ;
-
-        return RepositoryUtils::aggregateCountByMonth($eventsCount);
-    }
-
-    public function countParticipantsInReferentManagedArea(Adherent $referent): int
-    {
-        $this->checkReferent($referent);
-
-        $referentTagIds = array_map(
-            function (ReferentTag $tag) {
-                return $tag->getId();
-            },
-            $referent->getManagedArea()->getTags()->toArray()
-        );
-
-        $query = <<<'SQL'
-            SELECT SUM(events_count.count) as count
-            FROM (
-                SELECT events.participants_count AS count
-                FROM events
-                    INNER JOIN event_referent_tag ert ON events.id = ert.event_id
-                    INNER JOIN referent_tags tags ON tags.id = ert.referent_tag_id
-                WHERE (tags.id IN (?)
-                    AND events.committee_id IS NOT NULL
-                    AND events.status = ?
-                    AND events.participants_count > 0)
-                    AND events.type = ?
-                GROUP BY events.id
-            ) AS events_count
-            SQL;
-
-        $results = $this->_em->getConnection()->executeQuery(
-            $query,
-            [$referentTagIds, BaseEvent::STATUS_SCHEDULED, EventTypeEnum::TYPE_COMMITTEE],
-            [Connection::PARAM_STR_ARRAY, \PDO::PARAM_STR]
-        );
-
-        return $results->fetchOne();
-    }
-
-    public function countCommitteeEventsInReferentManagedArea(
-        Adherent $referent,
-        ?StatisticsParametersFilter $filter = null
-    ): array {
-        $this->checkReferent($referent);
-
-        $query = $this->queryCountByMonth($referent);
-        if ($filter) {
-            $query = RepositoryUtils::addStatstFilter($filter, $query);
-        }
-
-        $result = $query
-            ->andWhere('event.committee IS NOT NULL')
-            ->getQuery()
-            ->getArrayResult()
-        ;
-
-        return RepositoryUtils::aggregateCountByMonth($result);
-    }
-
-    public function countReferentEventsInReferentManagedArea(Adherent $referent): array
-    {
-        $this->checkReferent($referent);
-
-        $query = $this->queryCountByMonth($referent);
-
-        $result = $query
-            ->andWhere('event.committee IS NULL')
-            ->getQuery()
-            ->getArrayResult()
-        ;
-
-        return RepositoryUtils::aggregateCountByMonth($result);
-    }
-
-    public function countTotalEventsInReferentManagedAreaForCurrentMonth(Adherent $referent): int
-    {
-        $this->checkReferent($referent);
-
-        $query = $this->queryCountByMonth($referent, 0);
-
-        try {
-            return (int) $query->getQuery()->getSingleResult()['count'];
-        } catch (NoResultException $e) {
-            return 0;
-        }
     }
 
     /**

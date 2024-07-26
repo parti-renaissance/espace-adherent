@@ -6,7 +6,6 @@ use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\Survey;
 use App\Exporter\SurveyExporter;
-use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\DataSurveyRepository;
 use App\Scope\ScopeGeneratorResolver;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -20,13 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Security("is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('SCOPE_CAN_MANAGE', survey)")]
 class GetSurveyRepliesController extends AbstractController
 {
-    private ScopeGeneratorResolver $scopeGeneratorResolver;
-    private ZoneRepository $zoneRepository;
-
-    public function __construct(ScopeGeneratorResolver $scopeGeneratorResolver, ZoneRepository $zoneRepository)
+    public function __construct(private readonly ScopeGeneratorResolver $scopeGeneratorResolver)
     {
-        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
-        $this->zoneRepository = $zoneRepository;
     }
 
     public function __invoke(
@@ -82,6 +76,10 @@ class GetSurveyRepliesController extends AbstractController
 
     protected function getZones(Adherent $adherent): array
     {
-        return $adherent->isCorrespondent() ? [$adherent->getCorrespondentZone()] : $this->zoneRepository->findForJecouteByReferentTags($adherent->getManagedArea()->getTags()->toArray());
+        if ($adherent->isCorrespondent()) {
+            return [$adherent->getCorrespondentZone()];
+        }
+
+        return [];
     }
 }

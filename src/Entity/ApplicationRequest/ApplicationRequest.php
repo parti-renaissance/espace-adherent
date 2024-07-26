@@ -5,9 +5,7 @@ namespace App\Entity\ApplicationRequest;
 use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
-use App\Entity\EntityReferentTagTrait;
 use App\Entity\EntityTimestampableTrait;
-use App\Entity\ReferentTaggableEntity;
 use App\Intl\FranceCitiesBundle;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,10 +18,9 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\MappedSuperclass]
-abstract class ApplicationRequest implements ReferentTaggableEntity
+abstract class ApplicationRequest
 {
     use EntityIdentityTrait;
-    use EntityReferentTagTrait;
     use EntityTimestampableTrait;
 
     #[Assert\Choice(choices: Genders::CHOICES)]
@@ -165,7 +162,6 @@ abstract class ApplicationRequest implements ReferentTaggableEntity
     {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->favoriteThemes = new ArrayCollection();
-        $this->referentTags = new ArrayCollection();
         $this->tags = new ArrayCollection();
 
         $this->phone = new PhoneNumber();

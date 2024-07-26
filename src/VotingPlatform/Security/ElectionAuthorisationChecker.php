@@ -56,9 +56,7 @@ class ElectionAuthorisationChecker
 
         if (DesignationTypeEnum::COMMITTEE_ADHERENT === $election->getDesignationType()) {
             if (
-                $adherent->isReferent()
-                || $adherent->isDeputy()
-                || $adherent->isSenator()
+                $adherent->isDeputy()
                 || $adherent->getActiveDesignatedAdherentMandates()
             ) {
                 return false;

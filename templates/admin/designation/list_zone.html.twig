@@ -3,12 +3,6 @@
 {% block field %}
     {% if object.isCommitteeTypes() %}
         {{ object.getGlobalZones()|join(', ') }}
-    {% elseif object.isCopolType() %}
-        {% if object.referentTags|length > 1 %}
-            1+
-        {% else %}
-            {{ object.referentTags|map(tag => tag.code)|join(', ') }}
-        {% endif %}
     {% elseif object.isLocalElectionTypes() %}
         {{ object.getZones()|first }}
         {% if object.getZones()|length > 1 %}

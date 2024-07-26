@@ -11,14 +11,14 @@ Feature:
 
   Scenario: As an authenticated user I cannot upload a document for invalid type
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/upload/invalid?scope=referent" with parameters:
+    When I send a "POST" request to "/api/v3/upload/invalid?scope=president_departmental_assembly" with parameters:
       | key         | value      |
       | upload      | @image.jpg |
     Then the response status code should be 403
 
   Scenario: As an authenticated user I cannot upload a document without a document
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/upload/news?scope=referent"
+    When I send a "POST" request to "/api/v3/upload/news?scope=president_departmental_assembly"
     Then the response status code should be 400
     And the response should be in JSON
     And the JSON should be equal to:
@@ -44,7 +44,7 @@ Feature:
     """
     Examples:
       | user                                    | scope                                           |
-      | referent@en-marche-dev.fr               | referent                                        |
+      | referent@en-marche-dev.fr               | president_departmental_assembly                                        |
       | senateur@en-marche-dev.fr               | delegated_08f40730-d807-4975-8773-69d8fae1da74  |
       | senatorial-candidate@en-marche-dev.fr   | legislative_candidate                           |
       | gisele-berthoux@caramail.com            | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c  |

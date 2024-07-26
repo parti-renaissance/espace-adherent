@@ -5,60 +5,6 @@ Feature:
   As a logged-in user
   I should be able to access API adherent messages
 
-  Scenario: As a logged-in user I can not update adherent message filter with not my segment
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/filter?scope=referent" with body:
-    """
-    {
-      "segment": "f6c36dd7-0517-4caf-ba6f-ec6822f2ec12"
-    }
-    """
-    Then the response status code should be 400
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-       "status":"error",
-       "message":"Validation Failed",
-       "violations":[
-          {
-             "propertyPath":"segment",
-             "message":"Le segment n'est pas autorisé"
-          }
-       ]
-    }
-    """
-
-  Scenario: As a logged-in user I can update adherent message filter with segment
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/filter?scope=referent" with body:
-    """
-    {
-      "segment": "830d230f-67fb-4217-9986-1a3ed7d3d5e7"
-    }
-    """
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-      "OK"
-    """
-
-  Scenario: As a delegated user I can update adherent message filter with segment
-    Given I am logged with "senateur@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "PUT" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/filter?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74" with body:
-    """
-    {
-      "segment": "830d230f-67fb-4217-9986-1a3ed7d3d5e7"
-    }
-    """
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-      "OK"
-    """
-
   Scenario Outline: As a logged-in (delegated) referent I can retrieve my messages
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/adherent_messages?scope=<scope>"
@@ -133,10 +79,9 @@ Feature:
     }
     """
     Examples:
-      | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | user                            | scope                                          |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       # senateur@en-marche-dev.fr has a delegated access from referent@en-marche-dev.fr and should see the same messages
-      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a (delegated) referent I can get a content of a message
     Given I am logged with "<user>" via OAuth client "JeMengage Web"
@@ -153,13 +98,12 @@ Feature:
     }
     """
     Examples:
-      | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
-      | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+      | user                            | scope                                          |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
 
   Scenario: As a DC referent I cannot delete a message already sent
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "DELETE" request to "/api/v3/adherent_messages/65f6cdbf-0707-4940-86d8-cc1755aab17e?scope=referent"
+    When I send a "DELETE" request to "/api/v3/adherent_messages/65f6cdbf-0707-4940-86d8-cc1755aab17e?scope=president_departmental_assembly"
     Then the response status code should be 403
 
   Scenario Outline: As a (delegated) referent I can delete a draft message
@@ -168,7 +112,7 @@ Feature:
     Then the response status code should be 204
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a (delegated) Correspondent I can create a message
@@ -214,7 +158,7 @@ Feature:
     When I send a "POST" request to "/api/v3/adherent_messages?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74" with body:
     """
     {
-      "type": "referent",
+      "type": "president_departmental_assembly",
       "label": "Message d'un référent délégué",
       "subject": "L'objet de l'email",
       "content": "<table>...</table>",
@@ -277,7 +221,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a delegated referent I can access to sending a referent message
@@ -372,17 +316,6 @@ Feature:
                     "type": "integer_interval"
                 },
                 {
-                    "code": "isCertified",
-                    "label": "Certifié",
-                    "options": {
-                        "choices": [
-                            "Non",
-                            "Oui"
-                        ]
-                    },
-                    "type": "select"
-                },
-                {
                     "code": "zone",
                     "label": "Zone géographique",
                     "options": {
@@ -417,10 +350,10 @@ Feature:
                             "sympathisant": "Sympathisant",
                             "sympathisant:adhesion_incomplete": "Sympathisant - Adhésion incomplète",
                             "sympathisant:compte_em": "Sympathisant - Ancien compte En Marche",
-                            "sympathisant:ensemble2024": "Sympathisant - Ensemble 2024",
                             "sympathisant:compte_avecvous_jemengage": "Sympathisant - Anciens comptes Je m'engage et Avec vous",
                             "sympathisant:autre_parti": "Sympathisant - Adhérent d'un autre parti",
-                            "sympathisant:besoin_d_europe": "Sympathisant - Besoin d'Europe"
+                            "sympathisant:besoin_d_europe": "Sympathisant - Besoin d'Europe",
+                            "sympathisant:ensemble2024": "Sympathisant - Ensemble 2024"
                         }
                     },
                     "type": "select"
@@ -446,6 +379,18 @@ Feature:
                             "Non",
                             "Oui"
                         ]
+                    },
+                    "type": "select"
+                },
+                {
+                    "code": "donatorStatus",
+                    "label": "Donateur",
+                    "options": {
+                        "choices": {
+                            "donator_n": "Donateur année en cours",
+                            "donator_n-x": "Donateur années passées uniquement",
+                            "not_donator": "Pas encore donateur"
+                        }
                     },
                     "type": "select"
                 },
@@ -574,5 +519,5 @@ Feature:
       """
       Examples:
           | user                      | scope                                          |
-          | referent@en-marche-dev.fr | referent                                       |
+          | referent@en-marche-dev.fr | president_departmental_assembly                                       |
           | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |

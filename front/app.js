@@ -92,15 +92,6 @@ class App {
         autocompleteAddressForm.buildWidget();
     }
 
-    createVoteLocationSelector(country, postalCode, city, cityName, office) {
-        const formFactory = this._di.get('vote_location.form_factory');
-        const form = formFactory.createVoteLocationForm(country, postalCode, city, cityName, office);
-
-        form.prepare();
-        form.refresh();
-        form.attachEvents();
-    }
-
     startDateFieldsSynchronisation(referenceDateFieldName, targetDateFieldName) {
         this._di.get('form.date_synchronizer').sync(referenceDateFieldName, targetDateFieldName);
     }
@@ -141,12 +132,6 @@ class App {
         });
     }
 
-    runCopyToClipboard() {
-        import('pages/copy_to_clipboard').catch((error) => { throw error; }).then((module) => {
-            module.default();
-        });
-    }
-
     runSocialShare(urlAll, urlCategory) {
         import('pages/social_share').catch((error) => { throw error; }).then((module) => {
             module.default(urlAll, urlCategory);
@@ -165,12 +150,6 @@ class App {
         });
     }
 
-    runReferentsList() {
-        import('pages/referents_list').catch((error) => { throw error; }).then((module) => {
-            module.default();
-        });
-    }
-
     runBoardMember() {
         import('pages/board_member_list').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('api'));
@@ -180,12 +159,6 @@ class App {
     runManageParticipants() {
         import('pages/manage_participants').catch((error) => { throw error; }).then((module) => {
             module.default();
-        });
-    }
-
-    runManageUserSegment(segmentType, wrapperSelector, checkboxSelector, countMembers) {
-        import('pages/manage_user_segment').catch((error) => { throw error; }).then((module) => {
-            module.default(segmentType, wrapperSelector, checkboxSelector, this.get('api'), countMembers);
         });
     }
 
@@ -210,18 +183,6 @@ class App {
         });
     }
 
-    runBatchActions(wrapperSelector, checkboxSelector, mainCheckboxSelector, actions) {
-        import('pages/batch_actions').catch((error) => { throw error; }).then((module) => {
-            module.default(
-                wrapperSelector,
-                checkboxSelector,
-                mainCheckboxSelector,
-                actions,
-                this.get('api')
-            );
-        });
-    }
-
     runGrandeMarcheEurope() {
         import('pages/grande_marche_europe').catch((error) => { throw error; }).then((module) => {
             module.default();
@@ -234,33 +195,9 @@ class App {
         });
     }
 
-    runProcurationProxy(countryFieldSelector, stateFieldSelector) {
-        import('pages/procuration_proxy').catch((error) => { throw error; }).then((module) => {
-            module.default(countryFieldSelector, stateFieldSelector);
-        });
-    }
-
-    runProcurationRequest(countryFieldSelector, stateFieldSelector) {
-        import('pages/procuration_request').catch((error) => { throw error; }).then((module) => {
-            module.default(countryFieldSelector, stateFieldSelector);
-        });
-    }
-
     runMessageList(buttonClass) {
         import('pages/message_list').catch((error) => { throw error; }).then((module) => {
             module.default(buttonClass, this.get('api'));
-        });
-    }
-
-    runReferentUserList(committeeModalButtonClass) {
-        import('pages/referent_user_list').catch((error) => { throw error; }).then((module) => {
-            module.default(committeeModalButtonClass, this.get('api'));
-        });
-    }
-
-    runMyActivityCommitteeList(switchSelector) {
-        import('pages/my_activity_committees').catch((error) => { throw error; }).then((module) => {
-            module.default(switchSelector, this.get('api'));
         });
     }
 

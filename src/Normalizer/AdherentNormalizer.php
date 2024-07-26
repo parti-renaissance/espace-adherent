@@ -23,7 +23,6 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         'postal_code' => 'zipCode',
         'first_name' => 'firstName',
         'last_name' => 'lastName',
-        'managed_area_tag_codes' => 'managedAreaTagCodes',
     ];
 
     protected const ALREADY_CALLED = 'ADHERENT_NORMALIZER_ALREADY_CALLED';

@@ -14,8 +14,6 @@ use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\PresidentDepartmentalAssemblyAdherentMessage;
-use App\Entity\AdherentMessage\ReferentAdherentMessage;
-use App\Entity\AdherentMessage\ReferentInstancesMessage;
 use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
 use App\Entity\AdherentMessage\RegionalDelegateAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
@@ -28,8 +26,6 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
     {
         return $filter instanceof AudienceFilter
             || \in_array(\get_class($filter->getMessage()), [
-                ReferentAdherentMessage::class,
-                ReferentInstancesMessage::class,
                 DeputyAdherentMessage::class,
                 CommitteeAdherentMessage::class,
                 SenatorAdherentMessage::class,
@@ -45,7 +41,6 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
         $interestKeys = [];
 
         switch ($messageClass = \get_class($campaign->getMessage())) {
-            case ReferentAdherentMessage::class:
             case RegionalCoordinatorAdherentMessage::class:
                 if (
                     (
@@ -59,7 +54,6 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
 
                 $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
                 break;
-            case ReferentInstancesMessage::class:
             case PresidentDepartmentalAssemblyAdherentMessage::class:
             case FdeCoordinatorAdherentMessage::class:
                 $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
@@ -110,9 +104,6 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
         switch ($scope = $filter->getScope()) {
-            case ScopeEnum::REFERENT:
-                $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
-                break;
             case ScopeEnum::DEPUTY:
                 $interestKeys[] = SubscriptionTypeEnum::DEPUTY_EMAIL;
                 break;

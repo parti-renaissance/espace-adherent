@@ -20,7 +20,6 @@ class UnregistrationFactory
             $adherent->getPostAddress()->getPostalCode(),
             $adherent->isAdherent(),
             $adherent->isRenaissanceUser(),
-            $adherent->getReferentTags()->toArray(),
             $command->getExcludedBy()
         );
     }
@@ -36,7 +35,6 @@ class UnregistrationFactory
             $adherent->getPostAddress()->getPostalCode(),
             $adherent->isAdherent(),
             $adherent->isRenaissanceUser(),
-            $adherent->getReferentTags()->toArray()
         );
     }
 }

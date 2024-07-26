@@ -10,7 +10,6 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class CityRepository extends ServiceEntityRepository
 {
-    use GeoFilterTrait;
     use PaginatorTrait;
 
     private const ALIAS = 'city';
@@ -30,10 +29,6 @@ class CityRepository extends ServiceEntityRepository
             ->innerJoin(self::ALIAS.'.department', 'department')
             ->innerJoin('department.region', 'region')
         ;
-
-        if ($managedTags = $filter->getManagedTags()) {
-            $this->applyGeoFilter($qb, $managedTags, self::ALIAS, 'region.country', self::ALIAS.'.inseeCode');
-        }
 
         if ($managedInseeCode = $filter->getManagedInseeCode()) {
             $qb

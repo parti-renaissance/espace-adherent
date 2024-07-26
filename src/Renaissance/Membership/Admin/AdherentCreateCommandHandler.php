@@ -15,7 +15,6 @@ use App\Membership\Event\UserEvent;
 use App\Membership\MembershipNotifier;
 use App\Membership\MembershipSourceEnum;
 use App\Membership\UserEvents;
-use App\Referent\ReferentTagManager;
 use App\Referent\ReferentZoneManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -25,7 +24,6 @@ class AdherentCreateCommandHandler
     public function __construct(
         private readonly AdherentFactory $adherentFactory,
         private readonly DonationRequestHandler $donationRequestHandler,
-        private readonly ReferentTagManager $referentTagManager,
         private readonly ReferentZoneManager $referentZoneManager,
         private readonly EntityManagerInterface $entityManager,
         private readonly EventDispatcherInterface $dispatcher,
@@ -56,7 +54,6 @@ class AdherentCreateCommandHandler
 
         $this->entityManager->persist($adherent);
 
-        $this->referentTagManager->assignReferentLocalTags($adherent);
         $this->referentZoneManager->assignZone($adherent);
 
         $this->entityManager->flush();

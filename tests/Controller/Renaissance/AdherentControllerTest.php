@@ -273,7 +273,6 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
     public function findEmailSubscriptionHistoryByAdherent(
         Adherent $adherent,
         ?string $action = null,
-        ?string $referentTagCode = null
     ): array {
         $qb = $this
             ->getEmailSubscriptionHistoryRepository()
@@ -287,14 +286,6 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
             $qb
                 ->andWhere('history.action = :action')
                 ->setParameter('action', $action)
-            ;
-        }
-
-        if ($referentTagCode) {
-            $qb
-                ->leftJoin('history.referentTags', 'tag')
-                ->andWhere('tag.code = :code')
-                ->setParameter('code', $referentTagCode)
             ;
         }
 
@@ -330,7 +321,6 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
     {
         /** @var Adherent $adherent */
         $adherentBeforeUnregistration = $this->getAdherentRepository()->findOneByEmail($userEmail);
-        $referentTagsBeforeUnregistration = $adherentBeforeUnregistration->getReferentTags()->toArray(); // It triggers the real SQL query instead of lazy-load
 
         $this->authenticateAsAdherent($this->client, $userEmail);
 
@@ -370,7 +360,6 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertSame((new \DateTime())->format('Y-m-d'), $unregistration->getUnregisteredAt()->format('Y-m-d'));
         $this->assertSame($adherentBeforeUnregistration->getUuid()->toString(), $unregistration->getUuid()->toString());
         $this->assertSame($adherentBeforeUnregistration->getPostalCode(), $unregistration->getPostalCode());
-        $this->assertEquals($referentTagsBeforeUnregistration, $unregistration->getReferentTags()->toArray());
     }
 
     public function testBlockedCertificationRequest(): void

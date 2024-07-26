@@ -15,9 +15,9 @@ class SendNewMembershipNotificationCommandTest extends AbstractCommandTestCase
 
         $output = $output->getDisplay();
 
-        self::assertStringContainsString('Found 3 manager(s) to process about new memberships', $output);
+        self::assertStringContainsString('Found 5 manager(s) to process about new memberships', $output);
 
-        $this->assertCountMails(2, RenaissanceNewAdherentsNotificationMessage::class);
+        $this->assertCountMails(3, RenaissanceNewAdherentsNotificationMessage::class);
         $this->assertCountMails(1, RenaissanceNewAdherentsNotificationMessage::class, 'adherent-female-56@en-marche-dev.fr');
         $this->assertCountMails(1, RenaissanceNewAdherentsNotificationMessage::class, 'president-ad@renaissance-dev.fr');
     }

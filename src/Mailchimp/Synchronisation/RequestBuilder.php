@@ -2,7 +2,6 @@
 
 namespace App\Mailchimp\Synchronisation;
 
-use App\Address\AddressInterface;
 use App\Adherent\Tag\TagTranslator;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
@@ -21,7 +20,6 @@ use App\Mailchimp\Synchronisation\Request\MemberRequest;
 use App\Mailchimp\Synchronisation\Request\MemberTagsRequest;
 use App\Repository\AdherentMandate\ElectedRepresentativeAdherentMandateRepository;
 use App\Repository\DonationRepository;
-use App\Repository\ReferentTagRepository;
 use Doctrine\Common\Collections\Collection;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -57,7 +55,6 @@ class RequestBuilder implements LoggerAwareInterface
     private $favoriteCitiesCodes;
     private $takenForCity = false;
     private $isSubscribeRequest = true;
-    private $referentTagsCodes = [];
 
     private ?array $mandateTypes = null;
     private ?array $declaredMandates = null;
@@ -157,7 +154,6 @@ class RequestBuilder implements LoggerAwareInterface
             ->setLastName($applicationRequest->getLastName())
             ->setFavoriteCities($applicationRequest->getFavoriteCitiesNames())
             ->setFavoriteCitiesCodes($applicationRequest->getFavoriteCityPrefixedCodes())
-            ->setReferentTagCodes($applicationRequest->getReferentTagsCodes())
             ->setTakenForCity($applicationRequest->getTakenForCity())
             ->setActiveTags($activeTags)
         ;
@@ -331,13 +327,6 @@ class RequestBuilder implements LoggerAwareInterface
     public function setFavoriteCitiesCodes(array $favoriteCitiesCodes): self
     {
         $this->favoriteCitiesCodes = $favoriteCitiesCodes;
-
-        return $this;
-    }
-
-    public function setReferentTagCodes(array $codes): self
-    {
-        $this->referentTagsCodes = $codes;
 
         return $this;
     }
@@ -552,10 +541,6 @@ class RequestBuilder implements LoggerAwareInterface
             $mergeFields[MemberRequest::MERGE_FIELD_FAVORITE_CITIES_CODES] = implode(',', $this->favoriteCitiesCodes);
         }
 
-        if ($this->referentTagsCodes) {
-            $mergeFields[MemberRequest::MERGE_FIELD_REFERENT_TAGS] = implode(',', $this->referentTagsCodes);
-        }
-
         if (false !== $this->takenForCity) {
             $mergeFields[MemberRequest::MERGE_FIELD_MUNICIPAL_TEAM] = (string) $this->takenForCity;
         }
@@ -671,7 +656,6 @@ class RequestBuilder implements LoggerAwareInterface
                         Manager::INTEREST_KEY_COMMITTEE_HOST => !($memberships = $adherent->getMemberships())->getCommitteeHostMemberships(CommitteeMembershipCollection::EXCLUDE_SUPERVISORS)->isEmpty(),
                         Manager::INTEREST_KEY_COMMITTEE_FOLLOWER => $isFollower = !$memberships->getCommitteeFollowerMembershipsNotWaitingForApproval()->isEmpty(),
                         Manager::INTEREST_KEY_COMMITTEE_NO_FOLLOWER => !$isFollower,
-                        Manager::INTEREST_KEY_REFERENT => $adherent->isReferent(),
                         Manager::INTEREST_KEY_DEPUTY => $adherent->isDeputy(),
                         Manager::INTEREST_KEY_COORDINATOR => $adherent->isRegionalCoordinator(),
                         Manager::INTEREST_KEY_PROCURATION_MANAGER => $adherent->isProcurationsManager(),
@@ -686,10 +670,6 @@ class RequestBuilder implements LoggerAwareInterface
     private function getAdherentActiveTags(Adherent $adherent): array
     {
         $tags = [];
-
-        if (AddressInterface::FRANCE !== $adherent->getCountry()) {
-            $tags[] = ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG;
-        }
 
         if ($adherent->isCertified()) {
             $tags[] = MailchimpSegmentTagEnum::CERTIFIED;
@@ -710,10 +690,6 @@ class RequestBuilder implements LoggerAwareInterface
     private function getInactiveTags(Adherent $adherent): array
     {
         $tags = [];
-
-        if (AddressInterface::FRANCE === $adherent->getCountry()) {
-            $tags[] = ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG;
-        }
 
         if (!$adherent->isCertified()) {
             $tags[] = MailchimpSegmentTagEnum::CERTIFIED;

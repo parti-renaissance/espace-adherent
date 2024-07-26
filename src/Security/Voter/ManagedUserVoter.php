@@ -2,11 +2,9 @@
 
 namespace App\Security\Voter;
 
-use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Repository\Geo\ZoneRepository;
-use App\Repository\ReferentTagRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ManagedUserVoter extends AbstractAdherentVoter
@@ -35,25 +33,9 @@ class ManagedUserVoter extends AbstractAdherentVoter
             $user = $delegatedAccess->getDelegator();
         }
 
-        // Check Referent role
-        /** @var Adherent $adherent */
-        if ($user->isReferent()) {
-            $isGranted = (bool) array_intersect(
-                $adherent->getReferentTagCodes(),
-                $user->getManagedAreaTagCodes(),
-            );
-        }
-
         // Check Deputy role
         if (!$isGranted && $user->isDeputy()) {
             $isGranted = $this->zoneRepository->isInZones($adherent->getZones()->toArray(), [$user->getDeputyZone()]);
-        }
-
-        // Check Senator role
-        if (!$isGranted && $user->isSenator()) {
-            $code = $user->getSenatorArea()->getDepartmentTag()->getCode();
-            $isGranted = (bool) array_intersect($adherent->getReferentTagCodes(), [$code])
-                || (ReferentTagRepository::FRENCH_OUTSIDE_FRANCE_TAG === $code && AddressInterface::FRANCE !== $adherent->getCountry());
         }
 
         return $isGranted;

@@ -90,95 +90,15 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'apps' => ['jemarche'],
             ],
         ]];
-        yield [LoadAdherentData::REFERENT_3_UUID, [[
-            'code' => 'referent',
-            'zones' => [[
-                'code' => '93',
-                'name' => 'Seine-Saint-Denis',
-            ], [
-                'code' => 'CH',
-                'name' => 'Suisse',
-            ]],
-            'apps' => ['data_corner'],
-        ]]];
-        yield [LoadAdherentData::SENATOR_UUID, [
-            [
-                'code' => 'senator',
-                'zones' => [[
-                    'code' => '59',
-                    'name' => 'Nord',
-                ]],
-                'apps' => ['data_corner'],
-            ],
-            [
-                'code' => 'delegated_08f40730-d807-4975-8773-69d8fae1da74',
-                'zones' => [
-                    [
-                        'code' => '13',
-                        'name' => 'Bouches-du-Rhône',
-                    ],
-                    [
-                        'code' => '59',
-                        'name' => 'Nord',
-                    ],
-                    [
-                        'code' => '76',
-                        'name' => 'Seine-Maritime',
-                    ],
-                    [
-                        'code' => '77',
-                        'name' => 'Seine-et-Marne',
-                    ],
-                    [
-                        'code' => '92',
-                        'name' => 'Hauts-de-Seine',
-                    ],
-                    [
-                        'code' => 'ES',
-                        'name' => 'Espagne',
-                    ],
-                    [
-                        'code' => 'CH',
-                        'name' => 'Suisse',
-                    ],
-                ],
-                'apps' => ['data_corner'],
-                'features' => [
-                    'dashboard',
-                    'contacts',
-                    'contacts_export',
-                    'messages',
-                    'events',
-                    'my_team',
-                    'mobile_app',
-                    'news',
-                    'elections',
-                    'ripostes',
-                    'pap',
-                    'pap_v2',
-                    'team',
-                    'phoning_campaign',
-                    'survey',
-                    'department_site',
-                    'elected_representative',
-                    'adherent_formations',
-                    'committee',
-                    'general_meeting_reports',
-                    'documents',
-                    'designation',
-                    'statutory_message',
-                    'procurations',
-                    'actions',
-                ],
-            ],
-        ]];
         yield [LoadAdherentData::ADHERENT_3_UUID, [
             [
                 'code' => 'candidate',
-                'zones' => [[
-                    'code' => '11',
-                    'name' => 'Île-de-France',
-                ]],
+                'zones' => [
+                    [
+                        'code' => '11',
+                        'name' => 'Île-de-France',
+                    ],
+                ],
                 'apps' => ['data_corner'],
             ],
             [
@@ -195,18 +115,6 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                 'code' => 'delegated_433e368f-fd4e-4a24-9f01-b667f8e3b9f2',
                 'zones' => [
                     [
-                        'code' => '13',
-                        'name' => 'Bouches-du-Rhône',
-                    ],
-                    [
-                        'code' => '59',
-                        'name' => 'Nord',
-                    ],
-                    [
-                        'code' => '76',
-                        'name' => 'Seine-Maritime',
-                    ],
-                    [
                         'code' => '77',
                         'name' => 'Seine-et-Marne',
                     ],
@@ -215,12 +123,16 @@ class GeneralScopeGeneratorTest extends AbstractKernelTestCase
                         'name' => 'Hauts-de-Seine',
                     ],
                     [
-                        'code' => 'ES',
-                        'name' => 'Espagne',
+                        'code' => '76',
+                        'name' => 'Seine-Maritime',
                     ],
                     [
-                        'code' => 'CH',
-                        'name' => 'Suisse',
+                        'code' => '59',
+                        'name' => 'Nord',
+                    ],
+                    [
+                        'code' => '13',
+                        'name' => 'Bouches-du-Rhône',
                     ],
                 ],
                 'apps' => ['data_corner'],

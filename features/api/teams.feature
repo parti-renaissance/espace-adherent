@@ -116,7 +116,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As an anonymous I can not remove an adherent from a team
@@ -309,7 +309,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can get a local team in a zone I am manager of
@@ -342,7 +342,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can create a local team in a zone I am manager of
@@ -373,7 +373,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          | title |
-      | referent@en-marche-dev.fr | referent                                       | ref   |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       | ref   |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | sen   |
 
   Scenario Outline: As a user granted with local scope, I can update a local team in a zone I am manager of
@@ -403,17 +403,17 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a user granted with local scope, I can not get a local team in a zone I am not manager of
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/teams/a4ad9bde-9fd5-4eda-92e5-9e5576cac9e2?scope=referent"
+    When I send a "GET" request to "/api/v3/teams/a4ad9bde-9fd5-4eda-92e5-9e5576cac9e2?scope=president_departmental_assembly"
     Then the response status code should be 403
 
   Scenario: As a user granted with local scope, I can not create a local team in a zone I am not manager of
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "POST" request to "/api/v3/teams?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/teams?scope=president_departmental_assembly" with body:
     """
     {
       "name": "Nouvelle équipe locale de phoning dans le 92",
@@ -440,7 +440,7 @@ Feature:
 
   Scenario: As a user granted with local scope, I can not update a local team in a zone I am not manager of
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=referent" with body:
+    When I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=president_departmental_assembly" with body:
     """
     {
       "name": "Equipe d'appel - 59"
@@ -475,7 +475,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can not update a national team
@@ -489,15 +489,15 @@ Feature:
     Then the response status code should be 403
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As an anonymous user, I can not get the list of teams
-    Given I send a "GET" request to "/api/v3/teams?scope=referent"
+    Given I send a "GET" request to "/api/v3/teams?scope=president_departmental_assembly"
     Then the response status code should be 401
 
   Scenario: As an anonymous user, I can not create a team
-    Given I send a "POST" request to "/api/v3/teams?scope=referent" with body:
+    Given I send a "POST" request to "/api/v3/teams?scope=president_departmental_assembly" with body:
     """
     {
       "name": "Nouvelle équipe locale de phoning dans le 92",
@@ -507,7 +507,7 @@ Feature:
     Then the response status code should be 401
 
   Scenario: As an anonymous user, I can not update a team
-    Given I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=referent" with body:
+    Given I send a "PUT" request to "/api/v3/teams/ba9ab5dd-c8da-4721-8acb-5a96e285aec3?scope=president_departmental_assembly" with body:
     """
     {
       "name": "Equipe d'appel - 59"
@@ -586,7 +586,7 @@ Feature:
     Then the response status code should be 201
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a user granted with team feature, I can add a member to a team

@@ -21,11 +21,9 @@ class ListControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
         $formations = $crawler->filter('h3');
-        self::assertCount(4, $formations);
+        self::assertCount(2, $formations);
         self::assertSame('Première formation nationale', $formations->eq(0)->text());
         self::assertSame('Formation sans description', $formations->eq(1)->text());
-        self::assertSame('Première formation du 77', $formations->eq(2)->text());
-        self::assertSame('Deuxième formation du 77', $formations->eq(3)->text());
     }
 
     public function testAnonymousCanNotSeeFormations(): void

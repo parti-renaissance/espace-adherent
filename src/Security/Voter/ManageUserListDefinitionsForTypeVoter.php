@@ -14,10 +14,6 @@ class ManageUserListDefinitionsForTypeVoter extends AbstractAdherentVoter
             return false;
         }
 
-        if (UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE === $subject && !$adherent->isReferent() && !$adherent->isDelegatedReferent()) {
-            return false;
-        }
-
         return true;
     }
 

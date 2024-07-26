@@ -64,17 +64,16 @@ class DocumentsController extends AbstractController
         $adherent = $this->getUser();
 
         $isHost = $adherent->isHost() || $adherent->isSupervisor();
-        $isReferent = $adherent->isReferent();
 
-        if (DocumentRepository::DIRECTORY_HOSTS === $type && !($isHost || $isReferent)) {
+        if (DocumentRepository::DIRECTORY_HOSTS === $type && !$isHost) {
             throw $this->createNotFoundException();
         }
 
-        if (DocumentRepository::DIRECTORY_FOREIGN_HOSTS === $type && !($isHost || $isReferent || AddressInterface::FRANCE !== strtoupper($adherent->getCountry()))) {
+        if (DocumentRepository::DIRECTORY_FOREIGN_HOSTS === $type && !($isHost || AddressInterface::FRANCE !== strtoupper($adherent->getCountry()))) {
             throw $this->createNotFoundException();
         }
 
-        if (DocumentRepository::DIRECTORY_REFERENTS === $type && !$isReferent) {
+        if (DocumentRepository::DIRECTORY_REFERENTS === $type) {
             throw $this->createNotFoundException();
         }
     }

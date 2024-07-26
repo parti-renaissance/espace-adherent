@@ -10,7 +10,7 @@ use App\Entity\AdherentMessage\CommitteeAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
-use App\Entity\AdherentMessage\ReferentAdherentMessage;
+use App\Entity\AdherentMessage\PresidentDepartmentalAssemblyAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Entity\AdherentMessage\StatutoryAdherentMessage;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -37,9 +37,19 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
 
         $faker = Factory::create('FR_fr');
 
+        $parisZone = LoadGeoZoneData::getZoneReference($manager, 'zone_department_75');
+
+        $manager->persist($message = StatutoryAdherentMessage::createFromAdherent($this->getAuthor(StatutoryAdherentMessage::class)));
+        $message->setSource(AdherentMessageInterface::SOURCE_API);
+        $message->setRecipientCount(10);
+        $message->setFilter(new MessageFilter([$parisZone]));
+        $message->setContent($faker->randomHtml());
+        $message->setSubject($faker->sentence(5));
+        $message->setLabel($faker->sentence(2));
+
         // message draft
-        $message1 = ReferentAdherentMessage::createFromAdherent(
-            $this->getAuthor(ReferentAdherentMessage::class),
+        $message1 = PresidentDepartmentalAssemblyAdherentMessage::createFromAdherent(
+            $this->getAuthor(PresidentDepartmentalAssemblyAdherentMessage::class),
             Uuid::fromString(self::MESSAGE_01_UUID)
         );
 
@@ -51,8 +61,8 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         $message1->setFilter(new MessageFilter([$parisZone = LoadGeoZoneData::getZoneReference($manager, 'zone_department_75')]));
 
         // message sent
-        $message2 = ReferentAdherentMessage::createFromAdherent(
-            $this->getAuthor(ReferentAdherentMessage::class),
+        $message2 = PresidentDepartmentalAssemblyAdherentMessage::createFromAdherent(
+            $this->getAuthor(PresidentDepartmentalAssemblyAdherentMessage::class),
             Uuid::fromString(self::MESSAGE_02_UUID)
         );
 
@@ -66,14 +76,6 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
 
         $manager->persist($message1);
         $manager->persist($message2);
-
-        $manager->persist($message = StatutoryAdherentMessage::createFromAdherent($this->getAuthor(StatutoryAdherentMessage::class)));
-        $message->setSource(AdherentMessageInterface::SOURCE_API);
-        $message->setRecipientCount(10);
-        $message->setFilter(new MessageFilter([$parisZone]));
-        $message->setContent($faker->randomHtml());
-        $message->setSubject($faker->sentence(5));
-        $message->setLabel($faker->sentence(2));
 
         $manager->persist($message = StatutoryAdherentMessage::createFromAdherent($this->getAuthor(StatutoryAdherentMessage::class)));
         $message->setSource(AdherentMessageInterface::SOURCE_API);
@@ -114,7 +116,6 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
     {
         return [
             LoadCommitteeV1Data::class,
-            LoadDistrictData::class,
             LoadGeoZoneData::class,
         ];
     }
@@ -123,16 +124,16 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
     {
         return [
             CommitteeAdherentMessage::class,
-            ReferentAdherentMessage::class,
             DeputyAdherentMessage::class,
             SenatorAdherentMessage::class,
+            PresidentDepartmentalAssemblyAdherentMessage::class,
         ];
     }
 
     private function getAuthor(string $class): Adherent
     {
         switch ($class) {
-            case ReferentAdherentMessage::class:
+            case PresidentDepartmentalAssemblyAdherentMessage::class:
             case CommitteeAdherentMessage::class:
                 return $this->getReference('adherent-8'); // referent@en-marche-dev.fr
             case DeputyAdherentMessage::class:

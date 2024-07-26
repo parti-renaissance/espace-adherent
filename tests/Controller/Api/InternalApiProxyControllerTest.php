@@ -44,7 +44,7 @@ class InternalApiProxyControllerTest extends AbstractApiTestCase
         $url = sprintf(
             '/api/v3/internal/%s/api/v3/events?scope=%s',
             LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_04_UUID,
-            ScopeEnum::REFERENT
+            ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY
         );
 
         $this->client->request(Request::METHOD_GET, $url, [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);
@@ -63,7 +63,7 @@ class InternalApiProxyControllerTest extends AbstractApiTestCase
         $url = sprintf(
             '/api/v3/internal/%s/api/v3/events?scope=%s&name=%s',
             LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_04_UUID,
-            ScopeEnum::REFERENT,
+            ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
             urlencode('Grand Meeting'),
         );
 

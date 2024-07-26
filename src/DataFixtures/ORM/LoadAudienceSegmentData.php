@@ -15,26 +15,10 @@ use Ramsey\Uuid\Uuid;
 
 class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterface
 {
-    public const SEGMENT_1_UUID = '830d230f-67fb-4217-9986-1a3ed7d3d5e7';
     public const SEGMENT_2_UUID = 'f6c36dd7-0517-4caf-ba6f-ec6822f2ec12';
 
     public function load(ObjectManager $manager)
     {
-        $segment1 = $this->createSegment(
-            self::SEGMENT_1_UUID,
-            $this->getReference('adherent-8'),
-            ScopeEnum::REFERENT,
-            LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'),
-            'Maria',
-            'Dupont',
-            Genders::FEMALE,
-            20,
-            42,
-            new \DateTime('2017-08-03'),
-            new \DateTime('2021-07-11'),
-            false,
-            true
-        );
         $segment2 = $this->createSegment(
             self::SEGMENT_2_UUID,
             $this->getReference('deputy-75-1'),
@@ -51,7 +35,6 @@ class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterfa
             false
         );
 
-        $manager->persist($segment1);
         $manager->persist($segment2);
 
         $manager->flush();

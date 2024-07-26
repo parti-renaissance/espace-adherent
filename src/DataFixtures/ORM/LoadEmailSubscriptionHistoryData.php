@@ -33,7 +33,7 @@ class LoadEmailSubscriptionHistoryData extends Fixture implements DependentFixtu
         // Create current subscription history
         foreach ($adherents as $adherent) {
             foreach ($adherent->getSubscriptionTypes() as $subscription) {
-                $manager->persist(new EmailSubscriptionHistory($adherent, $subscription, $adherent->getReferentTags()->toArray(), EmailSubscriptionHistoryAction::SUBSCRIBE()));
+                $manager->persist(new EmailSubscriptionHistory($adherent, $subscription, EmailSubscriptionHistoryAction::SUBSCRIBE()));
             }
         }
 
@@ -47,30 +47,25 @@ class LoadEmailSubscriptionHistoryData extends Fixture implements DependentFixtu
         // one updates his address and the new one have common referent tag(s) with the old one (it can happen with paris district for example)
         $this->createSubscribedUnsubscribedHistory(
             $this->getReference('adherent-3'),
-            [$this->getReference('referent_tag_75')],
             '-5 months'
         );
         $this->createSubscribedUnsubscribedHistory(
             $this->getReference('adherent-3'),
-            [$this->getReference('referent_tag_75008')],
             '-5 months'
         );
 
         $this->createSubscribedUnsubscribedHistory(
             $this->getReference('adherent-4'),
-            [$this->getReference('referent_tag_75'), $this->getReference('referent_tag_75009')],
             '-4 months'
         );
 
         $this->createSubscribedUnsubscribedHistory(
             $this->getReference('adherent-7'),
-            [$this->getReference('referent_tag_77')],
             '-3 months'
         );
 
         $this->createSubscribedUnsubscribedHistory(
             $this->getReference('adherent-17'),
-            [$this->getReference('referent_tag_75'), $this->getReference('referent_tag_75008')],
             '-2 months'
         );
 
@@ -79,12 +74,11 @@ class LoadEmailSubscriptionHistoryData extends Fixture implements DependentFixtu
         $manager->flush();
     }
 
-    private function createSubscribedUnsubscribedHistory(Adherent $adherent, array $tags, string $subscribedAt): void
+    private function createSubscribedUnsubscribedHistory(Adherent $adherent, string $subscribedAt): void
     {
         $this->manager->persist(new EmailSubscriptionHistory(
             $adherent,
             $this->getReference('st-'.SubscriptionTypeEnum::LOCAL_HOST_EMAIL),
-            $tags,
             EmailSubscriptionHistoryAction::SUBSCRIBE(),
             new Chronos($subscribedAt)
         ));
@@ -92,7 +86,6 @@ class LoadEmailSubscriptionHistoryData extends Fixture implements DependentFixtu
         $this->manager->persist(new EmailSubscriptionHistory(
             $adherent,
             $this->getReference('st-'.SubscriptionTypeEnum::LOCAL_HOST_EMAIL),
-            $tags,
             EmailSubscriptionHistoryAction::UNSUBSCRIBE(),
             new Chronos('-1 month')
         ));
@@ -102,7 +95,6 @@ class LoadEmailSubscriptionHistoryData extends Fixture implements DependentFixtu
     {
         return [
             LoadAdherentData::class,
-            LoadReferentTagData::class,
         ];
     }
 }

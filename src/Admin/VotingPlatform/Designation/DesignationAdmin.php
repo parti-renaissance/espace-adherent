@@ -4,7 +4,6 @@ namespace App\Admin\VotingPlatform\Designation;
 
 use App\Admin\AbstractAdmin;
 use App\Entity\Geo\Zone;
-use App\Entity\ReferentTag;
 use App\Entity\VotingPlatform\Designation\CandidacyPool\CandidacyPool;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Form\Admin\DesignationGlobalZoneType;
@@ -21,7 +20,6 @@ use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\Form\Type\BooleanType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -75,16 +73,6 @@ class DesignationAdmin extends AbstractAdmin
                         'label' => 'Zones globales',
                         'multiple' => true,
                         'help' => 'pour les élections de types: "Comités-Adhérents" ou "Comités-Animateurs"',
-                    ])
-                    ->add('referentTags', EntityType::class, [
-                        'class' => ReferentTag::class,
-                        'required' => false,
-                        'label' => 'Référent tags',
-                        'multiple' => true,
-                        'help' => 'pour les élections de type "Copol"',
-                        'attr' => [
-                            'data-sonata-select2' => 'false',
-                        ],
                     ])
                     ->add('zones', ModelAutocompleteType::class, [
                         'callback' => [$this, 'prepareZoneAutocompleteCallback'],

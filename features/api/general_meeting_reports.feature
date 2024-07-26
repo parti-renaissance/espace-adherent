@@ -52,7 +52,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I can create a general meeting report in a zone I am manager of
@@ -86,7 +86,7 @@ Feature:
         """
         Examples:
             | user                      | scope                                          |
-            | referent@en-marche-dev.fr | referent                                       |
+            | referent@en-marche-dev.fr | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I can update a general meeting report in a zone I am manager of
@@ -120,5 +120,5 @@ Feature:
         """
         Examples:
             | user                      | scope                                          |
-            | referent@en-marche-dev.fr | referent                                       |
+            | referent@en-marche-dev.fr | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |

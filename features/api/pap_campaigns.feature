@@ -421,7 +421,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can filter campaigns by visibility
@@ -616,7 +616,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can get a local campaign in a zone I am manager of
@@ -657,7 +657,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can create a local campaign in a zone I am manager of
@@ -694,7 +694,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can update a local campaign in a zone I am manager of
@@ -725,7 +725,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can disable/enable a local campaign in a zone I am manager of
@@ -780,7 +780,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can not update a local campaign in a zone I am not manager of
@@ -794,7 +794,7 @@ Feature:
     Then the response status code should be 403
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a legislative candidate granted with local scope, I cannot create a local campaign with not valid vote places
@@ -984,7 +984,7 @@ Feature:
     Then the response status code should be 403
 
   Scenario: As an anonymous user, I can not get the list of campaigns
-    Given I send a "GET" request to "/api/v3/pap_campaigns?scope=referent"
+    Given I send a "GET" request to "/api/v3/pap_campaigns?scope=president_departmental_assembly"
     Then the response status code should be 401
 
   Scenario: As an anonymous user, I can not create a campaign
@@ -1268,7 +1268,7 @@ Feature:
     """
     Examples:
       | user                            | scope                                           |
-      | referent-75-77@en-marche-dev.fr | referent                                        |
+      | referent-75-77@en-marche-dev.fr | president_departmental_assembly                                        |
       | francis.brioul@yahoo.com        | delegated_689757d2-dea5-49d1-95fe-281fc860ff77  |
 
   Scenario: As a logged-in user with no correct rights I cannot get a campaign survey
@@ -2510,12 +2510,12 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a referent I can get the list of PAP campaign histories
     When I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=referent&page_size=10"
+    When I send a "GET" request to "/api/v3/pap_campaign_histories?scope=president_departmental_assembly&page_size=10"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -3322,7 +3322,7 @@ Feature:
     """
     Examples:
       | user                            | scope                                           |
-      | referent-75-77@en-marche-dev.fr | referent                                        |
+      | referent-75-77@en-marche-dev.fr | president_departmental_assembly                                        |
       | francis.brioul@yahoo.com        | delegated_689757d2-dea5-49d1-95fe-281fc860ff77  |
 
   Scenario Outline: As a (delegated) referent I get an empty list of a national campaign replies, if no replies in my managed zones
@@ -3344,7 +3344,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a PAP national manger I can get PAP campaigns KPI
@@ -3380,7 +3380,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a PAP national manager I can get a PAP questioners with their stats
@@ -3493,8 +3493,8 @@ Feature:
     """
     Examples:
       | user                            | scope                                          |
-      | referent@en-marche-dev.fr       | referent                                       |
-      | referent-75-77@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
+      | referent-75-77@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario: As a legislative candidate I cannot get PAP questioners of national campaign
@@ -3601,7 +3601,7 @@ Feature:
     Then the response status code should be 204
     Examples:
       | user                                  | scope                                          | uuid                                 |
-      | referent@en-marche-dev.fr             | referent                                       | 31f24b6c-0884-461a-af34-dbbb7b1276ab |
+      | referent@en-marche-dev.fr             | president_departmental_assembly                                       | 31f24b6c-0884-461a-af34-dbbb7b1276ab |
       | senateur@en-marche-dev.fr             | delegated_08f40730-d807-4975-8773-69d8fae1da74 | 31f24b6c-0884-461a-af34-dbbb7b1276ab |
       | senatorial-candidate@en-marche-dev.fr | legislative_candidate                          | d572fb7b-4c60-451a-9303-84f45c60a490 |
 
@@ -3612,26 +3612,26 @@ Feature:
     Examples:
       | user                                  | scope                                          | uuid                                 |
       # ongoing campaign
-      | referent@en-marche-dev.fr             | referent                                       | 63460047-c81a-44b9-aec9-152ecf58df93 |
+      | referent@en-marche-dev.fr             | president_departmental_assembly                                       | 63460047-c81a-44b9-aec9-152ecf58df93 |
       | senateur@en-marche-dev.fr             | delegated_08f40730-d807-4975-8773-69d8fae1da74 | 63460047-c81a-44b9-aec9-152ecf58df93 |
       | senatorial-candidate@en-marche-dev.fr | legislative_candidate                          | 63460047-c81a-44b9-aec9-152ecf58df93 |
       # finished campaign
-      | referent@en-marche-dev.fr             | referent                                       | 9ba6b743-5018-4358-bdc0-eb2094010beb |
+      | referent@en-marche-dev.fr             | president_departmental_assembly                                       | 9ba6b743-5018-4358-bdc0-eb2094010beb |
       | senateur@en-marche-dev.fr             | delegated_08f40730-d807-4975-8773-69d8fae1da74 | 9ba6b743-5018-4358-bdc0-eb2094010beb |
       | senatorial-candidate@en-marche-dev.fr | legislative_candidate                          | 9ba6b743-5018-4358-bdc0-eb2094010beb |
       # not my campaign
-      | referent@en-marche-dev.fr             | referent                                       | d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9 |
+      | referent@en-marche-dev.fr             | president_departmental_assembly                                       | d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9 |
       | senateur@en-marche-dev.fr             | delegated_08f40730-d807-4975-8773-69d8fae1da74 | d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9 |
       | senatorial-candidate@en-marche-dev.fr | legislative_candidate                          | d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9 |
       # national campaign
-      | referent@en-marche-dev.fr             | referent                                       | d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9 |
+      | referent@en-marche-dev.fr             | president_departmental_assembly                                       | d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9 |
       | senateur@en-marche-dev.fr             | delegated_08f40730-d807-4975-8773-69d8fae1da74 | d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9 |
       | senatorial-candidate@en-marche-dev.fr | legislative_candidate                          | d65b621c-43fb-42e7-a169-6f79c44a31bc |
       | deputy@en-marche-dev.fr               | pap_national_manager                           | d65b621c-43fb-42e7-a169-6f79c44a31bc |
 
   Scenario: As a referent I can get campaign's vote places
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/vote_places?scope=referent"
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/vote_places?scope=president_departmental_assembly"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -3683,7 +3683,7 @@ Feature:
 
   Scenario: As a referent I can get campaign's advancement
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/building_statistics?scope=referent&order[status]=asc&order[nb_visited_doors]=asc&order[building.type]=desc"
+    When I send a "GET" request to "/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/building_statistics?scope=president_departmental_assembly&order[status]=asc&order[nb_visited_doors]=asc&order[building.type]=desc"
     Then the response status code should be 200
     And the JSON should be equal to:
     """

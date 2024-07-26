@@ -2,8 +2,6 @@
 
 namespace App\AssociationCity\Filter;
 
-use App\Entity\ReferentTag;
-
 class AssociationCityFilter
 {
     /**
@@ -21,9 +19,6 @@ class AssociationCityFilter
      */
     private $managedInseeCode;
 
-    /**
-     * @var ReferentTag[]
-     */
     private $managedTags = [];
 
     public function getName(): ?string

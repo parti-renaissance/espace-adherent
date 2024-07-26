@@ -2,8 +2,6 @@
 
 namespace App\Entity\ElectedRepresentative;
 
-use App\Entity\EntityReferentTagTrait;
-use App\Entity\ReferentTag;
 use App\Repository\ElectedRepresentative\ZoneRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,8 +14,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\UniqueConstraint(name: 'elected_representative_zone_name_category_unique', columns: ['name', 'category_id'])]
 class Zone
 {
-    use EntityReferentTagTrait;
-
     /**
      * @var int|null
      */
@@ -40,15 +36,6 @@ class Zone
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: ZoneCategory::class, fetch: 'EAGER')]
     private $category;
-
-    /**
-     * @var Collection|ReferentTag[]
-     */
-    #[ORM\InverseJoinColumn(name: 'referent_tag_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ORM\JoinColumn(name: 'elected_representative_zone_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ORM\JoinTable(name: 'elected_representative_zone_referent_tag')]
-    #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
-    protected $referentTags;
 
     /**
      * @var string|null
@@ -75,7 +62,6 @@ class Zone
     {
         $this->category = $category;
         $this->name = $name;
-        $this->referentTags = new ArrayCollection();
         $this->parents = new ArrayCollection();
         $this->children = new ArrayCollection();
     }

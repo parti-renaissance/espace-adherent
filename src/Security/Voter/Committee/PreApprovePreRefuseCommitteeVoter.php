@@ -39,10 +39,6 @@ class PreApprovePreRefuseCommitteeVoter extends AbstractAdherentVoter
             $adherent = $delegatedAccess->getDelegator();
         }
 
-        if (!$adherent->isReferent()) {
-            return false;
-        }
-
         if (!$committee->isPending() && !(CommitteePermissionEnum::PRE_APPROVE === $attribute && $committee->isPreRefused())) {
             return false;
         }

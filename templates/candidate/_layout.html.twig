@@ -46,13 +46,6 @@
 
 {% block adherent_space_header_title %}
     Vous gérez : <span class="text--black text--bold">{{ currentUserOrDelegator.candidateManagedArea.zone }} </span>
-
-    {% set last_visit_date = get_referent_previous_visit_date(app.user) %}
-
-    {% if last_visit_date is not null %}
-        • Dernière visite le <span class="text--black text--bold">{{ last_visit_date|date('d/m/Y') }}</span>
-        à <span class="text--black text--bold">{{ last_visit_date|date('H\\hi') }}</span>
-    {% endif %}
 {% endblock %}
 
 {% block final_javascripts %}

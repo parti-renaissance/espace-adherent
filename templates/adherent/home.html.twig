@@ -96,8 +96,6 @@
                                 <div class="text--body text--gray">Organisé par
                                     {% if event.committee %}
                                         <span class="text--bold">{{ event.committee.name }}</span>
-                                    {% elseif event.organizer and event.organizer.isReferent %}
-                                        <span class="text--bold">Référent En Marche</span> ({{ event.organizer.fullName }})
                                     {% elseif event.organizer %}
                                         <span class="text--bold">{{ event.organizer.fullName }}</span>
                                     {% endif %}

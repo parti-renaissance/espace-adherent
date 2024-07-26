@@ -7,7 +7,6 @@ use MyCLabs\Enum\Enum;
 class AdherentCharterTypeEnum extends Enum
 {
     public const TYPE_COMMITTEE_HOST = 'committee_host';
-    public const TYPE_REFERENT = 'referent';
     public const TYPE_DEPUTY = 'deputy';
     public const TYPE_SENATOR = 'senator';
     public const TYPE_SENATORIAL_CANDIDATE = 'senatorial_candidate';

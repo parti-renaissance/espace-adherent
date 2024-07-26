@@ -3,12 +3,9 @@
 namespace App\Entity\Reporting;
 
 use App\Entity\Adherent;
-use App\Entity\ReferentTag;
 use App\Entity\SubscriptionType;
 use App\Repository\EmailSubscriptionHistoryRepository;
 use Cake\Chronos\Chronos;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
@@ -44,13 +41,6 @@ class EmailSubscriptionHistory
     private $subscriptionType;
 
     /**
-     * @var Collection|ReferentTag[]
-     */
-    #[ORM\JoinTable(name: 'adherent_email_subscription_history_referent_tag')]
-    #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
-    private $referentTags;
-
-    /**
      * @var string
      */
     #[ORM\Column(length: 32)]
@@ -65,7 +55,6 @@ class EmailSubscriptionHistory
     public function __construct(
         Adherent $adherent,
         SubscriptionType $subscriptionType,
-        array $referentTags,
         EmailSubscriptionHistoryAction $action,
         ?\DateTimeImmutable $date = null
     ) {
@@ -73,11 +62,6 @@ class EmailSubscriptionHistory
         $this->subscriptionType = $subscriptionType;
         $this->action = $action->getValue();
         $this->date = $date ?: new Chronos();
-
-        $this->referentTags = new ArrayCollection();
-        foreach ($referentTags as $tag) {
-            $this->referentTags->add($tag);
-        }
     }
 
     public function getId(): ?int
@@ -93,14 +77,6 @@ class EmailSubscriptionHistory
     public function getSubscriptionType(): string
     {
         return $this->subscriptionType;
-    }
-
-    /**
-     * @return Collection|ReferentTag[]
-     */
-    public function getReferentTags(): Collection
-    {
-        return $this->referentTags;
     }
 
     public function getDate(): \DateTimeImmutable

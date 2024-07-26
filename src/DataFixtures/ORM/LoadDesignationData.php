@@ -84,7 +84,6 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         // COPOL designation with started CANDIDATURE period
         $designation = new Designation('Désignation COPOL avec les candidatures ouvertes');
         $designation->setType(DesignationTypeEnum::COPOL);
-        $designation->addReferentTag($this->getReference('referent_tag_75'));
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
 
         $this->setReference('designation-6', $designation);
@@ -93,7 +92,6 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         // COPOL designation with started VOTE period
         $designation = new Designation('Désignation COPOL les votes');
         $designation->setType(DesignationTypeEnum::COPOL);
-        $designation->addReferentTag($this->getReference('referent_tag_92'));
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
         $designation->setCandidacyEndDate(new \DateTime('-2 hours'));
         $designation->setVoteStartDate(new \DateTime('-1 hour'));
@@ -135,7 +133,6 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         // NATIONAL_COUNCIL designation with started candidature period
         $designation = new Designation('Désignation Conseil national avec les candidatures');
         $designation->setType(DesignationTypeEnum::NATIONAL_COUNCIL);
-        $designation->addReferentTag($this->getReference('referent_tag_59'));
         $designation->setCandidacyStartDate(new \DateTime('-1 month'));
 
         $this->setReference('designation-10', $designation);
@@ -291,7 +288,6 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            LoadReferentTagData::class,
             LoadGeoZoneData::class,
             LoadDesignationPollData::class,
             LoadCmsBlockData::class,

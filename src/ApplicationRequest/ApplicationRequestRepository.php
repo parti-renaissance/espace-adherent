@@ -47,15 +47,6 @@ class ApplicationRequestRepository
         return $this->volunteerRepository->findAllTakenFor($inseeCode, $filter);
     }
 
-    public function findAllForReferentTags(array $referentTags, string $type, ?ListFilter $filter = null): array
-    {
-        if (ApplicationRequestTypeEnum::RUNNING_MATE === $type) {
-            return $this->runningMateRepository->findForReferentTags($referentTags, $filter);
-        }
-
-        return $this->volunteerRepository->findForReferentTags($referentTags, $filter);
-    }
-
     public function updateAdherentRelation(string $email, ?Adherent $adherent): void
     {
         $this->runningMateRepository->updateAdherentRelation($email, $adherent);

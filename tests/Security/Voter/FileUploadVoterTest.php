@@ -26,14 +26,6 @@ class FileUploadVoterTest extends AbstractAdherentVoterTestCase
         return static::getUserDocumentTypesDataProvider();
     }
 
-    public static function provideReferentRights(): iterable
-    {
-        return static::getUserDocumentTypesDataProvider([
-            UserDocument::TYPE_REFERENT,
-            UserDocument::TYPE_EVENT,
-        ]);
-    }
-
     public static function provideHostRights(): iterable
     {
         return static::getUserDocumentTypesDataProvider([
@@ -54,41 +46,17 @@ class FileUploadVoterTest extends AbstractAdherentVoterTestCase
     #[DataProvider('provideDocumentTypes')]
     public function testSimpleAdherentCanNotUploadFile(string $type)
     {
-        $adherent = $this->getAdherentMock(false, false);
+        $adherent = $this->getAdherentMock(false);
 
         $this->assertGrantedForAdherent(false, true, $adherent, DocumentPermissions::FILE_UPLOAD, $type);
-    }
-
-    #[DataProvider('provideReferentRights')]
-    public function testReferentRights(string $type, bool $granted)
-    {
-        $adherent = $this->getAdherentMock(true, false);
-
-        $this->assertGrantedForAdherent($granted, true, $adherent, DocumentPermissions::FILE_UPLOAD, $type);
-    }
-
-    #[DataProvider('provideHostRights')]
-    public function testHostRights(string $type, bool $granted)
-    {
-        $adherent = $this->getAdherentMock(false, true);
-
-        $this->assertGrantedForAdherent($granted, true, $adherent, DocumentPermissions::FILE_UPLOAD, $type);
     }
 
     /**
      * @return Adherent|MockObject
      */
-    private function getAdherentMock(?bool $isReferent = null, ?bool $isHost = null): Adherent
+    private function getAdherentMock(?bool $isHost = null): Adherent
     {
         $adherent = $this->createAdherentMock();
-
-        if (null !== $isReferent) {
-            $adherent
-                ->expects(self::any())
-                ->method('isReferent')
-                ->willReturn($isReferent)
-            ;
-        }
 
         if (null !== $isHost) {
             $adherent
