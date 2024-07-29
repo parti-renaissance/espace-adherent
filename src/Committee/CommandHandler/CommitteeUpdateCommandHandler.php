@@ -6,7 +6,6 @@ use App\Address\PostAddressFactory;
 use App\Committee\DTO\CommitteeCommand;
 use App\Committee\Event\CommitteeEvent;
 use App\Events;
-use App\Referent\ReferentTagManager;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -15,18 +14,15 @@ class CommitteeUpdateCommandHandler
     private $dispatcher;
     private $addressFactory;
     private $manager;
-    private $referentTagManager;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
         ObjectManager $manager,
         PostAddressFactory $addressFactory,
-        ReferentTagManager $referentTagManager
     ) {
         $this->dispatcher = $dispatcher;
         $this->manager = $manager;
         $this->addressFactory = $addressFactory;
-        $this->referentTagManager = $referentTagManager;
     }
 
     public function handle(CommitteeCommand $command)
@@ -42,8 +38,6 @@ class CommitteeUpdateCommandHandler
         );
 
         $committee->setSocialNetworks($command->facebookPageUrl, $command->twitterNickname);
-
-        $this->referentTagManager->assignReferentLocalTags($committee);
 
         $this->manager->persist($committee);
         $this->manager->flush();
@@ -70,8 +64,6 @@ class CommitteeUpdateCommandHandler
         if ($adherentPSM = $command->getProvisionalSupervisorMale()) {
             $committee->updateProvisionalSupervisor($adherentPSM);
         }
-
-        $this->referentTagManager->assignReferentLocalTags($committee);
 
         $committee->preApproved();
 

@@ -109,7 +109,6 @@
                                 {% else %}
                                     {% if
                                         has_active_parliamentary_mandate
-                                        or app.user.isReferent()
                                         or app.user.isSupervisor(false)
                                         or app.user.getActiveDesignatedAdherentMandates()
                                     %}
@@ -189,13 +188,6 @@
     <div>
         <p class="text--center text--body b__nudge--top-50">
             <a class="link--no-decor text--blue--dark" href="{{ path('app_search_committees') }}">Voir tous les comités</a>
-            -
-            <a class="link--no-decor text--blue--dark"
-               href="{{ is_granted('ROLE_REFERENT') or (is_granted('ROLE_DELEGATED_REFERENT') and is_granted('HAS_DELEGATED_ACCESS_COMMITTEE'))
-                   ? path('app_referent_create_committee')
-                   : path('app_adherent_create_committee') }}">
-                Demander la création d'un comité
-            </a>
         </p>
     </div>
 </div>

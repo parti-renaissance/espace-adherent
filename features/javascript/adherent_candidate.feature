@@ -6,8 +6,6 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadReferentTagsZonesLinksData  |
-      | LoadReferentTagData             |
       | LoadGeoZoneData                 |
       | LoadAdherentData                |
       | LoadJecouteSurveyData           |

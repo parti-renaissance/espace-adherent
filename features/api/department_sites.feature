@@ -22,11 +22,11 @@ Feature:
     Then the response status code should be 403
 
     Examples:
-      | method | url                                                                          |
-      | GET    | /api/v3/department_sites?scope=referent                                      |
-      | POST   | /api/v3/department_sites?scope=referent                                      |
-      | GET    | /api/v3/department_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3?scope=referent |
-      | PUT    | /api/v3/department_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3?scope=referent |
+      | method | url                                                                                                 |
+      | GET    | /api/v3/department_sites?scope=president_departmental_assembly                                      |
+      | POST   | /api/v3/department_sites?scope=president_departmental_assembly                                      |
+      | GET    | /api/v3/department_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3?scope=president_departmental_assembly |
+      | PUT    | /api/v3/department_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3?scope=president_departmental_assembly |
 
   Scenario: As referent I cannot create my department site if no scope
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
@@ -40,7 +40,7 @@ Feature:
 
   Scenario: As a referent I cannot create a department site other than my department one
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/department_sites?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/department_sites?scope=president_departmental_assembly" with body:
     """
     {
       "content": "<p>test</p>",
@@ -67,7 +67,7 @@ Feature:
 
   Scenario: As a referent I can create my department site
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/department_sites?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/department_sites?scope=president_departmental_assembly" with body:
     """
     {
       "content": "<p>test</p>",
@@ -87,7 +87,7 @@ Feature:
 
   Scenario: As referent I can get my department site
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/department_sites?scope=referent"
+    When I send a "GET" request to "/api/v3/department_sites?scope=president_departmental_assembly"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -116,7 +116,7 @@ Feature:
 
   Scenario: As referent I cannot create my department site with invalid payload
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/department_sites?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/department_sites?scope=president_departmental_assembly" with body:
     """
     {}
     """
@@ -149,7 +149,7 @@ Feature:
 
   Scenario: As a referent I cannot create my department site
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "PUT" request to "/api/v3/department_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3?scope=referent" with body:
+    When I send a "PUT" request to "/api/v3/department_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3?scope=president_departmental_assembly" with body:
     """
     {
       "content": "<p>ceci est une mise à jour</p>",
@@ -169,7 +169,7 @@ Feature:
 
   Scenario: As a referent I can get my department site
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/department_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3?scope=referent"
+    When I send a "GET" request to "/api/v3/department_sites/51e507e5-3d7c-4f08-b05d-b7cb45e960d3?scope=president_departmental_assembly"
     Then the response status code should be 200
     And the JSON should be equal to:
     """

@@ -7,13 +7,9 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\DataFixtures\ORM\LoadPhoningCampaignData;
 use App\Entity\Adherent;
-use App\Entity\Committee;
 use App\Entity\Phoning\Campaign;
-use App\Entity\ReferentTag;
 use App\Repository\AdherentRepository;
 use App\Repository\Phoning\CampaignRepository;
-use App\Repository\ReferentTagRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -26,11 +22,6 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
      * @var AdherentRepository
      */
     private $adherentRepository;
-
-    /**
-     * @var ReferentTagRepository
-     */
-    private $referentTagRepository;
 
     /**
      * @var CampaignRepository
@@ -86,53 +77,6 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         foreach ($boardMembers as $adherent) {
             $this->assertContains($adherent->getEmailAddress(), $results);
         }
-    }
-
-    public function testFindReferentsByCommittee()
-    {
-        $committeeTags = new ArrayCollection([
-            $this->referentTagRepository->findOneByCode('CH'),
-        ]);
-
-        // Foreign Committee with Referent
-        $committee = $this->createMock(Committee::class);
-        $committee->expects(static::any())->method('getReferentTags')->willReturn($committeeTags);
-
-        $referents = $this->adherentRepository->findReferentsByCommittee($committee);
-
-        $this->assertNotEmpty($referents);
-        $this->assertCount(2, $referents);
-
-        $referent = $referents->first();
-
-        $this->assertSame('Referent Referent', $referent->getFullName());
-        $this->assertSame('referent@en-marche-dev.fr', $referent->getEmailAddress());
-
-        // Committee with no Referent
-        $committeeTags = new ArrayCollection([
-            $this->referentTagRepository->findOneByCode('44'),
-        ]);
-
-        $committee = $this->createMock(Committee::class);
-        $committee->expects(static::any())->method('getReferentTags')->willReturn($committeeTags);
-
-        $referents = $this->adherentRepository->findReferentsByCommittee($committee);
-
-        $this->assertEmpty($referents);
-
-        // Departmental Committee with Referent
-        $committeeTags = new ArrayCollection([
-            $this->referentTagRepository->findOneByCode('77'),
-        ]);
-
-        $committee = $this->createMock(Committee::class);
-        $committee->expects(static::any())->method('getReferentTags')->willReturn($committeeTags);
-
-        $referents = $this->adherentRepository->findReferentsByCommittee($committee);
-
-        $this->assertCount(2, $referents);
-        $this->assertSame('referent@en-marche-dev.fr', $referents[0]->getEmailAddress());
-        $this->assertSame('referent-75-77@en-marche-dev.fr', $referents[1]->getEmailAddress());
     }
 
     public function testFindCommitteeHostMembersList()
@@ -280,14 +224,12 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         parent::setUp();
 
         $this->adherentRepository = $this->getAdherentRepository();
-        $this->referentTagRepository = $this->getRepository(ReferentTag::class);
         $this->campaignRepository = $this->getRepository(Campaign::class);
     }
 
     protected function tearDown(): void
     {
         $this->adherentRepository = null;
-        $this->referentTagRepository = null;
         $this->campaignRepository = null;
 
         parent::tearDown();

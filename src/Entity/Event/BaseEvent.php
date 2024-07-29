@@ -22,7 +22,6 @@ use App\Entity\AuthorInstanceInterface;
 use App\Entity\AuthorInstanceTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityNullablePostAddressTrait;
-use App\Entity\EntityReferentTagTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
 use App\Entity\ExposedImageOwnerInterface;
@@ -31,8 +30,6 @@ use App\Entity\Geo\Zone;
 use App\Entity\ImageTrait;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\NullablePostAddress;
-use App\Entity\ReferentTag;
-use App\Entity\ReferentTaggableEntity;
 use App\Entity\Report\ReportableInterface;
 use App\Entity\ZoneableEntity;
 use App\EntityListener\AlgoliaIndexListener;
@@ -49,7 +46,6 @@ use App\Validator\AdherentInterests as AdherentInterestsConstraint;
 use App\Validator\DateRange;
 use App\Validator\EventCategory as AssertValidEventCategory;
 use Cake\Chronos\Chronos;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -187,11 +183,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['status'])]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: '`events`')]
-abstract class BaseEvent implements ReportableInterface, GeoPointInterface, ReferentTaggableEntity, AddressHolderInterface, ZoneableEntity, AuthorInstanceInterface, ExposedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, ExposedObjectInterface
+abstract class BaseEvent implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntity, AuthorInstanceInterface, ExposedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, ExposedObjectInterface
 {
     use EntityIdentityTrait;
     use EntityNullablePostAddressTrait;
-    use EntityReferentTagTrait;
     use EntityZoneTrait;
     use EntityTimestampableTrait;
     use ImageTrait;
@@ -229,15 +224,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     #[ORM\JoinTable(name: 'event_zone')]
     #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
     protected Collection $zones;
-
-    /**
-     * @var Collection|ReferentTag[]
-     */
-    #[ORM\InverseJoinColumn(name: 'referent_tag_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ORM\JoinColumn(name: 'event_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
-    #[ORM\JoinTable(name: 'event_referent_tag')]
-    #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
-    protected $referentTags;
 
     /**
      * @var string|null
@@ -389,8 +375,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Refe
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
-
-        $this->referentTags = new ArrayCollection();
         $this->zones = new ZoneCollection();
     }
 

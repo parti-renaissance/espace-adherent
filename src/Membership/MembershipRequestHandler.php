@@ -9,7 +9,6 @@ use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\MembershipRequest\JeMengageMembershipRequest;
 use App\Membership\MembershipRequest\MembershipInterface;
-use App\Referent\ReferentTagManager;
 use App\Referent\ReferentZoneManager;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -19,7 +18,6 @@ class MembershipRequestHandler
     private $dispatcher;
     private $adherentFactory;
     private $manager;
-    private $referentTagManager;
     private $referentZoneManager;
     private $unregistrationHandler;
     private $notifier;
@@ -28,7 +26,6 @@ class MembershipRequestHandler
         EventDispatcherInterface $dispatcher,
         AdherentFactory $adherentFactory,
         ObjectManager $manager,
-        ReferentTagManager $referentTagManager,
         ReferentZoneManager $referentZoneManager,
         UnregistrationHandler $unregistrationHandler,
         MembershipNotifier $notifier
@@ -36,7 +33,6 @@ class MembershipRequestHandler
         $this->adherentFactory = $adherentFactory;
         $this->dispatcher = $dispatcher;
         $this->manager = $manager;
-        $this->referentTagManager = $referentTagManager;
         $this->referentZoneManager = $referentZoneManager;
         $this->unregistrationHandler = $unregistrationHandler;
         $this->notifier = $notifier;
@@ -51,7 +47,6 @@ class MembershipRequestHandler
     {
         $this->manager->persist($adherent = $this->adherentFactory->createFromMembershipRequest($membershipRequest));
 
-        $this->referentTagManager->assignReferentLocalTags($adherent);
         $this->referentZoneManager->assignZone($adherent);
 
         $this->manager->flush();

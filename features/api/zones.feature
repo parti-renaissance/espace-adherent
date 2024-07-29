@@ -70,34 +70,13 @@ Feature:
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/zone/autocomplete" with parameters:
       | key         | value     |
-      | scope       | referent  |
+      | scope       | president_departmental_assembly  |
       | q           | pa        |
     Then the response status code should be 200
     And the response should be in JSON
     And the JSON should be equal to:
     """
     [
-        {
-            "uuid": "e3ef84ed-906e-11eb-a875-0242ac150002",
-            "type": "country",
-            "postal_code": [],
-            "code": "ES",
-            "name": "Espagne"
-        },
-        {
-            "uuid": "e3f33ac7-906e-11eb-a875-0242ac150002",
-            "type": "consular_district",
-            "postal_code": [],
-            "code": "CONS_030-2",
-            "name": "Espagne  2ème circo"
-        },
-        {
-            "uuid": "e3f33a66-906e-11eb-a875-0242ac150002",
-            "type": "consular_district",
-            "postal_code": [],
-            "code": "CONS_030-1",
-            "name": "Espagne 1ère circo"
-        },
         {
             "uuid": "e3f28b24-906e-11eb-a875-0242ac150002",
             "type": "city",
@@ -245,7 +224,7 @@ Feature:
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/zone/autocomplete" with parameters:
       | key         | value     |
-      | scope       | referent  |
+      | scope       | president_departmental_assembly  |
       | q           | pa        |
       | types[]     | city      |
     Then the response status code should be 200

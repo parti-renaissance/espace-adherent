@@ -43,7 +43,6 @@ class ElectedRepresentativeTagsBuilder
         return array_unique(array_merge(
             $translatedTags,
             array_map([$this, 'translateKey'], array_unique($tags)),
-            $electedRepresentative->getActiveReferentTagCodes()
         ));
     }
 

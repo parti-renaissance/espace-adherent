@@ -194,7 +194,6 @@
             <argument>App\Entity\Event\BaseEvent</argument>
             <argument />
             <argument type="service" id="event_dispatcher"/>
-            <argument type="service" id="App\Referent\ReferentTagManager"/>
             <call method="setSubClasses">
                 <argument type="collection">
                     <argument>App\Entity\Event\DefaultEvent</argument>
@@ -225,24 +224,6 @@
             <argument />
             <argument>App\Entity\Event\EventGroupCategory</argument>
             <argument />
-        </service>
-
-        <service id="app.admin.organizational_chart_item_admin" class="App\Admin\OrganizationalChartItemAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Équipe départementale" group="Territoires" />
-
-            <argument />
-            <argument>App\Entity\ReferentOrganizationalChart\AbstractOrganizationalChartItem</argument>
-            <argument />
-            <call method="setSubClasses">
-                <argument type="collection">
-                    <argument key="person">App\Entity\ReferentOrganizationalChart\PersonOrganizationalChartItem</argument>
-                    <argument key="group">App\Entity\ReferentOrganizationalChart\GroupOrganizationalChartItem</argument>
-                </argument>
-            </call>
-            <call method="setTemplate">
-                <argument>list</argument>
-                <argument>admin/organizational_chart/admin_list.html.twig</argument>
-            </call>
         </service>
 
         <service id="app.admin.team.team" class="App\Admin\Team\TeamAdmin">
@@ -1026,27 +1007,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.referent" class="App\Admin\ReferentAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Trombi Référents" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\Referent</argument>
-            <argument>App\Controller\Admin\AdminReferentController</argument>
-            <argument type="service" id="App\Form\DataTransformer\ReferentAreaTransformer" />
-            <call method="setTemplate">
-                <argument>list</argument>
-                <argument>admin/referent/admin_list.html.twig</argument>
-            </call>
-        </service>
-
-        <service id="app.admin.referent_area" class="App\Admin\ReferentAreaAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Zone des référents" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\ReferentArea</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.city" class="App\Admin\CityAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Communes" group="Archives (à dépublier)" />
 
@@ -1277,14 +1237,6 @@
             <tag name="sonata.admin" manager-type="orm" label="Zones géographiques" group="Archives" />
             <argument />
             <argument>App\Entity\LegislativeDistrictZone</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.referent_tag" class="App\Admin\ReferentTagAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Tags réferent" group="Archives" />
-
-            <argument />
-            <argument>App\Entity\ReferentTag</argument>
             <argument />
         </service>
 

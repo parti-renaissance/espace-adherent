@@ -88,11 +88,6 @@ class CommitteeManager
         return $committee->getCreatedBy() ? $this->getAdherentRepository()->findByUuid($committee->getCreatedBy()) : null;
     }
 
-    public function getCommitteeReferents(Committee $committee): AdherentCollection
-    {
-        return $this->getAdherentRepository()->findReferentsByCommittee($committee);
-    }
-
     public function getOptinCommitteeFollowers(Committee $committee): array
     {
         return $this->getAdherentRepository()->findForCommittee($committee);

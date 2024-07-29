@@ -63,8 +63,6 @@
                 theme: 'default em-filters'
             })
 
-            App.runReferentUserList('referent-user__committees-modal--trigger');
-
             $('.js-role-select').on('change', function() {
                 var selectedRoles = $(this).val(),
                     $oppositeOptions = $('#'+$(this).data('opposite')).find('option'),

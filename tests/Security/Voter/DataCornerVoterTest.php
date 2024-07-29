@@ -33,15 +33,14 @@ class DataCornerVoterTest extends AbstractAdherentVoterTestCase
     }
 
     #[DataProvider('provideAdherent')]
-    public function testAdherentIsGranted(bool $isDeputy, bool $isSenator, bool $isGranted): void
+    public function testAdherentIsGranted(bool $isDeputy, bool $isGranted): void
     {
-        $adherent = $this->getAdherentMock($isDeputy, $isSenator);
+        $adherent = $this->getAdherentMock($isDeputy);
 
         $this->scopeGeneratorMock->expects($this->once())
             ->method('generateScopes')
             ->willReturn(
-                ($isDeputy ? [new Scope('deputy', 'Délégué de circonscription', [], [], [], $adherent)] : [])
-                + ($isSenator ? [new Scope('senator', 'Sénateur', [], [], [], $adherent)] : [])
+                $isDeputy ? [new Scope('deputy', 'Délégué de circonscription', [], [], [], $adherent)] : []
             )
         ;
 
@@ -50,13 +49,11 @@ class DataCornerVoterTest extends AbstractAdherentVoterTestCase
 
     public static function provideAdherent(): iterable
     {
-        yield [true, false, true];
-        yield [false, true, true];
         yield [true, true, true];
         yield [false, false, false];
     }
 
-    private function getAdherentMock(bool $isDeputy = false, bool $isSenator = false): Adherent
+    private function getAdherentMock(bool $isDeputy = false): Adherent
     {
         $adherent = $this->createAdherentMock();
 
@@ -67,10 +64,6 @@ class DataCornerVoterTest extends AbstractAdherentVoterTestCase
         $adherent->expects($this->any())
             ->method('isDeputy')
             ->willReturn($isDeputy)
-        ;
-        $adherent->expects($this->any())
-            ->method('isSenator')
-            ->willReturn($isSenator)
         ;
 
         return $adherent;

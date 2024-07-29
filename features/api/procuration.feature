@@ -297,7 +297,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a referent I can get a list of requests corresponding to my zones
@@ -387,7 +387,7 @@ Feature:
         """
         Examples:
             | user                      | scope                                          |
-            | referent@en-marche-dev.fr | referent                                       |
+            | referent@en-marche-dev.fr | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a referent I can update proxy slots status
@@ -414,17 +414,15 @@ Feature:
                         "first_name": "<first_name>",
                         "last_name": "<last_name>"
                     },
-                    "author_scope": "Référent",
+                    "author_scope": "Président assemblée départementale",
                     "context": {
                         "old_status": "pending",
                         "new_status": "manual"
                     }
-
                 }
             ]
         }
         """
-
         When I send a "PUT" request to "/api/v3/procuration/proxy_slots/b024ff2a-c74b-442c-8339-7df9d0c104b6?scope=<scope>" with body:
         """
         {
@@ -447,7 +445,7 @@ Feature:
                         "first_name": "<first_name>",
                         "last_name": "<last_name>"
                     },
-                    "author_scope": "Référent",
+                    "author_scope": "Président assemblée départementale",
                     "context": {
                         "old_status": "manual",
                         "new_status": "pending"
@@ -463,7 +461,7 @@ Feature:
                         "first_name": "<first_name>",
                         "last_name": "<last_name>"
                     },
-                    "author_scope": "Référent",
+                    "author_scope": "Président assemblée départementale",
                     "context": {
                         "old_status": "pending",
                         "new_status": "manual"
@@ -474,7 +472,7 @@ Feature:
         """
         Examples:
             | user                      | scope                                          | first_name | last_name     |
-            | referent@en-marche-dev.fr | referent                                       | Referent   | Referent      |
+            | referent@en-marche-dev.fr | president_departmental_assembly                | Referent   | Referent      |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | Bob        | Senateur (59) |
 
     Scenario Outline: As a referent I can update request slots status
@@ -501,7 +499,7 @@ Feature:
                         "first_name": "<first_name>",
                         "last_name": "<last_name>"
                     },
-                    "author_scope": "Référent",
+                    "author_scope": "Président assemblée départementale",
                     "context": {
                         "old_status": "pending",
                         "new_status": "manual"
@@ -533,7 +531,7 @@ Feature:
                         "first_name": "<first_name>",
                         "last_name": "<last_name>"
                     },
-                    "author_scope": "Référent",
+                    "author_scope": "Président assemblée départementale",
                     "context": {
                         "old_status": "manual",
                         "new_status": "pending"
@@ -548,7 +546,7 @@ Feature:
                         "first_name": "<first_name>",
                         "last_name": "<last_name>"
                     },
-                    "author_scope": "Référent",
+                    "author_scope": "Président assemblée départementale",
                     "context": {
                         "old_status": "pending",
                         "new_status": "manual"
@@ -559,7 +557,7 @@ Feature:
         """
         Examples:
             | user                      | scope                                          | first_name | last_name     |
-            | referent@en-marche-dev.fr | referent                                       | Referent   | Referent      |
+            | referent@en-marche-dev.fr | president_departmental_assembly                | Referent   | Referent      |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | Bob        | Senateur (59) |
 
     Scenario Outline: As a referent I can match and unmatch slots
@@ -644,7 +642,7 @@ Feature:
                                 "first_name": "<first_name>",
                                 "last_name": "<last_name>"
                             },
-                            "author_scope": "Référent",
+                            "author_scope": "Président assemblée départementale",
                             "context": []
                         }
                     ]
@@ -685,7 +683,7 @@ Feature:
                                 "first_name": "<first_name>",
                                 "last_name": "<last_name>"
                             },
-                            "author_scope": "Référent",
+                            "author_scope": "Président assemblée départementale",
                             "context": []
                         },
                         {
@@ -696,7 +694,7 @@ Feature:
                                 "first_name": "<first_name>",
                                 "last_name": "<last_name>"
                             },
-                            "author_scope": "Référent",
+                            "author_scope": "Président assemblée départementale",
                             "context": []
                         }
                     ]
@@ -707,7 +705,7 @@ Feature:
 
         Examples:
             | user                      | scope                                          | first_name | last_name     |
-            | referent@en-marche-dev.fr | referent                                       | Referent   | Referent      |
+            | referent@en-marche-dev.fr | president_departmental_assembly                | Referent   | Referent      |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | Bob        | Senateur (59) |
 
     Scenario Outline: As a referent I can match and unmatch slots
@@ -751,7 +749,7 @@ Feature:
                         "first_name": "<first_name>",
                         "last_name": "<last_name>"
                     },
-                    "author_scope": "Référent",
+                    "author_scope": "Président assemblée départementale",
                     "context": {
                         "old_status": "pending",
                         "new_status": "excluded"
@@ -787,7 +785,7 @@ Feature:
                         "first_name": "<first_name>",
                         "last_name": "<last_name>"
                     },
-                    "author_scope": "Référent",
+                    "author_scope": "Président assemblée départementale",
                     "context": {
                         "old_status": "excluded",
                         "new_status": "pending"
@@ -801,7 +799,7 @@ Feature:
                         "first_name": "<first_name>",
                         "last_name": "<last_name>"
                     },
-                    "author_scope": "Référent",
+                    "author_scope": "Président assemblée départementale",
                     "context": {
                         "old_status": "pending",
                         "new_status": "excluded"
@@ -813,5 +811,5 @@ Feature:
 
         Examples:
             | user                      | scope                                          | first_name | last_name     |
-            | referent@en-marche-dev.fr | referent                                       | Referent   | Referent      |
+            | referent@en-marche-dev.fr | president_departmental_assembly                | Referent   | Referent      |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 | Bob        | Senateur (59) |

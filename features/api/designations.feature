@@ -40,7 +40,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I cannot create a committee designation without entity uuid
@@ -60,7 +60,7 @@ Feature:
     And the JSON node "detail" should be equal to "election_entity_identifier: Un identifiant est requis pour ce champs."
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can create a designation
@@ -93,7 +93,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can get a designation
@@ -116,7 +116,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can update schedule a designation
@@ -149,7 +149,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I can view election results
@@ -233,7 +233,7 @@ Feature:
       """
       Examples:
         | user                            | scope                                          |
-        | referent@en-marche-dev.fr       | referent                                       |
+        | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
         | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
         | president-ad@renaissance-dev.fr | president_departmental_assembly                |
 
@@ -285,7 +285,7 @@ Feature:
         """
         Examples:
           | user                            | scope                                          |
-          | referent@en-marche-dev.fr       | referent                                       |
+          | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
           | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
           | president-ad@renaissance-dev.fr | president_departmental_assembly                |
 
@@ -311,5 +311,5 @@ Feature:
         """
         Examples:
           | user                      | scope                                          |
-          | referent@en-marche-dev.fr | referent                                       |
+          | referent@en-marche-dev.fr | president_departmental_assembly                                       |
           | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |

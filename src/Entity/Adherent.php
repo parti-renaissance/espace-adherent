@@ -33,7 +33,6 @@ use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\DelegatedAccessEnum;
 use App\Entity\Team\Member;
-use App\EntityListener\RevokeReferentTeamMemberRolesListener;
 use App\Exception\AdherentAlreadyEnabledException;
 use App\Exception\AdherentException;
 use App\Exception\AdherentTokenException;
@@ -105,16 +104,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  */
 #[ORM\Entity(repositoryClass: AdherentRepository::class)]
-#[ORM\EntityListeners([RevokeReferentTeamMemberRolesListener::class])]
 #[ORM\Table(name: 'adherents')]
 #[UniqueEntity(fields: ['nickname'], groups: ['anonymize'])]
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ReferentTaggableEntity, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface, TranslatedTagInterface
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface, TranslatedTagInterface, EntityPostAddressInterface
 {
     use EntityIdentityTrait;
     use EntityPersonNameTrait;
     use EntityPostAddressTrait;
     use LazyCollectionTrait;
-    use EntityReferentTagTrait;
     use EntityZoneTrait;
     use EntityUTMTrait;
     use EntityAdministratorBlameableTrait;
@@ -214,30 +211,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $subscriptionTypes;
 
     /**
-     * @var ReferentManagedArea|null
-     */
-    #[ORM\OneToOne(targetEntity: ReferentManagedArea::class, cascade: ['all'], orphanRemoval: true)]
-    private $managedArea;
-
-    /**
-     * Defines to which referent team the adherent belongs.
-     *
-     * @var ReferentTeamMember|null
-     */
-    #[ORM\OneToOne(mappedBy: 'member', targetEntity: ReferentTeamMember::class, cascade: ['all'], orphanRemoval: true)]
-    private $referentTeamMember;
-
-    /**
      * @AssertZoneBasedRoles
+     *
+     * @var AdherentZoneBasedRole[]|Collection
      */
     #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentZoneBasedRole::class, cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
     private Collection $zoneBasedRoles;
-
-    /**
-     * @var CoordinatorManagedArea|null
-     */
-    #[ORM\OneToOne(targetEntity: CoordinatorManagedArea::class, cascade: ['all'], orphanRemoval: true)]
-    private $coordinatorCommitteeArea;
 
     /**
      * @var BoardMember|null
@@ -268,12 +247,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: CommitteeFeedItem::class, cascade: ['remove'])]
     private $committeeFeedItems;
-
-    /**
-     * @var District|null
-     */
-    #[ORM\OneToOne(targetEntity: District::class, cascade: ['persist'])]
-    private $managedDistrict;
 
     #[Groups(['profile_read'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
@@ -403,13 +376,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $emailUnsubscribedAt;
 
     /**
-     * @var SenatorialCandidateManagedArea|null
-     */
-    #[Assert\Valid]
-    #[ORM\OneToOne(targetEntity: SenatorialCandidateManagedArea::class, cascade: ['all'], orphanRemoval: true)]
-    private $senatorialCandidateManagedArea;
-
-    /**
      * @var CandidateManagedArea|null
      */
     #[Assert\Valid]
@@ -427,12 +393,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentCharter\AbstractAdherentCharter::class, cascade: ['all'])]
     private $charters;
-
-    /**
-     * @var SenatorArea|null
-     */
-    #[ORM\OneToOne(targetEntity: SenatorArea::class, cascade: ['all'], orphanRemoval: true)]
-    private $senatorArea;
 
     /**
      * @var ConsularManagedArea|null
@@ -623,7 +583,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->provisionalSupervisors = new ArrayCollection();
         $this->teamMemberships = new ArrayCollection();
         $this->zoneBasedRoles = new ArrayCollection();
-        $this->referentTags = new ArrayCollection();
         $this->campusRegistrations = new ArrayCollection();
         $this->contributions = new ArrayCollection();
         $this->payments = new ArrayCollection();
@@ -680,7 +639,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         bool $nicknameUsed = false,
         string $status = self::DISABLED,
         string $registeredAt = 'now',
-        ?array $referentTags = [],
         ?array $mandates = [],
         ?string $nationality = null,
         ?string $customGender = null
@@ -701,7 +659,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->phone = $phone;
         $adherent->status = $status;
         $adherent->registeredAt = new \DateTime($registeredAt);
-        $adherent->referentTags = new ArrayCollection($referentTags);
         $adherent->mandates = $mandates ?? [];
         $adherent->nationality = $nationality;
         $adherent->customGender = $customGender;
@@ -739,14 +696,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_ADHERENT';
         }
 
-        if ($this->isReferent()) {
-            $roles[] = 'ROLE_REFERENT';
-        }
-
-        if ($this->isCoReferent()) {
-            $roles[] = 'ROLE_COREFERENT';
-        }
-
         if ($this->isDeputy()) {
             $roles[] = 'ROLE_DEPUTY';
         }
@@ -757,10 +706,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         if ($this->isFdeCoordinator()) {
             $roles[] = 'ROLE_FDE_COORDINATOR';
-        }
-
-        if ($this->isSenator()) {
-            $roles[] = 'ROLE_SENATOR';
         }
 
         if ($this->isConsular()) {
@@ -823,8 +768,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_DELEGATED_'.strtoupper($delegatedAccess->getType());
         }
 
-        if ($this->isSenatorialCandidate()) {
-            $roles[] = 'ROLE_SENATORIAL_CANDIDATE';
+        foreach ($this->zoneBasedRoles as $zoneBasedRole) {
+            $roles[] = 'ROLE_DELEGATED_'.strtoupper($zoneBasedRole->getType());
         }
 
         if ($this->isHeadedRegionalCandidate()) {
@@ -876,10 +821,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function getType(): string
     {
-        if ($this->isReferent()) {
-            return 'REFERENT';
-        }
-
         if ($this->isSupervisor() || $this->isHost()) {
             return 'HOST';
         }
@@ -889,9 +830,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function hasAdvancedPrivileges(): bool
     {
-        return $this->isReferent()
-            || $this->isDelegatedReferent()
-            || $this->isRegionalCoordinator()
+        return $this->isRegionalCoordinator()
             || $this->isProcurationsManager()
             || $this->isJecouteManager()
             || $this->isSupervisor()
@@ -899,10 +838,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isBoardMember()
             || $this->isDeputy()
             || $this->isDelegatedDeputy()
-            || $this->isSenator()
-            || $this->isDelegatedSenator()
             || $this->isElectionResultsReporter()
-            || $this->isSenatorialCandidate()
             || $this->isHeadedRegionalCandidate()
             || $this->isLeaderRegionalCandidate()
             || $this->isDepartmentalCandidate()
@@ -1341,48 +1277,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->updatedAt;
     }
 
-    public function getManagedArea(): ?ReferentManagedArea
-    {
-        return $this->managedArea;
-    }
-
-    public function setManagedArea(?ReferentManagedArea $managedArea): void
-    {
-        $this->managedArea = $managedArea;
-    }
-
-    public function getReferentTeamMember(): ?ReferentTeamMember
-    {
-        return $this->referentTeamMember;
-    }
-
-    public function setReferentTeamMember(?ReferentTeamMember $referentTeam): void
-    {
-        $referentTeam?->setMember($this);
-        $this->referentTeamMember = $referentTeam;
-    }
-
-    public function getReferentOfReferentTeam(): ?Adherent
-    {
-        return $this->referentTeamMember?->getReferent();
-    }
-
-    public function getMemberOfReferentTeam(): ?Adherent
-    {
-        return $this->referentTeamMember?->getMember();
-    }
-
-    /**
-     * @return string[]
-     */
-    #[Groups(['referent'])]
-    public function getManagedAreaTagCodes(): array
-    {
-        return $this->getManagedArea()
-            ? $this->getManagedArea()->getReferentTagCodes()
-            : [];
-    }
-
     public function getBoardMember(): ?BoardMember
     {
         return $this->boardMember;
@@ -1434,37 +1328,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->zoneBasedRoles->removeElement($role);
     }
 
-    public function setReferent(array $tags, ?string $markerLatitude = null, ?string $markerLongitude = null): void
-    {
-        $this->managedArea = new ReferentManagedArea($tags, $markerLatitude, $markerLongitude);
-    }
-
-    public function isReferent(): bool
-    {
-        return $this->managedArea instanceof ReferentManagedArea
-            && !$this->managedArea->getTags()->isEmpty();
-    }
-
-    public function isDelegatedReferent(): bool
-    {
-        return \count($this->getReceivedDelegatedAccessOfType('referent')) > 0;
-    }
-
-    public function isCoReferent(): bool
-    {
-        return $this->referentTeamMember instanceof ReferentTeamMember;
-    }
-
-    public function isLimitedCoReferent(): bool
-    {
-        return $this->isCoReferent() && $this->referentTeamMember->isLimited();
-    }
-
-    public function revokeReferent(): void
-    {
-        $this->managedArea = null;
-    }
-
     public function revokeJecouteManager(): void
     {
         $this->jecouteManagedArea = null;
@@ -1477,12 +1340,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function canBeProxy(): bool
     {
-        return $this->isReferent() || $this->isProcurationsManager();
-    }
-
-    public function isCoordinatorCommitteeSector(): bool
-    {
-        return $this->coordinatorCommitteeArea && $this->coordinatorCommitteeArea->getCodes();
+        return $this->isProcurationsManager();
     }
 
     public function getJecouteManagedArea(): ?JecouteManagedArea
@@ -1635,21 +1493,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->committeeFeedItems;
     }
 
-    public function getReferentTagCodes(): array
-    {
-        return array_map(function (ReferentTag $tag) { return $tag->getCode(); }, $this->referentTags->toArray());
-    }
-
-    public function getCoordinatorCommitteeArea(): ?CoordinatorManagedArea
-    {
-        return $this->coordinatorCommitteeArea;
-    }
-
-    public function setCoordinatorCommitteeArea(?CoordinatorManagedArea $coordinatorCommitteeArea): void
-    {
-        $this->coordinatorCommitteeArea = $coordinatorCommitteeArea;
-    }
-
     public function isDelegatedDeputy(): bool
     {
         return \count($this->getReceivedDelegatedAccessOfType('deputy')) > 0;
@@ -1724,16 +1567,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return !empty($this->mandates);
     }
 
-    public function getSenatorArea(): ?SenatorArea
-    {
-        return $this->senatorArea;
-    }
-
-    public function setSenatorArea(?SenatorArea $senatorArea): void
-    {
-        $this->senatorArea = $senatorArea;
-    }
-
     public function getConsularManagedArea(): ?ConsularManagedArea
     {
         return $this->consularManagedArea;
@@ -1800,7 +1633,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         return
             array_intersect($roles, [
-                'ROLE_REFERENT',
                 'ROLE_DEPUTY',
                 'ROLE_HOST',
                 'ROLE_SUPERVISOR',
@@ -1823,21 +1655,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         $this->subscriptionTypes = new ArrayCollection($this->subscriptionTypes->toArray());
         $this->postAddress = clone $this->postAddress;
-    }
-
-    #[Groups(['user_profile'])]
-    public function getDetailedRoles(): array
-    {
-        $roles = [];
-
-        if ($this->isReferent()) {
-            $roles[] = [
-                'label' => 'ROLE_REFERENT',
-                'codes' => $this->getManagedAreaTagCodes(),
-            ];
-        }
-
-        return $roles;
     }
 
     public function hasNationalRole(): bool
@@ -1867,10 +1684,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function hasFormationSpaceAccess(): bool
     {
-        return
-            $this->isHost()
-            || $this->isSupervisor()
-            || $this->isReferent();
+        return $this->isHost() || $this->isSupervisor();
     }
 
     public function getCharters(): AdherentCharterCollection
@@ -1888,16 +1702,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $charter->setAdherent($this);
             $this->charters->add($charter);
         }
-    }
-
-    public function isSenator(): bool
-    {
-        return !empty($this->senatorArea);
-    }
-
-    public function isDelegatedSenator(): bool
-    {
-        return \count($this->getReceivedDelegatedAccessOfType('senator')) > 0;
     }
 
     public function isConsular(): bool
@@ -2066,22 +1870,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
 
         return false;
-    }
-
-    public function isSenatorialCandidate(): bool
-    {
-        return $this->senatorialCandidateManagedArea instanceof SenatorialCandidateManagedArea;
-    }
-
-    public function getSenatorialCandidateManagedArea(): ?SenatorialCandidateManagedArea
-    {
-        return $this->senatorialCandidateManagedArea;
-    }
-
-    public function setSenatorialCandidateManagedArea(
-        ?SenatorialCandidateManagedArea $senatorialCandidateManagedArea
-    ): void {
-        $this->senatorialCandidateManagedArea = $senatorialCandidateManagedArea;
     }
 
     public function getCandidateManagedArea(): ?CandidateManagedArea

@@ -36,12 +36,6 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                 /** @var QueryBuilder $qb */
                 $where = new Expr\Orx();
 
-                // Senator
-                if (\in_array(AdherentRoleEnum::SENATOR, $value, true)) {
-                    $qb->leftJoin(sprintf('%s.senatorArea', $alias), 'senatorArea');
-                    $where->add('senatorArea IS NOT NULL');
-                }
-
                 // Committee animator
                 if (\in_array(AdherentRoleEnum::ANIMATOR, $value, true)) {
                     $qb->leftJoin(sprintf('%s.animatorCommittees', $alias), 'ac');

@@ -36,10 +36,6 @@ class CanEditSurveyVoter extends AbstractAdherentVoter
 
         $surveyZone = $subject->getZone();
 
-        if ($adherent->isReferent()) {
-            return !$subject->hasBlockedChanges() && $this->zoneRepository->isInJecouteZones($adherent->getManagedArea()->getTags()->toArray(), $surveyZone);
-        }
-
         if ($adherent->isJecouteManager()) {
             $managedZone = $adherent->getJecouteManagedArea()->getZone();
         }

@@ -15,10 +15,6 @@
             <br />
             {{ author.phone|phone_number_format }}
         {% endif %}
-        {% if author.isReferent %}
-            <br />
-            (Référent)
-        {% endif %}
     {% else %}
         Anonyme (adhérent désadhéré)
     {% endif %}

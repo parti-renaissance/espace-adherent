@@ -52,17 +52,17 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         $this->createFile($formation);
         $manager->persist($formation);
 
-        /** @var Adherent $referent77 */
-        $referent77 = $this->getReference('adherent-8');
-        /** @var Zone $zoneDepartment77 */
-        $zoneDepartment77 = LoadGeoZoneData::getZoneReference($manager, 'zone_department_77');
+        /** @var Adherent $referent92 */
+        $referent92 = $this->getReference('adherent-8');
+        /** @var Zone $zoneDepartment92 */
+        $zoneDepartment92 = LoadGeoZoneData::getZoneReference($manager, 'zone_department_92');
 
-        $formation = $this->createLocalFormation(self::FORMATION_4_UUID, $referent77, $zoneDepartment77, 'Première formation du 77');
+        $formation = $this->createLocalFormation(self::FORMATION_4_UUID, $referent92, $zoneDepartment92, 'Première formation du 77');
         $formation->setContentType(FormationContentTypeEnum::FILE);
         $this->createFile($formation);
         $manager->persist($formation);
 
-        $formation = $this->createLocalFormation(self::FORMATION_5_UUID, $referent77, $zoneDepartment77, 'Deuxième formation du 77');
+        $formation = $this->createLocalFormation(self::FORMATION_5_UUID, $referent92, $zoneDepartment92, 'Deuxième formation du 77');
         $formation->setContentType(FormationContentTypeEnum::LINK);
         $formation->setLink('http://renaissance.code/');
         $manager->persist($formation);

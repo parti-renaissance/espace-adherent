@@ -6,7 +6,6 @@ Feature:
 
   Background:
     Given the following fixtures are loaded:
-      | LoadReferentTagsZonesLinksData   |
       | LoadAdherentData                 |
       | LoadCommitteeV1Data              |
       | LoadCommitteeAdherentMandateData |
@@ -29,25 +28,6 @@ Feature:
     And I wait 3 second until I see "Charte de bonne utilisation des outils numériques"
     When I press "J'ai lu et j'accepte"
     Then I should be on "espace-depute/messagerie"
-
-  Scenario: As referent, I should see a popup when I'm in the referent space
-    Given I am logged as "referent-75-77@en-marche-dev.fr"
-    When I am on "espace-referent/messagerie"
-    Then I wait 3 second until I see "Charte de bonne utilisation des outils numériques"
-
-  Scenario: As referent, I should be redirected if I close the popup when I'm in the referent space
-    Given I am logged as "referent-75-77@en-marche-dev.fr"
-    And I am on "espace-referent/evenements"
-    And I wait 3 second until I see "Charte de bonne utilisation des outils numériques"
-    When I press "close"
-    Then I should be on "/"
-
-  Scenario: As referent, I should stay on the same page if I accept the condition
-    Given I am logged as "referent-75-77@en-marche-dev.fr"
-    And I am on "espace-referent/evenements"
-    And I wait 3 second until I see "Charte de bonne utilisation des outils numériques"
-    When I press "J'ai lu et j'accepte"
-    Then I should be on "espace-referent/evenements"
 
   Scenario: As supervisor, I should be redirected if I close the popup when I'm in the deputy space
     Given I am logged as "martine.lindt@gmail.com"

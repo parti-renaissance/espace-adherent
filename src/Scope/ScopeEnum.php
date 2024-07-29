@@ -6,7 +6,6 @@ use MyCLabs\Enum\Enum;
 
 class ScopeEnum extends Enum
 {
-    public const REFERENT = 'referent';
     public const DEPUTY = 'deputy';
     public const SENATOR = 'senator';
     public const CANDIDATE = 'candidate';
@@ -26,7 +25,6 @@ class ScopeEnum extends Enum
     public const FDE_COORDINATOR = 'fde_coordinator';
 
     public const ALL = [
-        self::REFERENT,
         self::DEPUTY,
         self::SENATOR,
         self::CANDIDATE,

@@ -57,12 +57,7 @@ class UserController extends AbstractController
     public function showMe(SerializerInterface $serializer): JsonResponse
     {
         /* @var Adherent $user */
-        $user = $this->getUser();
         $groups = ['user_profile', 'legacy'];
-
-        if ($user->isReferent()) {
-            $groups[] = 'referent';
-        }
 
         return new JsonResponse(
             $serializer->serialize($this->getUser(), 'json', ['groups' => $groups]),

@@ -25,10 +25,6 @@ class DocumentManager
             }
         }
 
-        if ($adherent->isReferent()) {
-            $documents['referent'] = $this->repository->listReferentDirectory('/');
-        }
-
         return $documents;
     }
 

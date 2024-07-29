@@ -253,14 +253,6 @@
     </div>
 {% endblock %}
 
-{%- block _referent_zone_filter_referentTag_entry_row -%}
-    <div class="form__radio">
-        {{ form_widget(form) }}
-        {{ form_label(form) }}
-        {{ form_errors(form) }}
-    </div>
-{%- endblock -%}
-
 {% block _adherent_registration_birthdate_widget %}
     <div {{ block('widget_container_attributes') }}>
         {{- date_pattern|replace({

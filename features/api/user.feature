@@ -27,7 +27,6 @@ Feature:
       "nickname": "pont",
       "use_nickname": false,
       "certified": false,
-      "detailed_roles": [],
       "surveys": {
         "total": 0,
         "last_month": 0
@@ -54,7 +53,6 @@ Feature:
         "first_name": "Jacques",
         "last_name": "Picard",
         "use_nickname": true,
-        "detailed_roles": [],
         "certified": true,
         "email_subscribed": true,
         "country": "FR",

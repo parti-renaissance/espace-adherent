@@ -10,7 +10,6 @@ use App\DataFixtures\ORM\LoadCommitteeV2Data;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
-use App\Entity\ReferentTag;
 use App\Entity\Reporting\CommitteeMembershipHistory;
 use App\Exception\CommitteeMembershipException;
 use App\Geocoder\Coordinates;
@@ -88,7 +87,6 @@ class CommitteeManagerTest extends AbstractKernelTestCase
         $this->assertSame(LoadAdherentData::ADHERENT_1_UUID, $membershipHistory->getAdherentUuid()->toString());
         $this->assertSame('FOLLOWER', $membershipHistory->getPrivilege());
         $this->assertSame('join', $membershipHistory->getAction());
-        $this->assertEquals(['75008', '75'], $this->getReferentTagCodes($membershipHistory));
 
         $this->committeeManager->unfollowCommittee($adherent, $committee);
 
@@ -100,15 +98,6 @@ class CommitteeManagerTest extends AbstractKernelTestCase
         $this->assertSame(LoadAdherentData::ADHERENT_1_UUID, $membershipHistory->getAdherentUuid()->toString());
         $this->assertSame('FOLLOWER', $membershipHistory->getPrivilege());
         $this->assertSame('leave', $membershipHistory->getAction());
-        $this->assertEquals(['75008', '75'], $this->getReferentTagCodes($membershipHistory));
-    }
-
-    private function getReferentTagCodes(CommitteeMembershipHistory $history): array
-    {
-        return array_map(
-            function (ReferentTag $tag) { return $tag->getCode(); },
-            $history->getReferentTags()->toArray()
-        );
     }
 
     public function testFollowThenUnfollowCommittees(): void

@@ -58,7 +58,6 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
         int $participantsCount = 0,
         ?string $slug = null,
         ?string $type = null,
-        array $referentTags = [],
         string $timeZone = GeoCoder::DEFAULT_TIME_ZONE
     ) {
         parent::__construct($uuid);
@@ -79,7 +78,6 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
         $this->isForLegislatives = $isForLegislatives;
         $this->type = $type;
         $this->documents = new ArrayCollection();
-        $this->referentTags = new ArrayCollection($referentTags);
         $this->timeZone = $timeZone;
     }
 
@@ -115,11 +113,6 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
         }
 
         return $committee->getUuidAsString();
-    }
-
-    public function isReferentEvent(): bool
-    {
-        return null === $this->getCommittee();
     }
 
     public function needNotifyForRegistration(): bool

@@ -6,15 +6,12 @@ use App\Entity\Adherent;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\SurveyQuestion;
-use App\Repository\ReferentTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 class LocalSurveyRepository extends ServiceEntityRepository
 {
-    use ReferentTrait;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, LocalSurvey::class);

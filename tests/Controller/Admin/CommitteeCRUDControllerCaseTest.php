@@ -4,7 +4,6 @@ namespace Tests\App\Controller\Admin;
 
 use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\Mailer\Message\CommitteeApprovalConfirmationMessage;
-use App\Mailer\Message\CommitteeApprovalReferentMessage;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,7 +50,6 @@ class CommitteeCRUDControllerCaseTest extends AbstractRenaissanceWebTestCase
 
         $this->assertTrue($committee->isApproved());
         $this->assertCountMails(1, CommitteeApprovalConfirmationMessage::class, 'benjyd@aol.com');
-        $this->assertCountMails(1, CommitteeApprovalReferentMessage::class, 'referent@en-marche-dev.fr');
     }
 
     protected function setUp(): void

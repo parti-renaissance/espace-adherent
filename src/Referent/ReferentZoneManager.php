@@ -5,6 +5,7 @@ namespace App\Referent;
 use App\Entity\Adherent;
 use App\Entity\ZoneableEntity;
 use App\Repository\Geo\ZoneRepository;
+use App\Utils\AreaUtils;
 
 class ReferentZoneManager
 {
@@ -19,7 +20,7 @@ class ReferentZoneManager
     {
         $entity->clearZones();
 
-        if (empty($code = ManagedAreaUtils::getZone($entity))) {
+        if (empty($code = AreaUtils::getZone($entity))) {
             return;
         }
 
@@ -33,7 +34,7 @@ class ReferentZoneManager
         $currentZones = array_values($adherent->getZonesCodes());
         sort($currentZones);
 
-        $newZone = ManagedAreaUtils::getZone($adherent);
+        $newZone = AreaUtils::getZone($adherent);
 
         $newZones = $newZone ? [$newZone] : [];
 

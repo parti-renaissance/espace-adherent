@@ -73,12 +73,12 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
             'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
             GrantTypeEnum::PASSWORD,
             null,
-            'referent@en-marche-dev.fr',
+            'president-ad@renaissance-dev.fr',
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
         ob_start();
-        $this->client->request(Request::METHOD_GET, '/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xlsx?scope=referent', [], [], [
+        $this->client->request(Request::METHOD_GET, '/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xlsx?scope=president_departmental_assembly', [], [], [
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ]);
         $content = ob_get_clean();
@@ -131,7 +131,7 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
 
     public static function provideReferents(): iterable
     {
-        yield ['referent-75-77@en-marche-dev.fr', 'referent'];
+        yield ['referent-75-77@en-marche-dev.fr', 'president_departmental_assembly'];
         yield ['francis.brioul@yahoo.com', 'delegated_689757d2-dea5-49d1-95fe-281fc860ff77'];
     }
 }

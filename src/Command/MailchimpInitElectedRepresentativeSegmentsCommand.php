@@ -6,11 +6,9 @@ use App\Adherent\MandateTypeEnum;
 use App\Entity\ElectedRepresentative\LabelNameEnum;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\MailchimpSegment;
-use App\Entity\ReferentTag;
 use App\Entity\UserListDefinitionEnum;
 use App\Mailchimp\Synchronisation\ElectedRepresentativeTagsBuilder;
 use App\Repository\MailchimpSegmentRepository;
-use App\Repository\ReferentTagRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -28,7 +26,6 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class MailchimpInitElectedRepresentativeSegmentsCommand extends Command
 {
     private $mailchimpSegmentRepository;
-    private $referentTagRepository;
     private $tagsBuilder;
     private $client;
     private $entityManager;
@@ -38,14 +35,12 @@ class MailchimpInitElectedRepresentativeSegmentsCommand extends Command
 
     public function __construct(
         MailchimpSegmentRepository $mailchimpSegmentRepository,
-        ReferentTagRepository $referentTagRepository,
         ElectedRepresentativeTagsBuilder $tagsBuilder,
         HttpClientInterface $mailchimpClient,
         ObjectManager $entityManager,
         string $mailchimpElectedRepresentativeListId
     ) {
         $this->mailchimpSegmentRepository = $mailchimpSegmentRepository;
-        $this->referentTagRepository = $referentTagRepository;
         $this->tagsBuilder = $tagsBuilder;
         $this->client = $mailchimpClient;
         $this->entityManager = $entityManager;
@@ -61,15 +56,7 @@ class MailchimpInitElectedRepresentativeSegmentsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $referentTags = $this->referentTagRepository->findAll();
-        $this->io->progressStart(\count($referentTags));
-
-        /** @var ReferentTag $tag */
-        foreach ($referentTags as $tag) {
-            $this->initTag($tag->getCode());
-
-            $this->io->progressAdvance();
-        }
+        $this->io->progressStart();
 
         foreach (MandateTypeEnum::ALL as $mandateType) {
             $this->initTag($this->tagsBuilder->translateKey($mandateType));

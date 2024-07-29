@@ -13,7 +13,6 @@ use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\Committee;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
-use App\Entity\Event\CommitteeEvent;
 use App\Entity\Geo\Zone;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
@@ -25,7 +24,6 @@ use App\Intl\FranceCitiesBundle;
 use App\Search\SearchParametersFilter;
 use App\ValueObject\Genders;
 use App\VotingPlatform\Designation\DesignationGlobalZoneEnum;
-use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -37,9 +35,7 @@ use Ramsey\Uuid\UuidInterface;
 class CommitteeRepository extends ServiceEntityRepository
 {
     use PaginatorTrait;
-    use GeoFilterTrait;
     use NearbyTrait;
-    use ReferentTrait;
     use GeoZoneTrait;
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
@@ -270,25 +266,6 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findManagedBy(Adherent $referent): array
-    {
-        if (!$referent->isReferent()) {
-            return [];
-        }
-
-        $qb = $this->createQueryBuilder('c')
-            ->select('c')
-            ->where('c.status = :status AND c.version = 1')
-            ->setParameter('status', Committee::APPROVED)
-            ->orderBy('c.name', 'ASC')
-            ->orderBy('c.createdAt', 'DESC')
-        ;
-
-        $this->applyGeoFilter($qb, $referent->getManagedArea()->getTags()->toArray(), 'c');
-
-        return $qb->getQuery()->getResult();
-    }
-
     public function findManagedByCoordinator(Adherent $coordinator, CommitteeFilter $filter): array
     {
         if (!$coordinator->isRegionalCoordinator()) {
@@ -315,36 +292,6 @@ class CommitteeRepository extends ServiceEntityRepository
         $filter->apply($qb, 'c');
 
         return $qb->getQuery()->getResult();
-    }
-
-    public function countSitemapCommittees(): int
-    {
-        return (int) $this->createSitemapQb()
-            ->select('COUNT(c) AS nb')
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
-    public function findSitemapCommittees(int $page, int $perPage): array
-    {
-        return $this->createSitemapQb()
-            ->select('c.uuid', 'c.slug')
-            ->orderBy('c.id')
-            ->setFirstResult(($page - 1) * $perPage)
-            ->setMaxResults($perPage)
-            ->getQuery()
-            ->getArrayResult()
-        ;
-    }
-
-    private function createSitemapQb(): QueryBuilder
-    {
-        return $this
-            ->createQueryBuilder('c')
-            ->where('c.status = :status AND c.version = 1')
-            ->setParameter('status', Committee::APPROVED)
-        ;
     }
 
     /**
@@ -420,18 +367,6 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findByPartialNameForReferent(Adherent $referent, string $search, int $limit = 10): array
-    {
-        $qb = $this
-            ->createPartialNameQueryBuilder($search, $alias = 'committee')
-            ->setMaxResults($limit)
-        ;
-
-        $this->applyGeoFilter($qb, $referent->getManagedArea()->getTags()->toArray(), $alias);
-
-        return $qb->getQuery()->getResult();
-    }
-
     public function findByPartialNameForDeputy(Adherent $deputy, string $search, int $limit = 10): array
     {
         $qb = $this
@@ -448,30 +383,6 @@ class CommitteeRepository extends ServiceEntityRepository
             'zones',
             'z2'
         );
-
-        return $qb->getQuery()->getResult();
-    }
-
-    public function findByPartialNameForSenator(Adherent $senator, string $search, int $limit = 10): array
-    {
-        $qb = $this
-            ->createPartialNameQueryBuilder($search, $alias = 'committee')
-            ->setMaxResults($limit)
-        ;
-
-        $this->applyGeoFilter($qb, [$senator->getSenatorArea()->getDepartmentTag()], $alias);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    public function findByPartialNameForCandidate(array $referentTags, string $search, int $limit = 10): array
-    {
-        $qb = $this
-            ->createPartialNameQueryBuilder($search, $alias = 'committee')
-            ->setMaxResults($limit)
-        ;
-
-        $this->applyGeoFilter($qb, $referentTags, $alias);
 
         return $qb->getQuery()->getResult();
     }
@@ -500,81 +411,6 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
 
         return new Paginator($query);
-    }
-
-    public function countApprovedForReferent(Adherent $referent): int
-    {
-        return (int) $this->createQueryBuilder('committee')
-            ->select('COUNT(committee) AS count')
-            ->join('committee.referentTags', 'tag')
-            ->where('committee.status = :status AND committee.version = 1')
-            ->andWhere('tag.id IN (:tags)')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->setParameter('status', Committee::APPROVED)
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
-    public function findApprovedForReferentAutocomplete(Adherent $referent, $value): array
-    {
-        $this->checkReferent($referent);
-
-        $qb = $this->createQueryBuilder('committee')
-            ->select('committee.uuid, committee.name')
-            ->join('committee.referentTags', 'tag')
-            ->where('committee.status = :status')
-            ->andWhere('tag.id IN (:tags)')
-            ->setParameter('status', Committee::APPROVED)
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->orderBy('committee.name')
-        ;
-
-        if ($value) {
-            $qb
-                ->andWhere('committee.name LIKE :searchedName')
-                ->setParameter('searchedName', $value.'%')
-                ->setMaxResults(70)
-            ;
-        }
-
-        return array_map(function (array $committee) {
-            return [$committee['uuid'] => $committee['name']];
-        }, $qb->getQuery()->getScalarResult());
-    }
-
-    public function findCitiesForReferentAutocomplete(Adherent $referent, $value): array
-    {
-        $this->checkReferent($referent);
-
-        $qb = $this->createQueryBuilder('committee')
-            ->select('DISTINCT committee.postAddress.cityName as city')
-            ->join('committee.referentTags', 'tag')
-            ->where('committee.status = :status')
-            ->andWhere('tag.id IN (:tags)')
-            ->setParameter('status', Committee::APPROVED)
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->orderBy('city')
-        ;
-
-        if ($value) {
-            $qb
-                ->andWhere('committee.postAddress.cityName LIKE :searchedCityName')
-                ->setParameter('searchedCityName', $value.'%')
-            ;
-        }
-
-        return array_column($qb->getQuery()->getArrayResult(), 'city');
-    }
-
-    public function retrieveMostActiveCommitteesInReferentManagedArea(Adherent $referent, int $limit = 5): array
-    {
-        return $this->retrieveTopCommitteesInReferentManagedArea($referent, $limit);
-    }
-
-    public function retrieveLeastActiveCommitteesInReferentManagedArea(Adherent $referent, int $limit = 5): array
-    {
-        return $this->retrieveTopCommitteesInReferentManagedArea($referent, $limit, false);
     }
 
     public function createQueryBuilderForZones(array $zones, int $version, bool $withZoneParents = true): QueryBuilder
@@ -641,35 +477,6 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
     }
 
-    private function retrieveTopCommitteesInReferentManagedArea(
-        Adherent $referent,
-        int $limit = 5,
-        bool $mostActive = true
-    ): array {
-        $this->checkReferent($referent);
-
-        return $this->createQueryBuilder('committee')
-            ->select('committee.name, COUNT(event) AS events, SUM(event.participantsCount) as HIDDEN participants')
-            ->join(CommitteeEvent::class, 'event', Join::WITH, 'event.committee = committee.id')
-            ->join('committee.referentTags', 'tag')
-            ->where('tag.id IN (:tags)')
-            ->andWhere('committee.status = :status AND committee.version = 1')
-            ->andWhere('event.beginAt >= :from')
-            ->andWhere('event.beginAt < :until')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->setParameter('status', Committee::APPROVED)
-            ->setParameter('from', (new Chronos('first day of this month'))->setTime(0, 0, 0))
-            ->setParameter('until', (new Chronos('first day of next month'))->setTime(0, 0, 0))
-            ->setMaxResults($limit)
-            ->orderBy('events', $mostActive ? 'DESC' : 'ASC')
-            ->addOrderBy('participants', $mostActive ? 'DESC' : 'ASC')
-            ->addOrderBy('committee.id', 'ASC')
-            ->groupBy('committee.id')
-            ->getQuery()
-            ->getArrayResult()
-        ;
-    }
-
     /**
      * @return Committee[]
      */
@@ -731,16 +538,6 @@ class CommitteeRepository extends ServiceEntityRepository
             ->setParameter('adherent', $adherent)
             ->getQuery()
             ->getResult()
-        ;
-    }
-
-    public function createSelectByReferentTagsQueryBuilder(array $referentTags): QueryBuilder
-    {
-        return $this->createQueryBuilder('committee')
-            ->innerJoin('committee.referentTags', 'tag')
-            ->andWhere('tag IN (:tags)')
-            ->setParameter('tags', $referentTags)
-            ->orderBy('committee.name')
         ;
     }
 

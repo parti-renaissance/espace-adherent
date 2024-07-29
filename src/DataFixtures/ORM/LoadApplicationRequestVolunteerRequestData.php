@@ -77,8 +77,6 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture implements Depe
             $volunteerRequest->setIsPreviousCampaignMember(false);
             $volunteerRequest->setShareAssociativeCommitment(false);
 
-            $volunteerRequest->addReferentTag($this->getReference('referent_tag_59'));
-
             $manager->persist($volunteerRequest);
         }
 
@@ -91,7 +89,6 @@ class LoadApplicationRequestVolunteerRequestData extends Fixture implements Depe
             LoadAdherentData::class,
             LoadApplicationRequestThemeData::class,
             LoadApplicationRequestTechnicalSkillData::class,
-            LoadReferentTagData::class,
         ];
     }
 }

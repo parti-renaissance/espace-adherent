@@ -6,18 +6,15 @@ use App\Adherent\SessionModal\SessionModalActivatorListener;
 use App\Adherent\Tag\TagTranslator;
 use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
-use App\Entity\ReferentSpaceAccessInformation;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\AdherentRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
-use App\Repository\ReferentSpaceAccessInformationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class AdherentRuntime implements RuntimeExtensionInterface
 {
     private $memberInterests;
-    private $accessInformationRepository;
     private $electedRepresentativeRepository;
     private $committeeMandateRepository;
     private $adherentRepository;
@@ -25,14 +22,12 @@ class AdherentRuntime implements RuntimeExtensionInterface
 
     public function __construct(
         ElectedRepresentativeRepository $electedRepresentativeRepository,
-        ReferentSpaceAccessInformationRepository $accessInformationRepository,
         CommitteeAdherentMandateRepository $committeeMandateRepository,
         AdherentRepository $adherentRepository,
         TagTranslator $tagTranslator,
         array $adherentInterests
     ) {
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
-        $this->accessInformationRepository = $accessInformationRepository;
         $this->committeeMandateRepository = $committeeMandateRepository;
         $this->adherentRepository = $adherentRepository;
         $this->tagTranslator = $tagTranslator;
@@ -57,14 +52,6 @@ class AdherentRuntime implements RuntimeExtensionInterface
     {
         if (!$adherent->isAdherent()) {
             return 'Non-adhérent(e)';
-        }
-
-        if ($adherent->isReferent()) {
-            return $adherent->isFemale() ? 'Référente 🥇' : 'Référent 🥇';
-        }
-
-        if ($adherent->isCoReferent()) {
-            return 'Équipe du référent 🥈';
         }
 
         if ($adherent->isDeputy()) {
@@ -95,28 +82,12 @@ class AdherentRuntime implements RuntimeExtensionInterface
             $labels[] = 'Non-adhérent(e)';
         }
 
-        if ($adherent->isReferent()) {
-            $labels[] = $adherent->isFemale() ? 'Référente' : 'Référent';
-        }
-
-        if ($adherent->isCoReferent() || $adherent->isDelegatedReferent()) {
-            $labels[] = 'Équipe du référent';
-        }
-
         if ($adherent->isDeputy()) {
             $labels[] = $adherent->isFemale() ? 'Déléguée de circonscription' : 'Délégué de circonscription';
         }
 
         if ($adherent->isDelegatedDeputy()) {
             $labels[] = 'Équipe du délégué de circonscription';
-        }
-
-        if ($adherent->isSenator()) {
-            $labels[] = $adherent->isFemale() ? 'Sénatrice' : 'Sénateur';
-        }
-
-        if ($adherent->isDelegatedSenator()) {
-            $labels[] = 'Équipe du sénateur';
         }
 
         if ($adherent->isSupervisor()) {
@@ -132,18 +103,6 @@ class AdherentRuntime implements RuntimeExtensionInterface
         }
 
         return $labels;
-    }
-
-    public function getReferentPreviousVisitDate(Adherent $adherent): ?\DateTimeInterface
-    {
-        /** @var ReferentSpaceAccessInformation $accessInformation */
-        $accessInformation = $this->accessInformationRepository->findByAdherent($adherent, 7200);
-
-        if ($accessInformation) {
-            return $accessInformation->getPreviousDate();
-        }
-
-        return null;
     }
 
     public function getElectedRepresentative(Adherent $adherent): ?ElectedRepresentative

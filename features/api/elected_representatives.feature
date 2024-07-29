@@ -80,7 +80,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I can create an elected representative in a zone I am manager of
@@ -125,7 +125,7 @@ Feature:
         """
         Examples:
             | user                      | scope                                          |
-            | referent@en-marche-dev.fr | referent                                       |
+            | referent@en-marche-dev.fr | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I can update an elected representative in a zone I am manager of
@@ -205,7 +205,7 @@ Feature:
         """
         Examples:
             | user                      | scope                                          |
-            | referent@en-marche-dev.fr | referent                                       |
+            | referent@en-marche-dev.fr | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I can get an elected representative informations in a zone I am manager of
@@ -279,7 +279,7 @@ Feature:
         """
         Examples:
             | user                      | scope                                          |
-            | referent@en-marche-dev.fr | referent                                       |
+            | referent@en-marche-dev.fr | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can delete an elected representative created by me
@@ -289,7 +289,7 @@ Feature:
 
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user with (delegated) referent role I can get filters list to filter elected representatives
@@ -507,7 +507,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can get an elected representative mandate informations
@@ -541,7 +541,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can create an elected representative mandate informations
@@ -621,7 +621,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can update an elected representative mandate informations
@@ -701,7 +701,7 @@ Feature:
     """
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
   Scenario Outline: As a user granted with local scope, I can delete an elected representative mandate informations
@@ -710,5 +710,5 @@ Feature:
     Then the response status code should be 204
     Examples:
       | user                      | scope                                          |
-      | referent@en-marche-dev.fr | referent                                       |
+      | referent@en-marche-dev.fr | president_departmental_assembly                                       |
       | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |

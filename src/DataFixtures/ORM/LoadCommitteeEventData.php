@@ -604,7 +604,6 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
             LoadEventCategoryData::class,
             LoadCommitteeV1Data::class,
             LoadCommitteeV2Data::class,
-            LoadReferentTagsZonesLinksData::class,
         ];
     }
 }

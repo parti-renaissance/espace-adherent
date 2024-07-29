@@ -20,14 +20,6 @@
             <div class="manager__filters__row">
                 <div class="manager__filters__section">
                     <div class="manager__filters__group">
-                        {% if form.referentTag is defined %}
-                            <div class="filter__row">
-                                <label class="filter__label">Zone gérée</label>
-                                {{ form_widget(form.referentTag, {attr: {class: 'filter__field'}}) }}
-                                {{ form_errors(form.referentTag) }}
-                            </div>
-                        {% endif %}
-
                         <div class="filter__row">
                             <label class="filter__label">Nom</label>
                             {{ form_widget(form.lastName, {attr: {class: 'filter__field', placeholder: 'Saisissez un nom'}}) }}

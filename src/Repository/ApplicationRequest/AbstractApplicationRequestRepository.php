@@ -7,7 +7,6 @@ use App\Entity\Adherent;
 use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Entity\ApplicationRequest\RunningMateRequest;
 use App\Entity\ApplicationRequest\VolunteerRequest;
-use App\Entity\ReferentTag;
 use App\Intl\FranceCitiesBundle;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Orx;
@@ -15,22 +14,6 @@ use Doctrine\ORM\QueryBuilder;
 
 abstract class AbstractApplicationRequestRepository extends ServiceEntityRepository
 {
-    /**
-     * @var ReferentTag[]
-     *
-     * @return VolunteerRequest[]|RunningMateRequest[]
-     */
-    public function findForReferentTags(array $referentTags, ?ListFilter $filter = null): array
-    {
-        return $this->createListQueryBuilder('r', $filter)
-            ->innerJoin('r.referentTags', 'refTag')
-            ->andWhere('refTag IN (:tags)')
-            ->setParameter('tags', $referentTags)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     /**
      * @return VolunteerRequest|RunningMateRequest|null
      */

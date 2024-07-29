@@ -5,8 +5,6 @@ namespace App\Controller\Admin;
 use App\Address\PostAddressFactory;
 use App\Committee\CommitteeManagementAuthority;
 use App\Committee\DTO\CommitteeCommand;
-use App\Committee\Exception\MultipleReferentsFoundException;
-use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Exception\BaseGroupException;
 use App\Form\Admin\ApproveCommitteeCommandType;
@@ -53,19 +51,6 @@ class AdminCommitteeCRUDController extends CRUDController
                     $this->addFlash('sonata_flash_success', sprintf('Le comité « %s » a été approuvé avec succès.', $committee->getName()));
                 } catch (BaseGroupException $exception) {
                     throw $this->createNotFoundException(sprintf('Committee %u must not be approved in order to be approved.', $committee->getId()), $exception);
-                }
-
-                try {
-                    $committeeManagementAuthority->notifyReferentsForApproval($committee);
-                } catch (MultipleReferentsFoundException $exception) {
-                    $this->addFlash('warning', sprintf(
-                        'Attention, plusieurs référents (%s) ont été trouvés dans le département de ce nouveau comité.
-                                Aucun email de notification pour la validation de ce comité ne leur a été envoyé.
-                                Nommez un seul référent pour permettre les notifications de ce type.',
-                        implode(', ', array_map(function (Adherent $referent) {
-                            return $referent->getEmailAddress();
-                        }, $exception->getReferents()->toArray()))
-                    ));
                 }
 
                 return $this->redirectToList();

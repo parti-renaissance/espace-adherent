@@ -37,7 +37,6 @@ use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Utils\AreaUtils;
-use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Connection;
@@ -58,12 +57,10 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class AdherentRepository extends ServiceEntityRepository implements UserLoaderInterface, UserProviderInterface
 {
     use NearbyTrait;
-    use ReferentTrait;
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
     }
     use PaginatorTrait;
-    use GeoFilterTrait;
     use GeoZoneTrait;
 
     public function __construct(ManagerRegistry $registry)
@@ -215,62 +212,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return Adherent::class === $class;
     }
 
-    /**
-     * Finds the list of referents.
-     *
-     * @return Adherent[]
-     */
-    public function findReferents(): array
-    {
-        return $this
-            ->createReferentQueryBuilder()
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    public function findReferent(string $identifier): ?Adherent
-    {
-        $qb = $this->createReferentQueryBuilder();
-
-        if (Uuid::isValid($identifier)) {
-            $qb
-                ->andWhere('a.uuid = :uuid')
-                ->setParameter('uuid', Uuid::fromString($identifier)->toString())
-            ;
-        } else {
-            $qb
-                ->andWhere('LOWER(a.emailAddress) = :email')
-                ->join('a.managedArea', 'managedArea')
-                ->join('managedArea.tags', 'tags')
-                ->setParameter('email', $identifier)
-            ;
-        }
-
-        return $qb->getQuery()->getOneOrNullResult();
-    }
-
-    private function createReferentQueryBuilder(): QueryBuilder
-    {
-        return $this
-            ->createQueryBuilder('a')
-            ->innerJoin('a.managedArea', 'managed_area')
-            ->innerJoin('managed_area.tags', 'managed_area_tag')
-            ->orderBy('LOWER(managed_area_tag.name)', 'ASC')
-        ;
-    }
-
-    public function findReferentsByCommittee(Committee $committee): AdherentCollection
-    {
-        $qb = $this
-            ->createReferentQueryBuilder()
-            ->andWhere('managed_area_tag IN (:tags)')
-            ->setParameter('tags', $committee->getReferentTags())
-        ;
-
-        return new AdherentCollection($qb->getQuery()->getResult());
-    }
-
     public function searchBoardMembers(BoardMemberFilter $filter, Adherent $excludedMember): array
     {
         return $this
@@ -296,11 +237,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return $this
             ->createQueryBuilder('a')
             ->addSelect('bm')
-            ->addSelect('cca')
             ->addSelect('cm')
             ->addSelect('bmr')
             ->innerJoin('a.boardMember', 'bm')
-            ->leftJoin('a.coordinatorCommitteeArea', 'cca')
             ->leftJoin('a.memberships', 'cm')
             ->innerJoin('bm.roles', 'bmr')
         ;
@@ -452,46 +391,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         }, array_column($query->getArrayResult(), 'uuid'));
     }
 
-    public function findAdherentsByNameAndReferentTags(array $tags, ?string $name): array
-    {
-        $qb = $this->createQueryBuilder('a')
-            ->leftJoin('a.referentTags', 'referent_tags')
-        ;
-
-        if ($name) {
-            $qb
-                ->where('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName)) LIKE :name')
-                ->setParameter('name', '%'.strtolower($name).'%')
-            ;
-        }
-
-        $this->applyGeoFilter($qb, $tags, 'a', null, null, 'referent_tags');
-
-        return $qb->getQuery()->getResult();
-    }
-
-    public function findAdherentsByName(array $zones, ?string $name): array
-    {
-        $this->withGeoZones(
-            $zones,
-            $qb = $this->createQueryBuilder('a'),
-            'a',
-            Adherent::class,
-            'a2',
-            'zones',
-            'z2'
-        );
-
-        if ($name) {
-            $qb
-                ->andWhere('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName)) LIKE :name')
-                ->setParameter('name', '%'.strtolower($name).'%')
-            ;
-        }
-
-        return $qb->getQuery()->getResult();
-    }
-
     public function countByGender(): array
     {
         return $this->createQueryBuilder('a', 'a.gender')
@@ -505,113 +404,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    public function countByGenderManagedBy(Adherent $referent): array
-    {
-        $this->checkReferent($referent);
-
-        return $this->createQueryBuilder('a', 'a.gender')
-            ->select('a.gender, COUNT(DISTINCT a) AS count')
-            ->innerJoin('a.referentTags', 'tag')
-            ->where('tag.id IN (:tags)')
-            ->andWhere('a.adherent = 1')
-            ->andWhere('a.status = :status')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->setParameter('status', Adherent::ENABLED)
-            ->groupBy('a.gender')
-            ->getQuery()
-            ->getArrayResult()
-        ;
-    }
-
-    public function countSupervisorsByGenderForReferent(Adherent $referent): array
-    {
-        $this->checkReferent($referent);
-
-        $result = $this->createQueryBuilder('adherent', 'adherent.gender')
-            ->select('adherent.gender, COUNT(DISTINCT adherent) AS count')
-            ->join('adherent.memberships', 'membership')
-            ->join('membership.committee', 'committee')
-            ->join('committee.adherentMandates', 'mandate')
-            ->join('committee.referentTags', 'tag')
-            ->where('tag.id IN (:tags)')
-            ->andWhere('committee.status = :status')
-            ->andWhere('mandate.adherent = adherent AND mandate.committee IS NOT NULL AND mandate.quality = :supervisor AND mandate.finishAt IS NULL')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->setParameter('status', Committee::APPROVED)
-            ->setParameter('supervisor', CommitteeMandateQualityEnum::SUPERVISOR)
-            ->groupBy('adherent.gender')
-            ->getQuery()
-            ->getArrayResult()
-        ;
-
-        return $this->formatCount($result);
-    }
-
-    public function countMembersByGenderForReferent(Adherent $referent): array
-    {
-        $this->checkReferent($referent);
-
-        $result = $this->createQueryBuilder('adherent', 'adherent.gender')
-            ->select('adherent.gender, COUNT(DISTINCT adherent) AS count')
-            ->join('adherent.memberships', 'membership')
-            ->join('membership.committee', 'committee')
-            ->innerJoin('committee.referentTags', 'tag')
-            ->where('tag.id IN (:tags)')
-            ->andWhere('committee.status = :status')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->setParameter('status', Committee::APPROVED)
-            ->groupBy('adherent.gender')
-            ->getQuery()
-            ->getArrayResult()
-        ;
-
-        return $this->formatCount($result);
-    }
-
-    private function formatCount(array $count): array
-    {
-        array_walk($count, function (&$item) {
-            $item = (int) $item['count'];
-        });
-
-        $count['total'] = array_sum($count);
-
-        return $count;
-    }
-
-    public function countMembersManagedBy(Adherent $referent, \DateTimeInterface $until): int
-    {
-        $this->assertReferent($referent);
-
-        $query = $this->createQueryBuilder('adherent')
-            ->select('COUNT(DISTINCT adherent) AS count')
-            ->innerJoin('adherent.referentTags', 'tag')
-            ->where('tag IN (:tags)')
-            ->andWhere('adherent.activatedAt <= :until')
-            ->setParameter('tags', $referent->getManagedArea()->getTags())
-            ->setParameter('until', $until)
-            ->getQuery()
-        ;
-
-        // Let's cache past data as they are never going to change
-        $firstDayOfMonth = (new Chronos('first day of this month'))->setTime(0, 0);
-        if ($firstDayOfMonth > $until) {
-            $query->useResultCache(true, 5184000); // 60 days
-        }
-
-        return (int) $query->getSingleScalarResult();
-    }
-
-    /**
-     * @throws \InvalidArgumentException
-     */
-    protected function assertReferent(Adherent $referent): void
-    {
-        if (!$referent->isReferent()) {
-            throw new \InvalidArgumentException('Adherent must be a referent.');
-        }
-    }
-
     public function refresh(Adherent $adherent): void
     {
         $this->getEntityManager()->refresh($adherent);
@@ -621,21 +413,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         $this->_em->persist($adherent);
         $this->_em->flush();
-    }
-
-    public function findPaginatedForInseeCodes(
-        array $inseeCodes,
-        int $page = 1,
-        int $maxItemPerPage = 10
-    ): PaginatorInterface {
-        $qb = $this
-            ->createQueryBuilder('a')
-            ->where("FIND_IN_SET(SUBSTRING_INDEX(a.postAddress.city, '-', -1), :insee_codes) > 0")
-            ->andWhere('a.adherent = 1')
-            ->setParameter('insee_codes', implode(',', $inseeCodes))
-        ;
-
-        return $this->configurePaginator($qb, $page, $maxItemPerPage);
     }
 
     public function findOneForMatching(string $emailAddress, string $firstName, string $lastName): ?Adherent
@@ -1387,28 +1164,18 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         return $this
             ->createQueryBuilder($alias)
-            ->addSelect('cca')
             ->addSelect('cm')
             ->addSelect('c')
             ->addSelect('bm')
             ->addSelect('jma')
-            ->addSelect('rtm')
-            ->addSelect('ma')
             ->addSelect('rda')
-            ->addSelect('scma')
-            ->addSelect('ref_tags')
             ->addSelect('mandates')
             ->addSelect('zone_based_role')
             ->leftJoin($alias.'.jecouteManagedArea', 'jma')
-            ->leftJoin($alias.'.coordinatorCommitteeArea', 'cca')
-            ->leftJoin($alias.'.referentTeamMember', 'rtm')
-            ->leftJoin($alias.'.managedArea', 'ma')
-            ->leftJoin('ma.tags', 'ref_tags')
             ->leftJoin($alias.'.memberships', 'cm')
             ->leftJoin('cm.committee', 'c')
             ->leftJoin($alias.'.boardMember', 'bm')
             ->leftJoin($alias.'.receivedDelegatedAccesses', 'rda')
-            ->leftJoin($alias.'.senatorialCandidateManagedArea', 'scma')
             ->leftJoin($alias.'.adherentMandates', 'mandates')
             ->leftJoin($alias.'.zoneBasedRoles', 'zone_based_role')
         ;

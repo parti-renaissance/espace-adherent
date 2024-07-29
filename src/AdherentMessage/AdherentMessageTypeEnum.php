@@ -10,9 +10,6 @@ use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\FdeCoordinatorAdherentMessage;
 use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\PresidentDepartmentalAssemblyAdherentMessage;
-use App\Entity\AdherentMessage\ReferentAdherentMessage;
-use App\Entity\AdherentMessage\ReferentElectedRepresentativeMessage;
-use App\Entity\AdherentMessage\ReferentInstancesMessage;
 use App\Entity\AdherentMessage\RegionalCoordinatorAdherentMessage;
 use App\Entity\AdherentMessage\RegionalDelegateAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
@@ -25,11 +22,8 @@ use MyCLabs\Enum\Enum;
 class AdherentMessageTypeEnum extends Enum
 {
     public const DEPUTY = 'deputy';
-    public const REFERENT = 'referent';
     public const COMMITTEE = 'committee';
     public const SENATOR = 'senator';
-    public const REFERENT_ELECTED_REPRESENTATIVE = 'referent_elected_representative';
-    public const REFERENT_INSTANCES = 'referent_instances';
     public const LEGISLATIVE_CANDIDATE = 'legislative_candidate';
     public const CANDIDATE = 'candidate';
     public const CANDIDATE_JECOUTE = 'candidate_jecoute';
@@ -42,11 +36,8 @@ class AdherentMessageTypeEnum extends Enum
 
     public const CLASSES = [
         self::DEPUTY => DeputyAdherentMessage::class,
-        self::REFERENT => ReferentAdherentMessage::class,
         self::COMMITTEE => CommitteeAdherentMessage::class,
         self::SENATOR => SenatorAdherentMessage::class,
-        self::REFERENT_ELECTED_REPRESENTATIVE => ReferentElectedRepresentativeMessage::class,
-        self::REFERENT_INSTANCES => ReferentInstancesMessage::class,
         self::LEGISLATIVE_CANDIDATE => LegislativeCandidateAdherentMessage::class,
         self::CANDIDATE => CandidateAdherentMessage::class,
         self::CANDIDATE_JECOUTE => CandidateJecouteMessage::class,
@@ -64,10 +55,6 @@ class AdherentMessageTypeEnum extends Enum
         CommitteeAdherentMessage::class => ['ROLE_ANIMATOR', 'ROLE_DELEGATED_ANIMATOR'],
 
         SenatorAdherentMessage::class => ['ROLE_SENATOR', 'ROLE_DELEGATED_SENATOR'],
-
-        ReferentAdherentMessage::class => ['ROLE_REFERENT', 'ROLE_DELEGATED_REFERENT'],
-        ReferentElectedRepresentativeMessage::class => ['ROLE_REFERENT', 'ROLE_DELEGATED_REFERENT'],
-        ReferentInstancesMessage::class => ['ROLE_REFERENT', 'ROLE_DELEGATED_REFERENT'],
 
         LegislativeCandidateAdherentMessage::class => ['ROLE_LEGISLATIVE_CANDIDATE', 'ROLE_DELEGATED_LEGISLATIVE_CANDIDATE'],
 

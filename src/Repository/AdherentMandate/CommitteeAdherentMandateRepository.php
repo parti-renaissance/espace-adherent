@@ -80,14 +80,6 @@ class CommitteeAdherentMandateRepository extends ServiceEntityRepository
             ])
         ;
 
-        if ($refTags) {
-            $qb
-                ->leftJoin('committee.referentTags', 'tag')
-                ->andWhere('tag.id IN (:tags)')
-                ->setParameter('tags', $refTags)
-            ;
-        }
-
         return $qb
             ->getQuery()
             ->getResult()

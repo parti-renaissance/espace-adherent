@@ -20,8 +20,6 @@
 
             {% if is_granted('ROLE_SUPERVISOR') or
                 is_granted('ROLE_HOST') or
-                is_granted('ROLE_REFERENT') or
-                is_granted('ROLE_COREFERENT') or
                 is_granted('ROLE_DEPUTY') or
                 is_granted('ROLE_SENATOR') or
                 is_granted('ROLE_BOARD_MEMBER') or
@@ -33,27 +31,9 @@
                 is_granted('ROLE_ELECTION_RESULTS_REPORTER') or
                 is_granted('ROLE_SENATORIAL_CANDIDATE') or
                 is_granted('ROLE_CANDIDATE') or
-                is_granted('ROLE_DELEGATED_REFERENT') or
                 is_granted('ROLE_DELEGATED_DEPUTY') or
                 is_granted('ROLE_DELEGATED_SENATOR')
             %}
-                {% set totalSections =
-                    (app.user.isSupervisor or app.user.isHost) +
-                    (app.user.isReferent or app.user.isCoReferent) +
-                    app.user.isDeputy +
-                    app.user.isSenator +
-                    app.user.isRegionalCoordinator +
-                    app.user.isProcurationsManager +
-
-                    app.user.isJecouteManager +
-                    app.user.isElectionResultsReporter +
-                    app.user.isSenatorialCandidate +
-                    app.user.isCandidate +
-                    app.user.isDelegatedReferent +
-                    app.user.isDelegatedDeputy +
-                    app.user.isDelegatedSenator
-                %}
-
                 <div class="em-dropdown manager-topbar__spaces">
                     <div class="manager-topbar__spaces--content em-dropdown--trigger">
                         <span class="current-space">{{ block('page_title') }}</span>

@@ -3,15 +3,6 @@ Feature:
   As Referent|Deputy|CP-Host|Committee-Host or Committee-Supervisor
   I cannot communicate with the adherents when one republican silence is declared for the same Referent Tags
 
-  Scenario Outline: As referent of department 92 I cannot communicate with adherent from my referent space.
-    Given I am logged as "referent-child@en-marche-dev.fr"
-     When I go to "<uri>"
-     Then I should see "En raison du silence républicain, votre espace est momentanément désactivé. Vous pourrez de nouveau y accéder à la fin de celui-ci."
-    Examples:
-      | uri                                   |
-      | /espace-referent/utilisateurs         |
-      | /espace-referent/evenements/creer     |
-
   Scenario Outline: As committee host I cannot access to the committee pages
     Given I am logged as "lolodie.dutemps@hotnix.tld"
     When I go to "<uri>"

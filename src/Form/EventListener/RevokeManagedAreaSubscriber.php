@@ -23,12 +23,7 @@ class RevokeManagedAreaSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $managedArea = $adherent->getManagedArea();
         $jecouteManagedArea = $adherent->getJecouteManagedArea();
-
-        if ($managedArea && $managedArea->getTags()->isEmpty()) {
-            $adherent->revokeReferent();
-        }
 
         if ($jecouteManagedArea && null === $jecouteManagedArea->getZone()) {
             $adherent->revokeJecouteManager();

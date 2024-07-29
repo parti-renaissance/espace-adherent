@@ -10,25 +10,21 @@ use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Geo\ZoneMatcher;
 use App\Image\ImageManager;
-use App\Referent\ReferentTagManager;
 use Ramsey\Uuid\Uuid;
 
 class EventFactory
 {
     private $addressFactory;
     private $zoneMatcher;
-    private $referentTagManager;
     private $imageManager;
 
     public function __construct(
-        ReferentTagManager $referentTagManager,
         ImageManager $imageManager,
         ZoneMatcher $zoneMatcher,
         ?PostAddressFactory $addressFactory = null
     ) {
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
         $this->zoneMatcher = $zoneMatcher;
-        $this->referentTagManager = $referentTagManager;
         $this->imageManager = $imageManager;
     }
 
@@ -66,8 +62,6 @@ class EventFactory
 
         $event->setPrivate($data['private'] ?? false);
         $event->setElectoral($data['electoral'] ?? false);
-
-        $this->referentTagManager->assignReferentLocalTags($event);
 
         foreach ($this->zoneMatcher->match($event->getPostAddress()) as $zone) {
             $event->addZone($zone);
@@ -118,8 +112,6 @@ class EventFactory
         $event->setPrivate($command->isPrivate());
         $event->setElectoral($command->isElectoral());
 
-        $this->referentTagManager->assignReferentLocalTags($event);
-
         if ($event->getImage()) {
             $this->imageManager->saveImage($event);
         }
@@ -150,7 +142,6 @@ class EventFactory
         $event->setCategory($command->getCategory());
         $event->setImage($command->getImage());
         $event->setRemoveImage($command->isRemoveImage());
-        $this->referentTagManager->assignReferentLocalTags($event);
 
         if ($event->isRemoveImage() && $event->hasImageName()) {
             $this->imageManager->removeImage($event);

@@ -88,7 +88,6 @@ class EventHydrator extends AbstractHydrator
             $row['event_participants_count'],
             $row['event_slug'],
             $row['event_type'],
-            [],
             $row['timeZone']
         );
 

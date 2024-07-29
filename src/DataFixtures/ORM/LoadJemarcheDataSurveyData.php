@@ -25,9 +25,6 @@ class LoadJemarcheDataSurveyData extends Fixture implements DependentFixtureInte
         /** @var NationalSurvey $nationalSurvey1 */
         $nationalSurvey1 = $this->getReference('national-survey-1');
 
-        /** @var NationalSurvey $nationalSurvey2 */
-        $nationalSurvey2 = $this->getReference('national-survey-2');
-
         /** @var Adherent $adherent7 */
         $adherent7 = $this->getReference('adherent-7');
 

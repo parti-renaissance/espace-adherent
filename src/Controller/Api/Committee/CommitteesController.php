@@ -26,7 +26,7 @@ class CommitteesController extends AbstractController
     }
 
     #[Route(path: '/committees/{uuid}/candidacies', name: 'app_api_committee_candidacies_get', methods: ['GET'])]
-    #[Security("is_granted('MEMBER_OF_COMMITTEE', committee) or is_granted('ROLE_REFERENT') or is_granted('ROLE_DELEGATED_REFERENT')")]
+    #[Security("is_granted('MEMBER_OF_COMMITTEE', committee)")]
     public function getCommitteeCandidaciesAction(
         Committee $committee,
         CommitteeMembershipRepository $repository

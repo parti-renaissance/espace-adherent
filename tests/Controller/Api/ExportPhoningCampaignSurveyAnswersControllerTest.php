@@ -73,7 +73,7 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiTestCa
 
     public static function provideReferents(): iterable
     {
-        yield ['referent@en-marche-dev.fr', 'referent'];
+        yield ['referent@en-marche-dev.fr', 'president_departmental_assembly'];
         yield ['senateur@en-marche-dev.fr', 'delegated_08f40730-d807-4975-8773-69d8fae1da74'];
     }
 }

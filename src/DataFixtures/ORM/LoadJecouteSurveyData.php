@@ -183,7 +183,6 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            LoadReferentData::class,
             LoadAdherentData::class,
             LoadAdminData::class,
             LoadJecouteQuestionData::class,

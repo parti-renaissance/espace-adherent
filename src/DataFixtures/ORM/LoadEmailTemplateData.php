@@ -59,7 +59,7 @@ class LoadEmailTemplateData extends Fixture implements DependentFixtureInterface
             file_get_contents(__DIR__.'/../unlayer/content.md'),
             file_get_contents(__DIR__.'/../unlayer/json_content.json'),
         );
-        $emailTemplate5->setScopes([ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, ScopeEnum::REFERENT]);
+        $emailTemplate5->setScopes([ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY]);
         $emailTemplate5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $emailTemplate5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_75'));
         $emailTemplate5->setCreatedByAdministrator($this->getReference('administrator-2'));
@@ -72,7 +72,7 @@ class LoadEmailTemplateData extends Fixture implements DependentFixtureInterface
         ));
         $emailTemplate->subject = 'Email statutaire - {{_scope:"zone_name"}}';
         $emailTemplate->subjectEditable = false;
-        $emailTemplate->setScopes([ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY, ScopeEnum::REFERENT]);
+        $emailTemplate->setScopes([ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY]);
         $emailTemplate->setCreatedByAdministrator($this->getReference('administrator-2'));
         $emailTemplate->isStatutory = true;
 

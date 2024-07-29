@@ -12,7 +12,6 @@ use App\Event\CommitteeEventEvent;
 use App\Event\EventEvent;
 use App\Events;
 use App\Form\EventCategoryType;
-use App\Referent\ReferentTagManager;
 use App\Utils\PhpConfigurator;
 use Doctrine\ORM\Query\Expr\Join;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -37,7 +36,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class EventAdmin extends AbstractAdmin
 {
     private $dispatcher;
-    private $referentTagManager;
     private $beforeUpdate;
 
     public function __construct(
@@ -45,12 +43,10 @@ class EventAdmin extends AbstractAdmin
         $class,
         $baseControllerName,
         EventDispatcherInterface $dispatcher,
-        ReferentTagManager $referentTagManager
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
         $this->dispatcher = $dispatcher;
-        $this->referentTagManager = $referentTagManager;
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
@@ -160,8 +156,6 @@ class EventAdmin extends AbstractAdmin
      */
     protected function postUpdate(object $object): void
     {
-        $this->referentTagManager->assignReferentLocalTags($object);
-
         if ($object instanceof CommitteeEvent) {
             $event = new CommitteeEventEvent($object->getOrganizer(), $object);
         } else {

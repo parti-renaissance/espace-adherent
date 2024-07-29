@@ -27,8 +27,6 @@ class JecouteSpaceEnum extends Enum
     public static function getByScope(string $scope): ?string
     {
         switch ($scope) {
-            case ScopeEnum::REFERENT:
-                return self::REFERENT_SPACE;
             case ScopeEnum::CORRESPONDENT:
                 return self::CORRESPONDENT_SPACE;
             case ScopeEnum::LEGISLATIVE_CANDIDATE:

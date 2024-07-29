@@ -74,7 +74,7 @@ class ExportSurveyAnswersControllerTest extends AbstractApiTestCase
     public static function provideUsers(): iterable
     {
         yield ['deputy@en-marche-dev.fr', 'national'];
-        yield ['referent-75-77@en-marche-dev.fr', 'referent'];
+        yield ['referent-75-77@en-marche-dev.fr', 'president_departmental_assembly'];
         yield ['francis.brioul@yahoo.com', 'delegated_689757d2-dea5-49d1-95fe-281fc860ff77'];
     }
 }

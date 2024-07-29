@@ -17,7 +17,6 @@ class AdherentSpaceEnum
     public const REGIONAL_COORDINATOR = 'regional_coordinator';
 
     public const SCOPES = [
-        ScopeEnum::REFERENT => self::REFERENT,
         ScopeEnum::CANDIDATE => self::CANDIDATE,
         ScopeEnum::SENATOR => self::SENATOR,
         ScopeEnum::DEPUTY => self::DEPUTY,

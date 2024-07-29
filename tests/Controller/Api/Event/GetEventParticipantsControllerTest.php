@@ -26,12 +26,12 @@ class GetEventParticipantsControllerTest extends AbstractApiTestCase
             'BHLfR-MWLVBF@Z.ZBh4EdTFJ',
             GrantTypeEnum::PASSWORD,
             Scope::JEMENGAGE_ADMIN,
-            'referent@en-marche-dev.fr',
+            'president-ad@renaissance-dev.fr',
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
         ob_start();
-        $this->client->request(Request::METHOD_GET, '/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/participants.xlsx?scope=referent', [], [], [
+        $this->client->request(Request::METHOD_GET, '/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/participants.xlsx?scope=president_departmental_assembly', [], [], [
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ]);
         $content = ob_get_clean();

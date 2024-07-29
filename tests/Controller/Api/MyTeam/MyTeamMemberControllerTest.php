@@ -41,7 +41,7 @@ class MyTeamMemberControllerTest extends AbstractApiTestCase
 
         $this->client->request(
             Request::METHOD_POST,
-            '/api/v3/my_team_members?scope=referent',
+            '/api/v3/my_team_members?scope=president_departmental_assembly',
             [],
             [],
             [
@@ -96,7 +96,7 @@ class MyTeamMemberControllerTest extends AbstractApiTestCase
 
         $this->client->request(
             Request::METHOD_POST,
-            '/api/v3/my_team_members?scope=referent',
+            '/api/v3/my_team_members?scope=president_departmental_assembly',
             [],
             [],
             [
@@ -129,8 +129,6 @@ class MyTeamMemberControllerTest extends AbstractApiTestCase
             'type' => $team->getScope(),
         ]);
 
-        $this->assertSame(LoadDelegatedAccessData::ACCESS_UUID_10, $delegatedAccess->getUuid()->toString());
-        $this->assertNotEmpty($delegatedAccess->getAccesses());
         $this->assertValidDelegatedAccesses($member, $delegatedAccess);
     }
 
@@ -153,7 +151,7 @@ class MyTeamMemberControllerTest extends AbstractApiTestCase
 
         $this->client->request(
             Request::METHOD_PUT,
-            sprintf('/api/v3/my_team_members/%s?scope=referent', $memberUuid),
+            sprintf('/api/v3/my_team_members/%s?scope=president_departmental_assembly', $memberUuid),
             [],
             [],
             [
@@ -211,7 +209,7 @@ class MyTeamMemberControllerTest extends AbstractApiTestCase
 
         $this->client->request(
             Request::METHOD_DELETE,
-            sprintf('/api/v3/my_team_members/%s?scope=referent', $memberUuid),
+            sprintf('/api/v3/my_team_members/%s?scope=president_departmental_assembly', $memberUuid),
             [],
             [],
             ['HTTP_AUTHORIZATION' => "Bearer $accessToken"],
@@ -249,7 +247,7 @@ class MyTeamMemberControllerTest extends AbstractApiTestCase
 
         $this->client->request(
             Request::METHOD_DELETE,
-            sprintf('/api/v3/my_team_members/%s?scope=referent', $memberUuid),
+            sprintf('/api/v3/my_team_members/%s?scope=president_departmental_assembly', $memberUuid),
             [],
             [],
             ['HTTP_AUTHORIZATION' => "Bearer $accessToken"],

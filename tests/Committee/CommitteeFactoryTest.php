@@ -8,7 +8,6 @@ use App\Committee\DTO\CommitteeCreationCommand;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Geo\ZoneMatcher;
-use App\Referent\ReferentTagManager;
 use libphonenumber\PhoneNumber;
 use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
@@ -46,15 +45,9 @@ class CommitteeFactoryTest extends AbstractKernelTestCase
         $command->facebookPageUrl = $facebook;
         $command->twitterNickname = $twitter;
 
-        $referentTagManager = $this->createMock(ReferentTagManager::class);
-        $referentTagManager
-            ->expects(self::never())
-            ->method('assignReferentLocalTags')
-        ;
-
         $zoneMatcher = $this->createMock(ZoneMatcher::class);
 
-        $committeeFactory = new CommitteeFactory($referentTagManager, $zoneMatcher);
+        $committeeFactory = new CommitteeFactory($zoneMatcher);
         $committee = $committeeFactory->createFromCommitteeCreationCommand($command);
 
         $this->assertInstanceOf(Committee::class, $committee);

@@ -286,21 +286,6 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::ELECTIONS
         );
         yield $this->createRole(
-            'ROLE_ADMIN_TERRITOIRES_REFERENTS',
-            'Administrateur des référents',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_TERRITOIRES_REFERENT_AREAS',
-            'Administrateur des zones de référents',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_TERRITOIRES_ORGANIZATIONAL_CHART_ITEMS',
-            'Administrateur des équipes départementales',
-            AdministratorRoleGroupEnum::TERRITOIRES
-        );
-        yield $this->createRole(
             'ROLE_ADMIN_TERRITOIRES_VOTE_PLACES',
             'Administrateur des bureaux de votes (assesseurs)',
             AdministratorRoleGroupEnum::ELECTIONS
@@ -561,11 +546,6 @@ class LoadAdministratorRoleData extends Fixture
         yield $this->createRole(
             'ROLE_ADMIN_ARCHIVES_BOARD_MEMBER_ROLES',
             'Administrateur des rôles de membres du conseil',
-            AdministratorRoleGroupEnum::ARCHIVES
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_ARCHIVES_REFERENT_TAGS',
-            'Administrateur des tags référent',
             AdministratorRoleGroupEnum::ARCHIVES
         );
         yield $this->createRole(

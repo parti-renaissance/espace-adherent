@@ -568,30 +568,6 @@
     </tr>
 {% endblock %}
 
-{% block app_admin_voting_platform_designation_referentTags_entity_widget %}
-    {{ form_widget(form) }}
-
-    <div>
-        <script type="text/javascript">
-            function toggleCheckRefTags(checked) {
-                var options = $('#{{ form.vars.id }} > option');
-
-                if (checked) {
-                    options.prop('selected', 'selected');
-                } else {
-                    options.removeAttr('selected');
-                }
-
-                return false;
-            }
-        </script>
-
-        <button onClick="return toggleCheckRefTags(true);" class="btn btn-xs btn-primary">Tout sélectionner <span class="glyphicon glyphicon-ok-circle"></span></button>
-
-        <button onClick="return toggleCheckRefTags(false);" class="btn btn-xs btn-primary">Tout désélectionner <span class="glyphicon glyphicon-remove-circle"></span></button>
-    </div>
-{% endblock %}
-
 {% block app_admin_adherent_contributionStatus_text_widget %}
     {% set adherent = form.parent.vars.value %}
 

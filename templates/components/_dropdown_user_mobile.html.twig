@@ -43,45 +43,6 @@
         </div>
 
         {% if has_role_adherent %}
-            {% if is_granted('ROLE_SUPERVISOR') or
-                is_granted('ROLE_HOST') or
-                is_granted('ROLE_REFERENT') or
-                is_granted('ROLE_COREFERENT') or
-                is_granted('ROLE_DEPUTY') or
-                is_granted('ROLE_SENATOR') or
-                is_granted('ROLE_BOARD_MEMBER') or
-                is_granted('ROLE_REGIONAL_COORDINATOR') or
-                is_granted('ROLE_PROCURATION_MANAGER') or
-                is_granted('ROLE_LEGISLATIVE_CANDIDATE') or
-                is_granted('ROLE_JECOUTE_MANAGER') or
-                is_granted('ROLE_ELECTION_RESULTS_REPORTER')
-            %}
-                {% set totalSections =
-                    (app.user.isSupervisor or app.user.isHost) +
-                    (app.user.isReferent or app.user.isCoReferent) +
-                    app.user.isDeputy +
-                    app.user.isSenator +
-                    app.user.isRegionalCoordinator +
-                    app.user.isProcurationsManager +
-                    app.user.isJecouteManager +
-                    app.user.isElectionResultsReporter
-                %}
-                <div class="em-nav__menu em-nav__menu--mobile">
-                    <div class="b__nudge--bottom">
-                        {% if totalSections > 1 %}
-                            <span class="head">Vos espaces</span>
-                        {% endif %}
-                        <ul class="items">
-                            {% if app.user.isReferent or app.user.isDeputy or app.user.isSenator %}
-                                <li>
-                                    <a href="{{ jemengage_host }}" target="_blank">Espace cadre</a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </div>
-            {% endif %}
-
             <div class="em-nav__menu em-nav__menu--mobile">
                 <div class="b__nudge--bottom">
                     <span class="head">Informations</span>
@@ -125,7 +86,6 @@
                     <li><a href="{{ path('page_le_mouvement') }}">Qui sommes-nous ?</a></li>
                     <li><a href="{{ path('app_static_page', { slug: 'rejoignez-notre-equipe' }) }}">Recrutement</a></li>
                     <li><a href="{{ path('app_static_page', { slug: 'le-mouvement/fonctionnement' }) }}">Notre fonctionnement</a></li>
-                    <li><a href="{{ path('our_referents_homepage') }}">Nos référents</a></li>
                     <li><a href="https://dpt.en-marche.fr">Nos sites départementaux</a></li>
                     <li><a href="{{ path('app_static_page', { slug: 'delegation-renaissance' }) }}">Les eurodéputés Renaissance</a></li>
                     <li><a href="{{ path('app_static_page', { slug: 'nos-senateurs' }) }}">Nos sénateurs</a></li>

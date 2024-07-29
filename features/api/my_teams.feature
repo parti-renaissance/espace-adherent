@@ -24,10 +24,10 @@ Feature:
 
     Examples:
       | method | url                                                                          |
-      | GET    | /api/v3/my_teams?scope=referent                                              |
-      | POST   | /api/v3/my_teams?scope=referent                                              |
-      | GET    | /api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent  |
-      | DELETE | /api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent  |
+      | GET    | /api/v3/my_teams?scope=president_departmental_assembly                                              |
+      | POST   | /api/v3/my_teams?scope=president_departmental_assembly                                              |
+      | GET    | /api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=president_departmental_assembly  |
+      | DELETE | /api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=president_departmental_assembly  |
 
   Scenario: As a referent I cannot create my team if no scope
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
@@ -41,7 +41,7 @@ Feature:
 
   Scenario: As a referent I can create my team
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/my_teams?scope=referent"
+    When I send a "POST" request to "/api/v3/my_teams?scope=president_departmental_assembly"
     Then the response status code should be 201
     And the JSON should be equal to:
     """
@@ -52,7 +52,7 @@ Feature:
 
   Scenario: As a referent I will get my team when I want to create it, but it already exists
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/my_teams?scope=referent"
+    When I send a "POST" request to "/api/v3/my_teams?scope=president_departmental_assembly"
     Then the response status code should be 201
     And the JSON should be equal to:
     """
@@ -63,7 +63,7 @@ Feature:
 
   Scenario: As a referent I cannot add a new member in my team with invalid data
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/my_team_members?scope=president_departmental_assembly" with body:
     """
     {
         "team": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26",
@@ -131,7 +131,7 @@ Feature:
 
   Scenario: As a referent I cannot add a new member in my team, if the user is already in my team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/my_team_members?scope=president_departmental_assembly" with body:
     """
     {
         "team": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26",
@@ -162,7 +162,7 @@ Feature:
 
   Scenario: As a referent I cannot add a new member in my team, if the user is not in my managed zone
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/my_team_members?scope=president_departmental_assembly" with body:
     """
     {
         "team": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26",
@@ -193,7 +193,7 @@ Feature:
 
   Scenario: As a referent I can add a new member in my team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "POST" request to "/api/v3/my_team_members?scope=referent" with body:
+    When I send a "POST" request to "/api/v3/my_team_members?scope=president_departmental_assembly" with body:
     """
     {
         "team": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26",
@@ -228,7 +228,7 @@ Feature:
 
   Scenario: As a referent I can edit a member in my team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "PUT" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent" with body:
+    When I send a "PUT" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=president_departmental_assembly" with body:
     """
     {
         "adherent": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
@@ -260,7 +260,7 @@ Feature:
 
   Scenario: As a referent I can get a member of my team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent"
+    When I send a "GET" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=president_departmental_assembly"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -285,17 +285,17 @@ Feature:
 
   Scenario: As a referent I can delete a member of my team
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "DELETE" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent"
+    When I send a "DELETE" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=president_departmental_assembly"
     Then the response status code should be 204
 
   Scenario: As a referent I cannot delete a member of not my team
     Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "DELETE" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=referent"
+    When I send a "DELETE" request to "/api/v3/my_team_members/d11d6ddd-dfba-4972-97b2-4c0bdf289559?scope=president_departmental_assembly"
     Then the response status code should be 403
 
   Scenario: As a referent I can get my team with members
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/my_teams?scope=referent"
+    When I send a "GET" request to "/api/v3/my_teams?scope=president_departmental_assembly"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
@@ -309,7 +309,7 @@ Feature:
         },
         "items": [
             {
-                "scope": "referent",
+                "scope": "president_departmental_assembly",
                 "members": [
                     {
                         "adherent": {
@@ -385,20 +385,92 @@ Feature:
     """
 
   Scenario: As a referent I get an empty list of my team members, if I doesn't have my team
-    Given I am logged with "referent-child@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-    When I send a "GET" request to "/api/v3/my_teams?scope=referent"
+    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+    When I send a "GET" request to "/api/v3/my_teams?scope=president_departmental_assembly"
     Then the response status code should be 200
     And the JSON should be equal to:
     """
     {
         "metadata": {
-            "total_items": 0,
+            "total_items": 1,
             "items_per_page": 2,
-            "count": 0,
+            "count": 1,
             "current_page": 1,
             "last_page": 1
         },
         "items": [
+            {
+                "scope": "president_departmental_assembly",
+                "members": [
+                    {
+                        "adherent": {
+                            "uuid": "@uuid@",
+                            "first_name": "Jacques",
+                            "last_name": "Picard",
+                            "email_address": "jacques.picard@en-marche.fr"
+                        },
+                        "role": "mobilization_manager",
+                        "scope_features": [
+                            "contacts",
+                            "events"
+                        ],
+                        "uuid": "@uuid@"
+                    },
+                    {
+                        "adherent": {
+                            "uuid": "@uuid@",
+                            "first_name": "Gisele",
+                            "last_name": "Berthoux",
+                            "email_address": "gisele-berthoux@caramail.com"
+                        },
+                        "role": "communication_manager",
+                        "scope_features": [
+                            "contacts",
+                            "messages",
+                            "events"
+                        ],
+                        "uuid": "@uuid@"
+                    },
+                    {
+                        "adherent": {
+                            "uuid": "@uuid@",
+                            "first_name": "Bob",
+                            "last_name": "Senateur (59)",
+                            "email_address": "senateur@en-marche-dev.fr"
+                        },
+                        "role": "mobilization_manager",
+                        "scope_features": [
+                            "dashboard",
+                            "contacts",
+                            "contacts_export",
+                            "messages",
+                            "events",
+                            "my_team",
+                            "mobile_app",
+                            "news",
+                            "elections",
+                            "ripostes",
+                            "pap",
+                            "pap_v2",
+                            "team",
+                            "phoning_campaign",
+                            "survey",
+                            "department_site",
+                            "elected_representative",
+                            "adherent_formations",
+                            "committee",
+                            "general_meeting_reports",
+                            "documents",
+                            "designation",
+                            "statutory_message",
+                            "procurations",
+                            "actions"
+                        ],
+                        "uuid": "@uuid@"
+                    }
+                ],
+                "uuid": "7fab9d6c-71a1-4257-b42b-c6b9b2350a26"
+            }
         ]
     }
     """

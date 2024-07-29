@@ -160,14 +160,14 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
         $oldLatitude = $adherent->getLatitude();
         $oldLongitude = $adherent->getLongitude();
-        $histories06Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '06');
-        $histories06Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '06');
-        $histories77Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '77');
-        $histories77Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '77');
+        $histories06Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe');
+        $histories06Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe');
+        $histories77Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe');
+        $histories77Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe');
 
         $this->assertCount(6, $histories77Subscriptions);
         $this->assertCount(0, $histories77Unsubscriptions);
-        $this->assertCount(0, $histories06Subscriptions);
+        $this->assertCount(6, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
@@ -297,13 +297,13 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertNotSame($oldLatitude, $newLatitude);
         $this->assertNotSame($oldLongitude, $newLongitude);
 
-        $histories06Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '06');
-        $histories06Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '06');
-        $histories77Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '77');
-        $histories77Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '77');
+        $histories06Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe');
+        $histories06Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe');
+        $histories77Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe');
+        $histories77Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe');
 
         $this->assertCount(6, $histories77Subscriptions);
-        $this->assertCount(6, $histories77Unsubscriptions);
+        $this->assertCount(0, $histories77Unsubscriptions);
         $this->assertCount(6, $histories06Subscriptions);
         $this->assertCount(0, $histories06Unsubscriptions);
     }
@@ -425,7 +425,6 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
     public function findEmailSubscriptionHistoryByAdherent(
         Adherent $adherent,
         ?string $action = null,
-        ?string $referentTagCode = null
     ): array {
         $qb = $this
             ->getEmailSubscriptionHistoryRepository()
@@ -439,14 +438,6 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
             $qb
                 ->andWhere('history.action = :action')
                 ->setParameter('action', $action)
-            ;
-        }
-
-        if ($referentTagCode) {
-            $qb
-                ->leftJoin('history.referentTags', 'tag')
-                ->andWhere('tag.code = :code')
-                ->setParameter('code', $referentTagCode)
             ;
         }
 
@@ -703,7 +694,6 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
     ): void {
         /** @var Adherent $adherent */
         $adherentBeforeUnregistration = $this->getAdherentRepository()->findOneByEmail($userEmail);
-        $referentTagsBeforeUnregistration = $adherentBeforeUnregistration->getReferentTags()->toArray(); // It triggers the real SQL query instead of lazy-load
 
         $this->authenticateAsAdherent($this->client, $userEmail);
 
@@ -781,7 +771,6 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertSame((new \DateTime())->format('Y-m-d'), $unregistration->getUnregisteredAt()->format('Y-m-d'));
         $this->assertSame($adherentBeforeUnregistration->getUuid()->toString(), $unregistration->getUuid()->toString());
         $this->assertSame($adherentBeforeUnregistration->getPostalCode(), $unregistration->getPostalCode());
-        $this->assertEquals($referentTagsBeforeUnregistration, $unregistration->getReferentTags()->toArray());
     }
 
     public static function provideAdherentCredentials(): array

@@ -35,11 +35,9 @@
                 {{ form_rest(form) }}
             {{ form_end(form) }}
 
-            {% if not app.user.isReferent %}
-                <div class="committee__warning b__nudge--top-40">
-                    Vous pouvez démissionner à tout moment sur demande à l'adresse <a class="link--newblue" href="mailto:territoires@en-marche.fr">territoires@en-marche.fr</a>.
-                </div>
-            {% endif %}
+            <div class="committee__warning b__nudge--top-40">
+                Vous pouvez démissionner à tout moment sur demande à l'adresse <a class="link--newblue" href="mailto:territoires@en-marche.fr">territoires@en-marche.fr</a>.
+            </div>
         </section>
     </main>
 {% endblock %}

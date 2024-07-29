@@ -5,13 +5,11 @@ namespace App\AdherentProfile;
 use App\Address\PostAddressFactory;
 use App\Entity\Adherent;
 use App\Entity\SubscriptionType;
-use App\History\EmailSubscriptionHistoryHandler;
 use App\Membership\AdherentChangeEmailHandler;
 use App\Membership\AdherentEvents;
 use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
-use App\Referent\ReferentTagManager;
 use App\Referent\ReferentZoneManager;
 use App\Repository\SubscriptionTypeRepository;
 use App\Subscription\SubscriptionHandler;
@@ -25,9 +23,7 @@ class AdherentProfileHandler
         private readonly EntityManagerInterface $manager,
         private readonly PostAddressFactory $addressFactory,
         private readonly AdherentChangeEmailHandler $emailHandler,
-        private readonly ReferentTagManager $referentTagManager,
         private readonly ReferentZoneManager $referentZoneManager,
-        private readonly EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler,
         private readonly SubscriptionTypeRepository $subscriptionTypeRepository,
         private readonly SubscriptionHandler $subscriptionHandler,
     ) {
@@ -55,12 +51,6 @@ class AdherentProfileHandler
 
     public function updateReferentTagsAndSubscriptionHistoryIfNeeded(Adherent $adherent): void
     {
-        if ($this->referentTagManager->isUpdateNeeded($adherent)) {
-            $oldReferentTags = $adherent->getReferentTags()->toArray();
-            $this->referentTagManager->assignReferentLocalTags($adherent);
-            $this->emailSubscriptionHistoryHandler->handleReferentTagsUpdate($adherent, $oldReferentTags);
-        }
-
         if ($this->referentZoneManager->isUpdateNeeded($adherent)) {
             $this->referentZoneManager->assignZone($adherent);
         }

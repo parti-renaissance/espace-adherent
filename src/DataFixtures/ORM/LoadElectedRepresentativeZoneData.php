@@ -100,11 +100,6 @@ class LoadElectedRepresentativeZoneData extends Fixture implements DependentFixt
     {
         foreach (self::CITIES as $code => $name) {
             $zoneCity = new Zone($this->getReference('zone-category-ville'), $name);
-            $zoneCity->addReferentTag($this->getReference('referent_tag_'.substr($code, 0, 2)));
-            if ('75007' == $code) {
-                $zoneCity->addReferentTag($this->getReference('referent_tag_'.$code));
-            }
-
             $manager->persist($zoneCity);
             $this->setReference("zone-city-$code", $zoneCity);
         }
@@ -112,7 +107,6 @@ class LoadElectedRepresentativeZoneData extends Fixture implements DependentFixt
         foreach (self::EPCI as $codeDpt => $arrEpci) {
             foreach ($arrEpci as $key => $epci) {
                 $zoneEPCI = new Zone($this->getReference('zone-category-epci'), $epci);
-                $zoneEPCI->addReferentTag($this->getReference("referent_tag_$codeDpt"));
 
                 $manager->persist($zoneEPCI);
                 ++$key;
@@ -122,7 +116,6 @@ class LoadElectedRepresentativeZoneData extends Fixture implements DependentFixt
 
         foreach (self::DEPARTMENTS as $code => $name) {
             $zoneDpt = new Zone($this->getReference('zone-category-département'), $name);
-            $zoneDpt->addReferentTag($this->getReference('referent_tag_'.mb_strtolower($code)));
 
             $manager->persist($zoneDpt);
             $this->setReference("zone-dpt-$code", $zoneDpt);
@@ -131,7 +124,6 @@ class LoadElectedRepresentativeZoneData extends Fixture implements DependentFixt
         foreach (self::REGIONS as $code => $name) {
             $zoneRegion = new Zone($this->getReference('zone-category-région'), $name);
             $code = str_pad($code, 2, '0', \STR_PAD_LEFT);
-            $zoneRegion->addReferentTag($this->getReference("referent_tag_$code"));
 
             $manager->persist($zoneRegion);
             $this->setReference("zone-region-$code", $zoneRegion);
@@ -140,19 +132,16 @@ class LoadElectedRepresentativeZoneData extends Fixture implements DependentFixt
         foreach (self::DISTRICTS as $code => $name) {
             $zoneRegion = new Zone($this->getReference('zone-category-circonscription'), $name);
             $code = str_pad($code, 2, '0', \STR_PAD_LEFT);
-            $zoneRegion->addReferentTag($this->getReference("referent_tag_circo_$code"));
 
             $manager->persist($zoneRegion);
             $this->setReference("zone-district-$code", $zoneRegion);
         }
 
         $zoneCorsica = new Zone($this->getReference('zone-category-corse'), 'Corse');
-        $zoneCorsica->addReferentTag($this->getReference('referent_tag_20'));
         $manager->persist($zoneCorsica);
         $this->setReference('zone-corsica', $zoneCorsica);
 
         $zoneFOF = new Zone($this->getReference('zone-category-fde'), 'Français de l\'Étranger');
-        $zoneFOF->addReferentTag($this->getReference('referent_tag_fof'));
         $manager->persist($zoneFOF);
         $this->setReference('zone-fof', $zoneFOF);
 
@@ -163,8 +152,6 @@ class LoadElectedRepresentativeZoneData extends Fixture implements DependentFixt
     {
         return [
             LoadElectedRepresentativeZoneCategoryData::class,
-            LoadReferentTagData::class,
-            LoadDistrictData::class,
         ];
     }
 }

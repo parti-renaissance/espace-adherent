@@ -15,7 +15,6 @@ use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
-use App\Entity\ReferentTag;
 use App\Entity\VotingPlatform\Designation\CandidacyPool\CandidacyPool;
 use App\Entity\VotingPlatform\Designation\Poll\Poll;
 use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
@@ -132,12 +131,6 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      */
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private $globalZones;
-
-    /**
-     * @var ReferentTag[]|Collection
-     */
-    #[ORM\ManyToMany(targetEntity: ReferentTag::class)]
-    private $referentTags;
 
     /**
      * @var \DateTime|null
@@ -285,7 +278,6 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         $this->label = $label;
         $this->uuid = $uuid ?? Uuid::uuid4();
 
-        $this->referentTags = new ArrayCollection();
         $this->zones = new ZoneCollection();
         $this->candidacyPools = new ArrayCollection();
     }
@@ -326,35 +318,6 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     public function setGlobalZones(?array $globalZones): void
     {
         $this->globalZones = $globalZones;
-    }
-
-    /**
-     * @return ReferentTag[]
-     */
-    public function getReferentTags(): array
-    {
-        return $this->referentTags->toArray();
-    }
-
-    public function addReferentTag(ReferentTag $tag): void
-    {
-        if (!$this->referentTags->contains($tag)) {
-            $this->referentTags->add($tag);
-        }
-    }
-
-    public function removeReferentTag(ReferentTag $tag): void
-    {
-        $this->referentTags->removeElement($tag);
-    }
-
-    public function setReferentTags(array $referentTags): void
-    {
-        $this->referentTags->clear();
-
-        foreach ($referentTags as $tag) {
-            $this->addReferentTag($tag);
-        }
     }
 
     public function getCandidacyStartDate(): ?\DateTime
@@ -553,7 +516,6 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
         return
             ($this->isCommitteeTypes() && !empty($this->globalZones))
-            || ($this->isCopolType() && !$this->referentTags->isEmpty())
             || ($this->isLocalElectionType() && !$this->zones->isEmpty());
     }
 
@@ -609,7 +571,6 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     {
         $this->id = null;
         $this->uuid = Uuid::uuid4();
-        $this->referentTags = new ArrayCollection();
     }
 
     public function getPoolTypes(): array

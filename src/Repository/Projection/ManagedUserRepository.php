@@ -14,7 +14,6 @@ use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Repository\GeoZoneTrait;
 use App\Repository\Helper\MembershipFilterHelper;
 use App\Repository\PaginatorTrait;
-use App\Repository\ReferentTrait;
 use App\Subscription\SubscriptionTypeEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
@@ -25,7 +24,6 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class ManagedUserRepository extends ServiceEntityRepository
 {
-    use ReferentTrait;
     use PaginatorTrait;
     use GeoZoneTrait;
 

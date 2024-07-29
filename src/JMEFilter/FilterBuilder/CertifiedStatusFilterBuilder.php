@@ -11,7 +11,7 @@ class CertifiedStatusFilterBuilder implements FilterBuilderInterface
 {
     public function supports(string $scope, ?string $feature = null): bool
     {
-        return \in_array($scope, [ScopeEnum::REFERENT, ScopeEnum::NATIONAL], true)
+        return ScopeEnum::NATIONAL === $scope
             && \in_array($feature, [FeatureEnum::MESSAGES, FeatureEnum::CONTACTS], true);
     }
 

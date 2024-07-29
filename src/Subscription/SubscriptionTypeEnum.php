@@ -53,7 +53,6 @@ final class SubscriptionTypeEnum extends Enum
     ];
 
     public const SUBSCRIPTION_TYPES_BY_SCOPES = [
-        ScopeEnum::REFERENT => self::REFERENT_EMAIL,
         ScopeEnum::REGIONAL_COORDINATOR => self::REFERENT_EMAIL,
         ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY => self::REFERENT_EMAIL,
         ScopeEnum::CORRESPONDENT => self::REFERENT_EMAIL,

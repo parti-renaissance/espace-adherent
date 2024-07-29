@@ -2,7 +2,6 @@
 
 namespace App\Entity\AdherentMessage\Filter;
 
-use App\Entity\ReferentTag;
 use App\Entity\UserListDefinition;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -53,20 +52,6 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
      */
     #[ORM\ManyToOne(targetEntity: UserListDefinition::class)]
     private $userListDefinition;
-
-    /**
-     * @var ReferentTag|null
-     */
-    #[Assert\NotNull]
-    #[ORM\ManyToOne(targetEntity: ReferentTag::class)]
-    private $referentTag;
-
-    public function __construct(?ReferentTag $referentTag = null)
-    {
-        parent::__construct();
-
-        $this->referentTag = $referentTag;
-    }
 
     public function getGender(): ?string
     {
@@ -136,15 +121,5 @@ abstract class AbstractElectedRepresentativeFilter extends AbstractAdherentMessa
     public function setUserListDefinition(?UserListDefinition $userListDefinition): void
     {
         $this->userListDefinition = $userListDefinition;
-    }
-
-    public function getReferentTag(): ?ReferentTag
-    {
-        return $this->referentTag;
-    }
-
-    public function setReferentTag(?ReferentTag $referentTag = null): void
-    {
-        $this->referentTag = $referentTag;
     }
 }

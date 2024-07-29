@@ -23,12 +23,11 @@ class CreateCommitteeVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        return $adherent->isReferent() || (
+        return
             !$adherent->isMinor()
             && $adherent->isCertified()
             && !$adherent->isSupervisor()
             && !$adherent->isProvisionalSupervisor()
-            && !$this->electedRepresentativeRepository->hasActiveParliamentaryMandate($adherent)
-        );
+            && !$this->electedRepresentativeRepository->hasActiveParliamentaryMandate($adherent);
     }
 }

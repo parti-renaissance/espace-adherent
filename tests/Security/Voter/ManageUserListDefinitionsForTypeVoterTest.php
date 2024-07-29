@@ -61,31 +61,11 @@ class ManageUserListDefinitionsForTypeVoterTest extends AbstractAdherentVoterTes
         );
     }
 
-    public function testAdherentIsNotGrantedIfNotReferentAndElectedRepresentativeType()
-    {
-        $adherent = $this->getAdherentMock(false);
-
-        $this->assertGrantedForAdherent(
-            false,
-            true,
-            $adherent,
-            UserListDefinitionPermissions::ABLE_TO_MANAGE_TYPE,
-            UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE
-        );
-    }
-
     /**
      * @return Adherent|MockObject
      */
-    private function getAdherentMock(bool $isReferent = true): Adherent
+    private function getAdherentMock(): Adherent
     {
-        $adherent = $this->createAdherentMock();
-
-        $adherent->expects($this->any())
-            ->method('isReferent')
-            ->willReturn($isReferent)
-        ;
-
-        return $adherent;
+        return $this->createAdherentMock();
     }
 }

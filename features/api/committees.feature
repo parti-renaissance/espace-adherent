@@ -12,7 +12,7 @@ Feature:
 
     Scenario: As referent I cannot get committees outside my zone
         Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        When I send a "GET" request to "/api/v3/committees?scope=referent"
+        When I send a "GET" request to "/api/v3/committees?scope=president_departmental_assembly"
         Then the JSON nodes should be equal to:
             | metadata.count | 0 |
 
@@ -109,7 +109,7 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I can update a committee
@@ -281,12 +281,12 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario: As a user granted with local scope, I can get geo zone available for a new committee
         Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        And I send a "GET" request to "/api/v3/zone/autocomplete?scope=referent&q=Hauts&availableForCommittee=true"
+        And I send a "GET" request to "/api/v3/zone/autocomplete?scope=president_departmental_assembly&q=Hauts&availableForCommittee=true"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:
@@ -356,7 +356,7 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: I cannot create a committee with invalid zone type
@@ -391,7 +391,7 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I can get geo zone available for a new committee
@@ -431,7 +431,7 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I can get a committee election
@@ -484,7 +484,7 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I cannot create a candidacies group on a past or started committee election
@@ -501,7 +501,7 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I can create a candidacies group on committee election
@@ -527,7 +527,7 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a grand user with local scope, I cannot delete a non empty list
@@ -537,7 +537,7 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a grand user with local scope, I can delete an empty list
@@ -547,7 +547,7 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I can get a candidate information
@@ -576,7 +576,7 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I can add a candidate to a group
@@ -611,7 +611,7 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I can delete a candidate
@@ -621,7 +621,7 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I cannot add a candidate to a past or ongoing committee election
@@ -639,7 +639,7 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a grand user with local scope, I cannot delete a candidate on a past or ongoing committee election
@@ -649,7 +649,7 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a grand user with local scope, I cannot create a candidate whose adherent account is not in my managed area
@@ -667,7 +667,7 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a grand user with local scope, I can delete a committee
@@ -678,5 +678,5 @@ Feature:
         Examples:
             | user                            | scope                                          |
             | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | referent                                       |
+            | referent@en-marche-dev.fr       | president_departmental_assembly                                       |
             | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |

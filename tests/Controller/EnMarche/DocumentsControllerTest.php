@@ -62,27 +62,6 @@ class DocumentsControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertCount(0, $crawler->filter('ul.documents__tree li a:contains("document-referent-b.pdf")'));
     }
 
-    public function testDocumentsIndexAsReferent()
-    {
-        $this->authenticateAsAdherent($this->client, 'referent@en-marche-dev.fr');
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->assertCount(1, $crawler->filter('h1:contains("Documents")'));
-        $this->assertCount(1, $crawler->filter('h2:contains("Adhérents")'));
-        $this->assertCount(1, $crawler->filter('h2:contains("Animateurs")'));
-        $this->assertCount(1, $crawler->filter('h2:contains("Référents")'));
-        $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("dir1")'));
-        $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("dir2")'));
-        $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("document-adherent-c.pdf")'));
-        $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("dir3")'));
-        $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("document-host-b.pdf")'));
-        $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("dir4")'));
-        $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("document-referent-a.pdf")'));
-        $this->assertCount(1, $crawler->filter('ul.documents__tree li a:contains("document-referent-b.pdf")'));
-    }
-
     public function testDocumentsDirectory()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');

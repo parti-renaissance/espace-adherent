@@ -26,7 +26,6 @@ class LoadRepublicanSilenceData extends Fixture implements DependentFixtureInter
     public function getDependencies()
     {
         return [
-            LoadReferentTagData::class,
             LoadGeoZoneData::class,
         ];
     }

@@ -13,7 +13,6 @@
                     <li><a href="{{ path('page_le_mouvement') }}">Qui sommes-nous ?</a></li>
                     <li><a href="{{ path('app_static_page', { slug: 'rejoignez-notre-equipe' }) }}">Recrutement</a></li>
                     <li><a href="{{ path('app_static_page', { slug: 'le-mouvement/fonctionnement' }) }}">Notre fonctionnement</a></li>
-                    <li><a href="{{ path('our_referents_homepage') }}">Nos référents</a></li>
                     <li><a href="https://dpt.en-marche.fr" rel="noopener noreferrer" target="_blank">Nos sites départementaux</a></li>
                     <li><a href="{{ path('app_static_page', { slug: 'delegation-renaissance' }) }}">Les eurodéputés Renaissance</a></li>
                     <li><a href="{{ path('app_static_page', { slug: 'nos-senateurs' }) }}">Nos sénateurs</a></li>
@@ -107,8 +106,6 @@
 
 {% if is_granted('ROLE_SUPERVISOR') or
     is_granted('ROLE_HOST') or
-    is_granted('ROLE_REFERENT') or
-    is_granted('ROLE_COREFERENT') or
     is_granted('ROLE_DEPUTY') or
     is_granted('ROLE_SENATOR') or
     is_granted('ROLE_BOARD_MEMBER') or
@@ -119,7 +116,6 @@
     is_granted('ROLE_ELECTION_RESULTS_REPORTER') or
     is_granted('ROLE_SENATORIAL_CANDIDATE') or
     is_granted('ROLE_CANDIDATE') or
-    is_granted('ROLE_DELEGATED_REFERENT') or
     is_granted('ROLE_DELEGATED_DEPUTY') or
     is_granted('ROLE_DELEGATED_SENATOR') or
     is_granted('ROLE_DELEGATED_CANDIDATE') or
@@ -128,11 +124,6 @@
     <div class="background--darker l__hide--on-tablet">
         <div class="l__row font-roboto l__wrapper ">
             <ul class="space--10-0 list__links list__links--row list__links--row-left list__links--no-decor list__links--subnav nav-dropdown__menu__items">
-                {% if app.user.isReferent or app.user.isDeputy or app.user.isSenator %}
-                    <li>
-                        <a href="{{ jemengage_host }}" target="_blank">Espace cadre</a>
-                    </li>
-                {% endif %}
                 {% if is_granted('ROLE_FORMATION_SPACE') %}
                     <li>
                         <a href="{{ path('app_formation_home') }}">Je me forme</a>

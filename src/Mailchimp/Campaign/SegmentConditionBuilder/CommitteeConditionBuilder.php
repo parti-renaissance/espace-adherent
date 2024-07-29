@@ -3,7 +3,6 @@
 namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
-use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
@@ -18,12 +17,11 @@ class CommitteeConditionBuilder extends AbstractStaticSegmentConditionBuilder
     {
         return $filter instanceof CommitteeFilter
             || ($filter instanceof ReferentUserFilter && $filter->getCommittee())
-            || ($filter instanceof AdherentZoneFilter && $filter->getCommittee())
             || ($filter instanceof MessageFilter && $filter->getCommittee());
     }
 
     /**
-     * @param CommitteeFilter|ReferentUserFilter|AdherentZoneFilter $filter
+     * @param CommitteeFilter|ReferentUserFilter $filter
      */
     protected function getSegmentId(AdherentMessageFilterInterface $filter, MailchimpCampaign $campaign): int
     {

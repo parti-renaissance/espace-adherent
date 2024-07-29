@@ -108,8 +108,6 @@ services:
             tags: ['app.recaptcha_api_client']
         App\RepublicanSilence\ZoneExtractor\ZoneExtractorInterface:
             tags: [ 'app.republican_silence.zone_extractor' ]
-        App\Statistics\Acquisition\Calculator\CalculatorInterface:
-            tags: ['app.acquisition_statistics.calculator']
         App\Adherent\Tag\TagGenerator\TagGeneratorInterface:
             tags: ['app.adherent.tag.generator']
         App\JeMengage\Timeline\FeedProcessor\FeedProcessorInterface:

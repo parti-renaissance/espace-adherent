@@ -13,8 +13,6 @@ class RevokeDelegatedAccessListener implements EventSubscriberInterface
     private DelegatedAccessRepository $delegatedAccessRepository;
 
     private bool $isDeputy = false;
-    private bool $isSenator = false;
-    private bool $isReferent = false;
 
     public function __construct(DelegatedAccessRepository $delegatedAccessRepository)
     {
@@ -26,8 +24,6 @@ class RevokeDelegatedAccessListener implements EventSubscriberInterface
         $adherent = $event->getUser();
 
         $this->isDeputy = $adherent->isDeputy();
-        $this->isSenator = $adherent->isSenator();
-        $this->isReferent = $adherent->isReferent();
     }
 
     public function onAfterUpdate(UserEvent $event)
@@ -36,14 +32,6 @@ class RevokeDelegatedAccessListener implements EventSubscriberInterface
 
         if ($this->isDeputy && !$adherent->isDeputy()) {
             $this->delegatedAccessRepository->removeFromDelegator($adherent, AdherentSpaceEnum::DEPUTY);
-        }
-
-        if ($this->isSenator && !$adherent->isSenator()) {
-            $this->delegatedAccessRepository->removeFromDelegator($adherent, AdherentSpaceEnum::SENATOR);
-        }
-
-        if ($this->isReferent && !$adherent->isReferent()) {
-            $this->delegatedAccessRepository->removeFromDelegator($adherent, AdherentSpaceEnum::REFERENT);
         }
     }
 

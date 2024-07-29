@@ -239,25 +239,6 @@ Feature:
     When I send a "GET" request to "/api/v3/audiences?scope=deputy"
     Then the response status code should be 403
 
-  Scenario: As a logged-in referent I can get referent audiences
-    Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
-    When I send a "GET" request to "/api/v3/audiences?scope=referent"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    [
-      {
-        "name": "Audience REFERENT avec les paramètres nécessaires",
-        "uuid": "4fe24658-000c-4223-87be-d09129c1e191"
-      },
-      {
-        "name": "Audience REFERENT avec quelques paramètres",
-        "uuid": "4562e1ca-09ee-4500-96b6-a73431e40bf1"
-      }
-    ]
-    """
-
   Scenario: As a logged-in deputy I can get deputy audiences
     Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
     When I send a "GET" request to "/api/v3/audiences?scope=deputy"

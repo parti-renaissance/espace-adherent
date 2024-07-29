@@ -4,11 +4,9 @@ namespace App\Mailchimp\Campaign\SegmentConditionBuilder;
 
 use App\Entity\AdherentMessage\Filter\AbstractElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\AdherentGeoZoneFilter;
-use App\Entity\AdherentMessage\Filter\AdherentZoneFilter;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\CommitteeFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
-use App\Entity\AdherentMessage\Filter\ReferentElectedRepresentativeFilter;
 use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -19,7 +17,6 @@ class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
     public function support(SegmentFilterInterface $filter): bool
     {
         return $filter instanceof ReferentUserFilter
-            || $filter instanceof AdherentZoneFilter
             || $filter instanceof MessageFilter
             || $filter instanceof AdherentGeoZoneFilter
             || $filter instanceof CommitteeFilter
@@ -37,7 +34,7 @@ class ContactNameConditionBuilder implements SegmentConditionBuilderInterface
     }
 
     /**
-     * @param ReferentUserFilter|AdherentZoneFilter|AdherentGeoZoneFilter|ReferentElectedRepresentativeFilter|AudienceFilter $filter
+     * @param ReferentUserFilter|AdherentGeoZoneFilter|AudienceFilter $filter
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
