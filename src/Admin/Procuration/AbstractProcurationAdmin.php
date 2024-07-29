@@ -30,7 +30,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractProcurationAdmin extends AbstractAdmin
 {
@@ -342,10 +342,8 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
         ;
     }
 
-    protected static function getExportCommonFields(
-        AbstractProcuration $procuration,
-        TranslatorInterface $translator
-    ): array {
+    protected static function getExportCommonFields(AbstractProcuration $procuration, TranslatorInterface $translator): array
+    {
         $adherent = $procuration->adherent;
 
         return [
