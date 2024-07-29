@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block vote_step_pool_title %}
-    {{ cms_block(pool.code)|markdown }}
+    {{ cms_block(pool.code)|markdown_to_html }}
 {% endblock %}
 
 {% block election_sub_title %}

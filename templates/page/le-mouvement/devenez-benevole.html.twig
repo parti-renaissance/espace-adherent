@@ -6,5 +6,5 @@
 {% block meta_twitter_description page.twitterDescription ?: page.description %}
 
 {% block mouvement_content %}
-    {{ page.content|markdown }}
+    {{ page.content|markdown_to_html }}
 {% endblock %}

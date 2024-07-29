@@ -20,7 +20,7 @@
 
     <section class="espace-formation__article">
         <article class="l__wrapper--slim">
-            {{ module.content|markdown }}
+            {{ module.content|markdown_to_html }}
 
             {% if module.files|length > 0 %}
                 <h2>Contenus du module</h2>

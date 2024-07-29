@@ -8,5 +8,5 @@
     {{ procuration_request.rounds.first.election.requestConfirmation|replace({
         '{{ email }}': procuration_request.email,
         '{{email}}': procuration_request.email,
-    })|markdown }}
+    })|markdown_to_html }}
 {% endblock %}
