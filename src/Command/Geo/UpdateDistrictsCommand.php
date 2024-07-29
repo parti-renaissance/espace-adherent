@@ -142,21 +142,21 @@ final class UpdateDistrictsCommand extends Command
         }
 
         $codeCityPartial = str_pad($row['CODE COMMUNE'], 3, '0', \STR_PAD_LEFT);
-        $specialDepartment = sprintf('%s-%s', $codeDepartment, $codeCityPartial);
+        $specialDepartment = \sprintf('%s-%s', $codeDepartment, $codeCityPartial);
         $codeDepartment = self::DEPARTMENT_CODE_BY_CITY[$specialDepartment]
             ?? self::DEPARTMENT_CODE[$codeDepartment]
             ?? $codeDepartment;
 
-        $codeCity = sprintf('%s%s', substr($codeDepartment, 0, 2), $codeCityPartial);
+        $codeCity = \sprintf('%s%s', substr($codeDepartment, 0, 2), $codeCityPartial);
 
         $number = $row['CODE CIRC LEGISLATIVE'];
-        $code = sprintf('%s-%d', $codeDepartment, $row['CODE CIRC LEGISLATIVE']);
-        $name = sprintf('%s (%d)', $row['NOM DPT'], $number);
+        $code = \sprintf('%s-%d', $codeDepartment, $row['CODE CIRC LEGISLATIVE']);
+        $name = \sprintf('%s (%d)', $row['NOM DPT'], $number);
 
         /* @var Department $department */
         $department = $this->departments[$codeDepartment] ?? null;
         if (!$department) {
-            throw new \RuntimeException(sprintf('Department %s not found', $codeDepartment));
+            throw new \RuntimeException(\sprintf('Department %s not found', $codeDepartment));
         }
 
         $district = $this->entities->get($code);
@@ -178,10 +178,10 @@ final class UpdateDistrictsCommand extends Command
     {
         $this->io->section('Loading districts from source');
 
-        $filename = sprintf('%s/%s', sys_get_temp_dir(), uniqid(md5(self::SOURCE), true));
+        $filename = \sprintf('%s/%s', sys_get_temp_dir(), uniqid(md5(self::SOURCE), true));
         $this->io->comment([
-            sprintf('Fetching data from %s', self::SOURCE),
-            sprintf('Writing to %s', $filename),
+            \sprintf('Fetching data from %s', self::SOURCE),
+            \sprintf('Writing to %s', $filename),
         ]);
 
         $response = $this->httpClient->request('GET', self::SOURCE);

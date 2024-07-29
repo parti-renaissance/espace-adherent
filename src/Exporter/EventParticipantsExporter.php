@@ -24,7 +24,7 @@ class EventParticipantsExporter
     {
         return $this->exporter->getResponse(
             $format,
-            sprintf(
+            \sprintf(
                 '%s_%s.%s',
                 (new Slugify())->slugify($event->getName()),
                 (new \DateTime())->format('Y-m-d'),

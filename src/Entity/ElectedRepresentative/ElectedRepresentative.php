@@ -564,7 +564,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
     public function getFullName(): string
     {
-        return sprintf('%s %s', $this->firstName, $this->lastName);
+        return \sprintf('%s %s', $this->firstName, $this->lastName);
     }
 
     public function getAge(): ?int
@@ -604,7 +604,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
     public function __toString(): string
     {
-        return sprintf('%s %s', $this->firstName, $this->lastName);
+        return \sprintf('%s %s', $this->firstName, $this->lastName);
     }
 
     public function getZones(): Collection

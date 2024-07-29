@@ -9,6 +9,6 @@ class InvalidFilterException extends UnrecoverableMessageHandlingException
 {
     public function __construct(AdherentMessageInterface $message, string $description)
     {
-        parent::__construct(sprintf('%s [message id: "%s"]', $description, $message->getUuid()->toString()));
+        parent::__construct(\sprintf('%s [message id: "%s"]', $description, $message->getUuid()->toString()));
     }
 }

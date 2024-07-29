@@ -24,7 +24,7 @@ class DonationContext extends RawMinkContext
         $this->getMink()->setDefaultSessionName(self::DEFAULT_SESSION_NAME);
 
         if (!$donation = $this->getDonation($email)) {
-            throw new \Exception(sprintf('Donation not found for email %s', $email));
+            throw new \Exception(\sprintf('Donation not found for email %s', $email));
         }
 
         /** @var PayboxProvider $payboxProvider */
@@ -68,7 +68,7 @@ class DonationContext extends RawMinkContext
         $driver = $this->getMink()->getSession()->getDriver();
 
         if (!$driver instanceof BrowserKitDriver) {
-            throw new \RuntimeException(sprintf('Driver must be one instance of %s', BrowserKitDriver::class));
+            throw new \RuntimeException(\sprintf('Driver must be one instance of %s', BrowserKitDriver::class));
         }
 
         return $driver->getClient()->getContainer();

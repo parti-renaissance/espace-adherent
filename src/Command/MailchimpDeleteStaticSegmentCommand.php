@@ -66,7 +66,7 @@ class MailchimpDeleteStaticSegmentCommand extends Command
 
         $this->io->progressFinish();
 
-        $this->io->success(sprintf('%d segments are deleted', \count($success)));
+        $this->io->success(\sprintf('%d segments are deleted', \count($success)));
 
         if ($errors) {
             $this->io->warning('These segments have not been deleted');

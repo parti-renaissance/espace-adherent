@@ -30,7 +30,7 @@ class AdherentToIdTransformer implements DataTransformerInterface
         $adherent = $this->adherentRepository->findOneActiveById($adherentId);
 
         if (!$adherent) {
-            throw new TransformationFailedException(sprintf('An Adherent with id "%d" does not exist.', $adherentId));
+            throw new TransformationFailedException(\sprintf('An Adherent with id "%d" does not exist.', $adherentId));
         }
 
         return $adherent;

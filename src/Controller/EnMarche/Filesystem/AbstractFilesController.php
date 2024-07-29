@@ -78,7 +78,7 @@ abstract class AbstractFilesController extends AbstractController
         return $this->render($template, array_merge(
             $parameters,
             [
-                'base_template' => sprintf('filesystem/_base_%s_space.html.twig', $spaceName = $this->getSpaceType()),
+                'base_template' => \sprintf('filesystem/_base_%s_space.html.twig', $spaceName = $this->getSpaceType()),
                 'space_name' => $spaceName,
             ]
         ));
@@ -86,6 +86,6 @@ abstract class AbstractFilesController extends AbstractController
 
     private function getFilenameForDownload(File $file): ?string
     {
-        return sprintf('%s.%s', Urlizer::urlize($file->getName()), $file->getExtension());
+        return \sprintf('%s.%s', Urlizer::urlize($file->getName()), $file->getExtension());
     }
 }

@@ -37,7 +37,7 @@ class CommitteeManagementAuthorityTest extends TestCase
         ;
 
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator->expects($this->once())->method('generate')->willReturn(sprintf(
+        $urlGenerator->expects($this->once())->method('generate')->willReturn(\sprintf(
             '/comites/%s',
             'comite-lille-beach'
         ));

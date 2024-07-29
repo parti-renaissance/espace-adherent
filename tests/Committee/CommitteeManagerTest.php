@@ -141,7 +141,7 @@ class CommitteeManagerTest extends AbstractKernelTestCase
         $committee = $this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID);
 
         $this->expectException(CommitteeMembershipException::class);
-        $this->expectExceptionMessage(sprintf('Committee membership "%s" cannot be promoted to the host privilege', $adherent->getMembershipFor($committee)->getUuid()));
+        $this->expectExceptionMessage(\sprintf('Committee membership "%s" cannot be promoted to the host privilege', $adherent->getMembershipFor($committee)->getUuid()));
 
         $this->committeeManager->changePrivilege($adherent, $committee, CommitteeMembership::COMMITTEE_HOST);
     }

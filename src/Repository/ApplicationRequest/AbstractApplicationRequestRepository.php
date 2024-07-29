@@ -42,7 +42,7 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
         if (isset(FranceCitiesBundle::SPECIAL_CITY_ZONES[$inseeCode])) {
             $qb
                 ->andWhere("CONCAT('#', r.takenForCity) LIKE :insee_code")
-                ->setParameter('insee_code', sprintf('%%#%s%%', rtrim($inseeCode, '0')))
+                ->setParameter('insee_code', \sprintf('%%#%s%%', rtrim($inseeCode, '0')))
             ;
         } else {
             $qb
@@ -90,7 +90,7 @@ abstract class AbstractApplicationRequestRepository extends ServiceEntityReposit
         foreach ($inseeCodes as $key => $code) {
             if (isset(FranceCitiesBundle::SPECIAL_CITY_ZONES[$code])) {
                 $orExpression->add("CONCAT('#', REPLACE(r.favoriteCities, ',', '#')) LIKE :code_{$key}");
-                $qb->setParameter("code_$key", sprintf('%%#%s%%', rtrim($code, '0')));
+                $qb->setParameter("code_$key", \sprintf('%%#%s%%', rtrim($code, '0')));
             } else {
                 $orExpression->add("FIND_IN_SET(:code_$key, r.favoriteCities) > 0");
                 $qb->setParameter("code_$key", $code);

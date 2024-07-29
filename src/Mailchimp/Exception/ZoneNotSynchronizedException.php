@@ -13,7 +13,7 @@ class ZoneNotSynchronizedException extends UnrecoverableMessageHandlingException
     {
         $this->zone = $zone;
 
-        parent::__construct(sprintf('Zone type "%s" is not synchronized with mailchimp.', $zone->getType()));
+        parent::__construct(\sprintf('Zone type "%s" is not synchronized with mailchimp.', $zone->getType()));
     }
 
     public function getZone(): Zone

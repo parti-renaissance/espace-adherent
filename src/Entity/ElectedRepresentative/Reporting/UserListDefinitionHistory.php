@@ -76,7 +76,7 @@ class UserListDefinitionHistory
         UserInterface $user
     ) {
         if (!$user instanceof Adherent && !$user instanceof Administrator) {
-            throw new \InvalidArgumentException(sprintf('User must be an instance of "%s" or "%s".', Adherent::class, Administrator::class));
+            throw new \InvalidArgumentException(\sprintf('User must be an instance of "%s" or "%s".', Adherent::class, Administrator::class));
         }
 
         $this->action = $action;

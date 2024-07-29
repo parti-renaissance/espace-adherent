@@ -61,7 +61,7 @@ class MailchimpReportDownloadCommand extends Command
         $from = null;
 
         if ($input->getOption('recent-only')) {
-            $from = (new \DateTime())->modify(sprintf('-%d days', (int) $input->getOption('recent-interval')));
+            $from = (new \DateTime())->modify(\sprintf('-%d days', (int) $input->getOption('recent-interval')));
         }
 
         $paginator = $this->createPaginator($from);

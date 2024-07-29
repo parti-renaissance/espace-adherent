@@ -48,7 +48,7 @@ class UpdateStaticSegmentHandler implements MessageHandlerInterface
         $this->entityManager->refresh($object);
 
         if (!$object->getMailchimpId()) {
-            throw new StaticSegmentIdMissingException(sprintf('%s "%s" does not have Mailchimp static segment id', $object->getUuid()->toString(), basename(str_replace('\\', '/', $object::class))));
+            throw new StaticSegmentIdMissingException(\sprintf('%s "%s" does not have Mailchimp static segment id', $object->getUuid()->toString(), basename(str_replace('\\', '/', $object::class))));
         }
 
         if ($command instanceof RemoveAdherentFromStaticSegmentCommand) {

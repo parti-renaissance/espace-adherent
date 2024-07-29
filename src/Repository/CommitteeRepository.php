@@ -156,7 +156,7 @@ class CommitteeRepository extends ServiceEntityRepository
             'zones',
             'z2',
             function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(sprintf('%s.status = :status', $entityClassAlias));
+                $zoneQueryBuilder->andWhere(\sprintf('%s.status = :status', $entityClassAlias));
             }
         );
 
@@ -256,7 +256,7 @@ class CommitteeRepository extends ServiceEntityRepository
             'zones',
             'z2',
             function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(sprintf('%s.status = :status', $entityClassAlias));
+                $zoneQueryBuilder->andWhere(\sprintf('%s.status = :status', $entityClassAlias));
             }
         );
 
@@ -505,7 +505,7 @@ class CommitteeRepository extends ServiceEntityRepository
 
             // Outre-Mer condition
             if (\in_array(DesignationGlobalZoneEnum::OUTRE_MER, $designation->getGlobalZones(), true) || \in_array(DesignationGlobalZoneEnum::FRANCE, $designation->getGlobalZones(), true)) {
-                $zoneCondition->add(sprintf(
+                $zoneCondition->add(\sprintf(
                     'c.postAddress.country = :fr AND SUBSTRING(c.postAddress.postalCode, 1, 3) %s (:outremer_codes)',
                     \in_array(DesignationGlobalZoneEnum::OUTRE_MER, $designation->getGlobalZones(), true) ? 'IN' : 'NOT IN'
                 ));
@@ -514,7 +514,7 @@ class CommitteeRepository extends ServiceEntityRepository
 
             // France vs FDE
             if ([DesignationGlobalZoneEnum::FRANCE, DesignationGlobalZoneEnum::FDE] !== array_intersect([DesignationGlobalZoneEnum::FRANCE, DesignationGlobalZoneEnum::FDE], $designation->getGlobalZones())) {
-                $zoneCondition->add(sprintf(
+                $zoneCondition->add(\sprintf(
                     'c.postAddress.country %s :fr',
                     \in_array(DesignationGlobalZoneEnum::FRANCE, $designation->getGlobalZones(), true) ? '=' : '!='
                 ));
@@ -546,14 +546,14 @@ class CommitteeRepository extends ServiceEntityRepository
         $qb = $this
             ->createQueryBuilder('c')
             ->select('c AS committee')
-            ->addSelect(sprintf('(%s) AS total_voters',
+            ->addSelect(\sprintf('(%s) AS total_voters',
                 $this->getEntityManager()->createQueryBuilder()
                     ->select('COUNT(DISTINCT cm.id)')
                     ->from(CommitteeMembership::class, 'cm')
                     ->where('cm.committee = c AND cm.enableVote = :true')
                     ->getDQL()
             ))
-            ->addSelect(sprintf('(%s) AS total_candidacy_male',
+            ->addSelect(\sprintf('(%s) AS total_candidacy_male',
                 $this->getEntityManager()->createQueryBuilder()
                     ->select('SUM(IF(candidacy1.id IS NOT NULL AND candidacy1.gender = :male, 1, 0))')
                     ->from(CommitteeElection::class, 'election1')
@@ -563,7 +563,7 @@ class CommitteeRepository extends ServiceEntityRepository
                     ->andWhere('(designation1.voteEndDate IS NULL OR :now <= designation1.voteEndDate)')
                     ->getDQL()
             ))
-            ->addSelect(sprintf('(%s) AS total_candidacy_female',
+            ->addSelect(\sprintf('(%s) AS total_candidacy_female',
                 $this->getEntityManager()->createQueryBuilder()
                     ->select('SUM(IF(candidacy2.id IS NOT NULL AND candidacy2.gender = :female, 1, 0))')
                     ->from(CommitteeElection::class, 'election2')
@@ -595,7 +595,7 @@ class CommitteeRepository extends ServiceEntityRepository
             'zones',
             'z2',
             function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(sprintf('%s.status = :status', $entityClassAlias));
+                $zoneQueryBuilder->andWhere(\sprintf('%s.status = :status', $entityClassAlias));
             }
         );
 
@@ -619,7 +619,7 @@ class CommitteeRepository extends ServiceEntityRepository
             'zones',
             'z2',
             function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(sprintf('%s.createdAt > :from', $entityClassAlias));
+                $zoneQueryBuilder->andWhere(\sprintf('%s.createdAt > :from', $entityClassAlias));
             }
         );
 
@@ -674,7 +674,7 @@ class CommitteeRepository extends ServiceEntityRepository
                 'zones',
                 'z2',
                 function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                    $zoneQueryBuilder->andWhere(sprintf('%1$s.status = :status AND %1$s.approvedAt <= :d30', $entityClassAlias));
+                    $zoneQueryBuilder->andWhere(\sprintf('%1$s.status = :status AND %1$s.approvedAt <= :d30', $entityClassAlias));
                 }
             );
         }

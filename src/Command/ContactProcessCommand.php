@@ -65,7 +65,7 @@ class ContactProcessCommand extends Command
             return self::SUCCESS;
         }
 
-        if (false === $this->io->confirm(sprintf('Are you sure to dispatch process of %d contacts?', $total), false)) {
+        if (false === $this->io->confirm(\sprintf('Are you sure to dispatch process of %d contacts?', $total), false)) {
             return self::FAILURE;
         }
 

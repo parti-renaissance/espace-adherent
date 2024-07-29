@@ -84,7 +84,7 @@ trait RegistrationTrait
         /** @var AdherentActivationToken $lastActivationToken */
         $this->assertInstanceOf(AdherentActivationToken::class, $lastActivationToken = end($tokens));
 
-        $client->request(Request::METHOD_GET, sprintf(
+        $client->request(Request::METHOD_GET, \sprintf(
             '/inscription/finaliser/%s/%s',
             $lastActivationToken->getAdherentUuid(),
             $lastActivationToken->getValue()

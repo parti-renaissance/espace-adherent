@@ -199,7 +199,7 @@ class Donation implements GeoPointInterface
 
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%.2f € [%s]',
             $this->amount / 100,
             $this->donatedAt->format('Y/m/d H:i:s')
@@ -344,7 +344,7 @@ class Donation implements GeoPointInterface
         $donationDate = clone $this->donatedAt;
 
         return $donationDate->modify(
-            sprintf('+%d months', $donationDate->diff($fromDay)->m + 1)
+            \sprintf('+%d months', $donationDate->diff($fromDay)->m + 1)
         );
     }
 
@@ -522,13 +522,13 @@ class Donation implements GeoPointInterface
 
     public function getFilePathWithDirectory(): string
     {
-        return sprintf('%s/%s', 'files/donations', $this->filename);
+        return \sprintf('%s/%s', 'files/donations', $this->filename);
     }
 
     public function setFilenameFromUploadedFile(): void
     {
-        $this->filename = sprintf('%s.%s',
-            md5(sprintf('%s@%s', $this->getUuid(), $this->file->getClientOriginalName())),
+        $this->filename = \sprintf('%s.%s',
+            md5(\sprintf('%s@%s', $this->getUuid(), $this->file->getClientOriginalName())),
             $this->file->getClientOriginalExtension()
         );
     }
@@ -615,7 +615,7 @@ class Donation implements GeoPointInterface
     {
         $this->id = null;
         $this->uuid = Uuid::uuid4();
-        $this->payboxOrderRef = sprintf('%s_%s', $this->uuid->toString(), explode('_', $this->payboxOrderRef)[1]);
+        $this->payboxOrderRef = \sprintf('%s_%s', $this->uuid->toString(), explode('_', $this->payboxOrderRef)[1]);
         $this->donatedAt = new \DateTimeImmutable();
         $this->createdAt = new \DateTimeImmutable();
         $this->transactions = new ArrayCollection();

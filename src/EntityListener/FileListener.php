@@ -26,7 +26,7 @@ class FileListener
     {
         if ($entityFile->getFile()) {
             if (!($file = $entityFile->getFile()) instanceof UploadedFile) {
-                throw new \RuntimeException(sprintf('The file must be an instance of %s', UploadedFile::class));
+                throw new \RuntimeException(\sprintf('The file must be an instance of %s', UploadedFile::class));
             }
 
             // Clears the old file if needed
@@ -35,7 +35,7 @@ class FileListener
             }
 
             $entityFile->setExtension($extension = $file->getClientOriginalExtension());
-            $entityFile->setPath($path = sprintf(
+            $entityFile->setPath($path = \sprintf(
                 '%s/%s.%s',
                 $entityFile->getPrefixPath(),
                 Uuid::uuid4()->toString(),

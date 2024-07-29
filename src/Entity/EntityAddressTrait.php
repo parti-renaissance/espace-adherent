@@ -252,7 +252,7 @@ trait EntityAddressTrait
         }
 
         $parts[] = str_replace(',', '', $this->address);
-        $parts[] = sprintf('%s %s', $this->postalCode, $this->getCityName());
+        $parts[] = \sprintf('%s %s', $this->postalCode, $this->getCityName());
 
         if (!$this->isFrenchAddress() && $this->country) {
             $parts[] = $this->getCountryName($locale);

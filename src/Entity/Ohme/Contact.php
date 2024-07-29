@@ -78,7 +78,7 @@ class Contact
     public function __toString(): string
     {
         return implode(' ', array_filter([
-            sprintf('[%s]', $this->ohmeIdentifier),
+            \sprintf('[%s]', $this->ohmeIdentifier),
             $this->firstname,
             $this->lastname,
         ]));

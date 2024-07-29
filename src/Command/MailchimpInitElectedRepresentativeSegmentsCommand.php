@@ -84,7 +84,7 @@ class MailchimpInitElectedRepresentativeSegmentsCommand extends Command
 
         $this->io->progressFinish();
 
-        $this->io->note(sprintf(
+        $this->io->note(\sprintf(
             'Tags synchronized ! Maybe run "%s" to ensure both ways are synced.',
             'mailchimp:sync:segments elected_representative'
         ));
@@ -99,7 +99,7 @@ class MailchimpInitElectedRepresentativeSegmentsCommand extends Command
             $this->entityManager->persist($mailchimpSegment);
         }
 
-        $url = sprintf('/3.0/lists/%s/segments', $this->mailchimpElectedRepresentativeListId);
+        $url = \sprintf('/3.0/lists/%s/segments', $this->mailchimpElectedRepresentativeListId);
 
         try {
             $response = $this->client->request('POST', $url, ['json' => [

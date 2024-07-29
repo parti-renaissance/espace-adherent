@@ -39,7 +39,7 @@ class ManagedZoneProvider
             return $adherent->getRegionalCoordinatorZone();
         }
 
-        throw new \InvalidArgumentException(sprintf('Invalid "%s" space type', $spaceType));
+        throw new \InvalidArgumentException(\sprintf('Invalid "%s" space type', $spaceType));
     }
 
     public function getManagedZonesIds(Adherent $adherent, string $spaceType): array

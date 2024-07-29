@@ -61,10 +61,10 @@ final class SwaggerDecorator implements NormalizerInterface
         ResourceMetadata $resourceMetadata,
         ?string $group
     ): array {
-        $path = sprintf('%s%s', $this->apiPathPrefix, $this->getPath($resourceMetadata->getShortName(), ['get'], 'collection'));
+        $path = \sprintf('%s%s', $this->apiPathPrefix, $this->getPath($resourceMetadata->getShortName(), ['get'], 'collection'));
 
         if ($group) {
-            $definition = sprintf('%s-%s', $resourceMetadata->getShortName(), $group);
+            $definition = \sprintf('%s-%s', $resourceMetadata->getShortName(), $group);
         } else {
             $definition = $resourceMetadata->getShortName();
         }

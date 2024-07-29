@@ -54,7 +54,7 @@ final class EventsZipCodeFilter extends AbstractFilter
             'zones',
             'zip_code_filter_zone',
             function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(sprintf('%s.published = 1', $entityClassAlias));
+                $zoneQueryBuilder->andWhere(\sprintf('%s.published = 1', $entityClassAlias));
             },
             true,
             'zip_code_filter_zone_parent'

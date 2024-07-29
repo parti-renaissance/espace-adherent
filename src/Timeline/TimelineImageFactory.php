@@ -49,7 +49,7 @@ class TimelineImageFactory
     {
         $counts = $this->getMeasureCounts();
 
-        $imagePath = sprintf('%s/images/transformer-social-media-%s.png', $this->webDirectory, $locale);
+        $imagePath = \sprintf('%s/images/transformer-social-media-%s.png', $this->webDirectory, $locale);
 
         if (!$image = self::createImageFromPng($imagePath)) {
             throw new \InvalidArgumentException("Image template does not exist for locale \"$locale\".");
@@ -80,7 +80,7 @@ class TimelineImageFactory
 
             self::drawText(
                 $image,
-                $this->translate(sprintf('timeline.measure.status.%s', strtolower($status)), $locale),
+                $this->translate(\sprintf('timeline.measure.status.%s', strtolower($status)), $locale),
                 $textColor,
                 $regularFont,
                 self::TEXT_SIZE_REGULAR,
@@ -114,7 +114,7 @@ class TimelineImageFactory
 
     private function getFontPath(string $fontName): string
     {
-        return sprintf('%s/fonts/%s', $this->webDirectory, $fontName);
+        return \sprintf('%s/fonts/%s', $this->webDirectory, $fontName);
     }
 
     private function getMeasureCounts(): array
@@ -139,7 +139,7 @@ class TimelineImageFactory
 
     private function saveImage($image): string
     {
-        imagejpeg($image, $path = sprintf('%s/%s', $this->cacheDirectory, self::OUTPUT_IMAGE_NAME));
+        imagejpeg($image, $path = \sprintf('%s/%s', $this->cacheDirectory, self::OUTPUT_IMAGE_NAME));
         imagedestroy($image);
 
         return $path;

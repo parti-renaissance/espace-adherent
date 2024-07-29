@@ -39,7 +39,7 @@ abstract class AbstractController extends BaseAbstractController
     ): Response {
         $appCode = $this->appUrlManager->getAppCodeFromRequest($request);
 
-        $baseTemplate = sprintf('voting_platform/_layout_%s.html.twig', $designationType = $election->getDesignationType());
+        $baseTemplate = \sprintf('voting_platform/_layout_%s.html.twig', $designationType = $election->getDesignationType());
 
         if (!$this->twig->getLoader()->exists($baseTemplate)) {
             $baseTemplate = 'voting_platform/_layout_base.html.twig';

@@ -48,7 +48,7 @@ class Round
 
     public function __toString(): string
     {
-        return sprintf('%s - %s', $this->election->name, $this->name);
+        return \sprintf('%s - %s', $this->election->name, $this->name);
     }
 
     public function isUpcoming(): bool

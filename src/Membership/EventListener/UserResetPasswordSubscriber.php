@@ -37,7 +37,7 @@ class UserResetPasswordSubscriber implements EventSubscriberInterface
             MembershipSourceEnum::BESOIN_D_EUROPE => BesoinDEuropeResetPasswordMessage::createFromAdherent($user, $resetPasswordUrl),
             MembershipSourceEnum::PLATFORM => AdherentResetPasswordMessage::createFromAdherent($user, $resetPasswordUrl),
             MembershipSourceEnum::LEGISLATIVE => EnsembleResetPasswordMessage::createFromAdherent($user, $resetPasswordUrl),
-            default => throw new \InvalidArgumentException(sprintf('Invalid adherent source "%s"', $source)),
+            default => throw new \InvalidArgumentException(\sprintf('Invalid adherent source "%s"', $source)),
         };
 
         $this->mailer->sendMessage($message);

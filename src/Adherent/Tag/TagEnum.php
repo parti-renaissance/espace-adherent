@@ -47,9 +47,9 @@ class TagEnum extends Enum
             [
                 self::ADHERENT,
                 self::getAdherentYearTag($currentYear),
-                sprintf(self::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $currentYear),
-                sprintf(self::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $currentYear),
-                sprintf(self::ADHERENT_YEAR_ELU_TAG_PATTERN, $currentYear),
+                \sprintf(self::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $currentYear),
+                \sprintf(self::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $currentYear),
+                \sprintf(self::ADHERENT_YEAR_ELU_TAG_PATTERN, $currentYear),
             ],
             array_map(
                 fn (int $year) => self::getAdherentYearTag($year),
@@ -92,7 +92,7 @@ class TagEnum extends Enum
 
     public static function getAdherentYearTag(?int $year = null): string
     {
-        return sprintf(self::ADHERENT_YEAR_TAG_PATTERN, $year ?? date('Y'));
+        return \sprintf(self::ADHERENT_YEAR_TAG_PATTERN, $year ?? date('Y'));
     }
 
     public static function includesTag(string $searchTag, array $previousTags): bool
@@ -113,6 +113,6 @@ class TagEnum extends Enum
 
     public static function getNationalEventTag(string $eventSlug): string
     {
-        return sprintf(self::NATIONAL_EVENT_PATTERN, $eventSlug);
+        return \sprintf(self::NATIONAL_EVENT_PATTERN, $eventSlug);
     }
 }

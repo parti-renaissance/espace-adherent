@@ -21,7 +21,7 @@ class SurveyNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param Survey $object */
     protected function getDescription(object $object): ?string
     {
-        return sprintf('%s questions', $object->getQuestionsCount());
+        return \sprintf('%s questions', $object->getQuestionsCount());
     }
 
     /** @param Survey $object */

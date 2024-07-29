@@ -106,7 +106,7 @@ class GetCampaignRankingController extends AbstractController
         if ($zone) {
             $adherentZoneIds = [$zone->getId()];
         } else {
-            $this->logger->error(sprintf('Adherent with ID "%d" has neither zone of type "department" nor "borough"', $adherent->getId()));
+            $this->logger->error(\sprintf('Adherent with ID "%d" has neither zone of type "department" nor "borough"', $adherent->getId()));
         }
 
         $zonesList = array_column(array_map(function (Zone $zone) {

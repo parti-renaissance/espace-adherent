@@ -52,7 +52,7 @@ class UnpublishLocalPollCommand extends Command
             ->execute()
         ;
 
-        $this->io->success(sprintf(
+        $this->io->success(\sprintf(
             '%s local poll%s %s been unpublished successfully.',
             $total,
             $total > 1 ? 's' : '',

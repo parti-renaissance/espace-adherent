@@ -64,7 +64,7 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
                 }
 
                 if (!$adherent = $this->adherentRepository->findByUuid($contact['uuid_adherent'])) {
-                    $this->io->warning(sprintf('Adherent with uuid "%s" has not been found.', $contact['uuid_adherent']));
+                    $this->io->warning(\sprintf('Adherent with uuid "%s" has not been found.', $contact['uuid_adherent']));
 
                     continue;
                 }

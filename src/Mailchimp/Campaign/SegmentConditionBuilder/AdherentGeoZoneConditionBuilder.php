@@ -70,14 +70,14 @@ class AdherentGeoZoneConditionBuilder implements SegmentConditionBuilderInterfac
         if (Zone::FDE_CODE === $zone->getCode()) {
             return $this->buildZoneCondition(
                 MemberRequest::MERGE_FIELD_ZONE_COUNTRY,
-                sprintf('(%s)', AddressInterface::FRANCE),
+                \sprintf('(%s)', AddressInterface::FRANCE),
                 'notcontain'
             );
         }
 
         return $this->buildZoneCondition(
             MemberRequest::getMergeFieldFromZone($zone),
-            sprintf(' (%s)', $zone->getCode()),
+            \sprintf(' (%s)', $zone->getCode()),
             'contains'
         );
     }

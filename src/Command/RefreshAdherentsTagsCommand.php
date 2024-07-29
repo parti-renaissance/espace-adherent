@@ -62,7 +62,7 @@ class RefreshAdherentsTagsCommand extends Command
 
         $total = $paginator->count();
 
-        if (!$this->io->isQuiet() && false === $this->io->confirm(sprintf('Are you sure to sync %d adherents?', $total), false)) {
+        if (!$this->io->isQuiet() && false === $this->io->confirm(\sprintf('Are you sure to sync %d adherents?', $total), false)) {
             return self::FAILURE;
         }
 

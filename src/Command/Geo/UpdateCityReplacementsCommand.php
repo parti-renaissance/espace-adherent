@@ -137,10 +137,10 @@ final class UpdateCityReplacementsCommand extends Command
     {
         $this->io->section('Loading replacements from source');
 
-        $filename = sprintf('%s/%s', sys_get_temp_dir(), uniqid(md5($source), true));
+        $filename = \sprintf('%s/%s', sys_get_temp_dir(), uniqid(md5($source), true));
         $this->io->comment([
-            sprintf('Fetching data from %s', $source),
-            sprintf('Writing to %s', $filename),
+            \sprintf('Fetching data from %s', $source),
+            \sprintf('Writing to %s', $filename),
         ]);
 
         $response = $this->httpClient->request('GET', $source);

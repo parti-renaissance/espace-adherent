@@ -90,7 +90,7 @@ class ImportConsularDistrictCommand extends Command
             $code = array_search($country, $this->countries, true);
 
             if (!$code) {
-                throw new \RuntimeException(sprintf('Country "%s" does not match any code', $country));
+                throw new \RuntimeException(\sprintf('Country "%s" does not match any code', $country));
             }
 
             return $code;

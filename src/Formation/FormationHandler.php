@@ -24,7 +24,7 @@ class FormationHandler
             return;
         }
 
-        $formation->setFilePath($path = sprintf(
+        $formation->setFilePath($path = \sprintf(
             '%s/%s.%s',
             'files/adherent_formations',
             Uuid::uuid4()->toString(),

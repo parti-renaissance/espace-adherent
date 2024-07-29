@@ -31,7 +31,7 @@ class JWTAuthenticationTest extends AbstractEnMarcheWebTestCase
         $this->assertArrayHasKey('token', $data);
 
         $this->client->request('GET', '/api/users/me', [], [], [
-            'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $data['token']),
+            'HTTP_AUTHORIZATION' => \sprintf('Bearer %s', $data['token']),
         ]);
         $response = $this->client->getResponse();
         $this->isSuccessful($response);
@@ -43,7 +43,7 @@ class JWTAuthenticationTest extends AbstractEnMarcheWebTestCase
         $expiredJWTToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1NDg3NjIyNDAsImV4cCI6MTU0ODc2NTg0MCwicm9sZXMiOlsiUk9MRV9VU0VSIiwiUk9MRV9BREhFUkVOVCIsIlJPTEVfQk9BUkRfTUVNQkVSIl0sInVzZXJuYW1lIjoiY2FybDk5OUBleGFtcGxlLmZyIn0.iAe-UASkeBI1czzq8oEmdRbb5Su8QhXtKWUEFM5lvpZdOKFcxVf0S1y4Ly5U6TFlE1g5vr9m_aRdYMjCHGAd6g76CNzKYFpSLJN4uenhFMXmh2ukIktJ1UxYy6eapwdkpyiIePx2r0um6Wm7SxgOhZ4hgOPVIo42psVI9H2UGTw';
 
         $this->client->request('GET', '/api/users/me', [], [], [
-            'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $expiredJWTToken),
+            'HTTP_AUTHORIZATION' => \sprintf('Bearer %s', $expiredJWTToken),
         ]);
         $this->assertStatusCode(401, $this->client);
         $this->assertSame('{"code":401,"message":"Expired JWT Token"}', $this->client->getResponse()->getContent());

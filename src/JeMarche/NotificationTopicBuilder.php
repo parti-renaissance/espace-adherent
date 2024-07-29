@@ -46,7 +46,7 @@ class NotificationTopicBuilder
 
     public function buildTopic(?Zone $zone = null): string
     {
-        return sprintf('%s_%s', $this->buildTopicPrefix(), $this->getTopic($zone));
+        return \sprintf('%s_%s', $this->buildTopicPrefix(), $this->getTopic($zone));
     }
 
     private function getTopic(?Zone $zone): string
@@ -61,11 +61,11 @@ class NotificationTopicBuilder
 
         switch ($zone->getType()) {
             case Zone::REGION:
-                return sprintf('%s_%s', self::PREFIX_TARGET_REGION, $zone->getCode());
+                return \sprintf('%s_%s', self::PREFIX_TARGET_REGION, $zone->getCode());
             case Zone::DEPARTMENT:
-                return sprintf('%s_%s', self::PREFIX_TARGET_DEPARTMENT, $zone->getCode());
+                return \sprintf('%s_%s', self::PREFIX_TARGET_DEPARTMENT, $zone->getCode());
             case Zone::BOROUGH:
-                return sprintf('%s_%s', self::PREFIX_TARGET_BOROUGH, current($zone->getPostalCode()));
+                return \sprintf('%s_%s', self::PREFIX_TARGET_BOROUGH, current($zone->getPostalCode()));
             default:
                 throw new \InvalidArgumentException('Can not target Zone of type "%s".', $zone->getType());
         }
@@ -77,7 +77,7 @@ class NotificationTopicBuilder
             ? self::PREFIX_ENVIRONMENT_PRODUCTION
             : self::PREFIX_ENVIRONMENT_DEV;
 
-        return sprintf('%s_%s', $environmentPrefix, self::MAIN_PREFIX);
+        return \sprintf('%s_%s', $environmentPrefix, self::MAIN_PREFIX);
     }
 
     private function isCanary(): bool

@@ -22,7 +22,7 @@ class EntityFromUuidDenormalizer implements DenormalizerInterface
             return $object;
         }
 
-        throw new ItemNotFoundException(sprintf('Entity "%s" with UUID "%s" not found', $type, $data));
+        throw new ItemNotFoundException(\sprintf('Entity "%s" with UUID "%s" not found', $type, $data));
     }
 
     public function supportsDenormalization($data, $type, $format = null)

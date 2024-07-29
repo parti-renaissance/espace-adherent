@@ -56,7 +56,7 @@ class DonationCancelCommand extends Command
     {
         $email = $input->getArgument('email');
 
-        $this->io->title(sprintf('Cancelling subscribed donations for email "%s"', $email));
+        $this->io->title(\sprintf('Cancelling subscribed donations for email "%s"', $email));
 
         $donations = $this->donationRepository->findAllSubscribedDonationByEmail($email);
 
@@ -68,7 +68,7 @@ class DonationCancelCommand extends Command
 
         foreach ($donations as $donation) {
             try {
-                if (!$this->io->confirm(sprintf(
+                if (!$this->io->confirm(\sprintf(
                     'Are you sure you want to cancel the recurring donation id(%d) from email "%s"?',
                     $donation->getId(),
                     $donation->getDonator()->getEmailAddress()
@@ -79,13 +79,13 @@ class DonationCancelCommand extends Command
                 $this->payboxPaymentUnsubscription->unsubscribe($donation);
                 $this->em->flush();
 
-                $this->io->success(sprintf(
+                $this->io->success(\sprintf(
                     'The recurring donation id(%d) from email "%s" has been canceled successfully.',
                     $donation->getId(),
                     $donation->getDonator()->getEmailAddress()
                 ));
             } catch (PayboxPaymentUnsubscriptionException $e) {
-                $this->io->error(sprintf(
+                $this->io->error(\sprintf(
                     'Subscription donation id(%d) from user email %s have an error: %s',
                     $donation->getId(),
                     $donation->getDonator()->getEmailAddress(),

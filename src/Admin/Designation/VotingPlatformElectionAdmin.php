@@ -138,21 +138,21 @@ class VotingPlatformElectionAdmin extends AbstractAdmin
                         case DesignationStatusEnum::IN_PROGRESS:
                             $qb
                                 ->andWhere('designation.voteStartDate IS NOT NULL AND designation.voteEndDate IS NOT NULL')
-                                ->andWhere(sprintf('(designation.voteStartDate < :now AND designation.voteEndDate > :now) OR (%1$s.secondRoundEndDate IS NOT NULL AND %1$s.secondRoundEndDate > :now)', $alias))
+                                ->andWhere(\sprintf('(designation.voteStartDate < :now AND designation.voteEndDate > :now) OR (%1$s.secondRoundEndDate IS NOT NULL AND %1$s.secondRoundEndDate > :now)', $alias))
                                 ->setParameter('now', new \DateTime())
                             ;
                             break;
 
                         case DesignationStatusEnum::CLOSED:
                             $qb
-                                ->andWhere(sprintf('%s.status = :status', $alias))
+                                ->andWhere(\sprintf('%s.status = :status', $alias))
                                 ->setParameter('status', ElectionStatusEnum::CLOSED)
                             ;
                             break;
                     }
 
                     $qb
-                        ->andWhere(sprintf('%s.status %s :cancel_status', $alias, DesignationStatusEnum::CANCELED === $value->getValue() ? '=' : '!='))
+                        ->andWhere(\sprintf('%s.status %s :cancel_status', $alias, DesignationStatusEnum::CANCELED === $value->getValue() ? '=' : '!='))
                         ->setParameter('cancel_status', ElectionStatusEnum::CANCELED)
                     ;
 

@@ -181,11 +181,11 @@ class CommitteeEventManagerController extends AbstractController
             throw new \InvalidArgumentException("Action '$action' is not allowed.");
         }
 
-        if (!$this->isCsrfTokenValid(sprintf('event.%s_members', $action), $request->request->get('token'))) {
+        if (!$this->isCsrfTokenValid(\sprintf('event.%s_members', $action), $request->request->get('token'))) {
             throw $this->createAccessDeniedException("Invalid CSRF protection token to $action members.");
         }
 
-        if (!$uuids = json_decode($request->request->get(sprintf('%ss', $action)), true)) {
+        if (!$uuids = json_decode($request->request->get(\sprintf('%ss', $action)), true)) {
             if (self::ACTION_CONTACT === $action) {
                 $this->addFlash('info', 'committee.event.contact.none');
             }

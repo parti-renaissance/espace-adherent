@@ -55,7 +55,7 @@ class SearchController extends AbstractController
         $search = $this->searchParametersFilter->handleRequest($request);
         $user = $this->getUser();
         if ($user && \in_array(EntityPostAddressTrait::class, class_uses($user))) {
-            $search->setCity(sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
+            $search->setCity(\sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
         }
 
         if ($user instanceof Adherent) {
@@ -84,7 +84,7 @@ class SearchController extends AbstractController
         $search = $this->searchParametersFilter->handleRequest($request);
         $user = $this->getUser();
         if ($user && \in_array(EntityPostAddressTrait::class, class_uses($user))) {
-            $search->setCity(sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
+            $search->setCity(\sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
         }
 
         try {

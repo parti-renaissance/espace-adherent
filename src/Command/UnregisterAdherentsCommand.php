@@ -135,7 +135,7 @@ class UnregisterAdherentsCommand extends Command
 
                 $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_DELETED);
             } catch (\Exception $ex) {
-                throw new \RuntimeException(\PHP_EOL.sprintf('An error occured while unregistering an adherent with email "%s".', $email), 0, $ex);
+                throw new \RuntimeException(\PHP_EOL.\sprintf('An error occured while unregistering an adherent with email "%s".', $email), 0, $ex);
             }
 
             if (0 === ($i % $batchSize)) {

@@ -17,7 +17,7 @@ class FloatToStringTransformer implements DataTransformerInterface
             throw new TransformationFailedException('Expected a float.');
         }
 
-        return sprintf('%.2f', $value);
+        return \sprintf('%.2f', $value);
     }
 
     public function reverseTransform($value): float

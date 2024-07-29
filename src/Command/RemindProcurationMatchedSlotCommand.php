@@ -57,7 +57,7 @@ class RemindProcurationMatchedSlotCommand extends Command
         $roundId = $input->getOption('round');
 
         if ($roundId && !\is_int($roundId)) {
-            $this->io->error(sprintf('Option "round" must be an integer, "%s" given.', $roundId));
+            $this->io->error(\sprintf('Option "round" must be an integer, "%s" given.', $roundId));
 
             return self::INVALID;
         }
@@ -102,9 +102,9 @@ class RemindProcurationMatchedSlotCommand extends Command
 
         $batchSize = $input->getOption('batch-size');
 
-        $this->io->text(sprintf('Found %s matched request slot(s) to remind for given round.', $total));
+        $this->io->text(\sprintf('Found %s matched request slot(s) to remind for given round.', $total));
 
-        if (!$this->io->confirm(sprintf('Send reminder to %s matched request slot(s)?', $total), true)) {
+        if (!$this->io->confirm(\sprintf('Send reminder to %s matched request slot(s)?', $total), true)) {
             return self::FAILURE;
         }
 

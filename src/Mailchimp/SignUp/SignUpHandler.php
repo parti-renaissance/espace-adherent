@@ -76,7 +76,7 @@ class SignUpHandler implements LoggerAwareInterface
 
         foreach ($this->subscriptionIds as $code => $id) {
             if (\in_array($code, SubscriptionTypeEnum::DEFAULT_EMAIL_TYPES, true)) {
-                $formData[sprintf('group[%d][%d]', $this->subscriptionGroupId, $id)] = $id;
+                $formData[\sprintf('group[%d][%d]', $this->subscriptionGroupId, $id)] = $id;
             }
         }
 
@@ -85,7 +85,7 @@ class SignUpHandler implements LoggerAwareInterface
 
     private function getTokenKey(): string
     {
-        return sprintf('b_%s_%s', $this->mailchimpOrgId, $this->listId);
+        return \sprintf('b_%s_%s', $this->mailchimpOrgId, $this->listId);
     }
 
     private function getQueryData(): array

@@ -38,7 +38,7 @@ class LoginLinkHandler implements LoginLinkHandlerInterface
         $urlParts = parse_url($link->getUrl().'&'.http_build_query($queryParams));
 
         return new LoginLinkDetails(
-            sprintf(
+            \sprintf(
                 '%s://%s%s?%s',
                 $urlParts['scheme'],
                 $host ?? $urlParts['host'],

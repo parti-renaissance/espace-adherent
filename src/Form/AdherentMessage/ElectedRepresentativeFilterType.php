@@ -55,7 +55,7 @@ class ElectedRepresentativeFilterType extends AbstractType
                     $trad = $this->translator->trans($key);
 
                     if ($key === $trad) {
-                        return sprintf('[L] %s', $choice->getLabel());
+                        return \sprintf('[L] %s', $choice->getLabel());
                     }
 
                     return $trad;

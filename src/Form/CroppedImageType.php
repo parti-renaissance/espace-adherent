@@ -53,7 +53,7 @@ class CroppedImageType extends AbstractType
                 } elseif (-1 == $data['croppedImage']) {
                     unset($data['croppedImage'], $data['image']);
                     $model = $event->getForm()->getParent()->getData();
-                    if (method_exists($model, $methodName = sprintf('setRemove%s', ucfirst($event->getForm()->getName())))
+                    if (method_exists($model, $methodName = \sprintf('setRemove%s', ucfirst($event->getForm()->getName())))
                         || method_exists($model, $methodName = 'setRemoveImage')
                     ) {
                         $model->$methodName(true);

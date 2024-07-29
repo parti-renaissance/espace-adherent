@@ -22,14 +22,14 @@ final class EventCancellationMessage extends Message
 
         $recipient = array_shift($recipients);
         if (!$recipient instanceof EventRegistration) {
-            throw new \RuntimeException(sprintf('First recipient must be an %s instance, %s given', EventRegistration::class, $recipient::class));
+            throw new \RuntimeException(\sprintf('First recipient must be an %s instance, %s given', EventRegistration::class, $recipient::class));
         }
 
         $message = new self(
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
             $recipient->getFirstName().' '.$recipient->getLastName(),
-            sprintf('L\'événement "%s" a été annulé.', $event->getName()),
+            \sprintf('L\'événement "%s" a été annulé.', $event->getName()),
             static::getTemplateVars($event->getName(), $eventsLink),
             self::getRecipientVars($recipient),
             $host->getEmailAddress()

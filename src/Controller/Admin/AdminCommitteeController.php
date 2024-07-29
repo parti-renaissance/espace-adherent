@@ -64,9 +64,9 @@ class AdminCommitteeController extends AbstractController
             if ($form->get('allow')->isClicked()) {
                 try {
                     $committeeManagementAuthority->refuse($committee);
-                    $this->addFlash('sonata_flash_success', sprintf('Le comité « %s » a été refusé avec succès.', $committee->getName()));
+                    $this->addFlash('sonata_flash_success', \sprintf('Le comité « %s » a été refusé avec succès.', $committee->getName()));
                 } catch (BaseGroupException $exception) {
-                    throw $this->createNotFoundException(sprintf('Committee %u must be pending in order to be refused.', $committee->getId()), $exception);
+                    throw $this->createNotFoundException(\sprintf('Committee %u must be pending in order to be refused.', $committee->getId()), $exception);
                 }
             }
 
@@ -143,7 +143,7 @@ class AdminCommitteeController extends AbstractController
     {
         $committee = $mandate->getCommittee();
         if ($mandate->getFinishAt()) {
-            $this->addFlash('sonata_flash_error', sprintf('Le mandate (id %s) est inactif et ne peut pas être remplacé.', $mandate->getId()));
+            $this->addFlash('sonata_flash_error', \sprintf('Le mandate (id %s) est inactif et ne peut pas être remplacé.', $mandate->getId()));
 
             return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $committee->getId()]);
         }
@@ -189,7 +189,7 @@ class AdminCommitteeController extends AbstractController
     ): Response {
         $committee = $mandate->getCommittee();
         if ($mandate->getFinishAt()) {
-            $this->addFlash('sonata_flash_error', sprintf('Le mandate (id %s) est inactif et ne peut pas être retiré.', $mandate->getId()));
+            $this->addFlash('sonata_flash_error', \sprintf('Le mandate (id %s) est inactif et ne peut pas être retiré.', $mandate->getId()));
 
             return $this->redirectToRoute('app_admin_committee_mandates', ['id' => $committee->getId()]);
         }
@@ -232,7 +232,7 @@ class AdminCommitteeController extends AbstractController
             $this->createAccessDeniedException('Cannot promote an adherent');
         }
 
-        if (!$this->isCsrfTokenValid(sprintf('committee.change_privilege.%s', $adherent->getId()), $request->query->get('token'))) {
+        if (!$this->isCsrfTokenValid(\sprintf('committee.change_privilege.%s', $adherent->getId()), $request->query->get('token'))) {
             throw new BadRequestHttpException('Invalid Csrf token provided.');
         }
 
@@ -256,14 +256,14 @@ class AdminCommitteeController extends AbstractController
         string $action
     ): Response {
         if (!\in_array($action, CommitteeAdherentMandateManager::ACTIONS)) {
-            throw new BadRequestHttpException(sprintf('Action "%s" is not authorized.', $action));
+            throw new BadRequestHttpException(\sprintf('Action "%s" is not authorized.', $action));
         }
 
         if (!$committee->isApproved()) {
             throw new BadRequestHttpException($this->translator->trans('adherent_mandate.committee.committee_not_approved'));
         }
 
-        if (!$this->isCsrfTokenValid(sprintf('committee.change_mandate.%s', $adherent->getId()), $request->query->get('token'))) {
+        if (!$this->isCsrfTokenValid(\sprintf('committee.change_mandate.%s', $adherent->getId()), $request->query->get('token'))) {
             throw new BadRequestHttpException('Invalid Csrf token provided.');
         }
 
@@ -287,7 +287,7 @@ class AdminCommitteeController extends AbstractController
         $msg = '';
         /** @var CommitteeAdherentMandate $activeMandate */
         array_walk($mandates, function (CommitteeAdherentMandate $activeMandate) use (&$msg) {
-            $msg .= sprintf(
+            $msg .= \sprintf(
                 '%s dans le comité "%s", ',
                 CommitteeMandateQualityEnum::SUPERVISOR === $activeMandate->getQuality()
                     ? ($activeMandate->isProvisional() ? 'Animateur provisoire' : 'Animateur')
@@ -303,7 +303,7 @@ class AdminCommitteeController extends AbstractController
 
     private function addFlashMsgForNewMandate(CommitteeAdherentMandate $mandate): void
     {
-        $this->addFlash('sonata_flash_success', sprintf(
+        $this->addFlash('sonata_flash_success', \sprintf(
             '%s est devenu%s %s.',
             $mandate->getAdherent()->getFullName(),
             $mandate->isFemale() ? 'e' : '',
@@ -313,7 +313,7 @@ class AdminCommitteeController extends AbstractController
 
     private function addFlashMsgForClosedMandate(CommitteeAdherentMandate $mandate): void
     {
-        $this->addFlash('sonata_flash_success', sprintf(
+        $this->addFlash('sonata_flash_success', \sprintf(
             '%s n\'est plus %s.',
             $mandate->getAdherent()->getFullName(),
             $this->translator->trans('adherent_mandate.committee.'.$mandate->getType()))

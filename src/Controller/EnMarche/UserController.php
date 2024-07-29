@@ -142,7 +142,7 @@ class UserController extends AbstractController
             return $this->render(
                 $isRenaissanceApp
                     ? 'renaissance/adherent/terminate_membership/success.html.twig'
-                    : sprintf('%s/terminate_membership.html.twig', $viewFolder),
+                    : \sprintf('%s/terminate_membership.html.twig', $viewFolder),
                 [
                     'unregistered' => true,
                     'form' => $form->createView(),
@@ -153,7 +153,7 @@ class UserController extends AbstractController
         return $this->render(
             $isRenaissanceApp
                 ? 'renaissance/adherent/terminate_membership/form.html.twig'
-                : sprintf('%s/terminate_membership.html.twig', $viewFolder),
+                : \sprintf('%s/terminate_membership.html.twig', $viewFolder),
             [
                 'unregistered' => false,
                 'form' => $form->createView(),

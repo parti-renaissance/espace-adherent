@@ -44,7 +44,7 @@ class JemarcheDataSurveyCreateCommandHandler implements MessageHandlerInterface,
     {
         /** @var JemarcheDataSurvey $dataSurvey */
         if (!$dataSurvey = $this->dataSurveyRepository->findLastAvailableToContactByEmail($email = $message->getEmail())) {
-            $this->logger->warning(sprintf('DataSurvey contact available to contact with email "%s" not found, message skipped', $email));
+            $this->logger->warning(\sprintf('DataSurvey contact available to contact with email "%s" not found, message skipped', $email));
 
             return;
         }

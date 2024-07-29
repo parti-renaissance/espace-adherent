@@ -9,6 +9,6 @@ class PayboxPaymentUnsubscriptionException extends BadRequestHttpException
 {
     public function __construct(int $codeError, ?\Exception $previous = null, $code = 0)
     {
-        parent::__construct(sprintf('%d: %s', $codeError, PayboxPaymentUnsubscriptionErrorEnum::getMessage($codeError)), $previous, $code);
+        parent::__construct(\sprintf('%d: %s', $codeError, PayboxPaymentUnsubscriptionErrorEnum::getMessage($codeError)), $previous, $code);
     }
 }

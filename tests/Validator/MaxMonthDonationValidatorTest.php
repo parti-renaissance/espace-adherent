@@ -20,7 +20,7 @@ class MaxMonthDonationValidatorTest extends ConstraintValidatorTestCase
         $this->assertSame(
             $violation,
             $violationsCount = \count($this->context->getViolations()),
-            sprintf('%u violation expected. Got %u. for amount %u', $violation, $violationsCount, $amount)
+            \sprintf('%u violation expected. Got %u. for amount %u', $violation, $violationsCount, $amount)
         );
     }
 

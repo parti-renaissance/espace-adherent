@@ -26,7 +26,7 @@ class ProcurationUpcomingRoundExtension implements QueryCollectionExtensionInter
 
         $queryBuilder
             ->innerJoin(
-                sprintf(
+                \sprintf(
                     '%s.%s',
                     $rootAlias,
                     is_a($resourceClass, Proxy::class, true)

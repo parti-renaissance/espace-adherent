@@ -27,7 +27,7 @@ class QuestionRepository extends ServiceEntityRepository
                 'q.type',
                 'ch.content as choice_content',
                 'COUNT(da1.textField) AS total_simple_field',
-                sprintf('(
+                \sprintf('(
                     SELECT COUNT(1) FROM %s AS da2 
                     INNER JOIN da2.selectedChoices AS sc
                     WHERE sc = ch

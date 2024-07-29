@@ -18,7 +18,7 @@ class OAuthServerException extends BaseOAuthServerException
     /** {@inheritDoc} */
     public static function invalidRequest($parameter, $hint = null, ?\Throwable $previous = null)
     {
-        $hint ??= sprintf(self::INVALID_REQUEST_HINT_MESSAGE, $parameter);
+        $hint ??= \sprintf(self::INVALID_REQUEST_HINT_MESSAGE, $parameter);
 
         return new self(self::INVALID_REQUEST_MESSAGE, 3, 'invalid_request', 400, $hint, null, $previous);
     }

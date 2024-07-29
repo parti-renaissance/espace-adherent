@@ -9,7 +9,7 @@ trait NearbyTrait
 {
     public function getNearbyExpression(string $alias): string
     {
-        return sprintf('(6371 * acos(cos(radians(:latitude)) * cos(radians(%1$s.postAddress.latitude))
+        return \sprintf('(6371 * acos(cos(radians(:latitude)) * cos(radians(%1$s.postAddress.latitude))
             * cos(radians(%1$s.postAddress.longitude) - radians(:longitude)) + sin(radians(:latitude)) *
             sin(radians(%1$s.postAddress.latitude))))', $alias);
     }

@@ -60,7 +60,7 @@ class MailchimpSyncAllNewsletterCommand extends Command
 
         $count = $paginator->count();
 
-        if (false === $this->io->confirm(sprintf('Are you sure to sync %d newsletters?', $count), false)) {
+        if (false === $this->io->confirm(\sprintf('Are you sure to sync %d newsletters?', $count), false)) {
             return self::FAILURE;
         }
 

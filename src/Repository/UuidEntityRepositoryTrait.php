@@ -45,7 +45,7 @@ trait UuidEntityRepositoryTrait
     protected static function validUuid(string $uuid): void
     {
         if (false === Uuid::isValid($uuid)) {
-            throw new InvalidUuidException(sprintf('Uuid "%s" is not valid.', $uuid));
+            throw new InvalidUuidException(\sprintf('Uuid "%s" is not valid.', $uuid));
         }
     }
 

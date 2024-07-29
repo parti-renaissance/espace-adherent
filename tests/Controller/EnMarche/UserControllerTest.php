@@ -55,7 +55,7 @@ class UserControllerTest extends AbstractEnMarcheWebTestCase
 
         $token = $this->getRepository(AdherentChangeEmailToken::class)->findLastUnusedByEmail('new.mail@test.com');
 
-        $this->client->request(Request::METHOD_GET, sprintf('/valider-changement-email/%s/%s', $token->getAdherentUuid(), $token->getValue()));
+        $this->client->request(Request::METHOD_GET, \sprintf('/valider-changement-email/%s/%s', $token->getAdherentUuid(), $token->getValue()));
         $this->assertClientIsRedirectedTo('//test.renaissance.code/espace-adherent', $this->client);
 
         $flash = $this->client->getRequest()->getSession()->getFlashBag()->get('info');

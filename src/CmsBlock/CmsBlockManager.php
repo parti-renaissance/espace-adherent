@@ -21,7 +21,7 @@ class CmsBlockManager
         $content = $this->cmsBlockRepository->getContentByName($cmsBlockName);
 
         if (!$content) {
-            $this->logger->error(sprintf('No content found for CmsBlock with name "%s".', $cmsBlockName));
+            $this->logger->error(\sprintf('No content found for CmsBlock with name "%s".', $cmsBlockName));
         }
 
         return $content;

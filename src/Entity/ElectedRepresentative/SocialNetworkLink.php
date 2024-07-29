@@ -79,7 +79,7 @@ class SocialNetworkLink
     public function setType(string $type): void
     {
         if (!SocialLinkTypeEnum::isValid($type)) {
-            throw new BadSocialLinkTypeException(sprintf('The social link type "%s" is invalid', $type));
+            throw new BadSocialLinkTypeException(\sprintf('The social link type "%s" is invalid', $type));
         }
 
         $this->type = $type;

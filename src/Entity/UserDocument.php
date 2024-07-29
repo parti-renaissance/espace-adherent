@@ -159,7 +159,7 @@ class UserDocument
 
     public function getPath(): string
     {
-        return sprintf('user_documents/%ss/%s.%s', $this->type, $this->getUuid()->toString(), $this->getExtension());
+        return \sprintf('user_documents/%ss/%s.%s', $this->type, $this->getUuid()->toString(), $this->getExtension());
     }
 
     public static function allTypes(): array

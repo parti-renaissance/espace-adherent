@@ -46,7 +46,7 @@ class ContactAgeConditionBuilder implements SegmentConditionBuilderInterface
                 'condition_type' => 'DateMerge',
                 'op' => 'less',
                 'field' => MemberRequest::MERGE_FIELD_BIRTHDATE,
-                'value' => DateUtils::adjustDate($now, true)->modify(sprintf('-%d years', $minAge))->format(MemberRequest::DATE_FORMAT),
+                'value' => DateUtils::adjustDate($now, true)->modify(\sprintf('-%d years', $minAge))->format(MemberRequest::DATE_FORMAT),
             ];
         }
 
@@ -55,7 +55,7 @@ class ContactAgeConditionBuilder implements SegmentConditionBuilderInterface
                 'condition_type' => 'DateMerge',
                 'op' => 'greater',
                 'field' => MemberRequest::MERGE_FIELD_BIRTHDATE,
-                'value' => DateUtils::adjustDate($now, false)->modify(sprintf('-%d years', $maxAge))->format(MemberRequest::DATE_FORMAT),
+                'value' => DateUtils::adjustDate($now, false)->modify(\sprintf('-%d years', $maxAge))->format(MemberRequest::DATE_FORMAT),
             ];
         }
 

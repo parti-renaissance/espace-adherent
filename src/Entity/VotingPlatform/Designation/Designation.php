@@ -368,7 +368,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             return $date;
         }
 
-        return (clone $date)->modify(sprintf('+%d minutes', \intval($this->resultScheduleDelay * 60)));
+        return (clone $date)->modify(\sprintf('+%d minutes', \intval($this->resultScheduleDelay * 60)));
     }
 
     public function getResultDisplayDelay(): int
@@ -412,7 +412,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             }
 
             if ($suffix) {
-                return sprintf('%s_%s', $this->type, strtolower($suffix));
+                return \sprintf('%s_%s', $this->type, strtolower($suffix));
             }
         }
 
@@ -559,7 +559,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             return null;
         }
 
-        return (clone $this->getVoteEndDate())->modify(sprintf('+%d days', $this->getResultDisplayDelay()));
+        return (clone $this->getVoteEndDate())->modify(\sprintf('+%d days', $this->getResultDisplayDelay()));
     }
 
     public function markAsLimited(): void

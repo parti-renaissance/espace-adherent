@@ -50,7 +50,7 @@ class MailchimpUpdateAdherentCommand extends Command
         $filePath = $input->getArgument('file');
 
         if (false === ($file = fopen($filePath, 'rb'))) {
-            throw new \InvalidArgumentException(sprintf('File %s is not readable', $filePath));
+            throw new \InvalidArgumentException(\sprintf('File %s is not readable', $filePath));
         }
 
         $header = fgetcsv($file);
@@ -88,15 +88,15 @@ class MailchimpUpdateAdherentCommand extends Command
         int $interestColIndex
     ): void {
         if ('Adresse email' !== $header[$emailColIndex]) {
-            throw new \InvalidArgumentException(sprintf('It seems that position of email column is not %d or its label is not equal to `Adresse email`', $emailColIndex));
+            throw new \InvalidArgumentException(\sprintf('It seems that position of email column is not %d or its label is not equal to `Adresse email`', $emailColIndex));
         }
 
         if ('Mes notifications via e-mail' !== $header[$emailPrefColIndex]) {
-            throw new \InvalidArgumentException(sprintf('It seems that position of email preferences column is not %d or its label is not equal to `Mes notifications via e-mail`', $emailPrefColIndex));
+            throw new \InvalidArgumentException(\sprintf('It seems that position of email preferences column is not %d or its label is not equal to `Mes notifications via e-mail`', $emailPrefColIndex));
         }
 
         if ('Mes centres d\'intérêt' !== $header[$interestColIndex]) {
-            throw new \InvalidArgumentException(sprintf('It seems that position of interests column is not %d or its label is not equal to `Mes centres d\'intérêt`', $interestColIndex));
+            throw new \InvalidArgumentException(\sprintf('It seems that position of interests column is not %d or its label is not equal to `Mes centres d\'intérêt`', $interestColIndex));
         }
     }
 }

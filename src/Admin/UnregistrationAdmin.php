@@ -90,8 +90,8 @@ class UnregistrationAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $qb->andWhere($qb->expr()->eq(sprintf('json_contains(%s.reasons, :reason)', $alias), 1));
-                    $qb->setParameter(':reason', sprintf('"%s"', $value->getValue()));
+                    $qb->andWhere($qb->expr()->eq(\sprintf('json_contains(%s.reasons, :reason)', $alias), 1));
+                    $qb->setParameter(':reason', \sprintf('"%s"', $value->getValue()));
 
                     return true;
                 },
@@ -106,7 +106,7 @@ class UnregistrationAdmin extends AbstractAdmin
                     }
 
                     $uuid = Adherent::createUuid($value->getValue());
-                    $qb->andWhere(sprintf('%s.adherentUuid = :adherent_uuid', $alias));
+                    $qb->andWhere(\sprintf('%s.adherentUuid = :adherent_uuid', $alias));
                     $qb->setParameter('adherent_uuid', $uuid->toString());
 
                     return true;

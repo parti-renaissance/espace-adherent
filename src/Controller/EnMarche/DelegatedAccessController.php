@@ -15,7 +15,7 @@ class DelegatedAccessController extends AbstractController
     public function delegatedSpace(DelegatedAccess $delegatedAccess, SessionInterface $session)
     {
         if (0 === \count($delegatedAccess->getAccesses())) {
-            throw new \LogicException(sprintf('No access available for delegated access %d', $delegatedAccess->getId()));
+            throw new \LogicException(\sprintf('No access available for delegated access %d', $delegatedAccess->getId()));
         }
 
         $session->set(DelegatedAccess::ATTRIBUTE_KEY, $delegatedAccess->getUuid()->toString());

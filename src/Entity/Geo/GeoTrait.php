@@ -51,7 +51,7 @@ trait GeoTrait
 
     public function __toString(): string
     {
-        return sprintf('%s (%s)', $this->name, $this->code);
+        return \sprintf('%s (%s)', $this->name, $this->code);
     }
 
     public function getId(): ?int
@@ -77,7 +77,7 @@ trait GeoTrait
     #[Groups(['autocomplete'])]
     public function getNameCode(): string
     {
-        return sprintf('%s %s', $this->name, $this->code);
+        return \sprintf('%s %s', $this->name, $this->code);
     }
 
     public function isActive(): bool

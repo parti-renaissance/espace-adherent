@@ -27,7 +27,7 @@ trait ElectionRoundsCollectionTrait
 
         foreach ($rounds as $round) {
             if (!$round instanceof ElectionRound) {
-                throw new \InvalidArgumentException(sprintf('Expected an instance of "%s", but got "%s".', ElectionRound::class, \is_object($round) ? $round::class : \gettype($round)));
+                throw new \InvalidArgumentException(\sprintf('Expected an instance of "%s", but got "%s".', ElectionRound::class, \is_object($round) ? $round::class : \gettype($round)));
             }
 
             if ($this->electionRounds->contains($round)) {

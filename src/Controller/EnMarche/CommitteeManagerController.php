@@ -166,7 +166,7 @@ class CommitteeManagerController extends AbstractController
     public function promoteHostAction(Request $request, Committee $committee, Adherent $member): Response
     {
         if (!$this->manager->isPromotableHost($member, $committee)) {
-            throw $this->createNotFoundException(sprintf('Member "%s" of committee "%s" can not be promoted as a host privileged person.', $member->getUuid(), $committee->getUuid()));
+            throw $this->createNotFoundException(\sprintf('Member "%s" of committee "%s" can not be promoted as a host privileged person.', $member->getUuid(), $committee->getUuid()));
         }
 
         $form = $this->createForm(FormType::class);
@@ -200,7 +200,7 @@ class CommitteeManagerController extends AbstractController
     public function demoteHostAction(Request $request, Committee $committee, Adherent $member): Response
     {
         if (!$this->manager->isDemotableHost($member, $committee)) {
-            throw $this->createNotFoundException(sprintf('Member "%s" of committee "%s" can not be demoted as a simple follower.', $member->getUuid(), $committee->getUuid()));
+            throw $this->createNotFoundException(\sprintf('Member "%s" of committee "%s" can not be demoted as a simple follower.', $member->getUuid(), $committee->getUuid()));
         }
 
         $form = $this->createForm(FormType::class);

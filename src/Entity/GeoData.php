@@ -32,7 +32,7 @@ class GeoData
     public function __construct(GeometryInterface $geoShape)
     {
         if (!$geoShape instanceof Polygon && !$geoShape instanceof MultiPolygon) {
-            throw new \InvalidArgumentException(sprintf('$geoShape must be an instance of %s or %s, %s given', Polygon::class, MultiPolygon::class, $geoShape::class));
+            throw new \InvalidArgumentException(\sprintf('$geoShape must be an instance of %s or %s, %s given', Polygon::class, MultiPolygon::class, $geoShape::class));
         }
 
         $this->geoShape = $geoShape;

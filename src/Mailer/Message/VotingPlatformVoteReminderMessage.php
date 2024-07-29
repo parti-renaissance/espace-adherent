@@ -26,7 +26,7 @@ final class VotingPlatformVoteReminderMessage extends Message
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            sprintf('[Rappel] Il vous reste %s pour participer !', $remainingTime),
+            \sprintf('[Rappel] Il vous reste %s pour participer !', $remainingTime),
             [
                 'remaining_time' => $remainingTime,
                 'first_name' => $adherent->getFirstName(),

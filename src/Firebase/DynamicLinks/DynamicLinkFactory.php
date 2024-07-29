@@ -22,7 +22,7 @@ class DynamicLinkFactory
     public function create(DynamicLinkObjectInterface $object): CreateDynamicLink
     {
         if (!str_starts_with($url = $object->getDynamicLinkPath(), 'http')) {
-            $url = sprintf('%s/%s', rtrim($this->dynamicLinksHost, '/'), ltrim($url, '/'));
+            $url = \sprintf('%s/%s', rtrim($this->dynamicLinksHost, '/'), ltrim($url, '/'));
         }
 
         $link = CreateDynamicLink::forUrl($url)

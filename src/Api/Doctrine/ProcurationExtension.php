@@ -42,7 +42,7 @@ class ProcurationExtension implements QueryCollectionExtensionInterface
 
         $zoneQueryBuilder = $this->entityManager
             ->createQueryBuilder()
-            ->select($select = sprintf('%s.id', $entityClassAlias = 'procu_filter_subquery'))
+            ->select($select = \sprintf('%s.id', $entityClassAlias = 'procu_filter_subquery'))
             ->from($resourceClass, $entityClassAlias)
             ->leftJoin($entityClassAlias.'.voteZone', 'vote_zone')
             ->leftJoin($entityClassAlias.'.votePlace', 'vote_place')
@@ -71,6 +71,6 @@ class ProcurationExtension implements QueryCollectionExtensionInterface
 
         $zoneQueryBuilder->where($orX);
 
-        $queryBuilder->andWhere(sprintf('%s.id IN (%s)', $queryBuilder->getRootAliases()[0], $zoneQueryBuilder->getDQL()));
+        $queryBuilder->andWhere(\sprintf('%s.id IN (%s)', $queryBuilder->getRootAliases()[0], $zoneQueryBuilder->getDQL()));
     }
 }

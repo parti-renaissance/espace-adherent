@@ -39,7 +39,7 @@ class CertificationRequestProcessPreApprovedCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $interval = sprintf('-%d hour', (int) $input->getOption('interval'));
+        $interval = \sprintf('-%d hour', (int) $input->getOption('interval'));
 
         $createdBefore = new \DateTime('now');
         $createdBefore->add(\DateInterval::createFromDateString($interval));

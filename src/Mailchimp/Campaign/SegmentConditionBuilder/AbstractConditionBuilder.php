@@ -25,7 +25,7 @@ abstract class AbstractConditionBuilder implements SegmentConditionBuilderInterf
         return [
             'condition_type' => 'Interests',
             'op' => $op,
-            'field' => sprintf('interests-%s', $groupId),
+            'field' => \sprintf('interests-%s', $groupId),
             'value' => array_values(
                 array_intersect_key($this->getListInterestIds(), array_fill_keys($interestKeys, true))
             ),

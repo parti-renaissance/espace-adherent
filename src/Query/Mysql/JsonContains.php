@@ -41,7 +41,7 @@ class JsonContains extends FunctionNode
         }
 
         if ($sqlWalker->getConnection()->getDatabasePlatform() instanceof MySQLPlatform) {
-            return sprintf('%s(%s, %s)', static::FUNCTION_NAME, $jsonDoc, $jsonVal.$jsonPath);
+            return \sprintf('%s(%s, %s)', static::FUNCTION_NAME, $jsonDoc, $jsonVal.$jsonPath);
         }
 
         throw Exception::notSupported(static::FUNCTION_NAME);

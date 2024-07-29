@@ -14,9 +14,9 @@ class NewsTitlePrefix
         $space = $news->getSpace();
         switch ($space) {
             case JecouteSpaceEnum::CANDIDATE_SPACE:
-                return sprintf('[%s] %s', self::PREFIX_CANDIDATE_SPACE, $news->getTitle());
+                return \sprintf('[%s] %s', self::PREFIX_CANDIDATE_SPACE, $news->getTitle());
             case JecouteSpaceEnum::REFERENT_SPACE:
-                return sprintf('[%s] %s', self::PREFIX_REFERENT_SPACE, $news->getTitle());
+                return \sprintf('[%s] %s', self::PREFIX_REFERENT_SPACE, $news->getTitle());
             default:
                 return $news->getTitle();
         }
@@ -28,11 +28,11 @@ class NewsTitlePrefix
         $prefix = null;
         switch ($space) {
             case JecouteSpaceEnum::CANDIDATE_SPACE:
-                $prefix = sprintf('[%s] ', self::PREFIX_CANDIDATE_SPACE);
+                $prefix = \sprintf('[%s] ', self::PREFIX_CANDIDATE_SPACE);
 
                 break;
             case JecouteSpaceEnum::REFERENT_SPACE:
-                $prefix = sprintf('[%s] ', self::PREFIX_REFERENT_SPACE);
+                $prefix = \sprintf('[%s] ', self::PREFIX_REFERENT_SPACE);
 
                 break;
             default:

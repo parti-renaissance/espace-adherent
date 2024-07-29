@@ -13,7 +13,7 @@ final class Version20230307142934 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_A4CCEF076FBC9426 ON geo_zone');
         $this->addSql('ALTER TABLE geo_zone CHANGE tags tags LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\'');
 
-        $this->addSql(sprintf(
+        $this->addSql(\sprintf(
             "UPDATE geo_zone SET tags = '%s' WHERE code IN ('64PB', '64B', '20', '69D', '69M')",
             ZoneTagEnum::SUB_ZONE
         ));

@@ -29,7 +29,7 @@ class TransactionalSender implements SenderInterface
     public function sendTest(AdherentMessageInterface $message, array $recipients = []): bool
     {
         $message = clone $message;
-        $message->setSubject(sprintf('[TEST] %s', $message->getSubject()));
+        $message->setSubject(\sprintf('[TEST] %s', $message->getSubject()));
 
         return $this->doSend($message, $recipients);
     }

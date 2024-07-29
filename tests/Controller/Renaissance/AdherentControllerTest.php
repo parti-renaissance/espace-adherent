@@ -77,15 +77,15 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
         $inputPattern = 'input[name="adherent_profile[%s]"]';
         $optionPattern = 'select[name="adherent_profile[%s]"] option[selected="selected"]';
 
-        self::assertSame('female', $crawler->filter(sprintf($optionPattern, 'gender'))->attr('value'));
-        self::assertSame('Laure', $crawler->filter(sprintf($inputPattern, 'firstName'))->attr('value'));
-        self::assertSame('Fenix', $crawler->filter(sprintf($inputPattern, 'lastName'))->attr('value'));
-        self::assertSame('2 avenue Jean Jaurès', $crawler->filter(sprintf($inputPattern, 'address][address'))->attr('value'));
-        self::assertSame('77000', $crawler->filter(sprintf($inputPattern, 'address][postalCode'))->attr('value'));
-        self::assertSame('France', $crawler->filter(sprintf($optionPattern, 'address][country'))->text());
-        self::assertSame(null, $crawler->filter(sprintf($inputPattern, 'phone][number'))->attr('value'));
-        self::assertSame('En activité', $crawler->filter(sprintf($optionPattern, 'position'))->text());
-        self::assertSame('1942-01-10', $crawler->filter(sprintf($inputPattern, 'birthdate'))->attr('value'));
+        self::assertSame('female', $crawler->filter(\sprintf($optionPattern, 'gender'))->attr('value'));
+        self::assertSame('Laure', $crawler->filter(\sprintf($inputPattern, 'firstName'))->attr('value'));
+        self::assertSame('Fenix', $crawler->filter(\sprintf($inputPattern, 'lastName'))->attr('value'));
+        self::assertSame('2 avenue Jean Jaurès', $crawler->filter(\sprintf($inputPattern, 'address][address'))->attr('value'));
+        self::assertSame('77000', $crawler->filter(\sprintf($inputPattern, 'address][postalCode'))->attr('value'));
+        self::assertSame('France', $crawler->filter(\sprintf($optionPattern, 'address][country'))->text());
+        self::assertSame(null, $crawler->filter(\sprintf($inputPattern, 'phone][number'))->attr('value'));
+        self::assertSame('En activité', $crawler->filter(\sprintf($optionPattern, 'position'))->text());
+        self::assertSame('1942-01-10', $crawler->filter(\sprintf($inputPattern, 'birthdate'))->attr('value'));
         self::assertAdherentHasZone($adherent, '77');
 
         // Submit the profile form with invalid data

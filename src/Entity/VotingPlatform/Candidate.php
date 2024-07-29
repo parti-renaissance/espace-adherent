@@ -104,7 +104,7 @@ class Candidate
 
     public function getFullName(): string
     {
-        return trim(sprintf('%s %s', $this->firstName, $this->lastName));
+        return trim(\sprintf('%s %s', $this->firstName, $this->lastName));
     }
 
     public function isFemale(): bool

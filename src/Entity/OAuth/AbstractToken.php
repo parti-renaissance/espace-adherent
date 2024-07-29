@@ -71,7 +71,7 @@ abstract class AbstractToken implements TokenInterface
     public function revoke(string $datetime = 'now'): void
     {
         if ($this->revokedAt) {
-            throw new \LogicException(sprintf('Token of type "%s" and identified by "%s" has already been revoked!', \get_class($this), $this->identifier));
+            throw new \LogicException(\sprintf('Token of type "%s" and identified by "%s" has already been revoked!', \get_class($this), $this->identifier));
         }
 
         $this->revokedAt = new \DateTime($datetime);

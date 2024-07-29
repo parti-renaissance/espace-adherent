@@ -197,11 +197,11 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $username = $user->getUsername();
 
         if (!$this->supportsClass($class)) {
-            throw new UnsupportedUserException(sprintf('User of type "%s" and identified by "%s" is not supported by this provider.', $class, $username));
+            throw new UnsupportedUserException(\sprintf('User of type "%s" and identified by "%s" is not supported by this provider.', $class, $username));
         }
 
         if (!$user = $this->loadUserByUsername($username)) {
-            throw new UsernameNotFoundException(sprintf('Unable to find Adherent user identified by "%s".', $username));
+            throw new UsernameNotFoundException(\sprintf('Unable to find Adherent user identified by "%s".', $username));
         }
 
         return $user;
@@ -725,7 +725,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             $now = new \DateTimeImmutable();
             $qb
                 ->andWhere('adherent.birthdate <= :min_age_birth_date')
-                ->setParameter('min_age_birth_date', $now->sub(new \DateInterval(sprintf('P%dY', $ageMin))))
+                ->setParameter('min_age_birth_date', $now->sub(new \DateInterval(\sprintf('P%dY', $ageMin))))
             ;
         }
 
@@ -733,7 +733,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             $now = new \DateTimeImmutable();
             $qb
                 ->andWhere('adherent.birthdate >= :max_age_birth_date')
-                ->setParameter('max_age_birth_date', $now->sub(new \DateInterval(sprintf('P%dY', $ageMax))))
+                ->setParameter('max_age_birth_date', $now->sub(new \DateInterval(\sprintf('P%dY', $ageMax))))
             ;
         }
 
@@ -770,12 +770,12 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 'z2',
                 function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
                     $zoneQueryBuilder
-                        ->andWhere(sprintf('%s.status = :adherent_status', $entityClassAlias))
-                        ->andWhere(sprintf('%s.adherent = true', $entityClassAlias))
+                        ->andWhere(\sprintf('%s.status = :adherent_status', $entityClassAlias))
+                        ->andWhere(\sprintf('%s.adherent = true', $entityClassAlias))
                         ->andWhere((new Orx())
-                            ->add(sprintf('%s.source IS NULL', $entityClassAlias))
-                            ->add(sprintf('%s.source = :source_jme', $entityClassAlias))
-                            ->add(sprintf('%s.source = :source_renaissance', $entityClassAlias))
+                            ->add(\sprintf('%s.source IS NULL', $entityClassAlias))
+                            ->add(\sprintf('%s.source = :source_jme', $entityClassAlias))
+                            ->add(\sprintf('%s.source = :source_renaissance', $entityClassAlias))
                         )
                     ;
                 }
@@ -819,14 +819,14 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $queryBuilder = $this->createQueryBuilderForAudience($campaign->getAudience())
             ->select('adherent')
             ->andWhere('adherent.phone LIKE :fr_phone')
-            ->andWhere(sprintf('adherent.id NOT IN (%s)',
+            ->andWhere(\sprintf('adherent.id NOT IN (%s)',
                 $this->createQueryBuilder('a3')
                     ->select('DISTINCT(a3.id)')
                     ->innerJoin(CampaignHistory::class, 'ch3', Join::WITH, 'ch3.adherent = a3')
                     ->andWhere('ch3.status = :completed')
                     ->andWhere('ch3.campaign = :campaign')
             ))
-            ->andWhere(sprintf('adherent.id NOT IN (%s)',
+            ->andWhere(\sprintf('adherent.id NOT IN (%s)',
                 $this->createQueryBuilder('a4')
                     ->select('DISTINCT(a4.id)')
                     ->innerJoin(CampaignHistory::class, 'ch4', Join::WITH, 'ch4.adherent = a4')
@@ -835,7 +835,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                         ->add('ch4.status = :dont_remind AND ch4.campaign = :campaign')
                     )
             ))
-            ->andWhere(sprintf('adherent.id NOT IN (%s)',
+            ->andWhere(\sprintf('adherent.id NOT IN (%s)',
                 $this->createQueryBuilder('a5')
                     ->select('DISTINCT(a5.id)')
                     ->innerJoin(CampaignHistory::class, 'ch5', Join::WITH, 'ch5.adherent = a5')
@@ -1145,7 +1145,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $where = $qb->expr()->orX();
 
         if ($committeeMandates = array_intersect([AdherentRoleEnum::COMMITTEE_SUPERVISOR, AdherentRoleEnum::COMMITTEE_PROVISIONAL_SUPERVISOR], $roles)) {
-            $qb->leftJoin(sprintf('%s.adherentMandates', $alias), 'am');
+            $qb->leftJoin(\sprintf('%s.adherentMandates', $alias), 'am');
             $condition = '';
 
             if (1 === \count($committeeMandates)) {
@@ -1279,7 +1279,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ])
         ;
 
-        $zoneQueryModifier = fn (QueryBuilder $queryBuilder, string $entityClassAlias) => $queryBuilder->andWhere(sprintf('%1$s.source IS NULL OR %1$s.source = :source', $entityClassAlias));
+        $zoneQueryModifier = fn (QueryBuilder $queryBuilder, string $entityClassAlias) => $queryBuilder->andWhere(\sprintf('%1$s.source IS NULL OR %1$s.source = :source', $entityClassAlias));
 
         $this->withGeoZones(
             [$zone],
@@ -1303,7 +1303,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
 
         $qb
-            ->andWhere(sprintf('adherent.id NOT IN (%s)', $excludedAdherentQueryBuilder->getDQL()))
+            ->andWhere(\sprintf('adherent.id NOT IN (%s)', $excludedAdherentQueryBuilder->getDQL()))
             ->setParameters(new ArrayCollection(array_merge($qb->getParameters()->toArray(), $excludedAdherentQueryBuilder->getParameters()->toArray())))
         ;
 
@@ -1345,9 +1345,9 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_recotisation, a.id, NULL)) AS total_recotisation')
             ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_elu, a.id, NULL)) AS total_elu')
             ->setParameters([
-                'tag_primo' => '%'.sprintf(TagEnum::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $currentYear).'%',
-                'tag_recotisation' => '%'.sprintf(TagEnum::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $currentYear).'%',
-                'tag_elu' => '%'.sprintf(TagEnum::ADHERENT_YEAR_ELU_TAG_PATTERN, $currentYear).'%',
+                'tag_primo' => '%'.\sprintf(TagEnum::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $currentYear).'%',
+                'tag_recotisation' => '%'.\sprintf(TagEnum::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $currentYear).'%',
+                'tag_elu' => '%'.\sprintf(TagEnum::ADHERENT_YEAR_ELU_TAG_PATTERN, $currentYear).'%',
                 'tag_a_jour_n' => '%'.TagEnum::getAdherentYearTag().'%',
                 'tag_a_jour_n1' => '%'.TagEnum::getAdherentYearTag($currentYear - 1).'%',
                 'tag_a_jour_n2' => '%'.TagEnum::getAdherentYearTag($currentYear - 2).'%',

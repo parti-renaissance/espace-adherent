@@ -23,7 +23,7 @@ class EventNormalizer implements NormalizerInterface
         ];
 
         if ($organizer = $object->getOrganizer()) {
-            $eventData['ORGANIZER'] = sprintf('%s %s', $organizer->getFirstName(), mb_strtoupper($organizer->getLastName()));
+            $eventData['ORGANIZER'] = \sprintf('%s %s', $organizer->getFirstName(), mb_strtoupper($organizer->getLastName()));
         }
 
         return $eventData;

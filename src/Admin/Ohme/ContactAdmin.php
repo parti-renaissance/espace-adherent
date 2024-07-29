@@ -44,7 +44,7 @@ class ContactAdmin extends AbstractAdmin
                         'search',
                     ],
                     'to_string_callback' => static function (Adherent $adherent): string {
-                        return sprintf(
+                        return \sprintf(
                             '%s (%s) [%s]',
                             $adherent->getFullName(),
                             $adherent->getEmailAddress(),

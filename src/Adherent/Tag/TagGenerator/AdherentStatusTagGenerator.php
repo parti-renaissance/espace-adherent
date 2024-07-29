@@ -35,7 +35,7 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
         $mainTag = null;
 
         if (\count($adherent->getConfirmedPayments())) {
-            $mainTag = sprintf(TagEnum::ADHERENT_YEAR_ELU_TAG_PATTERN, date('Y'));
+            $mainTag = \sprintf(TagEnum::ADHERENT_YEAR_ELU_TAG_PATTERN, date('Y'));
         }
 
         $countCotisationByYear = $this->donationRepository->countCotisationByYearForAdherent($adherent);
@@ -45,12 +45,12 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
 
             if ($lastYear == date('Y')) {
                 if (1 === $countTotalCotisation) {
-                    $mainTag = sprintf(TagEnum::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $lastYear);
+                    $mainTag = \sprintf(TagEnum::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $lastYear);
                 } else {
-                    $mainTag = sprintf(TagEnum::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $lastYear);
+                    $mainTag = \sprintf(TagEnum::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $lastYear);
                 }
             } elseif (null === $mainTag) {
-                $mainTag = sprintf(TagEnum::ADHERENT_YEAR_TAG_PATTERN, $lastYear);
+                $mainTag = \sprintf(TagEnum::ADHERENT_YEAR_TAG_PATTERN, $lastYear);
             }
         }
 

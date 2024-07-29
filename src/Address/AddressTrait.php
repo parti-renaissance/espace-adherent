@@ -73,7 +73,7 @@ trait AddressTrait
         if ($city) {
             $parts = explode('-', $city);
             if (2 !== \count($parts)) {
-                throw new \InvalidArgumentException(sprintf('Invalid french city format: %s.', $city));
+                throw new \InvalidArgumentException(\sprintf('Invalid french city format: %s.', $city));
             }
 
             if (!$this->postalCode) {

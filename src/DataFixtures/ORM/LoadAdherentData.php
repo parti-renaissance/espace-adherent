@@ -895,7 +895,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             $adherent = $this->adherentFactory->createFromArray([
                 'uuid' => Uuid::uuid4(),
                 'password' => self::DEFAULT_PASSWORD,
-                'email' => sprintf('adherent-%s-%d@en-marche-dev.fr', $gender, $index),
+                'email' => \sprintf('adherent-%s-%d@en-marche-dev.fr', $gender, $index),
                 'gender' => $gender,
                 'nationality' => AddressInterface::FRANCE,
                 'first_name' => 'Adherent '.$index,

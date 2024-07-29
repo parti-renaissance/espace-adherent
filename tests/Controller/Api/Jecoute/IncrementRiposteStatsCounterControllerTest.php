@@ -42,7 +42,7 @@ class IncrementRiposteStatsCounterControllerTest extends AbstractApiTestCase
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
-        $this->client->request(Request::METHOD_PUT, sprintf(self::URI, $riposteUuid, $action), [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);
+        $this->client->request(Request::METHOD_PUT, \sprintf(self::URI, $riposteUuid, $action), [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);
 
         $this->isSuccessful($this->client->getResponse());
         self::assertEquals('"OK"', $this->client->getResponse()->getContent());

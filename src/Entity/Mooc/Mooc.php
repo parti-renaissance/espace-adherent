@@ -236,7 +236,7 @@ class Mooc
 
     public function getYoutubeThumbnail(): ?string
     {
-        return $this->youtubeId ? sprintf('https://img.youtube.com/vi/%s/0.jpg', $this->youtubeId) : null;
+        return $this->youtubeId ? \sprintf('https://img.youtube.com/vi/%s/0.jpg', $this->youtubeId) : null;
     }
 
     public function getYoutubeDuration(): ?\DateTime

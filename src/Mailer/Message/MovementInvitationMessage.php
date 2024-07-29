@@ -12,7 +12,7 @@ final class MovementInvitationMessage extends Message
             $invite->getUuid(),
             $invite->getEmail(),
             null,
-            sprintf('%s vous invite à rejoindre En Marche.', self::escape($invite->getSenderFullName())),
+            \sprintf('%s vous invite à rejoindre En Marche.', self::escape($invite->getSenderFullName())),
             static::getTemplateVars($invite->getFirstName(), $invite->getLastName(), $invite->getMessage())
         );
     }

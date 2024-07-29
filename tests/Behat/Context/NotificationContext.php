@@ -29,7 +29,7 @@ class NotificationContext extends RawMinkContext
         $actualCount = $this->notificationRepository->count($criteria);
 
         if ($actualCount !== $expectedCount) {
-            $this->raiseException(sprintf('I found %d notification(s) instead of %d', $actualCount, $expectedCount));
+            $this->raiseException(\sprintf('I found %d notification(s) instead of %d', $actualCount, $expectedCount));
         }
     }
 
@@ -59,7 +59,7 @@ class NotificationContext extends RawMinkContext
         $actualValue = $this->propertyAccessor->getValue($notification, $property);
 
         if ($expectedValue !== $actualValue) {
-            $this->raiseException(sprintf('Expected notification with %s "%s", but got "%s" instead.', $property, $expectedValue, $actualValue));
+            $this->raiseException(\sprintf('Expected notification with %s "%s", but got "%s" instead.', $property, $expectedValue, $actualValue));
         }
     }
 

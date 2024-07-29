@@ -30,7 +30,7 @@ class CommitteeFactory
     {
         foreach (['name', 'description', 'created_by', 'address'] as $key) {
             if (empty($data[$key])) {
-                throw new \InvalidArgumentException(sprintf('Key "%s" is missing or has an empty value.', $key));
+                throw new \InvalidArgumentException(\sprintf('Key "%s" is missing or has an empty value.', $key));
             }
         }
 

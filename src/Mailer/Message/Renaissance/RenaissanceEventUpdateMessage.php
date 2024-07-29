@@ -22,7 +22,7 @@ class RenaissanceEventUpdateMessage extends AbstractRenaissanceMessage
 
         $recipient = array_shift($recipients);
         if (!$recipient instanceof EventRegistration) {
-            throw new \RuntimeException(sprintf('First recipient must be an %s instance, %s given', EventRegistration::class, $recipient::class));
+            throw new \RuntimeException(\sprintf('First recipient must be an %s instance, %s given', EventRegistration::class, $recipient::class));
         }
 
         $message = new self(
@@ -53,7 +53,7 @@ class RenaissanceEventUpdateMessage extends AbstractRenaissanceMessage
             'event_name' => self::escape($event->getName()),
             'event_url' => $eventUrl,
             'event_date' => static::formatDate($event->getLocalBeginAt(), 'EEEE d MMMM y'),
-            'event_hour' => sprintf(
+            'event_hour' => \sprintf(
                 '%sh%s',
                 static::formatDate($event->getLocalBeginAt(), 'HH'),
                 static::formatDate($event->getLocalBeginAt(), 'mm')

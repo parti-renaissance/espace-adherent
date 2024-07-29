@@ -20,7 +20,7 @@ final class VotingPlatformCandidacyInvitationDeclinedMessage extends AbstractVot
             Uuid::uuid4(),
             $candidate->getEmailAddress(),
             $candidate->getFullName(),
-            sprintf('[%s] %s a décliné votre invitation', $emailTitle, $invited->getFirstName()),
+            \sprintf('[%s] %s a décliné votre invitation', $emailTitle, $invited->getFirstName()),
             [
                 'email_title' => $emailTitle,
                 'election_type' => $designation->getType(),

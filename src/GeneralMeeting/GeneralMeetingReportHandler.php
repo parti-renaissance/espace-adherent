@@ -20,7 +20,7 @@ class GeneralMeetingReportHandler
 
         $this->removeFile($generalMeetingReport);
 
-        $generalMeetingReport->setFilePath($path = sprintf(
+        $generalMeetingReport->setFilePath($path = \sprintf(
             '%s/%s.%s',
             'files/general_meeting_reports',
             Uuid::uuid4()->toString(),

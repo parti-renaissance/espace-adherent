@@ -525,11 +525,11 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         }
 
         for ($day = 1; $day <= 31; ++$day) {
-            $this->publishCommitteeMessage($committee1, $author3, 'Foo subject', sprintf("Rapport d'activité du %u janvier 2017.", $day), sprintf('2017-01-%02u 09:00:00', $day));
+            $this->publishCommitteeMessage($committee1, $author3, 'Foo subject', \sprintf("Rapport d'activité du %u janvier 2017.", $day), \sprintf('2017-01-%02u 09:00:00', $day));
         }
 
         for ($day = 1; $day <= 5; ++$day) {
-            $this->publishCommitteeMessage($committee1, $author7, 'Foo subject', sprintf("Rapport d'activité du %u janvier 2017.", $day), sprintf('2017-01-%02u 09:00:00', $day));
+            $this->publishCommitteeMessage($committee1, $author7, 'Foo subject', \sprintf("Rapport d'activité du %u janvier 2017.", $day), \sprintf('2017-01-%02u 09:00:00', $day));
         }
 
         $this->publishCommitteeEvent($event1);

@@ -21,7 +21,7 @@ final class VotingPlatformElectionSecondRoundNotificationMessage extends Abstrac
             Uuid::uuid4(),
             $first->getEmailAddress(),
             $first->getFullName(),
-            sprintf('[%s] Vous avez %d jours pour voter à nouveau.', self::getMailSubjectPrefix($election->getDesignation()), $daysLeft),
+            \sprintf('[%s] Vous avez %d jours pour voter à nouveau.', self::getMailSubjectPrefix($election->getDesignation()), $daysLeft),
             [
                 'election_type' => $election->getDesignationType(),
                 'days_left' => $daysLeft,

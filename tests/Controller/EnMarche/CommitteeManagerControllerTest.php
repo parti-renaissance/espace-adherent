@@ -46,7 +46,7 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->request('GET', sprintf('%s/editer', $this->client->getRequest()->getPathInfo()));
+        $this->client->request('GET', \sprintf('%s/editer', $this->client->getRequest()->getPathInfo()));
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
@@ -199,7 +199,7 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->client->request('GET', sprintf('%s/evenements/ajouter', $this->client->getRequest()->getPathInfo()));
+        $this->client->request('GET', \sprintf('%s/evenements/ajouter', $this->client->getRequest()->getPathInfo()));
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
@@ -422,7 +422,7 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->authenticateAsAdherent($this->client, $username);
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
         $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
-        $this->client->request(Request::METHOD_GET, sprintf('%s/membres', $this->client->getRequest()->getPathInfo()));
+        $this->client->request(Request::METHOD_GET, \sprintf('%s/membres', $this->client->getRequest()->getPathInfo()));
 
         $this->assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }

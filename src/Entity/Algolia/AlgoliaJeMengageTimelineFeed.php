@@ -62,7 +62,7 @@ class AlgoliaJeMengageTimelineFeed extends Aggregator implements IndexableEntity
     public function isIndexable(): bool
     {
         if (!$this->entity instanceof IndexableEntityInterface) {
-            throw new \LogicException(sprintf('Algolia Sub Entity "%s" should implement "%s"', \get_class($this->entity), IndexableEntityInterface::class));
+            throw new \LogicException(\sprintf('Algolia Sub Entity "%s" should implement "%s"', \get_class($this->entity), IndexableEntityInterface::class));
         }
 
         return $this->entity->isIndexable();

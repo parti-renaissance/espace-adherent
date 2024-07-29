@@ -26,7 +26,7 @@ class InternalApiProxyControllerTest extends AbstractApiTestCase
     {
         $accessToken = $this->getJwtAccessTokenByIdentifier('l9efhked975s1z1og3z10anp8ydi6tkmha468906g1tu0hb5hltni7xvsuipg5n7tkslzqjttyfn69cd', $this->privateCryptKey);
 
-        $url = sprintf('/api/v3/internal/%s/api/v3/events', LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_03_UUID);
+        $url = \sprintf('/api/v3/internal/%s/api/v3/events', LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_03_UUID);
 
         $this->client->request(Request::METHOD_GET, $url, [], [], ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]);
         $this->isSuccessful($response = $this->client->getResponse());
@@ -41,7 +41,7 @@ class InternalApiProxyControllerTest extends AbstractApiTestCase
     {
         $accessToken = $this->getJwtAccessTokenByIdentifier('l9efhked975s1z1og3z10anp8ydi6tkmha468906g1tu0hb5hltni7xvsuipg5n7tkslzqjttyfn69cd', $this->privateCryptKey);
 
-        $url = sprintf(
+        $url = \sprintf(
             '/api/v3/internal/%s/api/v3/events?scope=%s',
             LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_04_UUID,
             ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY
@@ -60,7 +60,7 @@ class InternalApiProxyControllerTest extends AbstractApiTestCase
     {
         $accessToken = $this->getJwtAccessTokenByIdentifier('l9efhked975s1z1og3z10anp8ydi6tkmha468906g1tu0hb5hltni7xvsuipg5n7tkslzqjttyfn69cd', $this->privateCryptKey);
 
-        $url = sprintf(
+        $url = \sprintf(
             '/api/v3/internal/%s/api/v3/events?scope=%s&name=%s',
             LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_04_UUID,
             ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
@@ -80,7 +80,7 @@ class InternalApiProxyControllerTest extends AbstractApiTestCase
     {
         $accessToken = $this->getJwtAccessTokenByIdentifier('l9efhked975s1z1og3z10anp8ydi6tkmha468906g1tu0hb5hltni7xvsuipg5n7tkslzqjttyfn69cd', $this->privateCryptKey);
 
-        $url = sprintf(
+        $url = \sprintf(
             '/api/v3/internal/%s/api/v3/events?scope=%s',
             LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_04_UUID,
             ScopeEnum::CANDIDATE
@@ -94,7 +94,7 @@ class InternalApiProxyControllerTest extends AbstractApiTestCase
     {
         $accessToken = $this->getJwtAccessTokenByIdentifier('l9efhked975s1z1og3z10anp8ydi6tkmha468906g1tu0hb5hltni7xvsuipg5n7tkslzqjttyfn69cd', $this->privateCryptKey);
 
-        $url = sprintf(
+        $url = \sprintf(
             '/api/v3/internal/%s/api/v3/events?scope=invalid',
             LoadInternalApiApplicationData::INTERNAL_API_APPLICATION_04_UUID,
         );

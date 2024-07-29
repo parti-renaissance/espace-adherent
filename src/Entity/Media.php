@@ -274,6 +274,6 @@ class Media
 
     public function getPathWithDirectory(): string
     {
-        return sprintf('%s/%s', $this->isVideo() ? 'videos' : 'images', $this->getPath());
+        return \sprintf('%s/%s', $this->isVideo() ? 'videos' : 'images', $this->getPath());
     }
 }

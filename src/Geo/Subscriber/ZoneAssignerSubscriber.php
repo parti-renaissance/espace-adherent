@@ -82,7 +82,7 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
         foreach ($zones as $zone) {
             $entity->addZone($zone);
             if ($setCity && $needInsee && $zone->isCity()) {
-                $entity->setCity(sprintf('%s-%s', $address->getPostalCode(), $zone->getCode()));
+                $entity->setCity(\sprintf('%s-%s', $address->getPostalCode(), $zone->getCode()));
             }
         }
 

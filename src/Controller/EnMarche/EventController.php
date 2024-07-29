@@ -76,7 +76,7 @@ class EventController extends AbstractController
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
         if ($event->isFinished()) {
-            throw $this->createNotFoundException(sprintf('Event "%s" is finished and does not accept registrations anymore', $event->getUuid()));
+            throw $this->createNotFoundException(\sprintf('Event "%s" is finished and does not accept registrations anymore', $event->getUuid()));
         }
 
         if ($event->isFull()) {
@@ -118,7 +118,7 @@ class EventController extends AbstractController
         }
 
         if ($event->isFinished()) {
-            throw $this->createNotFoundException(sprintf('Event "%s" is finished and does not accept registrations anymore', $event->getUuid()));
+            throw $this->createNotFoundException(\sprintf('Event "%s" is finished and does not accept registrations anymore', $event->getUuid()));
         }
 
         if ($event->isFull()) {
@@ -160,7 +160,7 @@ class EventController extends AbstractController
     ): Response {
         try {
             if (!$registration = $manager->findRegistration($uuid = $request->query->get('registration'))) {
-                throw $this->createNotFoundException(sprintf('Unable to find event registration by its UUID: %s', $uuid));
+                throw $this->createNotFoundException(\sprintf('Unable to find event registration by its UUID: %s', $uuid));
             }
         } catch (InvalidUuidException $e) {
             throw new BadUuidRequestException($e);

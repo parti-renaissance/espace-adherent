@@ -53,7 +53,7 @@ class GeoCoder
 
             return $this->cacheRecord[$ip];
         } catch (GeoIp2Exception $e) {
-            $this->logger->warning(sprintf('[GeoIP2] Unable to locate IP [%s]: %s', $ip, $e->getMessage()), [
+            $this->logger->warning(\sprintf('[GeoIP2] Unable to locate IP [%s]: %s', $ip, $e->getMessage()), [
                 'stack_trace' => $e->getTraceAsString(),
             ]);
         }

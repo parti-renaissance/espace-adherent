@@ -49,7 +49,7 @@ class DefaultEventRepository extends EventRepository
             'zones',
             'z2',
             function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(sprintf('%s.published = :published', $entityClassAlias));
+                $zoneQueryBuilder->andWhere(\sprintf('%s.published = :published', $entityClassAlias));
             }
         );
 

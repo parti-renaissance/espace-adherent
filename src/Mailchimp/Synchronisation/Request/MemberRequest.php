@@ -150,7 +150,7 @@ class MemberRequest implements MemberRequestInterface
             case Zone::REGION:
                 return self::MERGE_FIELD_CODE_REGION;
             default:
-                throw new \InvalidArgumentException(sprintf('Zone code type "%s" is not synchronized with mailchimp.', $zone->getType()));
+                throw new \InvalidArgumentException(\sprintf('Zone code type "%s" is not synchronized with mailchimp.', $zone->getType()));
         }
     }
 }

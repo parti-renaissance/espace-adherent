@@ -129,7 +129,7 @@ class UploadDocumentController extends AbstractController
         $response = new Response($documentContent);
         $response->headers->set('Content-Disposition', HeaderUtils::makeDisposition(
             HeaderUtils::DISPOSITION_ATTACHMENT,
-            sprintf(
+            \sprintf(
                 '%s.%s',
                 Urlizer::urlize($document->getFilename()),
                 $document->getExtension()

@@ -78,8 +78,8 @@ class ManagedUserRepository extends ServiceEntityRepository
             $zoneCondition = $qb->expr()->orX();
 
             foreach ($managedZones as $key => $zone) {
-                $zoneCondition->add(sprintf('FIND_IN_SET(:managed_zone_%s, u.zonesIds) > 0', $key));
-                $qb->setParameter(sprintf(':managed_zone_%s', $key), $zone->getId());
+                $zoneCondition->add(\sprintf('FIND_IN_SET(:managed_zone_%s, u.zonesIds) > 0', $key));
+                $qb->setParameter(\sprintf(':managed_zone_%s', $key), $zone->getId());
             }
 
             $qb->andWhere($zoneCondition);
@@ -89,8 +89,8 @@ class ManagedUserRepository extends ServiceEntityRepository
             $zoneCondition = $qb->expr()->orX();
 
             foreach ($selectedZones as $key => $zone) {
-                $zoneCondition->add(sprintf('FIND_IN_SET(:selected_zone_%s, u.zonesIds) > 0', $key));
-                $qb->setParameter(sprintf(':selected_zone_%s', $key), $zone->getId());
+                $zoneCondition->add(\sprintf('FIND_IN_SET(:selected_zone_%s, u.zonesIds) > 0', $key));
+                $qb->setParameter(\sprintf(':selected_zone_%s', $key), $zone->getId());
             }
 
             $qb->andWhere($zoneCondition);
@@ -178,20 +178,20 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         if (null !== $filter->isNewRenaissanceUser) {
             $qb
-                ->andWhere(sprintf('u.createdAt %s :registered_since_last_15d', $filter->isNewRenaissanceUser ? '>=' : '<'))
+                ->andWhere(\sprintf('u.createdAt %s :registered_since_last_15d', $filter->isNewRenaissanceUser ? '>=' : '<'))
                 ->setParameter('registered_since_last_15d', (new \DateTime('-15 days'))->setTime(0, 0))
             ;
         }
 
         if (null !== $filter->isCampusRegistered) {
             $qb
-                ->andWhere(sprintf('u.campusRegisteredAt %s NULL', $filter->isCampusRegistered ? 'IS NOT' : 'IS'))
+                ->andWhere(\sprintf('u.campusRegisteredAt %s NULL', $filter->isCampusRegistered ? 'IS NOT' : 'IS'))
             ;
         }
 
         foreach (array_values($filter->interests) as $key => $interest) {
             $qb
-                ->andWhere(sprintf('FIND_IN_SET(:interest_%s, u.interests) > 0', $key))
+                ->andWhere(\sprintf('FIND_IN_SET(:interest_%s, u.interests) > 0', $key))
                 ->setParameter('interest_'.$key, $interest)
             ;
         }
@@ -229,7 +229,7 @@ class ManagedUserRepository extends ServiceEntityRepository
             }
 
             $qb
-                ->andWhere(sprintf('u.tags %s :static_tag %s', $operator, $nullCheck))
+                ->andWhere(\sprintf('u.tags %s :static_tag %s', $operator, $nullCheck))
                 ->setParameter('static_tag', '%'.$staticTag.'%')
             ;
         }
@@ -277,7 +277,7 @@ class ManagedUserRepository extends ServiceEntityRepository
         }
 
         if (null !== $filter->isCommitteeMember) {
-            $qb->andWhere(sprintf('u.isCommitteeMember = %s', $filter->isCommitteeMember ? '1' : '0'));
+            $qb->andWhere(\sprintf('u.isCommitteeMember = %s', $filter->isCommitteeMember ? '1' : '0'));
         }
 
         $typeExpression = $qb->expr()->orX();
@@ -337,11 +337,11 @@ class ManagedUserRepository extends ServiceEntityRepository
         }
 
         if (null !== $filter->voteInCommittee) {
-            $qb->andWhere(sprintf('u.voteCommitteeId %s NULL', $filter->voteInCommittee ? 'IS NOT' : 'IS'));
+            $qb->andWhere(\sprintf('u.voteCommitteeId %s NULL', $filter->voteInCommittee ? 'IS NOT' : 'IS'));
         }
 
         if (null !== $filter->isCertified) {
-            $qb->andWhere(sprintf('u.certifiedAt %s NULL', $filter->isCertified ? 'IS NOT' : 'IS'));
+            $qb->andWhere(\sprintf('u.certifiedAt %s NULL', $filter->isCertified ? 'IS NOT' : 'IS'));
         }
 
         if (null !== $renaissanceMembership = $filter->renaissanceMembership) {
@@ -420,7 +420,7 @@ class ManagedUserRepository extends ServiceEntityRepository
             'zones',
             'z2',
             function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(sprintf('%s.status = :status', $entityClassAlias));
+                $zoneQueryBuilder->andWhere(\sprintf('%s.status = :status', $entityClassAlias));
             }
         );
 
@@ -444,7 +444,7 @@ class ManagedUserRepository extends ServiceEntityRepository
 
         $this->createQueryBuilder('managed_user')
             ->update()
-            ->set('managed_user.mandates', sprintf('(%s)', $subQuery))
+            ->set('managed_user.mandates', \sprintf('(%s)', $subQuery))
             ->where('managed_user.originalId = :adherent_id')
             ->setParameters([
                 'adherent_id' => $adherent->getId(),

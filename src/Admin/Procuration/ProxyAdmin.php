@@ -126,7 +126,7 @@ class ProxyAdmin extends AbstractProcurationAdmin
                         'Statut' => $translator->trans('procuration.proxy.status.'.$proxy->status->value),
                         'Numéro d\'électeur' => $proxy->electorNumber,
                         'Associations' => implode(', ', array_map(static function (ProxySlot $slot) {
-                            return sprintf(
+                            return \sprintf(
                                 '%s: %s',
                                 $slot->round->name,
                                 $slot->requestSlot

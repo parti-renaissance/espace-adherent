@@ -23,6 +23,6 @@ class ZoneExtractorFactory
             }
         }
 
-        throw new InvalidAdherentTypeException(sprintf('Adherent type [%d] is invalid', $type));
+        throw new InvalidAdherentTypeException(\sprintf('Adherent type [%d] is invalid', $type));
     }
 }

@@ -107,7 +107,7 @@ trait EntityDesignationTrait
         return $this->designation
             && $this->getVoteEndDate() <= $now
             && $now < (clone $voteEndDate)->modify(
-                sprintf('+%d days', $this->designation->getResultDisplayDelay())
+                \sprintf('+%d days', $this->designation->getResultDisplayDelay())
             );
     }
 
@@ -132,7 +132,7 @@ trait EntityDesignationTrait
         $now = new \DateTime();
         $candidateEndDate = clone $candidateEndDate;
 
-        return $candidateEndDate->modify(sprintf('-%d days', $this->designation->getLockPeriodThreshold())) < $now
+        return $candidateEndDate->modify(\sprintf('-%d days', $this->designation->getLockPeriodThreshold())) < $now
             && ($this->isCandidacyPeriodActive() || $now < $this->getRealVoteEndDate());
     }
 

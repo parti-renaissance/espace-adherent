@@ -115,7 +115,7 @@ class Donator
 
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%s %s (%s)',
             $this->firstName,
             $this->lastName,

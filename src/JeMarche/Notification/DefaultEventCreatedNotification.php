@@ -11,8 +11,8 @@ class DefaultEventCreatedNotification extends AbstractTopicNotification
     public static function create(string $topic, DefaultEvent $event, Zone $zone): self
     {
         $notification = new self(
-            sprintf('%s, nouvel événement', $zone->getName()),
-            sprintf('%s • %s • %s',
+            \sprintf('%s, nouvel événement', $zone->getName()),
+            \sprintf('%s • %s • %s',
                 $event->getName(),
                 self::formatDate($event->getBeginAt(), 'EEEE d MMMM y à HH\'h\'mm'),
                 $event->getInlineFormattedAddress()

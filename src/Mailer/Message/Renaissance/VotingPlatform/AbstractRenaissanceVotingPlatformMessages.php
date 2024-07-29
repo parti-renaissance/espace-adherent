@@ -9,6 +9,6 @@ abstract class AbstractRenaissanceVotingPlatformMessages extends AbstractRenaiss
 {
     protected static function getMailSubjectPrefix(Designation $designation, bool $isPartial = false): string
     {
-        return sprintf('%ss%s', $designation->getDenomination(false, true), $isPartial ? ' partielles' : '');
+        return \sprintf('%ss%s', $designation->getDenomination(false, true), $isPartial ? ' partielles' : '');
     }
 }

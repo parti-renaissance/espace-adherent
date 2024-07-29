@@ -41,7 +41,7 @@ class RegionManager
         }
 
         if (!$uploadedFile instanceof UploadedFile) {
-            throw new \RuntimeException(sprintf('The file must be an instance of %s', UploadedFile::class));
+            throw new \RuntimeException(\sprintf('The file must be an instance of %s', UploadedFile::class));
         }
 
         $region->setLogoFromUploadedFile();
@@ -62,7 +62,7 @@ class RegionManager
         }
 
         if (!$uploadedFile instanceof UploadedFile) {
-            throw new \RuntimeException(sprintf('The file must be an instance of %s', UploadedFile::class));
+            throw new \RuntimeException(\sprintf('The file must be an instance of %s', UploadedFile::class));
         }
 
         $region->setBannerFromUploadedFile();

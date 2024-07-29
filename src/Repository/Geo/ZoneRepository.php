@@ -148,7 +148,7 @@ class ZoneRepository extends ServiceEntityRepository
             ;
 
             $qb
-                ->andWhere(sprintf('zone.id %s (%s)', $filter->usedByCommittees ? 'IN' : 'NOT IN', $subQuery->getDQL()))
+                ->andWhere(\sprintf('zone.id %s (%s)', $filter->usedByCommittees ? 'IN' : 'NOT IN', $subQuery->getDQL()))
                 ->andWhere('(zone.tags IS NULL OR FIND_IN_SET(:zone_tag_cc_multi_dpt, zone.tags) = 0)')
                 ->setParameter('zone_tag_cc_multi_dpt', ZoneTagEnum::CITY_COMMUNITY_MULTI_DEPARTMENT)
             ;

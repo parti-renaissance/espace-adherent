@@ -47,7 +47,7 @@ class AdherentController extends AbstractController
         SearchParametersFilter $searchParametersFilter
     ): Response {
         $user = $this->getUser();
-        $searchParametersFilter->setCity(sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
+        $searchParametersFilter->setCity(\sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
         $searchParametersFilter->setMaxResults(3);
         $searchParametersFilter->setRadius(SearchParametersFilter::RADIUS_150);
         $params = [];

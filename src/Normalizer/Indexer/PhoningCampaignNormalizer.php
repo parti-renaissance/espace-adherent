@@ -22,7 +22,7 @@ class PhoningCampaignNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param Campaign $object */
     protected function getDescription(object $object): ?string
     {
-        return sprintf('Vous avez jusqu\'au %s pour remplir %s questionnaires.',
+        return \sprintf('Vous avez jusqu\'au %s pour remplir %s questionnaires.',
             $this->formatDate($object->getFinishAt()),
             $object->getGoal()
         );

@@ -28,7 +28,7 @@ class MailchimpWebhookController extends AbstractController
                 new SerializerStamp(['groups' => ['command_read']]),
             ]);
         } else {
-            $logger->error(sprintf('[Mailchimp Webhook] invalid request key "%s"', $key));
+            $logger->error(\sprintf('[Mailchimp Webhook] invalid request key "%s"', $key));
         }
 
         return new Response('OK');

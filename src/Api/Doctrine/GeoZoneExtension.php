@@ -19,7 +19,7 @@ class GeoZoneExtension implements QueryCollectionExtensionInterface
     ): void {
         if (Zone::class === $resourceClass) {
             $queryBuilder
-                ->andWhere(sprintf('%s.active = :true', $queryBuilder->getRootAliases()[0]))
+                ->andWhere(\sprintf('%s.active = :true', $queryBuilder->getRootAliases()[0]))
                 ->setParameter('true', true)
             ;
         }

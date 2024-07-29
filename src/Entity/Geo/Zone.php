@@ -189,7 +189,7 @@ class Zone implements GeoInterface, UuidEntityInterface
 
     public function getTypeCode(): string
     {
-        return sprintf('%s_%s', $this->type, $this->code);
+        return \sprintf('%s_%s', $this->type, $this->code);
     }
 
     public function isCountry(): bool

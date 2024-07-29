@@ -304,9 +304,9 @@ class EventManagerControllerTest extends AbstractEnMarcheWebTestCase
         /** @var CommitteeEvent $event */
         $event = $this->getEventRepository()->findOneBy(['uuid' => $uuid]);
 
-        $this->client->request(Request::METHOD_GET, sprintf('/evenements/%s/ical', $event->getSlug()));
+        $this->client->request(Request::METHOD_GET, \sprintf('/evenements/%s/ical', $event->getSlug()));
         $this->isSuccessful($response = $this->client->getResponse());
-        self::assertSame(sprintf('attachment; filename=%s.ics', $event->getSlug()), $response->headers->get('Content-Disposition'));
+        self::assertSame(\sprintf('attachment; filename=%s.ics', $event->getSlug()), $response->headers->get('Content-Disposition'));
         self::assertSame('text/calendar; charset=UTF-8', $response->headers->get('Content-Type'));
 
         $beginAt = preg_quote($event->getLocalBeginAt()->format('Ymd\THis'), '/');
@@ -331,7 +331,7 @@ class EventManagerControllerTest extends AbstractEnMarcheWebTestCase
             CONTENT;
         $icalRegex = str_replace("\n", "\r\n", $icalRegex); // Returned content contains CRLF
 
-        $this->assertMatchesRegularExpression(sprintf('/%s/', $icalRegex), $response->getContent());
+        $this->assertMatchesRegularExpression(\sprintf('/%s/', $icalRegex), $response->getContent());
     }
 
     private function redirectionEventNotPublishTest($url)

@@ -37,7 +37,7 @@ final class GeocodableAddress
         }
 
         if ($this->postalCode) {
-            $address[] = sprintf('%s %s', $this->postalCode, $this->cityName);
+            $address[] = \sprintf('%s %s', $this->postalCode, $this->cityName);
         }
 
         $countryCode = $this->countryCode;

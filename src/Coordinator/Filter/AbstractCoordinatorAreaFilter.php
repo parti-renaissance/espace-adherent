@@ -25,11 +25,11 @@ abstract class AbstractCoordinatorAreaFilter
     final public function apply(QueryBuilder $qb, string $alias): void
     {
         $qb
-            ->andWhere(sprintf('%s.status = :status', $alias))
+            ->andWhere(\sprintf('%s.status = :status', $alias))
             ->setParameter('status', $this->getStatus())
 
-            ->orderBy(sprintf('%s.createdAt', $alias), 'DESC')
-            ->addOrderBy(sprintf('%s.name', $alias), 'ASC')
+            ->orderBy(\sprintf('%s.createdAt', $alias), 'DESC')
+            ->addOrderBy(\sprintf('%s.name', $alias), 'ASC')
 
             ->setFirstResult($this->offset)
             ->setMaxResults(static::PER_PAGE)
@@ -58,7 +58,7 @@ abstract class AbstractCoordinatorAreaFilter
         $status = trim($status);
 
         if ($status && !\in_array($status, $this->getAvailableStatus(), true)) {
-            throw new \UnexpectedValueException(sprintf('Unexpected committee request status "%s".', $status));
+            throw new \UnexpectedValueException(\sprintf('Unexpected committee request status "%s".', $status));
         }
 
         if (empty($status)) {
@@ -134,7 +134,7 @@ abstract class AbstractCoordinatorAreaFilter
         $qbCount = clone $qb;
 
         $count = $qbCount
-            ->select(sprintf('count(%s)', $alias))
+            ->select(\sprintf('count(%s)', $alias))
             ->setMaxResults(null)
             ->setFirstResult(null)
             ->getQuery()

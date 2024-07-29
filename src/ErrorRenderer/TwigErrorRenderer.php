@@ -64,12 +64,12 @@ class TwigErrorRenderer implements ErrorRendererInterface
 
     private function findTemplate(int $statusCode, string $appCode): ?string
     {
-        $template = sprintf('@Twig/Exception/%s/error%s.html.twig', $appCode, $statusCode);
+        $template = \sprintf('@Twig/Exception/%s/error%s.html.twig', $appCode, $statusCode);
         if (($loader = $this->twig->getLoader())->exists($template)) {
             return $template;
         }
 
-        $template = sprintf('@Twig/Exception/%s/error.html.twig', $appCode);
+        $template = \sprintf('@Twig/Exception/%s/error.html.twig', $appCode);
         if ($loader->exists($template)) {
             return $template;
         }

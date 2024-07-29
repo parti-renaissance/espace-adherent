@@ -13,7 +13,7 @@ final class NewsletterInvitationMessage extends Message
             Uuid::uuid4(),
             $invite->getEmail(),
             null,
-            sprintf('%s vous invite à vous abonner à la newsletter En Marche.', self::escape($invite->getSenderFullName())),
+            \sprintf('%s vous invite à vous abonner à la newsletter En Marche.', self::escape($invite->getSenderFullName())),
             static::getTemplateVars($invite->getFirstName(), $subscribeUrl)
         );
     }

@@ -62,7 +62,7 @@ class PartyListProportionalCalculator extends MajoritarianCalculator
         ));
 
         if ($electionToProcess->hasFreeSeats()) {
-            $this->logger->error(sprintf('Plateforme de vote : problème de distribution de siège pour l\'élection "%d", reste %d siège(s) à distribuer', $elected->getId(), $electionToProcess->getFreeSeatsNumber()));
+            $this->logger->error(\sprintf('Plateforme de vote : problème de distribution de siège pour l\'élection "%d", reste %d siège(s) à distribuer', $elected->getId(), $electionToProcess->getFreeSeatsNumber()));
         }
 
         foreach ($electionToProcess->partyLists as $list) {

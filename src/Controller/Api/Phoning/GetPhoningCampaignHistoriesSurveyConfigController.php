@@ -42,7 +42,7 @@ class GetPhoningCampaignHistoriesSurveyConfigController extends AbstractControll
                     [
                         [
                             'code' => 'postal_code_checked',
-                            'label' => sprintf(
+                            'label' => \sprintf(
                                 'Habitez-vous toujours à %s (%s) ?',
                                 $adherent->getCityName(),
                                 $adherent->getPostalCode()

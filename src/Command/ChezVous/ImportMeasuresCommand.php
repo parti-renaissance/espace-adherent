@@ -90,14 +90,14 @@ class ImportMeasuresCommand extends AbstractImportCommand
     private function importMeasureType(string $type): void
     {
         if (!\in_array($type, $this->measureFactory->getTypeChoices(), true)) {
-            throw new \InvalidArgumentException(sprintf('"%s" is not a known measure type. Known measure types are: "%s".', $type, implode('", "', $this->measureFactory->getTypeChoices())));
+            throw new \InvalidArgumentException(\sprintf('"%s" is not a known measure type. Known measure types are: "%s".', $type, implode('", "', $this->measureFactory->getTypeChoices())));
         }
 
         $measureType = $this->measureFactory->getMeasureType($type);
 
         $this->io->section("Importing measures of type \"$type\"");
 
-        $filename = sprintf('%s/%s.csv', self::CSV_DIRECTORY, $type);
+        $filename = \sprintf('%s/%s.csv', self::CSV_DIRECTORY, $type);
 
         if (!$this->storage->has($filename)) {
             $this->io->comment("No CSV found ($filename).");
@@ -282,7 +282,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if (0 === \strlen($nombreBeneficiaires) || !is_numeric($nombreBeneficiaires)) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
                 ChequeEnergie::KEY_NOMBRE_BENEFICIAIRES,
                 $inseeCode
@@ -322,7 +322,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
             0 === \strlen($metadata[ConversionSurfaceAgricoleBio::KEY_HECTARES_BIO])
             || !is_numeric($metadata[ConversionSurfaceAgricoleBio::KEY_HECTARES_BIO])
         ) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
                 ConversionSurfaceAgricoleBio::KEY_HECTARES_BIO,
                 $inseeCode
@@ -332,7 +332,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if (0 === \strlen($metadata[ConversionSurfaceAgricoleBio::KEY_PROGRESSION])) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Key "%s" is required (insee_code: "%s"). Skipping.',
                 ConversionSurfaceAgricoleBio::KEY_PROGRESSION,
                 $inseeCode
@@ -437,7 +437,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if (0 === \strlen($entreprises) || !is_numeric($entreprises)) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
                 CreationEntreprise::KEY_ENTREPRISES,
                 $inseeCode
@@ -447,7 +447,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if (0 !== \strlen($microEntreprises) && !is_numeric($microEntreprises)) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'If set, key "%s" should be a number (insee_code: "%s"). Skipping.',
                 CreationEntreprise::KEY_MICRO_ENTREPRISES,
                 $inseeCode
@@ -569,7 +569,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if (0 === \strlen($nombreProjets) || !is_numeric($nombreProjets)) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
                 FranceRelance::KEY_NOMBRE_PROJETS,
                 $inseeCode
@@ -579,7 +579,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if (0 === \strlen($exemple)) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Key "%s" is required (insee_code: "%s"). Skipping.',
                 FranceRelance::KEY_EXEMPLE,
                 $inseeCode
@@ -615,7 +615,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if (0 === \strlen($proportionEleves)) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Key "%s" is required (insee_code: "%s"). Skipping.',
                 DevoirsFaits::KEY_PROPORTION_ELEVES,
                 $inseeCode
@@ -652,7 +652,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if (0 === \strlen($nombreMaisons) || !is_numeric($nombreMaisons)) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
                 MaisonDeSante::KEY_NOMBRE_MAISONS,
                 $inseeCode
@@ -662,7 +662,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if (0 === \strlen($pourcentageProgression) || !is_numeric($pourcentageProgression)) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
                 MaisonDeSante::KEY_POURCENTAGE_PROGRESSION,
                 $inseeCode
@@ -698,7 +698,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if (0 === \strlen($nombreFoyers) || !is_numeric($nombreFoyers)) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
                 MaPrimeRenov::KEY_NOMBRE_FOYERS,
                 $inseeCode
@@ -735,7 +735,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if (0 === \strlen($nombreJeunes) || !is_numeric($nombreJeunes)) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
                 Apprentissage::KEY_NOMBRE_JEUNES,
                 $inseeCode
@@ -745,7 +745,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if (0 === \strlen($pourcentageProgression) || !is_numeric($pourcentageProgression)) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
                 Apprentissage::KEY_POURCENTAGE_PROGRESSION,
                 $inseeCode
@@ -782,7 +782,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if (0 === \strlen($nombreEntreprises) || !is_numeric($nombreEntreprises)) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
                 EntreprisesAideesCovid::KEY_NOMBRE_ENTREPRISES,
                 $inseeCode
@@ -792,7 +792,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if (0 === \strlen($pourcentageSalaries) || !is_numeric($pourcentageSalaries)) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
                 EntreprisesAideesCovid::KEY_POURCENTAGE_SALARIES,
                 $inseeCode
@@ -828,7 +828,7 @@ class ImportMeasuresCommand extends AbstractImportCommand
         }
 
         if (0 === \strlen($totalEleves) || !is_numeric($totalEleves)) {
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Key "%s" is required and should be a number (insee_code: "%s"). Skipping.',
                 DedoublementClasses::KEY_TOTAL_ELEVES,
                 $inseeCode

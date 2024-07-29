@@ -53,7 +53,7 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiTestCa
         ob_start();
         $this->client->request(
             Request::METHOD_GET,
-            sprintf('/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies.xlsx?scope=%s', $scope),
+            \sprintf('/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies.xlsx?scope=%s', $scope),
             [],
             [],
             ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]

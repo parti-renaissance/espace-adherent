@@ -52,7 +52,7 @@ class TimelineMeasureControllerCaseTest extends AbstractRenaissanceWebTestCase
 
         $this->authenticateAsAdmin($this->client);
 
-        $deleteUrl = sprintf('/admin/app/timeline-measure/%s/delete', $measure->getId());
+        $deleteUrl = \sprintf('/admin/app/timeline-measure/%s/delete', $measure->getId());
         $crawler = $this->client->request(Request::METHOD_GET, $deleteUrl);
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -77,13 +77,13 @@ class TimelineMeasureControllerCaseTest extends AbstractRenaissanceWebTestCase
 
         $this->authenticateAsAdmin($this->client);
 
-        $editUrl = sprintf('/admin/app/timeline-measure/%s/edit', $measure->getId());
+        $editUrl = \sprintf('/admin/app/timeline-measure/%s/edit', $measure->getId());
         $crawler = $this->client->request(Request::METHOD_GET, $editUrl);
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $form = $crawler->selectButton('Mettre à jour')->form();
         $formName = str_replace(
-            sprintf('%s?uniqid=', $editUrl),
+            \sprintf('%s?uniqid=', $editUrl),
             '',
             $form->getFormNode()->getAttribute('action')
         );

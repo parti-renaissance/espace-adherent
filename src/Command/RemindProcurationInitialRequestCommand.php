@@ -53,7 +53,7 @@ class RemindProcurationInitialRequestCommand extends Command
         $paginator = $this->getQueryBuilder();
         $total = $paginator->count();
 
-        $this->io->text(sprintf('Found %s initial requests to remind', $total));
+        $this->io->text(\sprintf('Found %s initial requests to remind', $total));
 
         $paginator->getQuery()->setMaxResults($batchSize);
 

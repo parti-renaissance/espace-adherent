@@ -40,7 +40,7 @@ class ContentController extends AbstractController
             $filePath = $formation->getFilePath();
 
             if (!$this->defaultStorage->has($filePath)) {
-                $this->logger->error(sprintf('No file found for Formation with uuid "%s".', $formation->getUuid()->toString()));
+                $this->logger->error(\sprintf('No file found for Formation with uuid "%s".', $formation->getUuid()->toString()));
 
                 throw $this->createNotFoundException('File not found.');
             }
@@ -63,6 +63,6 @@ class ContentController extends AbstractController
             return $this->redirect($formation->getLink());
         }
 
-        throw $this->createNotFoundException(sprintf('No content found for Formation "%s".', $formation->getUuid()));
+        throw $this->createNotFoundException(\sprintf('No content found for Formation "%s".', $formation->getUuid()));
     }
 }

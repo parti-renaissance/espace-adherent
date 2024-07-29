@@ -26,7 +26,7 @@ class ScopeStore implements ScopeRepositoryInterface
         $userIdentifier = null
     ) {
         if (!$clientEntity instanceof Client) {
-            throw new \LogicException(sprintf('Only %s instances are supported', Client::class));
+            throw new \LogicException(\sprintf('Only %s instances are supported', Client::class));
         }
 
         // Check if OAuth client asked for an un-granted scope (it's not done by the oauth server out of the box)

@@ -32,7 +32,7 @@ class AdherentExtractCommandHandler extends AbstractEmailExtractCommandHandler
             switch ($field) {
                 case AdherentExtractCommand::FIELD_GENDER:
                     $row[$this->translateField($field)] = $adherent->getGender()
-                        ? $this->translator->trans(sprintf('common.gender.%s', $adherent->getGender()))
+                        ? $this->translator->trans(\sprintf('common.gender.%s', $adherent->getGender()))
                         : null;
 
                     break;
@@ -95,7 +95,7 @@ class AdherentExtractCommandHandler extends AbstractEmailExtractCommandHandler
                         $source = 'enmarche_user';
                     }
 
-                    $row[$this->translateField($field)] = $this->translator->trans(sprintf('adherent.source.%s', $source));
+                    $row[$this->translateField($field)] = $this->translator->trans(\sprintf('adherent.source.%s', $source));
 
                     break;
                 default:

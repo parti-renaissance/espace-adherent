@@ -36,7 +36,7 @@ final class JecouteNewsZipCodeFilter extends AbstractFilter
         $rootAlias = $queryBuilder->getRootAliases()[0];
 
         $queryBuilder
-            ->leftJoin(sprintf('%s.zone', $rootAlias), 'zone')
+            ->leftJoin(\sprintf('%s.zone', $rootAlias), 'zone')
             ->leftJoin('zone.children', 'children')
             ->andWhere('zone IS NULL OR zone IN (:zones) OR children IN (:zones)')
             ->setParameter('zones', $zones)

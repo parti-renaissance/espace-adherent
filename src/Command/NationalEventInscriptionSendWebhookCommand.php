@@ -47,7 +47,7 @@ class NationalEventInscriptionSendWebhookCommand extends Command
 
         $count = $paginator->count();
 
-        if (!$count || false === $this->io->confirm(sprintf('Are you sure to sync %d inscriptions ?', $count), false)) {
+        if (!$count || false === $this->io->confirm(\sprintf('Are you sure to sync %d inscriptions ?', $count), false)) {
             return self::FAILURE;
         }
 

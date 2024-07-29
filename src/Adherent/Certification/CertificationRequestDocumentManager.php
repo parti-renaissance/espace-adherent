@@ -18,7 +18,7 @@ class CertificationRequestDocumentManager
     public function uploadDocument(CertificationRequest $certificationRequest): void
     {
         if (!$certificationRequest->getDocument() instanceof UploadedFile) {
-            throw new \RuntimeException(sprintf('The file must be an instance of %s', UploadedFile::class));
+            throw new \RuntimeException(\sprintf('The file must be an instance of %s', UploadedFile::class));
         }
 
         $certificationRequest->processDocument($certificationRequest->getDocument());

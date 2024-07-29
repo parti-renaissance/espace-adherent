@@ -48,11 +48,11 @@ class CancelDonationController extends AbstractController
                             'success',
                             'Votre don mensuel a bien été annulé. Vous recevrez bientôt un email de confirmation.'
                         );
-                        $logger->info(sprintf('Subscription donation id(%d) from user email %s have been cancel successfully.', $donation->getId(), $adherent->getEmailAddress()));
+                        $logger->info(\sprintf('Subscription donation id(%d) from user email %s have been cancel successfully.', $donation->getId(), $adherent->getEmailAddress()));
                     } catch (PayboxPaymentUnsubscriptionException $e) {
                         $this->addFlash('error', 'La requête n\'a pas abouti, veuillez réessayer s\'il vous plait. Si le problème persiste, merci de nous envoyer un email à dons@parti-renaissance.fr');
 
-                        $logger->error(sprintf('Subscription donation id(%d) from user email %s have an error.', $donation->getId(), $adherent->getEmailAddress()), ['exception' => $e]);
+                        $logger->error(\sprintf('Subscription donation id(%d) from user email %s have an error.', $donation->getId(), $adherent->getEmailAddress()), ['exception' => $e]);
                     }
                 }
             }

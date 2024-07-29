@@ -100,7 +100,7 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
             ],
         ];
 
-        $response = $this->client->request('GET', sprintf('/3.0/lists/%s/segments', $this->mailchimpListId), $params);
+        $response = $this->client->request('GET', \sprintf('/3.0/lists/%s/segments', $this->mailchimpListId), $params);
 
         if (200 !== $response->getStatusCode()) {
             return [];

@@ -21,7 +21,7 @@ class ImageManager implements ImageManagerInterface
     public function saveImage(ImageOwnerInterface $object): void
     {
         if (!$object->getImage() instanceof UploadedFile) {
-            throw new \RuntimeException(sprintf('The image must be an instance of %s', UploadedFile::class));
+            throw new \RuntimeException(\sprintf('The image must be an instance of %s', UploadedFile::class));
         }
 
         $oldPath = $object->hasImageName() ? $object->getImagePath() : null;

@@ -50,7 +50,7 @@ class MoocVideoElement extends BaseMoocElement
 
     public function getYoutubeThumbnail(): ?string
     {
-        return sprintf('https://img.youtube.com/vi/%s/0.jpg', $this->youtubeId);
+        return \sprintf('https://img.youtube.com/vi/%s/0.jpg', $this->youtubeId);
     }
 
     public function getDuration(): \DateTime

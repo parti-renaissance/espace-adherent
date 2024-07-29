@@ -33,7 +33,7 @@ final class VotingPlatformPartialElectionIsOpenMessage extends AbstractVotingPla
             Uuid::uuid4(),
             $first->getEmailAddress(),
             $first->getFullName(),
-            sprintf(
+            \sprintf(
                 '[%s] %s',
                 self::getMailSubjectPrefix($designation, true),
                 $designation->isCommitteeTypes() ? 'Candidatez dans votre comité !' : 'Candidatez dans votre Conseil territorial !'

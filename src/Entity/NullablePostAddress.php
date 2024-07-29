@@ -34,7 +34,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
             $region
         );
 
-        $address->city = sprintf('%s-%s', $postalCode, $inseeCode);
+        $address->city = \sprintf('%s-%s', $postalCode, $inseeCode);
 
         return $address;
     }

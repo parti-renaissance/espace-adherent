@@ -20,7 +20,7 @@ abstract class AbstractProcurationMessage extends Message
 
     protected static function getCivilityName(string $gender, string $lastName): string
     {
-        return sprintf(
+        return \sprintf(
             '%s %s',
             Genders::FEMALE === $gender ? 'Mme' : 'M.',
             $lastName

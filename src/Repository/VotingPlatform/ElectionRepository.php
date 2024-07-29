@@ -117,24 +117,24 @@ class ElectionRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('election')
             ->select('pool.code AS pool_code')
             ->addSelect(
-                sprintf(
+                \sprintf(
                     '(SELECT COUNT(1)
                 FROM %s AS pool2
                 INNER JOIN pool2.candidateGroups AS candidate_groups
                 WHERE pool2.id = pool.id) AS candidate_group_count',
                     ElectionPool::class
                 ),
-                sprintf(
+                \sprintf(
                     '(SELECT COUNT(1) FROM %s AS voter
                 INNER JOIN voter.votersLists AS voters_list
                 WHERE voters_list.election = election) AS voters_count',
                     Voter::class
                 ),
-                sprintf(
+                \sprintf(
                     '(SELECT COUNT(vote.id) FROM %s AS vote WHERE vote.electionRound = election_round) AS votes_count',
                     Vote::class
                 ),
-                sprintf(
+                \sprintf(
                     '(SELECT COUNT(vote_choice.id) FROM %s AS vote_choice
                     WHERE vote_choice.electionPool = pool AND vote_choice.isBlank = true) AS votes_blank_count',
                     VoteChoice::class

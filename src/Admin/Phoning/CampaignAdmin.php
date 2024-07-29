@@ -75,7 +75,7 @@ class CampaignAdmin extends AbstractAdmin
                     'label' => 'Équipe phoning',
                     'class' => Team::class,
                     'choice_label' => function (Team $team) {
-                        return sprintf('%s (%s)',
+                        return \sprintf('%s (%s)',
                             $team->getName(),
                             $team->getMembersCount()
                         );
@@ -229,7 +229,7 @@ class CampaignAdmin extends AbstractAdmin
 
     public function toString($object): string
     {
-        return sprintf('%s%s', $object, $object->isPermanent() ? ' [Campagne permanente]' : '');
+        return \sprintf('%s%s', $object, $object->isPermanent() ? ' [Campagne permanente]' : '');
     }
 
     private function isPermanent(): bool

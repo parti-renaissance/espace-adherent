@@ -46,7 +46,7 @@ class MailchimpSyncAllCandidatesCommand extends Command
         $volunteerCount = $volunteerPaginator->count();
         $runningMateCount = $runningMatePaginator->count();
 
-        if (false === $this->io->confirm(sprintf('Are you sure to sync %d volunteer and %d running mate candidates?', $volunteerCount, $runningMateCount), false)) {
+        if (false === $this->io->confirm(\sprintf('Are you sure to sync %d volunteer and %d running mate candidates?', $volunteerCount, $runningMateCount), false)) {
             return self::FAILURE;
         }
 

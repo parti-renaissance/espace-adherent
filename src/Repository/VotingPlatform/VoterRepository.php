@@ -57,7 +57,7 @@ class VoterRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('voter')
             ->select('adherent.firstName', 'adherent.lastName')
-            ->addSelect(sprintf('(
+            ->addSelect(\sprintf('(
                     SELECT v.votedAt
                     FROM %s AS v
                     WHERE v.voter = voter

@@ -144,7 +144,7 @@ class JemarcheDataSurveyRepository extends ServiceEntityRepository
     private function applyMinPostedAt(QueryBuilder $qb, \DateTimeInterface $minPostedAt): void
     {
         if (!\in_array('dataSurvey', $qb->getAllAliases(), true)) {
-            $qb->leftJoin(sprintf('%s.dataSurvey', $qb->getRootAliases()[0]), 'dataSurvey');
+            $qb->leftJoin(\sprintf('%s.dataSurvey', $qb->getRootAliases()[0]), 'dataSurvey');
         }
 
         $qb

@@ -21,9 +21,9 @@ trait ImageTrait
     public function setImageName(?UploadedFile $image): void
     {
         $this->imageName = null === $image ? null :
-            sprintf('%s.%s',
+            \sprintf('%s.%s',
                 md5(
-                    sprintf(
+                    \sprintf(
                         '%s@%s',
                         method_exists($this, 'getUuid') ? $this->getUuid()->toString() : ($this->getId() ?? Uuid::uuid4()),
                         $image->getClientOriginalName()

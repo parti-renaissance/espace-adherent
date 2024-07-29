@@ -31,7 +31,7 @@ class AdherentToEmailTransformer implements DataTransformerInterface
         $adherent = $this->adherentRepository->findOneByEmail($value);
 
         if (null === $adherent) {
-            throw new TransformationFailedException(sprintf('No adherent found with email "%s".', $value));
+            throw new TransformationFailedException(\sprintf('No adherent found with email "%s".', $value));
         }
 
         return $adherent;

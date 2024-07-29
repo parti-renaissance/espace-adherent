@@ -15,7 +15,7 @@ class GeocodingException extends \RuntimeException
 
     public static function create(string $address, ?\Exception $exception = null): self
     {
-        $message = sprintf('Unable to geocode address "%s".', $address);
+        $message = \sprintf('Unable to geocode address "%s".', $address);
 
         return new self($address, $message, $exception);
     }

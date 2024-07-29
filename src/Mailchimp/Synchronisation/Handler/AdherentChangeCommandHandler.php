@@ -32,7 +32,7 @@ class AdherentChangeCommandHandler implements MessageHandlerInterface, LoggerAwa
     {
         /** @var Adherent $adherent */
         if (!$adherent = $this->repository->findOneByUuid($uuid = $message->getUuid()->toString())) {
-            $this->logger->warning(sprintf('Adherent with UUID "%s" not found, message skipped', $uuid));
+            $this->logger->warning(\sprintf('Adherent with UUID "%s" not found, message skipped', $uuid));
 
             return;
         }

@@ -86,7 +86,7 @@ class ImportProgrammaticFoundationCommand extends Command
             } else {
                 $this->em->rollback();
 
-                $this->io->error(sprintf('Import canceled due to %d validation errors.', \count($this->validationErrors)));
+                $this->io->error(\sprintf('Import canceled due to %d validation errors.', \count($this->validationErrors)));
             }
         } catch (\Exception $exception) {
             $this->em->rollback();
@@ -141,7 +141,7 @@ class ImportProgrammaticFoundationCommand extends Command
             }
 
             if (empty($measureContent)) {
-                $this->validationErrors[] = sprintf('Measure with title "%s" has no content. (line %d)', $measureTitle, $line);
+                $this->validationErrors[] = \sprintf('Measure with title "%s" has no content. (line %d)', $measureTitle, $line);
 
                 continue;
             }
@@ -199,13 +199,13 @@ class ImportProgrammaticFoundationCommand extends Command
                 }
 
                 if (empty($projectContent)) {
-                    $this->validationErrors[] = sprintf('Project with title "%s" has no content. (line %d)', $projectTitle, $line);
+                    $this->validationErrors[] = \sprintf('Project with title "%s" has no content. (line %d)', $projectTitle, $line);
 
                     continue;
                 }
 
                 if (empty($projectCity)) {
-                    $this->validationErrors[] = sprintf('Project with title "%s" has no city. (line %d)', $projectTitle, $line);
+                    $this->validationErrors[] = \sprintf('Project with title "%s" has no city. (line %d)', $projectTitle, $line);
 
                     continue;
                 }

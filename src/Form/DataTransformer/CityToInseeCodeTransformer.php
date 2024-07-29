@@ -26,7 +26,7 @@ class CityToInseeCodeTransformer implements DataTransformerInterface
         $city = $this->cityRepository->findOneBy(['inseeCode' => $inseeCode]);
 
         if (!$city) {
-            throw new TransformationFailedException(sprintf('A City with INSEE code "%d" does not exist.', $inseeCode));
+            throw new TransformationFailedException(\sprintf('A City with INSEE code "%d" does not exist.', $inseeCode));
         }
 
         return $city;

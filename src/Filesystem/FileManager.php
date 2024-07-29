@@ -46,7 +46,7 @@ class FileManager
     public function upload(File $file): void
     {
         if (!$file->getFile() instanceof UploadedFile) {
-            throw new \RuntimeException(sprintf('The file must be an instance of %s', UploadedFile::class));
+            throw new \RuntimeException(\sprintf('The file must be an instance of %s', UploadedFile::class));
         }
 
         $this->storage->write($file->getPath(), file_get_contents($file->getFile()->getPathname()));

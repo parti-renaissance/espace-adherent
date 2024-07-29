@@ -279,7 +279,7 @@ abstract class AbstractMessageController extends AbstractController
         return $this->render($template, array_merge(
             $parameters,
             [
-                'base_template' => sprintf('message/_base_%s.html.twig', $messageType = $this->getMessageType()),
+                'base_template' => \sprintf('message/_base_%s.html.twig', $messageType = $this->getMessageType()),
                 'message_type' => $messageType,
             ]
         ));

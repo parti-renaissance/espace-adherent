@@ -39,7 +39,7 @@ class DonatorExtractCommandHandler extends AbstractEmailExtractCommandHandler
             switch ($field) {
                 case DonatorExtractCommand::FIELD_GENDER:
                     $row[$this->translateField($field)] = $donator->getGender()
-                        ? $this->translator->trans(sprintf('common.gender.%s', $donator->getGender()))
+                        ? $this->translator->trans(\sprintf('common.gender.%s', $donator->getGender()))
                         : null;
 
                     break;

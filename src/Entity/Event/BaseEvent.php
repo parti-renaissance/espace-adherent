@@ -615,7 +615,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
 
     public function getImagePath(): string
     {
-        return $this->imageName ? sprintf('images/events/%s', $this->getImageName()) : '';
+        return $this->imageName ? \sprintf('images/events/%s', $this->getImageName()) : '';
     }
 
     public function getNormalizationGroups(): array
@@ -716,7 +716,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
 
     public function getDynamicLinkPath(): string
     {
-        return sprintf('/events/%s', $this->getUuid());
+        return \sprintf('/events/%s', $this->getUuid());
     }
 
     public function withSocialMeta(): bool

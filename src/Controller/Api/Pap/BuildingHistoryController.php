@@ -28,7 +28,7 @@ class BuildingHistoryController extends AbstractController
 
         if (!$campaign = $campaignRepository->findOneByUuid($campaignUuid)) {
             return $this->json(
-                sprintf('Campaign with uuid "%s" not found.', $campaignUuid),
+                \sprintf('Campaign with uuid "%s" not found.', $campaignUuid),
                 Response::HTTP_BAD_REQUEST
             );
         }

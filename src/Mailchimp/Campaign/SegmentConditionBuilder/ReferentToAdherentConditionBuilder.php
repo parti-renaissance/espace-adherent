@@ -18,7 +18,7 @@ class ReferentToAdherentConditionBuilder extends AbstractStaticSegmentConditionB
     protected function getSegmentId(AdherentMessageFilterInterface $filter, MailchimpCampaign $campaign): int
     {
         if (!$campaign->getStaticSegmentId()) {
-            throw new StaticSegmentIdMissingException(sprintf('[ReferentMessage] Referent message (%s) does not have a Mailchimp Static segment ID', $campaign->getMessage()->getUuid()->toString()));
+            throw new StaticSegmentIdMissingException(\sprintf('[ReferentMessage] Referent message (%s) does not have a Mailchimp Static segment ID', $campaign->getMessage()->getUuid()->toString()));
         }
 
         return $campaign->getStaticSegmentId();

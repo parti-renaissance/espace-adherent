@@ -57,7 +57,7 @@ class Marker
 
     public function __toString()
     {
-        return sprintf('%s [%s, %s]', $this->type, $this->latitude, $this->longitude);
+        return \sprintf('%s [%s, %s]', $this->type, $this->latitude, $this->longitude);
     }
 
     public function getId(): ?int

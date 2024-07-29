@@ -39,6 +39,6 @@ class CommitteeV2Extension implements QueryCollectionExtensionInterface, QueryIt
         }
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        $queryBuilder->andWhere(sprintf('%s.version = 2', $rootAlias));
+        $queryBuilder->andWhere(\sprintf('%s.version = 2', $rootAlias));
     }
 }

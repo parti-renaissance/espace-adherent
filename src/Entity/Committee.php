@@ -425,7 +425,7 @@ class Committee implements SynchronizedEntity, StaticSegmentInterface, AddressHo
         }
 
         if ($this->twitterNickname) {
-            $links['twitter'] = $this->createLink(sprintf('https://twitter.com/%s', $this->twitterNickname), 'Twitter');
+            $links['twitter'] = $this->createLink(\sprintf('https://twitter.com/%s', $this->twitterNickname), 'Twitter');
         }
 
         return $links;
@@ -555,7 +555,7 @@ class Committee implements SynchronizedEntity, StaticSegmentInterface, AddressHo
         $count = $found->count();
 
         if ($count > 1) {
-            throw new CommitteeProvisionalSupervisorException(sprintf('More than one %s provisional supervisor has been found for committee with UUID "%s".', $this->getUuid(), $gender));
+            throw new CommitteeProvisionalSupervisorException(\sprintf('More than one %s provisional supervisor has been found for committee with UUID "%s".', $this->getUuid(), $gender));
         }
 
         return $count > 0 ? $found->first() : null;
@@ -589,7 +589,7 @@ class Committee implements SynchronizedEntity, StaticSegmentInterface, AddressHo
         $count = $mandates->count();
 
         if ($count > 1) {
-            throw new CommitteeSupervisorException(sprintf('More than one %s %s supervisor has been found for committee with UUID "%s".', $gender, $isProvisional ? 'provisional' : '', $this->getUuid()));
+            throw new CommitteeSupervisorException(\sprintf('More than one %s %s supervisor has been found for committee with UUID "%s".', $gender, $isProvisional ? 'provisional' : '', $this->getUuid()));
         }
 
         return $count > 0 ? $mandates->first() : null;

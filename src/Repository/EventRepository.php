@@ -171,8 +171,8 @@ class EventRepository extends ServiceEntityRepository
 
         return $qb
             ->andWhere((new Orx())
-                ->add(sprintf('committee IS NOT NULL AND committee.id IN (%s)', $committeeZoneCondition->getDQL()))
-                ->add(sprintf('committee IS NULL AND adherent.id IN (%s)', $adherentZonesCondition->getDQL()))
+                ->add(\sprintf('committee IS NOT NULL AND committee.id IN (%s)', $committeeZoneCondition->getDQL()))
+                ->add(\sprintf('committee IS NULL AND adherent.id IN (%s)', $adherentZonesCondition->getDQL()))
             )
             ->getQuery()
             ->getResult()

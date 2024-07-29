@@ -26,7 +26,7 @@ class SurveyToIdTransformer implements DataTransformerInterface
         $survey = $this->surveyRepository->findOneBy(['id' => $surveyId]);
 
         if (!$survey) {
-            throw new TransformationFailedException(sprintf('A Survey with id "%d" does not exist.', $surveyId));
+            throw new TransformationFailedException(\sprintf('A Survey with id "%d" does not exist.', $surveyId));
         }
 
         return $survey;

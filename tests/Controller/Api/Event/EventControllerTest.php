@@ -61,7 +61,7 @@ class EventControllerTest extends AbstractApiTestCase
 
         self::assertSame(AppCodeEnum::JEMENGAGE_WEB, $registration->getSource());
 
-        $this->client->request(Request::METHOD_PUT, sprintf('/api/v3/events/%s?scope=president_departmental_assembly', $response['uuid']), [], [], [
+        $this->client->request(Request::METHOD_PUT, \sprintf('/api/v3/events/%s?scope=president_departmental_assembly', $response['uuid']), [], [], [
             'CONTENT_TYPE' => 'application/json',
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ], json_encode([

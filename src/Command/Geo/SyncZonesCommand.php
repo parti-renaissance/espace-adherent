@@ -130,7 +130,7 @@ final class SyncZonesCommand extends Command
         $this->io->section('Fetch zones from sources');
 
         foreach ($this->getClasses($types) as $class) {
-            $this->io->write(sprintf(' // "%s"', $class));
+            $this->io->write(\sprintf(' // "%s"', $class));
 
             $entities = $this->em
                 ->createQueryBuilder()
@@ -140,14 +140,14 @@ final class SyncZonesCommand extends Command
                 ->getResult()
             ;
 
-            $this->io->writeln(sprintf(' ... found %d', \count($entities)));
+            $this->io->writeln(\sprintf(' ... found %d', \count($entities)));
 
             $grouped[] = $entities;
         }
 
         $entities = array_merge(...$grouped);
 
-        $this->io->comment(sprintf('Total %d', \count($entities)));
+        $this->io->comment(\sprintf('Total %d', \count($entities)));
 
         return $entities;
     }

@@ -55,7 +55,7 @@ class EventInvite
 
     public function __toString()
     {
-        return sprintf('Invitation à l\'évenement %s de %s', $this->event, $this->getFullName());
+        return \sprintf('Invitation à l\'évenement %s de %s', $this->event, $this->getFullName());
     }
 
     public static function create(BaseEvent $event, EventInvitation $invitation): self

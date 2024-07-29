@@ -50,7 +50,7 @@ class BuildingEventControllerTest extends AbstractApiTestCase
 
         $this->client->request(
             Request::METHOD_POST,
-            sprintf('/api/v3/pap/buildings/%s/events', $buidingUuid),
+            \sprintf('/api/v3/pap/buildings/%s/events', $buidingUuid),
             [],
             [],
             [

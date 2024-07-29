@@ -48,7 +48,7 @@ class SurveyExporter
 
         return $this->exporter->getResponse(
             $format,
-            sprintf(
+            \sprintf(
                 '%s_%s_%s.%s',
                 (new Slugify())->slugify($survey->getName()),
                 $survey->getId(),

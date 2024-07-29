@@ -108,10 +108,10 @@ class BaseEventCommandType extends AbstractType
         if ($step < $nowMinute) {
             $now
                 ->modify('next hour')
-                ->modify(sprintf('-%d minutes', $nowMinute))
+                ->modify(\sprintf('-%d minutes', $nowMinute))
             ;
         } else {
-            $now->modify(sprintf('+%d minutes', $step - $nowMinute));
+            $now->modify(\sprintf('+%d minutes', $step - $nowMinute));
         }
 
         return $now;
