@@ -2,7 +2,8 @@
 
 namespace App\Entity\ProgrammaticFoundation;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Entity\EntityIdentityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,21 +14,14 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     collectionOperations={
- *         "get": {
- *             "path": "/programmatic-foundation/approaches",
- *             "method": "GET",
- *         }
- *     },
- *     attributes={
- *         "normalization_context": {"groups": {"approach_list_read"}},
- *         "pagination_enabled": false,
- *         "order": {"position": "ASC"}
- *     }
- * )
- */
+#[ApiResource(
+    operations: [
+        new GetCollection(uriTemplate: '/programmatic-foundation/approaches'),
+    ],
+    normalizationContext: ['groups' => ['approach_list_read']],
+    order: ['position' => 'ASC'],
+    paginationEnabled: false
+)]
 #[ORM\Entity]
 #[ORM\Table(name: 'programmatic_foundation_approach')]
 #[UniqueEntity(fields: ['position'], message: 'programmatic_foundation.unique_position.approach')]

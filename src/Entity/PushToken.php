@@ -2,8 +2,12 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use App\Controller\Api\PushToken\CreateController;
 use App\PushToken\PushTokenSourceEnum;
 use App\Repository\PushTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,34 +17,24 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"push_token_read"}
- *         },
- *         "denormalization_context": {
- *             "groups": {"push_token_write"}
- *         },
- *     },
- *     collectionOperations={
- *         "post": {
- *             "path": "/v3/push-token",
- *             "controller": "App\Controller\Api\PushToken\CreateController",
- *         }
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/push-token/{identifier}",
- *             "security": "is_granted('IS_AUTHOR_OF_PUSH_TOKEN', object)"
- *         },
- *         "delete": {
- *             "path": "/v3/push-token/{identifier}",
- *             "security": "is_granted('IS_AUTHOR_OF_PUSH_TOKEN', object)"
- *         },
- *     }
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/v3/push-token/{identifier}',
+            security: 'is_granted(\'IS_AUTHOR_OF_PUSH_TOKEN\', object)'
+        ),
+        new Delete(
+            uriTemplate: '/v3/push-token/{identifier}',
+            security: 'is_granted(\'IS_AUTHOR_OF_PUSH_TOKEN\', object)'
+        ),
+        new Post(
+            uriTemplate: '/v3/push-token',
+            controller: CreateController::class
+        ),
+    ],
+    normalizationContext: ['groups' => ['push_token_read']],
+    denormalizationContext: ['groups' => ['push_token_write']]
+)]
 #[ORM\Entity(repositoryClass: PushTokenRepository::class)]
 class PushToken
 {
@@ -49,9 +43,8 @@ class PushToken
 
     /**
      * @var UuidInterface
-     *
-     * @ApiProperty(identifier=false)
      */
+    #[ApiProperty(identifier: false)]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
 
@@ -71,9 +64,8 @@ class PushToken
 
     /**
      * @var string|null
-     *
-     * @ApiProperty(identifier=true)
      */
+    #[ApiProperty(identifier: true)]
     #[Assert\Length(max: 255)]
     #[Assert\NotBlank]
     #[Groups(['push_token_write'])]

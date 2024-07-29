@@ -2,7 +2,8 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
 use App\Entity\Geo\Zone;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
@@ -19,25 +20,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     collectionOperations={
- *         "post": {
- *             "path": "/legislative_newsletter_subscriptions",
- *             "denormalization_context": {
- *                 "groups": {"legislative_newsletter_subscriptions_write"},
- *             },
- *             "normalization_context": {
- *                 "groups": {"legislative_newsletter_subscriptions_read"},
- *                 "iri": true,
- *             },
- *             "validation_groups": {"Default", "legislative_newsletter_subscriptions_write"},
- *         }
- *     },
- *     itemOperations={},
- * )
- *
  * @AssertRecaptcha(api="friendly_captcha", groups={"legislative_newsletter_subscriptions_write"})
  */
+#[ApiResource(
+    operations: [
+        new Post(
+            uriTemplate: '/legislative_newsletter_subscriptions',
+            normalizationContext: ['groups' => ['legislative_newsletter_subscriptions_read'], 'iri' => true],
+            denormalizationContext: ['groups' => ['legislative_newsletter_subscriptions_write']],
+            validationContext: ['groups' => ['Default', 'legislative_newsletter_subscriptions_write']]
+        ),
+    ]
+)]
 #[ORM\Entity(repositoryClass: LegislativeNewsletterSubscriptionRepository::class)]
 #[ORM\Table]
 #[UniqueEntity(fields: ['emailAddress'], message: 'legislative_newsletter.already_registered')]

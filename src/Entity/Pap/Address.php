@@ -2,8 +2,8 @@
 
 namespace App\Entity\Pap;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use App\Collection\ZoneCollection;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityZoneTrait;
@@ -16,31 +16,15 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {
- *             "iri": true,
- *             "groups": {"pap_address_read"}
- *         },
- *     },
- *     collectionOperations={},
- *     itemOperations={
- *         "get": {
- *             "method": "GET",
- *             "path": "/v3/pap/address/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *         },
- *     },
- *     subresourceOperations={
- *         "voters_get_subresource": {
- *             "method": "GET",
- *             "path": "/v3/pap/address/{uuid}/voters",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *         },
- *     },
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/v3/pap/address/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%']
+        ),
+    ],
+    normalizationContext: ['iri' => true, 'groups' => ['pap_address_read']]
+)]
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 #[ORM\Index(columns: ['offset_x', 'offset_y'])]
 #[ORM\Index(columns: ['latitude', 'longitude'])]
@@ -88,9 +72,6 @@ class Address
     #[ORM\Column(type: 'geo_point', nullable: true)]
     private ?float $longitude;
 
-    /**
-     * @ApiSubresource
-     */
     #[ORM\OneToMany(mappedBy: 'address', targetEntity: Voter::class, cascade: ['all'], fetch: 'EXTRA_LAZY')]
     private Collection $voters;
 

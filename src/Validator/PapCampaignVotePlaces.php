@@ -4,9 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class PapCampaignVotePlaces extends Constraint
 {
     public $messageAnotherCampaign = 'Un ou plusieurs bureaux de vote que vous avez choisi sont déjà dans une autre campagne.';

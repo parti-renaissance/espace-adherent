@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Post;
 use App\Entity\VotingPlatform\Designation\BaseCandidaciesGroup;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Repository\CommitteeCandidaciesGroupRepository;
@@ -14,55 +16,29 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     routePrefix="/v3",
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"committee_candidacies_group:read"},
- *         },
- *         "denormalization_context": {
- *             "groups": {"committee_candidacies_group:write"},
- *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee')",
- *     },
- *     itemOperations={
- *         "delete": {
- *             "path": "/committee_candidacies_groups/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getCommittee()) and not object.isVotePeriodStarted() and object.isEmptyCandidacies()",
- *         }
- *     },
- *     collectionOperations={
- *         "post": {
- *             "path": "/committee_candidacies_groups",
- *         }
- *     }
- * )
- */
+#[ApiResource(operations: [
+    new Delete(
+        uriTemplate: '/committee_candidacies_groups/{uuid}',
+        requirements: ['uuid' => '%pattern_uuid%'],
+        security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object.getCommittee()) and not object.isVotePeriodStarted() and object.isEmptyCandidacies()'
+    ),
+    new Post(uriTemplate: '/committee_candidacies_groups'),
+],
+    routePrefix: '/v3',
+    normalizationContext: ['groups' => ['committee_candidacies_group:read']],
+    denormalizationContext: ['groups' => ['committee_candidacies_group:write']],
+    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\')'
+)]
 #[Assert\Expression(expression: '!this.isVotePeriodStarted()', message: 'Vous ne pouvez pas créer de liste sur une élection en cours')]
 #[ORM\Entity(repositoryClass: CommitteeCandidaciesGroupRepository::class)]
 class CommitteeCandidaciesGroup extends BaseCandidaciesGroup
 {
     use EntityTimestampableTrait;
 
-    /**
-     * @ApiProperty(identifier=false)
-     */
+    #[ApiProperty(identifier: false)]
     private $id;
 
-    /**
-     * @ApiProperty(
-     *     identifier=true,
-     *     attributes={
-     *         "swagger_context": {
-     *             "type": "string",
-     *             "format": "uuid",
-     *             "example": "b4219d47-3138-5efd-9762-2ef9f9495084"
-     *         }
-     *     }
-     * )
-     */
+    #[ApiProperty(identifier: true, openapiContext: ['type' => 'string', 'format' => 'uuid', 'example' => 'b4219d47-3138-5efd-9762-2ef9f9495084'])]
     #[Groups(['committee_election:read', 'committee_candidacies_group:read', 'committee_candidacy:read'])]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected UuidInterface $uuid;

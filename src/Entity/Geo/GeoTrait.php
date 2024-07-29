@@ -14,9 +14,8 @@ trait GeoTrait
 
     /**
      * @var int|null
-     *
-     * @ApiProperty(identifier=false)
      */
+    #[ApiProperty(identifier: false)]
     #[Groups(['autocomplete'])]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]

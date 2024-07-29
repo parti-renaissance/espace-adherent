@@ -2,7 +2,7 @@
 
 namespace App\Entity\Pap;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
 use App\Entity\EntityIdentityTrait;
@@ -15,19 +15,11 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"pap_building_block_list"},
- *             "iri": true,
- *         },
- *         "pagination_enabled": false,
- *     },
- *     collectionOperations={},
- *     itemOperations={},
- * )
- */
+#[ApiResource(
+    operations: [],
+    normalizationContext: ['groups' => ['pap_building_block_list'], 'iri' => true],
+    paginationEnabled: false
+)]
 #[ORM\Entity]
 #[ORM\Table(name: 'pap_building_block')]
 #[ORM\UniqueConstraint(name: 'building_block_unique', columns: ['name', 'building_id'])]

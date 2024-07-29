@@ -4,9 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class PapCampaignStarted extends Constraint
 {
     public $messageSurvey = 'pap.campaign.not_changeable_survey';

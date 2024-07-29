@@ -2,8 +2,13 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Address\AddressInterface;
 use App\AdherentMessage\StaticSegmentInterface;
 use App\Api\Filter\InZoneOfScopeFilter;
@@ -33,68 +38,42 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * This entity represents a committee group.
- *
- * @ApiResource(
- *     routePrefix="/v3",
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"committee:list"},
- *         },
- *         "validation_groups": {"api_committee_edition"},
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee')",
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/committees/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
- *             "normalization_context": {
- *                 "groups": {"committee:list", "committee:read"},
- *             },
- *         },
- *         "put": {
- *             "path": "/committees/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
- *             "denormalization_context": {
- *                 "groups": {"committee:write"},
- *             },
- *             "normalization_context": {
- *                 "groups": {"committee:list", "committee:read"},
- *             },
- *         },
- *         "delete": {
- *             "path": "/committees/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
- *         },
- *         "update_animator": {
- *             "method": "put",
- *             "path": "/committees/{uuid}/animator",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
- *             "denormalization_context": {
- *                 "groups": {"committee:update_animator"},
- *             },
- *             "normalization_context": {
- *                 "groups": {"committee:list", "committee:read"},
- *             },
- *         },
- *     },
- *     collectionOperations={
- *         "get",
- *         "post": {
- *             "denormalization_context": {
- *                 "groups": {"committee:write"},
- *             },
- *         },
- *     }
- * )
- *
- * @ApiFilter(InZoneOfScopeFilter::class)
- */
+#[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/committees/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['committee:list', 'committee:read']],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object)'
+        ),
+        new Put(
+            uriTemplate: '/committees/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['committee:list', 'committee:read']],
+            denormalizationContext: ['groups' => ['committee:write']],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object)'
+        ),
+        new Delete(
+            uriTemplate: '/committees/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object)'
+        ),
+        new Put(
+            uriTemplate: '/committees/{uuid}/animator',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['committee:list', 'committee:read']],
+            denormalizationContext: ['groups' => ['committee:update_animator']],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object)'
+        ),
+        new GetCollection(),
+        new Post(denormalizationContext: ['groups' => ['committee:write']]),
+    ],
+    routePrefix: '/v3',
+    normalizationContext: ['groups' => ['committee:list']],
+    validationContext: ['groups' => ['api_committee_edition']],
+    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\')'
+)]
 #[ORM\Entity(repositoryClass: CommitteeRepository::class)]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Index(columns: ['version'])]

@@ -4,10 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- */
+#[\Attribute]
 class ValidMessageFilterSegment extends Constraint
 {
     public $message = 'Le segment n\'est pas autorisé';

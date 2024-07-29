@@ -2,10 +2,13 @@
 
 namespace App\Entity\Projection;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Adherent\Tag\TranslatedTagInterface;
 use App\Collection\ZoneCollection;
+use App\Controller\Api\AdherentList\AdherentListController;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use App\Membership\MembershipSourceEnum;
@@ -24,32 +27,23 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  * This entity is a projection: do not insert, update or delete objects using this class.
  * The table is populated on a regular basis by a background worker to improve performance
  * of SQL queries.
- *
- * @ApiResource(
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/adherents/{adherentUuid}",
- *             "requirements": {"adherentUuid": "%pattern_uuid%"},
- *             "normalization_context": {
- *                 "enable_tag_translator": true,
- *                 "groups": {"managed_user_read"}
- *             },
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/adherents.{format}",
- *             "controller": "App\Controller\Api\AdherentList\AdherentListController",
- *             "requirements": {
- *                 "format": "json|csv|xlsx",
- *             },
- *             "defaults": {
- *                 "format": "json",
- *             },
- *         },
- *     },
- * )
  */
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/v3/adherents/{adherentUuid}',
+            requirements: ['adherentUuid' => '%pattern_uuid%'],
+            normalizationContext: ['enable_tag_translator' => true, 'groups' => ['managed_user_read']]
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/adherents.{format}',
+            defaults: ['format' => 'json'],
+            requirements: ['format' => 'json|csv|xlsx'],
+            controller: AdherentListController::class,
+            read: false,
+        ),
+    ]
+)]
 #[ORM\Entity(repositoryClass: ManagedUserRepository::class, readOnly: true)]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Index(columns: ['original_id'])]
@@ -63,9 +57,8 @@ class ManagedUser implements TranslatedTagInterface
 
     /**
      * @var int
-     *
-     * @ApiProperty(identifier=false)
      */
+    #[ApiProperty(identifier: false)]
     #[ORM\Column(type: 'bigint', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
     #[ORM\Id]
@@ -103,9 +96,8 @@ class ManagedUser implements TranslatedTagInterface
 
     /**
      * @var UuidInterface|null
-     *
-     * @ApiProperty(identifier=true)
      */
+    #[ApiProperty(identifier: true)]
     #[Groups(['managed_users_list', 'managed_user_read'])]
     #[ORM\Column(type: 'uuid', nullable: true)]
     private $adherentUuid;

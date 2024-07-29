@@ -2,12 +2,21 @@
 
 namespace App\Entity\Pap;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Api\Filter\ScopeVisibilityFilter;
 use App\Collection\ZoneCollection;
+use App\Controller\Api\Pap\GetAvailableVotePlaceForCampaignController;
+use App\Controller\Api\Pap\GetCampaignBuildingStatisticsController;
+use App\Controller\Api\Pap\GetCampaignVotePlacesController;
+use App\Controller\Api\Pap\GetPapCampaignQuestionersStatsController;
+use App\Controller\Api\Pap\GetPapCampaignsKpiController;
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
@@ -37,113 +46,84 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     shortName="PapCampaign",
- *     attributes={
- *         "order": {"createdAt": "DESC"},
- *         "pagination_client_enabled": true,
- *         "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))",
- *         "normalization_context": {
- *             "iri": true,
- *             "groups": {"pap_campaign_read"},
- *         },
- *         "denormalization_context": {
- *             "groups": {"pap_campaign_write"}
- *         },
- *     },
- *     itemOperations={
- *         "get": {
- *             "method": "GET",
- *             "path": "/v3/pap_campaigns/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *         },
- *         "put": {
- *             "path": "/v3/pap_campaigns/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) and is_granted('SCOPE_CAN_MANAGE', object)",
- *             "normalization_context": {"groups": {"pap_campaign_read_after_write"}},
- *         },
- *         "get_questioners_with_scores": {
- *             "method": "GET",
- *             "path": "/v3/pap_campaigns/{uuid}/questioners",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
- *             "controller": "App\Controller\Api\Pap\GetPapCampaignQuestionersStatsController",
- *             "defaults": {"_api_receive": false},
- *         },
- *         "delete": {
- *             "path": "/v3/pap_campaigns/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) and is_granted('CAN_DELETE_PAP_CAMPAIGN', object)",
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "method": "GET",
- *             "path": "/v3/pap_campaigns",
- *             "normalization_context": {
- *                 "groups": {"pap_campaign_read_list"},
- *             },
- *         },
- *         "post": {
- *             "path": "/v3/pap_campaigns",
- *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
- *             "normalization_context": {"groups": {"pap_campaign_read_after_write"}},
- *             "validation_groups": {"Default", "pap_campaign_creation"},
- *         },
- *         "get_kpi": {
- *             "method": "GET",
- *             "path": "/v3/pap_campaigns/kpi",
- *             "controller": "App\Controller\Api\Pap\GetPapCampaignsKpiController",
- *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
- *         },
- *         "get_campaign_building_statistics": {
- *             "method": "GET",
- *             "path": "/v3/pap_campaigns/{uuid}/building_statistics",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "controller": "App\Controller\Api\Pap\GetCampaignBuildingStatisticsController",
- *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
- *             "normalization_context": {
- *                 "groups": {"pap_building_statistics_read"},
- *             },
- *         },
- *         "get_campaign_vote_places": {
- *             "method": "GET",
- *             "path": "/v3/pap_campaigns/{uuid}/vote_places",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "controller": "App\Controller\Api\Pap\GetCampaignVotePlacesController",
- *             "pagination_enabled": false,
- *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
- *             "normalization_context": {"iri": true, "groups": {"pap_vote_place_read"}},
- *         },
- *         "get_available_vote_places": {
- *             "method": "GET",
- *             "path": "/v3/pap_campaigns/{uuid}/available_vote_places",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "controller": "App\Controller\Api\Pap\GetAvailableVotePlaceForCampaignController",
- *             "normalization_context": {
- *                 "iri": true,
- *                 "groups": {"pap_vote_place_read"},
- *             },
- *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
- *         },
- *     },
- * )
- *
- * @ApiFilter(ScopeVisibilityFilter::class)
- * @ApiFilter(SearchFilter::class, properties={
- *     "visibility": "exact",
- * })
- *
- * @ScopeVisibility
- * @AssertStartedPapCampaignValid
- * @AssertVotePlacesValid
- */
+#[ApiFilter(filterClass: ScopeVisibilityFilter::class)]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['visibility' => 'exact'])]
+#[ApiResource(
+    shortName: 'PapCampaign',
+    operations: [
+        new Get(
+            uriTemplate: '/v3/pap_campaigns/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%']
+        ),
+        new Put(
+            uriTemplate: '/v3/pap_campaigns/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['pap_campaign_read_after_write']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\']) and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+        ),
+        new Get(
+            uriTemplate: '/v3/pap_campaigns/{uuid}/questioners',
+            defaults: ['_api_receive' => false],
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: GetPapCampaignQuestionersStatsController::class,
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'
+        ),
+        new Delete(
+            uriTemplate: '/v3/pap_campaigns/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\']) and is_granted(\'CAN_DELETE_PAP_CAMPAIGN\', object)'
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/pap_campaigns',
+            normalizationContext: ['groups' => ['pap_campaign_read_list']]
+        ),
+        new Post(
+            uriTemplate: '/v3/pap_campaigns',
+            normalizationContext: ['groups' => ['pap_campaign_read_after_write']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])',
+            validationContext: ['groups' => ['Default', 'pap_campaign_creation']]
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/pap_campaigns/kpi',
+            controller: GetPapCampaignsKpiController::class,
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/pap_campaigns/{uuid}/building_statistics',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: GetCampaignBuildingStatisticsController::class,
+            normalizationContext: ['groups' => ['pap_building_statistics_read']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/pap_campaigns/{uuid}/vote_places',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: GetCampaignVotePlacesController::class,
+            paginationEnabled: false,
+            normalizationContext: ['iri' => true, 'groups' => ['pap_vote_place_read']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/pap_campaigns/{uuid}/available_vote_places',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: GetAvailableVotePlaceForCampaignController::class,
+            normalizationContext: ['iri' => true, 'groups' => ['pap_vote_place_read']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'
+        ),
+    ],
+    normalizationContext: ['iri' => true, 'groups' => ['pap_campaign_read']],
+    denormalizationContext: ['groups' => ['pap_campaign_write']],
+    order: ['createdAt' => 'DESC'],
+    paginationClientEnabled: true,
+    security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\']) or (is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\') and is_granted(\'ROLE_PAP_USER\'))'
+)]
+#[AssertStartedPapCampaignValid]
+#[AssertVotePlacesValid]
 #[ORM\Entity(repositoryClass: CampaignRepository::class)]
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class, PapCampaignListener::class])]
 #[ORM\Index(columns: ['begin_at', 'finish_at'])]
 #[ORM\Table(name: 'pap_campaign')]
+#[ScopeVisibility]
 class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZonesInterface, EntityAdherentBlameableInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;
@@ -198,8 +178,6 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
 
     /**
      * @var Survey|null
-     *
-     * @ApiSubresource
      */
     #[Assert\NotBlank]
     #[Groups(['pap_campaign_write', 'pap_campaign_read', 'pap_campaign_read_after_write'])]
@@ -221,8 +199,6 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
 
     /**
      * @var VotePlace[]|Collection
-     *
-     * @ApiSubresource
      */
     #[Groups(['pap_campaign_write'])]
     #[ORM\JoinTable(name: 'pap_campaign_vote_place')]
@@ -231,8 +207,6 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
 
     /**
      * @var Collection|BuildingStatistics[]
-     *
-     * @ApiSubresource
      */
     #[ORM\OneToMany(mappedBy: 'campaign', targetEntity: BuildingStatistics::class, fetch: 'EXTRA_LAZY')]
     private Collection $buildingStatistics;

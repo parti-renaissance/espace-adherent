@@ -55,7 +55,7 @@ class FormationNormalizer implements NormalizerInterface, NormalizerAwareInterfa
             $parameters['scope'] = $scope->getCode();
         }
 
-        return $this->urlGenerator->generate('api_formations_get_file_item', $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->urlGenerator->generate('_api_/formations/{uuid}/file_get', $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     private function getCurrentScope(): ?ScopeGeneratorInterface

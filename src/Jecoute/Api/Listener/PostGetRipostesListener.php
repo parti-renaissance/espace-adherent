@@ -29,7 +29,7 @@ class PostGetRipostesListener implements EventSubscriberInterface
     public function dispatchPostReadEvent(RequestEvent $event): void
     {
         $attributes = $event->getRequest()->attributes;
-        if ('api_ripostes_get_collection' !== $attributes->get('_route')
+        if ('_api_/v3/ripostes_get_collection' !== $attributes->get('_route')
             || Riposte::class !== $attributes->get('_api_resource_class')
             || !$this->security->isGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')
         ) {

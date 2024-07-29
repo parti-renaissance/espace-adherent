@@ -2,9 +2,13 @@
 
 namespace App\Entity\Team;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Api\Filter\ScopeVisibilityFilter;
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
@@ -30,56 +34,36 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "order": {"createdAt": "DESC"},
- *         "normalization_context": {
- *             "groups": {"team_read"}
- *         },
- *         "denormalization_context": {
- *             "groups": {"team_write"}
- *         },
- *         "security": "is_granted('IS_FEATURE_GRANTED', 'team')"
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/teams",
- *             "normalization_context": {
- *                 "groups": {"team_list_read"}
- *             },
- *             "maximum_items_per_page": 1000
- *         },
- *         "post": {
- *             "path": "/v3/teams",
- *         }
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/teams/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', object)"
- *         },
- *         "put": {
- *             "path": "/v3/teams/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', object)"
- *         }
- *     }
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={
- *     "name": "partial",
- *     "visibility": "exact",
- * })
- *
- * @ApiFilter(ScopeVisibilityFilter::class)
- *
- * @ScopeVisibility
- */
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial', 'visibility' => 'exact'])]
+#[ApiFilter(filterClass: ScopeVisibilityFilter::class)]
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/v3/teams/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'team\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+        ),
+        new Put(
+            uriTemplate: '/v3/teams/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'team\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/teams',
+            paginationMaximumItemsPerPage: 1000,
+            normalizationContext: ['groups' => ['team_list_read']]
+        ),
+        new Post(uriTemplate: '/v3/teams'),
+    ],
+    normalizationContext: ['groups' => ['team_read']],
+    denormalizationContext: ['groups' => ['team_write']],
+    order: ['createdAt' => 'DESC'],
+    security: 'is_granted(\'IS_FEATURE_GRANTED\', \'team\')'
+)]
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
 #[ORM\Table]
 #[ORM\UniqueConstraint(columns: ['name', 'zone_id'])]
+#[ScopeVisibility]
 #[UniqueEntity(fields: ['name', 'zone'], message: 'team.name.already_exists', errorPath: 'name', ignoreNull: false)]
 class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, EntityScopeVisibilityWithZoneInterface
 {

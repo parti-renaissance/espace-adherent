@@ -2,7 +2,12 @@
 
 namespace App\Entity\EmailTemplate;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Collection\ZoneCollection;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
@@ -19,55 +24,39 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     routePrefix="/v3",
- *     attributes={
- *         "order": {"createdAt": "DESC"},
- *         "security": "is_granted('IS_FEATURE_GRANTED', 'messages')",
- *         "normalization_context": {
- *             "groups": {"email_template_read"}
- *         },
- *         "denormalization_context": {
- *             "groups": {"email_template_write"}
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/email_templates",
- *             "normalization_context": {
- *                 "groups": {"email_template_list_read"}
- *             },
- *         },
- *         "post": {
- *             "path": "/email_templates",
- *             "normalization_context": {
- *                 "groups": {"email_template_read_restricted"}
- *             },
- *         },
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/email_templates/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'messages') and is_granted('CAN_READ_EMAIL_TEMPLATE', object)",
- *         },
- *         "put": {
- *             "path": "/email_templates/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'messages') and object.getCreatedByAdherent() and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), 'messages'))",
- *             "normalization_context": {
- *                 "groups": {"email_template_read_restricted"}
- *             },
- *         },
- *         "delete": {
- *             "path": "/email_templates/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'messages') and object.getCreatedByAdherent() and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), 'messages'))",
- *         },
- *     },
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/email_templates/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\') and is_granted(\'CAN_READ_EMAIL_TEMPLATE\', object)'
+        ),
+        new Put(
+            uriTemplate: '/email_templates/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['email_template_read_restricted']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\') and object.getCreatedByAdherent() and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), \'messages\'))'
+        ),
+        new Delete(
+            uriTemplate: '/email_templates/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\') and object.getCreatedByAdherent() and (object.getCreatedByAdherent() == user or user.hasDelegatedFromUser(object.getCreatedByAdherent(), \'messages\'))'
+        ),
+        new GetCollection(
+            uriTemplate: '/email_templates',
+            normalizationContext: ['groups' => ['email_template_list_read']]
+        ),
+        new Post(
+            uriTemplate: '/email_templates',
+            normalizationContext: ['groups' => ['email_template_read_restricted']]
+        ),
+    ],
+    routePrefix: '/v3',
+    normalizationContext: ['groups' => ['email_template_read']],
+    denormalizationContext: ['groups' => ['email_template_write']],
+    order: ['createdAt' => 'DESC'],
+    security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\')'
+)]
 #[ORM\Entity]
 #[ORM\Table(name: 'email_templates')]
 class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface

@@ -2,7 +2,8 @@
 
 namespace App\Entity\Jecoute;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\ExposedImageOwnerInterface;
@@ -15,21 +16,16 @@ use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "order": {"position": "ASC"},
- *         "normalization_context": {"groups": {"jecoute_resource_links_read", "image_owner_exposed"}},
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/jecoute/resource-links",
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
- *         }
- *     },
- *     itemOperations={}
- * )
- */
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: '/v3/jecoute/resource-links',
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\')'
+        ),
+    ],
+    normalizationContext: ['groups' => ['jecoute_resource_links_read', 'image_owner_exposed']],
+    order: ['position' => 'ASC']
+)]
 #[ORM\Entity(repositoryClass: ResourceLinkRepository::class)]
 #[ORM\Table(name: 'jecoute_resource_link')]
 class ResourceLink implements ExposedImageOwnerInterface

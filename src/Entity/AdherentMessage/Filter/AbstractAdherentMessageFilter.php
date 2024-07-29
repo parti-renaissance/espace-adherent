@@ -2,7 +2,7 @@
 
 namespace App\Entity\AdherentMessage\Filter;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Collection\ZoneCollection;
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
@@ -15,15 +15,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ApiResource(
- *     itemOperations={},
- *     collectionOperations={},
- *     subresourceOperations={},
- * )
- * @ValidMessageFilterSegment
- */
+#[ApiResource(operations: [])]
 #[ORM\Entity]
+#[ValidMessageFilterSegment]
 abstract class AbstractAdherentMessageFilter extends AbstractAdherentFilter implements AdherentMessageFilterInterface
 {
     use EntityZoneTrait;

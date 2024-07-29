@@ -2,7 +2,11 @@
 
 namespace App\Entity\Jecoute;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use App\Controller\Api\Jecoute\JemarcheDataSurveyKpiController;
+use App\Controller\Api\Jecoute\JemarcheDataSurveyReplyController;
 use App\Entity\Device;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -16,42 +20,29 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {
- *             "iri": true,
- *             "groups": {"jemarche_data_survey_read"},
- *         },
- *         "denormalization_context": {
- *             "groups": {"jemarche_data_survey_write"},
- *         },
- *     },
- *     itemOperations={
- *         "post_reply": {
- *             "path": "/v3/jemarche_data_surveys/{uuid}/reply",
- *             "method": "POST",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "controller": "App\Controller\Api\Jecoute\JemarcheDataSurveyReplyController",
- *             "security": "(is_granted('ROLE_ADHERENT') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))",
- *             "defaults": {"_api_receive": false},
- *             "normalization_context": {"groups": {"data_survey_read"}},
- *         },
- *     },
- *     collectionOperations={
- *         "post": {
- *             "path": "/v3/jemarche_data_surveys",
- *             "security": "(is_granted('ROLE_ADHERENT') or is_granted('ROLE_OAUTH_DEVICE')) and (is_granted('ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS') or is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))"
- *         },
- *         "get_jemarche_data_surveys_dashboard_kpi": {
- *             "method": "GET",
- *             "path": "/v3/jemarche_data_surveys/kpi",
- *             "controller": "App\Controller\Api\Jecoute\JemarcheDataSurveyKpiController",
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'survey')",
- *         },
- *     },
- * )
- */
+#[ApiResource(
+    operations: [
+        new Post(
+            uriTemplate: '/v3/jemarche_data_surveys/{uuid}/reply',
+            defaults: ['_api_receive' => false],
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: JemarcheDataSurveyReplyController::class,
+            normalizationContext: ['groups' => ['data_survey_read']],
+            security: '(is_granted(\'ROLE_ADHERENT\') or is_granted(\'ROLE_OAUTH_DEVICE\')) and (is_granted(\'ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS\') or is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\'))'
+        ),
+        new Post(
+            uriTemplate: '/v3/jemarche_data_surveys',
+            security: '(is_granted(\'ROLE_ADHERENT\') or is_granted(\'ROLE_OAUTH_DEVICE\')) and (is_granted(\'ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS\') or is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\'))'
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/jemarche_data_surveys/kpi',
+            controller: JemarcheDataSurveyKpiController::class,
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'survey\')'
+        ),
+    ],
+    normalizationContext: ['iri' => true, 'groups' => ['jemarche_data_survey_read']],
+    denormalizationContext: ['groups' => ['jemarche_data_survey_write']]
+)]
 #[ORM\Entity(repositoryClass: JemarcheDataSurveyRepository::class)]
 class JemarcheDataSurvey implements DataSurveyAwareInterface
 {

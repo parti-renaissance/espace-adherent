@@ -2,7 +2,11 @@
 
 namespace App\Entity\MyTeam;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -18,42 +22,31 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     shortName="MyTeamMember",
- *     attributes={
- *         "normalization_context": {
- *             "iri": true,
- *             "groups": {"my_team_member_read"},
- *         },
- *         "denormalization_context": {
- *             "groups": {"my_team_member_write"}
- *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')"
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/my_team_members/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *         },
- *         "put": {
- *             "path": "/v3/my_team_members/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *         },
- *         "delete": {
- *             "path": "/v3/my_team_members/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "object.getTeam().getOwner() == user and is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'my_team')",
- *         }
- *     },
- *     collectionOperations={
- *         "post": {
- *             "path": "/v3/my_team_members",
- *             "denormalization_context": {"groups": {"my_team_member_write", "my_team_member_post"}}
- *         }
- *     }
- * )
- */
+#[ApiResource(
+    shortName: 'MyTeamMember',
+    operations: [
+        new Get(
+            uriTemplate: '/v3/my_team_members/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%']
+        ),
+        new Put(
+            uriTemplate: '/v3/my_team_members/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%']
+        ),
+        new Delete(
+            uriTemplate: '/v3/my_team_members/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'object.getTeam().getOwner() == user and is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'my_team\')'
+        ),
+        new Post(
+            uriTemplate: '/v3/my_team_members',
+            denormalizationContext: ['groups' => ['my_team_member_write', 'my_team_member_post']]
+        ),
+    ],
+    normalizationContext: ['iri' => true, 'groups' => ['my_team_member_read']],
+    denormalizationContext: ['groups' => ['my_team_member_write']],
+    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'my_team\')'
+)]
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
 #[ORM\Table(name: 'my_team_member')]
 #[ORM\UniqueConstraint(name: 'team_member_unique', columns: ['team_id', 'adherent_id'])]

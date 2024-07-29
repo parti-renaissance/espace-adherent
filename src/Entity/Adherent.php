@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
 use App\Address\AddressInterface;
 use App\Address\PostAddressFactory;
 use App\Adherent\Contribution\ContributionAmountUtils;
@@ -71,41 +73,29 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueMembership(groups={"Admin"})
- *
- * @ApiResource(
- *     routePrefix="/v3",
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"adherent_elect_read"},
- *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'contacts')",
- *     },
- *     itemOperations={
- *         "get_elect": {
- *             "path": "/adherents/{uuid}/elect",
- *             "method": "GET",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')",
- *         },
- *         "put_elect": {
- *             "path": "/adherents/{uuid}/elect",
- *             "method": "PUT",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "denormalization_context": {
- *                 "groups": {"adherent_elect_update"},
- *             },
- *             "validation_groups": {"adherent_elect_update"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')",
- *         },
- *     },
- *     collectionOperations={},
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/adherents/{uuid}/elect',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'elected_representative\')'
+        ),
+        new Put(
+            uriTemplate: '/adherents/{uuid}/elect',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            denormalizationContext: ['groups' => ['adherent_elect_update']],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'elected_representative\')',
+            validationContext: ['groups' => ['adherent_elect_update']]
+        ),
+    ],
+    routePrefix: '/v3',
+    normalizationContext: ['groups' => ['adherent_elect_read']],
+    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'contacts\')'
+)]
 #[ORM\Entity(repositoryClass: AdherentRepository::class)]
 #[ORM\Table(name: 'adherents')]
 #[UniqueEntity(fields: ['nickname'], groups: ['anonymize'])]
+#[UniqueMembership(groups: ['Admin'])]
 class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface, TranslatedTagInterface, EntityPostAddressInterface
 {
     use EntityIdentityTrait;

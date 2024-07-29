@@ -2,57 +2,55 @@
 
 namespace App\Entity\Audience;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use App\Controller\Api\Audience\RetrieveAudiencesController;
 use App\Repository\Audience\AudienceRepository;
 use App\Validator\ManagedZone;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "security": "is_granted('ROLE_AUDIENCE')",
- *         "normalization_context": {"groups": {"audience_read"}},
- *         "denormalization_context": {"groups": {"audience_write"}},
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/audiences",
- *             "controller": "App\Controller\Api\Audience\RetrieveAudiencesController",
- *             "security": "is_granted('ROLE_AUDIENCE') and is_granted('REQUEST_SCOPE_GRANTED')",
- *             "normalization_context": {
- *                 "groups": {"audience_list_read"}
- *             },
- *         },
- *         "post": {
- *             "path": "/v3/audiences",
- *             "security": "is_granted('ROLE_AUDIENCE') and is_granted('REQUEST_SCOPE_GRANTED')",
- *             "defaults": {"scope_position": "request"},
- *             "validation_groups": {"Default", "api_scope_context"},
- *         },
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/audiences/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_AUDIENCE') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
- *         },
- *         "put": {
- *             "path": "/v3/audiences/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_AUDIENCE') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
- *             "validation_groups": {"Default", "api_scope_context"},
- *         },
- *         "delete": {
- *             "path": "/v3/audiences/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_AUDIENCE') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object)",
- *         },
- *     }
- * )
- * @ManagedZone(path="zone", message="common.zone.not_managed_zone")
- */
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/v3/audiences/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_AUDIENCE\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object)'
+        ),
+        new Put(
+            uriTemplate: '/v3/audiences/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_AUDIENCE\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object)',
+            validationContext: ['groups' => ['Default', 'api_scope_context']]
+        ),
+        new Delete(
+            uriTemplate: '/v3/audiences/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_AUDIENCE\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object)'
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/audiences',
+            controller: RetrieveAudiencesController::class,
+            normalizationContext: ['groups' => ['audience_list_read']],
+            security: 'is_granted(\'ROLE_AUDIENCE\') and is_granted(\'REQUEST_SCOPE_GRANTED\')'
+        ),
+        new Post(
+            uriTemplate: '/v3/audiences',
+            defaults: ['scope_position' => 'request'],
+            security: 'is_granted(\'ROLE_AUDIENCE\') and is_granted(\'REQUEST_SCOPE_GRANTED\')',
+            validationContext: ['groups' => ['Default', 'api_scope_context']]
+        ),
+    ],
+    normalizationContext: ['groups' => ['audience_read']],
+    denormalizationContext: ['groups' => ['audience_write']],
+    security: 'is_granted(\'ROLE_AUDIENCE\')'
+)]
+#[ManagedZone(path: 'zone', message: 'common.zone.not_managed_zone')]
 #[ORM\Entity(repositoryClass: AudienceRepository::class)]
 class Audience extends AbstractAudience
 {

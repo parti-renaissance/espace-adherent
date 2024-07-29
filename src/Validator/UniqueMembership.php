@@ -4,12 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * Constraint for the Unique Membership validator.
- *
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- */
+#[\Attribute]
 class UniqueMembership extends Constraint
 {
     public string $message = 'adherent.email_address.not_unique';

@@ -2,10 +2,14 @@
 
 namespace App\Entity\Jecoute;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Api\Filter\JecouteNewsScopeFilter;
 use App\Api\Filter\JecouteNewsZipCodeFilter;
 use App\Api\Filter\ScopeVisibilityFilter;
@@ -39,101 +43,57 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\String\UnicodeString;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {"groups": {"jecoute_news_read"}},
- *         "denormalization_context": {"groups": {"jecoute_news_write"}},
- *         "filters": {JecouteNewsZipCodeFilter::class, JecouteNewsScopeFilter::class},
- *         "order": {"createdAt": "DESC"},
- *     },
- *     collectionOperations={
- *         "get_public": {
- *             "path": "/jecoute/news",
- *             "method": "GET",
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
- *             "swagger_context": {
- *                 "parameters": {
- *                     {
- *                         "name": "uuid",
- *                         "in": "query",
- *                         "type": "string",
- *                         "description": "Filter News by exact uuid.",
- *                         "example": "a046adbe-9c7b-56a9-a676-6151a6785dda",
- *                     },
- *                     {
- *                         "name": "title",
- *                         "in": "query",
- *                         "type": "string",
- *                         "description": "Filter News by partial title.",
- *                         "example": "Rassem",
- *                     },
- *                 }
- *             }
- *         },
- *         "get_private": {
- *             "path": "/v3/jecoute/news",
- *             "method": "GET",
- *             "normalization_context": {"groups": {"jecoute_news_read_dc"}},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'news')",
- *         },
- *         "post": {
- *             "path": "/v3/jecoute/news",
- *             "normalization_context": {"groups": {"jecoute_news_read_dc"}},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'news')",
- *         },
- *     },
- *     itemOperations={
- *         "get_public": {
- *             "method": "GET",
- *             "path": "/jecoute/news/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')",
- *             "swagger_context": {
- *                 "summary": "Retrieves a News resource by UUID.",
- *                 "description": "Retrieves a News resource by UUID.",
- *                 "parameters": {
- *                     {
- *                         "name": "uuid",
- *                         "in": "path",
- *                         "type": "string",
- *                         "description": "The UUID of the News resource.",
- *                         "example": "28",
- *                     }
- *                 }
- *             }
- *         },
- *         "get_private": {
- *             "path": "/v3/jecoute/news/{uuid}",
- *             "method": "GET",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "normalization_context": {"groups": {"jecoute_news_read_dc"}},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'news')",
- *         },
- *         "put": {
- *             "path": "/v3/jecoute/news/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "normalization_context": {"groups": {"jecoute_news_read_dc"}},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'news') and is_granted('SCOPE_CAN_MANAGE', object)",
- *         },
- *     },
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={
- *     "uuid": "exact",
- *     "title": "partial",
- * })
- * @ApiFilter(ScopeVisibilityFilter::class)
- *
- * @ReferentNews
- * @NewsTarget(groups="Admin")
- * @NewsText
- * @ScopeVisibility
- */
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['uuid' => 'exact', 'title' => 'partial'])]
+#[ApiFilter(filterClass: ScopeVisibilityFilter::class)]
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/jecoute/news/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            openapiContext: ['summary' => 'Retrieves a News resource by UUID.', 'description' => 'Retrieves a News resource by UUID.', 'parameters' => [['name' => 'uuid', 'in' => 'path', 'type' => 'string', 'description' => 'The UUID of the News resource.', 'example' => '28']]],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\')'
+        ),
+        new Get(
+            uriTemplate: '/v3/jecoute/news/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['jecoute_news_read_dc']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'news\')'
+        ),
+        new Put(
+            uriTemplate: '/v3/jecoute/news/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['jecoute_news_read_dc']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'news\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+        ),
+        new GetCollection(
+            uriTemplate: '/jecoute/news',
+            openapiContext: ['parameters' => [['name' => 'uuid', 'in' => 'query', 'type' => 'string', 'description' => 'Filter News by exact uuid.', 'example' => 'a046adbe-9c7b-56a9-a676-6151a6785dda'], ['name' => 'title', 'in' => 'query', 'type' => 'string', 'description' => 'Filter News by partial title.', 'example' => 'Rassem']]],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\')'
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/jecoute/news',
+            normalizationContext: ['groups' => ['jecoute_news_read_dc']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'news\')'
+        ),
+        new Post(
+            uriTemplate: '/v3/jecoute/news',
+            normalizationContext: ['groups' => ['jecoute_news_read_dc']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'news\')'
+        ),
+    ],
+    normalizationContext: ['groups' => ['jecoute_news_read']],
+    denormalizationContext: ['groups' => ['jecoute_news_write']],
+    filters: [JecouteNewsZipCodeFilter::class, JecouteNewsScopeFilter::class],
+    order: ['createdAt' => 'DESC']
+)]
+#[NewsTarget(groups: ['Admin'])]
+#[NewsText]
 #[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'author', joinColumns: [new ORM\JoinColumn(onDelete: 'SET NULL')])])]
 #[ORM\Entity]
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
 #[ORM\Table(name: 'jecoute_news')]
+#[ReferentNews]
+#[ScopeVisibility]
 class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, DynamicLinkObjectInterface
 {
     use EntityTimestampableTrait;
@@ -142,17 +102,13 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
     use DynamicLinkObjectTrait;
     use UserDocumentTrait;
 
-    /**
-     * @ApiProperty(identifier=false)
-     */
+    #[ApiProperty(identifier: false)]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
     #[ORM\Id]
     private ?int $id = null;
 
-    /**
-     * @ApiProperty(identifier=true)
-     */
+    #[ApiProperty(identifier: true)]
     #[Groups(['jecoute_news_read', 'jecoute_news_read_dc'])]
     #[ORM\Column(type: 'uuid', unique: true)]
     private UuidInterface $uuid;

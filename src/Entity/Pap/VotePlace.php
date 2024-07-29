@@ -2,7 +2,8 @@
 
 namespace App\Entity\Pap;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Api\Filter\PapVotePlaceScopeFilter;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Geo\Zone;
@@ -14,27 +15,16 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ApiResource(
- *     shortName="PapVotePlace",
- *     attributes={
- *         "pagination_client_enabled": true,
- *         "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))",
- *         "normalization_context": {
- *             "iri": true,
- *             "groups": {"pap_vote_place_read"},
- *         },
- *         "filters": {PapVotePlaceScopeFilter::class},
- *     },
- *     collectionOperations={
- *         "get": {
- *             "method": "GET",
- *             "path": "/v3/pap_vote_places",
- *         },
- *     },
- *     itemOperations={},
- * )
- */
+#[ApiResource(
+    shortName: 'PapVotePlace',
+    operations: [
+        new GetCollection(uriTemplate: '/v3/pap_vote_places'),
+    ],
+    normalizationContext: ['iri' => true, 'groups' => ['pap_vote_place_read']],
+    filters: [PapVotePlaceScopeFilter::class],
+    paginationClientEnabled: true,
+    security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\']) or (is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\') and is_granted(\'ROLE_PAP_USER\'))'
+)]
 #[ORM\Entity(repositoryClass: VotePlaceRepository::class)]
 #[ORM\Index(columns: ['latitude', 'longitude'])]
 #[ORM\Table(name: 'pap_vote_place')]

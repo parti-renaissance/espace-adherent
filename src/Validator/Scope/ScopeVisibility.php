@@ -4,10 +4,7 @@ namespace App\Validator\Scope;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- */
+#[\Attribute]
 class ScopeVisibility extends Constraint
 {
     public string $nationalScopeWithZoneMessage = 'scope.zone.national_scope_with_zone';

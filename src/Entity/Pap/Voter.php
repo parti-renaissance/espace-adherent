@@ -2,7 +2,9 @@
 
 namespace App\Entity\Pap;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use App\Entity\EntityIdentityTrait;
 use App\Repository\Pap\VoterRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,19 +12,15 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"pap_address_voter_list"},
- *             "iri": true,
- *         },
- *         "pagination_enabled": false,
- *     },
- *     collectionOperations={},
- *     itemOperations={},
- * )
- */
+#[ApiResource(
+    uriTemplate: '/v3/pap/address/{uuid}/voters',
+    operations: [new GetCollection()],
+    uriVariables: [
+        'uuid' => new Link(toProperty: 'address', fromClass: Address::class),
+    ],
+    normalizationContext: ['groups' => ['pap_address_voter_list'], 'iri' => true],
+    paginationEnabled: false
+)]
 #[ORM\Entity(repositoryClass: VoterRepository::class)]
 #[ORM\Table(name: 'pap_voter')]
 class Voter

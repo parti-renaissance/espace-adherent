@@ -2,7 +2,11 @@
 
 namespace App\Entity\AdherentMessage\Segment;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\AdherentMessage\DynamicSegmentInterface;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
@@ -17,40 +21,31 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {"groups": {"audience_segment_read"}},
- *         "denormalization_context": {
- *             "groups": {"audience_segment_write"},
- *             "disable_type_enforcement": true,
- *         },
- *     },
- *     collectionOperations={
- *         "post": {
- *             "path": "/v3/audience-segments",
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR')",
- *         },
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/audience-segments/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
- *         },
- *         "put": {
- *             "path": "/v3/audience-segments/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
- *         },
- *         "delete": {
- *             "path": "/v3/audience-segments/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
- *         },
- *     }
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/v3/audience-segments/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_MESSAGE_REDACTOR\') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'messages\'))'
+        ),
+        new Put(
+            uriTemplate: '/v3/audience-segments/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_MESSAGE_REDACTOR\') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'messages\'))'
+        ),
+        new Delete(
+            uriTemplate: '/v3/audience-segments/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_MESSAGE_REDACTOR\') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'messages\'))'
+        ),
+        new Post(
+            uriTemplate: '/v3/audience-segments',
+            security: 'is_granted(\'ROLE_MESSAGE_REDACTOR\')'
+        ),
+    ],
+    normalizationContext: ['groups' => ['audience_segment_read']],
+    denormalizationContext: ['groups' => ['audience_segment_write'], 'disable_type_enforcement' => true]
+)]
 #[ORM\Entity(repositoryClass: AudienceSegmentRepository::class)]
 class AudienceSegment implements AuthorInterface, DynamicSegmentInterface
 {

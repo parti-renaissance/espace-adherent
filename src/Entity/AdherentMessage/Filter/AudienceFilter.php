@@ -2,7 +2,7 @@
 
 namespace App\Entity\AdherentMessage\Filter;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 use App\Adherent\MandateTypeEnum;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
@@ -13,14 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     itemOperations={},
- *     collectionOperations={},
- *     subresourceOperations={},
- * )
- * @ManagedZone(zoneGetMethodName="getZone")
- */
+#[ApiResource(operations: [])]
+#[ManagedZone]
 #[ORM\Entity]
 class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEntity, CampaignAdherentMessageFilterInterface
 {

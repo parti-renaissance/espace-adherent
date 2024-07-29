@@ -2,12 +2,19 @@
 
 namespace App\Entity\ProcurationV2;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Api\Filter\OrTextSearchFilter;
 use App\Api\Filter\ProcurationZoneFilter;
+use App\Controller\Api\Procuration\GetMatchedProxiesController;
+use App\Controller\Api\Procuration\MatchRequestWithProxyController;
+use App\Controller\Api\Procuration\UnmatchRequestAndProxyController;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\PostAddress;
@@ -27,86 +34,60 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ManualAssociations
  * @ExcludedAssociations
- *
- * @ApiResource(
- *     attributes={
- *         "routePrefix": "/v3/procuration",
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'procurations')",
- *         "pagination_client_items_per_page": true,
- *         "pagination_maximum_items_per_page": 100,
- *         "pagination_items_per_page": 50,
- *         "normalization_context": {
- *             "groups": {"procuration_request_list"},
- *         },
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/requests/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "normalization_context": {
- *                 "groups": {"procuration_request_read"},
- *                 "enable_tag_translator": true,
- *             },
- *         },
- *         "match": {
- *             "method": "POST",
- *             "path": "/requests/{uuid}/match",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "controller": "App\Controller\Api\Procuration\MatchRequestWithProxyController",
- *             "defaults": {"_api_receive": false},
- *         },
- *         "unmatch": {
- *             "method": "POST",
- *             "path": "/requests/{uuid}/unmatch",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "controller": "App\Controller\Api\Procuration\UnmatchRequestAndProxyController",
- *             "defaults": {"_api_receive": false},
- *         },
- *         "update_status": {
- *             "method": "PATCH",
- *             "path": "/requests/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "validation_groups": {"procuration_update_status"},
- *             "normalization_context": {
- *                 "groups": {"procuration_update_status"},
- *             },
- *             "denormalization_context": {
- *                 "groups": {"procuration_update_status"},
- *             },
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "normalization_context": {
- *                 "groups": {"procuration_request_list"},
- *                 "enable_tag_translator": true,
- *             },
- *         },
- *         "get_proxies": {
- *             "method": "GET",
- *             "path": "/requests/{uuid}/proxies",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "controller": "App\Controller\Api\Procuration\GetMatchedProxiesController",
- *             "normalization_context": {
- *                 "groups": {"procuration_matched_proxy"},
- *                 "enable_tag_translator": true,
- *             },
- *         },
- *     },
- * )
- *
- * @ApiFilter(OrderFilter::class, properties={"createdAt"})
- * @ApiFilter(SearchFilter::class, properties={"status": "exact"})
- * @ApiFilter(OrTextSearchFilter::class, properties={"firstNames": "lastName", "lastName": "firstNames", "email": "email", "voteZone.name": "voteZone.name", "votePlace.name": "votePlace.name"})
- * @ApiFilter(ProcurationZoneFilter::class)
  */
+#[ApiFilter(filterClass: OrderFilter::class, properties: ['createdAt'])]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['status' => 'exact'])]
+#[ApiFilter(filterClass: OrTextSearchFilter::class, properties: ['firstNames' => 'lastName', 'lastName' => 'firstNames', 'email' => 'email', 'voteZone.name' => 'voteZone.name', 'votePlace.name' => 'votePlace.name'])]
+#[ApiFilter(filterClass: ProcurationZoneFilter::class)]
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/requests/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['procuration_request_read'], 'enable_tag_translator' => true]
+        ),
+        new Post(
+            uriTemplate: '/requests/{uuid}/match',
+            defaults: ['_api_receive' => false],
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: MatchRequestWithProxyController::class
+        ),
+        new Post(
+            uriTemplate: '/requests/{uuid}/unmatch',
+            defaults: ['_api_receive' => false],
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: UnmatchRequestAndProxyController::class
+        ),
+        new Patch(
+            uriTemplate: '/requests/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['procuration_update_status']],
+            denormalizationContext: ['groups' => ['procuration_update_status']],
+            validationContext: ['groups' => ['procuration_update_status']]
+        ),
+        new GetCollection(normalizationContext: ['groups' => ['procuration_request_list'], 'enable_tag_translator' => true]),
+        new GetCollection(
+            uriTemplate: '/requests/{uuid}/proxies',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: GetMatchedProxiesController::class,
+            normalizationContext: ['groups' => ['procuration_matched_proxy'], 'enable_tag_translator' => true]
+        ),
+    ],
+    routePrefix: '/v3/procuration',
+    normalizationContext: ['groups' => ['procuration_request_list']],
+    paginationClientItemsPerPage: true,
+    paginationItemsPerPage: 50,
+    paginationMaximumItemsPerPage: 100,
+    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'procurations\')'
+)]
 #[ORM\Entity(repositoryClass: RequestRepository::class)]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Index(columns: ['created_at'])]
 #[ORM\Table(name: 'procuration_v2_requests')]
 class Request extends AbstractProcuration
 {
-    #[Assert\Choice(callback: [RequestStatusEnum::class, 'getAvailableStatuses'], groups: ['procuration_update_status'])]
+    #[Assert\Choice(callback: [RequestStatusEnum::class,
+        'getAvailableStatuses'], groups: ['procuration_update_status'])]
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_update_status', 'procuration_proxy_slot_read', 'procuration_request_slot_read'])]
     #[ORM\Column(enumType: RequestStatusEnum::class)]
     public RequestStatusEnum $status = RequestStatusEnum::PENDING;

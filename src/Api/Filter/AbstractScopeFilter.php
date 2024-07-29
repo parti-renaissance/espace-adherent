@@ -90,7 +90,7 @@ abstract class AbstractScopeFilter extends AbstractFilter
 
     protected function getAllowedOperationNames(string $resourceClass): array
     {
-        return ['_get_item', '_get_collection'];
+        return ['{uuid}_get', '{uuid}.{_format}_get', '_get_collection'];
     }
 
     private function isValidOperation(?Operation $operation): bool

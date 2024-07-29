@@ -2,30 +2,22 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *          "order": {"position": "ASC"},
- *          "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'dashboard')",
- *          "normalization_context": {
- *              "groups": {"hub_items_list"},
- *          },
- *          "pagination_items_per_page": 30,
- *      },
- *     itemOperations={},
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/hub-items",
- *         },
- *     },
- * )
- */
+#[ApiResource(
+    operations: [
+        new GetCollection(uriTemplate: '/v3/hub-items'),
+    ],
+    normalizationContext: ['groups' => ['hub_items_list']],
+    order: ['position' => 'ASC'],
+    paginationItemsPerPage: 30,
+    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'dashboard\')'
+)]
 #[ORM\Entity]
 class HubItem implements EntityAdministratorBlameableInterface
 {

@@ -2,13 +2,17 @@
 
 namespace App\Entity\Pap;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Api\Filter\AdherentIdentityFilter;
 use App\Api\Filter\PapCampaignHistoryScopeFilter;
+use App\Controller\Api\Pap\CampaignHistoryReplyController;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -26,55 +30,37 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     shortName="PapCampaignHistory",
- *     attributes={
- *         "normalization_context": {
- *             "iri": true,
- *             "groups": {"pap_campaign_history_read"},
- *         },
- *         "filters": {PapCampaignHistoryScopeFilter::class},
- *         "denormalization_context": {"groups": {"pap_campaign_history_write"}},
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')",
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/pap_campaign_histories",
- *             "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
- *             "normalization_context": {
- *                 "groups": {"pap_campaign_history_read_list"}
- *             },
- *         },
- *         "post": {
- *             "path": "/v3/pap_campaign_histories",
- *         },
- *     },
- *     itemOperations={
- *         "put": {
- *             "path": "/v3/pap_campaign_histories/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and object.getQuestioner() == user",
- *         },
- *         "post_reply": {
- *             "method": "POST",
- *             "path": "/v3/pap_campaign_histories/{uuid}/reply",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "controller": "App\Controller\Api\Pap\CampaignHistoryReplyController",
- *             "defaults": {"_api_receive": false},
- *             "normalization_context": {"groups": {"data_survey_read"}},
- *         },
- *     },
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={
- *     "status": "exact",
- *     "campaign.uuid": "exact"
- * })
- * @ApiFilter(AdherentIdentityFilter::class, properties={"questioner"})
- * @ApiFilter(DateFilter::class, properties={"createdAt", "beginAt"})
- * @ApiFilter(OrderFilter::class, properties={"createdAt"})
- */
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['status' => 'exact', 'campaign.uuid' => 'exact'])]
+#[ApiFilter(filterClass: AdherentIdentityFilter::class, properties: ['questioner'])]
+#[ApiFilter(filterClass: DateFilter::class, properties: ['createdAt', 'beginAt'])]
+#[ApiFilter(filterClass: OrderFilter::class, properties: ['createdAt'])]
+#[ApiResource(
+    shortName: 'PapCampaignHistory',
+    operations: [
+        new Put(
+            uriTemplate: '/v3/pap_campaign_histories/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\') and object.getQuestioner() == user'
+        ),
+        new Post(
+            uriTemplate: '/v3/pap_campaign_histories/{uuid}/reply',
+            defaults: ['_api_receive' => false],
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: CampaignHistoryReplyController::class,
+            normalizationContext: ['groups' => ['data_survey_read']]
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/pap_campaign_histories',
+            normalizationContext: ['groups' => ['pap_campaign_history_read_list']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'
+        ),
+        new Post(uriTemplate: '/v3/pap_campaign_histories'),
+    ],
+    normalizationContext: ['iri' => true, 'groups' => ['pap_campaign_history_read']],
+    denormalizationContext: ['groups' => ['pap_campaign_history_write']],
+    filters: [PapCampaignHistoryScopeFilter::class],
+    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\') and is_granted(\'ROLE_PAP_USER\')'
+)]
 #[ORM\Entity(repositoryClass: CampaignHistoryRepository::class)]
 #[ORM\Table(name: 'pap_campaign_history')]
 class CampaignHistory implements DataSurveyAwareInterface

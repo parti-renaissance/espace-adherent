@@ -56,7 +56,7 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
         $message->setSource(AdherentMessageInterface::SOURCE_API);
 
         if (
-            ($context['operation_name'] ?? null) === 'api_adherent_messages_put_item'
+            ($context['operation_name'] ?? null) === '_api_/v3/adherent_messages/{uuid}_put'
             && $oldMessage
             && (
                 $oldMessage->getContent() !== $message->getContent()

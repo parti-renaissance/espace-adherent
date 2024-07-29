@@ -2,7 +2,8 @@
 
 namespace App\Entity\NationalEvent;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Put;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -17,21 +18,13 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "denormalization_context": {"groups": {"event_inscription_update_status"}},
- *         "normalization_context": {"groups": {"event_inscription_read"}},
- *     },
- *     itemOperations={
- *         "put": {
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "_api_respond": false,
- *         },
- *     },
- *     collectionOperations={},
- * )
- */
+#[ApiResource(
+    operations: [
+        new Put(requirements: ['uuid' => '%pattern_uuid%']),
+    ],
+    normalizationContext: ['groups' => ['event_inscription_read']],
+    denormalizationContext: ['groups' => ['event_inscription_update_status']]
+)]
 #[ORM\Entity(repositoryClass: EventInscriptionRepository::class)]
 #[ORM\Table('national_event_inscription')]
 class EventInscription

@@ -2,15 +2,25 @@
 
 namespace App\Entity\AdherentMessage;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\AdherentMessage\AdherentMessageDataObject;
 use App\AdherentMessage\AdherentMessageStatusEnum;
 use App\AdherentMessage\AdherentMessageTypeEnum;
 use App\AdherentMessage\Filter\AdherentMessageFilterInterface;
 use App\Api\Filter\AdherentMessageScopeFilter;
+use App\Controller\Api\AdherentMessage\DuplicateMessageController;
+use App\Controller\Api\AdherentMessage\GetAdherentMessageKpiController;
+use App\Controller\Api\AdherentMessage\SendAdherentMessageController;
+use App\Controller\Api\AdherentMessage\SendTestAdherentMessageController;
+use App\Controller\Api\AdherentMessage\UpdateAdherentMessageFilterController;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\Filter\AbstractAdherentMessageFilter;
 use App\Entity\AuthoredTrait;
@@ -28,100 +38,85 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     shortName="AdherentMessage",
- *     attributes={
- *         "security": "is_granted('IS_FEATURE_GRANTED', 'messages')",
- *         "normalization_context": {"groups": {"message_read_list"}},
- *         "denormalization_context": {"groups": {"message_write"}},
- *         "pagination_client_enabled": true,
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/adherent_messages",
- *             "normalization_context": {
- *                 "groups": {"message_read_list"}
- *             },
- *         },
- *         "post": {
- *             "path": "/v3/adherent_messages",
- *             "normalization_context": {"groups": {"message_read"}},
- *         },
- *         "get_kpi": {
- *             "method": "GET",
- *             "path": "/v3/adherent_messages/kpi",
- *             "controller": "App\Controller\Api\AdherentMessage\GetAdherentMessageKpiController",
- *         },
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/adherent_messages/{uuid}",
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'messages') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "normalization_context": {"groups": {"message_read"}},
- *         },
- *         "get_content": {
- *             "method": "GET",
- *             "path": "/v3/adherent_messages/{uuid}/content",
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'messages') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "normalization_context": {"groups": {"message_read_content"}},
- *         },
- *         "put": {
- *             "path": "/v3/adherent_messages/{uuid}",
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'messages') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "normalization_context": {"groups": {"message_read"}},
- *         },
- *         "send": {
- *             "path": "/v3/adherent_messages/{uuid}/send",
- *             "method": "POST",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\AdherentMessage\SendAdherentMessageController"
- *         },
- *         "send_test": {
- *             "path": "/v3/adherent_messages/{uuid}/send-test",
- *             "method": "POST",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\AdherentMessage\SendTestAdherentMessageController"
- *         },
- *         "update_filter": {
- *             "path": "/v3/adherent_messages/{uuid}/filter",
- *             "method": "PUT",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\AdherentMessage\UpdateAdherentMessageFilterController"
- *         },
- *         "duplicate": {
- *             "path": "/v3/adherent_messages/{uuid}/duplicate",
- *             "method": "POST",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\AdherentMessage\DuplicateMessageController"
- *         },
- *         "delete": {
- *             "path": "/v3/adherent_messages/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'messages') and not object.isSent() and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
- *         }
- *     }
- * )
- *
- * @ApiFilter(AdherentMessageScopeFilter::class)
- * @ApiFilter(OrderFilter::class, properties={"createdAt"})
- * @ApiFilter(SearchFilter::class, properties={"label": "partial", "status": "exact"})
- *
- * @ValidAuthorRoleMessageType
- *
  * @phpstan-consistent-constructor
  */
+#[ApiFilter(filterClass: AdherentMessageScopeFilter::class)]
+#[ApiFilter(filterClass: OrderFilter::class, properties: ['createdAt'])]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['label' => 'partial', 'status' => 'exact'])]
+#[ApiResource(
+    shortName: 'AdherentMessage',
+    operations: [
+        new Get(
+            uriTemplate: '/v3/adherent_messages/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['message_read']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'messages\'))'
+        ),
+        new Get(
+            uriTemplate: '/v3/adherent_messages/{uuid}/content',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['message_read_content']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'messages\'))'
+        ),
+        new Put(
+            uriTemplate: '/v3/adherent_messages/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['message_read']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'messages\'))'
+        ),
+        new Post(
+            uriTemplate: '/v3/adherent_messages/{uuid}/send',
+            defaults: ['_api_receive' => false],
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: SendAdherentMessageController::class
+        ),
+        new Post(
+            uriTemplate: '/v3/adherent_messages/{uuid}/send-test',
+            defaults: ['_api_receive' => false],
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: SendTestAdherentMessageController::class
+        ),
+        new Put(
+            uriTemplate: '/v3/adherent_messages/{uuid}/filter',
+            defaults: ['_api_receive' => false],
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: UpdateAdherentMessageFilterController::class
+        ),
+        new Post(
+            uriTemplate: '/v3/adherent_messages/{uuid}/duplicate',
+            defaults: ['_api_receive' => false],
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: DuplicateMessageController::class
+        ),
+        new Delete(
+            uriTemplate: '/v3/adherent_messages/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\') and not object.isSent() and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'messages\'))'
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/adherent_messages',
+            normalizationContext: ['groups' => ['message_read_list']]
+        ),
+        new Post(
+            uriTemplate: '/v3/adherent_messages',
+            normalizationContext: ['groups' => ['message_read']]
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/adherent_messages/kpi',
+            controller: GetAdherentMessageKpiController::class
+        ),
+    ],
+    normalizationContext: ['groups' => ['message_read_list']],
+    denormalizationContext: ['groups' => ['message_write']],
+    paginationClientEnabled: true,
+    security: 'is_granted(\'IS_FEATURE_GRANTED\', \'messages\')'
+)]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap(AdherentMessageTypeEnum::CLASSES)]
 #[ORM\Entity(repositoryClass: AdherentMessageRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: 'adherent_messages')]
+#[ValidAuthorRoleMessageType]
 abstract class AbstractAdherentMessage implements AdherentMessageInterface
 {
     use EntityIdentityTrait;

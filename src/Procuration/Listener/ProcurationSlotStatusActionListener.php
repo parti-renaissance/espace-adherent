@@ -34,8 +34,8 @@ class ProcurationSlotStatusActionListener implements EventSubscriberInterface
         $operationName = $request->attributes->get('_api_operation_name');
 
         if (!\in_array($operationName, [
-            'api_request_slots_put_item',
-            'api_proxy_slots_put_item',
+            '_api_/request_slots/{uuid}_put',
+            '_api_/proxy_slots/{uuid}_put',
         ], true)) {
             return;
         }
@@ -55,8 +55,8 @@ class ProcurationSlotStatusActionListener implements EventSubscriberInterface
         $operationName = $request->attributes->get('_api_operation_name');
 
         if (!\in_array($operationName, [
-            'api_request_slots_put_item',
-            'api_proxy_slots_put_item',
+            '_api_/request_slots/{uuid}_put',
+            '_api_/proxy_slots/{uuid}_put',
         ], true)) {
             return;
         }

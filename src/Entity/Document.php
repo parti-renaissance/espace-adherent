@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use App\Controller\Api\DocumentDownloadFileController;
 use App\Repository\DocumentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -14,42 +17,30 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     routePrefix="/v3",
- *     attributes={
- *         "order": {"createdAt": "DESC"},
- *         "normalization_context": {
- *             "groups": {"document_read"}
- *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'documents')",
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/documents",
- *             "maximum_items_per_page": 1000
- *         }
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/documents/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'documents')",
- *         },
- *         "get_file": {
- *             "path": "/documents/{uuid}/file",
- *             "method": "GET",
- *             "controller": "App\Controller\Api\DocumentDownloadFileController",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'documents')",
- *         }
- *     }
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={
- *     "title": "partial",
- * })
- */
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['title' => 'partial'])]
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/documents/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'documents\')'
+        ),
+        new Get(
+            uriTemplate: '/documents/{uuid}/file',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: DocumentDownloadFileController::class,
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'documents\')'
+        ),
+        new GetCollection(
+            uriTemplate: '/documents',
+            paginationMaximumItemsPerPage: 1000
+        ),
+    ],
+    routePrefix: '/v3',
+    normalizationContext: ['groups' => ['document_read']],
+    order: ['createdAt' => 'DESC'],
+    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'documents\')'
+)]
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
 #[ORM\Table]
 #[UniqueEntity(fields: ['title'], message: 'document.title.unique_entity')]

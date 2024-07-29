@@ -2,17 +2,13 @@
 
 namespace App\Entity\Event;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use App\Event\EventTypeEnum;
 use App\Repository\Event\DefaultEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ApiResource(
- *     collectionOperations={},
- *     itemOperations={"get"},
- * )
- */
+#[ApiResource(operations: [new Get()])]
 #[ORM\Entity(repositoryClass: DefaultEventRepository::class)]
 class DefaultEvent extends BaseEvent
 {

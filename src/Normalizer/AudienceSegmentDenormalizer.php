@@ -20,7 +20,7 @@ class AudienceSegmentDenormalizer implements DenormalizerInterface, Denormalizer
         /** @var AudienceSegment $audienceSegment */
         $audienceSegment = $this->denormalizer->denormalize($data, $type, $format, $context);
 
-        if (isset($context['operation_name']) && 'api_audience_segments_put_item' === $context['operation_name']) {
+        if (isset($context['operation_name']) && '_api_/v3/audience-segments/{uuid}_put' === $context['operation_name']) {
             $audienceSegment->setSynchronized(false);
         }
 

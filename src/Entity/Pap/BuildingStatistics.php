@@ -2,7 +2,7 @@
 
 namespace App\Entity\Pap;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
@@ -12,18 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "security": "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])",
- *         "normalization_context": {
- *             "groups": {"pap_building_statistics_read"},
- *         },
- *     },
- *     collectionOperations={},
- *     itemOperations={},
- * )
- */
+#[ApiResource(
+    operations: [],
+    normalizationContext: ['groups' => ['pap_building_statistics_read']],
+    security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'
+)]
 #[ORM\Entity(repositoryClass: BuildingStatisticsRepository::class)]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Table(name: 'pap_building_statistics')]

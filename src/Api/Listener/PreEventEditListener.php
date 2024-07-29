@@ -29,7 +29,7 @@ class PreEventEditListener implements EventSubscriberInterface
     {
         $request = $requestEvent->getRequest();
 
-        if ('api_base_events_put_item' !== $request->attributes->get('_api_item_operation_name')
+        if ('_api_/v3/events/{uuid}_put' !== $request->attributes->get('_api_operation_name')
             || BaseEvent::class !== $request->attributes->get('_api_resource_class')) {
             return;
         }
