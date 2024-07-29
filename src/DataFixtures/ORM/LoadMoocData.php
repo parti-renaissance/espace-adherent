@@ -4,7 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Image;
 use App\Entity\Mooc\Mooc;
-use Cake\Chronos\MutableDateTime;
+use Cake\Chronos\Chronos;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -19,7 +19,7 @@ class LoadMoocData extends Fixture implements DependentFixtureInterface
             'Description du MOOC, faire de sa fourchette un acte politique',
             '<strong>Lorem ipsum</strong> dolor sit amet, consectetur adipiscing elit.',
             'ktHEfEDhscU',
-            MutableDateTime::createFromTime(0, 2, 10),
+            Chronos::createFromTime(0, 2, 10),
             'Bonsoir, voici un tweet de partage d\'un MOOC #enmarche',
             'Bonsoir, voici un partage avec Facebook',
             'Bonsoir, voici un email de partage !',
@@ -35,7 +35,7 @@ class LoadMoocData extends Fixture implements DependentFixtureInterface
             'Description du MOOC, la Rentrée des Territoires',
             '<strong>Lorem ipsum</strong> dolor sit amet, consectetur adipiscing elit.',
             'xha98D_Hoos',
-            MutableDateTime::createFromTime(0, 2, 10),
+            Chronos::createFromTime(0, 2, 10),
             'Bonsoir, voici un tweet de partage d\'un MOOC #enmarche',
             'Bonsoir, voici un partage avec Facebook',
             'Bonsoir, voici un email de partage !',

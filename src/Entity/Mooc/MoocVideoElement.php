@@ -2,7 +2,7 @@
 
 namespace App\Entity\Mooc;
 
-use Cake\Chronos\MutableDate;
+use Cake\Chronos\Chronos;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -26,11 +26,11 @@ class MoocVideoElement extends BaseMoocElement
         ?string $shareEmailObject = null,
         ?string $shareEmailBody = null,
         ?string $youtubeId = null,
-        ?\DateTime $duration = null
+        ?\DateTimeInterface $duration = null
     ) {
         parent::__construct($title, $content, $shareTwitterText, $shareFacebokText, $shareEmailObject, $shareEmailBody);
         $this->youtubeId = $youtubeId;
-        $this->duration = $duration ?? MutableDate::create();
+        $this->duration = $duration ?? Chronos::create();
     }
 
     public function getYoutubeId(): ?string
