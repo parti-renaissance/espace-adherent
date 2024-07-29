@@ -10,17 +10,17 @@
 {% block content_title 'Demande (Mandant)' %}
 
 {% block title_content_section %}
-    {{ election.requestTitle|markdown }}
+    {{ election.requestTitle|markdown_to_html }}
 {% endblock %}
 
 {% block description_content_section %}
-    {{ election.requestDescription|markdown }}
+    {{ election.requestDescription|markdown_to_html }}
 {% endblock %}
 
 {% block inner_content_section '' %}
 
 {% block legal_content_section %}
-    {{ election.requestLegal|markdown }}
+    {{ election.requestLegal|markdown_to_html }}
 {% endblock %}
 
 {% block round_additional_form %}

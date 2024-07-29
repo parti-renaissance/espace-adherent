@@ -842,7 +842,7 @@
     {% if form.vars.data and form.vars.data.content %}
         <div style="margin-top: 20px">
             <p><a href="{{ path('admin_app_cmsblock_edit', {id: form.vars.value}) }}">Modifier</a></p>
-            <div>{{ form.vars.data.content|markdown }}</div>
+            <div>{{ form.vars.data.content|markdown_to_html }}</div>
         </div>
     {% endif %}
 {% endblock %}
@@ -853,7 +853,7 @@
     {% if form.vars.data and form.vars.data.content %}
         <div style="margin-top: 20px">
             <p><a href="{{ path('admin_app_cmsblock_edit', {id: form.vars.value}) }}">Modifier</a></p>
-            <div>{{ form.vars.data.content|markdown }}</div>
+            <div>{{ form.vars.data.content|markdown_to_html }}</div>
         </div>
     {% endif %}
 {% endblock %}

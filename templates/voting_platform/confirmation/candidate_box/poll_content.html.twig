@@ -2,7 +2,7 @@
     <div class="ballot-paper__content text--center">
         <div class="b__nudge--bottom-small">
             <div class="text--gray b__nudge--bottom">
-                {{ cms_block(pool.code)|markdown }}
+                {{ cms_block(pool.code)|markdown_to_html }}
             </div>
 
             {% set candidate_group = candidate_groups|filter(group => vote_choice == group.uuid.toString)|first %}

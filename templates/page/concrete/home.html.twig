@@ -8,7 +8,7 @@
 
 {% block concrete_content %}
     <div class="space--20-0">
-        {{ page.content|markdown }}
+        {{ page.content|markdown_to_html }}
     </div>
 
     <a href="https://transformer.en-marche.fr/fr" class="concrete__promo text--center l__wrapper--600" target="_blank">

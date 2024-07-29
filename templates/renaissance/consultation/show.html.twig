@@ -9,7 +9,7 @@
     <div class="flex flex-col rounded-lg p-5 md:p-6 bg-white relative shadow">
         <div class="flex-1 overflow-hidden overflow-y-scroll max-h-[650px] pb-20">
             <div class="mt-4 prose-sm prose-re-blue lg:prose-base text-gray-500 lg:max-w-none">
-                {{ consultation.content|markdown }}
+                {{ consultation.content|markdown_to_html }}
             </div>
         </div>
         <div class="inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-white pt-20 pointer-events-none sticky -mt-32 transition-opacity duration-300 opacity-100">
@@ -24,4 +24,3 @@
     </div>
 </section>
 {% endblock %}
-

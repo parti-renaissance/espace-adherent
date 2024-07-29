@@ -9,4 +9,4 @@
 {% block meta_description page.description %}
 {% block meta_twitter_description page.twitterDescription ?: page.description %}
 
-{% block mouvement_content page.content|markdown %}
+{% block mouvement_content page.content|markdown_to_html %}

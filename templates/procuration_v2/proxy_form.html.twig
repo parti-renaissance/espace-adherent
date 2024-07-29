@@ -10,15 +10,15 @@
 {% block content_title 'Proposition (Mandataire)' %}
 
 {% block title_content_section %}
-    {{ election.proxyTitle|markdown }}
+    {{ election.proxyTitle|markdown_to_html }}
 {% endblock %}
 
 {% block description_content_section %}
-    {{ election.proxyDescription|markdown }}
+    {{ election.proxyDescription|markdown_to_html }}
 {% endblock %}
 
 {% block legal_content_section %}
-    {{ election.proxyLegal|markdown }}
+    {{ election.proxyLegal|markdown_to_html }}
 {% endblock %}
 
 {% block alternative_form %}

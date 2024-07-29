@@ -14,6 +14,6 @@
         {{ include('components/caret--left.html.twig') }}
         Retour</a>
 
-        {{ page.content|markdown }}
+        {{ page.content|markdown_to_html }}
     </div>
 {% endblock %}
