@@ -249,7 +249,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
                     $events[] = $this->createBuildingEvent(
                         BuildingEventTypeEnum::FLOOR,
                         BuildingEventActionEnum::CLOSE,
-                        sprintf('%s-%s', $buildingBlock->getName(), $floor->getNumber()),
+                        \sprintf('%s-%s', $buildingBlock->getName(), $floor->getNumber()),
                         $building,
                         $campaign,
                         $createdBy,

@@ -144,7 +144,7 @@ abstract class AbstractProcuration implements TranslatedTagInterface
 
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '[%s] %s %s (%s)',
             $this->id,
             $this->firstNames,

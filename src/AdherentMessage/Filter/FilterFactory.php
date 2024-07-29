@@ -33,7 +33,7 @@ abstract class FilterFactory
                 return static::createScopeZonesFilter($scope);
         }
 
-        throw new \InvalidArgumentException(sprintf('Invalid message type "%s"', $messageType));
+        throw new \InvalidArgumentException(\sprintf('Invalid message type "%s"', $messageType));
     }
 
     private static function createDeputyFilter(Adherent $user): MessageFilter

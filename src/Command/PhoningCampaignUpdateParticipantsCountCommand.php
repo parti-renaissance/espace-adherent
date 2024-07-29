@@ -58,7 +58,7 @@ class PhoningCampaignUpdateParticipantsCountCommand extends Command
         $count = $paginator->count();
         $total = $limit && $limit < $count ? $limit : $count;
 
-        if (false === $this->io->confirm(sprintf('Are you sure to update %d phoning campaign(s)?', $total), false)) {
+        if (false === $this->io->confirm(\sprintf('Are you sure to update %d phoning campaign(s)?', $total), false)) {
             return self::FAILURE;
         }
 
@@ -74,7 +74,7 @@ class PhoningCampaignUpdateParticipantsCountCommand extends Command
 
                     $this->entityManager->flush();
                 } catch (\Exception $e) {
-                    $this->io->comment(sprintf(
+                    $this->io->comment(\sprintf(
                         'Error while updating campaign "%s". Message: "%s".',
                         $campaign->getId(),
                         $e->getMessage()

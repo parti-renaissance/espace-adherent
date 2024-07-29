@@ -25,7 +25,7 @@ final class VotingPlatformCandidacyInvitationAcceptedMessage extends AbstractVot
             Uuid::uuid4(),
             $candidateAdherent->getEmailAddress(),
             $candidateAdherent->getFullName(),
-            sprintf('[%s] %s', $emailTitle, $emailSubTitle = self::createSubject($designation, $invitedCandidacy)),
+            \sprintf('[%s] %s', $emailTitle, $emailSubTitle = self::createSubject($designation, $invitedCandidacy)),
             array_merge([
                 'email_title' => $emailTitle,
                 'email_sub_title' => $emailSubTitle,
@@ -77,7 +77,7 @@ final class VotingPlatformCandidacyInvitationAcceptedMessage extends AbstractVot
                 return 'Félicitations, vous êtes candidat(e) en trinôme !';
             }
 
-            return sprintf('%s a accepté votre demande.', $candidacy->getFirstName());
+            return \sprintf('%s a accepté votre demande.', $candidacy->getFirstName());
         }
 
         return 'Félicitations, vous êtes candidat(e) en binôme !';

@@ -36,7 +36,7 @@ class MailchimpObjectIdMapping
     public function getTemplateId(AdherentMessageInterface $message): ?int
     {
         if (AdherentMessageInterface::SOURCE_API === $message->getSource()) {
-            if (!$templateId = $this->findTemplateId(sprintf('%s_api', $message->getType()))) {
+            if (!$templateId = $this->findTemplateId(\sprintf('%s_api', $message->getType()))) {
                 $templateId = $this->findTemplateId('default_api');
             }
         }
@@ -135,7 +135,7 @@ class MailchimpObjectIdMapping
             return null;
         }
 
-        return sprintf('%s?u=%s&id=%s', $this->mailchimpCampaignUrl, $this->mailchimpOrg, $campaignId);
+        return \sprintf('%s?u=%s&id=%s', $this->mailchimpCampaignUrl, $this->mailchimpOrg, $campaignId);
     }
 
     private function findTemplateId(string $key): ?int

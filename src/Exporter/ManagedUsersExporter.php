@@ -78,7 +78,7 @@ class ManagedUsersExporter
 
         return $this->exporter->getResponse(
             $format,
-            sprintf('adherents--%s.%s', date('d-m-Y--H-i'), $format),
+            \sprintf('adherents--%s.%s', date('d-m-Y--H-i'), $format),
             new IteratorCallbackSourceIterator(
                 $array->getIterator(),
                 $callback

@@ -515,7 +515,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         $city = $this->franceCities->getCityByPostalCodeAndName($address->getPostalCode(), $address->getCityName());
 
                         if ($city) {
-                            $address->setCity(sprintf('%s-%s', $address->getPostalCode(), $city->getInseeCode()));
+                            $address->setCity(\sprintf('%s-%s', $address->getPostalCode(), $city->getInseeCode()));
                         }
                     }
                 })
@@ -656,7 +656,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                             ElectedRepresentativeAdherentMandate::class,
                             'eam',
                             Expr\Join::WITH,
-                            sprintf('%s.id = eam.adherent', $alias)
+                            \sprintf('%s.id = eam.adherent', $alias)
                         )
                         ->andWhere('eam.finishAt IS NULL')
                         ->andWhere('eam.mandateType IN (:er_adherent_mandate_types)')
@@ -704,7 +704,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                                     ElectedRepresentativeAdherentMandate::class,
                                     'er_adherent_mandate_ongoing',
                                     Expr\Join::WITH,
-                                    sprintf('%s.id = er_adherent_mandate_ongoing.adherent', $alias)
+                                    \sprintf('%s.id = er_adherent_mandate_ongoing.adherent', $alias)
                                 )
                                 ->andWhere('er_adherent_mandate_ongoing.finishAt IS NULL')
                             ;
@@ -716,7 +716,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                                     ElectedRepresentativeAdherentMandate::class,
                                     'er_adherent_mandate_ongoing',
                                     Expr\Join::WITH,
-                                    sprintf('%s.id = er_adherent_mandate_ongoing.adherent', $alias)
+                                    \sprintf('%s.id = er_adherent_mandate_ongoing.adherent', $alias)
                                 )
                                 ->andWhere('er_adherent_mandate_ongoing.finishAt IS NOT NULL')
                             ;
@@ -791,7 +791,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
 
                     $qb
                         ->andWhere("$alias.birthdate <= :min_age_birth_date")
-                        ->setParameter('min_age_birth_date', $now->sub(new \DateInterval(sprintf('P%dY', $ageMin))))
+                        ->setParameter('min_age_birth_date', $now->sub(new \DateInterval(\sprintf('P%dY', $ageMin))))
                     ;
 
                     return true;
@@ -816,7 +816,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
 
                     $qb
                         ->andWhere("$alias.birthdate >= :max_age_birth_date")
-                        ->setParameter('max_age_birth_date', $now->sub(new \DateInterval(sprintf('P%dY', $ageMax))))
+                        ->setParameter('max_age_birth_date', $now->sub(new \DateInterval(\sprintf('P%dY', $ageMax))))
                     ;
 
                     return true;
@@ -1009,11 +1009,11 @@ class AbstractAdherentAdmin extends AbstractAdmin
                     'Pays' => $adherent->getCountry(),
                     'Labels' => implode(', ', array_map([$this->tagTranslator, 'trans'], $adherent->tags)),
                     'Rôles' => implode(', ', array_map(function (AdherentZoneBasedRole $role): string {
-                        return sprintf(
+                        return \sprintf(
                             '%s [%s]',
                             $this->translator->trans('role.'.$role->getType()),
                             implode(', ', array_map(function (Zone $zone): string {
-                                return sprintf(
+                                return \sprintf(
                                     '%s (%s)',
                                     $zone->getName(),
                                     $zone->getCode()
@@ -1025,7 +1025,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         $str = $this->translator->trans('adherent.mandate.type.'.$mandate->mandateType);
 
                         if ($zone = $mandate->zone) {
-                            $str .= sprintf(
+                            $str .= \sprintf(
                                 ' [%s (%s)]',
                                 $zone->getName(),
                                 $zone->getCode()
@@ -1040,7 +1040,7 @@ class AbstractAdherentAdmin extends AbstractAdmin
                 ];
             } catch (\Exception $e) {
                 $this->logger->error(
-                    sprintf('Error exporting Adherent with UUID: %s. (%s)', $adherent->getUuid(), $e->getMessage()),
+                    \sprintf('Error exporting Adherent with UUID: %s. (%s)', $adherent->getUuid(), $e->getMessage()),
                     ['exception' => $e]
                 );
 

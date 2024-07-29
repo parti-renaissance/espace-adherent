@@ -115,7 +115,7 @@ class PersistentTokenFactory
     private function getUser(string $identifier): Adherent
     {
         if (!$user = $this->adherentRepository->findByUuid(Uuid::fromString($identifier))) {
-            throw new \RuntimeException(sprintf('Unable to find %s entity by its identifier "%s".', Adherent::class, $identifier));
+            throw new \RuntimeException(\sprintf('Unable to find %s entity by its identifier "%s".', Adherent::class, $identifier));
         }
 
         return $user;
@@ -124,7 +124,7 @@ class PersistentTokenFactory
     private function getDevice(string $identifier): Device
     {
         if (!$device = $this->deviceRepository->findOneByDeviceUuid($identifier)) {
-            throw new \RuntimeException(sprintf('Unable to find %s entity by its identifier "%s".', Device::class, $identifier));
+            throw new \RuntimeException(\sprintf('Unable to find %s entity by its identifier "%s".', Device::class, $identifier));
         }
 
         return $device;
@@ -133,7 +133,7 @@ class PersistentTokenFactory
     private function getClient(string $identifier): Client
     {
         if (!$client = $this->clientRepository->findClientByUuid(Uuid::fromString($identifier))) {
-            throw new \RuntimeException(sprintf('Unable to find %s entity by its identifier "%s".', Client::class, $identifier));
+            throw new \RuntimeException(\sprintf('Unable to find %s entity by its identifier "%s".', Client::class, $identifier));
         }
 
         return $client;

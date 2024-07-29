@@ -19,9 +19,9 @@ class ActionCreatedNotification extends AbstractMulticastNotification
 
     private static function createTitle(Action $action): string
     {
-        $typeLabel = sprintf('%s %s', ActionTypeEnum::EMOJIS[$action->type], ucfirst(ActionTypeEnum::LABELS[$action->type]));
+        $typeLabel = \sprintf('%s %s', ActionTypeEnum::EMOJIS[$action->type], ucfirst(ActionTypeEnum::LABELS[$action->type]));
 
-        return sprintf(
+        return \sprintf(
             '%s le %d %s à %s',
             $typeLabel,
             $action->date->format('d'),
@@ -32,13 +32,13 @@ class ActionCreatedNotification extends AbstractMulticastNotification
 
     private static function createBody(Action $action): string
     {
-        return sprintf(
+        return \sprintf(
             '%s vient de créer une nouvelle action de %s le %s à %s%s.',
             $action->getAuthor()?->getFirstName(),
             ActionTypeEnum::LABELS[$action->type],
             static::formatDate($action->date, 'EEEE d MMMM à HH\'h\'mm'),
             $action->getCityName(),
-            $action->getPostalCode() ? sprintf(' (%s)', $action->getPostalCode()) : ''
+            $action->getPostalCode() ? \sprintf(' (%s)', $action->getPostalCode()) : ''
         );
     }
 }

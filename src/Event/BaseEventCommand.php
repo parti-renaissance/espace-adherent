@@ -223,7 +223,7 @@ class BaseEventCommand
 
     protected function getCategoryClass(): string
     {
-        throw new \LogicException(sprintf('The method "%s" must be overridden in "%s".', __METHOD__, static::class));
+        throw new \LogicException(\sprintf('The method "%s" must be overridden in "%s".', __METHOD__, static::class));
     }
 
     final protected static function getAddressModelFromEvent(BaseEvent $event): Address

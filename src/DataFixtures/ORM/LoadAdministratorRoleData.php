@@ -23,7 +23,7 @@ class LoadAdministratorRoleData extends Fixture
         foreach ($this->getRoles() as $administratorRole) {
             $manager->persist($administratorRole);
 
-            $this->setReference(sprintf('administrator-role-%s', $administratorRole->code), $administratorRole);
+            $this->setReference(\sprintf('administrator-role-%s', $administratorRole->code), $administratorRole);
         }
 
         $manager->flush();

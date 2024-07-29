@@ -55,7 +55,7 @@ class DepartmentSiteAdmin extends AbstractAdmin
                         $query = $datagrid->getQuery();
                         $rootAlias = $query->getRootAlias();
                         $query
-                            ->andWhere(sprintf('%1$s.type IN (:types) OR (%1$s.type = :custom_type AND %1$s.code = :zone_fde)', $rootAlias))
+                            ->andWhere(\sprintf('%1$s.type IN (:types) OR (%1$s.type = :custom_type AND %1$s.code = :zone_fde)', $rootAlias))
                             ->setParameter('types', [Zone::DEPARTMENT])
                             ->setParameter('custom_type', Zone::CUSTOM)
                             ->setParameter('zone_fde', Zone::FDE_CODE)
@@ -126,7 +126,7 @@ class DepartmentSiteAdmin extends AbstractAdmin
         }
         $qb
             ->orWhere($orx)
-            ->andWhere(sprintf('(%1$s.type = :type OR (%1$s.type = :custom_type AND %1$s.code = :code_fde)) AND %1$s.active = 1', $alias))
+            ->andWhere(\sprintf('(%1$s.type = :type OR (%1$s.type = :custom_type AND %1$s.code = :code_fde)) AND %1$s.active = 1', $alias))
             ->setParameter('type', Zone::DEPARTMENT)
             ->setParameter('custom_type', Zone::CUSTOM)
             ->setParameter('code_fde', Zone::FDE_CODE)
@@ -138,6 +138,6 @@ class DepartmentSiteAdmin extends AbstractAdmin
      */
     public function toString(object $object): string
     {
-        return sprintf('Site départemental %s', $object->getSlug());
+        return \sprintf('Site départemental %s', $object->getSlug());
     }
 }

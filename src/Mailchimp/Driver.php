@@ -37,7 +37,7 @@ class Driver implements LoggerAwareInterface
     {
         $response = $this->send(
             'PUT',
-            sprintf('/lists/%s/members/%s', $listId, $this->createHash($request->getMemberIdentifier())),
+            \sprintf('/lists/%s/members/%s', $listId, $this->createHash($request->getMemberIdentifier())),
             $request->toArray()
         );
 
@@ -67,7 +67,7 @@ class Driver implements LoggerAwareInterface
 
     public function getMemberTags(string $mail, string $listId): array
     {
-        $response = $this->send('GET', sprintf('/lists/%s/members/%s/tags', $listId, $this->createHash($mail)));
+        $response = $this->send('GET', \sprintf('/lists/%s/members/%s/tags', $listId, $this->createHash($mail)));
 
         if (!$this->isSuccessfulResponse($response)) {
             return [];
@@ -80,20 +80,20 @@ class Driver implements LoggerAwareInterface
     {
         return $this->sendRequest(
             'POST',
-            sprintf('/lists/%s/members/%s/tags', $listId, $this->createHash($request->getMemberIdentifier())),
+            \sprintf('/lists/%s/members/%s/tags', $listId, $this->createHash($request->getMemberIdentifier())),
             $request->toArray()
         );
     }
 
     public function getCampaignContent(string $campaignId): string
     {
-        $response = $this->send('GET', sprintf('/campaigns/%s/content', $campaignId));
+        $response = $this->send('GET', \sprintf('/campaigns/%s/content', $campaignId));
 
         if ($this->isSuccessfulResponse($response)) {
             return $response->toArray()['html'] ?? '';
         }
 
-        $this->logger->error(sprintf('[API] Error: %s', $response->getContent(false)), ['campaignId' => $campaignId]);
+        $this->logger->error(\sprintf('[API] Error: %s', $response->getContent(false)), ['campaignId' => $campaignId]);
 
         return '';
     }
@@ -107,29 +107,29 @@ class Driver implements LoggerAwareInterface
 
     public function updateCampaign(string $campaignId, EditCampaignRequest $request): array
     {
-        $response = $this->send('PATCH', sprintf('/campaigns/%s', $campaignId), $request->toArray());
+        $response = $this->send('PATCH', \sprintf('/campaigns/%s', $campaignId), $request->toArray());
 
         return $this->isSuccessfulResponse($response, true) ? $response->toArray() : [];
     }
 
     public function editCampaignContent(string $campaignId, EditCampaignContentRequest $request): ResponseInterface
     {
-        return $this->send('PUT', sprintf('/campaigns/%s/content', $campaignId), $request->toArray());
+        return $this->send('PUT', \sprintf('/campaigns/%s/content', $campaignId), $request->toArray());
     }
 
     public function deleteCampaign(string $campaignId): bool
     {
-        return $this->sendRequest('DELETE', sprintf('/campaigns/%s', $campaignId));
+        return $this->sendRequest('DELETE', \sprintf('/campaigns/%s', $campaignId));
     }
 
     public function sendCampaign(string $externalId): bool
     {
-        return $this->sendRequest('POST', sprintf('/campaigns/%s/actions/send', $externalId), [], true);
+        return $this->sendRequest('POST', \sprintf('/campaigns/%s/actions/send', $externalId), [], true);
     }
 
     public function sendTestCampaign(string $externalId, array $emails): bool
     {
-        return $this->sendRequest('POST', sprintf('/campaigns/%s/actions/test', $externalId), [
+        return $this->sendRequest('POST', \sprintf('/campaigns/%s/actions/test', $externalId), [
             'test_emails' => $emails,
             'send_type' => 'html',
         ]);
@@ -143,14 +143,14 @@ class Driver implements LoggerAwareInterface
             'fields' => 'segments.id,segments.name',
         ];
 
-        $response = $this->send('GET', sprintf('/lists/%s/segments?%s', $listId, http_build_query($params)));
+        $response = $this->send('GET', \sprintf('/lists/%s/segments?%s', $listId, http_build_query($params)));
 
         return $this->isSuccessfulResponse($response) ? $response->toArray()['segments'] : [];
     }
 
     public function createStaticSegment(string $name, string $listId, array $emails = []): ResponseInterface
     {
-        return $this->send('POST', sprintf('/lists/%s/segments', $listId), [
+        return $this->send('POST', \sprintf('/lists/%s/segments', $listId), [
             'name' => $name,
             'static_segment' => $emails,
         ]);
@@ -158,12 +158,12 @@ class Driver implements LoggerAwareInterface
 
     public function deleteStaticSegment(int $id): bool
     {
-        return $this->sendRequest('DELETE', sprintf('/lists/%s/segments/%d', $this->listId, $id));
+        return $this->sendRequest('DELETE', \sprintf('/lists/%s/segments/%d', $this->listId, $id));
     }
 
     public function pushSegmentMember(int $segmentId, string $mail): bool
     {
-        return $this->sendRequest('POST', sprintf('/lists/%s/segments/%d/members', $this->listId, $segmentId), [
+        return $this->sendRequest('POST', \sprintf('/lists/%s/segments/%d/members', $this->listId, $segmentId), [
             'email_address' => $mail,
         ]);
     }
@@ -172,13 +172,13 @@ class Driver implements LoggerAwareInterface
     {
         return $this->sendRequest(
             'DELETE',
-            sprintf('/lists/%s/segments/%d/members/%s', $this->listId, $segmentId, $this->createHash($mail))
+            \sprintf('/lists/%s/segments/%d/members/%s', $this->listId, $segmentId, $this->createHash($mail))
         );
     }
 
     public function createDynamicSegment(string $listId, EditSegmentRequest $request): ResponseInterface
     {
-        return $this->send('POST', sprintf('/lists/%s/segments', $listId), $request->toArray());
+        return $this->send('POST', \sprintf('/lists/%s/segments', $listId), $request->toArray());
     }
 
     public function updateDynamicSegment(
@@ -186,25 +186,25 @@ class Driver implements LoggerAwareInterface
         string $listId,
         EditSegmentRequest $request
     ): ResponseInterface {
-        return $this->send('PATCH', sprintf('/lists/%s/segments/%s', $listId, $segmentId), $request->toArray());
+        return $this->send('PATCH', \sprintf('/lists/%s/segments/%s', $listId, $segmentId), $request->toArray());
     }
 
     public function archiveMember(string $mail, string $listId): bool
     {
         return $this->sendRequest(
             'DELETE',
-            sprintf('/lists/%s/members/%s', $listId, $this->createHash($mail))
+            \sprintf('/lists/%s/members/%s', $listId, $this->createHash($mail))
         );
     }
 
     public function deleteMember(string $mail, string $listId): bool
     {
-        return $this->sendRequest('POST', sprintf('/lists/%s/members/%s/actions/delete-permanent', $listId, $this->createHash($mail)));
+        return $this->sendRequest('POST', \sprintf('/lists/%s/members/%s/actions/delete-permanent', $listId, $this->createHash($mail)));
     }
 
     public function getMemberStatus(string $mail, string $listId): ?string
     {
-        $response = $this->send('GET', sprintf('/lists/%s/members/%s?fields=status', $listId, $this->createHash($mail)));
+        $response = $this->send('GET', \sprintf('/lists/%s/members/%s?fields=status', $listId, $this->createHash($mail)));
 
         if ($this->isSuccessfulResponse($response)) {
             return $response->toArray()['status'] ?? null;
@@ -215,7 +215,7 @@ class Driver implements LoggerAwareInterface
 
     public function getReportData(string $campaignId): array
     {
-        $response = $this->send('GET', sprintf('/reports/%s?fields=emails_sent,unsubscribed,opens,clicks,list_stats', $campaignId), []);
+        $response = $this->send('GET', \sprintf('/reports/%s?fields=emails_sent,unsubscribed,opens,clicks,list_stats', $campaignId), []);
 
         return $this->isSuccessfulResponse($response) ? $response->toArray() : [];
     }
@@ -234,7 +234,7 @@ class Driver implements LoggerAwareInterface
         $isSuccessful = $response && 200 <= $response->getStatusCode() && $response->getStatusCode() < 300;
 
         if (!$isSuccessful && $log && $response) {
-            $this->logger->error(sprintf('[API] Error: %s', $response->getContent(false)));
+            $this->logger->error(\sprintf('[API] Error: %s', $response->getContent(false)));
         }
 
         return $isSuccessful;
@@ -256,7 +256,7 @@ class Driver implements LoggerAwareInterface
                 $body && \in_array($method, ['POST', 'PUT', 'PATCH'], true) ? ['json' => $body] : []
             );
         } catch (TransportExceptionInterface $e) {
-            $this->logger->error(sprintf('[API] Error: %s', $e->getMessage()), ['exception' => $e]);
+            $this->logger->error(\sprintf('[API] Error: %s', $e->getMessage()), ['exception' => $e]);
 
             return null;
         }

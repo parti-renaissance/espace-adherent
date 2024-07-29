@@ -44,7 +44,7 @@ class BuildingEventCommandHandler implements MessageHandlerInterface
                 case BuildingEventTypeEnum::BUILDING_BLOCK:
                     $objectWithStats = $building->getBuildingBlockByName($buildingEvent->getIdentifier());
                     if (!$objectWithStats) {
-                        throw new \RuntimeException(sprintf('BuildingBlock with name "%s" is not found in the Building with uuid "%s"', $buildingEvent->getIdentifier(), $building->getUuid()));
+                        throw new \RuntimeException(\sprintf('BuildingBlock with name "%s" is not found in the Building with uuid "%s"', $buildingEvent->getIdentifier(), $building->getUuid()));
                     }
 
                     break;
@@ -52,16 +52,16 @@ class BuildingEventCommandHandler implements MessageHandlerInterface
                     [$name, $number] = explode('-', $buildingEvent->getIdentifier());
                     $buildingBlock = $building->getBuildingBlockByName($name);
                     if (!$buildingBlock) {
-                        throw new \RuntimeException(sprintf('BuildingBlock with name "%s" is not found in the Building with uuid "%s"', $name, $building->getUuid()));
+                        throw new \RuntimeException(\sprintf('BuildingBlock with name "%s" is not found in the Building with uuid "%s"', $name, $building->getUuid()));
                     }
                     $objectWithStats = $buildingBlock->getFloorByNumber($number);
                     if (!$objectWithStats) {
-                        throw new \RuntimeException(sprintf('Floor with number "%s" is not found in the BuildingBlock named "%s" in the Building with uuid "%s"', $number, $name, $building->getUuid()));
+                        throw new \RuntimeException(\sprintf('Floor with number "%s" is not found in the BuildingBlock named "%s" in the Building with uuid "%s"', $number, $name, $building->getUuid()));
                     }
 
                     break;
                 default:
-                    throw new \InvalidArgumentException(sprintf('Type %s is not supported for creation a building statistics', $type));
+                    throw new \InvalidArgumentException(\sprintf('Type %s is not supported for creation a building statistics', $type));
             }
 
             $this->updateStatisticsCloseInfo($objectWithStats, $buildingEvent, $command instanceof BuildingEventAsyncCommand);
@@ -82,7 +82,7 @@ class BuildingEventCommandHandler implements MessageHandlerInterface
             if ($isAsync && $object instanceof Building) {
                 $stats = $this->buildingStatisticsManager->updateStats($object, $campaign);
             } else {
-                throw new \RuntimeException(sprintf('Statistics not found for entity "%s" with id "%s" for PAP campaign with id "%s"', $object::class, $object->getId(), $campaign->getId()));
+                throw new \RuntimeException(\sprintf('Statistics not found for entity "%s" with id "%s" for PAP campaign with id "%s"', $object::class, $object->getId(), $campaign->getId()));
             }
         }
 

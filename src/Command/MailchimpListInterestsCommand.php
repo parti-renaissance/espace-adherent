@@ -46,17 +46,17 @@ class MailchimpListInterestsCommand extends Command
     {
         $listId = $input->getArgument('listId');
 
-        $response = $this->mailchimpClient->request('GET', sprintf('/3.0/lists/%s', $listId));
+        $response = $this->mailchimpClient->request('GET', \sprintf('/3.0/lists/%s', $listId));
 
         if (200 !== $response->getStatusCode()) {
-            $this->io->error(sprintf('No Mailchimp list found with id "%s".', $listId));
+            $this->io->error(\sprintf('No Mailchimp list found with id "%s".', $listId));
 
             return self::SUCCESS;
         }
 
         $listData = $response->toArray();
 
-        $this->io->title(sprintf('Listing "%s" interests', $listData['name']));
+        $this->io->title(\sprintf('Listing "%s" interests', $listData['name']));
 
         $categoriesData = $this->getInterestCategories($listId);
 
@@ -78,14 +78,14 @@ class MailchimpListInterestsCommand extends Command
 
     private function getInterestCategories(string $listId): array
     {
-        $url = sprintf('/3.0/lists/%s/interest-categories', $listId);
+        $url = \sprintf('/3.0/lists/%s/interest-categories', $listId);
 
         return $this->mailchimpClient->request('GET', $url)->toArray();
     }
 
     private function getInterestCategoriesInterests(string $listId, string $categoryId): array
     {
-        $url = sprintf('/3.0/lists/%s/interest-categories/%s/interests', $listId, $categoryId);
+        $url = \sprintf('/3.0/lists/%s/interest-categories/%s/interests', $listId, $categoryId);
 
         return $this->mailchimpClient->request('GET', $url, [
             'query' => ['count' => 1000],

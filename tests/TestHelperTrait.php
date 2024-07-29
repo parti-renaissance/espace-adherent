@@ -122,7 +122,7 @@ trait TestHelperTrait
         $emails = $this->getEmailRepository()->findRecipientMessages($emailType, $emailRecipient);
 
         if (1 !== \count($emails)) {
-            throw new \RuntimeException(sprintf('I found %s email(s) instead of 1', \count($emails)));
+            throw new \RuntimeException(\sprintf('I found %s email(s) instead of 1', \count($emails)));
         }
 
         $emailPayloadJson = $emails[0]->getRequestPayloadJson();

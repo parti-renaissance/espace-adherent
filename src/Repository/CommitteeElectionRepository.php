@@ -79,7 +79,7 @@ class CommitteeElectionRepository extends ServiceEntityRepository
         $qb = $this
             ->createQueryBuilder('committee_election')
             ->addSelect('committee', 'designation')
-            ->addSelect(sprintf('(%s) AS total_confirmed_candidacy_male',
+            ->addSelect(\sprintf('(%s) AS total_confirmed_candidacy_male',
                 $this->getEntityManager()->createQueryBuilder()
                     ->select('SUM(IF(sub_committee_candidacy_1.id IS NOT NULL AND sub_committee_candidacy_1.gender = :male, 1, 0))')
                     ->from(CommitteeCandidacy::class, 'sub_committee_candidacy_1')
@@ -87,7 +87,7 @@ class CommitteeElectionRepository extends ServiceEntityRepository
                     ->andWhere('sub_committee_candidacy_1.status = :confirmed')
                     ->getDQL()
             ))
-            ->addSelect(sprintf('(%s) AS total_confirmed_candidacy_female',
+            ->addSelect(\sprintf('(%s) AS total_confirmed_candidacy_female',
                 $this->getEntityManager()->createQueryBuilder()
                     ->select('SUM(IF(sub_committee_candidacy_2.id IS NOT NULL AND sub_committee_candidacy_2.gender = :female, 1, 0))')
                     ->from(CommitteeCandidacy::class, 'sub_committee_candidacy_2')
@@ -95,7 +95,7 @@ class CommitteeElectionRepository extends ServiceEntityRepository
                     ->andWhere('sub_committee_candidacy_2.status = :confirmed')
                     ->getDQL()
             ))
-            ->addSelect(sprintf('(%s) AS total_draft_candidacy_male',
+            ->addSelect(\sprintf('(%s) AS total_draft_candidacy_male',
                 $this->getEntityManager()->createQueryBuilder()
                     ->select('SUM(IF(sub_committee_candidacy_3.id IS NOT NULL AND sub_committee_candidacy_3.gender = :male, 1, 0))')
                     ->from(CommitteeCandidacy::class, 'sub_committee_candidacy_3')
@@ -103,7 +103,7 @@ class CommitteeElectionRepository extends ServiceEntityRepository
                     ->andWhere('sub_committee_candidacy_3.status = :draft')
                     ->getDQL()
             ))
-            ->addSelect(sprintf('(%s) AS total_draft_candidacy_female',
+            ->addSelect(\sprintf('(%s) AS total_draft_candidacy_female',
                 $this->getEntityManager()->createQueryBuilder()
                     ->select('SUM(IF(sub_committee_candidacy_4.id IS NOT NULL AND sub_committee_candidacy_4.gender = :female, 1, 0))')
                     ->from(CommitteeCandidacy::class, 'sub_committee_candidacy_4')
@@ -111,7 +111,7 @@ class CommitteeElectionRepository extends ServiceEntityRepository
                     ->andWhere('sub_committee_candidacy_4.status = :draft')
                     ->getDQL()
             ))
-            ->addSelect(sprintf('(%s) AS winners',
+            ->addSelect(\sprintf('(%s) AS winners',
                 $this->getEntityManager()->createQueryBuilder()
                     ->select('GROUP_CONCAT(CONCAT_WS(\'|\', sub_voting_platform_candidate.gender, sub_voting_platform_candidate.firstName, sub_voting_platform_candidate.lastName))')
                     ->from(Candidate::class, 'sub_voting_platform_candidate')
@@ -123,7 +123,7 @@ class CommitteeElectionRepository extends ServiceEntityRepository
                     ->andWhere('sub_voting_platform_election.designation = designation')
                     ->getDQL()
             ))
-            ->addSelect(sprintf('(%s) AS voters',
+            ->addSelect(\sprintf('(%s) AS voters',
                 $this->getEntityManager()->createQueryBuilder()
                     ->select('COUNT(1)')
                     ->from(Vote::class, 'sub_voting_platform_vote')
@@ -134,7 +134,7 @@ class CommitteeElectionRepository extends ServiceEntityRepository
                     ->andWhere('sub_voting_platform_election2.designation = designation')
                     ->getDQL()
             ))
-            ->addSelect(sprintf('(%s) AS voting_platform_election_uuid',
+            ->addSelect(\sprintf('(%s) AS voting_platform_election_uuid',
                 $this->getEntityManager()->createQueryBuilder()
                     ->select('sub_voting_platform_election3.uuid')
                     ->from(Election::class, 'sub_voting_platform_election3')
@@ -181,7 +181,7 @@ class CommitteeElectionRepository extends ServiceEntityRepository
                 'zones',
                 'z2',
                 function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                    $zoneQueryBuilder->andWhere(sprintf('%s.status = :approved', $entityClassAlias));
+                    $zoneQueryBuilder->andWhere(\sprintf('%s.status = :approved', $entityClassAlias));
                 }
             );
         }

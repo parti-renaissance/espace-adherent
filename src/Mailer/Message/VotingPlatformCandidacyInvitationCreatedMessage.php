@@ -22,7 +22,7 @@ final class VotingPlatformCandidacyInvitationCreatedMessage extends AbstractVoti
             Uuid::uuid4(),
             $invited->getEmailAddress(),
             $invited->getFullName(),
-            sprintf('[%s] %s', $emailTitle, self::createSubject($designation, $candidate)),
+            \sprintf('[%s] %s', $emailTitle, self::createSubject($designation, $candidate)),
             array_merge(
                 [
                     'email_title' => $emailTitle,
@@ -41,9 +41,9 @@ final class VotingPlatformCandidacyInvitationCreatedMessage extends AbstractVoti
     private static function createSubject(Designation $designation, Adherent $candidate): string
     {
         if (DesignationTypeEnum::NATIONAL_COUNCIL === $designation->getType()) {
-            return sprintf('%s vous a invité(e) à candidater en trinôme', $candidate->getFirstName());
+            return \sprintf('%s vous a invité(e) à candidater en trinôme', $candidate->getFirstName());
         }
 
-        return sprintf('%s vous a invité(e) à candidater en binôme', $candidate->getFirstName());
+        return \sprintf('%s vous a invité(e) à candidater en binôme', $candidate->getFirstName());
     }
 }

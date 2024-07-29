@@ -65,7 +65,7 @@ class BaseEventRepository extends ServiceEntityRepository
             'zones',
             'z2',
             function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(sprintf('%s.published = :published', $entityClassAlias));
+                $zoneQueryBuilder->andWhere(\sprintf('%s.published = :published', $entityClassAlias));
             }
         );
 
@@ -124,8 +124,8 @@ class BaseEventRepository extends ServiceEntityRepository
         $qb = $this
             ->createQueryBuilder('event')
             ->andWhere((new Orx())
-                ->add(sprintf('event INSTANCE OF %s', DefaultEvent::class))
-                ->add(sprintf('event INSTANCE OF %s', CommitteeEvent::class))
+                ->add(\sprintf('event INSTANCE OF %s', DefaultEvent::class))
+                ->add(\sprintf('event INSTANCE OF %s', CommitteeEvent::class))
             )
             ->andWhere('event.beginAt >= :start_after')
             ->andWhere('event.beginAt < :start_before')
@@ -159,8 +159,8 @@ class BaseEventRepository extends ServiceEntityRepository
             ->where('event.published = :published')
             ->andWhere('event.renaissanceEvent = :re_event')
             ->andWhere((new Orx())
-                ->add(sprintf('event INSTANCE OF %s', DefaultEvent::class))
-                ->add(sprintf('event INSTANCE OF %s', CommitteeEvent::class))
+                ->add(\sprintf('event INSTANCE OF %s', DefaultEvent::class))
+                ->add(\sprintf('event INSTANCE OF %s', CommitteeEvent::class))
             )
             ->andWhere('event.status = :event_status')
             ->andWhere('event.beginAt >= CONVERT_TZ(:now, \'Europe/Paris\', event.timeZone)')
@@ -199,7 +199,7 @@ class BaseEventRepository extends ServiceEntityRepository
                 'zones',
                 'z2',
                 function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                    $zoneQueryBuilder->andWhere(sprintf('%s.published = :published', $entityClassAlias));
+                    $zoneQueryBuilder->andWhere(\sprintf('%s.published = :published', $entityClassAlias));
                 },
                 !$zone->isCountry()
             );

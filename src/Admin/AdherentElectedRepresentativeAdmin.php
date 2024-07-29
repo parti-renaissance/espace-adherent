@@ -30,7 +30,7 @@ class AdherentElectedRepresentativeAdmin extends AbstractAdherentAdmin
                 ElectedRepresentativeAdherentMandate::class,
                 'er_adherent_mandate',
                 Expr\Join::WITH,
-                sprintf('%s.id = er_adherent_mandate.adherent', $rootAlias)
+                \sprintf('%s.id = er_adherent_mandate.adherent', $rootAlias)
             )
             ->andWhere('er_adherent_mandate.finishAt IS NULL')
         ;

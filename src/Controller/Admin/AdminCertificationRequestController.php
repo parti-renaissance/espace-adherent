@@ -33,7 +33,7 @@ class AdminCertificationRequestController extends CRUDController
         $this->admin->checkAccess('approve', $certificationRequest);
 
         if (!$this->isGranted(CertificationPermissions::APPROVE, $certificationRequest)) {
-            $this->addFlash('error', sprintf(
+            $this->addFlash('error', \sprintf(
                 'La demande de certification <b>%d</b> est déjà traitée et ne peut être approuvée.',
                 $certificationRequest->getId()
             ));
@@ -50,7 +50,7 @@ class AdminCertificationRequestController extends CRUDController
             if ($form->get('allow')->isClicked()) {
                 $certificationManager->approve($certificationRequest, $this->getUser());
 
-                $this->addFlash('success', sprintf(
+                $this->addFlash('success', \sprintf(
                     'L\'adhérent <b>%s</b> a bien été certifié.',
                     $certificationRequest->getAdherent()->getFullName()
                 ));
@@ -75,7 +75,7 @@ class AdminCertificationRequestController extends CRUDController
         $this->admin->checkAccess('refuse', $certificationRequest);
 
         if (!$this->isGranted(CertificationPermissions::REFUSE, $certificationRequest)) {
-            $this->addFlash('error', sprintf(
+            $this->addFlash('error', \sprintf(
                 'La demande de certification <b>%d</b> est déjà traitée et ne peut être refusée.',
                 $certificationRequest->getId()
             ));
@@ -93,7 +93,7 @@ class AdminCertificationRequestController extends CRUDController
         if ($form->isSubmitted() && $form->isValid()) {
             $certificationManager->refuse($refuseCommand);
 
-            $this->addFlash('success', sprintf(
+            $this->addFlash('success', \sprintf(
                 'La demande de certification de l\'adhérent <b>%s</b> a bien été refusée.',
                 $certificationRequest->getAdherent()->getFullName()
             ));
@@ -117,7 +117,7 @@ class AdminCertificationRequestController extends CRUDController
         $this->admin->checkAccess('block', $certificationRequest);
 
         if (!$this->isGranted(CertificationPermissions::BLOCK, $certificationRequest)) {
-            $this->addFlash('error', sprintf(
+            $this->addFlash('error', \sprintf(
                 'La demande de certification <b>%d</b> est déjà traitée et ne peut être bloquée.',
                 $certificationRequest->getId()
             ));
@@ -135,7 +135,7 @@ class AdminCertificationRequestController extends CRUDController
         if ($form->isSubmitted() && $form->isValid()) {
             $certificationManager->block($blockCommand);
 
-            $this->addFlash('success', sprintf(
+            $this->addFlash('success', \sprintf(
                 'La demande de certification de l\'adhérent <b>%s</b> a bien été bloquée.',
                 $certificationRequest->getAdherent()->getFullName()
             ));

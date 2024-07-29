@@ -153,7 +153,7 @@ final class UpdateBoroughsCommand extends Command
         foreach (self::BOROUGHS as $cityCode => $boroughsPerCity) {
             $city = $this->cityRepository->findOneBy(['code' => $cityCode]);
             if (!$city) {
-                throw new \RuntimeException(sprintf('City %s not found', $cityCode));
+                throw new \RuntimeException(\sprintf('City %s not found', $cityCode));
             }
 
             foreach ($boroughsPerCity as $entry) {

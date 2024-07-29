@@ -19,7 +19,7 @@ class VotingPlatformLocalElectionVoteIsOverMessage extends AbstractRenaissanceVo
             Uuid::uuid4(),
             $first->getEmailAddress(),
             $first->getFullName(),
-            sprintf('[%s] Les résultats sont disponibles', self::getMailSubjectPrefix($election->getDesignation())),
+            \sprintf('[%s] Les résultats sont disponibles', self::getMailSubjectPrefix($election->getDesignation())),
             [
                 'election_type' => $election->getDesignationType(),
                 'election_denomination' => $election->getDesignation()->getDenomination(false, true),

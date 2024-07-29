@@ -62,7 +62,7 @@ class MailchimpDeleteContactsFromCsvCommand extends Command
 
         $reader = Reader::createFromStream($this->storage->readStream($input->getArgument('file')));
 
-        if (false === $this->io->confirm(sprintf('Are you sure to remove %d contacts?', $count = $reader->count()), false)) {
+        if (false === $this->io->confirm(\sprintf('Are you sure to remove %d contacts?', $count = $reader->count()), false)) {
             return self::FAILURE;
         }
 

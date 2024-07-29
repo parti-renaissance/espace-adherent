@@ -49,7 +49,7 @@ class ClientRepository extends ServiceEntityRepository
 
     private function addActiveClientCriteria(QueryBuilder $qb, string $rootAlias = 'c'): void
     {
-        $qb->andWhere(sprintf('%s.deletedAt IS NULL', $rootAlias));
+        $qb->andWhere(\sprintf('%s.deletedAt IS NULL', $rootAlias));
     }
 
     public function getVoxClient(): Client

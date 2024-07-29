@@ -154,7 +154,7 @@ class CandidateGroup
         $labelParts[] = $first->getFullName();
 
         if (($count = $this->candidates->count()) > 1) {
-            $labelParts[] = sprintf('(+%d candidat%s)', $count - 1, $count > 2 ? 's' : '');
+            $labelParts[] = \sprintf('(+%d candidat%s)', $count - 1, $count > 2 ? 's' : '');
         }
 
         return implode(' ', $labelParts);

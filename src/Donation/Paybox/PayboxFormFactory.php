@@ -66,7 +66,7 @@ class PayboxFormFactory
     {
         $donator = $donation->getDonator();
 
-        return sprintf(
+        return \sprintf(
             '<?xml version="1.0"?><Billing><Address><FirstName>%s</FirstName><LastName>%s</LastName><Address1>%s</Address1><ZipCode>%s</ZipCode><City>%s</City><CountryCode>%s</CountryCode></Address></Billing>',
             $donator->getFirstName() ? $this->slugify($donator->getFirstName(), 22) : '',
             $donator->getLastName() ? $this->slugify($donator->getLastName(), 22) : '',

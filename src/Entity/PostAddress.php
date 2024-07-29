@@ -86,7 +86,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
             $region
         );
 
-        $address->city = sprintf('%s-%s', $postalCode, $inseeCode);
+        $address->city = \sprintf('%s-%s', $postalCode, $inseeCode);
 
         return $address;
     }

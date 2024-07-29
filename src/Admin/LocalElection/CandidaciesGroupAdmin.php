@@ -79,7 +79,7 @@ class CandidaciesGroupAdmin extends AbstractAdmin
                     ->add('election', ModelAutocompleteType::class, [
                         'label' => 'Élection',
                         'property' => 'designation.label',
-                        'help' => sprintf(
+                        'help' => \sprintf(
                             'Si vous ne trouvez pas la bonne élection, veuillez la créer en cliquant <a href="%s">ici</a>',
                             $this->getRouteGenerator()->generate('admin_app_localelection_localelection_create')
                         ),

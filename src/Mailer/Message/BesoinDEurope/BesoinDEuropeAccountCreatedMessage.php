@@ -13,7 +13,7 @@ class BesoinDEuropeAccountCreatedMessage extends AbstractBesoinDEuropeMessage
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            sprintf('Bienvenue %s !', $firstName = self::escape($adherent->getFirstName())),
+            \sprintf('Bienvenue %s !', $firstName = self::escape($adherent->getFirstName())),
             [
                 'first_name' => $firstName,
             ],

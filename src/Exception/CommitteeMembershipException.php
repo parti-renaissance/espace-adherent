@@ -21,7 +21,7 @@ class CommitteeMembershipException extends \RuntimeException
     ): self {
         return new self(
             $membershipUuid,
-            sprintf('Committee membership "%s" cannot be promoted to the host privilege.', $membershipUuid),
+            \sprintf('Committee membership "%s" cannot be promoted to the host privilege.', $membershipUuid),
             $previous
         );
     }
@@ -32,7 +32,7 @@ class CommitteeMembershipException extends \RuntimeException
     ): self {
         return new self(
             $membershipUuid,
-            sprintf('Committee membership "%s" cannot be promoted to the host privilege. Only 2 hosts per committee allowed.', $membershipUuid),
+            \sprintf('Committee membership "%s" cannot be promoted to the host privilege. Only 2 hosts per committee allowed.', $membershipUuid),
             $previous
         );
     }
@@ -43,7 +43,7 @@ class CommitteeMembershipException extends \RuntimeException
     ): self {
         return new self(
             $membershipUuid,
-            sprintf('Committee membership "%s" cannot be demoted to the simple follower.', $membershipUuid),
+            \sprintf('Committee membership "%s" cannot be demoted to the simple follower.', $membershipUuid),
             $previous
         );
     }

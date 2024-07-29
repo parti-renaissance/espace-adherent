@@ -34,15 +34,15 @@ class LoadApproachMeasureData extends Fixture implements DependentFixtureInterfa
         for ($i = 0; $i < 12; ++$i) {
             $measure = new Measure(
                 $i + 1,
-                sprintf('Mesure lorem %d', $i + 1),
+                \sprintf('Mesure lorem %d', $i + 1),
                 self::CONTENTS[$i % 3],
                 0 === $i % 3,
                 0 === $i % 10
             );
-            $project1 = $this->getReference(sprintf('sub-approach-measure-project-%d', 2 * $i));
+            $project1 = $this->getReference(\sprintf('sub-approach-measure-project-%d', 2 * $i));
             $project1->setPosition(1);
 
-            $project2 = $this->getReference(sprintf('sub-approach-measure-project-%d', 2 * $i + 1));
+            $project2 = $this->getReference(\sprintf('sub-approach-measure-project-%d', 2 * $i + 1));
             $project2->setPosition(2);
 
             $manager->persist($project1);
@@ -51,7 +51,7 @@ class LoadApproachMeasureData extends Fixture implements DependentFixtureInterfa
             $measure->addProject($project1);
             $measure->addProject($project2);
 
-            $measure->addTag($this->getReference(sprintf('programmatic-foundation-tag-%d', $i % 6)));
+            $measure->addTag($this->getReference(\sprintf('programmatic-foundation-tag-%d', $i % 6)));
 
             $manager->persist($measure);
 

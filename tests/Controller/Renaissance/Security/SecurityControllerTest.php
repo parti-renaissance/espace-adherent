@@ -198,7 +198,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->assertNull($token->getUsageDate());
 
-        $resetPasswordUrl = sprintf('/changer-mot-de-passe/%s/%s', $adherent->getUuid(), $token->getValue());
+        $resetPasswordUrl = \sprintf('/changer-mot-de-passe/%s/%s', $adherent->getUuid(), $token->getValue());
         $crawler = $this->client->request(Request::METHOD_GET, $resetPasswordUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());

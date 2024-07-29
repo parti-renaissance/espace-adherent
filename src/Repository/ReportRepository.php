@@ -22,7 +22,7 @@ class ReportRepository extends ServiceEntityRepository
     public function findIdsByNameForClass(string $class, string $name): array
     {
         if (!is_subclass_of($class, Report::class)) {
-            throw new \InvalidArgumentException(sprintf('The class %s should extend %s.', $class, Report::class));
+            throw new \InvalidArgumentException(\sprintf('The class %s should extend %s.', $class, Report::class));
         }
 
         $ids = $this->_em->createQueryBuilder()
@@ -30,7 +30,7 @@ class ReportRepository extends ServiceEntityRepository
             ->select('report.id')
             ->join('report.subject', 'subject')
             ->andWhere('subject.name LIKE :name')
-            ->setParameter('name', sprintf('%%%s%%', $name))
+            ->setParameter('name', \sprintf('%%%s%%', $name))
             ->getQuery()
             ->getScalarResult()
         ;
@@ -70,7 +70,7 @@ class ReportRepository extends ServiceEntityRepository
     public function findNotResolvedByClassAndSubject(string $class, $subject): array
     {
         if (!is_subclass_of($class, Report::class)) {
-            throw new \InvalidArgumentException(sprintf('The class %s should extend %s.', $class, Report::class));
+            throw new \InvalidArgumentException(\sprintf('The class %s should extend %s.', $class, Report::class));
         }
 
         return $this->_em->createQueryBuilder('report')

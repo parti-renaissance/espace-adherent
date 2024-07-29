@@ -201,7 +201,7 @@ class Message
 
         return strtolower(
             preg_replace(
-                sprintf('#-%s$#', self::MESSAGE_CLASS_SUFFIX), // Remove _Message from the end
+                \sprintf('#-%s$#', self::MESSAGE_CLASS_SUFFIX), // Remove _Message from the end
                 '',
                 ltrim(preg_replace('#[A-Z]([A-Z](?![a-z]))*#', '-$0', end($parts)), '-')
             )

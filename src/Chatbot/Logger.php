@@ -28,7 +28,7 @@ class Logger implements LoggerAwareInterface
     public function logThread(Thread $thread, string $message, array $context = []): void
     {
         $this->log(
-            sprintf(
+            \sprintf(
                 '[Thread:%s] %s',
                 $thread->getUuid()->toString(),
                 $message

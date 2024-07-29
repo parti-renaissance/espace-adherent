@@ -67,7 +67,7 @@ class RepublicanSilenceCloseEventCommand extends Command
     private function closeEvents(RepublicanSilence $silence): void
     {
         $events = $this->eventRepository->findStartedEventBetweenDatesForZones(
-            (clone $silence->getBeginAt())->modify(sprintf('-%d minutes', $this->interval)),
+            (clone $silence->getBeginAt())->modify(\sprintf('-%d minutes', $this->interval)),
             $silence->getFinishAt(),
             $silence->getZones()->toArray()
         );

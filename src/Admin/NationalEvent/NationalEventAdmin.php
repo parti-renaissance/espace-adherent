@@ -108,7 +108,7 @@ class NationalEventAdmin extends AbstractAdmin
             return;
         }
 
-        $object->intoImagePath = sprintf('/national/events/%s.%s', $object->getUuid()->toString(), $object->file->getClientOriginalExtension());
+        $object->intoImagePath = \sprintf('/national/events/%s.%s', $object->getUuid()->toString(), $object->file->getClientOriginalExtension());
 
         $this->storage->write('/static'.$object->intoImagePath, file_get_contents($object->file->getPathname()));
     }

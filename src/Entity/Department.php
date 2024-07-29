@@ -68,7 +68,7 @@ class Department
 
     public function __toString()
     {
-        return sprintf('%s (%s)', $this->name, $this->code);
+        return \sprintf('%s (%s)', $this->name, $this->code);
     }
 
     public function getId(): ?int

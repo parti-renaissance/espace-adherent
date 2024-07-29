@@ -125,7 +125,7 @@ final class UpdateCantonsCommand extends Command
     private function loadCantonsFromSource(): void
     {
         $this->io->section('Loading cantons from source');
-        $this->io->comment(sprintf('Fetching data from %s', self::CANTONS_SOURCE));
+        $this->io->comment(\sprintf('Fetching data from %s', self::CANTONS_SOURCE));
 
         $file = $this->openUrlAsFile(self::CANTONS_SOURCE, self::CANTONS_FILENAME);
         $header = fgetcsv($file);
@@ -139,7 +139,7 @@ final class UpdateCantonsCommand extends Command
 
             $department = $this->em->getRepository(Department::class)->findOneBy(['code' => $row['dep']]);
             if (!$department) {
-                throw new \RuntimeException(sprintf('Department %s not found for canton %s (%s)', $row['dep'], $row['libelle'], $row['can']));
+                throw new \RuntimeException(\sprintf('Department %s not found for canton %s (%s)', $row['dep'], $row['libelle'], $row['can']));
             }
 
             $key = Canton::class.'#'.$row['can'];
@@ -169,7 +169,7 @@ final class UpdateCantonsCommand extends Command
     private function loadExtraLinksToCitiesFromSource(): void
     {
         $this->io->section('Linking cantons to cities');
-        $this->io->comment(sprintf('Fetching data from %s', self::CANTONS_SOURCE));
+        $this->io->comment(\sprintf('Fetching data from %s', self::CANTONS_SOURCE));
 
         $file = $this->openUrlAsFile(self::CITIES_SOURCE, self::CITIES_FILENAME);
         $header = fgetcsv($file);
@@ -207,7 +207,7 @@ final class UpdateCantonsCommand extends Command
     {
         $key = City::class.'#'.$code;
         if (!$this->entities->containsKey($key)) {
-            $this->io->caution(sprintf('City %s not found in database', $code));
+            $this->io->caution(\sprintf('City %s not found in database', $code));
         }
 
         return $this->entities->get($key);
@@ -220,7 +220,7 @@ final class UpdateCantonsCommand extends Command
     {
         $response = $this->httpClient->request('GET', $zipUrl);
 
-        $dir = sprintf('%s/%s', sys_get_temp_dir(), uniqid(md5($zipUrl), true));
+        $dir = \sprintf('%s/%s', sys_get_temp_dir(), uniqid(md5($zipUrl), true));
 
         $zipFilename = $dir.'.zip';
         $csvFilename = $dir.'/'.$filename;
@@ -230,7 +230,7 @@ final class UpdateCantonsCommand extends Command
         $zip = new \ZipArchive();
 
         if (true !== ($code = $zip->open($zipFilename))) {
-            throw new \RuntimeException(sprintf('ZipArchive::open() error: %d', $code));
+            throw new \RuntimeException(\sprintf('ZipArchive::open() error: %d', $code));
         }
 
         if (!$zip->extractTo($dir)) {

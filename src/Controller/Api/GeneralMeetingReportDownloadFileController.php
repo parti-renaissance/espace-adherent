@@ -22,7 +22,7 @@ class GeneralMeetingReportDownloadFileController extends AbstractController
         $filePath = $generalMeetingReport->getFilePath();
 
         if (!$this->defaultStorage->has($filePath)) {
-            $this->logger->error(sprintf('No file found for GeneralMeetingReport with uuid "%s".', $generalMeetingReport->getUuid()->toString()));
+            $this->logger->error(\sprintf('No file found for GeneralMeetingReport with uuid "%s".', $generalMeetingReport->getUuid()->toString()));
 
             throw $this->createNotFoundException('File not found.');
         }

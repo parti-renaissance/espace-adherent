@@ -92,7 +92,7 @@ class Image
 
     public function getFilePath(): string
     {
-        return sprintf(
+        return \sprintf(
             'images/%s.%s',
             $this->uuid,
             $this->extension

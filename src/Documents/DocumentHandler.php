@@ -20,7 +20,7 @@ class DocumentHandler
 
         $this->removeFile($document);
 
-        $document->filePath = sprintf(
+        $document->filePath = \sprintf(
             '%s/%s.%s',
             'files/documents',
             Uuid::uuid4()->toString(),

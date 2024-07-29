@@ -106,7 +106,7 @@ class PoliticalFunction
     public function setName(string $name): void
     {
         if (!PoliticalFunctionNameEnum::isValid($name)) {
-            throw new BadPoliticalFunctionNameException(sprintf('The political function name "%s" is invalid', $name));
+            throw new BadPoliticalFunctionNameException(\sprintf('The political function name "%s" is invalid', $name));
         }
 
         $this->name = $name;

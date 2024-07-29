@@ -69,8 +69,8 @@ class PushTokenRepository extends ServiceEntityRepository
 
         $tokens = $qb
             ->andWhere((new Orx())
-                ->add(sprintf('adherent.id IN (%s)', $adherentZonesCondition->getDQL()))
-                ->add(sprintf('device.id IN (%s)', $deviceZoneCondition->getDQL()))
+                ->add(\sprintf('adherent.id IN (%s)', $adherentZonesCondition->getDQL()))
+                ->add(\sprintf('device.id IN (%s)', $deviceZoneCondition->getDQL()))
             )
             ->getQuery()
             ->getArrayResult()

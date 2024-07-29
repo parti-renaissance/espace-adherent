@@ -40,7 +40,7 @@ class UserProvider extends EntityUserProvider implements UserProviderInterface
         $signature = LoginAttemptSignature::createFromRequest($this->requestStack->getMainRequest())->getSignature();
 
         if (!$this->failedLoginAttemptRepository->canLogin($signature)) {
-            $this->logger->warning(sprintf('Max login attempts reached for "%s"', $identifier), [
+            $this->logger->warning(\sprintf('Max login attempts reached for "%s"', $identifier), [
                 'attempts' => $this->failedLoginAttemptRepository->countAttempts($signature),
                 'username' => $identifier,
                 'signature' => $signature,
@@ -54,7 +54,7 @@ class UserProvider extends EntityUserProvider implements UserProviderInterface
         } catch (UserNotFoundException $e) {
             // security.hide_user_not_found option is disabled in order to customize the error message
             // So we must handle that logic ourself
-            throw new BadCredentialsException(sprintf('Username %s not found.', $identifier), 0, $e);
+            throw new BadCredentialsException(\sprintf('Username %s not found.', $identifier), 0, $e);
         }
     }
 }

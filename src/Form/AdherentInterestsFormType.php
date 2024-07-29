@@ -21,7 +21,7 @@ class AdherentInterestsFormType extends AbstractType
     {
         $adherent = $builder->getData();
         if (!$adherent instanceof Adherent) {
-            throw new InvalidConfigurationException(sprintf('The form type "%s" requires a pre set "%s" as underlying data.', __CLASS__, Adherent::class));
+            throw new InvalidConfigurationException(\sprintf('The form type "%s" requires a pre set "%s" as underlying data.', __CLASS__, Adherent::class));
         }
 
         $builder->add('interests', MemberInterestsChoiceType::class);

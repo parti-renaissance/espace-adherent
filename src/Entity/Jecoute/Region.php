@@ -147,7 +147,7 @@ class Region
     public function __toString()
     {
         if ($this->zone) {
-            return sprintf('%s (%s)', $this->zone->getName(), $this->zone->getCode());
+            return \sprintf('%s (%s)', $this->zone->getName(), $this->zone->getCode());
         }
 
         return $this->uuid->toString();
@@ -230,13 +230,13 @@ class Region
 
     public function getBannerPathWithDirectory(): string
     {
-        return sprintf('%s/%s', self::IMAGES_DIRECTORY, $this->banner);
+        return \sprintf('%s/%s', self::IMAGES_DIRECTORY, $this->banner);
     }
 
     public function setBannerFromUploadedFile(): void
     {
-        $this->banner = sprintf('%s-banner.%s',
-            md5(sprintf('%s@%s', $this->getUuid(), $this->bannerFile->getClientOriginalName())),
+        $this->banner = \sprintf('%s-banner.%s',
+            md5(\sprintf('%s@%s', $this->getUuid(), $this->bannerFile->getClientOriginalName())),
             $this->bannerFile->getClientOriginalExtension()
         );
     }
@@ -263,13 +263,13 @@ class Region
 
     public function getLogoPathWithDirectory(): string
     {
-        return sprintf('%s/%s', self::IMAGES_DIRECTORY, $this->logo);
+        return \sprintf('%s/%s', self::IMAGES_DIRECTORY, $this->logo);
     }
 
     public function setLogoFromUploadedFile(): void
     {
-        $this->logo = sprintf('%s-logo.%s',
-            md5(sprintf('%s@%s', $this->getUuid(), $this->logoFile->getClientOriginalName())),
+        $this->logo = \sprintf('%s-logo.%s',
+            md5(\sprintf('%s@%s', $this->getUuid(), $this->logoFile->getClientOriginalName())),
             $this->logoFile->getClientOriginalExtension()
         );
     }

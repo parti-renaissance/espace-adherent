@@ -50,7 +50,7 @@ class RefreshCommitteeMembershipsListener implements EventSubscriberInterface
         }
 
         if (!$zones) {
-            $this->logger->error(sprintf('Dpt or custom zone was not found for committee %d', $committee->getId()));
+            $this->logger->error(\sprintf('Dpt or custom zone was not found for committee %d', $committee->getId()));
 
             return;
         }

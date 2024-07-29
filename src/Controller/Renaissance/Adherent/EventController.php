@@ -127,7 +127,7 @@ class EventController extends AbstractController
             $eventRegistrationCommandHandler->handle($command);
 
             if (!$registration = $this->manager->findRegistration($uuid = (string) $command->getRegistrationUuid())) {
-                throw $this->createNotFoundException(sprintf('Registration with uuid %s not found', $uuid));
+                throw $this->createNotFoundException(\sprintf('Registration with uuid %s not found', $uuid));
             }
 
             if (!$registration->matches($event, $this->getUser())) {

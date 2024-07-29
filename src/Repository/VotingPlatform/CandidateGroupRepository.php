@@ -38,7 +38,7 @@ class CandidateGroupRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('candidate_group', 'candidate_group.id')
             ->select('candidate_group.id')
             ->addSelect(
-                sprintf(
+                \sprintf(
                     '(SELECT COUNT(1)
                 FROM %s AS vote_choice
                 WHERE vote_choice.candidateGroup = candidate_group) AS count',

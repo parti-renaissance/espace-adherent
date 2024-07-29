@@ -19,9 +19,9 @@ class ActionUpdatedNotification extends AbstractMulticastNotification
 
     private static function createTitle(Action $action): string
     {
-        $typeLabel = sprintf('%s %s', ActionTypeEnum::EMOJIS[$action->type], ucfirst(ActionTypeEnum::LABELS[$action->type]));
+        $typeLabel = \sprintf('%s %s', ActionTypeEnum::EMOJIS[$action->type], ucfirst(ActionTypeEnum::LABELS[$action->type]));
 
-        return sprintf(
+        return \sprintf(
             '%s le %d %s à %s',
             $typeLabel,
             $action->date->format('d'),
@@ -32,7 +32,7 @@ class ActionUpdatedNotification extends AbstractMulticastNotification
 
     private static function createBody(Action $action): string
     {
-        return sprintf(
+        return \sprintf(
             'Le %s du %s auquel vous êtes inscrit vient d\'être modifié.',
             ActionTypeEnum::LABELS[$action->type],
             static::formatDate($action->date, 'EEEE d MMMM à HH\'h\'mm'),

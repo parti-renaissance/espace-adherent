@@ -49,7 +49,7 @@ class SendNewMembershipNotificationCommand extends Command
 
         $managers = $this->getManagersToNotify();
 
-        $this->io->text(sprintf('Found %d manager(s) to process about new memberships', $count = \count($managers)));
+        $this->io->text(\sprintf('Found %d manager(s) to process about new memberships', $count = \count($managers)));
 
         $this->io->progressStart($count);
 

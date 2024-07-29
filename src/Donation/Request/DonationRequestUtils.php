@@ -80,7 +80,7 @@ class DonationRequestUtils
 
     public function buildDonationReference(UuidInterface $uuid, string $fullName): string
     {
-        return sprintf(
+        return \sprintf(
             '%s_%s',
             $uuid,
             $this->slugify->slugify($fullName)

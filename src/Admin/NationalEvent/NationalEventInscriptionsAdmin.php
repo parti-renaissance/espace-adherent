@@ -147,11 +147,11 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                 'Nom' => $inscription->lastName,
                 'Labels' => implode(', ', array_map([$this->tagTranslator, 'trans'], $adherent?->tags ?? [])),
                 'Rôles' => implode(', ', array_map(function (AdherentZoneBasedRole $role) use ($translator): string {
-                    return sprintf(
+                    return \sprintf(
                         '%s [%s]',
                         $translator->trans('role.'.$role->getType()),
                         implode(', ', array_map(function (Zone $zone): string {
-                            return sprintf(
+                            return \sprintf(
                                 '%s (%s)',
                                 $zone->getName(),
                                 $zone->getCode()
@@ -166,7 +166,7 @@ class NationalEventInscriptionsAdmin extends AbstractAdmin
                     $str = $translator->trans('adherent.mandate.type.'.$mandate->mandateType);
 
                     if ($zone = $mandate->zone) {
-                        $str .= sprintf(
+                        $str .= \sprintf(
                             ' [%s (%s)]',
                             $zone->getName(),
                             $zone->getCode()

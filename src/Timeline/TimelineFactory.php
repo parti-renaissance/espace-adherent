@@ -70,18 +70,18 @@ class TimelineFactory
         }
 
         if (empty($path)) {
-            throw new \InvalidArgumentException(sprintf('Can not create a media for "%s" with no file path.', $name));
+            throw new \InvalidArgumentException(\sprintf('Can not create a media for "%s" with no file path.', $name));
         }
 
-        $mediaPath = sprintf('timeline_macron/%s.jpg', $this->slugify($name));
-        $temporaryFilename = sprintf('%s/%s', sys_get_temp_dir(), $mediaPath);
+        $mediaPath = \sprintf('timeline_macron/%s.jpg', $this->slugify($name));
+        $temporaryFilename = \sprintf('%s/%s', sys_get_temp_dir(), $mediaPath);
 
         $this->storage->copy($path, $temporaryFilename);
 
         $mediaFile = new File($temporaryFilename);
 
         if (!$this->storage->write('images/'.$mediaPath, file_get_contents($mediaFile->getPathname()))) {
-            throw new \RuntimeException(sprintf('Image "%s" can\'t be uploaded on storage. (%s)', $name, $path));
+            throw new \RuntimeException(\sprintf('Image "%s" can\'t be uploaded on storage. (%s)', $name, $path));
         }
 
         return $this->mediaFactory->createFromFile($name, $mediaPath, $mediaFile);

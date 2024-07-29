@@ -47,7 +47,7 @@ class AdminCandidaciesGroupCandidateImportController extends CRUDController
             $totalCandidates = iterator_count($records);
 
             if (!empty($diff = array_diff(['GENRE', 'NOM', 'PRENOM', 'EMAIL', 'POSITION', 'LISTE'], $header))) {
-                $this->addFlash('sonata_flash_error', sprintf('En-tête de fichier invalide. Il manque la ou les colonne(s) %s', implode(',', $diff)));
+                $this->addFlash('sonata_flash_error', \sprintf('En-tête de fichier invalide. Il manque la ou les colonne(s) %s', implode(',', $diff)));
 
                 return $this->redirect($this->admin->generateObjectUrl('candidate_import', $candidaciesGroup));
             }
@@ -63,7 +63,7 @@ class AdminCandidaciesGroupCandidateImportController extends CRUDController
 
                     if (!empty($candidate['GENRE'])) {
                         if (!$civility = $this->getFormattedCivility($candidate['GENRE'])) {
-                            $this->addFlash('sonata_flash_error', sprintf('Civilité invalide pour le candidat avec l\'adresse email %s. Veuillez vérifier le fichier en entier', $email));
+                            $this->addFlash('sonata_flash_error', \sprintf('Civilité invalide pour le candidat avec l\'adresse email %s. Veuillez vérifier le fichier en entier', $email));
 
                             return $this->redirect($this->admin->generateObjectUrl('candidate_import', $candidaciesGroup));
                         }
@@ -87,7 +87,7 @@ class AdminCandidaciesGroupCandidateImportController extends CRUDController
             }
 
             $this->em->flush();
-            $this->addFlash('sonata_flash_success', sprintf('%s sur %s candidat(s) importé(s) dans la liste', $candidatesImported, $totalCandidates));
+            $this->addFlash('sonata_flash_success', \sprintf('%s sur %s candidat(s) importé(s) dans la liste', $candidatesImported, $totalCandidates));
 
             return $this->redirect($this->admin->generateObjectUrl('edit', $candidaciesGroup));
         }

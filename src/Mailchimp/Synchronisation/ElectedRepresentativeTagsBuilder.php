@@ -30,7 +30,7 @@ class ElectedRepresentativeTagsBuilder
         foreach ($electedRepresentative->getUserListDefinitions() as $userListDefinition) {
             $trad = $this->translateKey($userListDefinition->getCode());
             if ($trad === $userListDefinition->getCode()) {
-                $trad = sprintf('[L] %s', $userListDefinition->getLabel());
+                $trad = \sprintf('[L] %s', $userListDefinition->getLabel());
             }
 
             $translatedTags[] = $trad;

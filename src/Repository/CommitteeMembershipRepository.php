@@ -273,14 +273,14 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
                 if ($filter->getAgeMin()) {
                     $qb
                         ->andWhere('a.birthdate <= :min_birth_date')
-                        ->setParameter('min_birth_date', $now->sub(new \DateInterval(sprintf('P%dY', $filter->getAgeMin()))))
+                        ->setParameter('min_birth_date', $now->sub(new \DateInterval(\sprintf('P%dY', $filter->getAgeMin()))))
                     ;
                 }
 
                 if ($filter->getAgeMax()) {
                     $qb
                         ->andWhere('a.birthdate >= :min_birth_date')
-                        ->setParameter('min_birth_date', $now->sub(new \DateInterval(sprintf('P%dY', $filter->getAgeMax()))))
+                        ->setParameter('min_birth_date', $now->sub(new \DateInterval(\sprintf('P%dY', $filter->getAgeMax()))))
                     ;
                 }
             }
@@ -294,7 +294,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 
             if (null !== $filter->isCertified()) {
                 $qb
-                    ->andWhere(sprintf('a.certifiedAt IS %s NULL', $filter->isCertified() ? 'NOT' : ''))
+                    ->andWhere(\sprintf('a.certifiedAt IS %s NULL', $filter->isCertified() ? 'NOT' : ''))
                 ;
             }
 
@@ -605,7 +605,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->andWhere('(adherent.firstName LIKE :query OR adherent.lastName LIKE :query)')
             ->andWhere('adherent.certifiedAt IS NOT NULL AND adherent.registeredAt <= :registration_limit_date AND membership.joinedAt <= :limit_date')
             ->setParameters([
-                'query' => sprintf('%s%%', $query),
+                'query' => \sprintf('%s%%', $query),
                 'candidacy_draft_status' => CandidacyInterface::STATUS_DRAFT,
                 'election' => $candidacy->getElection(),
                 'committee' => $membership->getCommittee(),

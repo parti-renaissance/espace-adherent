@@ -181,7 +181,7 @@ class DesignationRepository extends ServiceEntityRepository
             );
 
             $conditions->add(
-                sprintf('designation.electionCreationDate > :adhesion_date AND designation.id IN (%s)', $zoneQueryBuilder->getDQL())
+                \sprintf('designation.electionCreationDate > :adhesion_date AND designation.id IN (%s)', $zoneQueryBuilder->getDQL())
             );
             $queryBuilder->setParameter('adhesion_date', $adherent->getRegisteredAt());
         }
@@ -202,9 +202,9 @@ class DesignationRepository extends ServiceEntityRepository
         }
 
         if ($withVoteActiveOnly) {
-            $queryBuilder->andWhere(sprintf('designation.id IN (%s)', $votingPlatformElectionQueryBuilder->getDQL()));
+            $queryBuilder->andWhere(\sprintf('designation.id IN (%s)', $votingPlatformElectionQueryBuilder->getDQL()));
         } else {
-            $conditions->add(sprintf('designation.id IN (%s)', $votingPlatformElectionQueryBuilder->getDQL()));
+            $conditions->add(\sprintf('designation.id IN (%s)', $votingPlatformElectionQueryBuilder->getDQL()));
         }
 
         $queryBuilder->andWhere($conditions);

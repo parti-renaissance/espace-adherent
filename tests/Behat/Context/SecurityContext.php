@@ -34,7 +34,7 @@ class SecurityContext extends RawMinkContext
     public function iAmLoggedAs(string $email): void
     {
         if (!$user = $this->adherentRepository->findOneBy(['emailAddress' => $email])) {
-            throw new \Exception(sprintf('Adherent %s not found', $email));
+            throw new \Exception(\sprintf('Adherent %s not found', $email));
         }
 
         $this->loginAs($user, 'main');
@@ -46,7 +46,7 @@ class SecurityContext extends RawMinkContext
     public function iAmLoggedAsAdmin(string $email): void
     {
         if (!$user = $this->administratorRepository->loadUserByUsername($email)) {
-            throw new \Exception(sprintf('Admin %s not found', $email));
+            throw new \Exception(\sprintf('Admin %s not found', $email));
         }
 
         $this->loginAs($user, 'admin');

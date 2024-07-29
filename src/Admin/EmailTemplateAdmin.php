@@ -63,7 +63,7 @@ class EmailTemplateAdmin extends AbstractAdmin
                     }
 
                     $qb
-                        ->andWhere(sprintf('FIND_IN_SET(:scope, %s.scopes) > 0', $alias))
+                        ->andWhere(\sprintf('FIND_IN_SET(:scope, %s.scopes) > 0', $alias))
                         ->setParameter('scope', $value->getValue()->getCode())
                     ;
 
@@ -159,7 +159,7 @@ class EmailTemplateAdmin extends AbstractAdmin
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
         $query
-            ->andWhere(sprintf('%s.createdByAdministrator IS NOT NULL', $query->getRootAliases()[0]))
+            ->andWhere(\sprintf('%s.createdByAdministrator IS NOT NULL', $query->getRootAliases()[0]))
         ;
 
         return $query;
@@ -181,7 +181,7 @@ class EmailTemplateAdmin extends AbstractAdmin
         }
         $qb
             ->orWhere($orx)
-            ->andWhere(sprintf('%1$s.type = :type AND %1$s.active = 1', $alias))
+            ->andWhere(\sprintf('%1$s.type = :type AND %1$s.active = 1', $alias))
             ->setParameter('type', Zone::DEPARTMENT)
         ;
     }

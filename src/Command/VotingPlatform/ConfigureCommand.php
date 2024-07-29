@@ -75,7 +75,7 @@ class ConfigureCommand extends Command
         $date = new \DateTime();
 
         $designations = $this->designationRepository->getIncomingDesignations(
-            $date->modify(sprintf('+%d minutes', (int) $input->getOption('interval')))
+            $date->modify(\sprintf('+%d minutes', (int) $input->getOption('interval')))
         );
 
         $this->io->progressStart();
@@ -547,7 +547,7 @@ class ConfigureCommand extends Command
         // validate voters
         if (!$this->entityManager->getRepository(CommitteeMembership::class)->committeeHasVotersForElection($committee, $designation)) {
             if ($this->io->isDebug()) {
-                $this->io->warning(sprintf('Committee "%s" does not have any voters', $committee->getSlug()));
+                $this->io->warning(\sprintf('Committee "%s" does not have any voters', $committee->getSlug()));
             }
 
             return false;
@@ -556,7 +556,7 @@ class ConfigureCommand extends Command
         // validate candidatures
         if (!$this->entityManager->getRepository(CommitteeCandidacy::class)->hasConfirmedCandidacies($committee, $designation)) {
             if ($this->io->isDebug()) {
-                $this->io->warning(sprintf('Committee "%s" does not have at least 1 candidate', $committee->getSlug()));
+                $this->io->warning(\sprintf('Committee "%s" does not have at least 1 candidate', $committee->getSlug()));
             }
 
             return false;

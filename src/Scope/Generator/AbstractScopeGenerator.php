@@ -77,7 +77,7 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
         $scope = $this->scopeRepository->findOneByCode($code);
 
         if (!$scope) {
-            throw new \InvalidArgumentException(sprintf('Could not find any Scope with code "%s" in database.', $code));
+            throw new \InvalidArgumentException(\sprintf('Could not find any Scope with code "%s" in database.', $code));
         }
 
         return $scope;
@@ -86,7 +86,7 @@ abstract class AbstractScopeGenerator implements ScopeGeneratorInterface
     private function getScopeCode(ScopeEntity $scopeEntity): string
     {
         return $this->delegatedAccess
-            ? sprintf('%s%s', self::DELEGATED_SCOPE_PREFIX, $this->delegatedAccess->getUuid()->toString())
+            ? \sprintf('%s%s', self::DELEGATED_SCOPE_PREFIX, $this->delegatedAccess->getUuid()->toString())
             : $scopeEntity->getCode();
     }
 

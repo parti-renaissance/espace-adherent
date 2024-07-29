@@ -14,7 +14,7 @@ final class AdherentTokenMismatchException extends AdherentTokenException
         UuidInterface $unexpectedAdherentUuid,
         ?\Exception $previous = null
     ) {
-        $message = sprintf(
+        $message = \sprintf(
             'The %s token %s cannot be used by the adherent %s but only by adherent %s.',
             $token->getType(),
             $token->getValue(),

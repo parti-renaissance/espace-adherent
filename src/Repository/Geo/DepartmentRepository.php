@@ -42,7 +42,7 @@ final class DepartmentRepository extends ServiceEntityRepository implements Logg
         ;
 
         if (\count($departments) > 1) {
-            $this->logger->error(sprintf('Found more than one department for postalCode "%s".', $postalCode));
+            $this->logger->error(\sprintf('Found more than one department for postalCode "%s".', $postalCode));
         }
 
         return $departments[0] ?? null;

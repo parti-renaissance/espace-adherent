@@ -29,7 +29,7 @@ class QrCodeResponseFactory
         if ($download) {
             $disposition = $response->headers->makeDisposition(
                 ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                sprintf('QR-%s.%s', Urlizer::urlize($filename), $writerByName)
+                \sprintf('QR-%s.%s', Urlizer::urlize($filename), $writerByName)
             );
 
             $response->headers->set('Content-Disposition', $disposition);

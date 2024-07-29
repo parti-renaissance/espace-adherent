@@ -364,7 +364,7 @@ abstract class ApplicationRequest
             $city = FranceCitiesBundle::getCityDataFromInseeCode($inseeCode);
 
             $cities[] = !empty($city['name'])
-                ? sprintf('%s (%s)', $city['name'], $city['postal_code'])
+                ? \sprintf('%s (%s)', $city['name'], $city['postal_code'])
                 : $inseeCode;
         }
 

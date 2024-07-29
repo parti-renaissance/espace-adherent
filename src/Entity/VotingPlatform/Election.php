@@ -227,7 +227,7 @@ class Election
         $secondRound->setElectionPools($pools);
 
         $this->secondRoundEndDate = (clone $this->getVoteEndDate())->modify(
-            sprintf('+%d days', $this->getAdditionalRoundDuration())
+            \sprintf('+%d days', $this->getAdditionalRoundDuration())
         );
     }
 

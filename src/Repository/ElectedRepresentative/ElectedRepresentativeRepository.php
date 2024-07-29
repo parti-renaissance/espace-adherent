@@ -243,12 +243,12 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
         $revenueDeclared = $filter->isRevenueDeclared();
         if (null !== $revenueDeclared) {
-            $qb->andWhere(sprintf('er.contributionStatus %s NULL', $revenueDeclared ? 'IS NOT' : 'IS'));
+            $qb->andWhere(\sprintf('er.contributionStatus %s NULL', $revenueDeclared ? 'IS NOT' : 'IS'));
         }
 
         $contributionActive = $filter->isContributionActive();
         if (null !== $contributionActive) {
-            $qb->andWhere(sprintf('er.lastContribution %s NULL', $contributionActive ? 'IS NOT' : 'IS'));
+            $qb->andWhere(\sprintf('er.lastContribution %s NULL', $contributionActive ? 'IS NOT' : 'IS'));
         }
 
         if ($renaissanceMembership = $filter->getRenaissanceMembership()) {
@@ -305,7 +305,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
 
         $qb->andWhere(
             ($condition ?? new Orx())
-                ->add(sprintf('mandate.id IN (%s)', $zoneConditionQueryBuilder->getDQL()))
+                ->add(\sprintf('mandate.id IN (%s)', $zoneConditionQueryBuilder->getDQL()))
         );
 
         return $qb;

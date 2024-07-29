@@ -146,7 +146,7 @@ class CommitteeMembership implements UuidEntityInterface
     public static function checkPrivilege(string $privilege): void
     {
         if (!\in_array($privilege, self::PRIVILEGES, true)) {
-            throw new \InvalidArgumentException(sprintf('Invalid privilege %s', $privilege));
+            throw new \InvalidArgumentException(\sprintf('Invalid privilege %s', $privilege));
         }
     }
 
@@ -293,7 +293,7 @@ class CommitteeMembership implements UuidEntityInterface
 
     private static function createUuid(UuidInterface $adherentUuid, UuidInterface $committeeUuid): UuidInterface
     {
-        $key = sha1(sprintf('%s|%s', $adherentUuid->toString(), $committeeUuid->toString()));
+        $key = sha1(\sprintf('%s|%s', $adherentUuid->toString(), $committeeUuid->toString()));
 
         return Uuid::uuid5(Uuid::NAMESPACE_OID, $key);
     }

@@ -113,7 +113,7 @@ final class UpdateFranceCommand extends Command
         $entries = $this->apiClient->request('GET', self::API_PATH)->toArray();
 
         $this->io->comment([
-            sprintf('%d cities found', \count($entries)),
+            \sprintf('%d cities found', \count($entries)),
             'Regions and departments will be extracted from these cities',
         ]);
 
@@ -265,7 +265,7 @@ final class UpdateFranceCommand extends Command
             $entity = $repository->findOneBy(['code' => $code]);
             if (!$entity) {
                 if (!$factory) {
-                    throw new \RuntimeException(sprintf('Entity %s not found', $key));
+                    throw new \RuntimeException(\sprintf('Entity %s not found', $key));
                 }
 
                 $entity = $factory();

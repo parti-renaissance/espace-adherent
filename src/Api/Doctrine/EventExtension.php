@@ -61,7 +61,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
             $scope = $this->scopeResolver->generate();
 
             if ($scope && $committeeUuids = $scope->getCommitteeUuids()) {
-                $queryBuilder->andWhere(sprintf($alias.'.id IN (%s)', $queryBuilder->getEntityManager()->createQueryBuilder()
+                $queryBuilder->andWhere(\sprintf($alias.'.id IN (%s)', $queryBuilder->getEntityManager()->createQueryBuilder()
                     ->select('ce.id')
                     ->from(CommitteeEvent::class, 'ce')
                     ->innerJoin('ce.committee', 'committee', Join::WITH, 'committee.uuid IN (:committee_uuids)')

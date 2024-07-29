@@ -115,7 +115,7 @@ abstract class AbstractPollController extends AbstractController
     public function togglePublish(bool $publish, Poll $poll, PollManager $pollManager): Response
     {
         if (!($publish xor $poll->isPublished())) {
-            $this->addFlash('error', sprintf('La question "%s" est déjà '.($publish ? 'publiée' : 'dépubliée'), $poll->getQuestion()));
+            $this->addFlash('error', \sprintf('La question "%s" est déjà '.($publish ? 'publiée' : 'dépubliée'), $poll->getQuestion()));
 
             return $this->redirectToPollRoute('local_list');
         }
@@ -126,7 +126,7 @@ abstract class AbstractPollController extends AbstractController
             $pollManager->unpublish($poll);
         }
 
-        $this->addFlash('info', sprintf('La question "%s" a bien été '.($publish ? 'publiée' : 'dépubliée'), $poll->getQuestion()));
+        $this->addFlash('info', \sprintf('La question "%s" a bien été '.($publish ? 'publiée' : 'dépubliée'), $poll->getQuestion()));
 
         return $this->redirectToPollRoute('local_list');
     }
@@ -148,7 +148,7 @@ abstract class AbstractPollController extends AbstractController
         return $this->render($template, array_merge(
             $parameters,
             [
-                'base_template' => sprintf('poll/_base_%s_space.html.twig', $spaceName = $this->getSpaceName()),
+                'base_template' => \sprintf('poll/_base_%s_space.html.twig', $spaceName = $this->getSpaceName()),
                 'space_name' => $spaceName,
             ]
         ));

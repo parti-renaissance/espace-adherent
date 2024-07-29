@@ -30,7 +30,7 @@ class ReportControllerTest extends AbstractEnMarcheWebTestCase
         ];
         yield 'Event' => [
             CommunityEventReport::class,
-            sprintf('/evenements/%s-reunion-de-reflexion-marseillaise', (new \DateTime('2018-05-18'))->modify('+17 days')->format('Y-m-d')),
+            \sprintf('/evenements/%s-reunion-de-reflexion-marseillaise', (new \DateTime('2018-05-18'))->modify('+17 days')->format('Y-m-d')),
             LoadCommitteeEventData::EVENT_5_UUID,
         ];
     }
@@ -65,7 +65,7 @@ class ReportControllerTest extends AbstractEnMarcheWebTestCase
 
     private function assertReportUri(Crawler $crawler, $reportClass, $subjectUuid, $subjectUrl): void
     {
-        $reportUri = sprintf(
+        $reportUri = \sprintf(
             'http://%s/report/%s/%s?redirectUrl=%s',
             $this->getParameter('app_host'),
             $this->getUriTypeFromReportCLass($reportClass),

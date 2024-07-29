@@ -78,7 +78,7 @@ class ZoneAutocompleteSelect2Controller extends AbstractZoneAutocompleteControll
 
             $results[$type]['children'][] = [
                 'id' => $zone->getId(),
-                'text' => $zone->getPostalCodeAsString() ? sprintf('%s (%s)', $zone->getName(), $zone->getPostalCodeAsString()) : $zone->getNameCode(),
+                'text' => $zone->getPostalCodeAsString() ? \sprintf('%s (%s)', $zone->getName(), $zone->getPostalCodeAsString()) : $zone->getNameCode(),
             ];
         }
 

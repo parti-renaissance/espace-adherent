@@ -37,18 +37,18 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
             case ScopeEnum::PHONING_NATIONAL_MANAGER:
             case ScopeEnum::PAP_NATIONAL_MANAGER:
                 $queryBuilder
-                    ->andWhere(sprintf('%s INSTANCE OF :national', $alias))
+                    ->andWhere(\sprintf('%s INSTANCE OF :national', $alias))
                     ->setParameter('national', SurveyTypeEnum::NATIONAL)
                 ;
                 break;
             case ScopeEnum::CORRESPONDENT:
                 $queryBuilder
-                    ->leftJoin(LocalSurvey::class, 'ls', Join::WITH, sprintf('ls.id = %s.id', $alias))
+                    ->leftJoin(LocalSurvey::class, 'ls', Join::WITH, \sprintf('ls.id = %s.id', $alias))
                     ->leftJoin('ls.zone', 'zone')
                     ->leftJoin('zone.parents', 'parent')
                     ->andWhere((new Orx())
-                        ->add(sprintf('%s INSTANCE OF :national', $alias))
-                        ->add(sprintf('%s INSTANCE OF :local AND (zone = :zone OR parent IN (:zone))', $alias))
+                        ->add(\sprintf('%s INSTANCE OF :national', $alias))
+                        ->add(\sprintf('%s INSTANCE OF :local AND (zone = :zone OR parent IN (:zone))', $alias))
                     )
                     ->setParameter('national', SurveyTypeEnum::NATIONAL)
                     ->setParameter('local', SurveyTypeEnum::LOCAL)
@@ -57,8 +57,8 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
                 break;
             case ScopeEnum::LEGISLATIVE_CANDIDATE:
                 $queryBuilder
-                    ->leftJoin(LocalSurvey::class, 'ls', Join::WITH, sprintf('ls.id = %s.id', $alias))
-                    ->andWhere(sprintf('%s INSTANCE OF :local AND ls.zone = :zone', $alias))
+                    ->leftJoin(LocalSurvey::class, 'ls', Join::WITH, \sprintf('ls.id = %s.id', $alias))
+                    ->andWhere(\sprintf('%s INSTANCE OF :local AND ls.zone = :zone', $alias))
                     ->setParameter('local', SurveyTypeEnum::LOCAL)
                     ->setParameter('zone', $user->getLegislativeCandidateZone())
                 ;

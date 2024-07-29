@@ -213,7 +213,7 @@ class DataSurveyRepository extends ServiceEntityRepository
             ->createQueryBuilder('ds')
             ->select('COUNT(1)')
             ->leftJoin(CampaignHistory::class, 'campaignHistory', Join::WITH, 'campaignHistory.dataSurvey = ds')
-            ->where(sprintf('campaignHistory.building = :building %s', $conditions))
+            ->where(\sprintf('campaignHistory.building = :building %s', $conditions))
             ->setParameters($params)
             ->getQuery()
             ->getSingleScalarResult()

@@ -129,7 +129,7 @@ class NewsletterControllerTest extends WebTestCase
 
         // Confirm subscription
         $token = $subscription->getToken();
-        $confirmationUrl = sprintf('/newsletter/confirmation/%s/%s', $subscription->getUuid(), $token);
+        $confirmationUrl = \sprintf('/newsletter/confirmation/%s/%s', $subscription->getUuid(), $token);
 
         $this->client->request(Request::METHOD_GET, $confirmationUrl);
 

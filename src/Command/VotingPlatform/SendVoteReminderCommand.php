@@ -81,7 +81,7 @@ class SendVoteReminderCommand extends Command
             if ($days <= 0) {
                 throw new \InvalidArgumentException('date argument is invalid');
             }
-            $voteEndDate = new \DateTime(sprintf('+%d days', $days));
+            $voteEndDate = new \DateTime(\sprintf('+%d days', $days));
             $elections = $this->electionRepository->getElectionsToClose($voteEndDate);
         }
 

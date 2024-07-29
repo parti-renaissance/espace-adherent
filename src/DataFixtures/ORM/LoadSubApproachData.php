@@ -22,16 +22,16 @@ class LoadSubApproachData extends Fixture implements DependentFixtureInterface
             $subtitle = 0 === $i % 2 ? 'Subtitle lorem' : '';
             $approach = (new SubApproach(
                 $i + 1,
-                sprintf('Axe secondaire lorem %d', $i + 1),
+                \sprintf('Axe secondaire lorem %d', $i + 1),
                 $subtitle,
                 self::DESCRIPTIONS[$i % 4],
                 0 === $i
             ));
 
-            $measure1 = $this->getReference(sprintf('sub-approach-measure-%d', 2 * $i));
+            $measure1 = $this->getReference(\sprintf('sub-approach-measure-%d', 2 * $i));
             $measure1->setPosition(1);
 
-            $measure2 = $this->getReference(sprintf('sub-approach-measure-%d', 2 * $i + 1));
+            $measure2 = $this->getReference(\sprintf('sub-approach-measure-%d', 2 * $i + 1));
             $measure2->setPosition(2);
 
             $manager->persist($measure1);

@@ -20,14 +20,14 @@ class ActionBeginNotification extends AbstractMulticastNotification
     private static function createTitle(Action $action, bool $firstNotification): string
     {
         if ($firstNotification) {
-            return sprintf(
+            return \sprintf(
                 'H-1 avant le %s à %s',
                 ActionTypeEnum::LABELS[$action->type],
                 $action->getCityName()
             );
         }
 
-        return sprintf(
+        return \sprintf(
             'C\'est parti pour le %s à %s',
             ActionTypeEnum::LABELS[$action->type],
             $action->getCityName()
@@ -37,7 +37,7 @@ class ActionBeginNotification extends AbstractMulticastNotification
     private static function createBody(Action $action, bool $firstNotification): string
     {
         if ($firstNotification) {
-            return sprintf(
+            return \sprintf(
                 'Rendez vous au %s à %s. %s vous attend !',
                 $action->getAddress(),
                 $action->date->format('H\hi'),
@@ -45,7 +45,7 @@ class ActionBeginNotification extends AbstractMulticastNotification
             );
         }
 
-        return sprintf(
+        return \sprintf(
             'Le %s commence ! Rendez vous au %s. Vous êtes sur place ? Déclarez votre présence !',
             ActionTypeEnum::LABELS[$action->type],
             $action->getAddress()

@@ -134,7 +134,7 @@ class AddressRepository extends ServiceEntityRepository
         $sql = str_replace(
             '__VOTE_PLACE_CONDITION__',
             $conditions ?
-                sprintf(
+                \sprintf(
                     'AND address.vote_place_id IN (SELECT vote_place.id FROM pap_vote_place AS vote_place WHERE %s)',
                     implode(' AND ', $conditions)
                 ) : '',

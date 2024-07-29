@@ -56,7 +56,7 @@ class ReButton extends AbstractComponentsLogic
                 active:not(:disabled):bg-ui_gray-70
                 disabled:bg-ui_gray-30 disabled:text-white
                 TW,
-            default => throw new \LogicException(sprintf('Unknown button type "%s"', $this->color))
+            default => throw new \LogicException(\sprintf('Unknown button type "%s"', $this->color))
         };
     }
 
@@ -71,7 +71,7 @@ class ReButton extends AbstractComponentsLogic
                 bg-white border-ui_gray-30 text-ui_gray-80
                 hover:enabled:bg-ui_gray-5
                 TW,
-            default => throw new \LogicException(sprintf('Unknown button type "%s"', $this->color))
+            default => throw new \LogicException(\sprintf('Unknown button type "%s"', $this->color))
         };
     }
 

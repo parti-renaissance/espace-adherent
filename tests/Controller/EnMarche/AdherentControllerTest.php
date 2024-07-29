@@ -175,16 +175,16 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         $inputPattern = 'input[name="adherent_profile[%s]"]';
         $optionPattern = 'select[name="adherent_profile[%s]"] option[selected="selected"]';
 
-        self::assertSame('male', $crawler->filter(sprintf($optionPattern, 'gender'))->attr('value'));
-        self::assertSame('Carl', $crawler->filter(sprintf($inputPattern, 'firstName'))->attr('value'));
-        self::assertSame('Mirabeau', $crawler->filter(sprintf($inputPattern, 'lastName'))->attr('value'));
-        self::assertSame('826 avenue du lys', $crawler->filter(sprintf($inputPattern, 'address][address'))->attr('value'));
-        self::assertSame('77190', $crawler->filter(sprintf($inputPattern, 'address][postalCode'))->attr('value'));
-        self::assertSame('77190-77152', $crawler->filter(sprintf($inputPattern, 'address][city'))->attr('value'));
-        self::assertSame('France', $crawler->filter(sprintf($optionPattern, 'address][country'))->text());
-        self::assertSame('01 11 22 33 44', $crawler->filter(sprintf($inputPattern, 'phone][number'))->attr('value'));
-        self::assertSame('Retraité', $crawler->filter(sprintf($optionPattern, 'position'))->text());
-        self::assertSame('1950-07-08', $crawler->filter(sprintf($inputPattern, 'birthdate'))->attr('value'));
+        self::assertSame('male', $crawler->filter(\sprintf($optionPattern, 'gender'))->attr('value'));
+        self::assertSame('Carl', $crawler->filter(\sprintf($inputPattern, 'firstName'))->attr('value'));
+        self::assertSame('Mirabeau', $crawler->filter(\sprintf($inputPattern, 'lastName'))->attr('value'));
+        self::assertSame('826 avenue du lys', $crawler->filter(\sprintf($inputPattern, 'address][address'))->attr('value'));
+        self::assertSame('77190', $crawler->filter(\sprintf($inputPattern, 'address][postalCode'))->attr('value'));
+        self::assertSame('77190-77152', $crawler->filter(\sprintf($inputPattern, 'address][city'))->attr('value'));
+        self::assertSame('France', $crawler->filter(\sprintf($optionPattern, 'address][country'))->text());
+        self::assertSame('01 11 22 33 44', $crawler->filter(\sprintf($inputPattern, 'phone][number'))->attr('value'));
+        self::assertSame('Retraité', $crawler->filter(\sprintf($optionPattern, 'position'))->text());
+        self::assertSame('1950-07-08', $crawler->filter(\sprintf($inputPattern, 'birthdate'))->attr('value'));
 
         // Submit the profile form with invalid data
         $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
@@ -719,7 +719,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertSame(1, $errors->count());
         $this->assertSame('Afin de confirmer la suppression de votre compte, veuillez sélectionner la raison pour laquelle vous quittez le mouvement.', $errors->eq(0)->text());
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', $committee));
+        $crawler = $this->client->request(Request::METHOD_GET, \sprintf('/comites/%s', $committee));
         $this->assertStringContainsString("$nbFollowers adhérents", $crawler->filter('.committee__infos')->text());
 
         $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/desadherer');
@@ -749,7 +749,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
             new RemoveAdherentAndRelatedDataCommand(Uuid::fromString($uuid))
         );
 
-        $crawler = $this->client->request(Request::METHOD_GET, sprintf('/comites/%s', $committee));
+        $crawler = $this->client->request(Request::METHOD_GET, \sprintf('/comites/%s', $committee));
         --$nbFollowers;
 
         $this->assertStringContainsString("$nbFollowers adhérents", $crawler->filter('.committee__infos')->text());

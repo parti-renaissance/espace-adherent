@@ -81,7 +81,7 @@ class EventRegistrationManager
     public function getAdherentRegistrations(Adherent $adherent, string $type = 'upcoming'): array
     {
         if (!\in_array($type = strtolower($type), ['upcoming', 'past'], true)) {
-            throw new EventRegistrationException(sprintf('Invalid "type" query string parameter. It must be eiter "upcoming" or "past" but "%s" given.', $type));
+            throw new EventRegistrationException(\sprintf('Invalid "type" query string parameter. It must be eiter "upcoming" or "past" but "%s" given.', $type));
         }
 
         if ('past' === $type) {

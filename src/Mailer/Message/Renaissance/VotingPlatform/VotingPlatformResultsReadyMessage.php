@@ -15,7 +15,7 @@ class VotingPlatformResultsReadyMessage extends AbstractRenaissanceVotingPlatfor
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            sprintf('[%s] Les résultats sont disponibles !', self::getMailSubjectPrefix($election->getDesignation())),
+            \sprintf('[%s] Les résultats sont disponibles !', self::getMailSubjectPrefix($election->getDesignation())),
             ['page_url' => $url]
         );
 

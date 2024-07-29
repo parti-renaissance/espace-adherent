@@ -42,7 +42,7 @@ class EmailContext extends RawMinkContext
     public function iShouldHaveMessages(int $number)
     {
         if (($nb = $this->emailRepository->count([])) !== $number) {
-            throw new \RuntimeException(sprintf('I found %d email(s) instead of %d', $nb, $number));
+            throw new \RuntimeException(\sprintf('I found %d email(s) instead of %d', $nb, $number));
         }
     }
 
@@ -54,7 +54,7 @@ class EmailContext extends RawMinkContext
         $emails = $this->emailRepository->findRecipientMessages($emailType, $emailRecipient);
 
         if (1 !== \count($emails)) {
-            throw new \RuntimeException(sprintf('I found %s email(s) instead of 1', \count($emails)));
+            throw new \RuntimeException(\sprintf('I found %s email(s) instead of 1', \count($emails)));
         }
 
         $emailPayloadJson = $emails[0]->getRequestPayloadJson();
@@ -100,7 +100,7 @@ class EmailContext extends RawMinkContext
         }
 
         if (null === $value) {
-            throw new \RuntimeException(sprintf('There is no variable or no data called %s. Variables availables are %s.', $name, implode(', ', array_keys($this->currentEmailPayload['Recipients'][0]['Vars'] ?? []))));
+            throw new \RuntimeException(\sprintf('There is no variable or no data called %s. Variables availables are %s.', $name, implode(', ', array_keys($this->currentEmailPayload['Recipients'][0]['Vars'] ?? []))));
         }
 
         return $value;

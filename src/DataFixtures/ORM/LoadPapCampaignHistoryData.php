@@ -216,7 +216,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
             if ($questioner) {
                 $dataSurvey->setAuthor($questioner);
                 $dataSurvey->setAuthorPostalCode($questioner->getPostalCode());
-                $campaignHistory->setEmailAddress(sprintf('%s-%s-%s@test-en-marche-dev.com', $building->getId(), $buildingBlock, $floor));
+                $campaignHistory->setEmailAddress(\sprintf('%s-%s-%s@test-en-marche-dev.com', $building->getId(), $buildingBlock, $floor));
             }
 
             $campaignHistory->setDataSurvey($dataSurvey);

@@ -47,7 +47,7 @@ class SendNationalEventTicketsCommand extends Command
             return self::SUCCESS;
         }
 
-        if (!$this->io->isQuiet() && false === $this->io->confirm(sprintf('Are you sure to send %d tickets ?', $total), false)) {
+        if (!$this->io->isQuiet() && false === $this->io->confirm(\sprintf('Are you sure to send %d tickets ?', $total), false)) {
             return self::FAILURE;
         }
 

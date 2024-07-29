@@ -111,7 +111,7 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
         ob_start();
         $this->client->request(
             Request::METHOD_GET,
-            sprintf('/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xlsx?scope=%s', $scope),
+            \sprintf('/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xlsx?scope=%s', $scope),
             [],
             [],
             ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]

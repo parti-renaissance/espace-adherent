@@ -31,7 +31,7 @@ class ChezVousCityControllerCaseTest extends AbstractRenaissanceWebTestCase
 
         $this->authenticateAsAdmin($this->client);
 
-        $deleteUrl = sprintf('/admin/app/chezvous-city/%s/delete', $city->getId());
+        $deleteUrl = \sprintf('/admin/app/chezvous-city/%s/delete', $city->getId());
         $crawler = $this->client->request(Request::METHOD_GET, $deleteUrl);
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
@@ -51,13 +51,13 @@ class ChezVousCityControllerCaseTest extends AbstractRenaissanceWebTestCase
 
         $this->authenticateAsAdmin($this->client);
 
-        $editUrl = sprintf('/admin/app/chezvous-city/%s/edit', $city->getId());
+        $editUrl = \sprintf('/admin/app/chezvous-city/%s/edit', $city->getId());
         $crawler = $this->client->request(Request::METHOD_GET, $editUrl);
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $form = $crawler->selectButton('Mettre à jour')->form();
         $formName = str_replace(
-            sprintf('%s?uniqid=', $editUrl),
+            \sprintf('%s?uniqid=', $editUrl),
             '',
             $form->getFormNode()->getAttribute('action')
         );

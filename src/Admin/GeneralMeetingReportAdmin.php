@@ -118,7 +118,7 @@ class GeneralMeetingReportAdmin extends AbstractAdmin
         }
         $qb
             ->orWhere($orx)
-            ->andWhere(sprintf('%1$s.type = :type AND %1$s.active = 1', $alias))
+            ->andWhere(\sprintf('%1$s.type = :type AND %1$s.active = 1', $alias))
             ->setParameter('type', Zone::DEPARTMENT)
         ;
     }

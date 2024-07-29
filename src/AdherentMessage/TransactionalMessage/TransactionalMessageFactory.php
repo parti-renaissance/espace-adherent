@@ -21,6 +21,6 @@ class TransactionalMessageFactory
             return DefaultUnlayerRenaissanceMessage::create($message, $recipients);
         }
 
-        throw new \RuntimeException(sprintf('Unknown transactional adherent message "%s"', $message::class));
+        throw new \RuntimeException(\sprintf('Unknown transactional adherent message "%s"', $message::class));
     }
 }

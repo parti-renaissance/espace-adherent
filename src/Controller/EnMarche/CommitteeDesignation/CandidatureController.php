@@ -91,7 +91,7 @@ class CandidatureController extends AbstractController
             return $this->redirectToRoute('app_committee_candidature_select_pair_candidate', ['slug' => $committee->getSlug()]);
         }
 
-        return $this->render(sprintf('committee/candidacy/form_%s.html.twig', $election->getDesignationType()), [
+        return $this->render(\sprintf('committee/candidacy/form_%s.html.twig', $election->getDesignationType()), [
             'candidacy' => $candidacy,
             'form' => $form->createView(),
             'committee' => $committee,

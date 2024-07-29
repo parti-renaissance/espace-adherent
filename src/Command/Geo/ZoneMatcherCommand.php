@@ -53,7 +53,7 @@ class ZoneMatcherCommand extends Command
             ->addArgument(
                 'entity',
                 InputArgument::REQUIRED,
-                sprintf('Entity fully qualified class name (must implements %s and %s).', AddressHolderInterface::class, ZoneableEntity::class)
+                \sprintf('Entity fully qualified class name (must implements %s and %s).', AddressHolderInterface::class, ZoneableEntity::class)
             )
             ->addOption('id', null, InputOption::VALUE_REQUIRED, 'Entity id.')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm but will not persist in database.')
@@ -101,7 +101,7 @@ class ZoneMatcherCommand extends Command
 
             if (!$dryRun) {
                 if ($this->io->isVeryVerbose()) {
-                    $this->io->comment(sprintf('Persisting bulk in database (%d items)', \count($items)));
+                    $this->io->comment(\sprintf('Persisting bulk in database (%d items)', \count($items)));
                 }
 
                 $this->em->flush();
@@ -124,11 +124,11 @@ class ZoneMatcherCommand extends Command
     private function validateEntityClass(string $class): void
     {
         if (!is_subclass_of($class, AddressHolderInterface::class)) {
-            throw new \InvalidArgumentException(sprintf('Class %s must implements %s', $class, AddressHolderInterface::class));
+            throw new \InvalidArgumentException(\sprintf('Class %s must implements %s', $class, AddressHolderInterface::class));
         }
 
         if (!is_subclass_of($class, ZoneableEntity::class)) {
-            throw new \InvalidArgumentException(sprintf('Class %s must implements %s', $class, ZoneableEntity::class));
+            throw new \InvalidArgumentException(\sprintf('Class %s must implements %s', $class, ZoneableEntity::class));
         }
     }
 

@@ -91,6 +91,6 @@ class MailchimpSegment
 
     public function __toString()
     {
-        return sprintf('[%s] %s', $this->list, $this->label);
+        return \sprintf('[%s] %s', $this->list, $this->label);
     }
 }

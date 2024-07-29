@@ -9,7 +9,7 @@ final class SHA1
     private function __construct(string $hash)
     {
         if (!preg_match('/^[a-f0-9]{40}/i', $hash)) {
-            throw new \InvalidArgumentException(sprintf('The given hash "%s" does not have a valid SHA-1 format.', $hash));
+            throw new \InvalidArgumentException(\sprintf('The given hash "%s" does not have a valid SHA-1 format.', $hash));
         }
 
         $this->hash = $hash;

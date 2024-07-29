@@ -69,7 +69,7 @@ class AdherentProfileUpdateHandler extends AbstractAdherentHandler implements Lo
 
         foreach ($interestLabels as $label) {
             if (!\in_array($label, $this->interests, true)) {
-                $this->logger->error(sprintf(
+                $this->logger->error(\sprintf(
                     '[MailchimpWebhook] Mailchimp interest label "%s" does not match any EM interest labels',
                     $label
                 ));

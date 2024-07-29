@@ -23,7 +23,7 @@ class RefreshThreadCommandHandler implements MessageHandlerInterface
         $thread = $this->threadRepository->findOneByUuid($command->getUuid()->toString());
 
         if (!$thread) {
-            $this->logger->log(sprintf('Did not find Thread with uuid: "%s"', $command->getUuid()->toString()));
+            $this->logger->log(\sprintf('Did not find Thread with uuid: "%s"', $command->getUuid()->toString()));
 
             return;
         }

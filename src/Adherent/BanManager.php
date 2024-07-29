@@ -23,7 +23,7 @@ class BanManager
     {
         $this->tokenRevocationAuthority->revokeUserTokens($adherent);
 
-        $reason = sprintf('Exclu(e) par la Commission des conflits le %s', date('d-m-Y'));
+        $reason = \sprintf('Exclu(e) par la Commission des conflits le %s', date('d-m-Y'));
 
         $unregistrationCommand = new UnregistrationCommand([$reason], $reason, $administrator);
 

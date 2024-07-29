@@ -42,6 +42,6 @@ class PayboxProvider
 
     public function getIpnUri(): string
     {
-        return sprintf('/don/payment-ipn/%d', time());
+        return \sprintf('/don/payment-ipn/%d', time());
     }
 }

@@ -118,7 +118,7 @@ class City implements AlgoliaIndexedEntityInterface
 
     public function __toString()
     {
-        return sprintf('%s (%s)', $this->name, $this->exportPostalCodes());
+        return \sprintf('%s (%s)', $this->name, $this->exportPostalCodes());
     }
 
     public function getId(): ?int

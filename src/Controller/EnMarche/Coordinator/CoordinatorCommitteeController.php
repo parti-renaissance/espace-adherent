@@ -73,7 +73,7 @@ class CoordinatorCommitteeController extends AbstractController
                     $this->addFlash('info', 'Merci. Votre appréciation a été transmise à nos équipes.');
                 }
             } catch (BaseGroupException $exception) {
-                $this->addFlash('info', sprintf('Le comité #%d a déjà été traité par un administrateur', $committee->getId()));
+                $this->addFlash('info', \sprintf('Le comité #%d a déjà été traité par un administrateur', $committee->getId()));
             }
         } else {
             foreach ($form->getErrors(true) as $error) {

@@ -78,7 +78,7 @@ class LegislativeDistrictZone
 
     public static function normalizeAreaCode(string $code): string
     {
-        return sprintf('%04s', $code);
+        return \sprintf('%04s', $code);
     }
 
     public function __toString(): string
@@ -88,12 +88,12 @@ class LegislativeDistrictZone
         }
 
         if (self::isCorsica($this->areaCode)) {
-            return sprintf('%s - %s', ltrim($this->areaCode, '0'), $this->name);
+            return \sprintf('%s - %s', ltrim($this->areaCode, '0'), $this->name);
         }
 
         $areaCode = (int) $this->areaCode;
 
-        return sprintf(
+        return \sprintf(
             '%s - %s',
             $areaCode < 10 ? substr($this->areaCode, 2) : ltrim($this->areaCode, '0'),
             $this->name
@@ -108,7 +108,7 @@ class LegislativeDistrictZone
     public function setAreaType(string $type): void
     {
         if (!\in_array($type = strtolower($type), $types = [self::TYPE_DEPARTMENT, self::TYPE_REGION])) {
-            throw new \InvalidArgumentException(sprintf('Invalid district zone type "%s". It must be one of %s.', $type, implode(', ', $types)));
+            throw new \InvalidArgumentException(\sprintf('Invalid district zone type "%s". It must be one of %s.', $type, implode(', ', $types)));
         }
 
         $this->areaType = $type;
@@ -192,7 +192,7 @@ class LegislativeDistrictZone
             return self::ZONE_FOREIGN;
         }
 
-        throw new \RuntimeException(sprintf('Unexpected code "%s" for zone "%s"', $areaCode, $this->name));
+        throw new \RuntimeException(\sprintf('Unexpected code "%s" for zone "%s"', $areaCode, $this->name));
     }
 
     public function getName(): ?string

@@ -16,7 +16,7 @@ final class VotingPlatformCandidacyInvitationRemovedMessage extends AbstractVoti
             Uuid::uuid4(),
             $invited->getEmailAddress(),
             $invited->getFullName(),
-            sprintf('[%s] %s a annulé son invitation', $emailTitle, $candidate->getFirstName()),
+            \sprintf('[%s] %s a annulé son invitation', $emailTitle, $candidate->getFirstName()),
             [
                 'email_title' => $emailTitle,
                 'election_type' => $designation->getType(),

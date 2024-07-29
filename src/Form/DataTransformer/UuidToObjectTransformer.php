@@ -17,7 +17,7 @@ class UuidToObjectTransformer implements DataTransformerInterface
     public function __construct(EntityManagerInterface $entityManager, string $className)
     {
         if (!is_a($className, UuidEntityInterface::class, true)) {
-            throw new \RuntimeException(sprintf('Invalid class name "%s", expected %s', $className, UuidEntityInterface::class));
+            throw new \RuntimeException(\sprintf('Invalid class name "%s", expected %s', $className, UuidEntityInterface::class));
         }
 
         $this->repository = $entityManager->getRepository($className);

@@ -20,7 +20,7 @@ final class MailchimpSubscriptionLabelMapping
     public static function getSubscriptionTypeCode(string $label): string
     {
         if (!isset(static::$mapping[$label])) {
-            throw new \InvalidArgumentException(sprintf('Invalid Mailchimp subscription label "%s"', $label));
+            throw new \InvalidArgumentException(\sprintf('Invalid Mailchimp subscription label "%s"', $label));
         }
 
         return static::$mapping[$label];

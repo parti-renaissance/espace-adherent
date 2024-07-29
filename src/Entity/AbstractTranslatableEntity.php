@@ -21,7 +21,7 @@ abstract class AbstractTranslatableEntity implements TranslatableInterface
             $english = $this->translate('en');
         }
 
-        $getter = sprintf('get%s', ucfirst($field));
+        $getter = \sprintf('get%s', ucfirst($field));
 
         return [
             'fr' => $french->$getter(),

@@ -280,12 +280,12 @@ class CertificationRequest
 
     public function getPathWithDirectory(): string
     {
-        return sprintf('%s/%s', 'files/certification_requests/document', $this->documentName);
+        return \sprintf('%s/%s', 'files/certification_requests/document', $this->documentName);
     }
 
     public function processDocument(UploadedFile $document): void
     {
-        $this->documentName = sprintf('%s.%s',
+        $this->documentName = \sprintf('%s.%s',
             $this->getUuid(),
             $document->getClientOriginalExtension()
         );

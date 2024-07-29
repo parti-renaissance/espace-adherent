@@ -49,7 +49,7 @@ class DepartmentSiteSlugHandler implements SlugHandlerInterface
         $this->sluggable->setTransliterator($this->originalTransliterator);
 
         if (method_exists($object, 'getZone')) {
-            $result = sprintf('%s-%s', $object->getZone()?->getCode(), Urlizer::urlize($object->getZone()?->getName()));
+            $result = \sprintf('%s-%s', $object->getZone()?->getCode(), Urlizer::urlize($object->getZone()?->getName()));
         }
 
         return $result;

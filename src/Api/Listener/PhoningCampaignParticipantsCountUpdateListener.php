@@ -50,7 +50,7 @@ class PhoningCampaignParticipantsCountUpdateListener implements EventSubscriberI
                 $this->entityManager->flush();
             } catch (\Exception $e) {
                 $this->logger->error(
-                    sprintf('Error while updating campaign "%s". Message: "%s".',
+                    \sprintf('Error while updating campaign "%s". Message: "%s".',
                         $campaign->getId(),
                         $e->getMessage())
                 );

@@ -55,7 +55,7 @@ class IdentityDocumentParser
             return str_contains($payload, $this->normalize($firstName));
         }
 
-        throw new \InvalidArgumentException(sprintf('Instance of "%s" is not a handled identity document type.', ImageAnnotations::class));
+        throw new \InvalidArgumentException(\sprintf('Instance of "%s" is not a handled identity document type.', ImageAnnotations::class));
     }
 
     public function hasLastName(ImageAnnotations $imageAnnotations, string $lastName): bool
@@ -77,7 +77,7 @@ class IdentityDocumentParser
             return str_contains($payload, $this->normalize($lastName));
         }
 
-        throw new \InvalidArgumentException(sprintf('Instance of "%s" is not a handled identity document type.', ImageAnnotations::class));
+        throw new \InvalidArgumentException(\sprintf('Instance of "%s" is not a handled identity document type.', ImageAnnotations::class));
     }
 
     public function hasDateOfBirth(ImageAnnotations $imageAnnotations, \DateTimeInterface $dateOfBirth): bool
@@ -101,7 +101,7 @@ class IdentityDocumentParser
         } elseif ($imageAnnotations->isFrenchPassport()) {
             $payload = $this->normalize($imageAnnotations->getText());
 
-            $pattern = sprintf('/(?<birth_date>%s-?%s-?%s)/',
+            $pattern = \sprintf('/(?<birth_date>%s-?%s-?%s)/',
                 $dateOfBirth->format('d'),
                 $dateOfBirth->format('m'),
                 $dateOfBirth->format('Y')
@@ -112,7 +112,7 @@ class IdentityDocumentParser
             return isset($matches['birth_date']) && $matches['birth_date'];
         }
 
-        throw new \InvalidArgumentException(sprintf('Instance of "%s" is not a handled identity document type.', ImageAnnotations::class));
+        throw new \InvalidArgumentException(\sprintf('Instance of "%s" is not a handled identity document type.', ImageAnnotations::class));
     }
 
     private function normalize(?string $str): string
@@ -129,7 +129,7 @@ class IdentityDocumentParser
     {
         $pattern = '/(%s)\s?:?\s?(?<last_name>.+)\\n/';
 
-        preg_match(sprintf($pattern, implode('|', $labels)), $text, $matches);
+        preg_match(\sprintf($pattern, implode('|', $labels)), $text, $matches);
 
         return $matches['last_name'] ?? null;
     }

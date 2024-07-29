@@ -34,7 +34,7 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends AbstractApiT
     public function testForbiddenWithGet($path)
     {
         foreach (UserListDefinitionEnum::TYPES as $type) {
-            $this->client->request(Request::METHOD_GET, sprintf($path, $type));
+            $this->client->request(Request::METHOD_GET, \sprintf($path, $type));
 
             $this->assertStatusCode(Response::HTTP_NOT_FOUND, $this->client);
         }
@@ -44,7 +44,7 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends AbstractApiT
     public function testForbiddenAsAnonymous($path)
     {
         foreach (UserListDefinitionEnum::TYPES as $type) {
-            $this->client->request(Request::METHOD_POST, sprintf($path, $type), [], [], [
+            $this->client->request(Request::METHOD_POST, \sprintf($path, $type), [], [], [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ]);
 
@@ -58,7 +58,7 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends AbstractApiT
 
         $this->client->request(
             Request::METHOD_POST,
-            sprintf('/api/elected-representative/user-list-definitions/%s/members', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE),
+            \sprintf('/api/elected-representative/user-list-definitions/%s/members', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE),
             [],
             [],
             ['HTTP_X-Requested-With' => 'XMLHttpRequest']
@@ -73,7 +73,7 @@ class ElectedRepresentativeUserListDefinitionControllerTest extends AbstractApiT
 
         $this->client->request(
             Request::METHOD_POST,
-            sprintf('/api/elected-representative/user-list-definitions/%s/members', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE),
+            \sprintf('/api/elected-representative/user-list-definitions/%s/members', UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE),
             ['ids' => [2, 3]],
             [],
             ['HTTP_X-Requested-With' => 'XMLHttpRequest']

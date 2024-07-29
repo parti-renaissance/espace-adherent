@@ -15,7 +15,7 @@ final class PayboxPaymentSubscription
     public static function getCommandSuffix(float $amount, int $duration): string
     {
         if (self::UNLIMITED === $duration) {
-            return sprintf('PBX_2MONT%sPBX_NBPAIE%sPBX_FREQ01PBX_QUAND00',
+            return \sprintf('PBX_2MONT%sPBX_NBPAIE%sPBX_FREQ01PBX_QUAND00',
                 str_pad($amount, 10, '0', \STR_PAD_LEFT),
                 '00'
             );

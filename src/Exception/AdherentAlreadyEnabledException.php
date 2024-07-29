@@ -10,7 +10,7 @@ final class AdherentAlreadyEnabledException extends AdherentException
     {
         parent::__construct(
             $adherentUuid,
-            sprintf('Adherent "%s" is already enabled.', $adherentUuid),
+            \sprintf('Adherent "%s" is already enabled.', $adherentUuid),
             $previous
         );
     }

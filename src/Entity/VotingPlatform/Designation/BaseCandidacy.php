@@ -114,7 +114,7 @@ abstract class BaseCandidacy implements CandidacyInterface, AlgoliaIndexedEntity
     public function getImagePath(): string
     {
         return $this->getImageName() ?
-            sprintf('images/candidacies/profile/%s', $this->getImageName())
+            \sprintf('images/candidacies/profile/%s', $this->getImageName())
             : '';
     }
 

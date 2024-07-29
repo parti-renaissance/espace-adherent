@@ -60,7 +60,7 @@ class ClientRenaissanceControllerCaseTest extends AbstractRenaissanceWebTestCase
     {
         $oauthClient = $this->findClient(LoadClientData::CLIENT_01_UUID);
 
-        $crawler = $this->client->request('GET', sprintf('/admin/app/oauth-client/%s/delete', $oauthClient->getId()));
+        $crawler = $this->client->request('GET', \sprintf('/admin/app/oauth-client/%s/delete', $oauthClient->getId()));
         $this->client->submit($crawler->selectButton('Oui, supprimer')->form());
 
         $accessTokens = $this->findAccessTokensByClient($oauthClient);

@@ -29,7 +29,7 @@ class DateRangeValidator extends ConstraintValidator
 
         foreach ([$constraint->startDateField, $constraint->endDateField] as $field) {
             if (!$this->propertyAccessor->isReadable($value, $field)) {
-                throw new ConstraintDefinitionException(sprintf('The field "%s" is not readable', $field));
+                throw new ConstraintDefinitionException(\sprintf('The field "%s" is not readable', $field));
             }
         }
 

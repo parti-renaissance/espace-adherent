@@ -62,7 +62,7 @@ class UserAuthorization
     {
         foreach ($scopes as $scope) {
             if (!$scope instanceof Scope) {
-                throw new \DomainException(sprintf('Instance of %s must be provided', Scope::class));
+                throw new \DomainException(\sprintf('Instance of %s must be provided', Scope::class));
             }
 
             if (!\in_array($scope->getIdentifier(), $this->scopes)) {

@@ -58,13 +58,13 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         if (\in_array('phoning_campaign_call_read', $groups)) {
             $lastCall = $this->campaignHistoryRepository->findLastHistoryForAdherent($object);
 
-            $data['info'] = sprintf(
+            $data['info'] = \sprintf(
                 '%s%s, habitant %s (%s). %s.',
                 $object->getFirstName(),
-                $object->getBirthdate() ? sprintf(', %s ans', $object->getAge()) : '',
+                $object->getBirthdate() ? \sprintf(', %s ans', $object->getAge()) : '',
                 $object->getCityName(),
                 $object->getPostalCode(),
-                sprintf($lastCall
+                \sprintf($lastCall
                     ? 'Appelé%s précédemment le '.$lastCall->getBeginAt()->format('d/m/Y')
                     : 'N’a encore jamais été appelé%s', $object->isFemale() ? 'e' : '')
             );

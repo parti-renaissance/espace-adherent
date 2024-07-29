@@ -24,7 +24,7 @@ class VisibleStatusesExtension implements QueryCollectionExtensionInterface
     {
         if (is_a($resourceClass, VisibleStatusesInterface::class, true)) {
             $queryBuilder
-                ->andWhere(sprintf('%s.status IN (:statuses)', $queryBuilder->getRootAliases()[0]))
+                ->andWhere(\sprintf('%s.status IN (:statuses)', $queryBuilder->getRootAliases()[0]))
                 ->setParameter('statuses', $resourceClass::getVisibleStatuses())
             ;
         }

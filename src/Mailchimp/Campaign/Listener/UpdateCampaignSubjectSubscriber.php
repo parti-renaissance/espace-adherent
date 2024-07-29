@@ -46,7 +46,7 @@ class UpdateCampaignSubjectSubscriber implements EventSubscriberInterface
         }
 
         if ($prefix) {
-            $request->setSubject(ltrim(sprintf('%s %s', $prefix, $message->getSubject())));
+            $request->setSubject(ltrim(\sprintf('%s %s', $prefix, $message->getSubject())));
         }
     }
 }

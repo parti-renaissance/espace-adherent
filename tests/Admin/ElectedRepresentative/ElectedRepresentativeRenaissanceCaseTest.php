@@ -38,13 +38,13 @@ class ElectedRepresentativeRenaissanceCaseTest extends AbstractRenaissanceWebTes
         /** @var ElectedRepresentative $electedRepresentative */
         $electedRepresentative = $this->electedRepresentativeRepository->findOneByUuid(LoadElectedRepresentativeData::ELECTED_REPRESENTATIVE_1_UUID);
 
-        $editUrl = sprintf(self::EDIT_URI_PATTERN, $electedRepresentative->getId());
+        $editUrl = \sprintf(self::EDIT_URI_PATTERN, $electedRepresentative->getId());
         $crawler = $this->client->request('GET', $editUrl);
         $this->assertStatusCode(200, $this->client);
 
         $form = $crawler->selectButton('Mettre à jour')->form();
         $formName = str_replace(
-            sprintf('%s?uniqid=', $editUrl),
+            \sprintf('%s?uniqid=', $editUrl),
             '',
             $form->getFormNode()->getAttribute('action')
         );

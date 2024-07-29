@@ -37,7 +37,7 @@ class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
         $jwtAccessToken = $this->getExpiredJwtAccessToken();
 
         $this->client->request(Request::METHOD_GET, '/api/me', [], [], [
-            'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $jwtAccessToken),
+            'HTTP_AUTHORIZATION' => \sprintf('Bearer %s', $jwtAccessToken),
             'CONTENT_TYPE' => 'application/json',
         ]);
 
@@ -53,7 +53,7 @@ class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
         $jwtAccessToken = $this->getRevokedJwtAccessToken();
 
         $this->client->request(Request::METHOD_GET, '/api/me', [], [], [
-            'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $jwtAccessToken),
+            'HTTP_AUTHORIZATION' => \sprintf('Bearer %s', $jwtAccessToken),
             'CONTENT_TYPE' => 'application/json',
         ]);
 
@@ -285,7 +285,7 @@ class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
 
         // 7. /api/me access is granted with access token
         $this->client->request(Request::METHOD_GET, '/api/me', [], [], [
-            'HTTP_AUTHORIZATION' => sprintf('Bearer %s', $data['access_token']),
+            'HTTP_AUTHORIZATION' => \sprintf('Bearer %s', $data['access_token']),
             'CONTENT_TYPE' => 'application/json',
         ]);
         $this->isSuccessful($response = $this->client->getResponse());
@@ -419,7 +419,7 @@ class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
 
         $params['state'] = 'bds1775p6f3ks29h2vla20ng5n';
 
-        return sprintf('http://'.$this->getParameter('app_host').'/oauth/v2/auth?%s', http_build_query($params));
+        return \sprintf('http://'.$this->getParameter('app_host').'/oauth/v2/auth?%s', http_build_query($params));
     }
 
     private function getEncryptedCode(AuthorizationCode $authCode): string

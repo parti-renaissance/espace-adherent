@@ -67,7 +67,7 @@ class City
 
     public function __toString()
     {
-        return sprintf('%s (%s)', $this->name, $this->inseeCode);
+        return \sprintf('%s (%s)', $this->name, $this->inseeCode);
     }
 
     public function getId(): ?int

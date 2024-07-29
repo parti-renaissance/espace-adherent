@@ -17,7 +17,7 @@ class SegmentRequestBuilder
 
     public function createEditSegmentRequestFromDynamicSegment(DynamicSegmentInterface $segment): EditSegmentRequest
     {
-        $name = sprintf(
+        $name = \sprintf(
             '%s_%s',
             strtolower((new \ReflectionClass($segment))->getShortName()),
             $segment->getUuid()->toString()

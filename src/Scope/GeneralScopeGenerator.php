@@ -90,7 +90,7 @@ class GeneralScopeGenerator
                 }
             }
 
-            throw new NotFoundScopeGeneratorException(sprintf('Scope generator not found for delegated access of type "%s" with uuid "%s".', $delegatedAccess->getType(), $delegatedAccess->getUuid()->toString()));
+            throw new NotFoundScopeGeneratorException(\sprintf('Scope generator not found for delegated access of type "%s" with uuid "%s".', $delegatedAccess->getType(), $delegatedAccess->getUuid()->toString()));
         }
 
         foreach ($this->generators as $generator) {

@@ -63,7 +63,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            sprintf('workflow.voting_process.completed.%s', VoteCommandStateEnum::TO_FINISH) => ['persistVote'],
+            \sprintf('workflow.voting_process.completed.%s', VoteCommandStateEnum::TO_FINISH) => ['persistVote'],
         ];
     }
 
@@ -146,7 +146,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
             if ($command->isMajorityVote()) {
                 foreach ($choice as $candidateGroupUuid => $mention) {
                     if (!$group = $this->candidateGroupRepository->findOneByUuid($candidateGroupUuid)) {
-                        throw new \RuntimeException(sprintf('Candidate group not found with uuid "%s"', $choice));
+                        throw new \RuntimeException(\sprintf('Candidate group not found with uuid "%s"', $choice));
                     }
 
                     $voteChoice = new VoteChoice($pool);
@@ -162,7 +162,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
                     $voteChoice->setIsBlank(true);
                 } else {
                     if (!$group = $this->candidateGroupRepository->findOneByUuid($choice)) {
-                        throw new \RuntimeException(sprintf('Candidate group not found with uuid "%s"', $choice));
+                        throw new \RuntimeException(\sprintf('Candidate group not found with uuid "%s"', $choice));
                     }
 
                     $voteChoice->setCandidateGroup($group);

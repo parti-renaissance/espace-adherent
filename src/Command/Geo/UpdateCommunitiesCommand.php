@@ -134,7 +134,7 @@ final class UpdateCommunitiesCommand extends Command
     private function loadCommunitiesFromSource(): void
     {
         $this->io->section('Loading communities from source');
-        $this->io->comment(sprintf('Fetching data from %s', self::SOURCE));
+        $this->io->comment(\sprintf('Fetching data from %s', self::SOURCE));
 
         $source = $this->openUrlAsFile(self::SOURCE, self::FILENAME);
 
@@ -157,7 +157,7 @@ final class UpdateCommunitiesCommand extends Command
 
             $department = $this->departments[$row['DEP']] ?? null;
             if (!$department) {
-                throw new \RuntimeException(sprintf('Department %s not found for community %s (%s)', $row['DEP'], $row['LIBEPCI'], $row['EPCI']));
+                throw new \RuntimeException(\sprintf('Department %s not found for community %s (%s)', $row['DEP'], $row['LIBEPCI'], $row['EPCI']));
             }
 
             $key = CityCommunity::class.'#'.$row['EPCI'];
@@ -178,7 +178,7 @@ final class UpdateCommunitiesCommand extends Command
             /* @var City|null $city */
             $city = $this->cities[$row['CODGEO']] ?? null;
             if (!$city) {
-                $this->io->caution(sprintf('City %s not found for community %s (%s)', $row['CODGEO'], $row['LIBEPCI'], $row['EPCI']));
+                $this->io->caution(\sprintf('City %s not found for community %s (%s)', $row['CODGEO'], $row['LIBEPCI'], $row['EPCI']));
             } else {
                 $city->setCityCommunity($community);
             }
@@ -189,7 +189,7 @@ final class UpdateCommunitiesCommand extends Command
     {
         $response = $this->httpClient->request('GET', $zipUrl);
 
-        $dir = sprintf('%s/%s', sys_get_temp_dir(), uniqid(md5($zipUrl), true));
+        $dir = \sprintf('%s/%s', sys_get_temp_dir(), uniqid(md5($zipUrl), true));
 
         $zipFilename = $dir.'.zip';
         $xlsxFilename = $dir.'/'.$filename;
@@ -199,7 +199,7 @@ final class UpdateCommunitiesCommand extends Command
         $zip = new \ZipArchive();
 
         if (true !== ($code = $zip->open($zipFilename))) {
-            throw new \RuntimeException(sprintf('ZipArchive::open() error: %d', $code));
+            throw new \RuntimeException(\sprintf('ZipArchive::open() error: %d', $code));
         }
 
         if (!$zip->extractTo($dir)) {

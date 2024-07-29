@@ -33,7 +33,7 @@ class ZoneType extends Constraint
         parent::__construct($options);
 
         if (!$this->types) {
-            throw new MissingOptionsException(sprintf('The option "types" must be given for constraint "%s".', __CLASS__), ['types']);
+            throw new MissingOptionsException(\sprintf('The option "types" must be given for constraint "%s".', __CLASS__), ['types']);
         }
 
         if (!array_intersect($this->types, Zone::TYPES)) {

@@ -57,7 +57,7 @@ class CertificationRequestRecomputeCommand extends Command
         /** @var CertificationRequest[]|iterable $certificationRequests */
         $certificationRequests = $this->certificationRequestRepository->findAllForDate($date);
 
-        $this->io->text(sprintf('Will recompute %d certification requests.', $total = \count($certificationRequests)));
+        $this->io->text(\sprintf('Will recompute %d certification requests.', $total = \count($certificationRequests)));
 
         $this->io->progressStart($total);
 

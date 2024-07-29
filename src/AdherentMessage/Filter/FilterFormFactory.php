@@ -44,6 +44,6 @@ class FilterFormFactory
                 ]);
         }
 
-        throw new InvalidAdherentMessageType(sprintf('Invalid message ("%s") type or data', $messageType));
+        throw new InvalidAdherentMessageType(\sprintf('Invalid message ("%s") type or data', $messageType));
     }
 }

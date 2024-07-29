@@ -89,7 +89,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
                 break;
 
             default:
-                throw new \InvalidArgumentException(sprintf('Message type %s does not match any subscription type', $messageClass));
+                throw new \InvalidArgumentException(\sprintf('Message type %s does not match any subscription type', $messageClass));
         }
 
         return [$this->buildInterestCondition(
@@ -118,7 +118,7 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
                 $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Scope %s does not match any subscription type', $scope));
+                throw new \InvalidArgumentException(\sprintf('Scope %s does not match any subscription type', $scope));
         }
 
         return [$this->buildInterestCondition(

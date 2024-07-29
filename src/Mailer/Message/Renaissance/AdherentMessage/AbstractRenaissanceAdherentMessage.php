@@ -37,11 +37,11 @@ abstract class AbstractRenaissanceAdherentMessage extends AbstractRenaissanceMes
     {
         return [
             'content' => $message->getContent(),
-            'reply_to_button' => sprintf(
+            'reply_to_button' => \sprintf(
                 '<a class="mcnButton" title="Répondre" href="mailto:%s" target="_blank">Répondre</a>',
                 $email = $message->getAuthor()->getEmailAddress()
             ),
-            'reply_to_link' => sprintf(
+            'reply_to_link' => \sprintf(
                 '<a title="Répondre" href="mailto:%s" target="_blank">Répondre</a>',
                 $email
             ),

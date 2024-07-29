@@ -79,12 +79,12 @@ class ImportMarkersCommand extends AbstractImportCommand
     private function importMarkerType(string $type): void
     {
         if (!\in_array($type, $this->markerChoiceLoader->getTypeChoices(), true)) {
-            throw new \InvalidArgumentException(sprintf('"%s" is not a known marker type. Known marker types are: "%s".', $type, implode('", "', $this->markerChoiceLoader->getTypeChoices())));
+            throw new \InvalidArgumentException(\sprintf('"%s" is not a known marker type. Known marker types are: "%s".', $type, implode('", "', $this->markerChoiceLoader->getTypeChoices())));
         }
 
         $this->io->section("Importing marker of type \"$type\"");
 
-        $filename = sprintf('%s/%s.csv', self::CSV_DIRECTORY, $type);
+        $filename = \sprintf('%s/%s.csv', self::CSV_DIRECTORY, $type);
 
         if (!$this->storage->has($filename)) {
             $this->io->comment("No CSV found ($filename).");

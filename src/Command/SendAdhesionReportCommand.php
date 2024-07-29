@@ -149,7 +149,7 @@ class SendAdhesionReportCommand extends Command
 
     private function createCountQueryBuilder(int $interval): QueryBuilder
     {
-        $startDate = new \DateTime(sprintf('-%d days', $interval));
+        $startDate = new \DateTime(\sprintf('-%d days', $interval));
         $endDate = new \DateTime('-1 days');
 
         return $this->repository->createQueryBuilder('a')

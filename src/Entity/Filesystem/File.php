@@ -306,22 +306,22 @@ class File
 
     public function getPath(): string
     {
-        return sprintf('files/filesystem/%s', $this->getUuid()->toString());
+        return \sprintf('files/filesystem/%s', $this->getUuid()->toString());
     }
 
     public function getNameWithExtension(): ?string
     {
         return $this->isFile()
-            ? sprintf('%s.%s', $this->getName(), $this->getExtension())
+            ? \sprintf('%s.%s', $this->getName(), $this->getExtension())
             : '';
     }
 
     public function getFullname(): ?string
     {
         return match ($this->type) {
-            FileTypeEnum::FILE => sprintf('%s.%s', $this->getName(), $this->getExtension()),
-            FileTypeEnum::DIRECTORY => sprintf('/%s', $this->getName()),
-            FileTypeEnum::EXTERNAL_LINK => sprintf('%s (un lien externe)', $this->getName()),
+            FileTypeEnum::FILE => \sprintf('%s.%s', $this->getName(), $this->getExtension()),
+            FileTypeEnum::DIRECTORY => \sprintf('/%s', $this->getName()),
+            FileTypeEnum::EXTERNAL_LINK => \sprintf('%s (un lien externe)', $this->getName()),
             default => null,
         };
     }

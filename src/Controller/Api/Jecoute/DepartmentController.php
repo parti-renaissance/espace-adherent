@@ -23,7 +23,7 @@ class DepartmentController extends AbstractController
         $department = $departmentRepository->findOneForJecoute($postalCode);
 
         if (!$department) {
-            throw $this->createNotFoundException(sprintf('No department found for postal code "%s"', $postalCode));
+            throw $this->createNotFoundException(\sprintf('No department found for postal code "%s"', $postalCode));
         }
 
         return new JsonResponse(

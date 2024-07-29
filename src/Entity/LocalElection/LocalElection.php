@@ -38,7 +38,7 @@ class LocalElection extends AbstractElectionEntity
             return '';
         }
 
-        return sprintf(
+        return \sprintf(
             '%s (%s)',
             $designation->getLabel(),
             implode(', ', $designation->getZonesCodes())

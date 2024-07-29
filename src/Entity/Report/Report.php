@@ -66,13 +66,13 @@ abstract class Report
         }
 
         if ($invalid = array_diff($reasons, ReportReasonEnum::REASONS_LIST)) {
-            throw new \InvalidArgumentException(sprintf('Some reasons are not valid "%s", they are defined in %s::REASONS_LIST', implode(', ', $invalid), ReportReasonEnum::class));
+            throw new \InvalidArgumentException(\sprintf('Some reasons are not valid "%s", they are defined in %s::REASONS_LIST', implode(', ', $invalid), ReportReasonEnum::class));
         }
 
         $isOtherReasonChecked = \in_array(ReportReasonEnum::REASON_OTHER, $reasons, true);
 
         if ($comment && !$isOtherReasonChecked) {
-            throw new \InvalidArgumentException(sprintf('$comment is filed but %s::REASON_OTHER is not provided in $reasons', ReportReasonEnum::class));
+            throw new \InvalidArgumentException(\sprintf('$comment is filed but %s::REASON_OTHER is not provided in $reasons', ReportReasonEnum::class));
         }
 
         $this->uuid = Uuid::uuid4();
@@ -85,7 +85,7 @@ abstract class Report
 
     final public function __toString(): string
     {
-        return sprintf('Signalement #%d (%s)', $this->id, $this->subject->getReportType());
+        return \sprintf('Signalement #%d (%s)', $this->id, $this->subject->getReportType());
     }
 
     final public function getSubject(): ReportableInterface

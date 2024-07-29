@@ -32,7 +32,7 @@ class UniqueEventNameHandler implements SlugHandlerWithUniqueCallbackInterface
     public function onSlugCompletion(SluggableAdapter $ea, array &$config, $object, &$slug)
     {
         if ($this->initialSlug && $slug !== $this->initialSlug) {
-            $object->setName(sprintf('%s (%d)', $object->getName(), substr(strrchr($slug, $config['separator']), 1)));
+            $object->setName(\sprintf('%s (%d)', $object->getName(), substr(strrchr($slug, $config['separator']), 1)));
         }
     }
 

@@ -51,7 +51,7 @@ final class ReportType
         self::assertExists($type = $subject->getReportType());
 
         if (false === $uriType = array_search($type, self::URI_MAP, true)) {
-            throw new \LogicException(sprintf('The type "%s" has no uri defined in %s::URI_MAP', $type, __CLASS__));
+            throw new \LogicException(\sprintf('The type "%s" has no uri defined in %s::URI_MAP', $type, __CLASS__));
         }
 
         return $uriType;
@@ -63,7 +63,7 @@ final class ReportType
     private static function assertExists(string $type): void
     {
         if (!isset(self::LIST[$type])) {
-            throw new \InvalidArgumentException(sprintf('%s is not a valid ReportType, use %s constants.', $type, __CLASS__));
+            throw new \InvalidArgumentException(\sprintf('%s is not a valid ReportType, use %s constants.', $type, __CLASS__));
         }
     }
 

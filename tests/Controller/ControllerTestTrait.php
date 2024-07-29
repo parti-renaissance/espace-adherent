@@ -70,7 +70,7 @@ trait ControllerTestTrait
     public function authenticateAsAdherent(KernelBrowser $client, string $emailAddress): void
     {
         if (!$user = $this->getAdherentRepository()->findOneBy(['emailAddress' => $emailAddress])) {
-            throw new \Exception(sprintf('Adherent %s not found', $emailAddress));
+            throw new \Exception(\sprintf('Adherent %s not found', $emailAddress));
         }
 
         $this->authenticate($client, $user, 'main');
@@ -79,7 +79,7 @@ trait ControllerTestTrait
     public function authenticateAsAdmin(KernelBrowser $client, string $email = 'admin@en-marche-dev.fr'): void
     {
         if (!$user = $this->getAdministratorRepository()->loadUserByUsername($email)) {
-            throw new \Exception(sprintf('Admin %s not found', $email));
+            throw new \Exception(\sprintf('Admin %s not found', $email));
         }
 
         $this->authenticate($client, $user, 'admin');

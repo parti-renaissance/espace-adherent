@@ -48,9 +48,9 @@ class AdminCommitteeCRUDController extends CRUDController
                         $committee->updateProvisionalSupervisor($adherentPSM);
                     }
                     $committeeManagementAuthority->approve($committee);
-                    $this->addFlash('sonata_flash_success', sprintf('Le comité « %s » a été approuvé avec succès.', $committee->getName()));
+                    $this->addFlash('sonata_flash_success', \sprintf('Le comité « %s » a été approuvé avec succès.', $committee->getName()));
                 } catch (BaseGroupException $exception) {
-                    throw $this->createNotFoundException(sprintf('Committee %u must not be approved in order to be approved.', $committee->getId()), $exception);
+                    throw $this->createNotFoundException(\sprintf('Committee %u must not be approved in order to be approved.', $committee->getId()), $exception);
                 }
 
                 return $this->redirectToList();

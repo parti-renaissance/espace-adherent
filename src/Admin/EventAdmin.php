@@ -311,7 +311,7 @@ class EventAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
+                    $qb->andWhere(\sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
                     $qb->setParameter('cityName', '%'.strtolower($value->getValue()).'%');
 
                     return true;
@@ -326,7 +326,7 @@ class EventAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $qb->andWhere(sprintf('%s.committee IS NULL', $alias));
+                    $qb->andWhere(\sprintf('%s.committee IS NULL', $alias));
 
                     return true;
                 },

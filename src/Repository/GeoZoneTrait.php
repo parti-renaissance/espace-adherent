@@ -35,7 +35,7 @@ trait GeoZoneTrait
             $zoneParentAlias
         );
 
-        $queryBuilder->andWhere(sprintf('%s.id IN (%s)', $rootAlias, $zoneQueryBuilder->getDQL()));
+        $queryBuilder->andWhere(\sprintf('%s.id IN (%s)', $rootAlias, $zoneQueryBuilder->getDQL()));
 
         return $queryBuilder;
     }
@@ -58,16 +58,16 @@ trait GeoZoneTrait
         $zoneQueryBuilder = $queryBuilder
             ->getEntityManager()
             ->createQueryBuilder()
-            ->select($select = sprintf('%s.id', $entityClassAlias))
+            ->select($select = \sprintf('%s.id', $entityClassAlias))
             ->from($entityClass, $entityClassAlias)
-            ->innerJoin(sprintf('%s.%s', $entityClassAlias, $zoneRelation), $zoneRelationAlias)
+            ->innerJoin(\sprintf('%s.%s', $entityClassAlias, $zoneRelation), $zoneRelationAlias)
             ->groupBy($select)
         ;
 
         $orX = $queryBuilder->expr()->orX();
-        $orX->add(sprintf('%s IN (:%s_zone_ids)', $zoneRelationAlias, $zoneRelationAlias));
+        $orX->add(\sprintf('%s IN (:%s_zone_ids)', $zoneRelationAlias, $zoneRelationAlias));
 
-        $queryBuilder->setParameter(sprintf('%s_zone_ids', $zoneRelationAlias), array_map(static function (Zone $zone): int {
+        $queryBuilder->setParameter(\sprintf('%s_zone_ids', $zoneRelationAlias), array_map(static function (Zone $zone): int {
             return $zone->getId();
         }, $zones));
 
@@ -81,8 +81,8 @@ trait GeoZoneTrait
                     $zoneQueryBuilder->leftJoin($zoneRelationAlias.'.parents', $zoneParentAlias);
                 }
 
-                $orX->add(sprintf('%s IN (:%s_zone_parent_ids)', $zoneParentAlias, $zoneRelationAlias));
-                $queryBuilder->setParameter(sprintf('%s_zone_parent_ids', $zoneRelationAlias), $parents);
+                $orX->add(\sprintf('%s IN (:%s_zone_parent_ids)', $zoneParentAlias, $zoneRelationAlias));
+                $queryBuilder->setParameter(\sprintf('%s_zone_parent_ids', $zoneRelationAlias), $parents);
             }
         }
 
@@ -108,13 +108,13 @@ trait GeoZoneTrait
             ->getEntityManager()
             ->createQueryBuilder()
             ->from($entityClass, $entityClassAlias)
-            ->select($select = sprintf('%s.id', $entityClassAlias))
-            ->innerJoin(sprintf('%s.%s', $entityClassAlias, $zoneRelation), $zoneRelationAlias)
+            ->select($select = \sprintf('%s.id', $entityClassAlias))
+            ->innerJoin(\sprintf('%s.%s', $entityClassAlias, $zoneRelation), $zoneRelationAlias)
             ->groupBy($select)
         ;
 
         $orX = $zoneQueryBuilder->expr()->orX();
-        $orX->add(sprintf('%s IN (:zone_ids)', $zoneRelationAlias));
+        $orX->add(\sprintf('%s IN (:zone_ids)', $zoneRelationAlias));
 
         $zoneQueryBuilder->setParameter('zone_ids', array_map(static function (Zone $zone): int {
             return $zone->getId();
@@ -130,7 +130,7 @@ trait GeoZoneTrait
                     $zoneQueryBuilder->innerJoin($zoneRelationAlias.'.parents', $zoneParentAlias);
                 }
 
-                $orX->add(sprintf('%s IN (:zone_parent_ids)', $zoneParentAlias));
+                $orX->add(\sprintf('%s IN (:zone_parent_ids)', $zoneParentAlias));
                 $zoneQueryBuilder->setParameter('zone_parent_ids', $parents);
             }
         }

@@ -71,7 +71,7 @@ class MailchimpSignUpEmailsCommand extends Command
         $csv->setHeaderOffset(0);
         $total = $csv->count();
 
-        if (!$this->io->confirm(sprintf('Are you sure to subscribe %d contacts?', $total))) {
+        if (!$this->io->confirm(\sprintf('Are you sure to subscribe %d contacts?', $total))) {
             return self::FAILURE;
         }
 

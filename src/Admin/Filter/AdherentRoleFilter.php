@@ -38,7 +38,7 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
 
                 // Committee animator
                 if (\in_array(AdherentRoleEnum::ANIMATOR, $value, true)) {
-                    $qb->leftJoin(sprintf('%s.animatorCommittees', $alias), 'ac');
+                    $qb->leftJoin(\sprintf('%s.animatorCommittees', $alias), 'ac');
                     $where->add('ac IS NOT NULL');
                 }
 
@@ -80,7 +80,7 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                     ],
                     $value
                 )) {
-                    $qb->leftJoin(sprintf('%s.receivedDelegatedAccesses', $alias), 'rda');
+                    $qb->leftJoin(\sprintf('%s.receivedDelegatedAccesses', $alias), 'rda');
                     $where->add('rda.type IN (:delegated_types)');
                     $qb->setParameter('delegated_types', array_map(static function ($type) {
                         return substr($type, 10); // remove "delegated_" prefix
@@ -90,7 +90,7 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                 // ZoneBasedRole
                 if ($zoneBasedRoles = array_intersect(ZoneBasedRoleTypeEnum::ALL, $value)) {
                     $qb
-                        ->leftJoin(sprintf('%s.zoneBasedRoles', $alias), 'zone_based_role')
+                        ->leftJoin(\sprintf('%s.zoneBasedRoles', $alias), 'zone_based_role')
                         ->setParameter('zone_based_roles', $zoneBasedRoles)
                     ;
                     $where->add('zone_based_role.type IN (:zone_based_roles)');

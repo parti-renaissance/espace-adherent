@@ -20,7 +20,7 @@ class RenaissanceAdherentAutocompleteType extends AbstractType
             'class' => Adherent::class,
             'template' => 'admin/form/sonata_type_model_autocomplete.html.twig',
             'callback' => [self::class, 'filterCallback'],
-            'to_string_callback' => fn (Adherent $adherent) => sprintf('%s (%s)', $adherent->getFullName(), $adherent->getPostalCode()),
+            'to_string_callback' => fn (Adherent $adherent) => \sprintf('%s (%s)', $adherent->getFullName(), $adherent->getPostalCode()),
             'minimum_input_length' => 1,
         ]);
     }

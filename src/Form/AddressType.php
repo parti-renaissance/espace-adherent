@@ -88,7 +88,7 @@ class AddressType extends AbstractType
                     $city = $this->franceCities->getCityByPostalCodeAndName($address->getPostalCode(), $address->getCityName());
 
                     if ($city) {
-                        $address->setCity(sprintf('%s-%s', $address->getPostalCode(), $city->getInseeCode()));
+                        $address->setCity(\sprintf('%s-%s', $address->getPostalCode(), $city->getInseeCode()));
                     }
                 }
             })

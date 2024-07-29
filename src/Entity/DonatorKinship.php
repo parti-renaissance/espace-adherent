@@ -39,7 +39,7 @@ class DonatorKinship
 
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%s (%s)',
             $this->related,
             $this->kinship

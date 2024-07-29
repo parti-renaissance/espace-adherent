@@ -245,13 +245,13 @@ class CommitteeAdmin extends AbstractAdmin
                     $hostCommitteeIds = $committeeMembershipRepository->findCommitteesUuidByHostFirstName($value->getValue());
                     if (!$creatorCommitteeIds && !$hostCommitteeIds) {
                         // Force no results when no user is found
-                        $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
+                        $qb->andWhere($qb->expr()->in(\sprintf('%s.id', $alias), [0]));
 
                         return true;
                     }
 
                     $committeeIds = array_unique(array_merge($hostCommitteeIds, $creatorCommitteeIds));
-                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $committeeIds));
+                    $qb->andWhere($qb->expr()->in(\sprintf('%s.uuid', $alias), $committeeIds));
 
                     return true;
                 },
@@ -269,13 +269,13 @@ class CommitteeAdmin extends AbstractAdmin
                     $hostCommitteeIds = $committeeMembershipRepository->findCommitteesUuidByHostLastName($value->getValue());
                     if (!$creatorCommitteeIds && !$hostCommitteeIds) {
                         // Force no results when no user is found
-                        $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
+                        $qb->andWhere($qb->expr()->in(\sprintf('%s.id', $alias), [0]));
 
                         return true;
                     }
 
                     $committeeIds = array_unique(array_merge($hostCommitteeIds, $creatorCommitteeIds));
-                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $committeeIds));
+                    $qb->andWhere($qb->expr()->in(\sprintf('%s.uuid', $alias), $committeeIds));
 
                     return true;
                 },
@@ -293,13 +293,13 @@ class CommitteeAdmin extends AbstractAdmin
                     $hostCommitteeIds = $committeeMembershipRepository->findCommitteesUuidByHostEmailAddress($value->getValue());
                     if (!$creatorCommitteeIds && !$hostCommitteeIds) {
                         // Force no results when no user is found
-                        $qb->andWhere($qb->expr()->in(sprintf('%s.id', $alias), [0]));
+                        $qb->andWhere($qb->expr()->in(\sprintf('%s.id', $alias), [0]));
 
                         return true;
                     }
 
                     $committeeIds = array_unique(array_merge($hostCommitteeIds, $creatorCommitteeIds));
-                    $qb->andWhere($qb->expr()->in(sprintf('%s.uuid', $alias), $committeeIds));
+                    $qb->andWhere($qb->expr()->in(\sprintf('%s.uuid', $alias), $committeeIds));
 
                     return true;
                 },
@@ -328,7 +328,7 @@ class CommitteeAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
+                    $qb->andWhere(\sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
                     $qb->setParameter('cityName', '%'.strtolower($value->getValue()).'%');
 
                     return true;
@@ -343,7 +343,7 @@ class CommitteeAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $qb->andWhere(sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
+                    $qb->andWhere(\sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
                     $qb->setParameter('country', strtolower($value->getValue()));
 
                     return true;

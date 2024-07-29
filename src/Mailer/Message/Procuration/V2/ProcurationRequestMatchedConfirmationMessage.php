@@ -18,7 +18,7 @@ final class ProcurationRequestMatchedConfirmationMessage extends AbstractProcura
             Uuid::uuid4(),
             $request->email,
             null,
-            sprintf(
+            \sprintf(
                 'Mise en relation : %s et %s',
                 self::getCivilityName($request->gender, $request->lastName),
                 self::getCivilityName($proxy->gender, $proxy->lastName)

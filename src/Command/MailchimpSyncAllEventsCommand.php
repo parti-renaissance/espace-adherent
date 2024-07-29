@@ -70,7 +70,7 @@ class MailchimpSyncAllEventsCommand extends Command
         $count = $paginator->count();
         $total = $limit && $limit < $count ? $limit : $count;
 
-        if (false === $this->io->confirm(sprintf('Are you sure to sync %d events?', $total), false)) {
+        if (false === $this->io->confirm(\sprintf('Are you sure to sync %d events?', $total), false)) {
             return self::FAILURE;
         }
 

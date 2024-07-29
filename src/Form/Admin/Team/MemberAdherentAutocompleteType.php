@@ -47,7 +47,7 @@ class MemberAdherentAutocompleteType extends AbstractType
 
     public static function toStringCallback(Adherent $adherent): string
     {
-        return sprintf(
+        return \sprintf(
             '%s %s (%s)',
             $adherent->getFirstName(),
             $adherent->getLastName(),

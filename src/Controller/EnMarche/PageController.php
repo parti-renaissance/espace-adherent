@@ -146,6 +146,6 @@ class PageController extends AbstractController
     #[Entity('page', expr: 'repository.findOneBySlug(slug)')]
     public function showPageAction(Page $page): Response
     {
-        return $this->render(sprintf('page/layout/%s.html.twig', $page->getLayout()), ['page' => $page]);
+        return $this->render(\sprintf('page/layout/%s.html.twig', $page->getLayout()), ['page' => $page]);
     }
 }

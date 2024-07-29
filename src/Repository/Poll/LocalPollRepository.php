@@ -28,12 +28,12 @@ class LocalPollRepository extends ServiceEntityRepository
             ->createQueryBuilder('poll')
             ->innerJoin('poll.zone', 'zone')
             ->addSelect('zone')
-            ->addSelect(sprintf('(
+            ->addSelect(\sprintf('(
                 SELECT COUNT(vote_y.id) FROM %s AS vote_y
                 INNER JOIN vote_y.choice AS choice_y
                 WHERE choice_y.value = :yes AND choice_y.poll = poll
             ) AS yes_count', Vote::class))
-            ->addSelect(sprintf('(
+            ->addSelect(\sprintf('(
                 SELECT COUNT(vote_n.id) FROM %s AS vote_n
                 INNER JOIN vote_n.choice AS choice_n
                 WHERE choice_n.value = :no AND choice_n.poll = poll

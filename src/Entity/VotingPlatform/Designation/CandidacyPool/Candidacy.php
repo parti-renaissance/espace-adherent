@@ -97,7 +97,7 @@ class Candidacy extends BaseCandidacy
 
     public function getFullName(): string
     {
-        return sprintf('%s %s', $this->firstName, $this->lastName);
+        return \sprintf('%s %s', $this->firstName, $this->lastName);
     }
 
     public function getElection(): ElectionEntityInterface

@@ -186,7 +186,7 @@ class LoadChezVousData extends Fixture implements DependentFixtureInterface
 
         foreach (self::DEPARTMENTS as $code => $departmentMetadatas) {
             $department = new Department(
-                $this->getReference(sprintf('chez-vous-region-%s', $departmentMetadatas['region_code'])),
+                $this->getReference(\sprintf('chez-vous-region-%s', $departmentMetadatas['region_code'])),
                 $departmentMetadatas['name'],
                 $departmentMetadatas['label'],
                 $code
@@ -200,11 +200,11 @@ class LoadChezVousData extends Fixture implements DependentFixtureInterface
 
         foreach (self::CITIES as $inseeCode => $cityMetadatas) {
             $city = new City(
-                $this->getReference(sprintf('chez-vous-department-%s', $cityMetadatas['department_code'])),
+                $this->getReference(\sprintf('chez-vous-department-%s', $cityMetadatas['department_code'])),
                 $cityMetadatas['name'],
                 $cityMetadatas['postal_codes'],
                 $inseeCode,
-                sprintf('%s-%s', $inseeCode, $this->slugify->slugify($cityMetadatas['name'])),
+                \sprintf('%s-%s', $inseeCode, $this->slugify->slugify($cityMetadatas['name'])),
                 $cityMetadatas['latitude'],
                 $cityMetadatas['longitude']
             );
@@ -213,7 +213,7 @@ class LoadChezVousData extends Fixture implements DependentFixtureInterface
                 foreach ($cityMetadatas['measures'] as $measureMetadatas) {
                     $measure = new Measure(
                         $city,
-                        $this->getReference(sprintf('chez-vous-measure-type-%s', $measureMetadatas['type'])),
+                        $this->getReference(\sprintf('chez-vous-measure-type-%s', $measureMetadatas['type'])),
                         $measureMetadatas['payload'] ?? null
                     );
 

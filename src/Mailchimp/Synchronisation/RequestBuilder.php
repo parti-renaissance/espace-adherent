@@ -419,7 +419,7 @@ class RequestBuilder implements LoggerAwareInterface
 
         $count = \count($zones);
         if ($count > 1) {
-            $this->logger->warning(sprintf('Cannot find only one geo zone for Mailchimp for adherent with id "%s"', $adherent->getId()));
+            $this->logger->warning(\sprintf('Cannot find only one geo zone for Mailchimp for adherent with id "%s"', $adherent->getId()));
         }
         $this->teamCode = (1 === $count) ? current($zones)->getTeamCode() : null;
 
@@ -521,7 +521,7 @@ class RequestBuilder implements LoggerAwareInterface
         }
 
         if ($this->city) {
-            $mergeFields[MemberRequest::MERGE_FIELD_CITY] = sprintf('%s (%s)', $this->city, $this->zipCode);
+            $mergeFields[MemberRequest::MERGE_FIELD_CITY] = \sprintf('%s (%s)', $this->city, $this->zipCode);
         }
 
         if ($this->zipCode) {
@@ -560,7 +560,7 @@ class RequestBuilder implements LoggerAwareInterface
             if (empty($mergeFields[$mergeField])) {
                 $mergeFields[$mergeField] = (string) $zone;
             } else {
-                $mergeFields[$mergeField] .= sprintf(' (%s)', $zone->getCode());
+                $mergeFields[$mergeField] .= \sprintf(' (%s)', $zone->getCode());
             }
         }
 

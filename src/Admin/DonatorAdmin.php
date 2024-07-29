@@ -209,7 +209,7 @@ class DonatorAdmin extends AbstractAdmin
 
                     $postalCodeExpression = $qb->expr()->orX();
                     foreach (array_filter($value) as $key => $code) {
-                        $postalCodeExpression->add(sprintf('donations.postAddress.postalCode LIKE :postalCode_%s', $key));
+                        $postalCodeExpression->add(\sprintf('donations.postAddress.postalCode LIKE :postalCode_%s', $key));
                         $qb->setParameter('postalCode_'.$key, $code.'%');
                     }
 
@@ -233,12 +233,12 @@ class DonatorAdmin extends AbstractAdmin
                 'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
                     switch ($value->getValue()) {
                         case 'yes':
-                            $qb->andWhere(sprintf('%s.adherent IS NOT NULL', $alias));
+                            $qb->andWhere(\sprintf('%s.adherent IS NOT NULL', $alias));
 
                             return true;
 
                         case 'no':
-                            $qb->andWhere(sprintf('%s.adherent IS NULL', $alias));
+                            $qb->andWhere(\sprintf('%s.adherent IS NULL', $alias));
 
                             return true;
                         default:

@@ -120,7 +120,7 @@ class MailchimpUpdateSegmentsFromListCommand extends Command
             case MailchimpSegment::LIST_ELECTED_REPRESENTATIVE:
                 return $this->mailchimpElectedRepresentativeListId;
             default:
-                throw new \InvalidArgumentException(sprintf('List "%s"" is invalid. Available lists are: "%s".', $list, implode('", "', MailchimpSegment::LISTS)));
+                throw new \InvalidArgumentException(\sprintf('List "%s"" is invalid. Available lists are: "%s".', $list, implode('", "', MailchimpSegment::LISTS)));
         }
     }
 }

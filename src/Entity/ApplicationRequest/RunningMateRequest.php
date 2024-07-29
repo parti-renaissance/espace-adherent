@@ -210,13 +210,13 @@ class RunningMateRequest extends ApplicationRequest
 
     public function getPathWithDirectory(): string
     {
-        return sprintf('%s/%s', 'files/application_requests/curriculum', $this->curriculumName);
+        return \sprintf('%s/%s', 'files/application_requests/curriculum', $this->curriculumName);
     }
 
     public function setCurriculumNameFromUploadedFile(UploadedFile $curriculum): void
     {
-        $this->curriculumName = sprintf('%s.%s',
-            md5(sprintf('%s@%s', $this->getUuid(), $curriculum->getClientOriginalName())),
+        $this->curriculumName = \sprintf('%s.%s',
+            md5(\sprintf('%s@%s', $this->getUuid(), $curriculum->getClientOriginalName())),
             $curriculum->getClientOriginalExtension()
         );
     }

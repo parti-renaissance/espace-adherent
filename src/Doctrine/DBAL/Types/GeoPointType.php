@@ -11,7 +11,7 @@ final class GeoPointType extends Type
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         if ($platform instanceof MySQLPlatform) {
-            return sprintf('FLOAT (10,6)');
+            return \sprintf('FLOAT (10,6)');
         }
 
         return $platform->getFloatDeclarationSQL($fieldDeclaration);

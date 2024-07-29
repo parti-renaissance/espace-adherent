@@ -54,7 +54,7 @@ abstract class AbstractEmailExtractCommandHandler
     protected function translateField(string $field): string
     {
         if (!\array_key_exists($field, $this->translatedKeys)) {
-            $key = sprintf('%s%s', $this->getTranslationPrefix(), $field);
+            $key = \sprintf('%s%s', $this->getTranslationPrefix(), $field);
 
             $this->translatedKeys[$field] = $this->translator->trans($key);
         }

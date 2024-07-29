@@ -76,7 +76,7 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
             return;
         }
 
-        $this->io->text(sprintf(
+        $this->io->text(\sprintf(
             'Will notify %d administrator(s) about %d new declared mandate historie(s)',
             \count($administrators),
             \count($histories)
@@ -117,7 +117,7 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
 
         foreach ($recipients as $departmentCode => $emails) {
             if (!\array_key_exists($departmentCode, $historiesByDepartment)) {
-                $this->io->note(sprintf(
+                $this->io->note(\sprintf(
                     'Manager of department code "%s" did not match any history during aggregation. Skipping...',
                     $departmentCode
                 ));
@@ -125,7 +125,7 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
                 continue;
             }
 
-            $this->io->text(sprintf(
+            $this->io->text(\sprintf(
                 'Will notify %d manager(s) of department %s about %d new declared mandate historie(s)',
                 \count($emails),
                 $departmentCode,
@@ -141,7 +141,7 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
      */
     private function markHistoriesAsNotified(array $histories): void
     {
-        $this->io->text(sprintf('Will mark %d new declared mandate histories as notified', \count($histories)));
+        $this->io->text(\sprintf('Will mark %d new declared mandate histories as notified', \count($histories)));
         $this->io->progressStart(\count($histories));
 
         foreach ($histories as $declaredMandateHistory) {

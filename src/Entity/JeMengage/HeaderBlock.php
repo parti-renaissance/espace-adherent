@@ -140,6 +140,6 @@ class HeaderBlock implements ExposedImageOwnerInterface
 
     public function getImagePath(): string
     {
-        return $this->imageName ? sprintf('images/jemengage/header_block/%s', $this->getImageName()) : '';
+        return $this->imageName ? \sprintf('images/jemengage/header_block/%s', $this->getImageName()) : '';
     }
 }

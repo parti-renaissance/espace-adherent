@@ -23,13 +23,13 @@ class SubscribeAsAnonymousControllerTest extends AbstractApiTestCase
     #[DataProvider('provideEvents')]
     public function testAnonymousCanSubscribeOnEvent(string $eventUuid)
     {
-        $this->client->request(Request::METHOD_POST, sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
+        $this->client->request(Request::METHOD_POST, \sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
             'first_name' => 'Joe',
         ]));
 
         $this->assertStatusCode(400, $this->client);
 
-        $this->client->request(Request::METHOD_POST, sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
+        $this->client->request(Request::METHOD_POST, \sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
             'first_name' => 'Joe',
             'last_name' => 'Hey',
             'email_address' => $email = 'j.hey@en-marche-dev.fr',
@@ -45,7 +45,7 @@ class SubscribeAsAnonymousControllerTest extends AbstractApiTestCase
     #[DataProvider('provideCancelledEvents')]
     public function testAnonymousCannotSubscribeOnCancelledEvent(string $eventUuid, string $messageClass)
     {
-        $this->client->request(Request::METHOD_POST, sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
+        $this->client->request(Request::METHOD_POST, \sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
             'first_name' => 'Joe',
             'last_name' => 'Hey',
             'email_address' => 'j.hey@en-marche-dev.fr',
@@ -58,7 +58,7 @@ class SubscribeAsAnonymousControllerTest extends AbstractApiTestCase
     #[DataProvider('providePrivateEvents')]
     public function testAnonymousCannotSubscribeOnPrivateEvent(string $eventUuid, string $messageClass)
     {
-        $this->client->request(Request::METHOD_POST, sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
+        $this->client->request(Request::METHOD_POST, \sprintf('/api/events/%s/subscribe', $eventUuid), [], [], [], json_encode([
             'first_name' => 'Joe',
             'last_name' => 'Hey',
             'email_address' => 'j.hey@en-marche-dev.fr',

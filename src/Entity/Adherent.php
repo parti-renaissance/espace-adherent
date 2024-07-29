@@ -967,7 +967,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setPosition(string $position): void
     {
         if (!ActivityPositionsEnum::exists($position)) {
-            throw new \InvalidArgumentException(sprintf('Invalid position "%s", known positions are "%s".', $position, implode('", "', ActivityPositionsEnum::ALL)));
+            throw new \InvalidArgumentException(\sprintf('Invalid position "%s", known positions are "%s".', $position, implode('", "', ActivityPositionsEnum::ALL)));
         }
 
         $this->position = $position;

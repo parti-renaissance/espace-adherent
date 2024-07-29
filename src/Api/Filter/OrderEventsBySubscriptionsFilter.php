@@ -35,7 +35,7 @@ final class OrderEventsBySubscriptionsFilter extends AbstractFilter
         $order = \in_array(strtolower($value[self::SUB_PROPERTY_NAME]), ['desc', 'asc']) ? strtolower($value[self::SUB_PROPERTY_NAME]) : 'desc';
 
         $queryBuilder
-            ->addSelect(sprintf(
+            ->addSelect(\sprintf(
                 '(%s) AS HIDDEN subscriptions_count',
                 $queryBuilder->getEntityManager()->createQueryBuilder()
                     ->select('COUNT(1)')

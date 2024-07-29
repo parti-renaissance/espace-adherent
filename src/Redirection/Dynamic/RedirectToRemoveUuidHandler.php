@@ -36,7 +36,7 @@ class RedirectToRemoveUuidHandler extends AbstractRedirectTo implements Redirect
 
             // Removes the uuid for all old URLs with uuid/slug
             if (null !== $uuid = $this->getUuid($requestUri)) {
-                if (!preg_match(sprintf('#%s%s#', $pattern, $this->patternUuid), $requestUri)) {
+                if (!preg_match(\sprintf('#%s%s#', $pattern, $this->patternUuid), $requestUri)) {
                     continue;
                 }
 
@@ -69,7 +69,7 @@ class RedirectToRemoveUuidHandler extends AbstractRedirectTo implements Redirect
 
     protected function getUuid(string $requestUri): ?string
     {
-        preg_match(sprintf("/\/%s/", $this->patternUuid), $requestUri, $matches);
+        preg_match(\sprintf("/\/%s/", $this->patternUuid), $requestUri, $matches);
 
         return $matches[0] ?? null;
     }

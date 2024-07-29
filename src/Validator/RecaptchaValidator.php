@@ -60,6 +60,6 @@ class RecaptchaValidator extends ConstraintValidator
             }
         }
 
-        throw new \InvalidArgumentException(sprintf('No captcha client found with name "%s".', $name));
+        throw new \InvalidArgumentException(\sprintf('No captcha client found with name "%s".', $name));
     }
 }

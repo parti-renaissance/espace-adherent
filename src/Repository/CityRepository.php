@@ -40,14 +40,14 @@ class CityRepository extends ServiceEntityRepository
         if ($name = $filter->getName()) {
             $qb
                 ->andWhere(self::ALIAS.'.name LIKE :name')
-                ->setParameter('name', sprintf('%%%s%%', $name))
+                ->setParameter('name', \sprintf('%%%s%%', $name))
             ;
         }
 
         if ($inseeCode = $filter->getInseeCode()) {
             $qb
                 ->andWhere(self::ALIAS.'.inseeCode LIKE :insee_code')
-                ->setParameter('insee_code', sprintf('%s%%', $inseeCode))
+                ->setParameter('insee_code', \sprintf('%s%%', $inseeCode))
             ;
         }
 

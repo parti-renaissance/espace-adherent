@@ -88,6 +88,6 @@ class ResourceLink implements ExposedImageOwnerInterface
 
     public function getImagePath(): string
     {
-        return $this->imageName ? sprintf('images/jecoute/resources/%s', $this->getImageName()) : '';
+        return $this->imageName ? \sprintf('images/jecoute/resources/%s', $this->getImageName()) : '';
     }
 }

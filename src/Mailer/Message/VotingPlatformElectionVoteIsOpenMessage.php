@@ -19,7 +19,7 @@ final class VotingPlatformElectionVoteIsOpenMessage extends AbstractVotingPlatfo
             Uuid::uuid4(),
             $first->getEmailAddress(),
             $first->getFullName(),
-            sprintf('[%s] Le vote est ouvert !', self::getMailSubjectPrefix($election->getDesignation())),
+            \sprintf('[%s] Le vote est ouvert !', self::getMailSubjectPrefix($election->getDesignation())),
             [
                 'vote_end_date' => static::formatDate($election->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
                 'name' => $election->getElectionEntityName(),

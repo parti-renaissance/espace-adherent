@@ -193,7 +193,7 @@ class LoadChezVousMeasureTypeData extends Fixture
             $measureType->setEligibilityLink($type['eligibilityLink']);
 
             $manager->persist($measureType);
-            $this->setReference(sprintf('chez-vous-measure-type-%s', $type['code']), $measureType);
+            $this->setReference(\sprintf('chez-vous-measure-type-%s', $type['code']), $measureType);
         }
 
         $manager->flush();

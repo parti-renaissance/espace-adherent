@@ -44,7 +44,7 @@ class BesoinDEuropeEventUpdateMessage extends AbstractBesoinDEuropeMessage
             'event_name' => self::escape($event->getName()),
             'event_url' => $eventUrl,
             'event_date' => static::formatDate($event->getLocalBeginAt(), 'EEEE d MMMM y'),
-            'event_hour' => sprintf(
+            'event_hour' => \sprintf(
                 '%sh%s',
                 static::formatDate($event->getLocalBeginAt(), 'HH'),
                 static::formatDate($event->getLocalBeginAt(), 'mm')

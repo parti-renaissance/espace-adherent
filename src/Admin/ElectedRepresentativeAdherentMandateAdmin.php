@@ -33,7 +33,7 @@ class ElectedRepresentativeAdherentMandateAdmin extends AbstractAdmin
 
     public function toStringCallback(Zone $zone): string
     {
-        return sprintf(
+        return \sprintf(
             '%s : %s (%s)',
             $this->getTranslator()->trans('geo_zone.'.$zone->getType()),
             $zone->getName(),
@@ -64,18 +64,18 @@ class ElectedRepresentativeAdherentMandateAdmin extends AbstractAdmin
             $conditions = [];
 
             if (\array_key_exists('types', $zoneTypeConditions)) {
-                $conditions[] = sprintf('%s.type IN (:zone_types)', $alias);
+                $conditions[] = \sprintf('%s.type IN (:zone_types)', $alias);
                 $qb->setParameter('zone_types', $zoneTypeConditions['types']);
             }
 
             if (\array_key_exists('codes', $zoneTypeConditions)) {
-                $conditions[] = sprintf('%s.code IN (:zone_codes)', $alias);
+                $conditions[] = \sprintf('%s.code IN (:zone_codes)', $alias);
                 $qb->setParameter('zone_codes', $zoneTypeConditions['codes']);
             }
 
             $qb->andWhere($qb->expr()->andX(...$conditions));
         }
 
-        $qb->andWhere(sprintf('%s.active = 1', $alias));
+        $qb->andWhere(\sprintf('%s.active = 1', $alias));
     }
 }

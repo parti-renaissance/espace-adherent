@@ -274,19 +274,19 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
                 }
             } catch (InvalidArgumentException $e) {
                 if (!$supportsPlainIdentifiers) {
-                    throw new UnexpectedValueException(sprintf('Invalid IRI "%s".', $data), $e->getCode(), $e);
+                    throw new UnexpectedValueException(\sprintf('Invalid IRI "%s".', $data), $e->getCode(), $e);
                 }
             }
         }
 
         if (!\is_array($data)) {
             if (!$supportsPlainIdentifiers) {
-                throw new UnexpectedValueException(sprintf('Expected IRI or document for resource "%s", "%s" given.', $resourceClass, \gettype($data)));
+                throw new UnexpectedValueException(\sprintf('Expected IRI or document for resource "%s", "%s" given.', $resourceClass, \gettype($data)));
             }
 
             $item = $this->itemDataProvider->getItem($resourceClass, $data, null, $context + ['fetch_data' => true]);
             if (null === $item) {
-                throw new ItemNotFoundException(sprintf('Item not found for resource "%s" with id "%s".', $resourceClass, $data));
+                throw new ItemNotFoundException(\sprintf('Item not found for resource "%s" with id "%s".', $resourceClass, $data));
             }
 
             return $item;
@@ -321,12 +321,12 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         }
 
         if (!isset($data[$mapping->getTypeProperty()])) {
-            throw new RuntimeException(sprintf('Type property "%s" not found for the abstract object "%s"', $mapping->getTypeProperty(), $class));
+            throw new RuntimeException(\sprintf('Type property "%s" not found for the abstract object "%s"', $mapping->getTypeProperty(), $class));
         }
 
         $type = $data[$mapping->getTypeProperty()];
         if (null === ($mappedClass = $mapping->getClassForType($type))) {
-            throw new RuntimeException(sprintf('The type "%s" has no mapped class for the abstract object "%s"', $type, $class));
+            throw new RuntimeException(\sprintf('The type "%s" has no mapped class for the abstract object "%s"', $type, $class));
         }
 
         return $mappedClass;
@@ -400,7 +400,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         }
 
         if (!$isValid) {
-            throw new UnexpectedValueException(sprintf('The type of the "%s" attribute must be "%s", "%s" given.', $attribute, $builtinType, \gettype($value)));
+            throw new UnexpectedValueException(\sprintf('The type of the "%s" attribute must be "%s", "%s" given.', $attribute, $builtinType, \gettype($value)));
         }
     }
 
@@ -414,7 +414,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         array $context
     ): array {
         if (!\is_array($value)) {
-            throw new InvalidArgumentException(sprintf('The type of the "%s" attribute must be "array", "%s" given.', $attribute, \gettype($value)));
+            throw new InvalidArgumentException(\sprintf('The type of the "%s" attribute must be "array", "%s" given.', $attribute, \gettype($value)));
         }
 
         $collectionKeyType = method_exists(Type::class, 'getCollectionKeyTypes') ? ($type->getCollectionKeyTypes()[0] ?? null) : $type->getCollectionKeyType();
@@ -423,7 +423,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         $values = [];
         foreach ($value as $index => $obj) {
             if (null !== $collectionKeyBuiltinType && !\call_user_func('is_'.$collectionKeyBuiltinType, $index)) {
-                throw new InvalidArgumentException(sprintf('The type of the key "%s" must be "%s", "%s" given.', $index, $collectionKeyBuiltinType, \gettype($index)));
+                throw new InvalidArgumentException(\sprintf('The type of the key "%s" must be "%s", "%s" given.', $index, $collectionKeyBuiltinType, \gettype($index)));
             }
 
             $values[$index] = $this->denormalizeRelation($attribute, $propertyMetadata, $className, $obj, $format, $this->createChildContext($context, $attribute, $format));
@@ -451,7 +451,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
                 }
             } catch (InvalidArgumentException $e) {
                 if (!$supportsPlainIdentifiers) {
-                    throw new UnexpectedValueException(sprintf('Invalid IRI "%s".', $value), $e->getCode(), $e);
+                    throw new UnexpectedValueException(\sprintf('Invalid IRI "%s".', $value), $e->getCode(), $e);
                 }
             }
         }
@@ -460,7 +460,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
             $context['api_allow_update'] = true;
 
             if (!$this->serializer instanceof DenormalizerInterface) {
-                throw new LogicException(sprintf('The injected serializer must be an instance of "%s".', DenormalizerInterface::class));
+                throw new LogicException(\sprintf('The injected serializer must be an instance of "%s".', DenormalizerInterface::class));
             }
 
             try {
@@ -479,18 +479,18 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
 
         if (!\is_array($value)) {
             if (!$supportsPlainIdentifiers) {
-                throw new UnexpectedValueException(sprintf('Expected IRI or nested document for attribute "%s", "%s" given.', $attributeName, \gettype($value)));
+                throw new UnexpectedValueException(\sprintf('Expected IRI or nested document for attribute "%s", "%s" given.', $attributeName, \gettype($value)));
             }
 
             $item = $this->itemDataProvider->getItem($className, $value, null, $context + ['fetch_data' => true]);
             if (null === $item) {
-                throw new ItemNotFoundException(sprintf('Item not found for resource "%s" with id "%s".', $className, $value));
+                throw new ItemNotFoundException(\sprintf('Item not found for resource "%s" with id "%s".', $className, $value));
             }
 
             return $item;
         }
 
-        throw new UnexpectedValueException(sprintf('Nested documents for attribute "%s" are not allowed. Use IRIs instead.', $attributeName));
+        throw new UnexpectedValueException(\sprintf('Nested documents for attribute "%s" are not allowed. Use IRIs instead.', $attributeName));
     }
 
     protected function getFactoryOptions(array $context): array
@@ -595,7 +595,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         }
 
         if (!$this->serializer instanceof NormalizerInterface) {
-            throw new LogicException(sprintf('The injected serializer must be an instance of "%s".', NormalizerInterface::class));
+            throw new LogicException(\sprintf('The injected serializer must be an instance of "%s".', NormalizerInterface::class));
         }
 
         unset($context['resource_class']);
@@ -644,7 +644,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
     ) {
         if (null === $relatedObject || !empty($context['attributes']) || $propertyMetadata->isReadableLink()) {
             if (!$this->serializer instanceof NormalizerInterface) {
-                throw new LogicException(sprintf('The injected serializer must be an instance of "%s".', NormalizerInterface::class));
+                throw new LogicException(\sprintf('The injected serializer must be an instance of "%s".', NormalizerInterface::class));
             }
 
             $normalizedRelatedObject = $this->serializer->normalize($relatedObject, $format, $context);
@@ -740,7 +740,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
             && null !== ($className = $collectionValueType->getClassName())
         ) {
             if (!$this->serializer instanceof DenormalizerInterface) {
-                throw new LogicException(sprintf('The injected serializer must be an instance of "%s".', DenormalizerInterface::class));
+                throw new LogicException(\sprintf('The injected serializer must be an instance of "%s".', DenormalizerInterface::class));
             }
 
             unset($context['resource_class']);
@@ -750,7 +750,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
 
         if (null !== $className = $type->getClassName()) {
             if (!$this->serializer instanceof DenormalizerInterface) {
-                throw new LogicException(sprintf('The injected serializer must be an instance of "%s".', DenormalizerInterface::class));
+                throw new LogicException(\sprintf('The injected serializer must be an instance of "%s".', DenormalizerInterface::class));
             }
 
             unset($context['resource_class']);
@@ -775,14 +775,14 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
                     } elseif ('true' === $value || '1' === $value) {
                         $value = true;
                     } else {
-                        throw new NotNormalizableValueException(sprintf('The type of the "%s" attribute for class "%s" must be bool ("%s" given).', $attribute, $className, $value));
+                        throw new NotNormalizableValueException(\sprintf('The type of the "%s" attribute for class "%s" must be bool ("%s" given).', $attribute, $className, $value));
                     }
                     break;
                 case Type::BUILTIN_TYPE_INT:
                     if (ctype_digit($value) || ('-' === $value[0] && ctype_digit(substr($value, 1)))) {
                         $value = (int) $value;
                     } else {
-                        throw new NotNormalizableValueException(sprintf('The type of the "%s" attribute for class "%s" must be int ("%s" given).', $attribute, $className, $value));
+                        throw new NotNormalizableValueException(\sprintf('The type of the "%s" attribute for class "%s" must be int ("%s" given).', $attribute, $className, $value));
                     }
                     break;
                 case Type::BUILTIN_TYPE_FLOAT:
@@ -798,7 +798,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
                         case '-INF':
                             return -\INF;
                         default:
-                            throw new NotNormalizableValueException(sprintf('The type of the "%s" attribute for class "%s" must be float ("%s" given).', $attribute, $className, $value));
+                            throw new NotNormalizableValueException(\sprintf('The type of the "%s" attribute for class "%s" must be float ("%s" given).', $attribute, $className, $value));
                     }
             }
         }

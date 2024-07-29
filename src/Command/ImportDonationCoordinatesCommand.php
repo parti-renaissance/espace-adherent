@@ -45,11 +45,11 @@ class ImportDonationCoordinatesCommand extends Command
             [$uuid, $latitude, $longitude] = $row;
 
             if (empty($uuid)) {
-                throw new \RuntimeException(sprintf('No uuid found for Donation. (line %d)', $index + 1));
+                throw new \RuntimeException(\sprintf('No uuid found for Donation. (line %d)', $index + 1));
             }
 
             if (!$donation = $this->findDonation($uuid)) {
-                throw new \RuntimeException(sprintf('No Donation found with uuid "%s". (line %d)', $uuid, $index + 1));
+                throw new \RuntimeException(\sprintf('No Donation found with uuid "%s". (line %d)', $uuid, $index + 1));
             }
 
             if ($donation->getLatitude() || $donation->getLongitude()) {
@@ -57,7 +57,7 @@ class ImportDonationCoordinatesCommand extends Command
             }
 
             if (empty($latitude) || empty($longitude)) {
-                throw new \RuntimeException(sprintf('No coordinates found for Donation "%s". (line %d)', $uuid, $index + 1));
+                throw new \RuntimeException(\sprintf('No coordinates found for Donation "%s". (line %d)', $uuid, $index + 1));
             }
 
             $donation->updateCoordinates(new Coordinates($latitude, $longitude));
@@ -85,7 +85,7 @@ class ImportDonationCoordinatesCommand extends Command
     private function parseCSV(string $filepath): array
     {
         if (false === ($handle = fopen($filepath, 'r'))) {
-            throw new FileNotFoundException(sprintf('File "%s" was not found', $filepath));
+            throw new FileNotFoundException(\sprintf('File "%s" was not found', $filepath));
         }
 
         $isFirstRow = true;

@@ -482,7 +482,7 @@ class DonationAdmin extends AbstractAdmin
 
                     $postalCodeExpression = $qb->expr()->orX();
                     foreach (array_filter($value) as $key => $code) {
-                        $postalCodeExpression->add(sprintf('%s.postAddress.postalCode LIKE :postalCode_%s', $alias, $key));
+                        $postalCodeExpression->add(\sprintf('%s.postAddress.postalCode LIKE :postalCode_%s', $alias, $key));
                         $qb->setParameter('postalCode_'.$key, $code.'%');
                     }
 
@@ -553,7 +553,7 @@ class DonationAdmin extends AbstractAdmin
 
             $destination = $donation->isNationalVisibility()
                 ? 'Siège'
-                : sprintf('Mixte (%s)', $donation->getZone()->getCode());
+                : \sprintf('Mixte (%s)', $donation->getZone()->getCode());
 
             return [
                 'id' => $donation->getId(),
@@ -685,7 +685,7 @@ class DonationAdmin extends AbstractAdmin
         }
 
         if (!$uploadedFile instanceof UploadedFile) {
-            throw new \RuntimeException(sprintf('The file must be an instance of %s', UploadedFile::class));
+            throw new \RuntimeException(\sprintf('The file must be an instance of %s', UploadedFile::class));
         }
 
         $donation->setFilenameFromUploadedFile();
@@ -724,7 +724,7 @@ class DonationAdmin extends AbstractAdmin
         }
         $qb
             ->orWhere($orx)
-            ->andWhere(sprintf('%1$s.type = :type AND %1$s.active = 1', $alias))
+            ->andWhere(\sprintf('%1$s.type = :type AND %1$s.active = 1', $alias))
             ->setParameter('type', Zone::DEPARTMENT)
         ;
     }

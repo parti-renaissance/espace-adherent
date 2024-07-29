@@ -22,7 +22,7 @@ class FormationDownloadFileController extends AbstractController
         $filePath = $formation->getFilePath();
 
         if (!$this->defaultStorage->has($filePath)) {
-            $this->logger->error(sprintf('No file found for Formation with uuid "%s".', $formation->getUuid()->toString()));
+            $this->logger->error(\sprintf('No file found for Formation with uuid "%s".', $formation->getUuid()->toString()));
 
             throw $this->createNotFoundException('File not found.');
         }

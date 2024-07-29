@@ -19,7 +19,7 @@ class Manager
         }
 
         if (!$candidaciesGroup->hasFaithStatementFile()) {
-            $candidaciesGroup->faithStatementFileName = sprintf('%s.pdf', Uuid::uuid4());
+            $candidaciesGroup->faithStatementFileName = \sprintf('%s.pdf', Uuid::uuid4());
         }
 
         $this->defaultStorage->write($candidaciesGroup->getFaithStatementFilePath(), file_get_contents($candidaciesGroup->file->getPathname()));

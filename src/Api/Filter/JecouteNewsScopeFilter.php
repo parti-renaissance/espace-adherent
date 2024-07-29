@@ -30,7 +30,7 @@ final class JecouteNewsScopeFilter extends AbstractScopeFilter
 
         switch ($scopeGenerator->getCode()) {
             case ScopeEnum::NATIONAL:
-                $queryBuilder->andWhere(sprintf('%s.space IS NULL', $alias));
+                $queryBuilder->andWhere(\sprintf('%s.space IS NULL', $alias));
                 break;
         }
     }

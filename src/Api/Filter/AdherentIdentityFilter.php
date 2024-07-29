@@ -37,7 +37,7 @@ class AdherentIdentityFilter extends AbstractFilter
 
         $queryBuilder
             ->leftJoin($alias.".$property", $property)
-            ->andWhere(sprintf('CONCAT(LOWER(%1$s.firstName), \' \', LOWER(%1$s.lastName)) LIKE :%2$s', $property, $parameterName))
+            ->andWhere(\sprintf('CONCAT(LOWER(%1$s.firstName), \' \', LOWER(%1$s.lastName)) LIKE :%2$s', $property, $parameterName))
             ->setParameter($parameterName, '%'.strtolower($value).'%')
         ;
     }

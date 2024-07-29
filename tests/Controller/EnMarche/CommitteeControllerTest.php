@@ -562,7 +562,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
 
         if ($twitterNickname = $committee->getTwitterNickname()) {
             $this->assertCount(1, $twitterLink = $crawler->filter($twitterLinkPattern));
-            $this->assertSame(sprintf('https://twitter.com/%s', $twitterNickname), $twitterLink->attr('href'));
+            $this->assertSame(\sprintf('https://twitter.com/%s', $twitterNickname), $twitterLink->attr('href'));
         } else {
             $this->assertCount(0, $crawler->filter($twitterLinkPattern));
         }

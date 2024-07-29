@@ -56,7 +56,7 @@ class AdminFileController extends AbstractController
 
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            sprintf('%s.%s', Urlizer::urlize($file->getName()), $file->getExtension())
+            \sprintf('%s.%s', Urlizer::urlize($file->getName()), $file->getExtension())
         );
 
         $response->headers->set('Content-Disposition', $disposition);

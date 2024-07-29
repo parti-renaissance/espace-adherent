@@ -126,7 +126,7 @@ class RequestAdmin extends AbstractProcurationAdmin
                     [
                         'Statut' => $translator->trans('procuration.request.status.'.$request->status->value),
                         'Associations' => implode(', ', array_map(static function (RequestSlot $slot) {
-                            return sprintf(
+                            return \sprintf(
                                 '%s: %s',
                                 $slot->round->name,
                                 $slot->proxySlot

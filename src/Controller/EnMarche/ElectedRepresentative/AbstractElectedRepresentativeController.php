@@ -76,7 +76,7 @@ abstract class AbstractElectedRepresentativeController extends AbstractControlle
         return $this->render($template, array_merge(
             $parameters,
             [
-                'base_template' => sprintf('elected_representative/_base_%s.html.twig', $spaceName = $this->getSpaceType()),
+                'base_template' => \sprintf('elected_representative/_base_%s.html.twig', $spaceName = $this->getSpaceType()),
                 'space_name' => $spaceName,
             ]
         ));

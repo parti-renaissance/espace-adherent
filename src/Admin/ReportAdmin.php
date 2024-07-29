@@ -82,7 +82,7 @@ class ReportAdmin extends AbstractAdmin
                     $instancesExpression = $qb->expr()->orX();
 
                     foreach ($value->getValue() as $value) {
-                        $instancesExpression->add(sprintf('%s INSTANCE OF %s', $alias, $value));
+                        $instancesExpression->add(\sprintf('%s INSTANCE OF %s', $alias, $value));
                     }
 
                     $qb->andWhere($instancesExpression);
@@ -125,7 +125,7 @@ class ReportAdmin extends AbstractAdmin
                     $qb
                         ->join("$alias.author", 'author')
                         ->andWhere('LOWER(author.firstName) LIKE :firstName')
-                        ->setParameter('firstName', sprintf('%%%s%%', mb_strtolower($value->getValue())))
+                        ->setParameter('firstName', \sprintf('%%%s%%', mb_strtolower($value->getValue())))
                     ;
 
                     return true;
@@ -147,7 +147,7 @@ class ReportAdmin extends AbstractAdmin
 
                     $qb
                         ->andWhere('LOWER(author.lastName) LIKE :lastName')
-                        ->setParameter('lastName', sprintf('%%%s%%', mb_strtolower($value->getValue())))
+                        ->setParameter('lastName', \sprintf('%%%s%%', mb_strtolower($value->getValue())))
                     ;
 
                     return true;
@@ -188,8 +188,8 @@ class ReportAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $qb->andWhere($qb->expr()->eq(sprintf('json_contains(%s.reasons, :reason)', $alias), 1));
-                    $qb->setParameter(':reason', sprintf('"%s"', $value->getValue()));
+                    $qb->andWhere($qb->expr()->eq(\sprintf('json_contains(%s.reasons, :reason)', $alias), 1));
+                    $qb->setParameter(':reason', \sprintf('"%s"', $value->getValue()));
 
                     return true;
                 },

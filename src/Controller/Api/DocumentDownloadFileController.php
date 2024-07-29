@@ -20,7 +20,7 @@ class DocumentDownloadFileController extends AbstractController
     public function __invoke(Request $request, Document $document): Response
     {
         if (!$document->hasFilePath() || !$this->defaultStorage->has($document->filePath)) {
-            $this->logger->error(sprintf('No file found for Document with uuid "%s".', $document->getUuid()->toString()));
+            $this->logger->error(\sprintf('No file found for Document with uuid "%s".', $document->getUuid()->toString()));
 
             throw $this->createNotFoundException('File not found.');
         }

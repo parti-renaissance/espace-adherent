@@ -33,7 +33,7 @@ final class EventNotificationMessage extends Message
             $host->getFirstName(),
             $event->getName(),
             static::formatDate($event->getLocalBeginAt(), 'EEEE d MMMM y'),
-            sprintf(
+            \sprintf(
                 '%sh%s',
                 static::formatDate($event->getLocalBeginAt(), 'HH'),
                 static::formatDate($event->getLocalBeginAt(), 'mm')
@@ -48,7 +48,7 @@ final class EventNotificationMessage extends Message
             Uuid::uuid4(),
             $recipient->getEmailAddress(),
             $recipient->getFullName(),
-            sprintf(
+            \sprintf(
                 '%s - %s : Nouvel événement de %s : %s',
                 static::formatDate($event->getLocalBeginAt(), 'd MMMM'),
                 $vars['event_hour'],

@@ -32,7 +32,7 @@ class EventFactory
     {
         foreach (['uuid', 'name', 'category', 'description', 'address', 'begin_at', 'finish_at', 'capacity'] as $key) {
             if (empty($data[$key])) {
-                throw new \InvalidArgumentException(sprintf('Key "%s" is missing or has an empty value.', $key));
+                throw new \InvalidArgumentException(\sprintf('Key "%s" is missing or has an empty value.', $key));
             }
         }
 
@@ -73,7 +73,7 @@ class EventFactory
     public function createFromEventCommand(EventCommand $command, string $eventClass): BaseEvent
     {
         if (!is_a($eventClass, BaseEvent::class, true)) {
-            throw new \InvalidArgumentException(sprintf('Invalid Event type: "%s"', $eventClass));
+            throw new \InvalidArgumentException(\sprintf('Invalid Event type: "%s"', $eventClass));
         }
 
         switch ($eventClass) {

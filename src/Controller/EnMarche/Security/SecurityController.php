@@ -53,7 +53,7 @@ class SecurityController extends AbstractController
             '_login_email' => $securityUtils->getLastUsername(),
         ], ['remember_me' => true]);
 
-        return $this->render($app ? sprintf('security/%s_user_login.html.twig', $app) : 'security/adherent_login.html.twig', [
+        return $this->render($app ? \sprintf('security/%s_user_login.html.twig', $app) : 'security/adherent_login.html.twig', [
             'form' => $form->createView(),
             'error' => $securityUtils->getLastAuthenticationError(),
         ]);
@@ -103,7 +103,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_user_login');
         }
 
-        return $this->render($currentApp ? sprintf('security/%s_forgot_password.html.twig', $currentApp) : 'security/forgot_password.html.twig', [
+        return $this->render($currentApp ? \sprintf('security/%s_forgot_password.html.twig', $currentApp) : 'security/forgot_password.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -151,7 +151,7 @@ class SecurityController extends AbstractController
             }
         }
 
-        return $this->render(sprintf('security/%s_reset_password.html.twig', $appUrlGenerator::getAppCode()), [
+        return $this->render(\sprintf('security/%s_reset_password.html.twig', $appUrlGenerator::getAppCode()), [
             'form' => $form->createView(),
         ]);
     }

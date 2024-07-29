@@ -355,6 +355,6 @@ class Mandate
             return $str;
         }
 
-        return sprintf('%s (%s)', $str, $this->politicalAffiliation);
+        return \sprintf('%s (%s)', $str, $this->politicalAffiliation);
     }
 }

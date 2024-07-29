@@ -27,7 +27,7 @@ class CsvResponseFactory
 
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            sprintf('%s-adherents.csv', date('YmdHis'))
+            \sprintf('%s-adherents.csv', date('YmdHis'))
         );
 
         $response->headers->set('Content-Disposition', $disposition);

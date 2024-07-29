@@ -88,7 +88,7 @@ abstract class AbstractManagedUsersController extends AbstractController
         return $this->render($template, array_merge(
             $parameters,
             [
-                'base_template' => sprintf('managed_users/_base_%s_space.html.twig', $spaceName = $this->getSpaceType()),
+                'base_template' => \sprintf('managed_users/_base_%s_space.html.twig', $spaceName = $this->getSpaceType()),
                 'space_name' => $spaceName,
             ]
         ));

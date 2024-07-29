@@ -154,7 +154,7 @@ abstract class AbstractNewsController extends AbstractController
         return $this->render($template, array_merge(
             $parameters,
             [
-                'base_template' => sprintf('jecoute/_base_%s_space.html.twig', $spaceName = $this->getSpaceName()),
+                'base_template' => \sprintf('jecoute/_base_%s_space.html.twig', $spaceName = $this->getSpaceName()),
                 'space_name' => $spaceName,
             ]
         ));

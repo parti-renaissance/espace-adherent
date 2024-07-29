@@ -353,7 +353,7 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
             'UUID' => $procuration->getUuid()->toString(),
             'Élections' => $procuration->rounds->first()->election->name,
             'Tours' => implode(', ', array_map(function (Round $round) {
-                return sprintf('%s (%s)', $round->name, $round->date->format('d/m/Y'));
+                return \sprintf('%s (%s)', $round->name, $round->date->format('d/m/Y'));
             }, $procuration->rounds->toArray())),
             'Civilité' => $translator->trans('common.civility.'.$procuration->gender),
             'Nom' => $procuration->lastName,

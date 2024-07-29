@@ -141,7 +141,7 @@ abstract class AbstractEventManagerController extends AbstractController
         return $this->render($template, array_merge(
             $parameters,
             [
-                'base_template' => sprintf('event_manager/_base_%s_space.html.twig', $spaceName = $this->getSpaceType()),
+                'base_template' => \sprintf('event_manager/_base_%s_space.html.twig', $spaceName = $this->getSpaceType()),
                 'space_name' => $spaceName,
             ]
         ));

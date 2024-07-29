@@ -56,7 +56,7 @@ class FormationAdmin extends AbstractAdmin
                     'label' => 'Type',
                     'choices' => FormationContentTypeEnum::ALL,
                     'choice_label' => function (string $choice): string {
-                        return sprintf('adherent_formation.content_type.%s', $choice);
+                        return \sprintf('adherent_formation.content_type.%s', $choice);
                     },
                 ])
                 ->add('file', FileType::class, [

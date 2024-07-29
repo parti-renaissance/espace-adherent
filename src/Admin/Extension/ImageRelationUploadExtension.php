@@ -77,7 +77,7 @@ class ImageRelationUploadExtension extends AbstractAdminExtension
             $this->storage->delete($image->getFilePath());
         } catch (\Exception $e) {
             $this->logger->warning(
-                sprintf('Cannot delete image [%s], error: %s', $image->getFilePath(), $e->getMessage()),
+                \sprintf('Cannot delete image [%s], error: %s', $image->getFilePath(), $e->getMessage()),
                 ['exception' => $e]
             );
         }

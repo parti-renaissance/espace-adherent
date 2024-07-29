@@ -57,7 +57,7 @@ class SubscriptionHandler
         if ($adherent) {
             $subscriptionType = $this->subscriptionTypeRepository->findOneByExternalId($listId);
             if (!$subscriptionType) {
-                throw new \RuntimeException(sprintf('There is no subscription type with external service id "%s".', $listId));
+                throw new \RuntimeException(\sprintf('There is no subscription type with external service id "%s".', $listId));
             }
 
             $hasSubscription = $adherent->hasSubscriptionType($subscriptionType->getCode());

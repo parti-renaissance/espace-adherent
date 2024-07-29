@@ -95,7 +95,7 @@ class LoadCityData extends Fixture
 
         foreach (self::DEPARTMENTS as $code => $departmentMetadatas) {
             $department = new Department(
-                $this->getReference(sprintf('region-%s', $departmentMetadatas['region_code'])),
+                $this->getReference(\sprintf('region-%s', $departmentMetadatas['region_code'])),
                 $departmentMetadatas['name'],
                 $departmentMetadatas['label'],
                 $code
@@ -109,14 +109,14 @@ class LoadCityData extends Fixture
 
         foreach (self::CITIES as $inseeCode => $cityMetadatas) {
             $city = new City(
-                $this->getReference(sprintf('department-%s', $cityMetadatas['department_code'])),
+                $this->getReference(\sprintf('department-%s', $cityMetadatas['department_code'])),
                 $cityMetadatas['name'],
                 $inseeCode,
                 $cityMetadatas['postal_codes']
             );
 
             $manager->persist($city);
-            $this->setReference(sprintf('city-%s', mb_strtolower($cityMetadatas['name'])), $city);
+            $this->setReference(\sprintf('city-%s', mb_strtolower($cityMetadatas['name'])), $city);
         }
 
         $manager->flush();

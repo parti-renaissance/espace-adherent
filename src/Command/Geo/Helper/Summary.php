@@ -48,11 +48,11 @@ final class Summary
                     continue;
                 }
 
-                $this->io->section(sprintf('New %s entities', $class));
+                $this->io->section(\sprintf('New %s entities', $class));
 
                 $items = [];
                 foreach ($sum['new'] as $entity) {
-                    $items[] = sprintf('%s', $entity->getName());
+                    $items[] = \sprintf('%s', $entity->getName());
                 }
 
                 $this->io->listing($items);
