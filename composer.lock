@@ -7837,27 +7837,28 @@
         },
         {
             "name": "lexik/paybox-bundle",
-            "version": "v2.3.1",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/parti-renaissance/LexikPayboxBundle.git",
-                "reference": "466a08c08279498db1ab6e7907560de864557799"
+                "reference": "72df161861d9c53b6b0b438ed2f9e8f585463ffd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/parti-renaissance/LexikPayboxBundle/zipball/466a08c08279498db1ab6e7907560de864557799",
-                "reference": "466a08c08279498db1ab6e7907560de864557799",
+                "url": "https://api.github.com/repos/parti-renaissance/LexikPayboxBundle/zipball/72df161861d9c53b6b0b438ed2f9e8f585463ffd",
+                "reference": "72df161861d9c53b6b0b438ed2f9e8f585463ffd",
                 "shasum": ""
             },
             "require": {
+                "ext-dom": "*",
                 "kriswallsmith/buzz": "~0.15",
                 "lib-curl": ">=7.10.0",
                 "lib-openssl": ">=0.9.6",
                 "php": ">=7.4",
                 "psr/log": "~1.0",
-                "symfony/form": "~4.0|^5.0",
-                "symfony/framework-bundle": "~4.0|^5.0",
-                "symfony/options-resolver": "~4.0|^5.0"
+                "symfony/form": "~4.0|^5.0|^6.0",
+                "symfony/framework-bundle": "~4.0|^5.0|^6.0",
+                "symfony/options-resolver": "~4.0|^5.0|^6.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^9.5"
@@ -7895,9 +7896,9 @@
                 "bundle"
             ],
             "support": {
-                "source": "https://github.com/parti-renaissance/LexikPayboxBundle/tree/v2.3.1"
+                "source": "https://github.com/parti-renaissance/LexikPayboxBundle/tree/v2.4.0"
             },
-            "time": "2024-01-16T23:53:30+00:00"
+            "time": "2024-07-30T17:12:46+00:00"
         },
         {
             "name": "longitude-one/doctrine-spatial",
