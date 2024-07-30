@@ -9855,16 +9855,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "b0993b7e4d9c860133365d115b176bc6e0f57022"
+                "reference": "a3c5c9e7ce3a2a8577bfa9e69960fbccbd2d4a9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/b0993b7e4d9c860133365d115b176bc6e0f57022",
-                "reference": "b0993b7e4d9c860133365d115b176bc6e0f57022",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/a3c5c9e7ce3a2a8577bfa9e69960fbccbd2d4a9e",
+                "reference": "a3c5c9e7ce3a2a8577bfa9e69960fbccbd2d4a9e",
                 "shasum": ""
             },
             "require": {
@@ -9953,9 +9953,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/2.2.0"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/2.2.1"
             },
-            "time": "2024-07-24T13:21:18+00:00"
+            "time": "2024-07-29T07:56:06+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
