@@ -49,7 +49,7 @@
         "egulias/email-validator": "^4.0",
         "endroid/qr-code-bundle": "^5.0",
         "enmarche/majority-judgment": "^0.0.3",
-        "exercise/htmlpurifier-bundle": "^3.1",
+        "exercise/htmlpurifier-bundle": "^5.0",
         "friendsofsymfony/ckeditor-bundle": "^2.5",
         "fusonic/opengraph": "^2.1",
         "gedmo/doctrine-extensions": "^3.14",
@@ -210,10 +210,6 @@
         "symfony/polyfill-php82": "*"
     },
     "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/ottaviano/HTMLPurifierBundle"
-        },
         {
             "type": "vcs",
             "url": "https://github.com/parti-renaissance/contexts"

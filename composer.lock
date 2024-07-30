@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b8cfa6d04dde724c6e0b8e8daa477137",
+    "content-hash": "9ef238b76672efcc1fbdc4481305c328",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -3254,35 +3254,34 @@
         },
         {
             "name": "exercise/htmlpurifier-bundle",
-            "version": "v3.1.1",
+            "version": "5.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ottaviano/HTMLPurifierBundle.git",
-                "reference": "8120cada0573f601ccac4e36ab401ceba9bc3586"
+                "url": "https://github.com/Exercise/HTMLPurifierBundle.git",
+                "reference": "3a6420410366933841589552c680f42b8481b1e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ottaviano/HTMLPurifierBundle/zipball/8120cada0573f601ccac4e36ab401ceba9bc3586",
-                "reference": "8120cada0573f601ccac4e36ab401ceba9bc3586",
+                "url": "https://api.github.com/repos/Exercise/HTMLPurifierBundle/zipball/3a6420410366933841589552c680f42b8481b1e4",
+                "reference": "3a6420410366933841589552c680f42b8481b1e4",
                 "shasum": ""
             },
             "require": {
-                "ezyang/htmlpurifier": "~4.0",
-                "php": "^7.1.3 || ^8.0.0",
-                "symfony/config": "~3.4 || ~4.0 || ^5.0",
-                "symfony/dependency-injection": "~3.4.1 || ^4.0.1 || ^5.0",
-                "symfony/http-kernel": "~3.4.1 || ^4.0.1 || ^5.0"
+                "ezyang/htmlpurifier": "~4.14",
+                "php": "^8.1",
+                "symfony/config": "^5.4 || ^6.0 || ^7.0",
+                "symfony/dependency-injection": "^5.4 || ^6.0 || ^7.0",
+                "symfony/http-kernel": "^5.4 || ^6.0 || ^7.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.0",
-                "symfony/form": "~3.4.1 || ^4.0.1 || ^5.0",
-                "symfony/phpunit-bridge": "4.4.*",
-                "twig/twig": "^1.35.0 || ^2.4.4 || ^3.0"
+                "symfony/form": "^5.4 || ^6.0 || ^7.0",
+                "symfony/phpunit-bridge": "^7.0",
+                "twig/twig": "^2.4.4 || ^3.0"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0.x-dev"
+                    "dev-master": "5.x-dev"
                 }
             },
             "autoload": {
@@ -3290,11 +3289,7 @@
                     "Exercise\\HTMLPurifierBundle\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Exercise\\HTMLPurifierBundle\\Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3307,15 +3302,16 @@
             "description": "HTMLPurifier integration for your Symfony project",
             "homepage": "https://github.com/Exercise/HTMLPurifierBundle",
             "keywords": [
+                "Purifier",
                 "html",
                 "htmlpurifier",
-                "purifier",
                 "symfony"
             ],
             "support": {
-                "source": "https://github.com/ottaviano/HTMLPurifierBundle/tree/v3.1.1"
+                "issues": "https://github.com/Exercise/HTMLPurifierBundle/issues",
+                "source": "https://github.com/Exercise/HTMLPurifierBundle/tree/v5.0-BETA1"
             },
-            "time": "2021-11-20T23:49:51+00:00"
+            "time": "2023-11-16T11:41:23+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",

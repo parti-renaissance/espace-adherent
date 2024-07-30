@@ -12,8 +12,6 @@ exercise_html_purifier:
                 URI.SafeIframeRegexp: '#^(https?:)?(\/\/www\.youtube(?:-nocookie)?\.com\/embed\/)#'
                 Attr.AllowedFrameTargets: "_blank"
                 CSS.AllowedProperties: text-align,border-style,border-width,float,height,width,margin
-                AutoFormat.Custom:
-                    - '@App\HTMLPurifier\Injector\ImageDimension'
         basic_content:
             config:
                 HTML.AllowedElements: p,ol,ul,li,br
