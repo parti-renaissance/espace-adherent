@@ -42,11 +42,6 @@
             <argument key="$webDirectory">%kernel.project_dir%/public</argument>
         </service>
 
-        <!-- HTML Purifiers -->
-        <service id="App\HTMLPurifier\Injector\ImageDimension">
-            <argument>%image_max_length%</argument>
-        </service>
-
         <!-- DoctrineExtension -->
         <service id="App\Api\Doctrine\VisibleStatusesExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
