@@ -1041,6 +1041,32 @@ Feature:
     [
         {
             "date": "@string@.isDateTime()",
+            "type": "@string@.oneOf(
+                contains('cb'),
+                contains('check'),
+                contains('transfer'),
+                contains('tpe')
+            )",
+            "subscription": "@boolean@",
+            "membership": "@boolean@",
+            "status": "@string@.oneOf(
+                contains('waiting_confirmation'),
+                contains('subscription_in_progress'),
+                contains('refunded'),
+                contains('canceled'),
+                contains('finished'),
+                contains('error')
+            )",
+            "amount": "@number@"
+        },
+        "@array_previous_repeat@"
+    ]
+    """
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "date": "@string@.isDateTime()",
             "type": "cb",
             "subscription": false,
             "membership": true,
