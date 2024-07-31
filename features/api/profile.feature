@@ -71,7 +71,9 @@ Feature:
             }
         ],
         "interests": [],
-        "adherent": true
+        "adherent": true,
+        "last_membership_donation": null,
+        "other_party_membership": false
     }
     """
 
@@ -722,34 +724,36 @@ Feature:
     And the JSON should be equal to:
     """
     {
-    "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9699",
-    "first_name": "Simple",
-    "last_name": "User",
-    "certified": false,
-    "gender": null,
-    "custom_gender": null,
-    "email_address": "simple-user@example.ch",
-    "phone": null,
-    "birthdate": null,
-    "position": "employed",
-    "subscription_types": [],
-    "adherent": false,
-    "facebook_page_url": null,
-    "twitter_page_url": null,
-    "linkedin_page_url": null,
-    "telegram_page_url": null,
-    "job": null,
-    "activity_area": null,
-    "nationality": null,
-    "post_address": {
-      "address": "",
-      "postal_code": "8057",
-      "city": null,
-      "city_name": null,
-      "country": "CH",
-      "region": null
-    },
-    "interests": []
+        "uuid": "313bd28f-efc8-57c9-8ab7-2106c8be9699",
+        "first_name": "Simple",
+        "last_name": "User",
+        "certified": false,
+        "gender": null,
+        "custom_gender": null,
+        "email_address": "simple-user@example.ch",
+        "phone": null,
+        "birthdate": null,
+        "position": "employed",
+        "subscription_types": [],
+        "adherent": false,
+        "facebook_page_url": null,
+        "twitter_page_url": null,
+        "linkedin_page_url": null,
+        "telegram_page_url": null,
+        "job": null,
+        "activity_area": null,
+        "nationality": null,
+        "post_address": {
+          "address": "",
+          "postal_code": "8057",
+          "city": null,
+          "city_name": null,
+          "country": "CH",
+          "region": null
+        },
+        "interests": [],
+        "last_membership_donation": null,
+        "other_party_membership": false
     }
     """
 
@@ -1025,4 +1029,89 @@ Feature:
         "Transports, logistique, aéronautique"
       ]
     }
+    """
+
+  Scenario: As a logged-in user I can retrieve my donations and cancel my subscriptions
+    Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scopes "read:profile"
+    When I send a "GET" request to "/api/v3/profile/me/donations"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "date": "@string@.isDateTime()",
+            "type": "@string@.oneOf(
+                contains('cb'),
+                contains('check'),
+                contains('transfer'),
+                contains('tpe')
+            )",
+            "subscription": "@boolean@",
+            "membership": "@boolean@",
+            "status": "@string@.oneOf(
+                contains('waiting_confirmation'),
+                contains('subscription_in_progress'),
+                contains('refunded'),
+                contains('canceled'),
+                contains('finished'),
+                contains('error')
+            )",
+            "amount": "@number@"
+        },
+        "@array_previous_repeat@"
+    ]
+    """
+    And the JSON should be equal to:
+    """
+    [
+        {
+            "date": "@string@.isDateTime()",
+            "type": "cb",
+            "subscription": false,
+            "membership": true,
+            "status": "finished",
+            "amount": 30
+        },
+        {
+            "date": "@string@.isDateTime()",
+            "type": "cb",
+            "subscription": false,
+            "membership": true,
+            "status": "finished",
+            "amount": 30
+        },
+        {
+            "date": "@string@.isDateTime()",
+            "type": "cb",
+            "subscription": true,
+            "membership": false,
+            "status": "subscription_in_progress",
+            "amount": 42
+        },
+        {
+            "date": "@string@.isDateTime()",
+            "type": "cb",
+            "subscription": false,
+            "membership": false,
+            "status": "finished",
+            "amount": 50
+        },
+        {
+            "date": "@string@.isDateTime()",
+            "type": "check",
+            "subscription": false,
+            "membership": false,
+            "status": "waiting_confirmation",
+            "amount": 30
+        }
+    ]
+    """
+
+    Then I send a "POST" request to "/api/v3/profile/me/donations/cancel"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be equal to:
+    """
+    "OK"
     """
