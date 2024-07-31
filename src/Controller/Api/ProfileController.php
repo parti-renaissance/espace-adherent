@@ -6,10 +6,15 @@ use App\AdherentProfile\AdherentProfile;
 use App\AdherentProfile\AdherentProfileConfiguration;
 use App\AdherentProfile\AdherentProfileHandler;
 use App\Donation\DonationManager;
+use App\Donation\Paybox\PayboxPaymentUnsubscription;
 use App\Entity\Adherent;
+use App\Exception\PayboxPaymentUnsubscriptionException;
 use App\Membership\MembershipRequestHandler;
 use App\Membership\MembershipSourceEnum;
 use App\OAuth\TokenRevocationAuthority;
+use App\Repository\DonationRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,8 +56,8 @@ class ProfileController extends AbstractController
     }
 
     #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
-    #[Route(path: '/me/donations', name: '_donations', methods: ['GET'])]
-    public function donations(SerializerInterface $serializer, DonationManager $donationManager): JsonResponse
+    #[Route(path: '/me/donations', name: '_donations_show', methods: ['GET'])]
+    public function showDonations(SerializerInterface $serializer, DonationManager $donationManager): JsonResponse
     {
         /** @var Adherent $user */
         $user = $this->getUser();
@@ -66,6 +71,40 @@ class ProfileController extends AbstractController
                 ]
             )
         );
+    }
+
+    #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
+    #[Route(path: '/me/donations/cancel', name: '_donations_cancel', methods: ['POST'])]
+    public function cancelDonations(
+        EntityManagerInterface $entityManager,
+        DonationRepository $donationRepository,
+        PayboxPaymentUnsubscription $payboxPaymentUnsubscription,
+        LoggerInterface $logger
+    ): JsonResponse {
+        /** @var Adherent $user */
+        $user = $this->getUser();
+
+        $donations = $donationRepository->findAllSubscribedDonationByEmail($user->getEmailAddress());
+
+        if (!$donations) {
+            return new JsonResponse([
+                'error' => 'Aucun don mensuel n\'a été trouvé',
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        foreach ($donations as $donation) {
+            try {
+                $payboxPaymentUnsubscription->unsubscribe($donation);
+                $entityManager->flush();
+                $payboxPaymentUnsubscription->sendConfirmationMessage($donation, $user);
+
+                $logger->info(\sprintf('Subscription donation id(%d) from user email %s have been cancel successfully.', $donation->getId(), $user->getEmailAddress()));
+            } catch (PayboxPaymentUnsubscriptionException $e) {
+                $logger->error(\sprintf('Subscription donation id(%d) from user email %s have an error.', $donation->getId(), $user->getEmailAddress()), ['exception' => $e]);
+            }
+        }
+
+        return new JsonResponse('OK');
     }
 
     #[Route(path: '/{uuid}', name: '_update', methods: ['PUT'])]
