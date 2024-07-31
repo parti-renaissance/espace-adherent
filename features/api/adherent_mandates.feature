@@ -345,3 +345,63 @@ Feature:
             }
         }
         """
+        When I send a "POST" request to "/api/v3/profile/elect-payment" with body:
+        """
+        {
+            "account_name": "Dupont",
+            "iban": "FR7630001007941234567890185",
+            "account_country": "FR"
+        }
+        """
+        Then the response status code should be 201
+        When I send a "GET" request to "/api/v3/adherents/b4219d47-3138-5efd-9762-2ef9f9495084/elect"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+        """
+        {
+            "mandates": [
+                "conseiller_municipal"
+            ],
+            "contribution_status": "eligible",
+            "exempt_from_cotisation": false,
+            "contributed_at": "@string@.isDateTime()",
+            "payments": [],
+            "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+            "contribution_amount": 20,
+            "elect_mandates": [
+                {
+                    "mandate_type": "conseiller_municipal",
+                    "delegation": "Conseiller(e) municipal(e)",
+                    "zone": {
+                        "uuid": "e3f18016-906e-11eb-a875-0242ac150002",
+                        "code": "200054781",
+                        "name": "Métropole du Grand Paris",
+                        "created_at": "@string@.isDateTime()"
+                    },
+                    "begin_at": "2019-07-23T00:00:00+02:00",
+                    "finish_at": "2023-06-11T00:00:00+02:00",
+                    "created_at": "@string@.isDateTime()",
+                    "uuid": "c1464d05-0a25-4ca9-95c0-0d0004644986"
+                },
+                {
+                    "mandate_type": "conseiller_municipal",
+                    "delegation": "Conseiller(e) municipal(e)",
+                    "zone": {
+                        "uuid": "e3f18016-906e-11eb-a875-0242ac150002",
+                        "code": "200054781",
+                        "name": "Métropole du Grand Paris",
+                        "created_at": "@string@.isDateTime()"
+                    },
+                    "begin_at": "2019-06-12T00:00:00+02:00",
+                    "finish_at": null,
+                    "created_at": "@string@.isDateTime()",
+                    "uuid": "a31bfe33-9d13-4b65-ad6c-653e75c6adb9"
+                }
+            ],
+            "last_revenue_declaration": {
+                "uuid": "@uuid@",
+                "amount": 1000,
+                "created_at": "@string@.isDateTime()"
+            }
+        }
+        """
