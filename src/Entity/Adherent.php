@@ -494,6 +494,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\ManyToOne(targetEntity: Zone::class)]
     private ?Zone $activismZone = null;
 
+    #[Groups(['profile_read'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $lastMembershipDonation = null;
 
@@ -504,6 +505,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $territoireProgresMembership = false;
 
+    #[Groups(['profile_read'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $otherPartyMembership = false;
 

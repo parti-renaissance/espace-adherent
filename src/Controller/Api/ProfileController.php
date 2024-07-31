@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\AdherentProfile\AdherentProfile;
 use App\AdherentProfile\AdherentProfileConfiguration;
 use App\AdherentProfile\AdherentProfileHandler;
+use App\Donation\DonationManager;
 use App\Entity\Adherent;
 use App\Membership\MembershipRequestHandler;
 use App\Membership\MembershipSourceEnum;
@@ -46,6 +47,24 @@ class ProfileController extends AbstractController
             $serializer->serialize($user, 'json', [
                 AbstractObjectNormalizer::GROUPS => self::READ_PROFILE_SERIALIZATION_GROUPS,
             ])
+        );
+    }
+
+    #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
+    #[Route(path: '/me/donations', name: '_donations', methods: ['GET'])]
+    public function donations(SerializerInterface $serializer, DonationManager $donationManager): JsonResponse
+    {
+        /** @var Adherent $user */
+        $user = $this->getUser();
+
+        return JsonResponse::fromJsonString(
+            $serializer->serialize(
+                $donationManager->getHistory($user),
+                'json',
+                [
+                    AbstractObjectNormalizer::GROUPS => ['donation_read'],
+                ]
+            )
         );
     }
 
