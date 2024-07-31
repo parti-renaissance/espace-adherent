@@ -146,6 +146,7 @@ class AdherentProfile implements MembershipInterface
      * @var array
      */
     #[Assert\Choice(choices: MandateTypeEnum::ALL, multiple: true, multipleMessage: 'adherent_profile.mandates.invalid_choice')]
+    #[Groups(['profile_write'])]
     private $mandates = [];
 
     /**
