@@ -1089,15 +1089,3 @@ Feature:
     """
     "OK"
     """
-
-  Scenario: As a logged-in user I can not cancel subscription if i don't have any
-    Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
-    When I send a "POST" request to "/api/v3/profile/me/donations/cancel"
-    Then the response status code should be 400
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-        "error": "Aucun don mensuel n'a été trouvé"
-    }
-    """

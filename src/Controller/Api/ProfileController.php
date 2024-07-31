@@ -86,12 +86,6 @@ class ProfileController extends AbstractController
 
         $donations = $donationRepository->findAllSubscribedDonationByEmail($user->getEmailAddress());
 
-        if (!$donations) {
-            return new JsonResponse([
-                'error' => 'Aucun don mensuel n\'a été trouvé',
-            ], JsonResponse::HTTP_BAD_REQUEST);
-        }
-
         foreach ($donations as $donation) {
             try {
                 $payboxPaymentUnsubscription->unsubscribe($donation);
