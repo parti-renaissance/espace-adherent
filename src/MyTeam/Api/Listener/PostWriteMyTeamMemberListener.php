@@ -33,7 +33,7 @@ class PostWriteMyTeamMemberListener implements EventSubscriberInterface
         }
 
         // suppression
-        if ('api_my_team_members_delete_item' === $request->get('_api_item_operation_name')) {
+        if ('_api_/v3/my_team_members/{uuid}_delete' === $request->get('_api_operation_name')) {
             /** @var Member $member */
             $member = $event->getRequest()->get('data');
             if ($delegatedAccess = $this->delegatedAccessManager->findDelegatedAccess($member)) {
@@ -50,7 +50,7 @@ class PostWriteMyTeamMemberListener implements EventSubscriberInterface
         }
 
         // creation
-        if ('api_my_team_members_post_collection' === $request->get('_api_collection_operation_name')
+        if ('_api_/v3/my_team_members_post' === $request->get('_api_operation_name')
             && $member->getScopeFeatures()) {
             $this->delegatedAccessManager->createDelegatedAccessForMember($member);
         }

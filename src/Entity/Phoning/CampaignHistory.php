@@ -2,11 +2,15 @@
 
 namespace App\Entity\Phoning;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Api\Filter\AdherentIdentityFilter;
+use App\Controller\Api\Phoning\CampaignHistoryReplyController;
 use App\Entity\Adherent;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\Jecoute\DataSurvey;
@@ -22,51 +26,34 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     shortName="PhoningCampaignHistory",
- *     attributes={
- *         "normalization_context": {
- *             "iri": true,
- *             "groups": {"phoning_campaign_history_read"},
- *         },
- *         "denormalization_context": {"groups": {"phoning_campaign_history_write"}},
- *         "order": {"beginAt": "DESC"},
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/phoning_campaign_histories",
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
- *             "normalization_context": {
- *                 "groups": {"phoning_campaign_history_read_list"}
- *             },
- *         },
- *     },
- *     itemOperations={
- *         "put": {
- *             "path": "/v3/phoning_campaign_histories/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_CAMPAIGN_HISTORY_CALLER', object)",
- *         },
- *         "post_reply": {
- *             "method": "POST",
- *             "path": "/v3/phoning_campaign_histories/{uuid}/reply",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "controller": "App\Controller\Api\Phoning\CampaignHistoryReplyController",
- *             "defaults": {"_api_receive": false},
- *             "normalization_context": {"groups": {"data_survey_read"}},
- *         },
- *     },
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={
- *     "campaign.uuid": "exact",
- *     "campaign.title": "partial",
- *     "status": "exact",
- * })
- * @ApiFilter(AdherentIdentityFilter::class, properties={"adherent", "caller"})
- * @ApiFilter(DateFilter::class, properties={"beginAt"})
- */
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['campaign.uuid' => 'exact', 'campaign.title' => 'partial', 'status' => 'exact'])]
+#[ApiFilter(filterClass: AdherentIdentityFilter::class, properties: ['adherent', 'caller'])]
+#[ApiFilter(filterClass: DateFilter::class, properties: ['beginAt'])]
+#[ApiResource(
+    shortName: 'PhoningCampaignHistory',
+    operations: [
+        new Put(
+            uriTemplate: '/v3/phoning_campaign_histories/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'IS_CAMPAIGN_HISTORY_CALLER\', object)'
+        ),
+        new Post(
+            uriTemplate: '/v3/phoning_campaign_histories/{uuid}/reply',
+            defaults: ['_api_receive' => false],
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: CampaignHistoryReplyController::class,
+            normalizationContext: ['groups' => ['data_survey_read']]
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/phoning_campaign_histories',
+            normalizationContext: ['groups' => ['phoning_campaign_history_read_list']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\')'
+        ),
+    ],
+    normalizationContext: ['iri' => true, 'groups' => ['phoning_campaign_history_read']],
+    denormalizationContext: ['groups' => ['phoning_campaign_history_write']],
+    order: ['beginAt' => 'DESC']
+)]
 #[ORM\Entity(repositoryClass: CampaignHistoryRepository::class)]
 #[ORM\Table(name: 'phoning_campaign_history')]
 class CampaignHistory implements DataSurveyAwareInterface

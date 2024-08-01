@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Membership\Contact\InterestEnum;
 use App\Membership\Contact\SourceEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
@@ -19,33 +22,30 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     collectionOperations={
- *         "post": {
- *             "denormalization_context": {"groups": {"contact_create"}},
- *             "normalization_context": {"groups": {"contact_read_after_write"}},
- *             "path": "/contacts",
- *             "validation_groups": {"Default", "contact_create"},
- *         }
- *     },
- *     itemOperations={
- *         "get": {
- *             "normalization_context": {"groups": {"contact_read"}},
- *             "path": "/contacts/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *         },
- *         "put": {
- *             "normalization_context": {"groups": {"contact_read_after_write"}},
- *             "denormalization_context": {"groups": {"contact_update"}},
- *             "path": "/contacts/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "validation_groups": {"Default", "contact_update"},
- *         }
- *     }
- * )
- *
  * @AssertRecaptcha(api="friendly_captcha", groups={"contact_create"})
  */
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/contacts/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['contact_read']]
+        ),
+        new Put(
+            uriTemplate: '/contacts/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['contact_read_after_write']],
+            denormalizationContext: ['groups' => ['contact_update']],
+            validationContext: ['groups' => ['Default', 'contact_update']]
+        ),
+        new Post(
+            uriTemplate: '/contacts',
+            normalizationContext: ['groups' => ['contact_read_after_write']],
+            denormalizationContext: ['groups' => ['contact_create']],
+            validationContext: ['groups' => ['Default', 'contact_create']]
+        ),
+    ]
+)]
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 #[UniqueEntity(fields: ['emailAddress'])]
 class Contact implements RecaptchaChallengeInterface

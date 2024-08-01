@@ -977,7 +977,8 @@ Feature:
                 "nb_questions": 4,
                 "creator": {
                     "first_name": "Referent",
-                    "last_name": "Referent"
+                    "last_name": "Referent",
+                    "uuid": "@uuid@"
                 },
                 "nb_answers": 3
             },
@@ -996,7 +997,8 @@ Feature:
                 "nb_questions": 1,
                 "creator": {
                     "first_name": "Referent75and77",
-                    "last_name": "Referent75and77"
+                    "last_name": "Referent75and77",
+                    "uuid": "@uuid@"
                 },
                 "nb_answers": 0
             },
@@ -1015,7 +1017,8 @@ Feature:
                 "nb_questions": 0,
                 "creator": {
                     "first_name": "Jacques",
-                    "last_name": "Picard"
+                    "last_name": "Picard",
+                    "uuid": "@uuid@"
                 },
                 "nb_answers": 0
             },
@@ -1034,7 +1037,8 @@ Feature:
                 "nb_questions": 0,
                 "creator": {
                     "first_name": "Referent",
-                    "last_name": "Referent"
+                    "last_name": "Referent",
+                    "uuid": "@uuid@"
                 },
                 "nb_answers": 0
             }
@@ -1114,7 +1118,8 @@ Feature:
                 "nb_questions": 4,
                 "creator": {
                     "first_name": "Referent",
-                    "last_name": "Referent"
+                    "last_name": "Referent",
+                    "uuid": "@uuid@"
                 },
                 "nb_answers": 3
             },
@@ -1133,7 +1138,8 @@ Feature:
                 "nb_questions": 1,
                 "creator": {
                     "first_name": "Referent75and77",
-                    "last_name": "Referent75and77"
+                    "last_name": "Referent75and77",
+                    "uuid": "@uuid@"
                 },
                 "nb_answers": 0
             }
@@ -1163,7 +1169,8 @@ Feature:
       "uuid": "138140e9-1dd2-11b2-a08e-41ae5b09da7d",
       "creator": {
         "first_name": "Referent",
-        "last_name": "Referent"
+        "last_name": "Referent",
+        "uuid": "@uuid@"
       },
       "name": "Questionnaire numéro 1",
       "published": true,
@@ -1391,7 +1398,8 @@ Feature:
       "published": true,
       "creator": {
         "first_name": "Député",
-        "last_name": "PARIS I"
+        "last_name": "PARIS I",
+        "uuid": "@uuid@"
       },
       "questions": [
         {
@@ -1511,7 +1519,8 @@ Feature:
       "published": true,
       "creator": {
         "first_name": "Referent",
-        "last_name": "Referent"
+        "last_name": "Referent",
+        "uuid": "@uuid@"
       },
       "questions": [
         {
@@ -1655,7 +1664,8 @@ Feature:
       "published": true,
       "creator": {
         "first_name": "Referent",
-        "last_name": "Referent"
+        "last_name": "Referent",
+        "uuid": "@uuid@"
       },
       "questions": [
         {

@@ -2,30 +2,24 @@
 
 namespace App\Entity\Event;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\EventCategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "pagination_enabled": false,
- *         "order": {"slug": "ASC"},
- *         "normalization_context": {
- *             "groups": {"event_category_read"}
- *         },
- *     },
- *     itemOperations={"get"},
- *     collectionOperations={
- *         "get": {
- *             "path": "/event_categories",
- *         },
- *     }
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(uriTemplate: '/event_categories'),
+    ],
+    normalizationContext: ['groups' => ['event_category_read']],
+    order: ['slug' => 'ASC'],
+    paginationEnabled: false
+)]
 #[ORM\Entity(repositoryClass: EventCategoryRepository::class)]
 #[ORM\Table(name: 'events_categories')]
 #[UniqueEntity(fields: ['name'])]

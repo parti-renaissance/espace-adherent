@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
 use App\Entity\VotingPlatform\Designation\BaseCandidaciesGroup;
 use App\Entity\VotingPlatform\Designation\BaseCandidacy;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
@@ -17,38 +20,26 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     routePrefix="/v3",
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"committee_candidacy:read"},
- *         },
- *         "denormalization_context": {
- *             "groups": {"committee_candidacy:write"},
- *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee')",
- *         "validation_groups": {"api_committee_candidacy_validation"},
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/committee_candidacies/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getCommittee())",
- *         },
- *         "delete": {
- *             "path": "/committee_candidacies/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getCommittee()) and not object.isVotePeriodStarted()",
- *         },
- *     },
- *     collectionOperations={
- *         "post": {
- *             "path": "/committee_candidacies",
- *         }
- *     }
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/committee_candidacies/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object.getCommittee())'
+        ),
+        new Delete(
+            uriTemplate: '/committee_candidacies/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object.getCommittee()) and not object.isVotePeriodStarted()'
+        ),
+        new Post(uriTemplate: '/committee_candidacies'),
+    ],
+    routePrefix: '/v3',
+    normalizationContext: ['groups' => ['committee_candidacy:read']],
+    denormalizationContext: ['groups' => ['committee_candidacy:write']],
+    validationContext: ['groups' => ['api_committee_candidacy_validation']],
+    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\')'
+)]
 #[Assert\Expression(expression: '!this.isVotePeriodStarted()', message: 'Vous ne pouvez pas créer de candidature sur une élection en cours', groups: ['api_committee_candidacy_validation'])]
 #[ORM\Entity(repositoryClass: CommitteeCandidacyRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]

@@ -12,7 +12,7 @@ use Doctrine\ORM\QueryBuilder;
 class AdherentIdentityFilter extends AbstractFilter
 {
     private const PROPERTY_NAMES = ['adherent', 'caller', 'questioner'];
-    private const OPERATION_NAMES = ['api_phoning_campaign_histories_get_collection', 'api_pap_campaign_histories_get_collection'];
+    private const OPERATION_NAMES = ['_api_/v3/phoning_campaign_histories_get_collection', '_api_/v3/pap_campaign_histories_get_collection'];
 
     protected function filterProperty(
         string $property,

@@ -36,11 +36,11 @@ class PostEventEditListener implements EventSubscriberInterface
             return;
         }
 
-        $operationName = $request->attributes->get('_api_collection_operation_name');
+        $operationName = $request->attributes->get('_api_operation_name');
 
         $this->dispatcher->dispatch(
             new EventEvent($event->getAuthor(), $event),
-            'api_base_events_post_collection' === $operationName ? Events::EVENT_CREATED : Events::EVENT_UPDATED
+            '_api_/v3/events_post' === $operationName ? Events::EVENT_CREATED : Events::EVENT_UPDATED
         );
     }
 }

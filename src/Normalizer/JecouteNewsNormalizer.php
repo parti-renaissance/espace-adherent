@@ -49,7 +49,7 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
             $news['text'] = $object->getText();
         } else {
             $news['creator'] = $object->getAuthorFullNameWithRole();
-            if (isset($context['operation_name']) && 'api_news_get_public_collection' === $context['operation_name']) {
+            if (isset($context['operation_name']) && '_api_/jecoute/news_get_collection' === $context['operation_name']) {
                 $news['text'] = $object->getCleanedCroppedText();
             }
         }
@@ -69,7 +69,7 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
     {
         $context[self::DENORMALIZER_ALREADY_CALLED] = true;
 
-        if (isset($context['operation_name']) && 'api_news_put_item' === $context['operation_name']) {
+        if (isset($context['operation_name']) && '_api_/v3/jecoute/news/{uuid}_put' === $context['operation_name']) {
             unset($data['zone']);
         }
 

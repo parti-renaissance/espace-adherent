@@ -2,7 +2,8 @@
 
 namespace App\Entity\ProcurationV2;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Put;
 use App\Validator\Procuration\ManualSlot;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,29 +13,26 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ManualSlot
- *
- * @ApiResource(
- *     attributes={
- *         "routePrefix": "/v3/procuration",
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'procurations')",
- *         "normalization_context": {"groups": {"procuration_proxy_slot_read"}},
- *     },
- *     itemOperations={
- *         "put": {
- *             "path": "/proxy_slots/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "denormalization_context": {"groups": {"procuration_proxy_slot_write"}},
- *         },
- *     },
- *     collectionOperations={},
- * )
  */
+#[ApiResource(
+    operations: [
+        new Put(
+            uriTemplate: '/proxy_slots/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            denormalizationContext: ['groups' => ['procuration_proxy_slot_write']]
+        ),
+    ],
+    routePrefix: '/v3/procuration',
+    normalizationContext: ['groups' => ['procuration_proxy_slot_read']],
+    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'procurations\')'
+)]
 #[ORM\Entity]
 #[ORM\Table(name: 'procuration_v2_proxy_slot')]
 class ProxySlot extends AbstractSlot
 {
     #[Groups(['procuration_proxy_slot_read'])]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(nullable: false,
+        onDelete: 'CASCADE')]
     #[ORM\ManyToOne(inversedBy: 'proxySlots', targetEntity: Proxy::class)]
     public Proxy $proxy;
 

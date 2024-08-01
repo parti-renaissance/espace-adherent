@@ -80,9 +80,9 @@ final class ScopeVisibilityFilter extends AbstractScopeFilter
     protected function getAllowedOperationNames(string $resourceClass): array
     {
         if (is_a($resourceClass, News::class, true)) {
-            return ['_get_private_item', '_get_private_collection'];
+            return ['_api_/v3/jecoute/news/{uuid}_get', '_api_/v3/jecoute/news_get_collection'];
         }
 
-        return ['_get_item', '_get_collection'];
+        return ['{uuid}_get', '{uuid}.{_format}_get', '_get_collection'];
     }
 }

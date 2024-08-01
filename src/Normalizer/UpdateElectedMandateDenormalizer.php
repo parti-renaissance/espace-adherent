@@ -62,7 +62,7 @@ class UpdateElectedMandateDenormalizer implements DenormalizerInterface, Denorma
     {
         return !isset($context[self::ALREADY_CALLED])
             && is_a($type, Mandate::class, true)
-            && 'api_mandates_put_item' === ($context['operation_name'] ?? null);
+            && '_api_/elected_mandates/{uuid}_put' === ($context['operation_name'] ?? null);
     }
 
     private function handleChanges(

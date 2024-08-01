@@ -2,10 +2,12 @@
 
 namespace App\Entity\ProcurationV2;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use App\Api\Filter\OrTextSearchFilter;
 use App\Api\Filter\ProcurationZoneFilter;
 use App\Entity\Adherent;
@@ -25,55 +27,39 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ExcludedAssociations
- *
- * @ApiResource(
- *     attributes={
- *         "routePrefix": "/v3/procuration",
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'procurations')",
- *         "pagination_client_items_per_page": true,
- *         "pagination_maximum_items_per_page": 100,
- *         "pagination_items_per_page": 50,
- *         "normalization_context": {
- *             "groups": {"procuration_proxy_list"},
- *         },
- *     },
- *     itemOperations={
- *         "update_status": {
- *             "method": "PATCH",
- *             "path": "/proxies/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "validation_groups": {"procuration_update_status"},
- *             "normalization_context": {
- *                 "groups": {"procuration_update_status"},
- *             },
- *             "denormalization_context": {
- *                 "groups": {"procuration_update_status"},
- *             },
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "normalization_context": {
- *                 "groups": {"procuration_proxy_list"},
- *                 "enable_tag_translator": true,
- *                 "datetime_format": "Y-m-d",
- *             },
- *         },
- *     },
- * )
- *
- * @ApiFilter(OrderFilter::class, properties={"createdAt"})
- * @ApiFilter(SearchFilter::class, properties={"status": "exact"})
- * @ApiFilter(OrTextSearchFilter::class, properties={"firstNames": "lastName", "lastName": "firstNames", "email": "email", "voteZone.name": "votePlace.name"})
- * @ApiFilter(ProcurationZoneFilter::class)
  */
+#[ApiFilter(filterClass: OrderFilter::class, properties: ['createdAt'])]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['status' => 'exact'])]
+#[ApiFilter(filterClass: OrTextSearchFilter::class, properties: ['firstNames' => 'lastName', 'lastName' => 'firstNames', 'email' => 'email', 'voteZone.name' => 'votePlace.name'])]
+#[ApiFilter(filterClass: ProcurationZoneFilter::class)]
+#[ApiResource(
+    operations: [
+        new Patch(
+            uriTemplate: '/proxies/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['procuration_update_status']],
+            denormalizationContext: ['groups' => ['procuration_update_status']],
+            validationContext: ['groups' => ['procuration_update_status']]
+        ),
+        new GetCollection(
+            normalizationContext: ['groups' => ['procuration_proxy_list'], 'enable_tag_translator' => true, 'datetime_format' => 'Y-m-d']
+        ),
+    ],
+    routePrefix: '/v3/procuration',
+    normalizationContext: ['groups' => ['procuration_proxy_list']],
+    paginationClientItemsPerPage: true,
+    paginationItemsPerPage: 50,
+    paginationMaximumItemsPerPage: 100,
+    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'procurations\')'
+)]
 #[ORM\Entity(repositoryClass: ProxyRepository::class)]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Index(columns: ['created_at'])]
 #[ORM\Table(name: 'procuration_v2_proxies')]
 class Proxy extends AbstractProcuration
 {
-    #[Assert\Length(min: 5, max: 9)]
+    #[Assert\Length(min: 5,
+        max: 9)]
     #[Assert\Regex(pattern: '/^[0-9]+$/i')]
     #[ORM\Column(length: 9, nullable: true)]
     public ?string $electorNumber = null;

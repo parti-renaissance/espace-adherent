@@ -2,13 +2,17 @@
 
 namespace App\Entity\Jecoute;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Api\Filter\JeMengageSurveyScopeFilter;
 use App\Api\Filter\SurveyTypeFilter;
+use App\Controller\Api\Jecoute\GetSurveysKpiController;
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
@@ -36,65 +40,48 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {"groups": {"survey_list"}},
- *         "filters": {JeMengageSurveyScopeFilter::class},
- *         "order": {"createdAt": "DESC"},
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/surveys/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'survey') and is_granted('SCOPE_CAN_MANAGE', object)",
- *             "normalization_context": {
- *                 "groups": {"survey_read_dc"}
- *             }
- *         },
- *         "put": {
- *             "path": "/v3/surveys/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'survey')",
- *             "denormalization_context": {"groups": {"survey_write_dc"}},
- *             "normalization_context": {"groups": {"survey_read_dc"}},
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/surveys",
- *             "security": "is_granted('IS_FEATURE_GRANTED', ['survey', 'phoning_campaign', 'pap_v2'])",
- *             "normalization_context": {
- *                 "groups": {"survey_list_dc"}
- *             },
- *             "maximum_items_per_page": 1000
- *         },
- *         "post": {
- *             "path": "/v3/surveys",
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'survey')",
- *             "denormalization_context": {
- *                 "groups": {"survey_write_dc"},
- *             },
- *             "normalization_context": {
- *                 "groups": {"survey_read_dc"}
- *             }
- *         },
- *         "get_kpi": {
- *             "method": "GET",
- *             "path": "/v3/surveys/kpi",
- *             "controller": "App\Controller\Api\Jecoute\GetSurveysKpiController",
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'survey')",
- *         },
- *     },
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={
- *     "name": "partial",
- * })
- * @ApiFilter(BooleanFilter::class, properties={"published"})
- * @ApiFilter(SurveyTypeFilter::class)
- *
  * @SurveyScopeTarget
  */
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial'])]
+#[ApiFilter(filterClass: BooleanFilter::class, properties: ['published'])]
+#[ApiFilter(filterClass: SurveyTypeFilter::class)]
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/v3/surveys/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['survey_read_dc']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'survey\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+        ),
+        new Put(
+            uriTemplate: '/v3/surveys/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['survey_read_dc']],
+            denormalizationContext: ['groups' => ['survey_write_dc']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'survey\')'
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/surveys',
+            paginationMaximumItemsPerPage: 1000,
+            normalizationContext: ['groups' => ['survey_list_dc']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'survey\', \'phoning_campaign\', \'pap_v2\'])'
+        ),
+        new Post(
+            uriTemplate: '/v3/surveys',
+            normalizationContext: ['groups' => ['survey_read_dc']],
+            denormalizationContext: ['groups' => ['survey_write_dc']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'survey\')'
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/surveys/kpi',
+            controller: GetSurveysKpiController::class,
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'survey\')'
+        ),
+    ],
+    normalizationContext: ['groups' => ['survey_list']],
+    filters: [JeMengageSurveyScopeFilter::class],
+    order: ['createdAt' => 'DESC']
+)]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap([SurveyTypeEnum::LOCAL => LocalSurvey::class, SurveyTypeEnum::NATIONAL => NationalSurvey::class])]
 #[ORM\Entity(repositoryClass: SurveyRepository::class)]
@@ -108,15 +95,6 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
     use EntityAdministratorBlameableTrait;
     use EntityAdherentBlameableTrait;
     use DynamicLinkObjectTrait;
-
-    /**
-     * @var UuidInterface
-     *
-     * @ApiProperty(identifier=true)
-     */
-    #[Groups(['data_survey_write', 'data_survey_read', 'jemarche_data_survey_read', 'survey_list', 'survey_list_dc', 'survey_read_dc', 'phoning_campaign_read', 'phoning_campaign_history_read_list', 'pap_campaign_read_after_write', 'pap_campaign_read', 'pap_campaign_history_read_list', 'phoning_campaign_replies_list', 'pap_campaign_replies_list'])]
-    #[ORM\Column(type: 'uuid', unique: true)]
-    protected $uuid;
 
     #[Assert\Length(max: 70)]
     #[Assert\NotBlank]

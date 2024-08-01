@@ -2,10 +2,17 @@
 
 namespace App\Entity\AdherentFormation;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Api\Filter\ScopeVisibilityFilter;
+use App\Controller\Api\FormationDownloadFileController;
+use App\Controller\Api\FormationUploadFileController;
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
@@ -30,77 +37,55 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     routePrefix="/v3",
- *     attributes={
- *         "order": {"createdAt": "DESC"},
- *         "normalization_context": {
- *             "groups": {"formation_read"}
- *         },
- *         "denormalization_context": {
- *             "groups": {"formation_write"},
- *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations')",
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/formations",
- *             "normalization_context": {
- *                 "groups": {"formation_list_read"}
- *             },
- *             "maximum_items_per_page": 1000
- *         },
- *         "post": {
- *             "path": "/formations",
- *         }
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/formations/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
- *         },
- *         "put": {
- *             "path": "/formations/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
- *         },
- *         "post_file": {
- *             "path": "/formations/{uuid}/file",
- *             "method": "POST",
- *             "controller": "App\Controller\Api\FormationUploadFileController",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
- *         },
- *         "get_file": {
- *             "path": "/formations/{uuid}/file",
- *             "method": "GET",
- *             "controller": "App\Controller\Api\FormationDownloadFileController",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
- *         },
- *         "delete": {
- *             "path": "/formations/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'adherent_formations') and is_granted('SCOPE_CAN_MANAGE', object)",
- *         },
- *     }
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={
- *     "title": "partial",
- *     "visibility": "exact",
- * })
- *
- * @ApiFilter(ScopeVisibilityFilter::class)
- *
- * @ScopeVisibility
- * @FormationContent
- */
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['title' => 'partial', 'visibility' => 'exact'])]
+#[ApiFilter(filterClass: ScopeVisibilityFilter::class)]
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/formations/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'adherent_formations\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+        ),
+        new Put(
+            uriTemplate: '/formations/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'adherent_formations\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+        ),
+        new Post(
+            uriTemplate: '/formations/{uuid}/file',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: FormationUploadFileController::class,
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'adherent_formations\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+        ),
+        new Get(
+            uriTemplate: '/formations/{uuid}/file',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: FormationDownloadFileController::class,
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'adherent_formations\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+        ),
+        new Delete(
+            uriTemplate: '/formations/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'adherent_formations\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+        ),
+        new GetCollection(
+            uriTemplate: '/formations',
+            paginationMaximumItemsPerPage: 1000,
+            normalizationContext: ['groups' => ['formation_list_read']]
+        ),
+        new Post(uriTemplate: '/formations'),
+    ],
+    routePrefix: '/v3',
+    normalizationContext: ['groups' => ['formation_read']],
+    denormalizationContext: ['groups' => ['formation_write']],
+    order: ['createdAt' => 'DESC'],
+    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'adherent_formations\')'
+)]
+#[FormationContent]
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
 #[ORM\EntityListeners([AdherentFormationListener::class])]
 #[ORM\Table(name: 'adherent_formation')]
+#[ScopeVisibility]
 #[UniqueEntity(fields: ['zone', 'title'], message: 'adherent_formation.zone_title.unique_entity')]
 class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface
 {

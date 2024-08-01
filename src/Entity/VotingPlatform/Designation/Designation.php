@@ -2,11 +2,16 @@
 
 namespace App\Entity\VotingPlatform\Designation;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Api\Filter\InZoneOfScopeFilter;
 use App\Api\Validator\UpdateDesignationGroupGenerator;
 use App\Collection\ZoneCollection;
+use App\Controller\Api\VotingPlatform\CancelElectionController;
 use App\Entity\CmsBlock;
 use App\Entity\EntityAdherentBlameableInterface;
 use App\Entity\EntityAdherentBlameableTrait;
@@ -30,54 +35,36 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     routePrefix="/v3",
- *     attributes={
- *         "order": {"voteStartDate": "DESC"},
- *         "normalization_context": {
- *             "groups": {"designation_read"}
- *         },
- *         "denormalization_context": {
- *             "groups": {"designation_write"},
- *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')"
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/designations/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')"
- *         },
- *         "put": {
- *             "path": "/designations/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')",
- *             "validation_groups": UpdateDesignationGroupGenerator::class,
- *         },
- *         "cancel": {
- *             "path": "/designations/{uuid}/cancel",
- *             "method": "PUT",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "defaults": {"_api_receive": false},
- *             "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')",
- *             "controller": "App\Controller\Api\VotingPlatform\CancelElectionController",
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "normalization_context": {
- *                 "groups": {"designation_list"}
- *             }
- *         },
- *         "post": {
- *             "validation_groups": {"api_designation_write"},
- *         }
- *     }
- * )
- *
- * @ApiFilter(InZoneOfScopeFilter::class)
- */
+#[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/designations/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'designation\')'
+        ),
+        new Put(
+            uriTemplate: '/designations/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'designation\')',
+            validationContext: ['groups' => UpdateDesignationGroupGenerator::class]
+        ),
+        new Put(
+            uriTemplate: '/designations/{uuid}/cancel',
+            defaults: ['_api_receive' => false],
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: CancelElectionController::class,
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'designation\')'
+        ),
+        new GetCollection(normalizationContext: ['groups' => ['designation_list']]),
+        new Post(validationContext: ['groups' => ['api_designation_write']]),
+    ],
+    routePrefix: '/v3',
+    normalizationContext: ['groups' => ['designation_read']],
+    denormalizationContext: ['groups' => ['designation_write']],
+    order: ['voteStartDate' => 'DESC'],
+    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'designation\')'
+)]
 #[ORM\Entity(repositoryClass: DesignationRepository::class)]
 class Designation implements EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, ZoneableEntity
 {

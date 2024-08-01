@@ -8,9 +8,7 @@ use App\Validator\StrictEmail;
 use App\Validator\UniqueMembership;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueMembership(groups={"change-email"})
- */
+#[UniqueMembership(groups: ['change-email'])]
 class ValidateAccountRequest implements MembershipInterface
 {
     #[Assert\Length(min: 4, max: 4, groups: ['validate-code'], options: ['allowEmptyString' => true])]

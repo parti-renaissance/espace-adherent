@@ -37,8 +37,8 @@ class ProcurationStatusActionListener implements EventSubscriberInterface
         $operationName = $request->attributes->get('_api_operation_name');
 
         if (!\in_array($operationName, [
-            'api_requests_update_status_item',
-            'api_proxies_update_status_item',
+            '_api_/requests/{uuid}_patch',
+            '_api_/proxies/{uuid}_patch',
         ], true)) {
             return;
         }
@@ -66,8 +66,8 @@ class ProcurationStatusActionListener implements EventSubscriberInterface
         $operationName = $request->attributes->get('_api_operation_name');
 
         if (!\in_array($operationName, [
-            'api_requests_update_status_item',
-            'api_proxies_update_status_item',
+            '_api_/requests/{uuid}_patch',
+            '_api_/proxies/{uuid}_patch',
         ], true)) {
             return;
         }

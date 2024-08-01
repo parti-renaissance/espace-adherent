@@ -2,7 +2,11 @@
 
 namespace App\Entity\DepartmentSite;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Api\Filter\DepartmentSiteScopeFilter;
 use App\DepartmentSite\DepartmentSiteSlugHandler;
 use App\Entity\EntityIdentityTrait;
@@ -19,47 +23,31 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "filters": {DepartmentSiteScopeFilter::class},
- *         "normalization_context": {
- *             "groups": {"department_site_read"}
- *         },
- *         "denormalization_context": {
- *             "groups": {"department_site_write"}
- *         },
- *         "security": "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'department_site')"
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/department_sites/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *         },
- *         "put": {
- *             "path": "/v3/department_sites/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "normalization_context": {
- *                 "groups": {"department_site_post_write"}
- *             },
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/department_sites",
- *             "normalization_context": {
- *                 "groups": {"department_site_read_list"}
- *             }
- *         },
- *         "post": {
- *             "path": "/v3/department_sites",
- *             "normalization_context": {
- *                 "groups": {"department_site_post_write"}
- *             },
- *         }
- *     }
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/v3/department_sites/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%']
+        ),
+        new Put(
+            uriTemplate: '/v3/department_sites/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['department_site_post_write']]
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/department_sites',
+            normalizationContext: ['groups' => ['department_site_read_list']]
+        ),
+        new Post(
+            uriTemplate: '/v3/department_sites',
+            normalizationContext: ['groups' => ['department_site_post_write']]
+        ),
+    ],
+    normalizationContext: ['groups' => ['department_site_read']],
+    denormalizationContext: ['groups' => ['department_site_write']],
+    filters: [DepartmentSiteScopeFilter::class],
+    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'department_site\')'
+)]
 #[ORM\Entity(repositoryClass: DepartmentSiteRepository::class)]
 #[UniqueEntity(fields: ['zone'], message: 'department_site.zone.not_unique')]
 #[UniqueEntity(fields: ['slug'])]

@@ -4,9 +4,7 @@ namespace App\Validator\Jecoute;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class NewsText extends Constraint
 {
     public $textLength = 1000;

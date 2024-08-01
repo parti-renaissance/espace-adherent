@@ -59,7 +59,7 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
         $campaign['nb_voters'] = $object->getNbVoters();
         $campaign['nb_collected_contacts'] = $this->campaignHistoryRepository->countCollectedContacts($object, $zones);
         $campaign['nb_vote_places'] = $object->getVotePlaces()->count();
-        if (($context['operation_name'] ?? null) === 'api_pap_campaigns_get_item') {
+        if (($context['operation_name'] ?? null) === '_api_/v3/pap_campaigns/{uuid}_get') {
             $campaign['average_visit_time'] = $this->campaignHistoryRepository->findCampaignAverageVisitTime($object, $zones);
             $campaign['nb_open_doors'] = $this->campaignHistoryRepository->countOpenDoors($object, $zones);
             $campaign['nb_to_join'] = $zones ? $this->campaignHistoryRepository->countToJoinByCampaign($object, $zones) : $object->getCampaignHistoriesToJoin()->count();

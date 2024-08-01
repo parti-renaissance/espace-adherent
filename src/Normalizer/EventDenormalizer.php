@@ -35,7 +35,7 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
         /** @var BaseEvent $object */
         $object = $this->denormalizer->denormalize($data, $eventClass, $format, $context);
 
-        if (\in_array($context['operation_name'] ?? null, ['api_base_events_post_collection', 'api_base_events_put_item'], true)) {
+        if (\in_array($context['operation_name'] ?? null, ['_api_/v3/events_post', '_api_/v3/events/{uuid}_put'], true)) {
             $object->setRenaissanceEvent(true);
         }
 

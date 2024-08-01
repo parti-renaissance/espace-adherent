@@ -2,10 +2,12 @@
 
 namespace App\Entity\Geo;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Address\AddressInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\UuidEntityInterface;
@@ -17,28 +19,16 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "pagination_client_items_per_page": true,
- *         "order": {"name": "ASC"},
- *         "normalization_context": {
- *             "groups": {"zone_read"}
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/zones",
- *         },
- *     },
- *     itemOperations={"get"},
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={
- *     "name": "word_start",
- *     "type": "exact"
- * })
- */
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'word_start', 'type' => 'exact'])]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(uriTemplate: '/zones'),
+    ],
+    normalizationContext: ['groups' => ['zone_read']],
+    order: ['name' => 'ASC'],
+    paginationClientItemsPerPage: true
+)]
 #[ORM\AttributeOverrides([new ORM\AttributeOverride(name: 'code', column: new ORM\Column(unique: false))])]
 #[ORM\Entity(repositoryClass: ZoneRepository::class)]
 #[ORM\Index(columns: ['type'])]
@@ -103,19 +93,9 @@ class Zone implements GeoInterface, UuidEntityInterface
      * The internal primary identity key.
      *
      * @var UuidInterface
-     *
-     * @ApiProperty(
-     *     identifier=true,
-     *     attributes={
-     *         "swagger_context": {
-     *             "type": "string",
-     *             "format": "uuid",
-     *             "example": "b4219d47-3138-5efd-9762-2ef9f9495084"
-     *         }
-     *     }
-     * )
      */
-    #[Groups(['zone_read', 'scopes', 'scope', 'jecoute_news_read_dc', 'audience_read', 'audience_segment_read', 'phoning_campaign_read', 'survey_list_dc', 'survey_read_dc', 'team_read', 'team_list_read', 'pap_campaign_read', 'pap_campaign_read_after_write', 'phoning_campaign_read', 'phoning_campaign_list', 'department_site_read', 'department_site_read_list', 'elected_representative_read', 'elected_representative_list', 'formation_list_read', 'formation_read', 'formation_write', 'elected_mandate_read', 'adherent_elect_read', 'general_meeting_report_list_read', 'general_meeting_report_read', 'committee:read', 'managed_users_list', 'managed_user_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'action_read'])]
+    #[ApiProperty(identifier: true, openapiContext: ['type' => 'string', 'format' => 'uuid', 'example' => 'b4219d47-3138-5efd-9762-2ef9f9495084'])]
+    #[Groups(['zone_read', 'survey_write_dc', 'scopes', 'scope', 'jecoute_news_read_dc', 'audience_read', 'audience_segment_read', 'phoning_campaign_read', 'survey_list_dc', 'survey_read_dc', 'team_read', 'team_list_read', 'pap_campaign_read', 'pap_campaign_read_after_write', 'phoning_campaign_read', 'phoning_campaign_list', 'department_site_read', 'department_site_read_list', 'elected_representative_read', 'elected_representative_list', 'formation_list_read', 'formation_read', 'formation_write', 'elected_mandate_read', 'adherent_elect_read', 'general_meeting_report_list_read', 'general_meeting_report_read', 'committee:read', 'managed_users_list', 'managed_user_read', 'procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy', 'general_meeting_report_write', 'elected_mandate_write', 'action_read', 'department_site_write', 'committee:write', 'audience_write'])]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
 
@@ -159,7 +139,7 @@ class Zone implements GeoInterface, UuidEntityInterface
 
     public function __construct(string $type, string $code, string $name, ?UuidInterface $uuid = null)
     {
-        $this->uuid = $uuid ?: Uuid::uuid4();
+        $this->uuid = $uuid ?? Uuid::uuid4();
         $this->type = $type;
         $this->code = $code;
         $this->name = $name;

@@ -26,7 +26,7 @@ class PostEventInscriptionEditListener implements EventSubscriberInterface
     {
         $request = $requestEvent->getRequest();
 
-        if ('api_event_inscriptions_put_item' !== $request->attributes->get('_api_item_operation_name')) {
+        if ('_api_/event_inscriptions/{uuid}.{_format}_put' !== $request->attributes->get('_api_operation_name')) {
             return;
         }
 

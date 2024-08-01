@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
 use App\Collection\ZoneCollection;
 use App\Repository\DeviceRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,31 +13,22 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"device_read"}
- *         },
- *         "denormalization_context": {
- *             "groups": {"device_write"}
- *         },
- *     },
- *     collectionOperations={},
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/device/{deviceUuid}",
- *             "requirements": {"deviceUuid": "[\w-]+"},
- *             "security": "is_granted('ROLE_OAUTH_DEVICE') and object.equals(user.getDevice())"
- *         },
- *         "put": {
- *             "path": "/v3/device/{deviceUuid}",
- *             "requirements": {"deviceUuid": "[\w-]+"},
- *             "security": "is_granted('ROLE_OAUTH_DEVICE') and object.equals(user.getDevice())"
- *         },
- *     }
- * )
- */
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/v3/device/{deviceUuid}',
+            requirements: ['deviceUuid' => '[\w-]+'],
+            security: 'is_granted(\'ROLE_OAUTH_DEVICE\') and object.equals(user.getDevice())'
+        ),
+        new Put(
+            uriTemplate: '/v3/device/{deviceUuid}',
+            requirements: ['deviceUuid' => '[\w-]+'],
+            security: 'is_granted(\'ROLE_OAUTH_DEVICE\') and object.equals(user.getDevice())'
+        ),
+    ],
+    normalizationContext: ['groups' => ['device_read']],
+    denormalizationContext: ['groups' => ['device_write']]
+)]
 #[ORM\Entity(repositoryClass: DeviceRepository::class)]
 #[ORM\Table(name: 'devices')]
 class Device
@@ -46,18 +39,16 @@ class Device
 
     /**
      * @var UuidInterface
-     *
-     * @ApiProperty(identifier=false)
      */
+    #[ApiProperty(identifier: false)]
     #[Groups(['user_profile'])]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
 
     /**
      * @var string
-     *
-     * @ApiProperty(identifier=true)
      */
+    #[ApiProperty(identifier: true)]
     #[Groups(['user_profile'])]
     #[ORM\Column(unique: true)]
     protected $deviceUuid;

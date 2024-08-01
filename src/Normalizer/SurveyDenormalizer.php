@@ -51,7 +51,7 @@ class SurveyDenormalizer implements DenormalizerInterface, DenormalizerAwareInte
     {
         return !isset($context[self::ALREADY_CALLED])
             && is_a($type, Survey::class, true)
-            && 'api_surveys_post_collection' === ($context['operation_name'] ?? null);
+            && '_api_/v3/surveys_post' === ($context['operation_name'] ?? null);
     }
 
     private function getSurveyClassFromType(string $surveyType): ?string

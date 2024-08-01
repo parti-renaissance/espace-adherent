@@ -2,10 +2,17 @@
 
 namespace App\Entity\Phoning;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Api\Filter\ScopeVisibilityFilter;
+use App\Controller\Api\Phoning\CampaignsScoresController;
+use App\Controller\Api\Phoning\GetPhoningCampaignCallersStatsController;
+use App\Controller\Api\Phoning\GetPhoningCampaignsKpiController;
 use App\Entity\Adherent;
 use App\Entity\Audience\AudienceSnapshot;
 use App\Entity\EntityAdherentBlameableInterface;
@@ -36,88 +43,63 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     shortName="PhoningCampaign",
- *     attributes={
- *         "normalization_context": {
- *             "groups": {"phoning_campaign_read"},
- *         },
- *         "denormalization_context": {
- *             "groups": {"phoning_campaign_write"}
- *         },
- *         "order": {"createdAt": "DESC"},
- *         "pagination_client_items_per_page": true
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/phoning_campaigns/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
- *         },
- *         "put": {
- *             "path": "/v3/phoning_campaigns/{uuid}",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign') and is_granted('SCOPE_CAN_MANAGE', object)"
- *         },
- *         "get_with_scores_public": {
- *             "method": "GET",
- *             "path": "/v3/phoning_campaigns/{uuid}/scores",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('CAN_MANAGE_PHONING_CAMPAIGN', object)",
- *             "normalization_context": {
- *                 "groups": {"phoning_campaign_read_with_score"},
- *             },
- *         },
- *         "get_callers_with_scores_private": {
- *             "method": "GET",
- *             "path": "/v3/phoning_campaigns/{uuid}/callers",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
- *             "controller": "App\Controller\Api\Phoning\GetPhoningCampaignCallersStatsController",
- *             "defaults": {"_api_receive": false},
- *         }
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/phoning_campaigns",
- *             "normalization_context": {
- *                 "groups": {"phoning_campaign_list"},
- *             },
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
- *         },
- *         "post": {
- *             "path": "/v3/phoning_campaigns",
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
- *         },
- *         "get_my_phoning_campaigns_scores": {
- *             "method": "GET",
- *             "path": "/v3/phoning_campaigns/scores",
- *             "controller": "App\Controller\Api\Phoning\CampaignsScoresController",
- *             "normalization_context": {
- *                 "iri": true,
- *                 "groups": {"phoning_campaign_read_with_score"},
- *             },
- *         },
- *         "get_phoning_campaigns_kpi": {
- *             "method": "GET",
- *             "path": "/v3/phoning_campaigns/kpi",
- *             "controller": "App\Controller\Api\Phoning\GetPhoningCampaignsKpiController",
- *             "security": "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')",
- *         },
- *     },
- * )
- *
- * @ApiFilter(ScopeVisibilityFilter::class)
- * @ApiFilter(SearchFilter::class, properties={
- *     "visibility": "exact",
- * })
- *
- * @ScopeVisibility
- */
+#[ApiFilter(filterClass: ScopeVisibilityFilter::class)]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['visibility' => 'exact'])]
+#[ApiResource(
+    shortName: 'PhoningCampaign',
+    operations: [
+        new Get(
+            uriTemplate: '/v3/phoning_campaigns/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\')'
+        ),
+        new Put(
+            uriTemplate: '/v3/phoning_campaigns/{uuid}',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+        ),
+        new Get(
+            uriTemplate: '/v3/phoning_campaigns/{uuid}/scores',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            normalizationContext: ['groups' => ['phoning_campaign_read_with_score']],
+            security: 'is_granted(\'CAN_MANAGE_PHONING_CAMPAIGN\', object)'
+        ),
+        new Get(
+            uriTemplate: '/v3/phoning_campaigns/{uuid}/callers',
+            defaults: ['_api_receive' => false],
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: GetPhoningCampaignCallersStatsController::class,
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\')'
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/phoning_campaigns',
+            normalizationContext: ['groups' => ['phoning_campaign_list']],
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\')'
+        ),
+        new Post(
+            uriTemplate: '/v3/phoning_campaigns',
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\')'
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/phoning_campaigns/scores',
+            controller: CampaignsScoresController::class,
+            normalizationContext: ['iri' => true, 'groups' => ['phoning_campaign_read_with_score']]
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/phoning_campaigns/kpi',
+            controller: GetPhoningCampaignsKpiController::class,
+            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\')'
+        ),
+    ],
+    normalizationContext: ['groups' => ['phoning_campaign_read']],
+    denormalizationContext: ['groups' => ['phoning_campaign_write']],
+    order: ['createdAt' => 'DESC'],
+    paginationClientItemsPerPage: true
+)]
 #[ORM\Entity(repositoryClass: CampaignRepository::class)]
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
 #[ORM\Table(name: 'phoning_campaign')]
+#[ScopeVisibility]
 class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;

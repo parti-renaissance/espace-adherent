@@ -2,12 +2,19 @@
 
 namespace App\Entity\Action;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\HttpOperation;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Action\ActionTypeEnum;
 use App\Collection\ZoneCollection;
+use App\Controller\Api\Action\CancelActionController;
+use App\Controller\Api\Action\RegisterController;
 use App\Entity\Adherent;
 use App\Entity\AuthorInstanceInterface;
 use App\Entity\AuthorInstanceTrait;
@@ -29,60 +36,39 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *     attributes={
- *         "denormalization_context": {"groups": {"action_write"}},
- *         "normalization_context": {"groups": {"action_read"}},
- *         "pagination_maximum_items_per_page": 300,
- *         "pagination_items_per_page": 300,
- *     },
- *     itemOperations={
- *         "get": {
- *             "path": "/v3/actions/{uuid}",
- *         },
- *         "put": {
- *             "path": "/v3/actions/{uuid}",
- *             "security": "object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'actions')",
- *         },
- *         "cancel": {
- *             "path": "/v3/actions/{uuid}/cancel",
- *             "method": "PUT",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\Action\CancelActionController",
- *         },
- *         "register": {
- *             "path": "/v3/actions/{uuid}/register",
- *             "method": "POST",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\Action\RegisterController",
- *         },
- *         "unregister": {
- *             "path": "/v3/actions/{uuid}/register",
- *             "method": "DELETE",
- *             "requirements": {"uuid": "%pattern_uuid%"},
- *             "defaults": {"_api_receive": false},
- *             "controller": "App\Controller\Api\Action\RegisterController",
- *         },
- *     },
- *     collectionOperations={
- *         "get": {
- *             "path": "/v3/actions",
- *             "normalization_context": {
- *                 "groups": {"action_read_list"},
- *             },
- *         },
- *         "post": {
- *             "path": "/v3/actions",
- *         },
- *     }
- * )
- *
- * @ApiFilter(SearchFilter::class, properties={"type": "exact"})
- * @ApiFilter(DateFilter::class, properties={"date"})
- */
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['type' => 'exact'])]
+#[ApiFilter(filterClass: DateFilter::class, properties: ['date'])]
+#[ApiResource(
+    operations: [
+        new Get(uriTemplate: '/v3/actions/{uuid}'),
+        new Put(
+            uriTemplate: '/v3/actions/{uuid}',
+            security: 'object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'actions\')'
+        ),
+        new Put(
+            uriTemplate: '/v3/actions/{uuid}/cancel',
+            defaults: ['_api_receive' => false],
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: CancelActionController::class
+        ),
+        new HttpOperation(
+            method: 'POST|DELETE',
+            uriTemplate: '/v3/actions/{uuid}/register',
+            defaults: ['_api_receive' => false],
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: RegisterController::class
+        ),
+        new GetCollection(
+            uriTemplate: '/v3/actions',
+            normalizationContext: ['groups' => ['action_read_list']]
+        ),
+        new Post(uriTemplate: '/v3/actions'),
+    ],
+    normalizationContext: ['groups' => ['action_read']],
+    denormalizationContext: ['groups' => ['action_write']],
+    paginationItemsPerPage: 300,
+    paginationMaximumItemsPerPage: 300
+)]
 #[ORM\Entity(repositoryClass: ActionRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[ORM\Table(name: 'vox_action')]
