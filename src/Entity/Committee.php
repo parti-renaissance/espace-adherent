@@ -152,7 +152,7 @@ class Committee implements SynchronizedEntity, StaticSegmentInterface, AddressHo
     /**
      * The group description.
      */
-    #[Groups(['committee:list', 'committee:write', 'committee:write_limited'])]
+    #[Groups(['committee:list', 'committee:write', 'committee:write_limited', 'profile_read'])]
     #[ORM\Column(type: 'text')]
     private $description;
 

@@ -1366,6 +1366,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->memberships;
     }
 
+    #[Groups(['profile_read'])]
+    #[SerializedName('committee_membership')]
     public function getCommitteeV2Membership(): ?CommitteeMembership
     {
         return current($this->getMemberships()->getCommitteeV2Memberships()) ?: null;

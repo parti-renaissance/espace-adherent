@@ -73,6 +73,7 @@ Feature:
         "interests": [],
         "adherent": true,
         "last_membership_donation": null,
+        "committee_membership": null,
         "other_party_membership": false
     }
     """
@@ -753,6 +754,7 @@ Feature:
         },
         "interests": [],
         "last_membership_donation": null,
+        "committee_membership": null,
         "other_party_membership": false
     }
     """
@@ -1115,3 +1117,183 @@ Feature:
     """
     "OK"
     """
+
+    Scenario: I can retrieve committees list for my zone and select my new committee
+        Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "VOX" with scope "jemarche_app read:profile write:profile"
+        When I send a "GET" request to "/api/v3/profile/me"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+        """
+        {
+            "gender": "female",
+            "custom_gender": null,
+            "email_address": "gisele-berthoux@caramail.com",
+            "phone": {
+                "country": "FR",
+                "number": "01 38 76 43 34"
+            },
+            "birthdate": "1983-12-24T00:00:00+01:00",
+            "position": "unemployed",
+            "subscription_types": [
+                {
+                    "label": "Recevoir les informations sur les actions militantes du mouvement par téléphone",
+                    "code": "militant_action_sms"
+                },
+                {
+                    "label": "Recevoir les e-mails nationaux",
+                    "code": "subscribed_emails_movement_information"
+                },
+                {
+                    "label": "Recevoir la newsletter hebdomadaire nationale",
+                    "code": "subscribed_emails_weekly_letter"
+                },
+                {
+                    "label": "Recevoir les e-mails de mon/ma député(e)",
+                    "code": "deputy_email"
+                },
+                {
+                    "label": "Recevoir les e-mails de mon animateur(trice) local(e) de comité",
+                    "code": "subscribed_emails_local_host"
+                },
+                {
+                    "label": "Recevoir les e-mails de mon/ma sénateur/trice",
+                    "code": "senator_email"
+                }
+            ],
+            "adherent": true,
+            "facebook_page_url": null,
+            "twitter_page_url": null,
+            "linkedin_page_url": null,
+            "telegram_page_url": null,
+            "job": null,
+            "activity_area": null,
+            "nationality": "FR",
+            "post_address": {
+                "address": "47 rue Martre",
+                "postal_code": "92110",
+                "city": "92110-92024",
+                "city_name": "Clichy",
+                "country": "FR",
+                "region": null
+            },
+            "last_membership_donation": "@string@.isDateTime()",
+            "other_party_membership": false,
+            "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+            "first_name": "Gisele",
+            "last_name": "Berthoux",
+            "committee_membership": {
+                "committee": {
+                    "description": "Un petit comité avec seulement 3 communes",
+                    "uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
+                    "name": "Second Comité des 3 communes"
+                },
+                "uuid": "@uuid@",
+                "subscription_date": "@string@.isDateTime()"
+            },
+            "certified": false,
+            "interests": []
+        }
+        """
+        When I send a "GET" request to "/api/v3/profile/committees"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+        """
+        [
+            {
+                "members_count": 10,
+                "sympathizers_count": 0,
+                "members_em_count": 0,
+                "description": "Un petit comité avec seulement 3 communes",
+                "uuid": "5e00c264-1d4b-43b8-862e-29edc38389b3",
+                "created_at": "@string@.isDateTime()",
+                "updated_at": "@string@.isDateTime()",
+                "name": "Comité des 3 communes"
+            },
+            {
+                "members_count": 3,
+                "sympathizers_count": 0,
+                "members_em_count": 0,
+                "description": "Un petit comité avec seulement 3 communes",
+                "uuid": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
+                "created_at": "@string@.isDateTime()",
+                "updated_at": "@string@.isDateTime()",
+                "name": "Second Comité des 3 communes"
+            }
+        ]
+        """
+        When I send a "PUT" request to "/api/v3/profile/committees/5e00c264-1d4b-43b8-862e-29edc38389b3/join"
+        Then the response status code should be 200
+        When I send a "GET" request to "/api/v3/profile/me"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+        """
+        {
+            "gender": "female",
+            "custom_gender": null,
+            "email_address": "gisele-berthoux@caramail.com",
+            "phone": {
+                "country": "FR",
+                "number": "01 38 76 43 34"
+            },
+            "birthdate": "1983-12-24T00:00:00+01:00",
+            "position": "unemployed",
+            "subscription_types": [
+                {
+                    "label": "Recevoir les informations sur les actions militantes du mouvement par téléphone",
+                    "code": "militant_action_sms"
+                },
+                {
+                    "label": "Recevoir les e-mails nationaux",
+                    "code": "subscribed_emails_movement_information"
+                },
+                {
+                    "label": "Recevoir la newsletter hebdomadaire nationale",
+                    "code": "subscribed_emails_weekly_letter"
+                },
+                {
+                    "label": "Recevoir les e-mails de mon/ma député(e)",
+                    "code": "deputy_email"
+                },
+                {
+                    "label": "Recevoir les e-mails de mon animateur(trice) local(e) de comité",
+                    "code": "subscribed_emails_local_host"
+                },
+                {
+                    "label": "Recevoir les e-mails de mon/ma sénateur/trice",
+                    "code": "senator_email"
+                }
+            ],
+            "adherent": true,
+            "facebook_page_url": null,
+            "twitter_page_url": null,
+            "linkedin_page_url": null,
+            "telegram_page_url": null,
+            "job": null,
+            "activity_area": null,
+            "nationality": "FR",
+            "post_address": {
+                "address": "47 rue Martre",
+                "postal_code": "92110",
+                "city": "92110-92024",
+                "city_name": "Clichy",
+                "country": "FR",
+                "region": null
+            },
+            "last_membership_donation": "@string@.isDateTime()",
+            "other_party_membership": false,
+            "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
+            "first_name": "Gisele",
+            "last_name": "Berthoux",
+            "committee_membership": {
+                "committee": {
+                    "description": "Un petit comité avec seulement 3 communes",
+                    "uuid": "5e00c264-1d4b-43b8-862e-29edc38389b3",
+                    "name": "Comité des 3 communes"
+                },
+                "uuid": "@uuid@",
+                "subscription_date": "@string@.isDateTime()"
+            },
+            "certified": false,
+            "interests": []
+        }
+        """

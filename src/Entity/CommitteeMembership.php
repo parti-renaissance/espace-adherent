@@ -43,7 +43,7 @@ class CommitteeMembership implements UuidEntityInterface
     /**
      * @var Committee
      */
-    #[Groups(['adherent_committees_modal'])]
+    #[Groups(['adherent_committees_modal', 'profile_read'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[ORM\ManyToOne(targetEntity: Committee::class)]
     private $committee;
@@ -280,7 +280,7 @@ class CommitteeMembership implements UuidEntityInterface
         return $this->isHostMember();
     }
 
-    #[Groups(['export', 'adherent_committees_modal'])]
+    #[Groups(['export', 'adherent_committees_modal', 'profile_read'])]
     public function getSubscriptionDate(): \DateTimeImmutable
     {
         return new \DateTimeImmutable($this->joinedAt->format(\DATE_RFC822), $this->joinedAt->getTimezone());
