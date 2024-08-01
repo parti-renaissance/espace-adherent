@@ -78,7 +78,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/adherents/{uuid}/elect',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'elected_representative\')'
+            security: '(is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'elected_representative\')) or (is_granted(\'ROLE_OAUTH_SCOPE_READ:PROFILE\') and object === user)'
         ),
         new Put(
             uriTemplate: '/adherents/{uuid}/elect',

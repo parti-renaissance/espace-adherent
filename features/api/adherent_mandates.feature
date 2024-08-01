@@ -24,6 +24,7 @@ Feature:
                 "method": "IBAN",
                 "amount": 50,
                 "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
                 "status_label": "Paiement validé"
             },
             {
@@ -31,6 +32,7 @@ Feature:
                 "method": "IBAN",
                 "amount": 50,
                 "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()",
                 "status_label": "Paiement validé"
             }
         ],
@@ -42,10 +44,12 @@ Feature:
                 "zone": {
                     "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
                     "code": "92",
-                    "name": "Hauts-de-Seine"
+                    "name": "Hauts-de-Seine",
+                    "created_at": "@string@.isDateTime()"
                 },
                 "begin_at": "@string@.isDateTime()",
                 "finish_at": null,
+                "created_at": "@string@.isDateTime()",
                 "uuid": "@uuid@"
             }
         ]
@@ -155,10 +159,12 @@ Feature:
                     "zone": {
                         "uuid": "@uuid@",
                         "code": "200054781",
-                        "name": "Métropole du Grand Paris"
+                        "name": "Métropole du Grand Paris",
+                        "created_at": "@string@.isDateTime()"
                     },
                     "begin_at": "@string@.isDateTime()",
                     "finish_at": "@string@.isDateTime()",
+                    "created_at": "@string@.isDateTime()",
                     "uuid": "@uuid@"
                 },
                 {
@@ -167,10 +173,12 @@ Feature:
                     "zone": {
                         "uuid": "@uuid@",
                         "code": "200054781",
-                        "name": "Métropole du Grand Paris"
+                        "name": "Métropole du Grand Paris",
+                        "created_at": "@string@.isDateTime()"
                     },
                     "begin_at": "@string@.isDateTime()",
                     "finish_at": null,
+                    "created_at": "@string@.isDateTime()",
                     "uuid": "@uuid@"
                 }
             ]
@@ -200,10 +208,12 @@ Feature:
                     "zone": {
                         "uuid": "@uuid@",
                         "code": "200054781",
-                        "name": "Métropole du Grand Paris"
+                        "name": "Métropole du Grand Paris",
+                        "created_at": "@string@.isDateTime()"
                     },
                     "begin_at": "@string@.isDateTime()",
                     "finish_at": "@string@.isDateTime()",
+                    "created_at": "@string@.isDateTime()",
                     "uuid": "@uuid@"
                 },
                 {
@@ -212,10 +222,12 @@ Feature:
                     "zone": {
                         "uuid": "@uuid@",
                         "code": "200054781",
-                        "name": "Métropole du Grand Paris"
+                        "name": "Métropole du Grand Paris",
+                        "created_at": "@string@.isDateTime()"
                     },
                     "begin_at": "@string@.isDateTime()",
                     "finish_at": null,
+                    "created_at": "@string@.isDateTime()",
                     "uuid": "@uuid@"
                 }
             ]
