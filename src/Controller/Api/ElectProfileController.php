@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Adherent\Contribution\ContributionRequest;
 use App\Adherent\Contribution\ContributionRequestHandler;
+use App\Adherent\Contribution\ContributionStatusEnum;
 use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
 use App\Entity\Adherent;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,6 +35,12 @@ class ElectProfileController extends AbstractController
 
         /** @var Adherent $adherent */
         $adherent->addRevenueDeclaration($command->revenueAmount);
+
+        if (!$command->needContribution()) {
+            $adherent->setContributionStatus(ContributionStatusEnum::NOT_ELIGIBLE);
+            $adherent->setContributedAt(new \DateTime());
+        }
+
         $entityManager->flush();
 
         $bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
@@ -54,6 +61,15 @@ class ElectProfileController extends AbstractController
         /** @var Adherent $adherent */
         $command->updateFromAdherent($adherent);
         $contributionRequestHandler->handle($command, $adherent);
+
+        return new JsonResponse('OK', Response::HTTP_CREATED);
+    }
+
+    #[Route(path: '/elect-payment/stop', methods: ['POST'])]
+    public function stopPayment(UserInterface $adherent, ContributionRequestHandler $contributionRequestHandler): Response
+    {
+        /** @var Adherent $adherent */
+        $contributionRequestHandler->cancelLastContribution($adherent);
 
         return new JsonResponse('OK', Response::HTTP_CREATED);
     }
