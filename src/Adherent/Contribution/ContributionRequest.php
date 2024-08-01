@@ -2,7 +2,7 @@
 
 namespace App\Adherent\Contribution;
 
-use App\Address\Address;
+use App\Address\AddressInterface;
 use App\Entity\Adherent;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,7 +24,7 @@ class ContributionRequest
 
     #[Assert\Country(message: 'common.country.invalid', groups: ['fill_contribution_informations'])]
     #[Assert\NotBlank(groups: ['fill_contribution_informations'])]
-    public ?string $accountCountry = Address::FRANCE;
+    public ?string $accountCountry = AddressInterface::FRANCE;
 
     #[Assert\Iban(groups: ['fill_contribution_informations'])]
     #[Assert\NotBlank(groups: ['fill_contribution_informations'])]
@@ -58,6 +58,7 @@ class ContributionRequest
     public function updateFromAdherent(Adherent $adherent): void
     {
         $this->adherentId = $adherent->getId();
+        $this->revenueAmount = $adherent->getLastRevenueDeclaration()->amount;
     }
 
     public function needContribution(): bool
