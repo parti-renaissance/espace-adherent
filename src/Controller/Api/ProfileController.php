@@ -5,13 +5,18 @@ namespace App\Controller\Api;
 use App\AdherentProfile\AdherentProfile;
 use App\AdherentProfile\AdherentProfileConfiguration;
 use App\AdherentProfile\AdherentProfileHandler;
+use App\Committee\CommitteeMembershipManager;
+use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Donation\DonationManager;
 use App\Donation\Paybox\PayboxPaymentUnsubscription;
 use App\Entity\Adherent;
+use App\Entity\Committee;
+use App\Entity\Geo\Zone;
 use App\Exception\PayboxPaymentUnsubscriptionException;
 use App\Membership\MembershipRequestHandler;
 use App\Membership\MembershipSourceEnum;
 use App\OAuth\TokenRevocationAuthority;
+use App\Repository\CommitteeRepository;
 use App\Repository\DonationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -22,6 +27,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -141,6 +147,39 @@ class ProfileController extends AbstractController
         $errors = $serializer->serialize($violations, 'jsonproblem');
 
         return JsonResponse::fromJsonString($errors, JsonResponse::HTTP_BAD_REQUEST);
+    }
+
+    #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
+    #[Route(path: '/committees', methods: ['GET'])]
+    public function showCommitteesOfMyZone(UserInterface $adherent, CommitteeRepository $committeeRepository): Response
+    {
+        /** @var Adherent $adherent */
+        return $this->json($committeeRepository->findInAdherentZone($adherent), context: ['groups' => ['committee:list']]);
+    }
+
+    #[Route(path: '/committees/{uuid}/join', methods: ['PUT'])]
+    #[Security('is_granted("ROLE_OAUTH_SCOPE_WRITE:PROFILE") and user.isRenaissanceAdherent()')]
+    public function saveMyNewCommittee(Committee $committee, UserInterface $adherent, CommitteeMembershipManager $committeeMembershipManager): Response
+    {
+        /** @var Adherent $adherent */
+        if (
+            !array_intersect(
+                $adherent->getParentZonesOfType($adherent->isForeignResident() ? Zone::CUSTOM : Zone::DEPARTMENT),
+                $committee->getParentZonesOfType($adherent->isForeignResident() ? Zone::CUSTOM : Zone::DEPARTMENT)
+            )
+        ) {
+            return $this->json([
+                'message' => 'Le comité choisi n\'est pas dans l\'assemblée départementale',
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $committeeMembershipManager->followCommittee(
+            $adherent,
+            $committee,
+            CommitteeMembershipTriggerEnum::MANUAL
+        );
+
+        return $this->json('OK');
     }
 
     #[IsGranted('ROLE_OAUTH_SCOPE_WRITE:PROFILE')]
