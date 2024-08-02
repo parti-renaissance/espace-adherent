@@ -1118,6 +1118,48 @@ Feature:
     "OK"
     """
 
+    Scenario Outline: As a logged-in user I can retrieve my certification details
+        Given I am logged with "<email>" via OAuth client "JeMengage Mobile" with scopes "read:profile"
+        When I send a "GET" request to "/api/v3/profile/me/certification-request"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        {
+            "certified_at": "@string@.isDateTime()||@null@",
+            "last_certification_request": {
+                "created_at": "@string@.isDateTime()",
+                "status": "@string@.oneOf(
+                    contains('pending'),
+                    contains('approved'),
+                    contains('refused'),
+                    contains('blocked')
+                )",
+                "processed_at": "@string@.isDateTime()||@null@",
+                "refusal_reason": "@string@.oneOf(
+                    contains('document_not_in_conformity'),
+                    contains('document_not_readable'),
+                    contains('informations_not_matching'),
+                    contains('process_timeout'),
+                    contains('birth_date_not_matching'),
+                    contains('unreadable_document'),
+                    contains('document_not_original'),
+                    contains('reversed_first_and_last_name'),
+                    contains('document_not_fully_visible'),
+                    contains('document_not_front'),
+                    contains('partial_first_name'),
+                    contains('other')
+                )||@null@",
+                "custom_refusal_reason": "@string@||@null@"
+            }
+        }
+        """
+    Examples:
+        | email                        |
+        | luciole1989@spambox.fr       |
+        | carl999@example.fr           |
+        | gisele-berthoux@caramail.com |
+
     Scenario: I can retrieve committees list for my zone and select my new committee
         Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "VOX" with scope "jemarche_app read:profile write:profile"
         When I send a "GET" request to "/api/v3/profile/me"
