@@ -2,6 +2,7 @@
 
 namespace App\Normalizer;
 
+use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\AuthorInstanceInterface;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;
@@ -28,6 +29,8 @@ final class AuthorNormalizer implements NormalizerInterface, NormalizerAwareInte
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
+        $apiContext = $context[PrivatePublicContextBuilder::CONTEXT_KEY] ?? null;
+
         foreach (['author_role', 'author_instance', 'author_zone'] as $key) {
             if (\array_key_exists($key, $data)) {
                 if (\array_key_exists('author', $data)) {
@@ -38,6 +41,10 @@ final class AuthorNormalizer implements NormalizerInterface, NormalizerAwareInte
 
                 if (!empty($authorKey) && !empty($data[$authorKey])) {
                     $data[$authorKey][explode('_', $key, 2)[1]] = $data[$key];
+
+                    if (PrivatePublicContextBuilder::CONTEXT_PUBLIC_ANONYMOUS === $apiContext && !empty($data[$authorKey]['last_name'])) {
+                        $data[$authorKey]['last_name'] = mb_substr($data[$authorKey]['last_name'], 0, 1);
+                    }
                 }
 
                 unset($data[$key]);
