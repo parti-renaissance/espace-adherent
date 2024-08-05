@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Controller\Api\Event;
+namespace App\Controller\Api;
 
 use App\Api\DTO\ImageContent;
-use App\Entity\Event\BaseEvent;
 use App\Image\ImageManagerInterface;
 use App\Image\ImageUploadHelper;
 use App\Normalizer\ImageOwnerExposedNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +15,6 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Security("is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('CAN_MANAGE_EVENT', event)")]
 class UpdateImageController extends AbstractController
 {
     public function __construct(
@@ -29,11 +26,12 @@ class UpdateImageController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, BaseEvent $event): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
+        $object = $request->attributes->get('data');
         if ($request->isMethod(Request::METHOD_DELETE)) {
-            if ($event->hasImageName()) {
-                $this->imageManager->removeImage($event);
+            if ($object->hasImageName()) {
+                $this->imageManager->removeImage($object);
                 $this->entityManager->flush();
             }
 
@@ -49,8 +47,8 @@ class UpdateImageController extends AbstractController
             return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
-        $this->imageUploadHelper->uploadImage($event, $image);
+        $this->imageUploadHelper->uploadImage($object, $image);
 
-        return $this->json($event, Response::HTTP_OK, [], ['groups' => ['event_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]]);
+        return $this->json($object, Response::HTTP_OK, [], ['groups' => [ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]]);
     }
 }
