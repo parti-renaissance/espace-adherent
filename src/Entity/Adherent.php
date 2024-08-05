@@ -399,6 +399,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @var \DateTime|null
      */
+    #[Groups(['certification_request_read'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $certifiedAt;
 
@@ -1763,6 +1764,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         }
 
         return $this->certificationRequests;
+    }
+
+    #[Groups(['certification_request_read'])]
+    public function getLastCertificationRequest(): ?CertificationRequest
+    {
+        return $this->certificationRequests->last() ?: null;
     }
 
     public function startCertificationRequest(): CertificationRequest

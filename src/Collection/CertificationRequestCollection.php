@@ -16,7 +16,7 @@ class CertificationRequestCollection extends ArrayCollection
             ->first()
         ;
 
-        return $certificationRequest ? $certificationRequest : null;
+        return $certificationRequest ?: null;
     }
 
     public function hasPendingCertificationRequest(): bool
@@ -51,7 +51,7 @@ class CertificationRequestCollection extends ArrayCollection
             ->first()
         ;
 
-        return $certificationRequest ? $certificationRequest : null;
+        return $certificationRequest ?: null;
     }
 
     public function hasBlockedCertificationRequest(): bool
