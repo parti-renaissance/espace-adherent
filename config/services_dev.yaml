@@ -40,7 +40,7 @@ services:
       $apiClients: [ '@Tests\App\Test\Recaptcha\DummyRecaptchaApiClient' ]
 
   Tests\App\Test\Algolia\DummySearchService:
-    decorates: 'search.service'
+    decorates: 'Algolia\SearchBundle\SearchService'
     arguments: [ '@.inner' ]
 
   App\OpenGraph\OpenGraphFetcher:

@@ -268,7 +268,7 @@ services:
             $generators: !tagged_iterator 'app.adherent.scope_generator'
 
     App\Algolia\SearchService:
-        decorates: 'search.service'
+        decorates: 'Algolia\SearchBundle\SearchService'
         arguments:
             - '@App\Algolia\SearchService.inner'
             - '%kernel.debug%'

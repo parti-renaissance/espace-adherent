@@ -3,10 +3,8 @@
 namespace App\Controller\Api;
 
 use App\Api\DTO\ImageContent;
-use App\Image\ImageManagerInterface;
 use App\Image\ImageUploadHelper;
 use App\Normalizer\ImageOwnerExposedNormalizer;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,8 +19,6 @@ class UpdateImageController extends AbstractController
         private readonly ImageUploadHelper $imageUploadHelper,
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
-        private readonly ImageManagerInterface $imageManager,
-        private readonly EntityManagerInterface $entityManager
     ) {
     }
 
@@ -30,10 +26,7 @@ class UpdateImageController extends AbstractController
     {
         $object = $request->attributes->get('data');
         if ($request->isMethod(Request::METHOD_DELETE)) {
-            if ($object->hasImageName()) {
-                $this->imageManager->removeImage($object);
-                $this->entityManager->flush();
-            }
+            $this->imageUploadHelper->removeImage($object);
 
             return $this->json('OK');
         }

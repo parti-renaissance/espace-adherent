@@ -8,6 +8,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\ImageTrait;
+use App\Normalizer\ImageOwnerExposedNormalizer;
 use App\Repository\Jecoute\ResourceLinkRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -23,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\')'
         ),
     ],
-    normalizationContext: ['groups' => ['jecoute_resource_links_read', 'image_owner_exposed']],
+    normalizationContext: ['groups' => ['jecoute_resource_links_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]],
     order: ['position' => 'ASC']
 )]
 #[ORM\Entity(repositoryClass: ResourceLinkRepository::class)]

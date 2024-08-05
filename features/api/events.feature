@@ -58,6 +58,7 @@ Feature:
             "last_name": "B",
             "role": null,
             "instance": null,
+            "image_url": null,
             "zone":null
         },
         "participants_count": null,
@@ -126,6 +127,7 @@ Feature:
                     "last_name": "Picard",
                     "role": null,
                     "instance": null,
+                    "image_url": null,
                     "zone": null
                 },
                 "participants_count": 1,
@@ -173,6 +175,7 @@ Feature:
                     "last_name": "Brioul",
                     "role": null,
                     "instance": null,
+                    "image_url": null,
                     "zone": null
                 },
                 "participants_count": 0,
@@ -243,6 +246,7 @@ Feature:
                     "last_name": "Picard",
                     "role": null,
                     "instance": null,
+                    "image_url": null,
                     "zone": null
                 },
                 "participants_count": 1,
@@ -290,6 +294,7 @@ Feature:
                     "last_name": "Brioul",
                     "role": null,
                     "instance": null,
+                    "image_url": null,
                     "zone": null
                 },
                 "participants_count": 0,
@@ -337,6 +342,7 @@ Feature:
                     "last_name": "Brioul",
                     "role": null,
                     "instance": null,
+                    "image_url": null,
                     "zone": null
                 },
                 "participants_count": 0,
@@ -400,6 +406,7 @@ Feature:
                     "last_name": "Berthoux",
                     "role": null,
                     "instance": null,
+                    "image_url": null,
                     "zone": null
                 },
                 "participants_count": 2,
@@ -447,6 +454,7 @@ Feature:
                     "last_name": "Referent",
                     "role": null,
                     "instance": null,
+                    "image_url": null,
                     "zone": null
                 },
                 "participants_count": 0,
@@ -485,6 +493,7 @@ Feature:
                     "last_name": "Referent",
                     "role": null,
                     "instance": null,
+                    "image_url": null,
                     "zone": null
                 },
                 "participants_count": 0,
@@ -549,6 +558,7 @@ Feature:
                     "last_name": "Picard",
                     "role": null,
                     "instance": null,
+                    "image_url": null,
                     "zone": null
                 },
                 "participants_count": 1,
@@ -586,6 +596,7 @@ Feature:
                     "last_name": "Fa56ke",
                     "role": null,
                     "instance": null,
+                    "image_url": null,
                     "zone": null
                 },
                 "participants_count": 3,
@@ -643,6 +654,7 @@ Feature:
                     "last_name": "Brioul",
                     "role": null,
                     "instance": null,
+                    "image_url": null,
                     "zone": null
                 },
                 "participants_count": 0,
@@ -703,6 +715,7 @@ Feature:
                     "last_name": "Referent",
                     "role": null,
                     "instance": null,
+                    "image_url": null,
                     "zone": null
                 },
                 "participants_count": 0,
@@ -741,6 +754,7 @@ Feature:
                     "last_name": "Referent",
                     "role": null,
                     "instance": null,
+                    "image_url": null,
                     "zone": null
                 },
                 "participants_count": 0,
@@ -779,6 +793,7 @@ Feature:
                     "last_name": "Referent",
                     "role": null,
                     "instance": null,
+                    "image_url": null,
                     "zone": null
                 },
                 "participants_count": 0,
@@ -840,6 +855,7 @@ Feature:
             "last_name": "Picard",
             "role": null,
             "instance": null,
+            "image_url": null,
             "zone": null
         },
         "participants_count": 0,
@@ -897,6 +913,7 @@ Feature:
             "last_name": "Referent",
             "role": null,
             "instance": null,
+            "image_url": null,
             "zone": null
         },
         "participants_count": 0,
@@ -953,6 +970,7 @@ Feature:
             "last_name": "Picard",
             "role": null,
             "instance": null,
+            "image_url": null,
             "zone": null
         },
         "participants_count": 0,
@@ -1119,6 +1137,7 @@ Feature:
             "last_name": "PARIS I",
             "role": "Délégué",
             "instance": "Circonscription",
+            "image_url": null,
             "zone": "Paris (1) (75-1)"
         },
         "participants_count": 1,
@@ -1199,6 +1218,7 @@ Feature:
             "last_name": "Fa55ke",
             "role": "Responsable",
             "instance": "Comité local",
+            "image_url": null,
             "zone": "Comité des 3 communes"
         },
         "committee": {
@@ -1494,6 +1514,7 @@ Feature:
             "last_name": "Referent",
             "role": null,
             "instance": null,
+            "image_url": null,
             "zone": null
         },
         "participants_count": 0,
@@ -1845,6 +1866,7 @@ Feature:
             "last_name": "Fortin",
             "role": "@string@",
             "instance": "@string@",
+            "image_url": null,
             "zone": "@string@"
         },
         "participants_count": 1,
@@ -1913,6 +1935,7 @@ Feature:
             "uuid": "ab03c939-8f70-40a8-b2cd-d147ec7fd09e",
             "role": null,
             "instance": null,
+            "image_url": null,
             "zone": null
         },
         "participants_count": 0,
