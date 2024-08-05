@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Put;
 use App\Address\AddressInterface;
 use App\Address\PostAddressFactory;
@@ -19,6 +20,7 @@ use App\Collection\CertificationRequestCollection;
 use App\Collection\CommitteeMembershipCollection;
 use App\Collection\ZoneCollection;
 use App\Committee\CommitteeMembershipTriggerEnum;
+use App\Controller\Api\UpdateImageController;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
@@ -87,6 +89,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'elected_representative\')',
             validationContext: ['groups' => ['adherent_elect_update']]
         ),
+        new HttpOperation(
+            method: 'POST|DELETE',
+            uriTemplate: '/profile/{uuid}/image',
+            controller: UpdateImageController::class,
+            security: 'is_granted(\'ROLE_OAUTH_SCOPE_WRITE:PROFILE\') and object === user',
+            deserialize: false,
+        ),
     ],
     routePrefix: '/v3',
     normalizationContext: ['groups' => ['adherent_elect_read']],
@@ -96,7 +105,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'adherents')]
 #[UniqueEntity(fields: ['nickname'], groups: ['anonymize'])]
 #[UniqueMembership(groups: ['Admin'])]
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface, TranslatedTagInterface, EntityPostAddressInterface
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ZoneableEntity, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface, TranslatedTagInterface, EntityPostAddressInterface, ExposedImageOwnerInterface
 {
     use EntityIdentityTrait;
     use EntityPersonNameTrait;
@@ -105,6 +114,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     use EntityZoneTrait;
     use EntityUTMTrait;
     use EntityAdministratorBlameableTrait;
+    use ImageTrait;
 
     public const ENABLED = 'ENABLED';
     public const TO_DELETE = 'TO_DELETE';
@@ -2654,5 +2664,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return 6 > ($idLength = \strlen($this->id))
             ? substr($this->uuid->toString(), 0, 6 - $idLength).$this->id
             : substr($this->id, -6);
+    }
+
+    public function getImagePath(): string
+    {
+        return $this->imageName ? \sprintf('images/profile/%s', $this->getImageName()) : '';
     }
 }

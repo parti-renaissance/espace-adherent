@@ -25,7 +25,7 @@ use App\Collection\ZoneCollection;
 use App\Controller\Api\Event\CancelEventController;
 use App\Controller\Api\Event\SubscribeAsAdherentController;
 use App\Controller\Api\Event\SubscribeAsAnonymousController;
-use App\Controller\Api\Event\UpdateImageController;
+use App\Controller\Api\UpdateImageController;
 use App\Entity\AddressHolderInterface;
 use App\Entity\Adherent;
 use App\Entity\AuthorInstanceInterface;
@@ -120,9 +120,10 @@ use Symfony\Component\Validator\Constraints as Assert;
         new HttpOperation(
             method: 'POST|DELETE',
             uriTemplate: '/v3/events/{uuid}/image',
-            defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
-            controller: UpdateImageController::class
+            controller: UpdateImageController::class,
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('CAN_MANAGE_EVENT', request.attributes.get('data'))",
+            deserialize: false
         ),
         new Put(
             uriTemplate: '/v3/events/{uuid}/cancel',
