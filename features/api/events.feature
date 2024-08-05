@@ -55,7 +55,7 @@ Feature:
         "organizer": {
             "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
             "first_name": "Francis",
-            "last_name": "Brioul",
+            "last_name": "B",
             "role": null,
             "instance": null,
             "zone":null
