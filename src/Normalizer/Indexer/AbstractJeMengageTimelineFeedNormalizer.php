@@ -59,6 +59,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     final protected function getAuthor(object $object): array
     {
         return [
+            'uuid' => $this->getAuthorObject($object)?->getUuidAsString(),
             'first_name' => $this->getAuthorObject($object)?->getFirstName(),
             'last_name' => $this->getAuthorObject($object)?->getLastName(),
             'role' => $this->getAuthorRole($object),
