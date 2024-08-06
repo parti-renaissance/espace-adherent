@@ -80,12 +80,12 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class AbstractAdherentAdmin extends AbstractAdmin
+abstract class AbstractAdherentAdmin extends AbstractAdmin
 {
     use IterableCallbackDataSourceTrait;
 
-    protected $dispatcher;
-    protected $emailSubscriptionHistoryManager;
+    protected EventDispatcherInterface $dispatcher;
+    protected EmailSubscriptionHistoryHandler $emailSubscriptionHistoryManager;
     protected AdherentProfileHandler $adherentProfileHandler;
     protected LoggerInterface $logger;
     protected FranceCities $franceCities;
@@ -535,6 +535,19 @@ class AbstractAdherentAdmin extends AbstractAdmin
                         'Désactivé' => Adherent::DISABLED,
                     ],
                 ],
+            ])
+            ->add('hasProfileImage', CallbackFilter::class, [
+                'label' => 'Avec avatar',
+                'field_type' => BooleanType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    $qb->andWhere(\sprintf('%s.imageName IS %s', $alias, 1 === $value->getValue() ? 'NOT NULL' : 'NULL'));
+
+                    return true;
+                },
             ])
             ->add('search', CallbackFilter::class, [
                 'label' => 'Recherche',
