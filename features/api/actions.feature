@@ -31,8 +31,20 @@ Feature:
             "status": "scheduled",
             "created_at": "@string@.isDateTime()",
             "updated_at": "@string@.isDateTime()",
-            "user_registered_at": null,
-            "participants": [],
+            "user_registered_at": "@string@.isDateTime()",
+            "participants": [
+                {
+                    "is_present": false,
+                    "adherent": {
+                        "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
+                        "first_name": "Damien",
+                        "last_name": "Durock"
+                    },
+                    "uuid": "@uuid@",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                }
+            ],
             "description": "<p>Bonjour, voici une description</p><ul><li>élément 1</li><li>élément 2</li></ul>",
             "post_address": {
                 "address": "92 bd Victor Hugo",
@@ -89,8 +101,20 @@ Feature:
             "created_at": "@string@.isDateTime()",
             "updated_at": "@string@.isDateTime()",
             "status": "scheduled",
-            "user_registered_at": null,
-            "participants": [],
+            "user_registered_at": "@string@.isDateTime()",
+            "participants": [
+                {
+                    "is_present": false,
+                    "adherent": {
+                        "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
+                        "first_name": "Damien",
+                        "last_name": "Durock"
+                    },
+                    "uuid": "@uuid@",
+                    "created_at": "@string@.isDateTime()",
+                    "updated_at": "@string@.isDateTime()"
+                }
+            ],
             "description": "<p>Bonjour, voici une description</p><ul><li>élément 1</li><li>élément 2</li></ul>",
             "post_address": {
                 "address": "92 bd Victor Hugo",
@@ -130,6 +154,9 @@ Feature:
             "editable": true
         }
         """
+        When I send a "DELETE" request to "/api/v3/actions/:last_response.uuid:/register"
+        Then the response status code should be 400
+        And the JSON node "message" should be equal to "Vous ne pouvez pas vous désinscrire d'une action que vous avez créé."
 
     Scenario: As a logged-in VOX user I can get actions around me
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"

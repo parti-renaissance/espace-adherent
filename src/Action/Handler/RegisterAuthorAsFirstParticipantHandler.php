@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Action\Handler;
+
+use App\Action\RegisterManager;
+use App\Entity\Action\Action;
+use App\JeMarche\Command\NotifyForActionCommand;
+use App\Repository\Action\ActionRepository;
+use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+
+class RegisterAuthorAsFirstParticipantHandler implements MessageHandlerInterface
+{
+    public function __construct(
+        private readonly RegisterManager $registerManager,
+        private readonly ActionRepository $actionRepository
+    ) {
+    }
+
+    public function __invoke(NotifyForActionCommand $command): void
+    {
+        if (NotifyForActionCommand::EVENT_CREATE !== $command->event) {
+            return;
+        }
+
+        /** @var Action $action */
+        if (
+            (!$action = $this->actionRepository->findOneByUuid($command->getUuid()))
+            || !$action->getAuthor()
+        ) {
+            return;
+        }
+
+        $this->registerManager->register($action, $action->getAuthor());
+    }
+}
