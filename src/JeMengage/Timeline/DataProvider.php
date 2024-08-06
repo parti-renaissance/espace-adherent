@@ -2,7 +2,7 @@
 
 namespace App\JeMengage\Timeline;
 
-use App\Algolia\SearchService;
+use Algolia\SearchBundle\SearchService;
 use App\Entity\Adherent;
 use App\Entity\Algolia\AlgoliaJeMengageTimelineFeed;
 use App\JeMengage\Timeline\FeedProcessor\FeedProcessorInterface;

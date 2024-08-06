@@ -27,6 +27,7 @@ use App\Entity\IndexableEntityInterface;
 use App\Entity\ZoneableEntity;
 use App\EntityListener\AlgoliaIndexListener;
 use App\Geocoder\GeoPointInterface;
+use App\Normalizer\ImageOwnerExposedNormalizer;
 use App\Repository\Action\ActionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -40,7 +41,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(filterClass: DateFilter::class, properties: ['date'])]
 #[ApiResource(
     operations: [
-        new Get(uriTemplate: '/v3/actions/{uuid}'),
+        new Get(
+            uriTemplate: '/v3/actions/{uuid}',
+            normalizationContext: ['groups' => ['action_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]],
+        ),
         new Put(
             uriTemplate: '/v3/actions/{uuid}',
             security: 'object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'actions\')'
@@ -60,7 +64,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new GetCollection(
             uriTemplate: '/v3/actions',
-            normalizationContext: ['groups' => ['action_read_list']]
+            normalizationContext: ['groups' => ['action_read_list', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]]
         ),
         new Post(uriTemplate: '/v3/actions'),
     ],

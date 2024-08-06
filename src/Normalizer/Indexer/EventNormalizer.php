@@ -8,10 +8,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
 {
-    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
-    {
-    }
-
     protected function getClassName(): string
     {
         return BaseEvent::class;

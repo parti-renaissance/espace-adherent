@@ -50,6 +50,7 @@ use App\Event\UniqueEventNameHandler;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Geocoder\GeoPointInterface;
+use App\Normalizer\ImageOwnerExposedNormalizer;
 use App\Report\ReportType;
 use App\Repository\Event\BaseEventRepository;
 use App\Validator\AdherentInterests as AdherentInterestsConstraint;
@@ -87,7 +88,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/v3/events/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            normalizationContext: ['groups' => ['event_read', 'image_owner_exposed']]
         ),
         new Get(
             uriTemplate: '/events/{uuid}',
@@ -133,11 +133,11 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new GetCollection(
             uriTemplate: '/v3/events',
-            normalizationContext: ['groups' => ['event_list_read', 'image_owner_exposed']]
+            normalizationContext: ['groups' => ['event_list_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]]
         ),
         new GetCollection(
             uriTemplate: '/events',
-            normalizationContext: ['groups' => ['event_list_read', 'image_owner_exposed']]
+            normalizationContext: ['groups' => ['event_list_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]]
         ),
         new Post(
             uriTemplate: '/v3/events',
@@ -146,7 +146,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             validationContext: ['groups' => ['Default', 'api_put_validation', 'event_creation']]
         ),
     ],
-    normalizationContext: ['groups' => ['event_read', 'image_owner_exposed']],
+    normalizationContext: ['groups' => ['event_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]],
     denormalizationContext: ['groups' => ['event_write']],
     order: ['beginAt' => 'ASC']
 )]

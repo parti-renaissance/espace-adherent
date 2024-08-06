@@ -2,6 +2,7 @@
 
 namespace Tests\App\Command;
 
+use Algolia\SearchBundle\SearchService;
 use App\Entity\ChezVous\City;
 use App\Entity\CustomSearchResult;
 use App\Entity\Proposal;
@@ -23,7 +24,7 @@ class AlgoliaSynchronizeCommandTest extends AbstractCommandTestCase
 
         $this->assertStringContainsString('Done!', $output->getDisplay());
 
-        $indexer = $this->get('search.service');
+        $indexer = $this->get(SearchService::class);
         self::assertSame($expected, $indexer->countForIndexByType($className));
     }
 

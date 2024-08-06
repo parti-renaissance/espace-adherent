@@ -7,9 +7,14 @@ use App\Entity\AuthorInstanceInterface;
 use App\Entity\Geo\Zone;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNormalizer
 {
+    public function __construct(protected readonly UrlGeneratorInterface $urlGenerator)
+    {
+    }
+
     final public function normalize($object, $format = null, array $context = [])
     {
         return [
@@ -59,6 +64,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'role' => $this->getAuthorRole($object),
             'instance' => $this->getAuthorInstance($object),
             'zone' => $this->getAuthorZone($object),
+            'image_url' => $this->getAuthorImageUrl($object),
         ];
     }
 
@@ -177,6 +183,22 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
         }
 
         return null;
+    }
+
+    /** @param Adherent $object */
+    protected function getAuthorImageUrl(object $object): ?string
+    {
+        if (!$object instanceof AuthorInstanceInterface) {
+            return null;
+        }
+
+        $author = $object->getAuthor();
+
+        return $author->getImageName() ? $this->urlGenerator->generate(
+            'asset_url',
+            ['path' => $author->getImagePath()],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        ) : null;
     }
 
     final protected function buildZoneCodes(?Zone $zone): ?array

@@ -15,33 +15,31 @@ class ImageOwnerExposedNormalizer implements NormalizerInterface, NormalizerAwar
     public const NORMALIZATION_GROUP = 'image_owner_exposed';
     private const ALREADY_CALLED = 'IMAGE_OWNER_EXPOSED_NORMALIZER_ALREADY_CALLED';
 
-    private $urlGenerator;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
     {
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
+        $context[self::ALREADY_CALLED.$object::class] = true;
 
         /** @var ExposedImageOwnerInterface $object */
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        if (\in_array(self::NORMALIZATION_GROUP, $context['groups'] ?? [])) {
-            $data['image_url'] = $object->getImageName() ? $this->urlGenerator->generate(
-                'asset_url',
-                ['path' => $object->getImagePath()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ) : null;
-        }
+        $data['image_url'] = $object->getImageName() ? $this->urlGenerator->generate(
+            'asset_url',
+            ['path' => $object->getImagePath()],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        ) : null;
 
         return $data;
     }
 
     public function supportsNormalization($data, $format = null, array $context = [])
     {
-        return !isset($context[self::ALREADY_CALLED]) && $data instanceof ExposedImageOwnerInterface;
+        return
+            \in_array(self::NORMALIZATION_GROUP, $context['groups'] ?? [])
+            && $data instanceof ExposedImageOwnerInterface
+            && !isset($context[self::ALREADY_CALLED.$data::class]);
     }
 }
