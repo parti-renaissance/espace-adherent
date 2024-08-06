@@ -1,23 +1,33 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {% if admin.hasAccess('edit') %}
-        <a href="{{ admin.generateObjectUrl('edit', object) }}" class="sonata-link-identifier">
-            {{ object.fullName }}
-        </a>
-    {% else %}
-        {{ object.fullName }}
-    {% endif %}
+    <div class="row" style="display: flex;">
+        <div class="avatar" style="background-image: url('{{ object.hasImageName() ? path('asset_url', {path: object.getImagePath()}) }}')">
+            {% if not object.hasImageName() %}
+                <div>{{ object.initials }}</div>
+            {% endif %}
+        </div>
 
-    {% if object.isCertified %}
-        {% include('components/_certification_logo.html.twig') %}
-    {% endif %}
+        <div style="margin-left: 10px">
+            {% if admin.hasAccess('edit') %}
+                <a href="{{ admin.generateObjectUrl('edit', object) }}" class="sonata-link-identifier">
+                    {{ object.fullName }}
+                </a>
+            {% else %}
+                {{ object.fullName }}
+            {% endif %}
 
-    <br>
-    {{ object.emailAddress }}
+            {% if object.isCertified %}
+                {% include('components/_certification_logo.html.twig') %}
+            {% endif %}
 
-    {% if object.phone %}
-        <br>
-        {{ object.phone|phone_number_format }}
-    {% endif %}
+            <br>
+            {{ object.emailAddress }}
+
+            {% if object.phone %}
+                <br>
+                {{ object.phone|phone_number_format }}
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
