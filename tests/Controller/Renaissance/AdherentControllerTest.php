@@ -96,7 +96,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
                 'firstName' => '',
                 'lastName' => '',
                 'nationality' => '',
-                'address' => [
+                'post_address' => [
                     'address' => '',
                     'country' => 'FR',
                     'postalCode' => '',
@@ -130,7 +130,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
                 'firstName' => 'Jean',
                 'lastName' => 'Dupont',
                 'nationality' => 'FR',
-                'address' => [
+                'post_address' => [
                     'address' => 'Une adresse de 150 caractères, ça peut arriver.Une adresse de 150 caractères, ça peut arriver.Une adresse de 150 caractères, ça peut arriver.Oui oui oui.',
                     'country' => 'FR',
                     'postalCode' => '0600000000000000',
@@ -161,7 +161,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
                 'gender' => 'female',
                 'firstName' => 'Jean',
                 'lastName' => 'Dupont',
-                'address' => [
+                'post_address' => [
                     'address' => '9 rue du Lycée',
                     'country' => 'FR',
                     'postalCode' => '06000',
