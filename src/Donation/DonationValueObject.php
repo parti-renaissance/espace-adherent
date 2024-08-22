@@ -2,6 +2,7 @@
 
 namespace App\Donation;
 
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 
@@ -13,7 +14,8 @@ class DonationValueObject
         private string $type,
         private bool $subscription,
         private bool $membership,
-        private string $status
+        private string $status,
+        private UuidInterface $uuid
     ) {
     }
 
@@ -52,5 +54,11 @@ class DonationValueObject
     public function getStatus(): string
     {
         return $this->status;
+    }
+
+    #[Groups(['donation_read'])]
+    public function getUuid(): string
+    {
+        return $this->uuid;
     }
 }

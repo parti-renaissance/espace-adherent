@@ -5,6 +5,7 @@ namespace App\Donation;
 use App\Entity\Adherent;
 use App\Repository\DonationRepository;
 use App\Repository\TransactionRepository;
+use Ramsey\Uuid\UuidInterface;
 
 class DonationManager
 {
@@ -28,7 +29,8 @@ class DonationManager
                 $donation->getType(),
                 $donation->isSubscription(),
                 $donation->isMembership(),
-                $donation->getStatus()
+                $donation->getStatus(),
+                $donation->getUuid()
             );
         }
 
@@ -40,7 +42,8 @@ class DonationManager
                 $donation->getType(),
                 $donation->isSubscription(),
                 $donation->isMembership(),
-                $donation->getStatus()
+                $donation->getStatus(),
+                $donation->getUuid()
             );
         }
 
@@ -57,8 +60,9 @@ class DonationManager
         string $type,
         bool $isSubscription,
         bool $isMembership,
-        string $status
+        string $status,
+        UuidInterface $uuid
     ): DonationValueObject {
-        return new DonationValueObject($date, $amount, $type, $isSubscription, $isMembership, $status);
+        return new DonationValueObject($date, $amount, $type, $isSubscription, $isMembership, $status, $uuid);
     }
 }
