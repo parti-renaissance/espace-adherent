@@ -60,7 +60,7 @@ class AdherentProfileType extends AbstractType
                     'required' => false,
                     'disabled' => $options['disabled_form'],
                 ])
-                ->add('address', AddressType::class, [
+                ->add('postAddress', AddressType::class, [
                     'label' => false,
                     'child_error_bubbling' => false,
                 ])

@@ -80,9 +80,9 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
         self::assertSame('female', $crawler->filter(\sprintf($optionPattern, 'gender'))->attr('value'));
         self::assertSame('Laure', $crawler->filter(\sprintf($inputPattern, 'firstName'))->attr('value'));
         self::assertSame('Fenix', $crawler->filter(\sprintf($inputPattern, 'lastName'))->attr('value'));
-        self::assertSame('2 avenue Jean Jaurès', $crawler->filter(\sprintf($inputPattern, 'address][address'))->attr('value'));
-        self::assertSame('77000', $crawler->filter(\sprintf($inputPattern, 'address][postalCode'))->attr('value'));
-        self::assertSame('France', $crawler->filter(\sprintf($optionPattern, 'address][country'))->text());
+        self::assertSame('2 avenue Jean Jaurès', $crawler->filter(\sprintf($inputPattern, 'postAddress][address'))->attr('value'));
+        self::assertSame('77000', $crawler->filter(\sprintf($inputPattern, 'postAddress][postalCode'))->attr('value'));
+        self::assertSame('France', $crawler->filter(\sprintf($optionPattern, 'postAddress][country'))->text());
         self::assertSame(null, $crawler->filter(\sprintf($inputPattern, 'phone][number'))->attr('value'));
         self::assertSame('En activité', $crawler->filter(\sprintf($optionPattern, 'position'))->text());
         self::assertSame('1942-01-10', $crawler->filter(\sprintf($inputPattern, 'birthdate'))->attr('value'));
@@ -96,7 +96,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
                 'firstName' => '',
                 'lastName' => '',
                 'nationality' => '',
-                'post_address' => [
+                'postAddress' => [
                     'address' => '',
                     'country' => 'FR',
                     'postalCode' => '',
@@ -130,7 +130,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
                 'firstName' => 'Jean',
                 'lastName' => 'Dupont',
                 'nationality' => 'FR',
-                'post_address' => [
+                'postAddress' => [
                     'address' => 'Une adresse de 150 caractères, ça peut arriver.Une adresse de 150 caractères, ça peut arriver.Une adresse de 150 caractères, ça peut arriver.Oui oui oui.',
                     'country' => 'FR',
                     'postalCode' => '0600000000000000',
@@ -161,7 +161,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
                 'gender' => 'female',
                 'firstName' => 'Jean',
                 'lastName' => 'Dupont',
-                'post_address' => [
+                'postAddress' => [
                     'address' => '9 rue du Lycée',
                     'country' => 'FR',
                     'postalCode' => '06000',

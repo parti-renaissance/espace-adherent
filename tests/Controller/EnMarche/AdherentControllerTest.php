@@ -178,10 +178,10 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         self::assertSame('male', $crawler->filter(\sprintf($optionPattern, 'gender'))->attr('value'));
         self::assertSame('Carl', $crawler->filter(\sprintf($inputPattern, 'firstName'))->attr('value'));
         self::assertSame('Mirabeau', $crawler->filter(\sprintf($inputPattern, 'lastName'))->attr('value'));
-        self::assertSame('826 avenue du lys', $crawler->filter(\sprintf($inputPattern, 'address][address'))->attr('value'));
-        self::assertSame('77190', $crawler->filter(\sprintf($inputPattern, 'address][postalCode'))->attr('value'));
-        self::assertSame('77190-77152', $crawler->filter(\sprintf($inputPattern, 'address][city'))->attr('value'));
-        self::assertSame('France', $crawler->filter(\sprintf($optionPattern, 'address][country'))->text());
+        self::assertSame('826 avenue du lys', $crawler->filter(\sprintf($inputPattern, 'postAddress][address'))->attr('value'));
+        self::assertSame('77190', $crawler->filter(\sprintf($inputPattern, 'postAddress][postalCode'))->attr('value'));
+        self::assertSame('77190-77152', $crawler->filter(\sprintf($inputPattern, 'postAddress][city'))->attr('value'));
+        self::assertSame('France', $crawler->filter(\sprintf($optionPattern, 'postAddress][country'))->text());
         self::assertSame('01 11 22 33 44', $crawler->filter(\sprintf($inputPattern, 'phone][number'))->attr('value'));
         self::assertSame('Retraité', $crawler->filter(\sprintf($optionPattern, 'position'))->text());
         self::assertSame('1950-07-08', $crawler->filter(\sprintf($inputPattern, 'birthdate'))->attr('value'));
@@ -194,7 +194,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
                 'firstName' => '',
                 'lastName' => '',
                 'nationality' => '',
-                'address' => [
+                'postAddress' => [
                     'address' => '',
                     'country' => 'FR',
                     'postalCode' => '',
@@ -228,7 +228,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
                 'firstName' => 'Jean',
                 'lastName' => 'Dupont',
                 'nationality' => 'FR',
-                'address' => [
+                'postAddress' => [
                     'address' => 'Une adresse de 150 caractères, ça peut arriver.Une adresse de 150 caractères, ça peut arriver.Une adresse de 150 caractères, ça peut arriver.Oui oui oui.',
                     'country' => 'FR',
                     'postalCode' => '0600000000000000',
@@ -259,7 +259,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
                 'gender' => 'female',
                 'firstName' => 'Jean',
                 'lastName' => 'Dupont',
-                'address' => [
+                'postAddress' => [
                     'address' => '9 rue du Lycée',
                     'country' => 'FR',
                     'postalCode' => '06000',
