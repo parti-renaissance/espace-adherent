@@ -111,7 +111,8 @@ use Symfony\Component\Validator\Constraints as Assert;
             controller: SubscribeAsAdherentController::class,
             security: 'is_granted(\'ROLE_USER\')'
         ),
-        new Post(
+        new HttpOperation(
+            method: 'POST|DELETE',
             uriTemplate: '/events/{uuid}/subscribe',
             defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
