@@ -56,7 +56,7 @@ class AdherentProfile implements MembershipInterface
      */
     #[Assert\Valid]
     #[Groups(['profile_write'])]
-    private $address;
+    private $postAddress;
 
     /**
      * @var string|null
@@ -166,7 +166,7 @@ class AdherentProfile implements MembershipInterface
 
     public function __construct()
     {
-        $this->address = new Address();
+        $this->postAddress = new Address();
     }
 
     public static function createFromAdherent(Adherent $adherent): self
@@ -178,7 +178,7 @@ class AdherentProfile implements MembershipInterface
         $dto->lastName = $adherent->getLastName();
         $dto->birthdate = $adherent->getBirthdate();
         $dto->position = $adherent->getPosition();
-        $dto->address = Address::createFromAddress($adherent->getPostAddress());
+        $dto->postAddress = Address::createFromAddress($adherent->getPostAddress());
         $dto->phone = $adherent->getPhone();
         $dto->emailAddress = $adherent->getEmailAddress();
         $dto->nationality = $adherent->getNationality();
@@ -246,14 +246,14 @@ class AdherentProfile implements MembershipInterface
         $this->lastName = $lastName;
     }
 
-    public function setAddress(Address $address): void
+    public function setPostAddress(Address $postAddress): void
     {
-        $this->address = $address;
+        $this->postAddress = $postAddress;
     }
 
-    public function getAddress(): Address
+    public function getPostAddress(): Address
     {
-        return $this->address;
+        return $this->postAddress;
     }
 
     public function setEmailAddress(string $emailAddress): void

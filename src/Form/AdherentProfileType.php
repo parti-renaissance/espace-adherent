@@ -21,7 +21,7 @@ class AdherentProfileType extends AbstractType
     {
         $adherent = $builder->getData();
 
-        $countryCode = $adherent ? $adherent->getAddress()->getCountry() : null;
+        $countryCode = $adherent ? $adherent->getPostAddress()->getCountry() : null;
 
         $builder
             ->add('firstName', TextType::class, [
@@ -49,7 +49,7 @@ class AdherentProfileType extends AbstractType
 
         if ($options['is_renaissance']) {
             $builder
-                ->add('address', AutocompleteAddressType::class, [
+                ->add('postAddress', AutocompleteAddressType::class, [
                     'with_additional_address' => true,
                     'validation_groups' => ['fill_personal_info'],
                 ])
@@ -60,7 +60,7 @@ class AdherentProfileType extends AbstractType
                     'required' => false,
                     'disabled' => $options['disabled_form'],
                 ])
-                ->add('address', AddressType::class, [
+                ->add('postAddress', AddressType::class, [
                     'label' => false,
                     'child_error_bubbling' => false,
                 ])

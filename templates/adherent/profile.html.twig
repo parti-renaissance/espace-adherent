@@ -26,7 +26,7 @@
         Kernel.onLoad(function() {
             App.runProfileUpdatePage();
 
-            {{ js.address(form.address) }}
+            {{ js.address(form.postAddress) }}
             $('.select2').select2({theme: 'default em-form'});
         });
     </script>
@@ -72,23 +72,23 @@
 
             <div class="em-form__row">
                 <div class="em-form__group">
-                    {{ form_label(form.address.address, 'Adresse') }}
+                    {{ form_label(form.postAddress.address, 'Adresse') }}
                     <div class="em-form__group b__nudge--none" style="margin: 0;">
-                    {{ form_widget(form.address.address) }}
+                    {{ form_widget(form.postAddress.address) }}
                     </div>
-                    {{ form_errors(form.address.address) }}
+                    {{ form_errors(form.postAddress.address) }}
                     <div class="address-autocomplete"></div>
                 </div>
 
-                {{ form_row(form.address.postalCode, {label: 'Code postal'}) }}
+                {{ form_row(form.postAddress.postalCode, {label: 'Code postal'}) }}
             </div>
             <div class="em-form__row">
-                {{ form_row(form.address.cityName, {label: 'Ville'}) }}
-                {{ form_row(form.address.city) }}
-                {{ form_row(form.address.country, {label: 'Pays'}) }}
+                {{ form_row(form.postAddress.cityName, {label: 'Ville'}) }}
+                {{ form_row(form.postAddress.city) }}
+                {{ form_row(form.postAddress.country, {label: 'Pays'}) }}
             </div>
             <div class="em-form__group">
-                {{ form_errors(form.address) }}
+                {{ form_errors(form.postAddress) }}
             </div>
             {{ form_row(form.emailAddress, {half: true, label: 'Adresse email'}) }}
             <div class="em-form__row">

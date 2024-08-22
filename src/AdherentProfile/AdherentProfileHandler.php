@@ -39,7 +39,7 @@ class AdherentProfileHandler
             $this->emailHandler->handleRequest($adherent, $adherentProfile->getEmailAddress());
         }
 
-        $adherent->updateProfile($adherentProfile, $this->addressFactory->createFromAddress($adherentProfile->getAddress()));
+        $adherent->updateProfile($adherentProfile, $this->addressFactory->createFromAddress($adherentProfile->getPostAddress()));
 
         $this->updateReferentTagsAndSubscriptionHistoryIfNeeded($adherent);
 

@@ -84,7 +84,7 @@ Feature:
     When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
     """
     {
-      "address": {
+      "post_address": {
           "address": "10 rue inconnue",
           "postal_code": "12345",
           "city_name": "Ville inconnue",
@@ -99,11 +99,11 @@ Feature:
     {
       "violations": [
         {
-          "propertyPath": "address",
+          "propertyPath": "post_address",
           "message": "Cette valeur n'est pas un code postal français valide."
         },
         {
-          "propertyPath": "address",
+          "propertyPath": "post_address",
           "message": "Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte."
         }
       ]
@@ -112,7 +112,7 @@ Feature:
     When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
     """
     {
-      "address": {
+      "post_address": {
           "address": "50 rue de la villette",
           "postal_code": "69003",
           "city_name": "Lyon 3ème",
@@ -132,6 +132,35 @@ Feature:
           "postal_code": "69003",
           "city": "69003-69383",
           "city_name": "Lyon 3ème",
+          "country": "FR"
+      }
+    }
+    """
+
+    # Address property backward compatibility
+    When I send a "PUT" request to "/api/v3/profile/e6977a4d-2646-5f6c-9c82-88e58dca8458" with body:
+    """
+    {
+      "address": {
+          "address": "92 bld victor hugo",
+          "postal_code": "92110",
+          "city_name": "Clichy",
+          "country": "FR"
+      }
+    }
+    """
+    Then the response status code should be 200
+    Then I send a "GET" request to "/api/v3/profile/me"
+    Then the response status code should be 200
+    And the response should be in JSON
+    And the JSON should be a superset of:
+    """
+    {
+      "post_address": {
+          "address": "92 bld victor hugo",
+          "postal_code": "92110",
+          "city": "92110-92024",
+          "city_name": "Clichy",
           "country": "FR"
       }
     }
