@@ -1,5 +1,6 @@
 @api
 @renaissance
+@debug
 Feature:
   As a logged-in user
   I should be able to retrieve and edit my profile information
@@ -1043,6 +1044,7 @@ Feature:
     """
     [
         {
+            "uuid": "@uuid@",
             "date": "@string@.isDateTime()",
             "type": "@string@.oneOf(
                 contains('cb'),
@@ -1069,6 +1071,7 @@ Feature:
     """
     [
         {
+            "uuid": "@uuid@",
             "date": "@string@.isDateTime()",
             "type": "cb",
             "subscription": false,
@@ -1077,6 +1080,7 @@ Feature:
             "amount": 30
         },
         {
+            "uuid": "@uuid@",
             "date": "@string@.isDateTime()",
             "type": "cb",
             "subscription": false,
@@ -1085,6 +1089,7 @@ Feature:
             "amount": 30
         },
         {
+            "uuid": "@uuid@",
             "date": "@string@.isDateTime()",
             "type": "cb",
             "subscription": true,
@@ -1093,6 +1098,7 @@ Feature:
             "amount": 42
         },
         {
+            "uuid": "@uuid@",
             "date": "@string@.isDateTime()",
             "type": "cb",
             "subscription": false,
@@ -1101,6 +1107,7 @@ Feature:
             "amount": 50
         },
         {
+            "uuid": "@uuid@",
             "date": "@string@.isDateTime()",
             "type": "check",
             "subscription": false,
