@@ -27,7 +27,7 @@ class ScopesType extends AbstractType
             ]);
         }
 
-        $builder->addModelTransformer(new class() implements DataTransformerInterface {
+        $builder->addModelTransformer(new class implements DataTransformerInterface {
             public function transform($value)
             {
                 if (!$value) {
