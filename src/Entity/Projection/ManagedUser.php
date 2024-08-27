@@ -10,8 +10,11 @@ use App\Adherent\Tag\TranslatedTagInterface;
 use App\Collection\ZoneCollection;
 use App\Controller\Api\AdherentList\AdherentListController;
 use App\Entity\EntityZoneTrait;
+use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\Geo\Zone;
+use App\Entity\ImageTrait;
 use App\Membership\MembershipSourceEnum;
+use App\Normalizer\ImageOwnerExposedNormalizer;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
 use App\Repository\Projection\ManagedUserRepository;
 use App\Subscription\SubscriptionTypeEnum;
@@ -33,7 +36,10 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
         new Get(
             uriTemplate: '/v3/adherents/{adherentUuid}',
             requirements: ['adherentUuid' => '%pattern_uuid%'],
-            normalizationContext: ['enable_tag_translator' => true, 'groups' => ['managed_user_read']]
+            normalizationContext: [
+                'enable_tag_translator' => true,
+                'groups' => ['managed_user_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP],
+            ],
         ),
         new GetCollection(
             uriTemplate: '/v3/adherents.{format}',
@@ -49,9 +55,10 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
 #[ORM\Index(columns: ['original_id'])]
 #[ORM\Index(columns: ['zones_ids'])]
 #[ORM\Table(name: 'projection_managed_users')]
-class ManagedUser implements TranslatedTagInterface
+class ManagedUser implements TranslatedTagInterface, ExposedImageOwnerInterface
 {
     use EntityZoneTrait;
+    use ImageTrait;
 
     public const STATUS_READY = 1;
 
@@ -703,5 +710,10 @@ class ManagedUser implements TranslatedTagInterface
     public function getCampusRegisteredAt(): ?\DateTime
     {
         return $this->campusRegisteredAt;
+    }
+
+    public function getImagePath(): string
+    {
+        return $this->imageName ? \sprintf('images/profile/%s', $this->getImageName()) : '';
     }
 }
