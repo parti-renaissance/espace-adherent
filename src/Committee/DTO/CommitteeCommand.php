@@ -13,10 +13,8 @@ use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertUniqueCommittee
- * @AssertApprovedCommitteeAddress(groups="edit")
- */
+#[AssertApprovedCommitteeAddress(groups: ['edit'])]
+#[AssertUniqueCommittee]
 class CommitteeCommand
 {
     /** @var Committee */
@@ -38,9 +36,7 @@ class CommitteeCommand
     #[Assert\Valid]
     protected $address;
 
-    /**
-     * @AssertPhoneNumber
-     */
+    #[AssertPhoneNumber]
     #[Assert\Expression(expression: "(value == null and this.getCommittee()) or (value != '' and value != null)", message: 'common.phone_number.required', groups: ['created_by_adherent'])]
     protected $phone;
 
@@ -54,16 +50,14 @@ class CommitteeCommand
 
     /**
      * @var Adherent|null
-     *
-     * @AssertCommitteeProvisionalSupervisorValid(gender="male", errorPath="provisionalSupervisorMale", groups={"with_provisional_supervisors"})
      */
+    #[AssertCommitteeProvisionalSupervisorValid(errorPath: 'provisionalSupervisorMale', gender: 'male', groups: ['with_provisional_supervisors'])]
     protected $provisionalSupervisorMale;
 
     /**
      * @var Adherent|null
-     *
-     * @AssertCommitteeProvisionalSupervisorValid(gender="female", errorPath="provisionalSupervisorFemale", groups={"with_provisional_supervisors"})
      */
+    #[AssertCommitteeProvisionalSupervisorValid(errorPath: 'provisionalSupervisorFemale', gender: 'female', groups: ['with_provisional_supervisors'])]
     #[Assert\Expression(expression: '(value == null and this.getProvisionalSupervisorMale() != null) or value != null', message: 'committee.provisional_supervisor.empty', groups: ['with_provisional_supervisors'])]
     protected $provisionalSupervisorFemale;
 

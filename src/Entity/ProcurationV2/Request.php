@@ -31,10 +31,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ManualAssociations
- * @ExcludedAssociations
- */
 #[ApiFilter(filterClass: OrderFilter::class, properties: ['createdAt'])]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['status' => 'exact'])]
 #[ApiFilter(filterClass: OrTextSearchFilter::class, properties: ['firstNames' => 'lastName', 'lastName' => 'firstNames', 'email' => 'email', 'voteZone.name' => 'voteZone.name', 'votePlace.name' => 'votePlace.name'])]
@@ -80,6 +76,8 @@ use Symfony\Component\Validator\Constraints as Assert;
     paginationMaximumItemsPerPage: 100,
     security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'procurations\')'
 )]
+#[ExcludedAssociations]
+#[ManualAssociations]
 #[ORM\Entity(repositoryClass: RequestRepository::class)]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Index(columns: ['created_at'])]

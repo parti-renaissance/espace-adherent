@@ -11,9 +11,7 @@ use App\Validator\StrictEmail;
 use App\ValueObject\Genders;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertRecaptcha(api="friendly_captcha")
- */
+#[AssertRecaptcha]
 class DonationRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
@@ -22,10 +20,8 @@ class DonationRequest implements RecaptchaChallengeInterface
     #[Assert\Range(min: 10, max: 4600)]
     public ?int $amount = null;
 
-    /**
-     * @StrictEmail(dnsCheck=false)
-     */
     #[Assert\NotBlank]
+    #[StrictEmail(dnsCheck: false)]
     public ?string $email = null;
 
     #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.invalid_choice')]

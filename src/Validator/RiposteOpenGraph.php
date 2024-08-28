@@ -4,10 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- */
+#[\Attribute]
 class RiposteOpenGraph extends Constraint
 {
     public $message = 'riposte.open_graph.can_not_fetch';

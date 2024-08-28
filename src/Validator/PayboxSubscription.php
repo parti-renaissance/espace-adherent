@@ -4,9 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class PayboxSubscription extends Constraint
 {
     public $message = 'La période de donation est incorrecte';

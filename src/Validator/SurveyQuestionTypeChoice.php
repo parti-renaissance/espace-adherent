@@ -4,10 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- */
+#[\Attribute]
 class SurveyQuestionTypeChoice extends Constraint
 {
     public $choiceMessage = 'survey.question.choice.invalid';

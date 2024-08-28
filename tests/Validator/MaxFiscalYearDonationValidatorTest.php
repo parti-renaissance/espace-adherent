@@ -45,7 +45,7 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
         $this->validator = $this->createCustomValidatorSuccess($totalCurrentAmount);
         $this->validator->initialize($this->context);
 
-        $this->validator->validate($donationRequest, new MaxFiscalYearDonation(['maxDonationInCents' => $maxDonation]));
+        $this->validator->validate($donationRequest, new MaxFiscalYearDonation($maxDonation));
 
         $this->assertNoViolation();
     }
@@ -85,7 +85,7 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
         $this->validator = $this->createCustomValidatorSuccess($totalCurrentAmount);
         $this->validator->initialize($this->context);
 
-        $this->validator->validate($donationRequest, new MaxFiscalYearDonation(['maxDonationInCents' => $maxDonation]));
+        $this->validator->validate($donationRequest, new MaxFiscalYearDonation($maxDonation));
 
         $this
             ->buildViolation('donation.max_fiscal_year_donation')

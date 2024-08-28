@@ -16,13 +16,11 @@ class Invitation
     #[Assert\Type('string')]
     public $lastName = '';
 
-    /**
-     * @Assert\All({
-     *     @Assert\Email(message="common.email.invalid"),
-     *     @Assert\NotBlank,
-     *     @Assert\Length(max=255, maxMessage="common.email.max_length")
-     * })
-     */
+    #[Assert\All([
+        new Assert\Email(message: 'common.email.invalid'),
+        new Assert\NotBlank(),
+        new Assert\Length(max: 255, maxMessage: 'common.email.max_length'),
+    ])]
     #[Assert\Count(min: 1, minMessage: 'newsletter.guests.min')]
     #[Assert\Type('array')]
     public $guests = [];

@@ -39,9 +39,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @SurveyScopeTarget
- */
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial'])]
 #[ApiFilter(filterClass: BooleanFilter::class, properties: ['published'])]
 #[ApiFilter(filterClass: SurveyTypeFilter::class)]
@@ -88,6 +85,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: 'jecoute_survey')]
+#[SurveyScopeTarget]
 abstract class Survey implements IndexableEntityInterface, EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, DynamicLinkObjectInterface, EntityScopeVisibilityInterface
 {
     use EntityIdentityTrait;

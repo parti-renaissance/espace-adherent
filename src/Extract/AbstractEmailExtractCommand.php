@@ -10,11 +10,10 @@ abstract class AbstractEmailExtractCommand
 
     /**
      * @var string[]|array
-     *
-     * @Assert\All({
-     *     @Assert\Email(message="{{ value }} n'est pas une adresse email valide.")
-     * })
      */
+    #[Assert\All([
+        new Assert\Email(message: '{{ value }} n\'est pas une adresse email valide.'),
+    ])]
     #[Assert\NotBlank]
     private $emails = [];
 

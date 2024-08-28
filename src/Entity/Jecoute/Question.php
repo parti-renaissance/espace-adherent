@@ -14,14 +14,12 @@ use Doctrine\ORM\Mapping\InheritanceType;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @SurveyQuestionTypeChoice
- */
 #[DiscriminatorColumn(name: 'discr', type: 'string')]
 #[DiscriminatorMap(['question' => Question::class, 'suggested_question' => SuggestedQuestion::class])]
 #[InheritanceType('JOINED')]
 #[ORM\Entity]
 #[ORM\Table(name: 'jecoute_question')]
+#[SurveyQuestionTypeChoice]
 class Question
 {
     #[ORM\Column(type: 'integer')]

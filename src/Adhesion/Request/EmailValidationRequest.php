@@ -5,24 +5,20 @@ namespace App\Adhesion\Request;
 use App\Procuration\V2\InitialRequestTypeEnum;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
-use App\Validator\Recaptcha;
+use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\StrictEmail;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Recaptcha(api="friendly_captcha", groups={"adhesion-email:persist"})
- */
+#[AssertRecaptcha(groups: ['adhesion-email:persist'])]
 class EmailValidationRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
 
-    /**
-     * @StrictEmail(captainVerifyCheck=true, groups={"Default"})
-     * @StrictEmail(dnsCheck=false, groups={"adhesion-email:persist", "procuration-email:persist", "bde-email:persist"})
-     */
-    #[Assert\NotBlank(groups: ['Default', 'adhesion-email:persist', 'procuration-email:persist', 'bde-email:persist'], message: "L'adresse email est nécessaire pour continuer.")]
+    #[Assert\NotBlank(message: "L'adresse email est nécessaire pour continuer.", groups: ['Default', 'adhesion-email:persist', 'procuration-email:persist', 'bde-email:persist'])]
     #[Groups(['adhesion-email:validate', 'adhesion-email:persist', 'procuration-email:persist', 'bde-email:validate', 'bde-email:persist'])]
+    #[StrictEmail(captainVerifyCheck: true, groups: ['Default'])]
+    #[StrictEmail(dnsCheck: false, groups: ['adhesion-email:persist', 'procuration-email:persist', 'bde-email:persist'])]
     private ?string $email = null;
 
     #[Assert\NotBlank(groups: ['procuration-email:persist'])]

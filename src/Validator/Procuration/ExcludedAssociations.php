@@ -4,9 +4,7 @@ namespace App\Validator\Procuration;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class ExcludedAssociations extends Constraint
 {
     public string $message = 'procuration.proxy.excluded_no_association';

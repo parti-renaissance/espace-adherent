@@ -11,17 +11,13 @@ use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertRecaptcha(api="friendly_captcha")
- */
+#[AssertRecaptcha]
 class EventInscriptionRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
 
-    /**
-     * @StrictEmail(dnsCheck=false)
-     */
     #[Assert\NotBlank]
+    #[StrictEmail(dnsCheck: false)]
     public ?string $email = null;
 
     #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.invalid_choice')]
@@ -40,9 +36,7 @@ class EventInscriptionRequest implements RecaptchaChallengeInterface
     #[Assert\Range(max: '-1 years')]
     public ?\DateTime $birthdate = null;
 
-    /**
-     * @AssertPhoneNumber(message="common.phone_number.invalid")
-     */
+    #[AssertPhoneNumber(message: 'common.phone_number.invalid')]
     public ?PhoneNumber $phone = null;
 
     #[Assert\Length(min: 4, max: 10, options: ['allowEmptyString' => true])]

@@ -150,9 +150,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(unique: true)]
     private $emailAddress;
 
-    /**
-     * @AssertPhoneNumber(message="common.phone_number.invalid", options={"groups": {"additional_info", "adhesion:further_information"}})
-     */
+    #[AssertPhoneNumber(message: 'common.phone_number.invalid', groups: ['additional_info', 'adhesion:further_information'])]
     #[Assert\Expression('not this.hasSmsSubscriptionType() or this.getPhone()', message: "Vous avez accepté de recevoir des informations du parti par SMS ou téléphone, cependant, vous n'avez pas précisé votre numéro de téléphone.", groups: ['adhesion:further_information'])]
     #[Groups(['profile_read', 'phoning_campaign_call_read', 'elected_representative_read', 'national_event_inscription:webhook'])]
     #[ORM\Column(type: 'phone_number', nullable: true)]
@@ -211,10 +209,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $subscriptionTypes;
 
     /**
-     * @AssertZoneBasedRoles
-     *
      * @var AdherentZoneBasedRole[]|Collection
      */
+    #[AssertZoneBasedRoles]
     #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentZoneBasedRole::class, cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
     private Collection $zoneBasedRoles;
 

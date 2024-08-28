@@ -13,10 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueMembership]
 class InscriptionRequest implements MembershipInterface
 {
-    /**
-     * @StrictEmail(dnsCheck=false)
-     */
     #[Assert\NotBlank]
+    #[StrictEmail(dnsCheck: false)]
     public ?string $email = null;
 
     #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.invalid_choice')]

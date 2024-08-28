@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Recaptcha\RecaptchaApiClient;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Repository\InviteRepository;
@@ -12,14 +13,8 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertWasNotInvitedRecently(
- *     emailField="email",
- *     since="24 hours",
- *     message="invitation.email.was_invited_recently"
- * )
- * @AssertRecaptcha
- */
+#[AssertRecaptcha(api: RecaptchaApiClient::NAME)]
+#[AssertWasNotInvitedRecently(emailField: 'email', since: '24 hours', message: 'invitation.email.was_invited_recently')]
 #[ORM\Entity(repositoryClass: InviteRepository::class)]
 #[ORM\Table(name: 'invitations')]
 class Invite implements RecaptchaChallengeInterface

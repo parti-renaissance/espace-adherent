@@ -18,10 +18,9 @@ abstract class ManagedArea
 
     /**
      * @var array
-     *
-     * @TagAllInManagedAreaCodes
      */
     #[ORM\Column(type: 'simple_array', nullable: true)]
+    #[TagAllInManagedAreaCodes]
     private $codes;
 
     public function getId(): ?int

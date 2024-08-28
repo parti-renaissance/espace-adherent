@@ -9,9 +9,7 @@ use App\Entity\Committee;
 use App\Validator\AdherentForCommitteeMandateReplacement as AssertAdherentValid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertAdherentValid(errorPath="adherent")
- */
+#[AssertAdherentValid(errorPath: 'adherent')]
 class CommitteeAdherentMandateCommand
 {
     /**

@@ -18,14 +18,7 @@ abstract class AbstractFeedItem
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
     protected $author;
 
-    /**
-     * @AssertWysiwygLength(
-     *     min=10,
-     *     max=6000,
-     *     minMessage="common.message.min_length",
-     *     maxMessage="common.message.max_length"
-     * )
-     */
+    #[AssertWysiwygLength(min: 10, max: 6000, minMessage: 'common.message.min_length', maxMessage: 'common.message.max_length')]
     #[Assert\NotBlank]
     #[ORM\Column(type: 'text')]
     protected $content;

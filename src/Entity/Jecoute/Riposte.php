@@ -26,9 +26,6 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @RiposteOpenGraph
- */
 #[ApiResource(
     operations: [
         new Get(
@@ -68,6 +65,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
 #[ORM\Table(name: 'jecoute_riposte')]
+#[RiposteOpenGraph]
 class Riposte implements AuthorInterface, IndexableEntityInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;

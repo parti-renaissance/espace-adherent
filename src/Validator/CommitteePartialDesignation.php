@@ -4,9 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class CommitteePartialDesignation extends Constraint
 {
     public $errorCommitteeAlreadyHasActiveDesignation = 'Le comité a déjà une élection en cours.';

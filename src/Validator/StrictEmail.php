@@ -4,10 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
- */
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class StrictEmail extends Constraint
 {
     public const LEVEL_WARNING = 'warning';
@@ -20,4 +17,17 @@ class StrictEmail extends Constraint
     public bool $disabledEmail = true;
     public bool $dnsCheck = true;
     public bool $captainVerifyCheck = false;
+
+    public function __construct(
+        ?bool $dnsCheck = true,
+        ?bool $captainVerifyCheck = false,
+        $options = null,
+        ?array $groups = null,
+        $payload = null
+    ) {
+        parent::__construct($options, $groups, $payload);
+
+        $this->dnsCheck = $dnsCheck;
+        $this->captainVerifyCheck = $captainVerifyCheck;
+    }
 }

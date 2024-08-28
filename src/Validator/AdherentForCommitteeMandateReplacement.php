@@ -4,17 +4,12 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- */
+#[\Attribute]
 class AdherentForCommitteeMandateReplacement extends Constraint
 {
-    public $errorPath;
-
-    public function getRequiredOptions()
+    public function __construct(public readonly string $errorPath, $options = null, $groups = null, $payload = null)
     {
-        return ['errorPath'];
+        parent::__construct($options, $groups, $payload);
     }
 
     public function getTargets(): string|array

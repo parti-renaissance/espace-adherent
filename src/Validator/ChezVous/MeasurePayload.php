@@ -4,9 +4,7 @@ namespace App\Validator\ChezVous;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class MeasurePayload extends Constraint
 {
     public $unexpectedKeyForType = 'L\'information "{{ key }}" ne fait pas partie du type "{{ type }}".';

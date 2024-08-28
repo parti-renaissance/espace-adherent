@@ -65,16 +65,6 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @DateRange(
- *     startDateField="beginAt",
- *     endDateField="finishAt",
- *     interval="3 days",
- *     messageDate="committee.event.invalid_finish_date"
- * )
- *
- * @AssertValidEventCategory
- */
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
 #[ApiFilter(filterClass: MyCreatedEventsFilter::class)]
 #[ApiFilter(filterClass: MySubscribedEventsFilter::class)]
@@ -150,6 +140,13 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['event_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]],
     denormalizationContext: ['groups' => ['event_write']],
     order: ['beginAt' => 'ASC']
+)]
+#[AssertValidEventCategory]
+#[DateRange(
+    startDateField: 'beginAt',
+    endDateField: 'finishAt',
+    interval: '3 days',
+    messageDate: 'committee.event.invalid_finish_date'
 )]
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap([EventTypeEnum::TYPE_DEFAULT => DefaultEvent::class, EventTypeEnum::TYPE_COMMITTEE => CommitteeEvent::class])]
@@ -307,9 +304,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
     #[ORM\Column(type: 'text', nullable: true)]
     private $visioUrl;
 
-    /**
-     * @AdherentInterestsConstraint
-     */
+    #[AdherentInterestsConstraint]
     #[Groups(['event_write'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private $interests = [];

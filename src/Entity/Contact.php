@@ -21,9 +21,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertRecaptcha(api="friendly_captcha", groups={"contact_create"})
- */
 #[ApiResource(
     operations: [
         new Get(
@@ -46,6 +43,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
     ]
 )]
+#[AssertRecaptcha(groups: ['contact_create'])]
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 #[UniqueEntity(fields: ['emailAddress'])]
 class Contact implements RecaptchaChallengeInterface
@@ -73,9 +71,7 @@ class Contact implements RecaptchaChallengeInterface
     #[ORM\Column(unique: true)]
     private ?string $emailAddress;
 
-    /**
-     * @AssertPhoneNumber
-     */
+    #[AssertPhoneNumber]
     #[Groups(['contact_update'])]
     #[ORM\Column(type: 'phone_number', nullable: true)]
     private ?PhoneNumber $phone = null;

@@ -6,28 +6,26 @@ use App\ValueObject\Genders;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\InvalidArgumentException;
 
-/**
- * @Annotation
- * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
- */
+#[\Attribute]
 class CommitteeProvisionalSupervisor extends Constraint
 {
-    public $errorPath;
-    public $gender;
     public $message = 'committee.provisional_supervisor.not_valid';
     public $notValidGenderMessage = 'committee.provisional_supervisor.gender.not_valid';
 
-    public function __construct($options = null)
-    {
-        if (\is_array($options) && \array_key_exists('gender', $options) && !\in_array($options['gender'], Genders::MALE_FEMALE)) {
+    public function __construct(
+        public readonly string $errorPath,
+        public readonly string $gender,
+        ?string $message = null,
+        $options = null,
+        ?array $groups = null,
+        $payload = null
+    ) {
+        if (!\in_array($gender, Genders::MALE_FEMALE)) {
             throw new InvalidArgumentException('The "gender" parameter value is not valid.');
         }
 
-        parent::__construct($options);
-    }
+        parent::__construct($options, $groups, $payload);
 
-    public function getRequiredOptions()
-    {
-        return ['errorPath', 'gender'];
+        $this->message = $message ?? $this->message;
     }
 }

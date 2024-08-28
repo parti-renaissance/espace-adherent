@@ -104,9 +104,8 @@ abstract class ApplicationRequest
 
     /**
      * @var PhoneNumber|null
-     *
-     * @AssertPhoneNumber
      */
+    #[AssertPhoneNumber]
     #[Assert\NotBlank(message: 'common.phone_number.required')]
     #[ORM\Column(type: 'phone_number', nullable: true)]
     protected $phone;

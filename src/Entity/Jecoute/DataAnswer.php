@@ -8,9 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @DataSurveyAnswerTypeChoice
- */
+#[DataSurveyAnswerTypeChoice]
 #[ORM\Entity]
 #[ORM\Table(name: 'jecoute_data_answer')]
 class DataAnswer

@@ -7,9 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity("inseeCode", message="city.insee_code.unique")
- */
 #[ORM\Entity(repositoryClass: CityRepository::class)]
 #[ORM\Table(name: 'cities')]
 #[UniqueEntity(fields: ['inseeCode'], message: 'city.insee_code.unique')]

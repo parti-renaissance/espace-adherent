@@ -3,15 +3,14 @@
 namespace App\Event;
 
 use App\Entity\Adherent;
+use App\Recaptcha\RecaptchaApiClient;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertRecaptcha(groups={"em_event_invitation"})
- * @AssertRecaptcha(api="friendly_captcha", groups={"re_event_invitation"})
- */
+#[AssertRecaptcha(api: RecaptchaApiClient::NAME, groups: ['em_event_invitation'])]
+#[AssertRecaptcha(groups: ['re_event_invitation'])]
 class EventInvitation implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
@@ -34,13 +33,11 @@ class EventInvitation implements RecaptchaChallengeInterface
     #[Assert\Length(max: 200, maxMessage: 'event.invitation.message.max_length')]
     public $message = '';
 
-    /**
-     * @Assert\All({
-     *     @Assert\Email(message="common.email.invalid"),
-     *     @Assert\NotBlank,
-     *     @Assert\Length(max=255, maxMessage="common.email.max_length")
-     * })
-     */
+    #[Assert\All([
+        new Assert\Email(message: 'common.email.invalid'),
+        new Assert\NotBlank(),
+        new Assert\Length(max: 255, maxMessage: 'common.email.max_length'),
+    ])]
     #[Assert\Count(min: 1, minMessage: 'event.invitation.guests.min')]
     #[Assert\Type('array')]
     public $guests = [];

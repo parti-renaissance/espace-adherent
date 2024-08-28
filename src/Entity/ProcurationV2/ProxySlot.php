@@ -11,9 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ManualSlot
- */
 #[ApiResource(
     operations: [
         new Put(
@@ -26,6 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['procuration_proxy_slot_read']],
     security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'procurations\')'
 )]
+#[ManualSlot]
 #[ORM\Entity]
 #[ORM\Table(name: 'procuration_v2_proxy_slot')]
 class ProxySlot extends AbstractSlot

@@ -16,11 +16,9 @@ use App\Validator\UniqueDonationSubscription;
 use App\ValueObject\Genders;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueDonationSubscription(groups={"Default", "fill_personal_info"})
- * @MaxFiscalYearDonation(groups={"Default", "fill_personal_info"})
- * @MaxMonthDonation(groups={"Default", "choose_donation_amount"})
- */
+#[MaxFiscalYearDonation(groups: ['Default', 'fill_personal_info'])]
+#[MaxMonthDonation(groups: ['Default', 'choose_donation_amount'])]
+#[UniqueDonationSubscription(groups: ['Default', 'fill_personal_info'])]
 class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
@@ -72,9 +70,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
 
     private $clientIp;
 
-    /**
-     * @AssertPayboxSubscription(groups={"Default", "choose_donation_amount"})
-     */
+    #[AssertPayboxSubscription(groups: ['Default', 'choose_donation_amount'])]
     private $duration;
 
     public $localDestination = false;

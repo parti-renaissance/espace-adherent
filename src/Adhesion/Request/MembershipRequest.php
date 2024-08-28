@@ -11,15 +11,11 @@ use App\Validator\StrictEmail;
 use App\ValueObject\Genders;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @MaxFiscalYearDonation(groups={"adhesion:amount"}, path="amount")
- */
+#[MaxFiscalYearDonation(path: 'amount', groups: ['adhesion:amount'])]
 class MembershipRequest implements DonationRequestInterface
 {
-    /**
-     * @StrictEmail(dnsCheck=false)
-     */
     #[Assert\NotBlank]
+    #[StrictEmail(dnsCheck: false)]
     public ?string $email = null;
 
     #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.invalid_choice')]
