@@ -17,6 +17,7 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\Form\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class ContactAdmin extends AbstractAdmin
 {
@@ -191,9 +192,7 @@ class ContactAdmin extends AbstractAdmin
         }
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setContactHandler(ContactHandler $contactHandler): void
     {
         $this->contactHandler = $contactHandler;

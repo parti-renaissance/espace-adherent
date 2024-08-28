@@ -11,6 +11,7 @@ use App\Scope\GeneralScopeGenerator;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractScopeFilter extends AbstractFilter
 {
@@ -72,17 +73,13 @@ abstract class AbstractScopeFilter extends AbstractFilter
         ];
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setGeneralScopeGenerator(GeneralScopeGenerator $generalScopeGenerator): void
     {
         $this->generalScopeGenerator = $generalScopeGenerator;
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;

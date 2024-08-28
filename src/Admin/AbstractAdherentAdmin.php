@@ -78,6 +78,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractAdherentAdmin extends AbstractAdmin
@@ -1066,7 +1067,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
         }];
     }
 
-    /** @required */
+    #[Required]
     public function setCommitteeMembershipManager(CommitteeMembershipManager $committeeMembershipManager): void
     {
         $this->committeeMembershipManager = $committeeMembershipManager;

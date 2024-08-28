@@ -25,6 +25,7 @@ use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class CampaignAdmin extends AbstractAdmin
 {
@@ -221,7 +222,7 @@ class CampaignAdmin extends AbstractAdmin
         $object->setParticipantsCount($this->adherentRepository->findForPhoningCampaign($object)->getTotalItems());
     }
 
-    /** @required */
+    #[Required]
     public function setAdherentRepository(AdherentRepository $adherentRepository): void
     {
         $this->adherentRepository = $adherentRepository;
