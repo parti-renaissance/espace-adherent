@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class CandidaciesGroupAdmin extends AbstractAdmin
 {
@@ -180,7 +181,7 @@ class CandidaciesGroupAdmin extends AbstractAdmin
         $this->localElectionManager->uploadFaithStatementFile($candidaciesGroup);
     }
 
-    /** @required */
+    #[Required]
     public function setLocalElectionManager(Manager $localElectionManager): void
     {
         $this->localElectionManager = $localElectionManager;

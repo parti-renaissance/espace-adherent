@@ -7,13 +7,14 @@ use App\Entity\Pap\VotePlace;
 use App\Repository\Pap\VotePlaceRepository;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Contracts\Service\Attribute\Required;
 
 final class PapVotePlaceScopeFilter extends AbstractScopeFilter
 {
     private ?VotePlaceRepository $repository = null;
 
-    /** @required */
-    public function setVotePlaceRepository(VotePlaceRepository $repository)
+    #[Required]
+    public function setVotePlaceRepository(VotePlaceRepository $repository): void
     {
         $this->repository = $repository;
     }

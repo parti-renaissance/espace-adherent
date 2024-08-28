@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class ProxyAdmin extends AbstractProcurationAdmin
 {
@@ -103,7 +104,7 @@ class ProxyAdmin extends AbstractProcurationAdmin
         $this->eventDispatcher->dispatch(new ProcurationEvent($object), ProcurationEvents::PROXY_AFTER_UPDATE);
     }
 
-    /** @required */
+    #[Required]
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;

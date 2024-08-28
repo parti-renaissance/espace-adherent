@@ -9,6 +9,7 @@ use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Repository\AdherentMessageRepository;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Contracts\Service\Attribute\Required;
 
 final class AdherentMessageScopeFilter extends AbstractScopeFilter
 {
@@ -45,17 +46,13 @@ final class AdherentMessageScopeFilter extends AbstractScopeFilter
         $this->authoredItemsCollectionExtension->setSkip(true);
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setAdherentMessageRepository(AdherentMessageRepository $adherentMessageRepository): void
     {
         $this->adherentMessageRepository = $adherentMessageRepository;
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setAuthoredItemsCollectionExtension(
         AuthoredItemsCollectionExtension $authoredItemsCollectionExtension
     ): void {

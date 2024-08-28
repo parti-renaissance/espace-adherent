@@ -11,6 +11,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class ChatbotAdmin extends AbstractAdmin
 {
@@ -125,7 +126,7 @@ class ChatbotAdmin extends AbstractAdmin
         }
     }
 
-    /** @required */
+    #[Required]
     public function setBotWebhookHandler(WebhookHandler $botWebhookHandler): void
     {
         $this->botWebhookHandler = $botWebhookHandler;

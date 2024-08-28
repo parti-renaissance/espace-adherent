@@ -12,6 +12,7 @@ use App\Scope\ScopeEnum;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Contracts\Service\Attribute\Required;
 
 final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
 {
@@ -66,9 +67,7 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
         }
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setZoneRepository(ZoneRepository $zoneRepository): void
     {
         $this->zoneRepository = $zoneRepository;
