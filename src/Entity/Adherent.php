@@ -1043,12 +1043,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     public function getMainZoneCode(): ?string
     {
-        if ($this->isForeignResident()) {
-            return $this->getCountry();
-        }
+        return $this->getMainZone()?->getCode();
+    }
 
-        if ($zones = $this->getZonesOfType(Zone::DEPARTMENT, true)) {
-            return current($zones)->getCode();
+    #[Groups(['profile_read'])]
+    public function getMainZone(): ?Zone
+    {
+        if ($zones = $this->getZonesOfType($this->isForeignResident() ? Zone::COUNTRY : Zone::DEPARTMENT, true)) {
+            return current($zones);
         }
 
         return null;

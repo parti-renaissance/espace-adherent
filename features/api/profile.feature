@@ -1,6 +1,5 @@
 @api
 @renaissance
-@debug
 Feature:
   As a logged-in user
   I should be able to retrieve and edit my profile information
@@ -44,6 +43,12 @@ Feature:
         "telegram_page_url": null,
         "position": "retired",
         "job": null,
+        "main_zone": {
+            "uuid": "@uuid@",
+            "type": "department",
+            "code": "77",
+            "name": "Seine-et-Marne"
+        },
         "activity_area": null,
         "subscription_types": [
             {
@@ -773,6 +778,7 @@ Feature:
         "linkedin_page_url": null,
         "telegram_page_url": null,
         "job": null,
+        "main_zone": null,
         "activity_area": null,
         "nationality": null,
         "post_address": {
@@ -1245,6 +1251,12 @@ Feature:
             "linkedin_page_url": null,
             "telegram_page_url": null,
             "job": null,
+            "main_zone": {
+                "uuid": "@uuid@",
+                "type": "department",
+                "code": "92",
+                "name": "Hauts-de-Seine"
+            },
             "activity_area": null,
             "nationality": "FR",
             "post_address": {
@@ -1349,6 +1361,12 @@ Feature:
             "linkedin_page_url": null,
             "telegram_page_url": null,
             "job": null,
+            "main_zone": {
+                "uuid": "@uuid@",
+                "type": "department",
+                "code": "92",
+                "name": "Hauts-de-Seine"
+            },
             "activity_area": null,
             "nationality": "FR",
             "post_address": {
@@ -1427,6 +1445,12 @@ Feature:
             "linkedin_page_url": null,
             "telegram_page_url": null,
             "job": null,
+            "main_zone": {
+                "uuid": "@uuid@",
+                "type": "department",
+                "code": "92",
+                "name": "Hauts-de-Seine"
+            },
             "activity_area": null,
             "nationality": "FR",
             "post_address": {
