@@ -4,9 +4,7 @@ namespace App\Validator\Procuration;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class ManualSlot extends Constraint
 {
     public string $message = 'procuration.slot.manual_no_association';

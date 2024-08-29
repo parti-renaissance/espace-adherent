@@ -105,11 +105,11 @@ Feature:
       "violations": [
         {
           "propertyPath": "post_address",
-          "message": "Cette valeur n'est pas un code postal français valide."
+          "message": "Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte."
         },
         {
           "propertyPath": "post_address",
-          "message": "Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte."
+          "message": "Cette valeur n'est pas un code postal français valide."
         }
       ]
     }

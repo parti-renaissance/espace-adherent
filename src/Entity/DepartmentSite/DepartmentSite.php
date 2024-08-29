@@ -62,9 +62,7 @@ class DepartmentSite
     #[ORM\Column(type: 'text')]
     private ?string $content = null;
 
-    /**
-     * @AssertZoneInScopeZones
-     */
+    #[AssertZoneInScopeZones]
     #[Assert\Expression("value and (value.getType() === constant('App\\\\Entity\\\\Geo\\\\Zone::DEPARTMENT') or (value.getType() === constant('App\\\\Entity\\\\Geo\\\\Zone::CUSTOM') and value.getCode() === constant('App\\\\Entity\\\\Geo\\\\Zone::FDE_CODE')))", message: 'department_site.zone.type.not_valid')]
     #[Assert\NotBlank]
     #[Groups(['department_site_read', 'department_site_read_list', 'department_site_write'])]

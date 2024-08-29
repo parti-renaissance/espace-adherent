@@ -11,9 +11,6 @@ use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields={"slug", "chapter"})
- */
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap([MoocElementTypeEnum::VIDEO => MoocVideoElement::class, MoocElementTypeEnum::QUIZ => MoocQuizElement::class, MoocElementTypeEnum::IMAGE => MoocImageElement::class])]
 #[ORM\Entity]

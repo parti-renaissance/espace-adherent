@@ -119,9 +119,8 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
 
     /**
      * @var PhoneNumber|null
-     *
-     * @AssertPhoneNumber
      */
+    #[AssertPhoneNumber]
     #[Groups(['elected_representative_write', 'elected_representative_read', 'elected_representative_list'])]
     #[ORM\Column(type: 'phone_number', nullable: true)]
     private $contactPhone;

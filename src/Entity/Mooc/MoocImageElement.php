@@ -11,14 +11,13 @@ class MoocImageElement extends BaseMoocElement
 {
     /**
      * @var Image|null
-     *
-     * @AssertImageObject(
-     *     mimeTypes={"image/jpeg", "image/png"},
-     *     maxSize="1M",
-     *     maxWidth="960",
-     *     maxHeight="720"
-     * )
      */
+    #[AssertImageObject(
+        maxSize: '1M',
+        mimeTypes: ['image/jpeg', 'image/png'],
+        maxWidth: 960,
+        maxHeight: 720
+    )]
     #[ORM\OneToOne(targetEntity: Image::class, cascade: ['all'], orphanRemoval: true)]
     protected $image;
 

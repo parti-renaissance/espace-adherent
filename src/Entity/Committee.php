@@ -200,9 +200,7 @@ class Committee implements SynchronizedEntity, StaticSegmentInterface, AddressHo
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => '2'])]
     public int $version = 2;
 
-    /**
-     * @AssertZoneType(types=Zone::COMMITTEE_TYPES, groups={"api_committee_edition"})
-     */
+    #[AssertZoneType(types: Zone::COMMITTEE_TYPES, groups: ['api_committee_edition'])]
     #[Assert\Count(min: 1, minMessage: 'Le comité doit contenir au moins une zone.', groups: ['api_committee_edition'])]
     #[Groups(['committee:read', 'committee:write'])]
     #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]

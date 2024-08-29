@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Recaptcha\RecaptchaApiClient;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Repository\JeMarcheReportRepository;
@@ -10,9 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-/**
- * @AssertRecaptcha
- */
+#[AssertRecaptcha(api: RecaptchaApiClient::NAME)]
 #[ORM\Entity(repositoryClass: JeMarcheReportRepository::class)]
 #[ORM\Table(name: 'je_marche_reports')]
 class JeMarcheReport implements RecaptchaChallengeInterface
@@ -60,23 +59,21 @@ class JeMarcheReport implements RecaptchaChallengeInterface
 
     /**
      * @var array
-     *
-     * @Assert\All({
-     *     @Assert\Email(message="jemarche.email.invalid"),
-     *     @Assert\Length(max=255, maxMessage="common.email.max_length")
-     * })
      */
+    #[Assert\All([
+        new Assert\Email(message: 'jemarche.email.invalid'),
+        new Assert\Length(max: 255, maxMessage: 'common.email.max_length'),
+    ])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private $convinced = [];
 
     /**
      * @var array
-     *
-     * @Assert\All({
-     *     @Assert\Email(message="jemarche.email.invalid"),
-     *     @Assert\Length(max=255, maxMessage="common.email.max_length")
-     * })
      */
+    #[Assert\All([
+        new Assert\Email(message: 'jemarche.email.invalid'),
+        new Assert\Length(max: 255, maxMessage: 'common.email.max_length'),
+    ])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private $almostConvinced = [];
 

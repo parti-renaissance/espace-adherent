@@ -4,10 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- */
+#[\Attribute]
 class FrenchAddressOrNationalityDonation extends Constraint
 {
     public $message = 'donation.french_address_or_nationality_donation';

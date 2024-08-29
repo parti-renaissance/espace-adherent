@@ -24,9 +24,8 @@ class AdherentMessageDataObject
 
     /**
      * @var string|null
-     *
-     * @AssertWysiwygLength(min="3", max="6000")
      */
+    #[AssertWysiwygLength(min: 3, max: 6000)]
     #[Assert\NotBlank]
     private $content;
 

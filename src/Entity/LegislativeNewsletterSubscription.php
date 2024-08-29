@@ -19,9 +19,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertRecaptcha(api="friendly_captcha", groups={"legislative_newsletter_subscriptions_write"})
- */
 #[ApiResource(
     operations: [
         new Post(
@@ -32,6 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
     ]
 )]
+#[AssertRecaptcha(groups: ['legislative_newsletter_subscriptions_write'])]
 #[ORM\Entity(repositoryClass: LegislativeNewsletterSubscriptionRepository::class)]
 #[ORM\Table]
 #[UniqueEntity(fields: ['emailAddress'], message: 'legislative_newsletter.already_registered')]
@@ -61,9 +59,8 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
 
     /**
      * @var Collection|Zone[]
-     *
-     * @AssertZoneType(types={"district", "foreign_district"})
      */
+    #[AssertZoneType(types: ['district', 'foreign_district'])]
     #[ORM\ManyToMany(targetEntity: Zone::class)]
     private Collection $fromZones;
 

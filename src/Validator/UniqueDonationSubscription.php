@@ -4,10 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- */
+#[\Attribute]
 class UniqueDonationSubscription extends Constraint
 {
     public $message = 'donation.subscription.not_unique';

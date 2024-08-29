@@ -84,9 +84,8 @@ class AdherentProfile implements MembershipInterface
 
     /**
      * @var PhoneNumber|null
-     *
-     * @AssertPhoneNumber
      */
+    #[AssertPhoneNumber]
     #[Groups(['profile_write'])]
     private $phone;
 
@@ -149,9 +148,8 @@ class AdherentProfile implements MembershipInterface
 
     /**
      * @var array
-     *
-     * @AdherentInterests
      */
+    #[AdherentInterests]
     #[Groups(['profile_write'])]
     private $interests = [];
 

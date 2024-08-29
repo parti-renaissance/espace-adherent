@@ -61,9 +61,7 @@ class Member
     #[ORM\ManyToOne(targetEntity: MyTeam::class, inversedBy: 'members')]
     private ?MyTeam $team = null;
 
-    /**
-     * @AssertMemberValid
-     */
+    #[AssertMemberValid]
     #[Assert\NotBlank(message: 'my_team.member.adherent.not_blank')]
     #[Groups(['my_team_member_read', 'my_team_member_write', 'my_team_read_list'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
@@ -76,9 +74,7 @@ class Member
     #[ORM\Column]
     private ?string $role;
 
-    /**
-     * @AssertScopeFeaturesValid
-     */
+    #[AssertScopeFeaturesValid]
     #[Assert\Choice(choices: FeatureEnum::ALL, multiple: true, multipleMessage: 'my_team.member.scope_features.invalid_choice')]
     #[Groups(['my_team_member_read', 'my_team_member_write', 'my_team_read_list'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]

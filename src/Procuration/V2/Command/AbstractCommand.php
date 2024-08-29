@@ -36,9 +36,7 @@ abstract class AbstractCommand
     #[Assert\Range(min: '-120 years', max: '-17 years', minMessage: 'procuration.birthdate.maximum_required_age', maxMessage: 'procuration.birthdate.minimum_required_age')]
     public ?\DateTimeInterface $birthdate = null;
 
-    /**
-     * @AssertPhoneNumber(message="common.phone_number.invalid")
-     */
+    #[AssertPhoneNumber(message: 'common.phone_number.invalid')]
     #[Assert\NotBlank(message: 'common.phone_number.required')]
     public ?PhoneNumber $phone = null;
 

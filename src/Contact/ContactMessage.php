@@ -3,15 +3,14 @@
 namespace App\Contact;
 
 use App\Entity\Adherent;
+use App\Recaptcha\RecaptchaApiClient;
 use App\Recaptcha\RecaptchaChallengeInterface;
 use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertRecaptcha(groups={"em_event_contact_organizer"})
- * @AssertRecaptcha(api="friendly_captcha", groups={"re_event_contact_organizer"})
- */
+#[AssertRecaptcha(api: RecaptchaApiClient::NAME, groups: ['em_event_contact_organizer'])]
+#[AssertRecaptcha(groups: ['re_event_contact_organizer'])]
 class ContactMessage implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;

@@ -6,10 +6,8 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Constraint for the Unique Committee validator.
- *
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
  */
+#[\Attribute]
 class UniqueCommittee extends Constraint
 {
     public $errorPathName = 'name';

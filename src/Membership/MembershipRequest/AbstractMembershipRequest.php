@@ -10,12 +10,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueMembership]
 abstract class AbstractMembershipRequest implements MembershipInterface
 {
-    /**
-     * @BannedAdherent
-     */
     #[Assert\Email(message: 'common.email.invalid')]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
     #[Assert\NotBlank]
+    #[BannedAdherent]
     #[Groups(['membership:write'])]
     protected ?string $emailAddress = null;
 

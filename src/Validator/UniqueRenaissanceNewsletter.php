@@ -4,10 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- */
+#[\Attribute]
 class UniqueRenaissanceNewsletter extends Constraint
 {
     public string $message = 'newsletter.already_registered';

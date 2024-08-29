@@ -8,9 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @MeasurePayload
- */
+#[MeasurePayload]
 #[ORM\Entity(repositoryClass: MeasureRepository::class)]
 #[ORM\Table(name: 'chez_vous_measures')]
 #[ORM\UniqueConstraint(name: 'chez_vous_measures_city_type_unique', columns: ['city_id', 'type_id'])]

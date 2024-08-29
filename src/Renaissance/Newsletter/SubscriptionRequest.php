@@ -11,10 +11,8 @@ use App\Validator\UniqueRenaissanceNewsletter;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertRecaptcha(api="friendly_captcha")
- * @UniqueRenaissanceNewsletter
- */
+#[AssertRecaptcha]
+#[UniqueRenaissanceNewsletter]
 class SubscriptionRequest implements RecaptchaChallengeInterface
 {
     use RecaptchaChallengeTrait;
@@ -23,11 +21,9 @@ class SubscriptionRequest implements RecaptchaChallengeInterface
     #[Groups(['newsletter:write'])]
     public ?string $postalCode = null;
 
-    /**
-     * @StrictEmail(dnsCheck=false)
-     */
     #[Assert\NotBlank]
     #[Groups(['newsletter:write'])]
+    #[StrictEmail(dnsCheck: false)]
     public ?string $email = null;
 
     #[Assert\Choice(callback: 'getValidSources')]

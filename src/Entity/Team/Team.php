@@ -81,12 +81,11 @@ class Team implements EntityAdherentBlameableInterface, EntityAdministratorBlame
 
     /**
      * @var Member[]|Collection
-     *
-     * @UniqueInCollection(propertyPath="adherent", message="team.members.adherent_already_in_collection")
      */
     #[Assert\Valid]
     #[ORM\OneToMany(mappedBy: 'team', targetEntity: Member::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['createdAt' => 'DESC'])]
+    #[UniqueInCollection(propertyPath: 'adherent', message: 'team.members.adherent_already_in_collection')]
     private Collection $members;
 
     #[Groups(['team_list_read'])]

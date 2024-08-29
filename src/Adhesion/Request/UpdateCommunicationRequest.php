@@ -9,9 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UpdateCommunicationRequest
 {
-    /**
-     * @AssertPhoneNumber
-     */
+    #[AssertPhoneNumber]
     #[Assert\Expression('not this.acceptSms or this.phone', message: "Vous avez accepté de recevoir des informations du parti par SMS ou téléphone, cependant, vous n'avez pas précisé votre numéro de téléphone.")]
     public ?PhoneNumber $phone = null;
 

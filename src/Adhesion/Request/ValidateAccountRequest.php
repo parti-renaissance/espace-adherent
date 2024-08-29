@@ -15,10 +15,8 @@ class ValidateAccountRequest implements MembershipInterface
     #[Assert\NotBlank(groups: ['validate-code'])]
     public ?string $code = null;
 
-    /**
-     * @StrictEmail(dnsCheck=false, groups={"change-email"})
-     */
     #[Assert\NotBlank(groups: ['change-email'])]
+    #[StrictEmail(dnsCheck: false, groups: ['change-email'])]
     public ?string $emailAddress = null;
 
     public function __construct(private readonly string $source = MembershipSourceEnum::RENAISSANCE)

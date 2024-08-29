@@ -4,10 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraints\Image;
 
-/**
- * @Annotation
- * @Target({"PROPERTY", "ANNOTATION"})
- */
+#[\Attribute]
 class ImageObject extends Image
 {
 }

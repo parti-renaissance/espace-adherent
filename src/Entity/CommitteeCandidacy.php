@@ -54,9 +54,8 @@ class CommitteeCandidacy extends BaseCandidacy
 
     /**
      * @var CommitteeMembership
-     *
-     * @AssertCommitteeMembershipZoneInScopeZones(groups={"api_committee_candidacy_validation"})
      */
+    #[AssertCommitteeMembershipZoneInScopeZones(groups: ['api_committee_candidacy_validation'])]
     #[Assert\NotBlank(message: "Cet adhérent n'est pas un membre du comité.", groups: ['api_committee_candidacy_validation'])]
     #[Groups(['committee_candidacy:read', 'committee_election:read'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]

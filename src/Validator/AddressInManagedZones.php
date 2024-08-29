@@ -4,38 +4,14 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- */
+#[\Attribute]
 class AddressInManagedZones extends Constraint
 {
     public $message = 'committee.address.not_in_zone';
 
-    /**
-     * @var string
-     */
-    public $spaceType;
-
-    public function __construct($options = null)
+    public function __construct(public readonly string $spaceType, $options = null, ?array $groups = null, $payload = null)
     {
-        if (null !== $options && !\is_array($options)) {
-            $options = [
-                'spaceType' => $options,
-            ];
-        }
-
-        parent::__construct($options);
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getRequiredOptions(): array
-    {
-        return [
-            'spaceType',
-        ];
+        parent::__construct($options, $groups, $payload);
     }
 
     public function getTargets(): string|array

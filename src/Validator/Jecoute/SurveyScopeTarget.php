@@ -4,9 +4,7 @@ namespace App\Validator\Jecoute;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class SurveyScopeTarget extends Constraint
 {
     public string $message = 'survey.with_wrong_scope';

@@ -9,15 +9,10 @@ use App\Validator\GeocodableAddress as AssertGeocodableAddress;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertValidAddress(groups={"Default"})
- * @FrenchAddress(groups={"fill_personal_info"})
- * @AssertGeocodableAddress(groups={"Default"})
- * @AssertGeocodableAddress(
- *     message="admin.common.address.not_geocodable",
- *     groups={"admin_adherent_renaissance_create"}
- * )
- */
+#[AssertGeocodableAddress(groups: ['Default'])]
+#[AssertGeocodableAddress(message: 'admin.common.address.not_geocodable', groups: ['admin_adherent_renaissance_create'])]
+#[AssertValidAddress(groups: ['Default'])]
+#[FrenchAddress(groups: ['fill_personal_info'])]
 class Address implements AddressInterface, GeocodableInterface
 {
     use AddressTrait;

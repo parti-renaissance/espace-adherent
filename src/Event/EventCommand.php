@@ -13,14 +13,12 @@ use App\Validator\DateRange;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @DateRange(
- *     startDateField="beginAt",
- *     endDateField="finishAt",
- *     interval="3 days",
- *     messageDate="committee.event.invalid_finish_date"
- * )
- */
+#[DateRange(
+    startDateField: 'beginAt',
+    endDateField: 'finishAt',
+    interval: '3 days',
+    messageDate: 'committee.event.invalid_finish_date'
+)]
 class EventCommand extends BaseEventCommand
 {
     #[Assert\GreaterThan('0', message: 'committee.event.invalid_capacity')]

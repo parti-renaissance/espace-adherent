@@ -6,9 +6,8 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Constraint for a valid french address.
- *
- * @Annotation
  */
+#[\Attribute]
 class FrenchAddress extends Constraint
 {
     public string $invalidCityMessage = 'Cette ville n\'est pas une ville française valide.';

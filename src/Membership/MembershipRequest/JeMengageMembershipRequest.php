@@ -30,9 +30,7 @@ class JeMengageMembershipRequest extends AbstractMembershipRequest
     #[Groups(['membership:write'])]
     public ?string $nationality = null;
 
-    /**
-     * @AssertPhoneNumber
-     */
+    #[AssertPhoneNumber]
     #[Groups(['membership:write'])]
     public ?PhoneNumber $phone = null;
 

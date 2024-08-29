@@ -33,17 +33,13 @@ class AdherentCreateCommand implements MembershipInterface
     #[Assert\Valid(groups: ['admin_adherent_renaissance_create'])]
     public Address $address;
 
-    /**
-     * @BannedAdherent
-     */
     #[Assert\Email(message: 'common.email.invalid', groups: ['admin_adherent_renaissance_create', 'admin_adherent_renaissance_verify_email'])]
     #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['admin_adherent_renaissance_create', 'admin_adherent_renaissance_verify_email'])]
     #[Assert\NotBlank(message: 'common.email.not_blank', groups: ['admin_adherent_renaissance_create', 'admin_adherent_renaissance_verify_email'])]
+    #[BannedAdherent]
     public ?string $email = null;
 
-    /**
-     * @AssertPhoneNumber(options={ "groups": {"admin_adherent_renaissance_create"} })
-     */
+    #[AssertPhoneNumber(groups: ['admin_adherent_renaissance_create'])]
     public ?PhoneNumber $phone = null;
 
     #[Assert\NotBlank(message: 'admin.common.birthdate.not_blank', groups: ['admin_adherent_renaissance_create'])]

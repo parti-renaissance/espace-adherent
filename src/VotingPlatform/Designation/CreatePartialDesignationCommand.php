@@ -8,15 +8,13 @@ use App\Validator\CommitteePartialDesignation as AssertCommitteePartialDesignati
 use App\Validator\DateRange as AssertDateRange;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @AssertCommitteePartialDesignation(groups={"Strict"})
- * @AssertDateRange(
- *     startDateField="voteStartDate",
- *     endDateField="voteEndDate",
- *     interval="7 days|14 days",
- *     messageInterval="Vous pouvez choisir d'ouvrir le vote dans 2 à 4 semaines et de le cloturer 7 à 14 jours plus tard."
- * )
- */
+#[AssertCommitteePartialDesignation(groups: ['Strinct'])]
+#[AssertDateRange(
+    startDateField: 'voteStartDate',
+    endDateField: 'voteEndDate',
+    interval: '7 days|14 days',
+    messageInterval: "Vous pouvez choisir d'ouvrir le vote dans 2 à 4 semaines et de le cloturer 7 à 14 jours plus tard."
+)]
 #[Assert\GroupSequence(['CreatePartialDesignationCommand', 'Strict'])]
 class CreatePartialDesignationCommand
 {

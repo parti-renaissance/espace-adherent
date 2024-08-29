@@ -13,14 +13,12 @@ class CommitteeMessage
     private $author;
     private $committee;
 
-    /**
-     * @AssertWysiwygLength(
-     *     min=10,
-     *     max=6000,
-     *     minMessage="common.message.min_length",
-     *     maxMessage="common.message.max_length"
-     * )
-     */
+    #[AssertWysiwygLength(
+        min: 10,
+        max: 6000,
+        minMessage: 'common.message.min_length',
+        maxMessage: 'common.message.max_length'
+    )]
     #[Assert\NotBlank]
     private $content;
     private $published;

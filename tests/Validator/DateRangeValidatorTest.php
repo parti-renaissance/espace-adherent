@@ -12,11 +12,11 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
     public function testStartDateFieldIsNotReadableThrowsException(): void
     {
         $this->expectException(ConstraintDefinitionException::class);
-        $this->validator->validate(new \stdClass(), new DateRange([
-            'startDateField' => 'foo',
-            'endDateField' => 'bar',
-            'interval' => '01010',
-        ]));
+        $this->validator->validate(new \stdClass(), new DateRange(
+            'foo',
+            'bar',
+            '01010',
+        ));
     }
 
     public function testInvalidStartDateThrowsException(): void
@@ -27,11 +27,11 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
         $object->foo = true;
         $object->bar = 'hello world';
 
-        $this->validator->validate($object, new DateRange([
-            'startDateField' => 'foo',
-            'endDateField' => 'bar',
-            'interval' => '01010',
-        ]));
+        $this->validator->validate($object, new DateRange(
+            'foo',
+            'bar',
+            '01010',
+        ));
     }
 
     public function testEndDateFieldIsNotReadableThrowsException(): void
@@ -40,11 +40,11 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
         $object = new \stdClass();
         $object->foo = true;
 
-        $this->validator->validate($object, new DateRange([
-            'startDateField' => 'foo',
-            'endDateField' => 'bar',
-            'interval' => '01010',
-        ]));
+        $this->validator->validate($object, new DateRange(
+            'foo',
+            'bar',
+            '01010',
+        ));
     }
 
     public function testInvalidEndDateThrowsException(): void
@@ -55,20 +55,20 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
         $object->foo = new \DateTime();
         $object->bar = 'hello world';
 
-        $this->validator->validate($object, new DateRange([
-            'startDateField' => 'foo',
-            'endDateField' => 'bar',
-            'interval' => '01010',
-        ]));
+        $this->validator->validate($object, new DateRange(
+            'foo',
+            'bar',
+            '01010',
+        ));
     }
 
     public function testSkipValidation(): void
     {
-        $this->validator->validate(null, new DateRange([
-            'startDateField' => 'foo',
-            'endDateField' => 'bar',
-            'interval' => '01010',
-        ]));
+        $this->validator->validate(null, new DateRange(
+            'foo',
+            'bar',
+            '01010',
+        ));
 
         $this->assertNoViolation();
     }
@@ -79,11 +79,11 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
         $object->startDate = new \DateTime('2018-05-15 15:00:00+02:00');
         $object->endDate = new \DateTime('2018-05-20 15:00:00+02:00');
 
-        $this->validator->validate($object, new DateRange([
-            'startDateField' => 'startDate',
-            'endDateField' => 'endDate',
-            'interval' => '3 days',
-        ]));
+        $this->validator->validate($object, new DateRange(
+            'startDate',
+            'endDate',
+            '3 days',
+        ));
 
         $this
             ->buildViolation('common.date_range.invalid_date')
@@ -99,11 +99,11 @@ class DateRangeValidatorTest extends ConstraintValidatorTestCase
         $object->startDate = new \DateTime('2018-05-15 15:00:00+02:00');
         $object->endDate = new \DateTime('2018-05-16 15:00:00+02:00');
 
-        $this->validator->validate($object, $constraint = new DateRange([
-            'startDateField' => 'startDate',
-            'endDateField' => 'endDate',
-            'interval' => '3 days|5 days',
-        ]));
+        $this->validator->validate($object, $constraint = new DateRange(
+            'startDate',
+            'endDate',
+            '3 days|5 days',
+        ));
 
         $violation = $this->buildViolation('common.date_range.invalid_interval');
 

@@ -4,10 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
- */
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class MaxMonthDonation extends Constraint
 {
     public $message = 'donation.max_fiscal_month_donation';

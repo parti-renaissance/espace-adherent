@@ -250,8 +250,8 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         self::assertSame(4, $errors->count());
         self::assertSame('L\'adresse ne peut pas dépasser 150 caractères.', $errors->eq(0)->text());
         self::assertSame('Le code postal doit contenir moins de 15 caractères.', $errors->eq(1)->text());
-        self::assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(2)->text());
-        self::assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(3)->text());
+        self::assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(2)->text());
+        self::assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(3)->text());
 
         // Submit the profile form with valid data
         $this->client->submit($crawler->selectButton('Enregistrer')->form([
@@ -548,8 +548,8 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame(9, $crawler->filter('#create-committee-form .form__errors > li')->count());
-        $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $crawler->filter('#create_committee_address_errors > li.form__error')->eq(0)->text());
-        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#create_committee_address_errors > li.form__error')->eq(1)->text());
+        $this->assertSame("Votre adresse n'est pas reconnue. Vérifiez qu'elle soit correcte.", $crawler->filter('#create_committee_address_errors > li.form__error')->eq(0)->text());
+        $this->assertSame('Cette valeur n\'est pas un code postal français valide.', $crawler->filter('#create_committee_address_errors > li.form__error')->eq(1)->text());
         $this->assertSame("L'adresse est obligatoire.", $crawler->filter('#create_committee_address_address_errors > li.form__error')->text());
         $this->assertSame('Le numéro de téléphone est obligatoire.', $crawler->filter('#create_committee_phone_errors > li.form__error')->text());
         $this->assertSame('Vous devez saisir au moins 2 caractères.', $crawler->filter('#create_committee_name_errors > li.form__error')->text());

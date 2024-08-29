@@ -4,9 +4,7 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class AdherentInterests extends Constraint
 {
     public $message = 'Valeur d\'intérêt n\'est pas valide';
