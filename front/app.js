@@ -6,7 +6,6 @@ import donationBanner from './listeners/donation-banner';
 import progressiveBackground from './listeners/progressive-background';
 import externalLinks from './listeners/external-links';
 import noJsRecaptcha from './listeners/no-js-recaptcha';
-import alogliaSearch from './listeners/algolia-search';
 import confirmModal from './listeners/confirm-modal';
 import emModal from './listeners/em-modal';
 import emDateTimePicker from './listeners/em-datetime-picker';
@@ -21,7 +20,6 @@ class App {
             progressiveBackground,
             externalLinks,
             noJsRecaptcha,
-            alogliaSearch,
             confirmModal,
             emModal,
             emDateTimePicker,
