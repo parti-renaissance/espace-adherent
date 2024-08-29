@@ -500,17 +500,6 @@ class LoadAdministratorRoleData extends Fixture
             'Administrateur des scopes',
             AdministratorRoleGroupEnum::TECH
         );
-        // Idées
-        yield $this->createRole(
-            'ROLE_ADMIN_IDEES_OLDOLF',
-            'Administrateur OLDOLF',
-            AdministratorRoleGroupEnum::IDEES
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_IDEES_CHEZ_VOUS',
-            'Administrateur ChezVous',
-            AdministratorRoleGroupEnum::IDEES
-        );
         // Formation
         yield $this->createRole(
             'ROLE_ADMIN_FORMATION_FORMATIONS',

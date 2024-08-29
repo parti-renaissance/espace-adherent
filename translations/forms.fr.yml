@@ -15,30 +15,3 @@ unregistration_reasons.elected: Je suis déçu(e) par mon/les élu(e)s LaREM
 unregistration_reasons.movement: Je ne me reconnais plus dans les actions du mouvement En Marche !
 unregistration_reasons.committee: Je suis en désaccord avec l’activité de mon comité local
 unregistration_reasons.other: Autre
-
-#
-# ChezVous
-#
-chez_vous.marker.type.maison_service_accueil_public: Nouvelle maison de service et d'accueil au public
-chez_vous.marker.type.dedoublement_classes: Dédoublement de classe
-chez_vous.marker.type.mission_bern: Mission Bern
-
-chez_vous.measure.type.dedoublement_classes: Dédoublement de classes
-chez_vous.measure.type.suppression_taxe_habitation: Suppression de la taxe d’habitation
-chez_vous.measure.type.couverture_fibre: Couverture en fibre de tout le territoire
-chez_vous.measure.type.maison_service_accueil_public: Généralisation des maisons de service et d'accueil du public
-chez_vous.measure.type.creation_entreprises: Créations nettes d’entreprises dans la commune
-chez_vous.measure.type.baisse_nombre_chomeurs: Baisse du nombre de chômeurs
-chez_vous.measure.type.pass_culture: Mise en Place du Pass Culture
-chez_vous.measure.type.emplois_francs: Emplois francs
-chez_vous.measure.type.quartier_reconquete_republicaine: Création d'un quartier de reconquête républicaine
-chez_vous.measure.type.cheque_energie: Chèque énergie
-chez_vous.measure.type.prime_conversion_automobile: Prime à la conversion automobile
-chez_vous.measure.type.conversion_surface_agricole_bio: Conversion de la surface agricole en Bio
-chez_vous.measure.type.mission_bern: Mission Bern
-chez_vous.measure.type.france_relance: France Relance
-chez_vous.measure.type.devoirs_faits: Devoirs Faits
-chez_vous.measure.type.maison_de_sante: Maison de santé
-chez_vous.measure.type.ma_prime_renov: MaPrimeRenov
-chez_vous.measure.type.apprentissage: Apprentissage
-chez_vous.measure.type.entreprises_aidees_covid: Entreprises aidées Covid

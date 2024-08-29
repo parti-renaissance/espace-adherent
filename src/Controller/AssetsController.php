@@ -2,11 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\CustomSearchResult;
-use App\Entity\Proposal;
-use App\Timeline\TimelineImageFactory;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\SymfonyResponseFactory;
@@ -15,16 +10,12 @@ use League\Glide\Signatures\SignatureException;
 use League\Glide\Signatures\SignatureFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AssetsController extends AbstractController
 {
-    private const WIDTH = 250;
-    private const HEIGHT = 170;
-
     private const EXTENSIONS_TYPES = [
         'gif' => 'image/gif',
         'svg' => 'image/svg+xml',
@@ -32,15 +23,8 @@ class AssetsController extends AbstractController
         'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     ];
 
-    private $manager;
-
-    public function __construct(EntityManagerInterface $manager)
-    {
-        $this->manager = $manager;
-    }
-
     #[Cache(maxage: 900, smaxage: 900)]
-    #[Route(path: '/assets/{path}', requirements: ['path' => '.+'], name: 'asset_url', methods: ['GET'])]
+    #[Route(path: '/assets/{path}', name: 'asset_url', requirements: ['path' => '.+'], methods: ['GET'])]
     public function assetAction(Server $glide, FilesystemOperator $defaultStorage, string $path, Request $request): Response
     {
         if (!$defaultStorage->has($path)) {
@@ -83,7 +67,7 @@ class AssetsController extends AbstractController
     }
 
     #[Cache(maxage: 60, smaxage: 60)]
-    #[Route(path: '/video/homepage.{format}', requirements: ['format' => 'mov|mp4'], name: 'homepage_video_url', methods: ['GET'])]
+    #[Route(path: '/video/homepage.{format}', name: 'homepage_video_url', requirements: ['format' => 'mov|mp4'], methods: ['GET'])]
     public function videoAction(FilesystemOperator $defaultStorage, string $format): Response
     {
         return new Response(
@@ -91,84 +75,5 @@ class AssetsController extends AbstractController
             Response::HTTP_OK,
             ['Content-Type' => 'video/'.$format]
         );
-    }
-
-    #[Cache(maxage: 900, smaxage: 900)]
-    #[Route(path: '/algolia/{type}/{slug}', requirements: ['type' => 'proposal|custom'], methods: ['GET'])]
-    public function algoliaAction(Server $glide, Request $request, string $type, string $slug): Response
-    {
-        $glide->setResponseFactory(new SymfonyResponseFactory($request));
-
-        try {
-            return $glide->getImageResponse($this->getTypePath($type, $slug), [
-                'w' => self::WIDTH,
-                'h' => self::HEIGHT,
-                'fit' => 'crop',
-                'fm' => 'pjpg',
-            ]);
-        } catch (FileNotFoundException $e) {
-            throw $this->createNotFoundException();
-        }
-    }
-
-    private function getTypePath(string $type, string $slug): string
-    {
-        if ('custom' === $type) {
-            $entity = $this->manager->getRepository(CustomSearchResult::class)->find((int) $slug);
-        } else {
-            $entity = $this->getTypeRepository($type)->findOneBySlug($slug);
-        }
-
-        if (!$entity) {
-            throw $this->createNotFoundException();
-        }
-
-        if (!$entity->getMedia()) {
-            return 'static/algolia/default.jpg';
-        }
-
-        return 'images/'.$entity->getMedia()->getPath();
-    }
-
-    private function getTypeRepository(string $type): ?ServiceEntityRepositoryInterface
-    {
-        if ('proposal' === $type) {
-            return $this->manager->getRepository(Proposal::class);
-        }
-
-        return null;
-    }
-
-    /**
-     * Creates a transparent image PNG with sizes 1px x 1px.
-     *
-     * @return string Image path
-     */
-    private function createWhiteImage(): string
-    {
-        $imagePath = $this->getParameter('kernel.cache_dir').\DIRECTORY_SEPARATOR.'white_image.png';
-
-        $image = imagecreatetruecolor(1, 1);
-        imagesavealpha($image, true);
-        $color = imagecolorallocatealpha($image, 0, 0, 0, 127);
-        imagefill($image, 0, 0, $color);
-        imagepng($image, $imagePath);
-
-        return $imagePath;
-    }
-
-    #[Cache(maxage: 900, smaxage: 900)]
-    #[Route(path: '/image-transformer.jpg', name: 'asset_timeline', methods: ['GET'])]
-    public function timelineImageAction(Request $request, TimelineImageFactory $imageFactory): Response
-    {
-        $locale = 'fr';
-
-        if (preg_match('#/en/#', $request->headers->get('referer'))) {
-            $locale = 'en';
-        }
-
-        return new BinaryFileResponse($imageFactory->createImage($locale), Response::HTTP_OK, [
-            'Content-Type' => 'image/jpeg',
-        ]);
     }
 }

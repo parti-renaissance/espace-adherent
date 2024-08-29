@@ -36,12 +36,6 @@
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
         </service>
 
-        <!-- Timeline -->
-        <service id="App\Timeline\TimelineImageFactory">
-            <argument key="$cacheDirectory">%kernel.cache_dir%</argument>
-            <argument key="$webDirectory">%kernel.project_dir%/public</argument>
-        </service>
-
         <!-- DoctrineExtension -->
         <service id="App\Api\Doctrine\VisibleStatusesExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />

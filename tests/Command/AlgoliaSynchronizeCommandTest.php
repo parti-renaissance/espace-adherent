@@ -3,13 +3,8 @@
 namespace Tests\App\Command;
 
 use Algolia\SearchBundle\SearchService;
-use App\Entity\ChezVous\City;
 use App\Entity\CustomSearchResult;
 use App\Entity\Proposal;
-use App\Entity\Timeline\Manifesto;
-use App\Entity\Timeline\Measure;
-use App\Entity\Timeline\Profile;
-use App\Entity\Timeline\Theme;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractCommandTestCase;
@@ -33,13 +28,6 @@ class AlgoliaSynchronizeCommandTest extends AbstractCommandTestCase
         return [
             ['proposal', Proposal::class, 3],
             ['custom_search_result', CustomSearchResult::class, 2],
-            // Timeline
-            ['timeline_theme', Theme::class, 5],
-            ['timeline_profile', Profile::class, 5],
-            ['timeline_manifesto', Manifesto::class, 3],
-            ['timeline_measure', Measure::class, 17],
-            // ChezVous
-            ['chezvous_city', City::class, 3],
         ];
     }
 }
