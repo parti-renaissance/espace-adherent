@@ -51,7 +51,7 @@ class ActionNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param Action $object */
     protected function getDate(object $object): ?\DateTime
     {
-        return $object->date;
+        return $object->getCreatedAt();
     }
 
     /** @param Action $object */
