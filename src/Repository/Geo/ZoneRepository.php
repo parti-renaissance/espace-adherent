@@ -4,7 +4,6 @@ namespace App\Repository\Geo;
 
 use App\Entity\Committee;
 use App\Entity\DepartmentSite\DepartmentSite;
-use App\Entity\Geo\City;
 use App\Entity\Geo\GeoInterface;
 use App\Entity\Geo\Region;
 use App\Entity\Geo\Zone;
@@ -251,25 +250,6 @@ class ZoneRepository extends ServiceEntityRepository
             ->setParameter('district_type', Zone::DISTRICT)
             ->getQuery()
             ->getResult()
-        ;
-    }
-
-    public function findRegionByPostalCode(string $postalCode): ?Zone
-    {
-        return $this->createQueryBuilder('zone')
-            ->leftJoin('zone.children', 'child')
-            ->innerJoin(City::class, 'city', Join::WITH, 'child.code = city.code')
-            ->where('(city.postalCode LIKE :postal_code_1 OR city.postalCode LIKE :postal_code_2)')
-            ->andWhere('zone.type = :region AND child.type = :city')
-            ->setParameters([
-                'postal_code_1' => $postalCode.'%',
-                'postal_code_2' => '%,'.$postalCode.'%',
-                'region' => Zone::REGION,
-                'city' => Zone::CITY,
-            ])
-            ->getQuery()
-            ->setMaxResults(1)
-            ->getOneOrNullResult()
         ;
     }
 

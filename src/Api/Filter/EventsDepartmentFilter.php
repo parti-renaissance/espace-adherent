@@ -6,21 +6,16 @@ use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Geo\Zone;
 use App\Repository\Event\BaseEventRepository;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Contracts\Service\Attribute\Required;
 
-final class EventsZipCodeFilter extends AbstractFilter
+final class EventsDepartmentFilter extends AbstractFilter
 {
-    /**
-     * @var BaseEventRepository
-     */
-    private $baseEventRepository;
-
-    /**
-     * @var ZoneRepository
-     */
-    private $zoneRepository;
+    private BaseEventRepository $baseEventRepository;
+    private ZoneRepository $zoneRepository;
 
     protected function filterProperty(
         string $property,
@@ -30,16 +25,16 @@ final class EventsZipCodeFilter extends AbstractFilter
         string $resourceClass,
         ?Operation $operation = null,
         array $context = []
-    ) {
+    ): void {
         if (
             !is_a($resourceClass, BaseEvent::class, true)
-            || 'zipCode' !== $property
+            || 'zone' !== $property
             || empty($value)
         ) {
             return;
         }
 
-        if (!$zone = $this->zoneRepository->findRegionByPostalCode($value)) {
+        if (!$zone = $this->zoneRepository->findOneBy(['code' => is_numeric($value) ? str_pad($value, 2, '0', \STR_PAD_LEFT) : $value, 'type' => [Zone::DEPARTMENT, Zone::CUSTOM]])) {
             return;
         }
 
@@ -69,13 +64,13 @@ final class EventsZipCodeFilter extends AbstractFilter
 
         $description = [];
         foreach ($this->properties as $property => $strategy) {
-            $description['zipCode'] = [
+            $description['zone'] = [
                 'property' => $property,
                 'type' => 'string',
                 'required' => false,
                 'swagger' => [
-                    'description' => 'Filter by zipCode.',
-                    'name' => 'zipCode',
+                    'description' => 'Filter by zone code.',
+                    'name' => 'zone',
                     'type' => 'string',
                 ],
             ];
@@ -84,17 +79,13 @@ final class EventsZipCodeFilter extends AbstractFilter
         return $description;
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setBaseEventRepository(BaseEventRepository $baseEventRepository): void
     {
         $this->baseEventRepository = $baseEventRepository;
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setZoneRepository(ZoneRepository $zoneRepository): void
     {
         $this->zoneRepository = $zoneRepository;

@@ -16,7 +16,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Address\AddressInterface;
 use App\Address\GeoCoder;
-use App\Api\Filter\EventsZipCodeFilter;
+use App\Api\Filter\EventsDepartmentFilter;
 use App\Api\Filter\InZoneOfScopeFilter;
 use App\Api\Filter\MyCreatedEventsFilter;
 use App\Api\Filter\MySubscribedEventsFilter;
@@ -79,7 +79,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(filterClass: MyCreatedEventsFilter::class)]
 #[ApiFilter(filterClass: MySubscribedEventsFilter::class)]
 #[ApiFilter(filterClass: OrderEventsBySubscriptionsFilter::class)]
-#[ApiFilter(filterClass: EventsZipCodeFilter::class)]
+#[ApiFilter(filterClass: EventsDepartmentFilter::class)]
 #[ApiFilter(filterClass: DateFilter::class, properties: ['finishAt' => 'strictly_after'])]
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['name' => 'partial', 'mode' => 'exact', 'beginAt' => 'start', 'status' => 'exact'])]
 #[ApiFilter(filterClass: OrderFilter::class, properties: ['createdAt', 'beginAt', 'finishAt'])]
