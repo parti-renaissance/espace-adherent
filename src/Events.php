@@ -15,8 +15,6 @@ final class Events
     public const EVENT_DELETED = 'event.deleted';
     public const EVENT_CANCELLED = 'event.cancelled';
     public const EVENT_REGISTRATION_CREATED = 'event_registration_created';
-    public const CHEZVOUS_MEASURE_TYPE_UPDATED = 'chezvous_measure_type.updated';
-    public const CHEZVOUS_MEASURE_TYPE_DELETED = 'chezvous_measure_type.deleted';
 
     private function __construct()
     {

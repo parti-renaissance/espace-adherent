@@ -4,7 +4,6 @@ namespace App\Algolia;
 
 use Algolia\SearchBundle\SearchService as SearchServiceInterface;
 use App\Entity\AlgoliaIndexedEntityInterface;
-use App\Entity\Timeline\Measure;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AlgoliaIndexedEntityManager
@@ -41,18 +40,10 @@ class AlgoliaIndexedEntityManager
     private function index(AlgoliaIndexedEntityInterface $entity): void
     {
         $this->algolia->index($this->entityManager, $entity, $entity->getIndexOptions());
-
-        if ($entity instanceof Measure) {
-            $this->algolia->index($this->entityManager, $entity->getThemesToIndex()->toArray());
-        }
     }
 
     private function unIndex(AlgoliaIndexedEntityInterface $entity): void
     {
         $this->algolia->remove($this->entityManager, $entity);
-
-        if ($entity instanceof Measure) {
-            $this->algolia->index($this->entityManager, $entity->getThemesToIndex()->toArray());
-        }
     }
 }

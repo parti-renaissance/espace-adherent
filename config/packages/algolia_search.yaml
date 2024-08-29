@@ -9,24 +9,6 @@ algolia_search:
             class: App\Entity\Proposal
             index_if: isIndexable
 
-        -   name: timeline_measure
-            class: App\Entity\Timeline\Measure
-
-        -   name: timeline_theme
-            class: App\Entity\Timeline\Theme
-
-        -   name: timeline_profile
-            class: App\Entity\Timeline\Profile
-
-        -   name: timeline_manifesto
-            class: App\Entity\Timeline\Manifesto
-
-        -   name: chezvous_city
-            class: App\Entity\ChezVous\City
-
-        -   name: designation_candidate
-            class: App\Entity\Algolia\AlgoliaCandidature
-
         -   name: jemengage_timeline_feed
             class: App\Entity\Algolia\AlgoliaJeMengageTimelineFeed
             index_if: isIndexable

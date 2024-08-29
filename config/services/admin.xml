@@ -1025,66 +1025,6 @@
 
         <!--
         ######################################################
-        # Archives » Idées
-        ######################################################
-        -->
-
-        <service id="app.admin.timeline_manifesto" class="App\Admin\TimelineManifestoAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="OLDOLF » Programmes" group="Archives » Idées" />
-
-            <argument />
-            <argument>App\Entity\Timeline\Manifesto</argument>
-            <argument/>
-        </service>
-
-        <service id="app.admin.timeline_profile" class="App\Admin\TimelineProfileAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="OLDOLF » Profils" group="Archives » Idées" />
-
-            <argument />
-            <argument>App\Entity\Timeline\Profile</argument>
-            <argument/>
-        </service>
-
-        <service id="app.admin.timeline_theme" class="App\Admin\TimelineThemeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="OLDOLF » Thèmes" group="Archives » Idées" />
-
-            <argument />
-            <argument>App\Entity\Timeline\Theme</argument>
-            <argument/>
-        </service>
-
-        <service id="app.admin.timeline_measure" class="App\Admin\TimelineMeasureAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="OLDOLF » Mesures" group="Archives » Idées" />
-
-            <argument />
-            <argument>App\Entity\Timeline\Measure</argument>
-            <argument/>
-        </service>
-
-        <service id="app.admin.chez_vous_city" class="App\Admin\ChezVous\CityAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Chez vous » Villes" group="Archives » Idées" />
-
-            <argument />
-            <argument>App\Entity\ChezVous\City</argument>
-            <argument />
-
-            <call method="setTemplate">
-                <argument>edit</argument>
-                <argument>admin/chez_vous/city/edit.html.twig</argument>
-            </call>
-        </service>
-
-        <service id="app.admin.chez_vous_measure_type" class="App\Admin\ChezVous\MeasureTypeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Chez vous » Indices" group="Archives » Idées" />
-
-            <argument />
-            <argument>App\Entity\ChezVous\MeasureType</argument>
-            <argument />
-            <argument type="service" id="event_dispatcher"/>
-        </service>
-
-        <!--
-        ######################################################
         # Archives » Formation
         ######################################################
         -->
@@ -1302,21 +1242,8 @@
 
         <service id="app.admin.algolia_indexed_entity_extension" class="App\Admin\Extension\AlgoliaIndexedEntityAdminExtension">
             <argument type="service" id="App\Algolia\AlgoliaIndexedEntityManager" />
-
-            <tag name="sonata.admin.extension" target="app.admin.timeline_manifesto" />
-            <tag name="sonata.admin.extension" target="app.admin.timeline_profile" />
-            <tag name="sonata.admin.extension" target="app.admin.timeline_theme" />
-            <tag name="sonata.admin.extension" target="app.admin.timeline_measure" />
-            <tag name="sonata.admin.extension" target="app.admin.chez_vous_city" />
             <tag name="sonata.admin.extension" target="app.admin.custom_search_result" />
             <tag name="sonata.admin.extension" target="app.admin.proposal" />
-        </service>
-
-        <service id="app.admin.empty_translation_remover_extension" class="App\Admin\Extension\EmptyTranslationRemoverAdminExtension">
-            <tag name="sonata.admin.extension" target="app.admin.timeline_manifesto" />
-            <tag name="sonata.admin.extension" target="app.admin.timeline_profile" />
-            <tag name="sonata.admin.extension" target="app.admin.timeline_theme" />
-            <tag name="sonata.admin.extension" target="app.admin.timeline_measure" />
         </service>
 
         <service id="app.admin.enabled_filter_configuration_extension" class="App\Admin\Extension\DoctrineEnabledFilterConfigurationAdminExtension">
