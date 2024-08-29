@@ -4,13 +4,12 @@ import 'utils/dom';
 import 'utils/css';
 import 'utils/text';
 import 'utils/url';
-import { decode } from 'js-base64';
 import * as Sentry from '@sentry/browser';
 
 import './style/app.scss';
 
 window.Kernel = class {
-    static boot(release, sentryDsn, environment, algoliaAppId, algoliaAppPublicKey, algoliaBlacklist, algoliaIndexPrefix, user) {
+    static boot(release, sentryDsn, environment, user) {
         let app = false;
         let vendor = false;
 
@@ -39,10 +38,6 @@ window.Kernel = class {
                     sentryDsn,
                     release,
                     environment,
-                    algoliaAppId,
-                    algoliaAppPublicKey,
-                    algoliaBlacklist: decode(algoliaBlacklist).split(','),
-                    algoliaIndexPrefix,
                 });
             }
         };

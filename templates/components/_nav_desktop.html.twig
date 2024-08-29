@@ -67,11 +67,6 @@
                 </ul>
             </div>
         </div>
-        <li {% if not algolia_app_id or not algolia_api_key %} style="display: none;" {% endif %} class="b__nudge--left-medium">
-            <a class="je-cherche" href="javascript:void(0)">
-                {{ include('components/search.html.twig') }}
-            </a>
-        </li>
     </ul>
     <div class="l__row">
         <div class="font-roboto b__nudge--right">
