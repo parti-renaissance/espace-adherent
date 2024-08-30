@@ -2,10 +2,8 @@
 
 namespace App\Controller\Api\AppLink;
 
-use App\AppCodeEnum;
 use App\Controller\Renaissance\Adhesion\AdhesionController;
 use App\Entity\Adherent;
-use App\OAuth\App\AuthAppUrlManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,7 +22,6 @@ class AuthenticatedAppLinkController extends AbstractController
 
     public function __invoke(
         Request $request,
-        AuthAppUrlManager $appUrlManager,
         LoginLinkHandlerInterface $loginLinkHandler,
         string $key
     ): JsonResponse {
@@ -35,13 +32,11 @@ class AuthenticatedAppLinkController extends AbstractController
             throw new BadRequestHttpException(\sprintf('No route found for key "%s".', $key));
         }
 
-        $appCode = $appUrlManager->getAppCodeFromRequest($request) ?? AppCodeEnum::RENAISSANCE;
-
         return $this->json(
             $loginLinkHandler->createLoginLink(
                 $user,
                 $request,
-                $appCode,
+                null,
                 $this->generateUrl(self::KEYS_TO_ROUTES[$key])
             ),
         );
