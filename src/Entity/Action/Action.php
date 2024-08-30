@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Action\ActionTypeEnum;
+use App\Api\Filter\MySubscribedActionsFilter;
 use App\Collection\ZoneCollection;
 use App\Controller\Api\Action\CancelActionController;
 use App\Controller\Api\Action\RegisterController;
@@ -39,6 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['type' => 'exact'])]
 #[ApiFilter(filterClass: DateFilter::class, properties: ['date'])]
+#[ApiFilter(filterClass: MySubscribedActionsFilter::class)]
 #[ApiResource(
     operations: [
         new Get(
