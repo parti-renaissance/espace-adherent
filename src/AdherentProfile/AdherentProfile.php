@@ -76,10 +76,10 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var string
      */
-    #[Assert\Email(message: 'common.email.invalid')]
-    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
-    #[Assert\NotBlank(message: 'adherent_profile.email.not_blank')]
-    #[Groups(['profile_write'])]
+    #[Assert\Email(message: 'common.email.invalid', groups: ['Default', 'api_put_validation'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['Default', 'api_put_validation'])]
+    #[Assert\NotBlank(message: 'adherent_profile.email.not_blank', groups: ['Default', 'api_put_validation'])]
+    #[Groups(['profile_write', 'profile_email_change'])]
     private $emailAddress;
 
     /**

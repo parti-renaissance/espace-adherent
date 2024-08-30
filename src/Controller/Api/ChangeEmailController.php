@@ -2,14 +2,17 @@
 
 namespace App\Controller\Api;
 
+use App\AdherentProfile\AdherentProfile;
 use App\Entity\Adherent;
 use App\Membership\AdherentChangeEmailHandler;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route(path: '/v3/profile/email', name: 'app_api_user_profile_email')]
 class ChangeEmailController extends AbstractController
@@ -19,25 +22,50 @@ class ChangeEmailController extends AbstractController
     ) {
     }
 
-    #[IsGranted('ROLE_OAUTH_SCOPE_WRITE:PROFILE')]
     #[Route(path: '/request', name: '_request', methods: ['POST'])]
-    public function request(Request $request): JsonResponse
-    {
-        /** @var Adherent $user */
-        $user = $this->getUser();
+    #[Security("is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE')")]
+    public function request(
+        Request $request,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator
+    ): JsonResponse {
+        $json = $request->getContent();
 
-        $data = json_decode($request->getContent(), true);
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
 
-        if (!$newEmail = $data['email'] ?? null) {
-            return new JsonResponse('Property "email" is required.', Response::HTTP_BAD_REQUEST);
+        $adherentProfile = AdherentProfile::createFromAdherent($adherent);
+
+        $serializer->deserialize($json, AdherentProfile::class, 'json', [
+            AbstractObjectNormalizer::OBJECT_TO_POPULATE => $adherentProfile,
+            AbstractObjectNormalizer::DEEP_OBJECT_TO_POPULATE => true,
+            AbstractObjectNormalizer::GROUPS => [
+                'profile_email_change',
+            ],
+        ]);
+
+        $validationGroups = ['api_put_validation'];
+        if ($adherent->isAdherent()) {
+            $validationGroups[] = 'Default';
         }
 
-        if ($user->getEmailAddress() !== $newEmail) {
-            $this->changeEmailHandler->handleRequest($user, $newEmail);
+        $violations = $validator->validate($adherentProfile, null, $validationGroups);
+
+        if (
+            $adherent->getEmailAddress() !== $adherentProfile->getEmailAddress()
+            && 0 === $violations->count()
+        ) {
+            $this->changeEmailHandler->handleRequest($adherent, $adherentProfile->getEmailAddress());
 
             return $this->json([
                 'message' => 'Un mail vous a été envoyé pour confirmer votre changement d\'adresse email.',
             ]);
+        }
+
+        if (0 < $violations->count()) {
+            $errors = $serializer->serialize($violations, 'jsonproblem');
+
+            return JsonResponse::fromJsonString($errors, JsonResponse::HTTP_BAD_REQUEST);
         }
 
         return $this->json([
