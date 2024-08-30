@@ -164,3 +164,7 @@ Feature:
         Then the response status code should be 200
         And the JSON node "metadata.items_per_page" should be equal to "300"
         And the JSON node "metadata.total_items" should be equal to "50"
+        When I send a "GET" request to "/api/v3/actions?latitude=48.866667&longitude=2.333333&subscribedOnly=1"
+        Then the response status code should be 200
+        And the JSON node "metadata.items_per_page" should be equal to "300"
+        And the JSON node "metadata.total_items" should be equal to "25"

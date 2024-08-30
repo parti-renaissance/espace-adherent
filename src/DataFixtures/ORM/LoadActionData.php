@@ -18,7 +18,7 @@ class LoadActionData extends AbstractLoadPostAddressData implements DependentFix
 
         $adherents = [
             $this->getReference('adherent-1'),
-            $this->getReference('adherent-2'),
+            $this->getReference('president-ad-1'),
         ];
 
         for ($i = 1; $i <= 50; ++$i) {
@@ -26,7 +26,8 @@ class LoadActionData extends AbstractLoadPostAddressData implements DependentFix
             $action->type = $types[$i % \count($types)];
             $coordinate = $coordinates[array_rand($coordinates)];
             $action->setPostAddress($this->createPostAddress('68 rue du Rocher', '75008-75108', latitude: $coordinate['latitude'], longitude: $coordinate['longitude']));
-            $action->setAuthor(0 === $i % 2 ? $adherents[0] : $adherents[1]);
+            $action->setAuthor($author = (0 === $i % 2 ? $adherents[0] : $adherents[1]));
+            $action->addNewParticipant($author);
             $action->setZones([LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')]);
             $action->date = new \DateTime('+'.$i.' hours');
             $action->description = '<p>description</p>';
