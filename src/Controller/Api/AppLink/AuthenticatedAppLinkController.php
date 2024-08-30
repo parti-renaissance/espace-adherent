@@ -18,6 +18,8 @@ class AuthenticatedAppLinkController extends AbstractController
 {
     private const KEYS_TO_ROUTES = [
         'adhesion' => AdhesionController::ROUTE_NAME,
+        'donation' => 'app_donation_index',
+        'contribution' => 'app_renaissance_contribution_fill_revenue',
     ];
 
     public function __invoke(
