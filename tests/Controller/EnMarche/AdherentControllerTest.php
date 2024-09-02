@@ -401,9 +401,10 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         $errors = $crawler->filter('.em-form--error');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        self::assertSame(2, $errors->count());
+        self::assertSame(3, $errors->count());
         self::assertSame('Le mot de passe est invalide.', $errors->eq(0)->text());
         self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
+        self::assertSame('Votre mot de passe doit comporter au moins 8 caractères.', $errors->eq(2)->text());
 
         // Submit the profile form with valid data
         $this->client->submit($crawler->selectButton('adherent_change_password[submit]')->form(), [
