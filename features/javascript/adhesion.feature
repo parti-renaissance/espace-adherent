@@ -111,6 +111,7 @@ Feature:
         Then I should see "Le code d'activation est erroné."
         When I fill activation code from email
         And I press "Valider"
+        And I wait 3 seconds
         Then I should be on "/adhesion/creation-mot-de-passe" wait otherwise
         And I should see "Votre adresse email a bien été validée !"
 
