@@ -11,7 +11,7 @@ class RenaissanceReAdhesionConfirmationMessage extends AbstractRenaissanceMessag
         Adherent $adherent,
         string $profileLink,
         string $donationLink,
-        string $committeeLink
+        string $committeeLink,
     ): self {
         return new self(
             Uuid::uuid4(),

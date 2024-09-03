@@ -13,7 +13,7 @@ class RemoveDelegatorDelegatedAccessesHandler implements UnregistrationAdherentH
 
     public function __construct(
         MyTeamRepository $myTeamRepository,
-        DelegatedAccessRepository $delegatedAccessRepository
+        DelegatedAccessRepository $delegatedAccessRepository,
     ) {
         $this->myTeamRepository = $myTeamRepository;
         $this->delegatedAccessRepository = $delegatedAccessRepository;

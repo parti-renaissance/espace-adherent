@@ -15,7 +15,7 @@ class BaseEventCategoryExtension implements QueryCollectionExtensionInterface
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         if (is_subclass_of($resourceClass, BaseEventCategory::class)) {
             $alias = $queryBuilder->getRootAliases()[0];

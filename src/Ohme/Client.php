@@ -12,7 +12,7 @@ class Client implements ClientInterface
 
     public function __construct(
         private readonly HttpClientInterface $ohmeClient,
-        private readonly RateLimiterFactory $ohmeApiRequestLimiter
+        private readonly RateLimiterFactory $ohmeApiRequestLimiter,
     ) {
         $this->limiter = $this->ohmeApiRequestLimiter->create('ohme_api_request');
     }

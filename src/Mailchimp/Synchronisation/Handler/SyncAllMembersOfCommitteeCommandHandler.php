@@ -19,7 +19,7 @@ class SyncAllMembersOfCommitteeCommandHandler implements MessageHandlerInterface
     public function __construct(
         MessageBusInterface $bus,
         EntityManagerInterface $entityManager,
-        CommitteeMembershipRepository $repository
+        CommitteeMembershipRepository $repository,
     ) {
         $this->bus = $bus;
         $this->entityManager = $entityManager;

@@ -20,7 +20,7 @@ class UpdateFirebaseTopicsCommandHandler implements MessageHandlerInterface
         AdherentRepository $adherentRepository,
         JeMarcheMessaging $messaging,
         PushTokenRepository $pushTokenRepository,
-        NotificationTopicBuilder $notificationTopicBuilder
+        NotificationTopicBuilder $notificationTopicBuilder,
     ) {
         $this->adherentRepository = $adherentRepository;
         $this->messaging = $messaging;

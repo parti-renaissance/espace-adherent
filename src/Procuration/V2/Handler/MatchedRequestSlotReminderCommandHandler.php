@@ -16,7 +16,7 @@ class MatchedRequestSlotReminderCommandHandler
     public function __construct(
         private readonly RequestSlotRepository $requestSlotRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly ProcurationNotifier $procurationNotifier
+        private readonly ProcurationNotifier $procurationNotifier,
     ) {
     }
 

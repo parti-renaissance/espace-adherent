@@ -49,7 +49,7 @@ class UnregisterAdherentsCommand extends Command
         FilesystemOperator $defaultStorage,
         EntityManagerInterface $em,
         EventDispatcherInterface $eventDispatcher,
-        UnregistrationHandler $handler
+        UnregistrationHandler $handler,
     ) {
         $this->storage = $defaultStorage;
         $this->em = $em;

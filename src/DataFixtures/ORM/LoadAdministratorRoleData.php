@@ -34,7 +34,7 @@ class LoadAdministratorRoleData extends Fixture
         string $label,
         AdministratorRoleGroupEnum $group,
         ?string $description = null,
-        bool $enabled = true
+        bool $enabled = true,
     ): AdministratorRole {
         $role = new AdministratorRole();
 

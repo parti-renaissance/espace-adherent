@@ -40,7 +40,7 @@ abstract class AbstractAction
 
     public function __construct(
         UuidInterface $uuid,
-        \DateTimeInterface $date
+        \DateTimeInterface $date,
     ) {
         $this->uuid = $uuid;
         $this->date = $date;

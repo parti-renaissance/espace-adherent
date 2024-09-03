@@ -18,7 +18,7 @@ class AdminCommitteeCRUDController extends CRUDController
         Request $request,
         Committee $committee,
         CommitteeManagementAuthority $committeeManagementAuthority,
-        PostAddressFactory $addressFactory
+        PostAddressFactory $addressFactory,
     ): Response {
         $this->admin->checkAccess('approve');
 

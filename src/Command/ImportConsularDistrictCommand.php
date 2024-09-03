@@ -36,7 +36,7 @@ class ImportConsularDistrictCommand extends Command
         FilesystemOperator $defaultStorage,
         EntityManagerInterface $em,
         ConsularDistrictRepository $repository,
-        Geocoder $geocoder
+        Geocoder $geocoder,
     ) {
         $this->storage = $defaultStorage;
         $this->manager = $em;

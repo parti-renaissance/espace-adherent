@@ -44,7 +44,7 @@ class CommitteeAdmin extends AbstractAdmin
         $class,
         $baseControllerName,
         ObjectManager $om,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
     ) {
         parent::__construct($code, $class, $baseControllerName);
 

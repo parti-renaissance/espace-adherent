@@ -33,7 +33,7 @@ abstract class AbstractSlot
 
     public function __construct(
         Round $round,
-        ?UuidInterface $uuid = null
+        ?UuidInterface $uuid = null,
     ) {
         $this->round = $round;
         $this->uuid = $uuid ?? Uuid::uuid4();

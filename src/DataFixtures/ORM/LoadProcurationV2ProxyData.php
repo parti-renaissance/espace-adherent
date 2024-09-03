@@ -25,7 +25,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
     private Generator $faker;
 
     public function __construct(
-        private readonly PostAddressFactory $addressFactory
+        private readonly PostAddressFactory $addressFactory,
     ) {
         $this->faker = Factory::create('fr_FR');
     }
@@ -190,7 +190,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         bool $joinNewsletter = false,
         string $electorNumber = '123456789',
         int $slots = 1,
-        array $slotsUuidMapping = []
+        array $slotsUuidMapping = [],
     ): Proxy {
         $proxy = new Proxy(
             $uuid ?? Uuid::uuid4(),

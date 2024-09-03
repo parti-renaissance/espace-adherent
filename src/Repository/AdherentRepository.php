@@ -247,7 +247,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     private function createBoardMemberFilterQueryBuilder(
         BoardMemberFilter $filter,
-        Adherent $excludedMember
+        Adherent $excludedMember,
     ): QueryBuilder {
         $qb = $this->createBoardMemberQueryBuilder();
 
@@ -503,7 +503,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         string $firstName,
         string $lastName,
         \DateTimeInterface $birthDate,
-        Adherent $ignoredAdherent
+        Adherent $ignoredAdherent,
     ): ?Adherent {
         return $this
             ->createQueryBuilder('a')
@@ -543,7 +543,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         string $name,
         ?string $gender,
         array $zones,
-        int $limit = 10
+        int $limit = 10,
     ): array {
         if (!$zones || !$name) {
             return [];
@@ -649,7 +649,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     private function createCommitteeHostsQueryBuilder(
         ?Committee $committee = null,
-        bool $withoutSupervisors = false
+        bool $withoutSupervisors = false,
     ): QueryBuilder {
         $qb = $this->createQueryBuilder('a');
 
@@ -814,7 +814,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     public function findForPhoningCampaign(
         Campaign $campaign,
         ?Adherent $excludedAdherent = null,
-        int $limit = 10
+        int $limit = 10,
     ): PaginatorInterface {
         $queryBuilder = $this->createQueryBuilderForAudience($campaign->getAudience())
             ->select('adherent')
@@ -972,7 +972,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     public function findFullScoresByPapCampaign(
         PapCampaign $campaign,
         int $page = 1,
-        int $limit = 100
+        int $limit = 100,
     ): PaginatorInterface {
         $qb = $this->createQueryBuilder('adherent')
             ->select('adherent.firstName AS first_name, adherent.lastName AS last_name')
@@ -1092,7 +1092,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         \DateTimeInterface $from,
         \DateTimeInterface $to,
         bool $adherentRenaissance,
-        bool $sympathizerRenaissance
+        bool $sympathizerRenaissance,
     ): int {
         return $this
             ->createQueryBuilderForZones($zones, $adherentRenaissance, $sympathizerRenaissance)
@@ -1109,7 +1109,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     private function createQueryBuilderForZones(
         array $zones,
         bool $adherentRenaissance,
-        bool $sympathizerRenaissance
+        bool $sympathizerRenaissance,
     ): QueryBuilder {
         $qb = $this->createQueryBuilder('adherent')
             ->where('adherent.source = :source')

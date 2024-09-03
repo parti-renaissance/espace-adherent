@@ -125,7 +125,7 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         string $campaignUuid,
         string $excludedAdherent,
         string $assert,
-        array $adherentEmails
+        array $adherentEmails,
     ): void {
         $excludedAdherent = $this->adherentRepository->findOneByEmail($excludedAdherent);
         $campaign = $this->campaignRepository->findOneBy(['uuid' => $campaignUuid]);

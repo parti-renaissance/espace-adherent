@@ -9,7 +9,7 @@ class DeclaredMandateNotification
     public function __construct(
         public readonly Adherent $adherent,
         public readonly array $addedMandates,
-        public readonly array $removedMandates
+        public readonly array $removedMandates,
     ) {
     }
 }

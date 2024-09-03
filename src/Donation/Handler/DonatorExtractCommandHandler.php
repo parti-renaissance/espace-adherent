@@ -18,7 +18,7 @@ class DonatorExtractCommandHandler extends AbstractEmailExtractCommandHandler
     public function __construct(
         CsvResponseFactory $csvResponseFactory,
         TranslatorInterface $translator,
-        DonatorRepository $donatorRepository
+        DonatorRepository $donatorRepository,
     ) {
         parent::__construct($csvResponseFactory, $translator);
 

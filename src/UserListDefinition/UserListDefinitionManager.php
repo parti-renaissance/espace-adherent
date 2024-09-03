@@ -30,7 +30,7 @@ class UserListDefinitionManager
         MessageBusInterface $bus,
         UserListDefinitionRepository $userListDefinitionRepository,
         AuthorizationCheckerInterface $authorizationChecker,
-        UserListDefinitionHistoryManager $historyManager
+        UserListDefinitionHistoryManager $historyManager,
     ) {
         $this->em = $em;
         $this->bus = $bus;

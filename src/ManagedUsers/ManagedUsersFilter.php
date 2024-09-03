@@ -145,7 +145,7 @@ class ManagedUsersFilter
         array $managedZones = [],
         array $committeeUuids = [],
         array $cities = [],
-        array $zones = []
+        array $zones = [],
     ) {
         if (empty($managedZones) && empty($zones) && empty($committeeUuids)) {
             throw new \InvalidArgumentException('ManagedUser filter should have managed zones or selected zones or committee');

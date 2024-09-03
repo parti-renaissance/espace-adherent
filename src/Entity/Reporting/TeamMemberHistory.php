@@ -77,7 +77,7 @@ class TeamMemberHistory
         Adherent $adherent,
         string $action,
         ?Administrator $administrator = null,
-        ?Adherent $teamManager = null
+        ?Adherent $teamManager = null,
     ) {
         $this->team = $team;
         $this->adherent = $adherent;

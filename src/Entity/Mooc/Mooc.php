@@ -125,7 +125,7 @@ class Mooc
         ?string $shareTwitterText = null,
         ?string $shareFacebookText = null,
         ?string $shareEmailSubject = null,
-        ?string $shareEmailBody = null
+        ?string $shareEmailBody = null,
     ) {
         $this->title = $title;
         $this->description = $description;

@@ -24,7 +24,7 @@ class ReceivePayboxIpnResponseCommandHandler implements MessageHandlerInterface
         private readonly TransactionRepository $transactionRepository,
         private readonly DonationRepository $donationRepository,
         private readonly MessageBusInterface $bus,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
     ) {
     }
 

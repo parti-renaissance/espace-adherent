@@ -23,7 +23,7 @@ class CancelDonationController extends AbstractController
         Request $request,
         DonationRepository $donationRepository,
         PayboxPaymentUnsubscription $payboxPaymentUnsubscription,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();

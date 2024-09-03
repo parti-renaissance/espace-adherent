@@ -13,7 +13,7 @@ class DelegatedAccessManager
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly DelegatedAccessRepository $delegatedAccessRepository,
-        private readonly TokenRevocationAuthority $tokenRevocationAuthority
+        private readonly TokenRevocationAuthority $tokenRevocationAuthority,
     ) {
     }
 

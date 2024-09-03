@@ -377,7 +377,7 @@ class ManagedUser implements TranslatedTagInterface, ExposedImageOwnerInterface
         array $mandates = [],
         array $declaredMandates = [],
         array $cotisationDates = [],
-        ?\DateTime $campusRegisteredAt = null
+        ?\DateTime $campusRegisteredAt = null,
     ) {
         $this->status = $status;
         $this->source = $source;

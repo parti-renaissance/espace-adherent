@@ -25,7 +25,7 @@ class DeputyController extends AbstractController
     public function listCommitteesAction(
         Request $request,
         CommitteeRepository $committeeRepository,
-        ManagedCommitteesExporter $committeesExporter
+        ManagedCommitteesExporter $committeesExporter,
     ): Response {
         return $this->render('deputy/committees_list.html.twig', [
             'managedCommitteesJson' => $committeesExporter->exportAsJson(

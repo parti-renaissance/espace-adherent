@@ -59,7 +59,7 @@ class RestContext extends BehatchRestContext
     public function iAmLoggedWithDeviceViaOAuthWithClientAndScope(
         string $deviceUuid,
         string $clientName,
-        string $scope
+        string $scope,
     ): void {
         $identifier = uniqid();
 
@@ -304,7 +304,7 @@ class RestContext extends BehatchRestContext
     private function setAcceptApplicationJsonHeader(
         string $url,
         ?string $method = null,
-        ?PyStringNode &$body = null
+        ?PyStringNode &$body = null,
     ): void {
         if (preg_match('#^/?(api|oauth)/#', $url) && !str_contains($url, 'oauth/v2/auth')) {
             $this->iAddHeaderEqualTo('Accept', 'application/json');

@@ -72,7 +72,7 @@ class Project
         ?string $content = null,
         ?string $city = null,
         bool $isExpanded = false,
-        ?Measure $measure = null
+        ?Measure $measure = null,
     ) {
         $this->uuid = Uuid::uuid4();
         $this->position = $position;

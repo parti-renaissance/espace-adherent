@@ -58,7 +58,7 @@ class CommitteeEvent extends BaseEvent implements UserDocumentInterface, Synchro
         int $participantsCount = 0,
         ?string $slug = null,
         ?string $type = null,
-        string $timeZone = GeoCoder::DEFAULT_TIME_ZONE
+        string $timeZone = GeoCoder::DEFAULT_TIME_ZONE,
     ) {
         parent::__construct($uuid);
 

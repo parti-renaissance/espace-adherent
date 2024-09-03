@@ -14,7 +14,7 @@ use Ramsey\Uuid\Uuid;
 class ProcurationFactory
 {
     public function __construct(
-        private readonly PostAddressFactory $addressFactory
+        private readonly PostAddressFactory $addressFactory,
     ) {
     }
 

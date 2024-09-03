@@ -19,7 +19,7 @@ final class MyTeamScopeFilter extends AbstractScopeFilter
         Adherent $currentUser,
         ScopeGeneratorInterface $scopeGenerator,
         string $resourceClass,
-        array $context
+        array $context,
     ): void {
         $alias = $queryBuilder->getRootAliases()[0];
         $scope = $scopeGenerator->generate($currentUser);

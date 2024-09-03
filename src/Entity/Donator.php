@@ -99,7 +99,7 @@ class Donator
         ?string $city = null,
         ?string $country = null,
         ?string $emailAddress = null,
-        ?string $gender = null
+        ?string $gender = null,
     ) {
         $this->uuid = Uuid::uuid4();
         $this->lastName = $lastName;

@@ -15,7 +15,7 @@ class NotificationContext extends RawMinkContext
 
     public function __construct(
         NotificationRepository $notificationRepository,
-        PropertyAccessorInterface $propertyAccessor
+        PropertyAccessorInterface $propertyAccessor,
     ) {
         $this->notificationRepository = $notificationRepository;
         $this->propertyAccessor = $propertyAccessor;
@@ -54,7 +54,7 @@ class NotificationContext extends RawMinkContext
     private function checkNotificationProperty(
         Notification $notification,
         string $property,
-        string $expectedValue
+        string $expectedValue,
     ): void {
         $actualValue = $this->propertyAccessor->getValue($notification, $property);
 

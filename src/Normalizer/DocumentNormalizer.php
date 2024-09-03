@@ -17,7 +17,7 @@ class DocumentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
 
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly MimeTypesInterface $mimeTypes
+        private readonly MimeTypesInterface $mimeTypes,
     ) {
     }
 

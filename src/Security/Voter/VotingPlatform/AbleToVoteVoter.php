@@ -15,7 +15,7 @@ class AbleToVoteVoter extends AbstractAdherentVoter
 
     public function __construct(
         private readonly VoterRepository $voterRepository,
-        private readonly VoteRepository $voteRepository
+        private readonly VoteRepository $voteRepository,
     ) {
     }
 

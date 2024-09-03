@@ -26,7 +26,7 @@ class UserProvider extends EntityUserProvider implements UserProviderInterface
         LoggerInterface $logger,
         string $classOrAlias,
         ?string $property = null,
-        ?string $managerName = null
+        ?string $managerName = null,
     ) {
         parent::__construct($registry, $classOrAlias, $property, $managerName);
 

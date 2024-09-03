@@ -14,7 +14,7 @@ class CommitteeCandidacyDenormalizer implements DenormalizerInterface
 {
     public function __construct(
         private readonly CommitteeCandidaciesGroupRepository $candidaciesGroupRepository,
-        private readonly CommitteeMembershipRepository $committeeMembershipRepository
+        private readonly CommitteeMembershipRepository $committeeMembershipRepository,
     ) {
     }
 

@@ -19,7 +19,7 @@ class StartCampaignController extends AbstractController
     public function __invoke(
         Campaign $campaign,
         AdherentRepository $adherentRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): JsonResponse {
         /** @var Adherent $connectedAdherent */
         $connectedAdherent = $this->getUser();

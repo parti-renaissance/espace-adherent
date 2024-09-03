@@ -17,7 +17,7 @@ class PasswordGrant extends BasePasswordGrant
     public function respondToAccessTokenRequest(
         ServerRequestInterface $request,
         ResponseTypeInterface $responseType,
-        \DateInterval $accessTokenTTL
+        \DateInterval $accessTokenTTL,
     ) {
         // Validate request
         $client = $this->validateClient($request);

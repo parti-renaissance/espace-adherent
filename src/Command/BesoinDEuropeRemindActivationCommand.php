@@ -21,7 +21,7 @@ class BesoinDEuropeRemindActivationCommand extends Command
     public function __construct(
         private readonly MembershipNotifier $membershipNotifier,
         private readonly AdherentRepository $adherentRepository,
-        private readonly ObjectManager $em
+        private readonly ObjectManager $em,
     ) {
         parent::__construct();
     }

@@ -14,7 +14,7 @@ trait PaginatorTrait
         int $page,
         int $limit = 30,
         ?callable $queryModifier = null,
-        bool $useOutputWalkers = true
+        bool $useOutputWalkers = true,
     ): PaginatorInterface {
         if ($page < 1) {
             $page = 1;

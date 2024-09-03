@@ -73,7 +73,7 @@ class BuildingEventCommandHandler implements MessageHandlerInterface
     private function updateStatisticsCloseInfo(
         CampaignStatisticsOwnerInterface $object,
         BuildingEvent $buildingEvent,
-        bool $isAsync
+        bool $isAsync,
     ): void {
         $status = BuildingEventActionEnum::CLOSE === $buildingEvent->getAction() ? BuildingStatusEnum::COMPLETED : BuildingStatusEnum::ONGOING;
         $campaign = $buildingEvent->getCampaign();

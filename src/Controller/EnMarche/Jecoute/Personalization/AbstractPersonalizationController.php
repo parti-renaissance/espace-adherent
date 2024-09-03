@@ -34,7 +34,7 @@ abstract class AbstractPersonalizationController extends AbstractController
     public function editJecoutePersonalization(
         Request $request,
         EntityManagerInterface $manager,
-        RegionManager $regionManager
+        RegionManager $regionManager,
     ): Response {
         $adherent = $this->getMainUser($request->getSession());
         $zones = $this->getZones($adherent);

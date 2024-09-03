@@ -22,7 +22,7 @@ class SurveyScopeTargetValidator extends ConstraintValidator
     public function __construct(
         Security $security,
         ScopeGeneratorResolver $scopeGeneratorResolver,
-        ManagedZoneProvider $managedZoneProvider
+        ManagedZoneProvider $managedZoneProvider,
     ) {
         $this->managedZoneProvider = $managedZoneProvider;
         $this->security = $security;

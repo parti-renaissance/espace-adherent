@@ -16,7 +16,7 @@ class MaxFiscalYearDonation extends Constraint
         ?string $path = null,
         $options = null,
         ?array $groups = null,
-        $payload = null
+        $payload = null,
     ) {
         parent::__construct($options, $groups, $payload);
 

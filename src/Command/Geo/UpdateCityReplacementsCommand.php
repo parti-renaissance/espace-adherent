@@ -60,7 +60,7 @@ final class UpdateCityReplacementsCommand extends Command
     public function __construct(
         HttpClientInterface $httpClient,
         EntityManagerInterface $em,
-        CityRepository $cityRepository
+        CityRepository $cityRepository,
     ) {
         $this->httpClient = $httpClient;
         $this->em = $em;

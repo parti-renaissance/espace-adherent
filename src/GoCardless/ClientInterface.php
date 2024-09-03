@@ -19,7 +19,7 @@ interface ClientInterface
         ?string $city = null,
         ?string $postalCode = null,
         ?string $countryCode = null,
-        array $metadata = []
+        array $metadata = [],
     ): Customer;
 
     public function disableBankAccount(string $bankAccountId): CustomerBankAccount;
@@ -28,7 +28,7 @@ interface ClientInterface
         Customer $customer,
         string $iban,
         string $accountName,
-        array $metadata = []
+        array $metadata = [],
     ): CustomerBankAccount;
 
     public function cancelMandate(string $mandateId): Mandate;

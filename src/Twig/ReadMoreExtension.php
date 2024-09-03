@@ -19,7 +19,7 @@ class ReadMoreExtension extends AbstractExtension
         $length = 256,
         $salt = null,
         $readMoreLabelText = 'Show more',
-        $readLessLabelText = 'Show less'
+        $readLessLabelText = 'Show less',
     ) {
         if (mb_strlen($text) <= $length) {
             return $text;

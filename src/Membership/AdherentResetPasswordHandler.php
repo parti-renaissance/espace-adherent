@@ -27,7 +27,7 @@ class AdherentResetPasswordHandler
         MailerService $transactionalMailer,
         ObjectManager $manager,
         EncoderFactoryInterface $encoderFactory,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
     ) {
         $this->mailer = $transactionalMailer;
         $this->manager = $manager;
@@ -50,7 +50,7 @@ class AdherentResetPasswordHandler
         AdherentResetPasswordToken $token,
         string $newPassword,
         ?string $appCode = null,
-        bool $isCreation = false
+        bool $isCreation = false,
     ): void {
         $newEncodedPassword = $this->encoderFactory
             ->getEncoder(Adherent::class)

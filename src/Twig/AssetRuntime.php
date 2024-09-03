@@ -16,7 +16,7 @@ class AssetRuntime implements RuntimeExtensionInterface
         private readonly BaseAssetExtension $symfonyAssetExtension,
         private readonly string $secret,
         private readonly string $appVersion,
-        private readonly MimeTypesInterface $mimeTypes
+        private readonly MimeTypesInterface $mimeTypes,
     ) {
     }
 
@@ -24,7 +24,7 @@ class AssetRuntime implements RuntimeExtensionInterface
         string $path,
         array $parameters = [],
         int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH,
-        ?string $appDomain = null
+        ?string $appDomain = null,
     ): string {
         $parameters['cache'] = $this->appVersion;
 
@@ -34,7 +34,7 @@ class AssetRuntime implements RuntimeExtensionInterface
     public function transformedMediaAsset(
         Media $media,
         array $parameters = [],
-        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH,
     ): string {
         $parameters['cache'] = substr(md5($media->getUpdatedAt()->format('U')), 0, 20);
 
@@ -75,7 +75,7 @@ class AssetRuntime implements RuntimeExtensionInterface
         string $path,
         array $parameters,
         int $referenceType,
-        ?string $appDomain = null
+        ?string $appDomain = null,
     ): string {
         $parameters['fm'] = 'pjpg';
 

@@ -21,7 +21,7 @@ class CertificationAuthorityManager
         EntityManagerInterface $em,
         CertificationRequestDocumentManager $documentManager,
         CertificationRequestNotifier $messageNotifier,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ) {
         $this->em = $em;
         $this->documentManager = $documentManager;
@@ -48,7 +48,7 @@ class CertificationAuthorityManager
     public function approve(
         CertificationRequest $certificationRequest,
         ?Administrator $administrator = null,
-        bool $removeDocument = false
+        bool $removeDocument = false,
     ): void {
         $certificationRequest->approve();
         $certificationRequest->process($administrator);

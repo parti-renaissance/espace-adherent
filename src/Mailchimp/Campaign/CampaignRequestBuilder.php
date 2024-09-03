@@ -12,7 +12,7 @@ class CampaignRequestBuilder
 
     public function __construct(
         MailchimpObjectIdMapping $objectIdMapping,
-        SegmentConditionsBuilder $segmentConditionsBuilder
+        SegmentConditionsBuilder $segmentConditionsBuilder,
     ) {
         $this->objectIdMapping = $objectIdMapping;
         $this->segmentConditionsBuilder = $segmentConditionsBuilder;

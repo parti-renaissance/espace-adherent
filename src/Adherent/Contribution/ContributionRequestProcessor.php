@@ -13,7 +13,7 @@ class ContributionRequestProcessor
 
     public function __construct(
         StateMachine $electedRepresentativeContributionProcessWorkflow,
-        private readonly Security $security
+        private readonly Security $security,
     ) {
         $this->workflow = $electedRepresentativeContributionProcessWorkflow;
     }

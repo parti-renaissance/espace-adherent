@@ -26,7 +26,7 @@ class SearchController extends AbstractController
     public function __construct(
         SearchParametersFilter $searchParametersFilter,
         SearchResultsProvidersManager $searchResultsProvidersManager,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ) {
         $this->searchParametersFilter = $searchParametersFilter;
         $this->searchResultsProvidersManager = $searchResultsProvidersManager;
@@ -39,7 +39,7 @@ class SearchController extends AbstractController
         Request $request,
         EventGroupCategoryRepository $eventGroupCategoryRepository,
         EventCategoryRepository $eventCategoryRepository,
-        ?string $slug = null
+        ?string $slug = null,
     ): Response {
         if ($slug) {
             if ($category = $eventCategoryRepository->findOneBySlug($slug)) {

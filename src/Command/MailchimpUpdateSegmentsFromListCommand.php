@@ -33,7 +33,7 @@ class MailchimpUpdateSegmentsFromListCommand extends Command
         MailchimpSegmentRepository $segmentRepository,
         Driver $driver,
         string $mailchimpListId,
-        string $mailchimpElectedRepresentativeListId
+        string $mailchimpElectedRepresentativeListId,
     ) {
         $this->entityManager = $entityManager;
         $this->driver = $driver;

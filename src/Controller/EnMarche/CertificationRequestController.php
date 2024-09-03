@@ -40,7 +40,7 @@ class CertificationRequestController extends AbstractController
         Request $request,
         AuthAppUrlManager $appUrlManager,
         CertificationManager $certificationManager,
-        string $app_domain
+        string $app_domain,
     ): Response {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
         $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);

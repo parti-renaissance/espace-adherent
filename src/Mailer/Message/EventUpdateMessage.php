@@ -14,7 +14,7 @@ final class EventUpdateMessage extends Message
         Adherent $host,
         BaseEvent $event,
         string $eventUrl,
-        string $icalEventUrl
+        string $icalEventUrl,
     ): self {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one Adherent recipient is required.');

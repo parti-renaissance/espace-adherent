@@ -15,7 +15,7 @@ class AdminJecouteController extends AbstractController
     public function __invoke(
         Request $request,
         Survey $survey,
-        SurveyExporter $exporter
+        SurveyExporter $exporter,
     ): Response {
         if ($survey->isNational()) {
             $this->denyAccessUnlessGranted('ROLE_ADMIN_APPLICATION_MOBILE_NATIONAL_SURVEYS');

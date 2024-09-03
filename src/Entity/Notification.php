@@ -66,7 +66,7 @@ class Notification
         string $body,
         ?array $data = null,
         ?string $topic = null,
-        ?array $tokens = null
+        ?array $tokens = null,
     ) {
         $this->notificationClass = $notificationClass;
         $this->title = $title;

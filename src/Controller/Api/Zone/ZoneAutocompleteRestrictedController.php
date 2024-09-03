@@ -25,7 +25,7 @@ class ZoneAutocompleteRestrictedController extends AbstractZoneAutocompleteContr
         AuthorizationChecker $authorizationChecker,
         ZoneRepository $repository,
         ManagedZoneProvider $managedZoneProvider,
-        ScopeGeneratorResolver $scopeGeneratorResolver
+        ScopeGeneratorResolver $scopeGeneratorResolver,
     ): Response {
         $filter = $this->getFilter($request);
         $managedZones = [];

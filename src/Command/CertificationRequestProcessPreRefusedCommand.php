@@ -23,7 +23,7 @@ class CertificationRequestProcessPreRefusedCommand extends Command
 
     public function __construct(
         CertificationRequestRepository $certificationRequestRepository,
-        CertificationAuthorityManager $certificationAuthorityManager
+        CertificationAuthorityManager $certificationAuthorityManager,
     ) {
         $this->certificationRequestRepository = $certificationRequestRepository;
         $this->certificationAuthorityManager = $certificationAuthorityManager;

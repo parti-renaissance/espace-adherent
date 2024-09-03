@@ -183,7 +183,7 @@ class UserDocument
         string $mimeType,
         string $name,
         string $extension,
-        int $size
+        int $size,
     ): self {
         $document = new self(
             $mimeType,

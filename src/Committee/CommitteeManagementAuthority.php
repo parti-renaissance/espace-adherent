@@ -22,7 +22,7 @@ class CommitteeManagementAuthority
         CommitteeManager $manager,
         UrlGeneratorInterface $urlGenerator,
         MailerService $transactionalMailer,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
     ) {
         $this->manager = $manager;
         $this->urlGenerator = $urlGenerator;

@@ -36,7 +36,7 @@ class CommitteeMessage
         ?string $content = null,
         bool $published = false,
         string $createdAt = 'now',
-        bool $sendNotification = true
+        bool $sendNotification = true,
     ) {
         $this->author = $author;
         $this->committee = $committee;

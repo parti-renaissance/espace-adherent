@@ -31,7 +31,7 @@ class ElectedRepresentativeRenaissanceCaseTest extends AbstractRenaissanceWebTes
     public function testUpdateTriggerMessage(
         array $values,
         bool $isChangeMessageExpected,
-        bool $isDeleteMessageExpected
+        bool $isDeleteMessageExpected,
     ): void {
         $this->authenticateAsAdmin($this->client);
 

@@ -10,7 +10,7 @@ class ElectedRepresentativeTagsBuilder
     public const TRANSLATION_PREFIX = 'elected_representative.mailchimp_tag.';
 
     public function __construct(
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
     ) {
     }
 

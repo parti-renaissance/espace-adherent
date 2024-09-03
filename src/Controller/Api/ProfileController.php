@@ -87,7 +87,7 @@ class ProfileController extends AbstractController
         EntityManagerInterface $entityManager,
         DonationRepository $donationRepository,
         PayboxPaymentUnsubscription $payboxPaymentUnsubscription,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ): JsonResponse {
         /** @var Adherent $user */
         $user = $this->getUser();
@@ -116,7 +116,7 @@ class ProfileController extends AbstractController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         AdherentProfileHandler $handler,
-        Adherent $adherent
+        Adherent $adherent,
     ): JsonResponse {
         $json = $request->getContent();
 
@@ -195,7 +195,7 @@ class ProfileController extends AbstractController
     #[Security("is_granted('UNREGISTER', user)")]
     public function terminateMembershipAction(
         MembershipRequestHandler $handler,
-        TokenRevocationAuthority $tokenRevocationAuthority
+        TokenRevocationAuthority $tokenRevocationAuthority,
     ): Response {
         /** @var Adherent $user */
         $user = $this->getUser();

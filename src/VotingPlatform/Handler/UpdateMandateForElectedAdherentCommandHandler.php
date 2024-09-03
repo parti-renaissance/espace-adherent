@@ -22,7 +22,7 @@ class UpdateMandateForElectedAdherentCommandHandler implements MessageHandlerInt
     public function __construct(
         AdherentMandateFactory $mandateFactory,
         EntityManagerInterface $entityManager,
-        ElectionRepository $electionRepository
+        ElectionRepository $electionRepository,
     ) {
         $this->mandateFactory = $mandateFactory;
         $this->entityManager = $entityManager;

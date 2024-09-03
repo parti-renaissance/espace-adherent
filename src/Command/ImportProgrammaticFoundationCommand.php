@@ -234,7 +234,7 @@ class ImportProgrammaticFoundationCommand extends Command
         ?string $title,
         string $content,
         ?string $city,
-        ?string $tags
+        ?string $tags,
     ): void {
         $project = $this->createProject($position, $title, $content, $city, $tags);
         $measure->addProject($project);

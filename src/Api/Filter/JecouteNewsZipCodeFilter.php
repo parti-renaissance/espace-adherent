@@ -21,7 +21,7 @@ final class JecouteNewsZipCodeFilter extends AbstractFilter
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ) {
         if (News::class !== $resourceClass
             || 'zipCode' !== $property

@@ -23,7 +23,7 @@ class PapCampaignSurveyRepliesExporter
     public function __construct(
         DataSurveyRepository $dataSurveyRepository,
         SurveyQuestionRepository $surveyQuestionRepository,
-        SonataExporter $exporter
+        SonataExporter $exporter,
     ) {
         $this->dataSurveyRepository = $dataSurveyRepository;
         $this->surveyQuestionRepository = $surveyQuestionRepository;

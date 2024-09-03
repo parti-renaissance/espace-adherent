@@ -14,7 +14,7 @@ final class VotingPlatformCandidacyInvitationCreatedMessage extends AbstractVoti
         Adherent $candidate,
         Designation $designation,
         string $invitationUrl,
-        array $params = []
+        array $params = [],
     ): self {
         $emailTitle = self::getMailSubjectPrefix($designation);
 

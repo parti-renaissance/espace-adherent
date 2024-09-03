@@ -21,7 +21,7 @@ class EventFactory
     public function __construct(
         ImageManager $imageManager,
         ZoneMatcher $zoneMatcher,
-        ?PostAddressFactory $addressFactory = null
+        ?PostAddressFactory $addressFactory = null,
     ) {
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
         $this->zoneMatcher = $zoneMatcher;

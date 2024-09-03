@@ -37,7 +37,7 @@ class InternalApiProxyController extends AbstractController
         InternalApiApplication $internalApiApplication,
         string $path,
         HttpClientInterface $internalApiProxyClient,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
     ): Response {
         /** @var Adherent $user */
         $user = $this->getUser();

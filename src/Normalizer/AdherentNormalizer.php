@@ -14,7 +14,7 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
 
     public function __construct(
         private readonly array $adherentInterests,
-        private readonly CampaignHistoryRepository $campaignHistoryRepository
+        private readonly CampaignHistoryRepository $campaignHistoryRepository,
     ) {
     }
 

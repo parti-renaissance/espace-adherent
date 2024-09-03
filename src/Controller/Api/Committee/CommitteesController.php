@@ -29,7 +29,7 @@ class CommitteesController extends AbstractController
     #[Security("is_granted('MEMBER_OF_COMMITTEE', committee)")]
     public function getCommitteeCandidaciesAction(
         Committee $committee,
-        CommitteeMembershipRepository $repository
+        CommitteeMembershipRepository $repository,
     ): Response {
         $memberships = $repository->getCandidacyMemberships($committee->getCommitteeElection());
 
@@ -63,7 +63,7 @@ class CommitteesController extends AbstractController
         Committee $committee,
         Request $request,
         CandidacyManager $candidacyManager,
-        CommitteeMembershipRepository $repository
+        CommitteeMembershipRepository $repository,
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();

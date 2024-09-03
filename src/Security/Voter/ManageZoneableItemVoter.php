@@ -22,7 +22,7 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
         private readonly SessionInterface $session,
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
         private readonly ManagedZoneProvider $managedZoneProvider,
-        private readonly AuthorizationCheckerInterface $authorizationChecker
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 

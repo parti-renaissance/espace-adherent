@@ -15,7 +15,7 @@ class Client implements ClientInterface
 
     public function __construct(
         private readonly string $goCardlessApiKey,
-        private readonly string $goCardlessEnvironment
+        private readonly string $goCardlessEnvironment,
     ) {
         $this->client = $this->createClient();
     }
@@ -33,7 +33,7 @@ class Client implements ClientInterface
         ?string $city = null,
         ?string $postalCode = null,
         ?string $countryCode = null,
-        array $metadata = []
+        array $metadata = [],
     ): Customer {
         return $this->client->customers()->create([
             'params' => [
@@ -58,7 +58,7 @@ class Client implements ClientInterface
         Customer $customer,
         string $iban,
         string $accountName,
-        array $metadata = []
+        array $metadata = [],
     ): CustomerBankAccount {
         return $this->client->customerBankAccounts()->create([
             'params' => [

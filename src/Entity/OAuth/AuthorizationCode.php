@@ -20,7 +20,7 @@ class AuthorizationCode extends AbstractGrantToken
         string $identifier,
         \DateTimeImmutable $expiryDateTime,
         string $redirectUri,
-        ?Client $client = null
+        ?Client $client = null,
     ) {
         parent::__construct($uuid, $user, $identifier, $expiryDateTime, $client);
 

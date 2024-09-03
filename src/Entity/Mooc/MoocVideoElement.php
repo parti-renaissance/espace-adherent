@@ -26,7 +26,7 @@ class MoocVideoElement extends BaseMoocElement
         ?string $shareEmailObject = null,
         ?string $shareEmailBody = null,
         ?string $youtubeId = null,
-        ?\DateTimeInterface $duration = null
+        ?\DateTimeInterface $duration = null,
     ) {
         parent::__construct($title, $content, $shareTwitterText, $shareFacebokText, $shareEmailObject, $shareEmailBody);
         $this->youtubeId = $youtubeId;

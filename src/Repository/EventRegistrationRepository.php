@@ -107,7 +107,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
     public function findActivityUpcomingAdherentRegistrations(
         Adherent $adherent,
         int $page = 1,
-        int $limit = 5
+        int $limit = 5,
     ): PaginatorInterface {
         $queryBuilder = $this->createAdherentEventRegistrationQueryBuilder($adherent->getUuidAsString())
             ->andWhere('e.published = true')
@@ -148,7 +148,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
     public function findActivityPastAdherentRegistrations(
         Adherent $adherent,
         int $page = 1,
-        int $limit = 5
+        int $limit = 5,
     ): PaginatorInterface {
         $queryBuilder = $this
             ->createAdherentEventRegistrationQueryBuilder($adherent->getUuidAsString())

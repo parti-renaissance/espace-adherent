@@ -63,7 +63,7 @@ class Measure
         ?string $content = null,
         bool $isLeading = false,
         bool $isExpanded = false,
-        ?SubApproach $subApproach = null
+        ?SubApproach $subApproach = null,
     ) {
         $this->uuid = Uuid::uuid4();
         $this->position = $position;

@@ -22,7 +22,7 @@ class ActionExtension implements QueryCollectionExtensionInterface
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         if (!is_a($resourceClass, Action::class, true)) {
             return;

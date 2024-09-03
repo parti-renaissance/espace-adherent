@@ -25,7 +25,7 @@ class SendEmailValidationSubscriber implements EventSubscriberInterface
         EntityManagerInterface $entityManager,
         MailerService $transactionalMailer,
         MembershipNotifier $notifier,
-        AuthAppUrlManager $appUrlManager
+        AuthAppUrlManager $appUrlManager,
     ) {
         $this->entityManager = $entityManager;
         $this->mailer = $transactionalMailer;

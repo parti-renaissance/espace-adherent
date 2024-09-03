@@ -15,7 +15,7 @@ class FilesControllerTest extends AbstractEnMarcheWebTestCase
     public function testFilesListIsDisplayedSuccessfully(
         string $uriPrefix,
         string $userEmail,
-        int $expectedDocumentsNumber
+        int $expectedDocumentsNumber,
     ): void {
         $this->authenticateAsAdherent($this->client, $userEmail);
 

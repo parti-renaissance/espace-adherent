@@ -73,7 +73,7 @@ class UserListDefinitionHistory
         string $action,
         ElectedRepresentative $electedRepresentative,
         UserListDefinition $userListDefinition,
-        UserInterface $user
+        UserInterface $user,
     ) {
         if (!$user instanceof Adherent && !$user instanceof Administrator) {
             throw new \InvalidArgumentException(\sprintf('User must be an instance of "%s" or "%s".', Adherent::class, Administrator::class));
@@ -129,7 +129,7 @@ class UserListDefinitionHistory
     public static function createAdd(
         UserInterface $user,
         ElectedRepresentative $electedRepresentative,
-        UserListDefinition $userListDefinition
+        UserListDefinition $userListDefinition,
     ): self {
         return new self(self::ACTION_ADD, $electedRepresentative, $userListDefinition, $user);
     }
@@ -137,7 +137,7 @@ class UserListDefinitionHistory
     public static function createRemove(
         UserInterface $user,
         ElectedRepresentative $electedRepresentative,
-        UserListDefinition $userListDefinition
+        UserListDefinition $userListDefinition,
     ): self {
         return new self(self::ACTION_REMOVE, $electedRepresentative, $userListDefinition, $user);
     }

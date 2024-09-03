@@ -23,14 +23,14 @@ class UpdateAdherentMessageFilterController extends AbstractController
     public function __construct(
         private readonly AdherentMessageManager $manager,
         private readonly SerializerInterface $serializer,
-        private readonly ValidatorInterface $validator
+        private readonly ValidatorInterface $validator,
     ) {
     }
 
     public function __invoke(
         Request $request,
         AbstractAdherentMessage $data,
-        ScopeGeneratorResolver $scopeGeneratorResolver
+        ScopeGeneratorResolver $scopeGeneratorResolver,
     ): Response {
         if ($data->isSent()) {
             throw new BadRequestHttpException('This message has been already sent. You cannot update it.');

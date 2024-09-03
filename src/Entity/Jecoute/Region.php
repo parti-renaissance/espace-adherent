@@ -131,7 +131,7 @@ class Region
         ?string $logo = null,
         ?string $banner = null,
         ?string $externalLink = null,
-        bool $enabled = true
+        bool $enabled = true,
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->zone = $zone;

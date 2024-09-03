@@ -16,7 +16,7 @@ class RemoveAdherentTokensHandler implements UnregistrationAdherentHandlerInterf
     public function __construct(
         EntityManagerInterface $manager,
         AdherentActivationTokenRepository $activationTokenRepository,
-        AdherentResetPasswordTokenRepository $resetPasswordTokenRepository
+        AdherentResetPasswordTokenRepository $resetPasswordTokenRepository,
     ) {
         $this->manager = $manager;
         $this->activationTokenRepository = $activationTokenRepository;

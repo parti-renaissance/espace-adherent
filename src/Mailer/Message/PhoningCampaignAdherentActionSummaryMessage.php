@@ -11,7 +11,7 @@ class PhoningCampaignAdherentActionSummaryMessage extends Message
         CampaignHistory $campaignHistory,
         ?string $emailSubscribeUrl,
         ?string $smsPreferenceUrl,
-        ?string $editProfilUrl
+        ?string $editProfilUrl,
     ): self {
         return new self(
             Uuid::uuid4(),

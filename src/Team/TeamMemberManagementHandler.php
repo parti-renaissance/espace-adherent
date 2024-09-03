@@ -20,7 +20,7 @@ class TeamMemberManagementHandler
     public function __construct(
         EntityManagerInterface $entityManager,
         AdherentRepository $adherentRepository,
-        Security $security
+        Security $security,
     ) {
         $this->entityManager = $entityManager;
         $this->adherentRepository = $adherentRepository;

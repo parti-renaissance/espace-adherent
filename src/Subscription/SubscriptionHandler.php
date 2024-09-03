@@ -30,7 +30,7 @@ class SubscriptionHandler
     public function __construct(
         EntityManagerInterface $em,
         EmailSubscriptionHistoryHandler $subscriptionHistoryHandler,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
     ) {
         $this->em = $em;
         $this->subscriptionHistoryHandler = $subscriptionHistoryHandler;
@@ -78,7 +78,7 @@ class SubscriptionHandler
     public function addDefaultTypesToAdherent(
         Adherent $adherent,
         bool $allowEmailNotifications,
-        bool $allowMobileNotifications
+        bool $allowMobileNotifications,
     ): void {
         $this->subscriptionTypeRepository->addToAdherent(
             $adherent,

@@ -79,7 +79,7 @@ class CommitteeEventManagerController extends AbstractController
     public function cancelAction(
         Request $request,
         CommitteeEvent $event,
-        EventCanceledHandler $eventCanceledHandler
+        EventCanceledHandler $eventCanceledHandler,
     ): Response {
         $form = $this->createForm(FormType::class);
         $form->handleRequest($request);
@@ -113,7 +113,7 @@ class CommitteeEventManagerController extends AbstractController
     public function exportMembersAction(
         Request $request,
         BaseEvent $event,
-        EventRegistrationExporter $exporter
+        EventRegistrationExporter $exporter,
     ): Response {
         $registrations = $this->getRegistrations($request, $event, self::ACTION_EXPORT);
 
@@ -138,7 +138,7 @@ class CommitteeEventManagerController extends AbstractController
     public function contactMembersAction(
         Request $request,
         BaseEvent $event,
-        EventContactMembersCommandHandler $handler
+        EventContactMembersCommandHandler $handler,
     ): Response {
         $registrations = $this->getRegistrations($request, $event, self::ACTION_CONTACT);
 

@@ -18,7 +18,7 @@ class AdherentRelationListener implements EventSubscriberInterface
     public function __construct(
         private readonly AdherentRepository $adherentRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly MessageBusInterface $bus
+        private readonly MessageBusInterface $bus,
     ) {
     }
 

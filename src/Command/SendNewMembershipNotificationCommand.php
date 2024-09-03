@@ -32,7 +32,7 @@ class SendNewMembershipNotificationCommand extends Command
         private readonly CommandHistoryRepository $commandHistoryRepository,
         private readonly AdherentRepository $adherentRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly MessageBusInterface $bus
+        private readonly MessageBusInterface $bus,
     ) {
         parent::__construct();
     }

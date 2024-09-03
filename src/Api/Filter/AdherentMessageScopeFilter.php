@@ -26,7 +26,7 @@ final class AdherentMessageScopeFilter extends AbstractScopeFilter
         Adherent $currentUser,
         ScopeGeneratorInterface $scopeGenerator,
         string $resourceClass,
-        array $context
+        array $context,
     ): void {
         $alias = $queryBuilder->getRootAliases()[0];
         $user = $scopeGenerator->isDelegatedAccess() ? $scopeGenerator->getDelegatedAccess()->getDelegator() : $currentUser;
@@ -54,7 +54,7 @@ final class AdherentMessageScopeFilter extends AbstractScopeFilter
 
     #[Required]
     public function setAuthoredItemsCollectionExtension(
-        AuthoredItemsCollectionExtension $authoredItemsCollectionExtension
+        AuthoredItemsCollectionExtension $authoredItemsCollectionExtension,
     ): void {
         $this->authoredItemsCollectionExtension = $authoredItemsCollectionExtension;
     }

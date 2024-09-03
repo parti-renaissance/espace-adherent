@@ -42,7 +42,7 @@ class CommitteeController extends AbstractController
     public function showAction(
         Request $request,
         Committee $committee,
-        AnonymousFollowerSession $anonymousFollowerSession
+        AnonymousFollowerSession $anonymousFollowerSession,
     ): Response {
         if ($this->isGranted('IS_ANONYMOUS') && $authenticate = $anonymousFollowerSession->start($request)) {
             return $authenticate;
@@ -73,7 +73,7 @@ class CommitteeController extends AbstractController
         EntityManagerInterface $manager,
         Request $request,
         Committee $committee,
-        CommitteeFeedItem $committeeFeedItem
+        CommitteeFeedItem $committeeFeedItem,
     ): Response {
         $form = $this
             ->createForm(CommitteeFeedItemMessageType::class, $committeeFeedItem)
@@ -102,7 +102,7 @@ class CommitteeController extends AbstractController
         EntityManagerInterface $em,
         Request $request,
         Committee $committee,
-        CommitteeFeedItem $committeeFeedItem
+        CommitteeFeedItem $committeeFeedItem,
     ): Response {
         $form = $this->createDeleteForm('', 'committee_feed_delete', $request);
 
@@ -143,7 +143,7 @@ class CommitteeController extends AbstractController
         Request $request,
         Committee $committee,
         CommitteeManagementAuthority $committeeManagementAuthority,
-        CsrfTokenManagerInterface $csrfTokenManager
+        CsrfTokenManagerInterface $csrfTokenManager,
     ): Response {
         if (!$this->isCsrfTokenValid('committee.follow', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to follow committee.');
@@ -165,7 +165,7 @@ class CommitteeController extends AbstractController
     public function unfollowAction(
         Request $request,
         Committee $committee,
-        CsrfTokenManagerInterface $csrfTokenManager
+        CsrfTokenManagerInterface $csrfTokenManager,
     ): Response {
         if (!$this->isCsrfTokenValid('committee.unfollow', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow committee.');
@@ -189,7 +189,7 @@ class CommitteeController extends AbstractController
         bool $enable,
         Request $request,
         Committee $committee,
-        MessageBusInterface $bus
+        MessageBusInterface $bus,
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();

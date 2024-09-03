@@ -12,7 +12,7 @@ class GetSurveysKpiController
     public function __invoke(
         ScopeGeneratorResolver $scopeGeneratorResolver,
         NationalSurveyRepository $nationalSurveyRepository,
-        LocalSurveyRepository $localSurveyRepository
+        LocalSurveyRepository $localSurveyRepository,
     ): array {
         $scope = $scopeGeneratorResolver->generate();
 

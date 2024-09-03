@@ -44,7 +44,7 @@ class QrCode
         ?string $name = null,
         ?string $redirectUrl = null,
         ?string $host = null,
-        int $count = 0
+        int $count = 0,
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->name = $name;

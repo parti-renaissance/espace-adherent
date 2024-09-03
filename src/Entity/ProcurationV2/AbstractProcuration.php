@@ -118,7 +118,7 @@ abstract class AbstractProcuration implements TranslatedTagInterface
         ?Adherent $adherent = null,
         bool $joinNewsletter = false,
         ?string $clientIp = null,
-        ?\DateTimeInterface $createdAt = null
+        ?\DateTimeInterface $createdAt = null,
     ) {
         $this->uuid = $uuid;
         $this->rounds = new ArrayCollection($rounds);

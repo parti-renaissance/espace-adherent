@@ -28,7 +28,7 @@ class CertificationRequestProcessCommandHandler implements MessageHandlerInterfa
         EntityManagerInterface $em,
         CertificationRequestRepository $certificationRequestRepository,
         iterable $handlers,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->em = $em;
         $this->certificationRequestRepository = $certificationRequestRepository;

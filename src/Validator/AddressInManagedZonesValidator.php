@@ -19,7 +19,7 @@ class AddressInManagedZonesValidator extends AbstractInManagedZoneValidator
         Security $security,
         SessionInterface $session,
         ZoneMatcher $zoneMatcher,
-        ManagedZoneProvider $managedZoneProvider
+        ManagedZoneProvider $managedZoneProvider,
     ) {
         parent::__construct($managedZoneProvider, $security, $session);
 

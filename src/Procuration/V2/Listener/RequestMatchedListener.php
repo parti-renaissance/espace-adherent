@@ -15,7 +15,7 @@ class RequestMatchedListener implements EventSubscriberInterface
 
     public function __construct(
         private readonly ProcurationNotifier $procurationNotifier,
-        private readonly MatchingHistoryHandler $matchingHistoryHandler
+        private readonly MatchingHistoryHandler $matchingHistoryHandler,
     ) {
     }
 

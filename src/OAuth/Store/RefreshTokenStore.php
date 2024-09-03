@@ -18,7 +18,7 @@ class RefreshTokenStore implements OAuthRefreshTokenRepositoryInterface
 
     public function __construct(
         PersistentTokenFactory $persistentTokenFactory,
-        RefreshTokenRepository $refreshTokenRepository
+        RefreshTokenRepository $refreshTokenRepository,
     ) {
         $this->persistentTokenFactory = $persistentTokenFactory;
         $this->refreshTokenRepository = $refreshTokenRepository;

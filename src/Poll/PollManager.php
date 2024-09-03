@@ -25,7 +25,7 @@ class PollManager
         EntityManagerInterface $entityManager,
         ZoneRepository $zoneRepository,
         NationalPollRepository $nationalPollRepository,
-        LocalPollRepository $localPollRepository
+        LocalPollRepository $localPollRepository,
     ) {
         $this->bus = $bus;
         $this->entityManager = $entityManager;

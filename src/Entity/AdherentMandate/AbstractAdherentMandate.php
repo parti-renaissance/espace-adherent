@@ -87,7 +87,7 @@ abstract class AbstractAdherentMandate implements AdherentMandateInterface
         ?\DateTime $beginAt = null,
         ?\DateTime $finishAt = null,
         ?string $quality = null,
-        bool $isProvisional = false
+        bool $isProvisional = false,
     ) {
         $this->uuid = Uuid::uuid4();
         $this->adherent = $adherent;

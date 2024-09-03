@@ -28,7 +28,7 @@ class ContactRegistrationCommandHandler implements MessageHandlerInterface, Logg
         ContactRepository $contactRepository,
         MembershipRequestHandler $membershipRequestHandler,
         AdherentRepository $adherentRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->em = $em;
         $this->contactRepository = $contactRepository;

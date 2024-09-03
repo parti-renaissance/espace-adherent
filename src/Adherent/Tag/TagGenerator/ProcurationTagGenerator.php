@@ -11,7 +11,7 @@ class ProcurationTagGenerator extends AbstractTagGenerator
 {
     public function __construct(
         private readonly ProxyRepository $proxyRepository,
-        private readonly RequestRepository $requestRepository
+        private readonly RequestRepository $requestRepository,
     ) {
     }
 

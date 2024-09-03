@@ -20,7 +20,7 @@ class SendWelcomeMailSubscriber implements EventSubscriberInterface
     public function __construct(
         MailerService $transactionalMailer,
         UrlGeneratorInterface $urlGenerator,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->mailer = $transactionalMailer;
         $this->urlGenerator = $urlGenerator;

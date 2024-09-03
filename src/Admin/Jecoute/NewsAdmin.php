@@ -39,7 +39,7 @@ class NewsAdmin extends AbstractAdmin
         $baseControllerName,
         Security $security,
         ZoneRepository $zoneRepository,
-        NewsHandler $newsHandler
+        NewsHandler $newsHandler,
     ) {
         parent::__construct($code, $class, $baseControllerName);
 

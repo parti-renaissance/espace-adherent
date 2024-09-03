@@ -13,7 +13,7 @@ class UpdateApplicationRequestHandler implements UnregistrationAdherentHandlerIn
 
     public function __construct(
         VolunteerRequestRepository $volunteerRequestRepository,
-        RunningMateRequestRepository $runningMateRequestRepository
+        RunningMateRequestRepository $runningMateRequestRepository,
     ) {
         $this->volunteerRequestRepository = $volunteerRequestRepository;
         $this->runningMateRequestRepository = $runningMateRequestRepository;

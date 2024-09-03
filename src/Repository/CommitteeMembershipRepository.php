@@ -256,7 +256,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         Committee $committee,
         ?ListFilterObject $filter = null,
         int $page = 1,
-        ?int $limit = 30
+        ?int $limit = 30,
     ): iterable {
         $qb = $this
             ->createCommitteeMembershipsQueryBuilder($committee)
@@ -553,7 +553,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     public function findVotingForElectionMemberships(
         Committee $committee,
         Designation $designation,
-        bool $withCertified = true
+        bool $withCertified = true,
     ): array {
         return $this->createQueryBuilderForVotingMemberships($committee, $designation, $withCertified)
             ->getQuery()
@@ -625,7 +625,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     private function createQueryBuilderForVotingMemberships(
         Committee $committee,
         Designation $designation,
-        bool $onlyCertified = true
+        bool $onlyCertified = true,
     ): QueryBuilder {
         $refDate = \DateTimeImmutable::createFromMutable($designation->getVoteEndDate());
 
@@ -684,7 +684,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 
     public function findMembershipFromAdherentUuidAndCommittee(
         UuidInterface $adherentUuid,
-        Committee $committee
+        Committee $committee,
     ): ?CommitteeMembership {
         return $this
             ->createQueryBuilder('cm')

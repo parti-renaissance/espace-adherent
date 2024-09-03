@@ -11,7 +11,7 @@ class DonationManager
 {
     public function __construct(
         private readonly DonationRepository $donationRepository,
-        private readonly TransactionRepository $transactionRepository
+        private readonly TransactionRepository $transactionRepository,
     ) {
     }
 
@@ -61,7 +61,7 @@ class DonationManager
         bool $isSubscription,
         bool $isMembership,
         string $status,
-        UuidInterface $uuid
+        UuidInterface $uuid,
     ): DonationValueObject {
         return new DonationValueObject($date, $amount, $type, $isSubscription, $isMembership, $status, $uuid);
     }

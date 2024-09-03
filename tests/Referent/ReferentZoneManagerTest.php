@@ -16,7 +16,7 @@ class ReferentZoneManagerTest extends TestCase
         bool $isUpdateNeeded,
         string $country,
         ?string $inseeCode,
-        array $zoneCodes
+        array $zoneCodes,
     ): void {
         $referentZoneManager = new ReferentZoneManager($this->createMock(ZoneRepository::class));
         $adherent = $this->createAdherent($country, $inseeCode, $zoneCodes);

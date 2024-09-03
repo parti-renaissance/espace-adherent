@@ -21,7 +21,7 @@ class UnregistrationCommand
         array $reasons = [],
         ?string $comment = null,
         ?Administrator $excludedBy = null,
-        bool $notification = false
+        bool $notification = false,
     ) {
         $this->reasons = $reasons;
         $this->comment = $comment;

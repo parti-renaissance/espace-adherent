@@ -22,7 +22,7 @@ class ElectionManager
         Adherent $adherent,
         array $types = [DesignationTypeEnum::LOCAL_ELECTION, DesignationTypeEnum::LOCAL_POLL],
         ?int $limit = null,
-        bool $withVoteActiveOnly = false
+        bool $withVoteActiveOnly = false,
     ): array {
         $cacheKey = implode('-', array_merge([$adherent->getId(), $withVoteActiveOnly], $types));
 

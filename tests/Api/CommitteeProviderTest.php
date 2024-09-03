@@ -93,7 +93,7 @@ class CommitteeProviderTest extends TestCase
         string $slug,
         string $name,
         ?float $latitude = null,
-        ?float $longitude = null
+        ?float $longitude = null,
     ) {
         $committee = $this->createMock(Committee::class);
         $committee->expects($this->any())->method('isGeocoded')->willReturn($latitude && $longitude);

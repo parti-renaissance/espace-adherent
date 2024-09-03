@@ -13,7 +13,7 @@ abstract class AbstractContributionController extends AbstractController
 {
     public function __construct(
         protected readonly ContributionRequestStorage $storage,
-        protected readonly ContributionRequestProcessor $processor
+        protected readonly ContributionRequestProcessor $processor,
     ) {
     }
 

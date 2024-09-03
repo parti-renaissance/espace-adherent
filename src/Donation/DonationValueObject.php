@@ -15,7 +15,7 @@ class DonationValueObject
         private bool $subscription,
         private bool $membership,
         private string $status,
-        private UuidInterface $uuid
+        private UuidInterface $uuid,
     ) {
     }
 

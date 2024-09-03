@@ -76,7 +76,7 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
     public static function create(
         string $adherentUuid,
         string $hash,
-        string $lifetime = '+1 day'
+        string $lifetime = '+1 day',
     ): AdherentExpirableTokenInterface {
         $timestamp = new \DateTime('now');
 

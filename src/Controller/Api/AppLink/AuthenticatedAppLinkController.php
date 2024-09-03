@@ -25,7 +25,7 @@ class AuthenticatedAppLinkController extends AbstractController
     public function __invoke(
         Request $request,
         LoginLinkHandlerInterface $loginLinkHandler,
-        string $key
+        string $key,
     ): JsonResponse {
         /** @var Adherent $user */
         $user = $this->getUser();

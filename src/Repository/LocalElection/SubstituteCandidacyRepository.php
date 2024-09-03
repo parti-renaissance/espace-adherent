@@ -16,7 +16,7 @@ class SubstituteCandidacyRepository extends ServiceEntityRepository
 
     public function findOneByCandidaciesGroupAndEmail(
         CandidaciesGroup $candidaciesGroup,
-        string $email
+        string $email,
     ): ?SubstituteCandidacy {
         return $this->createQueryBuilder('substitute')
             ->innerJoin('substitute.candidaciesGroup', 'candidacies_group')

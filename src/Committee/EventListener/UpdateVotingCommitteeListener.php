@@ -21,7 +21,7 @@ class UpdateVotingCommitteeListener implements EventSubscriberInterface
     public function __construct(
         private readonly CommitteeManager $committeeManager,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly VotersListManager $votersListManager
+        private readonly VotersListManager $votersListManager,
     ) {
     }
 

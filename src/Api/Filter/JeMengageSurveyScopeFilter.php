@@ -28,7 +28,7 @@ final class JeMengageSurveyScopeFilter extends AbstractScopeFilter
         Adherent $currentUser,
         ScopeGeneratorInterface $scopeGenerator,
         string $resourceClass,
-        array $context
+        array $context,
     ): void {
         $alias = $queryBuilder->getRootAliases()[0];
         $user = $scopeGenerator->isDelegatedAccess() ? $scopeGenerator->getDelegatedAccess()->getDelegator() : $currentUser;

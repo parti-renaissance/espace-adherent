@@ -33,7 +33,7 @@ class BoardMemberController extends AbstractController
     public function searchAction(
         Request $request,
         BoardMemberManager $manager,
-        CsrfTokenManagerInterface $csrfTokenManager
+        CsrfTokenManagerInterface $csrfTokenManager,
     ): Response {
         $filter = new BoardMemberFilter();
         $filter->handleRequest($request);
@@ -71,7 +71,7 @@ class BoardMemberController extends AbstractController
     public function sendMessageToSearchResultsAction(
         Request $request,
         BoardMemberManager $manager,
-        BoardMemberMessageNotifier $notifier
+        BoardMemberMessageNotifier $notifier,
     ): Response {
         $filter = new BoardMemberFilter();
         $filter->handleRequest($request);
@@ -105,7 +105,7 @@ class BoardMemberController extends AbstractController
     public function sendMessageToSavedProfilesAction(
         Request $request,
         BoardMemberManager $manager,
-        BoardMemberMessageNotifier $notifier
+        BoardMemberMessageNotifier $notifier,
     ): Response {
         $recipients = $manager->findSavedMembers($this->getUser());
         $message = $this->createMessage($recipients->toArray());
@@ -131,7 +131,7 @@ class BoardMemberController extends AbstractController
     public function sendMessageToMemberAction(
         Request $request,
         Adherent $member,
-        BoardMemberMessageNotifier $notifier
+        BoardMemberMessageNotifier $notifier,
     ): Response {
         $message = $this->createMessage([$member]);
 
@@ -182,7 +182,7 @@ class BoardMemberController extends AbstractController
     #[Route(path: '/list/boardmember/{id}', name: 'app_board_remove_profile_on_list', methods: ['DELETE'])]
     public function deleteBoardMemberOnListAction(
         EntityManagerInterface $entityManager,
-        BoardMember $boadMemberToDelete
+        BoardMember $boadMemberToDelete,
     ): Response {
         $boardMemberRepository = $entityManager->getRepository(BoardMember::class);
 

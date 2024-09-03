@@ -12,7 +12,7 @@ final class VotingPlatformCandidacyInvitationDeclinedMessage extends AbstractVot
         Adherent $invited,
         Adherent $candidate,
         Designation $designation,
-        string $invitationFormUrl
+        string $invitationFormUrl,
     ): self {
         $emailTitle = self::getMailSubjectPrefix($designation);
 

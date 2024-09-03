@@ -12,7 +12,7 @@ class SendAdherentActionSummaryCommandHandler implements MessageHandlerInterface
 {
     public function __construct(
         private readonly MailerService $transactionalMailer,
-        private readonly UrlGeneratorInterface $urlGenerator
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 

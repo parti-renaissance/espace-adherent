@@ -157,7 +157,7 @@ class Mandate
         bool $onGoing = true,
         ?\DateTime $beginAt = null,
         ?\DateTime $finishAt = null,
-        ?GeoZone $attachedZone = null
+        ?GeoZone $attachedZone = null,
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->type = $type;

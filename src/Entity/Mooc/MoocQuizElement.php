@@ -23,7 +23,7 @@ class MoocQuizElement extends BaseMoocElement
         ?string $shareFacebokText = null,
         ?string $shareEmailObject = null,
         ?string $shareEmailBody = null,
-        ?string $typeformUrl = null
+        ?string $typeformUrl = null,
     ) {
         parent::__construct($title, $content, $shareTwitterText, $shareFacebokText, $shareEmailObject, $shareEmailBody);
         $this->typeformUrl = $typeformUrl;

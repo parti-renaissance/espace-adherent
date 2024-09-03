@@ -22,7 +22,7 @@ class PoliticalFunctionAdmin extends AbstractAdmin
         string $code,
         string $class,
         string $baseControllerName,
-        MandateRepository $mandateRepository
+        MandateRepository $mandateRepository,
     ) {
         parent::__construct($code, $class, $baseControllerName);
 

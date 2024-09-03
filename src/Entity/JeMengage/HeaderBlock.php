@@ -59,7 +59,7 @@ class HeaderBlock implements ExposedImageOwnerInterface
         ?string $prefix = null,
         ?string $slogan = null,
         ?string $content = null,
-        ?\DateTime $deadlineDate = null
+        ?\DateTime $deadlineDate = null,
     ) {
         $this->name = $name;
         $this->prefix = $prefix;

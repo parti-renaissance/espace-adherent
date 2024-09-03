@@ -21,7 +21,7 @@ class CommitteeEventCreationNotificationCommandHandler implements MessageHandler
     public function __construct(
         EventRepository $eventRepository,
         PushTokenManager $pushTokenManager,
-        JeMarcheMessaging $messaging
+        JeMarcheMessaging $messaging,
     ) {
         $this->eventRepository = $eventRepository;
         $this->pushTokenManager = $pushTokenManager;

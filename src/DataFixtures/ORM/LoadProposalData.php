@@ -19,7 +19,7 @@ class LoadProposalData extends Fixture
     public function __construct(
         ProposalFactory $proposalFactory,
         MediaFactory $mediaFactory,
-        FilesystemOperator $defaultStorage
+        FilesystemOperator $defaultStorage,
     ) {
         $this->proposalFactory = $proposalFactory;
         $this->mediaFactory = $mediaFactory;

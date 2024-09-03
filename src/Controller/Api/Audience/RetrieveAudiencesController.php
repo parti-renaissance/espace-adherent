@@ -18,7 +18,7 @@ class RetrieveAudiencesController extends AbstractController
         Request $request,
         ManagedZoneProvider $managedZoneProvider,
         AudienceRepository $repository,
-        AuthorizationChecker $authorizationChecker
+        AuthorizationChecker $authorizationChecker,
     ): array {
         $scope = $authorizationChecker->getScope($request);
         $user = $this->getMainUser($request->getSession());

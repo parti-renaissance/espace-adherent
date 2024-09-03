@@ -29,7 +29,7 @@ class RemindProcurationMatchedSlotCommand extends Command
         private readonly RoundRepository $roundRepository,
         private readonly RequestSlotRepository $requestSlotRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly MessageBusInterface $bus
+        private readonly MessageBusInterface $bus,
     ) {
         parent::__construct();
     }

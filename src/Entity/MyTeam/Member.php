@@ -84,7 +84,7 @@ class Member
         ?Adherent $adherent = null,
         ?string $role = null,
         array $scopeFeatures = [],
-        ?UuidInterface $uuid = null
+        ?UuidInterface $uuid = null,
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->adherent = $adherent;

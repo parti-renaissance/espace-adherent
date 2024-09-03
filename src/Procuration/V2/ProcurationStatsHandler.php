@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class ProcurationStatsHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 

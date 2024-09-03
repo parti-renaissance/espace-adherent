@@ -42,7 +42,7 @@ class FileAdmin extends AbstractAdmin
         string $class,
         string $baseControllerName,
         FileRepository $repository,
-        FileManager $fileManager
+        FileManager $fileManager,
     ) {
         parent::__construct($code, $class, $baseControllerName);
 

@@ -47,7 +47,7 @@ class SendVoteReminderCommand extends Command
         EventDispatcherInterface $dispatcher,
         ElectionRepository $electionRepository,
         VoterRepository $voterRepository,
-        CommitteeMembershipRepository $committeeMembershipRepository
+        CommitteeMembershipRepository $committeeMembershipRepository,
     ) {
         $this->entityManager = $entityManager;
         $this->dispatcher = $dispatcher;

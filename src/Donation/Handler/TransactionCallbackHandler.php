@@ -14,7 +14,7 @@ class TransactionCallbackHandler
     public function __construct(
         private readonly UrlGeneratorInterface $router,
         private readonly DonationRepository $donationRepository,
-        private readonly DonationRequestUtils $donationRequestUtils
+        private readonly DonationRequestUtils $donationRequestUtils,
     ) {
     }
 

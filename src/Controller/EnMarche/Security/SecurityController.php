@@ -33,7 +33,7 @@ class SecurityController extends AbstractController
         AuthenticationUtils $securityUtils,
         FormFactoryInterface $formFactory,
         AuthAppUrlManager $appUrlManager,
-        ?string $app = null
+        ?string $app = null,
     ): Response {
         if ($user = $this->getUser()) {
             if ($user instanceof Administrator) {
@@ -115,7 +115,7 @@ class SecurityController extends AbstractController
         Adherent $adherent,
         AdherentResetPasswordToken $resetPasswordToken,
         AdherentResetPasswordHandler $handler,
-        AuthAppUrlManager $appUrlManager
+        AuthAppUrlManager $appUrlManager,
     ): Response {
         $appUrlGenerator = $appUrlManager->getUrlGenerator($appUrlManager->getAppCodeFromRequest($request) ?? PlatformAuthUrlGenerator::getAppCode());
 
@@ -162,7 +162,7 @@ class SecurityController extends AbstractController
         Adherent $adherent,
         AdherentChangeEmailToken $token,
         AdherentChangeEmailHandler $handler,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
     ): Response {
         if ($token->getUsageDate()) {
             throw $this->createNotFoundException('No available email changing token.');

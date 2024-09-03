@@ -20,7 +20,7 @@ class UpdateElectedMandateDenormalizer implements DenormalizerInterface, Denorma
 
     public function __construct(
         private readonly Security $security,
-        private readonly ScopeGeneratorResolver $scopeGeneratorResolver
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
     }
 
@@ -69,7 +69,7 @@ class UpdateElectedMandateDenormalizer implements DenormalizerInterface, Denorma
         Mandate $mandate,
         array $functionData,
         ?string $format = null,
-        array $context = []
+        array $context = [],
     ): PoliticalFunction {
         if (isset($functionData['id'])) {
             $function = $this->denormalizer->denormalize($functionData['id'], PoliticalFunction::class, $format, $context);

@@ -15,7 +15,7 @@ class VotersListManager
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly VoterRepository $voterRepository,
-        private readonly ElectionRepository $electionRepository
+        private readonly ElectionRepository $electionRepository,
     ) {
     }
 

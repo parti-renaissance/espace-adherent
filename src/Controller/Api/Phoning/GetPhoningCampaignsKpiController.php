@@ -10,7 +10,7 @@ class GetPhoningCampaignsKpiController
 {
     public function __invoke(
         ScopeGeneratorResolver $scopeGeneratorResolver,
-        CampaignRepository $campaignRepository
+        CampaignRepository $campaignRepository,
     ): array {
         $scope = $scopeGeneratorResolver->generate();
 

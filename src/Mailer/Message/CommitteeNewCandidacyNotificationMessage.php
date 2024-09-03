@@ -14,7 +14,7 @@ final class CommitteeNewCandidacyNotificationMessage extends Message
         CommitteeElection $election,
         Adherent $supervisor,
         Adherent $candidate,
-        string $committeeUrl
+        string $committeeUrl,
     ): self {
         return new self(
             Uuid::uuid4(),
@@ -30,7 +30,7 @@ final class CommitteeNewCandidacyNotificationMessage extends Message
         CommitteeElection $election,
         Adherent $supervisor,
         Adherent $candidate,
-        string $committeeUrl
+        string $committeeUrl,
     ): array {
         return [
             'supervisor_first_name' => $supervisor->getFirstName(),

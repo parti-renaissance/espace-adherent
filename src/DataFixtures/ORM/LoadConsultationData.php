@@ -56,7 +56,7 @@ class LoadConsultationData extends Fixture
         string $title,
         string $content,
         string $url,
-        bool $isPublished = true
+        bool $isPublished = true,
     ): Consultation {
         $consultation = new Consultation($uuid);
         $consultation->setTitle($title);

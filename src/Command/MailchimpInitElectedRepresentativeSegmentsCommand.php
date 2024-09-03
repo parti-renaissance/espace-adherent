@@ -38,7 +38,7 @@ class MailchimpInitElectedRepresentativeSegmentsCommand extends Command
         ElectedRepresentativeTagsBuilder $tagsBuilder,
         HttpClientInterface $mailchimpClient,
         ObjectManager $entityManager,
-        string $mailchimpElectedRepresentativeListId
+        string $mailchimpElectedRepresentativeListId,
     ) {
         $this->mailchimpSegmentRepository = $mailchimpSegmentRepository;
         $this->tagsBuilder = $tagsBuilder;

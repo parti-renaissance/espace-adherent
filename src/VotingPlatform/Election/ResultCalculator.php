@@ -18,7 +18,7 @@ class ResultCalculator
     public function __construct(
         private readonly iterable $calculators,
         private readonly VoterRepository $voterRepository,
-        private readonly VoteResultRepository $voteResultRepository
+        private readonly VoteResultRepository $voteResultRepository,
     ) {
     }
 

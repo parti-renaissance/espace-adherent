@@ -11,7 +11,7 @@ class SendTelegramMessageCommandHandler implements MessageHandlerInterface
 {
     public function __construct(
         private readonly MessageRepository $messageRepository,
-        private readonly MessageHandler $messageHandler
+        private readonly MessageHandler $messageHandler,
     ) {
     }
 

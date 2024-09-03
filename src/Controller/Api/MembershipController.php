@@ -27,7 +27,7 @@ class MembershipController extends AbstractController
         AuthorizationCheckerInterface $authorizationChecker,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        MembershipRequestHandler $handler
+        MembershipRequestHandler $handler,
     ): Response {
         if ($authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             throw $this->createAccessDeniedException('Logged in users can not create account.');
@@ -60,7 +60,7 @@ class MembershipController extends AbstractController
     public function forgotPasswordAction(
         Request $request,
         AdherentRepository $adherentRepository,
-        AdherentResetPasswordHandler $adherentResetPasswordHandler
+        AdherentResetPasswordHandler $adherentResetPasswordHandler,
     ): Response {
         $data = json_decode($request->getContent(), true);
 

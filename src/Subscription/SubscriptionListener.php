@@ -11,7 +11,7 @@ class SubscriptionListener implements EventSubscriberInterface
 {
     public function __construct(
         private readonly SubscriptionHandler $subscriptionHandler,
-        private readonly EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler
+        private readonly EmailSubscriptionHistoryHandler $emailSubscriptionHistoryHandler,
     ) {
     }
 

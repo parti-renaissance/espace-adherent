@@ -67,7 +67,7 @@ class CommitteeFeedItem implements UserDocumentInterface
         Committee $committee,
         Adherent $author,
         bool $published = true,
-        string $createdAt = 'now'
+        string $createdAt = 'now',
     ) {
         $this->uuid = $uuid;
         $this->committee = $committee;
@@ -83,7 +83,7 @@ class CommitteeFeedItem implements UserDocumentInterface
         Adherent $author,
         string $content,
         bool $published = true,
-        string $createdAt = 'now'
+        string $createdAt = 'now',
     ): self {
         $item = new self(Uuid::uuid4(), self::MESSAGE, $committee, $author, $published, $createdAt);
         $item->content = $content;
@@ -95,7 +95,7 @@ class CommitteeFeedItem implements UserDocumentInterface
         CommitteeEvent $event,
         Adherent $author,
         bool $published = true,
-        string $createdAt = 'now'
+        string $createdAt = 'now',
     ): self {
         $item = new self(
             Uuid::uuid5(Uuid::NAMESPACE_OID, (string) $event->getUuid()),

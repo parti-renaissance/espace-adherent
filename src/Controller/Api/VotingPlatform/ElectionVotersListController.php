@@ -17,7 +17,7 @@ class ElectionVotersListController extends AbstractController
     public function __invoke(
         Designation $designation,
         ElectionRepository $electionRepository,
-        VoterRepository $voterRepository
+        VoterRepository $voterRepository,
     ): Response {
         if (!$election = $electionRepository->findOneByDesignation($designation)) {
             throw $this->createNotFoundException();

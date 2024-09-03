@@ -130,7 +130,7 @@ class AdherentTest extends AbstractKernelTestCase
     private function createNewAdherent(
         $email = 'john.smith@example.org',
         $firstName = 'John',
-        $lastName = 'Smith'
+        $lastName = 'Smith',
     ): Adherent {
         $phone = new PhoneNumber();
         $phone->setCountryCode('FR');

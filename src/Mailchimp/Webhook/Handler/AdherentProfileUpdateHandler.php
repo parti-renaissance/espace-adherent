@@ -24,7 +24,7 @@ class AdherentProfileUpdateHandler extends AbstractAdherentHandler implements Lo
         SubscriptionHandler $subscriptionHandler,
         array $adherentInterests,
         LoggerInterface $logger,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
     ) {
         $this->subscriptionHandler = $subscriptionHandler;
         $this->interests = $adherentInterests;

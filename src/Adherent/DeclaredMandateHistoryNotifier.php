@@ -15,7 +15,7 @@ class DeclaredMandateHistoryNotifier
         private readonly MailerService $transactionalMailer,
         private readonly TranslatorInterface $translator,
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly string $jemengageHost
+        private readonly string $jemengageHost,
     ) {
     }
 

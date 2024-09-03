@@ -15,7 +15,7 @@ class GeoZoneExtension implements QueryCollectionExtensionInterface
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         if (Zone::class === $resourceClass) {
             $queryBuilder

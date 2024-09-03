@@ -20,7 +20,7 @@ class NewsCreatedNotificationCommandHandler implements MessageHandlerInterface
     public function __construct(
         NewsRepository $newsRepository,
         JeMarcheMessaging $messaging,
-        NewsTitlePrefix $newsTitlePrefix
+        NewsTitlePrefix $newsTitlePrefix,
     ) {
         $this->newsRepository = $newsRepository;
         $this->messaging = $messaging;

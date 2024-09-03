@@ -411,7 +411,7 @@ trait TestHelperTrait
         ?string $region = null,
         ?float $latitude = null,
         ?float $longitude = null,
-        bool $nullable = false
+        bool $nullable = false,
     ): AddressInterface {
         [, $inseeCode] = explode('-', $cityCode);
         $city = $this->getFranceCities()->getCityByInseeCode($inseeCode);

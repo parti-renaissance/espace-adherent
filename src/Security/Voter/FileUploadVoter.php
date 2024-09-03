@@ -16,7 +16,7 @@ class FileUploadVoter extends AbstractAdherentVoter
 
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        ScopeGeneratorResolver $scopeGeneratorResolver
+        ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;

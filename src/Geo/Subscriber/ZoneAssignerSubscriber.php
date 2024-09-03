@@ -23,7 +23,7 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly ZoneMatcher $zoneMatcher,
-        private readonly ScopeGeneratorResolver $scopeGeneratorResolver
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
     }
 

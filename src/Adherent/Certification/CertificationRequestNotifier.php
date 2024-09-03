@@ -22,7 +22,7 @@ class CertificationRequestNotifier
         MailerService $transactionalMailer,
         UrlGeneratorInterface $urlGenerator,
         TranslatorInterface $translator,
-        string $renaissanceHost
+        string $renaissanceHost,
     ) {
         $this->mailer = $transactionalMailer;
         $this->urlGenerator = $urlGenerator;

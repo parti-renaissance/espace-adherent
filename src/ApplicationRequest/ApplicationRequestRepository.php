@@ -14,7 +14,7 @@ class ApplicationRequestRepository
 
     public function __construct(
         RunningMateRequestRepository $runningMateRepository,
-        VolunteerRequestRepository $volunteerRepository
+        VolunteerRequestRepository $volunteerRepository,
     ) {
         $this->runningMateRepository = $runningMateRepository;
         $this->volunteerRepository = $volunteerRepository;

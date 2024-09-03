@@ -23,7 +23,7 @@ class LegislativeNewsletterSubscriptionSourceDenormalizer implements Denormalize
 
     public function __construct(
         LegislativeNewsletterSubscriptionRepository $subscriptionRepository,
-        ZoneRepository $zoneRepository
+        ZoneRepository $zoneRepository,
     ) {
         $this->subscriptionRepository = $subscriptionRepository;
         $this->zoneRepository = $zoneRepository;

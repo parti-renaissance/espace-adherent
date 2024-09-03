@@ -23,7 +23,7 @@ interface AuthAppUrlGeneratorInterface
     public function generateCreatePasswordLink(
         Adherent $adherent,
         AdherentExpirableTokenInterface $token,
-        array $urlParams = []
+        array $urlParams = [],
     ): string;
 
     public function generateLoginLink(): string;

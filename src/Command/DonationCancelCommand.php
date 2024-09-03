@@ -31,7 +31,7 @@ class DonationCancelCommand extends Command
     public function __construct(
         EntityManagerInterface $em,
         DonationRepository $donationRepository,
-        PayboxPaymentUnsubscription $payboxPaymentUnsubscription
+        PayboxPaymentUnsubscription $payboxPaymentUnsubscription,
     ) {
         parent::__construct();
 

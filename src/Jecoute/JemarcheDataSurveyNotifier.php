@@ -18,7 +18,7 @@ class JemarcheDataSurveyNotifier implements EventSubscriberInterface
     public function __construct(
         MailerService $transactionalMailer,
         JemarcheDataSurveyRepository $dataSurveyRepository,
-        AdherentRepository $adherentRepository
+        AdherentRepository $adherentRepository,
     ) {
         $this->mailer = $transactionalMailer;
         $this->dataSurveyRepository = $dataSurveyRepository;

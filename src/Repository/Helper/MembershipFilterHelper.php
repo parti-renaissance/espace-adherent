@@ -13,7 +13,7 @@ final class MembershipFilterHelper
     public static function withMembershipFilter(
         ProxyQuery|QueryBuilder $qb,
         string $alias,
-        string $membershipValue
+        string $membershipValue,
     ): bool {
         switch ($membershipValue) {
             case RenaissanceMembershipFilterEnum::ADHERENT_OR_SYMPATHIZER_RE:

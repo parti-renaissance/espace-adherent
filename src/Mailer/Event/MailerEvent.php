@@ -16,7 +16,7 @@ class MailerEvent extends Event
     public function __construct(
         Message $message,
         ?AbstractEmailTemplate $email = null,
-        ?MailerException $exception = null
+        ?MailerException $exception = null,
     ) {
         $this->message = $message;
         $this->email = $email;

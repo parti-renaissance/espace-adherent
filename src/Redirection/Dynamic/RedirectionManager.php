@@ -19,7 +19,7 @@ class RedirectionManager
         CacheItemPoolInterface $cache,
         EntityManagerInterface $entityManager,
         SerializerInterface $serializer,
-        RedirectionRepository $repository
+        RedirectionRepository $repository,
     ) {
         $this->cache = $cache;
         $this->entityManager = $entityManager;

@@ -15,7 +15,7 @@ class PersistProcurationEmailCommandHandler
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly ProcurationRequestRepository $procurationRequestRepository,
-        private readonly AdherentRepository $adherentRepository
+        private readonly AdherentRepository $adherentRepository,
     ) {
     }
 

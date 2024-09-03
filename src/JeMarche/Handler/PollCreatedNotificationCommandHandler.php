@@ -25,7 +25,7 @@ class PollCreatedNotificationCommandHandler implements MessageHandlerInterface
         PollRepository $pollRepository,
         PollManager $pollManager,
         JeMarcheMessaging $messaging,
-        NotificationTopicBuilder $topicBuilder
+        NotificationTopicBuilder $topicBuilder,
     ) {
         $this->pollRepository = $pollRepository;
         $this->pollManager = $pollManager;

@@ -14,7 +14,7 @@ class TokenRevocationAuthority
 
     public function __construct(
         AccessTokenRepository $accessTokenRepository,
-        RefreshTokenRepository $refreshTokenRepository
+        RefreshTokenRepository $refreshTokenRepository,
     ) {
         $this->accessTokenRepository = $accessTokenRepository;
         $this->refreshTokenRepository = $refreshTokenRepository;

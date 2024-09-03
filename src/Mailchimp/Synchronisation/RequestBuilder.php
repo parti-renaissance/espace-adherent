@@ -79,7 +79,7 @@ class RequestBuilder implements LoggerAwareInterface
         private readonly ElectedRepresentativeTagsBuilder $electedRepresentativeTagsBuilder,
         private readonly ElectedRepresentativeAdherentMandateRepository $mandateRepository,
         private readonly DonationRepository $donationRepository,
-        private readonly TagTranslator $tagTranslator
+        private readonly TagTranslator $tagTranslator,
     ) {
         $this->logger = new NullLogger();
     }

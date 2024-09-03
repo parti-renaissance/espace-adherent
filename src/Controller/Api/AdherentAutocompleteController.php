@@ -23,7 +23,7 @@ class AdherentAutocompleteController extends AbstractController
         Request $request,
         AdherentRepository $repository,
         ScopeGeneratorResolver $scopeGeneratorResolver,
-        DenormalizerInterface $denormalizer
+        DenormalizerInterface $denormalizer,
     ): JsonResponse {
         $zones = [];
         if ($scope = $scopeGeneratorResolver->generate()) {

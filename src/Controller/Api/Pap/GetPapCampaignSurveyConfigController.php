@@ -76,7 +76,7 @@ class GetPapCampaignSurveyConfigController extends AbstractController
         ?array $dependency = null,
         ?string $placeholder = null,
         ?string $help = null,
-        array $questionOptions = []
+        array $questionOptions = [],
     ): array {
         $question = [
             'code' => $code,

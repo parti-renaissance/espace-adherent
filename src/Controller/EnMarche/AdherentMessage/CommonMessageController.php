@@ -30,7 +30,7 @@ class CommonMessageController extends AbstractController
     #[Route(path: '/{uuid}/content', requirements: ['uuid' => '%pattern_uuid%'], name: 'content', methods: ['GET'])]
     public function getMessageTemplateAction(
         AbstractAdherentMessage $message,
-        AdherentMessageManager $manager
+        AdherentMessageManager $manager,
     ): Response {
         return new Response($manager->getMessageContent($message));
     }

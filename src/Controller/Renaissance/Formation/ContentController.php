@@ -23,7 +23,7 @@ class ContentController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly FilesystemOperator $defaultStorage,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
     ) {
     }
 

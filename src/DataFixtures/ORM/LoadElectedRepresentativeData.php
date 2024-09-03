@@ -513,7 +513,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         string $lastName,
         \DateTime $birthDate,
         ?string $gender = null,
-        ?string $uuid = null
+        ?string $uuid = null,
     ): ElectedRepresentative {
         return ElectedRepresentative::create(
             $firstName,

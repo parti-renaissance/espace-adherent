@@ -38,7 +38,7 @@ class InternalApiApplication
         string $applicationName,
         string $hostname,
         bool $scopeRequired = false,
-        ?UuidInterface $uuid = null
+        ?UuidInterface $uuid = null,
     ) {
         $this->applicationName = $applicationName;
         $this->hostname = $hostname;

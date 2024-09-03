@@ -25,7 +25,7 @@ class EventInscriptionController extends AbstractController
         private readonly NationalEventRepository $nationalEventRepository,
         private readonly EventInscriptionHandler $eventInscriptionHandler,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
-        private readonly string $friendlyCaptchaEuropeSiteKey
+        private readonly string $friendlyCaptchaEuropeSiteKey,
     ) {
     }
 

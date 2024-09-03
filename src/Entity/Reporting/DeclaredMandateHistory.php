@@ -39,7 +39,7 @@ class DeclaredMandateHistory
     public function __construct(
         Adherent $adherent,
         array $addedMandates,
-        array $removedMandates
+        array $removedMandates,
     ) {
         $this->adherent = $adherent;
         $this->addedMandates = $addedMandates;

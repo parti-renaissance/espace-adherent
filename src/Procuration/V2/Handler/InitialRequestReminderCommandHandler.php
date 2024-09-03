@@ -19,7 +19,7 @@ class InitialRequestReminderCommandHandler
         private readonly RequestRepository $requestRepository,
         private readonly ProxyRepository $proxyRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly ProcurationNotifier $procurationNotifier
+        private readonly ProcurationNotifier $procurationNotifier,
     ) {
     }
 

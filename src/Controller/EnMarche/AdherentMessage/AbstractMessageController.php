@@ -99,7 +99,7 @@ abstract class AbstractMessageController extends AbstractController
     public function updateMessageAction(
         Request $request,
         AbstractAdherentMessage $message,
-        AdherentMessageManager $manager
+        AdherentMessageManager $manager,
     ): Response {
         $this->checkAccess();
 
@@ -160,7 +160,7 @@ abstract class AbstractMessageController extends AbstractController
         Request $request,
         AbstractAdherentMessage $message,
         FilterFormFactory $formFactory,
-        AdherentMessageManager $manager
+        AdherentMessageManager $manager,
     ): Response {
         $this->checkAccess();
 

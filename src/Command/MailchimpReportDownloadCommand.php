@@ -33,7 +33,7 @@ class MailchimpReportDownloadCommand extends Command
         ObjectManager $entityManager,
         MailchimpCampaignRepository $mailchimpCampaignRepository,
         Manager $manager,
-        PropertyAccessorInterface $propertyAccessor
+        PropertyAccessorInterface $propertyAccessor,
     ) {
         $this->entityManager = $entityManager;
         $this->repository = $mailchimpCampaignRepository;

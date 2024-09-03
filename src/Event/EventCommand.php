@@ -54,7 +54,7 @@ class EventCommand extends BaseEventCommand
         bool $isForLegislatives = false,
         ?BaseEvent $event = null,
         string $timezone = GeoCoder::DEFAULT_TIME_ZONE,
-        ?string $visioUrl = null
+        ?string $visioUrl = null,
     ) {
         parent::__construct($author, $uuid, $address, $beginAt, $finishAt, $event, $timezone, $visioUrl);
 

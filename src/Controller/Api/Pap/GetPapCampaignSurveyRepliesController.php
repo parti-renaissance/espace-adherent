@@ -22,7 +22,7 @@ class GetPapCampaignSurveyRepliesController extends AbstractController
         string $_format,
         DataSurveyRepository $dataSurveyRepository,
         PapCampaignSurveyRepliesExporter $exporter,
-        ScopeGeneratorResolver $scopeGeneratorResolver
+        ScopeGeneratorResolver $scopeGeneratorResolver,
     ): Response {
         $zones = [];
         $scope = $scopeGeneratorResolver->generate();

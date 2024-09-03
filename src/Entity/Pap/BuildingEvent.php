@@ -64,7 +64,7 @@ class BuildingEvent implements AuthorInterface
         ?Campaign $campaign = null,
         ?string $action = null,
         ?string $type = null,
-        ?string $identifier = null
+        ?string $identifier = null,
     ) {
         $this->uuid = Uuid::uuid4();
         $this->building = $building;

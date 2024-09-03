@@ -67,7 +67,7 @@ class Client implements EntitySoftDeletedInterface
         string $description = '',
         string $secret = '',
         array $allowedGrantTypes = [],
-        array $redirectUris = []
+        array $redirectUris = [],
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->name = $name;

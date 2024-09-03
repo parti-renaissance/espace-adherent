@@ -28,7 +28,7 @@ class SocialShareController extends AbstractController
     public function showAction(
         SocialShareCategory $category,
         SocialShareCategoryRepository $socialShareCategoryRepository,
-        SocialShareRepository $socialShareRepository
+        SocialShareRepository $socialShareRepository,
     ): Response {
         return $this->render('social_share/wall.html.twig', [
             'currentCategory' => $category,

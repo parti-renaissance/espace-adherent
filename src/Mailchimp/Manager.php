@@ -56,7 +56,7 @@ class Manager implements LoggerAwareInterface
         Driver $driver,
         ContainerInterface $requestBuildersLocator,
         EventDispatcherInterface $eventDispatcher,
-        MailchimpObjectIdMapping $mailchimpObjectIdMapping
+        MailchimpObjectIdMapping $mailchimpObjectIdMapping,
     ) {
         $this->driver = $driver;
         $this->requestBuildersLocator = $requestBuildersLocator;
@@ -144,7 +144,7 @@ class Manager implements LoggerAwareInterface
 
     public function editElectedRepresentativeMember(
         ElectedRepresentative $electedRepresentative,
-        ElectedRepresentativeChangeCommandInterface $message
+        ElectedRepresentativeChangeCommandInterface $message,
     ): void {
         $emailAddress = $electedRepresentative->getEmailAddress();
         $listId = $this->mailchimpObjectIdMapping->getElectedRepresentativeListId();
@@ -330,7 +330,7 @@ class Manager implements LoggerAwareInterface
     public function editDynamicSegment(
         DynamicSegmentInterface $segment,
         ?int $segmentId = null,
-        ?string $listId = null
+        ?string $listId = null,
     ): bool {
         /** @var SegmentRequestBuilder $requestBuilder */
         $requestBuilder = $this->requestBuildersLocator->get(SegmentRequestBuilder::class);

@@ -46,7 +46,7 @@ abstract class AbstractEventManagerController extends AbstractController
     public function eventsCreateAction(
         Request $request,
         GeoCoder $geoCoder,
-        EventCommandHandler $eventCommandHandler
+        EventCommandHandler $eventCommandHandler,
     ): Response {
         /** @var Adherent $user */
         $user = $this->getMainUser($request->getSession());
@@ -133,7 +133,7 @@ abstract class AbstractEventManagerController extends AbstractController
     abstract protected function getEventsPaginator(
         Adherent $adherent,
         ?string $type = null,
-        int $page = 1
+        int $page = 1,
     ): PaginatorInterface;
 
     protected function renderTemplate(string $template, array $parameters = []): Response

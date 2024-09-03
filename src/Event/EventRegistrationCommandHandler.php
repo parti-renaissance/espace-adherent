@@ -10,7 +10,7 @@ class EventRegistrationCommandHandler
     public function __construct(
         private readonly EventDispatcherInterface $dispatcher,
         private readonly EventRegistrationFactory $factory,
-        private readonly EventRegistrationManager $manager
+        private readonly EventRegistrationManager $manager,
     ) {
     }
 

@@ -89,7 +89,7 @@ class LoadEmailTemplateData extends Fixture implements DependentFixtureInterface
         string $uuid,
         string $label,
         string $content,
-        string $jsonContent
+        string $jsonContent,
     ): EmailTemplate {
         $emailTemplate = new EmailTemplate(Uuid::fromString($uuid));
         $emailTemplate->setLabel($label);

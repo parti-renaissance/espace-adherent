@@ -16,7 +16,7 @@ class AuthorizationCodeStore implements OAuthAuthCodeRepositoryInterface
 
     public function __construct(
         PersistentTokenFactory $persistentTokenFactory,
-        AuthorizationCodeRepository $authorizationCodeRepository
+        AuthorizationCodeRepository $authorizationCodeRepository,
     ) {
         $this->persistentTokenFactory = $persistentTokenFactory;
         $this->authorizationCodeRepository = $authorizationCodeRepository;

@@ -29,7 +29,7 @@ class SurveyExporter
         DataSurveyRepository $dataSurveyRepository,
         SurveyQuestionRepository $surveyQuestionRepository,
         SonataExporter $exporter,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ) {
         $this->dataSurveyRepository = $dataSurveyRepository;
         $this->surveyQuestionRepository = $surveyQuestionRepository;
@@ -42,7 +42,7 @@ class SurveyExporter
         string $format,
         bool $fromAdmin = false,
         array $zones = [],
-        array $departmentCodes = []
+        array $departmentCodes = [],
     ): StreamedResponse {
         $questions = $this->surveyQuestionRepository->findForSurvey($survey);
 

@@ -19,7 +19,7 @@ class UpdateElectedRepresentativeHandler implements UnregistrationAdherentHandle
     public function __construct(
         MessageBusInterface $bus,
         EntityManagerInterface $manager,
-        ElectedRepresentativeRepository $electedRepresentativeRepository
+        ElectedRepresentativeRepository $electedRepresentativeRepository,
     ) {
         $this->bus = $bus;
         $this->manager = $manager;

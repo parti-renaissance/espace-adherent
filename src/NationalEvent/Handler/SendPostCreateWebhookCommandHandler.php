@@ -15,7 +15,7 @@ class SendPostCreateWebhookCommandHandler
     public function __construct(
         private readonly HttpClientInterface $nationalEventWebhookClient,
         private readonly NormalizerInterface $normalizer,
-        private readonly EventInscriptionRepository $eventInscriptionRepository
+        private readonly EventInscriptionRepository $eventInscriptionRepository,
     ) {
     }
 

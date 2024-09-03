@@ -14,7 +14,7 @@ class UserEvent extends Event
     public function __construct(
         Adherent $adherent,
         ?bool $allowEmailNotifications = null,
-        ?bool $allowMobileNotifications = null
+        ?bool $allowMobileNotifications = null,
     ) {
         $this->user = $adherent;
         $this->allowEmailNotifications = $allowEmailNotifications;

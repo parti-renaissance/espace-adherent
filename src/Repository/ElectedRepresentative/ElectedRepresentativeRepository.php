@@ -284,7 +284,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         QueryBuilder $qb,
         array $zones,
         string $alias = 'er',
-        ?Composite $condition = null
+        ?Composite $condition = null,
     ): QueryBuilder {
         if (!$zones) {
             return $qb;
@@ -359,7 +359,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
         QueryBuilder $qb,
         string $renaissanceMembership,
         string $alias = 'er',
-        string $adherentAlias = 'adherent'
+        string $adherentAlias = 'adherent',
     ): QueryBuilder {
         if (!\in_array('adherent', $qb->getAllAliases(), true)) {
             $qb->innerJoin($alias.'.adherent', $adherentAlias);

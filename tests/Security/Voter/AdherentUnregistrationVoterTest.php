@@ -67,7 +67,7 @@ class AdherentUnregistrationVoterTest extends TestCase
         bool $isAnimator,
         bool $isDeputy,
         bool $isRegionalDelegate,
-        bool $hasCommitteeCandidacy
+        bool $hasCommitteeCandidacy,
     ): void {
         $adherent = $this->createAdherentMock();
 

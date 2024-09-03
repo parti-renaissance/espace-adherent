@@ -39,7 +39,7 @@ abstract class AbstractAppUrlGenerator implements AuthAppUrlGeneratorInterface
     public function generateCreatePasswordLink(
         Adherent $adherent,
         AdherentExpirableTokenInterface $token,
-        array $urlParams = []
+        array $urlParams = [],
     ): string {
         return $this->urlGenerator->generate(
             'app_adherent_reset_password',

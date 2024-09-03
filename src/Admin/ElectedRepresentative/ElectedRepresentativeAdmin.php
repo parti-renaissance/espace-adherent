@@ -68,7 +68,7 @@ class ElectedRepresentativeAdmin extends AbstractAdmin
         $class,
         $baseControllerName,
         EventDispatcherInterface $dispatcher,
-        UserListDefinitionHistoryManager $userListDefinitionHistoryManager
+        UserListDefinitionHistoryManager $userListDefinitionHistoryManager,
     ) {
         parent::__construct($code, $class, $baseControllerName);
 

@@ -29,7 +29,7 @@ final class AnonymousFollowerSession
 
     public function __construct(
         private readonly SessionInterface $session,
-        private readonly Security $security
+        private readonly Security $security,
     ) {
     }
 

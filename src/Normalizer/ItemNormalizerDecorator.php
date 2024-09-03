@@ -69,7 +69,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         array $defaultContext = [],
         iterable $dataTransformers = [],
         $resourceMetadataFactory = null,
-        ?ResourceAccessCheckerInterface $resourceAccessChecker = null
+        ?ResourceAccessCheckerInterface $resourceAccessChecker = null,
     ) {
         if (!isset($defaultContext['circular_reference_handler'])) {
             $defaultContext['circular_reference_handler'] = function ($object) {
@@ -369,7 +369,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         $object,
         $previousObject,
         string $attribute,
-        array $context = []
+        array $context = [],
     ): bool {
         $options = $this->getFactoryOptions($context);
         /** @var PropertyMetadata|ApiProperty */
@@ -411,7 +411,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         string $className,
         $value,
         ?string $format,
-        array $context
+        array $context,
     ): array {
         if (!\is_array($value)) {
             throw new InvalidArgumentException(\sprintf('The type of the "%s" attribute must be "array", "%s" given.', $attribute, \gettype($value)));
@@ -438,7 +438,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         string $className,
         $value,
         ?string $format,
-        array $context
+        array $context,
     ) {
         $supportsPlainIdentifiers = $this->supportsPlainIdentifiers();
 
@@ -621,7 +621,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         $attributeValue,
         string $resourceClass,
         ?string $format,
-        array $context
+        array $context,
     ): array {
         $value = [];
         foreach ($attributeValue as $index => $obj) {
@@ -640,7 +640,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         $relatedObject,
         string $resourceClass,
         ?string $format,
-        array $context
+        array $context,
     ) {
         if (null === $relatedObject || !empty($context['attributes']) || $propertyMetadata->isReadableLink()) {
             if (!$this->serializer instanceof NormalizerInterface) {

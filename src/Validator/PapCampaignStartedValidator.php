@@ -20,7 +20,7 @@ class PapCampaignStartedValidator extends ConstraintValidator
     public function __construct(
         EntityManagerInterface $entityManager,
         CampaignHistoryRepository $campaignHistoryRepository,
-        VotePlaceRepository $votePlaceRepository
+        VotePlaceRepository $votePlaceRepository,
     ) {
         $this->entityManager = $entityManager;
         $this->campaignHistoryRepository = $campaignHistoryRepository;

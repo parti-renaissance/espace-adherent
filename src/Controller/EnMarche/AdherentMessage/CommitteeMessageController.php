@@ -37,7 +37,7 @@ class CommitteeMessageController extends AbstractController
     public function messageListAction(
         Request $request,
         AdherentMessageRepository $repository,
-        Committee $committee
+        Committee $committee,
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
@@ -66,7 +66,7 @@ class CommitteeMessageController extends AbstractController
     public function createMessageAction(
         Request $request,
         Committee $committee,
-        AdherentMessageManager $manager
+        AdherentMessageManager $manager,
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
@@ -110,7 +110,7 @@ class CommitteeMessageController extends AbstractController
         Request $request,
         CommitteeAdherentMessage $message,
         AdherentMessageManager $manager,
-        Committee $committee
+        Committee $committee,
     ): Response {
         if ($message->isSent()) {
             throw new BadRequestHttpException('This message has already been sent.');
@@ -149,7 +149,7 @@ class CommitteeMessageController extends AbstractController
         CommitteeAdherentMessage $message,
         Committee $committee,
         AdherentMessageManager $manager,
-        FilterFormFactory $formFactory
+        FilterFormFactory $formFactory,
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
@@ -210,7 +210,7 @@ class CommitteeMessageController extends AbstractController
     public function deleteMessageAction(
         CommitteeAdherentMessage $message,
         ObjectManager $manager,
-        Committee $committee
+        Committee $committee,
     ): Response {
         $manager->remove($message);
         $manager->flush();
@@ -225,7 +225,7 @@ class CommitteeMessageController extends AbstractController
     public function sendMessageAction(
         CommitteeAdherentMessage $message,
         AdherentMessageManager $manager,
-        Committee $committee
+        Committee $committee,
     ): Response {
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('The message is not ready to send yet.');
@@ -262,7 +262,7 @@ class CommitteeMessageController extends AbstractController
     public function publishMessageAction(
         AbstractAdherentMessage $message,
         EntityManagerInterface $manager,
-        Committee $committee
+        Committee $committee,
     ): Response {
         $message->setSendToTimeline(true);
         $manager->persist(CommitteeFeedItem::createMessage(
@@ -282,7 +282,7 @@ class CommitteeMessageController extends AbstractController
     public function sendTestMessageAction(
         CommitteeAdherentMessage $message,
         Manager $manager,
-        Committee $committee
+        Committee $committee,
     ): Response {
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('The message is not yet ready to test sending.');

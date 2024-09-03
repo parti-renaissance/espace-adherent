@@ -15,7 +15,7 @@ class BanManager
     public function __construct(
         private readonly MembershipRequestHandler $membershipRequestHandler,
         private readonly ObjectManager $entityManager,
-        private readonly TokenRevocationAuthority $tokenRevocationAuthority
+        private readonly TokenRevocationAuthority $tokenRevocationAuthority,
     ) {
     }
 

@@ -37,7 +37,7 @@ abstract class AbstractJecouteController extends AbstractController
     public function __construct(
         LocalSurveyRepository $localSurveyRepository,
         NationalSurveyRepository $nationalSurveyRepository,
-        ZoneRepository $zoneRepository
+        ZoneRepository $zoneRepository,
     ) {
         $this->localSurveyRepository = $localSurveyRepository;
         $this->nationalSurveyRepository = $nationalSurveyRepository;
@@ -58,7 +58,7 @@ abstract class AbstractJecouteController extends AbstractController
     public function jecouteSurveyCreateAction(
         Request $request,
         ObjectManager $manager,
-        SuggestedQuestionRepository $suggestedQuestionRepository
+        SuggestedQuestionRepository $suggestedQuestionRepository,
     ): Response {
         $this->checkCreateAccess();
 
@@ -97,7 +97,7 @@ abstract class AbstractJecouteController extends AbstractController
         Request $request,
         LocalSurvey $survey,
         ObjectManager $manager,
-        SuggestedQuestionRepository $suggestedQuestionRepository
+        SuggestedQuestionRepository $suggestedQuestionRepository,
     ): Response {
         $author = $survey->getCreator();
         if ($editByAuthor = $author === $this->getMainUser($request->getSession())) {
@@ -148,7 +148,7 @@ abstract class AbstractJecouteController extends AbstractController
         Request $request,
         Survey $survey,
         StatisticsProvider $provider,
-        SurveyExporter $exporter
+        SurveyExporter $exporter,
     ): Response {
         if ($format = $request->query->get('export')) {
             if ($survey instanceof LocalSurvey) {
@@ -181,7 +181,7 @@ abstract class AbstractJecouteController extends AbstractController
     public function jecouteSurveyDuplicateAction(
         Request $request,
         LocalSurvey $survey,
-        ObjectManager $manager
+        ObjectManager $manager,
     ): Response {
         $clonedSurvey = clone $survey;
 
@@ -197,7 +197,7 @@ abstract class AbstractJecouteController extends AbstractController
     #[Security("is_granted('IS_AUTHOR_OF', surveyQuestion.getSurvey()) or is_granted('IS_SURVEY_MANAGER_OF', surveyQuestion.getSurvey()) or surveyQuestion.getSurvey().isNational()")]
     public function jecouteSurveyAnswersListAction(
         SurveyQuestion $surveyQuestion,
-        DataAnswerRepository $dataAnswerRepository
+        DataAnswerRepository $dataAnswerRepository,
     ): Response {
         return $this->render('jecoute/data_answers_dialog_content.html.twig', [
             'answers' => $dataAnswerRepository->findAllBySurveyQuestion($surveyQuestion->getUuid()),

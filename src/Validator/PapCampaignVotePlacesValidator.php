@@ -20,7 +20,7 @@ class PapCampaignVotePlacesValidator extends ConstraintValidator
     public function __construct(
         ScopeGeneratorResolver $scopeGeneratorResolver,
         CampaignRepository $campaignRepository,
-        ZoneRepository $zoneRepository
+        ZoneRepository $zoneRepository,
     ) {
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;
         $this->campaignRepository = $campaignRepository;

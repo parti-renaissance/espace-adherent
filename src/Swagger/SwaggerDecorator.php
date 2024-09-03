@@ -20,7 +20,7 @@ final class SwaggerDecorator implements NormalizerInterface
         NormalizerInterface $decorated,
         string $apiPathPrefix,
         ResourceMetadataFactoryInterface $resourceMetadataFactory,
-        OperationPathResolverInterface $operationPathResolver
+        OperationPathResolverInterface $operationPathResolver,
     ) {
         $this->decorated = $decorated;
         $this->apiPathPrefix = $apiPathPrefix;
@@ -59,7 +59,7 @@ final class SwaggerDecorator implements NormalizerInterface
     private function overridePaginatedResponseFormat(
         array $docs,
         ResourceMetadata $resourceMetadata,
-        ?string $group
+        ?string $group,
     ): array {
         $path = \sprintf('%s%s', $this->apiPathPrefix, $this->getPath($resourceMetadata->getShortName(), ['get'], 'collection'));
 

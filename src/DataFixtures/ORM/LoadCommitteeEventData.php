@@ -52,7 +52,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         EventFactory $eventFactory,
         EventRegistrationFactory $eventRegistrationFactory,
         CommitteeFeedManager $committeeFeedManager,
-        FranceCities $franceCities
+        FranceCities $franceCities,
     ) {
         parent::__construct($environment, $eventFactory, $eventRegistrationFactory, $franceCities);
 
@@ -540,7 +540,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         Adherent $author,
         string $subject,
         string $text,
-        string $createdAt = 'now'
+        string $createdAt = 'now',
     ) {
         return $this->committeeFeedManager->createMessage(
             new CommitteeMessage($author, $committee, $subject, $text, true, $createdAt)

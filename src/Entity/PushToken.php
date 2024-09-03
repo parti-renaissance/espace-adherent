@@ -86,7 +86,7 @@ class PushToken
         ?Adherent $adherent = null,
         ?Device $device = null,
         ?string $identifier = null,
-        ?string $source = null
+        ?string $source = null,
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->adherent = $adherent;
@@ -99,7 +99,7 @@ class PushToken
         UuidInterface $uuid,
         Adherent $adherent,
         string $identifier,
-        string $source
+        string $source,
     ): self {
         return new self($uuid, $adherent, null, $identifier, $source);
     }
@@ -108,7 +108,7 @@ class PushToken
         UuidInterface $uuid,
         Device $device,
         string $identifier,
-        string $source
+        string $source,
     ): self {
         return new self($uuid, null, $device, $identifier, $source);
     }

@@ -65,7 +65,7 @@ class VotePlace
         int $nbAddresses = 0,
         int $nbVoters = 0,
         ?UuidInterface $uuid = null,
-        ?Zone $zone = null
+        ?Zone $zone = null,
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->latitude = $latitude;

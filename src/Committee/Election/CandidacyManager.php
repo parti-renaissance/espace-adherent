@@ -30,7 +30,7 @@ class CandidacyManager
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher,
         AdherentRepository $adherentRepository,
-        CommitteeCandidacyInvitationRepository $candidacyInvitationRepository
+        CommitteeCandidacyInvitationRepository $candidacyInvitationRepository,
     ) {
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
@@ -41,7 +41,7 @@ class CandidacyManager
     public function updateCandidature(
         CommitteeCandidacy $candidacy,
         ?Adherent $adherent = null,
-        ?Committee $committee = null
+        ?Committee $committee = null,
     ): void {
         // if UPDATE
         if ($candidacy->getId()) {
@@ -74,7 +74,7 @@ class CandidacyManager
     public function getCandidacy(
         Adherent $adherent,
         Committee $committee,
-        bool $createIfNotExist = false
+        bool $createIfNotExist = false,
     ): ?CommitteeCandidacy {
         $membership = $adherent->getMembershipFor($committee);
 
@@ -125,7 +125,7 @@ class CandidacyManager
     public function updateInvitation(
         CommitteeCandidacyInvitation $invitation,
         CommitteeCandidacy $candidacy,
-        ?CommitteeMembership $previouslyInvitedMembership = null
+        ?CommitteeMembership $previouslyInvitedMembership = null,
     ): void {
         $invitation->resetStatus();
 

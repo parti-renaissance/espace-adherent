@@ -74,7 +74,7 @@ class CommitteeElectionRepository extends ServiceEntityRepository
     public function findElections(
         CommitteeDesignationsListFilter $filter,
         int $page = 1,
-        int $limit = 50
+        int $limit = 50,
     ): PaginatorInterface {
         $qb = $this
             ->createQueryBuilder('committee_election')

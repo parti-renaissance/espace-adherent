@@ -26,7 +26,7 @@ class AddressRepository extends ServiceEntityRepository
         float $longitude,
         ?float $latitudeDelta,
         ?float $longitudeDelta,
-        int $limit = 300
+        int $limit = 300,
     ): array {
         $correction = $longitudeDelta ? 0 : 32;
         $latitudeDelta = $latitudeDelta ? $latitudeDelta / 2 : 0;

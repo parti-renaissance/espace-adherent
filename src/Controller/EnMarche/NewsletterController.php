@@ -25,7 +25,7 @@ class NewsletterController extends AbstractController
         Request $request,
         GeoCoder $geoCoder,
         NewsletterSubscriptionRepository $newsletterSubscriptionRepository,
-        NewsletterSubscriptionHandler $newsletterSubscriptionHandler
+        NewsletterSubscriptionHandler $newsletterSubscriptionHandler,
     ): Response {
         return $this->redirectToRoute('homepage');
 
@@ -75,7 +75,7 @@ class NewsletterController extends AbstractController
     #[Route(path: '/newsletter/confirmation/{uuid}/{confirm_token}', name: 'app_newsletter_confirmation', methods: ['GET'])]
     public function subscriptionConfirmationAction(
         NewsletterSubscription $subscription,
-        NewsletterSubscriptionHandler $newsletterSubscriptionHandler
+        NewsletterSubscriptionHandler $newsletterSubscriptionHandler,
     ): Response {
         $newsletterSubscriptionHandler->confirm($subscription);
 
@@ -97,7 +97,7 @@ class NewsletterController extends AbstractController
     #[Route(path: '/newsletter/desinscription', name: 'app_newsletter_unsubscribe', methods: ['GET', 'POST'])]
     public function unsubscribeAction(
         Request $request,
-        NewsletterSubscriptionHandler $newsletterSubscriptionHandler
+        NewsletterSubscriptionHandler $newsletterSubscriptionHandler,
     ): Response {
         $form = $this->createForm(NewsletterUnsubscribeType::class);
         $form->handleRequest($request);

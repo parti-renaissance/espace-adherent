@@ -240,7 +240,7 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
         int $nbVoters = 0,
         array $zones = [],
         ?Adherent $createdByAdherent = null,
-        bool $enabled = true
+        bool $enabled = true,
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->title = $title;

@@ -24,7 +24,7 @@ class JecouteManagedAreaAdmin extends AbstractAdmin
     public static function prepareAutocompleteFilterCallback(
         AbstractAdmin $admin,
         string $property,
-        string $value
+        string $value,
     ): void {
         $admin->getDatagrid()->setValue($property, null, $value);
         /** @var QueryBuilder $qb */

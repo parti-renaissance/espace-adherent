@@ -18,7 +18,7 @@ class AdherentProfileConfiguration
     public function __construct(
         TranslatorInterface $translator,
         SubscriptionTypeRepository $subscriptionTypeRepository,
-        array $adherentInterests
+        array $adherentInterests,
     ) {
         $this->translator = $translator;
         $this->subscriptionTypeRepository = $subscriptionTypeRepository;

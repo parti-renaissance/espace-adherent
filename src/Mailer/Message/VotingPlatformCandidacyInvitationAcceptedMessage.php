@@ -15,7 +15,7 @@ final class VotingPlatformCandidacyInvitationAcceptedMessage extends AbstractVot
         CandidacyInterface $candidate,
         Designation $designation,
         string $candidaciesListUrl,
-        array $params = []
+        array $params = [],
     ): self {
         $invited = $invitedCandidacy->getAdherent();
         $emailTitle = self::getMailSubjectPrefix($designation);
@@ -86,7 +86,7 @@ final class VotingPlatformCandidacyInvitationAcceptedMessage extends AbstractVot
     private static function getRecipientParams(
         Designation $designation,
         CandidacyInterface $candidate,
-        CandidacyInterface $invited
+        CandidacyInterface $invited,
     ): array {
         if (DesignationTypeEnum::NATIONAL_COUNCIL === $designation->getType()) {
             $invitations = array_filter($candidate->getInvitations(), function (CandidacyInvitationInterface $candidacyInvitation) use ($invited) {

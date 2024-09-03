@@ -11,7 +11,7 @@ class AdministratorRoleHistoryHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly Security $security
+        private readonly Security $security,
     ) {
     }
 

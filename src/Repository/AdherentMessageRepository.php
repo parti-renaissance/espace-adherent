@@ -45,7 +45,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
         Adherent $adherent,
         string $type,
         ?string $status = null,
-        int $page = 1
+        int $page = 1,
     ): PaginatorInterface {
         return $this->configurePaginator($this->createListQueryBuilder($adherent, $type, $status), $page);
     }
@@ -57,7 +57,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
         Adherent $adherent,
         Committee $committee,
         ?string $status = null,
-        int $page = 1
+        int $page = 1,
     ): PaginatorInterface {
         $queryBuilder = $this->createListQueryBuilder($adherent, AdherentMessageTypeEnum::COMMITTEE, $status);
 
@@ -78,7 +78,7 @@ class AdherentMessageRepository extends ServiceEntityRepository
     public function countTotalCommitteeMessage(
         Adherent $adherent,
         Committee $committee,
-        bool $currentMonthOnly = false
+        bool $currentMonthOnly = false,
     ): int {
         $queryBuilder = $this->createCountQueryBuilder(
             $adherent,

@@ -31,7 +31,7 @@ class PersistentTokenFactory
         AccessTokenRepository $accessTokenRepository,
         ClientRepository $clientRepository,
         AdherentRepository $adherentRepository,
-        DeviceRepository $deviceRepository
+        DeviceRepository $deviceRepository,
     ) {
         $this->accessTokenRepository = $accessTokenRepository;
         $this->clientRepository = $clientRepository;

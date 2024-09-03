@@ -23,7 +23,7 @@ class EventReminderHandler
         JeMarcheMessaging $messaging,
         PushTokenManager $pushTokenManager,
         BaseEventRepository $eventRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ) {
         $this->deviceNotifier = $deviceNotifier;
         $this->messaging = $messaging;
@@ -35,7 +35,7 @@ class EventReminderHandler
     public function findEventsToRemind(
         \DateTimeInterface $startAfter,
         \DateTimeInterface $startBefore,
-        ?string $mode = null
+        ?string $mode = null,
     ): array {
         return $this->eventRepository->findEventsToRemind($startAfter, $startBefore, $mode);
     }

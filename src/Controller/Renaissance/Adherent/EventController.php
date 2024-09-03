@@ -41,7 +41,7 @@ class EventController extends AbstractController
         private readonly BaseEventRepository $baseEventRepository,
         private readonly EventRegistrationRepository $eventRegistrationRepository,
         private readonly EventRegistrationManager $manager,
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -206,7 +206,7 @@ class EventController extends AbstractController
     public function contactAction(
         Request $request,
         BaseEvent $event,
-        ContactMessageHandler $handler
+        ContactMessageHandler $handler,
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();

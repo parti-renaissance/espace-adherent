@@ -29,7 +29,7 @@ class MandateRepository extends ServiceEntityRepository
     public function findByTypesAndUserListDefinitionForAdherent(
         array $mandateTypes,
         string $userListDefinitionCode,
-        Adherent $adherent
+        Adherent $adherent,
     ): array {
         return $this
             ->createQueryBuilder('mandate')
@@ -53,7 +53,7 @@ class MandateRepository extends ServiceEntityRepository
     public function findByFunctionAndUserListDefinitionForAdherent(
         string $functionName,
         string $userListDefinitionCode,
-        Adherent $adherent
+        Adherent $adherent,
     ): array {
         return $this
             ->createQueryBuilder('mandate')

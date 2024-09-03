@@ -32,7 +32,7 @@ class ReportAdmin extends AbstractAdmin
         string $code,
         string $class,
         string $baseControllerName,
-        ReportRepository $reportRepository
+        ReportRepository $reportRepository,
     ) {
         parent::__construct($code, $class, $baseControllerName);
 

@@ -16,7 +16,7 @@ trait ApiControllerTestTrait
         string $grantType,
         ?string $scope,
         ?string $username = null,
-        ?string $userPassword = null
+        ?string $userPassword = null,
     ): ?string {
         $params = [
             'client_id' => $clientUuid,

@@ -20,7 +20,7 @@ class ScopeGeneratorResolver
     public function __construct(
         RequestStack $requestStack,
         Security $security,
-        AuthorizationChecker $authorizationChecker
+        AuthorizationChecker $authorizationChecker,
     ) {
         $this->requestStack = $requestStack;
         $this->security = $security;

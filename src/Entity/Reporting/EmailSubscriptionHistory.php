@@ -56,7 +56,7 @@ class EmailSubscriptionHistory
         Adherent $adherent,
         SubscriptionType $subscriptionType,
         EmailSubscriptionHistoryAction $action,
-        ?\DateTimeImmutable $date = null
+        ?\DateTimeImmutable $date = null,
     ) {
         $this->adherentUuid = $adherent->getUuid();
         $this->subscriptionType = $subscriptionType;

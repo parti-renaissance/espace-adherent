@@ -23,7 +23,7 @@ class ScopeStore implements ScopeRepositoryInterface
         array $scopes,
         $grantType,
         ClientEntityInterface $clientEntity,
-        $userIdentifier = null
+        $userIdentifier = null,
     ) {
         if (!$clientEntity instanceof Client) {
             throw new \LogicException(\sprintf('Only %s instances are supported', Client::class));

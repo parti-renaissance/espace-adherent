@@ -32,7 +32,7 @@ class ReportController extends AbstractController
         string $type,
         string $uuid,
         ReportManager $reportManager,
-        ReportCreationCommandHandler $handler
+        ReportCreationCommandHandler $handler,
     ): Response {
         $subject = $reportManager->getSubjectByUuid(ReportType::URI_MAP[$type], $uuid);
 

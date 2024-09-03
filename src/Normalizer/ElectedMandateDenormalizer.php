@@ -18,7 +18,7 @@ class ElectedMandateDenormalizer implements DenormalizerInterface, DenormalizerA
 
     public function __construct(
         private readonly Security $security,
-        private readonly ScopeGeneratorResolver $scopeGeneratorResolver
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
     }
 

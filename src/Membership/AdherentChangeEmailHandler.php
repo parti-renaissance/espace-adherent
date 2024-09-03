@@ -28,7 +28,7 @@ class AdherentChangeEmailHandler
         AdherentChangeEmailTokenRepository $repository,
         UrlGeneratorInterface $urlGenerator,
         EventDispatcherInterface $dispatcher,
-        string $renaissanceHost
+        string $renaissanceHost,
     ) {
         $this->mailer = $transactionalMailer;
         $this->manager = $manager;

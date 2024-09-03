@@ -25,7 +25,7 @@ class LoadActivePapCampaignExtension implements QueryItemExtensionInterface, Que
         string $resourceClass,
         array $identifiers,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         $this->modifyQuery($queryBuilder, $resourceClass);
     }
@@ -35,7 +35,7 @@ class LoadActivePapCampaignExtension implements QueryItemExtensionInterface, Que
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         $this->modifyQuery($queryBuilder, $resourceClass);
     }

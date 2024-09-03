@@ -17,7 +17,7 @@ class CommitteeMembershipException extends \RuntimeException
 
     public static function createNotPromotableHostPrivilegeException(
         UuidInterface $membershipUuid,
-        ?\Exception $previous = null
+        ?\Exception $previous = null,
     ): self {
         return new self(
             $membershipUuid,
@@ -28,7 +28,7 @@ class CommitteeMembershipException extends \RuntimeException
 
     public static function createNotPromotableHostPrivilegeManyHostsException(
         UuidInterface $membershipUuid,
-        ?\Exception $previous = null
+        ?\Exception $previous = null,
     ): self {
         return new self(
             $membershipUuid,
@@ -39,7 +39,7 @@ class CommitteeMembershipException extends \RuntimeException
 
     public static function createNotDemotableFollowerPrivilegeException(
         UuidInterface $membershipUuid,
-        ?\Exception $previous = null
+        ?\Exception $previous = null,
     ): self {
         return new self(
             $membershipUuid,

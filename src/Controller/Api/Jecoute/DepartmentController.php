@@ -18,7 +18,7 @@ class DepartmentController extends AbstractController
     public function find(
         string $postalCode,
         SerializerInterface $serializer,
-        DepartmentRepository $departmentRepository
+        DepartmentRepository $departmentRepository,
     ): Response {
         $department = $departmentRepository->findOneForJecoute($postalCode);
 

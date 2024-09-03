@@ -136,7 +136,7 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         Adherent $adherent,
         string $role,
         array $scopeFeatures = [],
-        ?string $uuid = null
+        ?string $uuid = null,
     ): Member {
         return new Member($adherent, $role, $scopeFeatures, Uuid::fromString($uuid));
     }

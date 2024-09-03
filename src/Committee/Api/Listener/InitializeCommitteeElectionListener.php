@@ -16,7 +16,7 @@ class InitializeCommitteeElectionListener implements EventSubscriberInterface
 {
     public function __construct(
         private readonly CommitteeRepository $committeeRepository,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
     ) {
     }
 

@@ -439,7 +439,7 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
     private function createCmsBlock(
         string $name,
         string $description,
-        string $content = self::MARKDOWN_CONTENT
+        string $content = self::MARKDOWN_CONTENT,
     ): CmsBlock {
         return new CmsBlock($name, $description, $content);
     }

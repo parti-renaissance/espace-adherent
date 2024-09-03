@@ -614,7 +614,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
         ?string $visioUrl = null,
         ?int $capacity = null,
         bool $private = false,
-        bool $electoral = false
+        bool $electoral = false,
     ): void {
         $this->setName($name);
         $this->capacity = $capacity;

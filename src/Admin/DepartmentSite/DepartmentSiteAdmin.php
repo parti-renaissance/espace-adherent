@@ -24,7 +24,7 @@ class DepartmentSiteAdmin extends AbstractAdmin
         string $code,
         string $class,
         string $baseControllerName,
-        string $dptSiteUnlayerTemplateId
+        string $dptSiteUnlayerTemplateId,
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
@@ -113,7 +113,7 @@ class DepartmentSiteAdmin extends AbstractAdmin
     public static function prepareZoneAutocompleteCallback(
         AdminInterface $admin,
         array $properties,
-        string $value
+        string $value,
     ): void {
         /** @var QueryBuilder $qb */
         $qb = $admin->getDatagrid()->getQuery();

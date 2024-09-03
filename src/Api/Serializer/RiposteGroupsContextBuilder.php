@@ -14,7 +14,7 @@ class RiposteGroupsContextBuilder implements SerializerContextBuilderInterface
 
     public function __construct(
         SerializerContextBuilderInterface $decorated,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
     ) {
         $this->decorated = $decorated;
         $this->authorizationChecker = $authorizationChecker;

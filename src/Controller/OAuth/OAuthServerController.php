@@ -24,7 +24,7 @@ class OAuthServerController extends AbstractController
 {
     public function __construct(
         private readonly AuthorizationServer $authorizationServer,
-        private readonly HttpFoundationFactoryInterface $httpFoundationFactory
+        private readonly HttpFoundationFactoryInterface $httpFoundationFactory,
     ) {
     }
 

@@ -27,7 +27,7 @@ class RemoveAdherentAndRelatedDataCommandHandler implements MessageHandlerInterf
         AdherentRepository $adherentRepository,
         EntityManagerInterface $entityManager,
         iterable $handlers,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->adherentRepository = $adherentRepository;
         $this->entityManager = $entityManager;

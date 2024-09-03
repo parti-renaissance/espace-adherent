@@ -38,7 +38,7 @@ class AdministratorRoleHistory
         Administrator $administrator,
         string $role,
         string $action,
-        Administrator $author
+        Administrator $author,
     ) {
         $this->administrator = $administrator;
         $this->role = $role;
@@ -50,7 +50,7 @@ class AdministratorRoleHistory
     public static function createAdd(
         Administrator $administrator,
         string $role,
-        Administrator $author
+        Administrator $author,
     ): self {
         return new self($administrator, $role, self::ACTION_ADD, $author);
     }
@@ -58,7 +58,7 @@ class AdministratorRoleHistory
     public static function createRemove(
         Administrator $administrator,
         string $role,
-        Administrator $author
+        Administrator $author,
     ): self {
         return new self($administrator, $role, self::ACTION_REMOVE, $author);
     }

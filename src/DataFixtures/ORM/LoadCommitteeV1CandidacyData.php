@@ -159,7 +159,7 @@ class LoadCommitteeV1CandidacyData extends Fixture implements DependentFixtureIn
     private function createCandidacy(
         Committee $committee,
         Adherent $adherent,
-        bool $withPhoto = false
+        bool $withPhoto = false,
     ): CommitteeCandidacy {
         $adherent->getMembershipFor($committee)->addCommitteeCandidacy(
             $candidacy = new CommitteeCandidacy($committee->getCommitteeElection(), $adherent->getGender())

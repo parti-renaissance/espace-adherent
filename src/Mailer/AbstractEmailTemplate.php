@@ -34,7 +34,7 @@ abstract class AbstractEmailTemplate implements \JsonSerializable, EmailTemplate
         array $cc = [],
         array $bcc = [],
         array $vars = [],
-        array $templateContent = []
+        array $templateContent = [],
     ) {
         $this->uuid = $uuid;
         $this->template = $template;
@@ -51,7 +51,7 @@ abstract class AbstractEmailTemplate implements \JsonSerializable, EmailTemplate
     public static function createWithMessage(
         Message $message,
         string $defaultSenderEmail,
-        ?string $defaultSenderName = null
+        ?string $defaultSenderName = null,
     ): self {
         $senderEmail = $message->getSenderEmail() ?: $defaultSenderEmail;
         $senderName = $message->getSenderName() ?: $defaultSenderName;

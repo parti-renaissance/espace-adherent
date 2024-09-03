@@ -133,7 +133,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
         ?Committee $committee = null,
         ?bool $isFollower = null,
         ?bool $isSupervisor = null,
-        bool $isHost = false
+        bool $isHost = false,
     ): Adherent {
         $adherent = $this->createAdherentMock();
 
@@ -158,7 +158,7 @@ class FollowCommitteeVoterTest extends AbstractAdherentVoterTestCase
     private function getMembershipMock(
         ?bool $isFollower,
         ?bool $isSupervisor,
-        bool $isHost = false
+        bool $isHost = false,
     ): ?CommitteeMembership {
         if (!$isFollower) {
             return null;

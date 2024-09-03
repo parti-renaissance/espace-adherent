@@ -13,7 +13,7 @@ class EventCanceledHandler
 {
     public function __construct(
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly EntityManagerInterface $manager
+        private readonly EntityManagerInterface $manager,
     ) {
     }
 

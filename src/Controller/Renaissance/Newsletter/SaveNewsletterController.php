@@ -20,7 +20,7 @@ class SaveNewsletterController extends AbstractController
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
         private readonly NewsletterManager $newsletterManager,
-        private readonly string $friendlyCaptchaEuropeSiteKey
+        private readonly string $friendlyCaptchaEuropeSiteKey,
     ) {
     }
 

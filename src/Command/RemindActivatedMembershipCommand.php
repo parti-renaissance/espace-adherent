@@ -25,7 +25,7 @@ class RemindActivatedMembershipCommand extends Command
     public function __construct(
         MembershipNotifier $membershipNotifier,
         AdherentRepository $adherentRepository,
-        ObjectManager $em
+        ObjectManager $em,
     ) {
         parent::__construct();
 

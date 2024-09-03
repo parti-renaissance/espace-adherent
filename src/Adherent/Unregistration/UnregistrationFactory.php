@@ -9,7 +9,7 @@ class UnregistrationFactory
 {
     public static function createFromUnregistrationCommandAndAdherent(
         UnregistrationCommand $command,
-        Adherent $adherent
+        Adherent $adherent,
     ): Unregistration {
         return new Unregistration(
             $adherent->getUuid(),

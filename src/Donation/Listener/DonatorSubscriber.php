@@ -13,7 +13,7 @@ class DonatorSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly AdherentRepository $adherentRepository,
-        private readonly EntityManagerInterface $em
+        private readonly EntityManagerInterface $em,
     ) {
     }
 

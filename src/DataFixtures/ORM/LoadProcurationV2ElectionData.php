@@ -52,7 +52,7 @@ class LoadProcurationV2ElectionData extends Fixture
 
     private function createElection(
         string $name,
-        string $slug
+        string $slug,
     ): Election {
         $election = new Election();
         $election->name = $name;
@@ -82,7 +82,7 @@ class LoadProcurationV2ElectionData extends Fixture
     private function createRound(
         string $name,
         string $date,
-        ?UuidInterface $uuid = null
+        ?UuidInterface $uuid = null,
     ): Round {
         $round = new Round($uuid);
         $round->name = $name;

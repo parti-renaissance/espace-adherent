@@ -23,7 +23,7 @@ class AudienceDenormalizer implements DenormalizerInterface, DenormalizerAwareIn
     public function __construct(
         ScopeGeneratorResolver $scopeGeneratorResolver,
         ManagedZoneProvider $managedZoneProvider,
-        Security $security
+        Security $security,
     ) {
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;
         $this->managedZoneProvider = $managedZoneProvider;

@@ -100,7 +100,7 @@ class VoterRepository extends ServiceEntityRepository
         Election $election,
         bool $partial = false,
         ?int $offset = null,
-        ?int $limit = null
+        ?int $limit = null,
     ): array {
         $queryBuilder = $this->createQueryBuilder('voter')
             ->addSelect($partial ? 'PARTIAL adherent.{id, uuid, emailAddress, firstName, lastName}' : 'adherent')

@@ -203,7 +203,7 @@ class AdminAdherentCRUDController extends CRUDController
 
     public function extractAction(
         Request $request,
-        AdherentExtractCommandHandler $adherentExtractCommandHandler
+        AdherentExtractCommandHandler $adherentExtractCommandHandler,
     ): Response {
         $this->admin->checkAccess('extract');
 
@@ -250,7 +250,7 @@ class AdminAdherentCRUDController extends CRUDController
 
     public function createRenaissanceVerifyEmailAction(
         Request $request,
-        AdherentCreateCommandHandler $adherentCreateCommandHandler
+        AdherentCreateCommandHandler $adherentCreateCommandHandler,
     ): Response {
         $this->admin->checkAccess('create_renaissance_verify_email');
 
@@ -274,7 +274,7 @@ class AdminAdherentCRUDController extends CRUDController
 
     public function createRenaissanceAction(
         Request $request,
-        AdherentCreateCommandHandler $adherentCreateCommandHandler
+        AdherentCreateCommandHandler $adherentCreateCommandHandler,
     ): Response {
         $this->admin->checkAccess('create_renaissance');
 

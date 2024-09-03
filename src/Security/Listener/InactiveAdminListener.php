@@ -16,7 +16,7 @@ class InactiveAdminListener
         private readonly SessionInterface $session,
         private readonly TokenStorageInterface $tokenStorage,
         private readonly UrlGenerator $urlGenerator,
-        private readonly int $maxIdleTime = 0
+        private readonly int $maxIdleTime = 0,
     ) {
     }
 

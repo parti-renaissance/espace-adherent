@@ -50,7 +50,7 @@ class EventRegistration
         bool $newsletterSubscriber = false,
         ?UuidInterface $adherentUuid = null,
         ?string $source = null,
-        string $createdAt = 'now'
+        string $createdAt = 'now',
     ) {
         $this->uuid = $uuid;
         $this->event = $event;

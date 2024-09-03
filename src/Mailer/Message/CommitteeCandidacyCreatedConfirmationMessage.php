@@ -22,7 +22,7 @@ final class CommitteeCandidacyCreatedConfirmationMessage extends Message
     private static function getTemplateVars(
         Adherent $candidate,
         CommitteeElection $election,
-        string $committeeUrl
+        string $committeeUrl,
     ): array {
         return [
             'first_name' => $candidate->getFirstName(),

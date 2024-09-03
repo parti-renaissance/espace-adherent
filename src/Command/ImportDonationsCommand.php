@@ -134,7 +134,7 @@ class ImportDonationsCommand extends Command
         PostAddressFactory $postAddressFactory,
         DonatorManager $donatorManager,
         DonatorRepository $donatorRepository,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
     ) {
         $this->storage = $defaultStorage;
         $this->postAddressFactory = $postAddressFactory;

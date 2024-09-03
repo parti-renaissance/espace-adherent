@@ -29,7 +29,7 @@ class SurveyController extends AbstractController
         LocalSurveyRepository $localSurveyRepository,
         NationalSurveyRepository $nationalSurveyRepository,
         ZoneRepository $zoneRepository,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
     ): Response {
         $postalCode = null;
         /** @var Adherent|DeviceApiUser $user */
@@ -72,7 +72,7 @@ class SurveyController extends AbstractController
     public function surveyReplyAction(
         Request $request,
         JemarcheDataSurveyAnswerHandler $dataSurveyHandler,
-        FormFactoryInterface $formFactory
+        FormFactoryInterface $formFactory,
     ): JsonResponse {
         /** @var Adherent|DeviceApiUser $user */
         $user = $this->getUser();

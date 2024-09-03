@@ -26,7 +26,7 @@ class AdminCandidaciesGroupCandidateImportController extends CRUDController
         Request $request,
         CandidaciesGroup $candidaciesGroup,
         CandidacyRepository $candidacyRepository,
-        SubstituteCandidacyRepository $substituteCandidacyRepository
+        SubstituteCandidacyRepository $substituteCandidacyRepository,
     ): Response {
         $this->admin->checkAccess('candidate_import');
 
@@ -120,7 +120,7 @@ class AdminCandidaciesGroupCandidateImportController extends CRUDController
     private function getHolderCandidacy(
         CandidacyRepository $candidacyRepository,
         CandidaciesGroup $candidaciesGroup,
-        string $email
+        string $email,
     ): Candidacy {
         if (!$candidacy = $candidacyRepository->findOneByCandidaciesGroupAndEmail($candidaciesGroup, $email)) {
             $candidaciesGroup->addCandidacy($candidacy = new Candidacy());
@@ -133,7 +133,7 @@ class AdminCandidaciesGroupCandidateImportController extends CRUDController
     private function getSubstituteCandidacy(
         SubstituteCandidacyRepository $substituteCandidacyRepository,
         CandidaciesGroup $candidaciesGroup,
-        string $email
+        string $email,
     ): SubstituteCandidacy {
         if (!$candidacy = $substituteCandidacyRepository->findOneByCandidaciesGroupAndEmail($candidaciesGroup, $email)) {
             $candidaciesGroup->addSubstituteCandidacy($candidacy = new SubstituteCandidacy());

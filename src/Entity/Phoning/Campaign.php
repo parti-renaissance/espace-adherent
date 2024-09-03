@@ -189,7 +189,7 @@ class Campaign implements EntityAdherentBlameableInterface, EntityAdministratorB
         ?Survey $survey = null,
         ?int $goal = null,
         ?\DateTime $finishAt = null,
-        ?Zone $zone = null
+        ?Zone $zone = null,
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->title = $title;

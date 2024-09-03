@@ -214,7 +214,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         array $floorsUuids = [],
         string $status = BuildingStatusEnum::ONGOING,
         ?Adherent $createdBy = null,
-        ?\DateTime $createdAt = null
+        ?\DateTime $createdAt = null,
     ): void {
         $createdAt ??= new \DateTime();
 
@@ -269,7 +269,7 @@ class LoadPapBuildingData extends Fixture implements DependentFixtureInterface
         Campaign $campaign,
         Adherent $createdBy,
         ?\DateTime $createdAt = null,
-        ?CampaignStatisticsInterface $stats = null
+        ?CampaignStatisticsInterface $stats = null,
     ): BuildingEvent {
         $event = new BuildingEvent(
             $building,

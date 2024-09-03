@@ -49,7 +49,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
         FailedLoginAttemptRepository $failedLoginAttemptRepository,
         AuthAppUrlManager $appUrlManager,
         FinishInscriptionRedirectHandler $besoinDEuropeRedirectHandler,
-        string $apiPathPrefix
+        string $apiPathPrefix,
     ) {
         $this->urlGenerator = $urlGenerator;
         $this->csrfTokenManager = $csrfTokenManager;

@@ -26,7 +26,7 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
         private readonly VoteResultRepository $voteResultRepository,
         private readonly CommitteeRepository $committeeRepository,
         private readonly CandidateGroupRepository $candidateGroupRepository,
-        private readonly ElectionManager $electionManager
+        private readonly ElectionManager $electionManager,
     ) {
     }
 

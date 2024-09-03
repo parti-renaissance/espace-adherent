@@ -23,7 +23,7 @@ class FillRevenueController extends AbstractContributionController
         Request $request,
         EntityManagerInterface $entityManager,
         ContributionRequestHandler $contributionRequestHandler,
-        MessageBusInterface $bus
+        MessageBusInterface $bus,
     ): Response {
         $command = $this->getCommand($request);
 

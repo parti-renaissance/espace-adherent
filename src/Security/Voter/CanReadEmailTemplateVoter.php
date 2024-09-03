@@ -14,7 +14,7 @@ class CanReadEmailTemplateVoter extends AbstractAdherentVoter
 
     public function __construct(
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
-        private readonly Security $security
+        private readonly Security $security,
     ) {
     }
 

@@ -20,7 +20,7 @@ class AuthenticationFailureHandler extends DefaultAuthenticationFailureHandler
         HttpKernelInterface $httpKernel,
         HttpUtils $httpUtils,
         array $options = [],
-        ?LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
     ) {
         parent::__construct($httpKernel, $httpUtils, $options, $logger);
 

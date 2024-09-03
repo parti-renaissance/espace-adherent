@@ -29,7 +29,7 @@ class CertificationRequestRecomputeCommand extends Command
     public function __construct(
         CertificationRequestRepository $certificationRequestRepository,
         EntityManagerInterface $em,
-        MessageBusInterface $bus
+        MessageBusInterface $bus,
     ) {
         $this->certificationRequestRepository = $certificationRequestRepository;
         $this->em = $em;

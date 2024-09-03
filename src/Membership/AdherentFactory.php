@@ -127,7 +127,7 @@ class AdherentFactory
 
     public function createFromAdminAdherentCreateCommand(
         AdherentCreateCommand $command,
-        Administrator $administrator
+        Administrator $administrator,
     ): Adherent {
         $adherent = Adherent::createBlank(
             $command->gender,

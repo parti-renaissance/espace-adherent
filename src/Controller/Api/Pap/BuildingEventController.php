@@ -30,7 +30,7 @@ class BuildingEventController extends AbstractController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         EntityManagerInterface $entityManager,
-        MessageBusInterface $bus
+        MessageBusInterface $bus,
     ): JsonResponse {
         $buildingEvent = new BuildingEvent($building);
         $buildingEvent = $serializer->deserialize($request->getContent(), BuildingEvent::class, JsonEncoder::FORMAT, [

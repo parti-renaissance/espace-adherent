@@ -20,7 +20,7 @@ class JecouteNewsGroupsContextBuilder implements SerializerContextBuilderInterfa
     public function __construct(
         SerializerContextBuilderInterface $decorated,
         AuthorizationCheckerInterface $authorizationChecker,
-        AuthorizationChecker $scopeAuthorizationChecker
+        AuthorizationChecker $scopeAuthorizationChecker,
     ) {
         $this->decorated = $decorated;
         $this->authorizationChecker = $authorizationChecker;

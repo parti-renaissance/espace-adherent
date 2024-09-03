@@ -20,7 +20,7 @@ class CommitteeFactory
 
     public function __construct(
         ZoneMatcher $zoneMatcher,
-        ?PostAddressFactory $addressFactory = null
+        ?PostAddressFactory $addressFactory = null,
     ) {
         $this->zoneMatcher = $zoneMatcher;
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();

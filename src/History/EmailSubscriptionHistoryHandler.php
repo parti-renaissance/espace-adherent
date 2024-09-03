@@ -59,7 +59,7 @@ class EmailSubscriptionHistoryHandler
     private function createEmailSubscriptionHistory(
         Adherent $adherent,
         array $subscriptions,
-        EmailSubscriptionHistoryAction $action
+        EmailSubscriptionHistoryAction $action,
     ): void {
         foreach ($subscriptions as $subscription) {
             $this->em->persist(new EmailSubscriptionHistory($adherent, $subscription, $action));

@@ -20,7 +20,7 @@ class FormationNormalizer implements NormalizerInterface, NormalizerAwareInterfa
 
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly ScopeGeneratorResolver $scopeGeneratorResolver
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
     }
 

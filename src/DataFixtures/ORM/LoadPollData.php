@@ -126,7 +126,7 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
         string $question,
         \DateTimeInterface $finishAt,
         Zone $zone,
-        bool $published = false
+        bool $published = false,
     ): Poll {
         return new LocalPoll($author, Uuid::fromString($uuid), $question, $finishAt, $zone, $published);
     }
@@ -135,7 +135,7 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
         Administrator $administrator,
         string $uuid,
         string $question,
-        \DateTimeInterface $finishAt
+        \DateTimeInterface $finishAt,
     ): Poll {
         return new NationalPoll($administrator, Uuid::fromString($uuid), $question, $finishAt);
     }

@@ -21,7 +21,7 @@ class CallbackManager
         UrlGeneratorInterface $urlGenerator,
         RequestStack $requestStack,
         ClientRepository $clientRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->urlGenerator = $urlGenerator;
         $this->requestStack = $requestStack;
@@ -40,7 +40,7 @@ class CallbackManager
     public function generateUrl(
         string $name,
         array $parameters = [],
-        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH,
     ): string {
         $callbackParameters = $this->validateRedirectUriAndClient();
 

@@ -25,7 +25,7 @@ class JecouteRiposteExtension implements QueryItemExtensionInterface, QueryColle
         string $resourceClass,
         array $identifiers,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         $this->modifyQuery($queryBuilder, $resourceClass);
     }
@@ -35,7 +35,7 @@ class JecouteRiposteExtension implements QueryItemExtensionInterface, QueryColle
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         $this->modifyQuery($queryBuilder, $resourceClass);
     }

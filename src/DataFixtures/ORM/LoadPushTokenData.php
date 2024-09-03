@@ -62,7 +62,7 @@ class LoadPushTokenData extends Fixture implements DependentFixtureInterface
         string $uuid,
         Adherent $adherent,
         string $identifier,
-        string $source
+        string $source,
     ): PushToken {
         return PushToken::createForAdherent(
             Uuid::fromString($uuid),
@@ -76,7 +76,7 @@ class LoadPushTokenData extends Fixture implements DependentFixtureInterface
         string $uuid,
         Device $device,
         string $identifier,
-        string $source
+        string $source,
     ): PushToken {
         return PushToken::createForDevice(
             Uuid::fromString($uuid),

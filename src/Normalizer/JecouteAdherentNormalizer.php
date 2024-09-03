@@ -19,7 +19,7 @@ class JecouteAdherentNormalizer extends AdherentNormalizer
     public function __construct(
         private readonly DataSurveyRepository $dataSurveyRepository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly ClientRepository $clientRepository
+        private readonly ClientRepository $clientRepository,
     ) {
     }
 

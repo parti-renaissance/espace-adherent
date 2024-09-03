@@ -11,7 +11,7 @@ final class RenaissanceCertificationRequestRefusedMessage extends AbstractRenais
     public static function create(
         CertificationRequest $certificationRequest,
         string $refusalReason,
-        string $certificationRequestUrl
+        string $certificationRequestUrl,
     ): self {
         $adherent = $certificationRequest->getAdherent();
 

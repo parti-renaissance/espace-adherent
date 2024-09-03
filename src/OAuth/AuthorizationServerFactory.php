@@ -44,7 +44,7 @@ class AuthorizationServerFactory
         string $encryptionKey,
         string $accessTokenTtlInterval,
         string $refreshTokenTtlInterval,
-        string $authCodeTtlInterval = 'PT10M'
+        string $authCodeTtlInterval = 'PT10M',
     ) {
         $this->accessTokenRepository = $accessTokenRepository;
         $this->userRepository = $userRepository;

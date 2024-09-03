@@ -16,7 +16,7 @@ class CommitteeCandidacyEvent extends BaseCandidacyEvent
         CommitteeCandidacy $candidacy,
         Committee $committee,
         Adherent $candidate,
-        array $supervisors = []
+        array $supervisors = [],
     ) {
         parent::__construct($candidacy);
 

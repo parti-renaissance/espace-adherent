@@ -19,7 +19,7 @@ class DeclinePendingCandidacyInvitationsListener implements EventSubscriberInter
     public function __construct(
         CommitteeCandidacyManager $committeeCandidacyManager,
         EntityManagerInterface $entityManager,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ) {
         $this->committeeCandidacyManager = $committeeCandidacyManager;
         $this->entityManager = $entityManager;

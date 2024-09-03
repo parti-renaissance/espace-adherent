@@ -20,7 +20,7 @@ class GuardListener implements EventSubscriberInterface
 
     public function __construct(
         ElectionRepository $electionRepository,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
     ) {
         $this->electionRepository = $electionRepository;
         $this->authorizationChecker = $authorizationChecker;

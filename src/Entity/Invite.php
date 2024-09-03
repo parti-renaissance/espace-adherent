@@ -90,7 +90,7 @@ class Invite implements RecaptchaChallengeInterface
         string $lastName,
         string $email,
         string $message,
-        string $clientIp
+        string $clientIp,
     ): self {
         $invite = new self(Uuid::uuid4());
         $invite->firstName = $firstName;

@@ -14,7 +14,7 @@ class PushTokenManager
 
     public function __construct(
         CommitteeMembershipRepository $committeeMembershipRepository,
-        EventRegistrationRepository $eventRegistrationRepository
+        EventRegistrationRepository $eventRegistrationRepository,
     ) {
         $this->committeeMembershipRepository = $committeeMembershipRepository;
         $this->eventRegistrationRepository = $eventRegistrationRepository;

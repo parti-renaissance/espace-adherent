@@ -29,7 +29,7 @@ class MailchimpSyncJecouteCommand extends Command
     public function __construct(
         JemarcheDataSurveyRepository $dataSurveyRepository,
         EntityManagerInterface $entityManager,
-        MessageBusInterface $bus
+        MessageBusInterface $bus,
     ) {
         $this->dataSurveyRepository = $dataSurveyRepository;
         $this->entityManager = $entityManager;

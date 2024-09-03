@@ -19,7 +19,7 @@ class NewsHandler
         NewsRepository $newsRepository,
         EntityManagerInterface $entityManager,
         JeMarcheDeviceNotifier $deviceNotifier,
-        NotificationTopicBuilder $topicBuilder
+        NotificationTopicBuilder $topicBuilder,
     ) {
         $this->newsRepository = $newsRepository;
         $this->entityManager = $entityManager;

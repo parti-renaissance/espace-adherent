@@ -20,7 +20,7 @@ class BuildingHistoryController extends AbstractController
         Request $request,
         Building $building,
         CampaignHistoryRepository $campaignHistoryRepository,
-        CampaignRepository $campaignRepository
+        CampaignRepository $campaignRepository,
     ): JsonResponse {
         if (!$campaignUuid = $request->query->get('campaign_uuid')) {
             return $this->json('Parameter "campaign_uuid" is required.', Response::HTTP_BAD_REQUEST);
