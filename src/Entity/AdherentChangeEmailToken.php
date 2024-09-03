@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\AdherentChangeEmailTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AdherentChangeEmailTokenRepository::class)]
 #[ORM\Index(columns: ['email', 'used_at', 'expired_at'])]
@@ -13,6 +14,7 @@ class AdherentChangeEmailToken extends AdherentToken
     /**
      * @var string|null
      */
+    #[Groups(['profile_read'])]
     #[ORM\Column]
     private $email;
 

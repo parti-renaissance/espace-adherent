@@ -81,7 +81,8 @@ Feature:
         "last_membership_donation": null,
         "committee_membership": null,
         "other_party_membership": false,
-        "image_url": null
+        "image_url": null,
+        "change_email_token": null
     }
     """
 
@@ -793,7 +794,8 @@ Feature:
         "last_membership_donation": null,
         "committee_membership": null,
         "other_party_membership": false,
-        "image_url": null
+        "image_url": null,
+        "change_email_token": null
     }
     """
     # Update blank last name
@@ -1283,7 +1285,8 @@ Feature:
             },
             "certified": false,
             "interests": [],
-            "image_url": null
+            "image_url": null,
+            "change_email_token": null
         }
         """
         When I send a "GET" request to "/api/v3/profile/committees"
@@ -1393,7 +1396,8 @@ Feature:
             },
             "certified": false,
             "interests": [],
-            "image_url": null
+            "image_url": null,
+            "change_email_token": null
         }
         """
 
@@ -1477,7 +1481,8 @@ Feature:
             },
             "certified": false,
             "interests": [],
-            "image_url": null
+            "image_url": null,
+            "change_email_token": null
         }
         """
         When I send a "POST" request to "/api/v3/profile/b4219d47-3138-5efd-9762-2ef9f9495084/image" with body:
