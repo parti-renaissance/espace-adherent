@@ -27,7 +27,7 @@ abstract class AbstractScopeFilter extends AbstractFilter
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ) {
         if (self::PROPERTY_NAME !== $property || !$this->isValidOperation($operation)) {
             return;
@@ -59,7 +59,7 @@ abstract class AbstractScopeFilter extends AbstractFilter
         Adherent $currentUser,
         ScopeGeneratorInterface $scopeGenerator,
         string $resourceClass,
-        array $context
+        array $context,
     ): void;
 
     public function getDescription(string $resourceClass): array

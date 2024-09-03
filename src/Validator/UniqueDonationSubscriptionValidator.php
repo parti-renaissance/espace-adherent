@@ -20,7 +20,7 @@ class UniqueDonationSubscriptionValidator extends ConstraintValidator
     public function __construct(
         DonationRepository $donationRepository,
         UrlGeneratorInterface $urlGenerator,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
     ) {
         $this->donationRepository = $donationRepository;
         $this->urlGenerator = $urlGenerator;

@@ -12,7 +12,7 @@ class PaymentImporter
     public function __construct(
         private readonly ClientInterface $client,
         private readonly ContactRepository $contactRepository,
-        private readonly PaymentRepository $paymentRepository
+        private readonly PaymentRepository $paymentRepository,
     ) {
     }
 

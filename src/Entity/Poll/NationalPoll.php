@@ -18,7 +18,7 @@ class NationalPoll extends Poll
         ?Administrator $administrator = null,
         ?UuidInterface $uuid = null,
         ?string $question = null,
-        ?\DateTimeInterface $finishAt = null
+        ?\DateTimeInterface $finishAt = null,
     ) {
         parent::__construct($uuid, $question, $finishAt, true);
 

@@ -29,7 +29,7 @@ class CandidateEventManagerController extends AbstractEventManagerController
     public function __construct(
         DefaultEventRepository $repository,
         ManagedZoneProvider $managedZoneProvider,
-        EventGroupCategoryRepository $eventGroupCategoryRepository
+        EventGroupCategoryRepository $eventGroupCategoryRepository,
     ) {
         $this->repository = $repository;
         $this->managedZoneProvider = $managedZoneProvider;

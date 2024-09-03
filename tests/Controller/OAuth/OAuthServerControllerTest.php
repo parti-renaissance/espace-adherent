@@ -403,7 +403,7 @@ class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
     private function createAuthorizeUrl(
         $scopes = [],
         string $clientId = 'f80ce2df-af6d-4ce4-8239-04cfcefd5a19',
-        ?string $redirectUri = 'http://client-oauth.docker:8000/client/receive_authcode'
+        ?string $redirectUri = 'http://client-oauth.docker:8000/client/receive_authcode',
     ): string {
         $params = ['client_id' => $clientId];
 

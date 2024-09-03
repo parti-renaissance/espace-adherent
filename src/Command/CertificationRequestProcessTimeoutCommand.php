@@ -23,7 +23,7 @@ class CertificationRequestProcessTimeoutCommand extends Command
 
     public function __construct(
         EntityManagerInterface $em,
-        CertificationRequestRepository $certificationRequestRepository
+        CertificationRequestRepository $certificationRequestRepository,
     ) {
         $this->em = $em;
         $this->certificationRequestRepository = $certificationRequestRepository;

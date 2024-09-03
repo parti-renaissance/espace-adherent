@@ -17,7 +17,7 @@ class PayboxFormFactory
         private readonly LexikRequestHandler $membershipRequestHandler,
         private readonly UrlGeneratorInterface $router,
         private readonly DonationRequestUtils $donationRequestUtils,
-        private readonly SlugifyInterface $slugify
+        private readonly SlugifyInterface $slugify,
     ) {
     }
 

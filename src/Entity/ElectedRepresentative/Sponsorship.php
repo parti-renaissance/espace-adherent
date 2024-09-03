@@ -43,7 +43,7 @@ class Sponsorship
     public function __construct(
         ?int $presidentialElectionYear = null,
         ?string $candidate = null,
-        ?ElectedRepresentative $electedRepresentative = null
+        ?ElectedRepresentative $electedRepresentative = null,
     ) {
         $this->electedRepresentative = $electedRepresentative;
         $this->candidate = $candidate;

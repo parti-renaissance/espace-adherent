@@ -19,7 +19,7 @@ class MailchimpSyncLegislativeNewsletterCommandHandler implements MessageHandler
     public function __construct(
         Manager $manager,
         EntityManagerInterface $entityManager,
-        LegislativeNewsletterSubscriptionRepository $repository
+        LegislativeNewsletterSubscriptionRepository $repository,
     ) {
         $this->manager = $manager;
         $this->entityManager = $entityManager;

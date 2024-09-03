@@ -20,7 +20,7 @@ final class MovementInvitationMessage extends Message
     private static function getTemplateVars(
         string $senderFirstName,
         string $senderLastName,
-        string $targetMessage
+        string $targetMessage,
     ): array {
         return [
             'sender_firstname' => self::escape($senderFirstName),

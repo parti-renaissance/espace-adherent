@@ -30,7 +30,7 @@ class EventMessageNotifierListener implements EventSubscriberInterface
         private readonly MailerService $transactionalMailer,
         private readonly CommitteeManager $committeeManager,
         private readonly EventRegistrationRepository $registrationRepository,
-        private readonly UrlGeneratorInterface $urlGenerator
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 

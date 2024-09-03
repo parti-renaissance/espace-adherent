@@ -24,7 +24,7 @@ class AddTeamMembersController extends AbstractController
         Team $team,
         TeamMemberManagementHandler $teamMemberManagementHandler,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
     ): JsonResponse {
         if (!$content = $request->getContent()) {
             return $this->json('Request body should not be empty.', Response::HTTP_BAD_REQUEST);

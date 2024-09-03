@@ -18,7 +18,7 @@ class NewMembershipNotificationCommandHandler implements MessageHandlerInterface
         private readonly EntityManagerInterface $entityManager,
         private readonly AdherentRepository $adherentRepository,
         private readonly NewMembershipNotificationHandler $newMembershipNotificationHandler,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->logger = $logger;
     }

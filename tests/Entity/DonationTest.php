@@ -55,7 +55,7 @@ class DonationTest extends TestCase
     private function createDonation(
         ?string $donatedAt = null,
         string $type = Donation::TYPE_CB,
-        string $duration = PayboxPaymentSubscription::UNLIMITED
+        string $duration = PayboxPaymentSubscription::UNLIMITED,
     ): Donation {
         return new Donation(
             Uuid::uuid4(),

@@ -15,7 +15,7 @@ class NewMembershipNotificationHandler
         private readonly AdherentRepository $adherentRepository,
         private readonly CommitteeMembershipRepository $committeeMembershipRepository,
         private readonly MailerService $transactionalMailer,
-        private readonly string $jemengageHost
+        private readonly string $jemengageHost,
     ) {
     }
 

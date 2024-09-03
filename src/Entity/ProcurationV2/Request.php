@@ -132,7 +132,7 @@ class Request extends AbstractProcuration
         ?Adherent $adherent = null,
         bool $joinNewsletter = false,
         ?string $clientIp = null,
-        ?\DateTimeInterface $createdAt = null
+        ?\DateTimeInterface $createdAt = null,
     ) {
         parent::__construct(
             $uuid,

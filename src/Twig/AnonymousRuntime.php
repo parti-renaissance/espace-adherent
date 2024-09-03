@@ -23,7 +23,7 @@ class AnonymousRuntime implements RuntimeExtensionInterface
     private function doGeneratePathForAnonymousFollower(
         string $intention,
         string $callbackRoute = '',
-        array $params = []
+        array $params = [],
     ): string {
         if (!$callbackRoute) {
             $callbackRoute = $this->requestStack->getMainRequest()->attributes->get('_route');

@@ -20,7 +20,7 @@ class BuildingStatisticsManager
     public function __construct(
         EntityManagerInterface $em,
         DataSurveyRepository $dataSurveyRepository,
-        CampaignHistoryRepository $campaignHistoryRepository
+        CampaignHistoryRepository $campaignHistoryRepository,
     ) {
         $this->em = $em;
         $this->dataSurveyRepository = $dataSurveyRepository;

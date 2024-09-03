@@ -21,7 +21,7 @@ class SecurityContext extends RawMinkContext
     public function __construct(
         SessionInterface $session,
         AdherentRepository $adherentRepository,
-        AdministratorRepository $administratorRepository
+        AdministratorRepository $administratorRepository,
     ) {
         $this->session = $session;
         $this->adherentRepository = $adherentRepository;

@@ -70,7 +70,7 @@ class UserController extends AbstractController
         Request $request,
         AdherentChangePasswordHandler $handler,
         AuthAppUrlManager $appUrlManager,
-        string $app_domain
+        string $app_domain,
     ): Response {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
         $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
@@ -110,7 +110,7 @@ class UserController extends AbstractController
         Request $request,
         MembershipRequestHandler $handler,
         TokenStorageInterface $tokenStorage,
-        AuthAppUrlManager $appUrlManager
+        AuthAppUrlManager $appUrlManager,
     ): Response {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
         $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);

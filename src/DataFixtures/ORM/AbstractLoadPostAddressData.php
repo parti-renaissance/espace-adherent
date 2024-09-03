@@ -22,7 +22,7 @@ abstract class AbstractLoadPostAddressData extends Fixture
         string $cityCode,
         ?string $region = null,
         ?float $latitude = null,
-        ?float $longitude = null
+        ?float $longitude = null,
     ): AddressInterface {
         [, $inseeCode] = explode('-', $cityCode);
         $city = $this->franceCities->getCityByInseeCode($inseeCode);
@@ -35,7 +35,7 @@ abstract class AbstractLoadPostAddressData extends Fixture
         ?string $cityCode = null,
         ?string $region = null,
         ?float $latitude = null,
-        ?float $longitude = null
+        ?float $longitude = null,
     ): AddressInterface {
         if ($cityCode) {
             [, $inseeCode] = explode('-', $cityCode);

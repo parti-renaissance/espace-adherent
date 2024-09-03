@@ -22,7 +22,7 @@ class SaveCommitteeUpdateController extends AbstractController
         Committee $committee,
         ManagedZoneProvider $zoneProvider,
         CommitteeMembershipManager $committeeMembershipManager,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();

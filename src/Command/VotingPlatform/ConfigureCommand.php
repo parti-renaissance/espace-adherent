@@ -434,7 +434,7 @@ class ConfigureCommand extends Command
 
     private function configureCandidatesGroupsForCommitteeSupervisorElection(
         CommitteeElection $committeeElection,
-        Election $election
+        Election $election,
     ): void {
         $designation = $election->getDesignation();
 

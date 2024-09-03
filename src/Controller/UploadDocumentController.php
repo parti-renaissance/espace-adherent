@@ -25,7 +25,7 @@ class UploadDocumentController extends AbstractController
         string $type,
         Request $request,
         UserDocumentManager $manager,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ): Response {
         if (!\in_array($type, UserDocument::ALL_TYPES)) {
             throw new NotFoundHttpException("File upload is not defined for type '$type'.");
@@ -114,7 +114,7 @@ class UploadDocumentController extends AbstractController
     public function downloadDocumentAction(
         UserDocument $document,
         string $filename,
-        UserDocumentManager $manager
+        UserDocumentManager $manager,
     ): Response {
         if ($filename !== $document->getOriginalName()) {
             throw $this->createNotFoundException('Document not found');

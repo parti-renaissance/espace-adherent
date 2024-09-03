@@ -18,7 +18,7 @@ class SendCandidacyInvitationEmailListener implements EventSubscriberInterface
 {
     public function __construct(
         private readonly MailerService $transactionalMailer,
-        private readonly UrlGeneratorInterface $urlGenerator
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 

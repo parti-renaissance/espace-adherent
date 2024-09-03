@@ -33,7 +33,7 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
         ResourceServer $resourceServer,
         HttpMessageFactoryInterface $httpMessageFactory,
         AdherentRepository $adherentRepository,
-        DeviceRepository $deviceRepository
+        DeviceRepository $deviceRepository,
     ) {
         $this->resourceServer = $resourceServer;
         $this->httpMessageFactory = $httpMessageFactory;

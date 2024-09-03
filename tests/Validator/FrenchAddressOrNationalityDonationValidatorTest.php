@@ -72,7 +72,7 @@ class FrenchAddressOrNationalityDonationValidatorTest extends ConstraintValidato
 
     private function createDonationRequest(
         ?string $nationality = AddressInterface::FRANCE,
-        ?string $country = AddressInterface::FRANCE
+        ?string $country = AddressInterface::FRANCE,
     ): DonationRequest {
         $donationRequest = new DonationRequest('123.0.0.1');
 

@@ -85,7 +85,7 @@ class MailchimpUpdateAdherentCommand extends Command
         array $header,
         int $emailColIndex,
         int $emailPrefColIndex,
-        int $interestColIndex
+        int $interestColIndex,
     ): void {
         if ('Adresse email' !== $header[$emailColIndex]) {
             throw new \InvalidArgumentException(\sprintf('It seems that position of email column is not %d or its label is not equal to `Adresse email`', $emailColIndex));

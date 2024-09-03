@@ -44,7 +44,7 @@ class AdherentZoneBasedRoleAdmin extends AbstractAdmin
     public static function prepareAutocompleteFilterCallback(
         AbstractAdmin $admin,
         array $properties,
-        string $value
+        string $value,
     ): void {
         /** @var QueryBuilder $qb */
         $qb = $admin->getDatagrid()->getQuery();

@@ -34,7 +34,7 @@ class CommitteeAdherentMandate extends AbstractAdherentMandate
         ?\DateTime $beginDate = null,
         ?\DateTime $finishDate = null,
         ?string $quality = null,
-        bool $isProvisional = false
+        bool $isProvisional = false,
     ): self {
         $mandate = new self($adherent, $adherent->getGender(), $beginDate ?? new \DateTime(), $finishDate, $quality, $isProvisional);
         $mandate->setCommittee($committee);

@@ -16,7 +16,7 @@ class EventDateTimeZoneTransformerTest extends TestCase
         string $beginAtTransformed,
         string $finishAt,
         string $finishAtTransformed,
-        string $timeZone
+        string $timeZone,
     ): void {
         $transformer = new EventDateTimeZoneTransformer();
         $adherent = new Adherent();
@@ -42,7 +42,7 @@ class EventDateTimeZoneTransformerTest extends TestCase
         string $begintAt,
         string $finishAtTransformed,
         string $finishAt,
-        string $timeZone
+        string $timeZone,
     ): void {
         $transformer = new EventDateTimeZoneTransformer();
         $adherent = new Adherent();

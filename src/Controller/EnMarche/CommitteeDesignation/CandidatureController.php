@@ -195,7 +195,7 @@ class CandidatureController extends AbstractController
     #[Route(path: '/mes-invitations', name: '_invitation_list', methods: ['GET'])]
     public function invitationListAction(
         Committee $committee,
-        CommitteeCandidacyInvitationRepository $repository
+        CommitteeCandidacyInvitationRepository $repository,
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
@@ -224,7 +224,7 @@ class CandidatureController extends AbstractController
     public function acceptInvitationAction(
         Committee $committee,
         Request $request,
-        CommitteeCandidacyInvitation $invitation
+        CommitteeCandidacyInvitation $invitation,
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();

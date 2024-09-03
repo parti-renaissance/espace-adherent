@@ -118,7 +118,7 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
         ?bool $isCommitteeMember = null,
         ?bool $isCertified = null,
         ?bool $hasEmailSubscription = null,
-        ?bool $hasSmsSubscription = null
+        ?bool $hasSmsSubscription = null,
     ): Audience {
         $audience = new Audience(Uuid::fromString($uuid));
         $audience->setScope($scope);

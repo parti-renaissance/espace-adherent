@@ -44,7 +44,7 @@ class ElectionRepository extends ServiceEntityRepository
     public function findOneForCommittee(
         Committee $committee,
         Designation $designation,
-        bool $withResult = false
+        bool $withResult = false,
     ): ?Election {
         $qb = $this->createQueryBuilder('e')
             ->addSelect('d', 'ee')

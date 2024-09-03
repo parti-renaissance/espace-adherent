@@ -23,7 +23,7 @@ class DummyClient implements ClientInterface
         ?string $city = null,
         ?string $postalCode = null,
         ?string $countryCode = null,
-        array $metadata = []
+        array $metadata = [],
     ): Customer {
         return new Customer((object) [
             'id' => 'CU0123456',
@@ -50,7 +50,7 @@ class DummyClient implements ClientInterface
         Customer $customer,
         string $iban,
         string $accountName,
-        array $metadata = []
+        array $metadata = [],
     ): CustomerBankAccount {
         return new CustomerBankAccount((object) [
             'id' => 'BA0123456',

@@ -300,7 +300,7 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
         bool $pinned = false,
         bool $enriched = false,
         ?Adherent $author = null,
-        ?\DateTime $createdAt = null
+        ?\DateTime $createdAt = null,
     ): News {
         $news = new News(
             Uuid::fromString($uuid),

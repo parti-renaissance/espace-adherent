@@ -61,7 +61,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         RepublicanSilenceManager $manager,
         Environment $engine,
         ZoneExtractorFactory $zoneExtractorFactory,
-        SessionInterface $session
+        SessionInterface $session,
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->republicanSilenceManager = $manager;

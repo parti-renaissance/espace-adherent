@@ -13,7 +13,7 @@ class ClientCredentialsGrant extends BaseClientCredentialsGrant
     public function respondToAccessTokenRequest(
         ServerRequestInterface $request,
         ResponseTypeInterface $responseType,
-        \DateInterval $accessTokenTTL
+        \DateInterval $accessTokenTTL,
     ) {
         // Validate request
         $client = $this->validateClient($request);

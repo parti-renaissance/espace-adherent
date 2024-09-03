@@ -8,7 +8,7 @@ class ContactHandler
 {
     public function __construct(
         private readonly ClientInterface $client,
-        private readonly PaymentImporter $paymentImporter
+        private readonly PaymentImporter $paymentImporter,
     ) {
     }
 

@@ -78,7 +78,7 @@ abstract class AbstractPollController extends AbstractController
         Request $request,
         LocalPoll $localPoll,
         EntityManagerInterface $manager,
-        PollManager $pollManager
+        PollManager $pollManager,
     ): Response {
         $author = $localPoll->getAuthor();
         if ($editByAuthor = $author === $this->getMainUser($request->getSession())) {

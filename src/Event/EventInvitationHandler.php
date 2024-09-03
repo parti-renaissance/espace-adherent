@@ -19,7 +19,7 @@ class EventInvitationHandler
     public function __construct(
         ObjectManager $manager,
         MailerService $transactionalMailer,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
     ) {
         $this->manager = $manager;
         $this->mailer = $transactionalMailer;

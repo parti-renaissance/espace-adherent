@@ -17,7 +17,7 @@ class GetHeaderBlockContentController extends AbstractController
     public function __invoke(
         string $slug,
         HeaderBlockRepository $headerBlockRepository,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
     ): JsonResponse {
         /** @var Adherent $user */
         $user = $this->getUser();

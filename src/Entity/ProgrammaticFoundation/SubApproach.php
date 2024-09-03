@@ -57,7 +57,7 @@ class SubApproach
         ?string $subtitle = null,
         ?string $content = null,
         bool $isExpanded = false,
-        ?Approach $approach = null
+        ?Approach $approach = null,
     ) {
         $this->uuid = Uuid::uuid4();
         $this->position = $position;

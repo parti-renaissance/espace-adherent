@@ -16,7 +16,7 @@ class InitializeMyTeamController extends AbstractController
         Request $request,
         ScopeGeneratorResolver $scopeGeneratorResolver,
         MyTeamRepository $myTeamRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): ?MyTeam {
         if (!$scopeCode = $request->query->get('scope')) {
             throw new BadRequestHttpException('Aucun scope renseigné.');

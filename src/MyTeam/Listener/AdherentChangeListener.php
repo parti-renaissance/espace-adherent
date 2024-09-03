@@ -22,7 +22,7 @@ class AdherentChangeListener implements EventSubscriberInterface
         MyTeamRepository $myTeamRepository,
         DelegatedAccessRepository $delegatedAccessRepository,
         DelegatedAccessManager $delegatedAccessManager,
-        GeneralScopeGenerator $scopeGenerator
+        GeneralScopeGenerator $scopeGenerator,
     ) {
         $this->myTeamRepository = $myTeamRepository;
         $this->delegatedAccessRepository = $delegatedAccessRepository;

@@ -17,7 +17,7 @@ class CaptainVerifyDriver implements LoggerAwareInterface
         private readonly Storage $storage,
         private readonly HttpClientInterface $captainVerifyClient,
         private readonly DenormalizerInterface $denormalizer,
-        private readonly string $captainVerifyApiKey
+        private readonly string $captainVerifyApiKey,
     ) {
     }
 

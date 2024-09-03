@@ -44,7 +44,7 @@ class AdherentController extends AbstractController
         Request $request,
         AdherentRepository $adherentRepository,
         SearchResultsProvidersManager $searchResultsProvidersManager,
-        SearchParametersFilter $searchParametersFilter
+        SearchParametersFilter $searchParametersFilter,
     ): Response {
         $user = $this->getUser();
         $searchParametersFilter->setCity(\sprintf('%s, %s', $user->getCityName(), $user->getCountryName()));
@@ -79,7 +79,7 @@ class AdherentController extends AbstractController
         EntityManagerInterface $manager,
         Request $request,
         EventDispatcherInterface $dispatcher,
-        AuthAppUrlManager $appUrlManager
+        AuthAppUrlManager $appUrlManager,
     ): Response {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
         $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
@@ -168,7 +168,7 @@ class AdherentController extends AbstractController
         Adherent $adherent,
         ContactMessageHandler $handler,
         EntityManagerInterface $entityManager,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ): Response {
         $fromType = $request->query->get('from');
         $fromId = $request->query->get('id');

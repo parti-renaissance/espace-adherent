@@ -23,7 +23,7 @@ class JemarcheDataSurveyAnswerHandler
         ObjectManager $manager,
         EventDispatcherInterface $dipatcher,
         MessageBusInterface $bus,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
     ) {
         $this->manager = $manager;
         $this->dispatcher = $dipatcher;

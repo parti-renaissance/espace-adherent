@@ -23,7 +23,7 @@ abstract class AbstractElectedRepresentativeController extends AbstractControlle
     #[Route(path: '/elus', name: 'list', methods: ['GET'])]
     public function listElectedRepresentatives(
         Request $request,
-        ElectedRepresentativeRepository $electedRepresentativeRepository
+        ElectedRepresentativeRepository $electedRepresentativeRepository,
     ): Response {
         $filter = new ListFilter($managedZones = $this->getManagedZones($this->getMainUser($request->getSession())));
 

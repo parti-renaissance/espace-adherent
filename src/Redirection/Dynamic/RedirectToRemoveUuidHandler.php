@@ -19,7 +19,7 @@ class RedirectToRemoveUuidHandler extends AbstractRedirectTo implements Redirect
         RedirectionsProvider $provider,
         UrlMatcherInterface $urlMatcher,
         EventRepository $eventRepository,
-        string $patternUuid
+        string $patternUuid,
     ) {
         $this->provider = $provider;
         $this->urlMatcher = $urlMatcher;

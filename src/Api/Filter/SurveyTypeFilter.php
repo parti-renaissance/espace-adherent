@@ -20,7 +20,7 @@ final class SurveyTypeFilter extends AbstractFilter
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ) {
         if (
             Survey::class !== $resourceClass

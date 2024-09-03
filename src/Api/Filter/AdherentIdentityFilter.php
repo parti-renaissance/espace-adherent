@@ -21,7 +21,7 @@ class AdherentIdentityFilter extends AbstractFilter
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ) {
         if (
             !\in_array($resourceClass, [PhoningCampaignHistory::class, PapCampaignHistory::class])

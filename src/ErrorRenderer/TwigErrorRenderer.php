@@ -25,7 +25,7 @@ class TwigErrorRenderer implements ErrorRendererInterface
         string $avecvousHost,
         AuthAppUrlManager $appUrlManager,
         BaseTwigErrorRenderer $fallbackErrorRenderer,
-        callable $debug
+        callable $debug,
     ) {
         $this->twig = $twig;
         $this->requestStack = $requestStack;

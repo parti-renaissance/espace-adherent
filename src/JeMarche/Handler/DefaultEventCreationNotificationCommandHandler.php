@@ -24,7 +24,7 @@ class DefaultEventCreationNotificationCommandHandler implements MessageHandlerIn
         EntityManagerInterface $entityManager,
         BaseEventRepository $eventRepository,
         JeMarcheMessaging $messaging,
-        NotificationTopicBuilder $topicBuilder
+        NotificationTopicBuilder $topicBuilder,
     ) {
         $this->entityManager = $entityManager;
         $this->eventRepository = $eventRepository;

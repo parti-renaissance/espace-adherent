@@ -18,7 +18,7 @@ class LoadCustomSearchData extends Fixture
     public function __construct(
         CustomSearchResultFactory $customSearchResultFactory,
         MediaFactory $mediaFactory,
-        FilesystemOperator $defaultStorage
+        FilesystemOperator $defaultStorage,
     ) {
         $this->customSearchResultFactory = $customSearchResultFactory;
         $this->mediaFactory = $mediaFactory;

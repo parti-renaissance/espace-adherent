@@ -184,7 +184,7 @@ class Driver implements LoggerAwareInterface
     public function updateDynamicSegment(
         string $segmentId,
         string $listId,
-        EditSegmentRequest $request
+        EditSegmentRequest $request,
     ): ResponseInterface {
         return $this->send('PATCH', \sprintf('/lists/%s/segments/%s', $listId, $segmentId), $request->toArray());
     }

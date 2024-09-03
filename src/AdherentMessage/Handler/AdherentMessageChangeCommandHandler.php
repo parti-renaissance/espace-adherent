@@ -19,7 +19,7 @@ class AdherentMessageChangeCommandHandler implements MessageHandlerInterface
     public function __construct(
         AdherentMessageRepository $repository,
         Manager $mailchimpManager,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ) {
         $this->repository = $repository;
         $this->mailchimpManager = $mailchimpManager;

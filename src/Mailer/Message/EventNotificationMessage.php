@@ -18,7 +18,7 @@ final class EventNotificationMessage extends Message
         Adherent $host,
         CommitteeEvent $event,
         string $eventLink,
-        \Closure $recipientVarsGenerator
+        \Closure $recipientVarsGenerator,
     ): self {
         if (!$recipients) {
             throw new \InvalidArgumentException('At least one Adherent recipient is required.');
@@ -80,7 +80,7 @@ final class EventNotificationMessage extends Message
         string $eventAddress,
         string $eventLink,
         string $eventDescription,
-        string $committeeName
+        string $committeeName,
     ): array {
         return [
             // Global common variables

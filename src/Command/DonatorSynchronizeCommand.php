@@ -36,7 +36,7 @@ class DonatorSynchronizeCommand extends Command
     public function __construct(
         ObjectManager $manager,
         DonatorRepository $donatorRepository,
-        DonatorManager $donatorManager
+        DonatorManager $donatorManager,
     ) {
         $this->manager = $manager;
         $this->donatorRepository = $donatorRepository;

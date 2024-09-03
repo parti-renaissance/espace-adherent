@@ -22,7 +22,7 @@ class QrCodeResponseFactory
         string $text,
         string $filename,
         string $writerByName = self::DEFAULT_WRITER,
-        bool $download = false
+        bool $download = false,
     ): QrCodeResponse {
         $response = new QrCodeResponse($this->getQrContent($text, $writerByName));
 

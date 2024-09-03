@@ -27,7 +27,7 @@ class SignUpHandler implements LoggerAwareInterface
         int $subscriptionGroupId,
         array $subscriptionIds,
         string $mailchimpOrgId,
-        string $listId
+        string $listId,
     ) {
         $this->mailchimpSignUpHost = $mailchimpSignUpHost;
         $this->subscriptionGroupId = $subscriptionGroupId;

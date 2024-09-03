@@ -13,7 +13,7 @@ class GetAdherentMessageKpiController
     public function __invoke(
         Request $request,
         MailchimpCampaignReportRepository $mailchimpCampaignReportRepository,
-        ScopeGeneratorResolver $resolver
+        ScopeGeneratorResolver $resolver,
     ): array {
         $maxHistory = $request->query->getInt('max_history', 30);
         $scope = $resolver->generate();

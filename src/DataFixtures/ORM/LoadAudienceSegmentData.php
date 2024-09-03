@@ -53,7 +53,7 @@ class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterfa
         ?\DateTime $registeredSince = null,
         ?\DateTime $registeredUntil = null,
         ?bool $includeAdherentsInCommittee = null,
-        ?bool $isCertified = null
+        ?bool $isCertified = null,
     ): AudienceSegment {
         $segment = new AudienceSegment(Uuid::fromString($uuid));
         $segment->setAuthor($author);

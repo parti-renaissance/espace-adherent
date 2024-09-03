@@ -40,7 +40,7 @@ class CommitteeAdherentMandateManager
         CommitteeAdherentMandateRepository $mandateRepository,
         ElectedRepresentativeRepository $electedRepresentativeRepository,
         CommitteeManager $committeeManager,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ) {
         $this->entityManager = $entityManager;
         $this->mandateRepository = $mandateRepository;
@@ -95,7 +95,7 @@ class CommitteeAdherentMandateManager
 
     public function replaceMandate(
         CommitteeAdherentMandate $mandate,
-        CommitteeAdherentMandateCommand $command
+        CommitteeAdherentMandateCommand $command,
     ): CommitteeAdherentMandate {
         $adherent = $command->getAdherent();
         $committee = $command->getCommittee();

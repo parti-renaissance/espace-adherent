@@ -601,7 +601,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         bool $exclusiveMembership = false,
         bool $territoiresProgresMembership = false,
         bool $agirMembership = false,
-        ?\DateTime $registeredAt = null
+        ?\DateTime $registeredAt = null,
     ): self {
         $adherent = new self();
 
@@ -641,7 +641,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         string $registeredAt = 'now',
         ?array $mandates = [],
         ?string $nationality = null,
-        ?string $customGender = null
+        ?string $customGender = null,
     ): self {
         $adherent = new self();
 
@@ -1191,7 +1191,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function updateMembershipFormAdminAdherentCreateCommand(
         AdherentCreateCommand $command,
-        Administrator $administrator
+        Administrator $administrator,
     ): void {
         if (!$this->isCertified()) {
             $this->gender = $command->gender;
@@ -1218,7 +1218,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     public function hostCommittee(
         Committee $committee,
-        ?\DateTimeInterface $subscriptionDate = null
+        ?\DateTimeInterface $subscriptionDate = null,
     ): CommitteeMembership {
         return $this->joinCommittee($committee, CommitteeMembership::COMMITTEE_HOST, $subscriptionDate ?? new \DateTime());
     }
@@ -1229,7 +1229,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function followCommittee(
         Committee $committee,
         ?\DateTimeInterface $subscriptionDate = null,
-        ?CommitteeMembershipTriggerEnum $trigger = null
+        ?CommitteeMembershipTriggerEnum $trigger = null,
     ): CommitteeMembership {
         return $this->joinCommittee(
             $committee,
@@ -1243,7 +1243,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         Committee $committee,
         string $privilege,
         \DateTimeInterface $subscriptionDate,
-        ?CommitteeMembershipTriggerEnum $trigger = null
+        ?CommitteeMembershipTriggerEnum $trigger = null,
     ): CommitteeMembership {
         $committee->updateMembersCount(true, $this->isRenaissanceSympathizer(), $this->isRenaissanceAdherent());
 

@@ -37,7 +37,7 @@ abstract class AbstractGrantToken extends AbstractToken
         string $identifier,
         \DateTimeImmutable $expiryDateTime,
         ?Client $client = null,
-        ?Device $device = null
+        ?Device $device = null,
     ) {
         parent::__construct($uuid, $identifier, $expiryDateTime);
 

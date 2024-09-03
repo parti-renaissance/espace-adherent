@@ -64,7 +64,7 @@ class CommitteeMembershipHistory
     public function __construct(
         CommitteeMembership $committeeMembership,
         CommitteeMembershipAction $action,
-        ?\DateTimeImmutable $date = null
+        ?\DateTimeImmutable $date = null,
     ) {
         $this->adherentUuid = $committeeMembership->getAdherentUuid();
         $this->committee = $committeeMembership->getCommittee();

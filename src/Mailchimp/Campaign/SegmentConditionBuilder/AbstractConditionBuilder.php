@@ -20,7 +20,7 @@ abstract class AbstractConditionBuilder implements SegmentConditionBuilderInterf
     protected function buildInterestCondition(
         array $interestKeys,
         string $groupId,
-        string $op = self::OP_INTEREST_ALL
+        string $op = self::OP_INTEREST_ALL,
     ): array {
         return [
             'condition_type' => 'Interests',

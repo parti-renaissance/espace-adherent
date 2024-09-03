@@ -100,7 +100,7 @@ class Unregistration
         ?string $postalCode,
         bool $isAdherent,
         bool $isRenaissance,
-        ?Administrator $admin = null
+        ?Administrator $admin = null,
     ) {
         $this->uuid = $uuid;
         $this->adherentUuid = $adherentUuid;

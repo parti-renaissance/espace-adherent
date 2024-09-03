@@ -12,7 +12,7 @@ class AdherentAdminRuntime implements RuntimeExtensionInterface
 {
     public function __construct(
         private readonly DonationManager $donationManager,
-        private readonly DonationRepository $donationRepository
+        private readonly DonationRepository $donationRepository,
     ) {
     }
 

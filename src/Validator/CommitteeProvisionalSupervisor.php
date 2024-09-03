@@ -18,7 +18,7 @@ class CommitteeProvisionalSupervisor extends Constraint
         ?string $message = null,
         $options = null,
         ?array $groups = null,
-        $payload = null
+        $payload = null,
     ) {
         if (!\in_array($gender, Genders::MALE_FEMALE)) {
             throw new InvalidArgumentException('The "gender" parameter value is not valid.');

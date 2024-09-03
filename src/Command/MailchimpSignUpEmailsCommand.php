@@ -36,7 +36,7 @@ class MailchimpSignUpEmailsCommand extends Command
         MessageBusInterface $bus,
         SignUpHandler $signUpHandler,
         FilesystemOperator $defaultStorage,
-        ObjectManager $em
+        ObjectManager $em,
     ) {
         $this->repository = $repository;
         $this->bus = $bus;

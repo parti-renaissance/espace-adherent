@@ -119,7 +119,7 @@ class Contact implements RecaptchaChallengeInterface
         ?UuidInterface $uuid = null,
         ?string $firstName = null,
         ?string $emailAddress = null,
-        ?string $source = null
+        ?string $source = null,
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->firstName = $firstName;

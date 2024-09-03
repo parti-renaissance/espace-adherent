@@ -32,7 +32,7 @@ class LocalPoll extends Poll implements AuthoredInterface
         ?string $question = null,
         ?\DateTimeInterface $finishAt = null,
         ?Zone $zone = null,
-        bool $published = false
+        bool $published = false,
     ) {
         parent::__construct($uuid, $question, $finishAt, $published);
 

@@ -41,7 +41,7 @@ class CommitteeMembershipManager
     public function batchFollowCommittee(
         array $adherents,
         Committee $committee,
-        CommitteeMembershipTriggerEnum $trigger
+        CommitteeMembershipTriggerEnum $trigger,
     ): void {
         // 1. Comes out of the existing committees
         $this->committeeMembershipRepository->unfollowAllCommittees(array_map(fn (Adherent $a) => $a->getId(), $adherents), $committee);
@@ -59,7 +59,7 @@ class CommitteeMembershipManager
     public function followCommittee(
         Adherent $adherent,
         Committee $committee,
-        CommitteeMembershipTriggerEnum $trigger
+        CommitteeMembershipTriggerEnum $trigger,
     ): void {
         $alreadyFollow = false;
 

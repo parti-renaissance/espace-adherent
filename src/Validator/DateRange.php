@@ -18,7 +18,7 @@ class DateRange extends Constraint
         ?string $messageDate = null,
         $options = null,
         ?array $groups = null,
-        $payload = null
+        $payload = null,
     ) {
         parent::__construct($options, $groups, $payload);
 

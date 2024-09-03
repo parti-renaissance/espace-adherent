@@ -86,7 +86,7 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
         bool $withNotification = true,
         bool $enabled = true,
         ?Adherent $author = null,
-        ?Administrator $admin = null
+        ?Administrator $admin = null,
     ): Riposte {
         $riposte = new Riposte(Uuid::fromString($uuid), $withNotification, $enabled);
         $riposte->setTitle($title);

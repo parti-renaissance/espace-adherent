@@ -29,7 +29,7 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
     public function __construct(
         RequestStack $requestStack,
         ScopeGeneratorResolver $scopeGeneratorResolver,
-        NewsTitlePrefix $newsTitlePrefix
+        NewsTitlePrefix $newsTitlePrefix,
     ) {
         $this->requestStack = $requestStack;
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;

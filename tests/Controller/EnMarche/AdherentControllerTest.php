@@ -450,7 +450,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
      */
     public function findAllEmailSubscriptionHistoryByAdherentAndType(
         Adherent $adherent,
-        string $subscriptionType
+        string $subscriptionType,
     ): array {
         return $this
             ->getEmailSubscriptionHistoryRepository()
@@ -691,7 +691,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         string $userEmail,
         string $uuid,
         string $committee,
-        int $nbFollowers
+        int $nbFollowers,
     ): void {
         /** @var Adherent $adherent */
         $adherentBeforeUnregistration = $this->getAdherentRepository()->findOneByEmail($userEmail);

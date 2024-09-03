@@ -20,7 +20,7 @@ class BuildingEventRepository extends ServiceEntityRepository
     public function findLastByType(
         string $type,
         UuidInterface $buildingUuid,
-        UuidInterface $campaignUuid
+        UuidInterface $campaignUuid,
     ): ?BuildingEvent {
         return $this->createQueryBuilder('event')
             ->innerJoin('event.building', 'building')

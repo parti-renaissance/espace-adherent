@@ -285,7 +285,7 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
         int $nbVoters = 0,
         array $zones = [],
         ?Adherent $createdBy = null,
-        bool $enabled = true
+        bool $enabled = true,
     ): Campaign {
         return new Campaign(
             Uuid::fromString($uuid),

@@ -38,7 +38,7 @@ class AdminCommitteeController extends AbstractController
     public function __construct(
         CommitteeAdherentMandateManager $mandateManager,
         CommitteeAdherentMandateRepository $mandateRepository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ) {
         $this->mandateManager = $mandateManager;
         $this->mandateRepository = $mandateRepository;
@@ -53,7 +53,7 @@ class AdminCommitteeController extends AbstractController
     public function refuseAction(
         Request $request,
         Committee $committee,
-        CommitteeManagementAuthority $committeeManagementAuthority
+        CommitteeManagementAuthority $committeeManagementAuthority,
     ): Response {
         $form = $this
             ->createForm(ConfirmActionType::class)
@@ -105,7 +105,7 @@ class AdminCommitteeController extends AbstractController
     public function addMandateAction(
         Request $request,
         Committee $committee,
-        CommitteeManager $committeeManager
+        CommitteeManager $committeeManager,
     ): Response {
         $newMandateCommand = new CommitteeAdherentMandateCommand($committee);
         $form = $this->createForm(CommitteeMandateCommandType::class, $newMandateCommand, [
@@ -185,7 +185,7 @@ class AdminCommitteeController extends AbstractController
     public function closeMandateAction(
         Request $request,
         CommitteeAdherentMandate $mandate,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): Response {
         $committee = $mandate->getCommittee();
         if ($mandate->getFinishAt()) {
@@ -225,7 +225,7 @@ class AdminCommitteeController extends AbstractController
         Request $request,
         Committee $committee,
         Adherent $adherent,
-        string $privilege
+        string $privilege,
     ): Response {
         if (CommitteeMembership::COMMITTEE_HOST === $privilege
             && !$this->isGranted('PROMOTE_TO_HOST_IN_COMMITTEE', $committee)) {
@@ -253,7 +253,7 @@ class AdminCommitteeController extends AbstractController
         Request $request,
         Committee $committee,
         Adherent $adherent,
-        string $action
+        string $action,
     ): Response {
         if (!\in_array($action, CommitteeAdherentMandateManager::ACTIONS)) {
             throw new BadRequestHttpException(\sprintf('Action "%s" is not authorized.', $action));

@@ -26,7 +26,7 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
         TokenStorageInterface $tokenStorage,
         AdherentChangeEmailTokenRepository $repository,
         SessionInterface $session,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->repository = $repository;

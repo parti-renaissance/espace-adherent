@@ -71,7 +71,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         ?string $additionalAddress = null,
         ?string $region = null,
         ?float $latitude = null,
-        ?float $longitude = null
+        ?float $longitude = null,
     ): self {
         [$postalCode, $inseeCode] = explode('-', $cityCode);
 
@@ -99,7 +99,7 @@ class PostAddress implements AddressInterface, GeocodableInterface, GeoPointInte
         ?string $additionalAddress = null,
         ?string $region = null,
         ?float $latitude = null,
-        ?float $longitude = null
+        ?float $longitude = null,
     ): self {
         return new self($country, $zipCode, $cityName, $street, $additionalAddress, $latitude, $longitude, $region);
     }

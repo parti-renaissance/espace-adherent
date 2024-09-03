@@ -68,7 +68,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         string $email,
         string $fullName,
         bool $notification,
-        bool $isRenaissance
+        bool $isRenaissance,
     ): void {
         $this->authenticateAsAdmin($this->client);
 

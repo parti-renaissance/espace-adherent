@@ -71,7 +71,7 @@ class EventController extends AbstractController
     public function attendAdherentAction(
         BaseEvent $event,
         ValidatorInterface $validator,
-        EventRegistrationCommandHandler $eventRegistrationCommandHandler
+        EventRegistrationCommandHandler $eventRegistrationCommandHandler,
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
@@ -109,7 +109,7 @@ class EventController extends AbstractController
         Request $request,
         BaseEvent $event,
         EventRegistrationCommandHandler $eventRegistrationCommandHandler,
-        AnonymousFollowerSession $anonymousFollowerSession
+        AnonymousFollowerSession $anonymousFollowerSession,
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
@@ -156,7 +156,7 @@ class EventController extends AbstractController
     public function attendConfirmationAction(
         Request $request,
         BaseEvent $event,
-        EventRegistrationManager $manager
+        EventRegistrationManager $manager,
     ): Response {
         try {
             if (!$registration = $manager->findRegistration($uuid = $request->query->get('registration'))) {
@@ -226,7 +226,7 @@ class EventController extends AbstractController
     public function unregistrationAction(
         Request $request,
         BaseEvent $event,
-        EventRegistrationManager $eventRegistrationManager
+        EventRegistrationManager $eventRegistrationManager,
     ): JsonResponse {
         if (!$this->isCsrfTokenValid('event.unregistration', $request->request->get('token'))) {
             throw new BadRequestHttpException('Invalid CSRF protection token.');

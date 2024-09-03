@@ -20,7 +20,7 @@ class GetPhoningCampaignSurveyRepliesController extends AbstractController
         Campaign $campaign,
         string $_format,
         DataSurveyRepository $dataSurveyRepository,
-        PhoningCampaignSurveyRepliesExporter $exporter
+        PhoningCampaignSurveyRepliesExporter $exporter,
     ): Response {
         if ('json' !== $_format) {
             return $exporter->export($campaign, $_format);

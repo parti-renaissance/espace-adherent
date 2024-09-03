@@ -301,7 +301,7 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
     public static function prepareVoteZoneAutocompleteFilterCallback(
         AbstractAdmin $admin,
         array $properties,
-        string $value
+        string $value,
     ): void {
         self::prepareZoneAutocompleteFilterCallback($admin, $properties, $value, [
             Zone::COUNTRY,
@@ -313,7 +313,7 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
     public static function prepareVotePlaceAutocompleteFilterCallback(
         AbstractAdmin $admin,
         array $properties,
-        string $value
+        string $value,
     ): void {
         self::prepareZoneAutocompleteFilterCallback($admin, $properties, $value, [Zone::VOTE_PLACE]);
     }
@@ -322,7 +322,7 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
         AbstractAdmin $admin,
         array $properties,
         string $value,
-        array $types
+        array $types,
     ): void {
         $datagrid = $admin->getDatagrid();
         $qb = $datagrid->getQuery();
@@ -372,7 +372,7 @@ abstract class AbstractProcurationAdmin extends AbstractAdmin
     }
 
     protected static function getExportErrorFields(
-        AbstractProcuration $procuration
+        AbstractProcuration $procuration,
     ): array {
         return [
             'ID' => $procuration->getId(),

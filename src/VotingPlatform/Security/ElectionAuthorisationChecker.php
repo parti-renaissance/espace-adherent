@@ -16,7 +16,7 @@ class ElectionAuthorisationChecker
         private readonly ElectedRepresentativeRepository $electedRepresentativeRepository,
         private readonly CommitteeRepository $committeeRepository,
         private readonly ElectionRepository $electionRepository,
-        private readonly VoterRepository $voterRepository
+        private readonly VoterRepository $voterRepository,
     ) {
     }
 

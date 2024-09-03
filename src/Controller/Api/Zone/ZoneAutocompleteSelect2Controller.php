@@ -23,7 +23,7 @@ class ZoneAutocompleteSelect2Controller extends AbstractZoneAutocompleteControll
         Request $request,
         ManagedZoneProvider $managedZoneProvider,
         ZoneRepository $repository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ): Response {
         if (empty($spaceType = (string) $request->query->get('space_type'))) {
             throw new BadRequestException('Space type missing');

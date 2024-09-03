@@ -15,7 +15,7 @@ final class VotingPlatformPartialElectionIsOpenMessage extends AbstractVotingPla
         Designation $designation,
         string $messageContent,
         array $adherents,
-        string $url = ''
+        string $url = '',
     ): self {
         $first = array_shift($adherents);
 

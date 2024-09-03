@@ -28,7 +28,7 @@ class GetSurveyRepliesController extends AbstractController
         Survey $survey,
         string $_format,
         DataSurveyRepository $dataSurveyRepository,
-        SurveyExporter $exporter
+        SurveyExporter $exporter,
     ): Response {
         $scope = $this->scopeGeneratorResolver->generate();
 

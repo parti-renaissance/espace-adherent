@@ -66,7 +66,7 @@ class Contribution
 
     public static function fromSubscription(
         ElectedRepresentative $electedRepresentative,
-        Subscription $subscription
+        Subscription $subscription,
     ): self {
         $contribution = new self();
 

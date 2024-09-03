@@ -13,7 +13,7 @@ class DefaultAuthenticationSuccessHandler implements AuthenticationSuccessHandle
 {
     public function __construct(
         private readonly BaseAuthenticationSuccessHandler $decorated,
-        private readonly FinishInscriptionRedirectHandler $finishInscriptionRedirectHandler
+        private readonly FinishInscriptionRedirectHandler $finishInscriptionRedirectHandler,
     ) {
     }
 

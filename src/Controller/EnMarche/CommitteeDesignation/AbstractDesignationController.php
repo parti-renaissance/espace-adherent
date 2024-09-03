@@ -30,7 +30,7 @@ abstract class AbstractDesignationController extends AbstractController
     public function listDesignationsAction(
         Request $request,
         Committee $committee,
-        CommitteeElectionRepository $repository
+        CommitteeElectionRepository $repository,
     ): Response {
         return $this->renderTemplate('committee_designation/list.html.twig', $request, [
             'elections' => $repository->findElections(new CommitteeDesignationsListFilter([], $committee), 1, 200),
@@ -46,7 +46,7 @@ abstract class AbstractDesignationController extends AbstractController
         Request $request,
         Committee $committee,
         Election $election,
-        ?ElectionRound $electionRound = null
+        ?ElectionRound $electionRound = null,
     ): Response {
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
@@ -67,7 +67,7 @@ abstract class AbstractDesignationController extends AbstractController
         Committee $committee,
         Election $election,
         VoterRepository $voterRepository,
-        ?ElectionRound $electionRound = null
+        ?ElectionRound $electionRound = null,
     ): Response {
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
@@ -92,7 +92,7 @@ abstract class AbstractDesignationController extends AbstractController
         Request $request,
         Committee $committee,
         Election $election,
-        ?ElectionRound $electionRound = null
+        ?ElectionRound $electionRound = null,
     ): Response {
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
@@ -125,7 +125,7 @@ abstract class AbstractDesignationController extends AbstractController
         Committee $committee,
         Election $election,
         VoteResultRepository $voteResultRepository,
-        ?ElectionRound $electionRound = null
+        ?ElectionRound $electionRound = null,
     ): Response {
         if (!$electionRound) {
             $electionRound = $election->isSecondRoundVotePeriodActive()
@@ -163,7 +163,7 @@ abstract class AbstractDesignationController extends AbstractController
         string $subName,
         Committee $committee,
         Election $election,
-        array $parameters = []
+        array $parameters = [],
     ): Response {
         return $this->redirectToRoute("app_{$this->getSpaceType()}_designations_{$subName}", array_merge([
             'committee_slug' => $committee->getSlug(),

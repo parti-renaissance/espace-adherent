@@ -11,7 +11,7 @@ class MultiColumnsSearchHelper
         string $searchTerm,
         array $mainColumns,
         array $additionalColumns = [],
-        array $columnStrictSearch = []
+        array $columnStrictSearch = [],
     ): void {
         $conditions = $queryBuilder->expr()->orX();
 

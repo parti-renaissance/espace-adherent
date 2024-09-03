@@ -56,7 +56,7 @@ class CoordinatorCommitteeController extends AbstractController
     public function validateAction(
         Request $request,
         Committee $committee,
-        CommitteeManagementAuthority $committeeManagementAuthority
+        CommitteeManagementAuthority $committeeManagementAuthority,
     ): Response {
         $form = $this->createForm(CoordinatorAreaType::class, $committee, [
             'data_class' => Committee::class,

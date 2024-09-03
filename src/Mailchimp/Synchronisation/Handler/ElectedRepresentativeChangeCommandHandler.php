@@ -23,7 +23,7 @@ class ElectedRepresentativeChangeCommandHandler implements MessageHandlerInterfa
     public function __construct(
         Manager $manager,
         ElectedRepresentativeRepository $repository,
-        ObjectManager $entityManager
+        ObjectManager $entityManager,
     ) {
         $this->manager = $manager;
         $this->entityManager = $entityManager;

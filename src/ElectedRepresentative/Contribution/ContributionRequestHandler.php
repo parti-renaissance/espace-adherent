@@ -18,7 +18,7 @@ class ContributionRequestHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly ClientInterface $gocardless,
         private readonly ElectedRepresentativeRepository $electedRepresentativeRepository,
-        private readonly ContributionRepository $contributionRepository
+        private readonly ContributionRepository $contributionRepository,
     ) {
     }
 
@@ -71,7 +71,7 @@ class ContributionRequestHandler
     private function createSubscription(
         ContributionRequest $contributionRequest,
         Adherent $adherent,
-        ?string $customerId = null
+        ?string $customerId = null,
     ): Subscription {
         $metadata = $this->createMetadata($adherent);
 

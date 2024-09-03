@@ -54,7 +54,7 @@ class City
         ?Department $department = null,
         ?string $name = null,
         ?string $inseeCode = null,
-        ?array $postalCodes = null
+        ?array $postalCodes = null,
     ) {
         $this->department = $department;
         $this->name = $name;

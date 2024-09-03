@@ -22,7 +22,7 @@ class AdherentController extends AbstractController
         Request $request,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        EntityManagerInterface $manager
+        EntityManagerInterface $manager,
     ): Response {
         $data = json_decode($request->getContent(), true);
 

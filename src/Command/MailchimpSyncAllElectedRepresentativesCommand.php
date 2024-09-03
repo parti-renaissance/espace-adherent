@@ -29,7 +29,7 @@ class MailchimpSyncAllElectedRepresentativesCommand extends Command
     public function __construct(
         ElectedRepresentativeRepository $electedRepresentativeRepository,
         ObjectManager $entityManager,
-        MessageBusInterface $bus
+        MessageBusInterface $bus,
     ) {
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
         $this->entityManager = $entityManager;

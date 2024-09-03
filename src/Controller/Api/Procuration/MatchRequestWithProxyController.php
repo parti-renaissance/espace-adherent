@@ -20,7 +20,7 @@ class MatchRequestWithProxyController extends AbstractController
         ProxyRepository $proxyRepository,
         RoundRepository $roundRepository,
         RequestSlotRepository $requestSlotRepository,
-        ProcurationHandler $procurationHandler
+        ProcurationHandler $procurationHandler,
     ): Response {
         $data = json_decode($httpRequest->getContent(), true);
 

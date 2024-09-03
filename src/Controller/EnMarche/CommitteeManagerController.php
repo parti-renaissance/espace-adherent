@@ -44,7 +44,7 @@ class CommitteeManagerController extends AbstractController
     public function editAction(
         Request $request,
         Committee $committee,
-        CommitteeUpdateCommandHandler $commandHandler
+        CommitteeUpdateCommandHandler $commandHandler,
     ): Response {
         $command = CommitteeCommand::createFromCommittee($committee);
         $form = $this->createForm(CommitteeCommandType::class, $command, [
@@ -75,7 +75,7 @@ class CommitteeManagerController extends AbstractController
         Request $request,
         Committee $committee,
         GeoCoder $geoCoder,
-        EventCommandHandler $eventCommandHandler
+        EventCommandHandler $eventCommandHandler,
     ): Response {
         $command = new EventCommand($this->getUser(), $committee);
         $command->setTimeZone($geoCoder->getTimezoneFromIp($request->getClientIp()));
@@ -110,7 +110,7 @@ class CommitteeManagerController extends AbstractController
         CommitteeMembershipRepository $repository,
         AdherentRepository $adherentRepository,
         SerializerInterface $serializer,
-        Exporter $exporter
+        Exporter $exporter,
     ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();

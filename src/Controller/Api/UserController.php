@@ -94,7 +94,7 @@ class UserController extends AbstractController
         AdherentResetPasswordHandler $handler,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        OAuthTokenGenerator $authTokenGenerator
+        OAuthTokenGenerator $authTokenGenerator,
     ) {
         if ($createPasswordToken->getUsageDate()) {
             return $this->createBadRequestResponse('Pas de Token de création de mot de passe disponible');

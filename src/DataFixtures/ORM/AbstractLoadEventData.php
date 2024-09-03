@@ -24,7 +24,7 @@ abstract class AbstractLoadEventData extends Fixture
         string $environment,
         EventFactory $eventFactory,
         EventRegistrationFactory $eventRegistrationFactory,
-        FranceCities $franceCities
+        FranceCities $franceCities,
     ) {
         $this->environment = $environment;
         $this->eventFactory = $eventFactory;
@@ -55,7 +55,7 @@ abstract class AbstractLoadEventData extends Fixture
         string $cityCode,
         ?string $region = null,
         ?float $latitude = null,
-        ?float $longitude = null
+        ?float $longitude = null,
     ): AddressInterface {
         [, $inseeCode] = explode('-', $cityCode);
         $city = $this->franceCities->getCityByInseeCode($inseeCode);

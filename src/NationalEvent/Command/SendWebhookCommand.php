@@ -10,7 +10,7 @@ class SendWebhookCommand extends UuidDefaultAsyncMessage
 {
     public function __construct(
         UuidInterface $uuid,
-        public readonly WebhookActionEnum $action
+        public readonly WebhookActionEnum $action,
     ) {
         parent::__construct($uuid);
     }

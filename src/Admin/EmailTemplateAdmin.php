@@ -32,7 +32,7 @@ class EmailTemplateAdmin extends AbstractAdmin
         string $class,
         string $baseControllerName,
         string $emailTemplateUnlayerTemplateId,
-        DataTransformerInterface $dataTransformer
+        DataTransformerInterface $dataTransformer,
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
@@ -168,7 +168,7 @@ class EmailTemplateAdmin extends AbstractAdmin
     public static function prepareZoneAutocompleteCallback(
         AdminInterface $admin,
         array $properties,
-        string $value
+        string $value,
     ): void {
         /** @var QueryBuilder $qb */
         $qb = $admin->getDatagrid()->getQuery();

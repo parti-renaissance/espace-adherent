@@ -16,14 +16,14 @@ class DonationFactory
     public function __construct(
         private readonly PostAddressFactory $addressFactory,
         private readonly DonationRequestUtils $donationRequestUtils,
-        private readonly ZoneRepository $zoneRepository
+        private readonly ZoneRepository $zoneRepository,
     ) {
     }
 
     public function createFromDonationRequest(
         DonationRequest $request,
         Donator $donator,
-        bool $forReAdhesion = false
+        bool $forReAdhesion = false,
     ): Donation {
         $donation = new Donation(
             $uuid = Uuid::uuid4(),

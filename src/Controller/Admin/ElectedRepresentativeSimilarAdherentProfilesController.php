@@ -18,7 +18,7 @@ class ElectedRepresentativeSimilarAdherentProfilesController extends AbstractCon
     #[Route(path: '/elected-representative/{id}/adherent-similar-profiles', name: 'admin_app_electedrepresentative_adherent_similar_profiles', methods: ['GET'])]
     public function showSimilarProfilesAction(
         ElectedRepresentative $electedRepresentative,
-        AdherentRepository $adherentRepository
+        AdherentRepository $adherentRepository,
     ) {
         return $this->render('admin/elected_representative/adherent_similar_profiles.html.twig', [
             'elected_representative' => $electedRepresentative,
@@ -32,7 +32,7 @@ class ElectedRepresentativeSimilarAdherentProfilesController extends AbstractCon
         ElectedRepresentative $electedRepresentative,
         Adherent $adherent,
         EntityManagerInterface $entityManager,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
     ) {
         $dispatcher->dispatch(new ElectedRepresentativeEvent($electedRepresentative), ElectedRepresentativeEvents::BEFORE_UPDATE);
 

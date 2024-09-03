@@ -60,7 +60,7 @@ class Voter
         ?string $gender = null,
         ?\DateTimeInterface $birthdate = null,
         ?string $votePlace = null,
-        ?string $source = null
+        ?string $source = null,
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->firstName = $firstName;

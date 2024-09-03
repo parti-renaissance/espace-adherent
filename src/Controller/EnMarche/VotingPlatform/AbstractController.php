@@ -22,7 +22,7 @@ abstract class AbstractController extends BaseAbstractController
         protected readonly VoteCommandProcessor $processor,
         protected readonly CandidateGroupRepository $candidateGroupRepository,
         private readonly AuthAppUrlManager $appUrlManager,
-        private readonly Environment $twig
+        private readonly Environment $twig,
     ) {
     }
 
@@ -35,7 +35,7 @@ abstract class AbstractController extends BaseAbstractController
         string $template,
         Election $election,
         Request $request,
-        array $params = []
+        array $params = [],
     ): Response {
         $appCode = $this->appUrlManager->getAppCodeFromRequest($request);
 

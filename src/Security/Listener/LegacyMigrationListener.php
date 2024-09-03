@@ -16,7 +16,7 @@ class LegacyMigrationListener implements EventSubscriberInterface
 {
     public function __construct(
         private readonly EncoderFactoryInterface $encoderFactory,
-        private readonly EntityManagerInterface $manager
+        private readonly EntityManagerInterface $manager,
     ) {
     }
 

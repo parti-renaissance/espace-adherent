@@ -28,7 +28,7 @@ class AdherentListController extends AbstractController
         private readonly AuthorizationChecker $authorizationChecker,
         private readonly ManagedUserRepository $repository,
         private readonly DenormalizerInterface $denormalizer,
-        private readonly ManagedUsersExporter $exporter
+        private readonly ManagedUsersExporter $exporter,
     ) {
     }
 

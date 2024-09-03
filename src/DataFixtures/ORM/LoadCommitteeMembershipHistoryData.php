@@ -42,7 +42,7 @@ class LoadCommitteeMembershipHistoryData extends Fixture implements DependentFix
     private function createJoinHistory(
         Adherent $adherent,
         Committee $committee,
-        string $date
+        string $date,
     ): CommitteeMembershipHistory {
         return $this->createHistory(CommitteeMembershipAction::JOIN(), $adherent, $committee, $date);
     }
@@ -50,7 +50,7 @@ class LoadCommitteeMembershipHistoryData extends Fixture implements DependentFix
     private function createLeaveHistory(
         Adherent $adherent,
         Committee $committee,
-        string $date
+        string $date,
     ): CommitteeMembershipHistory {
         return $this->createHistory(CommitteeMembershipAction::LEAVE(), $adherent, $committee, $date);
     }
@@ -59,7 +59,7 @@ class LoadCommitteeMembershipHistoryData extends Fixture implements DependentFix
         CommitteeMembershipAction $action,
         Adherent $adherent,
         Committee $committee,
-        string $date
+        string $date,
     ): CommitteeMembershipHistory {
         $membership = $adherent->getMembershipFor($committee);
 

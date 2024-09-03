@@ -38,7 +38,7 @@ class CrmParisController extends AbstractController
     #[Route(path: '/adherents', name: 'app_crm_paris_adherents', methods: ['GET'])]
     public function adherentsAction(
         AdherentRepository $adherentRepository,
-        CsvResponseFactory $csvResponseFactory
+        CsvResponseFactory $csvResponseFactory,
     ): Response {
         set_time_limit(0);
 

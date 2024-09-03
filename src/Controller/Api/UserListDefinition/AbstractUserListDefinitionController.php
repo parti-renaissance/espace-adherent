@@ -15,7 +15,7 @@ abstract class AbstractUserListDefinitionController extends AbstractController
     #[Route(path: '/members/save', name: 'save_user_list_definition_members_for_type', condition: 'request.isXmlHttpRequest()', methods: ['POST'])]
     public function saveUserListDefinitionMembersForType(
         Request $request,
-        UserListDefinitionManager $userListDefinitionManager
+        UserListDefinitionManager $userListDefinitionManager,
     ): Response {
         if (!$members = $request->request->get('members')) {
             return $this->json('"members" not provided', Response::HTTP_BAD_REQUEST);
@@ -35,7 +35,7 @@ abstract class AbstractUserListDefinitionController extends AbstractController
     public function getUserListDefinitionMembersForType(
         Request $request,
         string $type,
-        UserListDefinitionManager $userListDefinitionManager
+        UserListDefinitionManager $userListDefinitionManager,
     ): JsonResponse {
         if (!$ids = $request->request->get('ids')) {
             return $this->json('"ids" not provided', Response::HTTP_BAD_REQUEST);

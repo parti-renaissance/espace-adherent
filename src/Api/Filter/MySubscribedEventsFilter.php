@@ -26,7 +26,7 @@ final class MySubscribedEventsFilter extends AbstractFilter
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ) {
         if (
             !is_a($resourceClass, BaseEvent::class, true)

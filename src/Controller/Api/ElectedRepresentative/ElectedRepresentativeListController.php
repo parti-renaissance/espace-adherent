@@ -21,7 +21,7 @@ class ElectedRepresentativeListController extends AbstractController
     public function __construct(
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
         private readonly ElectedRepresentativeRepository $repository,
-        private readonly DenormalizerInterface $denormalizer
+        private readonly DenormalizerInterface $denormalizer,
     ) {
     }
 

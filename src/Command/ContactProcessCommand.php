@@ -29,7 +29,7 @@ class ContactProcessCommand extends Command
     public function __construct(
         ContactRepository $contactRepository,
         ContactHandler $contactHandler,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ) {
         $this->contactRepository = $contactRepository;
         $this->contactHandler = $contactHandler;

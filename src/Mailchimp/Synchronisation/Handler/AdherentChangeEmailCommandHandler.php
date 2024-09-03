@@ -25,7 +25,7 @@ class AdherentChangeEmailCommandHandler implements MessageHandlerInterface, Logg
     public function __construct(
         MessageBusInterface $bus,
         AdherentRepository $adherentRepository,
-        ElectedRepresentativeRepository $electedRepresentativeRepository
+        ElectedRepresentativeRepository $electedRepresentativeRepository,
     ) {
         $this->bus = $bus;
         $this->adherentRepository = $adherentRepository;

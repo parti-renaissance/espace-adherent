@@ -87,7 +87,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
         ?string $clientIp = null,
         float $amount = self::DEFAULT_AMOUNT,
         int $duration = PayboxPaymentSubscription::NONE,
-        string $type = Donation::TYPE_CB
+        string $type = Donation::TYPE_CB,
     ) {
         $this->clientIp = $clientIp;
         $this->address = new Address();
@@ -101,7 +101,7 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
         ?string $clientIp = null,
         float $amount = self::DEFAULT_AMOUNT,
         int $duration = PayboxPaymentSubscription::NONE,
-        string $type = Donation::TYPE_CB
+        string $type = Donation::TYPE_CB,
     ): self {
         $dto = new self($clientIp, $amount, $duration, $type);
         $dto->gender = $adherent->getGender();

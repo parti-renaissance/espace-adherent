@@ -103,7 +103,7 @@ class Address
         ?int $offsetX = null,
         ?int $offsetY = null,
         ?float $latitude = null,
-        ?float $longitude = null
+        ?float $longitude = null,
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->number = $number;

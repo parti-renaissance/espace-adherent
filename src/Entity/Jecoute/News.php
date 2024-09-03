@@ -185,7 +185,7 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
         bool $notification = false,
         bool $published = true,
         bool $pinned = false,
-        bool $enriched = false
+        bool $enriched = false,
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->title = $title;

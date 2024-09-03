@@ -32,7 +32,7 @@ class CoachingRequest
     public function __construct(
         string $problemDescription = '',
         string $proposedSolution = '',
-        string $requiredMeans = ''
+        string $requiredMeans = '',
     ) {
         $this->problemDescription = $problemDescription;
         $this->proposedSolution = $proposedSolution;

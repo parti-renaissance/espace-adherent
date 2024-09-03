@@ -25,7 +25,7 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
     public function __construct(
         CampaignHistoryRepository $campaignHistoryRepository,
         BuildingStatisticsRepository $buildingStatisticsRepository,
-        ScopeGeneratorResolver $scopeGeneratorResolver
+        ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
         $this->campaignHistoryRepository = $campaignHistoryRepository;
         $this->buildingStatisticsRepository = $buildingStatisticsRepository;

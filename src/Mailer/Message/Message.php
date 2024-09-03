@@ -48,7 +48,7 @@ class Message
         array $recipientVars = [],
         ?string $replyTo = null,
         ?string $template = null,
-        array $templateContent = []
+        array $templateContent = [],
     ) {
         $this->uuid = $uuid;
         $this->subject = $subject;
@@ -210,7 +210,7 @@ class Message
 
     protected static function dateToString(
         ?\DateTimeInterface $date,
-        string $format = 'EEEE d MMMM y, HH\'h\'mm'
+        string $format = 'EEEE d MMMM y, HH\'h\'mm',
     ): string {
         return $date ? self::formatDate($date, $format) : '';
     }

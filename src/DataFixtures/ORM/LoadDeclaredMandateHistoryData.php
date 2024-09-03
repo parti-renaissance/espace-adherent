@@ -51,7 +51,7 @@ class LoadDeclaredMandateHistoryData extends Fixture implements DependentFixture
         Adherent $adherent,
         array $addedMandates,
         array $removedMandates,
-        ?Administrator $administrator = null
+        ?Administrator $administrator = null,
     ): DeclaredMandateHistory {
         $history = new DeclaredMandateHistory($adherent, $addedMandates, $removedMandates);
 

@@ -42,7 +42,7 @@ class EventRepository extends ServiceEntityRepository
     public function countElements(
         bool $onlyPublished = true,
         bool $withPrivate = false,
-        bool $forRenaissance = false
+        bool $forRenaissance = false,
     ): int {
         $qb = $this
             ->createQueryBuilder('e')
@@ -123,7 +123,7 @@ class EventRepository extends ServiceEntityRepository
     public function findStartedEventBetweenDatesForZones(
         \DateTimeInterface $startDate,
         \DateTimeInterface $endDate,
-        array $zones
+        array $zones,
     ): array {
         if (!$zones) {
             return [];
@@ -207,7 +207,7 @@ class EventRepository extends ServiceEntityRepository
     public function findEventsByOrganizerPaginator(
         Adherent $organizer,
         int $page = 1,
-        int $limit = 50
+        int $limit = 50,
     ): PaginatorInterface {
         return $this->configurePaginator(
             $this
@@ -242,7 +242,7 @@ class EventRepository extends ServiceEntityRepository
 
     private function createUpcomingEventsQueryBuilder(
         bool $withPrivate = false,
-        bool $forRenaissance = false
+        bool $forRenaissance = false,
     ): QueryBuilder {
         $qb = $this->createQueryBuilder('e')->select('e', 'ec', 'c', 'o');
         $qb->leftJoin('e.category', 'ec')
@@ -461,7 +461,7 @@ class EventRepository extends ServiceEntityRepository
     public function findNearbyOf(
         CommitteeEvent $event,
         int $radius = SearchParametersFilter::RADIUS_10,
-        int $max = 3
+        int $max = 3,
     ): array {
         return $this
             ->createNearbyQueryBuilder(new Coordinates($event->getLatitude(), $event->getLongitude()))

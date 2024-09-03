@@ -25,7 +25,7 @@ class PollController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         SerializerInterface $serializer,
-        ChoiceRepository $choiceRepository
+        ChoiceRepository $choiceRepository,
     ): JsonResponse {
         $body = json_decode($request->getContent(), true);
         $uuid = $body['uuid'] ?? null;

@@ -42,7 +42,7 @@ class DonationRequestUtils
 
     public function __construct(
         private readonly CsrfTokenManagerInterface $tokenManager,
-        private readonly SlugifyInterface $slugify
+        private readonly SlugifyInterface $slugify,
     ) {
     }
 

@@ -60,7 +60,7 @@ class DonationAdmin extends AbstractAdmin
         string $baseControllerName,
         FilesystemOperator $defaultStorage,
         EventDispatcherInterface $dispatcher,
-        AdherentRepository $adherentRepository
+        AdherentRepository $adherentRepository,
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
@@ -711,7 +711,7 @@ class DonationAdmin extends AbstractAdmin
     public static function prepareDestinationAutocompleteCallback(
         AdminInterface $admin,
         array $properties,
-        string $value
+        string $value,
     ): void {
         /** @var QueryBuilder $qb */
         $qb = $admin->getDatagrid()->getQuery();

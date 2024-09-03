@@ -155,7 +155,7 @@ class Epci
         string $epciSiren,
         string $name,
         string $insee,
-        string $fiscal
+        string $fiscal,
     ) {
         $this->status = $status;
         $this->surface = $surface;

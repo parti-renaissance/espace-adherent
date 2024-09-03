@@ -11,7 +11,7 @@ abstract class AbstractZonesInScopeZonesValidator extends ConstraintValidator
 {
     public function __construct(
         private readonly ZoneRepository $zoneRepository,
-        private readonly ScopeGeneratorResolver $scopeGeneratorResolver
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
     }
 

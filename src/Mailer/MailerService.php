@@ -22,7 +22,7 @@ class MailerService
         EventDispatcherInterface $dispatcher,
         TransportInterface $transport,
         EmailTemplateFactory $factory,
-        EmailClientInterface $emailClient
+        EmailClientInterface $emailClient,
     ) {
         $this->dispatcher = $dispatcher;
         $this->transport = $transport;

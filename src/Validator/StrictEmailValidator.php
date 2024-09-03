@@ -26,7 +26,7 @@ class StrictEmailValidator extends ConstraintValidator
 {
     public function __construct(
         private readonly DisabledEmailValidator $disabledEmailValidator,
-        private readonly CaptainVerifyValidator $captainVerifyValidator
+        private readonly CaptainVerifyValidator $captainVerifyValidator,
     ) {
     }
 

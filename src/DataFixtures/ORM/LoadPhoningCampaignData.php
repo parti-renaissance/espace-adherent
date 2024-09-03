@@ -202,7 +202,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         Survey $survey,
         int $goal,
         string $finishAt,
-        ?Zone $zone = null
+        ?Zone $zone = null,
     ): Campaign {
         $objet = new Campaign(Uuid::fromString($uuid), $title, $brief, $team, new AudienceSnapshot(), $survey, $goal, null, $zone);
 

@@ -26,7 +26,7 @@ class RepublicanSilenceCloseEventCommand extends Command
     public function __construct(
         RepublicanSilenceManager $manager,
         EventRepository $eventRepository,
-        EventCanceledHandler $eventCanceledHandler
+        EventCanceledHandler $eventCanceledHandler,
     ) {
         parent::__construct();
 

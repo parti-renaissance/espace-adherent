@@ -40,7 +40,7 @@ class CertificationRequestController extends AbstractController
         Request $request,
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        CertificationManager $certificationManager
+        CertificationManager $certificationManager,
     ): JsonResponse {
         /** @var Adherent $user */
         $user = $this->getUser();

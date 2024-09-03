@@ -13,7 +13,7 @@ class NewsletterManager
     public function __construct(
         private readonly NewsletterSubscriptionRepository $newsletterRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly MessageBusInterface $bus
+        private readonly MessageBusInterface $bus,
     ) {
     }
 

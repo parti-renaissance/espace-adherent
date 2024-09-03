@@ -18,7 +18,7 @@ class ConfirmNewsletterController extends AbstractController
     public function __invoke(
         NewsletterSubscription $subscription,
         EntityManagerInterface $entityManager,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): Response {
         if (!$subscription->confirmedAt) {
             $subscription->confirmedAt = new \DateTime();

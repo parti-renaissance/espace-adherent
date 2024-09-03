@@ -33,7 +33,7 @@ class ContactMessage implements RecaptchaChallengeInterface
         Adherent $from,
         Adherent $to,
         ?string $recaptcha = null,
-        ?string $content = null
+        ?string $content = null,
     ): self {
         $message = new self($from, $to, $content);
         $message->setRecaptcha($recaptcha);

@@ -15,7 +15,7 @@ class SimpleCsrfTokenManager implements CsrfTokenManagerInterface
 {
     public function __construct(
         private readonly TokenGeneratorInterface $generator,
-        private readonly TokenStorageInterface $storage
+        private readonly TokenStorageInterface $storage,
     ) {
     }
 

@@ -13,7 +13,7 @@ final class CommitteeElectionCandidacyPeriodIsOverMessage extends Message
         Adherent $adherent,
         Committee $committee,
         Designation $designation,
-        string $committeeUrl
+        string $committeeUrl,
     ): self {
         return new self(
             Uuid::uuid4(),

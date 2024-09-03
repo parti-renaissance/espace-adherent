@@ -24,7 +24,7 @@ class OhmeImportCommand extends Command
 
     public function __construct(
         private readonly ContactImporter $contactImporter,
-        private readonly PaymentImporter $paymentImporter
+        private readonly PaymentImporter $paymentImporter,
     ) {
         parent::__construct();
     }
@@ -69,7 +69,7 @@ class OhmeImportCommand extends Command
         ?int $limit = null,
         ?string $ohmeId = null,
         ?string $email = null,
-        ?string $uuidAdherent = null
+        ?string $uuidAdherent = null,
     ): void {
         $filters = array_filter([
             'ohme_id' => $ohmeId,
@@ -111,7 +111,7 @@ class OhmeImportCommand extends Command
 
     private function importPayments(
         ?int $limit = null,
-        ?string $contactId = null
+        ?string $contactId = null,
     ): void {
         $filters = array_filter([
             'contact_id' => $contactId,

@@ -21,7 +21,7 @@ class CharterController extends AbstractController
     public function retrieveCharter(
         string $type,
         TranslatorInterface $translator,
-        CmsBlockManager $cmsBlockManager
+        CmsBlockManager $cmsBlockManager,
     ): Response {
         if (!AdherentCharterTypeEnum::isValid($type)) {
             return $this->json(

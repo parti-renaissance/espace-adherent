@@ -13,7 +13,7 @@ class WebhookHandler
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly Client $client
+        private readonly Client $client,
     ) {
     }
 

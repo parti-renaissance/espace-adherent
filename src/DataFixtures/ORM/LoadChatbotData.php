@@ -18,7 +18,7 @@ class LoadChatbotData extends Fixture
     private function createChatbot(
         string $code,
         string $assistantId,
-        bool $enabled = true
+        bool $enabled = true,
     ): Chatbot {
         $chatbot = new Chatbot();
         $chatbot->code = $code;

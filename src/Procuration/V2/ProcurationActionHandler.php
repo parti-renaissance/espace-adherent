@@ -116,7 +116,7 @@ class ProcurationActionHandler
     public function createRequestSlotStatusUpdateAction(
         RequestSlot $requestSlot,
         string $newStatus,
-        string $oldStatus
+        string $oldStatus,
     ): void {
         $requestSlot->actions->add(
             $this->createRequestSlotAction(
@@ -135,7 +135,7 @@ class ProcurationActionHandler
     public function createProxySlotStatusUpdateAction(
         ProxySlot $proxySlot,
         string $newStatus,
-        string $oldStatus
+        string $oldStatus,
     ): void {
         $proxySlot->actions->add(
             $this->createProxySlotAction(
@@ -156,7 +156,7 @@ class ProcurationActionHandler
         Request $request,
         ?Adherent $author = null,
         ?string $authorScope = null,
-        array $context = []
+        array $context = [],
     ): RequestAction {
         $action = new RequestAction(
             Uuid::uuid4(),
@@ -177,7 +177,7 @@ class ProcurationActionHandler
         Proxy $proxy,
         ?Adherent $author = null,
         ?string $authorScope = null,
-        array $context = []
+        array $context = [],
     ): ProxyAction {
         $action = new ProxyAction(
             Uuid::uuid4(),
@@ -198,7 +198,7 @@ class ProcurationActionHandler
         RequestSlot $requestSlot,
         ?Adherent $author = null,
         ?string $authorScope = null,
-        array $context = []
+        array $context = [],
     ): RequestSlotAction {
         $action = new RequestSlotAction(
             Uuid::uuid4(),
@@ -219,7 +219,7 @@ class ProcurationActionHandler
         ProxySlot $proxySlot,
         ?Adherent $author = null,
         ?string $authorScope = null,
-        array $context = []
+        array $context = [],
     ): ProxySlotAction {
         $action = new ProxySlotAction(
             Uuid::uuid4(),

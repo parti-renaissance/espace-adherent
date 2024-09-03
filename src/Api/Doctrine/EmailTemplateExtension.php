@@ -15,7 +15,7 @@ class EmailTemplateExtension implements QueryCollectionExtensionInterface
 {
     public function __construct(
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
-        private readonly Security $security
+        private readonly Security $security,
     ) {
     }
 
@@ -24,7 +24,7 @@ class EmailTemplateExtension implements QueryCollectionExtensionInterface
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         if (EmailTemplate::class !== $resourceClass) {
             return;

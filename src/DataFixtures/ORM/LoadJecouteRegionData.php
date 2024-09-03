@@ -78,7 +78,7 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
         string $logo,
         ?string $banner = null,
         ?string $externalLink = null,
-        bool $enabled = true
+        bool $enabled = true,
     ): Region {
         return new Region(
             Uuid::fromString($uuid),

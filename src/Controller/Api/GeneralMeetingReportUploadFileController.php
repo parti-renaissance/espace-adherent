@@ -13,7 +13,7 @@ class GeneralMeetingReportUploadFileController extends AbstractController
     public function __invoke(
         Request $request,
         GeneralMeetingReport $generalMeetingReport,
-        GeneralMeetingReportHandler $generalMeetingReportHandler
+        GeneralMeetingReportHandler $generalMeetingReportHandler,
     ): GeneralMeetingReport {
         $uploadedFile = $request->files->get('file');
 

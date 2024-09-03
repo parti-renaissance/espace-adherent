@@ -97,7 +97,7 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
     #[DataProvider('provideReferents')]
     public function testExportPapCampaignRepliesInXlsByReferentWithRepliesInManagedZones(
         string $email,
-        string $scope
+        string $scope,
     ): void {
         $accessToken = $this->getAccessToken(
             LoadClientData::CLIENT_12_UUID,

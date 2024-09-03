@@ -25,7 +25,7 @@ class LegislativeDistrictZoneTest extends TestCase
         string $expectedAreaTypeLabel,
         string $expectedToString,
         string $areaCode,
-        string $name
+        string $name,
     ) {
         $zone = LegislativeDistrictZone::createDepartmentZone($areaCode, $name);
 

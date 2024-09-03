@@ -28,7 +28,7 @@ class CountAdherentController extends AbstractController
         private readonly ZoneRepository $zoneRepository,
         private readonly AdherentRepository $adherentRepository,
         private readonly ScopeGeneratorResolver $resolver,
-        private readonly ManagedZoneProvider $managedZoneProvider
+        private readonly ManagedZoneProvider $managedZoneProvider,
     ) {
     }
 

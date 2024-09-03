@@ -51,7 +51,7 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
         Zone $zone,
         ?string $firstName,
         ?\DateTimeInterface $dateTime = null,
-        bool $personalDataCollection = false
+        bool $personalDataCollection = false,
     ): LegislativeNewsletterSubscription {
         $subscription = new LegislativeNewsletterSubscription(Uuid::fromString($uuid));
         $subscription->setEmailAddress($emailAddress);

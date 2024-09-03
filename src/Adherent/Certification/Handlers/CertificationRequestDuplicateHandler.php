@@ -17,7 +17,7 @@ class CertificationRequestDuplicateHandler implements CertificationRequestHandle
     public function __construct(
         EntityManagerInterface $em,
         AdherentRepository $adherentRepository,
-        CertificationRequestDocumentManager $documentManager
+        CertificationRequestDocumentManager $documentManager,
     ) {
         $this->em = $em;
         $this->adherentRepository = $adherentRepository;

@@ -11,7 +11,7 @@ class ContactImporter
     public function __construct(
         private readonly ClientInterface $client,
         private readonly ContactRepository $contactRepository,
-        private readonly AdherentRepository $adherentRepository
+        private readonly AdherentRepository $adherentRepository,
     ) {
     }
 

@@ -17,7 +17,7 @@ class CallbackController extends AbstractController
         Request $request,
         DonationRepository $donationRepository,
         TransactionCallbackHandler $transactionCallbackHandler,
-        string $_callback_token
+        string $_callback_token,
     ): Response {
         $donationUuid = explode('_', $request->query->get('id'))[0];
 

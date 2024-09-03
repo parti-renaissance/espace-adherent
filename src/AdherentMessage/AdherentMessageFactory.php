@@ -11,7 +11,7 @@ class AdherentMessageFactory
     public static function create(
         Adherent $adherent,
         AdherentMessageDataObject $dataObject,
-        string $type
+        string $type,
     ): AdherentMessageInterface {
         $className = static::getMessageClassName($type);
 

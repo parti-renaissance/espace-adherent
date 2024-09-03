@@ -23,7 +23,7 @@ class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerI
         private readonly CommitteeRepository $committeeRepository,
         private readonly CommitteeMembershipManager $committeeMembershipManager,
         private readonly AdherentRepository $adherentRepository,
-        private readonly MessageBusInterface $bus
+        private readonly MessageBusInterface $bus,
     ) {
     }
 

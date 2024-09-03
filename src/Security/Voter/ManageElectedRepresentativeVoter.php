@@ -14,7 +14,7 @@ class ManageElectedRepresentativeVoter extends AbstractAdherentVoter
 
     public function __construct(
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
-        private readonly ManagedZoneProvider $managedZoneProvider
+        private readonly ManagedZoneProvider $managedZoneProvider,
     ) {
     }
 

@@ -25,7 +25,7 @@ final class MySubscribedActionsFilter extends AbstractFilter
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         if (
             !is_a($resourceClass, Action::class, true)

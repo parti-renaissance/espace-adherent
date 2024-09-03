@@ -99,7 +99,7 @@ class EventHydrator extends AbstractHydrator
         ?string $cityCode,
         ?string $cityName,
         ?float $latitude,
-        ?float $longitude
+        ?float $longitude,
     ): PostAddress {
         return PostAddress::createFrenchAddress($street ?? '', $cityCode ?? '-', $cityName ?? '', null, null, $latitude, $longitude);
     }
@@ -110,7 +110,7 @@ class EventHydrator extends AbstractHydrator
         ?string $cityName,
         ?string $street,
         ?float $latitude,
-        ?float $longitude
+        ?float $longitude,
     ): PostAddress {
         return PostAddress::createForeignAddress($country ?? '', $zipCode ?? '', $cityName, $street ?? '', null, null, $latitude, $longitude);
     }

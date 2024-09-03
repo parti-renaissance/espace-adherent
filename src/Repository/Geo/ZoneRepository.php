@@ -262,7 +262,7 @@ class ZoneRepository extends ServiceEntityRepository
         float $latitude,
         float $longitude,
         ?array $types,
-        array $parents = []
+        array $parents = [],
     ): array {
         $qb = $this
             ->createQueryBuilder('zone')

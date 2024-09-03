@@ -44,7 +44,7 @@ class DummyClient implements ClientInterface
         string $id,
         string $email,
         string $firstname,
-        string $lastname
+        string $lastname,
     ): array {
         return [
             'id' => $id,

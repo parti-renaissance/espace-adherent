@@ -27,7 +27,7 @@ class CertificationRequestOcrHandler implements CertificationRequestHandlerInter
         ObjectNormalizer $normalizer,
         PdfToImageConverter $pdfToImageConverter,
         FilesystemOperator $defaultStorage,
-        IdentityDocumentParser $identityDocumentParser
+        IdentityDocumentParser $identityDocumentParser,
     ) {
         $this->em = $em;
         $this->visionHandler = $visionHandler;

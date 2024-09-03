@@ -25,7 +25,7 @@ class CertificationRequestRemoveDocumentCommand extends Command
     public function __construct(
         EntityManagerInterface $em,
         CertificationRequestRepository $certificationRequestRepository,
-        CertificationRequestDocumentManager $documentManager
+        CertificationRequestDocumentManager $documentManager,
     ) {
         $this->em = $em;
         $this->certificationRequestRepository = $certificationRequestRepository;

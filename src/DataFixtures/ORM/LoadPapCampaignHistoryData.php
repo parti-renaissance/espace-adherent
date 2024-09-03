@@ -197,7 +197,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         ?Survey $survey = null,
         ?\DateTime $beginAt = null,
         ?\DateTime $finishAt = null,
-        ?string $uuid = null
+        ?string $uuid = null,
     ): CampaignHistory {
         $campaignHistory = new CampaignHistory($uuid ? Uuid::fromString($uuid) : Uuid::uuid4());
         $campaignHistory->setCampaign($campaign);

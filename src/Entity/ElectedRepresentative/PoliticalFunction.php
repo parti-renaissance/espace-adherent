@@ -82,7 +82,7 @@ class PoliticalFunction
         ?Mandate $mandate = null,
         bool $onGoing = true,
         ?\DateTime $beginAt = null,
-        ?\DateTime $finishAt = null
+        ?\DateTime $finishAt = null,
     ) {
         $this->name = $name;
         $this->clarification = $clarification;

@@ -32,7 +32,7 @@ class JemarcheDataSurveyReplyController extends AbstractReplyController
         Request $request,
         JemarcheDataSurvey $jemarcheDataSurvey,
         EventDispatcherInterface $dispatcher,
-        MessageBusInterface $bus
+        MessageBusInterface $bus,
     ): Response {
         $this->jemarcheDataSurvey = $jemarcheDataSurvey;
         $this->user = $this->getUser();

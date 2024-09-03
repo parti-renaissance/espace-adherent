@@ -26,7 +26,7 @@ class ProcurationExtension implements QueryCollectionExtensionInterface
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         if (!is_a($resourceClass, AbstractProcuration::class, true)) {
             return;

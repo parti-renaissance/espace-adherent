@@ -25,7 +25,7 @@ class GetCampaignRankingController extends AbstractController
     public function __construct(
         CampaignHistoryRepository $campaignHistoryRepository,
         ZoneRepository $zoneRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->campaignHistoryRepository = $campaignHistoryRepository;
         $this->zoneRepository = $zoneRepository;

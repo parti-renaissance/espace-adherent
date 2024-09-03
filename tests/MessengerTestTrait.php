@@ -11,7 +11,7 @@ trait MessengerTestTrait
     public function assertMessageIsDispatched(
         string $expectedMessageClass,
         bool $assert = true,
-        string $help = ''
+        string $help = '',
     ): bool {
         $found = false;
 

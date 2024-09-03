@@ -25,7 +25,7 @@ abstract class AbstractReplyController extends AbstractController implements Log
     public function __construct(
         EntityManagerInterface $entityManager,
         ValidatorInterface $validator,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
     ) {
         $this->entityManager = $entityManager;
         $this->validator = $validator;

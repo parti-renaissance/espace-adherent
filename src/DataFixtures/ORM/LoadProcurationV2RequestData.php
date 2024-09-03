@@ -25,7 +25,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
     private Generator $faker;
 
     public function __construct(
-        private readonly PostAddressFactory $addressFactory
+        private readonly PostAddressFactory $addressFactory,
     ) {
         $this->faker = Factory::create('fr_FR');
     }
@@ -190,7 +190,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         ?string $customVotePlace = null,
         bool $fromFrance = true,
         bool $joinNewsletter = false,
-        array $slotsUuidMapping = []
+        array $slotsUuidMapping = [],
     ): Request {
         $request = new Request(
             $uuid ?? Uuid::uuid4(),

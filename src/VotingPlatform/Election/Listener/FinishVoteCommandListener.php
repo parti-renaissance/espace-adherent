@@ -48,7 +48,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         CandidateGroupRepository $candidateGroupRepository,
         VoteCommandStorage $storage,
         MailerService $transactionalMailer,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ) {
         $this->entityManager = $entityManager;
         $this->security = $security;

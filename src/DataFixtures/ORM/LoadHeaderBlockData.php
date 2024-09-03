@@ -52,7 +52,7 @@ class LoadHeaderBlockData extends Fixture
         ?string $slogan = null,
         ?string $content = null,
         ?\DateTime $deadlineDate = null,
-        bool $withImage = false
+        bool $withImage = false,
     ): HeaderBlock {
         $headerBlock = new HeaderBlock($name, $prefix, $slogan, $content, $deadlineDate);
 

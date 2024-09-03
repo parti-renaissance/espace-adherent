@@ -179,7 +179,7 @@ class CampaignHistory implements DataSurveyAwareInterface
         Campaign $campaign,
         Adherent $caller,
         ?Adherent $adherent,
-        ?UuidInterface $uuid = null
+        ?UuidInterface $uuid = null,
     ): self {
         $history = new self($campaign, $uuid);
         $history->caller = $caller;

@@ -28,7 +28,7 @@ class ReportController extends AbstractController
         ReportManager $reportManager,
         ReportCreationCommandHandler $handler,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
     ): Response {
         $subject = $reportManager->getSubjectByUuid(ReportType::URI_MAP[$type], $uuid);
 

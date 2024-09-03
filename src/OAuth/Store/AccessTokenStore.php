@@ -20,7 +20,7 @@ class AccessTokenStore implements OAuthAccessTokenRepository
 
     public function __construct(
         PersistentTokenFactory $persistentTokenFactory,
-        AccessTokenRepository $accessTokenRepository
+        AccessTokenRepository $accessTokenRepository,
     ) {
         $this->persistentTokenFactory = $persistentTokenFactory;
         $this->accessTokenRepository = $accessTokenRepository;

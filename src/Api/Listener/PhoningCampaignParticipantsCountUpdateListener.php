@@ -21,7 +21,7 @@ class PhoningCampaignParticipantsCountUpdateListener implements EventSubscriberI
     public function __construct(
         EntityManagerInterface $entityManager,
         AdherentRepository $adherentRepository,
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ) {
         $this->entityManager = $entityManager;
         $this->adherentRepository = $adherentRepository;

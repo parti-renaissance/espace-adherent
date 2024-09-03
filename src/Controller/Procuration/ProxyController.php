@@ -23,7 +23,7 @@ class ProxyController extends AbstractController
     public function __construct(
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly AnonymousFollowerSession $anonymousFollowerSession,
-        private readonly ProcurationHandler $procurationHandler
+        private readonly ProcurationHandler $procurationHandler,
     ) {
     }
 

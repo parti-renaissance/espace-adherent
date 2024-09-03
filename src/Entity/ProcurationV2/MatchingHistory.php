@@ -50,7 +50,7 @@ class MatchingHistory
         Request $request,
         Proxy $proxy,
         Round $round,
-        bool $emailCopy
+        bool $emailCopy,
     ) {
         $this->status = $status;
         $this->request = $request;

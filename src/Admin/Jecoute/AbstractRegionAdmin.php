@@ -32,7 +32,7 @@ abstract class AbstractRegionAdmin extends AbstractAdmin
         string $class,
         string $baseControllerName,
         RegionManager $regionManager,
-        Security $security
+        Security $security,
     ) {
         parent::__construct($code, $class, $baseControllerName);
 

@@ -20,7 +20,7 @@ class RemoveTeamMemberController extends AbstractController
     public function __invoke(
         Team $team,
         Adherent $adherent,
-        TeamMemberManagementHandler $teamMemberManagementHandler
+        TeamMemberManagementHandler $teamMemberManagementHandler,
     ): JsonResponse {
         $teamMemberManagementHandler->handleMemberToRemove($team, $adherent);
         $team->reorderMembersCollection();

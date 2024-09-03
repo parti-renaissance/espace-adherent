@@ -40,7 +40,7 @@ class CommitteeManager
     public function __construct(
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $dispatcher,
-        CommitteeAdherentMandateRepository $mandateRepository
+        CommitteeAdherentMandateRepository $mandateRepository,
     ) {
         $this->entityManager = $entityManager;
         $this->dispatcher = $dispatcher;
@@ -257,7 +257,7 @@ class CommitteeManager
     public function followCommittee(
         Adherent $adherent,
         Committee $committee,
-        ?CommitteeMembershipTriggerEnum $trigger = null
+        ?CommitteeMembershipTriggerEnum $trigger = null,
     ): void {
         if ($this->getMembershipRepository()->findMembership($adherent, $committee)) {
             return;
@@ -361,7 +361,7 @@ class CommitteeManager
         Adherent $adherent,
         Committee $committee,
         string $privilege,
-        bool $flush = true
+        bool $flush = true,
     ): void {
         if (!$committeeMembership = $this->getCommitteeMembership($adherent, $committee)) {
             return;
@@ -403,7 +403,7 @@ class CommitteeManager
 
     private function createCommitteeMembershipHistory(
         CommitteeMembership $membership,
-        CommitteeMembershipAction $action
+        CommitteeMembershipAction $action,
     ): CommitteeMembershipHistory {
         return new CommitteeMembershipHistory($membership, $action);
     }
@@ -411,7 +411,7 @@ class CommitteeManager
     private function changePrivilegeOnMembership(
         CommitteeMembership $membership,
         string $privilege,
-        bool $flush = true
+        bool $flush = true,
     ): void {
         CommitteeMembership::checkPrivilege($privilege);
 

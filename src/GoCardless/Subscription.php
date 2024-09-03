@@ -13,7 +13,7 @@ class Subscription
         public Customer $customer,
         public CustomerBankAccount $bankAccount,
         public Mandate $mandate,
-        public GoCardlessSubscription $subscription
+        public GoCardlessSubscription $subscription,
     ) {
     }
 }

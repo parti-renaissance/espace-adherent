@@ -78,7 +78,7 @@ class BaseEventRepository extends ServiceEntityRepository
     public function findEventsByOrganizerPaginator(
         Adherent $organizer,
         int $page = 1,
-        int $limit = 50
+        int $limit = 50,
     ): PaginatorInterface {
         $qb = $this
             ->createQueryBuilder('event')
@@ -119,7 +119,7 @@ class BaseEventRepository extends ServiceEntityRepository
     public function findEventsToRemind(
         \DateTimeInterface $startAfter,
         \DateTimeInterface $startBefore,
-        ?string $mode = null
+        ?string $mode = null,
     ): array {
         $qb = $this
             ->createQueryBuilder('event')

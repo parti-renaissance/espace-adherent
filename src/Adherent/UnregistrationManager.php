@@ -12,7 +12,7 @@ class UnregistrationManager
 {
     public function __construct(
         private readonly MembershipRequestHandler $membershipRequestHandler,
-        private readonly TokenRevocationAuthority $tokenRevocationAuthority
+        private readonly TokenRevocationAuthority $tokenRevocationAuthority,
     ) {
     }
 

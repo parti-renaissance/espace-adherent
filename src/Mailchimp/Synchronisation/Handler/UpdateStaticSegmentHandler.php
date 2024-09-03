@@ -22,7 +22,7 @@ class UpdateStaticSegmentHandler implements MessageHandlerInterface
     public function __construct(
         Manager $mailchimpManager,
         AdherentRepository $adherentRepository,
-        ObjectManager $entityManager
+        ObjectManager $entityManager,
     ) {
         $this->mailchimpManager = $mailchimpManager;
         $this->adherentRepository = $adherentRepository;

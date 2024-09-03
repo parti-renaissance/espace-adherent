@@ -19,7 +19,7 @@ class UpdateStatsCommandHandler implements MessageHandlerInterface
     public function __construct(
         CampaignRepository $campaignRepository,
         BuildingRepository $buildingRepository,
-        BuildingStatisticsManager $buildingStatisticsManager
+        BuildingStatisticsManager $buildingStatisticsManager,
     ) {
         $this->campaignRepository = $campaignRepository;
         $this->buildingRepository = $buildingRepository;

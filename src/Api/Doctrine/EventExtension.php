@@ -22,7 +22,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
     public function __construct(
         private readonly Security $security,
         private readonly BaseEventRepository $baseEventRepository,
-        private readonly ScopeGeneratorResolver $scopeResolver
+        private readonly ScopeGeneratorResolver $scopeResolver,
     ) {
     }
 
@@ -32,7 +32,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
         string $resourceClass,
         array $identifiers,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         if (!is_a($resourceClass, BaseEvent::class, true)) {
             return;
@@ -46,7 +46,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         if (!is_a($resourceClass, BaseEvent::class, true)) {
             return;

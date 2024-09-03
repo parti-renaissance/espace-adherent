@@ -19,7 +19,7 @@ abstract class AbstractEventMessageTestCase extends AbstractKernelTestCase
         string $cityCode,
         ?string $committeeName = null,
         string $timeZone = 'Europe/Paris',
-        string $description = ''
+        string $description = '',
     ): CommitteeEvent {
         $address = $this->createPostAddress($street, $cityCode)->getInlineFormattedAddress('fr_FR');
 
@@ -45,7 +45,7 @@ abstract class AbstractEventMessageTestCase extends AbstractKernelTestCase
     protected function createRegistrationMock(
         string $emailAddress,
         string $firstName,
-        string $lastName
+        string $lastName,
     ): EventRegistration {
         $registration = $this->createMock(EventRegistration::class);
         $registration->expects(static::any())->method('getEmailAddress')->willReturn($emailAddress);
@@ -70,7 +70,7 @@ abstract class AbstractEventMessageTestCase extends AbstractKernelTestCase
         Adherent $author,
         string $content,
         ?BaseEvent $event = null,
-        ?string $committeeName = null
+        ?string $committeeName = null,
     ): CommitteeFeedItem {
         $mock = $this->getMockBuilder(CommitteeFeedItem::class)->disableOriginalConstructor()->getMock();
         $mock->expects($this->any())->method('getAuthor')->willReturn($author);

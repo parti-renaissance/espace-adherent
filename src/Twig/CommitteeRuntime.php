@@ -20,7 +20,7 @@ class CommitteeRuntime implements RuntimeExtensionInterface
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         CommitteeCandidacyRepository $committeeCandidacyRepository,
-        ?CommitteeManager $committeeManager = null
+        ?CommitteeManager $committeeManager = null,
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->committeeCandidacyRepository = $committeeCandidacyRepository;

@@ -16,7 +16,7 @@ class EventParticipantsExporter
     public function __construct(
         private readonly TagTranslator $tagTranslator,
         private readonly EventRegistrationRepository $eventRegistrationRepository,
-        private readonly SonataExporter $exporter
+        private readonly SonataExporter $exporter,
     ) {
     }
 

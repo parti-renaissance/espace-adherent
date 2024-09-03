@@ -10,7 +10,7 @@ class Message
         public readonly string $id,
         public readonly string $role,
         public readonly string $content,
-        public readonly \DateTimeInterface $createdAt
+        public readonly \DateTimeInterface $createdAt,
     ) {
     }
 

@@ -80,7 +80,7 @@ class NewsletterSubscription implements NewsletterSubscriptionInterface, EntityS
         ?string $postalCode = null,
         ?string $country = null,
         bool $fromEvent = false,
-        ?UuidInterface $uuid = null
+        ?UuidInterface $uuid = null,
     ) {
         $this->email = $email;
         $this->postalCode = $postalCode;

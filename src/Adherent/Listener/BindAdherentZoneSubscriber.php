@@ -21,7 +21,7 @@ class BindAdherentZoneSubscriber implements EventSubscriberInterface
 
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly ZoneRepository $zoneRepository
+        private readonly ZoneRepository $zoneRepository,
     ) {
     }
 

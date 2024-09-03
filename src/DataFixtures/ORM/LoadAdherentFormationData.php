@@ -85,7 +85,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         Administrator $creator,
         string $title,
         bool $description = true,
-        bool $published = true
+        bool $published = true,
     ): Formation {
         $formation = $this->createFormation($uuid, $title, $description, $published);
         $formation->setCreatedByAdministrator($creator);
@@ -99,7 +99,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         Zone $zone,
         string $title,
         bool $description = true,
-        bool $published = true
+        bool $published = true,
     ): Formation {
         $formation = $this->createFormation($uuid, $title, $description, $published);
         $formation->setCreatedByAdherent($creator);
@@ -112,7 +112,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         string $uuid,
         string $title,
         bool $description = true,
-        bool $published = true
+        bool $published = true,
     ): Formation {
         $formation = new Formation(Uuid::fromString($uuid));
         $formation->setTitle($title);

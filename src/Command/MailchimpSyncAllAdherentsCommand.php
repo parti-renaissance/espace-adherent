@@ -35,7 +35,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
     public function __construct(
         AdherentRepository $adherentRepository,
         ObjectManager $entityManager,
-        MessageBusInterface $bus
+        MessageBusInterface $bus,
     ) {
         $this->adherentRepository = $adherentRepository;
         $this->entityManager = $entityManager;
@@ -133,7 +133,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
         bool $activeMandatesOnly,
         bool $declaredMandatesOnly,
         ?string $source,
-        array $emails
+        array $emails,
     ): Paginator {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')

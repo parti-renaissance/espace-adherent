@@ -28,7 +28,7 @@ class MembershipRequestHandler
         ObjectManager $manager,
         ReferentZoneManager $referentZoneManager,
         UnregistrationHandler $unregistrationHandler,
-        MembershipNotifier $notifier
+        MembershipNotifier $notifier,
     ) {
         $this->adherentFactory = $adherentFactory;
         $this->dispatcher = $dispatcher;
@@ -66,7 +66,7 @@ class MembershipRequestHandler
         Adherent $adherent,
         ?UnregistrationCommand $command = null,
         bool $sendMail = true,
-        ?string $comment = null
+        ?string $comment = null,
     ): void {
         $this->unregistrationHandler->handle($adherent, $command, $comment);
 

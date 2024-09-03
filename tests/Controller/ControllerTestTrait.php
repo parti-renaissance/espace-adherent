@@ -34,7 +34,7 @@ trait ControllerTestTrait
         KernelBrowser $client,
         bool $withSchemes = false,
         bool $permanent = false,
-        bool $withParameters = true
+        bool $withParameters = true,
     ): void {
         $response = $client->getResponse();
 
@@ -130,7 +130,7 @@ trait ControllerTestTrait
     protected function appendCollectionFormPrototype(
         \DOMElement $collection,
         string $newIndex = '0',
-        string $prototypeName = '__name__'
+        string $prototypeName = '__name__',
     ): void {
         $prototypeHTML = $collection->getAttribute('data-prototype');
         $prototypeHTML = str_replace($prototypeName, $newIndex, $prototypeHTML);
@@ -146,7 +146,7 @@ trait ControllerTestTrait
         int $position,
         string $author,
         string $role,
-        string $text
+        string $text,
     ) {
         $message = $crawler->filter('.committee__timeline__message')->eq($position);
 
@@ -198,7 +198,7 @@ trait ControllerTestTrait
     protected function getUrl(
         string $route,
         array $params = [],
-        int $absolute = UrlGeneratorInterface::ABSOLUTE_PATH
+        int $absolute = UrlGeneratorInterface::ABSOLUTE_PATH,
     ): string {
         return $this->get('router')->generate($route, $params, $absolute);
     }

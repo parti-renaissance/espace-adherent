@@ -177,7 +177,7 @@ class CommitteeRepository extends ServiceEntityRepository
     public function searchRequestsByFilter(
         CommitteeListFilter $filter,
         int $page = 1,
-        int $limit = 100
+        int $limit = 100,
     ): PaginatorInterface {
         $queryBuilder = $this->createRequestsFilterQueryBuilder($filter->getZones() ?: $filter->getManagedZones())
             ->orderBy('c.createdAt', 'DESC')
@@ -400,7 +400,7 @@ class CommitteeRepository extends ServiceEntityRepository
 
     public function paginateAllApprovedCommittees(
         int $offset = 0,
-        int $limit = SearchParametersFilter::DEFAULT_MAX_RESULTS
+        int $limit = SearchParametersFilter::DEFAULT_MAX_RESULTS,
     ): Paginator {
         $query = $this->createQueryBuilder('c')
             ->andWhere('c.status = :approved AND c.version = 1')
@@ -629,7 +629,7 @@ class CommitteeRepository extends ServiceEntityRepository
     public function findAvailableForPartials(
         CommitteeDesignationsListFilter $filter,
         int $page = 1,
-        int $limit = 100
+        int $limit = 100,
     ): array {
         $qb = $this->createQueryBuilder('committee')
             ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality IS NULL THEN 1 ELSE 0 END) AS total_designed_adherents')

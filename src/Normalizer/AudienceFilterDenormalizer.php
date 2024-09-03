@@ -22,7 +22,7 @@ class AudienceFilterDenormalizer implements DenormalizerInterface, DenormalizerA
         private readonly ManagedZoneProvider $managedZoneProvider,
         private readonly Security $security,
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
-        private readonly CommitteeRepository $committeeRepository
+        private readonly CommitteeRepository $committeeRepository,
     ) {
     }
 

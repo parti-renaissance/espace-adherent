@@ -22,7 +22,7 @@ class AddNewVoterAfterCertificationListener implements EventSubscriberInterface
         ElectionAuthorisationChecker $authorisationChecker,
         VotersListManager $votersListManager,
         ElectionRepository $electionRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ) {
         $this->authorisationChecker = $authorisationChecker;
         $this->votersListManager = $votersListManager;

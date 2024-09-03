@@ -27,7 +27,7 @@ class RefreshAdherentsTagsCommand extends Command
     public function __construct(
         private readonly AdherentRepository $adherentRepository,
         private readonly ObjectManager $entityManager,
-        private readonly MessageBusInterface $bus
+        private readonly MessageBusInterface $bus,
     ) {
         parent::__construct();
     }

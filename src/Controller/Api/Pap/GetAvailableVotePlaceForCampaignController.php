@@ -13,7 +13,7 @@ class GetAvailableVotePlaceForCampaignController
 
     public function __construct(
         VotePlaceRepository $votePlaceRepository,
-        ScopeGeneratorResolver $scopeGeneratorResolver
+        ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
         $this->votePlaceRepository = $votePlaceRepository;
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;

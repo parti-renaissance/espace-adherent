@@ -20,7 +20,7 @@ class CandidacyInvitationEvent extends BaseCandidacyEvent
         CandidacyInterface $candidacy,
         ?CandidacyInterface $invitedCandidacy,
         array $invitations = [],
-        array $previouslyInvitedMemberships = []
+        array $previouslyInvitedMemberships = [],
     ) {
         parent::__construct($candidacy);
 

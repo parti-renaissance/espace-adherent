@@ -38,7 +38,7 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
     public function testValidateWithNoError(
         ?int $value,
         int $maxDonation,
-        int $totalCurrentAmount = 0
+        int $totalCurrentAmount = 0,
     ): void {
         $donationRequest = $this->createDonationRequest();
         $donationRequest->setAmount($value);
@@ -78,7 +78,7 @@ class MaxFiscalYearDonationValidatorTest extends ConstraintValidatorTestCase
         array $parameters,
         ?int $value,
         int $maxDonation,
-        int $totalCurrentAmount = 0
+        int $totalCurrentAmount = 0,
     ): void {
         $donationRequest = $this->createDonationRequest();
         $donationRequest->setAmount($value);

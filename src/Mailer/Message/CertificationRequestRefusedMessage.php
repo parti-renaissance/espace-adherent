@@ -10,7 +10,7 @@ final class CertificationRequestRefusedMessage extends Message
     public static function create(
         CertificationRequest $certificationRequest,
         string $refusalReason,
-        string $certificationRequestUrl
+        string $certificationRequestUrl,
     ): self {
         $adherent = $certificationRequest->getAdherent();
 

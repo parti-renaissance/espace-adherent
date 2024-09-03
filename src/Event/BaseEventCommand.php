@@ -72,7 +72,7 @@ class BaseEventCommand
         ?\DateTimeInterface $finishAt = null,
         ?BaseEvent $event = null,
         string $timeZone = GeoCoder::DEFAULT_TIME_ZONE,
-        ?string $visioUrl = null
+        ?string $visioUrl = null,
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->author = $author;

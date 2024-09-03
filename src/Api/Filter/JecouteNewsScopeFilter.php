@@ -20,7 +20,7 @@ final class JecouteNewsScopeFilter extends AbstractScopeFilter
         Adherent $currentUser,
         ScopeGeneratorInterface $scopeGenerator,
         string $resourceClass,
-        array $context
+        array $context,
     ): void {
         $alias = $queryBuilder->getRootAliases()[0];
 

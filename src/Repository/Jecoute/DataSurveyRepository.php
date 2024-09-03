@@ -83,7 +83,7 @@ class DataSurveyRepository extends ServiceEntityRepository
         PapCampaign $campaign,
         array $zones,
         int $page = 1,
-        ?int $limit = 30
+        ?int $limit = 30,
     ): iterable {
         $qb = $this
             ->createQueryBuilder('data_survey')
@@ -182,7 +182,7 @@ class DataSurveyRepository extends ServiceEntityRepository
         array $zones = [],
         array $departmentCodes = [],
         int $page = 1,
-        ?int $limit = 30
+        ?int $limit = 30,
     ): iterable {
         $queryBuilder = $this->createSurveyQueryBuilder($survey, $zones, $departmentCodes);
 
@@ -261,7 +261,7 @@ class DataSurveyRepository extends ServiceEntityRepository
     private function createSurveyQueryBuilder(
         Survey $survey,
         array $zones = [],
-        array $departmentCodes = []
+        array $departmentCodes = [],
     ): QueryBuilder {
         $qb = $this->createQueryBuilder('ds')
             ->addSelect('jemarcheDataSurvey')

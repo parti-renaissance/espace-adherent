@@ -38,7 +38,7 @@ class AdminUnregistrationController extends AbstractController
     public function exportUnregistrationsPartialAction(
         Request $request,
         UnregistrationRepository $repository,
-        UnregistrationSerializer $serializer
+        UnregistrationSerializer $serializer,
     ): Response {
         $unregistrations = $repository->findPaginatedForExport($request->query->getInt('page', 1), self::PER_PAGE);
 

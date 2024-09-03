@@ -12,7 +12,7 @@ class RegisterAuthorAsFirstParticipantHandler implements MessageHandlerInterface
 {
     public function __construct(
         private readonly RegisterManager $registerManager,
-        private readonly ActionRepository $actionRepository
+        private readonly ActionRepository $actionRepository,
     ) {
     }
 

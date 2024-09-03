@@ -24,7 +24,7 @@ class ScopeVisibilityVoter extends AbstractAdherentVoter
     public function __construct(
         ScopeGeneratorResolver $scopeGeneratorResolver,
         ManagedZoneProvider $managedZoneProvider,
-        ZoneRepository $zoneRepository
+        ZoneRepository $zoneRepository,
     ) {
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;
         $this->managedZoneProvider = $managedZoneProvider;

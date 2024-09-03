@@ -17,7 +17,7 @@ class AssignCommitteeByAdherentAddressListener implements EventSubscriberInterfa
 
     public function __construct(
         private readonly CommitteeMembershipManager $committeeManager,
-        private readonly VoterRepository $voterRepository
+        private readonly VoterRepository $voterRepository,
     ) {
     }
 

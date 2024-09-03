@@ -38,7 +38,7 @@ class Scope
         array $apps,
         array $features,
         Adherent $adherent,
-        ?DelegatedAccess $delegatedAccess = null
+        ?DelegatedAccess $delegatedAccess = null,
     ) {
         $this->code = $code;
         $this->name = $name;

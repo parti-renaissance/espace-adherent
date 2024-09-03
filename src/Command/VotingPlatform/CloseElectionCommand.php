@@ -27,7 +27,7 @@ class CloseElectionCommand extends Command
         private readonly ElectionRepository $electionRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly ResultCalculator $resultManager,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
         parent::__construct();
     }

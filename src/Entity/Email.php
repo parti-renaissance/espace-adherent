@@ -49,7 +49,7 @@ class Email
         string $messageClass,
         string $sender,
         array $recipients,
-        string $requestPayload
+        string $requestPayload,
     ) {
         $this->uuid = $uuid;
         $this->messageClass = $messageClass;

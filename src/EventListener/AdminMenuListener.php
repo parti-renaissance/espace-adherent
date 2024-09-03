@@ -12,7 +12,7 @@ class AdminMenuListener implements EventSubscriberInterface
 {
     public function __construct(
         private readonly MenuProviderInterface $provider,
-        private readonly AuthorizationCheckerInterface $authorizationChecker
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 

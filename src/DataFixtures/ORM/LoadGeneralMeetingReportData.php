@@ -81,7 +81,7 @@ class LoadGeneralMeetingReportData extends Fixture implements DependentFixtureIn
         Zone $zone,
         string $title,
         bool $description,
-        \DateTimeInterface $date
+        \DateTimeInterface $date,
     ): GeneralMeetingReport {
         $generalMeetingReport = $this->createGeneralMeetingReport($uuid, $title, $description, $date);
         $generalMeetingReport->setCreatedByAdherent($creator);
@@ -94,7 +94,7 @@ class LoadGeneralMeetingReportData extends Fixture implements DependentFixtureIn
         string $uuid,
         string $title,
         bool $description,
-        \DateTimeInterface $date
+        \DateTimeInterface $date,
     ): GeneralMeetingReport {
         $generalMeetingReport = new GeneralMeetingReport(Uuid::fromString($uuid));
         $generalMeetingReport->setTitle($title);

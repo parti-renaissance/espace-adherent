@@ -17,7 +17,7 @@ class GetCollectionFiltersController extends AbstractController
 {
     public function __construct(
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
-        private readonly FiltersGenerator $builder
+        private readonly FiltersGenerator $builder,
     ) {
     }
 

@@ -238,7 +238,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
         string $lastName,
         \DateTime $birthDate,
         ?string $gender = null,
-        ?UuidInterface $uuid = null
+        ?UuidInterface $uuid = null,
     ): self {
         $electedRepresentative = new self();
 

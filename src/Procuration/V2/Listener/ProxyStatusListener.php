@@ -15,7 +15,7 @@ class ProxyStatusListener implements EventSubscriberInterface
     private Collection $matchedRequests;
 
     public function __construct(
-        private readonly ProcurationHandler $procurationHandler
+        private readonly ProcurationHandler $procurationHandler,
     ) {
         $this->matchedRequests = new ArrayCollection();
     }

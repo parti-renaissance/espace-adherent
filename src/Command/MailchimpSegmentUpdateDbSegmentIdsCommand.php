@@ -29,7 +29,7 @@ class MailchimpSegmentUpdateDbSegmentIdsCommand extends Command
         CommitteeRepository $committeeRepository,
         HttpClientInterface $mailchimpClient,
         ObjectManager $entityManager,
-        string $mailchimpListId
+        string $mailchimpListId,
     ) {
         $this->committeeRepository = $committeeRepository;
         $this->client = $mailchimpClient;

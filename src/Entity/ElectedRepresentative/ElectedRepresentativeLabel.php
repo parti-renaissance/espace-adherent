@@ -59,7 +59,7 @@ class ElectedRepresentativeLabel
         ?ElectedRepresentative $electedRepresentative = null,
         bool $onGoing = true,
         ?int $beginYear = null,
-        ?int $finishYear = null
+        ?int $finishYear = null,
     ) {
         $this->name = $name;
         $this->onGoing = $onGoing;

@@ -19,7 +19,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         ?string $additionalAddress = null,
         ?string $region = null,
         ?float $latitude = null,
-        ?float $longitude = null
+        ?float $longitude = null,
     ): self {
         [$postalCode, $inseeCode] = explode('-', $cityCode);
 
@@ -47,7 +47,7 @@ class NullablePostAddress implements AddressInterface, GeocodableInterface, GeoP
         ?string $additionalAddress,
         ?string $region,
         ?float $latitude = null,
-        ?float $longitude = null
+        ?float $longitude = null,
     ): self {
         return new self($country, $zipCode, $cityName, $street, $additionalAddress, $latitude, $longitude, $region);
     }

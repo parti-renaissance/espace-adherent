@@ -20,7 +20,7 @@ class CommitteeFeedItemRepository extends ServiceEntityRepository
     public function findPaginatedMostRecentFeedItems(
         string $committeeUuid,
         int $limit,
-        int $firstResultIndex = 0
+        int $firstResultIndex = 0,
     ): Paginator {
         $qb = $this
             ->createCommitteeTimelineQueryBuilder($committeeUuid)
@@ -44,7 +44,7 @@ class CommitteeFeedItemRepository extends ServiceEntityRepository
     private function findMostRecentFeedItem(
         string $type,
         ?string $committeeUuid = null,
-        ?bool $published = null
+        ?bool $published = null,
     ): ?CommitteeFeedItem {
         $qb = $this
             ->createQueryBuilder('i')

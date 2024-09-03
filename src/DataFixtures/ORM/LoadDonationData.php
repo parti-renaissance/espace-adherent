@@ -206,7 +206,7 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
         int $duration = PayboxPaymentSubscription::NONE,
         string $type = Donation::TYPE_CB,
         ?string $donatedAt = null,
-        ?string $code = null
+        ?string $code = null,
     ): Donation {
         $donation = new Donation(
             $uuid = Uuid::uuid4(),
@@ -230,7 +230,7 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
     public function createTransaction(
         Donation $donation,
         string $resultCode = Transaction::PAYBOX_SUCCESS,
-        ?string $dateModifier = null
+        ?string $dateModifier = null,
     ): Transaction {
         /** @var \DateTimeImmutable $donatedAt */
         $donatedAt = $donation->getDonatedAt();

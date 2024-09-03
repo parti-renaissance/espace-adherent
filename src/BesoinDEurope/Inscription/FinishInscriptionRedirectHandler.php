@@ -16,7 +16,7 @@ class FinishInscriptionRedirectHandler
     public function __construct(
         private readonly Security $security,
         private readonly SessionInterface $session,
-        private readonly UrlGeneratorInterface $urlGenerator
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
 

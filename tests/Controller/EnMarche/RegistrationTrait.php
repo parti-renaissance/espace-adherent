@@ -18,7 +18,7 @@ trait RegistrationTrait
     private function register(
         KernelBrowser $client,
         Crawler $crawler,
-        string $redirectUrl = '/espace-adherent/accueil'
+        string $redirectUrl = '/espace-adherent/accueil',
     ): Crawler {
         $registrationButton = $crawler->selectButton('adherent_registration_submit');
 

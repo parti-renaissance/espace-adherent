@@ -26,7 +26,7 @@ class ScopeVisibilityValidator extends ConstraintValidator
         Security $security,
         ManagedZoneProvider $managedZoneProvider,
         ZoneRepository $zoneRepository,
-        ScopeGeneratorResolver $scopeGeneratorResolver
+        ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
         $this->security = $security;
         $this->managedZoneProvider = $managedZoneProvider;

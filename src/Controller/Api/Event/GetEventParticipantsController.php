@@ -21,7 +21,7 @@ class GetEventParticipantsController extends AbstractController
         BaseEvent $event,
         string $_format,
         EventRegistrationRepository $eventRegistrationRepository,
-        EventParticipantsExporter $exporter
+        EventParticipantsExporter $exporter,
     ): Response {
         if ('json' !== $_format) {
             return $exporter->export($event, $_format);

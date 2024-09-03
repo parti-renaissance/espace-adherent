@@ -19,7 +19,7 @@ class CreateBuildingPartsCommandHandler implements MessageHandlerInterface
     public function __construct(
         CampaignHistoryRepository $repository,
         CampaignHistoryManager $campaignHistoryManager,
-        MessageBusInterface $bus
+        MessageBusInterface $bus,
     ) {
         $this->repository = $repository;
         $this->campaignHistoryManager = $campaignHistoryManager;

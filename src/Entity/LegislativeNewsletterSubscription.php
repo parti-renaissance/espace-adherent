@@ -78,7 +78,7 @@ class LegislativeNewsletterSubscription implements RecaptchaChallengeInterface
         ?UuidInterface $uuid = null,
         ?string $emailAddress = null,
         ?string $postalCode = null,
-        ?bool $personalDataCollection = null
+        ?bool $personalDataCollection = null,
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->emailAddress = $emailAddress;

@@ -74,7 +74,7 @@ class CommitteeCandidacyRepository extends ServiceEntityRepository
 
     private function createConfirmedCandidaciesQueryBuilder(
         Committee $committee,
-        Designation $designation
+        Designation $designation,
     ): QueryBuilder {
         return $this->createQueryBuilder('cc')
             ->innerJoin('cc.committeeElection', 'election')

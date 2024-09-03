@@ -14,7 +14,7 @@ class GetPapCampaignQuestionersStatsController extends AbstractController
     public function __invoke(
         Request $request,
         Campaign $campaign,
-        AdherentRepository $adherentRepository
+        AdherentRepository $adherentRepository,
     ): PaginatorInterface {
         $this->denyAccessUnlessGranted(ScopeVisibilityVoter::PERMISSION, $campaign);
 

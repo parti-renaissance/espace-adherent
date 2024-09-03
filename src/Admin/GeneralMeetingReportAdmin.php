@@ -106,7 +106,7 @@ class GeneralMeetingReportAdmin extends AbstractAdmin
     public static function prepareZoneAutocompleteCallback(
         AdminInterface $admin,
         array $properties,
-        string $value
+        string $value,
     ): void {
         /** @var QueryBuilder $qb */
         $qb = $admin->getDatagrid()->getQuery();

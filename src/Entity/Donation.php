@@ -179,7 +179,7 @@ class Donation implements GeoPointInterface
         ?string $nationality = null,
         ?string $code = null,
         ?Donator $donator = null,
-        ?\DateTimeImmutable $createdAt = null
+        ?\DateTimeImmutable $createdAt = null,
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->type = $type;

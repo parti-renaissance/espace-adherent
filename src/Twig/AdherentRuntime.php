@@ -25,7 +25,7 @@ class AdherentRuntime implements RuntimeExtensionInterface
         CommitteeAdherentMandateRepository $committeeMandateRepository,
         AdherentRepository $adherentRepository,
         TagTranslator $tagTranslator,
-        array $adherentInterests
+        array $adherentInterests,
     ) {
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
         $this->committeeMandateRepository = $committeeMandateRepository;

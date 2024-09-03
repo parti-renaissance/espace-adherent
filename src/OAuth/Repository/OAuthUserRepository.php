@@ -14,7 +14,7 @@ class OAuthUserRepository implements UserRepositoryInterface
 {
     public function __construct(
         private readonly UserProvider $userProvider,
-        private readonly UserPasswordHasherInterface $userPasswordHasher
+        private readonly UserPasswordHasherInterface $userPasswordHasher,
     ) {
     }
 
@@ -22,7 +22,7 @@ class OAuthUserRepository implements UserRepositoryInterface
         $username,
         $password,
         $grantType,
-        ClientEntityInterface $clientEntity
+        ClientEntityInterface $clientEntity,
     ): ?UserInterface {
         try {
             $user = $this->userProvider->loadUserByIdentifier($username);

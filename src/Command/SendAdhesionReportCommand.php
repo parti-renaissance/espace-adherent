@@ -114,7 +114,7 @@ class SendAdhesionReportCommand extends Command
         array $zones,
         string $type,
         Adherent $recipient,
-        bool $dryRun = false
+        bool $dryRun = false,
     ): void {
         $this->addZoneCondition($qb, $zones);
 

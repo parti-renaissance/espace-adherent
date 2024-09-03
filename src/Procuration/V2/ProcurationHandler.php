@@ -22,7 +22,7 @@ class ProcurationHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly ProcurationNotifier $notifier,
         private readonly MatchingHistoryHandler $matchingHistoryHandler,
-        private readonly EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

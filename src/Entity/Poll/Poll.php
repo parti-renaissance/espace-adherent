@@ -52,7 +52,7 @@ abstract class Poll
         ?UuidInterface $uuid = null,
         ?string $question = null,
         ?\DateTimeInterface $finishAt = null,
-        bool $published = false
+        bool $published = false,
     ) {
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->question = $question;

@@ -58,7 +58,7 @@ class RedirectionManagerTest extends AbstractKernelTestCase
         Redirection $redirection,
         string $source,
         string $target,
-        int $type = 301
+        int $type = 301,
     ): void {
         self::assertSame($source, $redirection->getFrom());
         self::assertSame($target, $redirection->getTo());

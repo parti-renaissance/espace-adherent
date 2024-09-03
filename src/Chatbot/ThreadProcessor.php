@@ -15,7 +15,7 @@ class ThreadProcessor
         private readonly EntityManagerInterface $entityManager,
         private readonly Client $client,
         private readonly MessageBusInterface $bus,
-        private readonly Logger $logger
+        private readonly Logger $logger,
     ) {
     }
 
@@ -173,7 +173,7 @@ class ThreadProcessor
         Thread $thread,
         string $content,
         \DateTimeInterface $date,
-        string $externalId
+        string $externalId,
     ): void {
         $message = $thread->addAssistantMessage($content, $date, $externalId);
 

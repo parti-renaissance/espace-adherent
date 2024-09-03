@@ -17,7 +17,7 @@ trait GeoZoneTrait
         string $zoneRelationAlias,
         ?callable $queryModifier = null,
         bool $withParents = true,
-        string $zoneParentAlias = 'zone_parent'
+        string $zoneParentAlias = 'zone_parent',
     ): QueryBuilder {
         if (!$zones) {
             return $queryBuilder;
@@ -49,7 +49,7 @@ trait GeoZoneTrait
         string $zoneRelationAlias,
         ?callable $queryModifier = null,
         bool $withParents = true,
-        string $zoneParentAlias = 'zone_parent'
+        string $zoneParentAlias = 'zone_parent',
     ): QueryBuilder {
         if (!$zones) {
             return $queryBuilder;
@@ -102,7 +102,7 @@ trait GeoZoneTrait
         string $zoneRelation,
         string $zoneRelationAlias,
         bool $withParents = true,
-        string $zoneParentAlias = 'zone_parent'
+        string $zoneParentAlias = 'zone_parent',
     ): QueryBuilder {
         $zoneQueryBuilder = $this
             ->getEntityManager()

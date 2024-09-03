@@ -15,7 +15,7 @@ class VisibleStatusesExtension implements QueryCollectionExtensionInterface
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         ?Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
         $this->modifyQuery($queryBuilder, $resourceClass);
     }

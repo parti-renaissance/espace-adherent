@@ -10,7 +10,7 @@ class NewMembershipNotificationCommand extends UuidDefaultAsyncMessage
     public function __construct(
         UuidInterface $uuid,
         private readonly \DateTimeInterface $from,
-        private readonly \DateTimeInterface $to
+        private readonly \DateTimeInterface $to,
     ) {
         parent::__construct($uuid);
     }

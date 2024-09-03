@@ -18,7 +18,7 @@ class UpdateCampaignAddressInfoCommandHandler implements MessageHandlerInterface
     public function __construct(
         CampaignRepository $campaignRepository,
         AddressRepository $addressRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ) {
         $this->campaignRepository = $campaignRepository;
         $this->addressRepository = $addressRepository;

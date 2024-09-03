@@ -103,7 +103,7 @@ class LoadProcurationV2SlotActionData extends Fixture implements DependentFixtur
         ?\DateTimeInterface $date = null,
         ?Adherent $author = null,
         ?string $authorScope = null,
-        array $context = []
+        array $context = [],
     ): ProxyAction {
         $action = new ProxyAction(
             Uuid::uuid4(),
@@ -125,7 +125,7 @@ class LoadProcurationV2SlotActionData extends Fixture implements DependentFixtur
         ?\DateTimeInterface $date = null,
         ?Adherent $author = null,
         ?string $authorScope = null,
-        array $context = []
+        array $context = [],
     ): RequestSlotAction {
         $action = new RequestSlotAction(
             Uuid::uuid4(),
@@ -147,7 +147,7 @@ class LoadProcurationV2SlotActionData extends Fixture implements DependentFixtur
         ?\DateTimeInterface $date = null,
         ?Adherent $author = null,
         ?string $authorScope = null,
-        array $context = []
+        array $context = [],
     ): ProxySlotAction {
         $action = new ProxySlotAction(
             Uuid::uuid4(),
@@ -168,7 +168,7 @@ class LoadProcurationV2SlotActionData extends Fixture implements DependentFixtur
         ProxySlot $proxySlot,
         ?Adherent $author = null,
         ?string $authorScope = null,
-        ?\DateTimeInterface $date = null
+        ?\DateTimeInterface $date = null,
     ): void {
         $requestSlot->actions->add($this->createRequestSlotAction(
             SlotActionStatusEnum::MATCH,
@@ -192,7 +192,7 @@ class LoadProcurationV2SlotActionData extends Fixture implements DependentFixtur
         ProxySlot $proxySlot,
         ?Adherent $author = null,
         ?string $authorScope = null,
-        ?\DateTimeInterface $date = null
+        ?\DateTimeInterface $date = null,
     ): void {
         $requestSlot->actions->add($this->createRequestSlotAction(
             SlotActionStatusEnum::UNMATCH,

@@ -118,7 +118,7 @@ class LoadOAuthTokenData extends Fixture implements DependentFixtureInterface
         string $identifier,
         string $userUuid,
         string $clientUuid,
-        string $expiryDateTime
+        string $expiryDateTime,
     ): AuthorizationCode {
         return new AuthorizationCode(
             Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
@@ -134,7 +134,7 @@ class LoadOAuthTokenData extends Fixture implements DependentFixtureInterface
         string $identifier,
         string $userUuid,
         string $clientUuid,
-        string $expiryDateTime
+        string $expiryDateTime,
     ): AccessToken {
         return new AccessToken(
             Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),
@@ -148,7 +148,7 @@ class LoadOAuthTokenData extends Fixture implements DependentFixtureInterface
     private function createRefreshToken(
         AccessToken $accessToken,
         string $identifier,
-        string $expiryDateTime
+        string $expiryDateTime,
     ): RefreshToken {
         return new RefreshToken(
             Uuid::uuid5(Uuid::NAMESPACE_OID, $identifier),

@@ -81,7 +81,7 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
         int $amount,
         PostAddress $address,
         $allowEmailNotifications = false,
-        $allowMobileNotifications = false
+        $allowMobileNotifications = false,
     ): AdherentRequest {
         $adherentRequest = new AdherentRequest(Uuid::fromString($uuid));
         $adherentRequest->firstName = $firstName;

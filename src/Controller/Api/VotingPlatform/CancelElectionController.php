@@ -14,7 +14,7 @@ class CancelElectionController extends AbstractController
     public function __invoke(
         Designation $designation,
         EntityManagerInterface $entityManager,
-        ElectionRepository $electionRepository
+        ElectionRepository $electionRepository,
     ): Response {
         foreach ($electionRepository->findAllForDesignation($designation) as $election) {
             $election->cancel(ElectionCancelReasonEnum::Manual);

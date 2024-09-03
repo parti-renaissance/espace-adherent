@@ -37,7 +37,7 @@ class SendDeclaredMandateChangeNotificationCommand extends Command
         private readonly AdministratorRepository $administratorRepository,
         private readonly AdherentRepository $adherentRepository,
         private readonly DeclaredMandateHistoryNotifier $declaredMandateHistoryNotifier,
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
     ) {
         parent::__construct();
     }

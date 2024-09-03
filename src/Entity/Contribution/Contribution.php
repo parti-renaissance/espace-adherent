@@ -62,7 +62,7 @@ class Contribution
 
     public static function fromSubscription(
         Adherent $adherent,
-        Subscription $subscription
+        Subscription $subscription,
     ): self {
         $contribution = new self();
 

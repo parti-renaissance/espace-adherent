@@ -27,7 +27,7 @@ class PhoningCampaignUpdateParticipantsCountCommand extends Command
     public function __construct(
         AdherentRepository $adherentRepository,
         CampaignRepository $campaignRepository,
-        ObjectManager $entityManager
+        ObjectManager $entityManager,
     ) {
         $this->adherentRepository = $adherentRepository;
         $this->entityManager = $entityManager;

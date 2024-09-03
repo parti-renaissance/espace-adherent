@@ -52,7 +52,7 @@ class AdminDonatorController extends AbstractController
     #[Route(path: '/extract', name: 'app_admin_donator_extract', methods: ['GET', 'POST'])]
     public function extractAction(
         Request $request,
-        DonatorExtractCommandHandler $donatorExtractCommandHandler
+        DonatorExtractCommandHandler $donatorExtractCommandHandler,
     ): Response {
         $donatorExtractCommand = new DonatorExtractCommand();
 

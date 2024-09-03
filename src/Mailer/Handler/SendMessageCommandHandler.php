@@ -11,7 +11,7 @@ class SendMessageCommandHandler implements MessageHandlerInterface
 {
     public function __construct(
         private readonly EmailRepository $emailRepository,
-        private readonly EmailClientInterface $client
+        private readonly EmailClientInterface $client,
     ) {
     }
 

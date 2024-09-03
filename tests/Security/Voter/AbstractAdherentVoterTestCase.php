@@ -40,7 +40,7 @@ abstract class AbstractAdherentVoterTestCase extends TestCase
         bool $granted,
         bool $adherentInstanceChecked,
         string $attribute,
-        $subjectCallback = null
+        $subjectCallback = null,
     ): void {
         if ($granted) {
             $this->assertSame(
@@ -70,7 +70,7 @@ abstract class AbstractAdherentVoterTestCase extends TestCase
         bool $instanceIsChecked,
         Adherent $adherent,
         string $attribute,
-        $subject = null
+        $subject = null,
     ): void {
         if ($granted) {
             $this->assertSame(
@@ -92,7 +92,7 @@ abstract class AbstractAdherentVoterTestCase extends TestCase
         bool $instanceIsChecked,
         Adherent $adherent,
         string $attribute,
-        $subject = null
+        $subject = null,
     ): void {
         if ($granted) {
             $this->assertSame(

@@ -289,7 +289,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         int $offsetX,
         int $offsetY,
         float $latitude,
-        float $longitude
+        float $longitude,
     ): Address {
         return new Address(
             Uuid::fromString($uuid),
@@ -311,7 +311,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         string $lastName,
         string $gender,
         string $birthdate,
-        ?string $votePlace = null
+        ?string $votePlace = null,
     ): Voter {
         return new Voter(
             Uuid::fromString($uuid),

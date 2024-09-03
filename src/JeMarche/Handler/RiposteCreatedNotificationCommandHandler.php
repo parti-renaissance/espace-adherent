@@ -20,7 +20,7 @@ class RiposteCreatedNotificationCommandHandler implements MessageHandlerInterfac
     public function __construct(
         RiposteRepository $riposteRepository,
         JeMarcheMessaging $messaging,
-        NotificationTopicBuilder $topicBuilder
+        NotificationTopicBuilder $topicBuilder,
     ) {
         $this->riposteRepository = $riposteRepository;
         $this->messaging = $messaging;

@@ -17,7 +17,7 @@ class CreateDefaultMessageFilterSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
-        private readonly CommitteeRepository $committeeRepository
+        private readonly CommitteeRepository $committeeRepository,
     ) {
     }
 

@@ -28,7 +28,7 @@ class ElectionNotifier
         private readonly MailerService $transactionalMailer,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly EntityManagerInterface $entityManager,
-        private readonly VoterRepository $voterRepository
+        private readonly VoterRepository $voterRepository,
     ) {
     }
 
@@ -67,7 +67,7 @@ class ElectionNotifier
     public function notifyCommitteeElectionCandidacyPeriodIsOver(
         Adherent $adherent,
         Designation $designation,
-        Committee $committee
+        Committee $committee,
     ): void {
         $this->transactionalMailer->sendMessage(CommitteeElectionCandidacyPeriodIsOverMessage::create(
             $adherent,

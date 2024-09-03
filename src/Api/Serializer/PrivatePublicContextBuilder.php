@@ -16,7 +16,7 @@ class PrivatePublicContextBuilder implements SerializerContextBuilderInterface
 
     public function __construct(
         private readonly SerializerContextBuilderInterface $decorated,
-        private readonly AuthorizationCheckerInterface $authorizationChecker
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 

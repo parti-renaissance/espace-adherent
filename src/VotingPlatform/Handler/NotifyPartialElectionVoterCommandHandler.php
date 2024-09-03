@@ -25,7 +25,7 @@ class NotifyPartialElectionVoterCommandHandler implements MessageHandlerInterfac
         MailerService $transactionalMailer,
         CommitteeRepository $committeeRepository,
         CommitteeMembershipRepository $committeeMembershipRepository,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
     ) {
         $this->mailer = $transactionalMailer;
         $this->committeeRepository = $committeeRepository;

@@ -24,7 +24,7 @@ class OAuthTokenGenerator
     public function __construct(
         ClientRepository $clientRepository,
         AuthorizationServer $authorizationServer,
-        HttpMessageFactoryInterface $httpMessageFactory
+        HttpMessageFactoryInterface $httpMessageFactory,
     ) {
         $this->clientRepository = $clientRepository;
         $this->authorizationServer = $authorizationServer;
@@ -35,7 +35,7 @@ class OAuthTokenGenerator
         Request $request,
         UserInterface $user,
         string $clientId,
-        string $password
+        string $password,
     ): ?ResponseInterface {
         if (!Uuid::isValid($clientId)) {
             return null;

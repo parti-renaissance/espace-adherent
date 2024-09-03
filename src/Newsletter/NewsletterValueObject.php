@@ -77,7 +77,7 @@ class NewsletterValueObject
     }
 
     public static function createFromRenaissanceNewsletterSubscription(
-        RenaissanceNewsletterSubscription $newsletter
+        RenaissanceNewsletterSubscription $newsletter,
     ): self {
         $object = new self();
 

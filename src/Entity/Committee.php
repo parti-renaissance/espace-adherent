@@ -282,7 +282,7 @@ class Committee implements SynchronizedEntity, StaticSegmentInterface, AddressHo
         string $description,
         ?AddressInterface $address = null,
         ?PhoneNumber $phone = null,
-        string $createdAt = 'now'
+        string $createdAt = 'now',
     ): self {
         $committee = new self(
             $uuid,
@@ -303,7 +303,7 @@ class Committee implements SynchronizedEntity, StaticSegmentInterface, AddressHo
         string $description,
         AddressInterface $address,
         ?PhoneNumber $phone = null,
-        string $createdAt = 'now'
+        string $createdAt = 'now',
     ): self {
         $committee = new self(
             self::createUuid($name),
@@ -693,7 +693,7 @@ class Committee implements SynchronizedEntity, StaticSegmentInterface, AddressHo
     public function updateMembersCount(
         bool $incrementAction,
         bool $isSympathizer,
-        bool $isAdherent
+        bool $isAdherent,
     ): void {
         if ($incrementAction) {
             if ($isAdherent) {

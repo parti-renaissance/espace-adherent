@@ -20,7 +20,7 @@ class GeneralMeetingReportNormalizer implements NormalizerInterface, NormalizerA
 
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly ScopeGeneratorResolver $scopeGeneratorResolver
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
     }
 

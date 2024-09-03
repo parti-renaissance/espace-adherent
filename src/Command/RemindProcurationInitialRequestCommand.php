@@ -26,7 +26,7 @@ class RemindProcurationInitialRequestCommand extends Command
     public function __construct(
         private readonly ProcurationRequestRepository $procurationRequestRepository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly MessageBusInterface $bus
+        private readonly MessageBusInterface $bus,
     ) {
         parent::__construct();
     }

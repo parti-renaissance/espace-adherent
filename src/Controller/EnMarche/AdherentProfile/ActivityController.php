@@ -22,7 +22,7 @@ class ActivityController extends AbstractController
         CommitteeMembershipRepository $membershipRepository,
         DonationRepository $donationRepository,
         DonationManager $donationManager,
-        EventRegistrationRepository $eventRegistrationRepository
+        EventRegistrationRepository $eventRegistrationRepository,
     ): Response {
         /** @var Adherent $user */
         $user = $this->getUser();

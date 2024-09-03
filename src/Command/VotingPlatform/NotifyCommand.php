@@ -41,7 +41,7 @@ class NotifyCommand extends Command
         private readonly ElectionRepository $electionRepository,
         private readonly MailerService $transactionalMailer,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly UrlGeneratorInterface $urlGenerator
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {
         parent::__construct();
     }

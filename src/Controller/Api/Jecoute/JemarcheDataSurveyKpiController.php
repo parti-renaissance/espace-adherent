@@ -11,7 +11,7 @@ class JemarcheDataSurveyKpiController
     public function __invoke(
         Request $request,
         JemarcheDataSurveyRepository $jemarcheDataSurveyRepository,
-        ScopeGeneratorResolver $resolver
+        ScopeGeneratorResolver $resolver,
     ): array {
         $maxHistory = $request->query->getInt('max_history', 30);
         $scope = $resolver->generate();

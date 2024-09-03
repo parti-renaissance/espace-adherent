@@ -30,7 +30,7 @@ class JemarcheDataSurveyCreateCommandHandler implements MessageHandlerInterface,
         JemarcheDataSurveyRepository $dataSurveyRepository,
         ZoneRepository $zoneRepository,
         ZoneMatcher $zoneMatcher,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ) {
         $this->manager = $manager;
         $this->entityManager = $entityManager;

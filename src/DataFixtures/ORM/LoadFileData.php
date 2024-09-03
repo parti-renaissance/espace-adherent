@@ -154,7 +154,7 @@ class LoadFileData extends Fixture implements DependentFixtureInterface
         ?File $parent,
         array $permissions,
         bool $displayed = true,
-        string $createdAt = '2020-11-10 09:08:07'
+        string $createdAt = '2020-11-10 09:08:07',
     ): File {
         $file = $this->createBaseFile(FileTypeEnum::EXTERNAL_LINK, $name, $admin, $displayed, $createdAt, $parent, $permissions);
         $file->setExternalLink($externalLink);
@@ -172,7 +172,7 @@ class LoadFileData extends Fixture implements DependentFixtureInterface
         string $mimeType,
         int $size,
         bool $displayed = true,
-        string $createdAt = '2020-11-10 09:08:07'
+        string $createdAt = '2020-11-10 09:08:07',
     ): File {
         $file = $this->createBaseFile(FileTypeEnum::FILE, $name, $admin, $displayed, $createdAt, $parent, $permissions);
         $file->setOriginalFilename($originalFilename);
@@ -190,7 +190,7 @@ class LoadFileData extends Fixture implements DependentFixtureInterface
         bool $displayed = true,
         string $createdAt = '2020-11-10 09:08:07',
         ?File $parent = null,
-        array $permissions = []
+        array $permissions = [],
     ): File {
         $file = new File();
 

@@ -16,7 +16,7 @@ class EventInscriptionHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly AdherentRepository $adherentRepository,
-        private readonly Storage $storage
+        private readonly Storage $storage,
     ) {
     }
 

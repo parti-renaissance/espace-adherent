@@ -41,7 +41,7 @@ trait DeviceGrantTrait
         ClientEntityInterface $client,
         ?string $userIdentifier,
         ?string $deviceIdentifier,
-        array $scopes = []
+        array $scopes = [],
     ) {
         $maxGenerationAttempts = self::MAX_RANDOM_TOKEN_GENERATION_ATTEMPTS;
 

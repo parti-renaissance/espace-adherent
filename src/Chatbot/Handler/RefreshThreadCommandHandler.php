@@ -14,7 +14,7 @@ class RefreshThreadCommandHandler implements MessageHandlerInterface
     public function __construct(
         private readonly ThreadRepository $threadRepository,
         private readonly ThreadProcessor $threadProcessor,
-        private readonly Logger $logger
+        private readonly Logger $logger,
     ) {
     }
 

@@ -17,7 +17,7 @@ class FileManager
     public function __construct(
         FilesystemOperator $defaultStorage,
         EntityManagerInterface $entityManager,
-        FileRepository $repository
+        FileRepository $repository,
     ) {
         $this->storage = $defaultStorage;
         $this->entityManager = $entityManager;

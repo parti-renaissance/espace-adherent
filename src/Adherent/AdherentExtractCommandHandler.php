@@ -15,7 +15,7 @@ class AdherentExtractCommandHandler extends AbstractEmailExtractCommandHandler
     public function __construct(
         CsvResponseFactory $csvResponseFactory,
         TranslatorInterface $translator,
-        AdherentRepository $adherentRepository
+        AdherentRepository $adherentRepository,
     ) {
         parent::__construct($csvResponseFactory, $translator);
 

@@ -95,7 +95,7 @@ trait EntityAddressTrait
         ?string $additionalAddress = null,
         ?float $latitude = null,
         ?float $longitude = null,
-        ?string $region = null
+        ?string $region = null,
     ) {
         $this->country = $country;
         $this->address = $street;
