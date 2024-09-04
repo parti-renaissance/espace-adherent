@@ -18,8 +18,6 @@ class DonatorRepository extends ServiceEntityRepository
     {
         return $this
             ->createQueryBuilder('donator')
-            ->addSelect('adherent')
-            ->leftJoin('donator.adherent', 'adherent')
             ->andWhere('donator.emailAddress = :emailAddress')
             ->andWhere('donator.firstName = :firstName')
             ->andWhere('donator.lastName = :lastName')
