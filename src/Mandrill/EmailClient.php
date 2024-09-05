@@ -26,9 +26,9 @@ class EmailClient implements EmailClientInterface
         }
     }
 
-    public function sendEmail(string $email, bool $resend = false): string
+    public function sendEmail(string $email, bool $resend = false, bool $useTemplateEndpoint = true): string
     {
-        $response = $this->mandrillClient->request('POST', 'messages/send-template.json', ['json' => $this->prepareBody($email, $resend)]);
+        $response = $this->mandrillClient->request('POST', 'messages/send'.($useTemplateEndpoint ? '-template' : '').'.json', ['json' => $this->prepareBody($email, $resend)]);
 
         return $this->filterResponse($response);
     }

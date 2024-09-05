@@ -154,14 +154,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     /**
      * @var string
      */
-    #[Assert\NotBlank]
-    #[Groups(['message_write', 'message_read_content'])]
-    #[ORM\Column(type: 'text')]
-    private $content;
-
-    /**
-     * @var string
-     */
     #[Groups(['message_read_status', 'message_read', 'message_read_list'])]
     #[ORM\Column]
     private $status = AdherentMessageStatusEnum::DRAFT;
@@ -236,11 +228,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
         return $this->subject;
     }
 
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
     public function setLabel(string $label): void
     {
         $this->label = $label;
@@ -249,11 +236,6 @@ abstract class AbstractAdherentMessage implements AdherentMessageInterface
     public function setSubject(string $subject): void
     {
         $this->subject = $subject;
-    }
-
-    public function setContent(string $content): void
-    {
-        $this->content = $content;
     }
 
     public function getStatus(): string

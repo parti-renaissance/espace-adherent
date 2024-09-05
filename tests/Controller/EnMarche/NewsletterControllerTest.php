@@ -6,7 +6,7 @@ use App\Entity\NewsletterSubscription;
 use App\Mailer\Message\NewsletterAdherentSubscriptionMessage;
 use App\Mailer\Message\NewsletterInvitationMessage;
 use App\Mailer\Message\NewsletterSubscriptionConfirmationMessage;
-use App\Repository\EmailRepository;
+use App\Repository\Email\EmailLogRepository;
 use App\Repository\NewsletterInviteRepository;
 use App\Repository\NewsletterSubscriptionRepository;
 use PHPUnit\Framework\Attributes\Group;
@@ -27,7 +27,7 @@ class NewsletterControllerTest extends WebTestCase
     /** @var NewsletterInviteRepository */
     private $newsletterInviteRepository;
 
-    /** @var EmailRepository */
+    /** @var EmailLogRepository */
     private $emailRepository;
 
     public function testSubscriptionAndRetry()

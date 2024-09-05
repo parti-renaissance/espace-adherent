@@ -12,7 +12,7 @@ use App\Entity\Unregistration;
 use App\Mailer\Message\AdherentContactMessage;
 use App\Mailer\Message\CommitteeCreationConfirmationMessage;
 use App\Repository\CommitteeRepository;
-use App\Repository\EmailRepository;
+use App\Repository\Email\EmailLogRepository;
 use App\Repository\UnregistrationRepository;
 use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -32,7 +32,7 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
     /* @var CommitteeRepository */
     private $committeeRepository;
 
-    /* @var EmailRepository */
+    /* @var EmailLogRepository */
     private $emailRepository;
     private $subscriptionTypeRepository;
 

@@ -5,7 +5,7 @@ namespace App\Api\Doctrine;
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
-use App\Entity\EmailTemplate\EmailTemplate;
+use App\Entity\Email\EmailTemplate;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;

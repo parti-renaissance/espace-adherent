@@ -2,10 +2,10 @@
 
 namespace App\Mailer\EventSubscriber;
 
-use App\Entity\Email;
+use App\Entity\Email\EmailLog;
 use App\Mailer\Event\MailerEvent;
 use App\Mailer\Event\MailerEvents;
-use App\Repository\EmailRepository;
+use App\Repository\Email\EmailLogRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -14,7 +14,7 @@ class EmailPersisterEventSubscriber implements EventSubscriberInterface
     private $manager;
     private $repository;
 
-    public function __construct(ObjectManager $manager, EmailRepository $repository)
+    public function __construct(ObjectManager $manager, EmailLogRepository $repository)
     {
         $this->manager = $manager;
         $this->repository = $repository;
@@ -33,7 +33,7 @@ class EmailPersisterEventSubscriber implements EventSubscriberInterface
         $emailTemplate = $event->getEmail();
         $message = $event->getMessage();
 
-        $email = Email::createFromMessage($message, $emailTemplate->getHttpRequestPayload());
+        $email = EmailLog::createFromMessage($message, $emailTemplate->getHttpRequestPayload(), $emailTemplate->fromTemplate());
 
         $this->manager->persist($email);
         $this->manager->flush();

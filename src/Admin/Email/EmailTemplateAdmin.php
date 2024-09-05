@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Admin;
+namespace App\Admin\Email;
 
+use App\Admin\AbstractAdmin;
 use App\Entity\Geo\Zone;
 use App\Entity\Scope;
 use App\Form\Admin\UnlayerContentType;

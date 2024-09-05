@@ -7,9 +7,9 @@ use App\Mailer\EmailTemplateFactory;
 use App\Mailer\Event\MailerEvent;
 use App\Mailer\Event\MailerEvents;
 use App\Mailer\MailerService;
+use App\Mailer\Template\Manager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Tests\App\Test\Mailer\DummyEmailTemplate;
 use Tests\App\Test\Mailer\Message\DummyMessage;
 use Tests\App\Test\Mailer\Transport\FailingTransport;
 use Tests\App\Test\Mailer\Transport\NullTransport;
@@ -45,7 +45,7 @@ class MailerServiceTest extends TestCase
             new EmailTemplateFactory(
                 'contact@en-marche.fr',
                 'En Marche',
-                DummyEmailTemplate::class
+                $this->createMock(Manager::class)
             ),
             $this->createMock(EmailClientInterface::class)
         );
@@ -82,7 +82,7 @@ class MailerServiceTest extends TestCase
             new EmailTemplateFactory(
                 'contact@en-marche.fr',
                 'En Marche',
-                DummyEmailTemplate::class
+                $this->createMock(Manager::class)
             ),
             $this->createMock(EmailClientInterface::class)
         );
@@ -102,7 +102,7 @@ class MailerServiceTest extends TestCase
             new EmailTemplateFactory(
                 'contact@en-marche.fr',
                 'En Marche',
-                DummyEmailTemplate::class
+                $this->createMock(Manager::class)
             ),
             $emailClientMock
         );

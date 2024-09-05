@@ -693,8 +693,13 @@
             id: "unlayer-{{ form.vars.id }}",
             projectId: {{ unlayer_project_id }},
             locale: 'fr-FR',
+            displayMode: 'email',
             appearance: {
-                theme: 'dark',
+                theme: 'modern_dark',
+            },
+            user: {
+                id: '{{ app.user.getEmailAddress() }}',
+                email: '{{ app.user.getEmailAddress() }}',
             },
         });
 

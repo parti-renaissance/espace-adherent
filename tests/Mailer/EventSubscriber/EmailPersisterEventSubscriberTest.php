@@ -4,15 +4,16 @@ namespace Tests\App\Mailer\EventSubscriber;
 
 use App\Entity\Adherent;
 use App\Entity\CommitteeFeedItem;
-use App\Entity\Email;
+use App\Entity\Email\EmailLog;
+use App\Mailer\EmailTemplateFactory;
 use App\Mailer\Event\MailerEvent;
 use App\Mailer\EventSubscriber\EmailPersisterEventSubscriber;
 use App\Mailer\Message\CommitteeMessageNotificationMessage;
-use App\Repository\EmailRepository;
+use App\Mailer\Template\Manager;
+use App\Repository\Email\EmailLogRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
-use Tests\App\Test\Mailer\DummyEmailTemplate;
 use Tests\App\Test\Mailer\Message\DummyMessage;
 
 class EmailPersisterEventSubscriberTest extends TestCase
@@ -21,6 +22,7 @@ class EmailPersisterEventSubscriberTest extends TestCase
     private $subscriber;
     private $repository;
     private $manager;
+    private $emailTemplateFactory;
 
     public function testOnMailerDeliveryMessage()
     {
@@ -33,9 +35,12 @@ class EmailPersisterEventSubscriberTest extends TestCase
 
         $item = $this->createCommitteeFeedItemMock('25c5762d-5a50-4c68-8f6c-106bcbff862e', 'Un message !', $author);
 
+        $message = CommitteeMessageNotificationMessage::create($adherents, $item, 'Foo subject');
+        $message->setSenderEmail('noreply@en-marche.fr');
+
         $this->subscriber->onMailerDeliveryMessage(new MailerEvent(
-            $message = CommitteeMessageNotificationMessage::create($adherents, $item, 'Foo subject'),
-            DummyEmailTemplate::createWithMessage($message, 'noreply@en-marche.fr')
+            $message,
+            $this->emailTemplateFactory->createFromMessage($message)
         ));
     }
 
@@ -43,10 +48,11 @@ class EmailPersisterEventSubscriberTest extends TestCase
     {
         $this->repository->expects($this->never())->method('findOneByUuid');
         $this->manager->expects($this->never())->method('flush');
-
+        $message = DummyMessage::create();
+        $message->setSenderEmail('noreply@en-marche.fr');
         $this->subscriber->onMailerDeliverySuccess(new MailerEvent(
-            $message = DummyMessage::create(),
-            DummyEmailTemplate::createWithMessage($message, 'noreply@en-marche.fr')
+            $message,
+            $this->emailTemplateFactory->createFromMessage($message)
         ));
     }
 
@@ -61,7 +67,8 @@ class EmailPersisterEventSubscriberTest extends TestCase
             EOF;
 
         $message = DummyMessage::create();
-        $email = DummyEmailTemplate::createWithMessage($message, 'noreply@en-marche.fr');
+        $message->setSenderEmail('noreply@en-marche.fr');
+        $email = $this->emailTemplateFactory->createFromMessage($message);
         $email->delivered($responsePayload, $email->getHttpRequestPayload());
 
         $this->repository->expects($this->once())->method('findOneByUuid')->willReturn(null);
@@ -84,13 +91,14 @@ class EmailPersisterEventSubscriberTest extends TestCase
             }
             EOF;
 
-        $email = DummyEmailTemplate::createWithMessage($message, 'noreply@en-marche.fr');
+        $message->setSenderEmail('noreply@en-marche.fr');
+        $email = $this->emailTemplateFactory->createFromMessage($message);
         $email->delivered($responsePayload, $requestPayload = $email->getHttpRequestPayload());
 
         $this->repository
             ->expects($this->once())
             ->method('findOneByUuid')
-            ->willReturn($message1 = Email::createFromMessage($message, $requestPayload))
+            ->willReturn($message1 = EmailLog::createFromMessage($message, $requestPayload))
         ;
 
         $this->manager->expects($this->once())->method('flush');
@@ -128,9 +136,15 @@ class EmailPersisterEventSubscriberTest extends TestCase
         parent::setUp();
 
         $this->manager = $this->getMockBuilder(ObjectManager::class)->getMock();
-        $this->repository = $this->getMockBuilder(EmailRepository::class)->disableOriginalConstructor()->getMock();
+        $this->repository = $this->getMockBuilder(EmailLogRepository::class)->disableOriginalConstructor()->getMock();
 
-        $this->repository->expects($this->any())->method('getClassName')->willReturn(Email::class);
+        $this->repository->expects($this->any())->method('getClassName')->willReturn(EmailLog::class);
+
+        $this->emailTemplateFactory = new EmailTemplateFactory(
+            'sender@test.com',
+            'Test sender',
+            $this->createMock(Manager::class)
+        );
 
         $this->subscriber = new EmailPersisterEventSubscriber(
             $this->manager,
@@ -143,6 +157,7 @@ class EmailPersisterEventSubscriberTest extends TestCase
         $this->manager = null;
         $this->repository = null;
         $this->subscriber = null;
+        $this->emailTemplateFactory = null;
 
         parent::tearDown();
     }

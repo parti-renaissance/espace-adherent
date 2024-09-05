@@ -20,6 +20,7 @@ final class EmailTemplate extends AbstractEmailTemplate
             'message' => [
                 'subject' => $this->subject,
                 'from_email' => $this->senderEmail,
+                'html' => $this->messageHtmlContent,
             ],
         ];
 

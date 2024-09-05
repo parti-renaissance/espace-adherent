@@ -79,6 +79,7 @@ Feature:
       "message": {
         "subject": "Confirmez votre adresse email",
         "from_email": "ne-pas-repondre@parti-renaissance.fr",
+        "html": null,
         "global_merge_vars": [
           {
             "name": "first_name",
@@ -121,6 +122,7 @@ Feature:
         "message": {
           "subject": "Réinitialisation de votre mot de passe",
           "from_email": "ne-pas-repondre@parti-renaissance.fr",
+          "html": null,
           "global_merge_vars": [
             {
               "name": "first_name",

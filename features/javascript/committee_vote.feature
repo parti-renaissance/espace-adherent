@@ -31,6 +31,7 @@ Feature:
         "message": {
             "subject": "[Désignations] Votre candidature a été annulée",
             "from_email": "contact@en-marche.fr",
+            "html": null,
             "global_merge_vars": [
                 {
                     "name": "first_name",
@@ -76,6 +77,7 @@ Feature:
         "message": {
             "subject": "[Désignations] Une candidature a été retirée",
             "from_email": "contact@en-marche.fr",
+            "html": null,
             "global_merge_vars": [
                 {
                     "name": "supervisor_first_name",
@@ -145,6 +147,7 @@ Feature:
         "message": {
             "subject": "[Désignations] Vous êtes maintenant candidat(e) !",
             "from_email": "contact@en-marche.fr",
+            "html": null,
             "global_merge_vars": [
                 {
                     "name": "first_name",
@@ -190,6 +193,7 @@ Feature:
         "message": {
             "subject": "[Désignations] Une nouvelle candidature a été déposée",
             "from_email": "contact@en-marche.fr",
+            "html": null,
             "global_merge_vars": [
                 {
                     "name": "supervisor_first_name",

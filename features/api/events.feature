@@ -1271,6 +1271,7 @@ Feature:
         "message": {
             "subject": "29 janvier - 16h30 : Nouvel événement de Comité des 3 communes : Nouveau événement",
             "from_email": "ne-pas-repondre@parti-renaissance.fr",
+            "html": null,
             "global_merge_vars": [
                 {
                     "name": "animator_firstname",
@@ -1561,6 +1562,7 @@ Feature:
        "message": {
           "subject": "Un événement a été modifié",
           "from_email": "ne-pas-repondre@parti-renaissance.fr",
+          "html": null,
           "global_merge_vars": [
              {
                 "name": "event_name",
@@ -1665,6 +1667,7 @@ Feature:
        "message": {
           "subject": "Événement annulé",
           "from_email": "ne-pas-repondre@parti-renaissance.fr",
+          "html": null,
           "global_merge_vars": [
              {
                 "name": "event_name",

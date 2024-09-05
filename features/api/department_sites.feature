@@ -126,13 +126,8 @@ Feature:
     {
       "type": "https://tools.ietf.org/html/rfc2616#section-10",
       "title": "An error occurred",
-      "detail": "content: Cette valeur ne doit pas être vide.\nzone: Le type de la zone est invalide.\nzone: Cette valeur ne doit pas être vide.",
+      "detail": "zone: Le type de la zone est invalide.\nzone: Cette valeur ne doit pas être vide.\ncontent: Cette valeur ne doit pas être vide.",
       "violations": [
-        {
-          "propertyPath": "content",
-          "message": "Cette valeur ne doit pas être vide.",
-          "code": "@uuid@"
-        },
         {
           "propertyPath": "zone",
           "message": "Le type de la zone est invalide.",
@@ -140,6 +135,11 @@ Feature:
         },
         {
           "propertyPath": "zone",
+          "message": "Cette valeur ne doit pas être vide.",
+          "code": "@uuid@"
+        },
+        {
+          "propertyPath": "content",
           "message": "Cette valeur ne doit pas être vide.",
           "code": "@uuid@"
         }

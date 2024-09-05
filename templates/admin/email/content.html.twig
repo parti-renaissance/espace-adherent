@@ -1,0 +1,77 @@
+{% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
+
+{% block sonata_page_content %}
+    <div class="sonata-ba-form">
+        {{ form_start(form) }}
+            <section class="content-header">
+                {% include '@SonataTwig/FlashMessage/render.html.twig' %}
+
+                <div class="row">
+                    <h4 class="sonata-ba-title col-md-6">
+                        <a href="{{ path('admin_app_email_transactionalemailtemplate_edit', {id: object.id}) }}">
+                            Template {{ object.identifier }}
+                        </a> • <span>Contenu du template</span>
+                    </h4>
+                    <div class="col-md-6 text-right">
+                        <button type="submit" class="btn btn-success">Sauvegarder</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content">
+                {{ form_row(form.jsonContent) }}
+                {{ form_row(form.content) }}
+                <div id="unlayer-{{ form.content.vars.id }}" style="height: 700px;"></div>
+
+                <script src="https://editor.unlayer.com/embed.js"></script>
+
+                <script type="text/javascript">
+                    var form = document.querySelector('.sonata-ba-form form');
+                    var contentElement = document.querySelector('#{{ form.content.vars.id }}');
+                    var jsonContentElement = document.querySelector('input[name*="jsonContent"]');
+
+                    unlayer.init({
+                        id: "unlayer-{{ form.content.vars.id }}",
+                        projectId: {{ unlayer_project_id }},
+                        locale: 'fr-FR',
+                        displayMode: 'email',
+                        appearance: {
+                            theme: 'modern_dark',
+                        },
+                        user: {
+                            id: '{{ app.user.getEmailAddress() }}',
+                            email: '{{ app.user.getEmailAddress() }}',
+                        },
+                    });
+
+                    var loadDefaultTemplate = true;
+
+                    if (jsonContentElement.value) {
+                        var design = JSON.parse(jsonContentElement.value);
+                        if (design) {
+                            loadDefaultTemplate = false;
+                            unlayer.loadDesign(design)
+                        }
+                    }
+
+                    if (loadDefaultTemplate && {{ form.content.vars.unlayer_template_id ?? '' }}) {
+                        unlayer.loadTemplate({{ form.content.vars.unlayer_template_id }});
+                    }
+
+                    form.addEventListener('submit', function (event) {
+                        event.preventDefault();
+
+                        unlayer.exportHtml(
+                            function (data) {
+                                jsonContentElement.value = JSON.stringify(data.design);
+                                contentElement.value = data.html
+                                event.target.submit();
+                            },
+                            { minify: true }
+                        );
+                    })
+                </script>
+            </section>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

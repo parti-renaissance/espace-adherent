@@ -2,6 +2,7 @@
 
 namespace App\Mailer\Message;
 
+use App\Entity\Email\TransactionalEmailTemplate;
 use Ramsey\Uuid\UuidInterface;
 
 class Message
@@ -12,6 +13,7 @@ class Message
     protected $vars;
     protected $subject;
     protected $template;
+    protected $templateObject;
     protected $recipients = [];
     protected $replyTo;
     protected $senderEmail;
@@ -28,16 +30,17 @@ class Message
     /**
      * Message constructor.
      *
-     * @param UuidInterface $uuid            The unique identifier of this message
-     * @param string        $template        The Message template ID
-     * @param string        $recipientEmail  The first recipient email address
-     * @param string|null   $recipientName   The first recipient name
-     * @param string        $subject         The message subject
-     * @param array         $commonVars      The common variables shared by all recipients
-     * @param array         $recipientVars   The recipient's specific variables
-     * @param string        $replyTo         The email address to use for the Reply-to header
-     * @param string        $template        The email template
-     * @param array         $templateContent The email template content (mc:edit tags)
+     * @param UuidInterface              $uuid            The unique identifier of this message
+     * @param string                     $template        The Message template ID
+     * @param string                     $recipientEmail  The first recipient email address
+     * @param string|null                $recipientName   The first recipient name
+     * @param string                     $subject         The message subject
+     * @param array                      $commonVars      The common variables shared by all recipients
+     * @param array                      $recipientVars   The recipient's specific variables
+     * @param string                     $replyTo         The email address to use for the Reply-to header
+     * @param string                     $template        The email template
+     * @param array                      $templateContent The email template content (mc:edit tags)
+     * @param TransactionalEmailTemplate $templateObject  The email template object
      */
     final public function __construct(
         UuidInterface $uuid,
@@ -49,12 +52,14 @@ class Message
         ?string $replyTo = null,
         ?string $template = null,
         array $templateContent = [],
+        ?TransactionalEmailTemplate $templateObject = null,
     ) {
         $this->uuid = $uuid;
         $this->subject = $subject;
         $this->vars = $commonVars;
         $this->replyTo = $replyTo;
         $this->template = $template;
+        $this->templateObject = $templateObject;
         $this->templateContent = $templateContent;
 
         $this->addRecipient($recipientEmail, $recipientName, $recipientVars);
@@ -81,6 +86,11 @@ class Message
     final public function getTemplate(): ?string
     {
         return $this->template;
+    }
+
+    final public function getTemplateObject(): ?TransactionalEmailTemplate
+    {
+        return $this->templateObject;
     }
 
     public function getReplyTo(): ?string

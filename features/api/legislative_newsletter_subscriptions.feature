@@ -122,6 +122,7 @@ Feature:
             "subject": "Confirmez votre adresse email",
             "from_email": "ne-pas-repondre@avecvous.fr",
             "from_name": "La majorité présidentielle avec vous",
+            "html": null,
             "global_merge_vars": [
                 {
                     "name": "confirmation_link",

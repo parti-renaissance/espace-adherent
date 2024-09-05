@@ -2,7 +2,7 @@
 
 namespace Tests\App\Behat\Context;
 
-use App\Repository\EmailRepository;
+use App\Repository\Email\EmailLogRepository;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -21,7 +21,7 @@ class EmailContext extends RawMinkContext
 
     private $emailRepository;
 
-    public function __construct(EmailRepository $emailRepository)
+    public function __construct(EmailLogRepository $emailRepository)
     {
         $this->emailRepository = $emailRepository;
     }

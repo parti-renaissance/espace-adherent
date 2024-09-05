@@ -75,6 +75,7 @@ Feature:
             "message": {
                 "subject": "Confirmez votre adresse email",
                 "from_email": "ne-pas-repondre@parti-renaissance.fr",
+                "html": null,
                 "global_merge_vars": [
                     {
                         "name": "first_name",
@@ -218,6 +219,7 @@ Feature:
             "message": {
                 "subject": "Vous êtes déjà adhérent",
                 "from_email": "ne-pas-repondre@parti-renaissance.fr",
+                "html": null,
                 "global_merge_vars": [
                     {
                         "name": "first_name",
@@ -307,6 +309,7 @@ Feature:
             "message": {
                 "subject": "Confirmez votre adresse email",
                 "from_email": "ne-pas-repondre@parti-renaissance.fr",
+                "html": null,
                 "global_merge_vars": [
                     {
                         "name": "first_name",
