@@ -44,12 +44,7 @@ class ChangeEmailController extends AbstractController
             ],
         ]);
 
-        $validationGroups = ['api_put_validation'];
-        if ($adherent->isAdherent()) {
-            $validationGroups[] = 'Default';
-        }
-
-        $violations = $validator->validate($adherentProfile, null, $validationGroups);
+        $violations = $validator->validate($adherentProfile, null, ['api_email_change']);
 
         if (
             $adherent->getEmailAddress() !== $adherentProfile->getEmailAddress()
