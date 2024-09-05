@@ -423,6 +423,7 @@ Feature:
       "message": {
         "subject": "Votre adhésion à La République En Marche !",
         "from_email": "contact@parti-renaissance.fr",
+        "html": null,
         "global_merge_vars": [
           {
             "name": "first_name",
@@ -490,6 +491,7 @@ Feature:
       "message": {
         "subject": "Votre adhésion à La République En Marche !",
         "from_email": "contact@parti-renaissance.fr",
+        "html": null,
         "global_merge_vars": [
           {
             "name": "first_name",
@@ -611,6 +613,7 @@ Feature:
       "message": {
         "subject": "Votre adhésion à La République En Marche !",
         "from_email": "contact@parti-renaissance.fr",
+        "html": null,
         "global_merge_vars": [
           {
             "name": "first_name",

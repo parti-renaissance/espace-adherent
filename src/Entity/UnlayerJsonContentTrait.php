@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait UnlayerJsonContentTrait
 {
@@ -14,6 +15,11 @@ trait UnlayerJsonContentTrait
     #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $jsonContent = null;
 
+    #[Assert\NotBlank]
+    #[Groups(['department_site_read', 'department_site_write', 'message_write', 'message_read_content', 'email_template_read', 'email_template_write'])]
+    #[ORM\Column(type: 'text')]
+    protected ?string $content = null;
+
     public function getJsonContent(): ?string
     {
         return $this->jsonContent;
@@ -22,5 +28,15 @@ trait UnlayerJsonContentTrait
     public function setJsonContent(?string $jsonContent): void
     {
         $this->jsonContent = $jsonContent;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(string $content): void
+    {
+        $this->content = $content;
     }
 }

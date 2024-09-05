@@ -1212,6 +1212,7 @@ Feature:
             "subject": "[Désignations] Une candidature a été retirée",
             "from_email": "contact@parti-renaissance.fr",
             "from_name": "Renaissance",
+            "html": null,
             "merge_vars": [
              {
                  "rcpt": "adherent-male-39@en-marche-dev.fr",

@@ -2,7 +2,6 @@
 
 namespace App\Mailer;
 
-use App\Mailer\Message\Message;
 use Ramsey\Uuid\UuidInterface;
 
 abstract class AbstractEmailTemplate implements \JsonSerializable, EmailTemplateInterface
@@ -18,6 +17,7 @@ abstract class AbstractEmailTemplate implements \JsonSerializable, EmailTemplate
     protected $template;
     protected $vars;
     protected $templateContent;
+    protected $messageHtmlContent;
     /** @var bool|null */
     protected $preserveRecipients;
 
@@ -46,36 +46,6 @@ abstract class AbstractEmailTemplate implements \JsonSerializable, EmailTemplate
         $this->bcc = $bcc;
         $this->vars = $vars;
         $this->templateContent = $templateContent;
-    }
-
-    public static function createWithMessage(
-        Message $message,
-        string $defaultSenderEmail,
-        ?string $defaultSenderName = null,
-    ): self {
-        $senderEmail = $message->getSenderEmail() ?: $defaultSenderEmail;
-        $senderName = $message->getSenderName() ?: $defaultSenderName;
-
-        $email = new static(
-            $message->getUuid(),
-            $message->getTemplate() ?? $message->generateTemplateName(),
-            $message->getSubject(),
-            $senderEmail,
-            $senderName,
-            $message->getReplyTo(),
-            $message->getCC(),
-            $message->getBCC(),
-            $message->getVars(),
-            $message->getTemplateContent()
-        );
-
-        foreach ($message->getRecipients() as $recipient) {
-            $email->addRecipient($recipient->getEmailAddress(), $recipient->getFullName(), $recipient->getVars());
-        }
-
-        $email->setPreserveRecipients($message->getPreserveRecipients());
-
-        return $email;
     }
 
     public function getUuid(): UuidInterface
@@ -111,12 +81,22 @@ abstract class AbstractEmailTemplate implements \JsonSerializable, EmailTemplate
         return $this->getBody();
     }
 
-    abstract public function addRecipient(string $email, ?string $name = null, array $vars = []);
-
-    abstract public function getBody(): array;
-
-    private function setPreserveRecipients(?bool $preserveRecipients): void
+    public function setPreserveRecipients(?bool $preserveRecipients): void
     {
         $this->preserveRecipients = $preserveRecipients;
     }
+
+    public function setMessageHtmlContent(string $html): void
+    {
+        $this->messageHtmlContent = $html;
+    }
+
+    public function fromTemplate(): bool
+    {
+        return (bool) $this->template;
+    }
+
+    abstract public function addRecipient(string $email, ?string $name = null, array $vars = []);
+
+    abstract public function getBody(): array;
 }

@@ -11,7 +11,7 @@ use App\Entity\Renaissance\NewsletterSubscription;
 use App\Mailer\Message\Ensemble\EnsembleEventRegistrationConfirmationMessage;
 use App\Mailer\Message\Ensemble\EnsembleNewsletterSubscriptionConfirmationMessage;
 use App\Mailer\Message\EventInvitationMessage;
-use App\Repository\EmailRepository;
+use App\Repository\Email\EmailLogRepository;
 use App\Repository\EventRegistrationRepository;
 use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 class EventControllerTest extends AbstractEventControllerTestCase
 {
     private ?EventRegistrationRepository $repository;
-    private ?EmailRepository $emailRepository;
+    private ?EmailLogRepository $emailRepository;
 
     public function testAnonymousUserCanRegisterToEvent()
     {

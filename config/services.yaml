@@ -434,7 +434,6 @@ services:
         arguments:
             $senderEmail: '%transactional_sender_email%'
             $senderName: '%transactional_sender_name%'
-            $templateClass: App\Mandrill\EmailTemplate
 
     App\Mandrill\EmailClient:
         arguments:

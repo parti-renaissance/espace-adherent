@@ -1,24 +1,18 @@
 <?php
 
-namespace App\Admin;
+namespace App\Admin\Email;
 
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
+use App\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class EmailAdmin extends AbstractAdmin
+class EmailLogAdmin extends AbstractAdmin
 {
-    protected function configureDefaultSortValues(array &$sortValues): void
-    {
-        parent::configureDefaultSortValues($sortValues);
-
-        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
-        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
-    }
+    protected $baseRouteName = 'admin_app_email_logs';
+    protected $baseRoutePattern = 'app/email-logs';
 
     protected function getAccessMapping(): array
     {

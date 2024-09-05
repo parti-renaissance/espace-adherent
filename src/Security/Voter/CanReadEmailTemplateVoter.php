@@ -3,7 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\Adherent;
-use App\Entity\EmailTemplate\EmailTemplate;
+use App\Entity\Email\EmailTemplate;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\Security\Core\Security;

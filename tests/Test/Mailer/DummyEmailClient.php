@@ -17,7 +17,7 @@ class DummyEmailClient implements EmailClientInterface
         $this->httpClient = $httpClient;
     }
 
-    public function sendEmail(string $email, bool $resend = false): string
+    public function sendEmail(string $email, bool $resend = false, bool $useTemplateEndpoint = true): string
     {
         $response = $this->httpClient->request('POST', 'send', ['body' => $email]);
 

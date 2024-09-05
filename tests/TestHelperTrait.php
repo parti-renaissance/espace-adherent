@@ -17,7 +17,7 @@ use App\Entity\Donation;
 use App\Entity\Donator;
 use App\Entity\DonatorIdentifier;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
-use App\Entity\Email;
+use App\Entity\Email\EmailLog;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\EventCategory;
 use App\Entity\Event\EventRegistration;
@@ -34,7 +34,6 @@ use App\Entity\Pap\BuildingEvent;
 use App\Entity\Pap\Campaign as PapCampaign;
 use App\Entity\Pap\CampaignHistory;
 use App\Entity\PostAddress;
-use App\Entity\ReferentSpaceAccessInformation;
 use App\Entity\Reporting\CommitteeMembershipHistory;
 use App\Entity\Reporting\EmailSubscriptionHistory;
 use App\Entity\RepublicanSilence;
@@ -55,7 +54,7 @@ use App\Repository\DonationRepository;
 use App\Repository\DonatorIdentifierRepository;
 use App\Repository\DonatorRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
-use App\Repository\EmailRepository;
+use App\Repository\Email\EmailLogRepository;
 use App\Repository\EmailSubscriptionHistoryRepository;
 use App\Repository\EventRegistrationRepository;
 use App\Repository\EventRepository;
@@ -70,7 +69,6 @@ use App\Repository\Pap\BuildingEventRepository;
 use App\Repository\Pap\BuildingRepository;
 use App\Repository\Pap\CampaignHistoryRepository;
 use App\Repository\Pap\CampaignRepository as PapCampaignRepository;
-use App\Repository\ReferentSpaceAccessInformationRepository;
 use App\Repository\SubscriptionTypeRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\UserListDefinitionRepository;
@@ -98,7 +96,7 @@ trait TestHelperTrait
         return static::getContainer()->getParameter($name);
     }
 
-    public function assertMailCountRecipients(int $count, ?Email $mail): void
+    public function assertMailCountRecipients(int $count, ?EmailLog $mail): void
     {
         $this->assertNotNull($mail);
         $this->assertCount($count, $mail->getRecipients());
@@ -253,9 +251,9 @@ trait TestHelperTrait
         return $this->getRepository(JeMarcheReport::class);
     }
 
-    public function getEmailRepository(): EmailRepository
+    public function getEmailRepository(): EmailLogRepository
     {
-        return $this->getRepository(Email::class);
+        return $this->getRepository(EmailLog::class);
     }
 
     public function getEmailSubscriptionHistoryRepository(): EmailSubscriptionHistoryRepository
@@ -266,11 +264,6 @@ trait TestHelperTrait
     public function getSubscriptionTypeRepository(): SubscriptionTypeRepository
     {
         return $this->getRepository(SubscriptionType::class);
-    }
-
-    public function getReferentSpaceAccessInformationRepository(): ReferentSpaceAccessInformationRepository
-    {
-        return $this->getRepository(ReferentSpaceAccessInformation::class);
     }
 
     public function getUserListDefinitionRepository(): UserListDefinitionRepository

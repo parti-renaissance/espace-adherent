@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\EmailTemplate;
+namespace App\Entity\Email;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -82,11 +82,6 @@ class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministr
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     public bool $subjectEditable = true;
 
-    #[Assert\NotBlank]
-    #[Groups(['email_template_read', 'email_template_write'])]
-    #[ORM\Column(type: 'text')]
-    private ?string $content = null;
-
     /**
      * @var Collection|Zone[]
      */
@@ -123,16 +118,6 @@ class EmailTemplate implements EntityAdherentBlameableInterface, EntityAdministr
     public function setLabel(?string $label): void
     {
         $this->label = $label;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(?string $content): void
-    {
-        $this->content = $content;
     }
 
     public function getZones(): Collection

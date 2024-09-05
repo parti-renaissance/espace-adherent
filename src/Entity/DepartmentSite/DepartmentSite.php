@@ -57,11 +57,6 @@ class DepartmentSite
     use UnlayerJsonContentTrait;
     use EntityTimestampableTrait;
 
-    #[Assert\NotBlank]
-    #[Groups(['department_site_read', 'department_site_write'])]
-    #[ORM\Column(type: 'text')]
-    private ?string $content = null;
-
     #[AssertZoneInScopeZones]
     #[Assert\Expression("value and (value.getType() === constant('App\\\\Entity\\\\Geo\\\\Zone::DEPARTMENT') or (value.getType() === constant('App\\\\Entity\\\\Geo\\\\Zone::CUSTOM') and value.getCode() === constant('App\\\\Entity\\\\Geo\\\\Zone::FDE_CODE')))", message: 'department_site.zone.type.not_valid')]
     #[Assert\NotBlank]
@@ -79,16 +74,6 @@ class DepartmentSite
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(?string $content): void
-    {
-        $this->content = $content;
     }
 
     public function getZone(): ?Zone

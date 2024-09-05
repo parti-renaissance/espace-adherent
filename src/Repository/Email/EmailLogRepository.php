@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\Email;
 
-use App\Entity\Email;
+use App\Entity\Email\EmailLog;
+use App\Repository\UuidEntityRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class EmailRepository extends ServiceEntityRepository
+class EmailLogRepository extends ServiceEntityRepository
 {
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
@@ -14,16 +15,16 @@ class EmailRepository extends ServiceEntityRepository
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Email::class);
+        parent::__construct($registry, EmailLog::class);
     }
 
-    public function findOneByUuid(string $uuid): ?Email
+    public function findOneByUuid(string $uuid): ?EmailLog
     {
         return $this->findOneByValidUuid($uuid);
     }
 
     /**
-     * @return Email[]
+     * @return EmailLog[]
      */
     public function findRecipientMessages(string $messageClass, string $recipient): array
     {
@@ -39,7 +40,7 @@ class EmailRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findMostRecentMessage(?string $messageClass = null): ?Email
+    public function findMostRecentMessage(?string $messageClass = null): ?EmailLog
     {
         $qb = $this
             ->createQueryBuilder('e')
@@ -58,7 +59,7 @@ class EmailRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Email[]
+     * @return EmailLog[]
      */
     public function findMessages(string $messageClass): array
     {
@@ -72,7 +73,7 @@ class EmailRepository extends ServiceEntityRepository
         ;
     }
 
-    public function setDelivered(Email $email, string $response): void
+    public function setDelivered(EmailLog $email, string $response): void
     {
         $email->delivered($response);
 

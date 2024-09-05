@@ -130,11 +130,11 @@
             <argument />
         </service>
 
-        <service id="app.admin.email_template" class="App\Admin\EmailTemplateAdmin">
+        <service id="app.admin.email_template" class="App\Admin\Email\EmailTemplateAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Modèle d'email JME" group="Communication"/>
 
             <argument />
-            <argument>App\Entity\EmailTemplate\EmailTemplate</argument>
+            <argument>App\Entity\Email\EmailTemplate</argument>
             <argument />
             <argument type="string">%env(EMAIL_TEMPLATE_UNLAYER_TEMPLATE_ID)%</argument>
             <argument type="service" id="App\Form\DataTransformer\ScopeToCodeDataTransformer" />
@@ -757,11 +757,19 @@
             <argument />
         </service>
 
-        <service id="app.admin.email" class="App\Admin\EmailAdmin">
+        <service id="app.admin.email" class="App\Admin\Email\EmailLogAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Logs Mailer" group="Tech" />
 
             <argument />
-            <argument>App\Entity\Email</argument>
+            <argument>App\Entity\Email\EmailLog</argument>
+            <argument>App\Controller\Admin\AdminEmailCRUDController</argument>
+        </service>
+
+        <service id="app.admin.transactional_email_template" class="App\Admin\Email\TransactionalEmailTemplateAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Template Email" group="Tech" />
+
+            <argument />
+            <argument>App\Entity\Email\TransactionalEmailTemplate</argument>
             <argument>App\Controller\Admin\AdminEmailCRUDController</argument>
         </service>
 
@@ -1284,6 +1292,7 @@
             <tag name="sonata.admin.extension" target="app.admin.chatbot_chatbot" />
             <tag name="sonata.admin.extension" target="app.admin.procuration_v2.election" />
             <tag name="sonata.admin.extension" target="app.admin.hub_item" />
+            <tag name="sonata.admin.extension" target="app.admin.transactional_email_template" />
         </service>
 
         <service id="app.admin.entity_scope_visibility_extension" class="App\Admin\Extension\EntityScopeVisibilityAdminExtension">

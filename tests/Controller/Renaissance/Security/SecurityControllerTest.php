@@ -9,7 +9,7 @@ use App\Mailer\Message\AdherentResetPasswordMessage;
 use App\Mailer\Message\Renaissance\RenaissanceResetPasswordConfirmationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceResetPasswordMessage;
 use App\Repository\AdherentRepository;
-use App\Repository\EmailRepository;
+use App\Repository\Email\EmailLogRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +26,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
     /* @var AdherentRepository */
     private $adherentRepository;
 
-    /* @var EmailRepository */
+    /* @var EmailLogRepository */
     private $emailRepository;
 
     #[DataProvider('getAdherentEmails')]

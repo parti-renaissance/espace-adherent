@@ -715,6 +715,7 @@ Feature:
       "message": {
         "subject": "Validez votre nouvelle adresse email",
         "from_email": "ne-pas-repondre@parti-renaissance.fr",
+        "html": null,
         "merge_vars": [
           {
             "rcpt": "new.mail@example.com",

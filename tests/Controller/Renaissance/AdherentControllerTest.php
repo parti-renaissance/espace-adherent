@@ -9,7 +9,7 @@ use App\Entity\Adherent;
 use App\Entity\Reporting\EmailSubscriptionHistory;
 use App\Entity\Unregistration;
 use App\Mailer\Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage;
-use App\Repository\EmailRepository;
+use App\Repository\Email\EmailLogRepository;
 use App\Repository\UnregistrationRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -25,7 +25,7 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
-    /* @var EmailRepository */
+    /* @var EmailLogRepository */
     private $emailRepository;
 
     #[DataProvider('provideProfilePage')]
@@ -198,10 +198,10 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertNotSame($oldLatitude, $newLatitude);
         $this->assertNotSame($oldLongitude, $newLongitude);
 
-        $histories06Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '06');
-        $histories06Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '06');
-        $histories77Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe', '77');
-        $histories77Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe', '77');
+        $histories06Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe');
+        $histories06Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe');
+        $histories77Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe');
+        $histories77Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe');
 
         $this->assertCount(0, $histories77Subscriptions);
         $this->assertCount(0, $histories77Unsubscriptions);
@@ -271,10 +271,8 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
     /**
      * @return EmailSubscriptionHistory[]
      */
-    public function findEmailSubscriptionHistoryByAdherent(
-        Adherent $adherent,
-        ?string $action = null,
-    ): array {
+    public function findEmailSubscriptionHistoryByAdherent(Adherent $adherent, ?string $action = null): array
+    {
         $qb = $this
             ->getEmailSubscriptionHistoryRepository()
             ->createQueryBuilder('history')

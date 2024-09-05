@@ -2,6 +2,8 @@
 
 namespace Tests\App\Mandrill;
 
+use App\Mailer\EmailTemplateFactory;
+use App\Mailer\Template\Manager;
 use App\Mandrill\EmailTemplate;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -30,6 +32,7 @@ class EmailTemplateTest extends TestCase
             'message' => [
                 'subject' => 'Votre donation !',
                 'from_email' => 'contact@en-marche.fr',
+                'html' => null,
                 'merge_vars' => [
                     [
                         'rcpt' => 'john.smith@example.tld',
@@ -80,6 +83,7 @@ class EmailTemplateTest extends TestCase
             'message' => [
                 'subject' => 'Votre donation !',
                 'from_email' => 'contact@en-marche.fr',
+                'html' => null,
                 'merge_vars' => [
                     [
                         'rcpt' => 'john.smith@example.tld',
@@ -110,7 +114,15 @@ class EmailTemplateTest extends TestCase
 
     public function testCreateEmailTemplateFromDummyMessage()
     {
-        $email = EmailTemplate::createWithMessage(DummyMessage::create(), 'contact@en-marche.fr');
+        $emailTemplateFactory = new EmailTemplateFactory(
+            'sender@test.com',
+            'Test sender',
+            $this->createMock(Manager::class)
+        );
+
+        $message = DummyMessage::create();
+        $message->setSenderEmail('contact@en-marche.fr');
+        $email = $emailTemplateFactory->createFromMessage($message);
 
         $body = [
             'template_name' => '66666',
@@ -118,12 +130,14 @@ class EmailTemplateTest extends TestCase
             'message' => [
                 'subject' => 'Dummy Message',
                 'from_email' => 'contact@en-marche.fr',
+                'html' => null,
                 'global_merge_vars' => [
                     [
                         'name' => 'dummy',
                         'content' => 'ymmud',
                     ],
                 ],
+                'from_name' => 'Test sender',
                 'to' => [
                     [
                         'email' => 'dummy@example.tld',
@@ -157,6 +171,7 @@ class EmailTemplateTest extends TestCase
             'message' => [
                 'subject' => 'Votre donation !',
                 'from_email' => 'contact@en-marche.fr',
+                'html' => null,
                 'merge_vars' => [
                     [
                         'rcpt' => 'john.smith@example.tld',

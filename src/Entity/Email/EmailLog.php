@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Email;
 
+use App\Entity\EntityIdentityTrait;
+use App\Entity\EntityTimestampableTrait;
 use App\Mailer\Message\Message;
-use App\Repository\EmailRepository;
+use App\Repository\Email\EmailLogRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Entity(repositoryClass: EmailRepository::class)]
+#[ORM\Entity(repositoryClass: EmailLogRepository::class)]
 #[ORM\Table(name: 'emails')]
-class Email
+class EmailLog
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -44,18 +46,23 @@ class Email
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $deliveredAt;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    public bool $useTemplateEndpoint = true;
+
     public function __construct(
         UuidInterface $uuid,
         string $messageClass,
         string $sender,
         array $recipients,
         string $requestPayload,
+        bool $useTemplateEndpoint = true,
     ) {
         $this->uuid = $uuid;
         $this->messageClass = $messageClass;
         $this->sender = $sender;
         $this->recipients = $recipients;
         $this->requestPayload = base64_encode($requestPayload);
+        $this->useTemplateEndpoint = $useTemplateEndpoint;
     }
 
     public function __toString(): string
@@ -63,12 +70,7 @@ class Email
         return $this->messageClass.' de '.$this->sender.' à '.\count($this->recipients).' destinataires';
     }
 
-    public function getEnglishLog(): string
-    {
-        return $this->messageClass.' from '.$this->sender.' to '.\count($this->recipients).' recipients';
-    }
-
-    public static function createFromMessage(Message $message, $requestPayload): self
+    public static function createFromMessage(Message $message, string $requestPayload, bool $fromTemplate = true): self
     {
         $recipients = [];
 
@@ -78,14 +80,15 @@ class Email
 
         $parts = explode('\\', $message::class);
 
-        $senderName = $message->getSenderName() ?? 'EnMarche';
+        $senderName = $message->getSenderName() ?? 'Renaissance';
 
         return new self(
             $message->getUuid(),
             end($parts),
             $message->getReplyTo() ?? $senderName,
             $recipients,
-            $requestPayload
+            $requestPayload,
+            $fromTemplate
         );
     }
 

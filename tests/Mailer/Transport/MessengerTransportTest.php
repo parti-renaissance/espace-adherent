@@ -2,13 +2,15 @@
 
 namespace Tests\App\Mailer\Transport;
 
-use App\Entity\Email;
+use App\Entity\Email\EmailLog;
 use App\Mailer\Command\AsyncSendMessageCommand;
+use App\Mailer\EmailTemplateFactory;
 use App\Mailer\Handler\SendMessageCommandHandler;
 use App\Mailer\Message\Message;
+use App\Mailer\Template\Manager;
 use App\Mailer\Transport\MessengerTransport;
 use App\Mandrill\EmailTemplate;
-use App\Repository\EmailRepository;
+use App\Repository\Email\EmailLogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
@@ -22,7 +24,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Tests\App\Test\Mailer\DummyEmailClient;
-use Tests\App\Test\Mailer\DummyEmailTemplate;
 
 class MessengerTransportTest extends TestCase
 {
@@ -36,8 +37,8 @@ class MessengerTransportTest extends TestCase
         /** @var EmailTemplate $email */
         [$message, $email] = $this->createDummyEmail();
 
-        $emailRepository = $this->getMockBuilder(EmailRepository::class)->disableOriginalConstructor()->getMock();
-        $emailRepository->expects($this->once())->method('findOneByUuid')->willReturn(Email::createFromMessage($message, $email->getHttpRequestPayload()));
+        $emailRepository = $this->getMockBuilder(EmailLogRepository::class)->disableOriginalConstructor()->getMock();
+        $emailRepository->expects($this->once())->method('findOneByUuid')->willReturn(EmailLog::createFromMessage($message, $email->getHttpRequestPayload()));
         $client = new DummyEmailClient($httpClient);
 
         $transport = new MessengerTransport($this->getBus(new SendMessageCommandHandler($emailRepository, $client)));
@@ -63,8 +64,8 @@ class MessengerTransportTest extends TestCase
         $httpClient = new MockHttpClient([new MockResponse($body)], 'http://null');
         $client = new DummyEmailClient($httpClient);
 
-        $emailRepository = $this->createPartialMock(EmailRepository::class, ['findOneByUuid', 'getEntityManager']);
-        $emailRepository->expects($this->once())->method('findOneByUuid')->willReturn($emailObject = Email::createFromMessage($message, $email->getHttpRequestPayload()));
+        $emailRepository = $this->createPartialMock(EmailLogRepository::class, ['findOneByUuid', 'getEntityManager']);
+        $emailRepository->expects($this->once())->method('findOneByUuid')->willReturn($emailObject = EmailLog::createFromMessage($message, $email->getHttpRequestPayload()));
         $emailRepository->expects($this->once())->method('getEntityManager')->willReturn($this->createMock(EntityManagerInterface::class));
 
         $transport = new MessengerTransport($this->getBus(new SendMessageCommandHandler($emailRepository, $client)));
@@ -78,7 +79,13 @@ class MessengerTransportTest extends TestCase
         $message = new Message(Uuid::uuid4(), 'recipient@test.com', 'FirstName', 'Votre donation !', [], [], 'contact@en-marche.fr', 'En Marche !');
         $message->addRecipient('john.smith@example.tld', 'John Smith', ['name' => 'John Smith']);
 
-        $email = DummyEmailTemplate::createWithMessage($message, 'contact@en-marche.fr');
+        $emailTemplateFactory = new EmailTemplateFactory(
+            'sender@test.com',
+            'Test sender',
+            $this->createMock(Manager::class)
+        );
+        $message->setSenderEmail('contact@en-marche.fr');
+        $email = $emailTemplateFactory->createFromMessage($message);
 
         return [$message, $email];
     }
