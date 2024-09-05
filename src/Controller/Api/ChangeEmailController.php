@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ChangeEmailController extends AbstractController
 {
     public function __construct(
-        private readonly AdherentChangeEmailHandler $changeEmailHandler
+        private readonly AdherentChangeEmailHandler $changeEmailHandler,
     ) {
     }
 
@@ -27,7 +27,7 @@ class ChangeEmailController extends AbstractController
     public function request(
         Request $request,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
     ): JsonResponse {
         $json = $request->getContent();
 
