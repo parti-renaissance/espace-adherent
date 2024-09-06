@@ -121,3 +121,25 @@ Feature:
             }
         }
         """
+
+    Scenario: As a logged-in user I can resend a validation for email change
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        When I send a "POST" request to "/api/v3/profile/email/send-validation"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+        """
+        {
+            "message": "Email de validation envoyé avec succès."
+        }
+        """
+
+    Scenario Outline: As a logged-in user I can not resend a validation for email change for multiple reasons
+        Given I am logged with "<email>" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        When I send a "POST" request to "/api/v3/profile/email/send-validation"
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON node "message" should be equal to "Aucun changement d'adresse email en attente de validation pour cet utilisateur."
+        Examples:
+            | email                       |
+            | carl999@example.fr          |
+            | jacques.picard@en-marche.fr |
