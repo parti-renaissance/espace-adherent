@@ -18,7 +18,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[UniqueMembership]
+#[UniqueMembership(groups: ['Default', 'api_email_change'])]
 class AdherentProfile implements MembershipInterface
 {
     /**
@@ -76,10 +76,10 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var string
      */
-    #[Assert\Email(message: 'common.email.invalid')]
-    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length')]
-    #[Assert\NotBlank(message: 'adherent_profile.email.not_blank')]
-    #[Groups(['profile_write'])]
+    #[Assert\Email(message: 'common.email.invalid', groups: ['Default', 'api_put_validation', 'api_email_change'])]
+    #[Assert\Length(max: 255, maxMessage: 'common.email.max_length', groups: ['Default', 'api_put_validation', 'api_email_change'])]
+    #[Assert\NotBlank(message: 'adherent_profile.email.not_blank', groups: ['Default', 'api_put_validation', 'api_email_change'])]
+    #[Groups(['profile_write', 'profile_email_change'])]
     private $emailAddress;
 
     /**
