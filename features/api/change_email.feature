@@ -98,6 +98,7 @@ Feature:
               }
             ],
             "from_name": "Renaissance",
+            "html": null,
             "to": [
               {
                 "email": "new.mail@example.com",
