@@ -18,8 +18,6 @@ use App\Contribution\ContributionStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\AdherentZoneBasedRole;
-use App\Entity\BoardMember\BoardMember;
-use App\Entity\BoardMember\Role;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Entity\SubscriptionType;
@@ -29,7 +27,6 @@ use App\Form\AdherentMandateType;
 use App\Form\Admin\AdherentZoneBasedRoleType;
 use App\Form\Admin\ElectedRepresentativeAdherentMandateType;
 use App\Form\Admin\JecouteManagedAreaType;
-use App\Form\EventListener\BoardMemberListener;
 use App\Form\EventListener\CommitteeMembershipListener;
 use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
@@ -213,18 +210,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                 ->add('type', null, [
                     'label' => 'Rôles',
                     'template' => 'admin/adherent/show_statuses.html.twig',
-                ])
-            ->end()
-            ->with('Membre du Conseil', ['class' => 'col-md-3'])
-                ->add('isBoardMember', 'boolean', [
-                    'label' => 'Est membre du Conseil ?',
-                ])
-                ->add('boardMember.area', null, [
-                    'label' => 'Région',
-                ])
-                ->add('boardMember.roles', null, [
-                    'label' => 'Rôles',
-                    'template' => 'admin/adherent/list_board_member_roles.html.twig',
                 ])
             ->end()
             ->with('Responsabilités politiques', ['class' => 'col-md-6'])
@@ -431,24 +416,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                             'required' => false,
                         ])
                     ->end()
-                    ->with('Membre du Conseil', ['class' => 'col-md-6'])
-                        ->add('boardMemberArea', ChoiceType::class, [
-                            'label' => 'Région',
-                            'choices' => BoardMember::AREAS_CHOICES,
-                            'required' => false,
-                            'mapped' => false,
-                            'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
-                        ])
-                        ->add('boardMemberRoles', ModelType::class, [
-                            'label' => 'Rôles',
-                            'expanded' => true,
-                            'multiple' => true,
-                            'btn_add' => false,
-                            'class' => Role::class,
-                            'mapped' => false,
-                            'help' => 'Laisser vide si l\'adhérent n\'est pas membre du Conseil.',
-                        ])
-                    ->end()
                 ->end()
             ;
         }
@@ -505,7 +472,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
         if ($this->isGrantedAdherentAdminRole()) {
             $form->getFormBuilder()
                 ->addEventSubscriber(new CommitteeMembershipListener($this->committeeMembershipManager))
-                ->addEventSubscriber(new BoardMemberListener())
                 ->addEventSubscriber(new RevokeManagedAreaSubscriber())
                 ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
                     /** @var Adherent $adherent */
@@ -1090,7 +1056,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                 '_delegated_access',
                 '_zone_based_role',
                 '_zone_based_role_zone',
-                '_board_member',
                 '_animator_committees',
             )
             ->leftJoin($alias.'.adherentMandates', '_adherent_mandate')
@@ -1098,7 +1063,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
             ->leftJoin($alias.'.receivedDelegatedAccesses', '_delegated_access')
             ->leftJoin($alias.'.zoneBasedRoles', '_zone_based_role')
             ->leftJoin('_zone_based_role.zones', '_zone_based_role_zone')
-            ->leftJoin($alias.'.boardMember', '_board_member')
             ->leftJoin($alias.'.animatorCommittees', '_animator_committees')
         ;
 

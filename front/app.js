@@ -148,12 +148,6 @@ class App {
         });
     }
 
-    runBoardMember() {
-        import('pages/board_member_list').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('api'));
-        });
-    }
-
     runManageParticipants() {
         import('pages/manage_participants').catch((error) => { throw error; }).then((module) => {
             module.default();

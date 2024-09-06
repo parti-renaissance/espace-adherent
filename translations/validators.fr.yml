@@ -330,11 +330,6 @@ summary.spanable_item.length.invalid: L'événement doit être en cours ou avoir
 summary.mission_type_wishes: Vous devez cocher au minimum 1 élément.
 
 #
-# Board Member
-#
-board_member.area.invalid_choice: Cette région n'est pas valide.
-
-#
 # Interactive
 #
 interactive.friend_appreciations.min: Vous devez sélectionner au moins 1 valeur.

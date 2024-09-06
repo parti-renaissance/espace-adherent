@@ -13,7 +13,6 @@ use App\Entity\AdherentCharter\PapCampaignCharter;
 use App\Entity\AdherentCharter\PhoningCampaignCharter;
 use App\Entity\AdherentResetPasswordToken;
 use App\Entity\AdherentZoneBasedRole;
-use App\Entity\BoardMember\BoardMember;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\PostAddress;
 use App\FranceCities\FranceCities;
@@ -22,7 +21,6 @@ use App\Membership\ActivityPositionsEnum;
 use App\Membership\AdherentFactory;
 use App\Membership\MembershipSourceEnum;
 use App\Subscription\SubscriptionTypeEnum;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
@@ -115,9 +113,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent2->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent2->removeSubscriptionType($this->getReference('st-'.SubscriptionTypeEnum::LOCAL_HOST_EMAIL));
 
-        $roles = new ArrayCollection();
-        $roles->add($this->getReference('adherent'));
-        $adherent2->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $adherent2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $this->addReference('adherent-2', $adherent2);
 
@@ -266,9 +261,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33234823644',
             'registered_at' => '2017-02-16 17:12:08',
         ]);
-        $roles = new ArrayCollection();
-        $roles->add($this->getReference('adherent'));
-        $adherent9->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $adherent9->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent9->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_76540'));
         $adherent9->addCharter(new CommitteeHostCharter());
@@ -289,9 +281,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+492211653540',
             'registered_at' => '2017-02-23 13:56:12',
         ]);
-        $roles = new ArrayCollection();
-        $roles->add($this->getReference('adherent'));
-        $adherent10->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $adherent10->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent10->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_DE'));
         $this->addReference('adherent-10', $adherent10);
@@ -311,9 +300,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2017-04-10 14:08:12',
         ]);
         $adherent11->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $roles = new ArrayCollection();
-        $roles->add($this->getReference('adherent'));
-        $adherent11->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $adherent11->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_SG'));
         $this->addReference('adherent-11', $adherent11);
 
@@ -331,13 +317,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+12123150100',
             'registered_at' => '2017-04-09 06:20:38',
         ]);
-        $roles = new ArrayCollection();
-        $roles->add($this->getReference('adherent'));
-        $adherent12->setBoardMember(BoardMember::AREA_ABROAD, $roles);
-        $adherent12->getBoardMember()->addSavedBoardMember($adherent11->getBoardMember());
-        $adherent12->getBoardMember()->addSavedBoardMember($adherent10->getBoardMember());
-        $adherent12->getBoardMember()->addSavedBoardMember($adherent9->getBoardMember());
-        $adherent12->getBoardMember()->addSavedBoardMember($adherent2->getBoardMember());
         $adherent12->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent12->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_US'));
         $this->addReference('adherent-12', $adherent12);
@@ -479,9 +458,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'phone' => '+33673654349',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
-        $roles = new ArrayCollection();
-        $roles->add($this->getReference('referent'));
-        $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $referent->setPhoningManagerRole(true);
         $referent->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $referent->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_77288'));
@@ -578,14 +554,11 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'birthdate' => '1982-06-02',
             'registered_at' => '2017-06-01 09:26:31',
         ]);
-        $roles = new ArrayCollection();
-        $roles->add($this->getReference('deputy'));
         $deputy_75_1->setNationalRole(true);
         $deputy_75_1->setNationalCommunicationRole(true);
         $deputy_75_1->setPhoningManagerRole(true);
         $deputy_75_1->setPapNationalManagerRole(true);
         $deputy_75_1->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $deputy_75_1->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
         $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
         $deputy_75_1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
@@ -606,10 +579,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'registered_at' => '2018-08-05 15:02:34',
             'phone' => '+33187656781',
         ]);
-        $roles = new ArrayCollection();
-        $roles->add($this->getReference('deputy'));
         $deputy_75_2->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $deputy_75_2->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $deputy_75_2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_75056'));
         $deputy_75_2->addZoneBasedRole(AdherentZoneBasedRole::createDeputy(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-2')));
         $this->addReference('deputy-75-2', $deputy_75_2);
@@ -625,10 +595,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
             'birthdate' => '1979-07-02',
             'registered_at' => '2017-06-26 10:15:17',
         ]);
-        $roles = new ArrayCollection();
-        $roles->add($this->getReference('deputy'));
         $deputy_ch_li->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $deputy_ch_li->setBoardMember(BoardMember::AREA_ABROAD, $roles);
         $deputy_ch_li->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_country_CH'));
         $deputy_ch_li->addZoneBasedRole(AdherentZoneBasedRole::createDeputy(LoadGeoZoneData::getZoneReference($manager, 'zone_foreign_district_CIRCO_FDE-06')));
         $this->addReference('deputy-ch-li', $deputy_ch_li);
@@ -1244,7 +1211,6 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     public function getDependencies()
     {
         return [
-            LoadBoardMemberRoleData::class,
             LoadSubscriptionTypeData::class,
             LoadCityData::class,
             LoadGeoZoneData::class,

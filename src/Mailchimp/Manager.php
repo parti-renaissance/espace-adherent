@@ -45,7 +45,6 @@ class Manager implements LoggerAwareInterface
     public const INTEREST_KEY_DEPUTY = 'DEPUTY';
     public const INTEREST_KEY_COORDINATOR = 'COORDINATOR';
     public const INTEREST_KEY_PROCURATION_MANAGER = 'PROCURATION_MANAGER';
-    public const INTEREST_KEY_BOARD_MEMBER = 'BOARD_MEMBER';
 
     private $driver;
     private $requestBuildersLocator;

@@ -1173,14 +1173,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.board_member_roles" class="App\Admin\BoardMemberRoleAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Rôles des membres du Conseil" group="Archives" />
-
-            <argument />
-            <argument>App\Entity\BoardMember\Role</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.legislative_district_zone" class="App\Admin\LegislativeDistrictZoneAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Zones géographiques" group="Archives" />
             <argument />
