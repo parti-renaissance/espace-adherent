@@ -5,8 +5,15 @@ Feature:
     I should be able to change my email address
 
     Scenario: As a logged-in user I can request an email address change
-
         Given I am logged with "carl999@example.fr" via OAuth client "JeMengage Mobile" with scopes "read:profile write:profile"
+        When I send a "GET" request to "/api/v3/profile/me"
+        Then the response status code should be 200
+        And the JSON should be a superset of:
+        """
+        {
+            "change_email_token": null
+        }
+        """
 
         ## No changes
         When I send a "POST" request to "/api/v3/profile/email/request" with body:
@@ -91,6 +98,7 @@ Feature:
               }
             ],
             "from_name": "Renaissance",
+            "html": null,
             "to": [
               {
                 "email": "new.mail@example.com",
@@ -99,5 +107,17 @@ Feature:
               }
             ]
           }
+        }
+        """
+        When I send a "GET" request to "/api/v3/profile/me"
+        Then the response status code should be 200
+        And the JSON should be a superset of:
+        """
+        {
+            "change_email_token": {
+                "uuid": "@uuid@",
+                "email": "new.mail@example.com",
+                "expired_at": "@string@.isDateTime()"
+            }
         }
         """

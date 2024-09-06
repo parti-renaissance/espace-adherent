@@ -9,6 +9,7 @@ use App\ValueObject\SHA1;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * An abstract temporary token for Adherent.
@@ -38,6 +39,7 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
     /**
      * @var \DateTime
      */
+    #[Groups(['profile_read'])]
     #[ORM\Column(type: 'datetime')]
     private $expiredAt;
 
@@ -134,6 +136,11 @@ abstract class AdherentToken implements AdherentExpirableTokenInterface
         if ($this->isExpired()) {
             throw new AdherentTokenExpiredException($this);
         }
+    }
+
+    public function getExpiredAt(): \DateTimeInterface
+    {
+        return $this->expiredAt;
     }
 
     private function isExpired(): bool

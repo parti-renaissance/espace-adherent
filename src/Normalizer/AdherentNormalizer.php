@@ -3,6 +3,7 @@
 namespace App\Normalizer;
 
 use App\Entity\Adherent;
+use App\Repository\AdherentChangeEmailTokenRepository;
 use App\Repository\Phoning\CampaignHistoryRepository;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -15,6 +16,7 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
     public function __construct(
         private readonly array $adherentInterests,
         private readonly CampaignHistoryRepository $campaignHistoryRepository,
+        private readonly AdherentChangeEmailTokenRepository $changeEmailTokenRepository,
     ) {
     }
 
@@ -53,6 +55,12 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
             }
 
             $data['interests'] = $interests;
+
+            $data['change_email_token'] = $this->normalizer->normalize(
+                $this->changeEmailTokenRepository->findLastUnusedByAdherent($object),
+                $format,
+                $context
+            );
         }
 
         if (\in_array('phoning_campaign_call_read', $groups)) {
