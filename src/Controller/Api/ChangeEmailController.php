@@ -5,10 +5,12 @@ namespace App\Controller\Api;
 use App\AdherentProfile\AdherentProfile;
 use App\Entity\Adherent;
 use App\Membership\AdherentChangeEmailHandler;
+use App\Repository\AdherentChangeEmailTokenRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -20,6 +22,29 @@ class ChangeEmailController extends AbstractController
     public function __construct(
         private readonly AdherentChangeEmailHandler $changeEmailHandler,
     ) {
+    }
+
+    #[Route(path: '/send-validation', name: '_send_validation', methods: ['GET'])]
+    #[Security("is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE')")]
+    public function sendValidationEmail(
+        AdherentChangeEmailTokenRepository $changeEmailTokenRepository,
+    ): JsonResponse {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
+        $token = $changeEmailTokenRepository->findLastUnusedByAdherent($adherent);
+
+        if (!$token) {
+            return $this->json([
+                'message' => 'Aucun changement d\'adresse email en attente de validation pour cet utilisateur.',
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $this->changeEmailHandler->sendValidationEmail($adherent, $token);
+
+        return $this->json([
+            'message' => 'Email de validation envoyé avec succès.',
+        ]);
     }
 
     #[Route(path: '/request', name: '_request', methods: ['POST'])]
