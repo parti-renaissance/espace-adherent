@@ -24,29 +24,6 @@ class ChangeEmailController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/send-validation', name: '_send_validation', methods: ['GET'])]
-    #[Security("is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE')")]
-    public function sendValidationEmail(
-        AdherentChangeEmailTokenRepository $changeEmailTokenRepository,
-    ): JsonResponse {
-        /** @var Adherent $adherent */
-        $adherent = $this->getUser();
-
-        $token = $changeEmailTokenRepository->findLastUnusedByAdherent($adherent);
-
-        if (!$token) {
-            return $this->json([
-                'message' => 'Aucun changement d\'adresse email en attente de validation pour cet utilisateur.',
-            ], Response::HTTP_BAD_REQUEST);
-        }
-
-        $this->changeEmailHandler->sendValidationEmail($adherent, $token);
-
-        return $this->json([
-            'message' => 'Email de validation envoyé avec succès.',
-        ]);
-    }
-
     #[Route(path: '/request', name: '_request', methods: ['POST'])]
     #[Security("is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE')")]
     public function request(
@@ -90,6 +67,29 @@ class ChangeEmailController extends AbstractController
 
         return $this->json([
             'message' => 'Aucun changement d\'adresse email.',
+        ]);
+    }
+
+    #[Route(path: '/send-validation', name: '_send_validation', methods: ['POST'])]
+    #[Security("is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE')")]
+    public function sendValidationEmail(
+        AdherentChangeEmailTokenRepository $changeEmailTokenRepository,
+    ): JsonResponse {
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+
+        $token = $changeEmailTokenRepository->findLastUnusedByAdherent($adherent);
+
+        if (!$token) {
+            return $this->json([
+                'message' => 'Aucun changement d\'adresse email en attente de validation pour cet utilisateur.',
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $this->changeEmailHandler->sendValidationEmail($adherent, $token);
+
+        return $this->json([
+            'message' => 'Email de validation envoyé avec succès.',
         ]);
     }
 }
