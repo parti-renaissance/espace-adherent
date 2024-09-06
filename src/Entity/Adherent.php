@@ -26,7 +26,6 @@ use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
-use App\Entity\BoardMember\BoardMember;
 use App\Entity\Campus\Registration;
 use App\Entity\Contribution\Contribution;
 use App\Entity\Contribution\Payment;
@@ -214,12 +213,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[AssertZoneBasedRoles]
     #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentZoneBasedRole::class, cascade: ['persist'], fetch: 'EAGER', orphanRemoval: true)]
     private Collection $zoneBasedRoles;
-
-    /**
-     * @var BoardMember|null
-     */
-    #[ORM\OneToOne(mappedBy: 'adherent', targetEntity: BoardMember::class, cascade: ['all'], orphanRemoval: true)]
-    private $boardMember;
 
     /**
      * @var JecouteManagedArea|null
@@ -748,10 +741,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_LEGISLATIVE_CANDIDATE';
         }
 
-        if ($this->isBoardMember()) {
-            $roles[] = 'ROLE_BOARD_MEMBER';
-        }
-
         if ($this->canaryTester) {
             $roles[] = 'ROLE_CANARY_TESTER';
         }
@@ -835,7 +824,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             || $this->isJecouteManager()
             || $this->isSupervisor()
             || $this->isHost()
-            || $this->isBoardMember()
             || $this->isDeputy()
             || $this->isDelegatedDeputy()
             || $this->isElectionResultsReporter()
@@ -1277,38 +1265,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
-    }
-
-    public function getBoardMember(): ?BoardMember
-    {
-        return $this->boardMember;
-    }
-
-    public function setBoardMember(string $area, iterable $roles): void
-    {
-        if (!$this->boardMember) {
-            $this->boardMember = new BoardMember();
-            $this->boardMember->setAdherent($this);
-        }
-
-        $this->boardMember->setArea($area);
-        $this->boardMember->setRoles($roles);
-    }
-
-    public function isBoardMember(): bool
-    {
-        return $this->boardMember instanceof BoardMember
-            && !empty($this->boardMember->getArea()) && !empty($this->boardMember->getRoles());
-    }
-
-    public function revokeBoardMember(): void
-    {
-        if (!$this->boardMember) {
-            return;
-        }
-
-        $this->boardMember->revoke();
-        $this->boardMember = null;
     }
 
     /** @return AdherentZoneBasedRole[] */

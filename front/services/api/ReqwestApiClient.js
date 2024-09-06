@@ -174,25 +174,6 @@ export default class ReqwestApiClient {
         });
     }
 
-    deleteBoardMemberOnList(boardMemberId) {
-        return this._reqwest({
-            url: `/espace-membres-conseil/list/boardmember/${boardMemberId}`,
-            type: 'json',
-            method: 'delete',
-        });
-    }
-
-    addBoardMemberToList(boardMemberId) {
-        return this._reqwest({
-            url: '/espace-membres-conseil/list/boardmember',
-            type: 'json',
-            method: 'post',
-            data: {
-                boardMemberId,
-            },
-        });
-    }
-
     getMessageStatus(messageId, callback, errorCallback) {
         this._reqwest({
             url: `/api/adherent_messages/${messageId}`,

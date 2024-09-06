@@ -39,10 +39,6 @@
         {% set labels = labels|merge(['Animateur provisiore']) %}
     {% endif %}
 
-    {% if object.isBoardMember %}
-        {% set labels = labels|merge(['Membre du Conseil']) %}
-    {% endif %}
-
     {% if object.isHeadedRegionalCandidate %}
         {% set labels = labels|merge(['Tête de liste aux régionales']) %}
     {% endif %}

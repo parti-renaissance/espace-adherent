@@ -533,11 +533,6 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::ARCHIVES
         );
         yield $this->createRole(
-            'ROLE_ADMIN_ARCHIVES_BOARD_MEMBER_ROLES',
-            'Administrateur des rôles de membres du conseil',
-            AdministratorRoleGroupEnum::ARCHIVES
-        );
-        yield $this->createRole(
             'ROLE_ADMIN_ARCHIVES_PROPOSALS',
             'Administrateur des propositions',
             AdministratorRoleGroupEnum::ARCHIVES

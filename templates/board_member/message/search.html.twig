@@ -1,7 +1,0 @@
-{% extends 'board_member/message/layout.html.twig' %}
-
-{%- block return_path path('app_board_member_search') ~ filter -%}
-
-{% block recipients %}
-    <p>{{ 'board_member.message.filtered_members'|trans({ count: message.recipients|length }) }}</p>
-{% endblock %}

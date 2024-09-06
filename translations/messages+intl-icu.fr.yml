@@ -121,7 +121,6 @@ committee_provisional_supervisor: animateur provisoire
 supervisor: animateur
 committee_host: co-animateur
 host: co-animateur
-board_member: membre du conseil
 coordinator: coordinateur
 assessor_manager: responsable assesseur
 jecoute_manager: Responsable des questionnaires
@@ -146,7 +145,6 @@ role.committee_supervisor: Animateur
 role.animator: Responsable comité local
 role.committee_provisional_supervisor: Animateur provisoire
 role.committee_host: Co-Animateur
-role.board_member: Membre du conseil
 role.assessor_manager: Responsable assesseur
 role.assessor: Assesseur
 role.jecoute_manager: Responsable des questionnaires
@@ -563,37 +561,6 @@ event.personal_data_collect: J’accepte que LaREM traite mes données personnel
 event_type.municipal: Municipal
 event_type.committee: Comité
 event_type.default: Standard
-
-#
-# Board Member
-#
-board_member.area.metropolitan: France métropolitaine
-board_member.area.overseas: France d'Outre-Mer
-board_member.area.abroad: Étranger
-board_member.message.send_to_members: >-
-    {count, plural,
-        one {Envoyer un message à cette personne}
-        other {Envoyer un message à ces # personnes}
-    }
-board_member.message.success: Votre message a été envoyé avec succès. Il pourrait prendre quelques minutes à s'envoyer.
-board_member.message.filtered_members: >-
-    {count, plural,
-        one {Au membre filtré}
-        other {Aux # membres filtrés}
-    }
-board_member_count_saved_profils: >-
-    {count, plural,
-        one {1 profil sauvegardé}
-        other {# profils sauvegardés}
-    }
-board_member.stats.area.metropolitan: Métropole
-board_member.stats.area.overseas: DOM-TOM
-board_member.stats.area.abroad: Étranger
-board_member.message.recipients: >-
-    {count, plural,
-        one {Un membre du Conseil}
-        other {# membres du Conseil}
-    }
 
 #
 # Interactive

@@ -2,7 +2,6 @@
 
 namespace Tests\App\Repository;
 
-use App\BoardMember\BoardMemberFilter;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\DataFixtures\ORM\LoadCommitteeV1Data;
 use App\DataFixtures\ORM\LoadPhoningCampaignData;
@@ -10,7 +9,6 @@ use App\Entity\Adherent;
 use App\Entity\Phoning\Campaign;
 use App\Repository\AdherentRepository;
 use App\Repository\Phoning\CampaignRepository;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Tests\App\AbstractKernelTestCase;
@@ -46,37 +44,6 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
             $this->adherentRepository->loadUserByUsername('someone@foobar.tld'),
             'Non registered adherent must not be returned.'
         );
-    }
-
-    #[DataProvider('dataProviderSearchBoardMembers')]
-    public function testSearchBoardMembers(array $filters, array $results)
-    {
-        $filter = BoardMemberFilter::createFromArray($filters);
-        $excludedMember = $this->getAdherentRepository()->findOneByEmail('kiroule.p@blabla.tld');
-
-        $boardMembers = $this->adherentRepository->searchBoardMembers($filter, $excludedMember);
-
-        $this->assertSameSize($results, $boardMembers);
-
-        foreach ($boardMembers as $adherent) {
-            $this->assertContains($adherent->getEmailAddress(), $results);
-        }
-    }
-
-    #[DataProvider('dataProviderSearchBoardMembers')]
-    public function testPaginateBoardMembers(array $filters, array $results)
-    {
-        $filter = BoardMemberFilter::createFromArray($filters);
-        $excludedMember = $this->getAdherentRepository()->findOneByEmail('kiroule.p@blabla.tld');
-
-        $boardMembers = $this->adherentRepository->paginateBoardMembers($filter, $excludedMember);
-
-        $this->assertInstanceOf(Paginator::class, $boardMembers);
-        $this->assertSameSize($results, $boardMembers);
-
-        foreach ($boardMembers as $adherent) {
-            $this->assertContains($adherent->getEmailAddress(), $results);
-        }
     }
 
     public function testFindCommitteeHostMembersList()
@@ -162,61 +129,6 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
         yield [LoadPhoningCampaignData::CAMPAIGN_5_UUID, 'jacques.picard@en-marche.fr', 'assertContains', [
             'benjyd@aol.com',
         ]];
-    }
-
-    public static function dataProviderSearchBoardMembers(): array
-    {
-        return [
-            // Gender
-            [
-                ['g' => 'female'],
-                ['laura@deloche.com', 'martine.lindt@gmail.com', 'lolodie.dutemps@hotnix.tld'],
-            ],
-            [
-                ['g' => 'male'],
-                ['carl999@example.fr', 'deputy@en-marche-dev.fr', 'deputy-ch-li@en-marche-dev.fr', 'referent@en-marche-dev.fr', 'deputy-75-2@en-marche-dev.fr'],
-            ],
-            // Age
-            [
-                ['amin' => 55],
-                ['carl999@example.fr', 'referent@en-marche-dev.fr'],
-            ],
-            [
-                ['amax' => 54],
-                ['deputy@en-marche-dev.fr', 'deputy-ch-li@en-marche-dev.fr', 'laura@deloche.com', 'martine.lindt@gmail.com', 'lolodie.dutemps@hotnix.tld', 'deputy-75-2@en-marche-dev.fr'],
-            ],
-            [
-                ['amin' => 55, 'amax' => 65],
-                ['referent@en-marche-dev.fr'],
-            ],
-            // Name
-            [
-                ['f' => 'Laura'],
-                ['laura@deloche.com'],
-            ],
-            [
-                ['l' => 'Lindt'],
-                ['martine.lindt@gmail.com'],
-            ],
-            [
-                ['f' => 'Élodie', 'l' => 'Dutemps'],
-                ['lolodie.dutemps@hotnix.tld'],
-            ],
-            // Location
-            [
-                ['p' => '76, 368645'],
-                ['laura@deloche.com', 'lolodie.dutemps@hotnix.tld'],
-            ],
-            [
-                ['a' => ['metropolitan']],
-                ['laura@deloche.com', 'deputy@en-marche-dev.fr', 'referent@en-marche-dev.fr'],
-            ],
-            // Role
-            [
-                ['r' => ['referent']],
-                ['referent@en-marche-dev.fr'],
-            ],
-        ];
     }
 
     protected function setUp(): void

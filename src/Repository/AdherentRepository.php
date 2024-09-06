@@ -8,14 +8,12 @@ use App\Adherent\AdherentAutocompleteFilter;
 use App\Adherent\AdherentRoleEnum;
 use App\Adherent\MandateTypeEnum;
 use App\Adherent\Tag\TagEnum;
-use App\BoardMember\BoardMemberFilter;
 use App\Collection\AdherentCollection;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\Audience\AudienceInterface;
-use App\Entity\BoardMember\BoardMember;
 use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Entity\Donation;
@@ -44,7 +42,6 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -210,128 +207,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     public function supportsClass($class)
     {
         return Adherent::class === $class;
-    }
-
-    public function searchBoardMembers(BoardMemberFilter $filter, Adherent $excludedMember): array
-    {
-        return $this
-            ->createBoardMemberFilterQueryBuilder($filter, $excludedMember)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    public function paginateBoardMembers(BoardMemberFilter $filter, Adherent $excludedMember): Paginator
-    {
-        $qb = $this
-            ->createBoardMemberFilterQueryBuilder($filter, $excludedMember)
-            ->setFirstResult($filter->getOffset())
-            ->setMaxResults(BoardMemberFilter::PER_PAGE)
-        ;
-
-        return new Paginator($qb);
-    }
-
-    private function createBoardMemberQueryBuilder(): QueryBuilder
-    {
-        return $this
-            ->createQueryBuilder('a')
-            ->addSelect('bm')
-            ->addSelect('cm')
-            ->addSelect('bmr')
-            ->innerJoin('a.boardMember', 'bm')
-            ->leftJoin('a.memberships', 'cm')
-            ->innerJoin('bm.roles', 'bmr')
-        ;
-    }
-
-    private function createBoardMemberFilterQueryBuilder(
-        BoardMemberFilter $filter,
-        Adherent $excludedMember,
-    ): QueryBuilder {
-        $qb = $this->createBoardMemberQueryBuilder();
-
-        $qb->andWhere('a != :member');
-        $qb->setParameter('member', $excludedMember);
-
-        if ($queryGender = $filter->getQueryGender()) {
-            $qb->andWhere('a.gender = :gender');
-            $qb->setParameter('gender', $queryGender);
-        }
-
-        if ($queryAgeMinimum = $filter->getQueryAgeMinimum()) {
-            $dateMaximum = new \DateTime('now');
-            $dateMaximum->modify('-'.$queryAgeMinimum.' years');
-
-            $qb->andWhere('a.birthdate <= :dateMaximum');
-            $qb->setParameter('dateMaximum', $dateMaximum->format('Y-m-d'));
-        }
-
-        if ($queryAgeMaximum = $filter->getQueryAgeMaximum()) {
-            $dateMinimum = new \DateTime('now');
-            $dateMinimum->modify('-'.$queryAgeMaximum.' years');
-
-            $qb->andWhere('a.birthdate >= :dateMinimum');
-            $qb->setParameter('dateMinimum', $dateMinimum->format('Y-m-d'));
-        }
-
-        if ($queryFirstName = $filter->getQueryFirstName()) {
-            $qb->andWhere('a.firstName LIKE :firstName');
-            $qb->setParameter('firstName', '%'.$queryFirstName.'%');
-        }
-
-        if ($queryLastName = $filter->getQueryLastName()) {
-            $qb->andWhere('a.lastName LIKE :lastName');
-            $qb->setParameter('lastName', '%'.$queryLastName.'%');
-        }
-
-        if ($queryPostalCode = $filter->getQueryPostalCode()) {
-            $queryPostalCode = array_map('trim', explode(',', $queryPostalCode));
-
-            $postalCodeExpression = $qb->expr()->orX();
-
-            foreach ($queryPostalCode as $key => $postalCode) {
-                $postalCodeExpression->add('a.postAddress.postalCode LIKE :postalCode_'.$key);
-                $qb->setParameter('postalCode_'.$key, $postalCode.'%');
-            }
-
-            $qb->andWhere($postalCodeExpression);
-        }
-
-        if (\count($queryAreas = $filter->getQueryAreas())) {
-            $areasExpression = $qb->expr()->orX();
-
-            foreach ($queryAreas as $key => $area) {
-                $areasExpression->add('bm.area = :area_'.$key);
-                $qb->setParameter('area_'.$key, $area);
-            }
-
-            $qb->andWhere($areasExpression);
-        }
-
-        if (\count($queryRoles = $filter->getQueryRoles())) {
-            $rolesExpression = $qb->expr()->orX();
-
-            foreach ($queryRoles as $key => $role) {
-                $rolesExpression->add('bmr.code = :board_member_role_'.$key);
-                $qb->setParameter('board_member_role_'.$key, $role);
-            }
-
-            $qb->andWhere($rolesExpression);
-        }
-
-        return $qb;
-    }
-
-    public function findSavedBoardMember(BoardMember $owner): AdherentCollection
-    {
-        $qb = $this
-            ->createBoardMemberQueryBuilder()
-            ->where(':member MEMBER OF bm.owners')
-            ->setParameter('member', $owner)
-        ;
-
-        return new AdherentCollection($qb->getQuery()->getResult());
     }
 
     /**
@@ -1166,7 +1041,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->createQueryBuilder($alias)
             ->addSelect('cm')
             ->addSelect('c')
-            ->addSelect('bm')
             ->addSelect('jma')
             ->addSelect('rda')
             ->addSelect('mandates')
@@ -1174,7 +1048,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->leftJoin($alias.'.jecouteManagedArea', 'jma')
             ->leftJoin($alias.'.memberships', 'cm')
             ->leftJoin('cm.committee', 'c')
-            ->leftJoin($alias.'.boardMember', 'bm')
             ->leftJoin($alias.'.receivedDelegatedAccesses', 'rda')
             ->leftJoin($alias.'.adherentMandates', 'mandates')
             ->leftJoin($alias.'.zoneBasedRoles', 'zone_based_role')
