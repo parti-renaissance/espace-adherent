@@ -752,13 +752,6 @@ adherent_message.filter.role.CommitteeSupervisors: 'Animateurs de comités locau
 draft: Brouillon
 sent: Envoyé
 
-#
-# Application request
-#
-application_request.tags.edited_successfully: Les tags ont bien été mis à jour
-application_request.taken_successfully: Le candidat a bien été ajouté à votre équipe
-application_request.removed_successfully: Le candidat a été retiré de votre équipe
-
 admin.image.delete: Supprimer l'image actuelle
 
 #

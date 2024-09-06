@@ -11,7 +11,6 @@ class MailchimpObjectIdMapping
         private readonly string $mainListId,
         private readonly string $newsletterListId,
         private readonly string $electedRepresentativeListId,
-        private readonly string $applicationRequestCandidateListId,
         private readonly string $jecouteListId,
         private readonly string $jeMengageListId,
         private readonly string $newsletterLegislativeCandidateListId,
@@ -22,7 +21,6 @@ class MailchimpObjectIdMapping
         private readonly string $memberGroupInterestGroupId,
         private readonly string $memberInterestInterestGroupId,
         private readonly string $subscriptionTypeInterestGroupId,
-        private readonly array $applicationRequestTagIds,
         private readonly string $mailchimpCampaignUrl,
         private readonly string $mailchimpOrg,
     ) {
@@ -89,11 +87,6 @@ class MailchimpObjectIdMapping
         return $this->electedRepresentativeListId;
     }
 
-    public function getApplicationRequestCandidateListId(): string
-    {
-        return $this->applicationRequestCandidateListId;
-    }
-
     public function getJecouteListId(): string
     {
         return $this->jecouteListId;
@@ -107,11 +100,6 @@ class MailchimpObjectIdMapping
             default:
                 return $this->mainListId;
         }
-    }
-
-    public function getApplicationRequestTagIds(): array
-    {
-        return $this->applicationRequestTagIds;
     }
 
     public function getJeMengageListId(): string

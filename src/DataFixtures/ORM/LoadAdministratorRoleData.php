@@ -180,31 +180,6 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::ELUS
         );
         yield $this->createRole(
-            'ROLE_ADMIN_POLITIQUE_APPLICATION_REQUEST_TECHNICAL_SKILLS',
-            'Administrateur des compétences techniques (Muni)',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_POLITIQUE_APPLICATION_REQUEST_THEMES',
-            'Administrateur des thèmes (Muni)',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_POLITIQUE_APPLICATION_REQUEST_TAGS',
-            'Administrateur des tags de candidatures (Muni)',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_POLITIQUE_APPLICATION_REQUEST_RUNNING_MATE_REQUESTS',
-            'Administrateur des candidatures colistiers',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
-            'ROLE_ADMIN_POLITIQUE_APPLICATION_REQUEST_VOLUNTEER_REQUESTS',
-            'Administrateur des candidatures bénévoles',
-            AdministratorRoleGroupEnum::ARCHIVES_A_DEPUBLIER
-        );
-        yield $this->createRole(
             'ROLE_ADMIN_POLITIQUE_REPUBLICAN_SILENCES',
             'Administrateur des silences républicains',
             AdministratorRoleGroupEnum::ELECTIONS

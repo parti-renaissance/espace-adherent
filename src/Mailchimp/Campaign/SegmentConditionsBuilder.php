@@ -5,7 +5,6 @@ namespace App\Mailchimp\Campaign;
 use App\AdherentMessage\DynamicSegmentInterface;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Filter\AbstractElectedRepresentativeFilter;
-use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Mailchimp\Campaign\SegmentConditionBuilder\SegmentConditionBuilderInterface;
 
@@ -90,10 +89,6 @@ class SegmentConditionsBuilder
     private function getListId(AdherentMessageInterface $message, MailchimpCampaign $campaign): string
     {
         if ($filter = $message->getFilter()) {
-            if ($filter instanceof ReferentUserFilter && ($filter->getContactOnlyRunningMates() || $filter->getContactOnlyVolunteers())) {
-                return $this->mailchimpObjectIdMapping->getApplicationRequestCandidateListId();
-            }
-
             if ($filter instanceof AbstractElectedRepresentativeFilter) {
                 return $this->mailchimpObjectIdMapping->getElectedRepresentativeListId();
             }

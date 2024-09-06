@@ -971,50 +971,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.application_request_technical_skill" class="App\Admin\ApplicationRequest\TechnicalSkillAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Muni » Compétences techniques" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\ApplicationRequest\TechnicalSkill</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.application_request_theme" class="App\Admin\ApplicationRequest\ThemeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Muni » Thématiques" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\ApplicationRequest\Theme</argument>
-            <argument />
-        </service>
-
-        <!-- RunningMate manager-->
-        <service id="app.admin.application_request_running_mate_request" class="App\Admin\ApplicationRequest\RunningMateRequestAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Muni » Candidatures colistiers" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\ApplicationRequest\RunningMateRequest</argument>
-            <argument />
-            <call method="setStorage">
-                <argument type="service" id="League\Flysystem\FilesystemOperator" />
-            </call>
-        </service>
-
-        <service id="app.admin.application_request_volunteer_request" class="App\Admin\ApplicationRequest\VolunteerRequestAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Muni » Candidatures bénévoles" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\ApplicationRequest\VolunteerRequest</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.application_request_tag" class="App\Admin\ApplicationRequest\TagAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Muni » Tags de candidature" group="Archives (à dépublier)" />
-
-            <argument />
-            <argument>App\Entity\ApplicationRequest\ApplicationRequestTag</argument>
-            <argument />
-        </service>
-
         <service id="app.admin.city" class="App\Admin\CityAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Communes" group="Archives (à dépublier)" />
 

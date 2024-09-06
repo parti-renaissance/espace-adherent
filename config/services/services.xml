@@ -6,11 +6,6 @@
     <services>
         <defaults autowire="true" autoconfigure="true" public="false" />
 
-        <!-- ApplicationRequest -->
-        <service id="App\ApplicationRequest\Listener\ApplicationRequestChangeSubscriber">
-            <tag name="doctrine.event_subscriber"/>
-        </service>
-
         <!-- GeoCoder -->
         <service id="GeoIp2\WebService\Client">
             <argument>%env(int:MAXMIND_USER_ID)%</argument>
