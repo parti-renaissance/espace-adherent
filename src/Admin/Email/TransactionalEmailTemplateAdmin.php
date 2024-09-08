@@ -15,7 +15,21 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
         $collection
             ->add('content', $this->getRouterIdParameter().'/content')
             ->add('send_test', $this->getRouterIdParameter().'/send-test')
+            ->add('preview', $this->getRouterIdParameter().'/visualiser')
+            ->add('preview_content', $this->getRouterIdParameter().'/preview-content')
+            ->add('duplicate', $this->getRouterIdParameter().'/duplicate')
         ;
+    }
+
+    protected function getAccessMapping(): array
+    {
+        return [
+            'content' => 'EDIT',
+            'send_test' => 'EDIT',
+            'preview' => 'EDIT',
+            'preview_content' => 'EDIT',
+            'duplicate' => 'EDIT',
+        ];
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -31,7 +45,9 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
                 'actions' => [
                     'edit' => [],
                     'content' => ['template' => 'admin/email/list_content.html.twig'],
+                    'preview' => ['template' => 'admin/email/list_preview.html.twig'],
                     'send' => ['template' => 'admin/email/list_send_test.html.twig'],
+                    'duplicate' => ['template' => 'admin/email/list_duplicate.html.twig'],
                 ],
             ])
         ;

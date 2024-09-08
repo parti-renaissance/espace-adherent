@@ -27,7 +27,7 @@ trait UnlayerJsonContentTrait
 
     public function setJsonContent(?string $jsonContent): void
     {
-        $this->jsonContent = $jsonContent;
+        $this->jsonContent = trim($jsonContent);
     }
 
     public function getContent(): ?string
@@ -37,6 +37,6 @@ trait UnlayerJsonContentTrait
 
     public function setContent(string $content): void
     {
-        $this->content = $content;
+        $this->content = trim($content);
     }
 }

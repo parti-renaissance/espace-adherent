@@ -46,4 +46,10 @@ class TransactionalEmailTemplate implements EntityAdministratorBlameableInterfac
     {
         return (string) $this->identifier;
     }
+
+    public function __clone()
+    {
+        $this->id = null;
+        $this->uuid = Uuid::uuid4();
+    }
 }

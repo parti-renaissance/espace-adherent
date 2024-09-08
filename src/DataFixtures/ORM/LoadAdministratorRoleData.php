@@ -476,6 +476,11 @@ class LoadAdministratorRoleData extends Fixture
             AdministratorRoleGroupEnum::TECH
         );
         yield $this->createRole(
+            'ROLE_ADMIN_TECH_EMAIL_TEMPLATES',
+            'Administrateur des templates d\'emails',
+            AdministratorRoleGroupEnum::TECH
+        );
+        yield $this->createRole(
             'ROLE_ADMIN_TECH_EMAIL_LOGS',
             'Administrateur des logs d\'emails',
             AdministratorRoleGroupEnum::TECH

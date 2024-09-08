@@ -40,6 +40,7 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
             'ROLE_ADMIN_TERRITOIRES_PROCURATION_REQUESTS',
             'ROLE_ADMIN_TERRITOIRES_PROCURATION_PROXIES',
             'ROLE_ADMIN_TERRITOIRES_ELECTIONS',
+            'ROLE_ADMIN_TECH_EMAIL_TEMPLATES',
             'ROLE_ADMIN_TECH_EMAIL_LOGS',
             'ROLE_ADMIN_TECH_OAUTH_CLIENTS',
             'ROLE_ADMIN_TECH_SCOPES',
