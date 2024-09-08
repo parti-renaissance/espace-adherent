@@ -38,6 +38,9 @@ class EmailLogAdmin extends AbstractAdmin
             ->add('messageClass', null, [
                 'label' => 'Type du message',
             ])
+            ->add('useTemplateEndpoint', null, [
+                'label' => 'Template endpoint',
+            ])
             ->add('sender', null, [
                 'label' => 'Expéditeur',
             ])

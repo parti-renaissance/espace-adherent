@@ -3,9 +3,15 @@
 namespace App\Mailer\Template;
 
 use App\Entity\Email\TransactionalEmailTemplate;
+use App\Mailer\Message\Message;
+use App\Repository\Email\TransactionalEmailTemplateRepository;
 
 class Manager
 {
+    public function __construct(private readonly TransactionalEmailTemplateRepository $templateRepository)
+    {
+    }
+
     public function getTemplateContent(TransactionalEmailTemplate $template): string
     {
         if ($template->parent) {
@@ -16,5 +22,14 @@ class Manager
         }
 
         return $template->getContent();
+    }
+
+    public function findTemplateForMessage(Message $message): ?TransactionalEmailTemplate
+    {
+        if ($message->getTemplateObject()) {
+            return $message->getTemplateObject();
+        }
+
+        return $this->templateRepository->findOneBy(['identifier' => $message::class]);
     }
 }

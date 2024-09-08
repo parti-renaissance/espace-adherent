@@ -11,9 +11,11 @@ use App\Repository\Email\TransactionalEmailTemplateRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TransactionalEmailTemplateRepository::class)]
+#[UniqueEntity(fields: ['identifier'])]
 class TransactionalEmailTemplate implements EntityAdministratorBlameableInterface
 {
     use EntityIdentityTrait;
@@ -23,7 +25,7 @@ class TransactionalEmailTemplate implements EntityAdministratorBlameableInterfac
 
     #[Assert\Length(max: '255')]
     #[Assert\NotBlank]
-    #[ORM\Column]
+    #[ORM\Column(unique: true)]
     public ?string $identifier = null;
 
     #[Assert\Length(max: '255')]
@@ -34,6 +36,7 @@ class TransactionalEmailTemplate implements EntityAdministratorBlameableInterfac
     #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $content = null;
 
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: self::class)]
     public ?self $parent = null;
 
@@ -51,5 +54,6 @@ class TransactionalEmailTemplate implements EntityAdministratorBlameableInterfac
     {
         $this->id = null;
         $this->uuid = Uuid::uuid4();
+        $this->identifier .= '-copy';
     }
 }
