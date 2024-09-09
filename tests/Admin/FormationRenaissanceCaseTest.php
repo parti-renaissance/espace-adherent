@@ -5,10 +5,10 @@ namespace Tests\App\Admin;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAdminWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
-class FormationRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
+class FormationRenaissanceCaseTest extends AbstractAdminWebTestCase
 {
     use ControllerTestTrait;
 
@@ -23,11 +23,11 @@ class FormationRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
 
     public static function uriProvider(): iterable
     {
-        yield ['/admin/app/formation-path/list'];
-        yield ['/admin/app/formation-path/create'];
-        yield ['/admin/app/formation-axe/list'];
-        yield ['/admin/app/formation-axe/create'];
-        yield ['/admin/app/formation-module/list'];
-        yield ['/admin/app/formation-module/create'];
+        yield ['/app/formation-path/list'];
+        yield ['/app/formation-path/create'];
+        yield ['/app/formation-axe/list'];
+        yield ['/app/formation-axe/create'];
+        yield ['/app/formation-module/list'];
+        yield ['/app/formation-module/create'];
     }
 }

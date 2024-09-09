@@ -9,18 +9,18 @@ use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeChangeCommand;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAdminWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
 #[Group('functional')]
 #[Group('admin')]
-class ElectedRepresentativeRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
+class ElectedRepresentativeRenaissanceCaseTest extends AbstractAdminWebTestCase
 {
     use ControllerTestTrait;
     use MessengerTestTrait;
 
-    private const EDIT_URI_PATTERN = '/admin/app/electedrepresentative-electedrepresentative/%s/edit';
+    private const EDIT_URI_PATTERN = '/app/electedrepresentative-electedrepresentative/%s/edit';
 
     /**
      * @var ElectedRepresentativeRepository

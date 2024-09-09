@@ -5,11 +5,11 @@ namespace Tests\App\EventListener;
 use App\Entity\Reporting\AdministratorExportHistory;
 use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\Attributes\Group;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAdminWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
-class AdministratorExportHistoryListenerCaseTest extends AbstractRenaissanceWebTestCase
+class AdministratorExportHistoryListenerCaseTest extends AbstractAdminWebTestCase
 {
     use ControllerTestTrait;
 
@@ -48,7 +48,7 @@ class AdministratorExportHistoryListenerCaseTest extends AbstractRenaissanceWebT
         ];
 
         ob_start();
-        $this->client->request('GET', '/admin/app/adherent/export', $parameters);
+        $this->client->request('GET', '/app/adherent/export', $parameters);
         ob_end_clean();
 
         $histories = $this->historyRepository->findAll();

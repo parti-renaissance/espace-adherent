@@ -8,22 +8,22 @@ use App\Entity\OAuth\Client;
 use App\Entity\OAuth\RefreshToken;
 use PHPUnit\Framework\Attributes\Group;
 use Ramsey\Uuid\Uuid;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAdminWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
 #[Group('admin')]
-class ClientRenaissanceControllerCaseTest extends AbstractRenaissanceWebTestCase
+class ClientRenaissanceControllerCaseTest extends AbstractAdminWebTestCase
 {
     use ControllerTestTrait;
 
     public function testCreateLinkFromDashboard(): void
     {
-        $crawler = $this->client->request('GET', '/admin/dashboard');
+        $crawler = $this->client->request('GET', '/dashboard');
 
         $this->isSuccessful($this->client->getResponse());
 
-        $addLinks = $crawler->filterXPath('//a[@href="/admin/app/oauth-client/create"]');
+        $addLinks = $crawler->filterXPath('//a[@href="/app/oauth-client/create"]');
         $this->assertGreaterThanOrEqual(1, $addLinks->count(), 'A link to create a Client from the dashboard should exist.');
 
         $this->client->click($addLinks->first()->link());
@@ -32,7 +32,7 @@ class ClientRenaissanceControllerCaseTest extends AbstractRenaissanceWebTestCase
 
     public function testCreateValidClient(): void
     {
-        $crawler = $this->client->request('GET', '/admin/app/oauth-client/create');
+        $crawler = $this->client->request('GET', '/app/oauth-client/create');
         $this->isSuccessful($this->client->getResponse());
 
         $csrfInput = $crawler->filter('form input[id$=__token]')->first();
@@ -50,7 +50,7 @@ class ClientRenaissanceControllerCaseTest extends AbstractRenaissanceWebTestCase
         $this->client->request($form->getMethod(), $form->getUri(), [$formName => $values], $form->getPhpFiles());
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
-        $this->assertMatchesRegularExpression('#/admin/app/oauth-client/[\d]+/edit#', $this->client->getResponse()->getTargetUrl(), 'The user should be redirected on the \'edit\' page.');
+        $this->assertMatchesRegularExpression('#/app/oauth-client/[\d]+/edit#', $this->client->getResponse()->getTargetUrl(), 'The user should be redirected on the \'edit\' page.');
 
         $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
@@ -60,7 +60,7 @@ class ClientRenaissanceControllerCaseTest extends AbstractRenaissanceWebTestCase
     {
         $oauthClient = $this->findClient(LoadClientData::CLIENT_01_UUID);
 
-        $crawler = $this->client->request('GET', \sprintf('/admin/app/oauth-client/%s/delete', $oauthClient->getId()));
+        $crawler = $this->client->request('GET', \sprintf('/app/oauth-client/%s/delete', $oauthClient->getId()));
         $this->client->submit($crawler->selectButton('Oui, supprimer')->form());
 
         $accessTokens = $this->findAccessTokensByClient($oauthClient);

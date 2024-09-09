@@ -6,18 +6,18 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAdminWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
 #[Group('security')]
-class SecurityControllerCaseTest extends AbstractRenaissanceWebTestCase
+class SecurityControllerCaseTest extends AbstractAdminWebTestCase
 {
     use ControllerTestTrait;
 
     public function testAuthenticationIsSuccessful(): void
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
+        $crawler = $this->client->request(Request::METHOD_GET, '/login');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(0, $crawler->filter('#auth-error'));
@@ -28,7 +28,7 @@ class SecurityControllerCaseTest extends AbstractRenaissanceWebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/admin/dashboard', $this->client, true);
+        $this->assertClientIsRedirectedTo('/dashboard', $this->client, true);
 
         $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -36,7 +36,7 @@ class SecurityControllerCaseTest extends AbstractRenaissanceWebTestCase
 
     public function testAuthenticationIfSecretCode(): void
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
+        $crawler = $this->client->request(Request::METHOD_GET, '/login');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(0, $crawler->filter('#auth-error'));
@@ -47,10 +47,10 @@ class SecurityControllerCaseTest extends AbstractRenaissanceWebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/admin/dashboard', $this->client, true);
+        $this->assertClientIsRedirectedTo('/dashboard', $this->client, true);
 
         $this->client->followRedirect();
-        $this->assertClientIsRedirectedTo('/admin/2fa', $this->client, true);
+        $this->assertClientIsRedirectedTo('/login/2fa', $this->client, true);
 
         $crawler = $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -60,7 +60,7 @@ class SecurityControllerCaseTest extends AbstractRenaissanceWebTestCase
             '_auth_code' => '123456',
         ]));
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/admin/2fa', $this->client, true);
+        $this->assertClientIsRedirectedTo('/login/2fa', $this->client, true);
 
         $this->client->followRedirect();
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
@@ -69,7 +69,7 @@ class SecurityControllerCaseTest extends AbstractRenaissanceWebTestCase
 
     public function testAuthenticationFailedWhenAdminIsNotActivated(): void
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
+        $crawler = $this->client->request(Request::METHOD_GET, '/login');
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
             '_login_email' => 'jean.dupond@en-marche.fr',
@@ -87,7 +87,7 @@ class SecurityControllerCaseTest extends AbstractRenaissanceWebTestCase
     #[DataProvider('provideInvalidCredentials')]
     public function testLoginCheckFails(string $username, string $password): void
     {
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/login');
+        $crawler = $this->client->request(Request::METHOD_GET, '/login');
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(0, $crawler->filter('#auth-error'));
@@ -98,7 +98,7 @@ class SecurityControllerCaseTest extends AbstractRenaissanceWebTestCase
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/admin/login', $this->client, true);
+        $this->assertClientIsRedirectedTo('/login', $this->client, true);
 
         $crawler = $this->client->followRedirect();
 

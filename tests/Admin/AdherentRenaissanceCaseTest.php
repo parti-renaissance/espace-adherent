@@ -17,16 +17,16 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAdminWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
 #[Group('admin')]
-class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
+class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
 {
     use ControllerTestTrait;
 
-    private const ADHERENT_EDIT_URI_PATTERN = '/admin/app/adherent/%d/edit';
+    private const ADHERENT_EDIT_URI_PATTERN = '/app/adherent/%d/edit';
 
     private ?AdherentRepository $adherentRepository = null;
     private ?UnregistrationRepository $unregistrationRepository = null;
@@ -43,7 +43,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertStringNotContainsString('Supprimer cet adhérent ⚠️', $crawler->filter('ul.dropdown-menu')->text());
 
-        $this->client->request(Request::METHOD_GET, \sprintf('/admin/app/adherent/%s/terminate-membership', $adherent->getId()));
+        $this->client->request(Request::METHOD_GET, \sprintf('/app/adherent/%s/terminate-membership', $adherent->getId()));
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
         $this->assertClientIsRedirectedTo(\sprintf(self::ADHERENT_EDIT_URI_PATTERN, $adherent->getId()), $this->client);
 
@@ -84,7 +84,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         $this->client->clickLink('Supprimer cet adhérent ⚠️');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertSame(
-            \sprintf('/admin/app/adherent/%s/terminate-membership', $adherent->getId()),
+            \sprintf('/app/adherent/%s/terminate-membership', $adherent->getId()),
             $this->client->getRequest()->getPathInfo()
         );
 
@@ -94,7 +94,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
                 'notification' => $notification,
             ],
         ]);
-        $this->assertClientIsRedirectedTo('/admin/app/adherent/list', $this->client, false, false, false);
+        $this->assertClientIsRedirectedTo('/app/adherent/list', $this->client, false, false, false);
 
         $crawler = $this->client->followRedirect();
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
@@ -138,7 +138,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
 
         $this->assertStringNotContainsString('Exclure cet adhérent ⚠️', $crawler->filter('ul.dropdown-menu')->text());
 
-        $this->client->request(Request::METHOD_GET, \sprintf('/admin/app/adherent/%s/ban', $adherent->getId()));
+        $this->client->request(Request::METHOD_GET, \sprintf('/app/adherent/%s/ban', $adherent->getId()));
         $this->assertResponseStatusCode(403, $this->client->getResponse());
     }
 
@@ -158,14 +158,14 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         $this->client->clickLink('Exclure cet adhérent ⚠️');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertSame(
-            \sprintf('/admin/app/adherent/%s/ban', $adherent->getId()),
+            \sprintf('/app/adherent/%s/ban', $adherent->getId()),
             $this->client->getRequest()->getPathInfo()
         );
 
         $crawler = $this->client->submitForm('Confirmer');
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->assertSame(
-            '/admin/app/adherent/list',
+            '/app/adherent/list',
             $this->client->getRequest()->getPathInfo()
         );
 
@@ -226,7 +226,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
             }
 
             $this->assertSame(
-                \sprintf('/admin/app/adherent/%s/ban', $adherent->getId()),
+                \sprintf('/app/adherent/%s/ban', $adherent->getId()),
                 $this->client->getRequest()->getPathInfo()
             );
 
@@ -235,7 +235,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
             $crawler = $this->client->submitForm('Confirmer');
 
             $this->assertSame(
-                '/admin/app/adherent/list',
+                '/app/adherent/list',
                 $this->client->getRequest()->getPathInfo()
             );
 
@@ -327,9 +327,9 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
 
         $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, '/admin/app/adherent/create-renaissance');
+        $this->client->request(Request::METHOD_GET, '/app/adherent/create-renaissance');
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/admin/app/adherent/create-adherent-verify-email', $this->client);
+        $this->assertClientIsRedirectedTo('/app/adherent/create-adherent-verify-email', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -340,7 +340,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
             $crawler->filter('.alert-danger')->text()
         );
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/app/adherent/create-renaissance?email_address='.$submittedValues['email']);
+        $crawler = $this->client->request(Request::METHOD_GET, '/app/adherent/create-renaissance?email_address='.$submittedValues['email']);
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 
@@ -349,7 +349,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertClientIsRedirectedTo('/admin/app/adherent/create-adherent-verify-email', $this->client);
+        $this->assertClientIsRedirectedTo('/app/adherent/create-adherent-verify-email', $this->client);
 
         $crawler = $this->client->followRedirect();
 
@@ -461,7 +461,7 @@ class AdherentRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
     {
         $this->authenticateAsAdmin($this->client, 'superadmin@en-marche-dev.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, '/admin/app/adherent/create-renaissance?email_address='.$submittedValues['email']);
+        $crawler = $this->client->request(Request::METHOD_GET, '/app/adherent/create-renaissance?email_address='.$submittedValues['email']);
 
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
 

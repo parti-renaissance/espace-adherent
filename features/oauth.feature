@@ -1,4 +1,5 @@
 @app
+@renaissance
 Feature: Using OAuth for 2-legged OAuth flow (client credentials)
   In order to secure API or user data access
   As an API or an En-Marche! user
@@ -24,11 +25,10 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
       | client_id     | 138140b3-1dd2-11b2-ad7e-2348ad4fef66 |
       | response_type | code                                 |
     Then I should be redirected to "/connexion"
-    Then I should see "Connectez-vous avec votre compte"
     When I fill in the following:
       | _login_email    | carl999@example.fr |
       | _login_password | secret!12345       |
-    And I press "Connexion"
+    And I press "Me connecter"
     Then I should be on "/oauth/v2/auth"
     And the response status code should be 200
     And I should see "Je me connecte à Coalition App avec mon compte En Marche."

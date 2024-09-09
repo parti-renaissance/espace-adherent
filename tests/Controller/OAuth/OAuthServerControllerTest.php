@@ -12,13 +12,13 @@ use League\OAuth2\Server\CryptKey;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebTestCase;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ApiControllerTestTrait;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
 #[Group('api')]
-class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
+class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
     use ApiControllerTestTrait;
@@ -240,7 +240,7 @@ class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
         static::assertTrue($response->isRedirect('/connexion'));
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
-        $this->client->submit($crawler->selectButton('Connexion')->form([
+        $this->client->submit($crawler->selectButton('Me connecter')->form([
             '_login_email' => 'carl999@example.fr',
             '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
@@ -316,7 +316,7 @@ class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
     public function testOAuthAuthenticationFailedWithoutRedirectUriIfClientHasMoreThan1RedirectUri(): void
     {
         $this->client->request(Request::METHOD_GET, '/connexion');
-        $this->client->submit($this->client->getCrawler()->selectButton('Connexion')->form([
+        $this->client->submit($this->client->getCrawler()->selectButton('Me connecter')->form([
             '_login_email' => 'carl999@example.fr',
             '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
@@ -341,7 +341,7 @@ class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
 
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
-        $this->client->submit($crawler->selectButton('Connexion')->form([
+        $this->client->submit($crawler->selectButton('Me connecter')->form([
             '_login_email' => 'carl999@example.fr',
             '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
@@ -362,7 +362,7 @@ class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
 
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
-        $this->client->submit($crawler->selectButton('Connexion')->form([
+        $this->client->submit($crawler->selectButton('Me connecter')->form([
             '_login_email' => 'carl999@example.fr',
             '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
@@ -381,7 +381,7 @@ class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
 
         $crawler = $this->client->followRedirect();
         $this->isSuccessful($this->client->getResponse());
-        $this->client->submit($crawler->selectButton('Connexion')->form([
+        $this->client->submit($crawler->selectButton('Me connecter')->form([
             '_login_email' => 'president-ad@renaissance-dev.fr',
             '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
@@ -419,7 +419,7 @@ class OAuthServerControllerTest extends AbstractEnMarcheWebTestCase
 
         $params['state'] = 'bds1775p6f3ks29h2vla20ng5n';
 
-        return \sprintf('http://'.$this->getParameter('app_host').'/oauth/v2/auth?%s', http_build_query($params));
+        return \sprintf('http://'.$this->getParameter('app_renaissance_host').'/oauth/v2/auth?%s', http_build_query($params));
     }
 
     private function getEncryptedCode(AuthorizationCode $authCode): string

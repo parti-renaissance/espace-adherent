@@ -20,14 +20,14 @@ class InactiveRenaissanceDisconnectionCaseTest extends AbstractRenaissanceWebTes
 
         $this->authenticateAsAdmin($this->client);
 
-        $this->client->request(Request::METHOD_GET, '/admin/app/media/list');
+        $this->client->request(Request::METHOD_GET, '/app/media/list');
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         // wait
         sleep(1900);
 
         // go to another page
-        $this->client->request(Request::METHOD_GET, '/admin/dashboard');
+        $this->client->request(Request::METHOD_GET, '/dashboard');
 
         // should be redirected to log out
         $this->assertClientIsRedirectedTo('http://test.renaissance.code/deconnexion', $this->client);

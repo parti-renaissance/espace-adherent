@@ -11,6 +11,7 @@ services:
                 aliases:
                     - enmarche.code
                     - renaissance.code
+                    - admin.renaissance.code
                     - test.enmarche.code
                     - test.renaissance.code
         volumes:
