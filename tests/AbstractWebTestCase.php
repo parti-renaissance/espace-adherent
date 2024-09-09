@@ -44,4 +44,9 @@ abstract class AbstractWebTestCase extends WebTestCase
     {
         $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('app_renaissance_host'));
     }
+
+    protected function makeAdminClient(): void
+    {
+        $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('admin_renaissance_host'));
+    }
 }

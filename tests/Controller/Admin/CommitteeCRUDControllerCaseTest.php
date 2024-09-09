@@ -7,13 +7,13 @@ use App\Mailer\Message\CommitteeApprovalConfirmationMessage;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAdminWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 use Tests\App\MessengerTestTrait;
 
 #[Group('functional')]
 #[Group('admin')]
-class CommitteeCRUDControllerCaseTest extends AbstractRenaissanceWebTestCase
+class CommitteeCRUDControllerCaseTest extends AbstractAdminWebTestCase
 {
     use ControllerTestTrait;
     use MessengerTestTrait;
@@ -28,7 +28,7 @@ class CommitteeCRUDControllerCaseTest extends AbstractRenaissanceWebTestCase
 
         $this->authenticateAsAdmin($this->client);
 
-        $crawler = $this->client->request(Request::METHOD_GET, \sprintf('/admin/app/committee/%s/approve', $committee->getId()));
+        $crawler = $this->client->request(Request::METHOD_GET, \sprintf('/app/committee/%s/approve', $committee->getId()));
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 

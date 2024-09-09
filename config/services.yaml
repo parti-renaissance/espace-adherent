@@ -25,6 +25,7 @@ parameters:
     legislatives_avecvous_host:           "%env(LEGISLATIVES_AVECVOUS_HOST)%"
     renaissance_host:                     "%env(RENAISSANCE_HOST)%"
     app_renaissance_host:                 "%env(APP_RENAISSANCE_HOST)%"
+    admin_renaissance_host:               "%env(ADMIN_RENAISSANCE_HOST)%"
     webhook_renaissance_host:             "%env(WEBHOOK_RENAISSANCE_HOST)%"
     api_renaissance_host:                 "%env(API_RENAISSANCE_HOST)%"
     renaissance_qrcode_host:              "%env(RENAISSANCE_QRCODE_HOST)%"
@@ -58,6 +59,7 @@ services:
             $mailchimpWebhookKey: '%env(MAILCHIMP_WEBHOOK_KEY)%'
             $timelineMaxItems: '%timeline_max_messages%'
             $renaissanceHost: '%app_renaissance_host%'
+            $adminRenaissanceHost: '%admin_renaissance_host%'
             $jemengageHost: '%jemengage_host%'
             $jemengageAuthHost: '%jemengage_auth_host%'
             $avecvousHost: '%avecvous_host%'

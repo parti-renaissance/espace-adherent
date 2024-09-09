@@ -6,11 +6,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAdminWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
-class FileControllerCaseTest extends AbstractRenaissanceWebTestCase
+class FileControllerCaseTest extends AbstractAdminWebTestCase
 {
     use ControllerTestTrait;
 
@@ -21,7 +21,7 @@ class FileControllerCaseTest extends AbstractRenaissanceWebTestCase
 
         $this->authenticateAsAdherent($this->client, $adherentEmail);
 
-        $this->client->request(Request::METHOD_GET, \sprintf('admin/filesystem/documents/%s', $image->getUuid()));
+        $this->client->request(Request::METHOD_GET, \sprintf('/filesystem/documents/%s', $image->getUuid()));
 
         self::assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
@@ -32,7 +32,7 @@ class FileControllerCaseTest extends AbstractRenaissanceWebTestCase
 
         $this->authenticateAsAdmin($this->client, 'writer@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, \sprintf('/admin/filesystem/documents/%s', $image->getUuid()));
+        $this->client->request(Request::METHOD_GET, \sprintf('/filesystem/documents/%s', $image->getUuid()));
 
         self::assertResponseStatusCode(Response::HTTP_FORBIDDEN, $this->client->getResponse());
     }
@@ -43,7 +43,7 @@ class FileControllerCaseTest extends AbstractRenaissanceWebTestCase
 
         $this->authenticateAsAdmin($this->client, 'admin@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, \sprintf('/admin/filesystem/documents/%s', $directory->getUuid()));
+        $this->client->request(Request::METHOD_GET, \sprintf('/filesystem/documents/%s', $directory->getUuid()));
 
         self::assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }
@@ -54,7 +54,7 @@ class FileControllerCaseTest extends AbstractRenaissanceWebTestCase
 
         $this->authenticateAsAdmin($this->client, 'admin@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, \sprintf('/admin/filesystem/documents/%s', $directory->getUuid()));
+        $this->client->request(Request::METHOD_GET, \sprintf('/filesystem/documents/%s', $directory->getUuid()));
 
         self::assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
         self::assertClientIsRedirectedTo('https://dpt.en-marche.fr', $this->client);
@@ -66,7 +66,7 @@ class FileControllerCaseTest extends AbstractRenaissanceWebTestCase
 
         $this->authenticateAsAdmin($this->client, 'admin@en-marche-dev.fr');
 
-        $this->client->request(Request::METHOD_GET, \sprintf('/admin/filesystem/documents/%s', $directory->getUuid()));
+        $this->client->request(Request::METHOD_GET, \sprintf('/filesystem/documents/%s', $directory->getUuid()));
 
         self::assertResponseStatusCode(Response::HTTP_NOT_FOUND, $this->client->getResponse());
     }

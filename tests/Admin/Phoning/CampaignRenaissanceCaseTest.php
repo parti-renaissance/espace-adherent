@@ -5,12 +5,12 @@ namespace Tests\App\Admin\Phoning;
 use App\Entity\Phoning\Campaign;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractAdminWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
 #[Group('admin')]
-class CampaignRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
+class CampaignRenaissanceCaseTest extends AbstractAdminWebTestCase
 {
     use ControllerTestTrait;
 
@@ -18,7 +18,7 @@ class CampaignRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
     {
         $this->authenticateAsAdmin($this->client);
 
-        $crawler = $this->client->request(Request::METHOD_GET, $url = '/admin/app/phoning-campaign/create');
+        $crawler = $this->client->request(Request::METHOD_GET, $url = '/app/phoning-campaign/create');
 
         $form = $crawler->selectButton('Créer')->form();
         $formName = str_replace(\sprintf('%s?uniqid=', $url), '', $form->getFormNode()->getAttribute('action'));
@@ -33,6 +33,6 @@ class CampaignRenaissanceCaseTest extends AbstractRenaissanceWebTestCase
         $this->client->submit($form);
 
         $campaign = $this->getRepository(Campaign::class)->findOneBy(['title' => $title]);
-        $this->assertClientIsRedirectedTo(\sprintf('/admin/app/phoning-campaign/%d/edit', $campaign->getId()), $this->client);
+        $this->assertClientIsRedirectedTo(\sprintf('/app/phoning-campaign/%d/edit', $campaign->getId()), $this->client);
     }
 }

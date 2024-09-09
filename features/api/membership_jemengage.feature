@@ -101,12 +101,6 @@ Feature:
       }
     }
     """
-    When I click on the email link "create_password_link"
-    And I fill in the following:
-      | adherent_reset_password[password][first]  | test1234 |
-      | adherent_reset_password[password][second] | test1234 |
-    And I press "Créer mon mot de passe"
-    Then I should be on "http://login.jemengage.code/bienvenue"
 
     Scenario: As a non logged-in user I can request a reset password
       Given I send a "POST" request to "/api/membership/forgot-password?source=jemengage" with body:

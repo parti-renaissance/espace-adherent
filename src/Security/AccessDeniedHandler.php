@@ -17,6 +17,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
     public function __construct(
         private readonly Security $security,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly string $adminRenaissanceHost,
     ) {
     }
 
@@ -28,7 +29,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
 
         $user = $this->security->getUser();
 
-        if ($user instanceof Administrator && !str_starts_with($request->getPathInfo(), '/admin/')) {
+        if ($user instanceof Administrator && $request->getHost() !== $this->adminRenaissanceHost) {
             return new RedirectResponse($this->urlGenerator->generate('admin_app_adherent_list'));
         }
 
