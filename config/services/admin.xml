@@ -766,7 +766,7 @@
         </service>
 
         <service id="app.admin.transactional_email_template" class="App\Admin\Email\TransactionalEmailTemplateAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Template Email" group="Tech" />
+            <tag name="sonata.admin" manager-type="orm" label="Templates Email" group="Tech" />
 
             <argument />
             <argument>App\Entity\Email\TransactionalEmailTemplate</argument>
@@ -774,7 +774,7 @@
         </service>
 
         <service id="app.admin.subscription_type" class="App\Admin\SubscriptionTypeAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Types d'e-mails" group="Tech" />
+            <tag name="sonata.admin" manager-type="orm" label="Types d'Emails" group="Tech" />
 
             <argument />
             <argument>App\Entity\SubscriptionType</argument>

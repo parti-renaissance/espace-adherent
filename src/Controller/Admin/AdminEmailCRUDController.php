@@ -4,10 +4,13 @@ namespace App\Controller\Admin;
 
 use App\Entity\Administrator;
 use App\Entity\Email\EmailLog;
+use App\Entity\Email\TransactionalEmailTemplate;
 use App\Form\Admin\UnlayerContentType;
 use App\Mailer\Command\AsyncSendMessageCommand;
 use App\Mailer\MailerService;
 use App\Mailer\Message\EmailTemplateMessage;
+use App\Mailer\Template\Manager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,11 +33,12 @@ class AdminEmailCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
-    public function sendTestAction(MailerService $transactionalMailer): Response
+    public function sendTestAction(TransactionalEmailTemplate $template, MailerService $transactionalMailer): Response
     {
+        $this->admin->checkAccess('send_test', $template);
+
         /** @var Administrator $admin */
         $admin = $this->getUser();
-        $template = $this->admin->getSubject();
 
         $transactionalMailer->sendMessage(EmailTemplateMessage::create($template, $admin->getEmailAddress()), false);
 
@@ -43,9 +47,9 @@ class AdminEmailCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
-    public function contentAction(Request $request): Response
+    public function contentAction(TransactionalEmailTemplate $template, Request $request): Response
     {
-        $template = $this->admin->getSubject();
+        $this->admin->checkAccess('content', $template);
 
         $form = $this->createFormBuilder($template)
             ->add('jsonContent', HiddenType::class)
@@ -69,5 +73,34 @@ class AdminEmailCRUDController extends CRUDController
             'form' => $form->createView(),
             'action' => 'content',
         ]);
+    }
+
+    public function previewAction(TransactionalEmailTemplate $template): Response
+    {
+        $this->admin->checkAccess('preview', $template);
+
+        return $this->renderWithExtraParams('admin/email/preview.html.twig', [
+            'object' => $template,
+            'action' => 'preview',
+        ]);
+    }
+
+    public function previewContentAction(TransactionalEmailTemplate $template, Manager $templateManager): Response
+    {
+        $this->admin->checkAccess('preview_content', $template);
+
+        return new Response($templateManager->getTemplateContent($template));
+    }
+
+    public function duplicateAction(TransactionalEmailTemplate $template, EntityManagerInterface $entityManager): Response
+    {
+        $newTemplate = clone $template;
+
+        $entityManager->persist($newTemplate);
+        $entityManager->flush();
+
+        $this->addFlash('sonata_flash_success', 'Le template a été dupliqué');
+
+        return $this->redirect($this->admin->generateUrl('edit', ['id' => $newTemplate->getId()]));
     }
 }

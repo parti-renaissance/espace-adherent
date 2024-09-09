@@ -1,0 +1,17 @@
+{% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
+
+{% block sonata_page_content %}
+    <section class="content-header">
+        <div class="row">
+            <h4 class="sonata-ba-title col-md-6">
+                <a href="{{ path('admin_app_email_transactionalemailtemplate_content', {id: object.id}) }}">
+                    Template {{ object.identifier }}
+                </a> • <span>Contenu du template</span>
+            </h4>
+        </div>
+    </section>
+
+    <section class="content">
+        <iframe src="{{ path('admin_app_email_transactionalemailtemplate_preview_content', {id: object.id}) }}" style="width: 100%; height: 1000px; border: none;"></iframe>
+    </section>
+{% endblock %}

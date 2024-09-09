@@ -93,7 +93,7 @@ Feature:
     {
         "uuid": "969b1f08-53ec-4a7d-8d6e-7654a001b13f",
         "subject": "@string@",
-        "content": "<html><head><title>@string@</body></html>\n",
+        "content": "<html><head><title>@string@</body></html>",
         "json_content": null
     }
     """
