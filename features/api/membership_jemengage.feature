@@ -87,7 +87,7 @@ Feature:
           },
           {
             "name": "create_password_link",
-            "content": "http://login.jemengage.code/changer-mot-de-passe/@string@/@string@"
+            "content": "http://utilisateur.renaissance.code/changer-mot-de-passe/@string@/@string@"
           }
         ],
         "from_name": "Je m'engage",
@@ -108,10 +108,10 @@ Feature:
       {"email_address": "je-mengage-user-1@en-marche-dev.fr"}
       """
       Then the response status code should be 200
-      And I should have 1 email "JeMengageResetPasswordMessage" for "je-mengage-user-1@en-marche-dev.fr" with payload:
+      And I should have 1 email "RenaissanceResetPasswordMessage" for "je-mengage-user-1@en-marche-dev.fr" with payload:
       """
       {
-        "template_name": "je-mengage-reset-password",
+        "template_name": "renaissance-reset-password",
         "template_content": [],
         "message": {
           "subject": "Réinitialisation de votre mot de passe",
@@ -123,11 +123,11 @@ Feature:
               "content": "Jules"
             },
             {
-              "name": "create_password_link",
-              "content": "http://login.jemengage.code/changer-mot-de-passe/@string@/@string@"
+              "name": "reset_link",
+              "content": "http://utilisateur.renaissance.code/changer-mot-de-passe/@string@/@string@"
             }
           ],
-          "from_name": "Je m'engage",
+          "from_name": "Renaissance",
           "to": [
             {
               "email": "je-mengage-user-1@en-marche-dev.fr",

@@ -50,4 +50,11 @@ class PersistEmailControllerTest extends AbstractRenaissanceWebTestCase
         yield current($params = ['', 2]) => $params;
         yield current($params = ['luciole1989@spambox.fr', 3]) => $params;
     }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('user_vox_host'));
+    }
 }

@@ -34,6 +34,8 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
 
     public function testTryRequestSecuredResourceWithExpiredAccessToken(): void
     {
+        $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('api_renaissance_host'));
+
         $jwtAccessToken = $this->getExpiredJwtAccessToken();
 
         $this->client->request(Request::METHOD_GET, '/api/me', [], [], [
@@ -50,6 +52,8 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
 
     public function testTryRequestSecuredResourceWithRevokedAccessToken(): void
     {
+        $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('api_renaissance_host'));
+
         $jwtAccessToken = $this->getRevokedJwtAccessToken();
 
         $this->client->request(Request::METHOD_GET, '/api/me', [], [], [
@@ -279,6 +283,8 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertEquals(LastLoginGroupEnum::LESS_THAN_1_MONTH, $adherent->getLastLoginGroup());
 
         // 6. /api/me is not accessible without the access token
+        $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('api_renaissance_host'));
+
         $this->client->request(Request::METHOD_GET, '/api/me');
         static::assertStatusCode(Response::HTTP_UNAUTHORIZED, $this->client);
         $data = json_decode($json, true);
@@ -419,7 +425,7 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
 
         $params['state'] = 'bds1775p6f3ks29h2vla20ng5n';
 
-        return \sprintf('http://'.$this->getParameter('app_renaissance_host').'/oauth/v2/auth?%s', http_build_query($params));
+        return \sprintf('http://'.$this->getParameter('user_vox_host').'/oauth/v2/auth?%s', http_build_query($params));
     }
 
     private function getEncryptedCode(AuthorizationCode $authCode): string
@@ -475,6 +481,8 @@ class OAuthServerControllerTest extends AbstractRenaissanceWebTestCase
         $this->encryptionKey = $this->getParameter('ssl_encryption_key');
         $this->privateCryptKey = new CryptKey($this->getParameter('ssl_private_key'), null, false);
         $this->deviceRepository = $this->getRepository(Device::class);
+
+        $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('user_vox_host'));
     }
 
     protected function tearDown(): void

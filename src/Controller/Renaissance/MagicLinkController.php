@@ -62,14 +62,12 @@ class MagicLinkController extends AbstractController
             return $this->redirectToRoute('app_user_get_magic_link', ['app_domain' => $appUrlGenerator->getAppHost()]);
         }
 
-        return $this->render(\sprintf('security/%s_user_magic_link.html.twig', $appUrlGenerator::getAppCode()), ['form' => $form->createView()]);
+        return $this->render('security/renaissance_user_magic_link.html.twig', ['form' => $form->createView()]);
     }
 
     public function connectViaMagicLinkAction(Request $request, AuthAppUrlManager $appUrlManager): Response
     {
-        $appUrlGenerator = $appUrlManager->getUrlGenerator($appUrlManager->getAppCodeFromRequest($request) ?? AppCodeEnum::RENAISSANCE);
-
-        return $this->render(\sprintf('security/%s_connect_magic_link.html.twig', $appUrlGenerator::getAppCode()), [
+        return $this->render('security/renaissance_connect_magic_link.html.twig', [
             'expires' => $request->query->get('expires'),
             'user' => $request->query->get('user'),
             'hash' => $request->query->get('hash'),

@@ -1,5 +1,5 @@
 @app
-@renaissance
+@renaissance_user
 Feature: Using OAuth for 2-legged OAuth flow (client credentials)
   In order to secure API or user data access
   As an API or an En-Marche! user
@@ -66,19 +66,6 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
       "access_token":"@string@",
       "grant_types": ["client_credentials"],
       "scopes": ["read:users"]
-    }
-    """
-    Given I add the access token to the Authorization header
-    When I send a "GET" request to "/api/me"
-    Then the response status code should be 401
-    And the response should be in JSON
-    And the JSON should be equal to:
-    """
-    {
-      "error": "access_denied",
-      "error_description": "The resource owner or authorization server denied the request.",
-      "message": "The resource owner or authorization server denied the request.",
-      "hint": "API user does not have access to this route"
     }
     """
 

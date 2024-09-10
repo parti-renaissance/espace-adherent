@@ -69,7 +69,7 @@ class MembershipController extends AbstractController
         }
 
         if ($adherent = $adherentRepository->findOneByEmail($data['email_address'])) {
-            $adherentResetPasswordHandler->handle($adherent, $request->query->get('source') ?? $adherent->getSource());
+            $adherentResetPasswordHandler->handle($adherent);
         }
 
         return $this->json('OK');

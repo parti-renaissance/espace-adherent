@@ -54,7 +54,7 @@ class UrlGenerator extends AbstractAppUrlGenerator
 
     public function generateLoginLink(): string
     {
-        return $this->urlGenerator->generate('app_legislative_login');
+        return $this->urlGenerator->generate('app_renaissance_login');
     }
 
     public function guessAppCodeFromRequest(Request $request): ?string

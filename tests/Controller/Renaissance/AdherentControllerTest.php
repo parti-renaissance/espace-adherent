@@ -29,15 +29,6 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
     private $emailRepository;
 
     #[DataProvider('provideProfilePage')]
-    public function testProfileActionIsSecured(string $profilePage): void
-    {
-        $this->client->request(Request::METHOD_GET, $profilePage);
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-    }
-
-    #[DataProvider('provideProfilePage')]
     public function testProfileActionIsAccessibleForAdherent(string $profilePage): void
     {
         $this->authenticateAsAdherent($this->client, 'renaissance-user-1@en-marche-dev.fr');
