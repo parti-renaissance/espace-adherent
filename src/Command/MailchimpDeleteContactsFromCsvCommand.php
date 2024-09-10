@@ -3,7 +3,6 @@
 namespace App\Command;
 
 use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
-use App\Mailchimp\Synchronisation\Command\RemoveApplicationRequestCandidateCommand;
 use App\Mailchimp\Synchronisation\Command\RemoveNewsletterMemberCommand;
 use League\Csv\Reader;
 use League\Flysystem\FilesystemOperator;
@@ -40,7 +39,6 @@ class MailchimpDeleteContactsFromCsvCommand extends Command
         $this
             ->addArgument('file', InputArgument::REQUIRED, 'File csv with contact emails')
             ->addOption('adherents', null, InputOption::VALUE_NONE)
-            ->addOption('candidates', null, InputOption::VALUE_NONE)
             ->addOption('newsletters', null, InputOption::VALUE_NONE)
         ;
     }
@@ -53,10 +51,9 @@ class MailchimpDeleteContactsFromCsvCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $adherents = $input->getOption('adherents');
-        $candidates = $input->getOption('candidates');
         $newsletters = $input->getOption('newsletters');
 
-        if (!($adherents || $candidates || $newsletters)) {
+        if (!($adherents || $newsletters)) {
             throw new InvalidArgumentException('You should specify the type of contact');
         }
 
@@ -75,8 +72,6 @@ class MailchimpDeleteContactsFromCsvCommand extends Command
             $mail = current($row);
             if ($adherents) {
                 $command = new AdherentDeleteCommand($mail);
-            } elseif ($candidates) {
-                $command = new RemoveApplicationRequestCandidateCommand($mail);
             } elseif ($newsletters) {
                 $command = new RemoveNewsletterMemberCommand($mail);
             }

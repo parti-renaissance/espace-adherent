@@ -418,7 +418,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'main_list_id',
                     'newsletter_list_id',
                     'elected_representative_list_id',
-                    'application_request_candidate_list_id',
                     'jecoute_list_id',
                     'jemengage_list_id',
                     'newsletter_legislative_candidate_list_id',
@@ -451,10 +450,6 @@ class AdherentMessageChangeCommandHandlerTest extends AbstractKernelTestCase
                     'A',
                     'B',
                     'C',
-                    [
-                        'running_mate' => 123,
-                        'volunteer' => 345,
-                    ],
                     'https://mailchimp.com',
                     'xyz'
                 ),

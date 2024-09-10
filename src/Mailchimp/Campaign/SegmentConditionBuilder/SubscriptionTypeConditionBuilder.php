@@ -8,8 +8,6 @@ use App\Entity\AdherentMessage\CorrespondentAdherentMessage;
 use App\Entity\AdherentMessage\DeputyAdherentMessage;
 use App\Entity\AdherentMessage\FdeCoordinatorAdherentMessage;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
-use App\Entity\AdherentMessage\Filter\MessageFilter;
-use App\Entity\AdherentMessage\Filter\ReferentUserFilter;
 use App\Entity\AdherentMessage\Filter\SegmentFilterInterface;
 use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
 use App\Entity\AdherentMessage\MailchimpCampaign;
@@ -42,18 +40,6 @@ class SubscriptionTypeConditionBuilder extends AbstractConditionBuilder
 
         switch ($messageClass = \get_class($campaign->getMessage())) {
             case RegionalCoordinatorAdherentMessage::class:
-                if (
-                    (
-                        ($filter = $campaign->getMessage()->getFilter()) instanceof ReferentUserFilter
-                        || $filter instanceof MessageFilter
-                    )
-                    && ($filter->getContactOnlyRunningMates() || $filter->getContactOnlyVolunteers())
-                ) {
-                    return [];
-                }
-
-                $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;
-                break;
             case PresidentDepartmentalAssemblyAdherentMessage::class:
             case FdeCoordinatorAdherentMessage::class:
                 $interestKeys[] = SubscriptionTypeEnum::REFERENT_EMAIL;

@@ -59,16 +59,6 @@
                                     {{ form_row(form.excludeRoles, {label: false, attr: {class: 'candidate-incompatible filter__field multi_select2 js-role-select', 'data-opposite': form.includeRoles.vars.id}}) }}
                                 </div>
                             {% endif %}
-
-                            {% if form.contactOnlyVolunteers is defined %}
-                                <div class="filter__row" id="candidate-checkboxes-container">
-                                    <label class="filter__label">CANDIDATS</label>
-                                    {% if form.contactOnlyRunningMates is defined %}
-                                        {{ form_row(form.contactOnlyRunningMates, {label: 'Colistiers'}) }}
-                                    {% endif %}
-                                    {{ form_row(form.contactOnlyVolunteers, {label: 'Bénévoles'}) }}
-                                </div>
-                            {% endif %}
                         </div>
                     </div>
                 {% endif %}

@@ -100,7 +100,6 @@ services:
             $mainListId:                            '%env(MAILCHIMP_MEMBER_LIST_ID)%'
             $newsletterListId:                      '%env(MAILCHIMP_NEWSLETTER_LIST_ID)%'
             $electedRepresentativeListId:           '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
-            $applicationRequestCandidateListId:     '%env(MAILCHIMP_APPLICATION_REQUEST_CANDIDATE_LIST_ID)%'
             $jecouteListId:                         '%env(MAILCHIMP_JECOUTE_LIST_ID)%'
             $jeMengageListId:                       '%env(MAILCHIMP_JEMENGAGE_LIST_ID)%'
             $newsletterLegislativeCandidateListId:  '%env(MAILCHIMP_NEWSLETTER_LEGISLATIVE_CANDIDATE_LIST_ID)%'
@@ -115,6 +114,5 @@ services:
             $memberInterestInterestGroupId:         '%env(MAILCHIMP_MEMBER_INTEREST_INTEREST_GROUP_ID)%'
             $subscriptionTypeInterestGroupId:       '%env(MAILCHIMP_SUBSCRIPTION_TYPE_INTEREST_GROUP_ID)%'
 
-            $applicationRequestTagIds:              '%env(json:MAILCHIMP_APPLICATION_REQUEST_TAG_IDS)%'
             $mailchimpCampaignUrl:                  '%env(MAILCHIMP_CAMPAIGN_URL)%'
             $mailchimpOrg:                          '%env(MAILCHIMP_ORG_ID)%'

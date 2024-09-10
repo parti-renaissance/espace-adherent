@@ -5,8 +5,6 @@ namespace App\Mailchimp\Synchronisation;
 use App\Adherent\Tag\TagTranslator;
 use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
-use App\Entity\ApplicationRequest\ApplicationRequest;
-use App\Entity\ApplicationRequest\VolunteerRequest;
 use App\Entity\Campus\Registration;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Geo\Zone;
@@ -134,28 +132,6 @@ class RequestBuilder implements LoggerAwareInterface
             ->setIsAdherent($electedRepresentative->isAdherent())
             ->setActiveTags($this->electedRepresentativeTagsBuilder->buildTags($electedRepresentative))
             ->setIsSubscribeRequest(false === $electedRepresentative->isEmailUnsubscribed())
-        ;
-    }
-
-    public function updateFromApplicationRequest(ApplicationRequest $applicationRequest): self
-    {
-        $activeTags = $applicationRequest instanceof VolunteerRequest ?
-            [ApplicationRequestTagLabelEnum::VOLUNTEER_LABEL]
-            : [ApplicationRequestTagLabelEnum::RUNNING_MATE_LABEL];
-
-        if ($applicationRequest->isAdherent()) {
-            $activeTags[] = ApplicationRequestTagLabelEnum::ADHERENT_LABEL;
-        }
-
-        return $this
-            ->setEmail($applicationRequest->getEmailAddress())
-            ->setGender($applicationRequest->getGender())
-            ->setFirstName($applicationRequest->getFirstName())
-            ->setLastName($applicationRequest->getLastName())
-            ->setFavoriteCities($applicationRequest->getFavoriteCitiesNames())
-            ->setFavoriteCitiesCodes($applicationRequest->getFavoriteCityPrefixedCodes())
-            ->setTakenForCity($applicationRequest->getTakenForCity())
-            ->setActiveTags($activeTags)
         ;
     }
 

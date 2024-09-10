@@ -6,7 +6,6 @@ use App\AdherentMessage\DynamicSegmentInterface;
 use App\Entity\Adherent;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\MailchimpCampaign;
-use App\Entity\ApplicationRequest\ApplicationRequest;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\Jecoute\JemarcheDataSurvey;
 use App\Entity\MailchimpSegment;
@@ -161,29 +160,6 @@ class Manager implements LoggerAwareInterface
 
         if ($result) {
             $this->updateMemberTags($emailAddress, $listId, $requestBuilder);
-        }
-    }
-
-    public function editApplicationRequestCandidate(ApplicationRequest $applicationRequest): void
-    {
-        $requestBuilder = $this->requestBuildersLocator->get(RequestBuilder::class);
-
-        $result = $this
-            ->driver
-            ->editMember(
-                $requestBuilder
-                    ->updateFromApplicationRequest($applicationRequest)
-                    ->buildMemberRequest($applicationRequest->getEmailAddress()),
-                $this->mailchimpObjectIdMapping->getApplicationRequestCandidateListId()
-            )
-        ;
-
-        if ($result) {
-            // Active/Inactive member's tags
-            $this->driver->updateMemberTags(
-                $requestBuilder->createMemberTagsRequest($applicationRequest->getEmailAddress()),
-                $this->mailchimpObjectIdMapping->getApplicationRequestCandidateListId()
-            );
         }
     }
 
@@ -421,11 +397,6 @@ class Manager implements LoggerAwareInterface
     public function deleteNewsletterMember(string $mail): void
     {
         $this->driver->deleteMember($mail, $this->mailchimpObjectIdMapping->getNewsletterListId());
-    }
-
-    public function deleteApplicationRequestCandidate(string $mail): void
-    {
-        $this->driver->deleteMember($mail, $this->mailchimpObjectIdMapping->getApplicationRequestCandidateListId());
     }
 
     public function getReportData(MailchimpCampaign $campaign): array
