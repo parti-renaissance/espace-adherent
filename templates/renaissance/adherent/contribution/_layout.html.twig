@@ -1,58 +1,71 @@
-{% extends 'renaissance/adherent/_layout.html.twig' %}
+{% extends 'base_renaissance.html.twig' %}
 
 {% block page_title 'Cotisation élus' %}
 
-{% block content_right_side %}
-    <section class="space-y-4 md:space-y-6" id="elected-representative-contribution">
-        <div class="flex items-center justify-between">
-            <h1 class="text-3xl font-bold leading-10 text-gray-900">Cotisation élus</h1>
+{% block content %}
+    <div x-data="{ show: false }" @keydown.window.escape="show = false;" class="adherent-account relative flex min-h-screen flex-col bg-gray-50">
+        <!-- Navbar -->
+        {% include 'renaissance/adherent/_nav_bar.html.twig' with {profile: false, main_site_url_return_back: path('vox_app_redirect')} %}
 
-            {% set steps = [
-                'app_renaissance_contribution_fill_revenue',
-                'app_renaissance_contribution_see_amount',
-                'app_renaissance_contribution_fill_informations',
-            ] %}
+        <!-- Main Content -->
+        <main class="relative mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 flex-grow flex lg:px-8 lg:py-8 overflow-hidden">
+            <!-- Right side -->
+            <div class="lg:min-w-0 lg:flex-1">
+                <div class="lg:pl-8 pointer-events-auto" tabindex="-1">
+                    <section class="space-y-4 md:space-y-6" id="elected-representative-contribution">
+                        <div class="flex items-center justify-between">
+                            <h1 class="text-3xl font-bold leading-10 text-gray-900">Cotisation élus</h1>
 
-            {% set current_step_index = null %}
-            {% for step in steps %}
-                {% set current_step_index = is_active_route(app.request, step) ? loop.index : current_step_index %}
-            {% endfor %}
+                            {% set steps = [
+                                'app_renaissance_contribution_fill_revenue',
+                                'app_renaissance_contribution_see_amount',
+                                'app_renaissance_contribution_fill_informations',
+                            ] %}
 
-            {% block contribution_navigation %}
-            <nav class="flex items-center justify-center" aria-label="Progress">
-                <p class="text-sm font-medium">Etape {{ current_step_index}} sur {{ steps|length }}</p>
-                <ol role="list" class="ml-8 flex items-center space-x-5">
-                    {% for step in steps %}
-                        <li>
-                            {% if current_step_index is same as null or current_step_index > loop.index %}
-                                <!-- Completed Step -->
-                                <a href="{{ path(step) }}" class="block h-2.5 w-2.5 rounded-full bg-re-blue-600 hover:bg-re-blue-900">
-                                    <span class="sr-only">Etape {{ loop.index }}</span>
-                                </a>
-                            {% elseif current_step_index is same as loop.index %}
-                                <!-- Current Step -->
-                                <a href="#" class="relative flex items-center justify-center" aria-current="step">
-                                    <span class="absolute flex h-5 w-5 p-px" aria-hidden="true">
-                                        <span class="h-full w-full rounded-full bg-re-blue-200"></span>
-                                    </span>
-                                    <span class="relative block h-2.5 w-2.5 rounded-full bg-re-blue-600" aria-hidden="true"></span>
-                                    <span class="sr-only">Etape {{ loop.index }}</span>
-                                </a>
-                            {% else %}
-                                <!-- Upcoming Step -->
-                                <a href="#" class="block h-2.5 w-2.5 rounded-full bg-gray-200 hover:bg-gray-400">
-                                    <span class="sr-only">Step {{ loop.index }}</span>
-                                </a>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ol>
-            </nav>
-            {% endblock contribution_navigation %}
-        </div>
+                            {% set current_step_index = null %}
+                            {% for step in steps %}
+                                {% set current_step_index = is_active_route(app.request, step) ? loop.index : current_step_index %}
+                            {% endfor %}
 
-        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
-            {% block contribution_content %}{% endblock %}
-        </div>
-    </section>
+                            {% block contribution_navigation %}
+                                <nav class="flex items-center justify-center" aria-label="Progress">
+                                    <p class="text-sm font-medium">Étape {{ current_step_index}} sur {{ steps|length }}</p>
+                                    <ol role="list" class="ml-8 flex items-center space-x-5">
+                                        {% for step in steps %}
+                                            <li>
+                                                {% if current_step_index is same as null or current_step_index > loop.index %}
+                                                    <!-- Completed Step -->
+                                                    <a href="{{ path(step) }}" class="block h-2.5 w-2.5 rounded-full bg-re-blue-600 hover:bg-re-blue-900">
+                                                        <span class="sr-only">Étape {{ loop.index }}</span>
+                                                    </a>
+                                                {% elseif current_step_index is same as loop.index %}
+                                                    <!-- Current Step -->
+                                                    <a href="#" class="relative flex items-center justify-center" aria-current="step">
+                                                        <span class="absolute flex h-5 w-5 p-px" aria-hidden="true">
+                                                            <span class="h-full w-full rounded-full bg-re-blue-200"></span>
+                                                        </span>
+                                                        <span class="relative block h-2.5 w-2.5 rounded-full bg-re-blue-600" aria-hidden="true"></span>
+                                                        <span class="sr-only">Étape {{ loop.index }}</span>
+                                                    </a>
+                                                {% else %}
+                                                    <!-- Upcoming Step -->
+                                                    <a href="#" class="block h-2.5 w-2.5 rounded-full bg-gray-200 hover:bg-gray-400">
+                                                        <span class="sr-only">Step {{ loop.index }}</span>
+                                                    </a>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ol>
+                                </nav>
+                            {% endblock contribution_navigation %}
+                        </div>
+
+                        <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
+                            {% block contribution_content '' %}
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
 {% endblock %}

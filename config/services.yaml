@@ -16,7 +16,7 @@ parameters:
     avecvous_host:                        "%env(AVECVOUS_HOST)%"
     national_event_host:                  "%env(NATIONAL_EVENT_HOST)%"
     user_besoindeurope_host:              "%env(USER_BESOINDEUROPE_HOST)%"
-    user_legislative_host:                "%env(USER_LEGISLATIVE_HOST)%"
+    user_vox_host:                        "%env(USER_VOX_HOST)%"
     legislative_host:                     "%env(LEGISLATIVE_HOST)%"
     vox_host:                             "%env(VOX_HOST)%"
     besoindeurope_host:                   "%env(BESOINDEUROPE_HOST)%"
@@ -64,7 +64,7 @@ services:
             $jemengageAuthHost: '%jemengage_auth_host%'
             $avecvousHost: '%avecvous_host%'
             $userBesoinDEuropeHost: '%user_besoindeurope_host%'
-            $userLegislativeHost: '%user_legislative_host%'
+            $userVoxHost: '%user_vox_host%'
             $dynamicLinksHost: '%env(DYNAMIC_LINKS_HOST)%'
             $jemengageAppPackageId: '%env(JEMENGAGE_APP_PACKAGE_ID)%'
             $invalidEmailHashKey: '%env(INVALID_EMAIL_HASH_KEY)%'

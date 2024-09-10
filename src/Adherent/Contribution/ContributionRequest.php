@@ -58,7 +58,7 @@ class ContributionRequest
     public function updateFromAdherent(Adherent $adherent): void
     {
         $this->adherentId = $adherent->getId();
-        $this->revenueAmount = $adherent->getLastRevenueDeclaration()->amount;
+        $this->revenueAmount = $adherent->getLastRevenueDeclaration()?->amount;
     }
 
     public function needContribution(): bool
