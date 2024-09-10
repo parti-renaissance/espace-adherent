@@ -17,7 +17,7 @@ class SendWelcomeMailCommandHandler implements MessageHandlerInterface
     public function __construct(
         private readonly MailerService $transactionalMailer,
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly string $userLegislativeHost,
+        private readonly string $userVoxHost,
     ) {
     }
 
@@ -43,7 +43,7 @@ class SendWelcomeMailCommandHandler implements MessageHandlerInterface
                 $this->urlGenerator->generate('app_renaissance_newsletter_confirm', [
                     'uuid' => $subscription->getUuid()->toString(),
                     'confirm_token' => $subscription->token->toString(),
-                    'app_domain' => $this->userLegislativeHost,
+                    'app_domain' => $this->userVoxHost,
                 ], UrlGeneratorInterface::ABSOLUTE_URL)
             );
         }

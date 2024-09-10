@@ -8,11 +8,11 @@ use App\Repository\AdherentRepository;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractRenaissanceWebTestCase;
+use Tests\App\AbstractWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
-class ContributionControllerTest extends AbstractRenaissanceWebTestCase
+class ContributionControllerTest extends AbstractWebTestCase
 {
     use ControllerTestTrait;
 
@@ -100,6 +100,8 @@ class ContributionControllerTest extends AbstractRenaissanceWebTestCase
         parent::setUp();
 
         $this->adherentRepository = $this->getAdherentRepository();
+
+        $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('user_vox_host'));
     }
 
     protected function tearDown(): void

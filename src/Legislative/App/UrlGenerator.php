@@ -13,11 +13,11 @@ class UrlGenerator extends AbstractAppUrlGenerator
 {
     private string $appHost;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, private readonly ClientRepository $clientRepository, string $userLegislativeHost)
+    public function __construct(UrlGeneratorInterface $urlGenerator, private readonly ClientRepository $clientRepository, string $userVoxHost)
     {
         parent::__construct($urlGenerator);
 
-        $this->appHost = $userLegislativeHost;
+        $this->appHost = $userVoxHost;
     }
 
     public static function getAppCode(): string
