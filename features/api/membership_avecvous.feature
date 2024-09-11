@@ -146,7 +146,7 @@ Feature:
             "global_merge_vars": [
                 {
                     "name": "create_password_link",
-                    "content": "http://utilisateur.renaissance.code/changer-mot-de-passe/@string@/@string@"
+                    "content": "http://test.renaissance.code/changer-mot-de-passe/@string@/@string@"
                 }
             ],
             "to": [

@@ -2,18 +2,10 @@
 
 namespace Tests\App\Controller\Renaissance;
 
-use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
-use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
-use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
 use App\Entity\Reporting\EmailSubscriptionHistory;
-use App\Entity\Unregistration;
-use App\Mailer\Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage;
 use App\Repository\Email\EmailLogRepository;
-use App\Repository\UnregistrationRepository;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractRenaissanceWebTestCase;
@@ -28,16 +20,13 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
     /* @var EmailLogRepository */
     private $emailRepository;
 
-    #[DataProvider('provideProfilePage')]
-    public function testProfileActionIsAccessibleForAdherent(string $profilePage): void
+    public function testProfileActionIsAccessibleForAdherent(): void
     {
         $this->authenticateAsAdherent($this->client, 'renaissance-user-1@en-marche-dev.fr');
 
-        $crawler = $this->client->request(Request::METHOD_GET, $profilePage);
+        $this->client->request(Request::METHOD_GET, '/app');
 
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertSame('Laure Fenix', trim($crawler->filter('h6')->text()));
-        $this->assertStringContainsString('Inscrite depuis le 25 janvier 2017', $crawler->filter('#adherent-since')->text());
+        $this->assertClientIsRedirectedTo('/oauth/v2/auth?response_type=code&client_id=8128979a-cfdb-45d1-a386-f14f22bb19ae&redirect_uri=http://localhost:8081&scope=jemarche_app%20read:profile%20write:profile', $this->client);
     }
 
     public static function provideProfilePage(): \Generator
@@ -215,50 +204,6 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
         self::assertEquals('adherent_profile[gender]', $disabledFields->eq(3)->attr('name'));
     }
 
-    public function testAdherentChangePassword(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'renaissance-user-1@en-marche-dev.fr');
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/changer-mot-de-passe');
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-
-        $this->assertCount(1, $crawler->filter('input[name="adherent_change_password[old_password]"]'));
-        $this->assertCount(1, $crawler->filter('input[name="adherent_change_password[password][first]"]'));
-        $this->assertCount(1, $crawler->filter('input[name="adherent_change_password[password][second]"]'));
-
-        // Submit the profile form with invalid data
-        $crawler = $this->client->submit($crawler->selectButton('adherent_change_password[submit]')->form(), [
-            'adherent_change_password' => [
-                'old_password' => '',
-                'password' => [
-                    'first' => '',
-                    'second' => '',
-                ],
-            ],
-        ]);
-
-        $errors = $crawler->filter('.re-form-error');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        self::assertSame(3, $errors->count());
-        self::assertSame('Le mot de passe est invalide.', $errors->eq(0)->text());
-        self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
-        self::assertSame('Votre mot de passe doit comporter au moins 8 caractères.', $errors->eq(2)->text());
-
-        // Submit the profile form with valid data
-        $this->client->submit($crawler->selectButton('adherent_change_password[submit]')->form(), [
-            'adherent_change_password' => [
-                'old_password' => 'secret!12345',
-                'password' => [
-                    'first' => 'heaneaheah',
-                    'second' => 'heaneaheah',
-                ],
-            ],
-        ]);
-
-        $this->assertClientIsRedirectedTo('/parametres/mon-compte/changer-mot-de-passe', $this->client);
-    }
-
     /**
      * @return EmailSubscriptionHistory[]
      */
@@ -280,98 +225,6 @@ class AdherentControllerTest extends AbstractRenaissanceWebTestCase
         }
 
         return $qb->getQuery()->getResult();
-    }
-
-    #[DataProvider('dataProviderCannotTerminateMembership')]
-    public function testCannotTerminateMembership(string $email): void
-    {
-        $this->authenticateAsAdherent($this->client, $email);
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertStringNotContainsString(
-            'Si vous souhaitez désadhérer et supprimer votre compte En Marche, cliquez-ici.',
-            $crawler->text()
-        );
-
-        $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/desadherer');
-
-        $this->assertStatusCode(Response::HTTP_FORBIDDEN, $this->client);
-    }
-
-    public static function dataProviderCannotTerminateMembership(): \Generator
-    {
-        yield 'PAD' => ['president-ad@renaissance-dev.fr'];
-        yield 'RCL' => ['adherent-male-55@en-marche-dev.fr'];
-    }
-
-    #[DataProvider('provideAdherentCredentials')]
-    public function testAdherentTerminatesMembership(string $userEmail, string $uuid): void
-    {
-        /** @var Adherent $adherent */
-        $adherentBeforeUnregistration = $this->getAdherentRepository()->findOneByEmail($userEmail);
-
-        $this->authenticateAsAdherent($this->client, $userEmail);
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/desadherer');
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-
-        $crawler = $this->client->submit($crawler->selectButton('Je confirme la suppression de mon adhésion')->form());
-
-        $this->assertEquals('http://'.$this->getParameter('app_renaissance_host').'/parametres/mon-compte/desadherer', $this->client->getRequest()->getUri());
-
-        $errors = $crawler->filter('.re-form-error');
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertSame(0, $errors->count());
-        $this->assertStringContainsString('Votre adhésion et votre compte Renaissance ont bien été supprimés, vos données personnelles ont été effacées de notre base.', $this->client->getResponse()->getContent());
-
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(RenaissanceAdherentTerminateMembershipMessage::class, $userEmail));
-
-        $this->client->getContainer()->get('test.'.RemoveAdherentAndRelatedDataCommandHandler::class)(
-            new RemoveAdherentAndRelatedDataCommand(Uuid::fromString($uuid))
-        );
-
-        /** @var Adherent $adherent */
-        $adherent = $this->getAdherentRepository()->findOneByEmail($userEmail);
-
-        $this->assertNull($adherent);
-
-        /** @var Unregistration $unregistration */
-        $unregistration = $this->get(UnregistrationRepository::class)->findOneByUuid($uuid);
-        $mailHistorySubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherentBeforeUnregistration, 'subscribe');
-        $mailHistoryUnsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherentBeforeUnregistration, 'unsubscribe');
-
-        $this->assertSame(\count($mailHistorySubscriptions), \count($mailHistoryUnsubscriptions));
-        $this->assertEmpty($unregistration->getReasons());
-        $this->assertNull($unregistration->getComment());
-        $this->assertSame($adherentBeforeUnregistration->getRegisteredAt()->format('Y-m-d H:i:s'), $unregistration->getRegisteredAt()->format('Y-m-d H:i:s'));
-        $this->assertSame((new \DateTime())->format('Y-m-d'), $unregistration->getUnregisteredAt()->format('Y-m-d'));
-        $this->assertSame($adherentBeforeUnregistration->getUuid()->toString(), $unregistration->getUuid()->toString());
-        $this->assertSame($adherentBeforeUnregistration->getPostalCode(), $unregistration->getPostalCode());
-    }
-
-    public function testBlockedCertificationRequest(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-
-        $crawler = $this->client->request('GET', '/espace-adherent/mon-compte/certification');
-        $this->assertResponseStatusCode(200, $this->client->getResponse());
-        $this->assertStringContainsString('Demande de certification bloquée', $crawler->filter('#certification')->text());
-
-        $this->client->request('GET', '/espace-adherent/mon-compte/certification/demande');
-        $this->assertClientIsRedirectedTo('/espace-adherent/mon-compte/certification', $this->client);
-
-        $this->client->followRedirect();
-        $this->assertResponseStatusCode(200, $this->client->getResponse());
-    }
-
-    public static function provideAdherentCredentials(): array
-    {
-        return [
-            'adherent 1' => ['renaissance-user-1@en-marche-dev.fr', LoadAdherentData::RENAISSANCE_USER_1_UUID],
-        ];
     }
 
     protected function setUp(): void

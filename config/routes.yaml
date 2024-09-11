@@ -75,7 +75,7 @@ app_assets:
     type: "annotation"
     host: "{app_domain}"
     defaults:
-        app_domain: "%app_renaissance_host%"
+        app_domain: "%user_vox_host%"
     requirements:
         app_domain: "%app_host%|%app_renaissance_host%|%national_event_host%|%user_vox_host%"
 
@@ -252,18 +252,8 @@ app_webhook_renaissance:
     type: "annotation"
 
 app_renaissance:
-    host:   "%app_renaissance_host%"
+    host:   "%user_vox_host%"
     resource: "../src/Controller/Renaissance"
-    type: "annotation"
-
-app_adherent_elected_contribution:
-    host: "%user_vox_host%"
-    resource: "../src/Controller/Renaissance/Adherent/Contribution"
-    type: "annotation"
-
-app_adhesion:
-    host: "%user_vox_host%"
-    resource: "../src/Controller/Renaissance/Adhesion"
     type: "annotation"
 
 app_besoindeurope:

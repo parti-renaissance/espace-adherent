@@ -2,6 +2,7 @@
 
 namespace App\OAuth\App;
 
+use App\AppCodeEnum;
 use Symfony\Component\HttpFoundation\Request;
 
 class AuthAppUrlManager
@@ -16,7 +17,7 @@ class AuthAppUrlManager
 
     public function getUrlGenerator(string $appCode): AuthAppUrlGeneratorInterface
     {
-        return $this->urlGenerators[$appCode];
+        return $this->urlGenerators[$appCode] ?? $this->urlGenerators[AppCodeEnum::RENAISSANCE];
     }
 
     public function getAppCodeFromRequest(Request $request): ?string
