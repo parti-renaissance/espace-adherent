@@ -151,7 +151,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
         return parent::start($request, $authException);
     }
 
-    protected function getLoginUrl()
+    protected function getLoginUrl(): string
     {
         if ($this->currentAppCode) {
             return $this->appUrlManager->getUrlGenerator($this->currentAppCode)->generateLoginLink();

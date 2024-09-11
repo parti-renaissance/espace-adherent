@@ -60,7 +60,6 @@ services:
             $renaissanceHost: '%app_renaissance_host%'
             $adminRenaissanceHost: '%admin_renaissance_host%'
             $jemengageHost: '%jemengage_host%'
-            $jemengageAuthHost: '%jemengage_auth_host%'
             $avecvousHost: '%avecvous_host%'
             $userBesoinDEuropeHost: '%env(USER_BESOINDEUROPE_HOST)%'
             $userVoxHost: '%user_vox_host%'

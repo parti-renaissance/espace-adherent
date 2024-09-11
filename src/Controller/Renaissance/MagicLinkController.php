@@ -5,7 +5,6 @@ namespace App\Controller\Renaissance;
 use App\AppCodeEnum;
 use App\Entity\Administrator;
 use App\Mailer\MailerService;
-use App\Mailer\Message\Ensemble\EnsembleMagicLinkMessage;
 use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
 use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\AdherentRepository;
@@ -27,16 +26,13 @@ class MagicLinkController extends AbstractController
         AdherentRepository $adherentRepository,
         MailerService $transactionalMailer,
         TranslatorInterface $translator,
-        AuthAppUrlManager $appUrlManager,
     ): Response {
-        $appUrlGenerator = $appUrlManager->getUrlGenerator($appCode = $appUrlManager->getAppCodeFromRequest($request) ?? AppCodeEnum::RENAISSANCE);
-
         if ($user = $this->getUser()) {
             if ($user instanceof Administrator) {
                 return $this->redirectToRoute('admin_app_adherent_list');
             }
 
-            return $this->redirect($appUrlGenerator->generateForLoginSuccess($user));
+            return $this->redirectToRoute('vox_app_redirect');
         }
 
         $form = $this
@@ -48,18 +44,14 @@ class MagicLinkController extends AbstractController
             $email = $form->getData();
 
             if ($adherent = $adherentRepository->findOneActiveByEmail($email)) {
-                $loginLink = $loginLinkHandler->createLoginLink($adherent, $request, $appCode);
+                $loginLink = $loginLinkHandler->createLoginLink($adherent, $request, AppCodeEnum::VOX);
 
-                if (AppCodeEnum::isMobileApp($appCode)) {
-                    $transactionalMailer->sendMessage(EnsembleMagicLinkMessage::create($adherent, $loginLink->getUrl()));
-                } else {
-                    $transactionalMailer->sendMessage(RenaissanceMagicLinkMessage::create($adherent, $loginLink->getUrl()));
-                }
+                $transactionalMailer->sendMessage(RenaissanceMagicLinkMessage::create($adherent, $loginLink->getUrl()));
             }
 
             $this->addFlash('info', $translator->trans('adherent.get_magic_link.email_sent', ['%email%' => $email]));
 
-            return $this->redirectToRoute('app_user_get_magic_link', ['app_domain' => $appUrlGenerator->getAppHost()]);
+            return $this->redirectToRoute('app_user_get_magic_link');
         }
 
         return $this->render('security/renaissance_user_magic_link.html.twig', ['form' => $form->createView()]);

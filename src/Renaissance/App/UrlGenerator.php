@@ -12,11 +12,11 @@ class UrlGenerator extends AbstractAppUrlGenerator
 {
     private string $appHost;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, string $renaissanceHost)
+    public function __construct(UrlGeneratorInterface $urlGenerator, string $userVoxHost)
     {
         parent::__construct($urlGenerator);
 
-        $this->appHost = $renaissanceHost;
+        $this->appHost = $userVoxHost;
     }
 
     public static function getAppCode(): string
@@ -31,7 +31,7 @@ class UrlGenerator extends AbstractAppUrlGenerator
 
     public function generateForLoginSuccess(Adherent $adherent): string
     {
-        return $this->urlGenerator->generate('app_renaissance_adherent_space');
+        return $this->urlGenerator->generate('vox_app_redirect');
     }
 
     public function generateSuccessResetPasswordLink(Request $request): string
