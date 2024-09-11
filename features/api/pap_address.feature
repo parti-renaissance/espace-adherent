@@ -14,7 +14,6 @@ Feature:
       | /api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f                                                  |
       | /api/v3/pap/address/a0b9231b-9ff5-49b9-aa7a-1d28abbba32f/voters                                           |
       | /api/v3/pap/buildings/faf30370-80c5-4a46-8c31-f6a361bfa23b/building_blocks                                |
-      | /api/v3/pap/buildings/2fbe7b02-944d-4abd-be3d-f9b2944917a9/events                                         |
       | /api/v3/pap/buildings/2bffd913-34fe-48ad-95f4-7381812b93dd/history                                        |
 
   Scenario Outline: As a logged-in user with no PAP user role I cannot get and manage PAP campaigns

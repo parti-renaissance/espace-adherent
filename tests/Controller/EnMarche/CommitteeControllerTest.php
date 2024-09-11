@@ -394,21 +394,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         self::assertStringNotContainsString($messages->getContent(), $this->client->getResponse()->getContent());
     }
 
-    public function testDeleteEditDenied()
-    {
-        $committee = $this->manager->getRepository(Committee::class)->findOneBy(['slug' => 'en-marche-paris-8']);
-        $messages = $this->manager->getRepository(CommitteeFeedItem::class)->findMostRecentFeedEvent($committee->getUuid());
-
-        $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/modifier');
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-
-        $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/supprimer');
-        $this->assertClientIsRedirectedTo('/comites', $this->client, false, true);
-
-        $this->client->request(Request::METHOD_DELETE, '/comites/en-marche-paris-8/timeline/'.$messages->getId().'/supprimer');
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-    }
-
     public function testGetTimeLineConnected()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');

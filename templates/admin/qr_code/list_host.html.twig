@@ -6,8 +6,6 @@
     <span class="badge
     {% if host is constant('App\\QrCode\\QrCodeHostEnum::HOST_ENMARCHE') %}
         bg-light-blue
-    {% elseif host is constant('App\\QrCode\\QrCodeHostEnum::HOST_AVECVOUS') %}
-        bg-green
     {% elseif host is constant('App\\QrCode\\QrCodeHostEnum::HOST_RENAISSANCE') %}
         bg-purple
     {% else %}

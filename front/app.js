@@ -106,18 +106,6 @@ class App {
         });
     }
 
-    runCommitteesMap() {
-        import('pages/committees_map').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('map_factory'), this.get('api'));
-        });
-    }
-
-    runEventsMap() {
-        import('pages/events_map').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('map_factory'), this.get('api'));
-        });
-    }
-
     runManagedList(columns, items) {
         import('pages/managed_list').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('slugifier'), columns, items);
@@ -133,18 +121,6 @@ class App {
     runSocialShare(urlAll, urlCategory) {
         import('pages/social_share').catch((error) => { throw error; }).then((module) => {
             module.default(urlAll, urlCategory);
-        });
-    }
-
-    runLegislativesCandidatesList() {
-        import('pages/candidates_list').catch((error) => { throw error; }).then((module) => {
-            module.default();
-        });
-    }
-
-    runLegislativesCandidatesMap() {
-        import('pages/candidates_map').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('map_factory'), this.get('api'));
         });
     }
 
@@ -172,12 +148,6 @@ class App {
                 this.get('api'),
                 postApplyCallback
             );
-        });
-    }
-
-    runGrandeMarcheEurope() {
-        import('pages/grande_marche_europe').catch((error) => { throw error; }).then((module) => {
-            module.default();
         });
     }
 

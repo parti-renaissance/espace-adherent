@@ -10,25 +10,18 @@ parameters:
     transactional_sender_email:           'contact@parti-renaissance.fr'
     transactional_sender_name:            'Renaissance'
     app_host:                             "%env(APP_HOST)%"
-    legislatives_host:                    "%env(LEGISLATIVES_HOST)%"
-    jemengage_host:                       "%env(JEMENGAGE_HOST)%"
-    jemengage_auth_host:                  "%env(JEMENGAGE_AUTH_HOST)%"
-    avecvous_host:                        "%env(AVECVOUS_HOST)%"
     national_event_host:                  "%env(NATIONAL_EVENT_HOST)%"
     user_vox_host:                        "%env(USER_VOX_HOST)%"
     legislative_host:                     "%env(LEGISLATIVE_HOST)%"
     vox_host:                             "%env(VOX_HOST)%"
     besoindeurope_host:                   "%env(BESOINDEUROPE_HOST)%"
-    avecvous_qrcode_host:                 "%env(AVECVOUS_QRCODE_HOST)%"
     procuration_host:                     "%env(PROCURATION_HOST)%"
-    legislatives_avecvous_host:           "%env(LEGISLATIVES_AVECVOUS_HOST)%"
     renaissance_host:                     "%env(RENAISSANCE_HOST)%"
     app_renaissance_host:                 "%env(APP_RENAISSANCE_HOST)%"
     admin_renaissance_host:               "%env(ADMIN_RENAISSANCE_HOST)%"
     webhook_renaissance_host:             "%env(WEBHOOK_RENAISSANCE_HOST)%"
     api_renaissance_host:                 "%env(API_RENAISSANCE_HOST)%"
     renaissance_qrcode_host:              "%env(RENAISSANCE_QRCODE_HOST)%"
-    nous_reussirons_host:                 "%env(NOUS_REUSSIRONS_HOST)%"
     mooc_base_url:                        "%env(MOOC_BASE_URL)%"
     api_path_prefix:                      "%env(API_PATH_PREFIX)%"
     router.request_context.scheme:        "%env(APP_SCHEME)%"
@@ -59,9 +52,7 @@ services:
             $timelineMaxItems: '%timeline_max_messages%'
             $renaissanceHost: '%app_renaissance_host%'
             $adminRenaissanceHost: '%admin_renaissance_host%'
-            $jemengageHost: '%jemengage_host%'
-            $avecvousHost: '%avecvous_host%'
-            $userBesoinDEuropeHost: '%env(USER_BESOINDEUROPE_HOST)%'
+            $jemengageHost: '%env(JEMENGAGE_HOST)%'
             $userVoxHost: '%user_vox_host%'
             $dynamicLinksHost: '%env(DYNAMIC_LINKS_HOST)%'
             $jemengageAppPackageId: '%env(JEMENGAGE_APP_PACKAGE_ID)%'
