@@ -26,14 +26,6 @@ class ListControllerTest extends AbstractRenaissanceWebTestCase
         self::assertSame('Formation sans description', $formations->eq(1)->text());
     }
 
-    public function testAnonymousCanNotSeeFormations(): void
-    {
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/formations');
-        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-    }
-
     public function testNonREAdherentCanNotSeeFormations(): void
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');

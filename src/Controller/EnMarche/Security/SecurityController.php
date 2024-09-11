@@ -2,6 +2,7 @@
 
 namespace App\Controller\EnMarche\Security;
 
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentChangeEmailToken;
 use App\Entity\AdherentResetPasswordToken;
@@ -29,21 +30,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SecurityController extends AbstractController
 {
     #[Route(path: '/connexion', name: 'app_user_login', methods: ['GET'])]
-    public function loginAction(
-        AuthenticationUtils $securityUtils,
-        FormFactoryInterface $formFactory,
-        AuthAppUrlManager $appUrlManager,
-        ?string $app = null,
-    ): Response {
+    public function loginAction(AuthenticationUtils $securityUtils, FormFactoryInterface $formFactory, ?string $app = null): Response
+    {
         if ($user = $this->getUser()) {
             if ($user instanceof Administrator) {
                 return $this->redirectToRoute('admin_app_adherent_list');
             }
 
-            $this->addFlash('info', 'Vous êtes déjà connecté(e)');
-
             if ($app) {
-                return $this->redirect($appUrlManager->getUrlGenerator($app)->generateForLoginSuccess($user));
+                return $this->redirectToRoute('vox_app_redirect');
             }
 
             return $this->redirectToRoute('app_search_events');
@@ -53,7 +48,7 @@ class SecurityController extends AbstractController
             '_login_email' => $securityUtils->getLastUsername(),
         ], ['remember_me' => true]);
 
-        return $this->render($app ? \sprintf('security/%s_user_login.html.twig', $app) : 'security/adherent_login.html.twig', [
+        return $this->render($app ? 'security/renaissance_user_login.html.twig' : 'security/adherent_login.html.twig', [
             'form' => $form->createView(),
             'error' => $securityUtils->getLastAuthenticationError(),
         ]);
@@ -68,17 +63,13 @@ class SecurityController extends AbstractController
         AdherentResetPasswordHandler $handler,
         AdherentRepository $adherentRepository,
         TranslatorInterface $translatable,
-        AuthAppUrlManager $appUrlManager,
     ): Response {
-        $currentApp = $appUrlManager->getAppCodeFromRequest($request);
-        $urlGenerator = $appUrlManager->getUrlGenerator($currentApp);
-
         if ($user = $this->getUser()) {
             if ($user instanceof Administrator) {
                 return $this->redirectToRoute('admin_app_adherent_list');
             }
 
-            return $this->redirect($urlGenerator->generateForLoginSuccess($user));
+            return $this->redirectToRoute('vox_app_redirect');
         }
 
         $form = $this->createFormBuilder()
@@ -91,19 +82,15 @@ class SecurityController extends AbstractController
             $email = $form->get('email')->getData();
 
             if ($adherent = $adherentRepository->findOneByEmail($email)) {
-                $handler->handle($adherent, $currentApp);
+                $handler->handle($adherent);
             }
 
             $this->addFlash('info', $translatable->trans('adherent.reset_password.email_sent', ['%email%' => $email]));
 
-            if ($currentApp) {
-                return $this->redirectToRoute('app_forgot_password', ['app_domain' => $urlGenerator->getAppHost()]);
-            }
-
-            return $this->redirectToRoute('app_user_login');
+            return $this->redirectToRoute('app_forgot_password');
         }
 
-        return $this->render($currentApp ? \sprintf('security/%s_forgot_password.html.twig', $currentApp) : 'security/forgot_password.html.twig', [
+        return $this->render('security/renaissance_forgot_password.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -117,10 +104,8 @@ class SecurityController extends AbstractController
         AdherentResetPasswordHandler $handler,
         AuthAppUrlManager $appUrlManager,
     ): Response {
-        $appUrlGenerator = $appUrlManager->getUrlGenerator($appUrlManager->getAppCodeFromRequest($request) ?? PlatformAuthUrlGenerator::getAppCode());
-
         if ($this->getUser()) {
-            return $this->redirect($appUrlGenerator->generateHomepageLink());
+            return $this->redirectToRoute('vox_app_redirect');
         }
 
         if ($resetPasswordToken->getUsageDate()) {
@@ -140,10 +125,12 @@ class SecurityController extends AbstractController
                     $adherent,
                     $resetPasswordToken,
                     $newPassword,
-                    $appUrlGenerator::getAppCode(),
+                    AppCodeEnum::RENAISSANCE,
                     $request->query->has('is_creation')
                 );
                 $this->addFlash('info', 'adherent.reset_password.success');
+
+                $appUrlGenerator = $appUrlManager->getUrlGenerator($appUrlManager->getAppCodeFromRequest($request) ?? PlatformAuthUrlGenerator::getAppCode());
 
                 return $this->redirect($appUrlGenerator->generateSuccessResetPasswordLink($request));
             } catch (AdherentTokenExpiredException $e) {
@@ -151,7 +138,7 @@ class SecurityController extends AbstractController
             }
         }
 
-        return $this->render(\sprintf('security/%s_reset_password.html.twig', $appUrlGenerator::getAppCode()), [
+        return $this->render('security/renaissance_reset_password.html.twig', [
             'form' => $form->createView(),
         ]);
     }

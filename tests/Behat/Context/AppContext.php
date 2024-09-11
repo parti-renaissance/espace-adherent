@@ -13,11 +13,13 @@ class AppContext extends RawMinkContext
     private const TAG_RENAISSANCE = 'renaissance';
     private const TAG_RENAISSANCE_API = 'renaissance_api';
     private const TAG_RENAISSANCE_ADMIN = 'renaissance_admin';
+    private const TAG_RENAISSANCE_USER = 'renaissance_user';
 
     private const RENAISSANCE_TAGS = [
         self::TAG_RENAISSANCE,
         self::TAG_RENAISSANCE_API,
         self::TAG_RENAISSANCE_ADMIN,
+        self::TAG_RENAISSANCE_USER,
     ];
 
     #[BeforeScenario]
@@ -36,6 +38,7 @@ class AppContext extends RawMinkContext
             $paramName = match ($renaissanceTag) {
                 self::TAG_RENAISSANCE_API => 'api_renaissance_host',
                 self::TAG_RENAISSANCE_ADMIN => 'admin_renaissance_host',
+                self::TAG_RENAISSANCE_USER => 'user_vox_host',
                 default => 'app_renaissance_host',
             };
 

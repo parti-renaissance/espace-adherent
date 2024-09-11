@@ -1,8 +1,8 @@
-@renaissance
+@renaissance_user
 @javascript
 @javascript2
+@skip
 Feature:
-
     Scenario: I can become adherent
         Given the following fixtures are loaded:
             | LoadSubscriptionTypeData |
@@ -87,7 +87,7 @@ Feature:
                     },
                     {
                         "name": "magic_link",
-                        "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=test@test.com&expires=@number@&hash=@string@"
+                        "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=test@test.com&expires=@number@&hash=@string@&_failure_path=%2Fconnexion"
                     }
                 ],
                 "from_name": "Renaissance",

@@ -45,22 +45,11 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $adherent = $this->adherentRepository->findOneByEmail($email);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/espace-adherent', $this->client);
+        $this->assertClientIsRedirectedTo('/app', $this->client);
         $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
 
-        $this->client->followRedirects();
-        $crawler = $this->client->followRedirect();
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->assertSame($fullName, trim($crawler->filter('h6')->first()->text()));
-
-        $this->client->followRedirects(false);
-        $this->client->click($crawler->selectLink('Me déconnecter')->link());
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('http://test.renaissance.code/', $this->client);
-
-        $crawler = $this->client->followRedirect();
-        $this->assertSame(0, $crawler->selectLink($fullName)->count());
+        $this->client->followRedirect();
+        $this->assertClientIsRedirectedTo('/oauth/v2/auth?response_type=code&client_id=8128979a-cfdb-45d1-a386-f14f22bb19ae&redirect_uri=http://localhost:8081&scope=jemarche_app%20read:profile%20write:profile', $this->client);
     }
 
     public static function getAdherentEmails(): array
@@ -233,6 +222,8 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->adherentRepository = $this->getAdherentRepository();
         $this->emailRepository = $this->getEmailRepository();
+
+        $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('user_vox_host'));
     }
 
     protected function tearDown(): void

@@ -56,4 +56,11 @@ class ValidateEmailControllerTest extends AbstractRenaissanceWebTestCase
         yield current($params = ['invalid-email@parti-renaissance..fr', 2]) => $params;
         yield current($params = ['', 2]) => $params;
     }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('user_vox_host'));
+    }
 }

@@ -12,6 +12,7 @@ services:
                     - enmarche.code
                     - renaissance.code
                     - admin.renaissance.code
+                    - utilisateur.renaissance.code
                     - test.enmarche.code
                     - test.renaissance.code
         volumes:
