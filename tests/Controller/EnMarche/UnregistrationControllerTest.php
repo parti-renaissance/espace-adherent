@@ -19,8 +19,6 @@ class UnregistrationControllerTest extends AbstractEnMarcheWebTestCase
     use ControllerTestTrait;
 
     #[DependsExternal('Tests\App\Controller\Renaissance\Adherent\Contribution\ContributionControllerTest', 'testOnGoingElectedRepresentativeCanSeeContributionWorkflow')]
-    #[DependsExternal('Tests\App\Controller\Renaissance\AdherentControllerTest', 'testBlockedCertificationRequest')]
-    #[DependsExternal('Tests\App\Controller\Renaissance\UnregistrationControllerTest', 'testAdherentCanUnregisterSuccessfully')]
     public function testAdherentCanUnregisterSuccessfully(): void
     {
         $countForbidden = 0;

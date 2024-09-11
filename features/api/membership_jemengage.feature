@@ -87,7 +87,7 @@ Feature:
           },
           {
             "name": "create_password_link",
-            "content": "http://utilisateur.renaissance.code/changer-mot-de-passe/@string@/@string@"
+            "content": "http://test.renaissance.code/changer-mot-de-passe/@string@/@string@"
           }
         ],
         "from_name": "Je m'engage",
@@ -124,7 +124,7 @@ Feature:
             },
             {
               "name": "reset_link",
-              "content": "http://utilisateur.renaissance.code/changer-mot-de-passe/@string@/@string@"
+              "content": "http://test.renaissance.code/changer-mot-de-passe/@string@/@string@"
             }
           ],
           "from_name": "Renaissance",

@@ -42,7 +42,7 @@ abstract class AbstractWebTestCase extends WebTestCase
 
     protected function makeRenaissanceClient(): void
     {
-        $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('app_renaissance_host'));
+        $this->client->setServerParameter('HTTP_HOST', static::getContainer()->getParameter('user_vox_host'));
     }
 
     protected function makeAdminClient(): void
