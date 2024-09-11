@@ -95,11 +95,6 @@
                             </div>
                         </nav>
                         <ul>
-                            {% if is_granted('ROLE_FORMATION_SPACE') %}
-                                <li class="space--10-0">
-                                    <a href="{{ path('app_formation_home') }}" class="text--body text--small link--no-decor">Formation</a>
-                                </li>
-                            {% endif %}
                             <li class="space--10-0"><a href="https://aide.en-marche.fr" rel="noopener noreferrer" target="_blank" class="text--body text--small link--no-decor">Aide</a></li>
                             <li class="space--10-0"><a href="{{ path('logout') }}" class="text--body text--small link--no-decor">Déconnexion</a></li>
                         </ul>

@@ -33,8 +33,6 @@ class QrCodeEntityHandler
         switch ($qrCode->getHost()) {
             case QrCodeHostEnum::HOST_ENMARCHE:
                 return 'app_qr_code';
-            case QrCodeHostEnum::HOST_AVECVOUS:
-                return 'avecvous_qr_code';
             case QrCodeHostEnum::HOST_RENAISSANCE:
                 return 'renaissance_qr_code';
             default:

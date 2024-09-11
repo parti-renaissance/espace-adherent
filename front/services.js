@@ -5,7 +5,6 @@ import ReqwestApiClient from './services/api/ReqwestApiClient';
 import AddressFormFactory from './services/address/AddressFormFactory';
 import VoteLocationFormFactory from './services/vote/VoteLocationFormFactory';
 import Slugifier from './services/slugifier/Slugifier';
-import MapFactory from './services/map/MapFactory';
 import DateFieldsSynchronizer from './services/form/DateFieldsSynchronizer';
 
 /**
@@ -52,11 +51,6 @@ export default (di) => {
      * Vote office form
      */
     di.set('vote_location.form_factory', () => new VoteLocationFormFactory(di.get('api')));
-
-    /*
-     * Map factory
-     */
-    di.set('map_factory', () => new MapFactory());
 
     di.set('form.date_synchronizer', () => new DateFieldsSynchronizer());
 };

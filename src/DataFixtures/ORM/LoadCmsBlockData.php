@@ -239,16 +239,6 @@ Vous pouvez consulter notre Politique de protection des données (si vous êtes 
         ));
 
         $manager->persist($this->createCmsBlock(
-            'legislative-newsletter-thanks-content',
-            'Texte affiché pour la page de confirmation de souscription à la newsletter d\'un candidat aux législatives',
-            <<<'TXT'
-                <h1 class="text--large">
-                    Votre inscription à notre newsletter est validée. Merci.
-                </h1>
-                TXT
-        ));
-
-        $manager->persist($this->createCmsBlock(
             'donation-index-header-content',
             'Texte affiché dans le header de la page d\'accueil des dons',
             <<<'TXT'

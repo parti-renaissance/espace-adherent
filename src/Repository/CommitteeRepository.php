@@ -48,18 +48,6 @@ class CommitteeRepository extends ServiceEntityRepository
         parent::__construct($registry, Committee::class);
     }
 
-    public function countElements(): int
-    {
-        return (int) $this
-            ->createQueryBuilder('c')
-            ->select('COUNT(c)')
-            ->where('c.status = :approved AND c.version = 1')
-            ->setParameter('approved', Committee::APPROVED)
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
     /**
      * Finds a Committee instance by its unique canonical name.
      */

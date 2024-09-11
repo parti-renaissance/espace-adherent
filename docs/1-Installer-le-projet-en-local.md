@@ -156,14 +156,13 @@ Voici par defaut les noms de domaine pour les differentes applications, configur
 
 ```
 env(APP_HOST): enmarche.code
-env(LEGISLATIVES_HOST): legislatives.enmarche.code
 ```
 
 Le projet devrait être accessible sur
 [http://enmarche.code:8000](http://enmarche.code:8000) (ou si vous êtes sous macOS, sur le port 8000 de la
 machine virtuelle de votre instance Docker).
 
-Si vous préférez accéder à l'application principale via [http://localhost:8000](http://localhost:8000) au lieu de [http://enmarche.code:8000](http://enmarche.code:8000) par exemple, il vous suffit d'ajuster le fichier `/etc/hosts` ainsi que le fichier `app/config/parameters.yml` et les parametres `env(APP_HOST)` et `env(LEGISLATIVES_HOST)`.
+Si vous préférez accéder à l'application principale via [http://localhost:8000](http://localhost:8000) au lieu de [http://enmarche.code:8000](http://enmarche.code:8000) par exemple, il vous suffit d'ajuster le fichier `/etc/hosts` ainsi que le fichier `app/config/parameters.yml` et les parametres `env(APP_HOST)`.
 
 ### 1.1.3.1 Accéder à l'espace d'administration
 

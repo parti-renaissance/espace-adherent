@@ -2,7 +2,6 @@
 
 namespace Tests\App\Controller\EnMarche;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\App\AbstractEnMarcheWebTestCase;
@@ -23,23 +22,5 @@ class HomeControllerTest extends AbstractEnMarcheWebTestCase
         $this->client->request(Request::METHOD_GET, '/dynamic-redirection-302');
 
         $this->assertClientIsRedirectedTo('/comites', $this->client);
-    }
-
-    #[DataProvider('provideUrlsAndRedirections')]
-    public function testRemoveTrailingSlashAction(string $uri, string $redirectUri)
-    {
-        $this->client->request(Request::METHOD_GET, $uri);
-
-        $this->assertClientIsRedirectedTo($redirectUri, $this->client, true, true);
-
-        $this->client->followRedirect();
-
-        $this->isSuccessful($this->client->getResponse());
-    }
-
-    public static function provideUrlsAndRedirections(): \Generator
-    {
-        yield 'Emmanuel Macron' => ['/emmanuel-macron/', '/emmanuel-macron'];
-        yield 'Le mouvement' => ['/le-mouvement/', '/le-mouvement'];
     }
 }

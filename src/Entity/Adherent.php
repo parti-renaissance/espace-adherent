@@ -705,10 +705,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_CONSULAR';
         }
 
-        if ($this->hasFormationSpaceAccess()) {
-            $roles[] = 'ROLE_FORMATION_SPACE';
-        }
-
         if ($this->isRegionalCoordinator()) {
             $roles[] = 'ROLE_REGIONAL_COORDINATOR';
         }
@@ -1640,11 +1636,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isPhoningCampaignTeamMember(): bool
     {
         return !$this->teamMemberships->isEmpty();
-    }
-
-    public function hasFormationSpaceAccess(): bool
-    {
-        return $this->isHost() || $this->isSupervisor();
     }
 
     public function getCharters(): AdherentCharterCollection

@@ -6,7 +6,6 @@ use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Event\BaseEvent;
-use App\Entity\Event\BaseEventCategory;
 use App\Entity\Event\CommitteeEvent;
 use App\Event\EventTypeEnum;
 use App\Event\EventVisibilityEnum;
@@ -37,42 +36,6 @@ class EventRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry, string $className = CommitteeEvent::class)
     {
         parent::__construct($registry, $className);
-    }
-
-    public function countElements(
-        bool $onlyPublished = true,
-        bool $withPrivate = false,
-        bool $forRenaissance = false,
-    ): int {
-        $qb = $this
-            ->createQueryBuilder('e')
-            ->leftJoin('e.category', 'ec')
-            ->select('COUNT(e)')
-        ;
-
-        if ($onlyPublished) {
-            $qb->where('e.published = :published')
-                ->andWhere('ec.status = :enabled')
-                ->setParameter('published', true)
-                ->setParameter('enabled', BaseEventCategory::ENABLED)
-            ;
-        }
-
-        if (!$withPrivate) {
-            $qb
-                ->andWhere('e.visibility != :private_visibility')
-                ->setParameter('private_visibility', EventVisibilityEnum::PRIVATE)
-            ;
-        }
-
-        $qb
-            ->andWhere('e.renaissanceEvent = :for_re')
-            ->setParameter('for_re', $forRenaissance)
-        ;
-
-        return (int) $qb->getQuery()
-            ->getSingleScalarResult()
-        ;
     }
 
     public function findOneBySlug(string $slug): ?CommitteeEvent
@@ -194,16 +157,6 @@ class EventRepository extends ServiceEntityRepository
         ;
     }
 
-    public function countUpcomingEvents(bool $withPrivate = false): int
-    {
-        $qb = $this
-            ->createUpcomingEventsQueryBuilder($withPrivate)
-            ->select('COUNT(e.id)')
-        ;
-
-        return (int) $qb->getQuery()->getSingleScalarResult();
-    }
-
     public function findEventsByOrganizerPaginator(
         Adherent $organizer,
         int $page = 1,
@@ -224,89 +177,6 @@ class EventRepository extends ServiceEntityRepository
                 ;
             }
         );
-    }
-
-    public function findAllPublished(int $page = 1, int $limit = 50): PaginatorInterface
-    {
-        $qb = $this->createQueryBuilder('event')
-            ->select('event', 'organizer')
-            ->leftJoin('event.author', 'organizer')
-            ->where('event.published = :published')
-            ->orderBy('event.beginAt', 'DESC')
-            ->addOrderBy('event.name', 'ASC')
-            ->setParameter('published', true)
-        ;
-
-        return $this->configurePaginator($qb, $page, $limit);
-    }
-
-    private function createUpcomingEventsQueryBuilder(
-        bool $withPrivate = false,
-        bool $forRenaissance = false,
-    ): QueryBuilder {
-        $qb = $this->createQueryBuilder('e')->select('e', 'ec', 'c', 'o');
-        $qb->leftJoin('e.category', 'ec')
-            ->leftJoin('e.committee', 'c')
-            ->leftJoin('e.author', 'o')
-            ->where('e.published = :published')
-            ->andWhere('e.renaissanceEvent = :for_re')
-            ->andWhere('e.status = :event_status')
-            ->andWhere('e.beginAt >= :today')
-            ->andWhere('ec.status = :category_status')
-            ->orderBy('e.beginAt', 'ASC')
-            ->setParameter('published', true)
-            ->setParameter('event_status', BaseEvent::STATUS_SCHEDULED)
-            ->setParameter('for_re', $forRenaissance)
-            ->setParameter('today', (new Chronos('now'))->format('Y-m-d'))
-            ->setParameter('category_status', BaseEventCategory::ENABLED)
-        ;
-
-        if (!$withPrivate) {
-            $qb
-                ->andWhere('e.visibility != :private_visibility')
-                ->setParameter('private_visibility', EventVisibilityEnum::PRIVATE)
-            ;
-        }
-
-        return $qb;
-    }
-
-    public function countSitemapEvents(): int
-    {
-        return (int) $this
-            ->createSitemapQueryBuilder()
-            ->select('COUNT(c) AS nb')
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
-    public function findSitemapEvents(int $page, int $perPage): array
-    {
-        return $this
-            ->createSitemapQueryBuilder()
-            ->select('e.uuid', 'e.slug', 'e.updatedAt')
-            ->orderBy('e.id')
-            ->setFirstResult(($page - 1) * $perPage)
-            ->setMaxResults($perPage)
-            ->getQuery()
-            ->getArrayResult()
-        ;
-    }
-
-    private function createSitemapQueryBuilder(): QueryBuilder
-    {
-        return $this
-            ->createQueryBuilder('e')
-            ->select('e', 'a', 'c', 'o')
-            ->leftJoin('e.category', 'a')
-            ->leftJoin('e.committee', 'c')
-            ->leftJoin('e.author', 'o')
-            ->where('c.status = :status')
-            ->andWhere('e.published = :published')
-            ->setParameter('status', Committee::APPROVED)
-            ->setParameter('published', true)
-        ;
     }
 
     public function searchAllEvents(SearchParametersFilter $search): array

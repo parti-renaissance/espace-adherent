@@ -10,15 +10,7 @@
                     <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
                 </p>
                 <ul class="nav-dropdown__item">
-                    <li><a href="{{ path('page_le_mouvement') }}">Qui sommes-nous ?</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'rejoignez-notre-equipe' }) }}">Recrutement</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'le-mouvement/fonctionnement' }) }}">Notre fonctionnement</a></li>
                     <li><a href="https://dpt.en-marche.fr" rel="noopener noreferrer" target="_blank">Nos sites départementaux</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'delegation-renaissance' }) }}">Les eurodéputés Renaissance</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'nos-senateurs' }) }}">Nos sénateurs</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'elus' }) }}">Nos élus locaux</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'francais-de-l-etranger' }) }}">Français de l’Étranger</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'communaute' }) }}">Communautés LaREM</a></li>
                 </ul>
             </div>
         </div>
@@ -28,9 +20,6 @@
                     Actualités
                     <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
                 </p>
-                <ul class="nav-dropdown__item">
-                    <li><a href="{{ path('app_static_page', { slug: 'toutes-les-newsletters' }) }}">Notre Newsletter</a></li>
-                </ul>
             </div>
         </div>
         <div class="l__row">
@@ -40,13 +29,10 @@
                     <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
                 </p>
                 <ul class="nav-dropdown__item">
-                    <li><a href="{{ path('app_static_page', { slug: 'engagement-larem' }) }}">S'engager à LaREM</a></li>
                     <li><a href="{{ path('app_search_events') }}">Événements</a></li>
                     <li><a href="{{ path('app_search_committees') }}">Comités</a></li>
                     <li><a href="https://pourunecause.fr">Je m'engage pour une cause</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'toutes-politiques' }) }}">Toutes Politiques</a></li>
                     <li><a href="{{ mooc_host }}">Formation</a></li>
-                    <li><a href="{{ path('page_le_mouvement_devenez_benevole') }}">Devenez bénévole</a></li>
                     <li><a href="{{ path('app_donation_index') }}">Faire un don</a></li>
                 </ul>
             </div>
@@ -57,14 +43,6 @@
                     Nos idées
                     <img alt="menu" class="nav__chevron" src="{{ asset('/images/icons/chevron-down-light-black.svg') }}">
                 </p>
-                <ul class="nav-dropdown__item">
-                    <li><a href="{{ path('app_static_page', { slug: 'notre-projet' }) }}">Notre projet</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'nos-resultats' }) }}">Nos résultats concrets</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'conferences-debats' }) }}">Les conférences-débats</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'publications' }) }}">Les publications</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'vos-contributions' }) }}">Vos contributions</a></li>
-                    <li><a href="{{ path('app_static_page', { slug: 'apres-la-crise' }) }}">Reconstruire Ensemble</a></li>
-                </ul>
             </div>
         </div>
     </ul>
@@ -98,32 +76,3 @@
         <a href="{{ path('app_donation_index') }}" class="btn btn--red">Donner</a>
     </div>
 </nav>
-
-{% if is_granted('ROLE_SUPERVISOR') or
-    is_granted('ROLE_HOST') or
-    is_granted('ROLE_DEPUTY') or
-    is_granted('ROLE_SENATOR') or
-    is_granted('ROLE_REGIONAL_COORDINATOR') or
-    is_granted('ROLE_PROCURATION_MANAGER') or
-    is_granted('ROLE_LEGISLATIVE_CANDIDATE') or
-    is_granted('ROLE_JECOUTE_MANAGER') or
-    is_granted('ROLE_ELECTION_RESULTS_REPORTER') or
-    is_granted('ROLE_SENATORIAL_CANDIDATE') or
-    is_granted('ROLE_CANDIDATE') or
-    is_granted('ROLE_DELEGATED_DEPUTY') or
-    is_granted('ROLE_DELEGATED_SENATOR') or
-    is_granted('ROLE_DELEGATED_CANDIDATE') or
-    is_granted('ROLE_ADHERENT')
-%}
-    <div class="background--darker l__hide--on-tablet">
-        <div class="l__row font-roboto l__wrapper ">
-            <ul class="space--10-0 list__links list__links--row list__links--row-left list__links--no-decor list__links--subnav nav-dropdown__menu__items">
-                {% if is_granted('ROLE_FORMATION_SPACE') %}
-                    <li>
-                        <a href="{{ path('app_formation_home') }}">Je me forme</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-{% endif %}

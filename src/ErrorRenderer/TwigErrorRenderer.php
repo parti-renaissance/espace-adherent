@@ -2,7 +2,6 @@
 
 namespace App\ErrorRenderer;
 
-use App\Membership\MembershipSourceEnum;
 use App\OAuth\App\AuthAppUrlManager;
 use Symfony\Bridge\Twig\ErrorRenderer\TwigErrorRenderer as BaseTwigErrorRenderer;
 use Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface;
@@ -16,20 +15,17 @@ class TwigErrorRenderer implements ErrorRendererInterface
     private RequestStack $requestStack;
     private AuthAppUrlManager $appUrlManager;
     private BaseTwigErrorRenderer $fallbackErrorRenderer;
-    private string $avecvousHost;
     private $debug;
 
     public function __construct(
         Environment $twig,
         RequestStack $requestStack,
-        string $avecvousHost,
         AuthAppUrlManager $appUrlManager,
         BaseTwigErrorRenderer $fallbackErrorRenderer,
         callable $debug,
     ) {
         $this->twig = $twig;
         $this->requestStack = $requestStack;
-        $this->avecvousHost = $avecvousHost;
         $this->appUrlManager = $appUrlManager;
         $this->fallbackErrorRenderer = $fallbackErrorRenderer;
         $this->debug = $debug;
@@ -46,10 +42,6 @@ class TwigErrorRenderer implements ErrorRendererInterface
         $request = $this->requestStack->getCurrentRequest();
 
         $appCode = $this->appUrlManager->getAppCodeFromRequest($request);
-
-        if (!$appCode && str_ends_with($request->getHost(), $this->avecvousHost)) {
-            $appCode = MembershipSourceEnum::AVECVOUS;
-        }
 
         if (!$appCode || !$template = $this->findTemplate($exception->getStatusCode(), $appCode)) {
             return $exception;

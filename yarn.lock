@@ -1212,11 +1212,6 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.0.tgz#a5417ae8427873f1dd08b70b3574b453e67b5f7f"
   integrity sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==
 
-"@google/markerclusterer@^2.0.9":
-  version "2.0.9"
-  resolved "https://registry.yarnpkg.com/@google/markerclusterer/-/markerclusterer-2.0.9.tgz#04e50e1bd0ea90e7c21ae487e5890180ce9a5f83"
-  integrity sha512-MMOvRRZTe8MtfLmr+3GmpnvbQPvdta7DhLgeapm3NpdBGe7sr8Gt3TvR/2ckBHttzjKz/dGd4v+GPmM34cC0Sg==
-
 "@googlemaps/js-api-loader@^1.16.6":
   version "1.16.8"
   resolved "https://registry.yarnpkg.com/@googlemaps/js-api-loader/-/js-api-loader-1.16.8.tgz#1595a2af80ca07e551fc961d921a2437d1cb3643"
@@ -1331,13 +1326,6 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
-
-"@mapbox/polylabel@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@mapbox/polylabel/-/polylabel-1.0.2.tgz#c5714619b65add082638ea06027e69b14500efa6"
-  integrity sha1-xXFGGbZa3QgmOOoGAn5psUUA76Y=
-  dependencies:
-    tinyqueue "^1.1.0"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -6282,11 +6270,6 @@ tiny-emitter@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
   integrity sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==
-
-tinyqueue@^1.1.0:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/tinyqueue/-/tinyqueue-1.2.3.tgz#b6a61de23060584da29f82362e45df1ec7353f3d"
-  integrity sha512-Qz9RgWuO9l8lT+Y9xvbzhPT2efIUIFd69N7eF7tJ9lnQl0iLj1M7peK7IoUGZL9DJHw9XftqLreccfxcQgYLxA==
 
 tippy.js@^6.3.7:
   version "6.3.7"

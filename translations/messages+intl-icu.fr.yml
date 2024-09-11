@@ -1102,14 +1102,6 @@ adherent_mandate.senateur: "Sénateur(rice)"
 adherent_mandate.euro_depute: "Député(e) européen(ne)"
 
 #
-# Page
-#
-page.layout.default: Défaut avec titre (sans image d'en-tête)
-page.layout.default_with_header_image: Défaut avec image d'en tête (sans titre)
-page.layout.municipales: Municipales
-page.layout.renaissance: Renaissance
-
-#
 # Geo Zone
 #
 

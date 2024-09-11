@@ -1,15 +1,3 @@
-#
-# AvecVous
-#
-avecvous_qr_code:
-    host: "%avecvous_qrcode_host%"
-    path: "/{uuid}"
-    methods: "GET"
-    controller: App\Controller\EnMarche\QrCodeController
-
-#
-# JeMengage
-#
 app_forgot_password:
     host: "%user_vox_host%"
     methods: "GET|POST"
@@ -62,11 +50,6 @@ app_user_connect_with_magic_link:
     requirements:
         app_domain: "%app_renaissance_host%|%user_vox_host%"
 
-app_jemengage:
-    host: '%jemengage_auth_host%'
-    resource: "../src/Controller/JeMengage"
-    type: "annotation"
-
 #
 # Assets
 #
@@ -107,9 +90,6 @@ app_api:
     requirements:
         app_domain: "%app_host%|%app_renaissance_host%|%api_renaissance_host%"
 
-api_login_check:
-    path: "%api_path_prefix%/login_check"
-
 #
 # API Platform
 #
@@ -148,62 +128,16 @@ app_admin:
     resource: "../src/Controller/Admin"
     type:     "annotation"
 
-lexik_paybox_ipn_bc:
-    host:     "{app_domain}"
-    path: /don/payment-ipn/{time}
-    controller: lexik_paybox.controller.default
-    methods: [ GET, POST ]
-    defaults:
-        app_domain: "%app_renaissance_host%"
-    requirements:
-        app_domain: "%app_host%|%app_renaissance_host%"
-
 lexik_paybox_ipn:
     host: "%webhook_renaissance_host%"
     path: /paybox/payment-ipn/{time}
     controller: lexik_paybox.controller.default
     methods: [ GET, POST ]
 
-# This route must be loaded first to prevent another route to match his path
-map_events:
-    host:    "%app_host%"
-    path:    /evenements/la-carte
-    methods: GET
-    defaults: { _controller: 'App\Controller\EnMarche\MapController:eventsAction' }
-
 app_enmarche:
     host:     "%app_host%"
     resource: "../src/Controller/EnMarche"
     type:     "annotation"
-
-#
-# Legislatives app
-#
-app_legislatives:
-    host:     "%legislatives_host%"
-    resource: "../src/Controller/Legislatives"
-    type:     "annotation"
-
-#
-# Legacy
-#
-app_desintox:
-    host: "%app_host%"
-    path: /emmanuel-macron/desintox/{slug}
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
-    defaults:
-        slug: ~
-        route: ''
-
-#
-# Redirections
-#
-app_redirect_login:
-    host: "%app_host%"
-    path: /login
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
-    defaults:
-        route: app_user_login
 
 app_renaissance_adherent_space:
     host: "%app_renaissance_host%"
@@ -225,11 +159,6 @@ app_procuration:
     resource: "../src/Controller/Procuration"
     type: "annotation"
 
-app_legislative_avecvous:
-    host: "%legislatives_avecvous_host%"
-    resource: "../src/Controller/Legislatives/Newsletter"
-    type: "annotation"
-
 app_api_intl:
     host: "{app_domain}"
     prefix: "%api_path_prefix%"
@@ -239,12 +168,6 @@ app_api_intl:
         app_domain: "%app_host%"
     requirements:
         app_domain: "%app_host%|%procuration_host%|%app_renaissance_host%"
-
-app_nous_reussirons:
-    host:     "%nous_reussirons_host%"
-    path:     /
-    methods:  GET
-    defaults: { _controller: App\Controller\EnMarche\PageController:showPageAction, slug: 'nous-reussirons' }
 
 app_webhook_renaissance:
     host:   "%webhook_renaissance_host%"
@@ -284,13 +207,9 @@ vox_app:
 
 vox_app_redirect:
     methods: GET
-    host: "{app_domain}"
+    host: "%user_vox_host%"
     path: /app
-    controller: App\Controller\BesoinDEurope\RedirectAppController
-    defaults:
-        app_domain: "%user_vox_host%"
-    requirements:
-        app_domain: "%user_vox_host%|%app_renaissance_host%"
+    controller: App\Controller\Vox\RedirectAppController
 
 user_renaissance_redirect:
     host: "%user_vox_host%"
@@ -307,14 +226,11 @@ app_renaissance_login:
         app: renaissance
 
 user_validate_new_email:
-    host: "{app_domain}"
+    host: "%user_vox_host%"
     path: "/valider-changement-email/{adherent_uuid}/{change_email_token}"
     controller: App\Controller\EnMarche\Security\SecurityController::activateNewEmailAction
     methods: GET
-    defaults:
-        app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%app_renaissance_host%"
         "adherent_uuid": "%pattern_uuid%"
         "change_email_token": "%pattern_sha1%"
 
@@ -390,16 +306,4 @@ app_certification:
     defaults:
         app_domain: "%app_host%"
     requirements:
-        app_domain: "%app_host%|%app_renaissance_host%"
-
-# This route must be loaded the last to prevent an override
-app_static_page:
-    host: "{app_domain}"
-    path: /{slug}
-    methods: GET
-    defaults:
-        _controller: 'App\Controller\EnMarche\PageController:showPageAction'
-        app_domain: "%app_host%"
-    requirements:
-        slug: .+
         app_domain: "%app_host%|%app_renaissance_host%"

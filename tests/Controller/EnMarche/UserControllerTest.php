@@ -7,12 +7,12 @@ use App\Entity\AdherentChangeEmailToken;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\App\AbstractEnMarcheWebTestCase;
+use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
 #[Group('membership')]
-class UserControllerTest extends AbstractEnMarcheWebTestCase
+class UserControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
@@ -26,10 +26,8 @@ class UserControllerTest extends AbstractEnMarcheWebTestCase
             'adherent_profile[emailAddress]' => 'referent@en-marche-dev.fr',
         ]);
 
-        $errors = $crawler->filter('.em-form--error');
-
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        self::assertSame('Cette adresse email existe déjà.', $errors->eq(0)->text());
+        self::assertStringContainsString('Cette adresse email existe déjà.', $crawler->filter('body')->text());
     }
 
     public function testUserCanValidateYourNewEmail(): void
@@ -56,7 +54,7 @@ class UserControllerTest extends AbstractEnMarcheWebTestCase
         $token = $this->getRepository(AdherentChangeEmailToken::class)->findLastUnusedByEmail('new.mail@test.com');
 
         $this->client->request(Request::METHOD_GET, \sprintf('/valider-changement-email/%s/%s', $token->getAdherentUuid(), $token->getValue()));
-        $this->assertClientIsRedirectedTo('//test.renaissance.code/espace-adherent', $this->client);
+        $this->assertClientIsRedirectedTo('/espace-adherent', $this->client);
 
         $flash = $this->client->getRequest()->getSession()->getFlashBag()->get('info');
         self::assertCount(1, $flash);

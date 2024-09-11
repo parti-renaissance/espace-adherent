@@ -38,18 +38,8 @@ class LoadQrCodeData extends Fixture implements DependentFixtureInterface
         );
         $qrCode2->setCreatedBy($admin);
 
-        $qrCode3 = $this->createQrCode(
-            self::QR_CODE_3_UUID,
-            'QR Code avec redirection externe sur le domaine avecvous.fr',
-            'https://avecvous.fr',
-            QrCodeHostEnum::HOST_AVECVOUS,
-            10
-        );
-        $qrCode3->setCreatedBy($admin);
-
         $manager->persist($qrCode1);
         $manager->persist($qrCode2);
-        $manager->persist($qrCode3);
 
         $manager->flush();
     }

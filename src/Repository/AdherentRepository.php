@@ -65,16 +65,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         parent::__construct($registry, Adherent::class);
     }
 
-    public function countElements(): int
-    {
-        return (int) $this
-            ->createQueryBuilder('a')
-            ->select('COUNT(a)')
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
     public function countAdherents(): int
     {
         return (int) $this

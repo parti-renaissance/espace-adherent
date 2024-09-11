@@ -71,7 +71,6 @@
         "league/glide-symfony": "^2.0",
         "league/iso3166": "^4.3",
         "league/oauth2-server": "^8.2",
-        "lexik/jwt-authentication-bundle": "^2.6",
         "lexik/paybox-bundle": "^2.1",
         "longitude-one/doctrine-spatial": "*",
         "myclabs/php-enum": "^1.5",
