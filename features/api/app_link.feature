@@ -9,11 +9,10 @@ Feature:
     When I send a "GET" request to "/api/v3/app-link/adhesion"
     Then the response status code should be 200
     And the response should be in JSON
-    And print last JSON response
     And the JSON should be equal to:
     """
     {
-        "url": "@string@.isUrl()",
+        "url": "@string@.isUrl().matchRegex('/&_target_path=https?.+%2Fadhesion/')",
         "expires_at": "@string@.isDateTime()"
     }
     """
