@@ -6,7 +6,6 @@ use App\AppCodeEnum;
 use App\Entity\Administrator;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
-use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\AdherentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -57,8 +56,21 @@ class MagicLinkController extends AbstractController
         return $this->render('security/renaissance_user_magic_link.html.twig', ['form' => $form->createView()]);
     }
 
-    public function connectViaMagicLinkAction(Request $request, AuthAppUrlManager $appUrlManager): Response
+    public function connectViaMagicLinkAction(Request $request): Response
     {
+        if ($user = $this->getUser()) {
+            if ($user instanceof Administrator) {
+                return $this->redirectToRoute('admin_app_adherent_list');
+            }
+            if ($targetPath = $request->query->get('_target_path')) {
+                $targetPath = parse_url($targetPath, \PHP_URL_PATH);
+
+                return $this->redirect($targetPath ?: '/');
+            }
+
+            return $this->redirectToRoute('vox_app_redirect');
+        }
+
         return $this->render('security/renaissance_connect_magic_link.html.twig', [
             'expires' => $request->query->get('expires'),
             'user' => $request->query->get('user'),

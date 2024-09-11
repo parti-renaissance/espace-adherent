@@ -505,7 +505,7 @@ security:
                 max_uses: 1
                 lifetime: 600
                 failure_path: app_renaissance_login
-                default_target_path: app_renaissance_adherent_space
+                default_target_path: vox_app_redirect
 
     access_control:
         - { path: '^/parametres', roles: [ROLE_USER] }
