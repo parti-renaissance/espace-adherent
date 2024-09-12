@@ -55,7 +55,6 @@ class ActionExtension implements QueryCollectionExtensionInterface
             ->andWhere("$alias.status = :status")
             ->setParameter('date', new \DateTime('-1 hour'))
             ->setParameter('status', Action::STATUS_SCHEDULED)
-            ->addOrderBy("$alias.date", 'ASC')
         ;
     }
 }
