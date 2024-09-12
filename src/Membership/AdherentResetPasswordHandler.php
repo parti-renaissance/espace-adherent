@@ -75,5 +75,7 @@ class AdherentResetPasswordHandler
                 $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
             }
         }
+
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_FORGOT_PASSWORD_VALIDATED);
     }
 }

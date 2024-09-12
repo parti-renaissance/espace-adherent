@@ -32,6 +32,7 @@ class AdherentProfileHandler
     public function update(Adherent $adherent, AdherentProfile $adherentProfile): void
     {
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_BEFORE_UPDATE);
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_PROFILE_BEFORE_UPDATE);
 
         $this->updateSubscriptions($adherent, $adherentProfile->getSubscriptionTypes());
 
@@ -47,6 +48,7 @@ class AdherentProfileHandler
 
         $this->dispatcher->dispatch(new AdherentEvent($adherent), AdherentEvents::PROFILE_UPDATED);
         $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED);
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_PROFILE_AFTER_UPDATE);
     }
 
     public function updateReferentTagsAndSubscriptionHistoryIfNeeded(Adherent $adherent): void

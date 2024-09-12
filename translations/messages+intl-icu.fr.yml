@@ -1288,3 +1288,19 @@ administrator:
             porte_a_porte: Porte-à-porte
             instances: Instances
             elections_departementales: Élections départementales
+
+#
+# UserActionHistory
+#
+user_action_history:
+    type:
+        login_success: Connexion réussie
+        login_failure: Connexion échouée
+        profile_update: Mis à jour du profil
+        impersonification_start: Début d'impersonnification
+        impersonification_end: Fin d'impersonnification
+        password_reset_request: Mot de passe oublié (demande)
+        password_reset_validate: Mot de passe oublié (changement)
+        password_change: Changement de mot de passe
+        email_change_request: Changement d'adresse email (demande)
+        email_change_validate: Changement d'adresse email (validation)
