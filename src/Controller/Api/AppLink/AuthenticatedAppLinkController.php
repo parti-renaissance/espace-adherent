@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
 #[Route(path: '/v3/app-link/{key}', name: 'api_app_link_authenticated', methods: ['GET'])]
@@ -39,7 +40,7 @@ class AuthenticatedAppLinkController extends AbstractController
                 $user,
                 $request,
                 null,
-                $this->generateUrl(self::KEYS_TO_ROUTES[$key])
+                $this->generateUrl(self::KEYS_TO_ROUTES[$key], [], UrlGeneratorInterface::ABSOLUTE_URL)
             ),
         );
     }
