@@ -3,6 +3,7 @@
 namespace App\Entity\Action;
 
 use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
@@ -40,6 +41,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['type' => 'exact'])]
 #[ApiFilter(filterClass: DateFilter::class, properties: ['date'])]
+#[ApiFilter(filterClass: OrderFilter::class, properties: ['date'])]
 #[ApiFilter(filterClass: MySubscribedActionsFilter::class)]
 #[ApiResource(
     operations: [
@@ -72,8 +74,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     normalizationContext: ['groups' => ['action_read']],
     denormalizationContext: ['groups' => ['action_write']],
+    order: ['date' => 'ASC'],
     paginationItemsPerPage: 300,
-    paginationMaximumItemsPerPage: 300
+    paginationMaximumItemsPerPage: 300,
 )]
 #[ORM\Entity(repositoryClass: ActionRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]

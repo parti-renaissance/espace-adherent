@@ -37,7 +37,7 @@ trait NearbyTrait
             ->setParameter('longitude', $coordinates->getLongitude())
             ->where($alias.'.postAddress.latitude IS NOT NULL')
             ->andWhere($alias.'.postAddress.longitude IS NOT NULL')
-            ->orderBy('distance_between', 'ASC')
+            ->addOrderBy('distance_between', 'ASC')
         ;
     }
 }
