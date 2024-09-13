@@ -71,36 +71,6 @@ Feature:
     }
     """
     Then the response status code should be 201
-    And I should have 1 email "JeMengageUserAccountConfirmationMessage" for "new-user@en-marche-dev.fr" with payload:
-    """
-    {
-      "template_name": "je-mengage-user-account-confirmation",
-      "template_content": [],
-      "message": {
-        "subject": "Confirmez votre adresse email",
-        "from_email": "ne-pas-repondre@parti-renaissance.fr",
-        "html": null,
-        "global_merge_vars": [
-          {
-            "name": "first_name",
-            "content": "Jules"
-          },
-          {
-            "name": "create_password_link",
-            "content": "http://test.renaissance.code/changer-mot-de-passe/@string@/@string@"
-          }
-        ],
-        "from_name": "Je m'engage",
-        "to": [
-          {
-            "email": "new-user@en-marche-dev.fr",
-            "type": "to",
-            "name": "Jules Fullstack"
-          }
-        ]
-      }
-    }
-    """
 
     Scenario: As a non logged-in user I can request a reset password
       Given I send a "POST" request to "/api/membership/forgot-password?source=jemengage" with body:

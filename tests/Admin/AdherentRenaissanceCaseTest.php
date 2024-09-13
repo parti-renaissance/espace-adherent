@@ -105,7 +105,7 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
 
         $this->assertNull($this->adherentRepository->findOneByEmail($email));
         $this->assertSame(1, $this->unregistrationRepository->count([]));
-        $this->assertCountMails(($notification && $isRenaissance) ? 1 : 0, RenaissanceAdherentTerminateMembershipMessage::class, $email);
+        $this->assertCountMails($notification ? 1 : 0, RenaissanceAdherentTerminateMembershipMessage::class, $email);
 
         $unregistration = $this->unregistrationRepository->findOneBy(['uuid' => $adherentUuid]);
         $this->assertInstanceOf(Unregistration::class, $unregistration);

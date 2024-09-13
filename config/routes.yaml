@@ -286,9 +286,9 @@ app_renaissance_newsletter_confirm:
     methods: GET
     controller: App\Controller\Renaissance\Newsletter\ConfirmNewsletterController
     defaults:
-        app_domain: "%app_host%"
+        app_domain: "%user_vox_host%"
     requirements:
-        app_domain: "%app_renaissance_host%|%national_event_host%|%user_vox_host%"
+        app_domain: "%national_event_host%|%user_vox_host%"
 
 app_profile:
     host: "{app_domain}"

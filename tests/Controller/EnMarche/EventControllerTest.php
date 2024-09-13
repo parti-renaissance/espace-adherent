@@ -8,9 +8,9 @@ use App\DataFixtures\ORM\LoadEventCategoryData;
 use App\Entity\Event\EventInvite;
 use App\Entity\Event\EventRegistration;
 use App\Entity\Renaissance\NewsletterSubscription;
-use App\Mailer\Message\Ensemble\EnsembleEventRegistrationConfirmationMessage;
-use App\Mailer\Message\Ensemble\EnsembleNewsletterSubscriptionConfirmationMessage;
 use App\Mailer\Message\EventInvitationMessage;
+use App\Mailer\Message\Renaissance\EventRegistrationConfirmationMessage;
+use App\Mailer\Message\Renaissance\RenaissanceNewsletterSubscriptionConfirmationMessage;
 use App\Repository\Email\EmailLogRepository;
 use App\Repository\EventRegistrationRepository;
 use Cake\Chronos\Chronos;
@@ -79,7 +79,6 @@ class EventControllerTest extends AbstractEventControllerTestCase
         ]));
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadCommitteeEventData::EVENT_1_UUID, 'paupau75@example.org'));
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EnsembleEventRegistrationConfirmationMessage::class, 'paupau75@example.org'));
 
         $crawler = $this->client->followRedirect();
 
@@ -89,7 +88,7 @@ class EventControllerTest extends AbstractEventControllerTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
-        $this->assertCount(1, $this->emailRepository->findMessages(EnsembleNewsletterSubscriptionConfirmationMessage::class));
+        $this->assertCount(1, $this->emailRepository->findMessages(RenaissanceNewsletterSubscriptionConfirmationMessage::class));
 
         $this->assertCount(1, $subscriptions = $this->getRepository(NewsletterSubscription::class)->findAll());
 
@@ -129,7 +128,7 @@ class EventControllerTest extends AbstractEventControllerTestCase
         $this->client->followRedirect();
 
         $this->assertInstanceOf(EventRegistration::class, $this->repository->findGuestRegistration(LoadCommitteeEventData::EVENT_1_UUID, 'deputy@en-marche-dev.fr'));
-        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EnsembleEventRegistrationConfirmationMessage::class, 'deputy@en-marche-dev.fr'));
+        $this->assertCount(1, $this->getEmailRepository()->findRecipientMessages(EventRegistrationConfirmationMessage::class, 'deputy@en-marche-dev.fr'));
 
         $crawler = $this->client->followRedirect();
 

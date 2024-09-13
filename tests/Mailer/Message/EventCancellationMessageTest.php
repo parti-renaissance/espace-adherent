@@ -2,8 +2,8 @@
 
 namespace Tests\App\Mailer\Message;
 
-use App\Mailer\Message\EventCancellationMessage;
 use App\Mailer\Message\MessageRecipient;
+use App\Mailer\Message\Renaissance\EventCancellationMessage;
 
 class EventCancellationMessageTest extends AbstractEventMessageTestCase
 {
@@ -17,19 +17,18 @@ class EventCancellationMessageTest extends AbstractEventMessageTestCase
 
         $message = EventCancellationMessage::create(
             $recipients,
-            $this->createAdherentMock('em@example.com', 'Émmanuel', 'Macron'),
             $this->createEventMock('En Marche Lyon', '2017-02-01 15:30:00', '15 allées Paul Bocuse', '69006-69386'),
             self::SEARCH_EVENTS_URL
         );
 
         $this->assertSame('event-cancellation', $message->generateTemplateName());
         $this->assertCount(3, $message->getRecipients());
-        $this->assertSame('L\'événement "En Marche Lyon" a été annulé.', $message->getSubject());
+        $this->assertSame('Événement annulé', $message->getSubject());
         $this->assertCount(2, $message->getVars());
         $this->assertSame(
             [
                 'event_name' => 'En Marche Lyon',
-                'event_slug' => self::SEARCH_EVENTS_URL,
+                'events_link' => self::SEARCH_EVENTS_URL,
             ],
             $message->getVars()
         );

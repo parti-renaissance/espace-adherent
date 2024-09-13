@@ -3,7 +3,7 @@
 namespace Tests\App\Mailer\Message;
 
 use App\Entity\Event\EventRegistration;
-use App\Mailer\Message\EventRegistrationConfirmationMessage;
+use App\Mailer\Message\Renaissance\EventRegistrationConfirmationMessage;
 
 class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTestCase
 {
@@ -24,7 +24,7 @@ class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTestC
         $this->assertSame('event-registration-confirmation', $message->generateTemplateName());
         $this->assertSame('john@bar.com', $message->getRecipient(0)->getEmailAddress());
         $this->assertSame('John', $message->getRecipient(0)->getFullName());
-        $this->assertSame('Confirmation de participation à un événement En Marche !', $message->getSubject());
+        $this->assertSame('Inscription confirmée', $message->getSubject());
         $this->assertSame(
             [
                 'event_name' => 'Grand Meeting de Paris',
@@ -36,6 +36,6 @@ class EventRegistrationConfirmationMessageTest extends AbstractEventMessageTestC
 
         $recipient = $message->getRecipient(0);
 
-        $this->assertSame(['prenom' => 'John'], $recipient->getVars());
+        $this->assertSame(['first_name' => 'John'], $recipient->getVars());
     }
 }

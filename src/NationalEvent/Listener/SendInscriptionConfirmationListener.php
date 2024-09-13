@@ -3,7 +3,7 @@
 namespace App\NationalEvent\Listener;
 
 use App\Mailer\MailerService;
-use App\Mailer\Message\BesoinDEurope\NationalEventInscriptionConfirmationMessage;
+use App\Mailer\Message\Renaissance\NationalEventInscriptionConfirmationMessage;
 use App\NationalEvent\NewNationalEventInscriptionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

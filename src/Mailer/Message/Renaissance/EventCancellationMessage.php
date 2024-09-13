@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Mailer\Message\Ensemble;
+namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
 use Ramsey\Uuid\Uuid;
 
-final class EnsembleEventCancellationMessage extends AbstractEnsembleMessage
+final class EventCancellationMessage extends AbstractRenaissanceMessage
 {
     public static function create(array $recipients, BaseEvent $event, string $eventsLink): self
     {

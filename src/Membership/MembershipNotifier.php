@@ -2,7 +2,6 @@
 
 namespace App\Membership;
 
-use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
@@ -39,32 +38,14 @@ class MembershipNotifier implements LoggerAwareInterface
         return $this->transactionalMailer->sendMessage(Message\AdherentMembershipReminderMessage::create($adherent, $donationUrl));
     }
 
-    public function sendActivationReminder(Adherent $adherent): void
-    {
-        if (MembershipSourceEnum::BESOIN_D_EUROPE === $adherent->getSource()) {
-            $this->transactionalMailer->sendMessage(Message\BesoinDEurope\BesoinDEuropeActivationReminderMessage::create(
-                $adherent,
-                $this->linkHandler->createLoginLink($adherent, null, AppCodeEnum::BESOIN_D_EUROPE)->getUrl()
-            ));
-        }
-    }
-
     public function sendConfirmationJoinMessage(Adherent $adherent): void
     {
-        if (MembershipSourceEnum::RENAISSANCE === $adherent->getSource()) {
-            $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent(
-                $adherent,
-                $this->callbackManager->generateUrl('app_renaissance_adherent_profile', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                $this->callbackManager->generateUrl('app_donation_index', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                $this->callbackManager->generateUrl('app_my_committee_show_current', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            ));
-
-            return;
-        }
-
-        if (MembershipSourceEnum::LEGISLATIVE === $adherent->getSource()) {
-            $this->transactionalMailer->sendMessage(Message\Ensemble\EnsembleAccountCreatedMessage::create($adherent));
-        }
+        $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent(
+            $adherent,
+            $this->callbackManager->generateUrl('app_renaissance_adherent_profile', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->callbackManager->generateUrl('app_donation_index', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->callbackManager->generateUrl('app_my_committee_show_current', [], UrlGeneratorInterface::ABSOLUTE_URL),
+        ));
     }
 
     public function sendReAdhesionConfirmationMessage(Adherent $adherent): void
@@ -79,15 +60,7 @@ class MembershipNotifier implements LoggerAwareInterface
 
     public function sendUnregistrationMessage(Adherent $adherent): void
     {
-        if (MembershipSourceEnum::BESOIN_D_EUROPE === $adherent->getSource()) {
-            $this->transactionalMailer->sendMessage(Message\BesoinDEurope\BesoinDEuropeTerminateMembershipMessage::create($adherent));
-
-            return;
-        }
-
-        if (MembershipSourceEnum::RENAISSANCE === $adherent->getSource()) {
-            $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage::createFromAdherent($adherent));
-        }
+        $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentTerminateMembershipMessage::createFromAdherent($adherent));
     }
 
     public function sendAccountCreatedEmail(Adherent $adherent): void
@@ -107,17 +80,6 @@ class MembershipNotifier implements LoggerAwareInterface
     public function sendConnexionDetailsMessage(Adherent $adherent, ?string $appCode = null): void
     {
         $url = $this->linkHandler->createLoginLink($adherent, null, $appCode);
-
-        if (AppCodeEnum::isMobileApp($appCode)) {
-            $urlGenerator = $this->appUrlManager->getUrlGenerator($appCode);
-            $this->transactionalMailer->sendMessage(Message\Ensemble\EnsembleAccountAlreadyExistsMessage::create(
-                $adherent,
-                $url,
-                $this->urlGenerator->generate('app_forgot_password', ['app_domain' => $urlGenerator->getAppHost()], UrlGeneratorInterface::ABSOLUTE_URL),
-            ));
-
-            return;
-        }
 
         if ($adherent->isRenaissanceAdherent()) {
             $this->transactionalMailer->sendMessage(AdhesionAlreadyAdherentMessage::create(

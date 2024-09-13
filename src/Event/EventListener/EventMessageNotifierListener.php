@@ -11,9 +11,9 @@ use App\Event\EventEvent;
 use App\Event\EventRegistrationEvent;
 use App\Events;
 use App\Mailer\MailerService;
-use App\Mailer\Message\Ensemble\EnsembleEventCancellationMessage;
-use App\Mailer\Message\Ensemble\EnsembleEventRegistrationConfirmationMessage;
-use App\Mailer\Message\Ensemble\EnsembleEventUpdateMessage;
+use App\Mailer\Message\Renaissance\EventCancellationMessage;
+use App\Mailer\Message\Renaissance\EventRegistrationConfirmationMessage;
+use App\Mailer\Message\Renaissance\EventUpdateMessage;
 use App\Mailer\Message\Renaissance\RenaissanceEventNotificationMessage;
 use App\Repository\EventRegistrationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -75,7 +75,6 @@ class EventMessageNotifierListener implements EventSubscriberInterface
 
     public function onEventCancelled(EventEvent $event): void
     {
-        // @var BaseEvent $event
         $event = $event->getEvent();
 
         if (!$event->isCancelled()) {
@@ -88,7 +87,7 @@ class EventMessageNotifierListener implements EventSubscriberInterface
 
         foreach (array_chunk($subscriptions, MailerService::PAYLOAD_MAXSIZE) as $chunk) {
             $this->transactionalMailer->sendMessage(
-                EnsembleEventCancellationMessage::create(
+                EventCancellationMessage::create(
                     $chunk,
                     $event,
                     $this->generateUrl('vox_app').'/evenements',
@@ -105,7 +104,7 @@ class EventMessageNotifierListener implements EventSubscriberInterface
 
         $registration = $event->getRegistration();
 
-        $this->transactionalMailer->sendMessage(EnsembleEventRegistrationConfirmationMessage::createFromRegistration(
+        $this->transactionalMailer->sendMessage(EventRegistrationConfirmationMessage::createFromRegistration(
             $registration,
             $this->generateUrl('vox_app').'/evenements/'.$registration->getEvent()->getUuidAsString(),
         ));
@@ -135,7 +134,7 @@ class EventMessageNotifierListener implements EventSubscriberInterface
             }
 
             foreach (array_chunk($subscriptions, MailerService::PAYLOAD_MAXSIZE) as $chunk) {
-                $this->transactionalMailer->sendMessage(EnsembleEventUpdateMessage::create(
+                $this->transactionalMailer->sendMessage(EventUpdateMessage::create(
                     $chunk,
                     $event,
                     $this->generateUrl('vox_app').'/evenements/'.$event->getUuidAsString(),
