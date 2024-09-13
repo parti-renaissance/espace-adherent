@@ -8,7 +8,7 @@ use App\Entity\Email\EmailLog;
 use App\Mailer\EmailTemplateFactory;
 use App\Mailer\Event\MailerEvent;
 use App\Mailer\EventSubscriber\EmailPersisterEventSubscriber;
-use App\Mailer\Message\CommitteeMessageNotificationMessage;
+use App\Mailer\Message\Renaissance\RenaissanceDeclaredMandateNotificationMessage;
 use App\Mailer\Template\Manager;
 use App\Repository\Email\EmailLogRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
@@ -30,12 +30,7 @@ class EmailPersisterEventSubscriberTest extends TestCase
         $this->manager->expects($this->once())->method('flush');
         $this->manager->expects($this->once())->method('detach');
 
-        $adherents[] = $author = $this->createAdherentMock('john@smith.tld', 'John', 'Smith');
-        $adherents[] = $this->createAdherentMock('johana156@gmail.com', 'Johana', 'Durand');
-
-        $item = $this->createCommitteeFeedItemMock('25c5762d-5a50-4c68-8f6c-106bcbff862e', 'Un message !', $author);
-
-        $message = CommitteeMessageNotificationMessage::create($adherents, $item, 'Foo subject');
+        $message = RenaissanceDeclaredMandateNotificationMessage::create(['john@smith.tld', 'johana156@gmail.com'], [1, 2], 'https://');
         $message->setSenderEmail('noreply@en-marche.fr');
 
         $this->subscriber->onMailerDeliveryMessage(new MailerEvent(

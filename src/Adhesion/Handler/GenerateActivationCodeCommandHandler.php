@@ -5,9 +5,7 @@ namespace App\Adhesion\Handler;
 use App\Adhesion\ActivationCodeManager;
 use App\Adhesion\Command\GenerateActivationCodeCommand;
 use App\Mailer\MailerService;
-use App\Mailer\Message\Ensemble\EnsembleInscriptionCodeValidationMessage;
 use App\Mailer\Message\Renaissance\AdhesionCodeValidationMessage;
-use App\Membership\MembershipSourceEnum;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
@@ -28,10 +26,6 @@ class GenerateActivationCodeCommandHandler
         $code = $this->activationCodeGenerator->generate($adherent, $command->force)->value;
         $magicLink = $this->loginLinkHandler->createLoginLink($adherent, null, $adherent->getSource())->getUrl();
 
-        if (MembershipSourceEnum::LEGISLATIVE === $adherent->getSource()) {
-            $this->transactionalMailer->sendMessage(EnsembleInscriptionCodeValidationMessage::create($adherent, $code, $magicLink));
-        } else {
-            $this->transactionalMailer->sendMessage(AdhesionCodeValidationMessage::create($adherent, $code, $magicLink));
-        }
+        $this->transactionalMailer->sendMessage(AdhesionCodeValidationMessage::create($adherent, $code, $magicLink));
     }
 }

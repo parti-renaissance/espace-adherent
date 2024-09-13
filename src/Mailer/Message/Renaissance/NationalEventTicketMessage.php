@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Mailer\Message\BesoinDEurope;
+namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\NationalEvent\EventInscription;
 use Ramsey\Uuid\Uuid;
 
-class NationalEventTicketMessage extends AbstractBesoinDEuropeMessage
+class NationalEventTicketMessage extends AbstractRenaissanceMessage
 {
     public static function create(EventInscription $eventInscription): self
     {

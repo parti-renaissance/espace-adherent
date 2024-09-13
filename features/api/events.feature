@@ -1554,10 +1554,10 @@ Feature:
     }
     """
     And I should have 1 email
-    And I should have 1 email "EnsembleEventUpdateMessage" for "francis.brioul@yahoo.com" with payload:
+    And I should have 1 email "EventUpdateMessage" for "francis.brioul@yahoo.com" with payload:
     """
     {
-       "template_name": "ensemble-event-update",
+       "template_name": "event-update",
        "template_content": [],
        "message": {
           "subject": "Un événement a été modifié",
@@ -1623,7 +1623,7 @@ Feature:
                 ]
              }
           ],
-          "from_name": "ENSEMBLE",
+          "from_name": "Renaissance",
           "to": [
              {
                 "email": "referent@en-marche-dev.fr",
@@ -1659,10 +1659,10 @@ Feature:
     When I send a "PUT" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5/cancel?scope=<scope>"
     Then the response status code should be 200
     And I should have 1 email
-    And I should have 1 email "EnsembleEventCancellationMessage" for "francis.brioul@yahoo.com" with payload:
+    And I should have 1 email "EventCancellationMessage" for "francis.brioul@yahoo.com" with payload:
     """
     {
-       "template_name": "ensemble-event-cancellation",
+       "template_name": "event-cancellation",
        "template_content": [],
        "message": {
           "subject": "Événement annulé",
@@ -1716,7 +1716,7 @@ Feature:
                 ]
              }
           ],
-          "from_name": "ENSEMBLE",
+          "from_name": "Renaissance",
           "to": [
              {
                 "email": "referent@en-marche-dev.fr",

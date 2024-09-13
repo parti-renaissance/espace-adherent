@@ -5,10 +5,9 @@ namespace Tests\App\Controller\EnMarche;
 use App\DataFixtures\ORM\LoadCommitteeEventData;
 use App\DataFixtures\ORM\LoadEventCategoryData;
 use App\Entity\Event\CommitteeEvent;
-use App\Mailer\Message\BesoinDEurope\BesoinDEuropeEventCancellationMessage;
-use App\Mailer\Message\Ensemble\EnsembleEventCancellationMessage;
-use App\Mailer\Message\Ensemble\EnsembleEventUpdateMessage;
 use App\Mailer\Message\EventContactMembersMessage;
+use App\Mailer\Message\Renaissance\EventCancellationMessage;
+use App\Mailer\Message\Renaissance\EventUpdateMessage;
 use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -100,7 +99,7 @@ class EventManagerControllerTest extends AbstractEnMarcheWebTestCase
         ]));
 
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $this->assertCountMails(1, EnsembleEventUpdateMessage::class);
+        $this->assertCountMails(1, EventUpdateMessage::class);
 
         // Follow the redirect and check the adherent can see the committee page
         $crawler = $this->client->followRedirect();
@@ -133,8 +132,7 @@ class EventManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertStatusCode(Response::HTTP_OK, $this->client);
         $this->seeFlashMessage($crawler, 'L\'événement a bien été annulé.');
 
-        $messages = $this->getEmailRepository()->findMessages(EnsembleEventCancellationMessage::class);
-        /** @var BesoinDEuropeEventCancellationMessage $message */
+        $messages = $this->getEmailRepository()->findMessages(EventCancellationMessage::class);
         $message = array_shift($messages);
 
         // Two mails have been sent

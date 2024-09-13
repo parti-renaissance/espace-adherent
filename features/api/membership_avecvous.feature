@@ -133,32 +133,6 @@ Feature:
       "uuid": "@uuid@"
     }
     """
-    And I should have 1 email "AvecVousUserAccountConfirmationMessage" for "remi@avecvous.dev" with payload:
-    """
-    {
-        "template_name": "avec-vous-user-account-confirmation",
-        "template_content": [],
-        "message": {
-            "subject": "🚀 Activez votre compte Je m’engage",
-            "from_email": "ne-pas-repondre@parti-renaissance.fr",
-            "from_name": "Emmanuel Macron avec vous",
-            "html": null,
-            "global_merge_vars": [
-                {
-                    "name": "create_password_link",
-                    "content": "http://test.renaissance.code/changer-mot-de-passe/@string@/@string@"
-                }
-            ],
-            "to": [
-                {
-                    "email": "remi@avecvous.dev",
-                    "type": "to",
-                    "name": "Rémi Doe"
-                }
-            ]
-        }
-    }
-    """
 
   Scenario: As a non logged-in user I can create a contact with the same email address as an existing account
     Given I send a "POST" request to "/api/contacts" with body:

@@ -3,7 +3,7 @@
 namespace Tests\App\Controller\Renaissance;
 
 use App\Entity\Renaissance\NewsletterSubscription;
-use App\Mailer\Message\Ensemble\EnsembleNewsletterSubscriptionConfirmationMessage;
+use App\Mailer\Message\Renaissance\RenaissanceNewsletterSubscriptionConfirmationMessage;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\App\AbstractRenaissanceWebTestCase;
@@ -46,6 +46,6 @@ class NewsletterControllerTest extends AbstractRenaissanceWebTestCase
         self::assertNotEmpty($nl->token);
         self::assertEmpty($nl->confirmedAt);
 
-        $this->assertCountMails(1, EnsembleNewsletterSubscriptionConfirmationMessage::class, $email);
+        $this->assertCountMails(1, RenaissanceNewsletterSubscriptionConfirmationMessage::class, $email);
     }
 }
