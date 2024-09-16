@@ -44,8 +44,29 @@ class ActionExtension implements QueryCollectionExtensionInterface
         $latitude = (float) ($filters['latitude'] ?? null);
         $longitude = (float) ($filters['longitude'] ?? null);
 
+        $queryBuilder
+            ->addSelect("CASE WHEN $alias.date >= NOW() THEN 0 ELSE 1 END AS HIDDEN is_future")
+            ->addOrderBy('is_future', 'ASC')
+            ->addOrderBy($alias.'.date', 'DESC')
+        ;
+
         if ($latitude && $longitude) {
-            $this->actionRepository->updateNearByQueryBuilder($queryBuilder, $alias, new Coordinates($latitude, $longitude));
+            $subQuery = $queryBuilder->getEntityManager()->createQueryBuilder()
+                ->from(Action::class, 'a2')
+                ->select('DISTINCT a2.id')
+            ;
+
+            $this->actionRepository
+                ->updateNearByQueryBuilder($subQuery, 'a2', new Coordinates($latitude, $longitude))
+                ->setMaxResults(300)
+            ;
+
+            $ids = $subQuery->getQuery()->getResult();
+
+            $queryBuilder
+                ->andWhere("$alias.id IN (:ids)")
+                ->setParameter('ids', $ids)
+            ;
 
             return;
         }
