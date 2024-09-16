@@ -13,7 +13,8 @@
                         </a> • <span>Contenu du template</span>
                     </h4>
                     <div class="col-md-6 text-right">
-                        <button type="submit" class="btn btn-success">Sauvegarder</button>
+                        <button type="submit" class="btn btn-success" name="save_and_preview">Sauvegarder et visualiser</button>
+                        <button type="submit" class="btn btn-success" name="save">Sauvegarder</button>
                     </div>
                 </div>
             </section>
@@ -22,6 +23,7 @@
                 {{ form_row(form.jsonContent) }}
                 {{ form_row(form.content) }}
                 <div id="unlayer-{{ form.content.vars.id }}" style="height: 700px;"></div>
+                <input type="hidden" name="action" value="">
 
                 <script src="https://editor.unlayer.com/embed.js"></script>
 
@@ -29,6 +31,7 @@
                     var form = document.querySelector('.sonata-ba-form form');
                     var contentElement = document.querySelector('#{{ form.content.vars.id }}');
                     var jsonContentElement = document.querySelector('input[name*="jsonContent"]');
+                    var actiontElement = document.querySelector('input[name="action"]');
 
                     unlayer.init({
                         id: "unlayer-{{ form.content.vars.id }}",
@@ -65,6 +68,7 @@
                             function (data) {
                                 jsonContentElement.value = JSON.stringify(data.design);
                                 contentElement.value = data.html
+                                actiontElement.value = event.submitter.name;
                                 event.target.submit();
                             },
                             { minify: true }

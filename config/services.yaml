@@ -69,6 +69,7 @@ services:
             $appEnvironment: '%env(APP_ENVIRONMENT)%'
             $googlePlaceApiKey: '%env(GMAPS_PRIVATE_API_KEY)%'
             $voxHost: '%env(VOX_HOST)%'
+            $templateWebhookKey: '%env(TEMPLATE_WEBHOOK_KEY)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:

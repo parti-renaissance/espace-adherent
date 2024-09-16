@@ -21,6 +21,7 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
             ->add('preview', $this->getRouterIdParameter().'/visualiser')
             ->add('preview_content', $this->getRouterIdParameter().'/preview-content')
             ->add('duplicate', $this->getRouterIdParameter().'/duplicate')
+            ->add('sendToProd', $this->getRouterIdParameter().'/send-to-prod')
         ;
     }
 
@@ -60,6 +61,7 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
                     'preview' => ['template' => 'admin/email/list_preview.html.twig'],
                     'send' => ['template' => 'admin/email/list_send_test.html.twig'],
                     'duplicate' => ['template' => 'admin/email/list_duplicate.html.twig'],
+                    'sendToProd' => ['template' => 'admin/email/list_send_to_prod.html.twig'],
                 ],
             ])
         ;

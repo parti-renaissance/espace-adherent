@@ -2,6 +2,8 @@
 
 {% block sonata_page_content %}
     <section class="content-header">
+        {% include '@SonataTwig/FlashMessage/render.html.twig' %}
+
         <div class="row">
             <h4 class="sonata-ba-title col-md-6">
                 <a href="{{ path('admin_app_email_transactionalemailtemplate_content', {id: object.id}) }}">
