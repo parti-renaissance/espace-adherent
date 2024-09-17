@@ -21,6 +21,7 @@ use App\Api\Filter\InZoneOfScopeFilter;
 use App\Api\Filter\MyCreatedEventsFilter;
 use App\Api\Filter\MySubscribedEventsFilter;
 use App\Api\Filter\OrderEventsBySubscriptionsFilter;
+use App\Api\Provider\EventProvider;
 use App\Collection\ZoneCollection;
 use App\Controller\Api\Event\CancelEventController;
 use App\Controller\Api\Event\SubscribeAsAdherentController;
@@ -62,6 +63,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -77,11 +79,11 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new Get(
             uriTemplate: '/v3/events/{uuid}',
-            requirements: ['uuid' => '%pattern_uuid%'],
+            provider: EventProvider::class,
         ),
         new Get(
             uriTemplate: '/events/{uuid}',
-            requirements: ['uuid' => '%pattern_uuid%']
+            provider: EventProvider::class,
         ),
         new Put(
             uriTemplate: '/v3/events/{uuid}',
@@ -186,7 +188,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
     /**
      * @var UuidInterface
      */
-    #[ApiProperty(identifier: true)]
+    #[ApiProperty(identifier: true, builtinTypes: [new Type(Type::BUILTIN_TYPE_STRING)])]
     #[Groups(['event_read', 'event_list_read'])]
     #[ORM\Column(type: 'uuid', unique: true)]
     protected $uuid;
@@ -220,7 +222,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
      * @var string|null
      */
     #[Gedmo\Slug(fields: ['beginAt', 'canonicalName'], handlers: [new Gedmo\SlugHandler(class: UniqueEventNameHandler::class)], dateFormat: 'Y-m-d')]
-    #[Groups(['event_read'])]
+    #[Groups(['event_read', 'event_list_read'])]
     #[ORM\Column(length: 130, unique: true)]
     protected $slug;
 
