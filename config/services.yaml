@@ -20,6 +20,7 @@ parameters:
     app_renaissance_host:                 "%env(APP_RENAISSANCE_HOST)%"
     admin_renaissance_host:               "%env(ADMIN_RENAISSANCE_HOST)%"
     webhook_renaissance_host:             "%env(WEBHOOK_RENAISSANCE_HOST)%"
+    production_webhook_host:              "%env(PRODUCTION_WEBHOOK_HOST)%"
     api_renaissance_host:                 "%env(API_RENAISSANCE_HOST)%"
     renaissance_qrcode_host:              "%env(RENAISSANCE_QRCODE_HOST)%"
     mooc_base_url:                        "%env(MOOC_BASE_URL)%"

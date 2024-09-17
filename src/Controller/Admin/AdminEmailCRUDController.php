@@ -95,7 +95,7 @@ class AdminEmailCRUDController extends CRUDController
     {
         $this->admin->checkAccess('content', $template);
 
-        $response = $templateWebhookClient->request('POST', '/templates', [
+        $response = $templateWebhookClient->request('POST', $this->generateUrl('app_webhook_template_update'), [
             'json' => [
                 'identifier' => $template->identifier,
                 'subject' => $template->subject,
