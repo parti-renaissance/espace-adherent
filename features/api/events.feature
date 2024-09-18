@@ -120,6 +120,7 @@ Feature:
                 "uuid": "113876dd-87d2-426a-a12a-60ffd5107b10",
                 "name": "Grand Meeting de Marseille",
                 "time_zone": "Europe/Paris",
+                "slug": "@string@-grand-meeting-de-marseille",
                 "live_url": null,
                 "visibility": "public",
                 "created_at": "@string@.isDateTime()",
@@ -167,6 +168,7 @@ Feature:
             {
                 "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
                 "name": "Événements à Fontainebleau 1",
+                "slug": "@string@-evenements-a-fontainebleau-1",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
                 "visibility": "public",
@@ -238,6 +240,7 @@ Feature:
             {
                 "uuid": "113876dd-87d2-426a-a12a-60ffd5107b10",
                 "name": "Grand Meeting de Marseille",
+                "slug": "@string@-grand-meeting-de-marseille",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
                 "visibility": "public",
@@ -286,6 +289,7 @@ Feature:
             {
                 "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
                 "name": "Événements à Fontainebleau 1",
+                "slug": "@string@-evenements-a-fontainebleau-1",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
                 "visibility": "public",
@@ -334,6 +338,7 @@ Feature:
             {
                 "uuid": "65610a6c-5f18-4e9d-b4ab-0e96c0a52d9e",
                 "name": "Événements à Fontainebleau 2",
+                "slug": "@string@-evenements-a-fontainebleau-2",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
                 "visibility": "public",
@@ -398,6 +403,7 @@ Feature:
             {
                 "uuid": "e770cda4-b215-4ea2-85e5-03fc3e4423e3",
                 "name": "Un événement de l'assemblée départementale",
+                "slug": "@string@-un-evenement-de-lassemblee-departementale",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
                 "visibility": "public",
@@ -446,6 +452,7 @@ Feature:
             {
                 "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
                 "name": "Nouvel événement online privé et électoral",
+                "slug": "@string@-nouvel-evenement-online-prive-et-electoral",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
                 "visibility": "adherent",
@@ -485,6 +492,7 @@ Feature:
             {
                 "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
                 "name": "Nouvel événement online",
+                "slug": "@string@-nouvel-evenement-online",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
                 "visibility": "public",
@@ -550,6 +558,7 @@ Feature:
                 },
                 "uuid": "113876dd-87d2-426a-a12a-60ffd5107b10",
                 "name": "Grand Meeting de Marseille",
+                "slug": "@string@-grand-meeting-de-marseille",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
                 "visibility": "public",
@@ -588,6 +597,7 @@ Feature:
             {
                 "uuid": "5b279c9f-2b1e-4b93-9c34-1669f56e9d64",
                 "name": "Tractage sur le terrain",
+                "slug": "@string@-tractage-sur-le-terrain",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
                 "visibility": "public",
@@ -646,6 +656,7 @@ Feature:
                 },
                 "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
                 "name": "Événements à Fontainebleau 1",
+                "slug": "@string@-evenements-a-fontainebleau-1",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
                 "visibility": "public",
@@ -707,6 +718,7 @@ Feature:
             {
                 "uuid": "4d962b05-68fe-4888-ab6b-53b96bdbe797",
                 "name": "Un événement du référent annulé",
+                "slug": "@string@-un-evenement-du-referent-annule",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
                 "visibility": "public",
@@ -746,6 +758,7 @@ Feature:
             {
                 "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
                 "name": "Nouvel événement online",
+                "slug": "@string@-nouvel-evenement-online",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
                 "visibility": "public",
@@ -785,6 +798,7 @@ Feature:
             {
                 "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
                 "name": "Nouvel événement online privé et électoral",
+                "slug": "@string@-nouvel-evenement-online-prive-et-electoral",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
                 "visibility": "adherent",
@@ -897,6 +911,53 @@ Feature:
   Scenario: As a connected user I can get one cancelled event
     Given I am logged with "referent@en-marche-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
     When I send a "GET" request to "/api/v3/events/4d962b05-68fe-4888-ab6b-53b96bdbe797"
+    Then the response status code should be 200
+    And the JSON should be equal to:
+    """
+    {
+        "uuid": "4d962b05-68fe-4888-ab6b-53b96bdbe797",
+        "name": "Un événement du référent annulé",
+        "slug": "@string@-un-evenement-du-referent-annule",
+        "description": "Description de l'événement du référent annulé",
+        "time_zone": "Europe/Paris",
+        "live_url": null,
+        "visibility": "public",
+        "created_at": "@string@.isDateTime()",
+        "begin_at": "@string@.isDateTime()",
+        "finish_at": "@string@.isDateTime()",
+        "organizer": {
+            "uuid": "29461c49-2646-4d89-9c82-50b3f9b586f4",
+            "first_name": "Referent",
+            "last_name": "Referent",
+            "role": null,
+            "instance": null,
+            "image_url": null,
+            "zone": null
+        },
+        "participants_count": 0,
+        "status": "CANCELLED",
+        "capacity": 50,
+        "post_address": {
+            "address": "40 Rue Grande",
+            "postal_code": "77300",
+            "city": "77300-77186",
+            "city_name": "Fontainebleau",
+            "country": "FR",
+            "latitude": 48.404766,
+            "longitude": 2.698759
+        },
+        "category": null,
+        "visio_url": null,
+        "mode": "online",
+        "local_begin_at": "@string@.isDateTime()",
+        "local_finish_at": "@string@.isDateTime()",
+        "image_url": null,
+        "link": "@string@.isUrl()",
+        "user_registered_at": null,
+        "object_state": "full"
+    }
+    """
+    When I send a "GET" request to "/api/v3/events/:last_response.slug:"
     Then the response status code should be 200
     And the JSON should be equal to:
     """

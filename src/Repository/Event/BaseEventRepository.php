@@ -207,4 +207,9 @@ class BaseEventRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findOneBySlug(string $slug): ?BaseEvent
+    {
+        return $this->findOneBy(['slug' => $slug]);
+    }
 }
