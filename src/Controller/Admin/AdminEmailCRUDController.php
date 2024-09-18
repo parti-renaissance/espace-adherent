@@ -16,6 +16,8 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class AdminEmailCRUDController extends CRUDController
 {
@@ -65,6 +67,10 @@ class AdminEmailCRUDController extends CRUDController
 
             $this->addFlash('sonata_flash_success', 'Le contenu a été mis à jour');
 
+            if ('save_and_preview' === $request->request->get('action')) {
+                return $this->redirect($this->admin->generateObjectUrl('preview', $template));
+            }
+
             return $this->redirect($this->admin->generateObjectUrl('content', $template));
         }
 
@@ -83,6 +89,31 @@ class AdminEmailCRUDController extends CRUDController
             'object' => $template,
             'action' => 'preview',
         ]);
+    }
+
+    public function sendToProdAction(TransactionalEmailTemplate $template, HttpClientInterface $templateWebhookClient, SerializerInterface $serializer): Response
+    {
+        $this->admin->checkAccess('content', $template);
+
+        $response = $templateWebhookClient->request('POST', $this->generateUrl('app_webhook_template_update'), [
+            'json' => [
+                'identifier' => $template->identifier,
+                'subject' => $template->subject,
+                'content' => $template->getContent(),
+                'jsonContent' => $template->getJsonContent(),
+                'parent' => [
+                    'identifier' => $template->parent?->identifier,
+                ],
+            ],
+        ]);
+
+        if (200 === $response->getStatusCode()) {
+            $this->addFlash('sonata_flash_success', 'Le template a été envoyé en production');
+        } else {
+            $this->addFlash('sonata_flash_error', 'Erreur lors de l\'envoi du template en production');
+        }
+
+        return $this->redirect($this->admin->generateObjectUrl('list', $template));
     }
 
     public function previewContentAction(TransactionalEmailTemplate $template, Manager $templateManager): Response

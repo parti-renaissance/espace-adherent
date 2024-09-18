@@ -1,0 +1,6 @@
+{% if app_environment != 'production' %}
+    <a href="{{ path('admin_app_email_transactionalemailtemplate_sendToProd', {id: object.id}) }}" class="btn btn-sm btn-danger" title="Envoyer en prod">
+        <i class="fa fa-upload" aria-hidden="true"></i>
+        Envoyer en prod
+    </a>
+{% endif %}

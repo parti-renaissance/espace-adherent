@@ -56,4 +56,13 @@ class TransactionalEmailTemplate implements EntityAdministratorBlameableInterfac
         $this->uuid = Uuid::uuid4();
         $this->identifier .= '-copy';
     }
+
+    public function updateFrom(TransactionalEmailTemplate $template): void
+    {
+        $this->identifier = $template->identifier;
+        $this->subject = $template->subject;
+        $this->content = $template->content;
+        $this->jsonContent = $template->jsonContent;
+        $this->parent = $template->parent;
+    }
 }
