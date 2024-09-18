@@ -40,6 +40,7 @@ Feature:
         "elect_mandates": [
             {
                 "mandate_type": "senateur",
+                "mandate_type_label": "Sénateur",
                 "delegation": "Sénatrice",
                 "zone": {
                     "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002",
@@ -155,6 +156,7 @@ Feature:
             "elect_mandates": [
                 {
                     "mandate_type": "conseiller_municipal",
+                    "mandate_type_label": "Conseiller municipal",
                     "delegation": "Conseiller(e) municipal(e)",
                     "zone": {
                         "uuid": "@uuid@",
@@ -169,6 +171,7 @@ Feature:
                 },
                 {
                     "mandate_type": "conseiller_municipal",
+                    "mandate_type_label": "Conseiller municipal",
                     "delegation": "Conseiller(e) municipal(e)",
                     "zone": {
                         "uuid": "@uuid@",
@@ -204,6 +207,7 @@ Feature:
             "elect_mandates": [
                 {
                     "mandate_type": "conseiller_municipal",
+                    "mandate_type_label": "Conseiller municipal",
                     "delegation": "Conseiller(e) municipal(e)",
                     "zone": {
                         "uuid": "@uuid@",
@@ -218,6 +222,7 @@ Feature:
                 },
                 {
                     "mandate_type": "conseiller_municipal",
+                    "mandate_type_label": "Conseiller municipal",
                     "delegation": "Conseiller(e) municipal(e)",
                     "zone": {
                         "uuid": "@uuid@",
@@ -257,6 +262,7 @@ Feature:
             "elect_mandates": [
                 {
                     "mandate_type": "conseiller_municipal",
+                    "mandate_type_label": "Conseiller municipal",
                     "delegation": "Conseiller(e) municipal(e)",
                     "zone": {
                         "uuid": "e3f18016-906e-11eb-a875-0242ac150002",
@@ -271,6 +277,7 @@ Feature:
                 },
                 {
                     "mandate_type": "conseiller_municipal",
+                    "mandate_type_label": "Conseiller municipal",
                     "delegation": "Conseiller(e) municipal(e)",
                     "zone": {
                         "uuid": "e3f18016-906e-11eb-a875-0242ac150002",
@@ -311,6 +318,7 @@ Feature:
             "elect_mandates": [
                 {
                     "mandate_type": "conseiller_municipal",
+                    "mandate_type_label": "Conseiller municipal",
                     "delegation": "Conseiller(e) municipal(e)",
                     "zone": {
                         "uuid": "e3f18016-906e-11eb-a875-0242ac150002",
@@ -325,6 +333,7 @@ Feature:
                 },
                 {
                     "mandate_type": "conseiller_municipal",
+                    "mandate_type_label": "Conseiller municipal",
                     "delegation": "Conseiller(e) municipal(e)",
                     "zone": {
                         "uuid": "e3f18016-906e-11eb-a875-0242ac150002",
@@ -371,6 +380,7 @@ Feature:
             "elect_mandates": [
                 {
                     "mandate_type": "conseiller_municipal",
+                    "mandate_type_label": "Conseiller municipal",
                     "delegation": "Conseiller(e) municipal(e)",
                     "zone": {
                         "uuid": "e3f18016-906e-11eb-a875-0242ac150002",
@@ -385,6 +395,7 @@ Feature:
                 },
                 {
                     "mandate_type": "conseiller_municipal",
+                    "mandate_type_label": "Conseiller municipal",
                     "delegation": "Conseiller(e) municipal(e)",
                     "zone": {
                         "uuid": "e3f18016-906e-11eb-a875-0242ac150002",
