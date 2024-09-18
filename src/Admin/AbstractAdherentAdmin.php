@@ -265,22 +265,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                         ->add('position', ActivityPositionType::class, [
                             'label' => 'Statut',
                         ])
-                        ->add('exclusiveMembership', null, [
-                            'label' => 'Je certifie sur l’honneur que je n’appartiens à aucun autre parti politique',
-                            'required' => false,
-                        ])
-                        ->add('territoireProgresMembership', null, [
-                            'label' => 'Je suis membre de territoires de progrès',
-                            'required' => false,
-                        ])
-                        ->add('agirMembership', null, [
-                            'label' => 'Je suis membre d’agir, la droite constructive’',
-                            'required' => false,
-                        ])
-                        ->add('modemMembership', null, [
-                            'label' => 'Je suis membre de MoDem',
-                            'required' => false,
-                        ])
                     ->end()
                     ->with('Comité local', ['class' => 'col-md-6'])
                         ->add('committee', ModelType::class, [

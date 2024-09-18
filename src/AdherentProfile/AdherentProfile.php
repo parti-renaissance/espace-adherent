@@ -9,6 +9,7 @@ use App\Entity\Adherent;
 use App\Entity\JobEnum;
 use App\Membership\ActivityPositionsEnum;
 use App\Membership\MembershipRequest\MembershipInterface;
+use App\Renaissance\Membership\Admin\MembershipTypeEnum;
 use App\Subscription\SubscriptionTypeEnum;
 use App\Validator\AdherentInterests;
 use App\Validator\UniqueMembership;
@@ -156,9 +157,13 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var array
      */
-    #[Assert\Choice(choices: SubscriptionTypeEnum::ADHERENT_TYPES, multipleMessage: 'adherent_profile.subscription_types.invalid_choice', multiple: true)]
+    #[Assert\Choice(choices: SubscriptionTypeEnum::ADHERENT_TYPES, multiple: true, multipleMessage: 'adherent_profile.subscription_types.invalid_choice')]
     #[Groups(['profile_write'])]
     private $subscriptionTypes = [];
+
+    #[Assert\Choice(choices: MembershipTypeEnum::CHOICES)]
+    #[Groups(['profile_write'])]
+    public ?string $partyMembership = null;
 
     public bool $isAdherent = false;
 
@@ -190,6 +195,7 @@ class AdherentProfile implements MembershipInterface
         $dto->interests = $adherent->getInterests();
         $dto->subscriptionTypes = $adherent->getSubscriptionTypeCodes();
         $dto->isAdherent = $adherent->isRenaissanceAdherent();
+        $dto->partyMembership = $adherent->partyMembership;
 
         return $dto;
     }

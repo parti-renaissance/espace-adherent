@@ -47,6 +47,7 @@ use App\Membership\MembershipRequest\MembershipInterface;
 use App\Membership\MembershipSourceEnum;
 use App\OAuth\Model\User as InMemoryOAuthUser;
 use App\Renaissance\Membership\Admin\AdherentCreateCommand;
+use App\Renaissance\Membership\Admin\MembershipTypeEnum;
 use App\Repository\AdherentRepository;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
@@ -489,22 +490,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $lastMembershipDonation = null;
 
-    #[Assert\Expression(expression: '!(value == false and this.isTerritoireProgresMembership() == false and this.isAgirMembership() == false)', message: 'adherent.exclusive_membership.no_accepted', groups: ['adhesion_complete_profile'])]
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private bool $exclusiveMembership = false;
-
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private bool $territoireProgresMembership = false;
-
     #[Groups(['profile_read'])]
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private bool $otherPartyMembership = false;
-
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private bool $agirMembership = false;
-
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    public bool $modemMembership = false;
+    #[ORM\Column(options: ['default' => MembershipTypeEnum::EXCLUSIVE])]
+    public string $partyMembership = MembershipTypeEnum::EXCLUSIVE;
 
     private ?string $authAppCode = null;
     private ?string $authAppVersion = null;
@@ -591,10 +579,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         string $email,
         ?PhoneNumber $phone,
         ?\DateTimeInterface $birthdate,
-        bool $exclusiveMembership = false,
-        bool $territoiresProgresMembership = false,
-        bool $agirMembership = false,
         ?\DateTime $registeredAt = null,
+        ?string $partyMembership = null,
     ): self {
         $adherent = new self();
 
@@ -607,9 +593,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->emailAddress = $email;
         $adherent->phone = $phone;
         $adherent->birthdate = $birthdate;
-        $adherent->exclusiveMembership = $exclusiveMembership;
-        $adherent->territoireProgresMembership = $territoiresProgresMembership;
-        $adherent->agirMembership = $agirMembership;
+        $adherent->partyMembership = $partyMembership ?? MembershipTypeEnum::EXCLUSIVE;
         $adherent->registeredAt = $registeredAt ?? new \DateTime('now');
 
         $adherent->password = Uuid::uuid4();
@@ -1167,6 +1151,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->activityArea = $adherentProfile->getActivityArea();
         $this->mandates = $adherentProfile->getMandates();
         $this->interests = $adherentProfile->getInterests();
+        $this->partyMembership = $adherentProfile->partyMembership ?? $this->partyMembership;
 
         if (!$this->postAddress->equals($postAddress)) {
             $this->postAddress = $postAddress;
@@ -1187,9 +1172,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         $this->postAddress = PostAddressFactory::createFromAddress($command->address);
         $this->phone = $command->phone;
-        $this->exclusiveMembership = $command->isExclusiveMembership();
-        $this->territoireProgresMembership = $command->isTerritoiresProgresMembership();
-        $this->agirMembership = $command->isAgirMembership();
+        $this->partyMembership = $command->partyMembership;
         $this->updatedByAdministrator = $administrator;
 
         if (!$this->isRenaissanceUser()) {
@@ -2322,46 +2305,27 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isExclusiveMembership(): bool
     {
-        return $this->exclusiveMembership;
-    }
-
-    public function setExclusiveMembership(bool $exclusiveMembership): void
-    {
-        $this->exclusiveMembership = $exclusiveMembership;
-
-        if ($exclusiveMembership) {
-            $this->territoireProgresMembership = $this->agirMembership = $this->otherPartyMembership = false;
-        }
+        return MembershipTypeEnum::EXCLUSIVE === $this->partyMembership;
     }
 
     public function isTerritoireProgresMembership(): bool
     {
-        return $this->territoireProgresMembership;
-    }
-
-    public function setTerritoireProgresMembership(bool $territoireProgresMembership): void
-    {
-        $this->territoireProgresMembership = $territoireProgresMembership;
+        return MembershipTypeEnum::TERRITOIRES_PROGRES === $this->partyMembership;
     }
 
     public function isAgirMembership(): bool
     {
-        return $this->agirMembership;
+        return MembershipTypeEnum::AGIR === $this->partyMembership;
     }
 
-    public function setAgirMembership(bool $agirMembership): void
+    public function isModemMembership(): bool
     {
-        $this->agirMembership = $agirMembership;
+        return MembershipTypeEnum::MODEM === $this->partyMembership;
     }
 
     public function isOtherPartyMembership(): bool
     {
-        return $this->otherPartyMembership;
-    }
-
-    public function setOtherPartyMembership(bool $otherPartyMembership): void
-    {
-        $this->otherPartyMembership = $otherPartyMembership;
+        return MembershipTypeEnum::OTHER === $this->partyMembership;
     }
 
     public function isFrench(): bool

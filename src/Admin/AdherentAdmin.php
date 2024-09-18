@@ -81,9 +81,6 @@ class AdherentAdmin extends AbstractAdherentAdmin
         parent::configureDatagridFilters($filter);
 
         $filter
-            ->add('modemMembership', null, [
-                'label' => 'Membre MoDem',
-            ])
             ->add('memberships.committee', CallbackFilter::class, [
                 'label' => 'Comité',
                 'field_type' => ModelAutocompleteType::class,

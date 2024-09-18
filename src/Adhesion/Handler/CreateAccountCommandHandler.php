@@ -15,6 +15,7 @@ use App\Membership\Event\UserEvent;
 use App\Membership\MembershipNotifier;
 use App\Membership\MembershipSourceEnum;
 use App\Membership\UserEvents;
+use App\Renaissance\Membership\Admin\MembershipTypeEnum;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -54,13 +55,11 @@ class CreateAccountCommandHandler
         $currentUser->utmSource = $membershipRequest->utmSource;
         $currentUser->utmCampaign = $membershipRequest->utmCampaign;
 
-        $currentUser->setExclusiveMembership($membershipRequest->exclusiveMembership ?? false);
-
-        if (!$membershipRequest->exclusiveMembership) {
-            $currentUser->setTerritoireProgresMembership(1 === $membershipRequest->partyMembership);
-            $currentUser->setAgirMembership(2 === $membershipRequest->partyMembership);
-            $currentUser->setOtherPartyMembership(3 === $membershipRequest->partyMembership);
-        }
+        $currentUser->partyMembership = $membershipRequest->exclusiveMembership ? MembershipTypeEnum::EXCLUSIVE : match ($membershipRequest->partyMembership) {
+            1 => MembershipTypeEnum::TERRITOIRES_PROGRES,
+            2 => MembershipTypeEnum::AGIR,
+            3 => MembershipTypeEnum::OTHER,
+        };
 
         $currentUser->join();
         $currentUser->setV2(true);

@@ -50,7 +50,7 @@ class MembershipRequest implements DonationRequestInterface
     public bool $isPhysicalPerson = false;
 
     #[Assert\GreaterThanOrEqual(value: 10, message: "Le montant de la cotisation n'est pas valide", groups: ['adhesion:amount'])]
-    #[Assert\NotBlank(groups: ['adhesion:amount'], message: "Afin d'adhérer à Renaissance vous devez payer la valeur minimale de notre adhésion.")]
+    #[Assert\NotBlank(message: "Afin d'adhérer à Renaissance vous devez payer la valeur minimale de notre adhésion.", groups: ['adhesion:amount'])]
     public ?int $amount = null;
 
     public bool $allowNotifications = false;

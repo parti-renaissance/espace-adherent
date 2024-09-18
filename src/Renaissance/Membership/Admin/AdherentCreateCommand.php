@@ -48,7 +48,7 @@ class AdherentCreateCommand implements MembershipInterface
 
     #[Assert\Choice(choices: MembershipTypeEnum::CHOICES, message: 'admin.adherent.renaissance.membership_type.invalid_choice', groups: ['admin_adherent_renaissance_create'])]
     #[Assert\NotBlank(message: 'admin.adherent.renaissance.membership_type.not_blank', groups: ['admin_adherent_renaissance_create'])]
-    public ?string $membershipType = MembershipTypeEnum::EXCLUSIVE;
+    public ?string $partyMembership = MembershipTypeEnum::EXCLUSIVE;
 
     #[Assert\Choice(choices: CotisationTypeChoiceEnum::CHOICES, message: 'admin.membership.cotisation_type_choice.invalid_choice', groups: ['admin_adherent_renaissance_create'])]
     #[Assert\NotBlank(message: 'admin.membership.cotisation_amount_choice.not_blank', groups: ['admin_adherent_renaissance_create'])]
@@ -70,21 +70,6 @@ class AdherentCreateCommand implements MembershipInterface
     public function __construct(public ?string $source = null)
     {
         $this->cotisationDate = new \DateTime();
-    }
-
-    public function isExclusiveMembership(): bool
-    {
-        return MembershipTypeEnum::EXCLUSIVE === $this->membershipType;
-    }
-
-    public function isTerritoiresProgresMembership(): bool
-    {
-        return MembershipTypeEnum::TERRITOIRES_PROGRES === $this->membershipType;
-    }
-
-    public function isAgirMembership(): bool
-    {
-        return MembershipTypeEnum::AGIR === $this->membershipType;
     }
 
     public function isCotisationTypeTPE(): bool

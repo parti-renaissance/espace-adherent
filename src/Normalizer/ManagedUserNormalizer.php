@@ -34,7 +34,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         $data['email_subscription'] = null;
 
         if ($scope = $this->scopeGeneratorResolver->generate()) {
-            if ($scope->getMainUser()->modemMembership) {
+            if ($scope->getMainUser()->isModemMembership()) {
                 $data['email'] = null;
             }
 

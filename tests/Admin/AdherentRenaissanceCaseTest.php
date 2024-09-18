@@ -384,9 +384,9 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
         self::assertSame($submittedValues['email'], $adherent->getEmailAddress());
         self::assertSame(['adherent:a_jour_'.date('Y').':primo'], $adherent->tags);
         self::assertEquals(new \DateTime('-20 years, january 1st'), $adherent->getBirthdate());
-        self::assertSame('exclusive' === $submittedValues['membershipType'], $adherent->isExclusiveMembership());
-        self::assertSame('agir' === $submittedValues['membershipType'], $adherent->isAgirMembership());
-        self::assertSame('territoires_progres' === $submittedValues['membershipType'], $adherent->isTerritoireProgresMembership());
+        self::assertSame('exclusive' === $submittedValues['partyMembership'], $adherent->isExclusiveMembership());
+        self::assertSame('agir' === $submittedValues['partyMembership'], $adherent->isAgirMembership());
+        self::assertSame('territoires_progres' === $submittedValues['partyMembership'], $adherent->isTerritoireProgresMembership());
 
         $registeredAt = $adherent->getRegisteredAt();
         self::assertSame($submittedValues['cotisationDate']['year'], $registeredAt->format('Y'));
@@ -444,7 +444,7 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
                     'month' => 1,
                     'day' => 1,
                 ],
-                'membershipType' => 'exclusive',
+                'partyMembership' => 'exclusive',
                 'cotisationAmountChoice' => 'amount_30',
                 'cotisationDate' => [
                     'year' => date('Y'),
@@ -634,12 +634,12 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
             ['birthdate' => ['Cette valeur n\'est pas valide.']],
         ];
         yield 'No membership type' => [
-            ['membershipType' => '', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
-            ['membershipType' => ['Veuillez spécifier au moins un type d\'adhésion.']],
+            ['partyMembership' => '', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
+            ['partyMembership' => ['Veuillez spécifier au moins un type d\'adhésion.']],
         ];
         yield 'Invalid membership type' => [
-            ['membershipType' => 'invalid', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
-            ['membershipType' => ['Ce type d\'adhésion n\'est pas valide.']],
+            ['partyMembership' => 'invalid', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
+            ['partyMembership' => ['Ce type d\'adhésion n\'est pas valide.']],
         ];
         yield 'No cotisation amount choice' => [
             ['cotisationAmountChoice' => '', 'email' => 'renaissance-user-1@en-marche-dev.fr'],
