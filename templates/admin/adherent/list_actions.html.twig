@@ -14,23 +14,10 @@
                         client_id: client.getUuid().toString(),
                         redirect_uri: client.getRedirectUris()|first,
                         scope: client.getSupportedScopes()|join(' '),
-                    }) }}" class="btn btn-xs btn-default" title="Impersonnifier VOX">
+                    }) }}" class="btn btn-xs btn-default" title="Impersonnifier">
                         <i class="fa fa-user-secret" aria-hidden="true"></i>
-                        VOX 🇪🇺
+                        Impersonnifier
                     </a>
-
-                    {% if is_granted(constant('App\\Security\\Voter\\DataCornerVoter::DATA_CORNER'), object) %}
-                        <a href="{{ path('app_front_oauth_authorize', {
-                            app_domain: admin_renaissance_host,
-                            '_switch_user': object.emailAddress,
-                            response_type: 'code',
-                            client_id: get_jme_client_id(),
-                            scope: constant('App\\OAuth\\Model\\Scope::JEMENGAGE_ADMIN')
-                        }) }}" class="btn btn-xs btn-primary" title="Impersonnifier JME">
-                            <i class="fa fa-user-secret" aria-hidden="true"></i>
-                            JME 🇫🇷
-                        </a>
-                    {% endif %}
                 </div>
             {% endif %}
         {% else %}
