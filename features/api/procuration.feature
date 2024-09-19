@@ -51,6 +51,7 @@ Feature:
                 "age": "@number@",
                 "id": "@string@",
                 "tags": [{
+                    "code": "citoyen",
                     "label": "Citoyen",
                     "type": "citoyen"
                 }],
@@ -184,6 +185,7 @@ Feature:
                 "age": "@number@",
                 "id": "@string@",
                 "tags": [{
+                    "code": "citoyen",
                     "label": "Citoyen",
                     "type": "citoyen"
                 }],
@@ -269,6 +271,7 @@ Feature:
                 "age": "@number@",
                 "id": "@string@",
                 "tags": [{
+                    "code": "citoyen",
                     "label": "Citoyen",
                     "type": "citoyen"
                 }],
@@ -342,6 +345,7 @@ Feature:
                     "age": "@number@",
                     "id": "@string@",
                     "tags": [{
+                        "code": "citoyen",
                         "label": "Citoyen",
                         "type": "citoyen"
                     }],
