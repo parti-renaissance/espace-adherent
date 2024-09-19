@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 #[Route(path: '/resubscribe-email', name: 'api_resubscribe_email_payload', methods: ['GET'])]
+#[Route(path: '/v3/resubscribe-config', methods: ['GET'])]
 class ResubscribeEmailController extends AbstractController
 {
     public function __invoke(SignUpHandler $signUpHandler): Response

@@ -195,7 +195,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
 
         $author = $object->getAuthor();
 
-        return $author->getImageName() ? $this->urlGenerator->generate(
+        return $author?->getImageName() ? $this->urlGenerator->generate(
             'asset_url',
             ['path' => $author->getImagePath()],
             UrlGeneratorInterface::ABSOLUTE_URL
