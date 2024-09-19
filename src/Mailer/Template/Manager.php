@@ -12,16 +12,18 @@ class Manager
     {
     }
 
-    public function getTemplateContent(TransactionalEmailTemplate $template): string
+    public function getTemplateContent(TransactionalEmailTemplate $template, bool $fillVariables = false): string
     {
+        $content = $template->getContent();
+
         if ($template->parent) {
             preg_match('/<body[^>]*>([\s\S]*?)<\/body>/i', $template->getContent(), $matches);
             $childContent = $matches[1];
 
-            return preg_replace('/(<table\s+[^>]*class="template-email-block"[^>]*>)([\s\S]*?<div[^>]*>)[\s\S]*?(<\/div>[\s\S]*?<\/table>)/i', '$1$2'.$childContent.'$3', $template->parent->getContent());
+            $content = preg_replace('/(<table\s+[^>]*class="template-email-block"[^>]*>)([\s\S]*?<div[^>]*>)[\s\S]*?(<\/div>[\s\S]*?<\/table>)/i', '$1$2'.$childContent.'$3', $template->parent->getContent());
         }
 
-        return $template->getContent();
+        return $fillVariables ? preg_replace_callback('/{{\s*([a-zA-Z0-9_]+)\s*}}/', fn ($matches) => $matches[1], $content) : $content;
     }
 
     public function findTemplateForMessage(Message $message): ?TransactionalEmailTemplate

@@ -2,6 +2,7 @@
 
 namespace App\Mailer;
 
+use App\Mailer\Message\EmailTemplateMessage;
 use App\Mailer\Message\Message;
 use App\Mailer\Template\Manager;
 use App\Mandrill\EmailTemplate;
@@ -39,8 +40,7 @@ class EmailTemplateFactory
         $email->setPreserveRecipients($message->getPreserveRecipients());
 
         if ($templateObject) {
-            $content = $this->templateManager->getTemplateContent($templateObject);
-            $email->setMessageHtmlContent($content);
+            $email->setMessageHtmlContent($this->templateManager->getTemplateContent($templateObject, $message instanceof EmailTemplateMessage));
         }
 
         return $email;

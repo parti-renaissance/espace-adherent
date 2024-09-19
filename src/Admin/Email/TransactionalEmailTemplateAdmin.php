@@ -3,16 +3,21 @@
 namespace App\Admin\Email;
 
 use App\Admin\AbstractAdmin;
+use App\Entity\Email\TransactionalEmailTemplate;
 use App\Mailer\Message\Message;
+use App\Repository\Email\TransactionalEmailTemplateRepository;
 use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class TransactionalEmailTemplateAdmin extends AbstractAdmin
 {
+    private EntityRepository $transactionEmailTemplateRepository;
+
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
@@ -52,16 +57,12 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
             ->add('identifier', 'url', ['label' => 'Identifiant', 'route' => ['name' => 'admin_app_email_transactionalemailtemplate_content', 'identifier_parameter_name' => 'id']])
             ->add('subject', null, ['label' => 'Objet'])
             ->add('parent', 'url', ['label' => 'Parent', 'route' => ['name' => 'admin_app_email_transactionalemailtemplate_content', 'identifier_parameter_name' => 'id']])
-            ->add('createdAt', null, ['label' => 'Créé le'])
             ->add('updatedAt', null, ['label' => 'Modifié le'])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
-                    'edit' => [],
+                    'edit' => ['template' => 'admin/email/list_edit.html.twig'],
                     'content' => ['template' => 'admin/email/list_content.html.twig'],
                     'preview' => ['template' => 'admin/email/list_preview.html.twig'],
-                    'send' => ['template' => 'admin/email/list_send_test.html.twig'],
-                    'duplicate' => ['template' => 'admin/email/list_duplicate.html.twig'],
-                    'sendToProd' => ['template' => 'admin/email/list_send_to_prod.html.twig'],
                 ],
             ])
         ;
@@ -111,7 +112,9 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
             }
         }
 
-        return $classNames;
+        $templates = array_map(fn (TransactionalEmailTemplate $template) => $template->identifier, $this->transactionEmailTemplateRepository->findAll());
+
+        return array_diff($classNames, $templates);
     }
 
     private function scanDir(string $directory): array
@@ -144,5 +147,11 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
         }
 
         return $actions;
+    }
+
+    #[Required]
+    public function setTransactionEmailTemplateRepository(TransactionalEmailTemplateRepository $transactionEmailTemplateRepository): void
+    {
+        $this->transactionEmailTemplateRepository = $transactionEmailTemplateRepository;
     }
 }
