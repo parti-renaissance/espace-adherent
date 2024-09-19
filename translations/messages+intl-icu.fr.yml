@@ -247,6 +247,8 @@ adherent.source.enmarche_user: Utilisateur EM
 membership.type.exclusive: Certifie n'appartenir à aucun autre parti politique
 membership.type.territoires_progres: Membre de « Territoires de Progrès »
 membership.type.agir: Membre d' « Agir, la droite constructive »
+membership.type.modem: Membre de MoDem
+membership.type.other: Membre d'un autre parti politique
 
 cotistation.amount_choice.amount_10: 10€
 cotistation.amount_choice.amount_30: 30€

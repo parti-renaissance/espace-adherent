@@ -80,7 +80,7 @@ Feature:
         "adherent": true,
         "last_membership_donation": null,
         "committee_membership": null,
-        "other_party_membership": false,
+        "party_membership": "exclusive",
         "image_url": null,
         "change_email_token": null
     }
@@ -123,7 +123,8 @@ Feature:
           "postal_code": "69003",
           "city_name": "Lyon 3ème",
           "country": "FR"
-      }
+      },
+      "party_membership": "modem"
     }
     """
     Then the response status code should be 200
@@ -139,7 +140,8 @@ Feature:
           "city": "69003-69383",
           "city_name": "Lyon 3ème",
           "country": "FR"
-      }
+      },
+      "party_membership": "modem"
     }
     """
 
@@ -794,7 +796,7 @@ Feature:
         "interests": [],
         "last_membership_donation": null,
         "committee_membership": null,
-        "other_party_membership": false,
+        "party_membership": "exclusive",
         "image_url": null,
         "change_email_token": null
     }
@@ -1271,7 +1273,7 @@ Feature:
                 "region": null
             },
             "last_membership_donation": "@string@.isDateTime()",
-            "other_party_membership": false,
+            "party_membership": "exclusive",
             "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
             "first_name": "Gisele",
             "last_name": "Berthoux",
@@ -1382,7 +1384,7 @@ Feature:
                 "region": null
             },
             "last_membership_donation": "@string@.isDateTime()",
-            "other_party_membership": false,
+            "party_membership": "exclusive",
             "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
             "first_name": "Gisele",
             "last_name": "Berthoux",
@@ -1467,7 +1469,7 @@ Feature:
                 "region": null
             },
             "last_membership_donation": "@string@.isDateTime()",
-            "other_party_membership": false,
+            "party_membership": "exclusive",
             "uuid": "b4219d47-3138-5efd-9762-2ef9f9495084",
             "first_name": "Gisele",
             "last_name": "Berthoux",

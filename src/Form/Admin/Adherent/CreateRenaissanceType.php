@@ -56,7 +56,7 @@ class CreateRenaissanceType extends AbstractType
                 ],
             ])
             ->add('birthdate', BirthdateType::class, ['disabled' => $fromCertifiedAdherent])
-            ->add('membershipType', ChoiceType::class, [
+            ->add('partyMembership', ChoiceType::class, [
                 'choices' => MembershipTypeEnum::CHOICES,
                 'choice_label' => function (string $value): string {
                     return "membership.type.$value";

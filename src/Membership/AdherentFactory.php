@@ -117,8 +117,6 @@ class AdherentFactory
         $adherent->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);
         $adherent->setSource(MembershipSourceEnum::LEGISLATIVE);
 
-        $adherent->setExclusiveMembership((bool) $inscriptionRequest->partyMembership);
-
         $adherent->utmSource = $inscriptionRequest->utmSource;
         $adherent->utmCampaign = $inscriptionRequest->utmCampaign;
 
@@ -138,10 +136,8 @@ class AdherentFactory
             $command->email,
             $command->phone,
             $command->birthdate,
-            $command->isExclusiveMembership(),
-            $command->isTerritoiresProgresMembership(),
-            $command->isAgirMembership(),
-            $command->cotisationDate
+            $command->cotisationDate,
+            $command->partyMembership
         );
 
         $adherent->setSource($command->source);
