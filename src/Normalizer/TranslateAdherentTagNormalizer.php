@@ -41,7 +41,11 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
                         empty($context[self::NO_STATIC_TAGS])
                         || \in_array($tag, array_merge(TagEnum::getElectTags(), TagEnum::getAdherentTags()), true)
                     ) {
-                        return ['label' => $this->tagTranslator->trans($tag, false), 'type' => TagEnum::getMainLevel($tag)];
+                        return [
+                            'code' => $tag,
+                            'label' => $this->tagTranslator->trans($tag, false),
+                            'type' => TagEnum::getMainLevel($tag),
+                        ];
                     }
 
                     return null;
