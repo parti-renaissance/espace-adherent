@@ -246,10 +246,12 @@ Feature:
                 "nationality": "FR",
                 "tags": [
                     {
+                        "code": "adherent:a_jour_2024",
                         "label": "À jour 2024",
                         "type": "adherent"
                     },
                     {
+                        "code": "elu:cotisation_ok:exempte",
                         "label": "Exempté de cotisation",
                         "type": "elu"
                     },
@@ -433,10 +435,12 @@ Feature:
                 "nationality": "FR",
                 "tags": [
                     {
+                        "code": "adherent:a_jour_2024",
                         "label": "À jour 2024",
                         "type": "adherent"
                     },
                     {
+                        "code": "elu:cotisation_ok:exempte",
                         "label": "Exempté de cotisation",
                         "type": "elu"
                     },
@@ -618,10 +622,12 @@ Feature:
                 "nationality": "FR",
                 "tags": [
                     {
+                        "code": "adherent:a_jour_2024",
                         "label": "À jour 2024",
                         "type": "adherent"
                     },
                     {
+                        "code": "elu:cotisation_ok:exempte",
                         "label": "Exempté de cotisation",
                         "type": "elu"
                     },

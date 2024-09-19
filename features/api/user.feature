@@ -33,6 +33,7 @@ Feature:
         "last_month": 0
       },
       "tags": [{
+        "code": "sympathisant:compte_em",
         "label": "Ancien compte En Marche",
         "type": "sympathisant"
       }],
