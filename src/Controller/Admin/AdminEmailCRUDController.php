@@ -16,7 +16,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class AdminEmailCRUDController extends CRUDController
@@ -91,11 +90,11 @@ class AdminEmailCRUDController extends CRUDController
         ]);
     }
 
-    public function sendToProdAction(TransactionalEmailTemplate $template, HttpClientInterface $templateWebhookClient, SerializerInterface $serializer): Response
+    public function sendToProdAction(TransactionalEmailTemplate $template, HttpClientInterface $templateWebhookClient): Response
     {
         $this->admin->checkAccess('content', $template);
 
-        $response = $templateWebhookClient->request('POST', $this->generateUrl('app_webhook_template_update'), [
+        $response = $templateWebhookClient->request('POST', '/templates', [
             'json' => [
                 'identifier' => $template->identifier,
                 'subject' => $template->subject,

@@ -95,8 +95,6 @@ adherent.activity_position.invalid_choice: Le statut d'activité n'est pas valid
 adherent.job.invalid_choice: Le métier n'est pas valide.
 adherent.activity_area.invalid_choice: Le secteur d'activité n'est pas valide.
 
-adherent.exclusive_membership.no_accepted: L'acceptation d'une des mentions suivantes est obligatoire
-
 adherent.wrong_password: Le mot de passe est invalide.
 
 adherent.contact.min_length: Le message doit contenir au moins {{ limit }} caractères.
