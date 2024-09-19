@@ -9,24 +9,9 @@
             client_id: client.getUuid().toString(),
             redirect_uri: client.getRedirectUris()|first,
             scope: client.getSupportedScopes()|join(' '),
-        }) }}" class="sonata-action-element" title="Impersonnifier VOX">
+        }) }}" class="sonata-action-element" title="Impersonnifier">
             <i class="fa fa-user-secret" aria-hidden="true"></i>
-            Impersonnifier VOX 🇪🇺
+            Impersonnifier
         </a>
     </li>
-
-    {% if is_granted(constant('App\\Security\\Voter\\DataCornerVoter::DATA_CORNER'), object) %}
-        <li>
-            <a href="{{ path('app_front_oauth_authorize', {
-                app_domain: admin_renaissance_host,
-                '_switch_user': object.emailAddress,
-                response_type: 'code',
-                client_id: get_jme_client_id(),
-                scope: constant('App\\OAuth\\Model\\Scope::JEMENGAGE_ADMIN')
-            }) }}" class="sonata-action-element" title="Impersonnifier JME">
-                <i class="fa fa-user-secret" aria-hidden="true"></i>
-                Impersonnifier JME 🇫🇷
-            </a>
-        </li>
-    {% endif %}
 {% endif %}

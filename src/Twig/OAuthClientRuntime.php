@@ -15,11 +15,6 @@ class OAuthClientRuntime implements RuntimeExtensionInterface
     {
     }
 
-    public function getJMEClientId(): ?string
-    {
-        return $this->getClientId(AppCodeEnum::JEMENGAGE_WEB);
-    }
-
     public function getVoxClient(): ?Client
     {
         $code = AppCodeEnum::BESOIN_D_EUROPE;
