@@ -2328,6 +2328,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return MembershipTypeEnum::OTHER === $this->partyMembership;
     }
 
+    #[Groups(['profile_read'])]
+    public function getOtherPartyMembership(): bool
+    {
+        return $this->isOtherPartyMembership();
+    }
+
     public function isFrench(): bool
     {
         return AddressInterface::FRANCE === $this->nationality;
