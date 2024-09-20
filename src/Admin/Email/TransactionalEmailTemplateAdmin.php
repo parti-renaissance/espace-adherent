@@ -54,7 +54,7 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
     {
         $list
             ->add('id', null, ['label' => '#'])
-            ->add('identifier', 'url', ['label' => 'Identifiant', 'route' => ['name' => 'admin_app_email_transactionalemailtemplate_content', 'identifier_parameter_name' => 'id']])
+            ->add('messageClass', 'url', ['label' => 'Identifiant', 'route' => ['name' => 'admin_app_email_transactionalemailtemplate_content', 'identifier_parameter_name' => 'id']])
             ->add('subject', null, ['label' => 'Objet'])
             ->add('parent', 'url', ['label' => 'Parent', 'route' => ['name' => 'admin_app_email_transactionalemailtemplate_content', 'identifier_parameter_name' => 'id']])
             ->add('updatedAt', null, ['label' => 'Modifié le'])

@@ -58,6 +58,13 @@ class TransactionalEmailTemplate implements EntityAdministratorBlameableInterfac
         $this->identifier .= '-copy';
     }
 
+    public function getMessageClass(): string
+    {
+        $parts = explode('\\', $this->identifier);
+
+        return end($parts);
+    }
+
     public function updateFrom(UpdateTransactionalEmailTemplateCommand $command): void
     {
         $this->identifier = $command->identifier;
