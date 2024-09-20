@@ -19,7 +19,7 @@ class AdherentElectStatusTagGenerator extends AbstractTagGenerator
 
         if (null === $adherent->getLastRevenueDeclaration() && 0 === $countPayments) {
             $tags[] = TagEnum::ELU_ATTENTE_DECLARATION;
-        } elseif (null === $adherent->getContributionAmount()) {
+        } elseif (0 === $adherent->getContributionAmount()) {
             $tags[] = TagEnum::ELU_COTISATION_OK_NON_SOUMIS;
         } elseif ($countPayments) {
             $tags[] = TagEnum::ELU_COTISATION_OK_SOUMIS;
