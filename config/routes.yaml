@@ -107,9 +107,9 @@ app_oauth:
     type:     "annotation"
     prefix:   "/oauth/v2"
     defaults:
-        app_domain: "%app_host%"
+        app_domain: "%user_vox_host%"
     requirements:
-        app_domain: "%app_host%|%app_renaissance_host%|%api_renaissance_host%|%admin_renaissance_host%|%user_vox_host%"
+        app_domain: "%app_renaissance_host%|%api_renaissance_host%|%admin_renaissance_host%|%user_vox_host%"
 
 #
 # Admin panel
@@ -209,6 +209,12 @@ vox_app_redirect:
     methods: GET
     host: "%user_vox_host%"
     path: /app
+    controller: App\Controller\Vox\RedirectAppController
+
+vox_app_redirect_from_admin:
+    methods: GET
+    host: "%admin_renaissance_host%"
+    path: /vox
     controller: App\Controller\Vox\RedirectAppController
 
 user_renaissance_redirect:

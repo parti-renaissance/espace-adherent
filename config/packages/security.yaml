@@ -452,7 +452,7 @@ security:
         admin:
             context: main_context
             host: "%admin_renaissance_host%"
-            pattern: ^/(?!oauth)
+            pattern: ^/(?!(oauth|vox))
             provider: admins_db
             switch_user: true
             access_denied_handler: App\Security\AccessDeniedHandler
@@ -512,7 +512,7 @@ security:
         - { path: '^/espace-adherent', roles: [ROLE_ADHERENT] }
         - { host: "%admin_renaissance_host%", path: '^/login/(2fa|logout)', role: [IS_AUTHENTICATED_2FA_IN_PROGRESS] }
         - { host: "%admin_renaissance_host%", path: '^/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
-        - { host: "%admin_renaissance_host%", path: '^/(?!oauth)', roles: [ROLE_ADMIN_DASHBOARD] }
+        - { host: "%admin_renaissance_host%", path: '^/(?!(oauth|vox))', roles: [ROLE_ADMIN_DASHBOARD] }
         - { path: '^/membre/.*', roles: [IS_AUTHENTICATED_REMEMBERED] }
         - { path: '^/elections/.+', roles: [ROLE_ADHERENT] }
         - { path: '^/(adhesion|don|espace-elus)', allow_if: "not is_granted('ROLE_ADMIN_DASHBOARD')"}
