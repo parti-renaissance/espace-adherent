@@ -7,6 +7,7 @@ use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\UnlayerJsonContentTrait;
+use App\Mailer\Command\UpdateTransactionalEmailTemplateCommand;
 use App\Repository\Email\TransactionalEmailTemplateRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -57,12 +58,12 @@ class TransactionalEmailTemplate implements EntityAdministratorBlameableInterfac
         $this->identifier .= '-copy';
     }
 
-    public function updateFrom(TransactionalEmailTemplate $template): void
+    public function updateFrom(UpdateTransactionalEmailTemplateCommand $command): void
     {
-        $this->identifier = $template->identifier;
-        $this->subject = $template->subject;
-        $this->content = $template->content;
-        $this->jsonContent = $template->jsonContent;
-        $this->parent = $template->parent;
+        $this->identifier = $command->identifier;
+        $this->subject = $command->subject;
+        $this->content = $command->content;
+        $this->jsonContent = $command->jsonContent;
+        $this->parent = $command->parentObject;
     }
 }

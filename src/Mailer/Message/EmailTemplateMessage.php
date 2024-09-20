@@ -7,13 +7,15 @@ use Ramsey\Uuid\Uuid;
 
 class EmailTemplateMessage extends Message
 {
-    public static function create(TransactionalEmailTemplate $template, string $recipientEmail): self
+    public static function create(TransactionalEmailTemplate $template, array $recipientEmails): self
     {
-        return new self(
+        $email = array_shift($recipientEmails);
+
+        $message = new self(
             Uuid::uuid4(),
-            $recipientEmail,
-            $recipientEmail,
-            $template->subject,
+            $email,
+            $email,
+            $template->subject ?? '',
             [],
             [],
             null,
@@ -21,5 +23,11 @@ class EmailTemplateMessage extends Message
             [],
             $template
         );
+
+        foreach ($recipientEmails as $email) {
+            $message->addRecipient($email);
+        }
+
+        return $message;
     }
 }

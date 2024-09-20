@@ -1,4 +1,56 @@
-<a href="{{ path('admin_app_email_transactionalemailtemplate_preview', {id: object.id}) }}" class="btn btn-sm btn-warning" title="Visualiser">
-    <i class="fa fa-eye" aria-hidden="true"></i>
-    Visualiser
-</a>
+<style>
+    table.sonata-ba-list td {
+        overflow: initial;
+    }
+
+    .table-responsive {
+        overflow-x: initial;
+    }
+</style>
+<div class="btn-group">
+    <a href="{{ admin.generateObjectUrl('preview', object, actions.link_parameters|default([])) }}" class="btn btn-sm btn-warning" title="Visualiser">
+        <i class="fa fa-eye" aria-hidden="true"></i>
+    </a>
+
+    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+    </button>
+
+    <ul class="dropdown-menu" style="overflow-x: visible;">
+        <li>
+            <a href="#" data-toggle="modal" data-target="#send-test-form-{{ object.id }}">
+                <i class="fa fa-send" aria-hidden="true"></i>
+                Envoyer un test
+            </a>
+        </li>
+        <li><a href="{{ admin.generateObjectUrl('duplicate', object) }}">
+                <i class="fa fa-clone" aria-hidden="true"></i>Dupliquer</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="{{ admin.generateObjectUrl('sendToProd', object) }}"><i class="fa fa-upload" aria-hidden="true"></i><span class="text-danger">Envoyer en prod</span></a></li>
+    </ul>
+</div>
+
+<div class="modal fade" id="send-test-form-{{ object.id }}" style="display: none">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ admin.generateObjectUrl('send_test', object) }}" method="get">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Envoyer un test</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="emails-{{ object.id }}">Destinataires</label>
+                        <textarea class="form-control" name="emails" id="emails-{{ object.id }}">{{ app.user.getEmailAddress() }}</textarea>
+                        <p class="help-block">Plusieurs emails séparés par virgule, 3 max</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

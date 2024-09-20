@@ -3,6 +3,7 @@
 namespace App\Controller\Webhook;
 
 use App\Entity\Email\TransactionalEmailTemplate;
+use App\Mailer\Command\UpdateTransactionalEmailTemplateCommand;
 use App\Repository\Email\TransactionalEmailTemplateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,24 +25,24 @@ class UpdateTransactionalEmailTemplateController extends AbstractController
             return $this->json('Unauthorized', Response::HTTP_UNAUTHORIZED);
         }
 
-        $serializer->deserialize($request->getContent(), TransactionalEmailTemplate::class, 'json', [
-            'object_to_populate' => $template = new TransactionalEmailTemplate(),
+        $serializer->deserialize($request->getContent(), UpdateTransactionalEmailTemplateCommand::class, 'json', [
+            'object_to_populate' => $command = new UpdateTransactionalEmailTemplateCommand(),
         ]);
 
-        if (null === $template->identifier) {
+        if (null === $command->identifier) {
             return $this->json('Identifier is required', Response::HTTP_BAD_REQUEST);
         }
 
-        if ($template->parent?->identifier) {
-            $template->parent = $repository->findOneBy(['identifier' => $template->parent->identifier]);
+        if ($command->parent) {
+            $command->parentObject = $repository->findOneBy(['identifier' => $command->parent]);
         }
 
         /** @var TransactionalEmailTemplate $existingTemplate */
-        if ($existingTemplate = $repository->findOneBy(['identifier' => $template->identifier])) {
-            $existingTemplate->updateFrom($template);
-        } else {
-            $em->persist($template);
+        if (!$template = $repository->findOneBy(['identifier' => $command->identifier])) {
+            $em->persist($template = new TransactionalEmailTemplate());
         }
+
+        $template->updateFrom($command);
 
         $em->flush();
 

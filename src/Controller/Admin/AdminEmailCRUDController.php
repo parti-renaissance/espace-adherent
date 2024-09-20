@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Administrator;
 use App\Entity\Email\EmailLog;
 use App\Entity\Email\TransactionalEmailTemplate;
 use App\Form\Admin\UnlayerContentType;
@@ -34,16 +33,21 @@ class AdminEmailCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
-    public function sendTestAction(TransactionalEmailTemplate $template, MailerService $transactionalMailer): Response
+    public function sendTestAction(Request $request, TransactionalEmailTemplate $template, MailerService $transactionalMailer): Response
     {
         $this->admin->checkAccess('send_test', $template);
 
-        /** @var Administrator $admin */
-        $admin = $this->getUser();
+        $emails = array_map('trim', explode(',', $request->query->get('emails', '')));
 
-        $transactionalMailer->sendMessage(EmailTemplateMessage::create($template, $admin->getEmailAddress()), false);
+        if (\count($emails) < 1 || \count($emails) > 3) {
+            $this->addFlash('sonata_flash_error', 'Vous devez renseigner entre 1 et 3 emails');
 
-        $this->addFlash('sonata_flash_success', 'Email de test a été renvoyé à <strong>'.$admin->getEmailAddress().'</strong>');
+            return $this->redirectToList();
+        }
+
+        $transactionalMailer->sendMessage(EmailTemplateMessage::create($template, $emails), false);
+
+        $this->addFlash('sonata_flash_success', 'Email de test a été renvoyé à <strong>'.implode(', ', $emails).'</strong>');
 
         return $this->redirectToList();
     }
@@ -100,9 +104,7 @@ class AdminEmailCRUDController extends CRUDController
                 'subject' => $template->subject,
                 'content' => $template->getContent(),
                 'jsonContent' => $template->getJsonContent(),
-                'parent' => [
-                    'identifier' => $template->parent?->identifier,
-                ],
+                'parent' => $template->parent?->identifier,
             ],
         ]);
 
