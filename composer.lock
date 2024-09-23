@@ -14869,16 +14869,16 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v5.4.40",
+            "version": "v5.4.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
-                "reference": "75482b3b0aadc7f652d99b4f543b1d21f6562ff4"
+                "reference": "e4171a01aaa3789f351b5d58f9567b0fb81a0918"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/75482b3b0aadc7f652d99b4f543b1d21f6562ff4",
-                "reference": "75482b3b0aadc7f652d99b4f543b1d21f6562ff4",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/e4171a01aaa3789f351b5d58f9567b0fb81a0918",
+                "reference": "e4171a01aaa3789f351b5d58f9567b0fb81a0918",
                 "shasum": ""
             },
             "require": {
@@ -14939,7 +14939,7 @@
                 "localization"
             ],
             "support": {
-                "source": "https://github.com/symfony/intl/tree/v5.4.40"
+                "source": "https://github.com/symfony/intl/tree/v5.4.44"
             },
             "funding": [
                 {
@@ -14955,7 +14955,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:33:22+00:00"
+            "time": "2024-09-20T07:56:40+00:00"
         },
         {
             "name": "symfony/lock",
