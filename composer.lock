@@ -13698,16 +13698,16 @@
         },
         {
             "name": "symfony/dotenv",
-            "version": "v5.4.42",
+            "version": "v5.4.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dotenv.git",
-                "reference": "974e6b8ce872b686eac92721e9ec141fc52e2aa1"
+                "reference": "bb4fef2bf035a50170fd95e5b146152834126008"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dotenv/zipball/974e6b8ce872b686eac92721e9ec141fc52e2aa1",
-                "reference": "974e6b8ce872b686eac92721e9ec141fc52e2aa1",
+                "url": "https://api.github.com/repos/symfony/dotenv/zipball/bb4fef2bf035a50170fd95e5b146152834126008",
+                "reference": "bb4fef2bf035a50170fd95e5b146152834126008",
                 "shasum": ""
             },
             "require": {
@@ -13749,7 +13749,7 @@
                 "environment"
             ],
             "support": {
-                "source": "https://github.com/symfony/dotenv/tree/v5.4.42"
+                "source": "https://github.com/symfony/dotenv/tree/v5.4.44"
             },
             "funding": [
                 {
@@ -13765,7 +13765,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-08T19:30:21+00:00"
+            "time": "2024-09-16T09:39:25+00:00"
         },
         {
             "name": "symfony/error-handler",
