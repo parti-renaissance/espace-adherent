@@ -3,7 +3,7 @@
 namespace App\Donation\Handler;
 
 use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
-use App\Adhesion\Command\GenerateActivationCodeCommand;
+use App\Adhesion\Events\NewCotisationEvent;
 use App\Donation\Command\ReceivePayboxIpnResponseCommand;
 use App\Entity\Donation;
 use App\Mailer\MailerService;
@@ -15,6 +15,7 @@ use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ReceivePayboxIpnResponseCommandHandler implements MessageHandlerInterface
 {
@@ -24,6 +25,7 @@ class ReceivePayboxIpnResponseCommandHandler implements MessageHandlerInterface
         private readonly TransactionRepository $transactionRepository,
         private readonly DonationRepository $donationRepository,
         private readonly MessageBusInterface $bus,
+        private readonly EventDispatcherInterface $eventDispatcher,
         private readonly LoggerInterface $logger,
     ) {
     }
@@ -56,6 +58,10 @@ class ReceivePayboxIpnResponseCommandHandler implements MessageHandlerInterface
         $this->manager->flush();
 
         if ($transaction->isSuccessful()) {
+            if ($adherent) {
+                $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
+            }
+
             if ($donation->isMembership()) {
                 if (!$adherent) {
                     $this->logger->error('Adhesion RE: adherent introuvable pour une cotisation réussie, donation id '.$donation->getId());
@@ -63,15 +69,9 @@ class ReceivePayboxIpnResponseCommandHandler implements MessageHandlerInterface
                     return;
                 }
 
-                if ($adherent->isV2() && !$adherent->getActivatedAt()) {
-                    $this->bus->dispatch(new GenerateActivationCodeCommand($adherent, true));
-                }
+                $this->eventDispatcher->dispatch(new NewCotisationEvent($adherent, $donation));
             } else {
                 $this->transactionalMailer->sendMessage(DonationThanksMessage::createFromTransaction($transaction));
-            }
-
-            if ($adherent) {
-                $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
             }
         }
     }

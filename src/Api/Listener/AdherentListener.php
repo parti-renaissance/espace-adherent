@@ -3,7 +3,7 @@
 namespace App\Api\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
-use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
+use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;
 use App\Entity\Adherent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,6 +39,6 @@ class AdherentListener implements EventSubscriberInterface
             return;
         }
 
-        $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
+        $this->bus->dispatch(new AsyncRefreshAdherentTagCommand($adherent->getUuid()));
     }
 }

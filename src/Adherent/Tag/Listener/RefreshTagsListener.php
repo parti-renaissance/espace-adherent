@@ -2,7 +2,7 @@
 
 namespace App\Adherent\Tag\Listener;
 
-use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
+use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;
 use App\Entity\Adherent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
@@ -41,6 +41,6 @@ class RefreshTagsListener implements EventSubscriberInterface
 
     private function dispatch(Adherent $adherent): void
     {
-        $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
+        $this->bus->dispatch(new AsyncRefreshAdherentTagCommand($adherent->getUuid()));
     }
 }

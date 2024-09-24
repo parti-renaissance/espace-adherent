@@ -13,3 +13,4 @@ framework:
             App\Messenger\Message\UuidDefaultAsyncMessage: sync
             App\Mailer\Command\AsyncSendMessageCommand: sync
             App\Mailchimp\Webhook\Command\CatchMailchimpWebhookCallCommand: sync
+            App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand: sync

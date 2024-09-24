@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
+use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;
 use App\Entity\Contribution\Payment;
 use App\Ohme\ClientInterface;
 use App\Repository\AdherentRepository;
@@ -80,7 +80,7 @@ class ElectedRepresentativeOhmeUpdateCommand extends Command
                 }
 
                 $this->entityManager->flush();
-                $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
+                $this->bus->dispatch(new AsyncRefreshAdherentTagCommand($adherent->getUuid()));
 
                 $this->pause();
             }

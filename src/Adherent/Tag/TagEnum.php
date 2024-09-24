@@ -90,9 +90,9 @@ class TagEnum extends Enum
         ];
     }
 
-    public static function getAdherentYearTag(?int $year = null): string
+    public static function getAdherentYearTag(?int $year = null, string $tag = self::ADHERENT_YEAR_TAG_PATTERN): string
     {
-        return \sprintf(self::ADHERENT_YEAR_TAG_PATTERN, $year ?? date('Y'));
+        return \sprintf($tag, $year ?? date('Y'));
     }
 
     public static function includesTag(string $searchTag, array $previousTags): bool

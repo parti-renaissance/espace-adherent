@@ -34,6 +34,14 @@ framework:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.command' }
                     queues:
                         default: { binding_keys: ['async.command'] }
+            notification:
+                dsn: "%env(RABBITMQ_DSN)%"
+                retry_strategy:
+                    delay: 10000
+                options:
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.notification' }
+                    queues:
+                        notification: { binding_keys: [ 'async.notification' ] }
             pap:
                 dsn: "%env(RABBITMQ_DSN)%"
                 retry_strategy:
@@ -83,3 +91,4 @@ framework:
             App\Pap\Command\AsynchronousMessageInterface: pap
             App\Mailer\Command\AsyncSendMessageCommand: mailer
             App\Messenger\Message\AsynchronousMessageInterface: default
+            App\Notifier\AsyncNotificationInterface: notification

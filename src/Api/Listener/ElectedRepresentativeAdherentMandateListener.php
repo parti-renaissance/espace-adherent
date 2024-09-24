@@ -3,7 +3,7 @@
 namespace App\Api\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
-use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
+use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -44,6 +44,6 @@ class ElectedRepresentativeAdherentMandateListener implements EventSubscriberInt
         $adherent = $mandate->getAdherent();
 
         $this->bus->dispatch(new AdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress()));
-        $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
+        $this->bus->dispatch(new AsyncRefreshAdherentTagCommand($adherent->getUuid()));
     }
 }

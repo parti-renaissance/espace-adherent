@@ -2,8 +2,8 @@
 
 namespace App\Adherent\Tag\Command;
 
-use App\Messenger\Message\UuidDefaultAsyncMessage;
+use App\Messenger\Message\AbstractUuidMessage;
 
-class RefreshAdherentTagCommand extends UuidDefaultAsyncMessage
+class RefreshAdherentTagCommand extends AbstractUuidMessage
 {
 }
