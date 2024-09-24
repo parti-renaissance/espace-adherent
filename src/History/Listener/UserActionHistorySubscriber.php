@@ -11,6 +11,7 @@ use App\Membership\UserEvents;
 use App\Utils\ArrayUtils;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Event\AuthenticationSuccessEvent;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 use Symfony\Component\Security\Http\Event\SwitchUserEvent;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -40,28 +41,44 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onLoginSuccess(): void
+    public function onLoginSuccess(AuthenticationSuccessEvent $event): void
     {
-        $this->userActionHistoryHandler->createLoginSuccess();
+        $user = $event->getAuthenticationToken()->getUser();
+
+        if (!$user instanceof Adherent) {
+            return;
+        }
+
+        $this->userActionHistoryHandler->createLoginSuccess($user);
     }
 
-    public function onLoginFailure(): void
+    public function onLoginFailure(LoginFailureEvent $event): void
     {
-        $this->userActionHistoryHandler->createLoginFailure();
+        /** @var UserBadge|null $userBadge */
+        $userBadge = $event->getPassport()->getBadge(UserBadge::class);
+
+        $user = $userBadge?->getUser();
+
+        if (!$user instanceof Adherent) {
+            return;
+        }
+
+        $this->userActionHistoryHandler->createLoginFailure($user);
     }
 
     public function onSwitchUser(SwitchUserEvent $event): void
     {
+        $user = $event->getToken()?->getUser();
         $targetUser = $event->getTargetUser();
 
-        if ($targetUser instanceof Adherent) {
-            $this->userActionHistoryHandler->createImpersonificationStart($targetUser);
+        if ($user instanceof Administrator && $targetUser instanceof Adherent) {
+            $this->userActionHistoryHandler->createImpersonificationStart($user, $targetUser);
 
             return;
         }
 
-        if ($targetUser instanceof Administrator) {
-            $this->userActionHistoryHandler->createImpersonificationEnd($targetUser);
+        if ($user instanceof Adherent && $targetUser instanceof Administrator) {
+            $this->userActionHistoryHandler->createImpersonificationEnd($user, $targetUser);
         }
     }
 
@@ -83,7 +100,7 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->userActionHistoryHandler->createProfileUpdate($diff);
+        $this->userActionHistoryHandler->createProfileUpdate($event->getUser(), $diff);
     }
 
     public function onPasswordResetRequest(UserResetPasswordEvent $event): void
@@ -96,14 +113,14 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
         $this->userActionHistoryHandler->createPasswordResetValidate($event->getUser());
     }
 
-    public function onEmailChangeRequest(): void
+    public function onEmailChangeRequest(UserEvent $event): void
     {
-        $this->userActionHistoryHandler->createEmailChangeRequest();
+        $this->userActionHistoryHandler->createEmailChangeRequest($event->getUser());
     }
 
-    public function onEmailChangeValidate(): void
+    public function onEmailChangeValidate(UserEvent $event): void
     {
-        $this->userActionHistoryHandler->createEmailChangeValidate();
+        $this->userActionHistoryHandler->createEmailChangeValidate($event->getUser());
     }
 
     private function transformToArray(Adherent $adherent): array

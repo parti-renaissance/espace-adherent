@@ -5,8 +5,6 @@ namespace App\History;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\History\Command\UserActionHistoryCommand;
-use App\Repository\AdherentRepository;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
 use Symfony\Component\Security\Core\Security;
@@ -14,146 +12,91 @@ use Symfony\Component\Security\Core\Security;
 class UserActionHistoryHandler
 {
     public function __construct(
-        public readonly AdherentRepository $adherentRepository,
-        public readonly RequestStack $requestStack,
         public readonly Security $security,
         public readonly MessageBusInterface $bus,
     ) {
     }
 
-    public function createLoginSuccess(): void
+    public function createLoginSuccess(Adherent $adherent): void
     {
-        $user = $this->getUser();
-
-        if (!$user) {
-            return;
-        }
-
         $this->dispatch(
-            $user,
+            $adherent,
             UserActionHistoryTypeEnum::LOGIN_SUCCESS
         );
     }
 
-    public function createLoginFailure(): void
+    public function createLoginFailure(Adherent $adherent): void
     {
-        $request = $this->requestStack->getMainRequest();
-
-        if (!$request) {
-            return;
-        }
-
-        $login = mb_strtolower($request->request->get('_login_email'));
-
-        $adherent = $this->adherentRepository->findOneByEmail($login);
-
-        if (!$adherent) {
-            return;
-        }
-
         $this->dispatch(
             $adherent,
             UserActionHistoryTypeEnum::LOGIN_FAILURE
         );
     }
 
-    public function createProfileUpdate(array $properties): void
+    public function createProfileUpdate(Adherent $adherent, array $properties): void
     {
-        $user = $this->getUser();
-
-        if (!$user) {
-            return;
-        }
-
         $this->dispatch(
-            $user,
+            $adherent,
             UserActionHistoryTypeEnum::PROFILE_UPDATE,
             $properties,
             $this->getImpersonificator()
         );
     }
 
-    public function createImpersonificationStart(Adherent $adherent): void
+    public function createImpersonificationStart(Administrator $administrator, Adherent $adherent): void
     {
-        $administrator = $this->security->getUser();
-
         $this->dispatch(
             $adherent,
             UserActionHistoryTypeEnum::IMPERSONIFICATION_START,
             null,
-            $administrator instanceof Administrator ? $administrator : null
+            $administrator
         );
     }
 
-    public function createImpersonificationEnd(Administrator $administrator): void
+    public function createImpersonificationEnd(Adherent $adherent, Administrator $administrator): void
     {
-        $user = $this->getUser();
-
-        if (!$user) {
-            return;
-        }
-
         $this->dispatch(
-            $user,
+            $adherent,
             UserActionHistoryTypeEnum::IMPERSONIFICATION_END,
             null,
             $administrator
         );
     }
 
-    public function createPasswordResetRequest(Adherent $user): void
+    public function createPasswordResetRequest(Adherent $adherent): void
     {
         $this->dispatch(
-            $user,
+            $adherent,
             UserActionHistoryTypeEnum::PASSWORD_RESET_REQUEST
         );
     }
 
-    public function createPasswordResetValidate(Adherent $user): void
+    public function createPasswordResetValidate(Adherent $adherent): void
     {
         $this->dispatch(
-            $user,
+            $adherent,
             UserActionHistoryTypeEnum::PASSWORD_RESET_VALIDATE
         );
     }
 
-    public function createEmailChangeRequest(): void
+    public function createEmailChangeRequest(Adherent $adherent): void
     {
-        $user = $this->getUser();
-
-        if (!$user) {
-            return;
-        }
-
         $this->dispatch(
-            $user,
+            $adherent,
             UserActionHistoryTypeEnum::EMAIL_CHANGE_REQUEST,
             null,
             $this->getImpersonificator()
         );
     }
 
-    public function createEmailChangeValidate(): void
+    public function createEmailChangeValidate(Adherent $adherent): void
     {
-        $user = $this->getUser();
-
-        if (!$user) {
-            return;
-        }
-
         $this->dispatch(
-            $user,
+            $adherent,
             UserActionHistoryTypeEnum::EMAIL_CHANGE_VALIDATE,
             null,
             $this->getImpersonificator()
         );
-    }
-
-    private function getUser(): ?Adherent
-    {
-        $user = $this->security->getUser();
-
-        return $user instanceof Adherent ? $user : null;
     }
 
     private function getImpersonificator(): ?Administrator
