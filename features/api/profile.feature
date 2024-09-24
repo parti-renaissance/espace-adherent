@@ -125,6 +125,9 @@ Feature:
           "city_name": "Lyon 3ème",
           "country": "FR"
       },
+      "subscription_types": [
+        "subscribed_emails_weekly_letter"
+      ],
       "party_membership": "modem",
       "other_party_membership": false
     }
@@ -143,6 +146,12 @@ Feature:
           "city_name": "Lyon 3ème",
           "country": "FR"
       },
+      "subscription_types": [
+        {
+          "label": "Recevoir la newsletter hebdomadaire nationale",
+          "code": "subscribed_emails_weekly_letter"
+        }
+      ],
       "party_membership": "modem",
       "other_party_membership": false
     }

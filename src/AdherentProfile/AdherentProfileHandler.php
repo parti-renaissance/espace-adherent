@@ -63,7 +63,7 @@ class AdherentProfileHandler
         $oldEmailsSubscriptions = $adherent->getSubscriptionTypes();
         $newEmailsSubscriptions = $this->findSubscriptionTypes($subscriptionTypeCodes);
 
-        if (array_diff($oldEmailsSubscriptions, $newEmailsSubscriptions)) {
+        if (array_diff($oldEmailsSubscriptions, $newEmailsSubscriptions) || array_diff($newEmailsSubscriptions, $oldEmailsSubscriptions)) {
             $adherent->setSubscriptionTypes($newEmailsSubscriptions);
             $this->subscriptionHandler->handleChanges($adherent, $oldEmailsSubscriptions);
         }
