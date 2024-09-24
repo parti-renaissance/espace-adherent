@@ -2,8 +2,11 @@
 
 namespace App\History\Handler;
 
+use App\Entity\Adherent;
 use App\Entity\UserActionHistory;
 use App\History\Command\UserActionHistoryCommand;
+use App\Repository\AdherentRepository;
+use App\Repository\AdministratorRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -11,26 +14,31 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 class UserActionHistoryCommandHandler
 {
     public function __construct(
+        private readonly AdherentRepository $adherentRepository,
+        private readonly AdministratorRepository $administratorRepository,
         private readonly EntityManagerInterface $entityManager,
     ) {
     }
 
     public function __invoke(UserActionHistoryCommand $command): void
     {
-        $history = $this->createUserActionHistoryFromCommand($command);
+        $adherent = $this->adherentRepository->findOneByUuid($command->adherentUuid);
 
-        $this->entityManager->persist($history);
-        $this->entityManager->flush();
-    }
+        if (!$adherent instanceof Adherent) {
+            return;
+        }
 
-    private function createUserActionHistoryFromCommand(UserActionHistoryCommand $command): UserActionHistory
-    {
-        return new UserActionHistory(
-            $command->user,
+        $administrator = $this->administratorRepository->find($command->administratorId);
+
+        $history = new UserActionHistory(
+            $adherent,
             $command->type,
             $command->date,
             $command->data,
-            $command->impersonificator
+            $administrator
         );
+
+        $this->entityManager->persist($history);
+        $this->entityManager->flush();
     }
 }

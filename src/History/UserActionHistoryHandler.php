@@ -113,17 +113,17 @@ class UserActionHistoryHandler
     }
 
     private function dispatch(
-        Adherent $user,
+        Adherent $adherent,
         UserActionHistoryTypeEnum $type,
         ?array $data = null,
         ?Administrator $administrator = null,
     ): void {
         $this->bus->dispatch(
             new UserActionHistoryCommand(
-                $user,
+                $adherent->getUuid(),
                 $type,
                 $data,
-                $administrator
+                $administrator?->getId()
             )
         );
     }
