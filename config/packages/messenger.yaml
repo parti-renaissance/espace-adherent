@@ -34,14 +34,6 @@ framework:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.command' }
                     queues:
                         default: { binding_keys: ['async.command'] }
-            notification:
-                dsn: "%env(RABBITMQ_DSN)%"
-                retry_strategy:
-                    delay: 10000
-                options:
-                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.notification' }
-                    queues:
-                        notification: { binding_keys: [ 'async.notification' ] }
             pap:
                 dsn: "%env(RABBITMQ_DSN)%"
                 retry_strategy:
@@ -66,14 +58,14 @@ framework:
                     exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailchimp.campaign' }
                     queues:
                         mailchimp_campaign: { binding_keys: ['mailchimp.campaign'] }
-            mailer:
+            notification:
                 dsn: "%env(RABBITMQ_DSN)%"
                 retry_strategy:
                     delay: 10000
                 options:
-                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'mailer' }
+                    exchange: { name: 'messenger-topic', type: 'topic', default_publish_routing_key: 'async.notification' }
                     queues:
-                        mailer: { binding_keys: [ 'mailer' ] }
+                        notification: { binding_keys: [ 'async.notification' ] }
             chatbot:
                 dsn: "%env(RABBITMQ_DSN)%"
                 retry_strategy:
@@ -89,6 +81,6 @@ framework:
             App\Mailchimp\CampaignMessageInterface: mailchimp_campaign
             App\Mailchimp\SynchronizeMessageInterface: mailchimp_sync
             App\Pap\Command\AsynchronousMessageInterface: pap
-            App\Mailer\Command\AsyncSendMessageCommand: mailer
+            App\Mailer\Command\AsyncSendMessageCommand: notification
             App\Messenger\Message\AsynchronousMessageInterface: default
             App\Notifier\AsyncNotificationInterface: notification
