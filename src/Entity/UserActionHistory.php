@@ -6,7 +6,6 @@ use App\History\UserActionHistoryTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table]
 class UserActionHistory
 {
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]

@@ -11,7 +11,6 @@ enum UserActionHistoryTypeEnum: string
     case IMPERSONIFICATION_END = 'impersonification_end';
     case PASSWORD_RESET_REQUEST = 'password_reset_request';
     case PASSWORD_RESET_VALIDATE = 'password_reset_validate';
-    case PASSWORD_CHANGE = 'password_change';
     case EMAIL_CHANGE_REQUEST = 'email_change_request';
     case EMAIL_CHANGE_VALIDATE = 'email_change_validate';
 }

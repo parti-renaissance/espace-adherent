@@ -4,9 +4,10 @@ namespace App\History\Command;
 
 use App\Entity\Administrator;
 use App\History\UserActionHistoryTypeEnum;
+use App\Messenger\Message\AsynchronousMessageInterface;
 use Ramsey\Uuid\UuidInterface;
 
-class UserActionHistoryCommand
+class UserActionHistoryCommand implements AsynchronousMessageInterface
 {
     public function __construct(
         public readonly UuidInterface $adherentUuid,

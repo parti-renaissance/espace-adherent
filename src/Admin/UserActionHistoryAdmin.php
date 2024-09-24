@@ -82,13 +82,6 @@ class UserActionHistoryAdmin extends AbstractAdmin
             ->add('impersonificator', null, [
                 'label' => 'Administrateur',
             ])
-            ->add(ListMapper::NAME_ACTIONS, null, [
-                'virtual_field' => true,
-                'actions' => [
-                    'edit' => [],
-                    'delete' => [],
-                ],
-            ])
         ;
     }
 }

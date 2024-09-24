@@ -5,6 +5,7 @@ namespace App\History\Listener;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\History\UserActionHistoryHandler;
+use App\Membership\Event\UserEmailEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\Event\UserResetPasswordEvent;
 use App\Membership\UserEvents;
@@ -118,7 +119,7 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
         $this->userActionHistoryHandler->createEmailChangeRequest($event->getUser());
     }
 
-    public function onEmailChangeValidate(UserEvent $event): void
+    public function onEmailChangeValidate(UserEmailEvent $event): void
     {
         $this->userActionHistoryHandler->createEmailChangeValidate($event->getUser());
     }
