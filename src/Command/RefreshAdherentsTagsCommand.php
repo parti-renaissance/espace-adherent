@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
+use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;
 use App\Entity\Adherent;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\Request;
@@ -74,7 +74,7 @@ class RefreshAdherentsTagsCommand extends Command
         do {
             foreach ($paginator as $adherent) {
                 if (!$input->getOption('dry-run')) {
-                    $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
+                    $this->bus->dispatch(new AsyncRefreshAdherentTagCommand($adherent->getUuid()));
                 }
 
                 $this->io->progressAdvance();

@@ -5,7 +5,7 @@ namespace App\Controller\Renaissance\Adherent\Contribution;
 use App\Adherent\AdherentRoleEnum;
 use App\Adherent\Contribution\ContributionRequestHandler;
 use App\Adherent\Contribution\ContributionStatusEnum;
-use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
+use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;
 use App\Entity\Adherent;
 use App\Form\Renaissance\Adherent\Contribution\RevenueType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,7 +51,7 @@ class FillRevenueController extends AbstractContributionController
             $adherent->addRevenueDeclaration($command->revenueAmount);
             $entityManager->flush();
 
-            $bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
+            $bus->dispatch(new AsyncRefreshAdherentTagCommand($adherent->getUuid()));
 
             if (!$command->needContribution()) {
                 $this->processor->doNoContributionNeeded($command);

@@ -2,7 +2,7 @@
 
 namespace App\Procuration\V2\Listener;
 
-use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
+use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;
 use App\Entity\Adherent;
 use App\Procuration\V2\Event\ProcurationEvent;
 use App\Procuration\V2\Event\ProcurationEvents;
@@ -52,11 +52,11 @@ class AdherentRelationListener implements EventSubscriberInterface
         }
 
         if ($this->adherent) {
-            $this->bus->dispatch(new RefreshAdherentTagCommand($this->adherent->getUuid()));
+            $this->bus->dispatch(new AsyncRefreshAdherentTagCommand($this->adherent->getUuid()));
         }
 
         if ($procuration->adherent) {
-            $this->bus->dispatch(new RefreshAdherentTagCommand($procuration->adherent->getUuid()));
+            $this->bus->dispatch(new AsyncRefreshAdherentTagCommand($procuration->adherent->getUuid()));
         }
     }
 }

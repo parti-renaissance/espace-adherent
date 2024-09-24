@@ -71,6 +71,7 @@ services:
             $googlePlaceApiKey: '%env(GMAPS_PRIVATE_API_KEY)%'
             $voxHost: '%env(VOX_HOST)%'
             $templateWebhookKey: '%env(TEMPLATE_WEBHOOK_KEY)%'
+            $telegramChatIdPrimoAdhesion: '%env(TELEGRAM_CHAT_ID_PRIMO_ADHESION)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
