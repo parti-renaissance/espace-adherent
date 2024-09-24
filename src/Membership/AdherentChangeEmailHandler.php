@@ -49,6 +49,8 @@ class AdherentChangeEmailHandler
         $this->sendValidationEmail($adherent, $token);
 
         $this->repository->invalidateOtherActiveToken($adherent, $token);
+
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_EMAIL_CHANGE_REQUEST);
     }
 
     public function handleValidationRequest(Adherent $adherent, AdherentChangeEmailToken $token): void

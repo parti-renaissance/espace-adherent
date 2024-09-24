@@ -76,6 +76,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.user_action_history" class="App\Admin\UserActionHistoryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Historique adhérents" group="Adhérents" />
+
+            <argument />
+            <argument>App\Entity\UserActionHistory</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.invite" class="App\Admin\InviteAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Invitations" group="Adhérents" />
 
