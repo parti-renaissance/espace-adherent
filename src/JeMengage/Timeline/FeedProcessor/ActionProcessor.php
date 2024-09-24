@@ -19,6 +19,8 @@ class ActionProcessor extends AbstractFeedProcessor
             $user->getUuidAsString()
         )?->getCreatedAt();
 
+        $item['editable'] = $item['author']['uuid'] === $user->getUuidAsString();
+
         return $item;
     }
 
