@@ -6,7 +6,6 @@ use App\History\UserActionHistoryTypeEnum;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Index(columns: ['adherent_id'])]
 #[ORM\Table]
 class UserActionHistory
 {
