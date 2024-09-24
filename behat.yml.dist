@@ -3,7 +3,7 @@ default:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php
         Behat\MinkExtension:
-            base_url: "http://test.enmarche.code"
+            base_url: "http://test.renaissance.code"
             files_path: 'tests/Fixtures'
             sessions:
                 default:
@@ -56,6 +56,7 @@ default:
                 - Tests\App\Behat\Context\DIContext
                 - Tests\App\Behat\Context\FixtureContext
                 - Tests\App\Behat\Context\RestContext
+                - Tests\App\Behat\Context\MessengerBusContext
                 - Tests\App\Behat\Context\SecurityContext
                 - Tests\App\Behat\Context\JsonContext
                 - Tests\App\Behat\Context\EmailContext
