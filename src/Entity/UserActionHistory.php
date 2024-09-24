@@ -28,19 +28,19 @@ class UserActionHistory
 
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
-    public ?Administrator $impersonificator = null;
+    public ?Administrator $impersonator = null;
 
     public function __construct(
         Adherent $adherent,
         UserActionHistoryTypeEnum $type,
         \DateTimeInterface $date,
         ?array $data = null,
-        ?Administrator $impersonificator = null,
+        ?Administrator $impersonator = null,
     ) {
         $this->adherent = $adherent;
         $this->type = $type;
         $this->date = $date;
         $this->data = $data;
-        $this->impersonificator = $impersonificator;
+        $this->impersonator = $impersonator;
     }
 }
