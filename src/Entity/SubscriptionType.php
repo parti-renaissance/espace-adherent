@@ -2,12 +2,24 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\SubscriptionTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(),
+    ],
+    routePrefix: '/v3',
+    paginationEnabled: false,
+    normalizationContext: ['groups' => ['subscription_type_read']],
+)]
 #[ORM\Entity(repositoryClass: SubscriptionTypeRepository::class)]
 #[ORM\Index(columns: ['code'])]
 #[ORM\Table]
@@ -27,7 +39,7 @@ class SubscriptionType
      */
     #[Assert\Length(max: 255)]
     #[Assert\NotBlank]
-    #[Groups(['profile_read'])]
+    #[Groups(['profile_read', 'subscription_type_read'])]
     #[ORM\Column]
     private $label;
 
@@ -36,7 +48,7 @@ class SubscriptionType
      */
     #[Assert\Length(max: 255)]
     #[Assert\NotBlank]
-    #[Groups(['profile_read'])]
+    #[Groups(['profile_read', 'subscription_type_read'])]
     #[ORM\Column(unique: true)]
     private $code;
 
@@ -98,6 +110,16 @@ class SubscriptionType
     public function getPosition(): int
     {
         return $this->position;
+    }
+
+    #[Groups(['subscription_type_read'])]
+    public function getType(): string
+    {
+        if (str_contains($this->code, 'sms')) {
+            return 'sms';
+        }
+
+        return 'email';
     }
 
     public function __toString(): string
