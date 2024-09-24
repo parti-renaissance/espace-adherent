@@ -1295,8 +1295,8 @@ administrator:
 user_action_history.type.login_success: Connexion réussie
 user_action_history.type.login_failure: Connexion échouée
 user_action_history.type.profile_update: Mis à jour du profil
-user_action_history.type.impersonification_start: Début d'impersonnification
-user_action_history.type.impersonification_end: Fin d'impersonnification
+user_action_history.type.impersonation_start: Début d'impersonnification
+user_action_history.type.impersonation_end: Fin d'impersonnification
 user_action_history.type.password_reset_request: Mot de passe oublié (demande)
 user_action_history.type.password_reset_validate: Mot de passe oublié (changement)
 user_action_history.type.password_change: Changement de mot de passe

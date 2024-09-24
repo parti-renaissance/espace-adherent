@@ -73,13 +73,13 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
         $targetUser = $event->getTargetUser();
 
         if ($user instanceof Administrator && $targetUser instanceof Adherent) {
-            $this->userActionHistoryHandler->createImpersonificationStart($user, $targetUser);
+            $this->userActionHistoryHandler->createImpersonationStart($user, $targetUser);
 
             return;
         }
 
         if ($user instanceof Adherent && $targetUser instanceof Administrator) {
-            $this->userActionHistoryHandler->createImpersonificationEnd($user, $targetUser);
+            $this->userActionHistoryHandler->createImpersonationEnd($user, $targetUser);
         }
     }
 

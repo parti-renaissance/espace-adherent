@@ -43,21 +43,21 @@ class UserActionHistoryHandler
         );
     }
 
-    public function createImpersonificationStart(Administrator $administrator, Adherent $adherent): void
+    public function createImpersonationStart(Administrator $administrator, Adherent $adherent): void
     {
         $this->dispatch(
             $adherent,
-            UserActionHistoryTypeEnum::IMPERSONIFICATION_START,
+            UserActionHistoryTypeEnum::IMPERSONATION_START,
             null,
             $administrator
         );
     }
 
-    public function createImpersonificationEnd(Adherent $adherent, Administrator $administrator): void
+    public function createImpersonationEnd(Adherent $adherent, Administrator $administrator): void
     {
         $this->dispatch(
             $adherent,
-            UserActionHistoryTypeEnum::IMPERSONIFICATION_END,
+            UserActionHistoryTypeEnum::IMPERSONATION_END,
             null,
             $administrator
         );
