@@ -84,4 +84,9 @@ class MembershipRequest implements DonationRequestInterface
     {
         return $this->email;
     }
+
+    public function setEmail(string $email): void
+    {
+        $this->email = strtolower($email);
+    }
 }
