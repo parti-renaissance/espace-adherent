@@ -28,14 +28,12 @@ class UserActionHistoryCommandHandler
             return;
         }
 
-        $administrator = $this->administratorRepository->find($command->administratorId);
-
         $history = new UserActionHistory(
             $adherent,
             $command->type,
             $command->date,
             $command->data,
-            $administrator
+            $command->administratorId ? $this->administratorRepository->find($command->administratorId) : null
         );
 
         $this->entityManager->persist($history);
