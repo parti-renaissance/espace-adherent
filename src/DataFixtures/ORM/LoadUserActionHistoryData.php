@@ -24,9 +24,9 @@ class LoadUserActionHistoryData extends Fixture implements DependentFixtureInter
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PASSWORD_RESET_VALIDATE, new \DateTime('-8 minutes')));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::LOGIN_SUCCESS, new \DateTime('-7 minutes')));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PROFILE_UPDATE, new \DateTime('-6 minutes'), ['first_name']));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::IMPERSONIFICATION_START, new \DateTime('-5 minutes'), null, $administrator1));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::IMPERSONATION_START, new \DateTime('-5 minutes'), null, $administrator1));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::PROFILE_UPDATE, new \DateTime('-4 minutes'), ['birthdate'], $administrator1));
-        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::IMPERSONIFICATION_END, new \DateTime('-3 minutes'), null, $administrator1));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::IMPERSONATION_END, new \DateTime('-3 minutes'), null, $administrator1));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::EMAIL_CHANGE_REQUEST, new \DateTime('-2 minutes')));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::EMAIL_CHANGE_VALIDATE, new \DateTime('-1 minutes')));
 
