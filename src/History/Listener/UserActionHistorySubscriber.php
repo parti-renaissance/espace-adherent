@@ -55,7 +55,7 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
     public function onLoginFailure(LoginFailureEvent $event): void
     {
         /** @var UserBadge|null $userBadge */
-        $userBadge = $event->getPassport()->getBadge(UserBadge::class);
+        $userBadge = $event->getPassport()?->getBadge(UserBadge::class);
 
         $user = $userBadge?->getUser();
 
