@@ -50,6 +50,7 @@
         "endroid/qr-code-bundle": "^5.0",
         "enmarche/majority-judgment": "^0.0.3",
         "exercise/htmlpurifier-bundle": "^5.0",
+        "firebase/php-jwt": "^6.10",
         "friendsofsymfony/ckeditor-bundle": "^2.5",
         "fusonic/opengraph": "^2.1",
         "gedmo/doctrine-extensions": "^3.14",
