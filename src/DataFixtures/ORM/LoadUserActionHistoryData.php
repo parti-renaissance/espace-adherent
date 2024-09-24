@@ -38,14 +38,14 @@ class LoadUserActionHistoryData extends Fixture implements DependentFixtureInter
         UserActionHistoryTypeEnum $type,
         ?\DateTimeInterface $date = null,
         ?array $data = null,
-        ?Administrator $impersonificator = null,
+        ?Administrator $impersonator = null,
     ): UserActionHistory {
         return new UserActionHistory(
             $adherent,
             $type,
             $date ?? new \DateTime('now'),
             $data,
-            $impersonificator
+            $impersonator
         );
     }
 

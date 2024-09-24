@@ -39,7 +39,7 @@ class UserActionHistoryHandler
             $adherent,
             UserActionHistoryTypeEnum::PROFILE_UPDATE,
             $properties,
-            $this->getImpersonificator()
+            $this->getImpersonator()
         );
     }
 
@@ -85,7 +85,7 @@ class UserActionHistoryHandler
             $adherent,
             UserActionHistoryTypeEnum::EMAIL_CHANGE_REQUEST,
             null,
-            $this->getImpersonificator()
+            $this->getImpersonator()
         );
     }
 
@@ -95,11 +95,11 @@ class UserActionHistoryHandler
             $adherent,
             UserActionHistoryTypeEnum::EMAIL_CHANGE_VALIDATE,
             null,
-            $this->getImpersonificator()
+            $this->getImpersonator()
         );
     }
 
-    private function getImpersonificator(): ?Administrator
+    private function getImpersonator(): ?Administrator
     {
         $token = $this->security->getToken();
 

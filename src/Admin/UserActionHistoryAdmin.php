@@ -48,7 +48,7 @@ class UserActionHistoryAdmin extends AbstractAdmin
                     },
                 ],
             ])
-            ->add('impersonificator', ModelFilter::class, [
+            ->add('impersonator', ModelFilter::class, [
                 'label' => 'Administrateur',
                 'show_filter' => true,
                 'field_type' => ModelAutocompleteType::class,
@@ -79,7 +79,7 @@ class UserActionHistoryAdmin extends AbstractAdmin
             ->add('data', null, [
                 'label' => 'Données',
             ])
-            ->add('impersonificator', null, [
+            ->add('impersonator', null, [
                 'label' => 'Administrateur',
             ])
         ;
