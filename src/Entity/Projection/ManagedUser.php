@@ -13,6 +13,7 @@ use App\Entity\EntityZoneTrait;
 use App\Entity\ExposedImageOwnerInterface;
 use App\Entity\Geo\Zone;
 use App\Entity\ImageTrait;
+use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\MembershipSourceEnum;
 use App\Normalizer\ImageOwnerExposedNormalizer;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
@@ -115,6 +116,9 @@ class ManagedUser implements TranslatedTagInterface, ExposedImageOwnerInterface
     #[Groups(['managed_users_list', 'managed_user_read'])]
     #[ORM\Column]
     private $email;
+
+    #[ORM\Column(nullable: true)]
+    public ?string $mailchimpStatus = null;
 
     /**
      * @var string|null
@@ -568,6 +572,11 @@ class ManagedUser implements TranslatedTagInterface, ExposedImageOwnerInterface
     public function hasSmsSubscriptionType(): bool
     {
         return $this->phone && \in_array(SubscriptionTypeEnum::MILITANT_ACTION_SMS, $this->subscriptionTypes, true);
+    }
+
+    public function isEmailSubscribed(): bool
+    {
+        return ContactStatusEnum::SUBSCRIBED === $this->mailchimpStatus;
     }
 
     public function getCommitteeUuids(): ?array

@@ -2,11 +2,13 @@
 
 namespace App\Entity\Projection;
 
+use App\Mailchimp\Contact\ContactStatusEnum;
+
 class ManagedUserFactory
 {
     public function createFromArray(array $data): ManagedUser
     {
-        return new ManagedUser(
+        $managedUser = new ManagedUser(
             $data['status'],
             $data['source'],
             $data['original_id'],
@@ -47,6 +49,10 @@ class ManagedUserFactory
             $data['declared_mandates'] ?? [],
             $data['cotisation_dates'] ?? []
         );
+
+        $managedUser->mailchimpStatus = ContactStatusEnum::SUBSCRIBED;
+
+        return $managedUser;
     }
 
     private function getAge(\DateTimeInterface $date): int

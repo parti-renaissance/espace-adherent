@@ -31,7 +31,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        $data['email_subscription'] = null;
+        $data['email_subscription'] = $object->isEmailSubscribed();
 
         if ($scope = $this->scopeGeneratorResolver->generate()) {
             if ($scope->getMainUser()->isModemMembership()) {
@@ -39,7 +39,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
             }
 
             if (!empty($subscriptionType = SubscriptionTypeEnum::SUBSCRIPTION_TYPES_BY_SCOPES[$scope->getMainCode()] ?? null)) {
-                $data['email_subscription'] = \in_array($subscriptionType, $object->getSubscriptionTypes(), true);
+                $data['email_subscription'] = $data['email_subscription'] && \in_array($subscriptionType, $object->getSubscriptionTypes(), true);
             }
         }
 

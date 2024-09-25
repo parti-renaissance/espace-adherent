@@ -56,11 +56,13 @@ final class SubscriptionTypeEnum extends Enum
         ScopeEnum::REGIONAL_COORDINATOR => self::REFERENT_EMAIL,
         ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY => self::REFERENT_EMAIL,
         ScopeEnum::CORRESPONDENT => self::REFERENT_EMAIL,
+        ScopeEnum::FDE_COORDINATOR => self::REFERENT_EMAIL,
 
         ScopeEnum::CANDIDATE => self::CANDIDATE_EMAIL,
         ScopeEnum::LEGISLATIVE_CANDIDATE => self::CANDIDATE_EMAIL,
 
         ScopeEnum::DEPUTY => self::DEPUTY_EMAIL,
+        ScopeEnum::REGIONAL_DELEGATE => self::DEPUTY_EMAIL,
         ScopeEnum::SENATOR => self::SENATOR_EMAIL,
 
         ScopeEnum::ANIMATOR => self::LOCAL_HOST_EMAIL,
