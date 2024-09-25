@@ -10,9 +10,40 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `adherent_activation_code`
+--
+
+DROP TABLE IF EXISTS `adherent_activation_code`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `adherent_activation_code` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `adherent_id` int unsigned NOT NULL,
+  `value` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `expired_at` datetime NOT NULL,
+  `used_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_3A628E8F25F06C53` (`adherent_id`),
+  KEY `IDX_3A628E8F25F06C531D775834` (`adherent_id`,`value`),
+  CONSTRAINT `FK_3A628E8F25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `adherent_activation_code`
+--
+
+LOCK TABLES `adherent_activation_code` WRITE;
+/*!40000 ALTER TABLE `adherent_activation_code` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_activation_code` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_activation_keys`
 --
 
+DROP TABLE IF EXISTS `adherent_activation_keys`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_activation_keys` (
@@ -31,26 +62,19 @@ CREATE TABLE `adherent_activation_keys` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `adherent_adherent_tag`
+-- Dumping data for table `adherent_activation_keys`
 --
 
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `adherent_adherent_tag` (
-  `adherent_id` int unsigned NOT NULL,
-  `adherent_tag_id` int unsigned NOT NULL,
-  PRIMARY KEY (`adherent_id`,`adherent_tag_id`),
-  KEY `IDX_DD297F8225F06C53` (`adherent_id`),
-  KEY `IDX_DD297F82AED03543` (`adherent_tag_id`),
-  CONSTRAINT `FK_DD297F8225F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_DD297F82AED03543` FOREIGN KEY (`adherent_tag_id`) REFERENCES `adherent_tags` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `adherent_activation_keys` WRITE;
+/*!40000 ALTER TABLE `adherent_activation_keys` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_activation_keys` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `adherent_certification_histories`
 --
 
+DROP TABLE IF EXISTS `adherent_certification_histories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_certification_histories` (
@@ -69,9 +93,19 @@ CREATE TABLE `adherent_certification_histories` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_certification_histories`
+--
+
+LOCK TABLES `adherent_certification_histories` WRITE;
+/*!40000 ALTER TABLE `adherent_certification_histories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_certification_histories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_change_email_token`
 --
 
+DROP TABLE IF EXISTS `adherent_change_email_token`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_change_email_token` (
@@ -90,9 +124,19 @@ CREATE TABLE `adherent_change_email_token` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_change_email_token`
+--
+
+LOCK TABLES `adherent_change_email_token` WRITE;
+/*!40000 ALTER TABLE `adherent_change_email_token` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_change_email_token` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_charter`
 --
 
+DROP TABLE IF EXISTS `adherent_charter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_charter` (
@@ -103,14 +147,24 @@ CREATE TABLE `adherent_charter` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_D6F94F2B25F06C5370AAEA5` (`adherent_id`,`dtype`),
   KEY `IDX_D6F94F2B25F06C53` (`adherent_id`),
-  CONSTRAINT `FK_D6F94F2B25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`)
+  CONSTRAINT `FK_D6F94F2B25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `adherent_charter`
+--
+
+LOCK TABLES `adherent_charter` WRITE;
+/*!40000 ALTER TABLE `adherent_charter` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_charter` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `adherent_commitment`
 --
 
+DROP TABLE IF EXISTS `adherent_commitment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_commitment` (
@@ -129,9 +183,51 @@ CREATE TABLE `adherent_commitment` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_commitment`
+--
+
+LOCK TABLES `adherent_commitment` WRITE;
+/*!40000 ALTER TABLE `adherent_commitment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_commitment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `adherent_declared_mandate_history`
+--
+
+DROP TABLE IF EXISTS `adherent_declared_mandate_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `adherent_declared_mandate_history` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `adherent_id` int unsigned NOT NULL,
+  `added_mandates` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `removed_mandates` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `date` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
+  `administrator_id` int DEFAULT NULL,
+  `notified_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
+  PRIMARY KEY (`id`),
+  KEY `IDX_A92880F925F06C53` (`adherent_id`),
+  KEY `IDX_A92880F94B09E92C` (`administrator_id`),
+  CONSTRAINT `FK_A92880F925F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_A92880F94B09E92C` FOREIGN KEY (`administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `adherent_declared_mandate_history`
+--
+
+LOCK TABLES `adherent_declared_mandate_history` WRITE;
+/*!40000 ALTER TABLE `adherent_declared_mandate_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_declared_mandate_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_email_subscribe_token`
 --
 
+DROP TABLE IF EXISTS `adherent_email_subscribe_token`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_email_subscribe_token` (
@@ -160,9 +256,19 @@ CREATE TABLE `adherent_email_subscribe_token` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_email_subscribe_token`
+--
+
+LOCK TABLES `adherent_email_subscribe_token` WRITE;
+/*!40000 ALTER TABLE `adherent_email_subscribe_token` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_email_subscribe_token` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_email_subscription_histories`
 --
 
+DROP TABLE IF EXISTS `adherent_email_subscription_histories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_email_subscription_histories` (
@@ -181,9 +287,19 @@ CREATE TABLE `adherent_email_subscription_histories` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_email_subscription_histories`
+--
+
+LOCK TABLES `adherent_email_subscription_histories` WRITE;
+/*!40000 ALTER TABLE `adherent_email_subscription_histories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_email_subscription_histories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_email_subscription_history_referent_tag`
 --
 
+DROP TABLE IF EXISTS `adherent_email_subscription_history_referent_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_email_subscription_history_referent_tag` (
@@ -198,47 +314,97 @@ CREATE TABLE `adherent_email_subscription_history_referent_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_email_subscription_history_referent_tag`
+--
+
+LOCK TABLES `adherent_email_subscription_history_referent_tag` WRITE;
+/*!40000 ALTER TABLE `adherent_email_subscription_history_referent_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_email_subscription_history_referent_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_formation`
 --
 
+DROP TABLE IF EXISTS `adherent_formation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_formation` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `file_id` int unsigned DEFAULT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
-  `visible` tinyint(1) NOT NULL DEFAULT '0',
-  `downloads_count` smallint unsigned NOT NULL,
-  `position` smallint unsigned NOT NULL DEFAULT '0',
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `created_by_adherent_id` int unsigned DEFAULT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `published` tinyint(1) NOT NULL DEFAULT '0',
+  `print_count` smallint unsigned NOT NULL,
+  `position` smallint NOT NULL DEFAULT '0',
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `updated_by_adherent_id` int unsigned DEFAULT NULL,
+  `zone_id` int unsigned DEFAULT NULL,
+  `content_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_path` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `valid` tinyint(1) NOT NULL DEFAULT '0',
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_2D97408B2B36786B` (`title`),
-  UNIQUE KEY `UNIQ_2D97408B93CB796C` (`file_id`),
-  CONSTRAINT `FK_2D97408B93CB796C` FOREIGN KEY (`file_id`) REFERENCES `adherent_formation_file` (`id`)
+  UNIQUE KEY `UNIQ_2D97408BD17F50A6` (`uuid`),
+  KEY `IDX_2D97408B9DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_2D97408BCF1918FF` (`updated_by_administrator_id`),
+  KEY `IDX_2D97408B85C9D733` (`created_by_adherent_id`),
+  KEY `IDX_2D97408BDF6CFDC9` (`updated_by_adherent_id`),
+  KEY `IDX_2D97408B9F2C3FAB` (`zone_id`),
+  CONSTRAINT `FK_2D97408B85C9D733` FOREIGN KEY (`created_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_2D97408B9DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_2D97408B9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`),
+  CONSTRAINT `FK_2D97408BCF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_2D97408BDF6CFDC9` FOREIGN KEY (`updated_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `adherent_formation_file`
+-- Dumping data for table `adherent_formation`
 --
 
+LOCK TABLES `adherent_formation` WRITE;
+/*!40000 ALTER TABLE `adherent_formation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_formation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `adherent_formation_print_by_adherents`
+--
+
+DROP TABLE IF EXISTS `adherent_formation_print_by_adherents`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `adherent_formation_file` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `extension` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `adherent_formation_file_slug_extension` (`slug`,`extension`)
+CREATE TABLE `adherent_formation_print_by_adherents` (
+  `formation_id` int unsigned NOT NULL,
+  `adherent_id` int unsigned NOT NULL,
+  PRIMARY KEY (`formation_id`,`adherent_id`),
+  KEY `IDX_881E4C655200282E` (`formation_id`),
+  KEY `IDX_881E4C6525F06C53` (`adherent_id`),
+  CONSTRAINT `FK_881E4C6525F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_881E4C655200282E` FOREIGN KEY (`formation_id`) REFERENCES `adherent_formation` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `adherent_formation_print_by_adherents`
+--
+
+LOCK TABLES `adherent_formation_print_by_adherents` WRITE;
+/*!40000 ALTER TABLE `adherent_formation_print_by_adherents` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_formation_print_by_adherents` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `adherent_instance_quality`
 --
 
+DROP TABLE IF EXISTS `adherent_instance_quality`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_instance_quality` (
@@ -266,9 +432,19 @@ CREATE TABLE `adherent_instance_quality` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_instance_quality`
+--
+
+LOCK TABLES `adherent_instance_quality` WRITE;
+/*!40000 ALTER TABLE `adherent_instance_quality` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_instance_quality` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_mandate`
 --
 
+DROP TABLE IF EXISTS `adherent_mandate`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_mandate` (
@@ -277,7 +453,7 @@ CREATE TABLE `adherent_mandate` (
   `committee_id` int unsigned DEFAULT NULL,
   `territorial_council_id` int unsigned DEFAULT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `gender` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gender` varchar(6) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `begin_at` datetime NOT NULL,
   `finish_at` datetime DEFAULT NULL,
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -285,38 +461,77 @@ CREATE TABLE `adherent_mandate` (
   `is_additionally_elected` tinyint(1) DEFAULT '0',
   `reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `provisional` tinyint(1) NOT NULL DEFAULT '0',
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `created_by_adherent_id` int unsigned DEFAULT NULL,
+  `updated_by_adherent_id` int unsigned DEFAULT NULL,
+  `zone_id` int unsigned DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `mandate_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `delegation` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_9C0C3D60D17F50A6` (`uuid`),
   KEY `IDX_9C0C3D6025F06C53` (`adherent_id`),
   KEY `IDX_9C0C3D60AAA61A99` (`territorial_council_id`),
   KEY `IDX_9C0C3D60ED1A100B` (`committee_id`),
+  KEY `IDX_9C0C3D609DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_9C0C3D60CF1918FF` (`updated_by_administrator_id`),
+  KEY `IDX_9C0C3D6085C9D733` (`created_by_adherent_id`),
+  KEY `IDX_9C0C3D60DF6CFDC9` (`updated_by_adherent_id`),
+  KEY `IDX_9C0C3D609F2C3FAB` (`zone_id`),
   CONSTRAINT `FK_9C0C3D6025F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_9C0C3D6085C9D733` FOREIGN KEY (`created_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_9C0C3D609DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_9C0C3D609F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_9C0C3D60AAA61A99` FOREIGN KEY (`territorial_council_id`) REFERENCES `territorial_council` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_9C0C3D60CF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_9C0C3D60DF6CFDC9` FOREIGN KEY (`updated_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_9C0C3D60ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_mandate`
+--
+
+LOCK TABLES `adherent_mandate` WRITE;
+/*!40000 ALTER TABLE `adherent_mandate` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_mandate` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_message_filter_zone`
 --
 
+DROP TABLE IF EXISTS `adherent_message_filter_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_message_filter_zone` (
-  `message_filter_id` int unsigned NOT NULL,
+  `adherent_message_filter_id` int unsigned NOT NULL,
   `zone_id` int unsigned NOT NULL,
-  PRIMARY KEY (`message_filter_id`,`zone_id`),
-  KEY `IDX_64171C02B92CB468` (`message_filter_id`),
+  PRIMARY KEY (`adherent_message_filter_id`,`zone_id`),
   KEY `IDX_64171C029F2C3FAB` (`zone_id`),
+  KEY `IDX_64171C02FBF331D5` (`adherent_message_filter_id`),
   CONSTRAINT `FK_64171C029F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_64171C02B92CB468` FOREIGN KEY (`message_filter_id`) REFERENCES `adherent_message_filters` (`id`) ON DELETE CASCADE
+  CONSTRAINT `FK_64171C02FBF331D5` FOREIGN KEY (`adherent_message_filter_id`) REFERENCES `adherent_message_filters` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `adherent_message_filter_zone`
+--
+
+LOCK TABLES `adherent_message_filter_zone` WRITE;
+/*!40000 ALTER TABLE `adherent_message_filter_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_message_filter_zone` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `adherent_message_filters`
 --
 
+DROP TABLE IF EXISTS `adherent_message_filters`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_message_filters` (
@@ -328,7 +543,6 @@ CREATE TABLE `adherent_message_filters` (
   `political_committee_id` int unsigned DEFAULT NULL,
   `user_list_definition_id` int unsigned DEFAULT NULL,
   `zone_id` int unsigned DEFAULT NULL,
-  `cause_id` int unsigned DEFAULT NULL,
   `segment_id` int unsigned DEFAULT NULL,
   `synchronized` tinyint(1) NOT NULL DEFAULT '0',
   `dtype` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -342,16 +556,11 @@ CREATE TABLE `adherent_message_filters` (
   `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `interests` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:json)',
+  `interests` json DEFAULT NULL,
   `registered_since` date DEFAULT NULL,
   `registered_until` date DEFAULT NULL,
-  `contact_volunteer_team` tinyint(1) DEFAULT '0',
-  `contact_running_mate_team` tinyint(1) DEFAULT '0',
   `contact_only_volunteers` tinyint(1) DEFAULT '0',
   `contact_only_running_mates` tinyint(1) DEFAULT '0',
-  `contact_adherents` tinyint(1) DEFAULT '0',
-  `insee_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `contact_newsletter` tinyint(1) DEFAULT '0',
   `postal_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `mandate` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `political_function` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -359,13 +568,21 @@ CREATE TABLE `adherent_message_filters` (
   `qualities` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `include_committee_provisional_supervisors` tinyint(1) DEFAULT NULL,
   `is_certified` tinyint(1) DEFAULT NULL,
-  `scope` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `audience_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `renaissance_membership` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `audience_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `renaissance_membership` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_committee_member` tinyint(1) DEFAULT NULL,
+  `last_membership_since` date DEFAULT NULL,
+  `last_membership_before` date DEFAULT NULL,
+  `mandate_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_campus_registered` tinyint(1) DEFAULT NULL,
+  `donator_status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `declared_mandate` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `adherent_tags` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `elect_tags` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `IDX_28CA9F9466E2221E` (`cause_id`),
   KEY `IDX_28CA9F949C262DB3` (`referent_tag_id`),
   KEY `IDX_28CA9F949F2C3FAB` (`zone_id`),
   KEY `IDX_28CA9F94AAA61A99` (`territorial_council_id`),
@@ -374,22 +591,31 @@ CREATE TABLE `adherent_message_filters` (
   KEY `IDX_28CA9F94ED1A100B` (`committee_id`),
   KEY `IDX_28CA9F94F74563E3` (`user_list_definition_id`),
   KEY `IDX_28CA9F94FAF04979` (`adherent_segment_id`),
-  CONSTRAINT `FK_28CA9F9466E2221E` FOREIGN KEY (`cause_id`) REFERENCES `cause` (`id`),
   CONSTRAINT `FK_28CA9F949C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`),
   CONSTRAINT `FK_28CA9F949F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`),
   CONSTRAINT `FK_28CA9F94AAA61A99` FOREIGN KEY (`territorial_council_id`) REFERENCES `territorial_council` (`id`),
   CONSTRAINT `FK_28CA9F94C7A72` FOREIGN KEY (`political_committee_id`) REFERENCES `political_committee` (`id`),
   CONSTRAINT `FK_28CA9F94DB296AAD` FOREIGN KEY (`segment_id`) REFERENCES `audience_segment` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_28CA9F94ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`),
+  CONSTRAINT `FK_28CA9F94ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_28CA9F94F74563E3` FOREIGN KEY (`user_list_definition_id`) REFERENCES `user_list_definition` (`id`),
   CONSTRAINT `FK_28CA9F94FAF04979` FOREIGN KEY (`adherent_segment_id`) REFERENCES `adherent_segment` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_message_filters`
+--
+
+LOCK TABLES `adherent_message_filters` WRITE;
+/*!40000 ALTER TABLE `adherent_message_filters` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_message_filters` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_messages`
 --
 
+DROP TABLE IF EXISTS `adherent_messages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_messages` (
@@ -419,9 +645,19 @@ CREATE TABLE `adherent_messages` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_messages`
+--
+
+LOCK TABLES `adherent_messages` WRITE;
+/*!40000 ALTER TABLE `adherent_messages` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_messages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_referent_tag`
 --
 
+DROP TABLE IF EXISTS `adherent_referent_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_referent_tag` (
@@ -436,45 +672,65 @@ CREATE TABLE `adherent_referent_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_referent_tag`
+--
+
+LOCK TABLES `adherent_referent_tag` WRITE;
+/*!40000 ALTER TABLE `adherent_referent_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_referent_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_request`
 --
 
+DROP TABLE IF EXISTS `adherent_request`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_request` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `token` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `amount` int NOT NULL,
+  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `token` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `amount` double NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `address_address` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_postal_code` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_city_insee` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_city_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_country` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_region` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_city_insee` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_region` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `address_longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
-  `address_geocodable_hash` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_geocodable_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `allow_email_notifications` tinyint(1) NOT NULL DEFAULT '0',
   `allow_mobile_notifications` tinyint(1) NOT NULL DEFAULT '0',
   `token_used_at` datetime DEFAULT NULL,
-  `utm_source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `utm_campaign` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_campaign` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_BEE6BD11D17F50A6` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_request`
+--
+
+LOCK TABLES `adherent_request` WRITE;
+/*!40000 ALTER TABLE `adherent_request` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_request` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_reset_password_tokens`
 --
 
+DROP TABLE IF EXISTS `adherent_reset_password_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_reset_password_tokens` (
@@ -493,9 +749,19 @@ CREATE TABLE `adherent_reset_password_tokens` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_reset_password_tokens`
+--
+
+LOCK TABLES `adherent_reset_password_tokens` WRITE;
+/*!40000 ALTER TABLE `adherent_reset_password_tokens` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_reset_password_tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_segment`
 --
 
+DROP TABLE IF EXISTS `adherent_segment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_segment` (
@@ -515,9 +781,19 @@ CREATE TABLE `adherent_segment` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_segment`
+--
+
+LOCK TABLES `adherent_segment` WRITE;
+/*!40000 ALTER TABLE `adherent_segment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_segment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_subscription_type`
 --
 
+DROP TABLE IF EXISTS `adherent_subscription_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_subscription_type` (
@@ -532,23 +808,19 @@ CREATE TABLE `adherent_subscription_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `adherent_tags`
+-- Dumping data for table `adherent_subscription_type`
 --
 
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `adherent_tags` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_D34384A45E237E06` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `adherent_subscription_type` WRITE;
+/*!40000 ALTER TABLE `adherent_subscription_type` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_subscription_type` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `adherent_thematic_community`
 --
 
+DROP TABLE IF EXISTS `adherent_thematic_community`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_thematic_community` (
@@ -563,9 +835,19 @@ CREATE TABLE `adherent_thematic_community` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_thematic_community`
+--
+
+LOCK TABLES `adherent_thematic_community` WRITE;
+/*!40000 ALTER TABLE `adherent_thematic_community` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_thematic_community` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_zone`
 --
 
+DROP TABLE IF EXISTS `adherent_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_zone` (
@@ -580,16 +862,26 @@ CREATE TABLE `adherent_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_zone`
+--
+
+LOCK TABLES `adherent_zone` WRITE;
+/*!40000 ALTER TABLE `adherent_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_zone_based_role`
 --
 
+DROP TABLE IF EXISTS `adherent_zone_based_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_zone_based_role` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `adherent_id` int unsigned NOT NULL,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -600,9 +892,19 @@ CREATE TABLE `adherent_zone_based_role` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_zone_based_role`
+--
+
+LOCK TABLES `adherent_zone_based_role` WRITE;
+/*!40000 ALTER TABLE `adherent_zone_based_role` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_zone_based_role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherent_zone_based_role_zone`
 --
 
+DROP TABLE IF EXISTS `adherent_zone_based_role_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherent_zone_based_role_zone` (
@@ -617,9 +919,19 @@ CREATE TABLE `adherent_zone_based_role_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherent_zone_based_role_zone`
+--
+
+LOCK TABLES `adherent_zone_based_role_zone` WRITE;
+/*!40000 ALTER TABLE `adherent_zone_based_role_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherent_zone_based_role_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `adherents`
 --
 
+DROP TABLE IF EXISTS `adherents`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `adherents` (
@@ -629,18 +941,13 @@ CREATE TABLE `adherents` (
   `media_id` bigint DEFAULT NULL,
   `procuration_managed_area_id` int DEFAULT NULL,
   `assessor_managed_area_id` int DEFAULT NULL,
-  `municipal_chief_managed_area_id` int DEFAULT NULL,
   `jecoute_managed_area_id` int DEFAULT NULL,
   `senator_area_id` int DEFAULT NULL,
   `managed_district_id` int unsigned DEFAULT NULL,
   `consular_managed_area_id` int DEFAULT NULL,
   `assessor_role_id` int DEFAULT NULL,
-  `municipal_manager_role_id` int DEFAULT NULL,
-  `municipal_manager_supervisor_role_id` int DEFAULT NULL,
   `senatorial_candidate_managed_area_id` int DEFAULT NULL,
-  `lre_area_id` int DEFAULT NULL,
   `candidate_managed_area_id` int unsigned DEFAULT NULL,
-  `coalition_moderator_role_id` int unsigned DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `old_password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gender` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -654,7 +961,6 @@ CREATE TABLE `adherents` (
   `updated_at` datetime DEFAULT NULL,
   `last_logged_at` datetime DEFAULT NULL,
   `interests` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
-  `local_host_emails_subscription` tinyint(1) NOT NULL DEFAULT '0',
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `first_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `last_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -665,9 +971,7 @@ CREATE TABLE `adherents` (
   `address_country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `address_longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
-  `com_mobile` tinyint(1) DEFAULT NULL,
   `adherent` tinyint(1) NOT NULL DEFAULT '0',
-  `emails_subscriptions` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `remind_sent` tinyint(1) NOT NULL DEFAULT '0',
   `mandates` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `address_region` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -682,7 +986,6 @@ CREATE TABLE `adherents` (
   `canary_tester` tinyint(1) NOT NULL DEFAULT '0',
   `email_unsubscribed` tinyint(1) NOT NULL DEFAULT '0',
   `email_unsubscribed_at` datetime DEFAULT NULL,
-  `print_privilege` tinyint(1) NOT NULL DEFAULT '0',
   `election_results_reporter` tinyint(1) NOT NULL DEFAULT '0',
   `certified_at` datetime DEFAULT NULL,
   `address_geocodable_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -693,9 +996,6 @@ CREATE TABLE `adherents` (
   `membership_reminded_at` datetime DEFAULT NULL,
   `notified_for_election` tinyint(1) NOT NULL DEFAULT '0',
   `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `coalition_subscription` tinyint(1) NOT NULL DEFAULT '0',
-  `cause_subscription` tinyint(1) NOT NULL DEFAULT '0',
-  `coalitions_cgu_accepted` tinyint(1) NOT NULL DEFAULT '0',
   `vote_inspector` tinyint(1) NOT NULL DEFAULT '0',
   `national_role` tinyint(1) NOT NULL DEFAULT '0',
   `mailchimp_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -704,15 +1004,26 @@ CREATE TABLE `adherents` (
   `phone_verified_at` datetime DEFAULT NULL,
   `national_communication_role` tinyint(1) NOT NULL DEFAULT '0',
   `pap_user_role` tinyint(1) NOT NULL DEFAULT '0',
-  `last_login_group` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_login_group` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `global_notification_sent_at` datetime DEFAULT NULL,
   `activism_zone_id` int unsigned DEFAULT NULL,
   `last_membership_donation` datetime DEFAULT NULL,
   `exclusive_membership` tinyint(1) NOT NULL DEFAULT '0',
   `territoire_progres_membership` tinyint(1) NOT NULL DEFAULT '0',
   `agir_membership` tinyint(1) NOT NULL DEFAULT '0',
-  `utm_source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `utm_campaign` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_campaign` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `email_status_comment` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_contribution_id` int unsigned DEFAULT NULL,
+  `contribution_status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `contributed_at` datetime DEFAULT NULL,
+  `exempt_from_cotisation` tinyint(1) NOT NULL DEFAULT '0',
+  `tags` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `other_party_membership` tinyint(1) NOT NULL DEFAULT '0',
+  `v2` tinyint(1) NOT NULL DEFAULT '0',
+  `finished_adhesion_steps` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_562C7DA3B08E074E` (`email_address`),
   UNIQUE KEY `UNIQ_562C7DA3D17F50A6` (`uuid`),
@@ -721,33 +1032,29 @@ CREATE TABLE `adherents` (
   UNIQUE KEY `UNIQ_562C7DA3E4A5D7A5` (`assessor_role_id`),
   UNIQUE KEY `UNIQ_562C7DA3E1B55931` (`assessor_managed_area_id`),
   UNIQUE KEY `UNIQ_562C7DA3DC184E71` (`managed_area_id`),
-  UNIQUE KEY `UNIQ_562C7DA3CC72679B` (`municipal_chief_managed_area_id`),
   UNIQUE KEY `UNIQ_562C7DA3A188FE64` (`nickname`),
   UNIQUE KEY `UNIQ_562C7DA3A132C3C5` (`managed_district_id`),
-  UNIQUE KEY `UNIQ_562C7DA39801977F` (`municipal_manager_supervisor_role_id`),
   UNIQUE KEY `UNIQ_562C7DA394E3BB99` (`jecoute_managed_area_id`),
-  UNIQUE KEY `UNIQ_562C7DA38828ED30` (`coalition_moderator_role_id`),
-  UNIQUE KEY `UNIQ_562C7DA379DE69AA` (`municipal_manager_role_id`),
-  UNIQUE KEY `UNIQ_562C7DA379645AD5` (`lre_area_id`),
   UNIQUE KEY `UNIQ_562C7DA37657F304` (`candidate_managed_area_id`),
   UNIQUE KEY `UNIQ_562C7DA339054338` (`procuration_managed_area_id`),
   UNIQUE KEY `UNIQ_562C7DA31A912B27` (`coordinator_committee_area_id`),
   UNIQUE KEY `UNIQ_562C7DA3122E5FF4` (`consular_managed_area_id`),
+  UNIQUE KEY `UNIQ_562C7DA314E51F8D` (`last_contribution_id`),
   KEY `IDX_562C7DA3EA9FDD75` (`media_id`),
   KEY `IDX_562C7DA38C8E414F` (`activism_zone_id`),
+  KEY `IDX_562C7DA39DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_562C7DA3CF1918FF` (`updated_by_administrator_id`),
   CONSTRAINT `FK_562C7DA3122E5FF4` FOREIGN KEY (`consular_managed_area_id`) REFERENCES `consular_managed_area` (`id`),
+  CONSTRAINT `FK_562C7DA314E51F8D` FOREIGN KEY (`last_contribution_id`) REFERENCES `contribution` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_562C7DA31A912B27` FOREIGN KEY (`coordinator_committee_area_id`) REFERENCES `coordinator_managed_areas` (`id`),
   CONSTRAINT `FK_562C7DA339054338` FOREIGN KEY (`procuration_managed_area_id`) REFERENCES `procuration_managed_areas` (`id`),
   CONSTRAINT `FK_562C7DA37657F304` FOREIGN KEY (`candidate_managed_area_id`) REFERENCES `candidate_managed_area` (`id`),
-  CONSTRAINT `FK_562C7DA379645AD5` FOREIGN KEY (`lre_area_id`) REFERENCES `lre_area` (`id`),
-  CONSTRAINT `FK_562C7DA379DE69AA` FOREIGN KEY (`municipal_manager_role_id`) REFERENCES `municipal_manager_role_association` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `FK_562C7DA38828ED30` FOREIGN KEY (`coalition_moderator_role_id`) REFERENCES `coalition_moderator_role_association` (`id`),
   CONSTRAINT `FK_562C7DA38C8E414F` FOREIGN KEY (`activism_zone_id`) REFERENCES `geo_zone` (`id`),
   CONSTRAINT `FK_562C7DA393494FA8` FOREIGN KEY (`senator_area_id`) REFERENCES `senator_area` (`id`),
   CONSTRAINT `FK_562C7DA394E3BB99` FOREIGN KEY (`jecoute_managed_area_id`) REFERENCES `jecoute_managed_areas` (`id`),
-  CONSTRAINT `FK_562C7DA39801977F` FOREIGN KEY (`municipal_manager_supervisor_role_id`) REFERENCES `municipal_manager_supervisor_role` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_562C7DA39DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_562C7DA3A132C3C5` FOREIGN KEY (`managed_district_id`) REFERENCES `districts` (`id`),
-  CONSTRAINT `FK_562C7DA3CC72679B` FOREIGN KEY (`municipal_chief_managed_area_id`) REFERENCES `municipal_chief_areas` (`id`),
+  CONSTRAINT `FK_562C7DA3CF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_562C7DA3DC184E71` FOREIGN KEY (`managed_area_id`) REFERENCES `referent_managed_areas` (`id`),
   CONSTRAINT `FK_562C7DA3E1B55931` FOREIGN KEY (`assessor_managed_area_id`) REFERENCES `assessor_managed_areas` (`id`),
   CONSTRAINT `FK_562C7DA3E4A5D7A5` FOREIGN KEY (`assessor_role_id`) REFERENCES `assessor_role_association` (`id`) ON DELETE SET NULL,
@@ -757,16 +1064,26 @@ CREATE TABLE `adherents` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `adherents`
+--
+
+LOCK TABLES `adherents` WRITE;
+/*!40000 ALTER TABLE `adherents` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adherents` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `administrator_export_history`
 --
 
+DROP TABLE IF EXISTS `administrator_export_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `administrator_export_history` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `administrator_id` int NOT NULL,
   `route_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `parameters` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
+  `parameters` json NOT NULL,
   `exported_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_10499F014B09E92C` (`administrator_id`),
@@ -775,9 +1092,78 @@ CREATE TABLE `administrator_export_history` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `administrator_export_history`
+--
+
+LOCK TABLES `administrator_export_history` WRITE;
+/*!40000 ALTER TABLE `administrator_export_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `administrator_export_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `administrator_role`
+--
+
+DROP TABLE IF EXISTS `administrator_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `administrator_role` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `group_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_DEE3E68777153098` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `administrator_role`
+--
+
+LOCK TABLES `administrator_role` WRITE;
+/*!40000 ALTER TABLE `administrator_role` DISABLE KEYS */;
+/*!40000 ALTER TABLE `administrator_role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `administrator_role_history`
+--
+
+DROP TABLE IF EXISTS `administrator_role_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `administrator_role_history` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `administrator_id` int NOT NULL,
+  `author_id` int DEFAULT NULL,
+  `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `action` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
+  PRIMARY KEY (`id`),
+  KEY `IDX_CC6926CC4B09E92C` (`administrator_id`),
+  KEY `IDX_CC6926CCF675F31B` (`author_id`),
+  CONSTRAINT `FK_CC6926CC4B09E92C` FOREIGN KEY (`administrator_id`) REFERENCES `administrators` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_CC6926CCF675F31B` FOREIGN KEY (`author_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `administrator_role_history`
+--
+
+LOCK TABLES `administrator_role_history` WRITE;
+/*!40000 ALTER TABLE `administrator_role_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `administrator_role_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `administrators`
 --
 
+DROP TABLE IF EXISTS `administrators`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `administrators` (
@@ -793,9 +1179,46 @@ CREATE TABLE `administrators` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `administrators`
+--
+
+LOCK TABLES `administrators` WRITE;
+/*!40000 ALTER TABLE `administrators` DISABLE KEYS */;
+/*!40000 ALTER TABLE `administrators` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `administrators_roles`
+--
+
+DROP TABLE IF EXISTS `administrators_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `administrators_roles` (
+  `administrator_id` int NOT NULL,
+  `administrator_role_id` int unsigned NOT NULL,
+  PRIMARY KEY (`administrator_id`,`administrator_role_id`),
+  KEY `IDX_9BCFB8EB4B09E92C` (`administrator_id`),
+  KEY `IDX_9BCFB8EBB31C2F43` (`administrator_role_id`),
+  CONSTRAINT `FK_9BCFB8EB4B09E92C` FOREIGN KEY (`administrator_id`) REFERENCES `administrators` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_9BCFB8EBB31C2F43` FOREIGN KEY (`administrator_role_id`) REFERENCES `administrator_role` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `administrators_roles`
+--
+
+LOCK TABLES `administrators_roles` WRITE;
+/*!40000 ALTER TABLE `administrators_roles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `administrators_roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `algolia_candidature`
 --
 
+DROP TABLE IF EXISTS `algolia_candidature`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `algolia_candidature` (
@@ -805,21 +1228,41 @@ CREATE TABLE `algolia_candidature` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `algolia_candidature`
+--
+
+LOCK TABLES `algolia_candidature` WRITE;
+/*!40000 ALTER TABLE `algolia_candidature` DISABLE KEYS */;
+/*!40000 ALTER TABLE `algolia_candidature` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `algolia_je_mengage_timeline_feed`
 --
 
+DROP TABLE IF EXISTS `algolia_je_mengage_timeline_feed`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `algolia_je_mengage_timeline_feed` (
-  `object_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `object_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`object_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `algolia_je_mengage_timeline_feed`
+--
+
+LOCK TABLES `algolia_je_mengage_timeline_feed` WRITE;
+/*!40000 ALTER TABLE `algolia_je_mengage_timeline_feed` DISABLE KEYS */;
+/*!40000 ALTER TABLE `algolia_je_mengage_timeline_feed` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `application_request_running_mate`
 --
 
+DROP TABLE IF EXISTS `application_request_running_mate`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `application_request_running_mate` (
@@ -861,9 +1304,19 @@ CREATE TABLE `application_request_running_mate` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `application_request_running_mate`
+--
+
+LOCK TABLES `application_request_running_mate` WRITE;
+/*!40000 ALTER TABLE `application_request_running_mate` DISABLE KEYS */;
+/*!40000 ALTER TABLE `application_request_running_mate` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `application_request_tag`
 --
 
+DROP TABLE IF EXISTS `application_request_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `application_request_tag` (
@@ -874,9 +1327,19 @@ CREATE TABLE `application_request_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `application_request_tag`
+--
+
+LOCK TABLES `application_request_tag` WRITE;
+/*!40000 ALTER TABLE `application_request_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `application_request_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `application_request_technical_skill`
 --
 
+DROP TABLE IF EXISTS `application_request_technical_skill`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `application_request_technical_skill` (
@@ -888,9 +1351,19 @@ CREATE TABLE `application_request_technical_skill` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `application_request_technical_skill`
+--
+
+LOCK TABLES `application_request_technical_skill` WRITE;
+/*!40000 ALTER TABLE `application_request_technical_skill` DISABLE KEYS */;
+/*!40000 ALTER TABLE `application_request_technical_skill` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `application_request_theme`
 --
 
+DROP TABLE IF EXISTS `application_request_theme`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `application_request_theme` (
@@ -902,9 +1375,19 @@ CREATE TABLE `application_request_theme` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `application_request_theme`
+--
+
+LOCK TABLES `application_request_theme` WRITE;
+/*!40000 ALTER TABLE `application_request_theme` DISABLE KEYS */;
+/*!40000 ALTER TABLE `application_request_theme` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `application_request_volunteer`
 --
 
+DROP TABLE IF EXISTS `application_request_volunteer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `application_request_volunteer` (
@@ -941,9 +1424,19 @@ CREATE TABLE `application_request_volunteer` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `application_request_volunteer`
+--
+
+LOCK TABLES `application_request_volunteer` WRITE;
+/*!40000 ALTER TABLE `application_request_volunteer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `application_request_volunteer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `article_proposal_theme`
 --
 
+DROP TABLE IF EXISTS `article_proposal_theme`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `article_proposal_theme` (
@@ -958,9 +1451,19 @@ CREATE TABLE `article_proposal_theme` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `article_proposal_theme`
+--
+
+LOCK TABLES `article_proposal_theme` WRITE;
+/*!40000 ALTER TABLE `article_proposal_theme` DISABLE KEYS */;
+/*!40000 ALTER TABLE `article_proposal_theme` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `articles`
 --
 
+DROP TABLE IF EXISTS `articles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `articles` (
@@ -980,7 +1483,7 @@ CREATE TABLE `articles` (
   `keywords` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `twitter_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `for_renaissance` tinyint(1) NOT NULL DEFAULT '0',
-  `json_content` longtext COLLATE utf8mb4_unicode_ci,
+  `json_content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_BFDD3168989D9B62` (`slug`),
   KEY `IDX_BFDD316812469DE2` (`category_id`),
@@ -991,9 +1494,19 @@ CREATE TABLE `articles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `articles`
+--
+
+LOCK TABLES `articles` WRITE;
+/*!40000 ALTER TABLE `articles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `articles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `articles_categories`
 --
 
+DROP TABLE IF EXISTS `articles_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `articles_categories` (
@@ -1010,9 +1523,19 @@ CREATE TABLE `articles_categories` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `articles_categories`
+--
+
+LOCK TABLES `articles_categories` WRITE;
+/*!40000 ALTER TABLE `articles_categories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `articles_categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `assessor_managed_areas`
 --
 
+DROP TABLE IF EXISTS `assessor_managed_areas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assessor_managed_areas` (
@@ -1023,9 +1546,19 @@ CREATE TABLE `assessor_managed_areas` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `assessor_managed_areas`
+--
+
+LOCK TABLES `assessor_managed_areas` WRITE;
+/*!40000 ALTER TABLE `assessor_managed_areas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `assessor_managed_areas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `assessor_requests`
 --
 
+DROP TABLE IF EXISTS `assessor_requests`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assessor_requests` (
@@ -1040,7 +1573,7 @@ CREATE TABLE `assessor_requests` (
   `postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `vote_city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `office_number` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `office_number` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:phone_number)',
   `assessor_city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1054,9 +1587,9 @@ CREATE TABLE `assessor_requests` (
   `assessor_postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `assessor_country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `reachable` tinyint(1) NOT NULL DEFAULT '0',
-  `voter_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `election_rounds` longtext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:simple_array)',
-  `country` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'FR',
+  `voter_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `election_rounds` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:simple_array)',
+  `country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'FR',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_26BC800D17F50A6` (`uuid`),
   KEY `IDX_26BC800F3F90B30` (`vote_place_id`),
@@ -1065,9 +1598,19 @@ CREATE TABLE `assessor_requests` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `assessor_requests`
+--
+
+LOCK TABLES `assessor_requests` WRITE;
+/*!40000 ALTER TABLE `assessor_requests` DISABLE KEYS */;
+/*!40000 ALTER TABLE `assessor_requests` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `assessor_requests_vote_place_wishes`
 --
 
+DROP TABLE IF EXISTS `assessor_requests_vote_place_wishes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assessor_requests_vote_place_wishes` (
@@ -1082,9 +1625,19 @@ CREATE TABLE `assessor_requests_vote_place_wishes` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `assessor_requests_vote_place_wishes`
+--
+
+LOCK TABLES `assessor_requests_vote_place_wishes` WRITE;
+/*!40000 ALTER TABLE `assessor_requests_vote_place_wishes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `assessor_requests_vote_place_wishes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `assessor_role_association`
 --
 
+DROP TABLE IF EXISTS `assessor_role_association`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `assessor_role_association` (
@@ -1097,9 +1650,19 @@ CREATE TABLE `assessor_role_association` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `assessor_role_association`
+--
+
+LOCK TABLES `assessor_role_association` WRITE;
+/*!40000 ALTER TABLE `assessor_role_association` DISABLE KEYS */;
+/*!40000 ALTER TABLE `assessor_role_association` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `audience`
 --
 
+DROP TABLE IF EXISTS `audience`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `audience` (
@@ -1122,7 +1685,7 @@ CREATE TABLE `audience` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
-  `renaissance_membership` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `renaissance_membership` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_FDCD9418D17F50A6` (`uuid`),
   KEY `IDX_FDCD94189F2C3FAB` (`zone_id`),
@@ -1131,9 +1694,19 @@ CREATE TABLE `audience` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `audience`
+--
+
+LOCK TABLES `audience` WRITE;
+/*!40000 ALTER TABLE `audience` DISABLE KEYS */;
+/*!40000 ALTER TABLE `audience` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `audience_segment`
 --
 
+DROP TABLE IF EXISTS `audience_segment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `audience_segment` (
@@ -1149,14 +1722,24 @@ CREATE TABLE `audience_segment` (
   UNIQUE KEY `UNIQ_C5C2F52FD17F50A6` (`uuid`),
   KEY `IDX_C5C2F52FF675F31B` (`author_id`),
   CONSTRAINT `FK_C5C2F52FD395B25E` FOREIGN KEY (`filter_id`) REFERENCES `adherent_message_filters` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_C5C2F52FF675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`)
+  CONSTRAINT `FK_C5C2F52FF675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `audience_segment`
+--
+
+LOCK TABLES `audience_segment` WRITE;
+/*!40000 ALTER TABLE `audience_segment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `audience_segment` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `audience_snapshot`
 --
 
+DROP TABLE IF EXISTS `audience_snapshot`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `audience_snapshot` (
@@ -1178,7 +1761,7 @@ CREATE TABLE `audience_snapshot` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
-  `renaissance_membership` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `renaissance_membership` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_BA99FEBBD17F50A6` (`uuid`),
   KEY `IDX_BA99FEBB9F2C3FAB` (`zone_id`),
@@ -1187,9 +1770,19 @@ CREATE TABLE `audience_snapshot` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `audience_snapshot`
+--
+
+LOCK TABLES `audience_snapshot` WRITE;
+/*!40000 ALTER TABLE `audience_snapshot` DISABLE KEYS */;
+/*!40000 ALTER TABLE `audience_snapshot` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `audience_snapshot_zone`
 --
 
+DROP TABLE IF EXISTS `audience_snapshot_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `audience_snapshot_zone` (
@@ -1204,9 +1797,19 @@ CREATE TABLE `audience_snapshot_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `audience_snapshot_zone`
+--
+
+LOCK TABLES `audience_snapshot_zone` WRITE;
+/*!40000 ALTER TABLE `audience_snapshot_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `audience_snapshot_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `audience_zone`
 --
 
+DROP TABLE IF EXISTS `audience_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `audience_zone` (
@@ -1221,9 +1824,19 @@ CREATE TABLE `audience_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `audience_zone`
+--
+
+LOCK TABLES `audience_zone` WRITE;
+/*!40000 ALTER TABLE `audience_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `audience_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `banned_adherent`
 --
 
+DROP TABLE IF EXISTS `banned_adherent`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `banned_adherent` (
@@ -1236,9 +1849,19 @@ CREATE TABLE `banned_adherent` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `banned_adherent`
+--
+
+LOCK TABLES `banned_adherent` WRITE;
+/*!40000 ALTER TABLE `banned_adherent` DISABLE KEYS */;
+/*!40000 ALTER TABLE `banned_adherent` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `biography_executive_office_member`
 --
 
+DROP TABLE IF EXISTS `biography_executive_office_member`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `biography_executive_office_member` (
@@ -1262,7 +1885,7 @@ CREATE TABLE `biography_executive_office_member` (
   `deputy_general_delegate` tinyint(1) NOT NULL DEFAULT '0',
   `president` tinyint(1) NOT NULL DEFAULT '0',
   `for_renaissance` tinyint(1) NOT NULL DEFAULT '0',
-  `role` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_44A61059989D9B62` (`slug`),
   UNIQUE KEY `UNIQ_44A61059D17F50A6` (`uuid`)
@@ -1270,9 +1893,19 @@ CREATE TABLE `biography_executive_office_member` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `biography_executive_office_member`
+--
+
+LOCK TABLES `biography_executive_office_member` WRITE;
+/*!40000 ALTER TABLE `biography_executive_office_member` DISABLE KEYS */;
+/*!40000 ALTER TABLE `biography_executive_office_member` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `board_member`
 --
 
+DROP TABLE IF EXISTS `board_member`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `board_member` (
@@ -1286,9 +1919,19 @@ CREATE TABLE `board_member` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `board_member`
+--
+
+LOCK TABLES `board_member` WRITE;
+/*!40000 ALTER TABLE `board_member` DISABLE KEYS */;
+/*!40000 ALTER TABLE `board_member` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `board_member_roles`
 --
 
+DROP TABLE IF EXISTS `board_member_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `board_member_roles` (
@@ -1303,9 +1946,53 @@ CREATE TABLE `board_member_roles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `board_member_roles`
+--
+
+LOCK TABLES `board_member_roles` WRITE;
+/*!40000 ALTER TABLE `board_member_roles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `board_member_roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `campus_registration`
+--
+
+DROP TABLE IF EXISTS `campus_registration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `campus_registration` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `adherent_id` int unsigned NOT NULL,
+  `event_maker_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `campus_event_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `event_maker_order_uid` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `registered_at` datetime DEFAULT NULL,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_30249D7BD17F50A6` (`uuid`),
+  KEY `IDX_30249D7B25F06C53` (`adherent_id`),
+  CONSTRAINT `FK_30249D7B25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `campus_registration`
+--
+
+LOCK TABLES `campus_registration` WRITE;
+/*!40000 ALTER TABLE `campus_registration` DISABLE KEYS */;
+/*!40000 ALTER TABLE `campus_registration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `candidate_managed_area`
 --
 
+DROP TABLE IF EXISTS `candidate_managed_area`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `candidate_managed_area` (
@@ -1318,91 +2005,19 @@ CREATE TABLE `candidate_managed_area` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `cause`
+-- Dumping data for table `candidate_managed_area`
 --
 
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cause` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `coalition_id` int unsigned NOT NULL,
-  `author_id` int unsigned DEFAULT NULL,
-  `second_coalition_id` int unsigned DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  `image_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `canonical_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `followers_count` int unsigned NOT NULL,
-  `mailchimp_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_F0DA7FBF5E237E06` (`name`),
-  UNIQUE KEY `UNIQ_F0DA7FBFD17F50A6` (`uuid`),
-  KEY `IDX_F0DA7FBF38C2B2DC` (`second_coalition_id`),
-  KEY `IDX_F0DA7FBFC2A46A23` (`coalition_id`),
-  KEY `IDX_F0DA7FBFF675F31B` (`author_id`),
-  CONSTRAINT `FK_F0DA7FBF38C2B2DC` FOREIGN KEY (`second_coalition_id`) REFERENCES `coalition` (`id`),
-  CONSTRAINT `FK_F0DA7FBFC2A46A23` FOREIGN KEY (`coalition_id`) REFERENCES `coalition` (`id`),
-  CONSTRAINT `FK_F0DA7FBFF675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cause_follower`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cause_follower` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `cause_id` int unsigned NOT NULL,
-  `adherent_id` int unsigned DEFAULT NULL,
-  `zone_id` int unsigned DEFAULT NULL,
-  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  `first_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cgu_accepted` tinyint(1) DEFAULT NULL,
-  `cause_subscription` tinyint(1) DEFAULT NULL,
-  `coalition_subscription` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_6F9A8544D17F50A6` (`uuid`),
-  UNIQUE KEY `cause_follower_unique` (`cause_id`,`adherent_id`),
-  KEY `IDX_6F9A854425F06C53` (`adherent_id`),
-  KEY `IDX_6F9A854466E2221E` (`cause_id`),
-  KEY `IDX_6F9A85449F2C3FAB` (`zone_id`),
-  CONSTRAINT `FK_6F9A854425F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `FK_6F9A854466E2221E` FOREIGN KEY (`cause_id`) REFERENCES `cause` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_6F9A85449F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `cause_quick_action`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cause_quick_action` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `cause_id` int unsigned NOT NULL,
-  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_DC1B329B66E2221E` (`cause_id`),
-  CONSTRAINT `FK_DC1B329B66E2221E` FOREIGN KEY (`cause_id`) REFERENCES `cause` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `candidate_managed_area` WRITE;
+/*!40000 ALTER TABLE `candidate_managed_area` DISABLE KEYS */;
+/*!40000 ALTER TABLE `candidate_managed_area` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `certification_request`
 --
 
+DROP TABLE IF EXISTS `certification_request`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `certification_request` (
@@ -1437,16 +2052,26 @@ CREATE TABLE `certification_request` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `certification_request`
+--
+
+LOCK TABLES `certification_request` WRITE;
+/*!40000 ALTER TABLE `certification_request` DISABLE KEYS */;
+/*!40000 ALTER TABLE `certification_request` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `chez_vous_cities`
 --
 
+DROP TABLE IF EXISTS `chez_vous_cities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chez_vous_cities` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `department_id` int unsigned NOT NULL,
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `postal_codes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
+  `postal_codes` json NOT NULL,
   `insee_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `latitude` float(10,6) NOT NULL COMMENT '(DC2Type:geo_point)',
   `longitude` float(10,6) NOT NULL COMMENT '(DC2Type:geo_point)',
@@ -1460,9 +2085,19 @@ CREATE TABLE `chez_vous_cities` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `chez_vous_cities`
+--
+
+LOCK TABLES `chez_vous_cities` WRITE;
+/*!40000 ALTER TABLE `chez_vous_cities` DISABLE KEYS */;
+/*!40000 ALTER TABLE `chez_vous_cities` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `chez_vous_departments`
 --
 
+DROP TABLE IF EXISTS `chez_vous_departments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chez_vous_departments` (
@@ -1479,9 +2114,19 @@ CREATE TABLE `chez_vous_departments` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `chez_vous_departments`
+--
+
+LOCK TABLES `chez_vous_departments` WRITE;
+/*!40000 ALTER TABLE `chez_vous_departments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `chez_vous_departments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `chez_vous_markers`
 --
 
+DROP TABLE IF EXISTS `chez_vous_markers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chez_vous_markers` (
@@ -1497,9 +2142,19 @@ CREATE TABLE `chez_vous_markers` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `chez_vous_markers`
+--
+
+LOCK TABLES `chez_vous_markers` WRITE;
+/*!40000 ALTER TABLE `chez_vous_markers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `chez_vous_markers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `chez_vous_measure_types`
 --
 
+DROP TABLE IF EXISTS `chez_vous_measure_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chez_vous_measure_types` (
@@ -1517,16 +2172,26 @@ CREATE TABLE `chez_vous_measure_types` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `chez_vous_measure_types`
+--
+
+LOCK TABLES `chez_vous_measure_types` WRITE;
+/*!40000 ALTER TABLE `chez_vous_measure_types` DISABLE KEYS */;
+/*!40000 ALTER TABLE `chez_vous_measure_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `chez_vous_measures`
 --
 
+DROP TABLE IF EXISTS `chez_vous_measures`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chez_vous_measures` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `city_id` int unsigned NOT NULL,
   `type_id` int unsigned NOT NULL,
-  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:json)',
+  `payload` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `chez_vous_measures_city_type_unique` (`city_id`,`type_id`),
   KEY `IDX_E6E8973E8BAC62AF` (`city_id`),
@@ -1537,9 +2202,19 @@ CREATE TABLE `chez_vous_measures` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `chez_vous_measures`
+--
+
+LOCK TABLES `chez_vous_measures` WRITE;
+/*!40000 ALTER TABLE `chez_vous_measures` DISABLE KEYS */;
+/*!40000 ALTER TABLE `chez_vous_measures` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `chez_vous_regions`
 --
 
+DROP TABLE IF EXISTS `chez_vous_regions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chez_vous_regions` (
@@ -1552,9 +2227,19 @@ CREATE TABLE `chez_vous_regions` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `chez_vous_regions`
+--
+
+LOCK TABLES `chez_vous_regions` WRITE;
+/*!40000 ALTER TABLE `chez_vous_regions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `chez_vous_regions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `cities`
 --
 
+DROP TABLE IF EXISTS `cities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cities` (
@@ -1571,9 +2256,19 @@ CREATE TABLE `cities` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `cities`
+--
+
+LOCK TABLES `cities` WRITE;
+/*!40000 ALTER TABLE `cities` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cities` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `clarifications`
 --
 
+DROP TABLE IF EXISTS `clarifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `clarifications` (
@@ -1598,9 +2293,19 @@ CREATE TABLE `clarifications` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `clarifications`
+--
+
+LOCK TABLES `clarifications` WRITE;
+/*!40000 ALTER TABLE `clarifications` DISABLE KEYS */;
+/*!40000 ALTER TABLE `clarifications` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `cms_block`
 --
 
+DROP TABLE IF EXISTS `cms_block`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cms_block` (
@@ -1622,102 +2327,107 @@ CREATE TABLE `cms_block` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `coalition`
+-- Dumping data for table `cms_block`
 --
 
+LOCK TABLES `cms_block` WRITE;
+/*!40000 ALTER TABLE `cms_block` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cms_block` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `command_history`
+--
+
+DROP TABLE IF EXISTS `command_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `coalition` (
+CREATE TABLE `command_history` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  `image_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `youtube_id` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_A7CD7AC75E237E06` (`name`),
-  UNIQUE KEY `UNIQ_A7CD7AC7D17F50A6` (`uuid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `coalition_follower`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `coalition_follower` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `coalition_id` int unsigned NOT NULL,
-  `adherent_id` int unsigned DEFAULT NULL,
-  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_DFF370E2D17F50A6` (`uuid`),
-  KEY `IDX_DFF370E225F06C53` (`adherent_id`),
-  KEY `IDX_DFF370E2C2A46A23` (`coalition_id`),
-  CONSTRAINT `FK_DFF370E225F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_DFF370E2C2A46A23` FOREIGN KEY (`coalition_id`) REFERENCES `coalition` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `coalition_moderator_role_association`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `coalition_moderator_role_association` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `command_history`
+--
+
+LOCK TABLES `command_history` WRITE;
+/*!40000 ALTER TABLE `command_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `command_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `commitment`
 --
 
+DROP TABLE IF EXISTS `commitment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `commitment` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `short_description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `short_description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `position` int NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `image_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_F3E0CCBBD17F50A6` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `commitment`
+--
+
+LOCK TABLES `commitment` WRITE;
+/*!40000 ALTER TABLE `commitment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `commitment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `committee_candidacies_group`
 --
 
+DROP TABLE IF EXISTS `committee_candidacies_group`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `committee_candidacies_group` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
+  `election_id` int unsigned DEFAULT NULL,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_AF772F42D17F50A6` (`uuid`),
+  KEY `IDX_AF772F42A708DAFF` (`election_id`),
+  CONSTRAINT `FK_AF772F42A708DAFF` FOREIGN KEY (`election_id`) REFERENCES `committee_election` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `committee_candidacies_group`
+--
+
+LOCK TABLES `committee_candidacies_group` WRITE;
+/*!40000 ALTER TABLE `committee_candidacies_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `committee_candidacies_group` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `committee_candidacy`
 --
 
+DROP TABLE IF EXISTS `committee_candidacy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `committee_candidacy` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `committee_election_id` int unsigned NOT NULL,
   `committee_membership_id` int unsigned NOT NULL,
   `candidacies_group_id` int unsigned DEFAULT NULL,
@@ -1737,21 +2447,31 @@ CREATE TABLE `committee_candidacy` (
   KEY `IDX_9A04454FC1537C1` (`candidacies_group_id`),
   KEY `IDX_9A04454FCC6DA91` (`committee_membership_id`),
   CONSTRAINT `FK_9A044544E891720` FOREIGN KEY (`committee_election_id`) REFERENCES `committee_election` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_9A04454FC1537C1` FOREIGN KEY (`candidacies_group_id`) REFERENCES `committee_candidacies_group` (`id`),
+  CONSTRAINT `FK_9A04454FC1537C1` FOREIGN KEY (`candidacies_group_id`) REFERENCES `committee_candidacies_group` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_9A04454FCC6DA91` FOREIGN KEY (`committee_membership_id`) REFERENCES `committees_memberships` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `committee_candidacy`
+--
+
+LOCK TABLES `committee_candidacy` WRITE;
+/*!40000 ALTER TABLE `committee_candidacy` DISABLE KEYS */;
+/*!40000 ALTER TABLE `committee_candidacy` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `committee_candidacy_invitation`
 --
 
+DROP TABLE IF EXISTS `committee_candidacy_invitation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `committee_candidacy_invitation` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `membership_id` int unsigned NOT NULL,
-  `candidacy_id` int NOT NULL,
+  `candidacy_id` int unsigned NOT NULL,
   `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `accepted_at` datetime DEFAULT NULL,
   `declined_at` datetime DEFAULT NULL,
@@ -1768,9 +2488,19 @@ CREATE TABLE `committee_candidacy_invitation` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `committee_candidacy_invitation`
+--
+
+LOCK TABLES `committee_candidacy_invitation` WRITE;
+/*!40000 ALTER TABLE `committee_candidacy_invitation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `committee_candidacy_invitation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `committee_election`
 --
 
+DROP TABLE IF EXISTS `committee_election`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `committee_election` (
@@ -1789,9 +2519,19 @@ CREATE TABLE `committee_election` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `committee_election`
+--
+
+LOCK TABLES `committee_election` WRITE;
+/*!40000 ALTER TABLE `committee_election` DISABLE KEYS */;
+/*!40000 ALTER TABLE `committee_election` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `committee_feed_item`
 --
 
+DROP TABLE IF EXISTS `committee_feed_item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `committee_feed_item` (
@@ -1810,15 +2550,25 @@ CREATE TABLE `committee_feed_item` (
   KEY `IDX_4F1CDC80ED1A100B` (`committee_id`),
   KEY `IDX_4F1CDC80F675F31B` (`author_id`),
   CONSTRAINT `FK_4F1CDC8071F7E88B` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_4F1CDC80ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`),
+  CONSTRAINT `FK_4F1CDC80ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_4F1CDC80F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `committee_feed_item`
+--
+
+LOCK TABLES `committee_feed_item` WRITE;
+/*!40000 ALTER TABLE `committee_feed_item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `committee_feed_item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `committee_feed_item_user_documents`
 --
 
+DROP TABLE IF EXISTS `committee_feed_item_user_documents`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `committee_feed_item_user_documents` (
@@ -1833,9 +2583,19 @@ CREATE TABLE `committee_feed_item_user_documents` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `committee_feed_item_user_documents`
+--
+
+LOCK TABLES `committee_feed_item_user_documents` WRITE;
+/*!40000 ALTER TABLE `committee_feed_item_user_documents` DISABLE KEYS */;
+/*!40000 ALTER TABLE `committee_feed_item_user_documents` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `committee_membership_history_referent_tag`
 --
 
+DROP TABLE IF EXISTS `committee_membership_history_referent_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `committee_membership_history_referent_tag` (
@@ -1850,9 +2610,19 @@ CREATE TABLE `committee_membership_history_referent_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `committee_membership_history_referent_tag`
+--
+
+LOCK TABLES `committee_membership_history_referent_tag` WRITE;
+/*!40000 ALTER TABLE `committee_membership_history_referent_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `committee_membership_history_referent_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `committee_merge_histories`
 --
 
+DROP TABLE IF EXISTS `committee_merge_histories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `committee_merge_histories` (
@@ -1869,17 +2639,27 @@ CREATE TABLE `committee_merge_histories` (
   KEY `committee_merge_histories_source_committee_id_idx` (`source_committee_id`),
   KEY `IDX_BB95FBBC50FA8329` (`merged_by_id`),
   KEY `IDX_BB95FBBCA8E1562` (`reverted_by_id`),
-  CONSTRAINT `FK_BB95FBBC3BF0CCB3` FOREIGN KEY (`source_committee_id`) REFERENCES `committees` (`id`),
+  CONSTRAINT `FK_BB95FBBC3BF0CCB3` FOREIGN KEY (`source_committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_BB95FBBC50FA8329` FOREIGN KEY (`merged_by_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `FK_BB95FBBC5C34CBC4` FOREIGN KEY (`destination_committee_id`) REFERENCES `committees` (`id`),
+  CONSTRAINT `FK_BB95FBBC5C34CBC4` FOREIGN KEY (`destination_committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_BB95FBBCA8E1562` FOREIGN KEY (`reverted_by_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `committee_merge_histories`
+--
+
+LOCK TABLES `committee_merge_histories` WRITE;
+/*!40000 ALTER TABLE `committee_merge_histories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `committee_merge_histories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `committee_merge_histories_merged_memberships`
 --
 
+DROP TABLE IF EXISTS `committee_merge_histories_merged_memberships`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `committee_merge_histories_merged_memberships` (
@@ -1894,9 +2674,19 @@ CREATE TABLE `committee_merge_histories_merged_memberships` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `committee_merge_histories_merged_memberships`
+--
+
+LOCK TABLES `committee_merge_histories_merged_memberships` WRITE;
+/*!40000 ALTER TABLE `committee_merge_histories_merged_memberships` DISABLE KEYS */;
+/*!40000 ALTER TABLE `committee_merge_histories_merged_memberships` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `committee_provisional_supervisor`
 --
 
+DROP TABLE IF EXISTS `committee_provisional_supervisor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `committee_provisional_supervisor` (
@@ -1914,9 +2704,19 @@ CREATE TABLE `committee_provisional_supervisor` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `committee_provisional_supervisor`
+--
+
+LOCK TABLES `committee_provisional_supervisor` WRITE;
+/*!40000 ALTER TABLE `committee_provisional_supervisor` DISABLE KEYS */;
+/*!40000 ALTER TABLE `committee_provisional_supervisor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `committee_referent_tag`
 --
 
+DROP TABLE IF EXISTS `committee_referent_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `committee_referent_tag` (
@@ -1931,9 +2731,19 @@ CREATE TABLE `committee_referent_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `committee_referent_tag`
+--
+
+LOCK TABLES `committee_referent_tag` WRITE;
+/*!40000 ALTER TABLE `committee_referent_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `committee_referent_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `committee_zone`
 --
 
+DROP TABLE IF EXISTS `committee_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `committee_zone` (
@@ -1948,9 +2758,19 @@ CREATE TABLE `committee_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `committee_zone`
+--
+
+LOCK TABLES `committee_zone` WRITE;
+/*!40000 ALTER TABLE `committee_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `committee_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `committees`
 --
 
+DROP TABLE IF EXISTS `committees`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `committees` (
@@ -1966,12 +2786,12 @@ CREATE TABLE `committees` (
   `approved_at` datetime DEFAULT NULL,
   `refused_at` datetime DEFAULT NULL,
   `created_by` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:uuid)',
-  `members_count` smallint unsigned NOT NULL,
+  `members_count` smallint unsigned NOT NULL DEFAULT '0',
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `address_address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_postal_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_city_insee` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1983,20 +2803,47 @@ CREATE TABLE `committees` (
   `mailchimp_id` int DEFAULT NULL,
   `address_geocodable_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `closed_at` datetime DEFAULT NULL,
+  `created_by_adherent_id` int unsigned DEFAULT NULL,
+  `updated_by_adherent_id` int unsigned DEFAULT NULL,
+  `version` smallint unsigned NOT NULL DEFAULT '2',
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `sympathizers_count` smallint unsigned NOT NULL DEFAULT '0',
+  `animator_id` int unsigned DEFAULT NULL,
+  `members_em_count` smallint unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `committee_canonical_name_unique` (`canonical_name`),
-  UNIQUE KEY `committee_slug_unique` (`slug`),
   UNIQUE KEY `UNIQ_A36198C6D17F50A6` (`uuid`),
-  KEY `committee_status_idx` (`status`),
+  KEY `IDX_A36198C67B00651C` (`status`),
   KEY `IDX_A36198C6B4D2A5D1` (`current_designation_id`),
-  CONSTRAINT `FK_A36198C6B4D2A5D1` FOREIGN KEY (`current_designation_id`) REFERENCES `designation` (`id`)
+  KEY `IDX_A36198C685C9D733` (`created_by_adherent_id`),
+  KEY `IDX_A36198C6DF6CFDC9` (`updated_by_adherent_id`),
+  KEY `IDX_A36198C6BF1CD3C3` (`version`),
+  KEY `IDX_A36198C69DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_A36198C6CF1918FF` (`updated_by_administrator_id`),
+  KEY `IDX_A36198C670FBD26D` (`animator_id`),
+  CONSTRAINT `FK_A36198C670FBD26D` FOREIGN KEY (`animator_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_A36198C685C9D733` FOREIGN KEY (`created_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_A36198C69DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_A36198C6B4D2A5D1` FOREIGN KEY (`current_designation_id`) REFERENCES `designation` (`id`),
+  CONSTRAINT `FK_A36198C6CF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_A36198C6DF6CFDC9` FOREIGN KEY (`updated_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `committees`
+--
+
+LOCK TABLES `committees` WRITE;
+/*!40000 ALTER TABLE `committees` DISABLE KEYS */;
+/*!40000 ALTER TABLE `committees` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `committees_membership_histories`
 --
 
+DROP TABLE IF EXISTS `committees_membership_histories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `committees_membership_histories` (
@@ -2011,14 +2858,24 @@ CREATE TABLE `committees_membership_histories` (
   KEY `committees_membership_histories_adherent_uuid_idx` (`adherent_uuid`),
   KEY `committees_membership_histories_date_idx` (`date`),
   KEY `IDX_4BBAE2C7ED1A100B` (`committee_id`),
-  CONSTRAINT `FK_4BBAE2C7ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`)
+  CONSTRAINT `FK_4BBAE2C7ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `committees_membership_histories`
+--
+
+LOCK TABLES `committees_membership_histories` WRITE;
+/*!40000 ALTER TABLE `committees_membership_histories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `committees_membership_histories` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `committees_memberships`
 --
 
+DROP TABLE IF EXISTS `committees_memberships`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `committees_memberships` (
@@ -2029,6 +2886,7 @@ CREATE TABLE `committees_memberships` (
   `joined_at` datetime NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `enable_vote` tinyint(1) DEFAULT NULL,
+  `trigger` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `adherent_has_joined_committee` (`adherent_id`,`committee_id`),
   UNIQUE KEY `UNIQ_E7A6490ED17F50A6` (`uuid`),
@@ -2037,14 +2895,24 @@ CREATE TABLE `committees_memberships` (
   KEY `IDX_E7A6490E25F06C53` (`adherent_id`),
   KEY `IDX_E7A6490EED1A100B` (`committee_id`),
   CONSTRAINT `FK_E7A6490E25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`),
-  CONSTRAINT `FK_E7A6490EED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`)
+  CONSTRAINT `FK_E7A6490EED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `committees_memberships`
+--
+
+LOCK TABLES `committees_memberships` WRITE;
+/*!40000 ALTER TABLE `committees_memberships` DISABLE KEYS */;
+/*!40000 ALTER TABLE `committees_memberships` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `consular_district`
 --
 
+DROP TABLE IF EXISTS `consular_district`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `consular_district` (
@@ -2060,9 +2928,19 @@ CREATE TABLE `consular_district` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `consular_district`
+--
+
+LOCK TABLES `consular_district` WRITE;
+/*!40000 ALTER TABLE `consular_district` DISABLE KEYS */;
+/*!40000 ALTER TABLE `consular_district` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `consular_managed_area`
 --
 
+DROP TABLE IF EXISTS `consular_managed_area`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `consular_managed_area` (
@@ -2075,35 +2953,81 @@ CREATE TABLE `consular_managed_area` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `consular_managed_area`
+--
+
+LOCK TABLES `consular_managed_area` WRITE;
+/*!40000 ALTER TABLE `consular_managed_area` DISABLE KEYS */;
+/*!40000 ALTER TABLE `consular_managed_area` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `consultation`
+--
+
+DROP TABLE IF EXISTS `consultation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `consultation` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_964685A6D17F50A6` (`uuid`),
+  KEY `IDX_964685A69DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_964685A6CF1918FF` (`updated_by_administrator_id`),
+  CONSTRAINT `FK_964685A69DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_964685A6CF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `consultation`
+--
+
+LOCK TABLES `consultation` WRITE;
+/*!40000 ALTER TABLE `consultation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `consultation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `contact`
 --
 
+DROP TABLE IF EXISTS `contact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `contact` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email_address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(35) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:phone_number)',
+  `first_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:phone_number)',
   `birthdate` date DEFAULT NULL,
-  `interests` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
-  `source` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `interests` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `mail_contact` tinyint(1) NOT NULL DEFAULT '0',
   `phone_contact` tinyint(1) NOT NULL DEFAULT '0',
   `cgu_accepted` tinyint(1) NOT NULL DEFAULT '0',
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `address_address` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_postal_code` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_city_insee` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_city_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_country` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_region` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_city_insee` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_region` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `address_longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
-  `address_geocodable_hash` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_geocodable_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `adherent_id` int unsigned DEFAULT NULL,
   `processed_at` datetime DEFAULT NULL,
   `interests_updated_at` datetime DEFAULT NULL,
@@ -2116,9 +3040,122 @@ CREATE TABLE `contact` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `contact`
+--
+
+LOCK TABLES `contact` WRITE;
+/*!40000 ALTER TABLE `contact` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contact` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `contribution`
+--
+
+DROP TABLE IF EXISTS `contribution`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contribution` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `adherent_id` int unsigned NOT NULL,
+  `start_date` datetime DEFAULT NULL,
+  `end_date` datetime DEFAULT NULL,
+  `gocardless_customer_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gocardless_bank_account_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gocardless_bank_account_enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `gocardless_mandate_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gocardless_mandate_status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gocardless_subscription_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gocardless_subscription_status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_EA351E15D17F50A6` (`uuid`),
+  KEY `IDX_EA351E1525F06C53` (`adherent_id`),
+  CONSTRAINT `FK_EA351E1525F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contribution`
+--
+
+LOCK TABLES `contribution` WRITE;
+/*!40000 ALTER TABLE `contribution` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contribution` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `contribution_payment`
+--
+
+DROP TABLE IF EXISTS `contribution_payment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contribution_payment` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `adherent_id` int unsigned NOT NULL,
+  `ohme_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date` datetime DEFAULT NULL,
+  `method` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `amount` int NOT NULL,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_2C09F4CCD17F50A6` (`uuid`),
+  KEY `IDX_2C09F4CC25F06C53` (`adherent_id`),
+  CONSTRAINT `FK_2C09F4CC25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contribution_payment`
+--
+
+LOCK TABLES `contribution_payment` WRITE;
+/*!40000 ALTER TABLE `contribution_payment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contribution_payment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `contribution_revenue_declaration`
+--
+
+DROP TABLE IF EXISTS `contribution_revenue_declaration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contribution_revenue_declaration` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `adherent_id` int unsigned NOT NULL,
+  `amount` int NOT NULL,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_84181073D17F50A6` (`uuid`),
+  KEY `IDX_8418107325F06C53` (`adherent_id`),
+  CONSTRAINT `FK_8418107325F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contribution_revenue_declaration`
+--
+
+LOCK TABLES `contribution_revenue_declaration` WRITE;
+/*!40000 ALTER TABLE `contribution_revenue_declaration` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contribution_revenue_declaration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `coordinator_managed_areas`
 --
 
+DROP TABLE IF EXISTS `coordinator_managed_areas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `coordinator_managed_areas` (
@@ -2130,9 +3167,19 @@ CREATE TABLE `coordinator_managed_areas` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `coordinator_managed_areas`
+--
+
+LOCK TABLES `coordinator_managed_areas` WRITE;
+/*!40000 ALTER TABLE `coordinator_managed_areas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `coordinator_managed_areas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `custom_search_results`
 --
 
+DROP TABLE IF EXISTS `custom_search_results`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `custom_search_results` (
@@ -2152,9 +3199,19 @@ CREATE TABLE `custom_search_results` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `custom_search_results`
+--
+
+LOCK TABLES `custom_search_results` WRITE;
+/*!40000 ALTER TABLE `custom_search_results` DISABLE KEYS */;
+/*!40000 ALTER TABLE `custom_search_results` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `department`
 --
 
+DROP TABLE IF EXISTS `department`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `department` (
@@ -2171,18 +3228,28 @@ CREATE TABLE `department` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `department`
+--
+
+LOCK TABLES `department` WRITE;
+/*!40000 ALTER TABLE `department` DISABLE KEYS */;
+/*!40000 ALTER TABLE `department` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `department_site`
 --
 
+DROP TABLE IF EXISTS `department_site`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `department_site` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `zone_id` int unsigned DEFAULT NULL,
-  `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `json_content` longtext COLLATE utf8mb4_unicode_ci,
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `json_content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -2194,15 +3261,25 @@ CREATE TABLE `department_site` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `department_site`
+--
+
+LOCK TABLES `department_site` WRITE;
+/*!40000 ALTER TABLE `department_site` DISABLE KEYS */;
+/*!40000 ALTER TABLE `department_site` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `designation`
 --
 
+DROP TABLE IF EXISTS `designation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `designation` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `global_zones` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `global_zones` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `candidacy_start_date` datetime DEFAULT NULL,
   `candidacy_end_date` datetime DEFAULT NULL,
   `vote_start_date` datetime DEFAULT NULL,
@@ -2225,34 +3302,161 @@ CREATE TABLE `designation` (
   `poll_id` int unsigned DEFAULT NULL,
   `created_by_administrator_id` int DEFAULT NULL,
   `updated_by_administrator_id` int DEFAULT NULL,
-  `custom_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `custom_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `wording_welcome_page_id` int unsigned DEFAULT NULL,
   `seats` smallint unsigned DEFAULT NULL,
   `majority_prime` smallint unsigned DEFAULT NULL,
   `majority_prime_round_sup_mode` tinyint(1) DEFAULT NULL,
+  `created_by_adherent_id` int unsigned DEFAULT NULL,
+  `updated_by_adherent_id` int unsigned DEFAULT NULL,
+  `election_entity_identifier` char(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:uuid)',
+  `is_canceled` tinyint(1) NOT NULL DEFAULT '0',
+  `wording_regulation_page_id` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8947610DD17F50A6` (`uuid`),
   KEY `IDX_8947610D3C947C0F` (`poll_id`),
   KEY `IDX_8947610D9DF5350C` (`created_by_administrator_id`),
   KEY `IDX_8947610DCF1918FF` (`updated_by_administrator_id`),
   KEY `IDX_8947610DDD49221F` (`wording_welcome_page_id`),
+  KEY `IDX_8947610D85C9D733` (`created_by_adherent_id`),
+  KEY `IDX_8947610DDF6CFDC9` (`updated_by_adherent_id`),
+  KEY `IDX_8947610DE3A77273` (`wording_regulation_page_id`),
   CONSTRAINT `FK_8947610D3C947C0F` FOREIGN KEY (`poll_id`) REFERENCES `designation_poll` (`id`),
+  CONSTRAINT `FK_8947610D85C9D733` FOREIGN KEY (`created_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_8947610D9DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
   CONSTRAINT `FK_8947610DCF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `FK_8947610DDD49221F` FOREIGN KEY (`wording_welcome_page_id`) REFERENCES `cms_block` (`id`)
+  CONSTRAINT `FK_8947610DDD49221F` FOREIGN KEY (`wording_welcome_page_id`) REFERENCES `cms_block` (`id`),
+  CONSTRAINT `FK_8947610DDF6CFDC9` FOREIGN KEY (`updated_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_8947610DE3A77273` FOREIGN KEY (`wording_regulation_page_id`) REFERENCES `cms_block` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `designation`
+--
+
+LOCK TABLES `designation` WRITE;
+/*!40000 ALTER TABLE `designation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `designation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `designation_candidacy_pool`
+--
+
+DROP TABLE IF EXISTS `designation_candidacy_pool`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `designation_candidacy_pool` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `designation_id` int unsigned DEFAULT NULL,
+  `label` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_4DE072DAD17F50A6` (`uuid`),
+  KEY `IDX_4DE072DAFAC7D83F` (`designation_id`),
+  CONSTRAINT `FK_4DE072DAFAC7D83F` FOREIGN KEY (`designation_id`) REFERENCES `designation` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `designation_candidacy_pool`
+--
+
+LOCK TABLES `designation_candidacy_pool` WRITE;
+/*!40000 ALTER TABLE `designation_candidacy_pool` DISABLE KEYS */;
+/*!40000 ALTER TABLE `designation_candidacy_pool` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `designation_candidacy_pool_candidacies_group`
+--
+
+DROP TABLE IF EXISTS `designation_candidacy_pool_candidacies_group`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `designation_candidacy_pool_candidacies_group` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `candidacy_pool_id` int unsigned NOT NULL,
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_A9E819837B63808A` (`candidacy_pool_id`),
+  KEY `IDX_A9E819839DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_A9E81983CF1918FF` (`updated_by_administrator_id`),
+  CONSTRAINT `FK_A9E819837B63808A` FOREIGN KEY (`candidacy_pool_id`) REFERENCES `designation_candidacy_pool` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_A9E819839DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_A9E81983CF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `designation_candidacy_pool_candidacies_group`
+--
+
+LOCK TABLES `designation_candidacy_pool_candidacies_group` WRITE;
+/*!40000 ALTER TABLE `designation_candidacy_pool_candidacies_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `designation_candidacy_pool_candidacies_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `designation_candidacy_pool_candidacy`
+--
+
+DROP TABLE IF EXISTS `designation_candidacy_pool_candidacy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `designation_candidacy_pool_candidacy` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `candidacy_pool_id` int unsigned NOT NULL,
+  `candidacies_group_id` int unsigned DEFAULT NULL,
+  `adherent_id` int unsigned DEFAULT NULL,
+  `gender` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `biography` longtext COLLATE utf8mb4_unicode_ci,
+  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_substitute` tinyint(1) NOT NULL DEFAULT '0',
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `faith_statement` longtext COLLATE utf8mb4_unicode_ci,
+  `is_public_faith_statement` tinyint(1) NOT NULL DEFAULT '0',
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `image_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `position` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_A4C6328BD17F50A6` (`uuid`),
+  KEY `IDX_A4C6328B7B63808A` (`candidacy_pool_id`),
+  KEY `IDX_A4C6328BFC1537C1` (`candidacies_group_id`),
+  KEY `IDX_A4C6328B25F06C53` (`adherent_id`),
+  CONSTRAINT `FK_A4C6328B25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`),
+  CONSTRAINT `FK_A4C6328B7B63808A` FOREIGN KEY (`candidacy_pool_id`) REFERENCES `designation_candidacy_pool` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_A4C6328BFC1537C1` FOREIGN KEY (`candidacies_group_id`) REFERENCES `designation_candidacy_pool_candidacies_group` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `designation_candidacy_pool_candidacy`
+--
+
+LOCK TABLES `designation_candidacy_pool_candidacy` WRITE;
+/*!40000 ALTER TABLE `designation_candidacy_pool_candidacy` DISABLE KEYS */;
+/*!40000 ALTER TABLE `designation_candidacy_pool_candidacy` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `designation_poll`
 --
 
+DROP TABLE IF EXISTS `designation_poll`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `designation_poll` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `label` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -2261,16 +3465,26 @@ CREATE TABLE `designation_poll` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `designation_poll`
+--
+
+LOCK TABLES `designation_poll` WRITE;
+/*!40000 ALTER TABLE `designation_poll` DISABLE KEYS */;
+/*!40000 ALTER TABLE `designation_poll` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `designation_poll_question`
 --
 
+DROP TABLE IF EXISTS `designation_poll_question`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `designation_poll_question` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `poll_id` int unsigned NOT NULL,
-  `content` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `content` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `position` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_83F55735D17F50A6` (`uuid`),
@@ -2280,16 +3494,26 @@ CREATE TABLE `designation_poll_question` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `designation_poll_question`
+--
+
+LOCK TABLES `designation_poll_question` WRITE;
+/*!40000 ALTER TABLE `designation_poll_question` DISABLE KEYS */;
+/*!40000 ALTER TABLE `designation_poll_question` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `designation_poll_question_choice`
 --
 
+DROP TABLE IF EXISTS `designation_poll_question_choice`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `designation_poll_question_choice` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `question_id` int unsigned NOT NULL,
-  `label` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_AC70C953D17F50A6` (`uuid`),
   KEY `IDX_AC70C9531E27F6BF` (`question_id`),
@@ -2298,9 +3522,19 @@ CREATE TABLE `designation_poll_question_choice` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `designation_poll_question_choice`
+--
+
+LOCK TABLES `designation_poll_question_choice` WRITE;
+/*!40000 ALTER TABLE `designation_poll_question_choice` DISABLE KEYS */;
+/*!40000 ALTER TABLE `designation_poll_question_choice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `designation_referent_tag`
 --
 
+DROP TABLE IF EXISTS `designation_referent_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `designation_referent_tag` (
@@ -2315,9 +3549,19 @@ CREATE TABLE `designation_referent_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `designation_referent_tag`
+--
+
+LOCK TABLES `designation_referent_tag` WRITE;
+/*!40000 ALTER TABLE `designation_referent_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `designation_referent_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `designation_zone`
 --
 
+DROP TABLE IF EXISTS `designation_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `designation_zone` (
@@ -2332,9 +3576,19 @@ CREATE TABLE `designation_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `designation_zone`
+--
+
+LOCK TABLES `designation_zone` WRITE;
+/*!40000 ALTER TABLE `designation_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `designation_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `device_zone`
 --
 
+DROP TABLE IF EXISTS `device_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `device_zone` (
@@ -2349,9 +3603,19 @@ CREATE TABLE `device_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `device_zone`
+--
+
+LOCK TABLES `device_zone` WRITE;
+/*!40000 ALTER TABLE `device_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `device_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `devices`
 --
 
+DROP TABLE IF EXISTS `devices`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `devices` (
@@ -2369,9 +3633,19 @@ CREATE TABLE `devices` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `devices`
+--
+
+LOCK TABLES `devices` WRITE;
+/*!40000 ALTER TABLE `devices` DISABLE KEYS */;
+/*!40000 ALTER TABLE `devices` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `districts`
 --
 
+DROP TABLE IF EXISTS `districts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `districts` (
@@ -2394,9 +3668,55 @@ CREATE TABLE `districts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `districts`
+--
+
+LOCK TABLES `districts` WRITE;
+/*!40000 ALTER TABLE `districts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `districts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `document`
+--
+
+DROP TABLE IF EXISTS `document`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `document` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `comment` longtext COLLATE utf8mb4_unicode_ci,
+  `file_path` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_D8698A762B36786B` (`title`),
+  UNIQUE KEY `UNIQ_D8698A76D17F50A6` (`uuid`),
+  KEY `IDX_D8698A769DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_D8698A76CF1918FF` (`updated_by_administrator_id`),
+  CONSTRAINT `FK_D8698A769DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_D8698A76CF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `document`
+--
+
+LOCK TABLES `document` WRITE;
+/*!40000 ALTER TABLE `document` DISABLE KEYS */;
+/*!40000 ALTER TABLE `document` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `donation_donation_tag`
 --
 
+DROP TABLE IF EXISTS `donation_donation_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `donation_donation_tag` (
@@ -2411,9 +3731,19 @@ CREATE TABLE `donation_donation_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `donation_donation_tag`
+--
+
+LOCK TABLES `donation_donation_tag` WRITE;
+/*!40000 ALTER TABLE `donation_donation_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `donation_donation_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `donation_tags`
 --
 
+DROP TABLE IF EXISTS `donation_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `donation_tags` (
@@ -2426,9 +3756,19 @@ CREATE TABLE `donation_tags` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `donation_tags`
+--
+
+LOCK TABLES `donation_tags` WRITE;
+/*!40000 ALTER TABLE `donation_tags` DISABLE KEYS */;
+/*!40000 ALTER TABLE `donation_tags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `donation_transactions`
 --
 
+DROP TABLE IF EXISTS `donation_transactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `donation_transactions` (
@@ -2436,7 +3776,7 @@ CREATE TABLE `donation_transactions` (
   `donation_id` int unsigned NOT NULL,
   `paybox_result_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `paybox_authorization_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `paybox_payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:json)',
+  `paybox_payload` json DEFAULT NULL,
   `paybox_date_time` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
   `paybox_transaction_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `paybox_subscription_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -2450,9 +3790,19 @@ CREATE TABLE `donation_transactions` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `donation_transactions`
+--
+
+LOCK TABLES `donation_transactions` WRITE;
+/*!40000 ALTER TABLE `donation_transactions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `donation_transactions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `donations`
 --
 
+DROP TABLE IF EXISTS `donations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `donations` (
@@ -2487,21 +3837,36 @@ CREATE TABLE `donations` (
   `code` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_geocodable_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `beneficiary` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `membership` tinyint(1) NOT NULL DEFAULT '0',
+  `zone_id` int unsigned DEFAULT NULL,
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `re_adhesion` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_CDE98962D17F50A6` (`uuid`),
   KEY `donation_duration_idx` (`duration`),
   KEY `donation_status_idx` (`status`),
   KEY `IDX_CDE98962831BACAF` (`donator_id`),
-  CONSTRAINT `FK_CDE98962831BACAF` FOREIGN KEY (`donator_id`) REFERENCES `donators` (`id`) ON DELETE CASCADE
+  KEY `IDX_CDE989629F2C3FAB` (`zone_id`),
+  CONSTRAINT `FK_CDE98962831BACAF` FOREIGN KEY (`donator_id`) REFERENCES `donators` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_CDE989629F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `donations`
+--
+
+LOCK TABLES `donations` WRITE;
+/*!40000 ALTER TABLE `donations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `donations` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `donator_donator_tag`
 --
 
+DROP TABLE IF EXISTS `donator_donator_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `donator_donator_tag` (
@@ -2516,9 +3881,19 @@ CREATE TABLE `donator_donator_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `donator_donator_tag`
+--
+
+LOCK TABLES `donator_donator_tag` WRITE;
+/*!40000 ALTER TABLE `donator_donator_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `donator_donator_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `donator_identifier`
 --
 
+DROP TABLE IF EXISTS `donator_identifier`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `donator_identifier` (
@@ -2529,9 +3904,19 @@ CREATE TABLE `donator_identifier` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `donator_identifier`
+--
+
+LOCK TABLES `donator_identifier` WRITE;
+/*!40000 ALTER TABLE `donator_identifier` DISABLE KEYS */;
+/*!40000 ALTER TABLE `donator_identifier` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `donator_kinship`
 --
 
+DROP TABLE IF EXISTS `donator_kinship`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `donator_kinship` (
@@ -2548,9 +3933,19 @@ CREATE TABLE `donator_kinship` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `donator_kinship`
+--
+
+LOCK TABLES `donator_kinship` WRITE;
+/*!40000 ALTER TABLE `donator_kinship` DISABLE KEYS */;
+/*!40000 ALTER TABLE `donator_kinship` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `donator_tags`
 --
 
+DROP TABLE IF EXISTS `donator_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `donator_tags` (
@@ -2563,9 +3958,19 @@ CREATE TABLE `donator_tags` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `donator_tags`
+--
+
+LOCK TABLES `donator_tags` WRITE;
+/*!40000 ALTER TABLE `donator_tags` DISABLE KEYS */;
+/*!40000 ALTER TABLE `donator_tags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `donators`
 --
 
+DROP TABLE IF EXISTS `donators`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `donators` (
@@ -2581,7 +3986,7 @@ CREATE TABLE `donators` (
   `email_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `comment` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `gender` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -2598,13 +4003,23 @@ CREATE TABLE `donators` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `donators`
+--
+
+LOCK TABLES `donators` WRITE;
+/*!40000 ALTER TABLE `donators` DISABLE KEYS */;
+/*!40000 ALTER TABLE `donators` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `elected_representative`
 --
 
+DROP TABLE IF EXISTS `elected_representative`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `elected_representative` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `adherent_id` int unsigned DEFAULT NULL,
   `last_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `first_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2617,21 +4032,90 @@ CREATE TABLE `elected_representative` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `email_unsubscribed_at` datetime DEFAULT NULL,
   `email_unsubscribed` tinyint(1) NOT NULL DEFAULT '0',
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `created_by_adherent_id` int unsigned DEFAULT NULL,
+  `updated_by_adherent_id` int unsigned DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `last_contribution_id` int unsigned DEFAULT NULL,
+  `contribution_status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `contributed_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_BF51F0FDD17F50A6` (`uuid`),
   UNIQUE KEY `UNIQ_BF51F0FD25F06C53` (`adherent_id`),
-  CONSTRAINT `FK_BF51F0FD25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
+  UNIQUE KEY `UNIQ_BF51F0FD14E51F8D` (`last_contribution_id`),
+  KEY `IDX_BF51F0FD9DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_BF51F0FDCF1918FF` (`updated_by_administrator_id`),
+  KEY `IDX_BF51F0FD85C9D733` (`created_by_adherent_id`),
+  KEY `IDX_BF51F0FDDF6CFDC9` (`updated_by_adherent_id`),
+  CONSTRAINT `FK_BF51F0FD14E51F8D` FOREIGN KEY (`last_contribution_id`) REFERENCES `elected_representative_contribution` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_BF51F0FD25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_BF51F0FD85C9D733` FOREIGN KEY (`created_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_BF51F0FD9DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_BF51F0FDCF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_BF51F0FDDF6CFDC9` FOREIGN KEY (`updated_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `elected_representative`
+--
+
+LOCK TABLES `elected_representative` WRITE;
+/*!40000 ALTER TABLE `elected_representative` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elected_representative` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `elected_representative_contribution`
+--
+
+DROP TABLE IF EXISTS `elected_representative_contribution`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `elected_representative_contribution` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `elected_representative_id` int unsigned NOT NULL,
+  `gocardless_customer_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `gocardless_bank_account_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gocardless_mandate_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gocardless_subscription_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gocardless_bank_account_enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `gocardless_mandate_status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gocardless_subscription_status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `start_date` datetime DEFAULT NULL,
+  `end_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_6F9C7915D17F50A6` (`uuid`),
+  KEY `IDX_6F9C7915D38DA5D3` (`elected_representative_id`),
+  CONSTRAINT `FK_6F9C7915D38DA5D3` FOREIGN KEY (`elected_representative_id`) REFERENCES `elected_representative` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `elected_representative_contribution`
+--
+
+LOCK TABLES `elected_representative_contribution` WRITE;
+/*!40000 ALTER TABLE `elected_representative_contribution` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elected_representative_contribution` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `elected_representative_label`
 --
 
+DROP TABLE IF EXISTS `elected_representative_label`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `elected_representative_label` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `elected_representative_id` int NOT NULL,
+  `elected_representative_id` int unsigned NOT NULL,
   `on_going` tinyint(1) NOT NULL DEFAULT '1',
   `begin_year` int DEFAULT NULL,
   `finish_year` int DEFAULT NULL,
@@ -2643,14 +4127,24 @@ CREATE TABLE `elected_representative_label` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `elected_representative_label`
+--
+
+LOCK TABLES `elected_representative_label` WRITE;
+/*!40000 ALTER TABLE `elected_representative_label` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elected_representative_label` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `elected_representative_mandate`
 --
 
+DROP TABLE IF EXISTS `elected_representative_mandate`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `elected_representative_mandate` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `elected_representative_id` int NOT NULL,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `elected_representative_id` int unsigned NOT NULL,
   `zone_id` int DEFAULT NULL,
   `geo_zone_id` int unsigned DEFAULT NULL,
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2661,26 +4155,75 @@ CREATE TABLE `elected_representative_mandate` (
   `la_remsupport` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `on_going` tinyint(1) NOT NULL DEFAULT '1',
   `number` smallint NOT NULL DEFAULT '1',
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `attached_zone_id` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_38609146D17F50A6` (`uuid`),
   KEY `IDX_38609146283AB2A9` (`geo_zone_id`),
   KEY `IDX_386091469F2C3FAB` (`zone_id`),
   KEY `IDX_38609146D38DA5D3` (`elected_representative_id`),
+  KEY `IDX_38609146DAC800AF` (`attached_zone_id`),
   CONSTRAINT `FK_38609146283AB2A9` FOREIGN KEY (`geo_zone_id`) REFERENCES `geo_zone` (`id`),
   CONSTRAINT `FK_386091469F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `elected_representative_zone` (`id`),
-  CONSTRAINT `FK_38609146D38DA5D3` FOREIGN KEY (`elected_representative_id`) REFERENCES `elected_representative` (`id`) ON DELETE CASCADE
+  CONSTRAINT `FK_38609146D38DA5D3` FOREIGN KEY (`elected_representative_id`) REFERENCES `elected_representative` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_38609146DAC800AF` FOREIGN KEY (`attached_zone_id`) REFERENCES `geo_zone` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `elected_representative_mandate`
+--
+
+LOCK TABLES `elected_representative_mandate` WRITE;
+/*!40000 ALTER TABLE `elected_representative_mandate` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elected_representative_mandate` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `elected_representative_payment`
+--
+
+DROP TABLE IF EXISTS `elected_representative_payment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `elected_representative_payment` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `elected_representative_id` int unsigned NOT NULL,
+  `ohme_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date` datetime DEFAULT NULL,
+  `method` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `amount` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_4C351AA5D17F50A6` (`uuid`),
+  KEY `IDX_4C351AA5D38DA5D3` (`elected_representative_id`),
+  CONSTRAINT `FK_4C351AA5D38DA5D3` FOREIGN KEY (`elected_representative_id`) REFERENCES `elected_representative` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `elected_representative_payment`
+--
+
+LOCK TABLES `elected_representative_payment` WRITE;
+/*!40000 ALTER TABLE `elected_representative_payment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elected_representative_payment` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `elected_representative_political_function`
 --
 
+DROP TABLE IF EXISTS `elected_representative_political_function`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `elected_representative_political_function` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `elected_representative_id` int NOT NULL,
-  `mandate_id` int NOT NULL,
+  `elected_representative_id` int unsigned NOT NULL,
+  `mandate_id` int unsigned NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `clarification` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `on_going` tinyint(1) NOT NULL DEFAULT '1',
@@ -2695,14 +4238,54 @@ CREATE TABLE `elected_representative_political_function` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `elected_representative_political_function`
+--
+
+LOCK TABLES `elected_representative_political_function` WRITE;
+/*!40000 ALTER TABLE `elected_representative_political_function` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elected_representative_political_function` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `elected_representative_revenue_declaration`
+--
+
+DROP TABLE IF EXISTS `elected_representative_revenue_declaration`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `elected_representative_revenue_declaration` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `elected_representative_id` int unsigned NOT NULL,
+  `amount` int NOT NULL,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_6A0C2D59D17F50A6` (`uuid`),
+  KEY `IDX_6A0C2D59D38DA5D3` (`elected_representative_id`),
+  CONSTRAINT `FK_6A0C2D59D38DA5D3` FOREIGN KEY (`elected_representative_id`) REFERENCES `elected_representative` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `elected_representative_revenue_declaration`
+--
+
+LOCK TABLES `elected_representative_revenue_declaration` WRITE;
+/*!40000 ALTER TABLE `elected_representative_revenue_declaration` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elected_representative_revenue_declaration` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `elected_representative_social_network_link`
 --
 
+DROP TABLE IF EXISTS `elected_representative_social_network_link`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `elected_representative_social_network_link` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `elected_representative_id` int NOT NULL,
+  `elected_representative_id` int unsigned NOT NULL,
   `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
@@ -2713,14 +4296,24 @@ CREATE TABLE `elected_representative_social_network_link` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `elected_representative_social_network_link`
+--
+
+LOCK TABLES `elected_representative_social_network_link` WRITE;
+/*!40000 ALTER TABLE `elected_representative_social_network_link` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elected_representative_social_network_link` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `elected_representative_sponsorship`
 --
 
+DROP TABLE IF EXISTS `elected_representative_sponsorship`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `elected_representative_sponsorship` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `elected_representative_id` int NOT NULL,
+  `elected_representative_id` int unsigned NOT NULL,
   `presidential_election_year` int NOT NULL,
   `candidate` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -2730,13 +4323,23 @@ CREATE TABLE `elected_representative_sponsorship` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `elected_representative_sponsorship`
+--
+
+LOCK TABLES `elected_representative_sponsorship` WRITE;
+/*!40000 ALTER TABLE `elected_representative_sponsorship` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elected_representative_sponsorship` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `elected_representative_user_list_definition`
 --
 
+DROP TABLE IF EXISTS `elected_representative_user_list_definition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `elected_representative_user_list_definition` (
-  `elected_representative_id` int NOT NULL,
+  `elected_representative_id` int unsigned NOT NULL,
   `user_list_definition_id` int unsigned NOT NULL,
   PRIMARY KEY (`elected_representative_id`,`user_list_definition_id`),
   KEY `IDX_A9C53A24D38DA5D3` (`elected_representative_id`),
@@ -2747,14 +4350,24 @@ CREATE TABLE `elected_representative_user_list_definition` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `elected_representative_user_list_definition`
+--
+
+LOCK TABLES `elected_representative_user_list_definition` WRITE;
+/*!40000 ALTER TABLE `elected_representative_user_list_definition` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elected_representative_user_list_definition` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `elected_representative_user_list_definition_history`
 --
 
+DROP TABLE IF EXISTS `elected_representative_user_list_definition_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `elected_representative_user_list_definition_history` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `elected_representative_id` int NOT NULL,
+  `elected_representative_id` int unsigned NOT NULL,
   `user_list_definition_id` int unsigned NOT NULL,
   `adherent_id` int unsigned DEFAULT NULL,
   `administrator_id` int DEFAULT NULL,
@@ -2773,9 +4386,19 @@ CREATE TABLE `elected_representative_user_list_definition_history` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `elected_representative_user_list_definition_history`
+--
+
+LOCK TABLES `elected_representative_user_list_definition_history` WRITE;
+/*!40000 ALTER TABLE `elected_representative_user_list_definition_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elected_representative_user_list_definition_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `elected_representative_zone`
 --
 
+DROP TABLE IF EXISTS `elected_representative_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `elected_representative_zone` (
@@ -2792,9 +4415,19 @@ CREATE TABLE `elected_representative_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `elected_representative_zone`
+--
+
+LOCK TABLES `elected_representative_zone` WRITE;
+/*!40000 ALTER TABLE `elected_representative_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elected_representative_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `elected_representative_zone_category`
 --
 
+DROP TABLE IF EXISTS `elected_representative_zone_category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `elected_representative_zone_category` (
@@ -2806,9 +4439,19 @@ CREATE TABLE `elected_representative_zone_category` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `elected_representative_zone_category`
+--
+
+LOCK TABLES `elected_representative_zone_category` WRITE;
+/*!40000 ALTER TABLE `elected_representative_zone_category` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elected_representative_zone_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `elected_representative_zone_parent`
 --
 
+DROP TABLE IF EXISTS `elected_representative_zone_parent`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `elected_representative_zone_parent` (
@@ -2823,9 +4466,19 @@ CREATE TABLE `elected_representative_zone_parent` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `elected_representative_zone_parent`
+--
+
+LOCK TABLES `elected_representative_zone_parent` WRITE;
+/*!40000 ALTER TABLE `elected_representative_zone_parent` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elected_representative_zone_parent` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `elected_representative_zone_referent_tag`
 --
 
+DROP TABLE IF EXISTS `elected_representative_zone_referent_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `elected_representative_zone_referent_tag` (
@@ -2840,9 +4493,19 @@ CREATE TABLE `elected_representative_zone_referent_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `elected_representative_zone_referent_tag`
+--
+
+LOCK TABLES `elected_representative_zone_referent_tag` WRITE;
+/*!40000 ALTER TABLE `elected_representative_zone_referent_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elected_representative_zone_referent_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `election_city_candidate`
 --
 
+DROP TABLE IF EXISTS `election_city_candidate`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `election_city_candidate` (
@@ -2862,9 +4525,19 @@ CREATE TABLE `election_city_candidate` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `election_city_candidate`
+--
+
+LOCK TABLES `election_city_candidate` WRITE;
+/*!40000 ALTER TABLE `election_city_candidate` DISABLE KEYS */;
+/*!40000 ALTER TABLE `election_city_candidate` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `election_city_card`
 --
 
+DROP TABLE IF EXISTS `election_city_card`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `election_city_card` (
@@ -2907,9 +4580,19 @@ CREATE TABLE `election_city_card` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `election_city_card`
+--
+
+LOCK TABLES `election_city_card` WRITE;
+/*!40000 ALTER TABLE `election_city_card` DISABLE KEYS */;
+/*!40000 ALTER TABLE `election_city_card` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `election_city_contact`
 --
 
+DROP TABLE IF EXISTS `election_city_contact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `election_city_contact` (
@@ -2928,9 +4611,19 @@ CREATE TABLE `election_city_contact` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `election_city_contact`
+--
+
+LOCK TABLES `election_city_contact` WRITE;
+/*!40000 ALTER TABLE `election_city_contact` DISABLE KEYS */;
+/*!40000 ALTER TABLE `election_city_contact` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `election_city_manager`
 --
 
+DROP TABLE IF EXISTS `election_city_manager`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `election_city_manager` (
@@ -2942,9 +4635,19 @@ CREATE TABLE `election_city_manager` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `election_city_manager`
+--
+
+LOCK TABLES `election_city_manager` WRITE;
+/*!40000 ALTER TABLE `election_city_manager` DISABLE KEYS */;
+/*!40000 ALTER TABLE `election_city_manager` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `election_city_partner`
 --
 
+DROP TABLE IF EXISTS `election_city_partner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `election_city_partner` (
@@ -2959,9 +4662,19 @@ CREATE TABLE `election_city_partner` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `election_city_partner`
+--
+
+LOCK TABLES `election_city_partner` WRITE;
+/*!40000 ALTER TABLE `election_city_partner` DISABLE KEYS */;
+/*!40000 ALTER TABLE `election_city_partner` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `election_city_prevision`
 --
 
+DROP TABLE IF EXISTS `election_city_prevision`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `election_city_prevision` (
@@ -2976,9 +4689,19 @@ CREATE TABLE `election_city_prevision` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `election_city_prevision`
+--
+
+LOCK TABLES `election_city_prevision` WRITE;
+/*!40000 ALTER TABLE `election_city_prevision` DISABLE KEYS */;
+/*!40000 ALTER TABLE `election_city_prevision` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `election_rounds`
 --
 
+DROP TABLE IF EXISTS `election_rounds`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `election_rounds` (
@@ -2994,33 +4717,43 @@ CREATE TABLE `election_rounds` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `election_rounds`
+--
+
+LOCK TABLES `election_rounds` WRITE;
+/*!40000 ALTER TABLE `election_rounds` DISABLE KEYS */;
+/*!40000 ALTER TABLE `election_rounds` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `election_vote_place`
 --
 
+DROP TABLE IF EXISTS `election_vote_place`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `election_vote_place` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `zone_id` int unsigned DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `alias` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `alias` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `nb_addresses` int unsigned NOT NULL DEFAULT '0',
   `nb_voters` int unsigned NOT NULL DEFAULT '0',
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `address_address` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_postal_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_city_insee` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_city_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_country` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_region` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_postal_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_city_insee` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_region` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `address_longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
-  `address_geocodable_hash` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_geocodable_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_880DE20DD17F50A6` (`uuid`),
   UNIQUE KEY `UNIQ_880DE20D77153098` (`code`),
@@ -3030,9 +4763,19 @@ CREATE TABLE `election_vote_place` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `election_vote_place`
+--
+
+LOCK TABLES `election_vote_place` WRITE;
+/*!40000 ALTER TABLE `election_vote_place` DISABLE KEYS */;
+/*!40000 ALTER TABLE `election_vote_place` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `elections`
 --
 
+DROP TABLE IF EXISTS `elections`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `elections` (
@@ -3047,30 +4790,89 @@ CREATE TABLE `elections` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `elections`
+--
+
+LOCK TABLES `elections` WRITE;
+/*!40000 ALTER TABLE `elections` DISABLE KEYS */;
+/*!40000 ALTER TABLE `elections` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `email_template_zone`
+--
+
+DROP TABLE IF EXISTS `email_template_zone`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `email_template_zone` (
+  `email_template_id` int unsigned NOT NULL,
+  `zone_id` int unsigned NOT NULL,
+  PRIMARY KEY (`email_template_id`,`zone_id`),
+  KEY `IDX_8712F9C2131A730F` (`email_template_id`),
+  KEY `IDX_8712F9C29F2C3FAB` (`zone_id`),
+  CONSTRAINT `FK_8712F9C2131A730F` FOREIGN KEY (`email_template_id`) REFERENCES `email_templates` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_8712F9C29F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `email_template_zone`
+--
+
+LOCK TABLES `email_template_zone` WRITE;
+/*!40000 ALTER TABLE `email_template_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `email_template_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `email_templates`
 --
 
+DROP TABLE IF EXISTS `email_templates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `email_templates` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `author_id` int unsigned DEFAULT NULL,
+  `created_by_adherent_id` int unsigned DEFAULT NULL,
   `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `updated_by_adherent_id` int unsigned DEFAULT NULL,
+  `scopes` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `json_content` longtext COLLATE utf8mb4_unicode_ci,
+  `is_statutory` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_6023E2A5D17F50A6` (`uuid`),
-  KEY `IDX_6023E2A5F675F31B` (`author_id`),
-  CONSTRAINT `FK_6023E2A5F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
+  KEY `IDX_6023E2A59DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_6023E2A5CF1918FF` (`updated_by_administrator_id`),
+  KEY `IDX_6023E2A585C9D733` (`created_by_adherent_id`),
+  KEY `IDX_6023E2A5DF6CFDC9` (`updated_by_adherent_id`),
+  CONSTRAINT `FK_6023E2A585C9D733` FOREIGN KEY (`created_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_6023E2A59DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_6023E2A5CF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_6023E2A5DF6CFDC9` FOREIGN KEY (`updated_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `email_templates`
+--
+
+LOCK TABLES `email_templates` WRITE;
+/*!40000 ALTER TABLE `email_templates` DISABLE KEYS */;
+/*!40000 ALTER TABLE `email_templates` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `emails`
 --
 
+DROP TABLE IF EXISTS `emails`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `emails` (
@@ -3090,9 +4892,19 @@ CREATE TABLE `emails` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `emails`
+--
+
+LOCK TABLES `emails` WRITE;
+/*!40000 ALTER TABLE `emails` DISABLE KEYS */;
+/*!40000 ALTER TABLE `emails` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `epci`
 --
 
+DROP TABLE IF EXISTS `epci`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `epci` (
@@ -3122,9 +4934,19 @@ CREATE TABLE `epci` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `epci`
+--
+
+LOCK TABLES `epci` WRITE;
+/*!40000 ALTER TABLE `epci` DISABLE KEYS */;
+/*!40000 ALTER TABLE `epci` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `event_group_category`
 --
 
+DROP TABLE IF EXISTS `event_group_category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `event_group_category` (
@@ -3139,9 +4961,19 @@ CREATE TABLE `event_group_category` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `event_group_category`
+--
+
+LOCK TABLES `event_group_category` WRITE;
+/*!40000 ALTER TABLE `event_group_category` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event_group_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `event_referent_tag`
 --
 
+DROP TABLE IF EXISTS `event_referent_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `event_referent_tag` (
@@ -3156,9 +4988,19 @@ CREATE TABLE `event_referent_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `event_referent_tag`
+--
+
+LOCK TABLES `event_referent_tag` WRITE;
+/*!40000 ALTER TABLE `event_referent_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event_referent_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `event_user_documents`
 --
 
+DROP TABLE IF EXISTS `event_user_documents`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `event_user_documents` (
@@ -3173,9 +5015,19 @@ CREATE TABLE `event_user_documents` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `event_user_documents`
+--
+
+LOCK TABLES `event_user_documents` WRITE;
+/*!40000 ALTER TABLE `event_user_documents` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event_user_documents` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `event_zone`
 --
 
+DROP TABLE IF EXISTS `event_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `event_zone` (
@@ -3190,17 +5042,25 @@ CREATE TABLE `event_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `event_zone`
+--
+
+LOCK TABLES `event_zone` WRITE;
+/*!40000 ALTER TABLE `event_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `event_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `events`
 --
 
+DROP TABLE IF EXISTS `events`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `events` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `organizer_id` int unsigned DEFAULT NULL,
   `committee_id` int unsigned DEFAULT NULL,
-  `coalition_id` int unsigned DEFAULT NULL,
-  `cause_id` int unsigned DEFAULT NULL,
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `canonical_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(130) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -3213,7 +5073,7 @@ CREATE TABLE `events` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `address_address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address_postal_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_city_insee` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_city_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address_country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -3226,7 +5086,6 @@ CREATE TABLE `events` (
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `time_zone` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `address_region` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `invitations` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `address_geocodable_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `visio_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `interests` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
@@ -3235,29 +5094,37 @@ CREATE TABLE `events` (
   `reminded` tinyint(1) NOT NULL DEFAULT '0',
   `private` tinyint(1) NOT NULL DEFAULT '0',
   `electoral` tinyint(1) NOT NULL DEFAULT '0',
-  `dynamic_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dynamic_link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `renaissance_event` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_5387574A989D9B62` (`slug`),
   UNIQUE KEY `UNIQ_5387574AD17F50A6` (`uuid`),
   KEY `IDX_5387574A12469DE2` (`category_id`),
   KEY `IDX_5387574A3826374D` (`begin_at`),
-  KEY `IDX_5387574A66E2221E` (`cause_id`),
   KEY `IDX_5387574A7B00651C` (`status`),
   KEY `IDX_5387574A876C4DDA` (`organizer_id`),
-  KEY `IDX_5387574AC2A46A23` (`coalition_id`),
   KEY `IDX_5387574AED1A100B` (`committee_id`),
   KEY `IDX_5387574AFE28FD87` (`finish_at`),
-  CONSTRAINT `FK_5387574A66E2221E` FOREIGN KEY (`cause_id`) REFERENCES `cause` (`id`),
+  CONSTRAINT `FK_5387574A12469DE2` FOREIGN KEY (`category_id`) REFERENCES `events_categories` (`id`),
   CONSTRAINT `FK_5387574A876C4DDA` FOREIGN KEY (`organizer_id`) REFERENCES `adherents` (`id`) ON DELETE RESTRICT,
-  CONSTRAINT `FK_5387574AC2A46A23` FOREIGN KEY (`coalition_id`) REFERENCES `coalition` (`id`),
-  CONSTRAINT `FK_5387574AED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`)
+  CONSTRAINT `FK_5387574AED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `events`
+--
+
+LOCK TABLES `events` WRITE;
+/*!40000 ALTER TABLE `events` DISABLE KEYS */;
+/*!40000 ALTER TABLE `events` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `events_categories`
 --
 
+DROP TABLE IF EXISTS `events_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `events_categories` (
@@ -3275,9 +5142,19 @@ CREATE TABLE `events_categories` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `events_categories`
+--
+
+LOCK TABLES `events_categories` WRITE;
+/*!40000 ALTER TABLE `events_categories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `events_categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `events_invitations`
 --
 
+DROP TABLE IF EXISTS `events_invitations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `events_invitations` (
@@ -3298,9 +5175,19 @@ CREATE TABLE `events_invitations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `events_invitations`
+--
+
+LOCK TABLES `events_invitations` WRITE;
+/*!40000 ALTER TABLE `events_invitations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `events_invitations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `events_registrations`
 --
 
+DROP TABLE IF EXISTS `events_registrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `events_registrations` (
@@ -3314,7 +5201,7 @@ CREATE TABLE `events_registrations` (
   `created_at` datetime NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `last_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_EEFA30C0D17F50A6` (`uuid`),
   KEY `event_registration_adherent_uuid_idx` (`adherent_uuid`),
@@ -3325,9 +5212,19 @@ CREATE TABLE `events_registrations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `events_registrations`
+--
+
+LOCK TABLES `events_registrations` WRITE;
+/*!40000 ALTER TABLE `events_registrations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `events_registrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `facebook_profiles`
 --
 
+DROP TABLE IF EXISTS `facebook_profiles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `facebook_profiles` (
@@ -3336,7 +5233,7 @@ CREATE TABLE `facebook_profiles` (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gender` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `age_range` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
+  `age_range` json NOT NULL,
   `created_at` datetime NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `access_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -3349,9 +5246,19 @@ CREATE TABLE `facebook_profiles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `facebook_profiles`
+--
+
+LOCK TABLES `facebook_profiles` WRITE;
+/*!40000 ALTER TABLE `facebook_profiles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `facebook_profiles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `facebook_videos`
 --
 
+DROP TABLE IF EXISTS `facebook_videos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `facebook_videos` (
@@ -3369,9 +5276,19 @@ CREATE TABLE `facebook_videos` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `facebook_videos`
+--
+
+LOCK TABLES `facebook_videos` WRITE;
+/*!40000 ALTER TABLE `facebook_videos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `facebook_videos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `failed_login_attempt`
 --
 
+DROP TABLE IF EXISTS `failed_login_attempt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `failed_login_attempt` (
@@ -3386,9 +5303,19 @@ CREATE TABLE `failed_login_attempt` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `failed_login_attempt`
+--
+
+LOCK TABLES `failed_login_attempt` WRITE;
+/*!40000 ALTER TABLE `failed_login_attempt` DISABLE KEYS */;
+/*!40000 ALTER TABLE `failed_login_attempt` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `filesystem_file`
 --
 
+DROP TABLE IF EXISTS `filesystem_file`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `filesystem_file` (
@@ -3423,9 +5350,19 @@ CREATE TABLE `filesystem_file` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `filesystem_file`
+--
+
+LOCK TABLES `filesystem_file` WRITE;
+/*!40000 ALTER TABLE `filesystem_file` DISABLE KEYS */;
+/*!40000 ALTER TABLE `filesystem_file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `filesystem_file_permission`
 --
 
+DROP TABLE IF EXISTS `filesystem_file_permission`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `filesystem_file_permission` (
@@ -3440,9 +5377,19 @@ CREATE TABLE `filesystem_file_permission` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `filesystem_file_permission`
+--
+
+LOCK TABLES `filesystem_file_permission` WRITE;
+/*!40000 ALTER TABLE `filesystem_file_permission` DISABLE KEYS */;
+/*!40000 ALTER TABLE `filesystem_file_permission` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `formation_axes`
 --
 
+DROP TABLE IF EXISTS `formation_axes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `formation_axes` (
@@ -3454,7 +5401,7 @@ CREATE TABLE `formation_axes` (
   `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `display_media` tinyint(1) NOT NULL,
-  `position` smallint unsigned NOT NULL DEFAULT '0',
+  `position` smallint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_7E652CB6989D9B62` (`slug`),
   KEY `IDX_7E652CB6D96C566B` (`path_id`),
@@ -3465,9 +5412,19 @@ CREATE TABLE `formation_axes` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `formation_axes`
+--
+
+LOCK TABLES `formation_axes` WRITE;
+/*!40000 ALTER TABLE `formation_axes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `formation_axes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `formation_files`
 --
 
+DROP TABLE IF EXISTS `formation_files`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `formation_files` (
@@ -3485,9 +5442,19 @@ CREATE TABLE `formation_files` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `formation_files`
+--
+
+LOCK TABLES `formation_files` WRITE;
+/*!40000 ALTER TABLE `formation_files` DISABLE KEYS */;
+/*!40000 ALTER TABLE `formation_files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `formation_modules`
 --
 
+DROP TABLE IF EXISTS `formation_modules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `formation_modules` (
@@ -3499,7 +5466,7 @@ CREATE TABLE `formation_modules` (
   `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `display_media` tinyint(1) NOT NULL,
-  `position` smallint unsigned NOT NULL DEFAULT '0',
+  `position` smallint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_6B4806AC2B36786B` (`title`),
   UNIQUE KEY `UNIQ_6B4806AC989D9B62` (`slug`),
@@ -3511,9 +5478,19 @@ CREATE TABLE `formation_modules` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `formation_modules`
+--
+
+LOCK TABLES `formation_modules` WRITE;
+/*!40000 ALTER TABLE `formation_modules` DISABLE KEYS */;
+/*!40000 ALTER TABLE `formation_modules` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `formation_paths`
 --
 
+DROP TABLE IF EXISTS `formation_paths`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `formation_paths` (
@@ -3521,16 +5498,72 @@ CREATE TABLE `formation_paths` (
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `position` smallint unsigned NOT NULL DEFAULT '0',
+  `position` smallint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_FD311864989D9B62` (`slug`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `formation_paths`
+--
+
+LOCK TABLES `formation_paths` WRITE;
+/*!40000 ALTER TABLE `formation_paths` DISABLE KEYS */;
+/*!40000 ALTER TABLE `formation_paths` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `general_meeting_report`
+--
+
+DROP TABLE IF EXISTS `general_meeting_report`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `general_meeting_report` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `created_by_administrator_id` int DEFAULT NULL,
+  `updated_by_administrator_id` int DEFAULT NULL,
+  `created_by_adherent_id` int unsigned DEFAULT NULL,
+  `updated_by_adherent_id` int unsigned DEFAULT NULL,
+  `zone_id` int unsigned DEFAULT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `date` datetime NOT NULL,
+  `file_path` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_6BA05833D17F50A6` (`uuid`),
+  KEY `IDX_6BA058339DF5350C` (`created_by_administrator_id`),
+  KEY `IDX_6BA05833CF1918FF` (`updated_by_administrator_id`),
+  KEY `IDX_6BA0583385C9D733` (`created_by_adherent_id`),
+  KEY `IDX_6BA05833DF6CFDC9` (`updated_by_adherent_id`),
+  KEY `IDX_6BA058339F2C3FAB` (`zone_id`),
+  CONSTRAINT `FK_6BA0583385C9D733` FOREIGN KEY (`created_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_6BA058339DF5350C` FOREIGN KEY (`created_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_6BA058339F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `geo_zone` (`id`),
+  CONSTRAINT `FK_6BA05833CF1918FF` FOREIGN KEY (`updated_by_administrator_id`) REFERENCES `administrators` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `FK_6BA05833DF6CFDC9` FOREIGN KEY (`updated_by_adherent_id`) REFERENCES `adherents` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `general_meeting_report`
+--
+
+LOCK TABLES `general_meeting_report` WRITE;
+/*!40000 ALTER TABLE `general_meeting_report` DISABLE KEYS */;
+/*!40000 ALTER TABLE `general_meeting_report` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_borough`
 --
 
+DROP TABLE IF EXISTS `geo_borough`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_borough` (
@@ -3556,9 +5589,19 @@ CREATE TABLE `geo_borough` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_borough`
+--
+
+LOCK TABLES `geo_borough` WRITE;
+/*!40000 ALTER TABLE `geo_borough` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_borough` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_canton`
 --
 
+DROP TABLE IF EXISTS `geo_canton`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_canton` (
@@ -3582,9 +5625,19 @@ CREATE TABLE `geo_canton` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_canton`
+--
+
+LOCK TABLES `geo_canton` WRITE;
+/*!40000 ALTER TABLE `geo_canton` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_canton` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_city`
 --
 
+DROP TABLE IF EXISTS `geo_city`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_city` (
@@ -3616,9 +5669,19 @@ CREATE TABLE `geo_city` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_city`
+--
+
+LOCK TABLES `geo_city` WRITE;
+/*!40000 ALTER TABLE `geo_city` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_city` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_city_canton`
 --
 
+DROP TABLE IF EXISTS `geo_city_canton`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_city_canton` (
@@ -3633,9 +5696,19 @@ CREATE TABLE `geo_city_canton` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_city_canton`
+--
+
+LOCK TABLES `geo_city_canton` WRITE;
+/*!40000 ALTER TABLE `geo_city_canton` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_city_canton` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_city_community`
 --
 
+DROP TABLE IF EXISTS `geo_city_community`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_city_community` (
@@ -3656,9 +5729,19 @@ CREATE TABLE `geo_city_community` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_city_community`
+--
+
+LOCK TABLES `geo_city_community` WRITE;
+/*!40000 ALTER TABLE `geo_city_community` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_city_community` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_city_community_department`
 --
 
+DROP TABLE IF EXISTS `geo_city_community_department`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_city_community_department` (
@@ -3673,9 +5756,19 @@ CREATE TABLE `geo_city_community_department` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_city_community_department`
+--
+
+LOCK TABLES `geo_city_community_department` WRITE;
+/*!40000 ALTER TABLE `geo_city_community_department` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_city_community_department` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_city_district`
 --
 
+DROP TABLE IF EXISTS `geo_city_district`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_city_district` (
@@ -3690,9 +5783,19 @@ CREATE TABLE `geo_city_district` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_city_district`
+--
+
+LOCK TABLES `geo_city_district` WRITE;
+/*!40000 ALTER TABLE `geo_city_district` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_city_district` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_consular_district`
 --
 
+DROP TABLE IF EXISTS `geo_consular_district`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_consular_district` (
@@ -3718,9 +5821,19 @@ CREATE TABLE `geo_consular_district` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_consular_district`
+--
+
+LOCK TABLES `geo_consular_district` WRITE;
+/*!40000 ALTER TABLE `geo_consular_district` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_consular_district` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_country`
 --
 
+DROP TABLE IF EXISTS `geo_country`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_country` (
@@ -3744,9 +5857,19 @@ CREATE TABLE `geo_country` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_country`
+--
+
+LOCK TABLES `geo_country` WRITE;
+/*!40000 ALTER TABLE `geo_country` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_country` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_custom_zone`
 --
 
+DROP TABLE IF EXISTS `geo_custom_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_custom_zone` (
@@ -3767,9 +5890,19 @@ CREATE TABLE `geo_custom_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_custom_zone`
+--
+
+LOCK TABLES `geo_custom_zone` WRITE;
+/*!40000 ALTER TABLE `geo_custom_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_custom_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_data`
 --
 
+DROP TABLE IF EXISTS `geo_data`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_data` (
@@ -3781,9 +5914,19 @@ CREATE TABLE `geo_data` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_data`
+--
+
+LOCK TABLES `geo_data` WRITE;
+/*!40000 ALTER TABLE `geo_data` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_data` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_department`
 --
 
+DROP TABLE IF EXISTS `geo_department`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_department` (
@@ -3807,9 +5950,19 @@ CREATE TABLE `geo_department` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_department`
+--
+
+LOCK TABLES `geo_department` WRITE;
+/*!40000 ALTER TABLE `geo_department` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_department` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_district`
 --
 
+DROP TABLE IF EXISTS `geo_district`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_district` (
@@ -3834,9 +5987,19 @@ CREATE TABLE `geo_district` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_district`
+--
+
+LOCK TABLES `geo_district` WRITE;
+/*!40000 ALTER TABLE `geo_district` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_district` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_foreign_district`
 --
 
+DROP TABLE IF EXISTS `geo_foreign_district`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_foreign_district` (
@@ -3861,9 +6024,19 @@ CREATE TABLE `geo_foreign_district` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_foreign_district`
+--
+
+LOCK TABLES `geo_foreign_district` WRITE;
+/*!40000 ALTER TABLE `geo_foreign_district` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_foreign_district` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_region`
 --
 
+DROP TABLE IF EXISTS `geo_region`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_region` (
@@ -3887,9 +6060,61 @@ CREATE TABLE `geo_region` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_region`
+--
+
+LOCK TABLES `geo_region` WRITE;
+/*!40000 ALTER TABLE `geo_region` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_region` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `geo_vote_place`
+--
+
+DROP TABLE IF EXISTS `geo_vote_place`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `geo_vote_place` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `city_id` int unsigned NOT NULL,
+  `district_id` int unsigned NOT NULL,
+  `canton_id` int unsigned DEFAULT NULL,
+  `geo_data_id` int unsigned DEFAULT NULL,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
+  `longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_5C09B68877153098` (`code`),
+  UNIQUE KEY `UNIQ_5C09B68880E32C3E` (`geo_data_id`),
+  KEY `IDX_5C09B6888BAC62AF` (`city_id`),
+  KEY `IDX_5C09B688B08FA272` (`district_id`),
+  KEY `IDX_5C09B6888D070D0B` (`canton_id`),
+  CONSTRAINT `FK_5C09B68880E32C3E` FOREIGN KEY (`geo_data_id`) REFERENCES `geo_data` (`id`),
+  CONSTRAINT `FK_5C09B6888BAC62AF` FOREIGN KEY (`city_id`) REFERENCES `geo_city` (`id`),
+  CONSTRAINT `FK_5C09B6888D070D0B` FOREIGN KEY (`canton_id`) REFERENCES `geo_canton` (`id`),
+  CONSTRAINT `FK_5C09B688B08FA272` FOREIGN KEY (`district_id`) REFERENCES `geo_district` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `geo_vote_place`
+--
+
+LOCK TABLES `geo_vote_place` WRITE;
+/*!40000 ALTER TABLE `geo_vote_place` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_vote_place` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_zone`
 --
 
+DROP TABLE IF EXISTS `geo_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_zone` (
@@ -3906,21 +6131,30 @@ CREATE TABLE `geo_zone` (
   `postal_code` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
-  `tags` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tags` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `geo_zone_code_type_unique` (`code`,`type`),
   UNIQUE KEY `UNIQ_A4CCEF07D17F50A6` (`uuid`),
   UNIQUE KEY `UNIQ_A4CCEF0780E32C3E` (`geo_data_id`),
   KEY `IDX_A4CCEF078CDE5729` (`type`),
-  KEY `IDX_A4CCEF076FBC9426` (`tags`),
   CONSTRAINT `FK_A4CCEF0780E32C3E` FOREIGN KEY (`geo_data_id`) REFERENCES `geo_data` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_zone`
+--
+
+LOCK TABLES `geo_zone` WRITE;
+/*!40000 ALTER TABLE `geo_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `geo_zone_parent`
 --
 
+DROP TABLE IF EXISTS `geo_zone_parent`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `geo_zone_parent` (
@@ -3935,9 +6169,19 @@ CREATE TABLE `geo_zone_parent` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `geo_zone_parent`
+--
+
+LOCK TABLES `geo_zone_parent` WRITE;
+/*!40000 ALTER TABLE `geo_zone_parent` DISABLE KEYS */;
+/*!40000 ALTER TABLE `geo_zone_parent` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `home_blocks`
 --
 
+DROP TABLE IF EXISTS `home_blocks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `home_blocks` (
@@ -3968,9 +6212,19 @@ CREATE TABLE `home_blocks` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `home_blocks`
+--
+
+LOCK TABLES `home_blocks` WRITE;
+/*!40000 ALTER TABLE `home_blocks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `home_blocks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `image`
 --
 
+DROP TABLE IF EXISTS `image`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `image` (
@@ -3985,9 +6239,19 @@ CREATE TABLE `image` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `image`
+--
+
+LOCK TABLES `image` WRITE;
+/*!40000 ALTER TABLE `image` DISABLE KEYS */;
+/*!40000 ALTER TABLE `image` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `instance_quality`
 --
 
+DROP TABLE IF EXISTS `instance_quality`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `instance_quality` (
@@ -4006,26 +6270,19 @@ CREATE TABLE `instance_quality` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `institutional_events_categories`
+-- Dumping data for table `instance_quality`
 --
 
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `institutional_events_categories` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ENABLED',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_18A3A4175E237E06` (`name`),
-  UNIQUE KEY `UNIQ_18A3A417989D9B62` (`slug`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `instance_quality` WRITE;
+/*!40000 ALTER TABLE `instance_quality` DISABLE KEYS */;
+/*!40000 ALTER TABLE `instance_quality` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `interactive_choices`
 --
 
+DROP TABLE IF EXISTS `interactive_choices`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `interactive_choices` (
@@ -4043,9 +6300,19 @@ CREATE TABLE `interactive_choices` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `interactive_choices`
+--
+
+LOCK TABLES `interactive_choices` WRITE;
+/*!40000 ALTER TABLE `interactive_choices` DISABLE KEYS */;
+/*!40000 ALTER TABLE `interactive_choices` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `interactive_invitation_has_choices`
 --
 
+DROP TABLE IF EXISTS `interactive_invitation_has_choices`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `interactive_invitation_has_choices` (
@@ -4060,9 +6327,19 @@ CREATE TABLE `interactive_invitation_has_choices` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `interactive_invitation_has_choices`
+--
+
+LOCK TABLES `interactive_invitation_has_choices` WRITE;
+/*!40000 ALTER TABLE `interactive_invitation_has_choices` DISABLE KEYS */;
+/*!40000 ALTER TABLE `interactive_invitation_has_choices` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `interactive_invitations`
 --
 
+DROP TABLE IF EXISTS `interactive_invitations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `interactive_invitations` (
@@ -4084,9 +6361,19 @@ CREATE TABLE `interactive_invitations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `interactive_invitations`
+--
+
+LOCK TABLES `interactive_invitations` WRITE;
+/*!40000 ALTER TABLE `interactive_invitations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `interactive_invitations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `internal_api_application`
 --
 
+DROP TABLE IF EXISTS `internal_api_application`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `internal_api_application` (
@@ -4101,15 +6388,25 @@ CREATE TABLE `internal_api_application` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `internal_api_application`
+--
+
+LOCK TABLES `internal_api_application` WRITE;
+/*!40000 ALTER TABLE `internal_api_application` DISABLE KEYS */;
+/*!40000 ALTER TABLE `internal_api_application` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `invalid_email_address`
 --
 
+DROP TABLE IF EXISTS `invalid_email_address`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `invalid_email_address` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `email_hash` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `email_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -4118,9 +6415,19 @@ CREATE TABLE `invalid_email_address` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `invalid_email_address`
+--
+
+LOCK TABLES `invalid_email_address` WRITE;
+/*!40000 ALTER TABLE `invalid_email_address` DISABLE KEYS */;
+/*!40000 ALTER TABLE `invalid_email_address` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `invitations`
 --
 
+DROP TABLE IF EXISTS `invitations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `invitations` (
@@ -4138,9 +6445,19 @@ CREATE TABLE `invitations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `invitations`
+--
+
+LOCK TABLES `invitations` WRITE;
+/*!40000 ALTER TABLE `invitations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `invitations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `je_marche_reports`
 --
 
+DROP TABLE IF EXISTS `je_marche_reports`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `je_marche_reports` (
@@ -4159,9 +6476,19 @@ CREATE TABLE `je_marche_reports` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `je_marche_reports`
+--
+
+LOCK TABLES `je_marche_reports` WRITE;
+/*!40000 ALTER TABLE `je_marche_reports` DISABLE KEYS */;
+/*!40000 ALTER TABLE `je_marche_reports` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jecoute_choice`
 --
 
+DROP TABLE IF EXISTS `jecoute_choice`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_choice` (
@@ -4176,9 +6503,19 @@ CREATE TABLE `jecoute_choice` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jecoute_choice`
+--
+
+LOCK TABLES `jecoute_choice` WRITE;
+/*!40000 ALTER TABLE `jecoute_choice` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jecoute_choice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jecoute_data_answer`
 --
 
+DROP TABLE IF EXISTS `jecoute_data_answer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_data_answer` (
@@ -4195,9 +6532,19 @@ CREATE TABLE `jecoute_data_answer` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jecoute_data_answer`
+--
+
+LOCK TABLES `jecoute_data_answer` WRITE;
+/*!40000 ALTER TABLE `jecoute_data_answer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jecoute_data_answer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jecoute_data_answer_selected_choices`
 --
 
+DROP TABLE IF EXISTS `jecoute_data_answer_selected_choices`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_data_answer_selected_choices` (
@@ -4212,9 +6559,19 @@ CREATE TABLE `jecoute_data_answer_selected_choices` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jecoute_data_answer_selected_choices`
+--
+
+LOCK TABLES `jecoute_data_answer_selected_choices` WRITE;
+/*!40000 ALTER TABLE `jecoute_data_answer_selected_choices` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jecoute_data_answer_selected_choices` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jecoute_data_survey`
 --
 
+DROP TABLE IF EXISTS `jecoute_data_survey`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_data_survey` (
@@ -4223,7 +6580,7 @@ CREATE TABLE `jecoute_data_survey` (
   `survey_id` int unsigned NOT NULL,
   `posted_at` datetime NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `author_postal_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author_postal_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_6579E8E7D17F50A6` (`uuid`),
   KEY `IDX_6579E8E7B3FE509D` (`survey_id`),
@@ -4235,9 +6592,19 @@ CREATE TABLE `jecoute_data_survey` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jecoute_data_survey`
+--
+
+LOCK TABLES `jecoute_data_survey` WRITE;
+/*!40000 ALTER TABLE `jecoute_data_survey` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jecoute_data_survey` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jecoute_managed_areas`
 --
 
+DROP TABLE IF EXISTS `jecoute_managed_areas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_managed_areas` (
@@ -4251,9 +6618,19 @@ CREATE TABLE `jecoute_managed_areas` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jecoute_managed_areas`
+--
+
+LOCK TABLES `jecoute_managed_areas` WRITE;
+/*!40000 ALTER TABLE `jecoute_managed_areas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jecoute_managed_areas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jecoute_news`
 --
 
+DROP TABLE IF EXISTS `jecoute_news`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_news` (
@@ -4271,11 +6648,11 @@ CREATE TABLE `jecoute_news` (
   `notification` tinyint(1) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `space` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `link_label` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `visibility` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `link_label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pinned` tinyint(1) NOT NULL DEFAULT '0',
   `enriched` tinyint(1) NOT NULL DEFAULT '0',
-  `dynamic_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dynamic_link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_3436209D17F50A6` (`uuid`),
   KEY `IDX_34362099F2C3FAB` (`zone_id`),
@@ -4288,9 +6665,19 @@ CREATE TABLE `jecoute_news` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jecoute_news`
+--
+
+LOCK TABLES `jecoute_news` WRITE;
+/*!40000 ALTER TABLE `jecoute_news` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jecoute_news` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jecoute_news_user_documents`
 --
 
+DROP TABLE IF EXISTS `jecoute_news_user_documents`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_news_user_documents` (
@@ -4305,9 +6692,19 @@ CREATE TABLE `jecoute_news_user_documents` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jecoute_news_user_documents`
+--
+
+LOCK TABLES `jecoute_news_user_documents` WRITE;
+/*!40000 ALTER TABLE `jecoute_news_user_documents` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jecoute_news_user_documents` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jecoute_question`
 --
 
+DROP TABLE IF EXISTS `jecoute_question`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_question` (
@@ -4320,9 +6717,19 @@ CREATE TABLE `jecoute_question` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jecoute_question`
+--
+
+LOCK TABLES `jecoute_question` WRITE;
+/*!40000 ALTER TABLE `jecoute_question` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jecoute_question` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jecoute_region`
 --
 
+DROP TABLE IF EXISTS `jecoute_region`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_region` (
@@ -4352,29 +6759,49 @@ CREATE TABLE `jecoute_region` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jecoute_region`
+--
+
+LOCK TABLES `jecoute_region` WRITE;
+/*!40000 ALTER TABLE `jecoute_region` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jecoute_region` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jecoute_resource_link`
 --
 
+DROP TABLE IF EXISTS `jecoute_resource_link`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_resource_link` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `label` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `url` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `position` int NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `image_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_9368D3ADD17F50A6` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jecoute_resource_link`
+--
+
+LOCK TABLES `jecoute_resource_link` WRITE;
+/*!40000 ALTER TABLE `jecoute_resource_link` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jecoute_resource_link` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jecoute_riposte`
 --
 
+DROP TABLE IF EXISTS `jecoute_riposte`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_riposte` (
@@ -4393,8 +6820,8 @@ CREATE TABLE `jecoute_riposte` (
   `nb_detail_views` int unsigned NOT NULL DEFAULT '0',
   `nb_source_views` int unsigned NOT NULL DEFAULT '0',
   `nb_ripostes` int unsigned NOT NULL DEFAULT '0',
-  `open_graph` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
-  `dynamic_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `open_graph` json NOT NULL,
+  `dynamic_link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_17E1064BD17F50A6` (`uuid`),
   KEY `IDX_17E1064BB03A8386` (`created_by_id`),
@@ -4405,9 +6832,19 @@ CREATE TABLE `jecoute_riposte` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jecoute_riposte`
+--
+
+LOCK TABLES `jecoute_riposte` WRITE;
+/*!40000 ALTER TABLE `jecoute_riposte` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jecoute_riposte` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jecoute_suggested_question`
 --
 
+DROP TABLE IF EXISTS `jecoute_suggested_question`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_suggested_question` (
@@ -4419,9 +6856,19 @@ CREATE TABLE `jecoute_suggested_question` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jecoute_suggested_question`
+--
+
+LOCK TABLES `jecoute_suggested_question` WRITE;
+/*!40000 ALTER TABLE `jecoute_suggested_question` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jecoute_suggested_question` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jecoute_survey`
 --
 
+DROP TABLE IF EXISTS `jecoute_survey`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_survey` (
@@ -4440,7 +6887,7 @@ CREATE TABLE `jecoute_survey` (
   `blocked_changes` tinyint(1) DEFAULT '0',
   `updated_by_administrator_id` int DEFAULT NULL,
   `updated_by_adherent_id` int unsigned DEFAULT NULL,
-  `dynamic_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dynamic_link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_EC4948E5D17F50A6` (`uuid`),
   KEY `IDX_EC4948E59F2C3FAB` (`zone_id`),
@@ -4457,9 +6904,19 @@ CREATE TABLE `jecoute_survey` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jecoute_survey`
+--
+
+LOCK TABLES `jecoute_survey` WRITE;
+/*!40000 ALTER TABLE `jecoute_survey` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jecoute_survey` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jecoute_survey_question`
 --
 
+DROP TABLE IF EXISTS `jecoute_survey_question`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jecoute_survey_question` (
@@ -4479,9 +6936,19 @@ CREATE TABLE `jecoute_survey_question` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jecoute_survey_question`
+--
+
+LOCK TABLES `jecoute_survey_question` WRITE;
+/*!40000 ALTER TABLE `jecoute_survey_question` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jecoute_survey_question` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jemarche_data_survey`
 --
 
+DROP TABLE IF EXISTS `jemarche_data_survey`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jemarche_data_survey` (
@@ -4514,23 +6981,33 @@ CREATE TABLE `jemarche_data_survey` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jemarche_data_survey`
+--
+
+LOCK TABLES `jemarche_data_survey` WRITE;
+/*!40000 ALTER TABLE `jemarche_data_survey` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jemarche_data_survey` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jemengage_deep_link`
 --
 
+DROP TABLE IF EXISTS `jemengage_deep_link`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jemengage_deep_link` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `created_by_administrator_id` int DEFAULT NULL,
   `updated_by_administrator_id` int DEFAULT NULL,
-  `label` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `link` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `social_title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `social_description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `social_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `social_description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `dynamic_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dynamic_link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_AB0E5282D17F50A6` (`uuid`),
   KEY `IDX_AB0E52829DF5350C` (`created_by_administrator_id`),
@@ -4541,22 +7018,32 @@ CREATE TABLE `jemengage_deep_link` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jemengage_deep_link`
+--
+
+LOCK TABLES `jemengage_deep_link` WRITE;
+/*!40000 ALTER TABLE `jemengage_deep_link` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jemengage_deep_link` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jemengage_header_blocks`
 --
 
+DROP TABLE IF EXISTS `jemengage_header_blocks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jemengage_header_blocks` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(130) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `prefix` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slogan` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `content` longtext COLLATE utf8mb4_unicode_ci,
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(130) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `prefix` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slogan` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `deadline_date` datetime DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `image_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_682302E75E237E06` (`name`),
   UNIQUE KEY `UNIQ_682302E7989D9B62` (`slug`)
@@ -4564,16 +7051,26 @@ CREATE TABLE `jemengage_header_blocks` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jemengage_header_blocks`
+--
+
+LOCK TABLES `jemengage_header_blocks` WRITE;
+/*!40000 ALTER TABLE `jemengage_header_blocks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jemengage_header_blocks` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jemengage_mobile_app_download`
 --
 
+DROP TABLE IF EXISTS `jemengage_mobile_app_download`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jemengage_mobile_app_download` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
-  `zone_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `zone_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `zone_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `zone_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `unique_user` bigint NOT NULL,
   `cum_sum` int NOT NULL,
   `downloads_per1000` double NOT NULL,
@@ -4582,25 +7079,45 @@ CREATE TABLE `jemengage_mobile_app_download` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jemengage_mobile_app_download`
+--
+
+LOCK TABLES `jemengage_mobile_app_download` WRITE;
+/*!40000 ALTER TABLE `jemengage_mobile_app_download` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jemengage_mobile_app_download` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `jemengage_mobile_app_usage`
 --
 
+DROP TABLE IF EXISTS `jemengage_mobile_app_usage`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jemengage_mobile_app_usage` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
-  `zone_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `zone_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `zone_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `zone_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `unique_user` bigint NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jemengage_mobile_app_usage`
+--
+
+LOCK TABLES `jemengage_mobile_app_usage` WRITE;
+/*!40000 ALTER TABLE `jemengage_mobile_app_usage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jemengage_mobile_app_usage` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `legislative_candidates`
 --
 
+DROP TABLE IF EXISTS `legislative_candidates`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `legislative_candidates` (
@@ -4634,9 +7151,19 @@ CREATE TABLE `legislative_candidates` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `legislative_candidates`
+--
+
+LOCK TABLES `legislative_candidates` WRITE;
+/*!40000 ALTER TABLE `legislative_candidates` DISABLE KEYS */;
+/*!40000 ALTER TABLE `legislative_candidates` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `legislative_district_zones`
 --
 
+DROP TABLE IF EXISTS `legislative_district_zones`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `legislative_district_zones` (
@@ -4652,20 +7179,30 @@ CREATE TABLE `legislative_district_zones` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `legislative_district_zones`
+--
+
+LOCK TABLES `legislative_district_zones` WRITE;
+/*!40000 ALTER TABLE `legislative_district_zones` DISABLE KEYS */;
+/*!40000 ALTER TABLE `legislative_district_zones` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `legislative_newsletter_subscription`
 --
 
+DROP TABLE IF EXISTS `legislative_newsletter_subscription`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `legislative_newsletter_subscription` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email_address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `postal_code` varchar(11) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `postal_code` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `token` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `token` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `confirmed_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_2672FB76D17F50A6` (`uuid`),
@@ -4675,9 +7212,19 @@ CREATE TABLE `legislative_newsletter_subscription` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `legislative_newsletter_subscription`
+--
+
+LOCK TABLES `legislative_newsletter_subscription` WRITE;
+/*!40000 ALTER TABLE `legislative_newsletter_subscription` DISABLE KEYS */;
+/*!40000 ALTER TABLE `legislative_newsletter_subscription` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `legislative_newsletter_subscription_zone`
 --
 
+DROP TABLE IF EXISTS `legislative_newsletter_subscription_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `legislative_newsletter_subscription_zone` (
@@ -4692,9 +7239,19 @@ CREATE TABLE `legislative_newsletter_subscription_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `legislative_newsletter_subscription_zone`
+--
+
+LOCK TABLES `legislative_newsletter_subscription_zone` WRITE;
+/*!40000 ALTER TABLE `legislative_newsletter_subscription_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `legislative_newsletter_subscription_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `list_total_result`
 --
 
+DROP TABLE IF EXISTS `list_total_result`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `list_total_result` (
@@ -4711,9 +7268,19 @@ CREATE TABLE `list_total_result` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `list_total_result`
+--
+
+LOCK TABLES `list_total_result` WRITE;
+/*!40000 ALTER TABLE `list_total_result` DISABLE KEYS */;
+/*!40000 ALTER TABLE `list_total_result` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `live_links`
 --
 
+DROP TABLE IF EXISTS `live_links`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `live_links` (
@@ -4727,15 +7294,25 @@ CREATE TABLE `live_links` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `live_links`
+--
+
+LOCK TABLES `live_links` WRITE;
+/*!40000 ALTER TABLE `live_links` DISABLE KEYS */;
+/*!40000 ALTER TABLE `live_links` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `local_election`
 --
 
+DROP TABLE IF EXISTS `local_election`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `local_election` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `designation_id` int unsigned DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_4F341298D17F50A6` (`uuid`),
   KEY `IDX_4F341298FAC7D83F` (`designation_id`),
@@ -4744,15 +7321,25 @@ CREATE TABLE `local_election` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `local_election`
+--
+
+LOCK TABLES `local_election` WRITE;
+/*!40000 ALTER TABLE `local_election` DISABLE KEYS */;
+/*!40000 ALTER TABLE `local_election` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `local_election_candidacies_group`
 --
 
+DROP TABLE IF EXISTS `local_election_candidacies_group`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `local_election_candidacies_group` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `election_id` int unsigned NOT NULL,
-  `faith_statement_file_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `faith_statement_file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_by_administrator_id` int DEFAULT NULL,
   `updated_by_administrator_id` int DEFAULT NULL,
   `created_at` datetime NOT NULL,
@@ -4768,28 +7355,38 @@ CREATE TABLE `local_election_candidacies_group` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `local_election_candidacies_group`
+--
+
+LOCK TABLES `local_election_candidacies_group` WRITE;
+/*!40000 ALTER TABLE `local_election_candidacies_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `local_election_candidacies_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `local_election_candidacy`
 --
 
+DROP TABLE IF EXISTS `local_election_candidacy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `local_election_candidacy` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `election_id` int unsigned NOT NULL,
   `candidacies_group_id` int unsigned DEFAULT NULL,
   `adherent_id` int unsigned DEFAULT NULL,
-  `gender` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `biography` longtext COLLATE utf8mb4_unicode_ci,
-  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `faith_statement` longtext COLLATE utf8mb4_unicode_ci,
+  `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `biography` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `faith_statement` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `is_public_faith_statement` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `image_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `position` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_77220D7DD17F50A6` (`uuid`),
@@ -4804,25 +7401,65 @@ CREATE TABLE `local_election_candidacy` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `lre_area`
+-- Dumping data for table `local_election_candidacy`
 --
 
+LOCK TABLES `local_election_candidacy` WRITE;
+/*!40000 ALTER TABLE `local_election_candidacy` DISABLE KEYS */;
+/*!40000 ALTER TABLE `local_election_candidacy` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `local_election_substitute_candidacy`
+--
+
+DROP TABLE IF EXISTS `local_election_substitute_candidacy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `lre_area` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `referent_tag_id` int unsigned DEFAULT NULL,
-  `all_tags` tinyint(1) NOT NULL DEFAULT '0',
+CREATE TABLE `local_election_substitute_candidacy` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `adherent_id` int unsigned DEFAULT NULL,
+  `candidacies_group_id` int unsigned DEFAULT NULL,
+  `election_id` int unsigned NOT NULL,
+  `gender` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `biography` longtext COLLATE utf8mb4_unicode_ci,
+  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `position` int NOT NULL,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `faith_statement` longtext COLLATE utf8mb4_unicode_ci,
+  `is_public_faith_statement` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `image_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `IDX_8D3B8F189C262DB3` (`referent_tag_id`),
-  CONSTRAINT `FK_8D3B8F189C262DB3` FOREIGN KEY (`referent_tag_id`) REFERENCES `referent_tags` (`id`)
+  UNIQUE KEY `UNIQ_BD11975AD17F50A6` (`uuid`),
+  KEY `IDX_BD11975A25F06C53` (`adherent_id`),
+  KEY `IDX_BD11975AFC1537C1` (`candidacies_group_id`),
+  KEY `IDX_BD11975AA708DAFF` (`election_id`),
+  KEY `IDX_BD11975AE7927C74` (`email`),
+  CONSTRAINT `FK_BD11975A25F06C53` FOREIGN KEY (`adherent_id`) REFERENCES `adherents` (`id`),
+  CONSTRAINT `FK_BD11975AA708DAFF` FOREIGN KEY (`election_id`) REFERENCES `local_election` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_BD11975AFC1537C1` FOREIGN KEY (`candidacies_group_id`) REFERENCES `local_election_candidacies_group` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `local_election_substitute_candidacy`
+--
+
+LOCK TABLES `local_election_substitute_candidacy` WRITE;
+/*!40000 ALTER TABLE `local_election_substitute_candidacy` DISABLE KEYS */;
+/*!40000 ALTER TABLE `local_election_substitute_candidacy` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `mailchimp_campaign`
 --
 
+DROP TABLE IF EXISTS `mailchimp_campaign`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mailchimp_campaign` (
@@ -4839,7 +7476,7 @@ CREATE TABLE `mailchimp_campaign` (
   `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `mailchimp_list_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mailchimp_list_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `zone_id` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_CFABD3094BD2A4C0` (`report_id`),
@@ -4852,9 +7489,19 @@ CREATE TABLE `mailchimp_campaign` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `mailchimp_campaign`
+--
+
+LOCK TABLES `mailchimp_campaign` WRITE;
+/*!40000 ALTER TABLE `mailchimp_campaign` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mailchimp_campaign` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `mailchimp_campaign_mailchimp_segment`
 --
 
+DROP TABLE IF EXISTS `mailchimp_campaign_mailchimp_segment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mailchimp_campaign_mailchimp_segment` (
@@ -4869,9 +7516,19 @@ CREATE TABLE `mailchimp_campaign_mailchimp_segment` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `mailchimp_campaign_mailchimp_segment`
+--
+
+LOCK TABLES `mailchimp_campaign_mailchimp_segment` WRITE;
+/*!40000 ALTER TABLE `mailchimp_campaign_mailchimp_segment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mailchimp_campaign_mailchimp_segment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `mailchimp_campaign_report`
 --
 
+DROP TABLE IF EXISTS `mailchimp_campaign_report`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mailchimp_campaign_report` (
@@ -4894,9 +7551,19 @@ CREATE TABLE `mailchimp_campaign_report` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `mailchimp_campaign_report`
+--
+
+LOCK TABLES `mailchimp_campaign_report` WRITE;
+/*!40000 ALTER TABLE `mailchimp_campaign_report` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mailchimp_campaign_report` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `mailchimp_segment`
 --
 
+DROP TABLE IF EXISTS `mailchimp_segment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mailchimp_segment` (
@@ -4909,9 +7576,19 @@ CREATE TABLE `mailchimp_segment` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `mailchimp_segment`
+--
+
+LOCK TABLES `mailchimp_segment` WRITE;
+/*!40000 ALTER TABLE `mailchimp_segment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mailchimp_segment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `medias`
 --
 
+DROP TABLE IF EXISTS `medias`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `medias` (
@@ -4931,16 +7608,26 @@ CREATE TABLE `medias` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `medias`
+--
+
+LOCK TABLES `medias` WRITE;
+/*!40000 ALTER TABLE `medias` DISABLE KEYS */;
+/*!40000 ALTER TABLE `medias` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `messenger_messages`
 --
 
+DROP TABLE IF EXISTS `messenger_messages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `messenger_messages` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue_name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `body` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `headers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue_name` varchar(190) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `available_at` datetime NOT NULL,
   `delivered_at` datetime DEFAULT NULL,
@@ -4952,9 +7639,19 @@ CREATE TABLE `messenger_messages` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `messenger_messages`
+--
+
+LOCK TABLES `messenger_messages` WRITE;
+/*!40000 ALTER TABLE `messenger_messages` DISABLE KEYS */;
+/*!40000 ALTER TABLE `messenger_messages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `migrations`
 --
 
+DROP TABLE IF EXISTS `migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `migrations` (
@@ -4965,9 +7662,13 @@ CREATE TABLE `migrations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `migrations`
+--
+
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES ('Migrations\\Version20211126020536','2023-01-05 09:53:48',87),('Migrations\\Version20211126130535','2023-01-05 09:53:48',358),('Migrations\\Version20211126151434','2023-01-05 09:53:49',12),('Migrations\\Version20211126172212','2023-01-05 09:53:49',16),('Migrations\\Version20211130010431','2023-01-05 09:53:49',88),('Migrations\\Version20211130023420','2023-01-05 09:53:49',18),('Migrations\\Version20211130163308','2023-01-05 09:53:49',171),('Migrations\\Version20211202125517','2023-01-05 09:53:49',28),('Migrations\\Version20211202151633','2023-01-05 09:53:49',169),('Migrations\\Version20211202191607','2023-01-05 09:53:49',16),('Migrations\\Version20211203111253','2023-01-05 09:53:49',59),('Migrations\\Version20211203112333','2023-01-05 09:53:49',11),('Migrations\\Version20211206110133','2023-01-05 09:53:49',52),('Migrations\\Version20211206115819','2023-01-05 09:53:49',11),('Migrations\\Version20211207152117','2023-01-05 09:53:49',149),('Migrations\\Version20211208111523','2023-01-05 09:53:49',89),('Migrations\\Version20211209114932','2023-01-05 09:53:50',158),('Migrations\\Version20211209142923','2023-01-05 09:53:50',59),('Migrations\\Version20211220162832','2023-01-05 09:53:50',41),('Migrations\\Version20220103181110','2023-01-05 09:53:50',371),('Migrations\\Version20220104015613','2023-01-05 09:53:50',120),('Migrations\\Version20220106143719','2023-01-05 09:53:50',30),('Migrations\\Version20220110122036','2023-01-05 09:53:50',147),('Migrations\\Version20220110135715','2023-01-05 09:53:50',52),('Migrations\\Version20220110165351','2023-01-05 09:53:51',19),('Migrations\\Version20220110185032','2023-01-05 09:53:51',141),('Migrations\\Version20220112153457','2023-01-05 09:53:51',15),('Migrations\\Version20220113001351','2023-01-05 09:53:51',9),('Migrations\\Version20220113175738','2023-01-05 09:53:51',2454),('Migrations\\Version20220114104853','2023-01-05 09:53:53',113),('Migrations\\Version20220114151651','2023-01-05 09:53:53',19),('Migrations\\Version20220117173646','2023-01-05 09:53:53',13),('Migrations\\Version20220119094725','2023-01-05 09:53:53',54),('Migrations\\Version20220119160854','2023-01-05 09:53:53',106),('Migrations\\Version20220120173302','2023-01-05 09:53:53',150),('Migrations\\Version20220124162602','2023-01-05 09:53:54',82),('Migrations\\Version20220126182307','2023-01-05 09:53:54',55),('Migrations\\Version20220204141925','2023-01-05 09:53:54',11),('Migrations\\Version20220204164624','2023-01-05 09:53:54',209),('Migrations\\Version20220207135908','2023-01-05 09:53:54',56),('Migrations\\Version20220211115509','2023-01-05 09:53:54',216),('Migrations\\Version20220217113503','2023-01-05 09:53:54',9),('Migrations\\Version20220217124001','2023-01-05 09:53:54',16),('Migrations\\Version20220218125939','2023-01-05 09:53:54',107),('Migrations\\Version20220221172957','2023-01-05 09:53:54',48),('Migrations\\Version20220222082557','2023-01-05 09:53:54',170),('Migrations\\Version20220223181739','2023-01-05 09:53:55',41),('Migrations\\Version20220228120338','2023-01-05 09:53:55',12),('Migrations\\Version20220301133517','2023-01-05 09:53:55',47),('Migrations\\Version20220301190248','2023-01-05 09:53:55',14),('Migrations\\Version20220304164524','2023-01-05 09:53:55',69),('Migrations\\Version20220307111506','2023-01-05 09:53:55',58),('Migrations\\Version20220308175358','2023-01-05 09:53:55',12),('Migrations\\Version20220309113232','2023-01-05 09:53:55',11),('Migrations\\Version20220309113539','2023-01-05 09:53:55',33),('Migrations\\Version20220310121312','2023-01-05 09:53:55',13),('Migrations\\Version20220311152121','2023-01-05 09:53:55',13),('Migrations\\Version20220314141817','2023-01-05 09:53:55',45),('Migrations\\Version20220314155701','2023-01-05 09:53:55',11),('Migrations\\Version20220315005750','2023-01-05 09:53:55',106),('Migrations\\Version20220315170237','2023-01-05 09:53:55',89),('Migrations\\Version20220318201041','2023-01-05 09:53:55',39),('Migrations\\Version20220323165400','2023-01-05 09:53:55',6),('Migrations\\Version20220324112855','2023-01-05 09:53:55',84),('Migrations\\Version20220325172441','2023-01-05 09:53:55',398),('Migrations\\Version20220401171433','2023-01-05 09:53:56',12),('Migrations\\Version20220406110135','2023-01-05 09:53:56',45),('Migrations\\Version20220407142612','2023-01-05 09:53:56',69),('Migrations\\Version20220408144824','2023-01-05 09:53:56',43),('Migrations\\Version20220412120724','2023-01-05 09:53:56',54),('Migrations\\Version20220412172359','2023-01-05 09:53:56',601),('Migrations\\Version20220413192745','2023-01-05 09:53:57',22),('Migrations\\Version20220414170047','2023-01-05 09:53:57',14),('Migrations\\Version20220414211940','2023-01-05 09:53:57',28),('Migrations\\Version20220419193718','2023-01-05 09:53:57',116),('Migrations\\Version20220421132926','2023-01-05 09:53:57',45),('Migrations\\Version20220426163649','2023-01-05 09:53:57',31),('Migrations\\Version20220428150916','2023-01-05 09:53:57',13),('Migrations\\Version20220429114235','2023-01-05 09:53:57',115),('Migrations\\Version20220504182132','2023-01-05 09:53:57',37),('Migrations\\Version20220510102006','2023-01-05 09:53:57',14),('Migrations\\Version20220517152903','2023-01-05 09:53:57',13),('Migrations\\Version20220519181035','2023-01-05 09:53:57',25),('Migrations\\Version20220524105827','2023-01-05 09:53:57',55),('Migrations\\Version20220601181917','2023-01-05 09:53:57',405),('Migrations\\Version20220608011640','2023-01-05 09:53:58',57),('Migrations\\Version20220613112116','2023-01-05 09:53:58',33),('Migrations\\Version20220614100027','2023-01-05 09:53:58',72),('Migrations\\Version20220616095027','2023-01-05 09:53:58',9),('Migrations\\Version20220616140609','2023-01-05 09:53:58',67),('Migrations\\Version20220616154158','2023-01-05 09:53:58',14),('Migrations\\Version20220616165915','2023-01-05 09:53:58',11),('Migrations\\Version20220617190412','2023-01-05 09:53:58',12),('Migrations\\Version20220622122711','2023-01-05 09:53:58',167),('Migrations\\Version20220705022722','2023-01-05 09:53:58',22),('Migrations\\Version20220706000352','2023-01-05 09:53:58',138),('Migrations\\Version20220721160526','2023-01-05 09:53:58',14),('Migrations\\Version20220816180602','2023-01-05 09:53:58',21),('Migrations\\Version20220913155038','2023-01-05 09:53:58',739),('Migrations\\Version20220914170047','2023-01-05 09:53:59',18),('Migrations\\Version20220917042906','2023-01-05 09:53:59',174),('Migrations\\Version20220917135347','2023-01-05 09:53:59',283),('Migrations\\Version20220917153647','2023-01-05 09:53:59',205),('Migrations\\Version20220921132543','2023-01-05 09:54:00',180),('Migrations\\Version20220921152207','2023-01-05 09:54:00',16),('Migrations\\Version20220922172929','2023-01-05 09:54:00',8),('Migrations\\Version20220923100710','2023-01-05 09:54:00',7),('Migrations\\Version20220923154015','2023-01-05 09:54:00',19),('Migrations\\Version20220929173136','2023-01-05 09:54:00',28),('Migrations\\Version20220930151511','2023-01-05 09:54:00',24),('Migrations\\Version20221003152108','2023-01-05 09:54:00',82),('Migrations\\Version20221004115251','2023-01-05 09:54:00',23),('Migrations\\Version20221004155004','2023-01-05 09:54:00',19),('Migrations\\Version20221005132710','2023-01-05 09:54:00',10),('Migrations\\Version20221006135107','2023-01-05 09:54:00',27),('Migrations\\Version20221006182442','2023-01-05 09:54:00',9),('Migrations\\Version20221007154603','2023-01-05 09:54:00',8),('Migrations\\Version20221010123838','2023-01-05 09:54:00',8),('Migrations\\Version20221017232936','2023-01-05 09:54:00',8),('Migrations\\Version20221020113016','2023-01-05 09:54:00',168),('Migrations\\Version20221021140835','2023-01-05 09:54:00',14),('Migrations\\Version20221026085426','2023-01-05 09:54:00',113),('Migrations\\Version20221026160544','2023-01-05 09:54:00',215),('Migrations\\Version20221031150105','2023-01-05 09:54:01',21),('Migrations\\Version20221101210133','2023-01-05 09:54:01',29),('Migrations\\Version20221106232616','2023-01-05 09:54:01',194),('Migrations\\Version20221109170709','2023-01-05 09:54:01',34),('Migrations\\Version20221110000854','2023-01-05 09:54:01',11),('Migrations\\Version20221115082558','2023-01-05 09:54:01',35),('Migrations\\Version20221122094902','2023-01-05 09:54:01',348),('Migrations\\Version20221202153430','2023-01-05 09:54:01',50),('Migrations\\Version20221202161505','2023-01-05 09:54:01',12),('Migrations\\Version20221207092223','2023-01-05 09:54:01',57),('Migrations\\Version20221209122913','2023-01-05 09:54:02',361),('Migrations\\Version20221209162545','2023-01-05 09:54:02',136),('Migrations\\Version20221213112859','2023-01-05 09:54:02',114),('Migrations\\Version20221214111850','2023-01-05 09:54:02',15),('Migrations\\Version20221215150113','2023-01-05 09:54:02',25),('Migrations\\Version20221216123241','2023-01-05 09:54:02',9),('Migrations\\Version20221222094329','2023-01-05 09:54:02',53);
+INSERT INTO `migrations` VALUES ('Migrations\\Version20211126020536','2023-01-05 09:53:48',87),('Migrations\\Version20211126130535','2023-01-05 09:53:48',358),('Migrations\\Version20211126151434','2023-01-05 09:53:49',12),('Migrations\\Version20211126172212','2023-01-05 09:53:49',16),('Migrations\\Version20211130010431','2023-01-05 09:53:49',88),('Migrations\\Version20211130023420','2023-01-05 09:53:49',18),('Migrations\\Version20211130163308','2023-01-05 09:53:49',171),('Migrations\\Version20211202125517','2023-01-05 09:53:49',28),('Migrations\\Version20211202151633','2023-01-05 09:53:49',169),('Migrations\\Version20211202191607','2023-01-05 09:53:49',16),('Migrations\\Version20211203111253','2023-01-05 09:53:49',59),('Migrations\\Version20211203112333','2023-01-05 09:53:49',11),('Migrations\\Version20211206110133','2023-01-05 09:53:49',52),('Migrations\\Version20211206115819','2023-01-05 09:53:49',11),('Migrations\\Version20211207152117','2023-01-05 09:53:49',149),('Migrations\\Version20211208111523','2023-01-05 09:53:49',89),('Migrations\\Version20211209114932','2023-01-05 09:53:50',158),('Migrations\\Version20211209142923','2023-01-05 09:53:50',59),('Migrations\\Version20211220162832','2023-01-05 09:53:50',41),('Migrations\\Version20220103181110','2023-01-05 09:53:50',371),('Migrations\\Version20220104015613','2023-01-05 09:53:50',120),('Migrations\\Version20220106143719','2023-01-05 09:53:50',30),('Migrations\\Version20220110122036','2023-01-05 09:53:50',147),('Migrations\\Version20220110135715','2023-01-05 09:53:50',52),('Migrations\\Version20220110165351','2023-01-05 09:53:51',19),('Migrations\\Version20220110185032','2023-01-05 09:53:51',141),('Migrations\\Version20220112153457','2023-01-05 09:53:51',15),('Migrations\\Version20220113001351','2023-01-05 09:53:51',9),('Migrations\\Version20220113175738','2023-01-05 09:53:51',2454),('Migrations\\Version20220114104853','2023-01-05 09:53:53',113),('Migrations\\Version20220114151651','2023-01-05 09:53:53',19),('Migrations\\Version20220117173646','2023-01-05 09:53:53',13),('Migrations\\Version20220119094725','2023-01-05 09:53:53',54),('Migrations\\Version20220119160854','2023-01-05 09:53:53',106),('Migrations\\Version20220120173302','2023-01-05 09:53:53',150),('Migrations\\Version20220124162602','2023-01-05 09:53:54',82),('Migrations\\Version20220126182307','2023-01-05 09:53:54',55),('Migrations\\Version20220204141925','2023-01-05 09:53:54',11),('Migrations\\Version20220204164624','2023-01-05 09:53:54',209),('Migrations\\Version20220207135908','2023-01-05 09:53:54',56),('Migrations\\Version20220211115509','2023-01-05 09:53:54',216),('Migrations\\Version20220217113503','2023-01-05 09:53:54',9),('Migrations\\Version20220217124001','2023-01-05 09:53:54',16),('Migrations\\Version20220218125939','2023-01-05 09:53:54',107),('Migrations\\Version20220221172957','2023-01-05 09:53:54',48),('Migrations\\Version20220222082557','2023-01-05 09:53:54',170),('Migrations\\Version20220223181739','2023-01-05 09:53:55',41),('Migrations\\Version20220228120338','2023-01-05 09:53:55',12),('Migrations\\Version20220301133517','2023-01-05 09:53:55',47),('Migrations\\Version20220301190248','2023-01-05 09:53:55',14),('Migrations\\Version20220304164524','2023-01-05 09:53:55',69),('Migrations\\Version20220307111506','2023-01-05 09:53:55',58),('Migrations\\Version20220308175358','2023-01-05 09:53:55',12),('Migrations\\Version20220309113232','2023-01-05 09:53:55',11),('Migrations\\Version20220309113539','2023-01-05 09:53:55',33),('Migrations\\Version20220310121312','2023-01-05 09:53:55',13),('Migrations\\Version20220311152121','2023-01-05 09:53:55',13),('Migrations\\Version20220314141817','2023-01-05 09:53:55',45),('Migrations\\Version20220314155701','2023-01-05 09:53:55',11),('Migrations\\Version20220315005750','2023-01-05 09:53:55',106),('Migrations\\Version20220315170237','2023-01-05 09:53:55',89),('Migrations\\Version20220318201041','2023-01-05 09:53:55',39),('Migrations\\Version20220323165400','2023-01-05 09:53:55',6),('Migrations\\Version20220324112855','2023-01-05 09:53:55',84),('Migrations\\Version20220325172441','2023-01-05 09:53:55',398),('Migrations\\Version20220401171433','2023-01-05 09:53:56',12),('Migrations\\Version20220406110135','2023-01-05 09:53:56',45),('Migrations\\Version20220407142612','2023-01-05 09:53:56',69),('Migrations\\Version20220408144824','2023-01-05 09:53:56',43),('Migrations\\Version20220412120724','2023-01-05 09:53:56',54),('Migrations\\Version20220412172359','2023-01-05 09:53:56',601),('Migrations\\Version20220413192745','2023-01-05 09:53:57',22),('Migrations\\Version20220414170047','2023-01-05 09:53:57',14),('Migrations\\Version20220414211940','2023-01-05 09:53:57',28),('Migrations\\Version20220419193718','2023-01-05 09:53:57',116),('Migrations\\Version20220421132926','2023-01-05 09:53:57',45),('Migrations\\Version20220426163649','2023-01-05 09:53:57',31),('Migrations\\Version20220428150916','2023-01-05 09:53:57',13),('Migrations\\Version20220429114235','2023-01-05 09:53:57',115),('Migrations\\Version20220504182132','2023-01-05 09:53:57',37),('Migrations\\Version20220510102006','2023-01-05 09:53:57',14),('Migrations\\Version20220517152903','2023-01-05 09:53:57',13),('Migrations\\Version20220519181035','2023-01-05 09:53:57',25),('Migrations\\Version20220524105827','2023-01-05 09:53:57',55),('Migrations\\Version20220601181917','2023-01-05 09:53:57',405),('Migrations\\Version20220608011640','2023-01-05 09:53:58',57),('Migrations\\Version20220613112116','2023-01-05 09:53:58',33),('Migrations\\Version20220614100027','2023-01-05 09:53:58',72),('Migrations\\Version20220616095027','2023-01-05 09:53:58',9),('Migrations\\Version20220616140609','2023-01-05 09:53:58',67),('Migrations\\Version20220616154158','2023-01-05 09:53:58',14),('Migrations\\Version20220616165915','2023-01-05 09:53:58',11),('Migrations\\Version20220617190412','2023-01-05 09:53:58',12),('Migrations\\Version20220622122711','2023-01-05 09:53:58',167),('Migrations\\Version20220705022722','2023-01-05 09:53:58',22),('Migrations\\Version20220706000352','2023-01-05 09:53:58',138),('Migrations\\Version20220721160526','2023-01-05 09:53:58',14),('Migrations\\Version20220816180602','2023-01-05 09:53:58',21),('Migrations\\Version20220913155038','2023-01-05 09:53:58',739),('Migrations\\Version20220914170047','2023-01-05 09:53:59',18),('Migrations\\Version20220917042906','2023-01-05 09:53:59',174),('Migrations\\Version20220917135347','2023-01-05 09:53:59',283),('Migrations\\Version20220917153647','2023-01-05 09:53:59',205),('Migrations\\Version20220921132543','2023-01-05 09:54:00',180),('Migrations\\Version20220921152207','2023-01-05 09:54:00',16),('Migrations\\Version20220922172929','2023-01-05 09:54:00',8),('Migrations\\Version20220923100710','2023-01-05 09:54:00',7),('Migrations\\Version20220923154015','2023-01-05 09:54:00',19),('Migrations\\Version20220929173136','2023-01-05 09:54:00',28),('Migrations\\Version20220930151511','2023-01-05 09:54:00',24),('Migrations\\Version20221003152108','2023-01-05 09:54:00',82),('Migrations\\Version20221004115251','2023-01-05 09:54:00',23),('Migrations\\Version20221004155004','2023-01-05 09:54:00',19),('Migrations\\Version20221005132710','2023-01-05 09:54:00',10),('Migrations\\Version20221006135107','2023-01-05 09:54:00',27),('Migrations\\Version20221006182442','2023-01-05 09:54:00',9),('Migrations\\Version20221007154603','2023-01-05 09:54:00',8),('Migrations\\Version20221010123838','2023-01-05 09:54:00',8),('Migrations\\Version20221017232936','2023-01-05 09:54:00',8),('Migrations\\Version20221020113016','2023-01-05 09:54:00',168),('Migrations\\Version20221021140835','2023-01-05 09:54:00',14),('Migrations\\Version20221026085426','2023-01-05 09:54:00',113),('Migrations\\Version20221026160544','2023-01-05 09:54:00',215),('Migrations\\Version20221031150105','2023-01-05 09:54:01',21),('Migrations\\Version20221101210133','2023-01-05 09:54:01',29),('Migrations\\Version20221106232616','2023-01-05 09:54:01',194),('Migrations\\Version20221109170709','2023-01-05 09:54:01',34),('Migrations\\Version20221110000854','2023-01-05 09:54:01',11),('Migrations\\Version20221115082558','2023-01-05 09:54:01',35),('Migrations\\Version20221122094902','2023-01-05 09:54:01',348),('Migrations\\Version20221202153430','2023-01-05 09:54:01',50),('Migrations\\Version20221202161505','2023-01-05 09:54:01',12),('Migrations\\Version20221207092223','2023-01-05 09:54:01',57),('Migrations\\Version20221209122913','2023-01-05 09:54:02',361),('Migrations\\Version20221209162545','2023-01-05 09:54:02',136),('Migrations\\Version20221213112859','2023-01-05 09:54:02',114),('Migrations\\Version20221214111850','2023-01-05 09:54:02',15),('Migrations\\Version20221215150113','2023-01-05 09:54:02',25),('Migrations\\Version20221216123241','2023-01-05 09:54:02',9),('Migrations\\Version20221222094329','2023-01-05 09:54:02',53),('Migrations\\Version20230103112607','2024-09-25 10:41:30',423),('Migrations\\Version20230112170300','2024-09-25 10:41:30',33),('Migrations\\Version20230113162740','2024-09-25 10:41:30',212),('Migrations\\Version20230113181056','2024-09-25 10:41:31',206),('Migrations\\Version20230117112145','2024-09-25 10:41:31',216),('Migrations\\Version20230117175420','2024-09-25 10:41:31',59),('Migrations\\Version20230123015605','2024-09-25 10:41:31',10),('Migrations\\Version20230124144750','2024-09-25 10:41:31',267),('Migrations\\Version20230124152540','2024-09-25 10:41:31',4),('Migrations\\Version20230201185840','2024-09-25 10:41:31',49),('Migrations\\Version20230207011026','2024-09-25 10:41:31',186),('Migrations\\Version20230207174546','2024-09-25 10:41:32',127),('Migrations\\Version20230208105829','2024-09-25 10:41:32',94),('Migrations\\Version20230209153258','2024-09-25 10:41:32',57),('Migrations\\Version20230214143118','2024-09-25 10:41:32',38),('Migrations\\Version20230215084303','2024-09-25 10:41:32',117),('Migrations\\Version20230217112001','2024-09-25 10:41:32',75),('Migrations\\Version20230217142406','2024-09-25 10:41:32',35),('Migrations\\Version20230217143246','2024-09-25 10:41:32',95),('Migrations\\Version20230224152955','2024-09-25 10:41:32',68),('Migrations\\Version20230228165519','2024-09-25 10:41:32',25),('Migrations\\Version20230301155217','2024-09-25 10:41:32',160),('Migrations\\Version20230306120354','2024-09-25 10:41:33',31),('Migrations\\Version20230307142934','2024-09-25 10:41:33',75),('Migrations\\Version20230308172514','2024-09-25 10:41:33',8),('Migrations\\Version20230309121041','2024-09-25 10:41:33',17),('Migrations\\Version20230316170530','2024-09-25 10:41:33',46),('Migrations\\Version20230322144816','2024-09-25 10:41:33',16),('Migrations\\Version20230322174658','2024-09-25 10:41:33',8),('Migrations\\Version20230323111246','2024-09-25 10:41:33',8),('Migrations\\Version20230324113203','2024-09-25 10:41:33',4),('Migrations\\Version20230327141628','2024-09-25 10:41:33',9),('Migrations\\Version20230329012543','2024-09-25 10:41:33',38),('Migrations\\Version20230330153931','2024-09-25 10:41:33',73),('Migrations\\Version20230330173213','2024-09-25 10:41:33',13),('Migrations\\Version20230331125853','2024-09-25 10:41:33',150),('Migrations\\Version20230405125351','2024-09-25 10:41:33',9),('Migrations\\Version20230418095845','2024-09-25 10:41:33',13),('Migrations\\Version20230419141029','2024-09-25 10:41:33',33),('Migrations\\Version20230419170927','2024-09-25 10:41:33',3),('Migrations\\Version20230426174026','2024-09-25 10:41:33',154),('Migrations\\Version20230427153956','2024-09-25 10:41:33',81),('Migrations\\Version20230427165714','2024-09-25 10:41:33',9),('Migrations\\Version20230502141531','2024-09-25 10:41:33',32),('Migrations\\Version20230504151826','2024-09-25 10:41:33',122),('Migrations\\Version20230504163117','2024-09-25 10:41:33',36),('Migrations\\Version20230510153522','2024-09-25 10:41:34',8),('Migrations\\Version20230511181544','2024-09-25 10:41:34',18),('Migrations\\Version20230515153520','2024-09-25 10:41:34',75),('Migrations\\Version20230523012308','2024-09-25 10:41:34',6),('Migrations\\Version20230523023528','2024-09-25 10:41:34',46),('Migrations\\Version20230525133109','2024-09-25 10:41:34',14),('Migrations\\Version20230525135030','2024-09-25 10:41:34',5),('Migrations\\Version20230602161100','2024-09-25 10:41:34',19),('Migrations\\Version20230606133239','2024-09-25 10:41:34',4),('Migrations\\Version20230607155251','2024-09-25 10:41:34',10),('Migrations\\Version20230614123149','2024-09-25 10:41:34',79),('Migrations\\Version20230616145405','2024-09-25 10:41:34',54),('Migrations\\Version20230620145022','2024-09-25 10:41:34',3),('Migrations\\Version20230621084524','2024-09-25 10:41:34',17),('Migrations\\Version20230623073145','2024-09-25 10:41:34',5),('Migrations\\Version20230623101144','2024-09-25 10:41:34',26),('Migrations\\Version20230623103320','2024-09-25 10:41:34',17),('Migrations\\Version20230623153454','2024-09-25 10:41:34',28),('Migrations\\Version20230623173752','2024-09-25 10:41:34',14),('Migrations\\Version20230627233532','2024-09-25 10:41:34',5),('Migrations\\Version20230628150524','2024-09-25 10:41:34',10),('Migrations\\Version20230705072301','2024-09-25 10:41:34',34),('Migrations\\Version20230713081354','2024-09-25 10:41:34',463),('Migrations\\Version20230713171821','2024-09-25 10:41:35',260),('Migrations\\Version20230718161858','2024-09-25 10:41:35',31),('Migrations\\Version20230718180507','2024-09-25 10:41:35',180),('Migrations\\Version20230720163801','2024-09-25 10:41:35',6),('Migrations\\Version20230724100823','2024-09-25 10:41:35',82),('Migrations\\Version20230727095418','2024-09-25 10:41:35',389),('Migrations\\Version20230831072408','2024-09-25 10:41:35',14),('Migrations\\Version20230904142735','2024-09-25 10:41:35',8),('Migrations\\Version20230906080635','2024-09-25 10:41:35',6),('Migrations\\Version20230907113553','2024-09-25 10:41:35',20),('Migrations\\Version20230908112010','2024-09-25 10:41:36',29),('Migrations\\Version20230914080444','2024-09-25 10:41:36',54),('Migrations\\Version20230926123728','2024-09-25 10:41:36',22),('Migrations\\Version20230927161359','2024-09-25 10:41:36',162),('Migrations\\Version20231003095946','2024-09-25 10:41:36',122),('Migrations\\Version20231004161126','2024-09-25 10:41:36',98),('Migrations\\Version20231005220834','2024-09-25 10:41:36',111),('Migrations\\Version20231006082726','2024-09-25 10:41:36',111),('Migrations\\Version20231010151645','2024-09-25 10:41:36',20),('Migrations\\Version20231012080033','2024-09-25 10:41:36',6),('Migrations\\Version20231016232208','2024-09-25 10:41:36',9),('Migrations\\Version20231018081458','2024-09-25 10:41:36',34),('Migrations\\Version20231023161507','2024-09-25 10:41:36',8),('Migrations\\Version20231102091259','2024-09-25 10:41:36',4),('Migrations\\Version20231103172715','2024-09-25 10:41:36',55),('Migrations\\Version20231106102259','2024-09-25 10:41:36',6),('Migrations\\Version20231117170244','2024-09-25 10:41:36',5),('Migrations\\Version20231130142149','2024-09-25 10:41:36',14),('Migrations\\Version20231207093329','2024-09-25 10:41:36',31),('Migrations\\Version20231208002730','2024-09-25 10:41:36',85),('Migrations\\Version20231214003554','2024-09-25 10:41:37',103),('Migrations\\Version20231217142736','2024-09-25 10:41:37',144);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4975,6 +7676,7 @@ UNLOCK TABLES;
 -- Table structure for table `ministry_list_total_result`
 --
 
+DROP TABLE IF EXISTS `ministry_list_total_result`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ministry_list_total_result` (
@@ -4996,9 +7698,19 @@ CREATE TABLE `ministry_list_total_result` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `ministry_list_total_result`
+--
+
+LOCK TABLES `ministry_list_total_result` WRITE;
+/*!40000 ALTER TABLE `ministry_list_total_result` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ministry_list_total_result` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `ministry_vote_result`
 --
 
+DROP TABLE IF EXISTS `ministry_vote_result`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ministry_vote_result` (
@@ -5027,9 +7739,19 @@ CREATE TABLE `ministry_vote_result` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `ministry_vote_result`
+--
+
+LOCK TABLES `ministry_vote_result` WRITE;
+/*!40000 ALTER TABLE `ministry_vote_result` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ministry_vote_result` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `mooc`
 --
 
+DROP TABLE IF EXISTS `mooc`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mooc` (
@@ -5058,9 +7780,19 @@ CREATE TABLE `mooc` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `mooc`
+--
+
+LOCK TABLES `mooc` WRITE;
+/*!40000 ALTER TABLE `mooc` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mooc` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `mooc_attachment_file`
 --
 
+DROP TABLE IF EXISTS `mooc_attachment_file`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mooc_attachment_file` (
@@ -5075,9 +7807,19 @@ CREATE TABLE `mooc_attachment_file` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `mooc_attachment_file`
+--
+
+LOCK TABLES `mooc_attachment_file` WRITE;
+/*!40000 ALTER TABLE `mooc_attachment_file` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mooc_attachment_file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `mooc_attachment_link`
 --
 
+DROP TABLE IF EXISTS `mooc_attachment_link`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mooc_attachment_link` (
@@ -5091,9 +7833,19 @@ CREATE TABLE `mooc_attachment_link` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `mooc_attachment_link`
+--
+
+LOCK TABLES `mooc_attachment_link` WRITE;
+/*!40000 ALTER TABLE `mooc_attachment_link` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mooc_attachment_link` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `mooc_chapter`
 --
 
+DROP TABLE IF EXISTS `mooc_chapter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mooc_chapter` (
@@ -5112,9 +7864,19 @@ CREATE TABLE `mooc_chapter` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `mooc_chapter`
+--
+
+LOCK TABLES `mooc_chapter` WRITE;
+/*!40000 ALTER TABLE `mooc_chapter` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mooc_chapter` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `mooc_element_attachment_file`
 --
 
+DROP TABLE IF EXISTS `mooc_element_attachment_file`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mooc_element_attachment_file` (
@@ -5129,9 +7891,19 @@ CREATE TABLE `mooc_element_attachment_file` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `mooc_element_attachment_file`
+--
+
+LOCK TABLES `mooc_element_attachment_file` WRITE;
+/*!40000 ALTER TABLE `mooc_element_attachment_file` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mooc_element_attachment_file` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `mooc_element_attachment_link`
 --
 
+DROP TABLE IF EXISTS `mooc_element_attachment_link`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mooc_element_attachment_link` (
@@ -5146,9 +7918,19 @@ CREATE TABLE `mooc_element_attachment_link` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `mooc_element_attachment_link`
+--
+
+LOCK TABLES `mooc_element_attachment_link` WRITE;
+/*!40000 ALTER TABLE `mooc_element_attachment_link` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mooc_element_attachment_link` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `mooc_elements`
 --
 
+DROP TABLE IF EXISTS `mooc_elements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mooc_elements` (
@@ -5179,74 +7961,26 @@ CREATE TABLE `mooc_elements` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `municipal_chief_areas`
+-- Dumping data for table `mooc_elements`
 --
 
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `municipal_chief_areas` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `jecoute_access` tinyint(1) NOT NULL DEFAULT '0',
-  `insee_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `municipal_manager_role_association`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `municipal_manager_role_association` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `municipal_manager_role_association_cities`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `municipal_manager_role_association_cities` (
-  `municipal_manager_role_association_id` int NOT NULL,
-  `city_id` int unsigned NOT NULL,
-  PRIMARY KEY (`municipal_manager_role_association_id`,`city_id`),
-  UNIQUE KEY `UNIQ_A713D9C28BAC62AF` (`city_id`),
-  KEY `IDX_A713D9C2D96891C` (`municipal_manager_role_association_id`),
-  CONSTRAINT `FK_A713D9C28BAC62AF` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`),
-  CONSTRAINT `FK_A713D9C2D96891C` FOREIGN KEY (`municipal_manager_role_association_id`) REFERENCES `municipal_manager_role_association` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `municipal_manager_supervisor_role`
---
-
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `municipal_manager_supervisor_role` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `referent_id` int unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `IDX_F304FF35E47E35` (`referent_id`),
-  CONSTRAINT `FK_F304FF35E47E35` FOREIGN KEY (`referent_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `mooc_elements` WRITE;
+/*!40000 ALTER TABLE `mooc_elements` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mooc_elements` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `my_team`
 --
 
+DROP TABLE IF EXISTS `my_team`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `my_team` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `owner_id` int unsigned NOT NULL,
-  `scope` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -5257,9 +7991,19 @@ CREATE TABLE `my_team` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `my_team`
+--
+
+LOCK TABLES `my_team` WRITE;
+/*!40000 ALTER TABLE `my_team` DISABLE KEYS */;
+/*!40000 ALTER TABLE `my_team` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `my_team_delegate_access_committee`
 --
 
+DROP TABLE IF EXISTS `my_team_delegate_access_committee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `my_team_delegate_access_committee` (
@@ -5274,9 +8018,19 @@ CREATE TABLE `my_team_delegate_access_committee` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `my_team_delegate_access_committee`
+--
+
+LOCK TABLES `my_team_delegate_access_committee` WRITE;
+/*!40000 ALTER TABLE `my_team_delegate_access_committee` DISABLE KEYS */;
+/*!40000 ALTER TABLE `my_team_delegate_access_committee` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `my_team_delegated_access`
 --
 
+DROP TABLE IF EXISTS `my_team_delegated_access`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `my_team_delegated_access` (
@@ -5288,31 +8042,41 @@ CREATE TABLE `my_team_delegated_access` (
   `restricted_cities` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `scope_features` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `scope_features` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_421C13B9D17F50A6` (`uuid`),
   KEY `IDX_421C13B98825BEFA` (`delegator_id`),
   KEY `IDX_421C13B9B7E7AE18` (`delegated_id`),
-  CONSTRAINT `FK_421C13B98825BEFA` FOREIGN KEY (`delegator_id`) REFERENCES `adherents` (`id`),
+  CONSTRAINT `FK_421C13B98825BEFA` FOREIGN KEY (`delegator_id`) REFERENCES `adherents` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_421C13B9B7E7AE18` FOREIGN KEY (`delegated_id`) REFERENCES `adherents` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `my_team_delegated_access`
+--
+
+LOCK TABLES `my_team_delegated_access` WRITE;
+/*!40000 ALTER TABLE `my_team_delegated_access` DISABLE KEYS */;
+/*!40000 ALTER TABLE `my_team_delegated_access` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `my_team_member`
 --
 
+DROP TABLE IF EXISTS `my_team_member`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `my_team_member` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `team_id` int unsigned NOT NULL,
   `adherent_id` int unsigned NOT NULL,
-  `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `scope_features` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `scope_features` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -5326,9 +8090,19 @@ CREATE TABLE `my_team_member` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `my_team_member`
+--
+
+LOCK TABLES `my_team_member` WRITE;
+/*!40000 ALTER TABLE `my_team_member` DISABLE KEYS */;
+/*!40000 ALTER TABLE `my_team_member` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `national_council_candidacies_group`
 --
 
+DROP TABLE IF EXISTS `national_council_candidacies_group`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `national_council_candidacies_group` (
@@ -5339,13 +8113,23 @@ CREATE TABLE `national_council_candidacies_group` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `national_council_candidacies_group`
+--
+
+LOCK TABLES `national_council_candidacies_group` WRITE;
+/*!40000 ALTER TABLE `national_council_candidacies_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `national_council_candidacies_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `national_council_candidacy`
 --
 
+DROP TABLE IF EXISTS `national_council_candidacy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `national_council_candidacy` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `election_id` int unsigned NOT NULL,
   `candidacies_group_id` int unsigned DEFAULT NULL,
   `adherent_id` int unsigned NOT NULL,
@@ -5371,9 +8155,19 @@ CREATE TABLE `national_council_candidacy` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `national_council_candidacy`
+--
+
+LOCK TABLES `national_council_candidacy` WRITE;
+/*!40000 ALTER TABLE `national_council_candidacy` DISABLE KEYS */;
+/*!40000 ALTER TABLE `national_council_candidacy` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `national_council_election`
 --
 
+DROP TABLE IF EXISTS `national_council_election`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `national_council_election` (
@@ -5388,9 +8182,19 @@ CREATE TABLE `national_council_election` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `national_council_election`
+--
+
+LOCK TABLES `national_council_election` WRITE;
+/*!40000 ALTER TABLE `national_council_election` DISABLE KEYS */;
+/*!40000 ALTER TABLE `national_council_election` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `newsletter_invitations`
 --
 
+DROP TABLE IF EXISTS `newsletter_invitations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `newsletter_invitations` (
@@ -5407,9 +8211,19 @@ CREATE TABLE `newsletter_invitations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `newsletter_invitations`
+--
+
+LOCK TABLES `newsletter_invitations` WRITE;
+/*!40000 ALTER TABLE `newsletter_invitations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `newsletter_invitations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `newsletter_subscriptions`
 --
 
+DROP TABLE IF EXISTS `newsletter_subscriptions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `newsletter_subscriptions` (
@@ -5422,7 +8236,7 @@ CREATE TABLE `newsletter_subscriptions` (
   `country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `from_event` tinyint(1) NOT NULL DEFAULT '0',
   `confirmed_at` datetime DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `token` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_B3C13B0BE7927C74` (`email`),
@@ -5432,9 +8246,19 @@ CREATE TABLE `newsletter_subscriptions` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `newsletter_subscriptions`
+--
+
+LOCK TABLES `newsletter_subscriptions` WRITE;
+/*!40000 ALTER TABLE `newsletter_subscriptions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `newsletter_subscriptions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `notification`
 --
 
+DROP TABLE IF EXISTS `notification`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notification` (
@@ -5453,9 +8277,19 @@ CREATE TABLE `notification` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `notification`
+--
+
+LOCK TABLES `notification` WRITE;
+/*!40000 ALTER TABLE `notification` DISABLE KEYS */;
+/*!40000 ALTER TABLE `notification` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `oauth_access_tokens`
 --
 
+DROP TABLE IF EXISTS `oauth_access_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `oauth_access_tokens` (
@@ -5482,9 +8316,19 @@ CREATE TABLE `oauth_access_tokens` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `oauth_access_tokens`
+--
+
+LOCK TABLES `oauth_access_tokens` WRITE;
+/*!40000 ALTER TABLE `oauth_access_tokens` DISABLE KEYS */;
+/*!40000 ALTER TABLE `oauth_access_tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `oauth_auth_codes`
 --
 
+DROP TABLE IF EXISTS `oauth_auth_codes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `oauth_auth_codes` (
@@ -5512,9 +8356,19 @@ CREATE TABLE `oauth_auth_codes` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `oauth_auth_codes`
+--
+
+LOCK TABLES `oauth_auth_codes` WRITE;
+/*!40000 ALTER TABLE `oauth_auth_codes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `oauth_auth_codes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `oauth_clients`
 --
 
+DROP TABLE IF EXISTS `oauth_clients`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `oauth_clients` (
@@ -5531,16 +8385,26 @@ CREATE TABLE `oauth_clients` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `requested_roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_13CE8101D17F50A6` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `oauth_clients`
+--
+
+LOCK TABLES `oauth_clients` WRITE;
+/*!40000 ALTER TABLE `oauth_clients` DISABLE KEYS */;
+/*!40000 ALTER TABLE `oauth_clients` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `oauth_refresh_tokens`
 --
 
+DROP TABLE IF EXISTS `oauth_refresh_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `oauth_refresh_tokens` (
@@ -5560,9 +8424,19 @@ CREATE TABLE `oauth_refresh_tokens` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `oauth_refresh_tokens`
+--
+
+LOCK TABLES `oauth_refresh_tokens` WRITE;
+/*!40000 ALTER TABLE `oauth_refresh_tokens` DISABLE KEYS */;
+/*!40000 ALTER TABLE `oauth_refresh_tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `order_articles`
 --
 
+DROP TABLE IF EXISTS `order_articles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order_articles` (
@@ -5588,9 +8462,19 @@ CREATE TABLE `order_articles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `order_articles`
+--
+
+LOCK TABLES `order_articles` WRITE;
+/*!40000 ALTER TABLE `order_articles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `order_articles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `order_section_order_article`
 --
 
+DROP TABLE IF EXISTS `order_section_order_article`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order_section_order_article` (
@@ -5605,9 +8489,19 @@ CREATE TABLE `order_section_order_article` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `order_section_order_article`
+--
+
+LOCK TABLES `order_section_order_article` WRITE;
+/*!40000 ALTER TABLE `order_section_order_article` DISABLE KEYS */;
+/*!40000 ALTER TABLE `order_section_order_article` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `order_sections`
 --
 
+DROP TABLE IF EXISTS `order_sections`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order_sections` (
@@ -5619,9 +8513,19 @@ CREATE TABLE `order_sections` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `order_sections`
+--
+
+LOCK TABLES `order_sections` WRITE;
+/*!40000 ALTER TABLE `order_sections` DISABLE KEYS */;
+/*!40000 ALTER TABLE `order_sections` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `organizational_chart_item`
 --
 
+DROP TABLE IF EXISTS `organizational_chart_item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `organizational_chart_item` (
@@ -5642,9 +8546,19 @@ CREATE TABLE `organizational_chart_item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `organizational_chart_item`
+--
+
+LOCK TABLES `organizational_chart_item` WRITE;
+/*!40000 ALTER TABLE `organizational_chart_item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `organizational_chart_item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pages`
 --
 
+DROP TABLE IF EXISTS `pages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pages` (
@@ -5672,9 +8586,19 @@ CREATE TABLE `pages` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pages`
+--
+
+LOCK TABLES `pages` WRITE;
+/*!40000 ALTER TABLE `pages` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pap_address`
 --
 
+DROP TABLE IF EXISTS `pap_address`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pap_address` (
@@ -5688,7 +8612,7 @@ CREATE TABLE `pap_address` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
-  `postal_codes` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `postal_codes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `voters_count` smallint unsigned NOT NULL DEFAULT '0',
   `vote_place_id` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -5701,9 +8625,19 @@ CREATE TABLE `pap_address` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pap_address`
+--
+
+LOCK TABLES `pap_address` WRITE;
+/*!40000 ALTER TABLE `pap_address` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pap_address` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pap_address_zone`
 --
 
+DROP TABLE IF EXISTS `pap_address_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pap_address_zone` (
@@ -5718,9 +8652,19 @@ CREATE TABLE `pap_address_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pap_address_zone`
+--
+
+LOCK TABLES `pap_address_zone` WRITE;
+/*!40000 ALTER TABLE `pap_address_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pap_address_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pap_building`
 --
 
+DROP TABLE IF EXISTS `pap_building`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pap_building` (
@@ -5739,9 +8683,19 @@ CREATE TABLE `pap_building` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pap_building`
+--
+
+LOCK TABLES `pap_building` WRITE;
+/*!40000 ALTER TABLE `pap_building` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pap_building` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pap_building_block`
 --
 
+DROP TABLE IF EXISTS `pap_building_block`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pap_building_block` (
@@ -5766,9 +8720,19 @@ CREATE TABLE `pap_building_block` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pap_building_block`
+--
+
+LOCK TABLES `pap_building_block` WRITE;
+/*!40000 ALTER TABLE `pap_building_block` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pap_building_block` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pap_building_block_statistics`
 --
 
+DROP TABLE IF EXISTS `pap_building_block_statistics`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pap_building_block_statistics` (
@@ -5793,21 +8757,31 @@ CREATE TABLE `pap_building_block_statistics` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pap_building_block_statistics`
+--
+
+LOCK TABLES `pap_building_block_statistics` WRITE;
+/*!40000 ALTER TABLE `pap_building_block_statistics` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pap_building_block_statistics` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pap_building_event`
 --
 
+DROP TABLE IF EXISTS `pap_building_event`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pap_building_event` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `action` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `identifier` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `action` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `identifier` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `building_id` int unsigned DEFAULT NULL,
   `campaign_id` int unsigned NOT NULL,
   `author_id` int unsigned DEFAULT NULL,
   `created_at` datetime NOT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_D9F29104D17F50A6` (`uuid`),
   KEY `IDX_D9F291044D2A7E12` (`building_id`),
@@ -5820,9 +8794,19 @@ CREATE TABLE `pap_building_event` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pap_building_event`
+--
+
+LOCK TABLES `pap_building_event` WRITE;
+/*!40000 ALTER TABLE `pap_building_event` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pap_building_event` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pap_building_statistics`
 --
 
+DROP TABLE IF EXISTS `pap_building_statistics`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pap_building_statistics` (
@@ -5856,9 +8840,19 @@ CREATE TABLE `pap_building_statistics` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pap_building_statistics`
+--
+
+LOCK TABLES `pap_building_statistics` WRITE;
+/*!40000 ALTER TABLE `pap_building_statistics` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pap_building_statistics` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pap_campaign`
 --
 
+DROP TABLE IF EXISTS `pap_campaign`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pap_campaign` (
@@ -5873,11 +8867,11 @@ CREATE TABLE `pap_campaign` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `visibility` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `nb_addresses` int unsigned NOT NULL DEFAULT '0',
   `nb_voters` int unsigned NOT NULL DEFAULT '0',
   `associated` tinyint(1) NOT NULL DEFAULT '0',
-  `dynamic_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dynamic_link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_by_adherent_id` int unsigned DEFAULT NULL,
   `updated_by_adherent_id` int unsigned DEFAULT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
@@ -5896,9 +8890,19 @@ CREATE TABLE `pap_campaign` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pap_campaign`
+--
+
+LOCK TABLES `pap_campaign` WRITE;
+/*!40000 ALTER TABLE `pap_campaign` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pap_campaign` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pap_campaign_history`
 --
 
+DROP TABLE IF EXISTS `pap_campaign_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pap_campaign_history` (
@@ -5923,8 +8927,8 @@ CREATE TABLE `pap_campaign_history` (
   `updated_at` datetime NOT NULL,
   `finish_at` datetime DEFAULT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `voter_status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `voter_postal_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `voter_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `voter_postal_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `begin_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_5A3F26F7D17F50A6` (`uuid`),
@@ -5940,9 +8944,19 @@ CREATE TABLE `pap_campaign_history` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pap_campaign_history`
+--
+
+LOCK TABLES `pap_campaign_history` WRITE;
+/*!40000 ALTER TABLE `pap_campaign_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pap_campaign_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pap_campaign_vote_place`
 --
 
+DROP TABLE IF EXISTS `pap_campaign_vote_place`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pap_campaign_vote_place` (
@@ -5957,9 +8971,19 @@ CREATE TABLE `pap_campaign_vote_place` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pap_campaign_vote_place`
+--
+
+LOCK TABLES `pap_campaign_vote_place` WRITE;
+/*!40000 ALTER TABLE `pap_campaign_vote_place` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pap_campaign_vote_place` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pap_campaign_zone`
 --
 
+DROP TABLE IF EXISTS `pap_campaign_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pap_campaign_zone` (
@@ -5974,9 +8998,19 @@ CREATE TABLE `pap_campaign_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pap_campaign_zone`
+--
+
+LOCK TABLES `pap_campaign_zone` WRITE;
+/*!40000 ALTER TABLE `pap_campaign_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pap_campaign_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pap_floor`
 --
 
+DROP TABLE IF EXISTS `pap_floor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pap_floor` (
@@ -6001,9 +9035,19 @@ CREATE TABLE `pap_floor` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pap_floor`
+--
+
+LOCK TABLES `pap_floor` WRITE;
+/*!40000 ALTER TABLE `pap_floor` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pap_floor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pap_floor_statistics`
 --
 
+DROP TABLE IF EXISTS `pap_floor_statistics`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pap_floor_statistics` (
@@ -6016,7 +9060,7 @@ CREATE TABLE `pap_floor_statistics` (
   `updated_at` datetime NOT NULL,
   `closed_by_id` int unsigned DEFAULT NULL,
   `closed_at` datetime DEFAULT NULL,
-  `visited_doors` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `visited_doors` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   `nb_surveys` smallint unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_853B68C8D17F50A6` (`uuid`),
@@ -6030,17 +9074,27 @@ CREATE TABLE `pap_floor_statistics` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pap_floor_statistics`
+--
+
+LOCK TABLES `pap_floor_statistics` WRITE;
+/*!40000 ALTER TABLE `pap_floor_statistics` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pap_floor_statistics` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pap_vote_place`
 --
 
+DROP TABLE IF EXISTS `pap_vote_place`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pap_vote_place` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `latitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
   `longitude` float(10,6) DEFAULT NULL COMMENT '(DC2Type:geo_point)',
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nb_addresses` int unsigned NOT NULL DEFAULT '0',
   `nb_voters` int unsigned NOT NULL DEFAULT '0',
   `zone_id` int unsigned DEFAULT NULL,
@@ -6054,9 +9108,19 @@ CREATE TABLE `pap_vote_place` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pap_vote_place`
+--
+
+LOCK TABLES `pap_vote_place` WRITE;
+/*!40000 ALTER TABLE `pap_vote_place` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pap_vote_place` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pap_voter`
 --
 
+DROP TABLE IF EXISTS `pap_voter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pap_voter` (
@@ -6077,9 +9141,19 @@ CREATE TABLE `pap_voter` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `pap_voter`
+--
+
+LOCK TABLES `pap_voter` WRITE;
+/*!40000 ALTER TABLE `pap_voter` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pap_voter` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `phoning_campaign`
 --
 
+DROP TABLE IF EXISTS `phoning_campaign`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `phoning_campaign` (
@@ -6101,8 +9175,8 @@ CREATE TABLE `phoning_campaign` (
   `permanent` tinyint(1) NOT NULL DEFAULT '0',
   `participants_count` int NOT NULL DEFAULT '0',
   `zone_id` int unsigned DEFAULT NULL,
-  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dynamic_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `visibility` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dynamic_link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_C3882BA4D17F50A6` (`uuid`),
   UNIQUE KEY `UNIQ_C3882BA4848CC616` (`audience_id`),
@@ -6125,9 +9199,19 @@ CREATE TABLE `phoning_campaign` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `phoning_campaign`
+--
+
+LOCK TABLES `phoning_campaign` WRITE;
+/*!40000 ALTER TABLE `phoning_campaign` DISABLE KEYS */;
+/*!40000 ALTER TABLE `phoning_campaign` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `phoning_campaign_history`
 --
 
+DROP TABLE IF EXISTS `phoning_campaign_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `phoning_campaign_history` (
@@ -6161,9 +9245,19 @@ CREATE TABLE `phoning_campaign_history` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `phoning_campaign_history`
+--
+
+LOCK TABLES `phoning_campaign_history` WRITE;
+/*!40000 ALTER TABLE `phoning_campaign_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `phoning_campaign_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `political_committee`
 --
 
+DROP TABLE IF EXISTS `political_committee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `political_committee` (
@@ -6181,9 +9275,19 @@ CREATE TABLE `political_committee` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `political_committee`
+--
+
+LOCK TABLES `political_committee` WRITE;
+/*!40000 ALTER TABLE `political_committee` DISABLE KEYS */;
+/*!40000 ALTER TABLE `political_committee` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `political_committee_feed_item`
 --
 
+DROP TABLE IF EXISTS `political_committee_feed_item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `political_committee_feed_item` (
@@ -6204,9 +9308,19 @@ CREATE TABLE `political_committee_feed_item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `political_committee_feed_item`
+--
+
+LOCK TABLES `political_committee_feed_item` WRITE;
+/*!40000 ALTER TABLE `political_committee_feed_item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `political_committee_feed_item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `political_committee_membership`
 --
 
+DROP TABLE IF EXISTS `political_committee_membership`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `political_committee_membership` (
@@ -6226,9 +9340,19 @@ CREATE TABLE `political_committee_membership` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `political_committee_membership`
+--
+
+LOCK TABLES `political_committee_membership` WRITE;
+/*!40000 ALTER TABLE `political_committee_membership` DISABLE KEYS */;
+/*!40000 ALTER TABLE `political_committee_membership` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `political_committee_quality`
 --
 
+DROP TABLE IF EXISTS `political_committee_quality`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `political_committee_quality` (
@@ -6243,9 +9367,19 @@ CREATE TABLE `political_committee_quality` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `political_committee_quality`
+--
+
+LOCK TABLES `political_committee_quality` WRITE;
+/*!40000 ALTER TABLE `political_committee_quality` DISABLE KEYS */;
+/*!40000 ALTER TABLE `political_committee_quality` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `poll`
 --
 
+DROP TABLE IF EXISTS `poll`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `poll` (
@@ -6272,9 +9406,19 @@ CREATE TABLE `poll` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `poll`
+--
+
+LOCK TABLES `poll` WRITE;
+/*!40000 ALTER TABLE `poll` DISABLE KEYS */;
+/*!40000 ALTER TABLE `poll` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `poll_choice`
 --
 
+DROP TABLE IF EXISTS `poll_choice`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `poll_choice` (
@@ -6292,9 +9436,19 @@ CREATE TABLE `poll_choice` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `poll_choice`
+--
+
+LOCK TABLES `poll_choice` WRITE;
+/*!40000 ALTER TABLE `poll_choice` DISABLE KEYS */;
+/*!40000 ALTER TABLE `poll_choice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `poll_vote`
 --
 
+DROP TABLE IF EXISTS `poll_vote`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `poll_vote` (
@@ -6315,9 +9469,19 @@ CREATE TABLE `poll_vote` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `poll_vote`
+--
+
+LOCK TABLES `poll_vote` WRITE;
+/*!40000 ALTER TABLE `poll_vote` DISABLE KEYS */;
+/*!40000 ALTER TABLE `poll_vote` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `procuration_managed_areas`
 --
 
+DROP TABLE IF EXISTS `procuration_managed_areas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `procuration_managed_areas` (
@@ -6328,16 +9492,26 @@ CREATE TABLE `procuration_managed_areas` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `procuration_managed_areas`
+--
+
+LOCK TABLES `procuration_managed_areas` WRITE;
+/*!40000 ALTER TABLE `procuration_managed_areas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `procuration_managed_areas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `procuration_proxies`
 --
 
+DROP TABLE IF EXISTS `procuration_proxies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `procuration_proxies` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `gender` varchar(6) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `last_name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `first_names` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `gender` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `first_names` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `postal_code` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `city_insee` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -6359,10 +9533,10 @@ CREATE TABLE `procuration_proxies` (
   `proxies_count` smallint unsigned NOT NULL DEFAULT '1',
   `state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reachable` tinyint(1) NOT NULL DEFAULT '0',
-  `voter_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `backup_other_vote_cities` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `disabled_reason` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `voter_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `backup_other_vote_cities` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `disabled_reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reminded_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_9B5E777AD17F50A6` (`uuid`)
@@ -6370,9 +9544,19 @@ CREATE TABLE `procuration_proxies` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `procuration_proxies`
+--
+
+LOCK TABLES `procuration_proxies` WRITE;
+/*!40000 ALTER TABLE `procuration_proxies` DISABLE KEYS */;
+/*!40000 ALTER TABLE `procuration_proxies` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `procuration_proxies_to_election_rounds`
 --
 
+DROP TABLE IF EXISTS `procuration_proxies_to_election_rounds`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `procuration_proxies_to_election_rounds` (
@@ -6391,9 +9575,19 @@ CREATE TABLE `procuration_proxies_to_election_rounds` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `procuration_proxies_to_election_rounds`
+--
+
+LOCK TABLES `procuration_proxies_to_election_rounds` WRITE;
+/*!40000 ALTER TABLE `procuration_proxies_to_election_rounds` DISABLE KEYS */;
+/*!40000 ALTER TABLE `procuration_proxies_to_election_rounds` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `procuration_proxy_zone`
 --
 
+DROP TABLE IF EXISTS `procuration_proxy_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `procuration_proxy_zone` (
@@ -6408,9 +9602,19 @@ CREATE TABLE `procuration_proxy_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `procuration_proxy_zone`
+--
+
+LOCK TABLES `procuration_proxy_zone` WRITE;
+/*!40000 ALTER TABLE `procuration_proxy_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `procuration_proxy_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `procuration_requests`
 --
 
+DROP TABLE IF EXISTS `procuration_requests`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `procuration_requests` (
@@ -6441,9 +9645,9 @@ CREATE TABLE `procuration_requests` (
   `state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reachable` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '0',
-  `disabled_reason` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `disabled_reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `reminded_at` datetime DEFAULT NULL,
-  `voter_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `voter_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_9769FD842F1B6663` (`found_proxy_id`),
   KEY `IDX_9769FD84888FDEEE` (`procuration_request_found_by_id`),
@@ -6453,9 +9657,19 @@ CREATE TABLE `procuration_requests` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `procuration_requests`
+--
+
+LOCK TABLES `procuration_requests` WRITE;
+/*!40000 ALTER TABLE `procuration_requests` DISABLE KEYS */;
+/*!40000 ALTER TABLE `procuration_requests` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `procuration_requests_to_election_rounds`
 --
 
+DROP TABLE IF EXISTS `procuration_requests_to_election_rounds`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `procuration_requests_to_election_rounds` (
@@ -6470,9 +9684,19 @@ CREATE TABLE `procuration_requests_to_election_rounds` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `procuration_requests_to_election_rounds`
+--
+
+LOCK TABLES `procuration_requests_to_election_rounds` WRITE;
+/*!40000 ALTER TABLE `procuration_requests_to_election_rounds` DISABLE KEYS */;
+/*!40000 ALTER TABLE `procuration_requests_to_election_rounds` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `programmatic_foundation_approach`
 --
 
+DROP TABLE IF EXISTS `programmatic_foundation_approach`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `programmatic_foundation_approach` (
@@ -6489,9 +9713,19 @@ CREATE TABLE `programmatic_foundation_approach` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `programmatic_foundation_approach`
+--
+
+LOCK TABLES `programmatic_foundation_approach` WRITE;
+/*!40000 ALTER TABLE `programmatic_foundation_approach` DISABLE KEYS */;
+/*!40000 ALTER TABLE `programmatic_foundation_approach` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `programmatic_foundation_measure`
 --
 
+DROP TABLE IF EXISTS `programmatic_foundation_measure`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `programmatic_foundation_measure` (
@@ -6513,9 +9747,19 @@ CREATE TABLE `programmatic_foundation_measure` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `programmatic_foundation_measure`
+--
+
+LOCK TABLES `programmatic_foundation_measure` WRITE;
+/*!40000 ALTER TABLE `programmatic_foundation_measure` DISABLE KEYS */;
+/*!40000 ALTER TABLE `programmatic_foundation_measure` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `programmatic_foundation_measure_tag`
 --
 
+DROP TABLE IF EXISTS `programmatic_foundation_measure_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `programmatic_foundation_measure_tag` (
@@ -6530,9 +9774,19 @@ CREATE TABLE `programmatic_foundation_measure_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `programmatic_foundation_measure_tag`
+--
+
+LOCK TABLES `programmatic_foundation_measure_tag` WRITE;
+/*!40000 ALTER TABLE `programmatic_foundation_measure_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `programmatic_foundation_measure_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `programmatic_foundation_project`
 --
 
+DROP TABLE IF EXISTS `programmatic_foundation_project`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `programmatic_foundation_project` (
@@ -6554,9 +9808,19 @@ CREATE TABLE `programmatic_foundation_project` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `programmatic_foundation_project`
+--
+
+LOCK TABLES `programmatic_foundation_project` WRITE;
+/*!40000 ALTER TABLE `programmatic_foundation_project` DISABLE KEYS */;
+/*!40000 ALTER TABLE `programmatic_foundation_project` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `programmatic_foundation_project_tag`
 --
 
+DROP TABLE IF EXISTS `programmatic_foundation_project_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `programmatic_foundation_project_tag` (
@@ -6571,9 +9835,19 @@ CREATE TABLE `programmatic_foundation_project_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `programmatic_foundation_project_tag`
+--
+
+LOCK TABLES `programmatic_foundation_project_tag` WRITE;
+/*!40000 ALTER TABLE `programmatic_foundation_project_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `programmatic_foundation_project_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `programmatic_foundation_sub_approach`
 --
 
+DROP TABLE IF EXISTS `programmatic_foundation_sub_approach`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `programmatic_foundation_sub_approach` (
@@ -6595,9 +9869,19 @@ CREATE TABLE `programmatic_foundation_sub_approach` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `programmatic_foundation_sub_approach`
+--
+
+LOCK TABLES `programmatic_foundation_sub_approach` WRITE;
+/*!40000 ALTER TABLE `programmatic_foundation_sub_approach` DISABLE KEYS */;
+/*!40000 ALTER TABLE `programmatic_foundation_sub_approach` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `programmatic_foundation_tag`
 --
 
+DROP TABLE IF EXISTS `programmatic_foundation_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `programmatic_foundation_tag` (
@@ -6609,9 +9893,19 @@ CREATE TABLE `programmatic_foundation_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `programmatic_foundation_tag`
+--
+
+LOCK TABLES `programmatic_foundation_tag` WRITE;
+/*!40000 ALTER TABLE `programmatic_foundation_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `programmatic_foundation_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `projection_managed_users`
 --
 
+DROP TABLE IF EXISTS `projection_managed_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `projection_managed_users` (
@@ -6643,20 +9937,42 @@ CREATE TABLE `projection_managed_users` (
   `address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `certified_at` datetime DEFAULT NULL,
   `is_committee_provisional_supervisor` tinyint(1) NOT NULL,
-  `adherent_status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `adherent_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `activated_at` datetime DEFAULT NULL,
-  `source` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_membership_donation` datetime DEFAULT NULL,
+  `committee` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `committee_uuid` char(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:uuid)',
+  `nationality` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tags` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `cotisation_dates` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `campus_registered_at` datetime DEFAULT NULL,
+  `birthdate` date DEFAULT NULL,
+  `mandates` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `declared_mandates` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
+  `zones_ids` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `additional_tags` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   PRIMARY KEY (`id`),
   KEY `IDX_90A7D656108B7592` (`original_id`),
-  KEY `IDX_90A7D6567B00651C` (`status`)
+  KEY `IDX_90A7D6567B00651C` (`status`),
+  KEY `IDX_90A7D656AB78BDC2` (`zones_ids`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `projection_managed_users`
+--
+
+LOCK TABLES `projection_managed_users` WRITE;
+/*!40000 ALTER TABLE `projection_managed_users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projection_managed_users` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `projection_managed_users_zone`
 --
 
+DROP TABLE IF EXISTS `projection_managed_users_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `projection_managed_users_zone` (
@@ -6671,9 +9987,19 @@ CREATE TABLE `projection_managed_users_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `projection_managed_users_zone`
+--
+
+LOCK TABLES `projection_managed_users_zone` WRITE;
+/*!40000 ALTER TABLE `projection_managed_users_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `projection_managed_users_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `proposal_proposal_theme`
 --
 
+DROP TABLE IF EXISTS `proposal_proposal_theme`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `proposal_proposal_theme` (
@@ -6688,9 +10014,19 @@ CREATE TABLE `proposal_proposal_theme` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `proposal_proposal_theme`
+--
+
+LOCK TABLES `proposal_proposal_theme` WRITE;
+/*!40000 ALTER TABLE `proposal_proposal_theme` DISABLE KEYS */;
+/*!40000 ALTER TABLE `proposal_proposal_theme` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `proposals`
 --
 
+DROP TABLE IF EXISTS `proposals`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `proposals` (
@@ -6716,9 +10052,19 @@ CREATE TABLE `proposals` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `proposals`
+--
+
+LOCK TABLES `proposals` WRITE;
+/*!40000 ALTER TABLE `proposals` DISABLE KEYS */;
+/*!40000 ALTER TABLE `proposals` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `proposals_themes`
 --
 
+DROP TABLE IF EXISTS `proposals_themes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `proposals_themes` (
@@ -6730,9 +10076,19 @@ CREATE TABLE `proposals_themes` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `proposals_themes`
+--
+
+LOCK TABLES `proposals_themes` WRITE;
+/*!40000 ALTER TABLE `proposals_themes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `proposals_themes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `push_token`
 --
 
+DROP TABLE IF EXISTS `push_token`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `push_token` (
@@ -6755,21 +10111,31 @@ CREATE TABLE `push_token` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `push_token`
+--
+
+LOCK TABLES `push_token` WRITE;
+/*!40000 ALTER TABLE `push_token` DISABLE KEYS */;
+/*!40000 ALTER TABLE `push_token` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `qr_code`
 --
 
+DROP TABLE IF EXISTS `qr_code`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `qr_code` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `created_by_id` int DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `redirect_url` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `redirect_url` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `count` int NOT NULL,
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `host` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `host` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_7D8B1FB55E237E06` (`name`),
   UNIQUE KEY `UNIQ_7D8B1FB5D17F50A6` (`uuid`),
@@ -6779,15 +10145,25 @@ CREATE TABLE `qr_code` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `qr_code`
+--
+
+LOCK TABLES `qr_code` WRITE;
+/*!40000 ALTER TABLE `qr_code` DISABLE KEYS */;
+/*!40000 ALTER TABLE `qr_code` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `redirections`
 --
 
+DROP TABLE IF EXISTS `redirections`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `redirections` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `url_from` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `url_to` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url_from` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url_to` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` int NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
@@ -6795,9 +10171,19 @@ CREATE TABLE `redirections` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `redirections`
+--
+
+LOCK TABLES `redirections` WRITE;
+/*!40000 ALTER TABLE `redirections` DISABLE KEYS */;
+/*!40000 ALTER TABLE `redirections` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `referent`
 --
 
+DROP TABLE IF EXISTS `referent`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `referent` (
@@ -6823,9 +10209,19 @@ CREATE TABLE `referent` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `referent`
+--
+
+LOCK TABLES `referent` WRITE;
+/*!40000 ALTER TABLE `referent` DISABLE KEYS */;
+/*!40000 ALTER TABLE `referent` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `referent_area`
 --
 
+DROP TABLE IF EXISTS `referent_area`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `referent_area` (
@@ -6840,9 +10236,19 @@ CREATE TABLE `referent_area` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `referent_area`
+--
+
+LOCK TABLES `referent_area` WRITE;
+/*!40000 ALTER TABLE `referent_area` DISABLE KEYS */;
+/*!40000 ALTER TABLE `referent_area` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `referent_areas`
 --
 
+DROP TABLE IF EXISTS `referent_areas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `referent_areas` (
@@ -6857,9 +10263,19 @@ CREATE TABLE `referent_areas` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `referent_areas`
+--
+
+LOCK TABLES `referent_areas` WRITE;
+/*!40000 ALTER TABLE `referent_areas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `referent_areas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `referent_managed_areas`
 --
 
+DROP TABLE IF EXISTS `referent_managed_areas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `referent_managed_areas` (
@@ -6871,9 +10287,19 @@ CREATE TABLE `referent_managed_areas` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `referent_managed_areas`
+--
+
+LOCK TABLES `referent_managed_areas` WRITE;
+/*!40000 ALTER TABLE `referent_managed_areas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `referent_managed_areas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `referent_managed_areas_tags`
 --
 
+DROP TABLE IF EXISTS `referent_managed_areas_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `referent_managed_areas_tags` (
@@ -6888,9 +10314,19 @@ CREATE TABLE `referent_managed_areas_tags` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `referent_managed_areas_tags`
+--
+
+LOCK TABLES `referent_managed_areas_tags` WRITE;
+/*!40000 ALTER TABLE `referent_managed_areas_tags` DISABLE KEYS */;
+/*!40000 ALTER TABLE `referent_managed_areas_tags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `referent_person_link`
 --
 
+DROP TABLE IF EXISTS `referent_person_link`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `referent_person_link` (
@@ -6904,7 +10340,6 @@ CREATE TABLE `referent_person_link` (
   `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `postal_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_jecoute_manager` tinyint(1) NOT NULL DEFAULT '0',
-  `is_municipal_manager_supervisor` tinyint(1) NOT NULL DEFAULT '0',
   `co_referent` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `restricted_cities` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:simple_array)',
   PRIMARY KEY (`id`),
@@ -6918,9 +10353,19 @@ CREATE TABLE `referent_person_link` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `referent_person_link`
+--
+
+LOCK TABLES `referent_person_link` WRITE;
+/*!40000 ALTER TABLE `referent_person_link` DISABLE KEYS */;
+/*!40000 ALTER TABLE `referent_person_link` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `referent_person_link_committee`
 --
 
+DROP TABLE IF EXISTS `referent_person_link_committee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `referent_person_link_committee` (
@@ -6935,9 +10380,19 @@ CREATE TABLE `referent_person_link_committee` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `referent_person_link_committee`
+--
+
+LOCK TABLES `referent_person_link_committee` WRITE;
+/*!40000 ALTER TABLE `referent_person_link_committee` DISABLE KEYS */;
+/*!40000 ALTER TABLE `referent_person_link_committee` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `referent_space_access_information`
 --
 
+DROP TABLE IF EXISTS `referent_space_access_information`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `referent_space_access_information` (
@@ -6952,9 +10407,19 @@ CREATE TABLE `referent_space_access_information` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `referent_space_access_information`
+--
+
+LOCK TABLES `referent_space_access_information` WRITE;
+/*!40000 ALTER TABLE `referent_space_access_information` DISABLE KEYS */;
+/*!40000 ALTER TABLE `referent_space_access_information` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `referent_tags`
 --
 
+DROP TABLE IF EXISTS `referent_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `referent_tags` (
@@ -6973,9 +10438,19 @@ CREATE TABLE `referent_tags` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `referent_tags`
+--
+
+LOCK TABLES `referent_tags` WRITE;
+/*!40000 ALTER TABLE `referent_tags` DISABLE KEYS */;
+/*!40000 ALTER TABLE `referent_tags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `referent_team_member`
 --
 
+DROP TABLE IF EXISTS `referent_team_member`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `referent_team_member` (
@@ -6993,9 +10468,19 @@ CREATE TABLE `referent_team_member` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `referent_team_member`
+--
+
+LOCK TABLES `referent_team_member` WRITE;
+/*!40000 ALTER TABLE `referent_team_member` DISABLE KEYS */;
+/*!40000 ALTER TABLE `referent_team_member` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `referent_team_member_committee`
 --
 
+DROP TABLE IF EXISTS `referent_team_member_committee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `referent_team_member_committee` (
@@ -7010,9 +10495,19 @@ CREATE TABLE `referent_team_member_committee` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `referent_team_member_committee`
+--
+
+LOCK TABLES `referent_team_member_committee` WRITE;
+/*!40000 ALTER TABLE `referent_team_member_committee` DISABLE KEYS */;
+/*!40000 ALTER TABLE `referent_team_member_committee` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `referent_user_filter_referent_tag`
 --
 
+DROP TABLE IF EXISTS `referent_user_filter_referent_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `referent_user_filter_referent_tag` (
@@ -7027,9 +10522,19 @@ CREATE TABLE `referent_user_filter_referent_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `referent_user_filter_referent_tag`
+--
+
+LOCK TABLES `referent_user_filter_referent_tag` WRITE;
+/*!40000 ALTER TABLE `referent_user_filter_referent_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `referent_user_filter_referent_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `region`
 --
 
+DROP TABLE IF EXISTS `region`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `region` (
@@ -7043,35 +10548,55 @@ CREATE TABLE `region` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `region`
+--
+
+LOCK TABLES `region` WRITE;
+/*!40000 ALTER TABLE `region` DISABLE KEYS */;
+/*!40000 ALTER TABLE `region` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `rememberme_token`
 --
 
+DROP TABLE IF EXISTS `rememberme_token`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `rememberme_token` (
-  `series` varchar(88) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` varchar(88) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `series` varchar(88) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(88) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `lastUsed` datetime NOT NULL,
-  `class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `username` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `class` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`series`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `rememberme_token`
+--
+
+LOCK TABLES `rememberme_token` WRITE;
+/*!40000 ALTER TABLE `rememberme_token` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rememberme_token` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `renaissance_newsletter_subscription`
 --
 
+DROP TABLE IF EXISTS `renaissance_newsletter_subscription`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `renaissance_newsletter_subscription` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `zip_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `zip_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `confirmed_at` datetime DEFAULT NULL,
-  `token` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `token` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -7081,9 +10606,19 @@ CREATE TABLE `renaissance_newsletter_subscription` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `renaissance_newsletter_subscription`
+--
+
+LOCK TABLES `renaissance_newsletter_subscription` WRITE;
+/*!40000 ALTER TABLE `renaissance_newsletter_subscription` DISABLE KEYS */;
+/*!40000 ALTER TABLE `renaissance_newsletter_subscription` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `reports`
 --
 
+DROP TABLE IF EXISTS `reports`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reports` (
@@ -7091,7 +10626,7 @@ CREATE TABLE `reports` (
   `author_id` int unsigned DEFAULT NULL,
   `committee_id` int unsigned DEFAULT NULL,
   `community_event_id` int unsigned DEFAULT NULL,
-  `reasons` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:json)',
+  `reasons` json NOT NULL,
   `comment` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `status` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'unresolved',
   `created_at` datetime NOT NULL,
@@ -7105,16 +10640,26 @@ CREATE TABLE `reports` (
   KEY `IDX_F11FA745F675F31B` (`author_id`),
   KEY `report_status_idx` (`status`),
   KEY `report_type_idx` (`type`),
-  CONSTRAINT `FK_F11FA74583B12DAC` FOREIGN KEY (`community_event_id`) REFERENCES `events` (`id`),
-  CONSTRAINT `FK_F11FA745ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`),
+  CONSTRAINT `FK_F11FA74583B12DAC` FOREIGN KEY (`community_event_id`) REFERENCES `events` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_F11FA745ED1A100B` FOREIGN KEY (`committee_id`) REFERENCES `committees` (`id`) ON DELETE CASCADE,
   CONSTRAINT `FK_F11FA745F675F31B` FOREIGN KEY (`author_id`) REFERENCES `adherents` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `reports`
+--
+
+LOCK TABLES `reports` WRITE;
+/*!40000 ALTER TABLE `reports` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reports` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `republican_silence`
 --
 
+DROP TABLE IF EXISTS `republican_silence`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `republican_silence` (
@@ -7126,9 +10671,19 @@ CREATE TABLE `republican_silence` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `republican_silence`
+--
+
+LOCK TABLES `republican_silence` WRITE;
+/*!40000 ALTER TABLE `republican_silence` DISABLE KEYS */;
+/*!40000 ALTER TABLE `republican_silence` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `republican_silence_zone`
 --
 
+DROP TABLE IF EXISTS `republican_silence_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `republican_silence_zone` (
@@ -7143,9 +10698,19 @@ CREATE TABLE `republican_silence_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `republican_silence_zone`
+--
+
+LOCK TABLES `republican_silence_zone` WRITE;
+/*!40000 ALTER TABLE `republican_silence_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `republican_silence_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `roles`
 --
 
+DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `roles` (
@@ -7159,9 +10724,19 @@ CREATE TABLE `roles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `roles`
+--
+
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `running_mate_request_application_request_tag`
 --
 
+DROP TABLE IF EXISTS `running_mate_request_application_request_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `running_mate_request_application_request_tag` (
@@ -7176,9 +10751,19 @@ CREATE TABLE `running_mate_request_application_request_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `running_mate_request_application_request_tag`
+--
+
+LOCK TABLES `running_mate_request_application_request_tag` WRITE;
+/*!40000 ALTER TABLE `running_mate_request_application_request_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `running_mate_request_application_request_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `running_mate_request_referent_tag`
 --
 
+DROP TABLE IF EXISTS `running_mate_request_referent_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `running_mate_request_referent_tag` (
@@ -7193,9 +10778,19 @@ CREATE TABLE `running_mate_request_referent_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `running_mate_request_referent_tag`
+--
+
+LOCK TABLES `running_mate_request_referent_tag` WRITE;
+/*!40000 ALTER TABLE `running_mate_request_referent_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `running_mate_request_referent_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `running_mate_request_theme`
 --
 
+DROP TABLE IF EXISTS `running_mate_request_theme`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `running_mate_request_theme` (
@@ -7210,9 +10805,19 @@ CREATE TABLE `running_mate_request_theme` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `running_mate_request_theme`
+--
+
+LOCK TABLES `running_mate_request_theme` WRITE;
+/*!40000 ALTER TABLE `running_mate_request_theme` DISABLE KEYS */;
+/*!40000 ALTER TABLE `running_mate_request_theme` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `saved_board_members`
 --
 
+DROP TABLE IF EXISTS `saved_board_members`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `saved_board_members` (
@@ -7227,9 +10832,19 @@ CREATE TABLE `saved_board_members` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `saved_board_members`
+--
+
+LOCK TABLES `saved_board_members` WRITE;
+/*!40000 ALTER TABLE `saved_board_members` DISABLE KEYS */;
+/*!40000 ALTER TABLE `saved_board_members` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `scope`
 --
 
+DROP TABLE IF EXISTS `scope`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `scope` (
@@ -7244,9 +10859,19 @@ CREATE TABLE `scope` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `scope`
+--
+
+LOCK TABLES `scope` WRITE;
+/*!40000 ALTER TABLE `scope` DISABLE KEYS */;
+/*!40000 ALTER TABLE `scope` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `senator_area`
 --
 
+DROP TABLE IF EXISTS `senator_area`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `senator_area` (
@@ -7259,9 +10884,19 @@ CREATE TABLE `senator_area` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `senator_area`
+--
+
+LOCK TABLES `senator_area` WRITE;
+/*!40000 ALTER TABLE `senator_area` DISABLE KEYS */;
+/*!40000 ALTER TABLE `senator_area` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `senatorial_candidate_areas`
 --
 
+DROP TABLE IF EXISTS `senatorial_candidate_areas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `senatorial_candidate_areas` (
@@ -7271,9 +10906,19 @@ CREATE TABLE `senatorial_candidate_areas` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `senatorial_candidate_areas`
+--
+
+LOCK TABLES `senatorial_candidate_areas` WRITE;
+/*!40000 ALTER TABLE `senatorial_candidate_areas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `senatorial_candidate_areas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `senatorial_candidate_areas_tags`
 --
 
+DROP TABLE IF EXISTS `senatorial_candidate_areas_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `senatorial_candidate_areas_tags` (
@@ -7288,9 +10933,19 @@ CREATE TABLE `senatorial_candidate_areas_tags` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `senatorial_candidate_areas_tags`
+--
+
+LOCK TABLES `senatorial_candidate_areas_tags` WRITE;
+/*!40000 ALTER TABLE `senatorial_candidate_areas_tags` DISABLE KEYS */;
+/*!40000 ALTER TABLE `senatorial_candidate_areas_tags` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `sms_campaign`
 --
 
+DROP TABLE IF EXISTS `sms_campaign`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sms_campaign` (
@@ -7318,9 +10973,19 @@ CREATE TABLE `sms_campaign` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `sms_campaign`
+--
+
+LOCK TABLES `sms_campaign` WRITE;
+/*!40000 ALTER TABLE `sms_campaign` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_campaign` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `sms_stop_history`
 --
 
+DROP TABLE IF EXISTS `sms_stop_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sms_stop_history` (
@@ -7337,24 +11002,44 @@ CREATE TABLE `sms_stop_history` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `sms_stop_history`
+--
+
+LOCK TABLES `sms_stop_history` WRITE;
+/*!40000 ALTER TABLE `sms_stop_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sms_stop_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `social_share_categories`
 --
 
+DROP TABLE IF EXISTS `social_share_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `social_share_categories` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `position` smallint unsigned NOT NULL DEFAULT '0',
+  `position` smallint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `social_share_categories`
+--
+
+LOCK TABLES `social_share_categories` WRITE;
+/*!40000 ALTER TABLE `social_share_categories` DISABLE KEYS */;
+/*!40000 ALTER TABLE `social_share_categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `social_shares`
 --
 
+DROP TABLE IF EXISTS `social_shares`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `social_shares` (
@@ -7364,7 +11049,7 @@ CREATE TABLE `social_shares` (
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `position` smallint unsigned NOT NULL DEFAULT '0',
+  `position` smallint NOT NULL DEFAULT '0',
   `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `default_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `facebook_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -7381,9 +11066,19 @@ CREATE TABLE `social_shares` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `social_shares`
+--
+
+LOCK TABLES `social_shares` WRITE;
+/*!40000 ALTER TABLE `social_shares` DISABLE KEYS */;
+/*!40000 ALTER TABLE `social_shares` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `subscription_type`
 --
 
+DROP TABLE IF EXISTS `subscription_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `subscription_type` (
@@ -7400,9 +11095,19 @@ CREATE TABLE `subscription_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `subscription_type`
+--
+
+LOCK TABLES `subscription_type` WRITE;
+/*!40000 ALTER TABLE `subscription_type` DISABLE KEYS */;
+/*!40000 ALTER TABLE `subscription_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `team`
 --
 
+DROP TABLE IF EXISTS `team`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `team` (
@@ -7416,7 +11121,7 @@ CREATE TABLE `team` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `zone_id` int unsigned DEFAULT NULL,
-  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `visibility` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_C4E0A61FD17F50A6` (`uuid`),
   UNIQUE KEY `UNIQ_C4E0A61F5E237E069F2C3FAB` (`name`,`zone_id`),
@@ -7434,9 +11139,19 @@ CREATE TABLE `team` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `team`
+--
+
+LOCK TABLES `team` WRITE;
+/*!40000 ALTER TABLE `team` DISABLE KEYS */;
+/*!40000 ALTER TABLE `team` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `team_member`
 --
 
+DROP TABLE IF EXISTS `team_member`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `team_member` (
@@ -7457,9 +11172,19 @@ CREATE TABLE `team_member` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `team_member`
+--
+
+LOCK TABLES `team_member` WRITE;
+/*!40000 ALTER TABLE `team_member` DISABLE KEYS */;
+/*!40000 ALTER TABLE `team_member` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `team_member_history`
 --
 
+DROP TABLE IF EXISTS `team_member_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `team_member_history` (
@@ -7484,9 +11209,19 @@ CREATE TABLE `team_member_history` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `team_member_history`
+--
+
+LOCK TABLES `team_member_history` WRITE;
+/*!40000 ALTER TABLE `team_member_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `team_member_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council`
 --
 
+DROP TABLE IF EXISTS `territorial_council`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council` (
@@ -7507,9 +11242,19 @@ CREATE TABLE `territorial_council` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council`
+--
+
+LOCK TABLES `territorial_council` WRITE;
+/*!40000 ALTER TABLE `territorial_council` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_candidacies_group`
 --
 
+DROP TABLE IF EXISTS `territorial_council_candidacies_group`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_candidacies_group` (
@@ -7519,13 +11264,23 @@ CREATE TABLE `territorial_council_candidacies_group` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_candidacies_group`
+--
+
+LOCK TABLES `territorial_council_candidacies_group` WRITE;
+/*!40000 ALTER TABLE `territorial_council_candidacies_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_candidacies_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_candidacy`
 --
 
+DROP TABLE IF EXISTS `territorial_council_candidacy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_candidacy` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
   `election_id` int unsigned NOT NULL,
   `membership_id` int unsigned NOT NULL,
   `candidacies_group_id` int unsigned DEFAULT NULL,
@@ -7551,15 +11306,25 @@ CREATE TABLE `territorial_council_candidacy` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_candidacy`
+--
+
+LOCK TABLES `territorial_council_candidacy` WRITE;
+/*!40000 ALTER TABLE `territorial_council_candidacy` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_candidacy` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_candidacy_invitation`
 --
 
+DROP TABLE IF EXISTS `territorial_council_candidacy_invitation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_candidacy_invitation` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `membership_id` int unsigned NOT NULL,
-  `candidacy_id` int NOT NULL,
+  `candidacy_id` int unsigned NOT NULL,
   `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `accepted_at` datetime DEFAULT NULL,
   `declined_at` datetime DEFAULT NULL,
@@ -7576,9 +11341,19 @@ CREATE TABLE `territorial_council_candidacy_invitation` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_candidacy_invitation`
+--
+
+LOCK TABLES `territorial_council_candidacy_invitation` WRITE;
+/*!40000 ALTER TABLE `territorial_council_candidacy_invitation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_candidacy_invitation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_convocation`
 --
 
+DROP TABLE IF EXISTS `territorial_council_convocation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_convocation` (
@@ -7615,9 +11390,19 @@ CREATE TABLE `territorial_council_convocation` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_convocation`
+--
+
+LOCK TABLES `territorial_council_convocation` WRITE;
+/*!40000 ALTER TABLE `territorial_council_convocation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_convocation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_election`
 --
 
+DROP TABLE IF EXISTS `territorial_council_election`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_election` (
@@ -7652,9 +11437,19 @@ CREATE TABLE `territorial_council_election` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_election`
+--
+
+LOCK TABLES `territorial_council_election` WRITE;
+/*!40000 ALTER TABLE `territorial_council_election` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_election` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_election_poll`
 --
 
+DROP TABLE IF EXISTS `territorial_council_election_poll`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_election_poll` (
@@ -7667,9 +11462,19 @@ CREATE TABLE `territorial_council_election_poll` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_election_poll`
+--
+
+LOCK TABLES `territorial_council_election_poll` WRITE;
+/*!40000 ALTER TABLE `territorial_council_election_poll` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_election_poll` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_election_poll_choice`
 --
 
+DROP TABLE IF EXISTS `territorial_council_election_poll_choice`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_election_poll_choice` (
@@ -7685,9 +11490,19 @@ CREATE TABLE `territorial_council_election_poll_choice` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_election_poll_choice`
+--
+
+LOCK TABLES `territorial_council_election_poll_choice` WRITE;
+/*!40000 ALTER TABLE `territorial_council_election_poll_choice` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_election_poll_choice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_election_poll_vote`
 --
 
+DROP TABLE IF EXISTS `territorial_council_election_poll_vote`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_election_poll_vote` (
@@ -7704,9 +11519,19 @@ CREATE TABLE `territorial_council_election_poll_vote` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_election_poll_vote`
+--
+
+LOCK TABLES `territorial_council_election_poll_vote` WRITE;
+/*!40000 ALTER TABLE `territorial_council_election_poll_vote` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_election_poll_vote` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_feed_item`
 --
 
+DROP TABLE IF EXISTS `territorial_council_feed_item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_feed_item` (
@@ -7727,9 +11552,19 @@ CREATE TABLE `territorial_council_feed_item` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_feed_item`
+--
+
+LOCK TABLES `territorial_council_feed_item` WRITE;
+/*!40000 ALTER TABLE `territorial_council_feed_item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_feed_item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_membership`
 --
 
+DROP TABLE IF EXISTS `territorial_council_membership`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_membership` (
@@ -7748,9 +11583,19 @@ CREATE TABLE `territorial_council_membership` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_membership`
+--
+
+LOCK TABLES `territorial_council_membership` WRITE;
+/*!40000 ALTER TABLE `territorial_council_membership` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_membership` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_membership_log`
 --
 
+DROP TABLE IF EXISTS `territorial_council_membership_log`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_membership_log` (
@@ -7771,9 +11616,19 @@ CREATE TABLE `territorial_council_membership_log` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_membership_log`
+--
+
+LOCK TABLES `territorial_council_membership_log` WRITE;
+/*!40000 ALTER TABLE `territorial_council_membership_log` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_membership_log` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_official_report`
 --
 
+DROP TABLE IF EXISTS `territorial_council_official_report`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_official_report` (
@@ -7800,9 +11655,19 @@ CREATE TABLE `territorial_council_official_report` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_official_report`
+--
+
+LOCK TABLES `territorial_council_official_report` WRITE;
+/*!40000 ALTER TABLE `territorial_council_official_report` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_official_report` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_official_report_document`
 --
 
+DROP TABLE IF EXISTS `territorial_council_official_report_document`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_official_report_document` (
@@ -7823,9 +11688,19 @@ CREATE TABLE `territorial_council_official_report_document` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_official_report_document`
+--
+
+LOCK TABLES `territorial_council_official_report_document` WRITE;
+/*!40000 ALTER TABLE `territorial_council_official_report_document` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_official_report_document` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_quality`
 --
 
+DROP TABLE IF EXISTS `territorial_council_quality`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_quality` (
@@ -7841,9 +11716,19 @@ CREATE TABLE `territorial_council_quality` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_quality`
+--
+
+LOCK TABLES `territorial_council_quality` WRITE;
+/*!40000 ALTER TABLE `territorial_council_quality` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_quality` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_referent_tag`
 --
 
+DROP TABLE IF EXISTS `territorial_council_referent_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_referent_tag` (
@@ -7858,9 +11743,19 @@ CREATE TABLE `territorial_council_referent_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_referent_tag`
+--
+
+LOCK TABLES `territorial_council_referent_tag` WRITE;
+/*!40000 ALTER TABLE `territorial_council_referent_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_referent_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `territorial_council_zone`
 --
 
+DROP TABLE IF EXISTS `territorial_council_zone`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `territorial_council_zone` (
@@ -7875,9 +11770,19 @@ CREATE TABLE `territorial_council_zone` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `territorial_council_zone`
+--
+
+LOCK TABLES `territorial_council_zone` WRITE;
+/*!40000 ALTER TABLE `territorial_council_zone` DISABLE KEYS */;
+/*!40000 ALTER TABLE `territorial_council_zone` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `thematic_community`
 --
 
+DROP TABLE IF EXISTS `thematic_community`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `thematic_community` (
@@ -7895,9 +11800,19 @@ CREATE TABLE `thematic_community` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `thematic_community`
+--
+
+LOCK TABLES `thematic_community` WRITE;
+/*!40000 ALTER TABLE `thematic_community` DISABLE KEYS */;
+/*!40000 ALTER TABLE `thematic_community` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `thematic_community_contact`
 --
 
+DROP TABLE IF EXISTS `thematic_community_contact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `thematic_community_contact` (
@@ -7929,9 +11844,19 @@ CREATE TABLE `thematic_community_contact` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `thematic_community_contact`
+--
+
+LOCK TABLES `thematic_community_contact` WRITE;
+/*!40000 ALTER TABLE `thematic_community_contact` DISABLE KEYS */;
+/*!40000 ALTER TABLE `thematic_community_contact` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `thematic_community_membership`
 --
 
+DROP TABLE IF EXISTS `thematic_community_membership`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `thematic_community_membership` (
@@ -7961,9 +11886,19 @@ CREATE TABLE `thematic_community_membership` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `thematic_community_membership`
+--
+
+LOCK TABLES `thematic_community_membership` WRITE;
+/*!40000 ALTER TABLE `thematic_community_membership` DISABLE KEYS */;
+/*!40000 ALTER TABLE `thematic_community_membership` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `thematic_community_membership_user_list_definition`
 --
 
+DROP TABLE IF EXISTS `thematic_community_membership_user_list_definition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `thematic_community_membership_user_list_definition` (
@@ -7978,9 +11913,19 @@ CREATE TABLE `thematic_community_membership_user_list_definition` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `thematic_community_membership_user_list_definition`
+--
+
+LOCK TABLES `thematic_community_membership_user_list_definition` WRITE;
+/*!40000 ALTER TABLE `thematic_community_membership_user_list_definition` DISABLE KEYS */;
+/*!40000 ALTER TABLE `thematic_community_membership_user_list_definition` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `timeline_manifesto_translations`
 --
 
+DROP TABLE IF EXISTS `timeline_manifesto_translations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `timeline_manifesto_translations` (
@@ -7998,9 +11943,19 @@ CREATE TABLE `timeline_manifesto_translations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `timeline_manifesto_translations`
+--
+
+LOCK TABLES `timeline_manifesto_translations` WRITE;
+/*!40000 ALTER TABLE `timeline_manifesto_translations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `timeline_manifesto_translations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `timeline_manifestos`
 --
 
+DROP TABLE IF EXISTS `timeline_manifestos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `timeline_manifestos` (
@@ -8014,9 +11969,19 @@ CREATE TABLE `timeline_manifestos` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `timeline_manifestos`
+--
+
+LOCK TABLES `timeline_manifestos` WRITE;
+/*!40000 ALTER TABLE `timeline_manifestos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `timeline_manifestos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `timeline_measure_translations`
 --
 
+DROP TABLE IF EXISTS `timeline_measure_translations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `timeline_measure_translations` (
@@ -8032,9 +11997,19 @@ CREATE TABLE `timeline_measure_translations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `timeline_measure_translations`
+--
+
+LOCK TABLES `timeline_measure_translations` WRITE;
+/*!40000 ALTER TABLE `timeline_measure_translations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `timeline_measure_translations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `timeline_measures`
 --
 
+DROP TABLE IF EXISTS `timeline_measures`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `timeline_measures` (
@@ -8051,9 +12026,19 @@ CREATE TABLE `timeline_measures` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `timeline_measures`
+--
+
+LOCK TABLES `timeline_measures` WRITE;
+/*!40000 ALTER TABLE `timeline_measures` DISABLE KEYS */;
+/*!40000 ALTER TABLE `timeline_measures` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `timeline_measures_profiles`
 --
 
+DROP TABLE IF EXISTS `timeline_measures_profiles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `timeline_measures_profiles` (
@@ -8068,9 +12053,19 @@ CREATE TABLE `timeline_measures_profiles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `timeline_measures_profiles`
+--
+
+LOCK TABLES `timeline_measures_profiles` WRITE;
+/*!40000 ALTER TABLE `timeline_measures_profiles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `timeline_measures_profiles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `timeline_profile_translations`
 --
 
+DROP TABLE IF EXISTS `timeline_profile_translations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `timeline_profile_translations` (
@@ -8088,9 +12083,19 @@ CREATE TABLE `timeline_profile_translations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `timeline_profile_translations`
+--
+
+LOCK TABLES `timeline_profile_translations` WRITE;
+/*!40000 ALTER TABLE `timeline_profile_translations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `timeline_profile_translations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `timeline_profiles`
 --
 
+DROP TABLE IF EXISTS `timeline_profiles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `timeline_profiles` (
@@ -8100,9 +12105,19 @@ CREATE TABLE `timeline_profiles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `timeline_profiles`
+--
+
+LOCK TABLES `timeline_profiles` WRITE;
+/*!40000 ALTER TABLE `timeline_profiles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `timeline_profiles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `timeline_theme_translations`
 --
 
+DROP TABLE IF EXISTS `timeline_theme_translations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `timeline_theme_translations` (
@@ -8120,9 +12135,19 @@ CREATE TABLE `timeline_theme_translations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `timeline_theme_translations`
+--
+
+LOCK TABLES `timeline_theme_translations` WRITE;
+/*!40000 ALTER TABLE `timeline_theme_translations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `timeline_theme_translations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `timeline_themes`
 --
 
+DROP TABLE IF EXISTS `timeline_themes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `timeline_themes` (
@@ -8137,9 +12162,19 @@ CREATE TABLE `timeline_themes` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `timeline_themes`
+--
+
+LOCK TABLES `timeline_themes` WRITE;
+/*!40000 ALTER TABLE `timeline_themes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `timeline_themes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `timeline_themes_measures`
 --
 
+DROP TABLE IF EXISTS `timeline_themes_measures`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `timeline_themes_measures` (
@@ -8154,9 +12189,19 @@ CREATE TABLE `timeline_themes_measures` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `timeline_themes_measures`
+--
+
+LOCK TABLES `timeline_themes_measures` WRITE;
+/*!40000 ALTER TABLE `timeline_themes_measures` DISABLE KEYS */;
+/*!40000 ALTER TABLE `timeline_themes_measures` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `ton_macron_choices`
 --
 
+DROP TABLE IF EXISTS `ton_macron_choices`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ton_macron_choices` (
@@ -8173,9 +12218,19 @@ CREATE TABLE `ton_macron_choices` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `ton_macron_choices`
+--
+
+LOCK TABLES `ton_macron_choices` WRITE;
+/*!40000 ALTER TABLE `ton_macron_choices` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ton_macron_choices` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `ton_macron_friend_invitation_has_choices`
 --
 
+DROP TABLE IF EXISTS `ton_macron_friend_invitation_has_choices`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ton_macron_friend_invitation_has_choices` (
@@ -8190,9 +12245,19 @@ CREATE TABLE `ton_macron_friend_invitation_has_choices` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `ton_macron_friend_invitation_has_choices`
+--
+
+LOCK TABLES `ton_macron_friend_invitation_has_choices` WRITE;
+/*!40000 ALTER TABLE `ton_macron_friend_invitation_has_choices` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ton_macron_friend_invitation_has_choices` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `ton_macron_friend_invitations`
 --
 
+DROP TABLE IF EXISTS `ton_macron_friend_invitations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ton_macron_friend_invitations` (
@@ -8215,9 +12280,19 @@ CREATE TABLE `ton_macron_friend_invitations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `ton_macron_friend_invitations`
+--
+
+LOCK TABLES `ton_macron_friend_invitations` WRITE;
+/*!40000 ALTER TABLE `ton_macron_friend_invitations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ton_macron_friend_invitations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `unregistration_referent_tag`
 --
 
+DROP TABLE IF EXISTS `unregistration_referent_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `unregistration_referent_tag` (
@@ -8232,9 +12307,19 @@ CREATE TABLE `unregistration_referent_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `unregistration_referent_tag`
+--
+
+LOCK TABLES `unregistration_referent_tag` WRITE;
+/*!40000 ALTER TABLE `unregistration_referent_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `unregistration_referent_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `unregistrations`
 --
 
+DROP TABLE IF EXISTS `unregistrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `unregistrations` (
@@ -8247,7 +12332,7 @@ CREATE TABLE `unregistrations` (
   `registered_at` datetime NOT NULL,
   `unregistered_at` datetime NOT NULL,
   `is_adherent` tinyint(1) NOT NULL DEFAULT '0',
-  `adherent_uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
+  `adherent_uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `is_renaissance` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `IDX_F9E4AA0C5B30B80B` (`excluded_by_id`),
@@ -8256,9 +12341,19 @@ CREATE TABLE `unregistrations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `unregistrations`
+--
+
+LOCK TABLES `unregistrations` WRITE;
+/*!40000 ALTER TABLE `unregistrations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `unregistrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user_authorizations`
 --
 
+DROP TABLE IF EXISTS `user_authorizations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_authorizations` (
@@ -8278,9 +12373,19 @@ CREATE TABLE `user_authorizations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `user_authorizations`
+--
+
+LOCK TABLES `user_authorizations` WRITE;
+/*!40000 ALTER TABLE `user_authorizations` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_authorizations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user_documents`
 --
 
+DROP TABLE IF EXISTS `user_documents`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_documents` (
@@ -8298,9 +12403,19 @@ CREATE TABLE `user_documents` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `user_documents`
+--
+
+LOCK TABLES `user_documents` WRITE;
+/*!40000 ALTER TABLE `user_documents` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_documents` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user_list_definition`
 --
 
+DROP TABLE IF EXISTS `user_list_definition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_list_definition` (
@@ -8315,9 +12430,19 @@ CREATE TABLE `user_list_definition` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `user_list_definition`
+--
+
+LOCK TABLES `user_list_definition` WRITE;
+/*!40000 ALTER TABLE `user_list_definition` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_list_definition` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `volunteer_request_application_request_tag`
 --
 
+DROP TABLE IF EXISTS `volunteer_request_application_request_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `volunteer_request_application_request_tag` (
@@ -8332,9 +12457,19 @@ CREATE TABLE `volunteer_request_application_request_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `volunteer_request_application_request_tag`
+--
+
+LOCK TABLES `volunteer_request_application_request_tag` WRITE;
+/*!40000 ALTER TABLE `volunteer_request_application_request_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `volunteer_request_application_request_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `volunteer_request_referent_tag`
 --
 
+DROP TABLE IF EXISTS `volunteer_request_referent_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `volunteer_request_referent_tag` (
@@ -8349,9 +12484,19 @@ CREATE TABLE `volunteer_request_referent_tag` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `volunteer_request_referent_tag`
+--
+
+LOCK TABLES `volunteer_request_referent_tag` WRITE;
+/*!40000 ALTER TABLE `volunteer_request_referent_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `volunteer_request_referent_tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `volunteer_request_technical_skill`
 --
 
+DROP TABLE IF EXISTS `volunteer_request_technical_skill`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `volunteer_request_technical_skill` (
@@ -8366,9 +12511,19 @@ CREATE TABLE `volunteer_request_technical_skill` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `volunteer_request_technical_skill`
+--
+
+LOCK TABLES `volunteer_request_technical_skill` WRITE;
+/*!40000 ALTER TABLE `volunteer_request_technical_skill` DISABLE KEYS */;
+/*!40000 ALTER TABLE `volunteer_request_technical_skill` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `volunteer_request_theme`
 --
 
+DROP TABLE IF EXISTS `volunteer_request_theme`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `volunteer_request_theme` (
@@ -8383,34 +12538,19 @@ CREATE TABLE `volunteer_request_theme` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `vote_place`
+-- Dumping data for table `volunteer_request_theme`
 --
 
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `vote_place` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `postal_code` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `city` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  `holder_office_available` tinyint(1) NOT NULL,
-  `substitute_office_available` tinyint(1) NOT NULL,
-  `alias` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_2574310677153098` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `volunteer_request_theme` WRITE;
+/*!40000 ALTER TABLE `volunteer_request_theme` DISABLE KEYS */;
+/*!40000 ALTER TABLE `volunteer_request_theme` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `vote_result`
 --
 
+DROP TABLE IF EXISTS `vote_result`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `vote_result` (
@@ -8444,9 +12584,19 @@ CREATE TABLE `vote_result` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `vote_result`
+--
+
+LOCK TABLES `vote_result` WRITE;
+/*!40000 ALTER TABLE `vote_result` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vote_result` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `vote_result_list`
 --
 
+DROP TABLE IF EXISTS `vote_result_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `vote_result_list` (
@@ -8467,9 +12617,19 @@ CREATE TABLE `vote_result_list` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `vote_result_list`
+--
+
+LOCK TABLES `vote_result_list` WRITE;
+/*!40000 ALTER TABLE `vote_result_list` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vote_result_list` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `vote_result_list_collection`
 --
 
+DROP TABLE IF EXISTS `vote_result_list_collection`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `vote_result_list_collection` (
@@ -8485,9 +12645,19 @@ CREATE TABLE `vote_result_list_collection` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `vote_result_list_collection`
+--
+
+LOCK TABLES `vote_result_list_collection` WRITE;
+/*!40000 ALTER TABLE `vote_result_list_collection` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vote_result_list_collection` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_candidate`
 --
 
+DROP TABLE IF EXISTS `voting_platform_candidate`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_candidate` (
@@ -8503,6 +12673,7 @@ CREATE TABLE `voting_platform_candidate` (
   `faith_statement` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `additionally_elected` tinyint(1) NOT NULL DEFAULT '0',
   `position` smallint unsigned DEFAULT NULL,
+  `is_substitute` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_3F426D6DD17F50A6` (`uuid`),
   KEY `IDX_3F426D6D25F06C53` (`adherent_id`),
@@ -8513,9 +12684,19 @@ CREATE TABLE `voting_platform_candidate` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_candidate`
+--
+
+LOCK TABLES `voting_platform_candidate` WRITE;
+/*!40000 ALTER TABLE `voting_platform_candidate` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_candidate` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_candidate_group`
 --
 
+DROP TABLE IF EXISTS `voting_platform_candidate_group`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_candidate_group` (
@@ -8524,7 +12705,7 @@ CREATE TABLE `voting_platform_candidate_group` (
   `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
   `elected` tinyint(1) NOT NULL DEFAULT '0',
   `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `media_file_path` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `media_file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_2C1A353AD17F50A6` (`uuid`),
   KEY `IDX_2C1A353AC1E98F21` (`election_pool_id`),
@@ -8533,9 +12714,19 @@ CREATE TABLE `voting_platform_candidate_group` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_candidate_group`
+--
+
+LOCK TABLES `voting_platform_candidate_group` WRITE;
+/*!40000 ALTER TABLE `voting_platform_candidate_group` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_candidate_group` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_candidate_group_result`
 --
 
+DROP TABLE IF EXISTS `voting_platform_candidate_group_result`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_candidate_group_result` (
@@ -8556,9 +12747,19 @@ CREATE TABLE `voting_platform_candidate_group_result` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_candidate_group_result`
+--
+
+LOCK TABLES `voting_platform_candidate_group_result` WRITE;
+/*!40000 ALTER TABLE `voting_platform_candidate_group_result` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_candidate_group_result` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_election`
 --
 
+DROP TABLE IF EXISTS `voting_platform_election`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_election` (
@@ -8573,6 +12774,8 @@ CREATE TABLE `voting_platform_election` (
   `additional_places` smallint unsigned DEFAULT NULL,
   `additional_places_gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `notifications_sent` smallint NOT NULL DEFAULT '0',
+  `canceled_at` datetime DEFAULT NULL,
+  `cancel_reason` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_4E144C94D17F50A6` (`uuid`),
   KEY `IDX_4E144C94FAC7D83F` (`designation_id`),
@@ -8581,9 +12784,19 @@ CREATE TABLE `voting_platform_election` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_election`
+--
+
+LOCK TABLES `voting_platform_election` WRITE;
+/*!40000 ALTER TABLE `voting_platform_election` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_election` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_election_entity`
 --
 
+DROP TABLE IF EXISTS `voting_platform_election_entity`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_election_entity` (
@@ -8602,15 +12815,25 @@ CREATE TABLE `voting_platform_election_entity` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_election_entity`
+--
+
+LOCK TABLES `voting_platform_election_entity` WRITE;
+/*!40000 ALTER TABLE `voting_platform_election_entity` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_election_entity` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_election_pool`
 --
 
+DROP TABLE IF EXISTS `voting_platform_election_pool`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_election_pool` (
   `id` int NOT NULL AUTO_INCREMENT,
   `election_id` int unsigned DEFAULT NULL,
-  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_7225D6EFA708DAFF` (`election_id`),
   CONSTRAINT `FK_7225D6EFA708DAFF` FOREIGN KEY (`election_id`) REFERENCES `voting_platform_election` (`id`) ON DELETE CASCADE
@@ -8618,9 +12841,19 @@ CREATE TABLE `voting_platform_election_pool` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_election_pool`
+--
+
+LOCK TABLES `voting_platform_election_pool` WRITE;
+/*!40000 ALTER TABLE `voting_platform_election_pool` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_election_pool` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_election_pool_result`
 --
 
+DROP TABLE IF EXISTS `voting_platform_election_pool_result`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_election_pool_result` (
@@ -8641,9 +12874,19 @@ CREATE TABLE `voting_platform_election_pool_result` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_election_pool_result`
+--
+
+LOCK TABLES `voting_platform_election_pool_result` WRITE;
+/*!40000 ALTER TABLE `voting_platform_election_pool_result` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_election_pool_result` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_election_result`
 --
 
+DROP TABLE IF EXISTS `voting_platform_election_result`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_election_result` (
@@ -8659,9 +12902,19 @@ CREATE TABLE `voting_platform_election_result` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_election_result`
+--
+
+LOCK TABLES `voting_platform_election_result` WRITE;
+/*!40000 ALTER TABLE `voting_platform_election_result` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_election_result` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_election_round`
 --
 
+DROP TABLE IF EXISTS `voting_platform_election_round`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_election_round` (
@@ -8677,9 +12930,19 @@ CREATE TABLE `voting_platform_election_round` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_election_round`
+--
+
+LOCK TABLES `voting_platform_election_round` WRITE;
+/*!40000 ALTER TABLE `voting_platform_election_round` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_election_round` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_election_round_election_pool`
 --
 
+DROP TABLE IF EXISTS `voting_platform_election_round_election_pool`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_election_round_election_pool` (
@@ -8694,9 +12957,19 @@ CREATE TABLE `voting_platform_election_round_election_pool` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_election_round_election_pool`
+--
+
+LOCK TABLES `voting_platform_election_round_election_pool` WRITE;
+/*!40000 ALTER TABLE `voting_platform_election_round_election_pool` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_election_round_election_pool` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_election_round_result`
 --
 
+DROP TABLE IF EXISTS `voting_platform_election_round_result`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_election_round_result` (
@@ -8714,9 +12987,19 @@ CREATE TABLE `voting_platform_election_round_result` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_election_round_result`
+--
+
+LOCK TABLES `voting_platform_election_round_result` WRITE;
+/*!40000 ALTER TABLE `voting_platform_election_round_result` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_election_round_result` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_vote`
 --
 
+DROP TABLE IF EXISTS `voting_platform_vote`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_vote` (
@@ -8734,9 +13017,19 @@ CREATE TABLE `voting_platform_vote` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_vote`
+--
+
+LOCK TABLES `voting_platform_vote` WRITE;
+/*!40000 ALTER TABLE `voting_platform_vote` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_vote` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_vote_choice`
 --
 
+DROP TABLE IF EXISTS `voting_platform_vote_choice`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_vote_choice` (
@@ -8757,9 +13050,19 @@ CREATE TABLE `voting_platform_vote_choice` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_vote_choice`
+--
+
+LOCK TABLES `voting_platform_vote_choice` WRITE;
+/*!40000 ALTER TABLE `voting_platform_vote_choice` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_vote_choice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_vote_result`
 --
 
+DROP TABLE IF EXISTS `voting_platform_vote_result`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_vote_result` (
@@ -8767,6 +13070,7 @@ CREATE TABLE `voting_platform_vote_result` (
   `election_round_id` int DEFAULT NULL,
   `voter_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `voted_at` datetime NOT NULL,
+  `zone_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_vote` (`voter_key`,`election_round_id`),
   KEY `IDX_62C86890FCBF5E32` (`election_round_id`),
@@ -8775,9 +13079,19 @@ CREATE TABLE `voting_platform_vote_result` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_vote_result`
+--
+
+LOCK TABLES `voting_platform_vote_result` WRITE;
+/*!40000 ALTER TABLE `voting_platform_vote_result` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_vote_result` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_voter`
 --
 
+DROP TABLE IF EXISTS `voting_platform_voter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_voter` (
@@ -8793,9 +13107,19 @@ CREATE TABLE `voting_platform_voter` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_voter`
+--
+
+LOCK TABLES `voting_platform_voter` WRITE;
+/*!40000 ALTER TABLE `voting_platform_voter` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_voter` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_voters_list`
 --
 
+DROP TABLE IF EXISTS `voting_platform_voters_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_voters_list` (
@@ -8808,9 +13132,19 @@ CREATE TABLE `voting_platform_voters_list` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `voting_platform_voters_list`
+--
+
+LOCK TABLES `voting_platform_voters_list` WRITE;
+/*!40000 ALTER TABLE `voting_platform_voters_list` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_voters_list` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `voting_platform_voters_list_voter`
 --
 
+DROP TABLE IF EXISTS `voting_platform_voters_list_voter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `voting_platform_voters_list_voter` (
@@ -8825,25 +13159,13 @@ CREATE TABLE `voting_platform_voters_list_voter` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `web_hooks`
+-- Dumping data for table `voting_platform_voters_list_voter`
 --
 
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `web_hooks` (
-  `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `client_id` int unsigned NOT NULL,
-  `event` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `callbacks` json NOT NULL,
-  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:uuid)',
-  `service` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `web_hook_event_client_id_unique` (`event`,`client_id`),
-  UNIQUE KEY `UNIQ_CDB836ADD17F50A6` (`uuid`),
-  KEY `IDX_CDB836AD19EB6921` (`client_id`),
-  CONSTRAINT `FK_CDB836AD19EB6921` FOREIGN KEY (`client_id`) REFERENCES `oauth_clients` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `voting_platform_voters_list_voter` WRITE;
+/*!40000 ALTER TABLE `voting_platform_voters_list_voter` DISABLE KEYS */;
+/*!40000 ALTER TABLE `voting_platform_voters_list_voter` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping routines for database 'enmarche'
