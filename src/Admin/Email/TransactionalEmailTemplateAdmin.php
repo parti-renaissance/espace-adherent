@@ -75,7 +75,7 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
         $form
             ->add('identifier', ChoiceType::class, [
                 'label' => 'Identifiant',
-                'choices' => array_combine($classes = $this->getMessageClassNames(), $classes),
+                'choices' => array_combine($classes = $this->getMessageClassNames($template?->getId()), $classes),
                 'placeholder' => 'Choisir un identifiant',
             ])
             ->add('subject', null, ['label' => 'Objet', 'required' => false])
@@ -94,7 +94,7 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
         ;
     }
 
-    private function getMessageClassNames(): array
+    private function getMessageClassNames(?int $currentTemplateId): array
     {
         $classNames = [];
         foreach ($this->scanDir($dir = \dirname((new \ReflectionClass(Message::class))->getFileName())) as $file) {
@@ -112,7 +112,12 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
             }
         }
 
-        $templates = array_map(fn (TransactionalEmailTemplate $template) => $template->identifier, $this->transactionEmailTemplateRepository->findAll());
+        $existingTemplates = array_filter(
+            $this->transactionEmailTemplateRepository->findAll(),
+            function (TransactionalEmailTemplate $template) use ($currentTemplateId) { return $template->getId() != $currentTemplateId; }
+        );
+
+        $templates = array_map(fn (TransactionalEmailTemplate $template) => $template->identifier, $existingTemplates);
 
         return array_diff($classNames, $templates);
     }
