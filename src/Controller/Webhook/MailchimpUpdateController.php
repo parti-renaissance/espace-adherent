@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Renaissance;
+namespace App\Controller\Webhook;
 
 use App\Mailchimp\Webhook\Command\CatchMailchimpWebhookCallCommand;
 use Psr\Log\LoggerInterface;
@@ -11,14 +11,11 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\SerializerStamp;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route(path: '/mailchimp/webhook/{key}', name: 'app_mailchimp_webhook', methods: ['GET', 'POST'])]
-class MailchimpWebhookController extends AbstractController
+#[Route(path: '/mailchimp/{key}', name: 'app_mailchimp_webhook', methods: ['GET', 'POST'])]
+class MailchimpUpdateController extends AbstractController
 {
-    private string $mailchimpWebhookKey;
-
-    public function __construct(string $mailchimpWebhookKey)
+    public function __construct(private readonly string $mailchimpWebhookKey)
     {
-        $this->mailchimpWebhookKey = $mailchimpWebhookKey;
     }
 
     public function __invoke(string $key, Request $request, MessageBusInterface $bus, LoggerInterface $logger): Response
