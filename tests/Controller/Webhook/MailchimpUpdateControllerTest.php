@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\App\Controller\Renaissance;
+namespace Tests\App\Controller\Webhook;
 
 use App\Mailchimp\Contact\ContactStatusEnum;
 use PHPUnit\Framework\Attributes\Group;
@@ -9,11 +9,11 @@ use Tests\App\AbstractRenaissanceWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
 
 #[Group('functional')]
-class MailchimpWebhookControllerTest extends AbstractRenaissanceWebTestCase
+class MailchimpUpdateControllerTest extends AbstractRenaissanceWebTestCase
 {
     use ControllerTestTrait;
 
-    private const URL = '/mailchimp/webhook/abc';
+    private const URL = '/mailchimp/abc';
 
     public function testSubscribeAdherentViaMailchimpWebhook(): void
     {
