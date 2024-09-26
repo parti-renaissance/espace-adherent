@@ -49,6 +49,12 @@ class FillRevenueController extends AbstractContributionController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $adherent->addRevenueDeclaration($command->revenueAmount);
+            $adherent->setContributionStatus(
+                $command->needContribution()
+                    ? ContributionStatusEnum::ELIGIBLE
+                    : ContributionStatusEnum::NOT_ELIGIBLE
+            );
+
             $entityManager->flush();
 
             $bus->dispatch(new AsyncRefreshAdherentTagCommand($adherent->getUuid()));
@@ -58,7 +64,6 @@ class FillRevenueController extends AbstractContributionController
 
                 $contributionRequestHandler->cancelLastContribution($adherent);
 
-                $adherent->setContributionStatus(ContributionStatusEnum::NOT_ELIGIBLE);
                 $adherent->setContributedAt(new \DateTime());
 
                 $entityManager->flush();

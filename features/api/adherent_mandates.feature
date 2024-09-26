@@ -309,7 +309,7 @@ Feature:
             "mandates": [
                 "conseiller_municipal"
             ],
-            "contribution_status": null,
+            "contribution_status": "eligible",
             "exempt_from_cotisation": false,
             "contributed_at": null,
             "payments": [],
