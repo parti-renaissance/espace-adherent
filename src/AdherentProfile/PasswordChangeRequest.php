@@ -2,7 +2,6 @@
 
 namespace App\AdherentProfile;
 
-use App\Entity\Adherent;
 use App\Validator\NewUserPassword;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,10 +22,6 @@ class PasswordChangeRequest implements NewUserPasswordInterface
 
     #[Assert\NotBlank]
     public ?string $newPasswordConfirmation = null;
-
-    public function __construct(Adherent $adherent)
-    {
-    }
 
     public function getNewPassword(): ?string
     {

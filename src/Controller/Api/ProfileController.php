@@ -165,7 +165,7 @@ class ProfileController extends AbstractController
 
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
-        $passwordChangeRequest = new PasswordChangeRequest($adherent);
+        $passwordChangeRequest = new PasswordChangeRequest();
 
         $serializer->deserialize($json, PasswordChangeRequest::class, 'json', [
             AbstractObjectNormalizer::OBJECT_TO_POPULATE => $passwordChangeRequest,
