@@ -1534,3 +1534,68 @@ Feature:
         """
         {"image_url": null}
         """
+
+    Scenario Outline: As a logged-in user I can not change my password with a weak password
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scopes "write:profile"
+        When I send a "POST" request to "/api/v3/profile/me/password-change" with body:
+        """
+        {
+            "old_password": "secret!12345",
+            "new_password": "<password>",
+            "new_password_confirmation": "<password>"
+        }
+        """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON should be a superset of:
+        """
+        {
+            "violations": [
+                {
+                    "propertyPath": "new_password",
+                    "message": "<error_message>"
+                }
+            ]
+        }
+        """
+    Examples:
+        | password     | error_message                                                                                    |
+        | newpassword@ | Le mot de passe doit contenir au moins une lettre majuscule.                                     |
+        | NEWPASSWORD@ | Le mot de passe doit contenir au moins une lettre minuscule.                                     |
+        | NewPassword  | Le mot de passe doit contenir au moins un caractère spécial (!@#$%^&*()-_=+{}\|:;\"'<>,.?[]\\/). |
+        | New@         | Le mot de passe doit faire au moins 8 caractères.                                                |
+
+    Scenario: As a logged-in user I can not change my password if new passwords do not match
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scopes "write:profile"
+        When I send a "POST" request to "/api/v3/profile/me/password-change" with body:
+        """
+        {
+            "old_password": "secret!12345",
+            "new_password": "NewPassword@",
+            "new_password_confirmation": "NewPassword@2"
+        }
+        """
+        Then the response status code should be 400
+        And the JSON should be a superset of:
+        """
+        {
+            "violations": [
+                {
+                    "propertyPath": "new_password",
+                    "message": "Les mots de passe ne correspondent pas."
+                }
+            ]
+        }
+        """
+
+    Scenario: As a logged-in user I can change my password
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scopes "write:profile"
+        When I send a "POST" request to "/api/v3/profile/me/password-change" with body:
+        """
+        {
+            "old_password": "secret!12345",
+            "new_password": "NewPassword@",
+            "new_password_confirmation": "NewPassword@"
+        }
+        """
+        Then the response status code should be 200
