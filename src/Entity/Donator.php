@@ -67,7 +67,7 @@ class Donator
      */
     #[ORM\OneToMany(mappedBy: 'donator', targetEntity: Donation::class, cascade: ['all'])]
     #[ORM\OrderBy(['createdAt' => 'DESC'])]
-    private $donations;
+    private Collection $donations;
 
     /**
      * @var Donation|null
@@ -84,14 +84,17 @@ class Donator
     private $referenceDonation;
 
     #[ORM\ManyToMany(targetEntity: DonatorTag::class)]
-    private $tags;
+    private Collection $tags;
 
     /**
      * @var DonatorKinship[]|Collection
      */
     #[Assert\Valid]
     #[ORM\OneToMany(mappedBy: 'donator', targetEntity: DonatorKinship::class, cascade: ['all'])]
-    private $kinships;
+    private Collection $kinships;
+
+    #[ORM\OneToMany(mappedBy: 'donator', targetEntity: TaxReceipt::class, cascade: ['all'])]
+    private Collection $taxReceipts;
 
     public function __construct(
         ?string $lastName = null,
@@ -111,6 +114,7 @@ class Donator
         $this->donations = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->kinships = new ArrayCollection();
+        $this->taxReceipts = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -403,5 +407,12 @@ class Donator
         }
 
         return $total;
+    }
+
+    public function addTaxReceipt(TaxReceipt $receipt): void
+    {
+        if (!$this->taxReceipts->contains($receipt)) {
+            $this->taxReceipts->add($receipt);
+        }
     }
 }

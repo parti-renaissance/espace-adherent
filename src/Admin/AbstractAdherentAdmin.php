@@ -440,7 +440,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                 ->end()
             ->end()
             ->tab('Dons / Cotisations')
-                ->with('Informations', [
+                ->with('', [
                     'class' => 'col-md-12',
                     'box_class' => 'box box-info',
                 ])
