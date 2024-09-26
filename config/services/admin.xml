@@ -765,6 +765,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.administrator_action_history" class="App\Admin\AdministratorActionHistoryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Historique administrateurs" group="Tech" />
+
+            <argument />
+            <argument>App\Entity\AdministratorActionHistory</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.email" class="App\Admin\Email\EmailLogAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Logs Mailer" group="Tech" />
 

@@ -12,8 +12,8 @@ use Symfony\Component\Security\Core\Security;
 class UserActionHistoryHandler
 {
     public function __construct(
-        public readonly Security $security,
-        public readonly MessageBusInterface $bus,
+        private readonly Security $security,
+        private readonly MessageBusInterface $bus,
     ) {
     }
 

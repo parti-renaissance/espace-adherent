@@ -1302,3 +1302,12 @@ user_action_history.type.password_reset_validate: Mot de passe oublié (changeme
 user_action_history.type.password_change: Changement de mot de passe
 user_action_history.type.email_change_request: Changement d'adresse email (demande)
 user_action_history.type.email_change_validate: Changement d'adresse email (validation)
+
+#
+# AdministratorActionHistory
+#
+administrator_action_history.type.login_success: Connexion réussie
+administrator_action_history.type.login_failure: Connexion échouée
+administrator_action_history.type.impersonation_start: Début d'impersonnification
+administrator_action_history.type.impersonation_end: Fin d'impersonnification
+administrator_action_history.type.export: Export
