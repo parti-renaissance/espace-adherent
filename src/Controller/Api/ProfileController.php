@@ -175,7 +175,7 @@ class ProfileController extends AbstractController
         $violations = $validator->validate($passwordChangeRequest);
 
         if (0 === $violations->count()) {
-            $changePasswordHandler->changePassword($adherent, $passwordChangeRequest->getNewPassword());
+            $changePasswordHandler->changePassword($adherent, $passwordChangeRequest->newPassword);
 
             return new JsonResponse('OK');
         }
