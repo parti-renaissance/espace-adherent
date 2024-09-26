@@ -1105,6 +1105,12 @@ Feature:
                 contains('transfer'),
                 contains('tpe')
             )",
+            "type_label": "@string@.oneOf(
+                contains('Carte bleue'),
+                contains('Chèque'),
+                contains('Virement'),
+                contains('TPE')
+            )",
             "subscription": "@boolean@",
             "membership": "@boolean@",
             "status": "@string@.oneOf(
@@ -1127,6 +1133,7 @@ Feature:
             "uuid": "@uuid@",
             "date": "@string@.isDateTime()",
             "type": "cb",
+            "type_label": "Carte bleue",
             "subscription": false,
             "membership": true,
             "status": "finished",
@@ -1136,6 +1143,7 @@ Feature:
             "uuid": "@uuid@",
             "date": "@string@.isDateTime()",
             "type": "cb",
+            "type_label": "Carte bleue",
             "subscription": false,
             "membership": true,
             "status": "finished",
@@ -1145,6 +1153,7 @@ Feature:
             "uuid": "@uuid@",
             "date": "@string@.isDateTime()",
             "type": "cb",
+            "type_label": "Carte bleue",
             "subscription": true,
             "membership": false,
             "status": "subscription_in_progress",
@@ -1154,6 +1163,7 @@ Feature:
             "uuid": "@uuid@",
             "date": "@string@.isDateTime()",
             "type": "cb",
+            "type_label": "Carte bleue",
             "subscription": false,
             "membership": false,
             "status": "finished",
@@ -1163,6 +1173,7 @@ Feature:
             "uuid": "@uuid@",
             "date": "@string@.isDateTime()",
             "type": "check",
+            "type_label": "Chèque",
             "subscription": false,
             "membership": false,
             "status": "waiting_confirmation",
