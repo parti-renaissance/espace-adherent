@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\AdherentProfile\AdherentProfile;
 use App\AdherentProfile\AdherentProfileConfiguration;
 use App\AdherentProfile\AdherentProfileHandler;
+use App\AdherentProfile\PasswordChangeRequest;
 use App\Committee\CommitteeMembershipManager;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Donation\DonationManager;
@@ -13,6 +14,7 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Exception\PayboxPaymentUnsubscriptionException;
+use App\Membership\AdherentChangePasswordHandler;
 use App\Membership\MembershipRequestHandler;
 use App\Membership\MembershipSourceEnum;
 use App\Normalizer\ImageOwnerExposedNormalizer;
@@ -149,6 +151,38 @@ class ProfileController extends AbstractController
         $errors = $serializer->serialize($violations, 'jsonproblem');
 
         return JsonResponse::fromJsonString($errors, JsonResponse::HTTP_BAD_REQUEST);
+    }
+
+    #[Route(path: '/me/password-change', name: '_password_change', methods: ['POST'])]
+    #[Security("is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE')")]
+    public function changePassword(
+        Request $request,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        AdherentChangePasswordHandler $changePasswordHandler,
+    ): JsonResponse {
+        $json = $request->getContent();
+
+        /** @var Adherent $adherent */
+        $adherent = $this->getUser();
+        $passwordChangeRequest = new PasswordChangeRequest($adherent);
+
+        $serializer->deserialize($json, PasswordChangeRequest::class, 'json', [
+            AbstractObjectNormalizer::OBJECT_TO_POPULATE => $passwordChangeRequest,
+            AbstractObjectNormalizer::DEEP_OBJECT_TO_POPULATE => true,
+        ]);
+
+        $violations = $validator->validate($passwordChangeRequest);
+
+        if (0 === $violations->count()) {
+            $changePasswordHandler->changePassword($adherent, $passwordChangeRequest->getNewPassword());
+
+            return new JsonResponse('OK');
+        }
+
+        $errors = $serializer->serialize($violations, 'jsonproblem');
+
+        return JsonResponse::fromJsonString($errors, Response::HTTP_BAD_REQUEST);
     }
 
     #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
