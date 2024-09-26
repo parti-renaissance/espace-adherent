@@ -72,7 +72,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Post(uriTemplate: '/v3/actions'),
     ],
-    normalizationContext: ['groups' => ['action_read']],
+    normalizationContext: ['groups' => ['action_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]],
     denormalizationContext: ['groups' => ['action_write']],
     order: ['date' => 'ASC'],
     paginationItemsPerPage: 300,

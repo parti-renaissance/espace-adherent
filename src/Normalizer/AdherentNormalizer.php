@@ -5,7 +5,6 @@ namespace App\Normalizer;
 use App\Entity\Adherent;
 use App\Repository\AdherentChangeEmailTokenRepository;
 use App\Repository\Phoning\CampaignHistoryRepository;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -15,7 +14,6 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
     use NormalizerAwareTrait;
 
     public function __construct(
-        private readonly UrlGeneratorInterface $urlGenerator,
         private readonly array $adherentInterests,
         private readonly CampaignHistoryRepository $campaignHistoryRepository,
         private readonly AdherentChangeEmailTokenRepository $changeEmailTokenRepository,
@@ -80,10 +78,6 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
             );
         }
 
-        if (\in_array('action_read', $groups)) {
-            $data['image_url'] = $this->getImageUrl($object);
-        }
-
         return $data;
     }
 
@@ -101,14 +95,5 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         }
 
         return $data;
-    }
-
-    protected function getImageUrl(Adherent $adherent): ?string
-    {
-        return $adherent?->getImageName() ? $this->urlGenerator->generate(
-            'asset_url',
-            ['path' => $adherent->getImagePath()],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        ) : null;
     }
 }
