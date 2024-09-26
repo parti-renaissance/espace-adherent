@@ -123,6 +123,7 @@ class ImportDonationsCommand extends Command
         'camerounaise' => 'CM',
         'congolaise' => 'CD',
         'italienne' => 'IT',
+        'togolaise' => 'TG',
     ];
 
     /**
@@ -207,7 +208,7 @@ class ImportDonationsCommand extends Command
             $amount = trim($row['amount']);
             $transferNumber = trim($row['transfer_number']);
             $checkNumber = trim($row['check_number']);
-            $donatedAt = \DateTimeImmutable::createFromFormat('d/m/Y', trim($row['date']));
+            $donatedAt = \DateTimeImmutable::createFromFormat('Y-m-d', trim($row['date']));
             $beneficiary = trim($row['beneficiary']);
 
             if (!\array_key_exists($type, self::TYPES_MAP)) {
