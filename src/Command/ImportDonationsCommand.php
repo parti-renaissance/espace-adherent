@@ -17,6 +17,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -149,6 +150,7 @@ class ImportDonationsCommand extends Command
     {
         $this
             ->addArgument('filename', InputArgument::REQUIRED)
+            ->addOption('dry-run', null, InputOption::VALUE_NONE)
         ;
     }
 
@@ -159,10 +161,12 @@ class ImportDonationsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $dryRun = (bool) $input->getOption('dry-run');
+
         try {
             $this->em->beginTransaction();
 
-            $this->handleImport($input->getArgument('filename'));
+            $this->handleImport($input->getArgument('filename'), $dryRun);
 
             $this->em->commit();
         } catch (\Exception $exception) {
@@ -174,7 +178,7 @@ class ImportDonationsCommand extends Command
         return self::SUCCESS;
     }
 
-    private function handleImport(string $filename): void
+    private function handleImport(string $filename, bool $dryRun = false): void
     {
         $this->io->section('Starting import of Donation.');
 
@@ -302,22 +306,26 @@ class ImportDonationsCommand extends Command
                 $donation->setBeneficiary($beneficiary);
             }
 
-            $this->em->persist($donator);
-            $this->em->persist($donation);
-            $this->em->flush();
+            if (!$dryRun) {
+                $this->em->persist($donator);
+                $this->em->persist($donation);
+                $this->em->flush();
+            }
 
             ++$count;
 
             $this->io->progressAdvance();
 
-            if (0 === ($count % self::BATCH_SIZE)) {
+            if (!$dryRun && 0 === ($count % self::BATCH_SIZE)) {
                 $this->em->clear();
             }
         }
 
-        $this->updateDonatorIdentifier($identifier);
+        if (!$dryRun) {
+            $this->updateDonatorIdentifier($identifier);
 
-        $this->em->clear();
+            $this->em->clear();
+        }
 
         $this->io->progressFinish();
 
