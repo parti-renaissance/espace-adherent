@@ -63,9 +63,13 @@ class MagicLinkController extends AbstractController
                 return $this->redirectToRoute('admin_app_adherent_list');
             }
             if ($targetPath = $request->query->get('_target_path')) {
-                $targetPath = parse_url($targetPath, \PHP_URL_PATH);
+                $redirectUri = parse_url($targetPath, \PHP_URL_PATH);
 
-                return $this->redirect($targetPath ?: '/');
+                if ($queryParams = parse_url($targetPath, \PHP_URL_QUERY)) {
+                    $redirectUri .= '?'.$queryParams;
+                }
+
+                return $this->redirect($redirectUri ?: '/');
             }
 
             return $this->redirectToRoute('vox_app_redirect');

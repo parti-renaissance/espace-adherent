@@ -6,14 +6,12 @@ use App\Adherent\Command\SendResubscribeEmailCommand;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\AdherentResubscribeEmailMessage;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
 class SendResubscribeEmailCommandHandler implements MessageHandlerInterface
 {
     public function __construct(
         private readonly MailerService $transactionalMailer,
-        private readonly UrlGeneratorInterface $urlGenerator,
         private readonly LoginLinkHandlerInterface $loginLinkHandler,
     ) {
     }
@@ -22,9 +20,7 @@ class SendResubscribeEmailCommandHandler implements MessageHandlerInterface
     {
         $adherent = $command->adherent;
 
-        $link = $this->loginLinkHandler->createLoginLink($adherent, targetPath: $this->urlGenerator->generate('app_user_set_email_notifications', [
-            'autorun' => true,
-        ]));
+        $link = $this->loginLinkHandler->createLoginLink($adherent, targetPath: '/app?target_path='.urlencode('/profil/communications?autorun=1'));
 
         $this->transactionalMailer->sendMessage(AdherentResubscribeEmailMessage::create($adherent, $link));
     }
