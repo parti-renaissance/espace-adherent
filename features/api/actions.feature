@@ -38,7 +38,8 @@ Feature:
                     "adherent": {
                         "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
                         "first_name": "Damien",
-                        "last_name": "Durock"
+                        "last_name": "Durock",
+                        "image_url": null
                     },
                     "uuid": "@uuid@",
                     "created_at": "@string@.isDateTime()",
@@ -59,6 +60,7 @@ Feature:
                 "uuid": "@uuid@",
                 "first_name": "Damien",
                 "last_name": "Durock",
+                "image_url": null,
                 "role": "Président",
                 "zone": "Hauts-de-Seine",
                 "instance": "Assemblée départementale"
@@ -108,7 +110,8 @@ Feature:
                     "adherent": {
                         "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
                         "first_name": "Damien",
-                        "last_name": "Durock"
+                        "last_name": "Durock",
+                        "image_url": null
                     },
                     "uuid": "@uuid@",
                     "created_at": "@string@.isDateTime()",
@@ -129,6 +132,7 @@ Feature:
                 "uuid": "@uuid@",
                 "first_name": "Damien",
                 "last_name": "Durock",
+                "image_url": null,
                 "role": "Président",
                 "zone": "Hauts-de-Seine",
                 "instance": "Assemblée départementale"
