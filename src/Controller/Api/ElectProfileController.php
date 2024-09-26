@@ -26,6 +26,7 @@ class ElectProfileController extends AbstractController
     #[Route(path: '/elect-declaration', methods: ['POST'])]
     public function saveDeclaration(ValidatorInterface $validator, SerializerInterface $serializer, Request $request, UserInterface $adherent, EntityManagerInterface $entityManager, MessageBusInterface $bus): Response
     {
+        /** @var ContributionRequest $command */
         $command = $serializer->deserialize($request->getContent(), ContributionRequest::class, 'json');
         $errors = $validator->validate($command, null, ['fill_revenue']);
 
@@ -36,8 +37,13 @@ class ElectProfileController extends AbstractController
         /** @var Adherent $adherent */
         $adherent->addRevenueDeclaration($command->revenueAmount);
 
+        $adherent->setContributionStatus(
+            $command->needContribution()
+                ? ContributionStatusEnum::ELIGIBLE
+                : ContributionStatusEnum::NOT_ELIGIBLE
+        );
+
         if (!$command->needContribution()) {
-            $adherent->setContributionStatus(ContributionStatusEnum::NOT_ELIGIBLE);
             $adherent->setContributedAt(new \DateTime());
         }
 
