@@ -6,4 +6,4 @@ services:
 
     App\Monolog\SentryHandler:
         decorates: 'monolog.handler.sentry'
-        arguments: [ '@App\Monolog\SentryHandler.inner' ]
+        arguments: ['@App\Monolog\SentryHandler.inner']

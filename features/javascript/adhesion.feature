@@ -3,6 +3,7 @@
 @javascript2
 @skip
 Feature:
+
     Scenario: I can become adherent
         Given the following fixtures are loaded:
             | LoadSubscriptionTypeData |
@@ -68,39 +69,39 @@ Feature:
         And I should see "Confirmer votre adresse email"
         And I should see "test@test.com"
         And I should have 1 email "AdhesionCodeValidationMessage" for "test@test.com" with payload:
-        """
-        {
-            "template_name": "adhesion-code-validation",
-            "template_content": [],
-            "message": {
-                "subject": "Confirmez votre adresse email",
-                "from_email": "ne-pas-repondre@parti-renaissance.fr",
-                "html": null,
-                "global_merge_vars": [
-                    {
-                        "name": "first_name",
-                        "content": "Marine"
-                    },
-                    {
-                        "name": "code",
-                        "content": "@string@"
-                    },
-                    {
-                        "name": "magic_link",
-                        "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=test@test.com&expires=@number@&hash=@string@&_failure_path=%2Fconnexion"
-                    }
-                ],
-                "from_name": "Renaissance",
-                "to": [
-                    {
-                        "email": "test@test.com",
-                        "type": "to",
-                        "name": "Marine Dupont"
-                    }
-                ]
+            """
+            {
+                "template_name": "adhesion-code-validation",
+                "template_content": [],
+                "message": {
+                    "subject": "Confirmez votre adresse email",
+                    "from_email": "ne-pas-repondre@parti-renaissance.fr",
+                    "html": null,
+                    "global_merge_vars": [
+                        {
+                            "name": "first_name",
+                            "content": "Marine"
+                        },
+                        {
+                            "name": "code",
+                            "content": "@string@"
+                        },
+                        {
+                            "name": "magic_link",
+                            "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=test@test.com&expires=@number@&hash=@string@&_failure_path=%2Fconnexion"
+                        }
+                    ],
+                    "from_name": "Renaissance",
+                    "to": [
+                        {
+                            "email": "test@test.com",
+                            "type": "to",
+                            "name": "Marine Dupont"
+                        }
+                    ]
+                }
             }
-        }
-        """
+            """
 
         # Step 6 : email confirmation
         Given I am on "/adhesion/confirmation-email"
@@ -212,47 +213,47 @@ Feature:
         And I press "J'adhère"
         Then I wait 5 seconds until I see "Un email de confirmation vient d’être envoyé à votre adresse email. Cliquez sur le lien de validation qu’il contient pour continuer votre adhésion."
         And I should have 1 email "AdhesionAlreadyAdherentMessage" for "renaissance-user-4@en-marche-dev.fr" with payload:
-        """
-        {
-            "template_name": "adhesion-already-adherent",
-            "template_content": [],
-            "message": {
-                "subject": "Vous êtes déjà adhérent",
-                "from_email": "ne-pas-repondre@parti-renaissance.fr",
-                "html": null,
-                "global_merge_vars": [
-                    {
-                        "name": "first_name",
-                        "content": "Louis"
-                    },
-                    {
-                        "name": "this_year",
-                        "content": "@number@"
-                    },
-                    {
-                        "name": "magic_link",
-                        "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=renaissance-user-4@en-marche-dev.fr&expires=@number@&hash=@string@"
-                    },
-                    {
-                        "name": "forgot_password_link",
-                        "content": "http://test.renaissance.code/mot-de-passe-oublie"
-                    },
-                    {
-                        "name": "cotisation_link",
-                        "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=renaissance-user-4@en-marche-dev.fr&expires=@number@&hash=@string@&_target_path=/adhesion"
-                    }
-                ],
-                "from_name": "Renaissance",
-                "to": [
-                    {
-                        "email": "renaissance-user-4@en-marche-dev.fr",
-                        "type": "to",
-                        "name": "Louis Roche"
-                    }
-                ]
+            """
+            {
+                "template_name": "adhesion-already-adherent",
+                "template_content": [],
+                "message": {
+                    "subject": "Vous êtes déjà adhérent",
+                    "from_email": "ne-pas-repondre@parti-renaissance.fr",
+                    "html": null,
+                    "global_merge_vars": [
+                        {
+                            "name": "first_name",
+                            "content": "Louis"
+                        },
+                        {
+                            "name": "this_year",
+                            "content": "@number@"
+                        },
+                        {
+                            "name": "magic_link",
+                            "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=renaissance-user-4@en-marche-dev.fr&expires=@number@&hash=@string@"
+                        },
+                        {
+                            "name": "forgot_password_link",
+                            "content": "http://test.renaissance.code/mot-de-passe-oublie"
+                        },
+                        {
+                            "name": "cotisation_link",
+                            "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=renaissance-user-4@en-marche-dev.fr&expires=@number@&hash=@string@&_target_path=/adhesion"
+                        }
+                    ],
+                    "from_name": "Renaissance",
+                    "to": [
+                        {
+                            "email": "renaissance-user-4@en-marche-dev.fr",
+                            "type": "to",
+                            "name": "Louis Roche"
+                        }
+                    ]
+                }
             }
-        }
-        """
+            """
         When I click on the email link "cotisation_link"
         Then I should be on "/adhesion" wait otherwise
         When I click the ".aucomplete-fields-toggle" selector
@@ -302,39 +303,39 @@ Feature:
         And I press "J'adhère"
         Then I wait 5 seconds until I see "Un email de confirmation vient d’être envoyé à votre adresse email. Cliquez sur le lien de validation qu’il contient pour continuer votre adhésion."
         And I should have 1 email "AdhesionAlreadySympathizerMessage" for "carl999@example.fr" with payload:
-        """
-        {
-            "template_name": "adhesion-already-sympathizer",
-            "template_content": [],
-            "message": {
-                "subject": "Confirmez votre adresse email",
-                "from_email": "ne-pas-repondre@parti-renaissance.fr",
-                "html": null,
-                "global_merge_vars": [
-                    {
-                        "name": "first_name",
-                        "content": "Carl"
-                    },
-                    {
-                        "name": "created_at",
-                        "content": "@string@"
-                    },
-                    {
-                        "name": "magic_link",
-                        "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=carl999@example.fr&expires=@number@&hash=@string@"
-                    }
-                ],
-                "from_name": "Renaissance",
-                "to": [
-                    {
-                        "email": "carl999@example.fr",
-                        "type": "to",
-                        "name": "Carl Mirabeau"
-                    }
-                ]
+            """
+            {
+                "template_name": "adhesion-already-sympathizer",
+                "template_content": [],
+                "message": {
+                    "subject": "Confirmez votre adresse email",
+                    "from_email": "ne-pas-repondre@parti-renaissance.fr",
+                    "html": null,
+                    "global_merge_vars": [
+                        {
+                            "name": "first_name",
+                            "content": "Carl"
+                        },
+                        {
+                            "name": "created_at",
+                            "content": "@string@"
+                        },
+                        {
+                            "name": "magic_link",
+                            "content": "http://test.renaissance.code/connexion-avec-un-lien-magique?user=carl999@example.fr&expires=@number@&hash=@string@"
+                        }
+                    ],
+                    "from_name": "Renaissance",
+                    "to": [
+                        {
+                            "email": "carl999@example.fr",
+                            "type": "to",
+                            "name": "Carl Mirabeau"
+                        }
+                    ]
+                }
             }
-        }
-        """
+            """
         When I click on the email link "magic_link"
         Then I should be on "/adhesion" wait otherwise
         When I click the ".aucomplete-fields-toggle" selector

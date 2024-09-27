@@ -2,14 +2,14 @@ name: Setup composer
 description: Setup composer and install dependencies
 
 runs:
-  using: composite
-  steps:
-  - name: Setup PHP ${{ env.PHP_VERSION }}
-    uses: shivammathur/setup-php@v2
-    with:
-      php-version: ${{ env.PHP_VERSION }}
-      coverage: none
+    using: composite
+    steps:
+        - name: Setup PHP ${{ env.PHP_VERSION }}
+          uses: shivammathur/setup-php@v2
+          with:
+              php-version: ${{ env.PHP_VERSION }}
+              coverage: none
 
-  - name: Install composer dependencies
-    shell: bash
-    run: composer install
+        - name: Install composer dependencies
+          shell: bash
+          run: composer install

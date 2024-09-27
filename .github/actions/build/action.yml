@@ -2,71 +2,71 @@ name: Build and cache Docker dev image
 description: Build Docker dev image and cache it on GCR
 
 inputs:
-  tag:
-    description: The docker image tag
-    required: false
-    default: dev
-  hash:
-    description: The docker image hash
-    required: true
-  extra-containers:
-    description: List of container names to up
-    required: false
-    default: 'false'
-  keys:
-    description: Set to 'true' to generate private & public ssl keys
-    required: false
-    default: 'false'
-  cache-warmup:
-    description: Set to 'true' to clear and warmup cache
-    required: false
-    default: 'false'
+    tag:
+        description: The docker image tag
+        required: false
+        default: dev
+    hash:
+        description: The docker image hash
+        required: true
+    extra-containers:
+        description: List of container names to up
+        required: false
+        default: 'false'
+    keys:
+        description: Set to 'true' to generate private & public ssl keys
+        required: false
+        default: 'false'
+    cache-warmup:
+        description: Set to 'true' to clear and warmup cache
+        required: false
+        default: 'false'
 
 runs:
-  using: composite
-  steps:
-    - name: Build docker image
-      shell: bash
-      env:
-        TAG: ${{ inputs.tag }}
-        HASH: ${{ inputs.hash }}
-      run: |-
-        docker build --quiet \
-            --cache-from=$REGISTRY:$TAG-$HASH \
-            --cache-from=$REGISTRY:$TAG \
-            --tag=$REGISTRY:$TAG-$HASH \
-            --target=php_caddy \
-            --build-arg BUILDKIT_INLINE_CACHE=1 \
-            --build-arg BUILD_DEV=1 \
-            --compress \
-            .
+    using: composite
+    steps:
+        - name: Build docker image
+          shell: bash
+          env:
+              TAG: ${{ inputs.tag }}
+              HASH: ${{ inputs.hash }}
+          run: |-
+              docker build --quiet \
+                  --cache-from=$REGISTRY:$TAG-$HASH \
+                  --cache-from=$REGISTRY:$TAG \
+                  --tag=$REGISTRY:$TAG-$HASH \
+                  --target=php_caddy \
+                  --build-arg BUILDKIT_INLINE_CACHE=1 \
+                  --build-arg BUILD_DEV=1 \
+                  --compress \
+                  .
 
-    - name: Start app container
-      shell: bash
-      env:
-        TAG: ${{ inputs.tag }}
-        HASH: ${{ inputs.hash }}
-        CONTAINERS: app
-      run: make up-no-deps
+        - name: Start app container
+          shell: bash
+          env:
+              TAG: ${{ inputs.tag }}
+              HASH: ${{ inputs.hash }}
+              CONTAINERS: app
+          run: make up-no-deps
 
-    - name: Install composer dependencies
-      shell: bash
-      run: make vendor
+        - name: Install composer dependencies
+          shell: bash
+          run: make vendor
 
-    - name: Create private & public key
-      if: inputs.keys == 'true'
-      shell: bash
-      run: make keys perm
+        - name: Create private & public key
+          if: inputs.keys == 'true'
+          shell: bash
+          run: make keys perm
 
-    - name: Build cache
-      if: inputs.cache-warmup == 'true'
-      shell: bash
-      run: |-
-        make tfp-cc
+        - name: Build cache
+          if: inputs.cache-warmup == 'true'
+          shell: bash
+          run: |-
+              make tfp-cc
 
-    - name: Start extra containers
-      if: inputs.extra-containers != 'false'
-      shell: bash
-      env:
-        CONTAINERS: ${{ inputs.extra-containers }}
-      run: make up-no-deps
+        - name: Start extra containers
+          if: inputs.extra-containers != 'false'
+          shell: bash
+          env:
+              CONTAINERS: ${{ inputs.extra-containers }}
+          run: make up-no-deps

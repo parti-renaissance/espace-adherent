@@ -1,38 +1,38 @@
 parameters:
-    locale:                               fr
-    locales:                              [fr, en]
-    pattern_uuid:                         '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}'
-    pattern_sha1:                         '[0-9A-Fa-f]{40}'
-    pattern_coordinate:                   '-?\d+(\.\d{1,7})?'
-    timeline_max_messages:                30
-    search_max_results:                   30
-    enable_canary:                        "%env(ENABLE_CANARY)%"
-    transactional_sender_email:           'contact@parti-renaissance.fr'
-    transactional_sender_name:            'Renaissance'
-    app_host:                             "%env(APP_HOST)%"
-    national_event_host:                  "%env(NATIONAL_EVENT_HOST)%"
-    user_vox_host:                        "%env(USER_VOX_HOST)%"
-    legislative_host:                     "%env(LEGISLATIVE_HOST)%"
-    vox_host:                             "%env(VOX_HOST)%"
-    besoindeurope_host:                   "%env(BESOINDEUROPE_HOST)%"
-    procuration_host:                     "%env(PROCURATION_HOST)%"
-    renaissance_host:                     "%env(RENAISSANCE_HOST)%"
-    app_renaissance_host:                 "%env(APP_RENAISSANCE_HOST)%"
-    admin_renaissance_host:               "%env(ADMIN_RENAISSANCE_HOST)%"
-    webhook_renaissance_host:             "%env(WEBHOOK_RENAISSANCE_HOST)%"
-    production_webhook_host:              "%env(PRODUCTION_WEBHOOK_HOST)%"
-    api_renaissance_host:                 "%env(API_RENAISSANCE_HOST)%"
-    renaissance_qrcode_host:              "%env(RENAISSANCE_QRCODE_HOST)%"
-    mooc_base_url:                        "%env(MOOC_BASE_URL)%"
-    api_path_prefix:                      "%env(API_PATH_PREFIX)%"
-    router.request_context.scheme:        "%env(APP_SCHEME)%"
-    router.request_context.host:          "%app_host%"
-    image_max_length:                     450px
-    webhook.email_subscriptions_secret:   "%env(APP_EMAIL_SUBSCRIPTIONS_WEBHOOK_SECRET)%"
-    adherent_message_referent_limit:      1000
-    adherent_message_committee_limit:     1000
-    adherent_message_deputy_limit:        1000
-    adherent_message_senator_limit:       1000
+    locale: fr
+    locales: [fr, en]
+    pattern_uuid: '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}'
+    pattern_sha1: '[0-9A-Fa-f]{40}'
+    pattern_coordinate: '-?\d+(\.\d{1,7})?'
+    timeline_max_messages: 30
+    search_max_results: 30
+    enable_canary: '%env(ENABLE_CANARY)%'
+    transactional_sender_email: 'contact@parti-renaissance.fr'
+    transactional_sender_name: 'Renaissance'
+    app_host: '%env(APP_HOST)%'
+    national_event_host: '%env(NATIONAL_EVENT_HOST)%'
+    user_vox_host: '%env(USER_VOX_HOST)%'
+    legislative_host: '%env(LEGISLATIVE_HOST)%'
+    vox_host: '%env(VOX_HOST)%'
+    besoindeurope_host: '%env(BESOINDEUROPE_HOST)%'
+    procuration_host: '%env(PROCURATION_HOST)%'
+    renaissance_host: '%env(RENAISSANCE_HOST)%'
+    app_renaissance_host: '%env(APP_RENAISSANCE_HOST)%'
+    admin_renaissance_host: '%env(ADMIN_RENAISSANCE_HOST)%'
+    webhook_renaissance_host: '%env(WEBHOOK_RENAISSANCE_HOST)%'
+    production_webhook_host: '%env(PRODUCTION_WEBHOOK_HOST)%'
+    api_renaissance_host: '%env(API_RENAISSANCE_HOST)%'
+    renaissance_qrcode_host: '%env(RENAISSANCE_QRCODE_HOST)%'
+    mooc_base_url: '%env(MOOC_BASE_URL)%'
+    api_path_prefix: '%env(API_PATH_PREFIX)%'
+    router.request_context.scheme: '%env(APP_SCHEME)%'
+    router.request_context.host: '%app_host%'
+    image_max_length: 450px
+    webhook.email_subscriptions_secret: '%env(APP_EMAIL_SUBSCRIPTIONS_WEBHOOK_SECRET)%'
+    adherent_message_referent_limit: 1000
+    adherent_message_committee_limit: 1000
+    adherent_message_deputy_limit: 1000
+    adherent_message_senator_limit: 1000
 
 services:
     _defaults:
@@ -91,17 +91,17 @@ services:
         App\VotingPlatform\AdherentMandate\Factory\AdherentMandateFactoryInterface:
             tags: ['app.voting_platform.mandate_factory']
         App\VotingPlatform\Election\ResultCalculator\ResultCalculatorInterface:
-            tags: [ 'app.voting_platform.result_calculator' ]
+            tags: ['app.voting_platform.result_calculator']
         App\Scope\Generator\ScopeGeneratorInterface:
             tags: ['app.adherent.scope_generator']
         App\JMEFilter\FilterBuilder\FilterBuilderInterface:
-            tags: [ 'app.filter.builder' ]
+            tags: ['app.filter.builder']
         App\OAuth\App\AuthAppUrlGeneratorInterface:
-            tags: [ 'app.auth_app.url_generator' ]
+            tags: ['app.auth_app.url_generator']
         App\Recaptcha\RecaptchaApiClientInterface:
             tags: ['app.recaptcha_api_client']
         App\RepublicanSilence\ZoneExtractor\ZoneExtractorInterface:
-            tags: [ 'app.republican_silence.zone_extractor' ]
+            tags: ['app.republican_silence.zone_extractor']
         App\Adherent\Tag\TagGenerator\TagGeneratorInterface:
             tags: ['app.adherent.tag.generator']
         App\JeMengage\Timeline\FeedProcessor\FeedProcessorInterface:
@@ -130,16 +130,16 @@ services:
 
     App\Controller\:
         resource: ../src/Controller/
-        tags: [ 'controller.service_arguments' ]
+        tags: ['controller.service_arguments']
 
     App\Controller\Admin\:
         resource: ../src/Controller/Admin
         public: true
-        tags: [ 'controller.service_arguments' ]
+        tags: ['controller.service_arguments']
 
     App\EntityListener\:
         resource: ../src/EntityListener
-        tags: [ 'doctrine.orm.entity_listener' ]
+        tags: ['doctrine.orm.entity_listener']
 
     # Services
 
@@ -151,17 +151,23 @@ services:
         arguments:
             $handlers: !tagged_iterator 'app.adherent.certification_request.handler'
 
-    App\Statistics\Acquisition\Aggregator:
-        arguments: [!tagged_iterator {tag: 'app.acquisition_statistics.calculator', default_priority_method: getPriority}]
-
     App\Redirection\Dynamic\RedirectionsSubscriber:
         arguments: [!tagged_iterator 'app.redirection.handler']
 
     App\AdherentMessage\Listener\InitialiseMailchimpCampaignEntitySubscriber:
-        arguments: [!tagged_iterator {tag: 'app.adherent_message.mailchimp.campaign.handler', default_priority_method: getPriority}]
+        arguments:
+            [
+                !tagged_iterator {
+                    tag: 'app.adherent_message.mailchimp.campaign.handler',
+                    default_priority_method: getPriority,
+                },
+            ]
 
     App\AdherentMessage\Listener\UpdateTransactionalAdherentMessageDataListener:
-        arguments: [!tagged_iterator 'app.adherent_message.transaction.message_modifier']
+        arguments:
+            [
+                !tagged_iterator 'app.adherent_message.transaction.message_modifier',
+            ]
 
     App\AdherentMessage\AdherentMessageManager:
         arguments:
@@ -177,11 +183,16 @@ services:
 
     App\Adherent\Tag\TagAggregator:
         arguments:
-            $generators: !tagged_iterator {tag: 'app.adherent.tag.generator'}
+            $generators: !tagged_iterator { tag: 'app.adherent.tag.generator' }
 
     App\OAuth\App\AuthAppUrlManager:
         arguments:
-            $urlGenerators: !tagged_iterator {tag: 'app.auth_app.url_generator', default_index_method: 'getAppCode'}
+            [
+                !tagged_iterator {
+                    tag: 'app.auth_app.url_generator',
+                    default_index_method: 'getAppCode',
+                },
+            ]
 
     app.ssl_private_key:
         class: League\OAuth2\Server\CryptKey
@@ -208,29 +219,28 @@ services:
 
     App\AdherentMessage\MessageLimiter:
         arguments:
-            -
-                referent: '%adherent_message_referent_limit%'
-                committee: '%adherent_message_committee_limit%'
-                deputy: '%adherent_message_deputy_limit%'
-                senator: '%adherent_message_senator_limit%'
+            - referent: '%adherent_message_referent_limit%'
+              committee: '%adherent_message_committee_limit%'
+              deputy: '%adherent_message_deputy_limit%'
+              senator: '%adherent_message_senator_limit%'
 
     App\AdherentMessage\Listener\AdherentMessageChangeSubscriber:
         tags: ['doctrine.event_subscriber']
 
     App\Normalizer\JecouteAdherentNormalizer:
-        tags: [{name: 'serializer.normalizer', priority: 1}]
+        tags: [{ name: 'serializer.normalizer', priority: 1 }]
 
     App\Normalizer\AdherentNormalizer:
-        tags: [{name: 'serializer.normalizer', priority: 10}]
+        tags: [{ name: 'serializer.normalizer', priority: 10 }]
 
     App\Normalizer\JecouteDeviceNormalizer:
-        tags: [{name: 'serializer.normalizer', priority: 1}]
+        tags: [{ name: 'serializer.normalizer', priority: 1 }]
 
     App\Normalizer\DeviceNormalizer:
-        tags: [{name: 'serializer.normalizer', priority: 10}]
+        tags: [{ name: 'serializer.normalizer', priority: 10 }]
 
     App\Normalizer\JecouteRegionNormalizer:
-        tags: [{name: 'serializer.normalizer', priority: 1}]
+        tags: [{ name: 'serializer.normalizer', priority: 1 }]
 
     App\Normalizer\ConstraintViolationListNormalizer:
         decorates: 'serializer.normalizer.constraint_violation_list'
@@ -248,14 +258,14 @@ services:
             - '@api_platform.name_converter'
             - '@serializer.mapping.class_metadata_factory'
             - '@api_platform.item_data_provider'
-            - "%api_platform.allow_plain_identifiers%"
+            - '%api_platform.allow_plain_identifiers%'
             - []
             - !tagged_iterator 'api_platform.data_transformer'
             - ~
             - '@api_platform.security.resource_access_checker'
 
     App\Normalizer\Indexer\ThrowExceptionNormalizer:
-        tags: [{name: 'serializer.normalizer', priority: -801}] # to be just after CustomNormalizer
+        tags: [{ name: 'serializer.normalizer', priority: -801 }] # to be just after CustomNormalizer
 
     App\Scope\GeneralScopeGenerator:
         arguments:
@@ -290,13 +300,13 @@ services:
         arguments:
             $parameters:
                 production: '%env(bool:PAYBOX_PRODUCTION)%'
-                site: "%env(PAYBOX_MEMBERSHIP_SITE)%"
-                rank: "%env(PAYBOX_MEMBERSHIP_RANK)%"
-                login: "%env(PAYBOX_MEMBERSHIP_IDENTIFIER)%"
+                site: '%env(PAYBOX_MEMBERSHIP_SITE)%'
+                rank: '%env(PAYBOX_MEMBERSHIP_RANK)%'
+                login: '%env(PAYBOX_MEMBERSHIP_IDENTIFIER)%'
                 currencies:
                     - '978'
                 hmac:
-                    key: "%env(PAYBOX_MEMBERSHIP_KEY)%"
+                    key: '%env(PAYBOX_MEMBERSHIP_KEY)%'
                     algorithm: sha512
                     signature_name: Sign
             $servers: '%lexik_paybox.servers%'
@@ -331,13 +341,19 @@ services:
     Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
         arguments:
             - '@snc_redis.default'
-            - {ttl: '%env(SESSION_TTL)%', prefix: 'session'}
+            - { ttl: '%env(SESSION_TTL)%', prefix: 'session' }
 
     App\VotingPlatform\AdherentMandate\AdherentMandateFactory:
         arguments: [!tagged_iterator 'app.voting_platform.mandate_factory']
 
     App\VotingPlatform\Election\ResultCalculator:
-        arguments: [ !tagged_iterator { tag: 'app.voting_platform.result_calculator', default_priority_method: 'getPriority' } ]
+        arguments:
+            [
+                !tagged_iterator {
+                    tag: 'app.voting_platform.result_calculator',
+                    default_priority_method: 'getPriority',
+                },
+            ]
 
     App\JMEFilter\FiltersGenerator:
         arguments: [!tagged_iterator 'app.filter.builder']
@@ -407,10 +423,9 @@ services:
 
     App\Mailer\SenderMessageMapper:
         arguments:
-            -
-                App\Mailer\Message\Renaissance\RenaissanceMessageInterface:
-                    name: Renaissance
-                    email: "%env(RENAISSANCE_SENDER_EMAIL)%"
+            - App\Mailer\Message\Renaissance\RenaissanceMessageInterface:
+                  name: Renaissance
+                  email: '%env(RENAISSANCE_SENDER_EMAIL)%'
 
     App\Security\SimpleCsrfTokenManager: ~
 
@@ -433,17 +448,23 @@ services:
         arguments: ['@App\Messenger\AmqpTransport\AmqpTransportFactory.inner']
 
     App\CaptainVerify\Storage:
-        arguments: [!service {class: Symfony\Component\Cache\Psr16Cache, arguments: ['@app.cache.captain_verify']}]
+        arguments:
+            [
+                !service {
+                    class: Symfony\Component\Cache\Psr16Cache,
+                    arguments: ['@app.cache.captain_verify'],
+                },
+            ]
 
     League\Glide\Responses\SymfonyResponseFactory: ~
 
     League\Glide\Server:
         factory: League\Glide\ServerFactory::create
         arguments:
-            -   source: '@League\Flysystem\FilesystemOperator'
-                cache: '%kernel.cache_dir%'
-                response: '@League\Glide\Responses\SymfonyResponseFactory'
-                max_image_size: 4000000 # Max image size in number of pixels (2000x2000)
+            - source: '@League\Flysystem\FilesystemOperator'
+              cache: '%kernel.cache_dir%'
+              response: '@League\Glide\Responses\SymfonyResponseFactory'
+              max_image_size: 4000000 # Max image size in number of pixels (2000x2000)
 
     App\Security\Http\LoginLink\LoginLinkHandler:
         decorates: 'security.authenticator.login_link_handler.main'

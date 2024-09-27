@@ -1,14 +1,14 @@
 framework:
-    secret:          "%env(SECRET)%"
-    form:            ~
+    secret: '%env(SECRET)%'
+    form: ~
     csrf_protection: ~
     serializer:
-        name_converter: "serializer.name_converter.camel_case_to_snake_case"
-    trusted_hosts:   ~
+        name_converter: 'serializer.name_converter.camel_case_to_snake_case'
+    trusted_hosts: ~
     session:
-        name:        renaissance
-        handler_id:  Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler
-    fragments:       ~
+        name: renaissance
+        handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler
+    fragments: ~
     http_method_override: true
     assets:
         json_manifest_path: '%kernel.project_dir%/public/built/manifest.json'

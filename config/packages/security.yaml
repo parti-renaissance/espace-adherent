@@ -9,9 +9,9 @@ security:
         App\Entity\Administrator: bcrypt
         App\Entity\Adherent: bcrypt
         legacy_encoder:
-            algorithm:        sha1
+            algorithm: sha1
             encode_as_base64: false
-            iterations:       1
+            iterations: 1
 
     role_hierarchy:
         ## ALL
@@ -451,7 +451,7 @@ security:
 
         admin:
             context: main_context
-            host: "%admin_renaissance_host%"
+            host: '%admin_renaissance_host%'
             pattern: ^/(?!(oauth|vox))
             provider: admins_db
             switch_user: true
@@ -501,7 +501,7 @@ security:
             login_link:
                 check_route: app_user_connect_with_magic_link
                 check_post_only: true
-                signature_properties: [ 'uuid', 'emailAddress', 'registeredAt' ]
+                signature_properties: ['uuid', 'emailAddress', 'registeredAt']
                 max_uses: 1
                 lifetime: 600
                 failure_path: app_renaissance_login
@@ -510,9 +510,24 @@ security:
     access_control:
         - { path: '^/parametres', roles: [ROLE_USER] }
         - { path: '^/espace-adherent', roles: [ROLE_ADHERENT] }
-        - { host: "%admin_renaissance_host%", path: '^/login/(2fa|logout)', role: [IS_AUTHENTICATED_2FA_IN_PROGRESS] }
-        - { host: "%admin_renaissance_host%", path: '^/login', roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
-        - { host: "%admin_renaissance_host%", path: '^/(?!(oauth|vox))', roles: [ROLE_ADMIN_DASHBOARD] }
+        - {
+              host: '%admin_renaissance_host%',
+              path: '^/login/(2fa|logout)',
+              role: [IS_AUTHENTICATED_2FA_IN_PROGRESS],
+          }
+        - {
+              host: '%admin_renaissance_host%',
+              path: '^/login',
+              roles: [IS_AUTHENTICATED_ANONYMOUSLY],
+          }
+        - {
+              host: '%admin_renaissance_host%',
+              path: '^/(?!(oauth|vox))',
+              roles: [ROLE_ADMIN_DASHBOARD],
+          }
         - { path: '^/membre/.*', roles: [IS_AUTHENTICATED_REMEMBERED] }
         - { path: '^/elections/.+', roles: [ROLE_ADHERENT] }
-        - { path: '^/(adhesion|don|espace-elus)', allow_if: "not is_granted('ROLE_ADMIN_DASHBOARD')"}
+        - {
+              path: '^/(adhesion|don|espace-elus)',
+              allow_if: "not is_granted('ROLE_ADMIN_DASHBOARD')",
+          }

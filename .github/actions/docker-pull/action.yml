@@ -2,21 +2,21 @@ name: docker pull
 description: Pull docker images from the registry
 
 inputs:
-  hash:
-    description: The docker image hash.
-    required: true
-  tag:
-    description: The docker image tag
-    required: false
-    default: dev
+    hash:
+        description: The docker image hash.
+        required: true
+    tag:
+        description: The docker image tag
+        required: false
+        default: dev
 
 runs:
-  using: composite
-  steps:
-    - shell: bash
-      env:
-        HASH: ${{ inputs.hash }}
-        TAG: ${{ inputs.tag }}
-      run: |-
-        docker pull $REGISTRY:$TAG-$HASH --quiet || true
-        docker pull $REGISTRY:$TAG --quiet || true
+    using: composite
+    steps:
+        - shell: bash
+          env:
+              HASH: ${{ inputs.hash }}
+              TAG: ${{ inputs.tag }}
+          run: |-
+              docker pull $REGISTRY:$TAG-$HASH --quiet || true
+              docker pull $REGISTRY:$TAG --quiet || true

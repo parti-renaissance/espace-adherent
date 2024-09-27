@@ -349,13 +349,13 @@ export default class UserListDefinitionWidget extends React.Component {
             this.state.userListDefinitions.forEach((userListDefinition) => {
                 if (userListDefinition.status !== userListDefinition.newStatus) {
                     switch (userListDefinition.newStatus) {
-                    case STATUS_ALL:
-                        members[id].member_of.push(userListDefinition.id);
-                        break;
-                    case STATUS_NONE:
-                        members[id].not_member_of.push(userListDefinition.id);
-                        break;
-                    default:
+                        case STATUS_ALL:
+                            members[id].member_of.push(userListDefinition.id);
+                            break;
+                        case STATUS_NONE:
+                            members[id].not_member_of.push(userListDefinition.id);
+                            break;
+                        default:
                     }
                 }
             });

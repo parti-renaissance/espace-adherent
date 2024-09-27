@@ -9,12 +9,12 @@ window.share = (type, link, title) => {
     let socialUrl;
 
     switch (type) {
-    case 'twitter':
-        socialUrl = `https://twitter.com/share?url=${link}&text=${title}&via=enmarchefr`;
-        break;
-    case 'facebook':
-        socialUrl = `https://www.facebook.com/dialog/share?app_id=620675918119463&display=popup&href=${link}`;
-        break;
+        case 'twitter':
+            socialUrl = `https://twitter.com/share?url=${link}&text=${title}&via=enmarchefr`;
+            break;
+        case 'facebook':
+            socialUrl = `https://www.facebook.com/dialog/share?app_id=620675918119463&display=popup&href=${link}`;
+            break;
     }
 
     const popup = window.open(

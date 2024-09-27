@@ -1,94 +1,94 @@
 app_forgot_password:
-    host: "%user_vox_host%"
-    methods: "GET|POST"
-    path: "/mot-de-passe-oublie"
+    host: '%user_vox_host%'
+    methods: 'GET|POST'
+    path: '/mot-de-passe-oublie'
     controller: App\Controller\EnMarche\Security\SecurityController::retrieveForgotPasswordAction
 
 app_user_login_check:
-    host: "{app_domain}"
-    path: "/connexion/check"
-    methods: "POST"
+    host: '{app_domain}'
+    path: '/connexion/check'
+    methods: 'POST'
     controller: App\Controller\EnMarche\Security\SecurityController::loginCheckAction
     defaults:
         app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_host%|%app_renaissance_host%|%user_vox_host%"
+        app_domain: '%app_host%|%app_renaissance_host%|%user_vox_host%'
 
 logout:
-    host: "{app_domain}"
-    path: "/deconnexion"
-    methods: "GET"
+    host: '{app_domain}'
+    path: '/deconnexion'
+    methods: 'GET'
     controller: App\Controller\EnMarche\Security\SecurityController::logoutAction
     defaults:
         app_domain: '%app_renaissance_host%'
     requirements:
-        app_domain: "%app_host%|%app_renaissance_host%|%admin_renaissance_host%|%user_vox_host%"
+        app_domain: '%app_host%|%app_renaissance_host%|%admin_renaissance_host%|%user_vox_host%'
 
 app_adherent_reset_password:
-    host: "%user_vox_host%"
-    path: "/changer-mot-de-passe/{adherent_uuid}/{reset_password_token}"
-    methods: "GET|POST"
+    host: '%user_vox_host%'
+    path: '/changer-mot-de-passe/{adherent_uuid}/{reset_password_token}'
+    methods: 'GET|POST'
     controller: App\Controller\EnMarche\Security\SecurityController::resetPasswordAction
 
 app_user_get_magic_link:
-    host: "{app_domain}"
-    path: "/demander-un-lien-magique"
-    methods: "GET|POST"
+    host: '{app_domain}'
+    path: '/demander-un-lien-magique'
+    methods: 'GET|POST'
     controller: App\Controller\Renaissance\MagicLinkController::getMagicLinkAction
     defaults:
         app_domain: '%user_vox_host%'
     requirements:
-        app_domain: "%app_renaissance_host%|%user_vox_host%"
+        app_domain: '%app_renaissance_host%|%user_vox_host%'
 
 app_user_connect_with_magic_link:
-    host: "{app_domain}"
-    path: "/connexion-avec-un-lien-magique"
-    methods: "GET|POST"
+    host: '{app_domain}'
+    path: '/connexion-avec-un-lien-magique'
+    methods: 'GET|POST'
     controller: App\Controller\Renaissance\MagicLinkController::connectViaMagicLinkAction
     defaults:
         app_domain: '%user_vox_host%'
     requirements:
-        app_domain: "%app_renaissance_host%|%user_vox_host%"
+        app_domain: '%app_renaissance_host%|%user_vox_host%'
 
 #
 # Assets
 #
 app_assets:
-    resource: "../src/Controller/AssetsController.php"
-    type: "annotation"
-    host: "{app_domain}"
+    resource: '../src/Controller/AssetsController.php'
+    type: 'annotation'
+    host: '{app_domain}'
     defaults:
-        app_domain: "%user_vox_host%"
+        app_domain: '%user_vox_host%'
     requirements:
-        app_domain: "%app_host%|%app_renaissance_host%|%national_event_host%|%user_vox_host%"
+        app_domain: '%app_host%|%app_renaissance_host%|%national_event_host%|%user_vox_host%'
 
 #
 # Mooc
 #
 app_mooc:
-    resource: "../src/Controller/MoocController.php"
-    type:     "annotation"
+    resource: '../src/Controller/MoocController.php'
+    type: 'annotation'
 
 #
 # User uploaded documents
 #
 app_documents:
-    resource: "../src/Controller/UploadDocumentController.php"
-    type:     "annotation"
+    resource: '../src/Controller/UploadDocumentController.php'
+    type: 'annotation'
 
 #
 # API
 #
 app_api:
-    host:     "{app_domain}"
-    resource: "../src/Controller/Api"
-    type:     "annotation"
-    prefix:   "%api_path_prefix%"
+    host: '{app_domain}'
+    resource: '../src/Controller/Api'
+    type: 'annotation'
+    prefix: '%api_path_prefix%'
     defaults:
         _format: 'json'
-        app_domain: "%api_renaissance_host%"
+        app_domain: '%api_renaissance_host%'
     requirements:
-        app_domain: "%app_host%|%app_renaissance_host%|%api_renaissance_host%"
+        app_domain: '%app_host%|%app_renaissance_host%|%api_renaissance_host%'
 
 #
 # API Platform
@@ -96,210 +96,210 @@ app_api:
 api_platform:
     resource: .
     type: api_platform
-    prefix: "%api_path_prefix%"
+    prefix: '%api_path_prefix%'
 
 #
 # OAuth
 #
 app_oauth:
-    host:     "{app_domain}"
-    resource: "../src/Controller/OAuth"
-    type:     "annotation"
-    prefix:   "/oauth/v2"
+    host: '{app_domain}'
+    resource: '../src/Controller/OAuth'
+    type: 'annotation'
+    prefix: '/oauth/v2'
     defaults:
-        app_domain: "%user_vox_host%"
+        app_domain: '%user_vox_host%'
     requirements:
-        app_domain: "%app_renaissance_host%|%api_renaissance_host%|%admin_renaissance_host%|%user_vox_host%"
+        app_domain: '%app_renaissance_host%|%api_renaissance_host%|%admin_renaissance_host%|%user_vox_host%'
 
 #
 # Admin panel
 #
 admin_dashboard:
-    host:     "%admin_renaissance_host%"
-    resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
+    host: '%admin_renaissance_host%'
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
 
 admin_crud:
-    host:     "%admin_renaissance_host%"
+    host: '%admin_renaissance_host%'
     resource: .
-    type:     sonata_admin
+    type: sonata_admin
 
 app_admin:
-    host:     "%admin_renaissance_host%"
-    resource: "../src/Controller/Admin"
-    type:     "annotation"
+    host: '%admin_renaissance_host%'
+    resource: '../src/Controller/Admin'
+    type: 'annotation'
 
 lexik_paybox_ipn:
-    host: "%webhook_renaissance_host%"
+    host: '%webhook_renaissance_host%'
     path: /paybox/payment-ipn/{time}
     controller: lexik_paybox.controller.default
-    methods: [ GET, POST ]
+    methods: [GET, POST]
 
 app_enmarche:
-    host:     "%app_host%"
-    resource: "../src/Controller/EnMarche"
-    type:     "annotation"
+    host: '%app_host%'
+    resource: '../src/Controller/EnMarche'
+    type: 'annotation'
 
 app_renaissance_adherent_space:
-    host: "%app_renaissance_host%"
+    host: '%app_renaissance_host%'
     path: /espace-adherent
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
     defaults:
         route: app_renaissance_event_list
 
 app_voting_platform:
-    resource: "../src/Controller/EnMarche/VotingPlatform"
-    type:     "annotation"
-    prefix:   "/elections/{uuid}"
+    resource: '../src/Controller/EnMarche/VotingPlatform'
+    type: 'annotation'
+    prefix: '/elections/{uuid}'
     trailing_slash_on_root: false
     requirements:
-        uuid: "%pattern_uuid%"
+        uuid: '%pattern_uuid%'
 
 app_procuration:
-    host: "%procuration_host%"
-    resource: "../src/Controller/Procuration"
-    type: "annotation"
+    host: '%procuration_host%'
+    resource: '../src/Controller/Procuration'
+    type: 'annotation'
 
 app_api_intl:
-    host: "{app_domain}"
-    prefix: "%api_path_prefix%"
-    resource: "../src/Controller/IntlController.php"
-    type: "annotation"
+    host: '{app_domain}'
+    prefix: '%api_path_prefix%'
+    resource: '../src/Controller/IntlController.php'
+    type: 'annotation'
     defaults:
-        app_domain: "%app_host%"
+        app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_host%|%procuration_host%|%app_renaissance_host%"
+        app_domain: '%app_host%|%procuration_host%|%app_renaissance_host%'
 
 app_webhook_renaissance:
-    host:   "%webhook_renaissance_host%"
-    resource: "../src/Controller/Webhook"
-    type: "annotation"
+    host: '%webhook_renaissance_host%'
+    resource: '../src/Controller/Webhook'
+    type: 'annotation'
 
 app_renaissance:
-    host:   "%user_vox_host%"
-    resource: "../src/Controller/Renaissance"
-    type: "annotation"
+    host: '%user_vox_host%'
+    resource: '../src/Controller/Renaissance'
+    type: 'annotation'
 
 app_besoindeurope:
-    host: "%user_vox_host%"
-    resource: "../src/Controller/BesoinDEurope"
-    type: "annotation"
+    host: '%user_vox_host%'
+    resource: '../src/Controller/BesoinDEurope'
+    type: 'annotation'
 
 app_bde_national_event:
-    host: "%national_event_host%"
-    resource: "../src/Controller/BesoinDEurope/NationalEvent"
-    type: "annotation"
+    host: '%national_event_host%'
+    resource: '../src/Controller/BesoinDEurope/NationalEvent'
+    type: 'annotation'
 
 renaissance_site:
-    host: "%renaissance_host%"
-    path: "/"
+    host: '%renaissance_host%'
+    path: '/'
 
 besoindeurope_site:
-    host: "%besoindeurope_host%"
-    path: "/"
+    host: '%besoindeurope_host%'
+    path: '/'
 
 legislative_site:
-    host: "%legislative_host%"
-    path: "/"
+    host: '%legislative_host%'
+    path: '/'
 
 vox_app:
-    host: "%vox_host%"
-    path: "/"
+    host: '%vox_host%'
+    path: '/'
 
 vox_app_redirect:
     methods: GET
-    host: "%user_vox_host%"
+    host: '%user_vox_host%'
     path: /app
     controller: App\Controller\Vox\RedirectAppController
 
 vox_app_redirect_from_admin:
     methods: GET
-    host: "%admin_renaissance_host%"
+    host: '%admin_renaissance_host%'
     path: /vox
     controller: App\Controller\Vox\RedirectAppController
 
 user_renaissance_redirect:
-    host: "%user_vox_host%"
+    host: '%user_vox_host%'
     path: /
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
     defaults:
         route: 'app_renaissance_login'
 
 app_renaissance_login:
-    host: "%user_vox_host%"
-    path: "/connexion"
+    host: '%user_vox_host%'
+    path: '/connexion'
     controller: App\Controller\EnMarche\Security\SecurityController::loginAction
     defaults:
         app: renaissance
 
 user_validate_new_email:
-    host: "%user_vox_host%"
-    path: "/valider-changement-email/{adherent_uuid}/{change_email_token}"
+    host: '%user_vox_host%'
+    path: '/valider-changement-email/{adherent_uuid}/{change_email_token}'
     controller: App\Controller\EnMarche\Security\SecurityController::activateNewEmailAction
     methods: GET
     requirements:
-        "adherent_uuid": "%pattern_uuid%"
-        "change_email_token": "%pattern_sha1%"
+        'adherent_uuid': '%pattern_uuid%'
+        'change_email_token': '%pattern_sha1%'
 
 renaissance_qr_code:
-    host: "%renaissance_qrcode_host%"
-    path: "/{uuid}"
-    methods: "GET"
+    host: '%renaissance_qrcode_host%'
+    path: '/{uuid}'
+    methods: 'GET'
     controller: App\Controller\EnMarche\QrCodeController
 
 app_api_user_show_me:
-    host: "{app_domain}"
+    host: '{app_domain}'
     path: '%api_path_prefix%/users/me'
     methods: GET
     controller: App\Controller\Api\UserController::showMe
     defaults:
-        app_domain: "%app_host%"
+        app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_host%|%app_renaissance_host%"
+        app_domain: '%app_host%|%app_renaissance_host%'
 
 app_validate_email:
-    host: "{app_domain}"
+    host: '{app_domain}'
     path: '/api/validate-email'
     methods: POST
     controller: App\Controller\Renaissance\Adhesion\Api\ValidateEmailController
     defaults:
-        app_domain: "%app_host%"
+        app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_renaissance_host%|%national_event_host%|%procuration_host%|%user_vox_host%"
+        app_domain: '%app_renaissance_host%|%national_event_host%|%procuration_host%|%user_vox_host%'
 
 app_zone_autocomplete:
-    host: "{app_domain}"
+    host: '{app_domain}'
     path: '/api/zone/autocomplete'
     methods: GET
     controller: App\Controller\Api\Zone\ZoneAutocompleteController
     defaults:
-        app_domain: "%procuration_host%"
+        app_domain: '%procuration_host%'
     requirements:
-        app_domain: "%procuration_host%|%api_renaissance_host%"
+        app_domain: '%procuration_host%|%api_renaissance_host%'
 
 app_renaissance_newsletter_confirm:
-    host: "{app_domain}"
+    host: '{app_domain}'
     path: '/newsletter/confirmation/{uuid}/{confirm_token}'
     methods: GET
     controller: App\Controller\Renaissance\Newsletter\ConfirmNewsletterController
     defaults:
-        app_domain: "%user_vox_host%"
+        app_domain: '%user_vox_host%'
     requirements:
-        app_domain: "%national_event_host%|%user_vox_host%"
+        app_domain: '%national_event_host%|%user_vox_host%'
 
 app_profile:
-    host: "{app_domain}"
-    type: "annotation"
-    resource: "../src/Controller/EnMarche/UserController.php"
+    host: '{app_domain}'
+    type: 'annotation'
+    resource: '../src/Controller/EnMarche/UserController.php'
     defaults:
-        app_domain: "%app_host%"
+        app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_host%|%app_renaissance_host%"
+        app_domain: '%app_host%|%app_renaissance_host%'
 
 app_certification:
-    host: "{app_domain}"
-    type: "annotation"
-    resource: "../src/Controller/EnMarche/CertificationRequestController.php"
+    host: '{app_domain}'
+    type: 'annotation'
+    resource: '../src/Controller/EnMarche/CertificationRequestController.php'
     defaults:
-        app_domain: "%app_host%"
+        app_domain: '%app_host%'
     requirements:
-        app_domain: "%app_host%|%app_renaissance_host%"
+        app_domain: '%app_host%|%app_renaissance_host%'
