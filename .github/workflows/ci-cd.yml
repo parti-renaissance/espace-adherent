@@ -85,7 +85,8 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     needs: [build]
-
+    env:
+        EXEC:
     steps:
       - uses: actions/checkout@v4
 
@@ -121,22 +122,25 @@ jobs:
       - uses: ./.github/actions/setup-yarn
 
       - name: PHP Coding Standards Fixer
-        run: vendor/bin/php-cs-fixer fix --diff --dry-run --no-interaction -v
+        run: make phpcs
 
       - name: Lint YAML files
-        run: bin/console lint:yaml config --parse-tags
+        run: make ly
 
       - name: Lint Twig files
-        run: bin/console lint:twig templates
+        run: make lt
 
       - name: Lint container
-        run: bin/console lint:container
+        run: make lc
 
-      - name: Yarn lint
-        run: yarn lint -- --fix
+      - name: Yarn Eslint
+        run: make lj
+
+      - name: Yarn Prettier
+        run: make lp
 
       - name: PHPStan - PHP Static Analysis Tool
-        run: vendor/bin/phpstan analyse
+        run: make phpstan
 
       - name: Local PHP Security Checker
         run: |-
