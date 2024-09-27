@@ -1190,6 +1190,42 @@ Feature:
     "OK"
     """
 
+    Scenario: As a logged-in user I can retrieve my tax receipts
+        Given I am logged with "gisele-berthoux@caramail.com" via OAuth client "JeMengage Mobile" with scopes "read:profile"
+        When I send a "GET" request to "/api/v3/profile/me/tax_receipts"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+        """
+        [
+            {
+                "label": "@string@.pdf",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()"
+            },
+            {
+                "label": "@string@.pdf",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()"
+            },
+            {
+                "label": "@string@.pdf",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()"
+            },
+            {
+                "label": "@string@.pdf",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()"
+            },
+            {
+                "label": "@string@.pdf",
+                "uuid": "@uuid@",
+                "created_at": "@string@.isDateTime()"
+            }
+        ]
+        """
+
     Scenario Outline: As a logged-in user I can retrieve my certification details
         Given I am logged with "<email>" via OAuth client "JeMengage Mobile" with scopes "read:profile"
         When I send a "GET" request to "/api/v3/profile/me/certification-request"
