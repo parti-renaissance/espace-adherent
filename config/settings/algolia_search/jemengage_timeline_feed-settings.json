@@ -4,10 +4,7 @@
     "hitsPerPage": 20,
     "maxValuesPerFacet": 100,
     "version": 2,
-    "searchableAttributes": [
-        "unordered(title)",
-        "unordered(description)"
-    ],
+    "searchableAttributes": ["unordered(title)", "unordered(description)"],
     "numericAttributesToIndex": null,
     "attributesToRetrieve": [
         "address",
@@ -34,9 +31,7 @@
     ],
     "unretrievableAttributes": [],
     "optionalWords": null,
-    "queryLanguages": [
-        "fr"
-    ],
+    "queryLanguages": ["fr"],
     "attributesForFaceting": [
         "filterOnly(adherent_ids)",
         "filterOnly(is_national)",
@@ -64,12 +59,9 @@
     "removeWordsIfNoResults": "none",
     "queryType": "prefixLast",
     "highlightPreTag": "<em>",
-    "highlightPostTag": "<\/em>",
+    "highlightPostTag": "</em>",
     "snippetEllipsisText": "",
-    "alternativesAsExact": [
-        "ignorePlurals",
-        "singleWordSynonym"
-    ],
+    "alternativesAsExact": ["ignorePlurals", "singleWordSynonym"],
     "responseFields": [
         "hits",
         "hitsPerPage",
@@ -78,7 +70,5 @@
         "nbPages",
         "nbHits"
     ],
-    "indexLanguages": [
-        "fr"
-    ]
+    "indexLanguages": ["fr"]
 }

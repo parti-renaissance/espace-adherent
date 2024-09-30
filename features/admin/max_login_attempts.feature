@@ -1,8 +1,8 @@
 @app
 @renaissance_admin
 Feature:
-  In order to protect the APP
-  I should be blocked if I try to login too many time
+    In order to protect the APP
+    I should be blocked if I try to login too many time
 
     Scenario: Known admin is blocked after 5 attempts
         And I am on "/login"
@@ -37,7 +37,7 @@ Feature:
         And I press "Connexion"
         Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
-    # Refuse login with good credential
+        # Refuse login with good credential
         When I fill in the following:
             | _login_email    | superadmin@en-marche-dev.fr |
             | _login_password | superadmin                  |

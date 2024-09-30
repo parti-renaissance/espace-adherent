@@ -3,11 +3,9 @@ services:
         autowire: true
         autoconfigure: true
 
-    Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface:
-        '@Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory'
+    Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface: '@Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory'
 
-    Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface:
-        '@Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory'
+    Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface: '@Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory'
 
     Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory: null
     Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory: null

@@ -16,7 +16,7 @@ DOCKER_FILES=$(shell find ./docker/ -type f -name '*')
 CONTAINERS?=
 
 .DEFAULT_GOAL := help
-.PHONY: help start stop reset db db-init db-diff db-diff-dump db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt
+.PHONY: help start stop reset db db-init db-diff db-diff-dump db-migrate db-rollback db-load watch clear clean test tu tf tj lint ls ly lt lintfix
 .PHONY: lj build up perm deps cc phpcs phpcsfix phplint tty tfp tfp-rabbitmq tfp-db tfp-db-init test-behat test-phpunit-functional
 .PHONY: wait-for-rabbitmq wait-for-db security-check rm-docker-dev.lock assets
 
@@ -178,7 +178,15 @@ lj: node_modules                                                                
 	$(RUN_NODE) yarn lint
 
 ljfix: node_modules                                                                                    ## Lint and try to fix the Javascript to follow the convention
-	$(RUN_NODE) yarn lint -- --fix
+	$(RUN_NODE) yarn lint:fix
+
+lp: node_modules                                                                                    ## Lint and try to fix the Javascript to follow the convention
+	$(RUN_NODE) yarn prettier
+
+lpfix: node_modules                                                                                    ## Lint and try to fix the Javascript to follow the convention
+	$(RUN_NODE) yarn prettier:fix
+
+lintfix: phpcsfix ljfix lpfix
 
 phpcs: vendor                                                                                          ## Lint PHP code
 	$(PHPCSFIXER) fix --diff --dry-run --no-interaction -v

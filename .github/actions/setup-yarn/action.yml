@@ -2,13 +2,13 @@ name: Setup node
 description: Setup node and install yarn dependencies
 
 runs:
-  using: composite
-  steps:
-    - name: Setup node ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
+    using: composite
+    steps:
+        - name: Setup node ${{ env.NODE_VERSION }}
+          uses: actions/setup-node@v4
+          with:
+              node-version: ${{ env.NODE_VERSION }}
 
-    - name: Install yarn dependencies
-      shell: bash
-      run: yarn install
+        - name: Install yarn dependencies
+          shell: bash
+          run: yarn install

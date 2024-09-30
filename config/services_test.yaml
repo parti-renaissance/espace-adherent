@@ -3,8 +3,8 @@ imports:
 
 parameters:
     timeline_max_messages: 10
-    ssl_encryption_key: "%env(SSL_ENCRYPTION_KEY)%"
-    ssl_private_key: "%env(SSL_PRIVATE_KEY)%"
+    ssl_encryption_key: '%env(SSL_ENCRYPTION_KEY)%'
+    ssl_private_key: '%env(SSL_PRIVATE_KEY)%'
 
 services:
     _defaults:
@@ -25,10 +25,10 @@ services:
     League\Glide\Server:
         factory: League\Glide\ServerFactory::create
         arguments:
-            -   source: '@League\Flysystem\FilesystemOperator'
-                cache: '@memory.storage'
-                response: '@League\Glide\Responses\SymfonyResponseFactory'
-                max_image_size: 4000000 # Max image size in number of pixels (2000x2000)
+            - source: '@League\Flysystem\FilesystemOperator'
+              cache: '@memory.storage'
+              response: '@League\Glide\Responses\SymfonyResponseFactory'
+              max_image_size: 4000000 # Max image size in number of pixels (2000x2000)
 
     Tests\App\Test\Payment\PayboxProvider:
         arguments:

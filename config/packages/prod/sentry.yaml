@@ -5,7 +5,7 @@ services:
     Sentry\Integration\TransactionIntegration: ~
 
 sentry:
-    dsn: "%env(SENTRY_DSN)%"
+    dsn: '%env(SENTRY_DSN)%'
     register_error_listener: false
     tracing: false
     options:

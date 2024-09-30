@@ -2,7 +2,7 @@ sonata_admin:
     title_logo: logo/small_bg_white.jpg
     show_mosaic_button: false
     templates:
-        layout:  admin/layout.html.twig
+        layout: admin/layout.html.twig
         form_theme: [form_theme_admin.html.twig]
     security:
         handler: sonata.admin.security.handler.role

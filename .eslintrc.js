@@ -1,20 +1,16 @@
 module.exports = {
     settings: {
+        react: { version: 'detect' },
         'import/resolver': {
             webpack: {
                 config: 'webpack.development.js',
             },
         },
     },
-    extends: [
-        'eslint:recommended',
-        'airbnb-base',
-    ],
-    plugins: [
-        'react',
-    ],
+    extends: ['eslint:recommended', 'airbnb-base', 'prettier'],
+    plugins: ['react', 'prettier'],
     parserOptions: {
-        ecmaVersion: 11,
+        ecmaVersion: 2022,
         sourceType: 'module',
         ecmaFeatures: {
             jsx: true,
@@ -23,8 +19,6 @@ module.exports = {
     env: {
         es6: true,
         browser: true,
-        node: true,
-        mocha: true,
         jquery: true,
     },
     globals: {
@@ -51,8 +45,8 @@ module.exports = {
         friendlyChallenge: true,
     },
     rules: {
-        indent: ['error', 4],
-        quotes: ['error', 'single'],
+        indent: ['error', 4, { SwitchCase: 1 }],
+        quotes: ['error', 'single', { avoidEscape: true }],
         'no-var': ['error'],
         'no-underscore-dangle': 'off',
         semi: ['error', 'always'],
@@ -67,12 +61,15 @@ module.exports = {
         'default-case': ['off'],
         'import/no-named-as-default': ['off'],
         'import/no-named-as-default-member': ['off'],
-        'comma-dangle': ['error', {
-            arrays: 'always-multiline',
-            objects: 'always-multiline',
-            imports: 'always-multiline',
-            exports: 'always-multiline',
-            functions: 'never',
-        }],
+        'comma-dangle': [
+            'error',
+            {
+                arrays: 'always-multiline',
+                objects: 'always-multiline',
+                imports: 'always-multiline',
+                exports: 'always-multiline',
+                functions: 'never',
+            },
+        ],
     },
 };

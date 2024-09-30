@@ -41,10 +41,7 @@
     "removeWordsIfNoResults": "none",
     "queryType": "prefixLast",
     "highlightPreTag": "<em>",
-    "highlightPostTag": "<\/em>",
+    "highlightPostTag": "</em>",
     "snippetEllipsisText": "",
-    "alternativesAsExact": [
-        "ignorePlurals",
-        "singleWordSynonym"
-    ]
+    "alternativesAsExact": ["ignorePlurals", "singleWordSynonym"]
 }

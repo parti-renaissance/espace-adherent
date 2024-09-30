@@ -2,12 +2,12 @@ name: docker login
 description: Authenticate with docker on registry
 
 runs:
-  using: composite
-  steps:
-    - uses: google-github-actions/auth@v2
-      with:
-        credentials_json: ${{ env.GCP_SA_KEY_GCR_PUSHER }}
+    using: composite
+    steps:
+        - uses: google-github-actions/auth@v2
+          with:
+              credentials_json: ${{ env.GCP_SA_KEY_GCR_PUSHER }}
 
-    - shell: bash
-      run: |-
-        gcloud auth --quiet configure-docker $REGISTRY_HOST
+        - shell: bash
+          run: |-
+              gcloud auth --quiet configure-docker $REGISTRY_HOST

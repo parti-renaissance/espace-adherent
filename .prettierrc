@@ -1,0 +1,11 @@
+{
+    "plugins": ["prettier-plugin-gherkin"],
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "useTabs": false,
+    "arrowParens": "always",
+    "bracketSpacing": true,
+    "endOfLine": "auto",
+    "jsxBracketSameLine": false,
+    "proseWrap": "preserve"
+}

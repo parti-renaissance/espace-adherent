@@ -2,27 +2,27 @@ name: docker push
 description: Push and tag docker image
 
 inputs:
-  hash:
-    description: The docker image hash.
-    required: true
-  tag:
-    description: The docker image tag
-    required: false
-    default: dev
+    hash:
+        description: The docker image hash.
+        required: true
+    tag:
+        description: The docker image tag
+        required: false
+        default: dev
 
 runs:
-  using: composite
-  steps:
-    - shell: bash
-      env:
-        HASH: ${{ inputs.hash }}
-        TAG: ${{ inputs.tag }}
-      run: |-
-        docker image tag $REGISTRY:$TAG-$HASH $REGISTRY:$TAG
+    using: composite
+    steps:
+        - shell: bash
+          env:
+              HASH: ${{ inputs.hash }}
+              TAG: ${{ inputs.tag }}
+          run: |-
+              docker image tag $REGISTRY:$TAG-$HASH $REGISTRY:$TAG
 
-    - shell: bash
-      env:
-        HASH: ${{ inputs.hash }}
-        TAG: ${{ inputs.tag }}
-      run: |-
-        docker image push --all-tags --quiet $REGISTRY
+        - shell: bash
+          env:
+              HASH: ${{ inputs.hash }}
+              TAG: ${{ inputs.tag }}
+          run: |-
+              docker image push --all-tags --quiet $REGISTRY

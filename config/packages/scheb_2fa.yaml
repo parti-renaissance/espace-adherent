@@ -4,4 +4,4 @@ scheb_two_factor:
         issuer: En Marche !
         template: security/admin_google_authenticator.html.twig
     security_tokens:
-         - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+        - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken

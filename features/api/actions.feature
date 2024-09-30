@@ -8,156 +8,156 @@ Feature:
     Scenario: As a logged-in VOX user I can create and update an actions
         Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "J'écoute" with scope "jemarche_app"
         And I send a "POST" request to "/api/v3/actions?scope=president_departmental_assembly" with body:
-        """
-        {
-            "type": "pap",
-            "date": "2024-06-01 10:00:00",
-            "description": "<p>Bonjour, voici une description</p><ul><li>élément 1</li><li>élément 2</li></ul>",
-            "post_address": {
-                "address": "92 bd Victor Hugo",
-                "postal_code": "92110",
-                "city_name": "Clichy",
-                "country": "FR"
+            """
+            {
+                "type": "pap",
+                "date": "2024-06-01 10:00:00",
+                "description": "<p>Bonjour, voici une description</p><ul><li>élément 1</li><li>élément 2</li></ul>",
+                "post_address": {
+                    "address": "92 bd Victor Hugo",
+                    "postal_code": "92110",
+                    "city_name": "Clichy",
+                    "country": "FR"
+                }
             }
-        }
-        """
+            """
         Then the response status code should be 201
         And the JSON should be equal to:
-        """
-        {
-            "type": "pap",
-            "date": "@string@.isDateTime()",
-            "uuid": "@uuid@",
-            "status": "scheduled",
-            "created_at": "@string@.isDateTime()",
-            "updated_at": "@string@.isDateTime()",
-            "user_registered_at": "@string@.isDateTime()",
-            "participants": [
-                {
-                    "is_present": false,
-                    "adherent": {
-                        "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
-                        "first_name": "Damien",
-                        "last_name": "Durock",
-                        "image_url": null
-                    },
-                    "uuid": "@uuid@",
-                    "created_at": "@string@.isDateTime()",
-                    "updated_at": "@string@.isDateTime()"
-                }
-            ],
-            "description": "<p>Bonjour, voici une description</p><ul><li>élément 1</li><li>élément 2</li></ul>",
-            "post_address": {
-                "address": "92 bd Victor Hugo",
-                "postal_code": "92110",
-                "city": "92110-92024",
-                "city_name": "Clichy",
-                "country": "FR",
-                "latitude": 48.901058,
-                "longitude": 2.318325
-            },
-            "author": {
+            """
+            {
+                "type": "pap",
+                "date": "@string@.isDateTime()",
                 "uuid": "@uuid@",
-                "first_name": "Damien",
-                "last_name": "Durock",
-                "image_url": null,
-                "role": "Président",
-                "zone": "Hauts-de-Seine",
-                "instance": "Assemblée départementale"
-            },
-            "zones": [
-                {
-                    "uuid": "e3f0ee1a-906e-11eb-a875-0242ac150002",
-                    "type": "district",
-                    "code": "92-5",
-                    "name": "Hauts-de-Seine (5)",
-                    "created_at": "@string@.isDateTime()",
-                    "updated_at": "@string@.isDateTime()"
+                "status": "scheduled",
+                "created_at": "@string@.isDateTime()",
+                "updated_at": "@string@.isDateTime()",
+                "user_registered_at": "@string@.isDateTime()",
+                "participants": [
+                    {
+                        "is_present": false,
+                        "adherent": {
+                            "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
+                            "first_name": "Damien",
+                            "last_name": "Durock",
+                            "image_url": null
+                        },
+                        "uuid": "@uuid@",
+                        "created_at": "@string@.isDateTime()",
+                        "updated_at": "@string@.isDateTime()"
+                    }
+                ],
+                "description": "<p>Bonjour, voici une description</p><ul><li>élément 1</li><li>élément 2</li></ul>",
+                "post_address": {
+                    "address": "92 bd Victor Hugo",
+                    "postal_code": "92110",
+                    "city": "92110-92024",
+                    "city_name": "Clichy",
+                    "country": "FR",
+                    "latitude": 48.901058,
+                    "longitude": 2.318325
                 },
-                {
-                    "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
-                    "type": "city",
-                    "code": "92024",
-                    "name": "Clichy",
-                    "created_at": "@string@.isDateTime()",
-                    "updated_at": "@string@.isDateTime()"
-                }
-            ],
-            "editable": true
-        }
-        """
+                "author": {
+                    "uuid": "@uuid@",
+                    "first_name": "Damien",
+                    "last_name": "Durock",
+                    "image_url": null,
+                    "role": "Président",
+                    "zone": "Hauts-de-Seine",
+                    "instance": "Assemblée départementale"
+                },
+                "zones": [
+                    {
+                        "uuid": "e3f0ee1a-906e-11eb-a875-0242ac150002",
+                        "type": "district",
+                        "code": "92-5",
+                        "name": "Hauts-de-Seine (5)",
+                        "created_at": "@string@.isDateTime()",
+                        "updated_at": "@string@.isDateTime()"
+                    },
+                    {
+                        "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
+                        "type": "city",
+                        "code": "92024",
+                        "name": "Clichy",
+                        "created_at": "@string@.isDateTime()",
+                        "updated_at": "@string@.isDateTime()"
+                    }
+                ],
+                "editable": true
+            }
+            """
         When I save this response
         And I send a "PUT" request to "/api/v3/actions/:last_response.uuid:?scope=president_departmental_assembly" with body:
-        """
-        {
-            "type": "boitage"
-        }
-        """
+            """
+            {
+                "type": "boitage"
+            }
+            """
         Then the response status code should be 200
         And the JSON should be equal to:
-        """
-        {
-            "type": "boitage",
-            "date": "@string@.isDateTime()",
-            "uuid": "@uuid@",
-            "created_at": "@string@.isDateTime()",
-            "updated_at": "@string@.isDateTime()",
-            "status": "scheduled",
-            "user_registered_at": "@string@.isDateTime()",
-            "participants": [
-                {
-                    "is_present": false,
-                    "adherent": {
-                        "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
-                        "first_name": "Damien",
-                        "last_name": "Durock",
-                        "image_url": null
-                    },
-                    "uuid": "@uuid@",
-                    "created_at": "@string@.isDateTime()",
-                    "updated_at": "@string@.isDateTime()"
-                }
-            ],
-            "description": "<p>Bonjour, voici une description</p><ul><li>élément 1</li><li>élément 2</li></ul>",
-            "post_address": {
-                "address": "92 bd Victor Hugo",
-                "postal_code": "92110",
-                "city": "92110-92024",
-                "city_name": "Clichy",
-                "country": "FR",
-                "latitude": 48.901058,
-                "longitude": 2.318325
-            },
-            "author": {
+            """
+            {
+                "type": "boitage",
+                "date": "@string@.isDateTime()",
                 "uuid": "@uuid@",
-                "first_name": "Damien",
-                "last_name": "Durock",
-                "image_url": null,
-                "role": "Président",
-                "zone": "Hauts-de-Seine",
-                "instance": "Assemblée départementale"
-            },
-            "zones": [
-                {
-                    "uuid": "e3f0ee1a-906e-11eb-a875-0242ac150002",
-                    "type": "district",
-                    "code": "92-5",
-                    "name": "Hauts-de-Seine (5)",
-                    "created_at": "@string@.isDateTime()",
-                    "updated_at": "@string@.isDateTime()"
+                "created_at": "@string@.isDateTime()",
+                "updated_at": "@string@.isDateTime()",
+                "status": "scheduled",
+                "user_registered_at": "@string@.isDateTime()",
+                "participants": [
+                    {
+                        "is_present": false,
+                        "adherent": {
+                            "uuid": "9fec3385-8cfb-46e8-8305-c9bae10e4517",
+                            "first_name": "Damien",
+                            "last_name": "Durock",
+                            "image_url": null
+                        },
+                        "uuid": "@uuid@",
+                        "created_at": "@string@.isDateTime()",
+                        "updated_at": "@string@.isDateTime()"
+                    }
+                ],
+                "description": "<p>Bonjour, voici une description</p><ul><li>élément 1</li><li>élément 2</li></ul>",
+                "post_address": {
+                    "address": "92 bd Victor Hugo",
+                    "postal_code": "92110",
+                    "city": "92110-92024",
+                    "city_name": "Clichy",
+                    "country": "FR",
+                    "latitude": 48.901058,
+                    "longitude": 2.318325
                 },
-                {
-                    "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
-                    "type": "city",
-                    "code": "92024",
-                    "name": "Clichy",
-                    "created_at": "@string@.isDateTime()",
-                    "updated_at": "@string@.isDateTime()"
-                }
-            ],
-            "editable": true
-        }
-        """
+                "author": {
+                    "uuid": "@uuid@",
+                    "first_name": "Damien",
+                    "last_name": "Durock",
+                    "image_url": null,
+                    "role": "Président",
+                    "zone": "Hauts-de-Seine",
+                    "instance": "Assemblée départementale"
+                },
+                "zones": [
+                    {
+                        "uuid": "e3f0ee1a-906e-11eb-a875-0242ac150002",
+                        "type": "district",
+                        "code": "92-5",
+                        "name": "Hauts-de-Seine (5)",
+                        "created_at": "@string@.isDateTime()",
+                        "updated_at": "@string@.isDateTime()"
+                    },
+                    {
+                        "uuid": "e3f2c4a0-906e-11eb-a875-0242ac150002",
+                        "type": "city",
+                        "code": "92024",
+                        "name": "Clichy",
+                        "created_at": "@string@.isDateTime()",
+                        "updated_at": "@string@.isDateTime()"
+                    }
+                ],
+                "editable": true
+            }
+            """
         When I send a "DELETE" request to "/api/v3/actions/:last_response.uuid:/register"
         Then the response status code should be 400
         And the JSON node "message" should be equal to "Vous ne pouvez pas vous désinscrire d'une action que vous avez créé."
