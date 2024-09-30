@@ -14,11 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted('ROLE_ADMIN_TERRITOIRES_FILES')]
 #[Route(path: '/filesystem', name: 'app_admin_files_', methods: ['GET'])]
 class AdminFileController extends AbstractController
 {
-    #[Route(path: '/file-directory/autocompletion', name: 'autocomplete_file_directory', condition: 'request.isXmlHttpRequest()', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN_TERRITOIRES_FILES')]
+    #[Route(path: '/file-directory/autocompletion', name: 'autocomplete_file_directory', methods: ['GET'], condition: 'request.isXmlHttpRequest()')]
     public function directoriesAutocompleteAction(Request $request, FileRepository $repository): JsonResponse
     {
         $directories = $repository->findForAutocomplete(
@@ -33,7 +33,8 @@ class AdminFileController extends AbstractController
         );
     }
 
-    #[Route(path: '/documents/{uuid}', name: 'download', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%'])]
+    #[IsGranted('ROLE_ADMIN_TERRITOIRES_FILES')]
+    #[Route(path: '/documents/{uuid}', name: 'download', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
     public function downloadAction(File $file, FilesystemOperator $defaultStorage): Response
     {
         if ($file->isDir()) {
@@ -50,13 +51,29 @@ class AdminFileController extends AbstractController
             throw $this->createNotFoundException('No file found in storage for this File.');
         }
 
-        $response = new Response($defaultStorage->read($filePath), Response::HTTP_OK, [
-            'Content-Type' => $file->getMimeType(),
+        return $this->generateResponse($defaultStorage, $file->getPath(), $file->getMimeType(), $file->getName(), $file->getExtension());
+    }
+
+    #[IsGranted('ROLE_ADMIN_ADHERENT_ADHERENTS')]
+    #[Route(path: '/fichiers/{filePath}', name: 'download_from_storage', requirements: ['filePath' => '/.*'], methods: ['GET'])]
+    public function downloadFromStorageAction(string $filePath, FilesystemOperator $defaultStorage): Response
+    {
+        if (!$defaultStorage->has($filePath)) {
+            throw $this->createNotFoundException('No file found in storage for this File.');
+        }
+
+        return $this->generateResponse($defaultStorage, $filePath, $defaultStorage->mimeType($filePath), pathinfo($filePath, \PATHINFO_FILENAME), pathinfo($filePath, \PATHINFO_EXTENSION));
+    }
+
+    private function generateResponse(FilesystemOperator $storage, string $filePath, string $mimeType, string $name, $extension): Response
+    {
+        $response = new Response($storage->read($filePath), Response::HTTP_OK, [
+            'Content-Type' => $mimeType,
         ]);
 
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            \sprintf('%s.%s', Urlizer::urlize($file->getName()), $file->getExtension())
+            \sprintf('%s.%s', Urlizer::urlize($name), $extension)
         );
 
         $response->headers->set('Content-Disposition', $disposition);

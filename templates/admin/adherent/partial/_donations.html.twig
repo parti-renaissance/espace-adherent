@@ -4,7 +4,11 @@
 {% set donations = get_donations_history(adherent) %}
 {% set subscribed_donations = get_subscribed_donations(adherent) %}
 {% set last_subscription_ended = get_last_subscription_ended(adherent) %}
+
 <div class="box">
+    <div class="box-header">
+        <h4 class="box-title">Informations</h4>
+    </div>
     <div class="box-body table-responsive">
         <table class="table">
             <tbody>
@@ -38,6 +42,44 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+</div>
+
+{% set tax_receipts = get_tax_receipts_for_adherent(adherent) %}
+
+<div class="box">
+    <div class="box-header">
+        <h4 class="box-title">Reçus fiscaux</h4>
+    </div>
+    <div class="box-body table-responsive">
+        {% if tax_receipts is empty %}
+            <p>Aucun reçu fiscal.</p>
+        {% else %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Libellé</th>
+                        <th>Fichier</th>
+                        <th>Date d'ajout</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for receipt in tax_receipts %}
+                        <tr>
+                            <td>{{ receipt.label }}</td>
+                            <td>
+                                <a href="{{ path('app_admin_files_download_from_storage', {filePath: receipt.getFilePath()}) }}" target="_blank">
+                                    <i class="fa fa-file-pdf-o"></i>
+                                    {{ receipt.fileName }}
+                                </a>
+                            </td>
+                            <td>{{ receipt.createdAt|format_datetime('medium', 'none') }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
     </div>
 </div>
 
@@ -89,4 +131,3 @@
         {% endif %}
     </div>
 </div>
-

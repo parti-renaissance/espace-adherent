@@ -7,6 +7,7 @@ use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Entity\Adherent;
 use App\Entity\Donation;
 use App\Entity\Donator;
+use App\Entity\TaxReceipt;
 use App\Entity\Transaction;
 use Cocur\Slugify\SlugifyInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -47,6 +48,7 @@ class LoadDonationData extends Fixture implements DependentFixtureInterface
                 );
                 $this->createTransaction($donation);
 
+                $donator->addTaxReceipt(new TaxReceipt($donator, $year.'.pdf', Uuid::uuid4().'.pdf'));
                 $donation->setMembership(true);
                 $donator->setMembershipDonation($donation);
 

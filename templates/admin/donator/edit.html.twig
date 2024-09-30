@@ -3,31 +3,71 @@
 {% block sonata_tab_content %}
     {{ parent() }}
 
+    {% set tax_receipts = get_tax_receipts_for_donator(object) %}
+
+    <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h4 class="box-title">Reçus fiscaux</h4>
+            </div>
+            <div class="box-body table-responsive">
+                {% if tax_receipts is empty %}
+                    <p>Aucun reçu fiscal.</p>
+                {% else %}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Libellé</th>
+                            <th>Fichier</th>
+                            <th>Date d'ajout</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for receipt in tax_receipts %}
+                            <tr>
+                                <td>{{ receipt.label }}</td>
+                                <td>
+                                    <a href="{{ path('app_admin_files_download_from_storage', {filePath: receipt.getFilePath()}) }}" target="_blank">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                        {{ receipt.fileName }}
+                                    </a>
+                                </td>
+                                <td>{{ receipt.createdAt|format_datetime('medium', 'none') }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
     {% if object.isAdherent %}
-            <div class="col-md-6">
-                <div class="box box-primary">
-                    <div class="box-header">
-                        <h4 class="box-title">Informations adhérent</h4>
-                    </div>
-                    <div class="box-body table-responsive no-padding">
-                        <table class="table table-bordered table-striped sonata-ba-list">
-                            <tbody>
-                                <tr>
-                                    <th class="sonata-ba-list-field-header-text">Téléphone</th>
-                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ object.adherent.phone ? object.adherent.phone|phone_number_format }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th class="sonata-ba-list-field-header-text">Date de naissance</th>
-                                    <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                                        {{ object.adherent.birthDate|format_datetime('medium', 'none') }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h4 class="box-title">Informations adhérent</h4>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-bordered table-striped sonata-ba-list">
+                        <tbody>
+                            <tr>
+                                <th class="sonata-ba-list-field-header-text">Téléphone</th>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    {{ object.adherent.phone ? object.adherent.phone|phone_number_format }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="sonata-ba-list-field-header-text">Date de naissance</th>
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    {{ object.adherent.birthDate|format_datetime('medium', 'none') }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
     {% endif %}
 {% endblock %}
