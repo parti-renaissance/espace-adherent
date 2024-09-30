@@ -3,7 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Mooc\AttachmentFile;
-use App\Storage\FileRequestHandler;
+use App\Utils\HttpUtils;
+use League\Flysystem\FilesystemOperator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,8 +15,8 @@ class MoocController extends AbstractController
 {
     #[Cache(maxage: 900, smaxage: 900)]
     #[Route(path: '/file/{slug}.{extension}', name: 'mooc_get_file', methods: ['GET'])]
-    public function getFile(FileRequestHandler $fileRequestHandler, AttachmentFile $file): Response
+    public function getFile(AttachmentFile $file, FilesystemOperator $defaultStorage): Response
     {
-        return $fileRequestHandler->createResponse($file);
+        return HttpUtils::createResponse($defaultStorage, $file->getPath(), $file->getSlug().'.'.$file->getExtension());
     }
 }

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\TaxReceiptRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TaxReceiptRepository::class)]
 class TaxReceipt
@@ -16,6 +17,7 @@ class TaxReceipt
     #[ORM\ManyToOne(targetEntity: Donator::class, inversedBy: 'taxReceipts')]
     public Donator $donator;
 
+    #[Groups(['tax_receipt:list'])]
     #[ORM\Column]
     public string $label;
 

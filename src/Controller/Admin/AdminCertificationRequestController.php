@@ -10,11 +10,11 @@ use App\Entity\CertificationRequest;
 use App\Form\Admin\CertificationRequestBlockCommandType;
 use App\Form\Admin\CertificationRequestRefuseCommandType;
 use App\Form\ConfirmActionType;
+use App\Utils\HttpUtils;
 use League\Flysystem\FilesystemOperator;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class AdminCertificationRequestController extends CRUDController
 {
@@ -156,25 +156,12 @@ class AdminCertificationRequestController extends CRUDController
         /** @var CertificationRequest $certificationRequest */
         $certificationRequest = $this->admin->getSubject();
 
-        $filePath = $certificationRequest->getPathWithDirectory();
-
-        if (!$this->storage->has($filePath)) {
-            throw $this->createNotFoundException('No file found in storage for this CertificationRequest.');
-        }
-
-        $response = new Response($this->storage->read($filePath), Response::HTTP_OK, [
-            'Content-Type' => $certificationRequest->getDocumentMimeType(),
-        ]);
-
-        if ($request->query->has('download')) {
-            $disposition = $response->headers->makeDisposition(
-                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                $certificationRequest->getDocumentName()
-            );
-
-            $response->headers->set('Content-Disposition', $disposition);
-        }
-
-        return $response;
+        return HttpUtils::createResponse(
+            $this->storage,
+            $certificationRequest->getPathWithDirectory(),
+            $certificationRequest->getDocumentName(),
+            $certificationRequest->getDocumentMimeType(),
+            $request->query->has('download')
+        );
     }
 }

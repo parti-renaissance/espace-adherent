@@ -3,13 +3,13 @@
 namespace App\Controller\Api;
 
 use App\Entity\Document;
+use App\Utils\HttpUtils;
 use Cocur\Slugify\Slugify;
 use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class DocumentDownloadFileController extends AbstractController
 {
@@ -25,17 +25,10 @@ class DocumentDownloadFileController extends AbstractController
             throw $this->createNotFoundException('File not found.');
         }
 
-        $response = new Response($this->defaultStorage->read($document->filePath), Response::HTTP_OK, [
-            'Content-Type' => $this->defaultStorage->mimeType($document->filePath),
-        ]);
-
-        $disposition = $response->headers->makeDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+        return HttpUtils::createResponse(
+            $this->defaultStorage,
+            $document->filePath,
             (new Slugify())->slugify($document->title).'.'.pathinfo($document->filePath, \PATHINFO_EXTENSION)
         );
-
-        $response->headers->set('Content-Disposition', $disposition);
-
-        return $response;
     }
 }

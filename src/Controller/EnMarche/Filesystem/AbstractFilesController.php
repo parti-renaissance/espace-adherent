@@ -5,13 +5,13 @@ namespace App\Controller\EnMarche\Filesystem;
 use App\Controller\EnMarche\AccessDelegatorTrait;
 use App\Entity\Filesystem\File;
 use App\Repository\Filesystem\FileRepository;
+use App\Utils\HttpUtils;
 use Gedmo\Sluggable\Util\Urlizer;
 use League\Flysystem\FilesystemOperator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 abstract class AbstractFilesController extends AbstractController
@@ -39,22 +39,12 @@ abstract class AbstractFilesController extends AbstractController
 
         $filePath = $file->getPath();
 
-        if (!$defaultStorage->has($filePath)) {
-            throw $this->createNotFoundException('No file found in storage for this File.');
-        }
-
-        $response = new Response($defaultStorage->read($filePath), Response::HTTP_OK, [
-            'Content-Type' => $file->getMimeType(),
-        ]);
-
-        $disposition = $response->headers->makeDisposition(
-            $file->isPdf() ? ResponseHeaderBag::DISPOSITION_INLINE : ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $this->getFilenameForDownload($file)
+        return HttpUtils::createResponse(
+            $defaultStorage,
+            $filePath,
+            $this->getFilenameForDownload($file),
+            $file->getMimeType()
         );
-
-        $response->headers->set('Content-Disposition', $disposition);
-
-        return $response;
     }
 
     #[Route(path: '/documents', name: 'list', methods: ['GET'])]

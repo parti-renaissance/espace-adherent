@@ -13,6 +13,7 @@ use App\Donation\Paybox\PayboxPaymentUnsubscription;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
+use App\Entity\TaxReceipt;
 use App\Exception\PayboxPaymentUnsubscriptionException;
 use App\Membership\AdherentChangePasswordHandler;
 use App\Membership\MembershipRequestHandler;
@@ -21,7 +22,10 @@ use App\Normalizer\ImageOwnerExposedNormalizer;
 use App\OAuth\TokenRevocationAuthority;
 use App\Repository\CommitteeRepository;
 use App\Repository\DonationRepository;
+use App\Repository\TaxReceiptRepository;
+use App\Utils\HttpUtils;
 use Doctrine\ORM\EntityManagerInterface;
+use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -81,6 +85,26 @@ class ProfileController extends AbstractController
                 ]
             )
         );
+    }
+
+    #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
+    #[Route(path: '/me/tax_receipts', name: '_tax_receipts', methods: ['GET'])]
+    public function getTaxReceipts(TaxReceiptRepository $repository): JsonResponse
+    {
+        return $this->json($repository->findAllByAdherent($this->getUser()), context: ['groups' => ['tax_receipt:list']]);
+    }
+
+    #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
+    #[Route(path: '/me/tax_receipts/{uuid}/file', name: '_tax_receipts_download', methods: ['GET'])]
+    public function downloadTaxReceiptFile(TaxReceipt $receipt, FilesystemOperator $defaultStorage): Response
+    {
+        $user = $this->getUser();
+
+        if ($receipt->donator->getAdherent() !== $user) {
+            return $this->json(['message' => 'Tax receipt not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        return HttpUtils::createResponse($defaultStorage, $receipt->getFilePath(), $receipt->label);
     }
 
     #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
