@@ -7,8 +7,8 @@ use App\Entity\Adherent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Geo\Zone;
 use App\Entity\MyTeam\DelegatedAccess;
-use App\Entity\ZoneableEntity;
-use App\Entity\ZoneableWithScopeEntity;
+use App\Entity\ZoneableEntityInterface;
+use App\Entity\ZoneableWithScopeEntityInterface;
 use App\Geo\ManagedZoneProvider;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -36,7 +36,7 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             $adherent = $delegatedAccess->getDelegator();
         }
 
-        if ($subject instanceof ZoneableWithScopeEntity && $scopeCode = $subject->getScope()) {
+        if ($subject instanceof ZoneableWithScopeEntityInterface && $scopeCode = $subject->getScope()) {
             if (!$this->authorizationChecker->isGranted(RequestScopeVoter::PERMISSION, $scopeCode)) {
                 return false;
             }
@@ -67,7 +67,7 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
 
     protected function supports(string $attribute, $subject): bool
     {
-        return str_starts_with($attribute, self::PERMISSION) && $subject instanceof ZoneableEntity;
+        return str_starts_with($attribute, self::PERMISSION) && $subject instanceof ZoneableEntityInterface;
     }
 
     private function getSpaceType(string $attribute): string

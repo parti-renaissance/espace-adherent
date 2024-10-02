@@ -17,7 +17,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityUserListDefinitionTrait;
 use App\Entity\Geo\Zone;
-use App\Entity\ZoneableEntity;
+use App\Entity\ZoneableEntityInterface;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\ValueObject\Genders;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -57,7 +57,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: ElectedRepresentativeRepository::class)]
 #[UniqueEntity(fields: ['adherent'], message: 'elected_representative.invalid_adherent')]
-class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, ZoneableEntity, AuthoredInterface
+class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityAdministratorBlameableInterface, ZoneableEntityInterface, AuthoredInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;

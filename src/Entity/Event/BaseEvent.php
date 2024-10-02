@@ -42,7 +42,7 @@ use App\Entity\ImageTrait;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\NullablePostAddress;
 use App\Entity\Report\ReportableInterface;
-use App\Entity\ZoneableEntity;
+use App\Entity\ZoneableEntityInterface;
 use App\EntityListener\AlgoliaIndexListener;
 use App\EntityListener\DynamicLinkListener;
 use App\Event\EventTypeEnum;
@@ -159,7 +159,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['status'])]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: '`events`')]
-abstract class BaseEvent implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntity, AuthorInstanceInterface, ExposedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, ExposedObjectInterface
+abstract class BaseEvent implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ExposedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, ExposedObjectInterface
 {
     use EntityIdentityTrait;
     use EntityNullablePostAddressTrait;

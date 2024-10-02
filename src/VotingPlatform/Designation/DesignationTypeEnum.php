@@ -70,5 +70,6 @@ final class DesignationTypeEnum extends Enum
 
     public const API_AVAILABLE_TYPES = [
         self::COMMITTEE_SUPERVISOR,
+        self::CONSULTATION,
     ];
 }

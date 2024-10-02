@@ -8,7 +8,7 @@ use App\Committee\Event\CommitteeEvent;
 use App\Entity\Action\Action;
 use App\Entity\Event\CommitteeEvent as BaseCommitteeEvent;
 use App\Entity\Geo\Zone;
-use App\Entity\ZoneableEntity;
+use App\Entity\ZoneableEntityInterface;
 use App\Event\EventEvent;
 use App\Events;
 use App\Geo\ZoneMatcher;
@@ -69,7 +69,7 @@ class ZoneAssignerSubscriber implements EventSubscriberInterface
         $this->em->flush();
     }
 
-    public function assignZone(ZoneableEntity $entity, AddressInterface $address, bool $setCity = false): void
+    public function assignZone(ZoneableEntityInterface $entity, AddressInterface $address, bool $setCity = false): void
     {
         $zones = $this->zoneMatcher->match($address);
         if (!$zones) {

@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-interface ZoneableWithScopeEntity extends ZoneableEntity
+interface ZoneableWithScopeEntityInterface extends ZoneableEntityInterface
 {
     public function getScope(): ?string;
 }

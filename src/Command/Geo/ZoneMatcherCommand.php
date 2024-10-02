@@ -4,7 +4,7 @@ namespace App\Command\Geo;
 
 use App\Entity\AddressHolderInterface;
 use App\Entity\Geo\Zone;
-use App\Entity\ZoneableEntity;
+use App\Entity\ZoneableEntityInterface;
 use App\Geo\ZoneMatcher;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,7 +53,7 @@ class ZoneMatcherCommand extends Command
             ->addArgument(
                 'entity',
                 InputArgument::REQUIRED,
-                \sprintf('Entity fully qualified class name (must implements %s and %s).', AddressHolderInterface::class, ZoneableEntity::class)
+                \sprintf('Entity fully qualified class name (must implements %s and %s).', AddressHolderInterface::class, ZoneableEntityInterface::class)
             )
             ->addOption('id', null, InputOption::VALUE_REQUIRED, 'Entity id.')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Execute the algorithm but will not persist in database.')
@@ -127,8 +127,8 @@ class ZoneMatcherCommand extends Command
             throw new \InvalidArgumentException(\sprintf('Class %s must implements %s', $class, AddressHolderInterface::class));
         }
 
-        if (!is_subclass_of($class, ZoneableEntity::class)) {
-            throw new \InvalidArgumentException(\sprintf('Class %s must implements %s', $class, ZoneableEntity::class));
+        if (!is_subclass_of($class, ZoneableEntityInterface::class)) {
+            throw new \InvalidArgumentException(\sprintf('Class %s must implements %s', $class, ZoneableEntityInterface::class));
         }
     }
 
@@ -146,7 +146,7 @@ class ZoneMatcherCommand extends Command
     }
 
     /**
-     * @return AddressHolderInterface[]|ZoneableEntity[]
+     * @return AddressHolderInterface[]|ZoneableEntityInterface[]
      */
     private function getItems(string $class, int $offset, ?string $id): array
     {
@@ -173,7 +173,7 @@ class ZoneMatcherCommand extends Command
     /**
      * @param Zone[] $zones
      */
-    private function applyZones(ZoneableEntity $zoneable, array $zones): void
+    private function applyZones(ZoneableEntityInterface $zoneable, array $zones): void
     {
         $zoneable->clearZones();
         foreach ($zones as $zone) {
