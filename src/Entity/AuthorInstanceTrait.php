@@ -11,6 +11,10 @@ trait AuthorInstanceTrait
 
     #[Groups(['action_read', 'action_read_list', 'event_read', 'event_list_read'])]
     #[ORM\Column(nullable: true)]
+    private ?string $authorScope = null;
+
+    #[Groups(['action_read', 'action_read_list', 'event_read', 'event_list_read'])]
+    #[ORM\Column(nullable: true)]
     private ?string $authorRole = null;
 
     #[Groups(['action_read', 'action_read_list', 'event_read', 'event_list_read'])]
@@ -20,6 +24,16 @@ trait AuthorInstanceTrait
     #[Groups(['action_read', 'action_read_list', 'event_read', 'event_list_read'])]
     #[ORM\Column(nullable: true)]
     private ?string $authorZone = null;
+
+    public function getAuthorScope(): ?string
+    {
+        return $this->authorScope;
+    }
+
+    public function setAuthorScope(?string $authorScope): void
+    {
+        $this->authorScope = $authorScope;
+    }
 
     public function getAuthorRole(): ?string
     {

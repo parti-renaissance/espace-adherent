@@ -61,6 +61,7 @@ Feature:
                     "first_name": "Damien",
                     "last_name": "Durock",
                     "image_url": null,
+                    "scope": "president_departmental_assembly",
                     "role": "Président",
                     "zone": "Hauts-de-Seine",
                     "instance": "Assemblée départementale"
@@ -133,6 +134,7 @@ Feature:
                     "first_name": "Damien",
                     "last_name": "Durock",
                     "image_url": null,
+                    "scope": "president_departmental_assembly",
                     "role": "Président",
                     "zone": "Hauts-de-Seine",
                     "instance": "Assemblée départementale"

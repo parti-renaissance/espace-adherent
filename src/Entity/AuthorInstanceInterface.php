@@ -4,6 +4,10 @@ namespace App\Entity;
 
 interface AuthorInstanceInterface extends AuthorInterface
 {
+    public function getAuthorScope(): ?string;
+
+    public function setAuthorScope(?string $authorScope);
+
     public function getAuthorRole(): ?string;
 
     public function setAuthorRole(?string $authorRole): void;
