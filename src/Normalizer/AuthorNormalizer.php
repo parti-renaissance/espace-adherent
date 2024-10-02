@@ -31,7 +31,7 @@ final class AuthorNormalizer implements NormalizerInterface, NormalizerAwareInte
 
         $apiContext = $context[PrivatePublicContextBuilder::CONTEXT_KEY] ?? null;
 
-        foreach (['author_role', 'author_instance', 'author_zone'] as $key) {
+        foreach (['author_scope', 'author_role', 'author_instance', 'author_zone'] as $key) {
             if (\array_key_exists($key, $data)) {
                 if (\array_key_exists('author', $data)) {
                     $authorKey = 'author';

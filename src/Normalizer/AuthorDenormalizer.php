@@ -35,6 +35,7 @@ final class AuthorDenormalizer implements DenormalizerInterface, DenormalizerAwa
             $data->setAuthor($scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $this->security->getUser());
 
             if ($scope && $data instanceof AuthorInstanceInterface) {
+                $data->setAuthorScope($scope->getCode());
                 $data->setAuthorRole($scope->getRoleName());
                 $data->setAuthorInstance($scope->getScopeInstance());
                 $data->setAuthorZone(implode(', ', $scope->getZoneNames()));
