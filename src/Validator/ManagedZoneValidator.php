@@ -2,7 +2,7 @@
 
 namespace App\Validator;
 
-use App\Entity\ZoneableEntity;
+use App\Entity\ZoneableEntityInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -18,7 +18,7 @@ class ManagedZoneValidator extends AbstractInManagedZoneValidator
             return;
         }
 
-        if ($value instanceof ZoneableEntity) {
+        if ($value instanceof ZoneableEntityInterface) {
             $managedZones = $value->getZones()->toArray();
 
             if (null === $value = $value->{$constraint->zoneGetMethodName}()) {

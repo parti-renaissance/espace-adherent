@@ -3,7 +3,7 @@
 namespace App\Api\Filter;
 
 use App\Entity\Adherent;
-use App\Entity\ZoneableEntity;
+use App\Entity\ZoneableEntityInterface;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -15,7 +15,7 @@ class InZoneOfScopeFilter extends AbstractScopeFilter
 
     protected function needApplyFilter(string $property, string $resourceClass): bool
     {
-        return is_a($resourceClass, ZoneableEntity::class, true);
+        return is_a($resourceClass, ZoneableEntityInterface::class, true);
     }
 
     protected function applyFilter(

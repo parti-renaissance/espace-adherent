@@ -2,6 +2,7 @@
 
 namespace App\Entity\VotingPlatform\Designation;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
@@ -20,10 +21,11 @@ use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
+use App\Entity\InjectScopeZonesInterface;
 use App\Entity\VotingPlatform\Designation\CandidacyPool\CandidacyPool;
 use App\Entity\VotingPlatform\Designation\Poll\Poll;
 use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
-use App\Entity\ZoneableEntity;
+use App\Entity\ZoneableEntityInterface;
 use App\Repository\VotingPlatform\DesignationRepository;
 use App\VotingPlatform\Designation\CreatePartialDesignationCommand;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
@@ -36,6 +38,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
+#[ApiFilter(filterClass: SearchFilter::class, properties: ['type' => 'exact'])]
 #[ApiResource(
     operations: [
         new Get(
@@ -66,7 +69,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'designation\')'
 )]
 #[ORM\Entity(repositoryClass: DesignationRepository::class)]
-class Designation implements EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, ZoneableEntity
+class Designation implements EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, ZoneableEntityInterface, InjectScopeZonesInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
@@ -147,7 +150,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
      * @var \DateTime|null
      */
     #[Assert\Expression('value > this.getVoteStartDate()', message: 'La date de clôture doit être postérieur à la date de début', groups: ['Default', 'api_designation_write'])]
-    #[Groups(['designation_read', 'designation_write', 'committee_election:read'])]
+    #[Groups(['designation_read', 'designation_write', 'committee_election:read', 'designation_list'])]
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $voteEndDate;
 

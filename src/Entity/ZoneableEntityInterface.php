@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Entity\Geo\Zone;
 use Doctrine\Common\Collections\Collection;
 
-interface ZoneableEntity
+interface ZoneableEntityInterface
 {
     /**
      * @return Collection|Zone[]

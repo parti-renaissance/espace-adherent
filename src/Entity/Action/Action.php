@@ -26,7 +26,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
-use App\Entity\ZoneableEntity;
+use App\Entity\ZoneableEntityInterface;
 use App\EntityListener\AlgoliaIndexListener;
 use App\Geocoder\GeoPointInterface;
 use App\Normalizer\ImageOwnerExposedNormalizer;
@@ -81,7 +81,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ActionRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[ORM\Table(name: 'vox_action')]
-class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEntity, IndexableEntityInterface
+class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEntityInterface, IndexableEntityInterface
 {
     use EntityIdentityTrait;
     use EntityPostAddressTrait;

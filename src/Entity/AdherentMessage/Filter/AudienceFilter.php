@@ -6,7 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Adherent\MandateTypeEnum;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
-use App\Entity\ZoneableEntity;
+use App\Entity\ZoneableEntityInterface;
 use App\Validator\ManagedZone;
 use App\Validator\ValidScope;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(operations: [])]
 #[ManagedZone]
 #[ORM\Entity]
-class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEntity, CampaignAdherentMessageFilterInterface
+class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEntityInterface, CampaignAdherentMessageFilterInterface
 {
     use GeneralFilterTrait {
         GeneralFilterTrait::reset as generalFilterTraitReset;

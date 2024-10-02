@@ -3,7 +3,7 @@
 namespace App\Referent;
 
 use App\Entity\Adherent;
-use App\Entity\ZoneableEntity;
+use App\Entity\ZoneableEntityInterface;
 use App\Repository\Geo\ZoneRepository;
 use App\Utils\AreaUtils;
 
@@ -16,7 +16,7 @@ class ReferentZoneManager
         $this->zoneRepository = $zoneRepository;
     }
 
-    public function assignZone(ZoneableEntity $entity): void
+    public function assignZone(ZoneableEntityInterface $entity): void
     {
         $entity->clearZones();
 
