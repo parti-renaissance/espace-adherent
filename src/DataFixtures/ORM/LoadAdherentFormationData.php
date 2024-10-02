@@ -38,16 +38,19 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         $administrator = $this->getReference('administrator-renaissance');
 
         $formation = $this->createNationalFormation(self::FORMATION_1_UUID, $administrator, 'Première formation nationale');
+        $formation->setCategory('Catégorie 1');
         $formation->setContentType(FormationContentTypeEnum::FILE);
         $this->createFile($formation);
         $manager->persist($formation);
 
         $formation = $this->createNationalFormation(self::FORMATION_2_UUID, $administrator, 'Formation sans description', false);
+        $formation->setCategory('Catégorie 1');
         $formation->setContentType(FormationContentTypeEnum::LINK);
         $formation->setLink('http://enmarche.code/');
         $manager->persist($formation);
 
         $formation = $this->createNationalFormation(self::FORMATION_3_UUID, $administrator, 'Formation non publiée', true, false);
+        $formation->setCategory('Catégorie 2');
         $formation->setContentType(FormationContentTypeEnum::FILE);
         $this->createFile($formation);
         $manager->persist($formation);
