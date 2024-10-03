@@ -39,18 +39,21 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
 
         $formation = $this->createNationalFormation(self::FORMATION_1_UUID, $administrator, 'Première formation nationale');
         $formation->setCategory('Catégorie 1');
+        $formation->setPosition(1);
         $formation->setContentType(FormationContentTypeEnum::FILE);
         $this->createFile($formation);
         $manager->persist($formation);
 
         $formation = $this->createNationalFormation(self::FORMATION_2_UUID, $administrator, 'Formation sans description', false);
         $formation->setCategory('Catégorie 1');
+        $formation->setPosition(2);
         $formation->setContentType(FormationContentTypeEnum::LINK);
         $formation->setLink('http://enmarche.code/');
         $manager->persist($formation);
 
         $formation = $this->createNationalFormation(self::FORMATION_3_UUID, $administrator, 'Formation non publiée', true, false);
         $formation->setCategory('Catégorie 2');
+        $formation->setPosition(3);
         $formation->setContentType(FormationContentTypeEnum::FILE);
         $this->createFile($formation);
         $manager->persist($formation);
@@ -60,12 +63,14 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         /** @var Zone $zoneDepartment92 */
         $zoneDepartment92 = LoadGeoZoneData::getZoneReference($manager, 'zone_department_92');
 
-        $formation = $this->createLocalFormation(self::FORMATION_4_UUID, $referent92, $zoneDepartment92, 'Première formation du 77');
+        $formation = $this->createLocalFormation(self::FORMATION_4_UUID, $referent92, $zoneDepartment92, 'Première formation du 92');
+        $formation->setPosition(1);
         $formation->setContentType(FormationContentTypeEnum::FILE);
         $this->createFile($formation);
         $manager->persist($formation);
 
-        $formation = $this->createLocalFormation(self::FORMATION_5_UUID, $referent92, $zoneDepartment92, 'Deuxième formation du 77');
+        $formation = $this->createLocalFormation(self::FORMATION_5_UUID, $referent92, $zoneDepartment92, 'Deuxième formation du 92');
+        $formation->setPosition(2);
         $formation->setContentType(FormationContentTypeEnum::LINK);
         $formation->setLink('http://renaissance.code/');
         $manager->persist($formation);
@@ -76,6 +81,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         $zoneDepartment06 = LoadGeoZoneData::getZoneReference($manager, 'zone_department_06');
 
         $formation = $this->createLocalFormation(self::FORMATION_6_UUID, $referent06, $zoneDepartment06, 'Première formation du 06');
+        $formation->setPosition(1);
         $formation->setContentType(FormationContentTypeEnum::FILE);
         $this->createFile($formation);
         $manager->persist($formation);
