@@ -9,11 +9,11 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Jecoute\News;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\MyTeam\RoleEnum;
-use App\Repository\Action\ActionRepository;
 use App\Repository\MyTeam\DelegatedAccessRepository;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use App\Scope\ScopeEnum;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -36,9 +36,8 @@ class UpdateAuthorScopeCommand extends Command
     private $io;
 
     public function __construct(
-        private readonly ActionRepository $actionRepository,
-        private readonly DelegatedAccessRepository $delegatedAccessRepository,
         private readonly EntityManagerInterface $entityManager,
+        private readonly DelegatedAccessRepository $delegatedAccessRepository,
     ) {
         parent::__construct();
     }
@@ -70,11 +69,15 @@ class UpdateAuthorScopeCommand extends Command
                     if (false !== $roleScope) {
                         $this->updateAuthorScope($action, $roleScope);
                     } elseif (false !== $delegatedRoleScope) {
-                        $delegatedAccess = $this->findDelegatedAccessForRoleAndZone(
-                            $action->getAuthor(),
-                            $delegatedRoleScope,
-                            $action->getZones()
-                        );
+                        try {
+                            $delegatedAccess = $this->findDelegatedAccessForRoleAndZone(
+                                $action->getAuthor(),
+                                $delegatedRoleScope,
+                                $action->getZones()
+                            );
+                        } catch (NonUniqueResultException $e) {
+                            continue;
+                        }
 
                         if ($delegatedAccess) {
                             $this->updateAuthorScope(
@@ -104,17 +107,6 @@ class UpdateAuthorScopeCommand extends Command
         $entity->setAuthorScope($authorScope);
 
         $this->entityManager->flush();
-    }
-
-    /** @return Action[]|Paginator */
-    private function getActionsPaginator(): Paginator
-    {
-        return new Paginator(
-            $this->actionRepository
-                ->createQueryBuilder('a')
-                ->andWhere('a.authorScope IS NULL')
-                ->getQuery()
-        );
     }
 
     /** @return AuthorInstanceInterface[]|Paginator */
