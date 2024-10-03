@@ -107,6 +107,10 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
+    #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
+    #[ORM\Column(nullable: true)]
+    private ?string $category = null;
+
     #[Assert\Choice(choices: FormationContentTypeEnum::ALL)]
     #[Assert\NotBlank]
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
@@ -182,6 +186,16 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     public function setContentType(string $contentType): void
     {
         $this->contentType = $contentType;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): void
+    {
+        $this->category = $category;
     }
 
     public function isFileContent(): bool

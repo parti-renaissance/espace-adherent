@@ -35,6 +35,10 @@ class FormationAdmin extends AbstractAdmin
                     'required' => false,
                     'help' => 'Optionnelle. Sera affichée aux utilisateurs',
                 ])
+                ->add('category', TextType::class, [
+                    'label' => 'Catégorie',
+                    'required' => false,
+                ])
             ->end()
             ->with('Visibilité', ['class' => 'col-md-6'])
                 ->add('published', CheckboxType::class, [
@@ -82,6 +86,10 @@ class FormationAdmin extends AbstractAdmin
                 'label' => 'Titre',
                 'show_filter' => true,
             ])
+            ->add('category', null, [
+                'label' => 'Catégorie',
+                'show_filter' => true,
+            ])
             ->add('published', null, [
                 'label' => 'Publiée',
                 'show_filter' => true,
@@ -94,6 +102,9 @@ class FormationAdmin extends AbstractAdmin
         $list
             ->addIdentifier('title', null, [
                 'label' => 'Titre',
+            ])
+            ->add('category', null, [
+                'label' => 'Catégorie',
             ])
             ->add('printCount', null, [
                 'label' => 'Nb de téléchargements',
