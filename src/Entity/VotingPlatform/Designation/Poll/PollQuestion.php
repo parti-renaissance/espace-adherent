@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -18,6 +19,7 @@ class PollQuestion
     use Sortable;
 
     #[Assert\NotBlank]
+    #[Groups(['designation_read'])]
     #[ORM\Column(length: 500)]
     public ?string $content = null;
 
@@ -27,11 +29,13 @@ class PollQuestion
 
     #[Assert\Count(min: 2)]
     #[Assert\Valid]
+    #[Groups(['designation_read'])]
     #[ORM\OneToMany(mappedBy: 'question', targetEntity: QuestionChoice::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $choices;
 
-    public function __construct()
+    public function __construct(?string $content = null)
     {
+        $this->content = $content;
         $this->uuid = Uuid::uuid4();
         $this->choices = new ArrayCollection();
     }

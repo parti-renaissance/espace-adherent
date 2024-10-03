@@ -27,8 +27,9 @@ class Poll
     #[ORM\OrderBy(['position' => 'ASC'])]
     private Collection $questions;
 
-    public function __construct()
+    public function __construct(?string $label = null)
     {
+        $this->label = $label;
         $this->uuid = Uuid::uuid4();
         $this->questions = new ArrayCollection();
     }
@@ -59,5 +60,10 @@ class Poll
     public function __toString(): string
     {
         return (string) $this->label;
+    }
+
+    public function clearQuestions(): void
+    {
+        $this->questions->clear();
     }
 }
