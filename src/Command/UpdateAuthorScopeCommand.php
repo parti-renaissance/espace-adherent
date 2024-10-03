@@ -5,9 +5,11 @@ namespace App\Command;
 use App\Entity\Action\Action;
 use App\Entity\Adherent;
 use App\Entity\AuthorInstanceInterface;
+use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Jecoute\News;
 use App\Entity\MyTeam\DelegatedAccess;
+use App\Entity\ZoneableEntityInterface;
 use App\MyTeam\RoleEnum;
 use App\Repository\MyTeam\DelegatedAccessRepository;
 use App\Scope\Generator\ScopeGeneratorInterface;
@@ -61,19 +63,37 @@ class UpdateAuthorScopeCommand extends Command
             $offset = 0;
 
             do {
-                foreach ($paginator as $action) {
-                    $roleLabel = $action->getAuthorRole();
+                foreach ($paginator as $entity) {
+                    ++$offset;
+                    $this->io->progressAdvance();
+
+                    if ($entity->getAuthorScope()) {
+                        continue;
+                    }
+
+                    if (!$roleLabel = $entity->getAuthorRole()) {
+                        continue;
+                    }
+
                     $roleScope = array_search($roleLabel, ScopeEnum::ROLE_NAMES, true);
                     $delegatedRoleScope = array_search($roleLabel, RoleEnum::LABELS, true);
 
                     if (false !== $roleScope) {
-                        $this->updateAuthorScope($action, $roleScope);
+                        $this->updateAuthorScope($entity, $roleScope);
                     } elseif (false !== $delegatedRoleScope) {
+                        $zones = $entity instanceof EntityScopeVisibilityWithZoneInterface
+                            ? [$entity->getZone()]
+                            : ($entity instanceof ZoneableEntityInterface ? $entity->getZones() : []);
+
+                        if (empty($zones)) {
+                            continue;
+                        }
+
                         try {
                             $delegatedAccess = $this->findDelegatedAccessForRoleAndZone(
-                                $action->getAuthor(),
+                                $entity->getAuthor(),
                                 $delegatedRoleScope,
-                                $action->getZones()
+                                $zones
                             );
                         } catch (NonUniqueResultException $e) {
                             continue;
@@ -81,14 +101,11 @@ class UpdateAuthorScopeCommand extends Command
 
                         if ($delegatedAccess) {
                             $this->updateAuthorScope(
-                                $action,
+                                $entity,
                                 ScopeGeneratorInterface::DELEGATED_SCOPE_PREFIX.$delegatedAccess->getUuid()->toString()
                             );
                         }
                     }
-
-                    $this->io->progressAdvance();
-                    ++$offset;
                 }
 
                 $paginator->getQuery()->setFirstResult($offset);
@@ -109,7 +126,7 @@ class UpdateAuthorScopeCommand extends Command
         $this->entityManager->flush();
     }
 
-    /** @return AuthorInstanceInterface[]|Paginator */
+    /** @return AuthorInstanceInterface[]|EntityScopeVisibilityWithZoneInterface[]|Paginator */
     private function getPaginator(string $entityClass): Paginator
     {
         if (!is_a($entityClass, AuthorInstanceInterface::class, true)) {
@@ -122,11 +139,11 @@ class UpdateAuthorScopeCommand extends Command
                 ->getRepository($entityClass)
                 ->createQueryBuilder('e')
                 ->select('e')
-                ->andWhere('e.authorScope IS NULL')
                 ->getQuery()
         );
     }
 
+    /** @throws NonUniqueResultException */
     private function findDelegatedAccessForRoleAndZone(
         Adherent $adherent,
         string $role,
@@ -150,7 +167,7 @@ class UpdateAuthorScopeCommand extends Command
                 'c',
                 DelegatedAccess::class,
                 'c2',
-                'zones',
+                'zone',
                 'z2'
             )
         ;
