@@ -76,7 +76,6 @@
         "longitude-one/doctrine-spatial": "*",
         "myclabs/php-enum": "^1.5",
         "nelmio/cors-bundle": "^2.2",
-        "ninsuo/symfony-collection": "^2.1",
         "nyholm/psr7": "^1.5",
         "odolbeau/phone-number-bundle": "^3.3",
         "openai-php/client": "^0.10.1",
@@ -179,11 +178,9 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "Fuz\\Symfony\\Collection\\ScriptHandler::postInstall",
             "@auto-scripts"
         ],
         "post-update-cmd": [
-            "Fuz\\Symfony\\Collection\\ScriptHandler::postUpdate",
             "@auto-scripts"
         ],
         "auto-scripts": {
