@@ -89,6 +89,9 @@ Feature:
                 "vote_start_date": "@string@.isDateTime()",
                 "vote_end_date": "@string@.isDateTime()",
                 "description": "lorem ipsum...",
+                "target": [],
+                "fully_editable": true,
+                "questions": [],
                 "election_entity_identifier": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
                 "uuid": "@uuid@"
             }
@@ -112,6 +115,9 @@ Feature:
                 "election_creation_date": "@string@.isDateTime()",
                 "vote_start_date": "@string@.isDateTime()",
                 "vote_end_date": "@string@.isDateTime()",
+                "target": [],
+                "fully_editable": false,
+                "questions": [],
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                 "election_entity_identifier": "5e00c264-1d4b-43b8-862e-29edc38389b3",
                 "uuid": "7fb0693e-1dad-44c6-984b-19e99603ea2c"
@@ -146,6 +152,9 @@ Feature:
                 "election_creation_date": "@string@.isDateTime()",
                 "vote_start_date": "@string@.isDateTime()",
                 "vote_end_date": "@string@.isDateTime()",
+                "target": [],
+                "fully_editable": true,
+                "questions": [],
                 "description": "lorem ipsum...",
                 "election_entity_identifier": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
                 "uuid": "6c7ca0c7-d656-47c3-a345-170fb43ffd1a"
@@ -311,6 +320,9 @@ Feature:
                 "election_creation_date": "@string@.isDateTime()",
                 "vote_start_date": "@string@.isDateTime()",
                 "vote_end_date": "@string@.isDateTime()",
+                "target": [],
+                "fully_editable": false,
+                "questions": [],
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                 "election_entity_identifier": "5e00c264-1d4b-43b8-862e-29edc38389b3",
                 "uuid": "7fb0693e-1dad-44c6-984b-19e99603ea2c"

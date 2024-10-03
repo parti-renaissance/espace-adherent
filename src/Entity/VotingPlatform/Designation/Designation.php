@@ -24,6 +24,8 @@ use App\Entity\EntityZoneTrait;
 use App\Entity\InjectScopeZonesInterface;
 use App\Entity\VotingPlatform\Designation\CandidacyPool\CandidacyPool;
 use App\Entity\VotingPlatform\Designation\Poll\Poll;
+use App\Entity\VotingPlatform\Designation\Poll\PollQuestion;
+use App\Entity\VotingPlatform\Designation\Poll\QuestionChoice;
 use App\Entity\VotingPlatform\ElectionPoolCodeEnum;
 use App\Entity\ZoneableEntityInterface;
 use App\Repository\VotingPlatform\DesignationRepository;
@@ -115,6 +117,10 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[Groups(['designation_read', 'designation_write', 'designation_list'])]
     #[ORM\Column]
     private $type;
+
+    #[Groups(['designation_read', 'designation_write'])]
+    #[ORM\Column(type: 'simple_array', nullable: true)]
+    public array $target = [];
 
     /**
      * @var string[]|null
@@ -218,7 +224,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     private bool $isBlankVoteEnabled = true;
 
     #[Assert\Expression('!(this.isLocalPollType() || this.isConsultationType()) or value', message: 'Vous devez préciser le questionnaire qui sera utilisé pour cette élection.')]
-    #[ORM\ManyToOne(targetEntity: Poll::class)]
+    #[ORM\ManyToOne(targetEntity: Poll::class, cascade: ['persist'])]
     public ?Poll $poll = null;
 
     /**
@@ -815,6 +821,46 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     public function __toString(): string
     {
         return $this->getTitle();
+    }
+
+    #[Groups(['designation_read'])]
+    public function isFullyEditable(): bool
+    {
+        return !$this->isCanceled() && $this->getVoteStartDate() > (new \DateTime('+ 3 days'));
+    }
+
+    #[Groups(['designation_read'])]
+    public function getQuestions(): array
+    {
+        return $this->poll ? $this->poll->getQuestions() : [];
+    }
+
+    #[Groups(['designation_write'])]
+    public function setQuestions(array $questions): void
+    {
+        if (!$questions) {
+            return;
+        }
+
+        if (!$this->poll) {
+            $this->poll = new Poll('[API] '.$this->getTitle());
+        }
+
+        $this->poll->clearQuestions();
+
+        foreach ($questions as $question) {
+            if (empty($question['choices'])) {
+                continue;
+            }
+
+            $pollQuestion = new PollQuestion($question['content'] ?? null);
+
+            foreach ($question['choices'] as $choice) {
+                $pollQuestion->addChoice(new QuestionChoice($choice['label'] ?? null));
+            }
+
+            $this->poll->addQuestion($pollQuestion);
+        }
     }
 
     public function isLimitedResultsView(): bool
