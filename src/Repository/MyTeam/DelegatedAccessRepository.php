@@ -4,12 +4,15 @@ namespace App\Repository\MyTeam;
 
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
+use App\Repository\GeoZoneTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 class DelegatedAccessRepository extends ServiceEntityRepository
 {
+    use GeoZoneTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, DelegatedAccess::class);
