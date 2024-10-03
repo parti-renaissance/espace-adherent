@@ -39,7 +39,7 @@ class TagEnum extends Enum
     public const PROCURATION_PROXY = self::PROCURATION.':mandataire';
     public const PROCURATION_REQUEST = self::PROCURATION.':mandant';
 
-    public static function getAdherentTags(): array
+    public static function getAdherentTags(bool $adherentOnly = false): array
     {
         $currentYear = date('Y');
 
@@ -57,7 +57,7 @@ class TagEnum extends Enum
             )
         );
 
-        return array_merge($adherentTags, [
+        return $adherentOnly ? $adherentTags : array_merge($adherentTags, [
             self::SYMPATHISANT,
             self::SYMPATHISANT_ADHESION_INCOMPLETE,
             self::SYMPATHISANT_COMPTE_EM,

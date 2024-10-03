@@ -4,6 +4,8 @@
     <div class="mt-4 prose-sm prose-re-blue lg:prose-base text-gray-500 lg:max-w-none">
         {% if designation.wordingWelcomePage %}
             {{ designation.wordingWelcomePage.content|markdown_to_html }}
+        {% elseif designation.getDescription() %}
+            {{ designation.getDescription()|nl2br }}
         {% endif %}
     </div>
 
