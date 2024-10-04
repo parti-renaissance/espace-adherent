@@ -1625,3 +1625,35 @@ Feature:
             }
             """
         Then the response status code should be 200
+
+    Scenario: As a logged-in user I can not unregister with invalid reason
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile"
+        When I send a "POST" request to "/api/v3/profile/unregister" with body:
+            """
+            {
+                "reasons": ["lorem ipsum"]
+            }
+            """
+        Then the response status code should be 400
+        And the response should be in JSON
+        And the JSON should be a superset of:
+            """
+            {
+                "violations": [
+                    {
+                        "propertyPath": "reasons",
+                        "message": "Une ou plusieurs des valeurs soumises sont invalides."
+                    }
+                ]
+            }
+            """
+
+    Scenario: As a logged-in user I can unregister
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile"
+        When I send a "POST" request to "/api/v3/profile/unregister" with body:
+            """
+            {
+                "reasons": ["unregistration_reasons.emails", "unregistration_reasons.support"]
+            }
+            """
+        Then the response status code should be 200
