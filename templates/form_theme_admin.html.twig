@@ -4,7 +4,7 @@
     <label>Labels</label><br/>
 
     {% if tags is not empty %}
-        {% include 'admin/adherent/_tags.html.twig' with { tags: tags } %}
+        {{ include('admin/adherent/_tags.html.twig', {tags: tags}) }}
     {% else %}
         ~
     {% endif %}
@@ -13,10 +13,10 @@
 {% block measure_entry_row %}
     <div class="row">
         <div class="col-xs-4">
-            {{ form_row(form.key, { required: true }) }}
+            {{ form_row(form.key, {required: true}) }}
         </div>
         <div class="col-xs-4">
-            {{ form_row(form.value, { required: true }) }}
+            {{ form_row(form.value, {required: true}) }}
         </div>
     </div>
 {% endblock %}
@@ -32,7 +32,7 @@
                     </h4>
                     {% for key, choice in group %}
                         <div>
-                            {{- form_widget(form[key], { role: choice.data }) -}}
+                            {{- form_widget(form[key], {role: choice.data}) -}}
                         </div>
                     {% endfor %}
                 </div>
@@ -117,7 +117,6 @@
                     {% if choice.vars.value %}
                         {% set donation = form.vars.choices[choice.vars.value].data %}
 
-
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                             {{ donation.amountInEuros|format_currency('EUR') }}
                         </td>
@@ -163,7 +162,7 @@
                             {% endif %}
                         </td>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                            <a href="{{ path('admin_app_donation_edit', { id: choice.vars.value }) }}" target="_blank">
+                            <a href="{{ path('admin_app_donation_edit', {id: choice.vars.value}) }}" target="_blank">
                                 Voir le détail
                             </a>
                         </td>
@@ -189,7 +188,7 @@
 
     {% set object = form.parent.vars.value %}
     {% if object.filename is defined and object.filename is not empty %}
-        <a href="{{ path('app_admin_donation_file', { id: object.id }) }}" target="_blank">
+        <a href="{{ path('app_admin_donation_file', {id: object.id}) }}" target="_blank">
             <i class="fa fa-link" aria-hidden="true"></i> Voir le fichier téléchargé
         </a>
     {% endif %}
@@ -311,7 +310,7 @@
             <option value="{{ label }}" {{ form.vars.value == label or (shouldSetOther and label == constant('App\\Entity\\ElectedRepresentative\\LabelNameEnum::OTHER')) ? 'selected="selected"' }}>{{ label }}</option>
         {% endfor %}
     </select>
-    {{ form_widget(form, { attr: { style: "margin-top: 15px;" } }) }}
+    {{ form_widget(form, {attr: {style: 'margin-top: 15px;'}}) }}
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -405,7 +404,7 @@
                 {% endfor %}
 
             </select>
-            {{ form_row(form.candidate, { attr: { style: "margin-top: 15px;" } }) }}
+            {{ form_row(form.candidate, {attr: {style: 'margin-top: 15px;'}}) }}
         </td>
     </tr>
 
@@ -451,7 +450,7 @@
 
 {% block app_admin_national_event_file_row %}
     {% set value = form.parent.vars.value %}
-    {% set path = value.intoImagePath ? ('static'~value.intoImagePath) : null %}
+    {% set path = value.intoImagePath ? ('static' ~ value.intoImagePath) : null %}
 
     {{ block('admin_image_with_url_row') }}
 {% endblock %}
@@ -468,7 +467,7 @@
             <div>
                 <p><em>Image actuelle :</em></p>
                 <p class="text-center">
-                    <img class="img-thumbnail" src="{{ path('asset_url', { path: path }) }}">
+                    <img class="img-thumbnail" src="{{ path('asset_url', {path: path}) }}">
                 </p>
             </div>
         {% endif %}
@@ -577,13 +576,13 @@
 {% block app_admin_adherent_contributionStatus_text_widget %}
     {% set adherent = form.parent.vars.value %}
 
-    {% include 'admin/adherent/partial/_contributions.html.twig' with { adherent: adherent } %}
+    {{ include('admin/adherent/partial/_contributions.html.twig', {adherent: adherent}) }}
 {% endblock %}
 
 {% block app_admin_adherent_donations_hidden_widget %}
     {% set adherent = form.parent.vars.value %}
 
-    {% include 'admin/adherent/partial/_donations.html.twig' with { adherent: adherent } %}
+    {{ include('admin/adherent/partial/_donations.html.twig', {adherent: adherent}) }}
 {% endblock %}
 
 {% block app_admin_file_file_parent_widget %}
@@ -894,7 +893,7 @@
                         {{ candidacy.candidacies|length }} candidat(s)
                     </td>
                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                        <a href="{{ path('admin_app_localelection_candidaciesgroup_edit', { id: candidacy.id }) }}" target="_blank">
+                        <a href="{{ path('admin_app_localelection_candidaciesgroup_edit', {id: candidacy.id}) }}" target="_blank">
                             Voir le détail
                         </a>
                     </td>

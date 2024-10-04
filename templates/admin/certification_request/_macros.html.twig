@@ -8,7 +8,7 @@
                     bg-red
                 {% endif %}
                 ">
-                {{ ('certification_request.status.'~certification_request.ocrStatus)|trans }}
+                {{ ('certification_request.status.' ~ certification_request.ocrStatus)|trans }}
             </span>
         {% endif %}
 
@@ -23,7 +23,7 @@
                 bg-orange
             {% endif %}
             ">
-            {{ ('certification_request.status.'~certification_request.status)|trans }}
+            {{ ('certification_request.status.' ~ certification_request.status)|trans }}
         </span>
     {% endapply %}
 {% endmacro %}

@@ -42,7 +42,7 @@
             });
 
             $('.data-answers-open-popin').click(function() {
-                let url = "{{ path("app_jecoute_#{space_name}_survey_stats_answers_list", { uuid: 'questionUuid' }) }}";
+                let url = "{{ path("app_jecoute_#{space_name}_survey_stats_answers_list", {uuid: 'questionUuid'}) }}";
 
                 $.ajax({
                     url: url.replace('questionUuid', $(this).attr('data-question-uuid'))
@@ -92,7 +92,7 @@
                                     <div class="stats-bar__answered text--white text--bold">{{ question.choice_content }}</div>
                                 </div>
                                 <div class="stats-percent text--right">
-                                    <span>{{ percent|replace({'.' : ','}) }} %</span>
+                                    <span>{{ percent|replace({'.': ','}) }} %</span>
                                 </div>
                             </div>
                         {% endif %}
@@ -115,5 +115,5 @@
         </div>
     </div>
 
-    {% include ('jecoute/data_answers_dialog.html.twig') %}
+    {{ include(('jecoute/data_answers_dialog.html.twig')) }}
 {% endblock %}

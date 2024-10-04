@@ -22,7 +22,7 @@
                         <button type="submit" id="members-promote-button" class="btn btn--primary b__nudge--right">
                             Oui, définir comme simple membre
                         </button>
-                        <a href="{{ path('app_committee_manager_list_members', {'slug': committee.slug}) }}" class="btn">
+                        <a href="{{ path('app_committee_manager_list_members', {slug: committee.slug}) }}" class="btn">
                             Non, annuler
                         </a>
                     </form>
@@ -31,7 +31,3 @@
         </div>
     </section>
 {% endblock %}
-
-
-
-

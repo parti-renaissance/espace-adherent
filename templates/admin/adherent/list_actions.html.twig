@@ -9,7 +9,7 @@
 
                     <a href="{{ path('app_front_oauth_authorize', {
                         app_domain: admin_renaissance_host,
-                        '_switch_user': object.emailAddress,
+                        _switch_user: object.emailAddress,
                         response_type: 'code',
                         client_id: client.getUuid().toString(),
                         redirect_uri: client.getRedirectUris()|first,

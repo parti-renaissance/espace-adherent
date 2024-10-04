@@ -16,7 +16,7 @@
             <p class="text--error">Le formulaire est invalide</p>
         {% endif %}
 
-        {{ form_start(form, { attr: { class: 'em-form b__nudge--top-40' } }) }}
+        {{ form_start(form, {attr: {class: 'em-form b__nudge--top-40'}}) }}
 
         {% if form.zone is defined %}
             <div class="information__modal inf-modl--pale-blue b__nudge--top-50 b__nudge--bottom-large">
@@ -27,33 +27,33 @@
             </div>
             <div class="em-form__group em-form__checkbox--inline">
                 <label class="em-form__label required">Zone concernée</label>
-                {{ form_widget(form.zone, { attr: { class: 'em-form__field committee_event__form__name', placeholder: "Sélectionner une seule zone" } }) }}
+                {{ form_widget(form.zone, {attr: {class: 'em-form__field committee_event__form__name', placeholder: 'Sélectionner une seule zone'}}) }}
                 {{ form_errors(form.zone) }}
             </div>
         {% endif %}
 
         <div class="em-form__group">
             {{ form_errors(form.subtitle) }}
-            {{ form_label(form.subtitle, 'Sous-titre', { label_attr: { class: 'em-form__label' } }) }}
-            {{ form_widget(form.subtitle, { attr: { class: 'em-form__field committee_event__form__name', placeholder: 'Entrez le sous-titre (120 caractères max.)' } }) }}
+            {{ form_label(form.subtitle, 'Sous-titre', {label_attr: {class: 'em-form__label'}}) }}
+            {{ form_widget(form.subtitle, {attr: {class: 'em-form__field committee_event__form__name', placeholder: 'Entrez le sous-titre (120 caractères max.)'}}) }}
         </div>
 
         <div class="em-form__group">
             {{ form_errors(form.description) }}
-            {{ form_label(form.description, 'Description', { label_attr: { class: 'em-form__label' } }) }}
-            {{ form_widget(form.description, { attr: { class: 'em-form__field committee_event__form__name', placeholder: 'Entrez la description' } }) }}
+            {{ form_label(form.description, 'Description', {label_attr: {class: 'em-form__label'}}) }}
+            {{ form_widget(form.description, {attr: {class: 'em-form__field committee_event__form__name', placeholder: 'Entrez la description'}}) }}
         </div>
 
         <div class="em-form__group">
             {{ form_errors(form.primaryColor) }}
-            {{ form_label(form.primaryColor, 'Couleur', { label_attr: { class: 'em-form__label' } }) }}
+            {{ form_label(form.primaryColor, 'Couleur', {label_attr: {class: 'em-form__label'}}) }}
             {{ form_widget(form.primaryColor) }}
         </div>
 
         <div class="em-form__group">
             {{ form_errors(form.externalLink) }}
-            {{ form_label(form.externalLink, 'Lien', { label_attr: { class: 'em-form__label' } }) }}
-            {{ form_widget(form.externalLink, { attr: { class: 'em-form__field committee_event__form__name', placeholder: 'Entrez le lien externe (facultatif)' } }) }}
+            {{ form_label(form.externalLink, 'Lien', {label_attr: {class: 'em-form__label'}}) }}
+            {{ form_widget(form.externalLink, {attr: {class: 'em-form__field committee_event__form__name', placeholder: 'Entrez le lien externe (facultatif)'}}) }}
         </div>
 
         {{ form_row(form.logoFile) }}
@@ -78,7 +78,7 @@
     <script type="text/javascript">
         Kernel.onLoad(function() {
             {{ js.init_cropperjs(form.logoFile, 1, 500, 500) }}
-            {{ js.init_cropperjs(form.bannerFile, 16/9, 960, 540) }}
+            {{ js.init_cropperjs(form.bannerFile, 16 / 9, 960, 540) }}
 
             {% if form.zone is defined %}
                 once(dom('#{{ form.zone.vars.id }}'), 'change', function (event) {

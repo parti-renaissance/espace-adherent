@@ -1,10 +1,10 @@
 <nav class="tabs-nav border-on b__nudge--bottom-larger">
     <ul>
         <li class="{{ is_active_route(app.request, 'app_poll_election_index') ? 'active' }}">
-            <a href="{{ path("app_poll_election_index", { uuid: designation.getUuid(), '_fragment': 'vote-statuses-index' }) }}" id="vote-statuses-index" class="tabs-nav__item">Accueil</a>
+            <a href="{{ path('app_poll_election_index', {uuid: designation.getUuid(), _fragment: 'vote-statuses-index'}) }}" id="vote-statuses-index" class="tabs-nav__item">Accueil</a>
         </li>
         <li class="{{ is_active_route(app.request, 'app_poll_election_regulation') ? 'active' }}">
-            <a href="{{ path("app_poll_election_regulation", { uuid: designation.getUuid(), '_fragment': 'vote-statuses-rules' }) }}" id="vote-statuses-rules" class="tabs-nav__item">Règlement</a>
+            <a href="{{ path('app_poll_election_regulation', {uuid: designation.getUuid(), _fragment: 'vote-statuses-rules'}) }}" id="vote-statuses-rules" class="tabs-nav__item">Règlement</a>
         </li>
     </ul>
 </nav>

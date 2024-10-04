@@ -8,21 +8,21 @@
 
 <div>
     <a href="{{ path('app_renaissance_event_list') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, 'app_renaissance_event_*') ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
-        {% include 'icons/calendar.svg.twig' with { svg_class: 'h-6 w-6 mr-2' } %}
+        {{ include('icons/calendar.svg.twig', {svg_class: 'h-6 w-6 mr-2'}) }}
         Événements
     </a>
 </div>
 
 <div>
     <a href="{{ path('app_my_donations_show_list') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, ['app_my_donations_show_list', 'app_renaissance_donation__cancel_subscription']) ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
-        {% include 'icons/money.svg.twig' with { svg_class: 'h-6 w-6 mr-2' } %}
+        {{ include('icons/money.svg.twig', {svg_class: 'h-6 w-6 mr-2'}) }}
         Mes dons / Cotisations
     </a>
 </div>
 
 <div>
     <a href="{{ path('app_my_committee_show_current') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, 'app_my_committee_*') ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
-        {% include 'icons/map.svg.twig' with { svg_class: 'h-6 w-6 mr-2' } %}
+        {{ include('icons/map.svg.twig', {svg_class: 'h-6 w-6 mr-2'}) }}
         Comité local
     </a>
 </div>
@@ -30,7 +30,7 @@
 {% if is_granted(constant('App\\Adherent\\AdherentRoleEnum::ONGOING_ELECTED_REPRESENTATIVE')) %}
     <div>
         <a href="{{ path('app_renaissance_contribution_fill_revenue') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, 'app_renaissance_elected_representative_contribution_*') ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
-            {% include 'icons/credit-card.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
+            {{ include('icons/credit-card.svg.twig', {svg_class: 'h-5 w-5 mr-2'}) }}
             Cotisation élus
         </a>
     </div>
@@ -38,15 +38,15 @@
 
 {% if is_granted('RENAISSANCE_ADHERENT') %}
     <div>
-        <a href="{{ path('app_renaissance_adherent_formation_list') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, 'app_renaissance_adherent_formation_list', { app_domain: app_renaissance_host }) ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
-            {% include 'icons/academic.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
+        <a href="{{ path('app_renaissance_adherent_formation_list') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, 'app_renaissance_adherent_formation_list', {app_domain: app_renaissance_host}) ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
+            {{ include('icons/academic.svg.twig', {svg_class: 'h-5 w-5 mr-2'}) }}
             Formations
         </a>
     </div>
 
     <div>
-        <a href="{{ path('app_renaissance_consultation_list') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, 'app_renaissance_consultation_*', { app_domain: app_renaissance_host }) ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
-            {% include 'icons/clipboard-document.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
+        <a href="{{ path('app_renaissance_consultation_list') }}" class="inline-flex items-center text-base leading-6 tracking-wider {{ is_active_route(app.request, 'app_renaissance_consultation_*', {app_domain: app_renaissance_host}) ? 'text-re-blue-500 font-medium' : 'text-slate-700 hover:text-slate-900' }}">
+            {{ include('icons/clipboard-document.svg.twig', {svg_class: 'h-5 w-5 mr-2'}) }}
             Consultations
         </a>
     </div>
@@ -55,18 +55,18 @@
 {% set designations = find_active_designations(app.user) %}
 
 {% if designations|length %}
-    {% set election_routes  = {
-        'local_election': 'app_renaissance_departmental_election_lists',
-        'local_poll': 'app_renaissance_local_election_home',
-        'poll': 'app_poll_election_index',
-        'committee_supervisor': 'app_renaissance_committee_election_candidacies_lists_view',
-        'consultation': 'app_sas_election_index',
-        'territorial_assembly': 'app_sas_election_index',
+    {% set election_routes = {
+        local_election: 'app_renaissance_departmental_election_lists',
+        local_poll: 'app_renaissance_local_election_home',
+        poll: 'app_poll_election_index',
+        committee_supervisor: 'app_renaissance_committee_election_candidacies_lists_view',
+        consultation: 'app_sas_election_index',
+        territorial_assembly: 'app_sas_election_index',
     } %}
 
     <div>
         <h5 class="inline-flex items-center mb-4 text-sm leading-5 font-medium uppercase tracking-wider lg:mb-3 text-red-500">
-            {% include 'icons/archive.svg.twig' with { svg_class: 'text-red-500 w-5 h-5 mr-2' } %}
+            {{ include('icons/archive.svg.twig', {svg_class: 'text-red-500 w-5 h-5 mr-2'}) }}
             Élections et Consultations
         </h5>
         <ul class="ml-2 space-y-4 lg:space-y-2 border-l border-red-200">
@@ -83,7 +83,7 @@
 
 <div>
     <h5 class="inline-flex items-center mb-4 text-sm leading-5 font-medium uppercase tracking-wider lg:mb-3 {{ is_information_route ? 'text-re-blue-500' : 'text-slate-600' }}">
-        {% include 'icons/user.svg.twig' with { svg_class: (is_information_route ? 'text-re-blue-400' : 'text-gray-400') ~ ' w-5 h-5 mr-2' } %}
+        {{ include('icons/user.svg.twig', {svg_class: (is_information_route ? 'text-re-blue-400' : 'text-gray-400') ~ ' w-5 h-5 mr-2'}) }}
         Informations
     </h5>
     <ul class="ml-2 space-y-4 lg:space-y-2 border-l border-gray-200">
@@ -93,17 +93,17 @@
             </a>
         </li>
         <li>
-            <a href="{{ path('app_user_change_password', { app_domain: app_renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_user_change_password') ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
+            <a href="{{ path('app_user_change_password', {app_domain: app_renaissance_host}) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_user_change_password') ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
                 Mot de passe
             </a>
         </li>
         <li>
-            <a href="{{ path('app_user_set_email_notifications', { app_domain: app_renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_user_set_email_notifications') ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
+            <a href="{{ path('app_user_set_email_notifications', {app_domain: app_renaissance_host}) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_user_set_email_notifications') ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
                 Communication
             </a>
         </li>
         <li>
-            <a href="{{ path('app_certification_request_home', { app_domain: app_renaissance_host }) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_certification_request_*') ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
+            <a href="{{ path('app_certification_request_home', {app_domain: app_renaissance_host}) }}" class="block border-l pl-4 -ml-px {{ is_active_route(app.request, 'app_certification_request_*') ? 'border-re-blue-400 text-re-blue-500 font-medium' : 'border-transparent hover:border-slate-400 text-slate-700 hover:text-slate-900' }}">
                 Certification
             </a>
         </li>

@@ -61,7 +61,7 @@
                 </p>
             {% endif %}
 
-            {% set parameters = (type is same as('readhesion')) ? { state: '/profil' } : [] %}
+            {% set parameters = (type is same as('readhesion')) ? {state: '/profil'} : [] %}
             <twig:ReButton tag="a" href="{{ path('vox_app_redirect', parameters) }}" class="w-full" >
                 Accéder à mon espace
             </twig:ReButton>

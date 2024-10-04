@@ -9,7 +9,7 @@
         Kernel.onLoad(function() {
             App.runSocialShare(
                 '{{ path('app_social_share_list') }}',
-                '{{ path('app_social_share_show', {'slug': 'slug'}) }}'
+                '{{ path('app_social_share_show', {slug: 'slug'}) }}'
             );
         });
     </script>
@@ -46,7 +46,7 @@
                         Toutes les thématiques
                     </option>
                     {% for category in socialShareCategories %}
-                        <option value="{{ category.slug }}" {{  category == currentCategory ? ' selected ' : '' }}>
+                        <option value="{{ category.slug }}" {{ category == currentCategory ? ' selected ' : '' }}>
                             {{ category.name }}
                         </option>
                     {% endfor %}
@@ -73,7 +73,7 @@
                  },
                  "name": "{{ story.name }}",
                  "description": "{{ story.description }}",
-                 "contentUrl": "{{ (url('homepage')|trim('/')~media_asset(story.media, {'w': 1050, 'q': 70}))|raw }}",
+                 "contentUrl": "{{ (url('homepage')|trim('/') ~ media_asset(story.media, {w: 1050, q: 70}))|raw }}",
                  "dateCreated": "{{ story.createdAt|date(constant('\DATE_ATOM')) }}",
                  "potentialAction": {
                      "@type": "ShareAction",
@@ -93,7 +93,7 @@
                     voir la source &rarr;
                 </a></div>
             </div>
-            <img src="{{ media_asset(story.media, {'w': 1050, 'q': 70}) }}"
+            <img src="{{ media_asset(story.media, {w: 1050, q: 70}) }}"
                  title="{{ story.name }}" alt="{{ story.name }}" />
             <div class="je-partage__social l__col">
                 <div class="je-partage__info text--white text--body l__col">

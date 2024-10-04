@@ -28,7 +28,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        {{ row.vote ? row.vote|format_datetime('none', 'none', "d MMM yyyy à HH:mm") : '~' }}
+                        {{ row.vote ? row.vote|format_datetime('none', 'none', 'd MMM yyyy à HH:mm') : '~' }}
                     </td>
                 </tr>
             {% else %}

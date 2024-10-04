@@ -2,7 +2,7 @@
     <ul>
         {% if currentPage > 1 %}
             <li>
-                <a href="{{ path(pagination_route_name, { page: currentPage-1 }) }}">
+                <a href="{{ path(pagination_route_name, {page: currentPage - 1}) }}">
                     {{ include('components/caret--left.html.twig') }}
                 </a>
             </li>
@@ -11,7 +11,7 @@
         {# Display all pages behind page - 3 and page + 3 execpt if < 1 ou > totalPages #}
         {% for page in range(max(currentPage - 3, 1), min(currentPage + 3, totalPages)) %}
             <li class="{{ page == currentPage ? 'active' }}">
-                <a href="{{ path(pagination_route_name, { page: page }) }}">
+                <a href="{{ path(pagination_route_name, {page: page}) }}">
                     {{ page }}
                 </a>
             </li>
@@ -19,7 +19,7 @@
 
         {% if currentPage < totalPages %}
             <li>
-                <a href="{{ path(pagination_route_name, { page: currentPage+1 }) }}">
+                <a href="{{ path(pagination_route_name, {page: currentPage + 1}) }}">
                     {{ include('components/caret--right.html.twig') }}
                 </a>
             </li>

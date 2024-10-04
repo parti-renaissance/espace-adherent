@@ -11,7 +11,7 @@
                 <div class="relative flex items-start space-x-5 rounded-lg border border-gray-300 bg-white p-4 md:px-6 md:py-5 shadow-sm focus-within:ring-2 focus-within:ring-re-blue-500 focus-within:ring-offset-2 hover:border-gray-400">
                     <div class="shrink-0">
                         <div class="w-10 h-10 rounded-full bg-gray-100 flex justify-center items-center text-gray-700">
-                            {% include 'icons/teams.svg.twig' with { svg_class: 'w-6 h-6' } %}
+                            {{ include('icons/teams.svg.twig', {svg_class: 'w-6 h-6'}) }}
                         </div>
                     </div>
                     <div class="min-w-0 flex-1">
@@ -28,8 +28,8 @@
                             </button>
                             {% if group.hasFaithStatementFile() %}
                                 <span aria-hidden="true">·</span>
-                                <a href="{{ path('asset_url', { path: group.getFaithStatementFilePath(), app_domain: app_renaissance_host }) }}" class="text-sm flex items-center hover:text-re-blue-400" target="_blank">
-                                    {% include 'icons/download.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' }  %}
+                                <a href="{{ path('asset_url', {path: group.getFaithStatementFilePath(), app_domain: app_renaissance_host}) }}" class="text-sm flex items-center hover:text-re-blue-400" target="_blank">
+                                    {{ include('icons/download.svg.twig', {svg_class: 'h-5 w-5 mr-1.5'}) }}
                                     Profession de foi
                                 </a>
                             {% endif %}
@@ -46,7 +46,7 @@
                                     </span>
                                 </div>
                             {% endfor %}
-                            {%if group.substituteCandidacies is not empty %}
+                            {% if group.substituteCandidacies is not empty %}
                                 <div class="border-b border-gray-200 mt-2 pb-3">
                                     <h3 class="text-lg font-medium leading-6 text-gray-500">Suppléants</h3>
                                 </div>
@@ -96,13 +96,13 @@
                                     <div class="absolute top-0 right-0 hidden pt-4 pr-4 md:block">
                                         <button type="button" class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" @click="open = false">
                                             <span class="sr-only">Fermer</span>
-                                            {% include 'icons/x-close.svg.twig' %}
+                                            {{ include('icons/x-close.svg.twig') }}
                                         </button>
                                     </div>
                                     <div>
                                         <div class="flex items-center space-x-3">
                                             <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-re-blue-100">
-                                                {% include 'icons/teams.svg.twig' with { svg_class: 'w-6 h-6 text-re-blue-600' } %}
+                                                {{ include('icons/teams.svg.twig', {svg_class: 'w-6 h-6 text-re-blue-600'}) }}
                                             </div>
                                             <h3 class="!my-0 !text-lg font-medium !leading-6 !text-gray-900">Membres de la liste</h3>
                                         </div>
@@ -120,7 +120,7 @@
                                                     </li>
                                                 {% endfor %}
                                             </ul>
-                                            {%if group.substituteCandidacies is not empty %}
+                                            {% if group.substituteCandidacies is not empty %}
                                                 <div class="border-b border-gray-200 mt-2 pb-3">
                                                     <h3 class="text-lg font-medium leading-6 text-gray-500">Suppléants</h3>
                                                 </div>

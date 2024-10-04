@@ -3,7 +3,7 @@
 {% block content %}
     <div x-data="{ show: false }" @keydown.window.escape="show = false;" class="adherent-account relative flex min-h-screen flex-col bg-gray-50">
         <!-- Navbar -->
-        {% include 'renaissance/adherent/_nav_bar.html.twig' with {with_menu_open_button: true} %}
+        {{ include('renaissance/adherent/_nav_bar.html.twig', {with_menu_open_button: true}) }}
 
         <!-- Responsive Sidebar -->
         <div x-cloak x-show="show" class="relative z-40 md:hidden" aria-modal="true">
@@ -45,12 +45,12 @@
                     </div>
 
                     <div class="flex flex-shrink-0 items-center bg-re-blue-500 px-4 py-6">
-                        {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-6 w-auto text-white' } %}
+                        {{ include('renaissance/partials/logo-text.svg.twig', {svg_class: 'h-6 w-auto text-white'}) }}
                     </div>
                     <div class="mt-8 h-0 flex-1 overflow-y-auto">
                         <div class="space-y-4 px-3">
-                            {% include 'renaissance/adherent/_cadre-button.html.twig' %}
-                            {% include 'renaissance/adherent/_menu.html.twig' %}
+                            {{ include('renaissance/adherent/_cadre-button.html.twig') }}
+                            {{ include('renaissance/adherent/_menu.html.twig') }}
                         </div>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                             <h6 class="inline-flex items-center text-base font-medium text-gray-900">
                                 {{ app.user }}
                                 {% if app.user.certified %}
-                                    {% include 'icons/check-blue.svg.twig' with { svg_class: 'w-5 h-5 text-sky-400 ml-1.5'} %}
+                                    {{ include('icons/check-blue.svg.twig', {svg_class: 'w-5 h-5 text-sky-400 ml-1.5'}) }}
                                 {% endif %}
                             </h6>
                             <p class="truncate text-sm text-gray-500">{{ app.user.emailAddress }}</p>
@@ -82,9 +82,9 @@
                     <div>
                         <p class="text-sm leading-5 text-gray-500" id="adherent-since">
                             {% if app.user.isRenaissanceAdherent() %}
-                                Inscrit{{ app.user.female ? "e" }} depuis le <span class="capitalize">{{ app.user.registeredAt|format_datetime('none', 'none', 'd MMMM yyyy') }}</span>
+                                Inscrit{{ app.user.female ? 'e' }} depuis le <span class="capitalize">{{ app.user.registeredAt|format_datetime('none', 'none', 'd MMMM yyyy') }}</span>
                             {% else %}
-                                Non adhérent{{ app.user.female ? "e" }}.
+                                Non adhérent{{ app.user.female ? 'e' }}.
                             {% endif %}
                         </p>
                         <div class="mt-1.5 flex flex-wrap space-x-2 first:mx-0">
@@ -95,17 +95,17 @@
                     </div>
                 </div>
 
-                {% include 'renaissance/adherent/_cadre-button.html.twig' %}
+                {{ include('renaissance/adherent/_cadre-button.html.twig') }}
 
                 <div class="mt-5 space-y-6">
-                    {% include 'renaissance/adherent/_menu.html.twig' %}
+                    {{ include('renaissance/adherent/_menu.html.twig') }}
                 </div>
             </aside>
 
             <!-- Right side -->
             <div class="lg:min-w-0 lg:flex-1">
                 <div class="lg:pl-8 pointer-events-auto" tabindex="-1">
-                    {% include 'renaissance/adherent/_banner.html.twig' %}
+                    {{ include('renaissance/adherent/_banner.html.twig') }}
 
                     {% block content_right_side '' %}
                 </div>

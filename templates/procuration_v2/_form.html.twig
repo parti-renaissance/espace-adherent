@@ -73,22 +73,22 @@
                 </header>
 
                 {{ form_row(form.email, {
-                    label: "Mon adresse email",
+                    label: 'Mon adresse email',
                     attr: {
-                        placeholder: "adresse@mail.com",
+                        placeholder: 'adresse@mail.com',
                         onCheck: "setFieldValid('email')",
                         validate: "['required', 'email']"
                     }
                 }) }}
 
                 {{ form_row(form.acceptCgu, {
-                    label: "procuration.accept_cgu.label",
-                    attr: { onCheck:"setFieldValid('acceptCgu')", validate: "['required']" }
+                    label: 'procuration.accept_cgu.label',
+                    attr: {onCheck: "setFieldValid('acceptCgu')", validate: "['required']"}
                 }) }}
 
                 <div class="w-full re-field-frame !h-auto cursor-pointer"
                      @click="dom('.frc-button')?.click()">
-                    {% include 'renaissance/partials/friendly-captcha.html.twig' %}
+                    {{ include('renaissance/partials/friendly-captcha.html.twig') }}
                 </div>
 
                 <twig:ReButton
@@ -111,16 +111,16 @@
                 }) }}
 
                 {{ form_row(form.firstNames, {
-                    label: "Prénom(s)",
+                    label: 'Prénom(s)',
                     attr: {
-                        placeholder: "Marie, Claude, Anne"
+                        placeholder: 'Marie, Claude, Anne'
                     }
                 }) }}
 
                 {{ form_row(form.lastName, {
-                    label: "Nom (spécifier votre nom de jeune fille)",
+                    label: 'Nom (spécifier votre nom de jeune fille)',
                     attr: {
-                        placeholder: "Mon nom de famille complet"
+                        placeholder: 'Mon nom de famille complet'
                     }
                 }) }}
 
@@ -129,15 +129,15 @@
 
                     <fieldset class="flex gap-2.5 relative">
                         {{ form_widget(form.birthdate.day, {
-                            label: "Jour"
+                            label: 'Jour'
                         }) }}
 
                         {{ form_widget(form.birthdate.month, {
-                            label: "Mois"
+                            label: 'Mois'
                         }) }}
 
                         {{ form_widget(form.birthdate.year, {
-                            label: "Année"
+                            label: 'Année'
                         }) }}
                     </fieldset>
 
@@ -173,8 +173,6 @@
 
                     {{ fde_additional_form }}
 
-
-
                     <fieldset>
                         <template x-if="showManualBDV || (votePlaceUuid && isNotInFrance)">
                             <twig:Atoms:ReLabel x-text="`Mon bureau de vote ${isNotInFrance ? '(optionnel)' : ''}`"></twig:Atoms:ReLabel>
@@ -189,7 +187,7 @@
                         </template>
                         <div class="gap-5 flex flex-col" x-show="!votePlaceLoading">
                             <template x-if="votePlaceUuid && !isNotInFrance && !showManualBDV && !isVotePlacesEmpty">
-                                {{ form_row(form.votePlace, { attr: { placeholder: 'Saisir mon bureau de vote (saisie automatique)'}})  }}
+                                {{ form_row(form.votePlace, {attr: {placeholder: 'Saisir mon bureau de vote (saisie automatique)'}}) }}
                             </template>
                             <template x-if="votePlaceUuid && !isNotInFrance && !showManualBDV && !isVotePlacesEmpty">
                                 <p class="text-[#1877F2] text-center hover:text-[rgb(20,86,171)] cursor-pointer" @click="setManualBDV(true)">
@@ -198,7 +196,7 @@
                             </template>
 
                             <template x-if="showManualBDV || (votePlaceUuid && isNotInFrance) || isVotePlacesEmpty">
-                                {{ form_row(form.customVotePlace,{attr: { placeholder: 'Saisir mon Bureau de vote'}}) }}
+                                {{ form_row(form.customVotePlace, {attr: {placeholder: 'Saisir mon Bureau de vote'}}) }}
                             </template>
 
                             <template x-if="votePlaceUuid && showManualBDV && !isVotePlacesEmpty">
@@ -217,7 +215,7 @@
 
                     <fieldset>
                         {{ form_row(form.joinNewsletter, {
-                            label: "Je m’abonne à la newsletter pour ne rien rater des actualités (optionnel)",
+                            label: 'Je m’abonne à la newsletter pour ne rien rater des actualités (optionnel)',
                         }) }}
                     </fieldset>
                 </fieldset>

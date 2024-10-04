@@ -8,7 +8,7 @@
 
 {% block em_logo %}
     <div class="b__nudge--top-15 b__nudge--left-medium b__nudge--right-small b__nudge--bottom-larger">
-        {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-4 w-auto text-white lg:h-5' } %}
+        {{ include('renaissance/partials/logo-text.svg.twig', {svg_class: 'h-4 w-auto text-white lg:h-5'}) }}
     </div>
 {% endblock %}
 
@@ -24,18 +24,18 @@
             </div>
         {% endif %}
 
-        {{ form_start(form, {'action': path('app_admin_login')}) }}
+        {{ form_start(form, {action: path('app_admin_login')}) }}
             <ul class="form">
                 <li>
-                     {{ form_label(form._login_email, 'Email', { label_attr: { class: 'visually-hidden' } }) }}
+                     {{ form_label(form._login_email, 'Email', {label_attr: {class: 'visually-hidden'}}) }}
                      {{ form_errors(form._login_email) }}
-                     {{ form_widget(form._login_email, { attr: { placeholder: 'Email' } }) }}
+                     {{ form_widget(form._login_email, {attr: {placeholder: 'Email'}}) }}
                 </li>
 
                 <li>
-                    {{ form_label(form._login_password, 'Mot de passe', { label_attr: { class: 'visually-hidden' } }) }}
+                    {{ form_label(form._login_password, 'Mot de passe', {label_attr: {class: 'visually-hidden'}}) }}
                     {{ form_errors(form._login_password) }}
-                    {{ form_widget(form._login_password, { attr: { placeholder: 'Mot de passe' } }) }}
+                    {{ form_widget(form._login_password, {attr: {placeholder: 'Mot de passe'}}) }}
                 </li>
 
                 <li>

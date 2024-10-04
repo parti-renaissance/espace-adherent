@@ -1,13 +1,13 @@
 <div class="em-form__group">
     {{ form_errors(form.name) }}
-    {{ form_label(form.name, 'Nom du questionnaire', { label_attr: { class: 'em-form__label' } }) }}
-    {{ form_widget(form.name, { attr: { class: 'em-form__field committee_event__form__name', placeholder: 'Entrez le nom du questionnaire (70 caractères max.)' } }) }}
+    {{ form_label(form.name, 'Nom du questionnaire', {label_attr: {class: 'em-form__label'}}) }}
+    {{ form_widget(form.name, {attr: {class: 'em-form__field committee_event__form__name', placeholder: 'Entrez le nom du questionnaire (70 caractères max.)'}}) }}
 </div>
 
 {% if form.zone is defined %}
     <div class="em-form__group em-form__checkbox--inline">
         <label class="em-form__label required">Zone concernée</label>
-        {{ form_widget(form.zone, { attr: { class: 'em-form__field committee_event__form__name', placeholder: "Sélectionner une seule zone" } }) }}
+        {{ form_widget(form.zone, {attr: {class: 'em-form__field committee_event__form__name', placeholder: 'Sélectionner une seule zone'}}) }}
         {{ form_errors(form.zone) }}
     </div>
 {% endif %}
@@ -16,13 +16,13 @@
     <div class="em-form__group em-form__group--cgu">
         <div class="form__checkbox">
             {{ form_errors(form.published) }}
-            {{ form_widget(form.published, { attr: { class: 'committee_event__form__name' } }) }}
+            {{ form_widget(form.published, {attr: {class: 'committee_event__form__name'}}) }}
             {{ form_label(form.published, 'Publier le questionnaire') }}
         </div>
         {% if form.blockedChanges is defined %}
             <div class="form__checkbox">
                 {{ form_errors(form.blockedChanges) }}
-                {{ form_widget(form.blockedChanges, { attr: { class: 'committee_event__form__name' } }) }}
+                {{ form_widget(form.blockedChanges, {attr: {class: 'committee_event__form__name'}}) }}
                 {{ form_label(form.blockedChanges, 'Bloquer la modification du questionnaire aux autres rôles') }}
             </div>
         {% endif %}

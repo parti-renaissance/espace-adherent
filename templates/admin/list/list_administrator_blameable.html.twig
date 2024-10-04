@@ -3,7 +3,7 @@
 {% macro display(user, admin) %}
     {% if user is instanceof('App\\Entity\\Administrator') %}
         {% if admin.isGranted('EDIT', user) %}
-            <a class="btn btn-xs btn-danger" href="{{ path('admin_app_administrator_edit', { id: user.id }) }}">
+            <a class="btn btn-xs btn-danger" href="{{ path('admin_app_administrator_edit', {id: user.id}) }}">
                 {{ user }} <i class="fa fa-external-link"></i>
             </a>
         {% else %}
@@ -13,7 +13,7 @@
         {% endif %}
     {% elseif user is instanceof('App\\Entity\\Adherent') %}
         {% if admin.isGranted('EDIT', user) %}
-            <a class="btn btn-xs btn-primary" href="{{ path('admin_app_adherent_edit', { id: user.id }) }}">
+            <a class="btn btn-xs btn-primary" href="{{ path('admin_app_adherent_edit', {id: user.id}) }}">
                 {{ user }} <i class="fa fa-external-link"></i>
             </a>
         {% else %}

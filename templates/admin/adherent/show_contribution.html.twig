@@ -1,5 +1,5 @@
 {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
 {% block field_value %}
-    {% include 'admin/adherent/partial/_contributions.html.twig' with { adherent: object } %}
+    {{ include('admin/adherent/partial/_contributions.html.twig', {adherent: object}) }}
 {% endblock %}

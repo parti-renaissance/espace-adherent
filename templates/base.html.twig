@@ -159,7 +159,7 @@
         {% set session_modal_context = get_session_modal_context(app.request) %}
 
         {% if session_modal_context %}
-            {% include 'components/_adherent_session_modal.html.twig' %}
+            {{ include('components/_adherent_session_modal.html.twig') }}
         {% endif %}
 
         <div id="modal-wrapper"></div>
@@ -172,7 +172,7 @@
             on(window, 'load', function() {
                 Kernel.boot(
                     '{{ app_version }}',
-                    {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }},
+                    {{ sentry_dsn ? ('\'' ~ sentry_dsn ~ '\'')|raw : 'null' }},
                     '{{ app_environment }}',
                     '{{ app.user ? app.user.getUsername() }}'
                 );

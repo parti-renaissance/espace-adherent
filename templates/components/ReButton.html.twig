@@ -1,6 +1,6 @@
 {% set isDisabledMode = disabled and onDisabledClick %}
 
-{% if isDisabledMode  %} <div @click="{{ onDisabledClick }}"> {% endif %}
+{% if isDisabledMode %} <div @click="{{ onDisabledClick }}"> {% endif %}
     <{{ tag }}
         {{ attributes.without('x-text', 'x-html', 'class') }}
 
@@ -20,12 +20,12 @@
             'focus:enabled:outline focus:outline-4 focus:outline-offset-0 focus:outline-ui_blue-20',
             'disabled:cursor-not-allowed disabled:pointer-events-none',
             this.variantClasses
-        )}}"
+        ) }}"
         >
         {% if icon is defined %}
             <span
                     data-name="re-button__icon-container"
-                    {% if loading and this.props.loading.alpine%} x-bind:class="{'opacity-0':({{ this.props.loading.alpine }})}" {% endif %}
+                    {% if loading and this.props.loading.alpine %} x-bind:class="{'opacity-0':({{ this.props.loading.alpine }})}" {% endif %}
                     {% if loading and this.props.loading.twig %} class="opacity-0" {% endif %}
             >
                 <twig:ReIcon name="{{ icon }}" />
@@ -34,7 +34,7 @@
             <span
                     data-name="re-button__text-container"
                     {{ attributes.only('x-text', 'x-html') }}
-                    {% if loading and this.props.loading.alpine%} x-bind:class="{'opacity-0':({{ this.props.loading.alpine }})}" {% endif %}
+                    {% if loading and this.props.loading.alpine %} x-bind:class="{'opacity-0':({{ this.props.loading.alpine }})}" {% endif %}
                     {% if loading and this.props.loading.twig %} class="opacity-0" {% endif %}
             >
                 {% block content '' %}

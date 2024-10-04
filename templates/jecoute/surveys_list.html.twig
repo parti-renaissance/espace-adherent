@@ -70,8 +70,8 @@
                             questionsCount: data.questions_count,
                             responsesCount: data.responses_count,
                             zone: survey is instanceof('App\\Entity\\Jecoute\\LocalSurvey')
-                                ? '<span class="adherent-dashboard-tag">'~('geo_zone.'~zone.type)|trans~'</span><br>'
-                                    ~"<div class=\"b__nudge--top-10\">#{zone.name} (#{zone.code})</div>",
+                                ? '<span class="adherent-dashboard-tag">' ~ ('geo_zone.' ~ zone.type)|trans ~ '</span><br>'
+                                    ~ "<div class=\"b__nudge--top-10\">#{zone.name} (#{zone.code})</div>",
                             publish: survey.published ? '<span class="status status__1">Publié</span>' :
                                 '<span class="status status__2">Non publié</span>',
                         } %}
@@ -134,7 +134,7 @@
     <div class="datagrid__table__tabs">
         <div class="datagrid__pre-table b__nudge--bottom-larger">
             <h3>Questionnaires</h3>
-            {% if not(space_name == constant('App\\Jecoute\\JecouteSpaceEnum::CANDIDATE_SPACE') and is_granted('ROLE_CANDIDATE_DEPARTMENTAL')) %}
+            {% if not (space_name == constant('App\\Jecoute\\JecouteSpaceEnum::CANDIDATE_SPACE') and is_granted('ROLE_CANDIDATE_DEPARTMENTAL')) %}
                 <a href="{{ path("app_jecoute_#{space_name}_local_survey_create") }}" class="btn-secondary btn-secondary--blue">
                     + Créer un questionnaire local
                 </a>

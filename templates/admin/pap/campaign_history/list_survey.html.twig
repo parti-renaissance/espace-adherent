@@ -2,7 +2,7 @@
 
 {% block field %}
     {% if object.dataSurvey %}
-        <a href="{{ path('admin_app_jecoute_'~(object.dataSurvey.survey.getType())~'survey_edit', { id: object.dataSurvey.survey.id }) }}">
+        <a href="{{ path('admin_app_jecoute_' ~ (object.dataSurvey.survey.getType()) ~ 'survey_edit', {id: object.dataSurvey.survey.id}) }}">
             {{ object.dataSurvey.survey.name }}
         </a>
     {% endif %}

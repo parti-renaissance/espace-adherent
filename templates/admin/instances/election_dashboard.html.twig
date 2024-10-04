@@ -1,7 +1,7 @@
 {% extends '@SonataAdmin/CRUD/show.html.twig' %}
 
 {% block show %}
-    {% set tab_query_index = app.request.query.get('_tab', 0)|split("_")|last %}
+    {% set tab_query_index = app.request.query.get('_tab', 0)|split('_')|last %}
     {% set rounds = object.getElectionRounds() %}
     {% set designation = object.getDesignation() %}
     {% set is_tab_view = rounds|length > 1 %}

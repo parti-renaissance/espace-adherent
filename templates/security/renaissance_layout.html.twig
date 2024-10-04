@@ -14,12 +14,12 @@
             {% block security_block_title '' %}
         </h1>
 
-        {% include 'renaissance/partials/flashes.html.twig' with { wrapper_class: 'mb-6 lg:mb-16' } %}
+        {{ include('renaissance/partials/flashes.html.twig', {wrapper_class: 'mb-6 lg:mb-16'}) }}
 
         {% block security_content '' %}
 
         <footer class="text-center mt-24 text-ui_gray-40">
-            Renaissance © {{ "now"|date('Y') }}
+            Renaissance © {{ 'now'|date('Y') }}
         </footer>
     </section>
 {% endblock %}

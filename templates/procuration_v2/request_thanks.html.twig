@@ -2,7 +2,7 @@
 
 {% block page_title 'Procuration - Demande (Mandant)' %}
 
-{% set copylink = url('app_procuration_v2_request', { slug: procuration_request.rounds.first.election.slug }) %}
+{% set copylink = url('app_procuration_v2_request', {slug: procuration_request.rounds.first.election.slug}) %}
 
 {% block thanks_text %}
     {{ procuration_request.rounds.first.election.requestConfirmation|replace({

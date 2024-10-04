@@ -15,9 +15,9 @@
     <div class="flex-col flex justify-center">
         <script>
             if (!window.options_{{ id }}) {
-                window.options_{{ id }} = JSON.parse(`{{ options is defined ? options|json_encode|raw: '[]' }}`);
+                window.options_{{ id }} = JSON.parse(`{{ options is defined ? options|json_encode|raw : '[]' }}`);
             }
-            window.preferredOptions_{{ id }} = Object.values(JSON.parse(`{{ preferredOptions is defined ? preferredOptions|json_encode|raw: '{}' }}`));
+            window.preferredOptions_{{ id }} = Object.values(JSON.parse(`{{ preferredOptions is defined ? preferredOptions|json_encode|raw : '{}' }}`));
         </script>
 
         <div x-data="xReSelect({
@@ -47,7 +47,7 @@
                           x-bind:class="{'disabled': isValueSet && blocked, '!pr-24': isValueSet && blocked}"
                           @focus="handleChangeSetValue"
                           x-bind:placeholder="placeholder"
-                    {% for key,value in searchBoxProps %}
+                    {% for key, value in searchBoxProps %}
                         {{ key }}="{{ value }}"
                     {% endfor %}
                     ></textarea>

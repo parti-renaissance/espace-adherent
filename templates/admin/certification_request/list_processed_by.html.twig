@@ -5,7 +5,7 @@
 {% block field %}
     {% if object.processedBy %}
         {% if is_granted('ROLE_SUPER_ADMIN') %}
-            <a href="{{ path('admin_app_administrator_edit', { id: object.processedBy.id }) }}">
+            <a href="{{ path('admin_app_administrator_edit', {id: object.processedBy.id}) }}">
                 {{ object.processedBy }}
             </a>
         {% else %}

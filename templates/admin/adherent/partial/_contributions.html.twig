@@ -13,7 +13,7 @@
                 <th>Status</th>
                 <td>
                     {% if adherent.contributionStatus %}
-                        <span class="label label-{{ adherent.contributionStatus is same as constant('App\\Contribution\\ContributionStatusEnum::ELIGIBLE') ? 'success': 'danger' }}">
+                        <span class="label label-{{ adherent.contributionStatus is same as constant('App\\Contribution\\ContributionStatusEnum::ELIGIBLE') ? 'success' : 'danger' }}">
                             {{ ('elected_representative.contribution.status.' ~ adherent.contributionStatus)|trans }}
                         </span>
                     {% endif %}

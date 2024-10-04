@@ -5,5 +5,5 @@
         {% set difference = date(object.finishAt).diff(date(object.beginAt)) %}
         {% set minutes = difference.i %}
     {% endif %}
-    {{ object.beginAt|date('d/m/Y à H:i') }} {{ minutes is defined ? '('~minutes~' minutes)' : '' }}
+    {{ object.beginAt|date('d/m/Y à H:i') }} {{ minutes is defined ? '(' ~ minutes ~ ' minutes)' : '' }}
 {% endblock %}

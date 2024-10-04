@@ -2,8 +2,8 @@
 
 {% block page_title 'Inscription' %}
 
-{% block open_graph_image "https://assets.parti-renaissance.fr/sharer/inscription.png" %}
-{% block open_graph_description "Devenez acteur de la campagne législative" %}
+{% block open_graph_image 'https://assets.parti-renaissance.fr/sharer/inscription.png' %}
+{% block open_graph_description 'Devenez acteur de la campagne législative' %}
 {% block canonical_url url('app_bde_inscription') %}
 
 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
@@ -57,19 +57,19 @@
                             {{ form_row(form.email, {
                                 label: false,
                                 attr: {
-                                    placeholder: "Adresse email",
+                                    placeholder: 'Adresse email',
                                     onCheck: "setFieldValid('email')",
                                     validate: "['required', 'email']"
                                 }
                             }) }}
 
                             {{ form_row(form.acceptCgu, {
-                                label: "Je consens au traitement de mes données personnelles.",
-                                attr: { onCheck:"setFieldValid('acceptCgu')", validate: "['required']" }
+                                label: 'Je consens au traitement de mes données personnelles.',
+                                attr: {onCheck: "setFieldValid('acceptCgu')", validate: "['required']"}
                             }) }}
 
                             <div class="w-full re-field-frame !h-auto cursor-pointer" @click="dom('.frc-button')?.click()">
-                                {% include 'renaissance/partials/friendly-captcha.html.twig' %}
+                                {{ include('renaissance/partials/friendly-captcha.html.twig') }}
                             </div>
 
                             <twig:ReButton
@@ -83,19 +83,19 @@
                         <twig:Atoms:ReCard class="md:max-w-[500px] re-step bg-white" id="step_2" x-data="SecondFormStep()">
                             <h2 class="font-medium">Mes informations</h2>
 
-                            {{ form_row(form.civility, { label: false, attr: { onCheck:"setFieldValid('civility')", validate: "['required']", autocomplete:"civility" } }) }}
+                            {{ form_row(form.civility, {label: false, attr: {onCheck: "setFieldValid('civility')", validate: "['required']", autocomplete: 'civility'}}) }}
 
                             {{ form_row(form.firstName, {
                                 label: false,
-                                attr: { placeholder: 'Prénom', onCheck:"setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']" }
+                                attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"}
                             }) }}
 
                             {{ form_row(form.lastName, {
                                 label: false,
-                                attr: { placeholder: 'Nom', onCheck:"setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']" }
+                                attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"}
                             }) }}
 
-                            {{ form_row(form.address, { label: false }) }}
+                            {{ form_row(form.address, {label: false}) }}
 
                             <twig:ReButton
                                 color="black"
@@ -113,9 +113,9 @@
 
                             {{ form_row(form.partyMembership) }}
 
-                            {{ form_row(form.allowNotifications, { label: "Je souhaite recevoir les informations sur l'actualité de la campagne et ses communications politiques par email" }) }}
+                            {{ form_row(form.allowNotifications, {label: "Je souhaite recevoir les informations sur l'actualité de la campagne et ses communications politiques par email"}) }}
 
-                            {{ form_row(form.acceptCgu2, { label: 'besoindeurope.inscription.accept_cgu' }) }}
+                            {{ form_row(form.acceptCgu2, {label: 'besoindeurope.inscription.accept_cgu'}) }}
 
                             <twig:ReButton
                                 color="black"

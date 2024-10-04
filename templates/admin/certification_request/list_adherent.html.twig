@@ -3,5 +3,5 @@
 {% import 'admin/certification_request/_macros.html.twig' as macros %}
 
 {% block field %}
-    {% include('admin/adherent/_summary.html.twig') with { adherent: object.adherent } %}
+    {{ include(('admin/adherent/_summary.html.twig'), {adherent: object.adherent}) }}
 {% endblock %}

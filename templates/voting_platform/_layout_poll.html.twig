@@ -6,7 +6,7 @@
 {% block banner %}
     <div class="space--10-0 background--blue-soft-dark">
         <div class="l__wrapper--wide">
-            <a href="{{ path('app_poll_election_index', { uuid: designation.getUuid() }) }}"
+            <a href="{{ path('app_poll_election_index', {uuid: designation.getUuid()}) }}"
                class="text--body text--small text--white link--no-decor">
                 Retourner →
             </a>
@@ -24,7 +24,7 @@
 
 {% block vote_finish_action_block %}
     <div class="b__nudge--bottom-large b__nudge--top-large">
-        <a href="{{ path('app_poll_election_index', { uuid: designation.getUuid() }) }}" class="btn btn--blue">
+        <a href="{{ path('app_poll_election_index', {uuid: designation.getUuid()}) }}" class="btn btn--blue">
             Retour à l’accueil
         </a>
     </div>

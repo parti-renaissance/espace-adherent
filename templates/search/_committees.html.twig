@@ -1,5 +1,5 @@
 {% for committee in results %}
-    <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}" class="search__committee__box search__results__item">
+    <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" class="search__committee__box search__results__item">
         <div class="search__results__meta">
             <h2 class="text--medium text--normal">
                 {{ committee.name }}
@@ -11,7 +11,7 @@
             <span class="btn btn--blue">En savoir plus</span>
             <div class="text--body icon--with-text l__row--center">
                 {{ include('components/participants.html.twig') }}
-                {{ 'committee.members_count'|trans({ count: committee.membersEmCount }) }}
+                {{ 'committee.members_count'|trans({count: committee.membersEmCount}) }}
             </div>
         </div>
     </a>

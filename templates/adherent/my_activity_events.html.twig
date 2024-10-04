@@ -42,7 +42,7 @@
 
                                 <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">
                                     <a class="link--no-decor"
-                                       href="{{ path('app_committee_event_show', { slug: event.slug }) }}">
+                                       href="{{ path('app_committee_event_show', {slug: event.slug}) }}">
                                         {{ event.name }}
                                     </a>
                                 </h2>
@@ -73,18 +73,18 @@
                                     </div>
                                 {% endif %}
 
-                                <a href="{{ path('app_committee_event_show', { slug: event.slug }) }}"
+                                <a href="{{ path('app_committee_event_show', {slug: event.slug}) }}"
                                    class="btn" target="_blank" rel="noopener noreferrer">
                                     En savoir plus
                                 </a>
                                 <div class="text--body icon--with-text l__row--center">
                                     {{ include('components/participants.html.twig') }}
-                                    {{ 'participants_count'|trans({ count: event.participantsCount }) }}
+                                    {{ 'participants_count'|trans({count: event.participantsCount}) }}
                                 </div>
                             </div>
                         </div>
 
-                        <a href="{{ path('app_committee_event_show', { slug: event.slug }) }}"
+                        <a href="{{ path('app_committee_event_show', {slug: event.slug}) }}"
                            class="search__results__row__link link--no-decor" target="_blank" rel="noopener noreferrer">
                             En savoir plus
                         </a>

@@ -6,7 +6,7 @@
 
     {% if committee %}
         {% if is_granted('ROLE_APP_ADMIN_COMMITTEE_EDIT') %}
-            <a href="{{ path('admin_app_committee_edit', { id: committee.id }) }}" class="sonata-action-element">
+            <a href="{{ path('admin_app_committee_edit', {id: committee.id}) }}" class="sonata-action-element">
                 {{ committee }}
             </a>
         {% else %}

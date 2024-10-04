@@ -47,8 +47,8 @@
     <div>
         <h1 class="text-xl font-bold">{{ designation.title }}</h1>
         <p class="text--muted italic">
-            Du {{ designation.voteStartDate|format_datetime('none', 'none', "d MMMM yyyy à HH:mm") }} au
-            {{ designation.voteEndDate|format_datetime('none', 'none', "d MMMM yyyy à HH:mm") }}
+            Du {{ designation.voteStartDate|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }} au
+            {{ designation.voteEndDate|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}
         </p>
         {% if designation.targetYear %}
             <p class="text--muted">
@@ -110,7 +110,7 @@
     {% endfor %}
 
     <div>
-        <p class="text--muted">Les résultats sont disponibles en ligne aux adhérents jusqu’à J+{{ designation.getResultDisplayDelay() }} ({{ designation.getResultEndDate()|format_datetime('none', 'none', "d MMMM yyyy à HH:mm") }}).</p>
+        <p class="text--muted">Les résultats sont disponibles en ligne aux adhérents jusqu’à J+{{ designation.getResultDisplayDelay() }} ({{ designation.getResultEndDate()|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}).</p>
         <p class="text--muted">Une question, un problème ? <a href="https://parti-renaissance.fr/nos-departements">Contactez votre Assemblée départementale</a>.</p>
     </div>
 {% endblock %}

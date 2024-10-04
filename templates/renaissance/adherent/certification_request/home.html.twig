@@ -16,7 +16,7 @@
                     <div class="relative px-4 py-5 border border-gray-300 rounded-lg bg-white overflow-hidden">
                         <img class="absolute inset-0 h-full w-full z-0 pointer-events-none bg-center" src="{{ asset('images/icons/certification/certification_confettis.svg') }}" alt="Confetti svg"/>
                         <div class="relative z-10 flex flex-col items-center justify-center justify-center">
-                            {% include 'icons/check-blue.svg.twig' %}
+                            {{ include('icons/check-blue.svg.twig') }}
                             <p class="mt-1.5 text-lg leading-8 font-medium text-gray-900">Votre profil est certifié</p>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                                     {% endif %}
                                 </p>
                             {% endif %}
-                            Vous pouvez <a class="text-re-blue-500 font-medium hover:text-re-blue-600 hover:underline" href="{{ path('app_certification_request_form', { app_domain: app_renaissance_host }) }}">réessayer</a>.
+                            Vous pouvez <a class="text-re-blue-500 font-medium hover:text-re-blue-600 hover:underline" href="{{ path('app_certification_request_form', {app_domain: app_renaissance_host}) }}">réessayer</a>.
                         </div>
                     </div>
 
@@ -70,7 +70,7 @@
                             </div>
                         </div>
                         <div class="mt-5">
-                            <a href="{{ path('app_certification_request_form', { app_domain: app_renaissance_host }) }}" class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 uppercase tracking-wider font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-re-blue-500 focus:ring-offset-2 sm:text-sm">
+                            <a href="{{ path('app_certification_request_form', {app_domain: app_renaissance_host}) }}" class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 uppercase tracking-wider font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-re-blue-500 focus:ring-offset-2 sm:text-sm">
                                 Certifier mon profil
                             </a>
                         </div>

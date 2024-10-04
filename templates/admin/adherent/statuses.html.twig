@@ -91,7 +91,7 @@
     {% endif %}
 {% endfor %}
 
-{% include 'admin/adherent/_tags.html.twig' with { tags: object.tags } %}
+{{ include('admin/adherent/_tags.html.twig', {tags: object.tags}) }}
 
 {% if object.staticLabels is not empty %}
     {% for staticLabel in object.staticLabels %}

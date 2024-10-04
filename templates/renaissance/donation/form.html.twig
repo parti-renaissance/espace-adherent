@@ -14,7 +14,7 @@
                     amount: '{{ form.vars.value.amount }}',
                     duration: '{{ form.vars.value.duration }}',
                     localDestination: '{{ form.vars.value.localDestination }}',
-                    connectUrl: '{{ login_path_for_anonymous_follower('app_donation_index', { step: 1 }) }}'
+                    connectUrl: '{{ login_path_for_anonymous_follower('app_donation_index', {step: 1}) }}'
                    })"
             @stepper:adhesion-stepper:change.window="handleStepperChange($event.detail)">
             <header class="w-full flex flex-col p-4 bg-white sticky top-0 z-50 items-center h-auto
@@ -46,7 +46,7 @@
                             </h1>
                         </div>
                         <figure class="w-full max-w-[75vw] md:max-w-[500px] lg:max-w-[700px] xl:max-w-[1000px] md:pt-[80px]">
-                            {% include 'renaissance/donation/form_visual.svg.twig' %}
+                            {{ include('renaissance/donation/form_visual.svg.twig') }}
                         </figure>
                     </div>
                 </div>
@@ -119,12 +119,12 @@
 
                                     {{ form_errors(form.amount) }}
 
-                                    {{ form_row(form.amount, {attr: { 'x-bind:value!': 'amount'}}) }}
-                                    {{ form_row(form.duration, {attr: { 'x-bind:value!': 'duration'}}) }}
+                                    {{ form_row(form.amount, {attr: {'x-bind:value!': 'amount'}}) }}
+                                    {{ form_row(form.duration, {attr: {'x-bind:value!': 'duration'}}) }}
 
                                     {{ form_row(form.localDestination, {
                                         label: 'donation.local_destination.label', label_html: true,
-                                        attr: { onCheck:"setFieldValid('localDestination')", 'x-model': 'localDestination' }
+                                        attr: {onCheck: "setFieldValid('localDestination')", 'x-model': 'localDestination'}
                                     }) }}
 
                                     <div>
@@ -164,32 +164,32 @@
                                     <twig:Atoms:ReCard class="max-w-[500px]">
                                         {{ form_row(form.gender, {
                                             label: 'Mes informations',
-                                            attr: {color:'green', onCheck:"setFieldValid('gender')", validate: "['required']", autocomplete:"gender" }
+                                            attr: {color: 'green', onCheck: "setFieldValid('gender')", validate: "['required']", autocomplete: 'gender'}
                                         }) }}
 
                                         <div class="flex flex-col xs:flex-row gap-5 ">
                                             {{ form_row(form.lastName, {
                                                 label: false,
-                                                attr: { placeholder: 'Nom', onCheck:"setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']" }
+                                                attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"}
                                             }) }}
                                             {{ form_row(form.firstName, {
                                                 label: false,
-                                                attr: { placeholder: 'Prénom', onCheck:"setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']" }
+                                                attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"}
                                             }) }}
                                         </div>
 
                                         {{ form_row(form.emailAddress, {
                                             attr: {
                                                 placeholder: 'Adresse email',
-                                                validate:"['required', 'email']",
+                                                validate: "['required', 'email']",
                                                 autocomplete: 'email',
                                                 type: 'email',
-                                                onCheck:"setFieldValid('emailAddress')",
+                                                onCheck: "setFieldValid('emailAddress')",
                                             }, label: false}) }}
 
                                         {{ form_row(form.nationality, {
                                             label: 'Nationalité',
-                                            attr: { onCheck:"setFieldValid('nationality')", validate: "['required']" }
+                                            attr: {onCheck: "setFieldValid('nationality')", validate: "['required']"}
                                         }) }}
 
                                         {{ form_row(form.address, {label: 'Adresse postale'}) }}
@@ -207,12 +207,12 @@
                                     <twig:Atoms:ReLabel>Autorisations</twig:Atoms:ReLabel>
                                     {{ form_row(form.autorisations, {
                                         label: 'donation.autorisations.label', label_html: true,
-                                        attr: { onCheck:"setFieldValid('autorisations')", validate: "['required']" }
+                                        attr: {onCheck: "setFieldValid('autorisations')", validate: "['required']"}
                                     }) }}
 
                                     <div class="w-full re-field-frame !h-auto cursor-pointer"
                                          @click="dom('.frc-button')?.click()">
-                                        {% include 'renaissance/partials/friendly-captcha.html.twig' %}
+                                        {{ include('renaissance/partials/friendly-captcha.html.twig') }}
                                     </div>
                                     <twig:ReButton
                                             color="green"

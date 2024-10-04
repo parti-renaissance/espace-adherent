@@ -21,7 +21,7 @@
                 <a href="{{ path('app_search_committees') }}" class="link--no-decor">Comités</a>
             </li>
         </ul>
-        {{ include('search/_filters.html.twig', {'type': search.type }) }}
+        {{ include('search/_filters.html.twig', {type: search.type}) }}
         {% set currentRoute = app.request.attributes.get('_route') %}
 
         <div class="search__results {{ currentRoute }}" id="search-results">
