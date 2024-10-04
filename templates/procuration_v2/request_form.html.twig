@@ -2,10 +2,10 @@
 
 {% block page_title 'Procuration - Demande (Mandant)' %}
 
-{% block open_graph_image "https://assets.parti-renaissance.fr/sharer/mandant.png" %}
-{% block open_graph_title "Trouvez une personne qui ira voter pour vous • ENSEMBLE" %}
-{% block open_graph_description "Entre le front populiste et le front nationaliste, aucune voie ne doit manquer pour nos candidats Renaissance, MoDem et Horizons." %}
-{% block canonical_url url('app_procuration_v2_request', { slug: election.slug }) %}
+{% block open_graph_image 'https://assets.parti-renaissance.fr/sharer/mandant.png' %}
+{% block open_graph_title 'Trouvez une personne qui ira voter pour vous • ENSEMBLE' %}
+{% block open_graph_description 'Entre le front populiste et le front nationaliste, aucune voie ne doit manquer pour nos candidats Renaissance, MoDem et Horizons.' %}
+{% block canonical_url url('app_procuration_v2_request', {slug: election.slug}) %}
 
 {% block content_title 'Demande (Mandant)' %}
 
@@ -26,7 +26,7 @@
 {% block round_additional_form %}
    <fieldset>
        <twig:Atoms:ReLabel>Je donne ma procuration pour :</twig:Atoms:ReLabel>
-       {{  form_row(form.rounds) }}
+       {{ form_row(form.rounds) }}
    </fieldset>
 {% endblock %}
 
@@ -59,7 +59,7 @@
         <br>
         <a
             class="text-[#1877F2] text-center hover:text-[rgb(20,86,171)] cursor-pointer"
-            href="{{ url('app_procuration_v2_proxy', { slug: election.slug }) }}">
+            href="{{ url('app_procuration_v2_proxy', {slug: election.slug}) }}">
             Je me propose
         </a>
     </p>

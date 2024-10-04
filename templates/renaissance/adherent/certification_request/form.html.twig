@@ -7,7 +7,7 @@
         <h1 class="text-3xl font-bold leading-10 text-gray-900">Certification du profil</h1>
 
         <div class="rounded-lg p-5 md:p-6 bg-white shadow overflow-hidden">
-            {{ form_start(form, { attr: { class: 'em-form', id: 'app_certification_request' } }) }}
+            {{ form_start(form, {attr: {class: 'em-form', id: 'app_certification_request'}}) }}
 
                 {{ form_errors(form) }}
 
@@ -59,7 +59,7 @@
                                         </div>
                                         <p class="text-xs text-gray-500">Formats acceptés PNG, JPG, JPEG • Taille max.: 5Mo</p>
                                     </div>
-                                    {{ form_widget(form.document, { attr: { class: 'absolute inset-0 h-full w-full cursor-pointer opacity-0 em-form__file--area', id: 'file-upload' } }) }}
+                                    {{ form_widget(form.document, {attr: {class: 'absolute inset-0 h-full w-full cursor-pointer opacity-0 em-form__file--area', id: 'file-upload'}}) }}
                                 </div>
                                 {{ form_errors(form.document) }}
                             </div>
@@ -105,7 +105,7 @@
 
                     <div class="space-y-1">
                         <div>
-                            {{ form_widget(form.cgu, { attr: { class: 'h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500' } }) }}
+                            {{ form_widget(form.cgu, {attr: {class: 'h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500'}}) }}
                             {% block _form_cgu_label %}
                                 <label class="text-sm leading-5 text-gray-700" for="certification_request_cgu">
                                 <span>

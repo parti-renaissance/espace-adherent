@@ -11,8 +11,8 @@
     {{ form_errors(form) }}
 
     <div class="sonata-ba-collapsed-fields">
-        {{ form_row(form.type, { label: 'Type', placeholder: 'Sélectionnez un type de mandat' }) }}
-        {{ form_row(form.adherent, { label: 'Adhérent', attr: { placeholder: 'Insérer un Id d\'adhérent' } }) }}
+        {{ form_row(form.type, {label: 'Type', placeholder: 'Sélectionnez un type de mandat'}) }}
+        {{ form_row(form.adherent, {label: 'Adhérent', attr: {placeholder: 'Insérer un Id d\'adhérent'}}) }}
     </div>
     {% do form.confirm.setRendered %}
 {% endblock %}
@@ -22,7 +22,7 @@
 {% block action_buttons %}
     <div>
         <button type="submit" class="btn btn-success">Suivant</button>
-        <a href="{{ path('app_admin_committee_mandates', { id: committee.id }) }}" class="btn btn-danger">
+        <a href="{{ path('app_admin_committee_mandates', {id: committee.id}) }}" class="btn btn-danger">
             Retour à la liste des mandats
         </a>
     </div>

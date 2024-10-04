@@ -27,7 +27,7 @@
             <div class="l__row space--20-0 heading-link">
                 {% if is_renaissance_app %}
                     <a href="{{ path('renaissance_site') }}" class="link--no-decor text--logo b__nudge--right-large">
-                        {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-5 w-auto text-white' } %}
+                        {{ include('renaissance/partials/logo-text.svg.twig', {svg_class: 'h-5 w-auto text-white'}) }}
                     </a>
                 {% else %}
                     <a href="{{ path('homepage') }}" class="link--no-decor text--logo b__nudge--right-large">EM!</a>

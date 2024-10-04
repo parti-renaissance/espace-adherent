@@ -75,10 +75,10 @@
                     {% for pool_result in election_round_result.getElectionPoolResults %}
                         <div class="candidate-tab candidate-tab--{{ loop.index }}" {{ loop.index > 1 ? 'style="display: none;"' }}>
                             <div class="tab--container">
-                                {% include 'voting_platform/results/' ~ (designation.isMajorityType ? '_majority_vote') ~ '_candidates_list.html.twig' %}
+                                {{ include('voting_platform/results/' ~ (designation.isMajorityType ? '_majority_vote') ~ '_candidates_list.html.twig') }}
 
                                 {% if not designation.isLimitedResultsView() %}
-                                    {% include 'voting_platform/results/_stats_block.html.twig' %}
+                                    {{ include('voting_platform/results/_stats_block.html.twig') }}
                                 {% endif %}
                             </div>
                         </div>
@@ -87,7 +87,7 @@
                     {% if not designation.isLimitedResultsView() %}
                         <div class="candidate-tab candidate-tab--{{ election_round_result.getElectionPoolResults|length + 1 }}" style="display: none;">
                             <div class="tab--container">
-                                {% include 'voting_platform/results/' ~ (designation.isMajorityType ? '_majority_vote') ~ (designation.isPollType ? '_poll') ~ '_bulletins_list.html.twig' %}
+                                {{ include('voting_platform/results/' ~ (designation.isMajorityType ? '_majority_vote') ~ (designation.isPollType ? '_poll') ~ '_bulletins_list.html.twig') }}
                             </div>
                         </div>
                     {% endif %}

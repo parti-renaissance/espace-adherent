@@ -9,7 +9,7 @@
 
 {% block action_title 'Remplacer > Confirmation' %}
 {% block action_title_left %}
-    Ancien {{ include('admin/committee/mandates/_type.html.twig', { mandate: mandate }) }}
+    Ancien {{ include('admin/committee/mandates/_type.html.twig', {mandate: mandate}) }}
 {% endblock %}
 {% block action_title_right %}
     {{ new_mandate_name }}
@@ -17,25 +17,25 @@
 
 {% block action_content_left %}
     <div class="table-responsive margin-bottom">
-        {% include('admin/committee/mandates/_mandate_as_table.html.twig') with { mandate: mandate, show_all: true } %}
+        {{ include(('admin/committee/mandates/_mandate_as_table.html.twig'), {mandate: mandate, show_all: true}) }}
     </div>
 {% endblock %}
 
 {% block action_content_right %}
     <div class="sonata-ba-collapsed-fields visually-hidden">
-        {{ form_row(form.adherent, { attr: { readonly: true } }) }}
+        {{ form_row(form.adherent, {attr: {readonly: true}}) }}
     </div>
     <div class="table-responsive margin-bottom">
-        {% include('admin/committee/mandates/_mandate_as_table.html.twig') with { mandate: form.vars.value } %}
+        {{ include(('admin/committee/mandates/_mandate_as_table.html.twig'), {mandate: form.vars.value}) }}
     </div>
 {% endblock %}
 
 {% block action_buttons %}
     <div class="col-md-2">
-        {{ form_widget(form.confirm, { label: 'Confirmer', attr: { class: 'btn btn-success' } }) }}
-        <a href="{{ path('app_admin_committee_replace_mandate', { id: mandate.id }) }}" class="btn btn-default">Retour</a>
+        {{ form_widget(form.confirm, {label: 'Confirmer', attr: {class: 'btn btn-success'}}) }}
+        <a href="{{ path('app_admin_committee_replace_mandate', {id: mandate.id}) }}" class="btn btn-default">Retour</a>
     </div>
     <div class="col-md-1 col-md-offset-9">
-        <a href="{{ path('app_admin_committee_mandates', { id: mandate.committee.id }) }}" class="btn btn-danger">Annuler</a>
+        <a href="{{ path('app_admin_committee_mandates', {id: mandate.committee.id}) }}" class="btn btn-danger">Annuler</a>
     </div>
 {% endblock %}

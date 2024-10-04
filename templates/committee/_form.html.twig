@@ -4,9 +4,9 @@
     {{ form_label(form.name, 'Nom du comité') }}
     {{ form_errors(form.name) }}
     {{ form_widget(form.name, {
-        'attr': {
-            'class': 'form--full',
-            'placeholder': 'Choisissez un nom qui représente le territoire de votre comité',
+        attr: {
+            class: 'form--full',
+            placeholder: 'Choisissez un nom qui représente le territoire de votre comité',
         }
     }) }}
 </div>
@@ -15,9 +15,9 @@
     {{ form_label(form.description, 'Description') }}
     {{ form_errors(form.description) }}
     {{ form_widget(form.description, {
-        'attr': {
-            'class': 'form--full form__field--textarea-120',
-            'placeholder': 'Cette description sera visible dans le comité (Max 140 caractères)',
+        attr: {
+            class: 'form--full form__field--textarea-120',
+            placeholder: 'Cette description sera visible dans le comité (Max 140 caractères)',
         }
     }) }}
 </div>
@@ -44,7 +44,7 @@
         <div class="form__row">
             {{ form_widget(form.address.postalCode, {attr: {placeholder: 'Code postal'}}) }}
             {{ form_widget(form.address.city, {attr: {class: 'register__form__city'}}) }}
-            {{ form_widget(form.address.cityName, {attr: {class: 'register__form__city_name form--full', 'placeholder': 'Ville'}}) }}
+            {{ form_widget(form.address.cityName, {attr: {class: 'register__form__city_name form--full', placeholder: 'Ville'}}) }}
         </div>
         <div class="form__row">
             {{ form_widget(form.address.country, {attr: {class: 'form--full', placeholder: 'Pays'}}) }}
@@ -56,10 +56,10 @@
     <div class="form__row" id="field-facebook-page-url">
         {{ form_label(form.facebookPageUrl, 'Facebook') }}
         {{ form_errors(form.facebookPageUrl) }}
-        {{ form_widget(form.facebookPageUrl, { 'attr': {
-            'class': 'form--full',
-            'placeholder': 'URL de la page Facebook de votre comité (si vous en avez une)'
-        } }) }}
+        {{ form_widget(form.facebookPageUrl, {attr: {
+            class: 'form--full',
+            placeholder: 'URL de la page Facebook de votre comité (si vous en avez une)'
+        }}) }}
     </div>
 {% endif %}
 
@@ -67,10 +67,10 @@
     <div class="form__row" id="field-twitter-nickname">
         {{ form_label(form.twitterNickname, 'Twitter') }}
         {{ form_errors(form.twitterNickname) }}
-        {{ form_widget(form.twitterNickname, { 'attr': {
-            'class': 'form--full',
-            'placeholder': '@compte Twitter de votre comité (si vous en avez un)'
-        } }) }}
+        {{ form_widget(form.twitterNickname, {attr: {
+            class: 'form--full',
+            placeholder: '@compte Twitter de votre comité (si vous en avez un)'
+        }}) }}
     </div>
 {% endif %}
 
@@ -82,9 +82,9 @@
     <div class="form__row" id="field-provisional-supervisor-female">
         {{ form_label(form.provisionalSupervisorFemale, 'Animatrice provisoire') }}
         {{ form_errors(form.provisionalSupervisorFemale) }}
-        {{ form_widget(form.provisionalSupervisorFemale, { 'attr': {
-            'class': 'form--full form form__field',
-            'placeholder': 'Rechercher parmi vos adhérentes',
+        {{ form_widget(form.provisionalSupervisorFemale, {attr: {
+            class: 'form--full form form__field',
+            placeholder: 'Rechercher parmi vos adhérentes',
         }}) }}
     </div>
 {% endif %}
@@ -93,9 +93,9 @@
     <div class="form__row" id="field-provisional-supervisor-male">
         {{ form_label(form.provisionalSupervisorMale, 'Animateur provisoire') }}
         {{ form_errors(form.provisionalSupervisorMale) }}
-        {{ form_widget(form.provisionalSupervisorMale, { 'attr': {
-            'class': 'form--full form form__field',
-            'placeholder': 'Rechercher parmi vos adhérents',
+        {{ form_widget(form.provisionalSupervisorMale, {attr: {
+            class: 'form--full form form__field',
+            placeholder: 'Rechercher parmi vos adhérents',
         }}) }}
     </div>
 {% endif %}

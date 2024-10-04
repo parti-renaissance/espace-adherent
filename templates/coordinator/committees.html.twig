@@ -4,19 +4,19 @@
 
 {% set pages = [
     {
-        'route': coordinator_path,
-        'status': constant('App\\Entity\\Committee::PENDING'),
-        'label': 'Comités en attente'
+        route: coordinator_path,
+        status: constant('App\\Entity\\Committee::PENDING'),
+        label: 'Comités en attente'
     },
     {
-        'route': coordinator_path,
-        'status': constant('App\\Entity\\Committee::PRE_APPROVED'),
-        'label': 'Comités pré-validés'
+        route: coordinator_path,
+        status: constant('App\\Entity\\Committee::PRE_APPROVED'),
+        label: 'Comités pré-validés'
     },
     {
-        'route': coordinator_path,
-        'status': constant('App\\Entity\\Committee::PRE_REFUSED'),
-        'label': 'Comités pré-refusés'
+        route: coordinator_path,
+        status: constant('App\\Entity\\Committee::PRE_REFUSED'),
+        label: 'Comités pré-refusés'
     }
 ] %}
 

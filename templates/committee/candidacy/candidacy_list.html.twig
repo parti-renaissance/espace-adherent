@@ -35,12 +35,12 @@
                         {% set adherent = cand.committeeMembership.adherent %}
 
                         <div class="territorial-council__candidate">
-                            {% include 'components/_member_identity_box.html.twig' with {
+                            {{ include('components/_member_identity_box.html.twig', {
                                 initials: adherent.initials,
                                 image_path: cand.imagePath,
                                 full_name: adherent.fullName,
                                 details: '<span class="candidate-gender l__col l__col--center">' ~ (cand.isFemale ? 'F' : 'H') ~ '</span>',
-                            } %}
+                            }) }}
                         </div>
                     {% endfor %}
 

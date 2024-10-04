@@ -11,25 +11,25 @@
                 <div class="committee__details">
                     <h2 class="text--normal text--medium b__nudge--bottom-small text--breakword">
                         <a class="link--no-decor"
-                           href="{{ path("app_committee_show", { slug: committee.slug }) }}">
+                           href="{{ path('app_committee_show', {slug: committee.slug}) }}">
                             {{ committee.name }}
                         </a>
                     </h2>
                     <div class="font-roboto">
                         <span class="text--bold b__nudge--right-small">{{ committee.getCityName }}</span>
-                        <span>{{ 'committee.members_count'|trans({ count: committee.membersEmCount }) }}</span>
+                        <span>{{ 'committee.members_count'|trans({count: committee.membersEmCount}) }}</span>
                     </div>
                 </div>
                 <div class="committee__actions">
                     <div class="left l__row">
-                        <a href="{{ path("app_committee_show", { slug: committee.slug }) }}"
+                        <a href="{{ path('app_committee_show', {slug: committee.slug}) }}"
                            class="btn btn--blue b__nudge--right-small">
                             Voir
                         </a>
 
                         {% if committee_candidacy_membership == membership and committee.committeeElection %}
                             {% if committee.committeeElection.isCandidacyPeriodActive or (not committee.committeeElection.isVotePeriodStarted and is_granted('ROLE_PREVIOUS_ADMIN')) %}
-                                <a href="{{ path("app_committee_candidature_remove", { slug: committee.slug }) }}"
+                                <a href="{{ path('app_committee_candidature_remove', {slug: committee.slug}) }}"
                                    class="btn btn--ghosting--pink b__nudge--right-small em-confirm--trigger"
                                    data-confirm-title="Candidature"
                                    data-confirm-content="Êtes-vous sûr de vouloir retirer votre candidature ?"

@@ -15,7 +15,7 @@
                 bg-yellow
             {% endif %}
             ">
-            {{ ('donation.status.'~status)|trans }}
+            {{ ('donation.status.' ~ status)|trans }}
         </span>
     {% endapply %}
 {% endmacro %}
@@ -33,7 +33,7 @@
                 bg-red
             {% endif %}
             ">
-            {{ ('donation.type.'~type)|trans }}
+            {{ ('donation.type.' ~ type)|trans }}
         </span>
     {% endapply %}
 {% endmacro %}
@@ -47,7 +47,7 @@
                 bg-green
             {% endif %}
             ">
-            {{ ('donation.destination.'~ (destination ? 'local' : 'national'))|trans }}
+            {{ ('donation.destination.' ~ (destination ? 'local' : 'national'))|trans }}
             {% if destination is not null %}
                 ({{ destination.name }} [{{ destination.code }}])
             {% endif %}

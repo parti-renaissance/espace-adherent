@@ -16,9 +16,9 @@
                 <div class="flex items-center px-4 lg:px-0">
                     <a href="{{ path('renaissance_site') }}" class="shrink-0">
                         <!-- Logo Renaissance Texte -->
-                        {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-6 w-auto text-white hidden md:block' } %}
+                        {{ include('renaissance/partials/logo-text.svg.twig', {svg_class: 'h-6 w-auto text-white hidden md:block'}) }}
                         <!-- Logo Renaissance Icon -->
-                        {% include 'renaissance/partials/logo-icon.svg.twig' with { svg_class: 'h-8 w-8 text-white md:hidden' } %}
+                        {{ include('renaissance/partials/logo-icon.svg.twig', {svg_class: 'h-8 w-8 text-white md:hidden'}) }}
                     </a>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                                 <span class="hidden lg:inline-flex ml-2 items-center">
                                     {{ app.user.firstName }}
                                     {% if app.user.certified %}
-                                        {% include 'icons/check-blue.svg.twig' with { svg_class: 'w-5 h-5 text-sky-50 ml-1'} %}
+                                        {{ include('icons/check-blue.svg.twig', {svg_class: 'w-5 h-5 text-sky-50 ml-1'}) }}
                                     {% endif %}
                                 </span>
                             </button>
@@ -73,13 +73,13 @@
                             </div>
                             <div class="py-1" role="none">
                                 <a href="{{ path('app_renaissance_adherent_profile') }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Mon compte</a>
-                                <a href="{{ path('app_certification_request_home', { app_domain: app_renaissance_host }) }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Certification</a>
+                                <a href="{{ path('app_certification_request_home', {app_domain: app_renaissance_host}) }}" class="text-gray-700 block px-4 py-2 text-sm" role="menuitem">Certification</a>
                             </div>
                             <div class="py-1" role="none">
                                 {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                                    <a href="{{ path('admin_app_adherent_list', {'_switch_user': '_exit'}) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Quitter l'impersonnification</a>
+                                    <a href="{{ path('admin_app_adherent_list', {_switch_user: '_exit'}) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Quitter l'impersonnification</a>
                                 {% else %}
-                                    <a href="{{ path('logout', { app_domain: app_renaissance_host }) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Me déconnecter</a>
+                                    <a href="{{ path('logout', {app_domain: app_renaissance_host}) }}" class="text-gray-700 block w-full px-4 py-2 text-left text-sm" tabindex="-1">Me déconnecter</a>
                                 {% endif %}
                             </div>
                         </div>

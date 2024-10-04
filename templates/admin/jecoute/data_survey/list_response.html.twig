@@ -1,6 +1,6 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
-{% set questionKey = field_description.name|replace({'response_' : ''}) %}
+{% set questionKey = field_description.name|replace({response_: ''}) %}
 
 {% block field %}
     {% set surveyQuestion = object.survey.questions[questionKey] %}

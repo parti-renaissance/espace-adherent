@@ -4,14 +4,14 @@
 
 {% block adherent_profile_content %}
     <section class="adherent-profile__section b__nudge--bottom-50" id="committees">
-        {% include('adherent_profile/activity/_committees.html.twig') %}
+        {{ include(('adherent_profile/activity/_committees.html.twig')) }}
     </section>
 
     <section class="adherent-profile__section b__nudge--bottom-50" id="events">
-        {% include('adherent_profile/activity/_events.html.twig') %}
+        {{ include(('adherent_profile/activity/_events.html.twig')) }}
     </section>
 
     <section class="adherent-profile__section b__nudge--bottom-50" id="donations">
-        {% include('adherent_profile/activity/_donations.html.twig') %}
+        {{ include(('adherent_profile/activity/_donations.html.twig')) }}
     </section>
 {% endblock %}

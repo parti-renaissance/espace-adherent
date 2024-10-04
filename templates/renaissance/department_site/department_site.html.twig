@@ -1,12 +1,12 @@
 {% extends 'base_renaissance.html.twig' %}
 
 {% block page_title department_site.zone.getNameCode() %}
-{% block canonical_url url('app_renaissance_department_site_view', { slug: department_site.slug }) %}
+{% block canonical_url url('app_renaissance_department_site_view', {slug: department_site.slug}) %}
 
 {% block content %}
-    {% include 'renaissance/partials/site-header.html.twig' with { theme_bg: 'border-b border-re-blue-400 bg-re-blue-500' } %}
+    {{ include('renaissance/partials/site-header.html.twig', {theme_bg: 'border-b border-re-blue-400 bg-re-blue-500'}) }}
     <article>
         {{ department_site.content|raw }}
     </article>
-    {% include 'renaissance/partials/small-footer.html.twig' %}
+    {{ include('renaissance/partials/small-footer.html.twig') }}
 {% endblock %}

@@ -1,5 +1,5 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {% include 'admin/reporting/declared_mandate_history/_mandates.html.twig' with { mandates: object.addedMandates } %}
+    {{ include('admin/reporting/declared_mandate_history/_mandates.html.twig', {mandates: object.addedMandates}) }}
 {% endblock %}

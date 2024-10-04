@@ -29,11 +29,11 @@
     {% block deputy_content %}{% endblock %}
 
     {% if not hasCharterAccepted %}
-        {% include 'chart_dialog.html.twig' with {
-            'title': 'deputy.popup.title'|trans,
-            'subtitle': 'deputy.popup.subtitle'|trans,
-            'fileUrl': 'deputy.popup.file_url'|trans
-        } %}
+        {{ include('chart_dialog.html.twig', {
+            title: 'deputy.popup.title'|trans,
+            subtitle: 'deputy.popup.subtitle'|trans,
+            fileUrl: 'deputy.popup.file_url'|trans
+        }) }}
     {% endif %}
 {% endblock %}
 

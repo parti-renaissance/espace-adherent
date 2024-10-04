@@ -1,4 +1,4 @@
-<span {{ attributes.defaults({class:"flex flex-row mt-2.5"}) }}>
+<span {{ attributes.defaults({class: 'flex flex-row mt-2.5'}) }}>
     <template x-if="{{ showIcon ?? 'null' }}">
        <twig:ReIcon name="{{ status }}" class="mr-2" />
     </template>
@@ -7,6 +7,6 @@
         {{ xSyncStatus ? (':class="`re-text-status--${ ' ~ xSyncStatus ~ ' }`"')|raw }}
         {{ xSyncValue ? ('x-text="' ~ xSyncValue ~ '"')|raw }}
     >
-        {{ value | raw }}
+        {{ value|raw }}
     </span>
 </span>

@@ -6,9 +6,9 @@
 <twig:ReStandaloneLayout class="re_new_ui ">
     <twig:Atoms:ReCard class="max-w-[500px] items-center">
         {% if result_code == '00000' %}
-            {% include 'renaissance/payment/status/_success.html.twig' %}
+            {{ include('renaissance/payment/status/_success.html.twig') }}
         {% else %}
-            {% include 'renaissance/payment/status/_error.html.twig' %}
+            {{ include('renaissance/payment/status/_error.html.twig') }}
         {% endif %}
 
         {% if retry_url %}
@@ -20,11 +20,11 @@
 
             <hr class="w-full"/>
 
-            {% include 'renaissance/partials/adhesion_paper.html.twig' %}
+            {{ include('renaissance/partials/adhesion_paper.html.twig') }}
 
             <hr class="w-full"/>
 
-            <div>{% include 'renaissance/partials/contact_info.html.twig' with { adhesion: true } %}</div>
+            <div>{{ include('renaissance/partials/contact_info.html.twig', {adhesion: true}) }}</div>
         {% endif %}
     </twig:Atoms:ReCard>
 </twig:ReStandaloneLayout>
@@ -34,7 +34,7 @@
     <script type="text/javascript">
         Bootstrap.onLoad(async function() {
             {% if result_code == '00000' %}
-                await Main.runPaymentStatusPage('{{ path('app_payment_check', { uuid: uuid }) }}');
+                await Main.runPaymentStatusPage('{{ path('app_payment_check', {uuid: uuid}) }}');
             {% endif %}
         });
     </script>

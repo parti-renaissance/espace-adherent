@@ -24,7 +24,7 @@
 
     {% set delegated_access = get_delegated_access(app.request) %}
     <iframe width="100%" class="address__postal-code--loading" frameborder="0" height="700px" style="background-position: top;"
-            src="{{ path("app_message_common_content", {uuid: message.uuid}) }}"
+            src="{{ path('app_message_common_content', {uuid: message.uuid}) }}"
     ></iframe>
     <div class="l__wrapper--slim b__nudge--top-40 text--center">
         {% if not message.isSent %}

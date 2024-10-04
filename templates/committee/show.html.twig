@@ -1,7 +1,7 @@
 {% extends 'committee/_layout.html.twig' %}
 
 {% block page_title %}{{ committee.name }} - {{ committee.cityName }}{% endblock %}
-{% block canonical_url url('app_committee_show', {'slug': committee.slug}) %}
+{% block canonical_url url('app_committee_show', {slug: committee.slug}) %}
 
 {% set membership = is_granted('ROLE_ADHERENT') ? app.user.getMembershipFor(committee) : null %}
 
@@ -118,7 +118,7 @@
                 {% set designation = committee_election.designation %}
                 {% set candidacy = membership.committeeCandidacy(committee_election) %}
 
-                {% include "committee/_election_box.html.twig" %}
+                {{ include('committee/_election_box.html.twig') }}
             {% endif %}
         {% endif %}
 

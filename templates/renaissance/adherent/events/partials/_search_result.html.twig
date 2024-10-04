@@ -14,9 +14,9 @@
             <div class="flex flex-col justify-between flex-1 p-6 bg-white">
                 <div class="flex items-center justify-between space-x-1 text-gray-500">
                     <span class="inline-flex items-center">
-                        {% include 'icons/calendar-empty.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
+                        {{ include('icons/calendar-empty.svg.twig', {svg_class: 'h-5 w-5 mr-2'}) }}
                         <time datetime="{{ event.localBeginAt|format_datetime('none', 'none', "HH'H'mm", event.timeZone) }}" class="capitalize">
-                            {{ event.localBeginAt|format_datetime('full', 'none', "E d MMM YYYY", event.timeZone) }}
+                            {{ event.localBeginAt|format_datetime('full', 'none', 'E d MMM YYYY', event.timeZone) }}
                         </time>
                     </span>
                     <span class="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-sm text-gray-700 ring-1 ring-inset ring-gray-200">
@@ -32,7 +32,7 @@
                 <div class="mt-8">
                     <div class="text-sm leading-5 text-gray-500">
                         <p class="flex items-center flex-wrap">
-                            {% include 'icons/user.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' } %}
+                            {{ include('icons/user.svg.twig', {svg_class: 'h-5 w-5 mr-1.5'}) }}
                             <span>
                                 {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}
                                     Par le comité <span class="font-medium text-gray-700">{{ event.committee.name }}</span>
@@ -43,14 +43,14 @@
                         </p>
                         {% if event.getAddress() %}
                             <p class="mt-2 flex items-center">
-                                {% include 'icons/map.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' } %}
+                                {{ include('icons/map.svg.twig', {svg_class: 'h-5 w-5 mr-1.5'}) }}
                                 <span>
                                     {{ event.postAddress.inlineFormattedAddress }}
                                 </span>
                             </p>
                         {% endif %}
                         <p class="mt-2 flex items-center">
-                            {% include 'icons/clock.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' } %}
+                            {{ include('icons/clock.svg.twig', {svg_class: 'h-5 w-5 mr-1.5'}) }}
                             <span>
                                 <time datetime="{{ event.localBeginAt|format_datetime('none', 'none', "HH'H'mm", event.timeZone) }}" class="capitalize">
                                     {{ event.localBeginAt|date('G\\hi', event.timeZone) -}} {{ event.timeZone|utc_offset }}
@@ -60,13 +60,13 @@
                     </div>
                     <div class="mt-3 flex items-center justify-between space-x-1 text-gray-500">
                         <a class="inline-flex items-center leading-5 font-medium text-blue-700 hover:underline"
-                           href="{{ path('app_renaissance_event_show', { slug: event.slug }) }}">
-                            {% include 'icons/eye.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
+                           href="{{ path('app_renaissance_event_show', {slug: event.slug}) }}">
+                            {{ include('icons/eye.svg.twig', {svg_class: 'h-5 w-5 mr-2'}) }}
                             En savoir plus
                         </a>
                         <span class="inline-flex items-center">
-                            {% include 'icons/participants.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
-                            {{ 'participants_count'|trans({ count: event.participantsCount }) }}
+                            {{ include('icons/participants.svg.twig', {svg_class: 'h-5 w-5 mr-2'}) }}
+                            {{ 'participants_count'|trans({count: event.participantsCount}) }}
                        </span>
                     </div>
                 </div>

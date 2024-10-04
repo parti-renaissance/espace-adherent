@@ -53,8 +53,8 @@
                             title: data.title,
                             text: data.text,
                             createdAt: data.createdAt|date('d/m/Y'),
-                            zone: '<span class="adherent-dashboard-tag">'~('geo_zone.'~zone.type)|trans~'</span><br>'
-                                ~"<div class=\"b__nudge--top-10\">#{zone.name} (#{zone.code})</span>",
+                            zone: '<span class="adherent-dashboard-tag">' ~ ('geo_zone.' ~ zone.type)|trans ~ '</span><br>'
+                                ~ "<div class=\"b__nudge--top-10\">#{zone.name} (#{zone.code})</span>",
                             published: data.published ? '<span class="status status__1">Publiée</span>' :
                                 '<span class="status status__2">Non publiée</span>',
                         } %}

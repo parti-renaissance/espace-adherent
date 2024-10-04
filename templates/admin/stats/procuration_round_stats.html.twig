@@ -1,6 +1,6 @@
 {% extends 'admin/layout.html.twig' %}
 
-{% block sonata_head_title 'Statistiques procurations - ' ~ round.election.name ~ ' - ' ~ round.name ~ ' (' ~ round.date|format_datetime('medium', 'none') ~')' %}
+{% block sonata_head_title 'Statistiques procurations - ' ~ round.election.name ~ ' - ' ~ round.name ~ ' (' ~ round.date|format_datetime('medium', 'none') ~ ')' %}
 
 {% block javascripts %}
     {{ parent() }}

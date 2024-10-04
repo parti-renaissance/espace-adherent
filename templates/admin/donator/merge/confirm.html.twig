@@ -25,7 +25,7 @@
                 <h4 class="box-title">Donateur source</h4>
             </div>
             <div class="box-body table-responsive no-padding">
-                {% include 'admin/donator/merge/_donator_summary.html.twig' with { donator: source_donator } %}
+                {{ include('admin/donator/merge/_donator_summary.html.twig', {donator: source_donator}) }}
             </div>
         </div>
     </div>
@@ -38,7 +38,7 @@
                 </h4>
             </div>
             <div class="box-body table-responsive no-padding">
-                {% include 'admin/donator/merge/_donator_summary.html.twig' with { donator: destination_donator } %}
+                {{ include('admin/donator/merge/_donator_summary.html.twig', {donator: destination_donator}) }}
             </div>
         </div>
     </div>
@@ -53,8 +53,8 @@
                         </div>
                         <div class="box-body">
                             <div class="sonata-ba-collapsed-fields">
-                                {{ form_row(form.sourceDonator, { label: 'Numéro du donateur source', attr: { readonly: true } }) }}
-                                {{ form_row(form.destinationDonator, { label: 'Numéro du donateur de destination', attr: { readonly: true } }) }}
+                                {{ form_row(form.sourceDonator, {label: 'Numéro du donateur source', attr: {readonly: true}}) }}
+                                {{ form_row(form.destinationDonator, {label: 'Numéro du donateur de destination', attr: {readonly: true}}) }}
 
                                 <div>
                                     La fusion entraînera:
@@ -69,7 +69,7 @@
                                     </ul>
                                 </div>
                                 <div>
-                                    {{ form_widget(form.confirm, { label: 'Confirmer la fusion', attr: { class: 'btn btn-success' } }) }}
+                                    {{ form_widget(form.confirm, {label: 'Confirmer la fusion', attr: {class: 'btn btn-success'}}) }}
                                     <a href="{{ path('app_admin_donator_merge') }}" class="btn btn-danger">Annuler</a>
                                 </div>
                             </div>

@@ -15,7 +15,7 @@
                                 class="whitespace-nowrap border-b-2 px-1 pb-4 text-base font-medium {{ app.request.query.get('type') != 'past' ? 'border-re-blue-500 text-re-blue-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }}"
                             >À venir</a>
                             <a
-                                href="{{ path('app_renaissance_event_my_events_list', { type: 'past' }) }}"
+                                href="{{ path('app_renaissance_event_my_events_list', {type: 'past'}) }}"
                                 class="border-b-2 px-1 pb-4 whitespace-nowrap text-base font-medium {{ app.request.query.get('type') == 'past' ? 'border-re-blue-500 text-re-blue-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }}"
                             >Passés</a>
                         </nav>
@@ -29,11 +29,11 @@
 
         <div class="lg:col-span-5">
             <div class="mt-10">
-                <div class="{{ app.request.query.get('type') != 'past' ? 'block': 'hidden' }}">
-                    {% include 'renaissance/adherent/events/my_events/partials/event_grids.html.twig' with { events: upcoming_events, events_type: 'upcoming'} %}
+                <div class="{{ app.request.query.get('type') != 'past' ? 'block' : 'hidden' }}">
+                    {{ include('renaissance/adherent/events/my_events/partials/event_grids.html.twig', {events: upcoming_events, events_type: 'upcoming'}) }}
                 </div>
-                <div class="{{ app.request.query.get('type') == 'past' ? 'block': 'hidden' }}">
-                    {% include 'renaissance/adherent/events/my_events/partials/event_grids.html.twig' with { events: past_events, events_type: 'past'} %}
+                <div class="{{ app.request.query.get('type') == 'past' ? 'block' : 'hidden' }}">
+                    {{ include('renaissance/adherent/events/my_events/partials/event_grids.html.twig', {events: past_events, events_type: 'past'}) }}
                 </div>
             </div>
         </div>

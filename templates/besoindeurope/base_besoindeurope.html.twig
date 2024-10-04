@@ -14,7 +14,7 @@
     <meta name="twitter:image" content="{{ block('open_graph_image') }}" />
 {% endblock %}
 
-{%  block body_classes 're_new_ui' %}
+{% block body_classes 're_new_ui' %}
 
 {% block favicons %}
     <link rel="icon" type="image/png" href="{{ asset('images/europe/favicon.png') }}" sizes="32x32" />
@@ -65,14 +65,14 @@
         {% block sub_content '' %}
 
         <footer class="flex flex-col bg-black items-center md:justify-center gap-[56px] py-[80px] text-white text-sm border-t-[2px] border-white z-10">
-            {# --------------- SOCIALS ---------------#}
+            {# --------------- SOCIALS -------------- -#}
             <div class="flex bg-black items-center md:justify-center gap-[40px]">
-                {% include 'besoindeurope/partials/sn_links.html.twig' %}
+                {{ include('besoindeurope/partials/sn_links.html.twig') }}
             </div>
 
             <div class="h-[2px] md:hidden bg-white/25 w-3/4"></div>
 
-            {# --------------- PARTENERS ---------------#}
+            {# --------------- PARTENERS -------------- -#}
             <div class="flex flex-col flex-wrap md:flex-row bg-black items-center md:justify-center gap-x-[40px]">
                 <img src="{{ asset('images/icons/bde/parteners/LOGO_RENAISSANCE.svg') }}" alt="Logo Renaissance">
                 <img src="{{ asset('images/icons/bde/parteners/LOGO_MODEM.svg') }}" alt="Logo Modem">
@@ -83,14 +83,14 @@
 
             <div class="h-[2px] md:hidden bg-white/25 w-3/4"></div>
 
-            {# --------------- LINKS ---------------#}
+            {# --------------- LINKS -------------- -#}
             <div class="flex flex-col gap-[40px] md:gap-[24px] justify-center items-center">
                 <div class="flex flex-col md:flex-row bg-black items-center md:justify-center gap-[40px]">
                     <a href="https://parti-renaissance.fr/cgu" target="_blank">CGU</a>
                     <a href="https://parti-renaissance.fr/mentions-legales" target="_blank">Mentions légales</a>
                     <a href="https://parti-renaissance.fr/politique-de-protection-des-donnees" target="_blank">Données personnelles</a>
                 </div>
-                <span>© {{ "now"|date('Y') }} RENAISSANCE</span>
+                <span>© {{ 'now'|date('Y') }} RENAISSANCE</span>
             </div>
         </footer>
     </main>

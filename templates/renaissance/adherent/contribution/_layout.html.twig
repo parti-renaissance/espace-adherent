@@ -5,7 +5,7 @@
 {% block content %}
     <div x-data="{ show: false }" @keydown.window.escape="show = false;" class="adherent-account relative flex min-h-screen flex-col bg-gray-50">
         <!-- Navbar -->
-        {% include 'renaissance/adherent/_nav_bar.html.twig' with {profile: false, main_site_url_return_back: path('vox_app_redirect')} %}
+        {{ include('renaissance/adherent/_nav_bar.html.twig', {profile: false, main_site_url_return_back: path('vox_app_redirect')}) }}
 
         <!-- Main Content -->
         <main class="relative mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 flex-grow flex lg:px-8 lg:py-8 overflow-hidden">
@@ -29,7 +29,7 @@
 
                             {% block contribution_navigation %}
                                 <nav class="flex items-center justify-center" aria-label="Progress">
-                                    <p class="text-sm font-medium">Étape {{ current_step_index}} sur {{ steps|length }}</p>
+                                    <p class="text-sm font-medium">Étape {{ current_step_index }} sur {{ steps|length }}</p>
                                     <ol role="list" class="ml-8 flex items-center space-x-5">
                                         {% for step in steps %}
                                             <li>

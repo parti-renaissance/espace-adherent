@@ -13,15 +13,15 @@
                 <div class="box-body">
                     <div class="margin-bottom">Le référent et les animateurs provisoires seront avertis par email que le comité a été approuvé.</div>
                     <div class="sonata-ba-collapsed-fields visually-hidden">
-                        {{ form_row(form.name, { label: 'Nom', attr: { readonly: true } }) }}
-                        {{ form_row(form.slug, { label: 'Slug', attr: { readonly: true } }) }}
-                        {{ form_row(form.description, { label: 'Description', attr: { readonly: true } }) }}
-                        {{ form_row(form.address.address, { label: 'Adresse', attr: { readonly: true } }) }}
-                        {{ form_row(form.address.postalCode, { label: 'Code postal', attr: { readonly: true } }) }}
-                        {{ form_row(form.address.city, { attr: { readonly: true } }) }}
-                        {{ form_row(form.address.cityName, { label: 'Ville', attr: { readonly: true } }) }}
-                        {{ form_row(form.address.country, { label: 'Pays', attr: { readonly: true } }) }}
-                        {{ form_row(form.nameLocked, { label: 'Verrouiller les modifications', attr: { readonly: true } }) }}
+                        {{ form_row(form.name, {label: 'Nom', attr: {readonly: true}}) }}
+                        {{ form_row(form.slug, {label: 'Slug', attr: {readonly: true}}) }}
+                        {{ form_row(form.description, {label: 'Description', attr: {readonly: true}}) }}
+                        {{ form_row(form.address.address, {label: 'Adresse', attr: {readonly: true}}) }}
+                        {{ form_row(form.address.postalCode, {label: 'Code postal', attr: {readonly: true}}) }}
+                        {{ form_row(form.address.city, {attr: {readonly: true}}) }}
+                        {{ form_row(form.address.cityName, {label: 'Ville', attr: {readonly: true}}) }}
+                        {{ form_row(form.address.country, {label: 'Pays', attr: {readonly: true}}) }}
+                        {{ form_row(form.nameLocked, {label: 'Verrouiller les modifications', attr: {readonly: true}}) }}
                     </div>
                     <div class="table-responsive margin-bottom">
                         {% set committeeCommand = form.vars.value %}
@@ -59,13 +59,13 @@
                     <h4 class="box-title">Animation</h4>
                 </div>
                 <div class="table-responsive margin-bottom">
-                    {% include 'admin/committee/approve/_provisional_supervisors.html.twig'
-                        with { female: object.provisionalSupervisorFemale, male: object.provisionalSupervisorMale } %}
+                    {{ include('admin/committee/approve/_provisional_supervisors.html.twig'
+                        , {female: object.provisionalSupervisorFemale, male: object.provisionalSupervisorMale}) }}
                 </div>
                 <div class="box-body">
                     <div class="sonata-ba-collapsed-fields visually-hidden">
-                        {{ form_row(form.provisionalSupervisorFemale, { label: 'Animatrice provisoire', attr: { readonly: true } }) }}
-                        {{ form_row(form.provisionalSupervisorMale, { label: 'Animateur provisoire', attr: { readonly: true } }) }}
+                        {{ form_row(form.provisionalSupervisorFemale, {label: 'Animatrice provisoire', attr: {readonly: true}}) }}
+                        {{ form_row(form.provisionalSupervisorMale, {label: 'Animateur provisoire', attr: {readonly: true}}) }}
                     </div>
                 </div>
             </div>
@@ -75,8 +75,8 @@
     <div class="box-body">
         <div class="row sonata-ba-form-actions well well-small form-actions">
             <div class="col-md-2">
-                {{ form_widget(form.confirm, { label: 'Confirmer', attr: { class: 'btn btn-success' } }) }}
-                <a href="{{ path('admin_app_committee_approve', { id: object.committee.id }) }}" class="btn btn-default">Retour</a>
+                {{ form_widget(form.confirm, {label: 'Confirmer', attr: {class: 'btn btn-success'}}) }}
+                <a href="{{ path('admin_app_committee_approve', {id: object.committee.id}) }}" class="btn btn-default">Retour</a>
             </div>
             <div class="col-md-1 col-md-offset-9">
                 <a href="{{ path('admin_app_committee_list') }}" class="btn btn-danger">Annuler</a>

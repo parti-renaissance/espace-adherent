@@ -67,9 +67,9 @@
                             <td>{{ message.subject }}</td>
                             <td>
                                 {% if message.isSent %}
-                                    {{ message.sentAt ? message.sentAt|format_datetime('none', 'none', "d MMMM yyyy à HH:mm") : '~' }}
+                                    {{ message.sentAt ? message.sentAt|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') : '~' }}
                                 {% else %}
-                                    {{ message.createdAt|format_datetime('none', 'none', "d MMMM yyyy à HH:mm") }}
+                                    {{ message.createdAt|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}
                                 {% endif %}
                             </td>
                             <td>
@@ -123,7 +123,7 @@
                                         {% if message.isMailchimp %}
                                             {% set items = items|merge([
                                                 {
-                                                    href: path("app_message_common_preview-on-mailchimp", message_route_params),
+                                                    href: path('app_message_common_preview-on-mailchimp', message_route_params),
                                                     label: 'Obtenir le lien du message',
                                                     linkAttr: {
                                                         class: 'row-action text--blue--dark link--no-decor',
@@ -150,7 +150,7 @@
                                         }
                                     }]) %}
 
-                                    {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                                    {{ include('components/_annimated_sub_menu.html.twig', {items: items}) }}
                                 {% endblock %}
                             </td>
                         </tr>
@@ -166,11 +166,11 @@
     </div>
 
     {% if messages.count %}
-        {% include 'components/_modern_pagination.html.twig' with {
+        {{ include('components/_modern_pagination.html.twig', {
             current_page: messages.currentPage,
             total_pages: messages.lastPage,
             pagination_route_params: route_params|default({})|merge(message_filter_status ? {status: message_filter_status} : {})|merge(app.request.attributes.has('delegated_access_uuid') ? {delegated_access_uuid: app.request.attributes.get('delegated_access_uuid')} : {})
-        } %}
+        }) }}
     {% endif %}
 {% endblock %}
 

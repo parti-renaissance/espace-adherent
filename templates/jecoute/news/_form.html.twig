@@ -1,31 +1,31 @@
 <div class="em-form__group">
     {{ form_errors(form.title) }}
-    {{ form_label(form.title, 'Titre de l\'actualité', { label_attr: { class: 'em-form__label' } }) }}
-    {{ form_widget(form.title, { attr: { class: 'em-form__field committee_event__form__name', placeholder: '120 caractères maximum' } }) }}
+    {{ form_label(form.title, 'Titre de l\'actualité', {label_attr: {class: 'em-form__label'}}) }}
+    {{ form_widget(form.title, {attr: {class: 'em-form__field committee_event__form__name', placeholder: '120 caractères maximum'}}) }}
 </div>
 
 <div class="em-form__group">
     {{ form_errors(form.text) }}
-    {{ form_label(form.text, 'Texte de l\'actualité', { label_attr: { class: 'em-form__label' } }) }}
-    {{ form_widget(form.text, { attr: { class: 'em-form__field committee_event__form__name', placeholder: '1000 caractères maximum' } }) }}
+    {{ form_label(form.text, 'Texte de l\'actualité', {label_attr: {class: 'em-form__label'}}) }}
+    {{ form_widget(form.text, {attr: {class: 'em-form__field committee_event__form__name', placeholder: '1000 caractères maximum'}}) }}
 </div>
 
 <div class="em-form__group">
     {{ form_errors(form.externalLink) }}
-    {{ form_label(form.externalLink, 'Lien', { label_attr: { class: 'em-form__label' } }) }}
-    {{ form_widget(form.externalLink, { attr: { class: 'em-form__field committee_event__form__name', placeholder: 'https://...' } }) }}
+    {{ form_label(form.externalLink, 'Lien', {label_attr: {class: 'em-form__label'}}) }}
+    {{ form_widget(form.externalLink, {attr: {class: 'em-form__field committee_event__form__name', placeholder: 'https://...'}}) }}
 </div>
 
 <div class="em-form__group em-form__checkbox--inline">
     <label class="em-form__label required">Zone concernée</label>
-    {{ form_widget(form.zone, { attr: { class: 'em-form__field committee_event__form__name', placeholder: "Sélectionner une seule zone" } }) }}
+    {{ form_widget(form.zone, {attr: {class: 'em-form__field committee_event__form__name', placeholder: 'Sélectionner une seule zone'}}) }}
     {{ form_errors(form.zone) }}
 </div>
 
 <div class="em-form__group em-form__group--cgu">
     <div class="form__checkbox">
         {{ form_errors(form.notification) }}
-        {{ form_widget(form.notification, { attr: { class: 'committee_event__form__name' } }) }}
+        {{ form_widget(form.notification, {attr: {class: 'committee_event__form__name'}}) }}
         {{ form_label(form.notification, 'Envoyer une notification aux marcheurs') }}
     </div>
 </div>

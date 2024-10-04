@@ -11,7 +11,7 @@
 
             {% if object.gender is defined %}
                 <br/>
-                ({{ ('common.'~object.gender)|trans|lower }})
+                ({{ ('common.' ~ object.gender)|trans|lower }})
             {% endif %}
 
             {% if object.adherent_id is defined %}

@@ -21,29 +21,29 @@
                     <div class="form__row">
                         {{ form_label(form.lastName, 'Votre nom') }}
                         {{ form_errors(form.lastName) }}
-                        {{ form_widget(form.lastName, { 'attr': { 'class': 'form--full' } }) }}
+                        {{ form_widget(form.lastName, {attr: {class: 'form--full'}}) }}
                     </div>
 
                     <div class="form__row">
                         {{ form_label(form.firstName, 'Votre prénom') }}
                         {{ form_errors(form.firstName) }}
-                        {{ form_widget(form.firstName, { 'attr': { 'class': 'form--full' } }) }}
+                        {{ form_widget(form.firstName, {attr: {class: 'form--full'}}) }}
                     </div>
 
                     <div class="form__row">
                         {{ form_label(form.email, 'L\'adresse email de la personne que vous souhaitez inviter') }}
                         {{ form_errors(form.email) }}
-                        {{ form_widget(form.email, { 'attr': { 'class': 'form--full' } }) }}
+                        {{ form_widget(form.email, {attr: {class: 'form--full'}}) }}
                     </div>
 
                     <div class="form__row">
                         {{ form_label(form.message, 'Message d\'invitation') }}
                         {{ form_errors(form.message) }}
-                        {{ form_widget(form.message, { 'attr': { 'class': 'form--full form__field--textarea-120' } }) }}
+                        {{ form_widget(form.message, {attr: {class: 'form--full form__field--textarea-120'}}) }}
                     </div>
 
                     <div class="b__nudge--top text--small form__checkbox form__checkbox--large">
-                        {{ form_row(form.personalDataCollection, { label: "J'ai lu et j'accepte les mentions d'information relatives au recueil de mes données personnelles ci-dessous" }) }}
+                        {{ form_row(form.personalDataCollection, {label: "J'ai lu et j'accepte les mentions d'information relatives au recueil de mes données personnelles ci-dessous"}) }}
                     </div>
 
                     <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
@@ -54,7 +54,7 @@
                     {% endif %}
 
                     <div class="text--center">
-                        {{ form_widget(form.submit, { 'label': 'Envoyer l\'invitation' }) }}
+                        {{ form_widget(form.submit, {label: 'Envoyer l\'invitation'}) }}
                     </div>
 
                     <p class="text--small text--gray">

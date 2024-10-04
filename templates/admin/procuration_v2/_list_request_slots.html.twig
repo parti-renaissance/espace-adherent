@@ -14,7 +14,7 @@
                         {% set proxy = request_slot.proxySlot.proxy %}
 
                         <b>
-                            {{ ('common.civility.' ~ (proxy.gender == constant('App\\ValueObject\\Genders::FEMALE') ? 'mrs' : 'mr'))|trans  }}
+                            {{ ('common.civility.' ~ (proxy.gender == constant('App\\ValueObject\\Genders::FEMALE') ? 'mrs' : 'mr'))|trans }}
                             {{ proxy.firstNames }} {{ proxy.lastName }}
                         </b>
 

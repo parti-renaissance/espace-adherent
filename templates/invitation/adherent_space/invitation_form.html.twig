@@ -14,19 +14,19 @@
                     <p class="text--body b__nudge--bottom-larger">Avant d'envoyer ce message d'invitation, assurez-vous d'avoir obtenu l'autorisation de son destinataire.</p>
 
                     <div class="em-form__group">
-                            {{ form_label(form.email, 'L\'adresse email de la personne que vous souhaitez inviter', { label_attr: {'class': 'em-form__label'} }) }}
+                            {{ form_label(form.email, 'L\'adresse email de la personne que vous souhaitez inviter', {label_attr: {class: 'em-form__label'}}) }}
                             {{ form_errors(form.email) }}
-                            {{ form_widget(form.email, { attr: { class: 'em-form__field' } }) }}
+                            {{ form_widget(form.email, {attr: {class: 'em-form__field'}}) }}
                     </div>
 
                     <div class="em-form__group">
-                        {{ form_label(form.message, 'Message d\'invitation', { label_attr: {'class': 'em-form__label'} }) }}
+                        {{ form_label(form.message, 'Message d\'invitation', {label_attr: {class: 'em-form__label'}}) }}
                         {{ form_errors(form.message) }}
-                        {{ form_widget(form.message, { attr: { class: 'em-form__field' } }) }}
+                        {{ form_widget(form.message, {attr: {class: 'em-form__field'}}) }}
                     </div>
 
                     <div class="form__row b__nudge--top-50">
-                        {{ form_widget(form.submit, { label: 'Envoyer l\'invitation', attr: {'class': 'btn btn--blue btn--large-and-full b__nudge--top'} }) }}
+                        {{ form_widget(form.submit, {label: 'Envoyer l\'invitation', attr: {class: 'btn btn--blue btn--large-and-full b__nudge--top'}}) }}
                     </div>
 
                     <div class="em-form__group">

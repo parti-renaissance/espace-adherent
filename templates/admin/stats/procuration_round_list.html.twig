@@ -55,7 +55,7 @@
                                                 <td>{{ round.name }}</td>
                                                 <td>{{ round.date|format_datetime('full', 'none') }}</td>
                                                 <td>
-                                                    <a href="{{ path('admin_app_stats_procuration_round_stats', { uuid: round.uuid }) }}" class="btn btn-xs btn-default" title="Statistiques">
+                                                    <a href="{{ path('admin_app_stats_procuration_round_stats', {uuid: round.uuid}) }}" class="btn btn-xs btn-default" title="Statistiques">
                                                         <i class="fa fa-bar-chart" aria-hidden="true"></i>
                                                         Statistiques
                                                     </a>
