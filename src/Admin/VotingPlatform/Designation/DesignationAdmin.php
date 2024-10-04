@@ -2,6 +2,7 @@
 
 namespace App\Admin\VotingPlatform\Designation;
 
+use App\Adherent\Tag\TagEnum;
 use App\Admin\AbstractAdmin;
 use App\Entity\Geo\Zone;
 use App\Entity\VotingPlatform\Designation\CandidacyPool\CandidacyPool;
@@ -67,7 +68,7 @@ class DesignationAdmin extends AbstractAdmin
                         ],
                     ])
                 ->end()
-                ->with('Zone 🌍', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-primary'])
+                ->with('Zone & personnes concernées', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-primary'])
                     ->add('globalZones', DesignationGlobalZoneType::class, [
                         'required' => false,
                         'label' => 'Zones globales',
@@ -84,6 +85,11 @@ class DesignationAdmin extends AbstractAdmin
                         'multiple' => true,
                         'help' => 'Obligatoire pour les élections départementales',
                         'btn_add' => false,
+                    ])
+                    ->add('target', ChoiceType::class, [
+                        'label' => 'Personnes concernées',
+                        'choices' => array_combine($tags = TagEnum::getAdherentTags(true), $tags),
+                        'multiple' => true,
                     ])
                 ->end()
                 ->with('Candidature 🎎', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-default'])
