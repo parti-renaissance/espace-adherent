@@ -28,6 +28,10 @@ class TokenRevocationAuthority
 
     public function revokeUserTokens(Adherent $user): void
     {
+        if (!$user->getId()) {
+            return;
+        }
+
         $this->accessTokenRepository->revokeUserTokens($user);
         $this->refreshTokenRepository->revokeUserTokens($user);
     }
