@@ -4,14 +4,12 @@
 /app/data/timeline/
 /app/data/user_documents/
 /app/data/elections/
-/templates/jquery.collection.html.twig
 /build/
 /var/
 /vendor/
 /public/css/cropper.min.css
 /public/bundles/
 /public/built/
-/public/js/jquery.collection.js
 /public/select2/
 /.tmp
 /docker-compose.override.yml

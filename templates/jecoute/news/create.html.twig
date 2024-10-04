@@ -1,7 +1,7 @@
 {% extends 'jecoute/_layout.html.twig' %}
 
 {% block jecoute_content %}
-    {% form_theme form with ['jquery.collection.html.twig', 'jecoute/_form_theme.html.twig'] %}
+    {% form_theme form with ['jecoute/_form_theme.html.twig'] %}
 
     <a href="{{ path("app_jecoute_news_#{space_name}_news_list") }}" class="back-to-list text--blue--dark link--no-decor b__nudge--bottom block">
         ⟵ Retour
