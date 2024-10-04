@@ -71,7 +71,9 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(
             uriTemplate: '/formations',
             paginationMaximumItemsPerPage: 1000,
-            normalizationContext: ['groups' => ['formation_list_read']]
+            paginationClientEnabled: true,
+            normalizationContext: ['groups' => ['formation_list_read']],
+            security: 'is_granted(\'ROLE_USER\')'
         ),
         new Post(uriTemplate: '/formations'),
     ],
