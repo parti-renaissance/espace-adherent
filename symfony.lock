@@ -586,6 +586,15 @@
     "twig/extra-bundle": {
         "version": "v3.4.0"
     },
+    "vincentlanglet/twig-cs-fixer": {
+        "version": "3.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "0.6",
+            "ref": "e4da12a48e8138479bd24a675321bcfd84950266"
+        }
+    },
     "willdurand/geocoder-bundle": {
         "version": "5.16",
         "recipe": {
