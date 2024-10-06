@@ -10,7 +10,7 @@
 
 {% block content_right_side %}
     <section class="isolate relative">
-        <a href="{{ path('app_renaissance_event_show', { slug: event.slug }) }}" class="inline-flex items-center text-sm leading-10 text-re-blue-500 hover:text-re-blue-400">
+        <a href="{{ path('app_renaissance_event_show', {slug: event.slug}) }}" class="inline-flex items-center text-sm leading-10 text-re-blue-500 hover:text-re-blue-400">
             <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
             </svg>
@@ -31,7 +31,7 @@
             <div class="mt-4 space-y-8 divide-y divide-gray-200">
                 <div class="text-sm leading-5 text-gray-500">
                     <p class="flex items-center flex-wrap">
-                        {% include 'icons/user.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' } %}
+                        {{ include('icons/user.svg.twig', {svg_class: 'h-5 w-5 mr-1.5'}) }}
                         <span>
                             {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}
                                 Par le comité <span class="font-medium text-gray-700">{{ event.committee.name }}</span>
@@ -41,13 +41,13 @@
                         </span>
                     </p>
                     <p class="mt-2 flex items-center">
-                        {% include 'icons/calendar.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' } %}
+                        {{ include('icons/calendar.svg.twig', {svg_class: 'h-5 w-5 mr-1.5'}) }}
                         <span>
                             {{- event.beginAt|format_datetime('full', 'none')|capitalize }}, {{ event.beginAt|date('G\\hi') -}}{{ event.timeZone|utc_offset }}
                         </span>
                     </p>
                     <p class="mt-2 flex items-center">
-                        {% include 'icons/map.svg.twig' with { svg_class: 'h-5 w-5 mr-1.5' } %}
+                        {{ include('icons/map.svg.twig', {svg_class: 'h-5 w-5 mr-1.5'}) }}
                         <span>
                             {{ event.postAddress.inlineFormattedAddress }}
                         </span>
@@ -68,25 +68,25 @@
                                 <div class="space-y-8">
                                     <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-6">
                                         <div class="md:col-span-3">
-                                            {{ form_row(form.firstName, { label: 'Nom'}) }}
+                                            {{ form_row(form.firstName, {label: 'Nom'}) }}
                                         </div>
                                         <div class="md:col-span-3">
-                                            {{ form_row(form.lastName, { label: 'Prénom'}) }}
+                                            {{ form_row(form.lastName, {label: 'Prénom'}) }}
                                         </div>
                                     </div>
                                     <div>
-                                        {{ form_row(form.email, { half: true, label: 'Adresse email'}) }}
+                                        {{ form_row(form.email, {half: true, label: 'Adresse email'}) }}
                                     </div>
                                     <div>
-                                        {{ form_row(form.message, { label: 'Message d\'invitation', attr: { rows: 4 }}) }}
+                                        {{ form_row(form.message, {label: 'Message d\'invitation', attr: {rows: 4}}) }}
                                     </div>
                                     {% for guest in form.guests %}
                                         <div>
-                                            {{ form_row(guest, { label: 'Email de l\'invité N° ' ~ loop.index }) }}
+                                            {{ form_row(guest, {label: 'Email de l\'invité N° ' ~ loop.index}) }}
                                         </div>
                                     {% endfor %}
 
-                                    {% include 'renaissance/partials/friendly-captcha.html.twig' with { justify_class: 'justify-between' } %}
+                                    {{ include('renaissance/partials/friendly-captcha.html.twig', {justify_class: 'justify-between'}) }}
                                 </div>
                             </div>
                         {{ form_end(form) }}

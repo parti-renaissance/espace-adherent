@@ -15,7 +15,7 @@
 
 {% block action_content_left %}
     <div class="table-responsive margin-bottom">
-        {% include('admin/committee/mandates/_mandate_as_table.html.twig') with { mandate: mandate, show_all: true } %}
+        {{ include(('admin/committee/mandates/_mandate_as_table.html.twig'), {mandate: mandate, show_all: true}) }}
     </div>
 {% endblock %}
 
@@ -23,9 +23,9 @@
 
 {% block action_buttons %}
     <div class="col-md-2">
-        {{ form_widget(form.allow, { label: 'Confirmer', attr: { class: 'btn btn-success' } }) }}
+        {{ form_widget(form.allow, {label: 'Confirmer', attr: {class: 'btn btn-success'}}) }}
     </div>
     <div class="col-md-1 col-md-offset-9">
-        {{ form_widget(form.deny, { label: 'Annuler', attr: { class: 'btn btn-danger' } }) }}
+        {{ form_widget(form.deny, {label: 'Annuler', attr: {class: 'btn btn-danger'}}) }}
     </div>
 {% endblock %}

@@ -6,7 +6,7 @@
         <br />
         {{ object.jemarcheDataSurvey.emailAddress }}
     {% elseif object.isOfPhoningCampaignHistory and object.phoningCampaignHistory.adherent %}
-        <a href="{{ path('admin_app_adherent_show', { id: object.phoningCampaignHistory.adherent.id }) }}">
+        <a href="{{ path('admin_app_adherent_show', {id: object.phoningCampaignHistory.adherent.id}) }}">
             {{ object.phoningCampaignHistory.adherent.fullName }}
         </a>
         <br />

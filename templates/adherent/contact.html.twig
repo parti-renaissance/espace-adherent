@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block page_title 'Contacter '~adherent.fullName %}
+{% block page_title 'Contacter ' ~ adherent.fullName %}
 
 {% block javascripts %}
     <script src="https://www.google.com/recaptcha/enterprise.js"></script>
@@ -11,11 +11,11 @@
         <section class="l__wrapper--slim b__nudge--bottom-60">
             {% if fromType and from %}
                 {% if fromType == 'committee' %}
-                    <a href="{{ path('app_committee_show', {'slug': from.slug}) }}" class="back-to-list icon--with-text text--summary">
+                    <a href="{{ path('app_committee_show', {slug: from.slug}) }}" class="back-to-list icon--with-text text--summary">
                         {{ include('components/caret--left.html.twig') }}
                         Retour au comité</a>
                 {% else %}
-                    <a href="{{ path('app_committee_event_show', {'slug': from.slug}) }}" class="back-to-list icon--with-text text--summary">
+                    <a href="{{ path('app_committee_event_show', {slug: from.slug}) }}" class="back-to-list icon--with-text text--summary">
                         {{ include('components/caret--left.html.twig') }}
                         Retour à l'événement</a>
                 {% endif %}
@@ -25,18 +25,18 @@
                 <h1 class="text--large search-title">{{ block('page_title') }}</h1>
             </header>
 
-            {{ form_start(form, { attr: { class: 'form', id: 'app_adherent_contact' } }) }}
+            {{ form_start(form, {attr: {class: 'form', id: 'app_adherent_contact'}}) }}
 
                 {{ form_label(form.content, 'Contenu du message') }}
                 {{ form_errors(form.content) }}
-                {{ form_widget(form.content, { attr: {
+                {{ form_widget(form.content, {attr: {
                     class: 'form--full form__field--textarea-300',
-                    placeholder: "Entrez le message que vous souhaitez envoyer à "~adherent.fullName
-                } }) }}
+                    placeholder: 'Entrez le message que vous souhaitez envoyer à ' ~ adherent.fullName
+                }}) }}
 
             <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
             {% if recaptcha_public_key is not empty %}
-                {% for flashMessage in app.flashes("error_recaptcha") %}
+                {% for flashMessage in app.flashes('error_recaptcha') %}
                     <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
                 {% endfor %}
                 {{ form_errors(form) }}

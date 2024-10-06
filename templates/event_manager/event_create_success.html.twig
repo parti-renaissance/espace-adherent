@@ -4,7 +4,7 @@
     <div class="box-success text--center l__wrapper--500 font-roboto">
         <img class="icn_success b__nudge--bottom" src="{{ asset('images/icons/icn_success.svg') }}" />
 
-        <h2 class="text--medium b__nudge--bottom-larger">L'événement <a class="link--no--decor text--blue--dark" target="_blank" rel="noopener noreferrer" href="{{ path('app_committee_event_show', { slug: event.slug }) }}">&laquo; {{ event.name }} &raquo;</a> a bien été créé.</h2>
+        <h2 class="text--medium b__nudge--bottom-larger">L'événement <a class="link--no--decor text--blue--dark" target="_blank" rel="noopener noreferrer" href="{{ path('app_committee_event_show', {slug: event.slug}) }}">&laquo; {{ event.name }} &raquo;</a> a bien été créé.</h2>
 
         {% if share_by_email %}
             {% if event.status == constant('STATUS_SCHEDULED', event) %}
@@ -16,7 +16,7 @@
             <br/>
 
             <form method="POST" action="{{ path("app_message_#{space_name}_create") }}">
-                <input type="hidden" name='message_content' value="Inscrivez-vous à l'événement <a href='{{ url('app_committee_event_show', { slug: event.slug }) }}'>ici</a>">
+                <input type="hidden" name='message_content' value="Inscrivez-vous à l'événement <a href='{{ url('app_committee_event_show', {slug: event.slug}) }}'>ici</a>">
                 <button class="btn btn--blue b__nudge--bottom">L'envoyer par email</button>
             </form>
         {% endif %}

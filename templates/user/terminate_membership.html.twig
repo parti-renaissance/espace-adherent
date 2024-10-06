@@ -34,8 +34,8 @@
     {% if not unregistered %}
         <div id="is_adherent" class="settings__unsub">
             <header class="filtered-image progressive-background"
-                    data-sd="{{ static_asset('em-marcheurs-bg.jpg', { w: 300, q: 20 }) }}"
-                    data-hd="{{ static_asset('em-marcheurs-bg.jpg', { q: 70 }) }}">
+                    data-sd="{{ static_asset('em-marcheurs-bg.jpg', {w: 300, q: 20}) }}"
+                    data-hd="{{ static_asset('em-marcheurs-bg.jpg', {q: 70}) }}">
                 <div class="l__wrapper--narrow">
                     <h1 class="text--center text--larger">
                         Je souhaite supprimer mon compte <br/><em>En Marche</em>
@@ -51,7 +51,7 @@
             </section>
 
             <section class="l__wrapper--600">
-                {{ form_start(form, { attr: { class: 'b__nudge--top-40' } }) }}
+                {{ form_start(form, {attr: {class: 'b__nudge--top-40'}}) }}
 
                 {{ form_errors(form) }}
 
@@ -63,7 +63,7 @@
                     </div>
                     <div id="unregistration_another_reason_comment">
                         {{ form_errors(form.comment) }}
-                        {{ form_widget(form.comment, { attr: { class: 'form__textbox' } }) }}
+                        {{ form_widget(form.comment, {attr: {class: 'form__textbox'}}) }}
                     </div>
                 </div>
 

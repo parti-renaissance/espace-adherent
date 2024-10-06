@@ -3,7 +3,7 @@
         <li class="dropdown sonata-actions">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Liste d'actions <b class="caret"></b></a>
             <ul class="dropdown-menu" role="menu">
-                {% include('admin/committee/_actions_menu_li.html.twig') with { object: committee } %}
+                {{ include(('admin/committee/_actions_menu_li.html.twig'), {object: committee}) }}
             </ul>
         </li>
     </ul>

@@ -3,7 +3,7 @@
 {% block field %}
     {% for mandate in object.mandates %}
         <span class="label label-warning">
-            {{ ('adherent.mandate.type.'~mandate)|trans }}
+            {{ ('adherent.mandate.type.' ~ mandate)|trans }}
         </span>
         <br>
     {% endfor %}

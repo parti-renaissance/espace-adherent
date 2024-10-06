@@ -29,3 +29,7 @@ node_modules
 /.env.local.php
 /.env.*.local
 *.DS_Store
+
+###> vincentlanglet/twig-cs-fixer ###
+/.twig-cs-fixer.cache
+###< vincentlanglet/twig-cs-fixer ###

@@ -5,7 +5,7 @@ App.createAddressSelector(
     '{{ address.city.vars.id }}',
     '{{ address.cityName.vars.id }}',
     '{{ address.cityName.vars.required }}',
-    {% if address.region is defined  -%}
+    {% if address.region is defined -%}
         '{{ address.region.vars.id }}'
     {%- else -%}
         null
@@ -19,7 +19,7 @@ App.createAddressSelector(
         '#{{ addressForm.address.vars.id }}',
         '#{{ addressForm.postalCode.vars.id }}',
         '#{{ addressForm.cityName.vars.id }}',
-        {{ addressForm.region is defined ? '#'~addressForm.region.vars.id : 'null' }},
+        {{ addressForm.region is defined ? '#' ~ addressForm.region.vars.id : 'null' }},
         '#{{ addressForm.country.vars.id }}',
         '.address-autocomplete',
         '.address-block',
@@ -469,7 +469,7 @@ $(document).ready(function() {
 
 {% macro init_event_cropperjs(form) %}
     {% import _self as helper %}
-    {{ helper.init_cropperjs(form, 16/9, 960, 540) }}
+    {{ helper.init_cropperjs(form, 16 / 9, 960, 540) }}
 {% endmacro %}
 
 {% macro init_candidacy_cropperjs(form) %}

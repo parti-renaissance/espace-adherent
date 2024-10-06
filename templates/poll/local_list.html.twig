@@ -39,7 +39,7 @@
                             <td>{{ item.yes_count }}</td>
                             <td>{{ item.no_count }}</td>
                             <td>
-                                <span class="adherent-dashboard-tag">{{ ('geo_zone.'~poll.zone.type)|trans }}</span><br>
+                                <span class="adherent-dashboard-tag">{{ ('geo_zone.' ~ poll.zone.type)|trans }}</span><br>
                                 <div class="b__nudge--top-10">{{ poll.zone }}</div>
                             </td>
                             <td>{{ poll.author ? poll.author.fullName : 'Ancien adhérent' }}</td>
@@ -67,7 +67,7 @@
                                     }
                                 ] %}
 
-                                {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                                {{ include('components/_annimated_sub_menu.html.twig', {items: items}) }}
                             </td>
                         </tr>
                     {% else %}

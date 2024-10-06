@@ -25,24 +25,24 @@
             </div>
         {% endif %}
 
-        {{ form_start(form, { action: path('app_user_login_check') }) }}
+        {{ form_start(form, {action: path('app_user_login_check')}) }}
             <ul class="form">
                 <li>
-                     {{ form_label(form._login_email, 'Email', { label_attr: { class: 'visually-hidden' } }) }}
+                     {{ form_label(form._login_email, 'Email', {label_attr: {class: 'visually-hidden'}}) }}
                      {{ form_errors(form._login_email) }}
-                     {{ form_widget(form._login_email, { attr: { placeholder: 'Email', autocapitalize: 'off' } }) }}
+                     {{ form_widget(form._login_email, {attr: {placeholder: 'Email', autocapitalize: 'off'}}) }}
                 </li>
 
                 <li>
-                    {{ form_label(form._login_password, 'Mot de passe', { label_attr: { class: 'visually-hidden' } }) }}
+                    {{ form_label(form._login_password, 'Mot de passe', {label_attr: {class: 'visually-hidden'}}) }}
                     {{ form_errors(form._login_password) }}
-                    {{ form_widget(form._login_password, { attr: { placeholder: 'Mot de passe' } }) }}
+                    {{ form_widget(form._login_password, {attr: {placeholder: 'Mot de passe'}}) }}
 
                     <a href="{{ path('app_forgot_password') }}" class="form__forgotten-pw">Mot de passe oublié ? Cliquez ici</a>
                 </li>
                 <li>
                     <div class="b__nudge--top text--small form__checkbox form__checkbox--large">
-                        {{ form_row(form._remember_me, { label: 'Se souvenir de moi', label_attr: { class: 'form form__label' }}) }}
+                        {{ form_row(form._remember_me, {label: 'Se souvenir de moi', label_attr: {class: 'form form__label'}}) }}
                     </div>
                 </li>
                 <li>

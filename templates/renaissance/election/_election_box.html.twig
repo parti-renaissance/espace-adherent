@@ -59,7 +59,7 @@
                                     <a href="{{ path('app_adhesion_index') }}" class="banner-btn">Je cotise</a>
                                 {% else %}
                                     <span class="mb-5 md:mb-0">Vous devez être à jour de cotisation pour participer à la consultation.</span>
-                                    <a href="{{ path('app_adhesion_index') }}" class="banner-btn">Je recotise pour {{ "now"|date('Y') }}</a>
+                                    <a href="{{ path('app_adhesion_index') }}" class="banner-btn">Je recotise pour {{ 'now'|date('Y') }}</a>
                                 {% endif %}
                             </div>
                         {% endif %}

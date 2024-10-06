@@ -24,10 +24,10 @@
                         <p class="font-roboto text--bold b__nudge--bottom-large">Invitation envoyée</p>
 
                         <div class="b__nudge--bottom-large l__row l__row--wrap l__row--h-stretch">
-                            {% include 'components/_member_identity_box.html.twig' with {
+                            {{ include('components/_member_identity_box.html.twig', {
                                 initials: adherent.initials,
                                 full_name: adherent.fullName
-                            } %}
+                            }) }}
 
                             <div>
                                 <a href="{{ path('app_committee_candidature_select_pair_candidate', {slug: committee.slug}) }}" class="btn btn--ghosting--pink btn--no-wrap">Modifier ma demande de binôme</a>
@@ -97,11 +97,11 @@
                 {% set author = invitation.candidacy.committeeMembership.adherent %}
 
                 <div class="candidacy-invitation l__row l__row--wrap l__row--h-stretch b__nudge--bottom">
-                    {% include 'components/_member_identity_box.html.twig' with {
+                    {{ include('components/_member_identity_box.html.twig', {
                         initials: author.initials,
                         image_path: invitation.candidacy.imagePath,
                         full_name: author.fullName,
-                    } %}
+                    }) }}
 
                     <div class="l__row">
                         <a href="{{ path('app_committee_candidature_invitation_accept', {slug: committee.slug, uuid: invitation.uuid}) }}" class="btn btn--pink btn--no-wrap">Accepter</a>

@@ -1,7 +1,7 @@
 {% extends 'committee/show.html.twig' %}
 
 {% block page_title %}{{ committee.name }} - {{ committee.cityName }}{% endblock %}
-{% block canonical_url url('app_committee_show', {'slug': committee.slug}) %}
+{% block canonical_url url('app_committee_show', {slug: committee.slug}) %}
 
 {% block head_javascripts %}
     <script type="text/javascript" src={{ asset('js/jquery/jquery-2.2.4.min.js') }}></script>

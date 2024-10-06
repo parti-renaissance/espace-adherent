@@ -1,9 +1,9 @@
-{% use "form_div_layout.html.twig" %}
+{% use 'form_div_layout.html.twig' %}
 
 {%- block form_row -%}
     <div class="em-form__group{% if half is defined and half %} half{% endif %} {{ attr.class|default('') }}">
         {{- form_label(form) -}}
-        {{- form_widget(form, { attr: attr }) -}}
+        {{- form_widget(form, {attr: attr}) -}}
         {{- form_errors(form) -}}
     </div>
 {%- endblock form_row -%}

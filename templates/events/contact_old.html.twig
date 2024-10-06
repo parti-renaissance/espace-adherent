@@ -20,7 +20,7 @@
                     il ne pourra donc pas être envoyé.
                 </div>
             {% else %}
-                <div class="text--body">{{ 'Votre message sera envoyé par email à %s de votre comité.'|format('participants_count'|trans({ count: contacts|length })) }}</div>
+                <div class="text--body">{{ 'Votre message sera envoyé par email à %s de votre comité.'|format('participants_count'|trans({count: contacts|length})) }}</div>
             {% endif %}
 
             {{ form_start(form) }}
@@ -29,14 +29,14 @@
 
                 <input type="hidden" name="contacts" value="{{ contacts|json_encode }}" />
 
-                {{ form_widget(form.message, { attr: {
+                {{ form_widget(form.message, {attr: {
                     class: 'form--full form__field--textarea-300 b__nudge--top-15',
                     placeholder: 'Écrivez votre message'
-                } }) }}
+                }}) }}
 
-                {{ form_widget(form.submit, { label: 'Envoyer', attr: { class: 'btn btn--blue b__nudge--top-15' } }) }}
+                {{ form_widget(form.submit, {label: 'Envoyer', attr: {class: 'btn btn--blue b__nudge--top-15'}}) }}
 
-                <a href="{{ path('app_committee_event_show', {'slug': event.slug}) }}"
+                <a href="{{ path('app_committee_event_show', {slug: event.slug}) }}"
                    class="btn">
                     Annuler
                 </a>

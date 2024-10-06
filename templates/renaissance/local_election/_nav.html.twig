@@ -1,11 +1,11 @@
 <ul class="flex items-center space-x-1" role="menu">
     <li>
-        <a class="inline-block px-4 py-2.5 text-base rounded-md {{ is_active_route(app.request, 'app_renaissance_departmental_election_lists') ? 'bg-re-blue-50 text-re-blue-700 font-medium': 'text-gray-500 hover:text-gray-700' }}" href="{{ path("app_renaissance_departmental_election_lists", {uuid: designation.getUuid()}) }}">
+        <a class="inline-block px-4 py-2.5 text-base rounded-md {{ is_active_route(app.request, 'app_renaissance_departmental_election_lists') ? 'bg-re-blue-50 text-re-blue-700 font-medium' : 'text-gray-500 hover:text-gray-700' }}" href="{{ path('app_renaissance_departmental_election_lists', {uuid: designation.getUuid()}) }}">
             Candidatures
         </a>
     </li>
     <li>
-        <a class="inline-block px-4 py-2.5 text-base rounded-md {{ is_active_route(app.request, 'app_renaissance_departmental_election_rules') ? 'bg-re-blue-50 text-re-blue-700 font-medium': 'text-gray-500 hover:text-gray-700' }}" href="{{ path("app_renaissance_departmental_election_rules", {uuid: designation.getUuid()}) }}">
+        <a class="inline-block px-4 py-2.5 text-base rounded-md {{ is_active_route(app.request, 'app_renaissance_departmental_election_rules') ? 'bg-re-blue-50 text-re-blue-700 font-medium' : 'text-gray-500 hover:text-gray-700' }}" href="{{ path('app_renaissance_departmental_election_rules', {uuid: designation.getUuid()}) }}">
             Règlement intérieur
         </a>
     </li>

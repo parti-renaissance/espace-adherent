@@ -9,7 +9,7 @@
                         Mandats du comité "{{ committee.name }}"
                     </a>
                 </div>
-                {% include('admin/committee/_actions_menu_right.html.twig') with { object: committee } %}
+                {{ include(('admin/committee/_actions_menu_right.html.twig'), {object: committee}) }}
             </div>
         </nav>
     </div>
@@ -26,7 +26,7 @@
             Retour à la liste
         </a>
         {% if is_granted('ADD_MANDATE_TO_COMMITTEE', committee) %}
-            <a href="{{ path('app_admin_committee_add_mandate', { id: committee.id }) }}" class="btn btn-default">
+            <a href="{{ path('app_admin_committee_add_mandate', {id: committee.id}) }}" class="btn btn-default">
                 <i class="fa fa-plus" aria-hidden="true"></i>
                 Ajouter un mandat
             </a>
@@ -74,13 +74,13 @@
                                     {{ mandate.id }}
                                 </td>
                                 <td>
-                                    {{ ('adherent_mandate.committee.'~mandate.type)|trans }}
+                                    {{ ('adherent_mandate.committee.' ~ mandate.type)|trans }}
                                 </td>
                                 <td>
-                                    {{ ('common.gender.'~mandate.gender)|trans }}
+                                    {{ ('common.gender.' ~ mandate.gender)|trans }}
                                 </td>
                                 <td>
-                                    <a href="{{ path('admin_app_adherent_show', { id: adherent.id }) }}">
+                                    <a href="{{ path('admin_app_adherent_show', {id: adherent.id}) }}">
                                         {{ adherent.fullName }}
                                     </a>
                                     <br />
@@ -91,11 +91,11 @@
                                 </td>
                                 <td>
                                     {% if can_change_mandate %}
-                                        <a href="{{ path('app_admin_committee_replace_mandate', { id: mandate.id }) }}" class="btn btn-xs btn-default">
+                                        <a href="{{ path('app_admin_committee_replace_mandate', {id: mandate.id}) }}" class="btn btn-xs btn-default">
                                             <i class="fa fa-repeat" aria-hidden="true"></i>
                                             Remplacer
                                         </a>
-                                        <a href="{{ path('app_admin_committee_close_mandate', { id: mandate.id }) }}" class="btn btn-xs btn-default">
+                                        <a href="{{ path('app_admin_committee_close_mandate', {id: mandate.id}) }}" class="btn btn-xs btn-default">
                                             <i class="fa fa-close" aria-hidden="true"></i>
                                             Retirer
                                         </a>
@@ -155,13 +155,13 @@
                                     {{ mandate.id }}
                                 </td>
                                 <td>
-                                    {{ ('adherent_mandate.committee.'~mandate.type)|trans }}
+                                    {{ ('adherent_mandate.committee.' ~ mandate.type)|trans }}
                                 </td>
                                 <td>
-                                    {{ ('common.gender.'~mandate.gender)|trans }}
+                                    {{ ('common.gender.' ~ mandate.gender)|trans }}
                                 </td>
                                 <td>
-                                    <a href="{{ path('admin_app_adherent_show', { id: adherent.id }) }}">
+                                    <a href="{{ path('admin_app_adherent_show', {id: adherent.id}) }}">
                                         {{ adherent.fullName }}
                                     </a>
                                     <br />

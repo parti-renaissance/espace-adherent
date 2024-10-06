@@ -170,6 +170,10 @@ ly:
 
 lt:
 	$(CONSOLE) lint:twig templates
+	$(EXEC) vendor/bin/twig-cs-fixer
+
+ltfix:
+	$(EXEC) vendor/bin/twig-cs-fixer --fix
 
 lc:
 	$(CONSOLE) lint:container
@@ -186,7 +190,7 @@ lp: node_modules                                                                
 lpfix: node_modules                                                                                    ## Lint and try to fix the Javascript to follow the convention
 	$(RUN_NODE) yarn prettier:fix
 
-lintfix: phpcsfix ljfix lpfix
+lintfix: phpcsfix ljfix lpfix ltfix
 
 phpcs: vendor                                                                                          ## Lint PHP code
 	$(PHPCSFIXER) fix --diff --dry-run --no-interaction -v

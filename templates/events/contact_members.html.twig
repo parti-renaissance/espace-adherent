@@ -15,7 +15,7 @@
                         Organisé par <span class="text--bold">{{ event.organizer }}</span>
                         {% if committee is defined and committee %}
                             du comité
-                            <a class="link--white" href="{{ path('app_committee_show', {'slug': committee.slug}) }}">
+                            <a class="link--white" href="{{ path('app_committee_show', {slug: committee.slug}) }}">
                                 {{- committee.name -}}
                             </a>
                         {% endif %}
@@ -25,7 +25,7 @@
                     <a class="btn btn--no-border btn--full" href="{{ path('app_committee_event_attend', {slug: event.slug}) }}">Je veux participer</a>
                     <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10">
                         {{ include('components/participants.html.twig') }}
-                        {{ 'participants_count'|trans({ count: event.participantsCount }) }}
+                        {{ 'participants_count'|trans({count: event.participantsCount}) }}
                     </div>
                     <ul class="committee__event__header__cta__social list__links list__links--row list__links--svgs list__links--svgs--small text--white">
                         <li class="head">Partagez</li>
@@ -66,7 +66,7 @@
                     {% else %}
                         <div class="text--body">
                             {% set msg = 'Votre message sera envoyé par email à %s de votre comité.' %}
-                            {{ msg|format('participants_count'|trans({ count: contacts|length })) }}
+                            {{ msg|format('participants_count'|trans({count: contacts|length})) }}
                         </div>
                     {% endif %}
                 </div>
@@ -78,16 +78,16 @@
                     <div class="form__row subject">
                         {{ form_label(form.subject, 'Objet') }}
                         {{ form_errors(form.subject) }}
-                        {{ form_widget(form.subject, { attr: { class: 'form--full' } }) }}
+                        {{ form_widget(form.subject, {attr: {class: 'form--full'}}) }}
                     </div>
 
                     <div class="form__row message">
                         {{ form_label(form.message, 'Message') }}
                         {{ form_errors(form.message) }}
-                        {{ form_widget(form.message, { attr: { class: 'form--full form__field--textarea-300' } }) }}
+                        {{ form_widget(form.message, {attr: {class: 'form--full form__field--textarea-300'}}) }}
                     </div>
 
-                    {{ form_widget(form.submit, { label: 'Envoyer', attr: { class: 'btn btn--blue b__nudge--top-15' } }) }}
+                    {{ form_widget(form.submit, {label: 'Envoyer', attr: {class: 'btn btn--blue b__nudge--top-15'}}) }}
 
                     <a href="{{ path('app_committee_event_show', {slug: event.slug}) }}"
                        class="btn">

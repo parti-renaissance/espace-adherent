@@ -8,7 +8,7 @@
 
 {% block em_logo %}
     <div class="b__nudge--top-15 b__nudge--left-medium b__nudge--right-small b__nudge--bottom-larger">
-        {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-4 w-auto text-white lg:h-5' } %}
+        {{ include('renaissance/partials/logo-text.svg.twig', {svg_class: 'h-4 w-auto text-white lg:h-5'}) }}
     </div>
 {% endblock %}
 
@@ -16,8 +16,8 @@
     <section class="l__inner">
         <h1>Code d'authentification</h1>
 
-            <form class="form" action="{{ path("admin_security_2fa_check") }}" method="post">
-                {% for flashMessage in app.flashes("two_factor") %}
+            <form class="form" action="{{ path('admin_security_2fa_check') }}" method="post">
+                {% for flashMessage in app.flashes('two_factor') %}
                     <p class="text--error">{{ flashMessage|trans }}</p>
                 {% endfor %}
 
@@ -32,7 +32,7 @@
 
                 {# The logout link gives the user a way out if they can't complete the second step #}
                 <p class="text--center">
-                    <a href="{{ path('logout', { app_domain: app_renaissance_host }) }}">Annuler</a>
+                    <a href="{{ path('logout', {app_domain: app_renaissance_host}) }}">Annuler</a>
                 </p>
             </form>
     </section>

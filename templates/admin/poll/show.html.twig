@@ -29,7 +29,7 @@
                                     <th class="sonata-ba-list-field-header-text">Créé par</th>
                                     <td class="sonata-ba-list-field sonata-ba-list-field-text">
                                         {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                            <a href="{{ path('admin_app_administrator_edit', { id: object.createdBy.id }) }}">
+                                            <a href="{{ path('admin_app_administrator_edit', {id: object.createdBy.id}) }}">
                                                 {{ object.createdBy }}
                                             </a>
                                         {% else %}

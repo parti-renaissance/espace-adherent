@@ -9,7 +9,7 @@
 
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-6">
                 {% for formation in national_formations %}
-                    {% include 'renaissance/formation/_formation_preview.html.twig' with { formation: formation } %}
+                    {{ include('renaissance/formation/_formation_preview.html.twig', {formation: formation}) }}
                 {% endfor %}
             </div>
         {% endif %}
@@ -19,7 +19,7 @@
 
             <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-6">
                 {% for formation in local_formations %}
-                    {% include 'renaissance/formation/_formation_preview.html.twig' with { formation: formation } %}
+                    {{ include('renaissance/formation/_formation_preview.html.twig', {formation: formation}) }}
                 {% endfor %}
             </div>
         {% endif %}

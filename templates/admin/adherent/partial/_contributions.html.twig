@@ -11,7 +11,7 @@
                 <tr class="sonata-ba-view-container">
                     <th>Status</th>
                     <td>
-                        <span class="label label-{{ adherent.contributionStatus is same as constant('App\\Contribution\\ContributionStatusEnum::ELIGIBLE') ? 'success': 'danger' }}">
+                        <span class="label label-{{ adherent.contributionStatus is same as constant('App\\Contribution\\ContributionStatusEnum::ELIGIBLE') ? 'success' : 'danger' }}">
                             {{ ('elected_representative.contribution.status.' ~ adherent.contributionStatus)|trans }}
                         </span>
                     </td>

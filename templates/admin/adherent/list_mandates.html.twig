@@ -9,7 +9,7 @@
 
     {% for mandate in object.findElectedRepresentativeMandates(true) %}
         <span class="label label-success">
-            {{ ('adherent.mandate.type.'~mandate.mandateType)|trans }}
+            {{ ('adherent.mandate.type.' ~ mandate.mandateType)|trans }}
         </span>
         <br>
     {% endfor %}

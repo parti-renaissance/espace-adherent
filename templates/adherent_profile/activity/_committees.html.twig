@@ -31,7 +31,7 @@
                     <div class="activity-card__footer b__nudge--top">
                         <div class="l__row l__row--h-stretch l__row--bottom l__row--wrap">
                             <div class="l__row">
-                                <a href="{{ path('app_committee_show', {'slug': committee.slug}) }}" title="{{ committee.name }}" class="btn btn--blue b__nudge--right-small">
+                                <a href="{{ path('app_committee_show', {slug: committee.slug}) }}" title="{{ committee.name }}" class="btn btn--blue b__nudge--right-small">
                                     Voir
                                 </a>
                             </div>
@@ -132,7 +132,7 @@
                                 (last_candidate_committee is not null and last_candidate_committee != committee)
                                 or (last_vote_committee is not null and last_vote_committee != committee)
                             %}
-                                {% set main_text = 'Vous ne pouvez ni candidater ni voter dans ce comité car vous avez participé à ' ~ designation.denomination(true) ~ ' du binôme d\'' ~(designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') ? 'animateurs' : 'adhérents')~ ' dans le comité ' ~(last_candidate_committee is not null and last_candidate_committee != committee ? last_candidate_committee.name : last_vote_committee)~ ' il y a moins de 3 mois.' %}
+                                {% set main_text = 'Vous ne pouvez ni candidater ni voter dans ce comité car vous avez participé à ' ~ designation.denomination(true) ~ ' du binôme d\'' ~ (designation.type == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR') ? 'animateurs' : 'adhérents') ~ ' dans le comité ' ~ (last_candidate_committee is not null and last_candidate_committee != committee ? last_candidate_committee.name : last_vote_committee) ~ ' il y a moins de 3 mois.' %}
                             {% elseif app.user.isMinor(ref_date) %}
                                 {% set main_text = 'Vous ne pouvez ni candidater ni voter dans ce comité à cette ' ~ designation.denomination() ~ ' car vous êtes mineur.' %}
                             {% elseif candidacy_membership and not candidacy_membership.committee.equals(committee) %}
@@ -177,12 +177,12 @@
         {% endfor %}
 
         {% if committee_memberships.lastPage > 1 %}
-            {% include 'adherent_profile/activity/_pagination.html.twig' with {
+            {{ include('adherent_profile/activity/_pagination.html.twig', {
                 current_page: committee_memberships.currentPage,
                 total_pages: committee_memberships.lastPage,
                 pagination_type: 'committees',
                 section: 'committees'
-            } %}
+            }) }}
         {% endif %}
     {% endif %}
     <div>

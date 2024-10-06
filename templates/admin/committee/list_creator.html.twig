@@ -4,7 +4,7 @@
     {% if object.creator %}
         <ul>
             <li>
-                <a href="{{ path('admin_app_adherent_show', {'id': object.creator.id}) }}">
+                <a href="{{ path('admin_app_adherent_show', {id: object.creator.id}) }}">
                     {{ object.creator.fullName }}
                 </a>
                 <br />

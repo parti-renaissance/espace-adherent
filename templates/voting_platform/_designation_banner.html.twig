@@ -20,7 +20,7 @@
                         {% if selected_committee %}
                             Une désignation est ouverte dans <a class="link--no-decor link--white" href="{{ path('app_committee_show', {slug: selected_committee.slug}) }}"><strong>votre comité</strong></a> !
                         {% else %}
-                            Des désignations sont ouvertes, <a class="link--no-decor link--white" href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}"><strong>choisissez un comité de vote</strong></a> pour y participer.
+                            Des désignations sont ouvertes, <a class="link--no-decor link--white" href="{{ path('app_adherent_profile_activity', {_fragment: 'committees'}) }}"><strong>choisissez un comité de vote</strong></a> pour y participer.
                         {% endif %}
                     </div>
 

@@ -89,7 +89,7 @@
     <br/>
 {% endfor %}
 
-{% include 'admin/adherent/_tags.html.twig' with { tags: object.tags } %}
+{{ include('admin/adherent/_tags.html.twig', {tags: object.tags}) }}
 
 {% if object.isTerritoireProgresMembership %}
     <br>

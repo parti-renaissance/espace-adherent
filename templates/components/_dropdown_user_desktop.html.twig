@@ -6,7 +6,7 @@
                     <div class="name b__nudge--right-nano">{{ app.user }}</div>
                     {% if is_certified %}
                         <div class="l__row">
-                            {% include('components/_certification_logo.html.twig') %}
+                            {{ include(('components/_certification_logo.html.twig')) }}
                         </div>
                     {% endif %}
                 </div>
@@ -20,7 +20,7 @@
                     <li class="space--5-0"><a href="{{ path('logout') }}" class="text--body text--small link--no-decor">Déconnexion</a></li>
                     {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                         <li class="space--5-0">
-                            <a href="{{ path('admin_app_adherent_list', {'_switch_user': '_exit'}) }}" class="text--body text--small link--no-decor">
+                            <a href="{{ path('admin_app_adherent_list', {_switch_user: '_exit'}) }}" class="text--body text--small link--no-decor">
                                 Quitter l'impersonnification
                             </a>
                         </li>
@@ -43,9 +43,9 @@
                 <div class="em-nav__menu em-nav__menu--dropdown">
                     <span class="head">Activités</span>
                     <ul class="items">
-                        <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}">Mes comités</a></li>
-                        <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'events'}) }}">Mes événements</a></li>
-                        <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'donations'}) }}">Mes dons</a></li>
+                        <li><a href="{{ path('app_adherent_profile_activity', {_fragment: 'committees'}) }}">Mes comités</a></li>
+                        <li><a href="{{ path('app_adherent_profile_activity', {_fragment: 'events'}) }}">Mes événements</a></li>
+                        <li><a href="{{ path('app_adherent_profile_activity', {_fragment: 'donations'}) }}">Mes dons</a></li>
                     </ul>
                 </div>
             </div>

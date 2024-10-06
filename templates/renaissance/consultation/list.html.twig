@@ -13,14 +13,14 @@
                         <div class="flex flex-col justify-between flex-1 p-6 bg-white">
                             <div class="flex-1">
                                 <div class="w-10 h-10 rounded-md text-white bg-re-blue-500 flex items-center justify-center">
-                                    {% include 'icons/clipboard-document.svg.twig' with { svg_class: 'h-6 w-6' } %}
+                                    {{ include('icons/clipboard-document.svg.twig', {svg_class: 'h-6 w-6'}) }}
                                 </div>
                                 <h3 class="mt-4 text-base lg:text-lg font-medium text-slate-900">{{ consultation.title }}</h3>
                             </div>
                             <div class="mt-4">
                                 <a class="inline-flex items-center px-3 py-2 rounded-md text-sm leading-5 bg-re-blue-50 text-re-blue-800 hover:bg-re-blue-100"
-                                   href="{{ path('app_renaissance_consultation_show', { uuid: consultation.uuid }) }}">
-                                    {% include 'icons/eye.svg.twig' with { svg_class: 'h-5 w-5 mr-2' } %}
+                                   href="{{ path('app_renaissance_consultation_show', {uuid: consultation.uuid}) }}">
+                                    {{ include('icons/eye.svg.twig', {svg_class: 'h-5 w-5 mr-2'}) }}
                                     Voir
                                 </a>
                             </div>

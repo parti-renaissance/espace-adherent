@@ -4,5 +4,5 @@
 {% block canonical_url url('invitation_form') %}
 
 {% block invitation_content %}
-    {% include 'invitation/_confirmation.html.twig' with {back_url: back_url} %}
+    {{ include('invitation/_confirmation.html.twig', {back_url: back_url}) }}
 {% endblock %}
