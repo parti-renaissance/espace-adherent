@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Adherent\Unregistration\UnregistrationCommand;
 use App\AdherentProfile\AdherentProfile;
 use App\AdherentProfile\AdherentProfileConfiguration;
 use App\AdherentProfile\AdherentProfileHandler;
@@ -252,17 +253,35 @@ class ProfileController extends AbstractController
     #[Route(path: '/unregister', name: '_unregister', methods: ['POST'])]
     #[Security("is_granted('UNREGISTER', user)")]
     public function terminateMembershipAction(
+        Request $request,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
         MembershipRequestHandler $handler,
         TokenRevocationAuthority $tokenRevocationAuthority,
     ): Response {
         /** @var Adherent $user */
         $user = $this->getUser();
 
+        /** @var UnregistrationCommand $unregistrationCommand */
+        $unregistrationCommand = $serializer->deserialize($request->getContent(), UnregistrationCommand::class, 'json', [
+            AbstractObjectNormalizer::GROUPS => [
+                'unregister',
+            ],
+        ]);
+        $unregistrationCommand->setComment('[API] Compte supprimé par l\'adhérent');
+
+        $violations = $validator->validate($unregistrationCommand, null, ['unregister']);
+
+        if (0 < $violations->count()) {
+            $errors = $serializer->serialize($violations, 'jsonproblem');
+
+            return JsonResponse::fromJsonString($errors, Response::HTTP_BAD_REQUEST);
+        }
+
         $handler->terminateMembership(
             $user,
-            null,
+            $unregistrationCommand,
             $user instanceof Adherent && MembershipSourceEnum::BESOIN_D_EUROPE === $user->getSource(),
-            '[API] Compte supprimé par l\'adhérent'
         );
 
         $tokenRevocationAuthority->revokeUserTokens($user);

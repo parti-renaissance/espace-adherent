@@ -3,11 +3,15 @@
 namespace App\Adherent\Unregistration;
 
 use App\Entity\Administrator;
+use App\Entity\Unregistration;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class UnregistrationCommand
 {
+    #[Assert\Choice(choices: Unregistration::REASONS_LIST_ADHERENT, multiple: true, groups: ['unregister'])]
     #[Assert\NotBlank(message: 'adherent.unregistration.reasons')]
+    #[Groups('unregister')]
     private array $reasons;
 
     #[Assert\Length(max: 1000, groups: ['Default', 'admin'])]
