@@ -17,7 +17,7 @@ class ImageContent
     /**
      * @var UploadedFile|null
      */
-    #[Assert\Image(maxSize: '5M', mimeTypes: ['image/jpeg', 'image/png'])]
+    #[Assert\Image(maxSize: '5M', mimeTypes: ['image/jpeg', 'image/png', 'image/webp'])]
     #[Assert\NotBlank]
     private $file;
 
