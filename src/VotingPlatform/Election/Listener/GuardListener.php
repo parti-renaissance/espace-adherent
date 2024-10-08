@@ -3,7 +3,7 @@
 namespace App\VotingPlatform\Election\Listener;
 
 use App\Repository\VotingPlatform\ElectionRepository;
-use App\Security\Voter\VotingPlatform\AbleToVoteVoter;
+use App\Security\Voter\VotingPlatformAbleToVoteVoter;
 use App\VotingPlatform\Election\VoteCommand\VoteCommand;
 use App\VotingPlatform\Election\VoteCommandStateEnum;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -12,18 +12,13 @@ use Symfony\Component\Workflow\Event\GuardEvent;
 
 class GuardListener implements EventSubscriberInterface
 {
-    private $isGranted;
-    private $isGrantedForInspector;
-
-    private $electionRepository;
-    private $authorizationChecker;
+    private ?bool $isGranted = null;
+    private ?bool $isGrantedForInspector = null;
 
     public function __construct(
-        ElectionRepository $electionRepository,
-        AuthorizationCheckerInterface $authorizationChecker,
+        private readonly ElectionRepository $electionRepository,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
     ) {
-        $this->electionRepository = $electionRepository;
-        $this->authorizationChecker = $authorizationChecker;
     }
 
     public static function getSubscribedEvents(): array
@@ -51,7 +46,7 @@ class GuardListener implements EventSubscriberInterface
         $command = $event->getSubject();
 
         $this->isGranted = $this->authorizationChecker->isGranted(
-            AbleToVoteVoter::PERMISSION,
+            VotingPlatformAbleToVoteVoter::PERMISSION,
             $this->electionRepository->findOneByUuid($command->getElectionUuid())
         );
 

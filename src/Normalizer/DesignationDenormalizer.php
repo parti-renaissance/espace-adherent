@@ -24,20 +24,26 @@ class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwar
             $designation->markAsLimited();
         }
 
+        if (!$designation->getLabel() && $designation->customTitle) {
+            $designation->setLabel($designation->customTitle);
+        }
+
         if (\in_array('designation_write', $context['groups'] ?? [], true)) {
-            if (!$designation->getCandidacyStartDate()) {
-                $designation->setCandidacyStartDate(new \DateTime());
-            }
+            if ($designation->isCommitteeSupervisorType()) {
+                if (!$designation->getCandidacyStartDate()) {
+                    $designation->setCandidacyStartDate(new \DateTime());
+                }
 
-            if ($designation->getCandidacyEndDate() !== $voteDate = $designation->getVoteStartDate()) {
-                $designation->setCandidacyEndDate($voteDate);
-            }
+                if ($designation->getCandidacyEndDate() !== $voteDate = $designation->getVoteStartDate()) {
+                    $designation->setCandidacyEndDate($voteDate);
+                }
 
-            if ($designation->getVoteStartDate()) {
-                $electionCreationDate = (clone $designation->getVoteStartDate())->modify('-15 days')->setTime(0, 0, 0);
+                if ($designation->getVoteStartDate()) {
+                    $electionCreationDate = (clone $designation->getVoteStartDate())->modify('-15 days')->setTime(0, 0, 0);
 
-                if ($designation->electionCreationDate !== $electionCreationDate) {
-                    $designation->electionCreationDate = $electionCreationDate;
+                    if ($designation->electionCreationDate !== $electionCreationDate) {
+                        $designation->electionCreationDate = $electionCreationDate;
+                    }
                 }
             }
         }

@@ -1268,4 +1268,33 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $adherent->setLastMembershipDonation($lastDonationDate ? new \DateTime($lastDonationDate) : null);
         $this->getEntityManager()->flush();
     }
+
+    public function findAllForConsultation(array $target, array $zones): array
+    {
+        $qb = $this
+            ->createQueryBuilder('a')
+            ->select('PARTIAL a.{id, uuid, emailAddress, firstName, lastName}')
+            ->where('a.status = :status')
+            ->setParameter('status', Adherent::ENABLED)
+        ;
+
+        foreach ($target as $key => $value) {
+            $qb
+                ->orWhere('a.tags LIKE :tag'.$key)
+                ->setParameter('tag'.$key, '%'.$value.'%')
+            ;
+        }
+
+        $this->withGeoZones(
+            $zones,
+            $qb,
+            'a',
+            Adherent::class,
+            'a2',
+            'zones',
+            'z2'
+        );
+
+        return $qb->getQuery()->getResult();
+    }
 }

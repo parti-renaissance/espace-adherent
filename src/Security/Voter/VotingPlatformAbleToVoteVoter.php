@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Security\Voter\VotingPlatform;
+namespace App\Security\Voter;
 
 use App\Entity\Adherent;
+use App\Entity\Geo\Zone;
 use App\Entity\VotingPlatform\Election;
 use App\Repository\VotingPlatform\VoteRepository;
 use App\Repository\VotingPlatform\VoterRepository;
-use App\Security\Voter\AbstractAdherentVoter;
 
-class AbleToVoteVoter extends AbstractAdherentVoter
+class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'ABLE_TO_VOTE';
     public const PERMISSION_RESULTS = 'ABLE_TO_SEE_RESULTS';
@@ -38,8 +38,30 @@ class AbleToVoteVoter extends AbstractAdherentVoter
             return false;
         }
 
-        if ($designation->isConsultationType() && !$adherent->hasActiveMembership()) {
-            return false;
+        if ($designation->isConsultationType()) {
+            if ($designation->target) {
+                if (!array_sum(array_map([$adherent, 'hasTag'], $designation->target))) {
+                    return false;
+                }
+            } elseif (!$adherent->hasActiveMembership()) {
+                return false;
+            }
+
+            if ($zones = $designation->getZones()->toArray()) {
+                $managedZone = false;
+                $zones = array_map(fn (Zone $zone) => $zone->getId(), $zones);
+
+                foreach ($adherent->getDeepZones() as $zone) {
+                    if (\in_array($zone->getId(), $zones, true)) {
+                        $managedZone = true;
+                        break;
+                    }
+                }
+
+                if (!$managedZone) {
+                    return false;
+                }
+            }
         }
 
         $adherentIsInVotersList = $this->voterRepository->existsForElection($adherent, $subject->getUuid()->toString());

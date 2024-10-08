@@ -621,6 +621,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         return \in_array($this->type, [
             DesignationTypeEnum::LOCAL_POLL,
             DesignationTypeEnum::LOCAL_ELECTION,
+            DesignationTypeEnum::CONSULTATION,
         ]);
     }
 

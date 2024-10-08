@@ -1,4 +1,4 @@
-{% extends is_renaissance_app ? 'base_renaissance.html.twig' : 'base.html.twig' %}
+{% extends 'base_renaissance.html.twig' %}
 
 {% set designation = election.designation %}
 
@@ -10,7 +10,7 @@
 {% block designation_banner '' %}
 
 {% block election_sub_title %}
-    <h2>Bienvenue sur la plateforme de désignation par vote électronique de {% if is_renaissance_app %}Renaissance{% else %}La République En Marche{% endif %} !</h2>
+    <h2>Bienvenue sur la plateforme de désignation par vote électronique de Renaissance !</h2>
 {% endblock %}
 
 {% block vote_step_pool_title '' %}
@@ -22,16 +22,12 @@
 {% endblock %}
 
 {% block header %}
-    <header class="{{ is_renaissance_app ? 're-voting' : 'en-voting' }} voting-platform__header voting-platform-theme__{{ designation_type }}">
+    <header class="re-voting voting-platform__header voting-platform-theme__{{ designation_type }}">
         <div class="l__wrapper--wide l__row l__row--h-stretch l__row--wrap">
             <div class="l__row space--20-0 heading-link">
-                {% if is_renaissance_app %}
-                    <a href="{{ path('renaissance_site') }}" class="link--no-decor text--logo b__nudge--right-large">
-                        {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-5 w-auto text-white' } %}
-                    </a>
-                {% else %}
-                    <a href="{{ path('homepage') }}" class="link--no-decor text--logo b__nudge--right-large">EM!</a>
-                {% endif %}
+                <a href="{{ path('renaissance_site') }}" class="link--no-decor text--logo b__nudge--right-large">
+                    {% include 'renaissance/partials/logo-text.svg.twig' with { svg_class: 'h-5 w-auto text-white' } %}
+                </a>
 
                 {% block header_actions %}
                     <a href="{{ path('app_voting_platform_index', {uuid: election.uuid}) }}" class="return-home text--body link--no-decor">Revenir à l'accueil de {{ designation.getDenomination(true) }}</a>
@@ -48,7 +44,7 @@
 {% endblock %}
 
 {% block content %}
-    <main class="{{ is_renaissance_app ? 're-voting px-4 md:px-6' : 'em-voting' }} voting-platform voting-platform-theme__{{ designation_type }}">
+    <main class="re-voting px-4 md:px-6 voting-platform voting-platform-theme__{{ designation_type }}">
         {% block voting_platform_ornametns %}
             <div class="voting-platform__ornaments">
                 <img src="{{ asset('images/vote-platform-ornaments/ornament-1.png') }}" class="ornament ornament--1" alt="" />

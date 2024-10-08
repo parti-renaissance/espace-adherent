@@ -81,11 +81,19 @@ trait EntityZoneTrait
     public function getZonesOfType(string $type, bool $deep = false): array
     {
         return array_filter(
-            $deep ? array_merge($this->zones->toArray(), $this->getParentZones()) : $this->zones->toArray(),
+            $deep ? $this->getDeepZones() : $this->zones->toArray(),
             function (Zone $zone) use ($type) {
                 return $type === $zone->getType();
             }
         );
+    }
+
+    /**
+     * @return Zone[]
+     */
+    public function getDeepZones(): array
+    {
+        return array_merge($this->zones->toArray(), $this->getParentZones());
     }
 
     /**
