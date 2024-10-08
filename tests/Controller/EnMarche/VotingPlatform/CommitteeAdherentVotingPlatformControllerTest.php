@@ -32,7 +32,7 @@ class CommitteeAdherentVotingPlatformControllerTest extends AbstractEnMarcheWebT
 
         $this->client->request(Request::METHOD_GET, self::ELECTION_URI_1);
 
-        $this->assertClientIsRedirectedTo('/comites/en-marche-comite-de-evry', $this->client);
+        $this->assertClientIsRedirectedTo('//vox.code/', $this->client);
     }
 
     public function testAsAdherentVoterICanAccessToVotingPlatform(): void
@@ -92,6 +92,6 @@ class CommitteeAdherentVotingPlatformControllerTest extends AbstractEnMarcheWebT
         $results = $this->get(VoteResultRepository::class)->findAll();
         $this->assertMatchesRegularExpression('/[[:alnum:]]{3}-[[:alnum:]]{4}-[[:alnum:]]{3}/', end($results)->getVoterKey());
 
-        $this->assertStringEndsWith('/comites/en-marche-comite-de-evry', $crawler->getUri());
+        $this->assertStringEndsWith('//vox.code/', $crawler->getUri());
     }
 }

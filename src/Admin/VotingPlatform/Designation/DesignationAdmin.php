@@ -182,7 +182,7 @@ class DesignationAdmin extends AbstractAdmin
                         'btn_add' => 'Créer',
                     ])
                 ->end()
-                ->with('Alerte', ['class' => 'col-md-6', 'help' => 'Affichée sur le fil d\'actualité'])
+                ->with('Alerte', ['class' => 'col-md-6', 'description' => 'Affichée sur le fil d\'actualité'])
                     ->add('alertTitle', TextType::class, [
                         'required' => false,
                         'label' => 'Titre',

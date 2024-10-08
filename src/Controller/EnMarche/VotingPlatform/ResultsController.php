@@ -5,26 +5,24 @@ namespace App\Controller\EnMarche\VotingPlatform;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Repository\VotingPlatform\VoteResultRepository;
-use App\Security\Voter\VotingPlatform\AbleToVoteVoter;
+use App\Security\Voter\VotingPlatformAbleToVoteVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted(AbleToVoteVoter::PERMISSION_RESULTS, subject: 'election')]
+#[IsGranted(VotingPlatformAbleToVoteVoter::PERMISSION_RESULTS, subject: 'election')]
 #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
-#[Route(path: '/resultats/{election_round_uuid}', name: 'app_voting_platform_results', methods: ['GET'], defaults: ['election_round_uuid' => null])]
+#[Route(path: '/resultats/{election_round_uuid}', name: 'app_voting_platform_results', defaults: ['election_round_uuid' => null], methods: ['GET'])]
 class ResultsController extends AbstractController
 {
     public function __invoke(
         VoteResultRepository $voteResultRepository,
         Election $election,
-        Request $request,
         ?ElectionRound $electionRound = null,
     ): Response {
         if (!$election->isResultsDisplayable() || !$election->isResultPeriodActive()) {
-            return $this->redirect($this->redirectManager->getRedirection($election));
+            return $this->redirectToRoute('vox_app');
         }
 
         if (
@@ -43,7 +41,7 @@ class ResultsController extends AbstractController
                 : $election->getCurrentRound();
         }
 
-        return $this->renderElectionTemplate('voting_platform/results.html.twig', $election, $request, [
+        return $this->renderElectionTemplate('voting_platform/results.html.twig', $election, [
             'vote_results' => $voteResultRepository->getResultsForRound($electionRound),
             'election_round' => $electionRound,
         ]);

@@ -48,7 +48,7 @@ class VoteCommandProcessor
         }
     }
 
-    public function doConfirm(VoteCommand $command)
+    public function doConfirm(VoteCommand $command): void
     {
         if (!$command->isConfirm()) {
             $this->apply($command, VoteCommandStateEnum::TO_CONFIRM);

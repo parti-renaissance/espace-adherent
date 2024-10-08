@@ -352,7 +352,7 @@ class ConfigureCommand extends Command
             }
         }
 
-        $this->entityManager->persist($this->createVoterList($election));
+        $this->entityManager->persist($this->createVoterList($election, $designation->target ? $this->adherentRepository->findAllForConsultation($designation->target, $designation->getZones()->toArray()) : []));
         $this->entityManager->persist($election);
         $this->entityManager->flush();
 
