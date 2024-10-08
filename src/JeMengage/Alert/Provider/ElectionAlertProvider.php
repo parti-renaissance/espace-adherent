@@ -21,7 +21,6 @@ class ElectionAlertProvider implements AlertProviderInterface
         $designations = $this->electionManager->findActiveDesignations(
             $adherent,
             [DesignationTypeEnum::LOCAL_POLL, DesignationTypeEnum::CONSULTATION],
-            withVoteActiveOnly: true
         );
 
         if (!$designations) {
@@ -31,7 +30,7 @@ class ElectionAlertProvider implements AlertProviderInterface
         foreach ($designations as $designation) {
             if ($designation->alertTitle && $designation->alertDescription) {
                 return new Alert(
-                    'Élection',
+                    'Consultation / Élection',
                     $designation->alertTitle,
                     $designation->alertDescription,
                     $designation->alertCtaLabel,

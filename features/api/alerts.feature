@@ -11,7 +11,7 @@ Feature:
             """
             [
                 {
-                    "label": "Élection",
+                    "label": "Consultation / Élection",
                     "title": "Élection en cours !!",
                     "description": "# Élection\nvous avez **5 jours** pour voter.",
                     "cta_label": "Consulter",
