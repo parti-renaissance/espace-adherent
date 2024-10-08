@@ -266,7 +266,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\Column(nullable: true)]
     public ?string $alertCtaLabel = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     public ?string $alertDescription = null;
 
     public function __construct(?string $label = null, ?UuidInterface $uuid = null)

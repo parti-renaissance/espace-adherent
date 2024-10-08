@@ -6,6 +6,7 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\String\UnicodeString;
 
 class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {
@@ -45,6 +46,10 @@ class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwar
                         $designation->electionCreationDate = $electionCreationDate;
                     }
                 }
+            } elseif ($designation->isConsultationType()) {
+                $designation->alertTitle = $designation->alertTitle ?: $designation->getTitle();
+                $designation->alertCtaLabel = $designation->alertCtaLabel ?: 'Voir';
+                $designation->alertDescription = $designation->alertDescription ?: (new UnicodeString($designation->getDescription() ?? ''))->truncate(200, '…', false);
             }
         }
 
