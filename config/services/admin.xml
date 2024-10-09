@@ -92,22 +92,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.adherent_static_label" class="App\Admin\AdherentStaticLabelAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Labels statiques" group="Adhérents" />
-
-            <argument />
-            <argument>App\Entity\AdherentStaticLabel</argument>
-            <argument />
-        </service>
-
-        <service id="app.admin.adherent_static_label_category" class="App\Admin\AdherentStaticLabelCategoryAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Catégories de label statique" group="Adhérents" />
-
-            <argument />
-            <argument>App\Entity\AdherentStaticLabelCategory</argument>
-            <argument />
-        </service>
-
         <!--
         ######################################################
         # Communication
@@ -826,6 +810,22 @@
 
             <argument />
             <argument>App\Entity\Scope</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.adherent_static_label" class="App\Admin\AdherentStaticLabelAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Labels statiques" group="Tech" />
+
+            <argument />
+            <argument>App\Entity\AdherentStaticLabel</argument>
+            <argument />
+        </service>
+
+        <service id="app.admin.adherent_static_label_category" class="App\Admin\AdherentStaticLabelCategoryAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Catégories de label statique" group="Tech" />
+
+            <argument />
+            <argument>App\Entity\AdherentStaticLabelCategory</argument>
             <argument />
         </service>
 
