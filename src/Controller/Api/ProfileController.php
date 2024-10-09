@@ -268,7 +268,6 @@ class ProfileController extends AbstractController
                 'unregister',
             ],
         ]);
-        $unregistrationCommand->setComment('[API] Compte supprimé par l\'adhérent');
 
         $violations = $validator->validate($unregistrationCommand, null, ['unregister']);
 

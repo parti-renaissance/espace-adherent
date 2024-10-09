@@ -1653,7 +1653,8 @@ Feature:
         When I send a "POST" request to "/api/v3/profile/unregister" with body:
             """
             {
-                "reasons": ["unregistration_reasons.emails", "unregistration_reasons.support"]
+                "reasons": ["unregistration_reasons.emails", "unregistration_reasons.support"],
+                "comment": "Lorem ipsum dolor sit amet"
             }
             """
         Then the response status code should be 200

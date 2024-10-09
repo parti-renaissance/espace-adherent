@@ -15,6 +15,7 @@ class UnregistrationCommand
     private array $reasons;
 
     #[Assert\Length(max: 1000, groups: ['Default', 'admin'])]
+    #[Groups('unregister')]
     private ?string $comment;
 
     private ?Administrator $excludedBy;
