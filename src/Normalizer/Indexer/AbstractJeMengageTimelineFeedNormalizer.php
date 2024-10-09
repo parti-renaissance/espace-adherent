@@ -83,7 +83,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
 
     protected function getIdentifier(object $object): string
     {
-        return $object->getUuidAsString();
+        return $object->getUuid()->toString();
     }
 
     protected function getAddress(object $object): ?string
