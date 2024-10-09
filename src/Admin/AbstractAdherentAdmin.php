@@ -17,6 +17,7 @@ use App\Committee\CommitteeMembershipManager;
 use App\Contribution\ContributionStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
+use App\Entity\AdherentStaticLabel;
 use App\Entity\AdherentZoneBasedRole;
 use App\Entity\Administrator;
 use App\Entity\Committee;
@@ -269,6 +270,18 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                         ])
                         ->add('position', ActivityPositionType::class, [
                             'label' => 'Statut',
+                        ])
+                    ->end()
+                    ->with('Labels statiques', ['class' => 'col-md-6'])
+                        ->add('staticLabels', null, [
+                            'label' => false,
+                            'required' => false,
+                            'choice_label' => static function (AdherentStaticLabel $staticLabel): string {
+                                return $staticLabel->label;
+                            },
+                            'group_by' => static function (AdherentStaticLabel $staticLabel): string {
+                                return $staticLabel->category->label;
+                            },
                         ])
                     ->end()
                     ->with('Comité local', ['class' => 'col-md-6'])
@@ -566,8 +579,21 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                 'tags' => TagEnum::getElectTags(),
             ])
             ->add('tags_static', StaticAdherentTagFilter::class, [
+                'label' => 'Labels divers',
+                'show_filter' => true,
+            ])
+            ->add('staticLabels', null, [
                 'label' => 'Labels statiques',
                 'show_filter' => true,
+                'field_options' => [
+                    'multiple' => true,
+                    'choice_label' => static function (AdherentStaticLabel $staticLabel): string {
+                        return $staticLabel->label;
+                    },
+                    'group_by' => static function (AdherentStaticLabel $staticLabel): string {
+                        return $staticLabel->category->label;
+                    },
+                ],
             ])
             ->add('zones', ZoneAutocompleteFilter::class, [
                 'label' => 'Périmètres géographiques',

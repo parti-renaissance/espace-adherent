@@ -551,6 +551,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     public bool $acceptMemberCard = true;
 
+    #[ORM\ManyToMany(targetEntity: AdherentStaticLabel::class, fetch: 'EXTRA_LAZY')]
+    private Collection $staticLabels;
+
     public function __construct()
     {
         $this->memberships = new ArrayCollection();
@@ -568,6 +571,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->contributions = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->revenueDeclarations = new ArrayCollection();
+        $this->staticLabels = new ArrayCollection();
     }
 
     public static function createBlank(
@@ -2585,5 +2589,22 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getImagePath(): string
     {
         return $this->imageName ? \sprintf('images/profile/%s', $this->getImageName()) : '';
+    }
+
+    public function getStaticLabels(): Collection
+    {
+        return $this->staticLabels;
+    }
+
+    public function addStaticLabel(AdherentStaticLabel $adherentStaticLabel): void
+    {
+        if (!$this->staticLabels->contains($adherentStaticLabel)) {
+            $this->staticLabels->add($adherentStaticLabel);
+        }
+    }
+
+    public function removeStaticLabel(AdherentStaticLabel $adherentStaticLabel): void
+    {
+        $this->staticLabels->removeElement($adherentStaticLabel);
     }
 }
