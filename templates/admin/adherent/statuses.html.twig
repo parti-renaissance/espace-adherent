@@ -1,5 +1,5 @@
-{% macro label(label) %}
-    <span class="label" style="background-color: #3C8DBC; padding: 2px;">
+{% macro label(label, bgColor = '#3C8DBC') %}
+    <span class="label" style="background-color: {{ bgColor }}; padding: 2px;">
         {{ label }}
     </span>
 {% endmacro %}
@@ -86,10 +86,19 @@
 
 {% for label in labels %}
     {{ _self.label(label) }}
-    <br/>
+    {% if not loop.last %}
+        <br/>
+    {% endif %}
 {% endfor %}
 
 {% include 'admin/adherent/_tags.html.twig' with { tags: object.tags } %}
+
+{% if object.staticLabels is not empty %}
+    {% for staticLabel in object.staticLabels %}
+        <br>
+        {{ _self.label(staticLabel.label, 'grey') }}
+    {% endfor %}
+{% endif %}
 
 {% if object.isTerritoireProgresMembership %}
     <br>
