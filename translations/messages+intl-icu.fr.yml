@@ -1294,7 +1294,7 @@ administrator:
 #
 user_action_history.type.login_success: Connexion réussie
 user_action_history.type.login_failure: Connexion échouée
-user_action_history.type.profile_update: Mis à jour du profil
+user_action_history.type.profile_update: Mise à jour du profil
 user_action_history.type.impersonation_start: Début d'impersonnification
 user_action_history.type.impersonation_end: Fin d'impersonnification
 user_action_history.type.password_reset_request: Mot de passe oublié (demande)
@@ -1311,3 +1311,4 @@ administrator_action_history.type.login_failure: Connexion échouée
 administrator_action_history.type.impersonation_start: Début d'impersonnification
 administrator_action_history.type.impersonation_end: Fin d'impersonnification
 administrator_action_history.type.export: Export
+administrator_action_history.type.adherent_profile_update: Mise à jour du profil adhérent

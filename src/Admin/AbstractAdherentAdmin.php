@@ -18,6 +18,7 @@ use App\Contribution\ContributionStatusEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\ElectedRepresentativeAdherentMandate;
 use App\Entity\AdherentZoneBasedRole;
+use App\Entity\Administrator;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Entity\SubscriptionType;
@@ -32,6 +33,8 @@ use App\Form\EventListener\RevokeManagedAreaSubscriber;
 use App\Form\GenderType;
 use App\Form\TelNumberType;
 use App\FranceCities\FranceCities;
+use App\History\AdministratorActionEvent;
+use App\History\AdministratorActionEvents;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Mailchimp\Contact\ContactStatusEnum;
 use App\Membership\AdherentEvents;
@@ -74,6 +77,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -90,6 +94,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
     private TranslatorInterface $translator;
     private TagTranslator $tagTranslator;
     private CommitteeMembershipManager $committeeMembershipManager;
+    private Security $security;
 
     /**
      * State of adherent data before update
@@ -878,10 +883,18 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
         ;
     }
 
+    /**
+     * @param Adherent $object
+     */
     protected function alterObject(object $object): void
     {
         if (null === $this->beforeUpdate) {
             $this->beforeUpdate = clone $object;
+
+            $this->dispatcher->dispatch(
+                new AdministratorActionEvent($this->getAdministrator(), $object),
+                AdministratorActionEvents::ADMIN_USER_PROFILE_BEFORE_UPDATE
+            );
         }
     }
 
@@ -903,6 +916,11 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
         $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
         $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATED);
         $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATED_IN_ADMIN);
+
+        $this->dispatcher->dispatch(
+            new AdministratorActionEvent($this->getAdministrator(), $object),
+            AdministratorActionEvents::ADMIN_USER_PROFILE_AFTER_UPDATE
+        );
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -1051,5 +1069,16 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
         ;
 
         return $query;
+    }
+
+    #[Required]
+    public function setSecurity(Security $security): void
+    {
+        $this->security = $security;
+    }
+
+    private function getAdministrator(): Administrator
+    {
+        return $this->security->getUser();
     }
 }

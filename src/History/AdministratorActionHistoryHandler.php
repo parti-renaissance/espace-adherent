@@ -64,6 +64,18 @@ class AdministratorActionHistoryHandler
         );
     }
 
+    public function createAdherentProfileUpdate(Administrator $administrator, Adherent $adherent, array $properties): void
+    {
+        $this->dispatch(
+            $administrator,
+            AdministratorActionHistoryTypeEnum::ADHERENT_PROFILE_UPDATE,
+            [
+                'adherent_uuid' => $adherent->getUuid()->toString(),
+                'properties' => $properties,
+            ]
+        );
+    }
+
     private function dispatch(
         Administrator $administrator,
         AdministratorActionHistoryTypeEnum $type,
