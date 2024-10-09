@@ -10,7 +10,10 @@ class AuthorTransformationProcessor extends AbstractFeedProcessor
     {
         if ($user->getAuthAppVersion() < 540) {
             if (\is_array($item['author'])) {
-                $item['author'] = $item['author']['first_name'].' '.$item['author']['last_name'];
+                $item['author'] = implode(' ', array_filter([
+                    $item['author']['first_name'] ?? '',
+                    $item['author']['last_name'] ?? '',
+                ]));
             }
         } elseif (!\is_array($item['author'])) {
             $item['author'] = [

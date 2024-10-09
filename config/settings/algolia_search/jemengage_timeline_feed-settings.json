@@ -17,6 +17,7 @@
         "deeplink",
         "description",
         "finish_at",
+        "identifier",
         "image",
         "is_local",
         "media_type",

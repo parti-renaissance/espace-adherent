@@ -4,20 +4,44 @@ namespace App\Security\Voter\Event;
 
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
+use App\Scope\Exception\ScopeExceptionInterface;
 use App\Scope\FeatureEnum;
+use App\Scope\GeneralScopeGenerator;
 use App\Scope\ScopeGeneratorResolver;
 use App\Security\Voter\AbstractAdherentVoter;
 
 class CanManageEventVoter extends AbstractAdherentVoter
 {
-    public const PERMISSION = 'CAN_MANAGE_EVENT';
+    public const CAN_MANAGE_EVENT = 'CAN_MANAGE_EVENT';
+    public const CAN_MANAGE_EVENT_ITEM = 'CAN_MANAGE_EVENT_ITEM';
 
-    public function __construct(private readonly ScopeGeneratorResolver $scopeGeneratorResolver)
-    {
+    public function __construct(
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+        private readonly GeneralScopeGenerator $generalScopeGenerator,
+    ) {
     }
 
     /** @param BaseEvent $subject */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
+    {
+        if (self::CAN_MANAGE_EVENT === $attribute) {
+            return $this->canManageEvent($subject);
+        }
+
+        if (self::CAN_MANAGE_EVENT_ITEM === $attribute) {
+            return $this->canManageEventItem($adherent, $subject);
+        }
+
+        return false;
+    }
+
+    protected function supports(string $attribute, $subject): bool
+    {
+        return (self::CAN_MANAGE_EVENT === $attribute && $subject instanceof BaseEvent)
+            || (self::CAN_MANAGE_EVENT_ITEM === $attribute && \is_array($subject));
+    }
+
+    private function canManageEvent(BaseEvent $subject): bool
     {
         if (!$scope = $this->scopeGeneratorResolver->generate()) {
             return false;
@@ -27,11 +51,25 @@ class CanManageEventVoter extends AbstractAdherentVoter
             return false;
         }
 
-        return ($scope->getDelegator() ?? $adherent) === $subject->getAuthor();
+        return $scope->getMainUser() === $subject->getAuthor();
     }
 
-    protected function supports(string $attribute, $subject): bool
+    private function canManageEventItem(Adherent $adherent, array $event): bool
     {
-        return self::PERMISSION === $attribute && $subject instanceof BaseEvent;
+        if (empty($event['scope'])) {
+            return false;
+        }
+
+        try {
+            $scope = $this->generalScopeGenerator->getGenerator($event['scope'], $adherent)->generate($adherent);
+        } catch (ScopeExceptionInterface $e) {
+            return false;
+        }
+
+        if (!$scope->hasFeature(FeatureEnum::EVENTS)) {
+            return false;
+        }
+
+        return $scope->getMainUser()->getUuidAsString() === $event['author_uuid'];
     }
 }

@@ -52,6 +52,11 @@ class ClientRepository extends ServiceEntityRepository
         $qb->andWhere(\sprintf('%s.deletedAt IS NULL', $rootAlias));
     }
 
+    public function getCadreClient(): Client
+    {
+        return $this->findOneBy(['code' => AppCodeEnum::JEMENGAGE_WEB]);
+    }
+
     public function getVoxClient(): Client
     {
         return $this->findOneBy(['code' => AppCodeEnum::BESOIN_D_EUROPE]);

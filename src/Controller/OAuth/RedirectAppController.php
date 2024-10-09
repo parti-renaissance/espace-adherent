@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controller\Vox;
+namespace App\Controller\OAuth;
 
+use App\AppCodeEnum;
 use App\OAuth\App\AuthAppUrlManager;
 use App\Repository\OAuth\ClientRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,12 +15,15 @@ class RedirectAppController extends AbstractController
     {
     }
 
-    public function __invoke(Request $request, AuthAppUrlManager $appUrlManager, ClientRepository $clientRepository): Response
+    public function __invoke(Request $request, AuthAppUrlManager $appUrlManager, ClientRepository $clientRepository, ?string $clientCode = null): Response
     {
         $currentApp = $appUrlManager->getAppCodeFromRequest($request);
         $urlGenerator = $appUrlManager->getUrlGenerator($currentApp ?? '');
 
-        $client = $clientRepository->getVoxClient();
+        $client = match ($clientCode) {
+            AppCodeEnum::JEMENGAGE_WEB => $clientRepository->getCadreClient(),
+            default => $clientRepository->getVoxClient(),
+        };
 
         $redirectUri = current($client->getRedirectUris());
 

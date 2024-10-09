@@ -19,6 +19,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     {
         return [
             'type' => $this->getType(),
+            'identifier' => $this->getIdentifier($object),
             'is_local' => $this->isLocal($object),
             'title' => $this->getTitle($object),
             'description' => $this->getDescription($object),
@@ -65,6 +66,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'role' => $this->getAuthorRole($object),
             'instance' => $this->getAuthorInstance($object),
             'zone' => $this->getAuthorZone($object),
+            'scope' => $this->getAuthorScope($object),
             'image_url' => $this->getAuthorImageUrl($object),
         ];
     }
@@ -77,6 +79,11 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     protected function getCategory(object $object): ?string
     {
         return null;
+    }
+
+    protected function getIdentifier(object $object): string
+    {
+        return $object->getUuidAsString();
     }
 
     protected function getAddress(object $object): ?string
@@ -181,6 +188,15 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     {
         if ($object instanceof AuthorInstanceInterface) {
             return $object->getAuthorZone();
+        }
+
+        return null;
+    }
+
+    protected function getAuthorScope(object $object): ?string
+    {
+        if ($object instanceof AuthorInstanceInterface) {
+            return $object->getAuthorScope();
         }
 
         return null;
