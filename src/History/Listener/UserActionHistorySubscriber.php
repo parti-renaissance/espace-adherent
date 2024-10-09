@@ -41,6 +41,7 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
             UserEvents::USER_EMAIL_UPDATED => ['onEmailChangeValidate', -4096],
         ];
     }
+
     public function onInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $user = $event->getAuthenticationToken()->getUser();
