@@ -20,6 +20,12 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param BaseEvent $object */
+    protected function getIdentifier(object $object): string
+    {
+        return $object->getSlug() ?? parent::getIdentifier($object);
+    }
+
+    /** @param BaseEvent $object */
     protected function getDescription(object $object): ?string
     {
         return $object->getDescription();

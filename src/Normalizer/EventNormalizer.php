@@ -47,7 +47,7 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
                 $event['user_registered_at'] = $registration?->getCreatedAt()->format(\DateTimeInterface::RFC3339);
             }
         } elseif (PrivatePublicContextBuilder::CONTEXT_PRIVATE === $apiContext) {
-            $event['editable'] = $this->authorizationChecker->isGranted(CanManageEventVoter::PERMISSION, $object);
+            $event['editable'] = $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT, $object);
         }
 
         return $this->cleanEventDataIfNeed($object, $user, $event, $apiContext);

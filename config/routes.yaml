@@ -209,13 +209,21 @@ vox_app_redirect:
     methods: GET
     host: '%user_vox_host%'
     path: /app
-    controller: App\Controller\Vox\RedirectAppController
+    controller: App\Controller\OAuth\RedirectAppController
 
 vox_app_redirect_from_admin:
     methods: GET
     host: '%admin_renaissance_host%'
     path: /vox
-    controller: App\Controller\Vox\RedirectAppController
+    controller: App\Controller\OAuth\RedirectAppController
+
+cadre_app_redirect:
+    methods: GET
+    host: '%user_vox_host%'
+    path: /cadre
+    controller: App\Controller\OAuth\RedirectAppController
+    defaults:
+        clientCode: jemengage_web
 
 user_renaissance_redirect:
     host: '%user_vox_host%'

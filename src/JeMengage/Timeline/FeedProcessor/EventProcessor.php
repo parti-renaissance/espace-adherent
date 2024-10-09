@@ -8,12 +8,17 @@ use App\Event\EventCleaner;
 use App\Event\EventVisibilityEnum;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use App\Repository\EventRegistrationRepository;
+use App\Security\Voter\Event\CanManageEventVoter;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
 class EventProcessor extends AbstractFeedProcessor
 {
     public function __construct(
         private readonly EventCleaner $eventCleaner,
         private readonly EventRegistrationRepository $eventRegistrationRepository,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly LoginLinkHandlerInterface $loginLinkHandler,
     ) {
     }
 
@@ -21,6 +26,7 @@ class EventProcessor extends AbstractFeedProcessor
     {
         $item = $this->cleanEventDataIfNeed($item, $user);
         $item = $this->appendEventRegistrationDate($item, $user);
+        $item = $this->appendEventManagerData($item, $user);
 
         return $item;
     }
@@ -54,6 +60,21 @@ class EventProcessor extends AbstractFeedProcessor
             $item['objectID'],
             $user->getUuidAsString()
         )?->getCreatedAt();
+
+        return $item;
+    }
+
+    private function appendEventManagerData(array $item, Adherent $user): array
+    {
+        $item['editable'] = $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT_ITEM, [
+            'uuid' => $item['objectID'],
+            'author_uuid' => $item['author']['uuid'] ?? null,
+            'scope' => $scope = $item['author']['scope'] ?? null,
+        ]);
+
+        if ($item['editable']) {
+            $item['edit_link'] = $this->loginLinkHandler->createLoginLink($user, targetPath: '/cadre?state='.urlencode('/evenements/'.$item['objectID'].'?scope='.$scope))->getUrl();
+        }
 
         return $item;
     }
