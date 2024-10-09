@@ -66,13 +66,13 @@ class EventProcessor extends AbstractFeedProcessor
 
     private function appendEventManagerData(array $item, Adherent $user): array
     {
-        $item['editable'] = $isEditable = $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT_ITEM, [
+        $item['editable'] = $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT_ITEM, [
             'uuid' => $item['objectID'],
             'author_uuid' => $item['author']['uuid'] ?? null,
             'scope' => $scope = $item['author']['scope'] ?? null,
         ]);
 
-        if ($isEditable) {
+        if ($item['editable']) {
             $item['edit_link'] = $this->loginLinkHandler->createLoginLink($user, targetPath: '/cadre?state='.urlencode('/evenements/'.$item['objectID'].'?scope='.$scope))->getUrl();
         }
 
