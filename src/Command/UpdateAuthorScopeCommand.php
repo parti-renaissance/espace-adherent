@@ -9,7 +9,6 @@ use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Jecoute\News;
 use App\Entity\MyTeam\DelegatedAccess;
-use App\Entity\ZoneableEntityInterface;
 use App\MyTeam\RoleEnum;
 use App\Repository\MyTeam\DelegatedAccessRepository;
 use App\Scope\Generator\ScopeGeneratorInterface;
@@ -81,19 +80,10 @@ class UpdateAuthorScopeCommand extends Command
                     if (false !== $roleScope) {
                         $this->updateAuthorScope($entity, $roleScope);
                     } elseif (false !== $delegatedRoleScope) {
-                        $zones = $entity instanceof EntityScopeVisibilityWithZoneInterface
-                            ? [$entity->getZone()]
-                            : ($entity instanceof ZoneableEntityInterface ? $entity->getZones() : []);
-
-                        if (empty($zones)) {
-                            continue;
-                        }
-
                         try {
-                            $delegatedAccess = $this->findDelegatedAccessForRoleAndZone(
+                            $delegatedAccess = $this->findDelegatedAccessForRole(
                                 $entity->getAuthor(),
-                                $delegatedRoleScope,
-                                $zones
+                                $delegatedRoleScope
                             );
                         } catch (NonUniqueResultException $e) {
                             continue;
@@ -144,12 +134,11 @@ class UpdateAuthorScopeCommand extends Command
     }
 
     /** @throws NonUniqueResultException */
-    private function findDelegatedAccessForRoleAndZone(
+    private function findDelegatedAccessForRole(
         Adherent $adherent,
         string $role,
-        array $zones,
     ): ?DelegatedAccess {
-        $qb = $this
+        return $this
             ->delegatedAccessRepository
             ->createQueryBuilder('da')
             ->select('da')
@@ -157,22 +146,6 @@ class UpdateAuthorScopeCommand extends Command
             ->andWhere('da.role = :role')
             ->setParameter('delegated', $adherent)
             ->setParameter('role', $role)
-        ;
-
-        $this
-            ->delegatedAccessRepository
-            ->withGeoZones(
-                $zones,
-                $qb,
-                'c',
-                DelegatedAccess::class,
-                'c2',
-                'zone',
-                'z2'
-            )
-        ;
-
-        return $qb
             ->getQuery()
             ->getOneOrNullResult()
         ;
