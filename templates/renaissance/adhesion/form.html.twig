@@ -79,7 +79,7 @@
                                     }) }}
 
                                     <div class="w-full re-field-frame !h-auto cursor-pointer"
-                                         x-on:click="dom('.frc-button')?.click()">
+                                         @click="dom('.frc-button')?.click()">
                                         {% include 'renaissance/partials/friendly-captcha.html.twig' %}
                                     </div>
 
@@ -87,7 +87,7 @@
                                         class="w-full"
                                         disabled="x:!checkValidity()"
                                         onDisabledClick="_handleOnSubmitBase($event)"
-                                        x-on:click="handleOnSubmit($event, $dispatch)"
+                                        @click="handleOnSubmit($event, $dispatch)"
                                         loading="x:loading">
                                         J'adhère
                                     </twig:ReButton>
@@ -126,7 +126,7 @@
 
                                     <twig:ReButton
                                         class="w-full"
-                                        x-on:click="handleOnSubmit($event, $dispatch)"
+                                        @click="handleOnSubmit($event, $dispatch)"
                                         onDisabledClick="checkFormValidity($event)"
                                         disabled="x:!checkValidity()"
                                         loading="x:loading"
@@ -143,7 +143,7 @@
                                          {{ form_row(form.exclusiveMembership, {
                                              label: 'Autorisation',
                                              attr:{
-                                                 'x-on:change':'handleExclusiveMembershipChange($event)',
+                                                 '@change':'handleExclusiveMembershipChange($event)',
                                                  validate:"['required']",
                                                  onCheck: 'setFieldValid("exclusiveMembership")'
                                              }
@@ -153,7 +153,7 @@
                                         {{ form_row(form.partyMembership, {
                                             label: "J'appartiens déjà à un parti politique :",
                                             attr:{
-                                                'x-on:change':'handlePartyMembershipChange($event)',
+                                                '@change':'handlePartyMembershipChange($event)',
                                                 validate:"['?:isExlusiveMember', 'required']",
                                                 onCheck: 'setFieldValid("partyMembership")'
                                             }
@@ -192,7 +192,7 @@
                                             loading="x:loading"
                                             disabled="x:!checkValidity()"
                                             onDisabledClick="_handleOnSubmitBase($event)"
-                                            x-on:click="handleOnSubmit($event, $dispatch)"
+                                            @click="handleOnSubmit($event, $dispatch)"
                                         >Je deviens sympathisant</twig:ReButton>
                                     </template>
 
@@ -200,7 +200,7 @@
                                         <twig:ReButton
                                                 class="w-full"
                                                 loading="x:loading"
-                                                x-on:click="handleOnSubmit($event, $dispatch)"
+                                                @click="handleOnSubmit($event, $dispatch)"
                                                 x-bind:class="{disabled: !checkValidity()}"
                                         >J'adhère</twig:ReButton>
                                     </template>
@@ -327,7 +327,7 @@
                                         loading="x:loading"
                                         disabled="x:value === '4' && !confirmStudent"
                                         onDisabledClick="checkFormValidity($event)"
-                                        x-on:click="submitForm($event)"
+                                        @click="submitForm($event)"
                                     >J'adhère</twig:ReButton>
                                 </twig:Atoms:ReCard>
 

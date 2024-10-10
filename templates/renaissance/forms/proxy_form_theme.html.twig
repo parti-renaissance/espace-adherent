@@ -8,7 +8,7 @@
             name="{{ full_name }}"
             id="{{ id }}"
             placeholder="{{ attr.placeholder ?? 'Rechercher votre commune ou pays' }}"
-            x-on:change="handleVoteZoneChange($event.target.value)"
+            @change="handleVoteZoneChange($event.target.value)"
             validate="['required']"
             onCheck="setFieldValid('voteZone')"
         />

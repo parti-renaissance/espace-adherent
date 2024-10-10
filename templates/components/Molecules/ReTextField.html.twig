@@ -39,8 +39,8 @@
              <input {{ attributes.without('class') }}
                     x-ref="input"
                     x-bind="validateField"
-                    x-on:focus="isActive = true"
-                    x-on:blur="handleBlur()"
+                    @focus="isActive = true"
+                    @blur="handleBlur()"
 
                     class="h-full w-full border-0 outline-none focus:outline-none focus:ring-0 focus:border-0 bg-transparent {{ (center ? ' text-center' : '') }}"
                     id="{{ id }}" />
@@ -48,14 +48,14 @@
             <twig:ReIcon x-show="status !== 'default'"
                                name="x:status"
                                type="{{ status }}"
-                               x-on:click="$refs.input.focus()"
+                               @click="$refs.input.focus()"
                                class="flex pr-4 cursor-text"/>
             {% if icon %}
                 <twig:ReIcon x-show="status === 'default'"
                                    x-ref="icon"
                                    x-cloak
                                    name="{{ icon }}"
-                                   x-on:click="$refs.input.focus()"
+                                   @click="$refs.input.focus()"
                                    class="flex pr-4 cursor-text"
                 />
             {% endif %}
@@ -66,7 +66,7 @@
                             x-ref="icon"
                             x-cloak
                             name="x:isPasswordVisible ? 'unlock' : 'lock'"
-                            x-on:click="handleLockClick()"
+                            @click="handleLockClick()"
                             class="flex pr-4 cursor-pointer"
                     />
                 </div>

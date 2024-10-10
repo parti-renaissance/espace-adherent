@@ -42,7 +42,7 @@ class TagTranslator
                 }
             }
 
-            return $fullTag ? implode(' - ', $parts) : last($parts);
+            return $fullTag ? implode(' - ', $parts) : end($parts);
         }
 
         return $this->translate('adherent.tag.'.$tag, $tag);

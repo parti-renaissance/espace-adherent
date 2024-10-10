@@ -42,7 +42,7 @@
                     <ul x-show="isOpen" class="border-ui_gray-30 border border-b-0 overflow-hidden rounded-md">
                         <template x-for="committee in committees">
                             <li class="text-ui_gray-80 flex gap-6 flex-col border-b border-inherit bg-white p-6 cursor-pointer transition-colors hover:bg-ui_blue-5"
-                                x-on:click="handleCommitteeClick(committee.uuid)">
+                                @click="handleCommitteeClick(committee.uuid)">
                                 <ul>
                                     <li>Comité : <span class="font-medium" x-text="committee.name"></span></li>
                                     <li>Responsable : <span class="font-medium" x-text="committee.animator"></span></li>
@@ -51,7 +51,7 @@
                                         <span x-text="committee.location"></span>
                                     </li>
                                 </ul>
-                                <twig:ReButton link class="w-full text-left justify-start pl-0" x-on:click.prevent>
+                                <twig:ReButton link class="w-full text-left justify-start pl-0" @click.prevent>
                                     Rejoindre
                                 </twig:ReButton>
                             </li>
@@ -62,7 +62,7 @@
                         link
                         x-text="isOpen ? `Rester dans le comité ${selectedCommittee.name}` : 'Changer de comité'"
                         class="w-full"
-                        x-on:click="handleCommitteeChange($event)"
+                        @click="handleCommitteeChange($event)"
                     />
                 </twig:Atoms:ReCard>
 

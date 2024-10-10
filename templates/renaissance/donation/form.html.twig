@@ -76,13 +76,13 @@
                                         <twig:Atoms:ReToggleButton
                                             id="duration_monthly" value="{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') }}" name="duration"
                                             x-model="duration"
-                                            x-on:click="amount = '10'" >
+                                            @click="amount = '10'" >
                                             Mensuel
                                         </twig:Atoms:ReToggleButton>
                                         <twig:Atoms:ReToggleButton
                                             id="duration_punctual" value="{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::NONE') }}" name="duration"
                                             x-model="duration"
-                                            x-on:click="amount = '60'" >
+                                            @click="amount = '60'" >
                                             Unique
                                         </twig:Atoms:ReToggleButton>
                                     </twig:Atoms:ReLinkedToggle>
@@ -90,12 +90,12 @@
                                     <twig:Atoms:ReLinkedToggle color="green" name="amount" id="donation_amount_picker" grid label="">
                                         <template x-if="duration === '{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') }}'">
                                             <template x-for="amt in getAmounts()">
-                                                <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="`amount_1`" x-on:click="handleAmountClick(amt)" x-bind:value="amt" x-model="amount" x-text="amt" />
+                                                <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="`amount_1`" @click="handleAmountClick(amt)" x-bind:value="amt" x-model="amount" x-text="amt" />
                                             </template>
                                         </template>
                                         <template x-if="duration === '{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::NONE') }}'">
                                             <template x-for="amt in getAmounts()">
-                                                <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="amount" x-on:click="handleAmountClick(amt)" x-bind:value="amt" x-model="amount" x-text="amt" />
+                                                <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="amount" @click="handleAmountClick(amt)" x-bind:value="amt" x-model="amount" x-text="amt" />
                                             </template>
                                         </template>
                                     </twig:Atoms:ReLinkedToggle>
@@ -103,8 +103,8 @@
                                     <template x-if="duration === '{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') }}'">
                                         <twig:Molecules:ReTextField
                                             id="amount_custom"
-                                            x-on:input="handleCustomFieldChange($event)"
-                                            x-on:change="handleCustomFieldChange($event)"
+                                            @input="handleCustomFieldChange($event)"
+                                            @change="handleCustomFieldChange($event)"
                                             x-bind:value="defaultCustomAmount"
                                             center
                                             type="text"
@@ -115,8 +115,8 @@
                                     <template x-if="duration === '{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::NONE') }}'">
                                         <twig:Molecules:ReTextField
                                             id="amount_custom"
-                                            x-on:input="handleCustomFieldChange($event)"
-                                            x-on:change="handleCustomFieldChange($event)"
+                                            @input="handleCustomFieldChange($event)"
+                                            @change="handleCustomFieldChange($event)"
                                             x-bind:value="defaultCustomAmount"
                                             center
                                             type="text"
@@ -141,7 +141,7 @@
                                         </div>
                                     </div>
 
-                                    <twig:ReButton color="green" class="w-full" x-on:click="handleOnSubmit($event, $dispatch)">Suivant</twig:ReButton>
+                                    <twig:ReButton color="green" class="w-full" @click="handleOnSubmit($event, $dispatch)">Suivant</twig:ReButton>
 
                                     <p class="text-center">Vous préférez effectuer votre contribution<br/>par chèque ? Retrouvez ici nos<br/>coordonnées bancaires.</p>
 
@@ -204,7 +204,7 @@
                                         <twig:ReButton
                                             class="w-full"
                                             color="green"
-                                            x-on:click="handleOnSubmit($event, $dispatch)"
+                                            @click="handleOnSubmit($event, $dispatch)"
                                             onDisabledClick="checkFormValidity($event)"
                                             disabled="x:!checkValidity()"
                                         >Suivant</twig:ReButton>
@@ -218,7 +218,7 @@
                                     }) }}
 
                                     <div class="w-full re-field-frame !h-auto cursor-pointer"
-                                         x-on:click="dom('.frc-button')?.click()">
+                                         @click="dom('.frc-button')?.click()">
                                         {% include 'renaissance/partials/friendly-captcha.html.twig' %}
                                     </div>
                                     <twig:ReButton
@@ -227,7 +227,7 @@
                                             loading="x:loading"
                                             disabled="x:!checkValidity()"
                                             onDisabledClick="triggerValidateOnAllField()"
-                                            x-on:click="handleOnSubmit($event)"
+                                            @click="handleOnSubmit($event)"
                                     >Passer au paiement</twig:ReButton>
                                 </twig:Atoms:ReCard>
                                 <twig:Atoms:ReCard class="max-w-[500px]">

@@ -15,7 +15,7 @@
                     {% include 'icons/map.svg.twig' %}
                     {% if committee.getZones|length > 1 %}
                         {% set first_zone = committee.getZones()|first %}
-                        {{ first_zone }} <span class="text-blue-500 hover:underline font-medium cursor-pointer" x-on:click="open = ! open">(+ {{ committee.getZones|length - 1 }})</span>
+                        {{ first_zone }} <span class="text-blue-500 hover:underline font-medium cursor-pointer" @click="open = ! open">(+ {{ committee.getZones|length - 1 }})</span>
                     {% else %}
                         {{ committee.getZones|join(', ') }}
                     {% endif %}

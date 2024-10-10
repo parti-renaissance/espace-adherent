@@ -125,7 +125,7 @@
                     {{ form_row(form.acceptMedia, {label: "En participant à cet événement, je suis informé(e) qu’il sera filmé et autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et la voix d’un mineur dont je suis le représentant légal, à l’exploiter et à la diffuser en intégralité ou par extrait (1)", attr: {validate: '["required"]', onCheck: "setFieldValid('acceptMedia')"} }) }}
 
                     <div class="w-full re-field-frame !h-auto cursor-pointer"
-                         x-on:click="dom('.frc-button')?.click()">
+                         @click="dom('.frc-button')?.click()">
                         {% include 'renaissance/partials/friendly-captcha.html.twig' with {friendly_captcha_site_key: friendly_captcha_europe_site_key} %}
                     </div>
 

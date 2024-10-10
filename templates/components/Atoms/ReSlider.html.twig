@@ -7,9 +7,9 @@
         x-bind:max="max"
         x-bind:step="step"
         x-model="value"
-        x-on:{{ id }}:set-value="setValue($event.detail)"
-        x-on:input="onChange($event)"
-        x-on:change="onChange($event)"
+        @{{ id }}:set-value="setValue($event.detail)"
+        @input="onChange($event)"
+        @change="onChange($event)"
         {{ attributes.without('class') }} />
     <div class="re-slider__separator">
         <template x-for="i in stepBy">

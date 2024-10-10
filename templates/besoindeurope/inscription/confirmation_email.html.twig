@@ -52,7 +52,7 @@
                             placeholder: 'Votre code de confirmation',
                             class: 'w-full [&>div>div>input]:text-center',
                             onCheck: "setFieldValid('code')",
-                            'x-on:input': 'handleCodeInput($event)',
+                            '@input': 'handleCodeInput($event)',
                         }}) }}
 
                         {{ form_row(form.validate, { label: 'Confirmer mon adresse email', attr: {
@@ -78,13 +78,13 @@
                                 placeholder: 'Adresse email',
                                 validate: "['required']",
                                 onCheck: "setFieldValid('email')",
-                                'x-on:input': "handleEmailInput($event)",
+                                '@input': "handleEmailInput($event)",
                             }}) }}
                             {{ form_row(form.emailAddress.second, {attr: {
                                 placeholder: 'Confirmer mon adresse email',
                                 validate: "['required']",
                                 onCheck: "setFieldValid('confirmEmail')",
-                                'x-on:input': "handleEmailInput($event)",
+                                '@input': "handleEmailInput($event)",
                             }}) }}
                         </div>
 

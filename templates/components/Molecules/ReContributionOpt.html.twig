@@ -1,5 +1,5 @@
 <div class="re-contribution-opt {{ tagged ? '!mt-[20px]' }}" x-data="xReContributionOpt({{ this.jsProps }})">
-    <input {{ attributes }} type="radio" x-model="value" x-on:change="onChange"/>
+    <input {{ attributes }} type="radio" x-model="value" @change="onChange"/>
 
     <label for="{{ attributes.all().id }}" id="{{ attributes.all().id }}_label" class="self-stretch bg-white rounded-[10px] items-center flex flex-col">
         {% if tagged %}
@@ -48,9 +48,9 @@
                             type="number"
                             min="50"
                             max="7500"
-                            x-on:focus="handleFocus"
+                            @focus="handleFocus"
                             x-model="price"
-                            x-on:change="onInputChange($event.target.value)"
+                            @change="onInputChange($event.target.value)"
                              />
                     </div>
                 {% else %}

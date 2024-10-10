@@ -87,7 +87,7 @@
                 }) }}
 
                 <div class="w-full re-field-frame !h-auto cursor-pointer"
-                     x-on:click="dom('.frc-button')?.click()">
+                     @click="dom('.frc-button')?.click()">
                     {% include 'renaissance/partials/friendly-captcha.html.twig' %}
                 </div>
 
@@ -95,7 +95,7 @@
                         color="black"
                         class="w-full"
                         loading="x:loading"
-                        x-on:click="handleOnSubmit($event)"
+                        @click="handleOnSubmit($event)"
                 >Continuer</twig:ReButton>
 
                {{ alternative_form }}
@@ -192,7 +192,7 @@
                                 {{ form_row(form.votePlace, { attr: { placeholder: 'Saisir mon bureau de vote (saisie automatique)'}})  }}
                             </template>
                             <template x-if="votePlaceUuid && !isNotInFrance && !showManualBDV && !isVotePlacesEmpty">
-                                <p class="text-[#1877F2] text-center hover:text-[rgb(20,86,171)] cursor-pointer" x-on:click="setManualBDV(true)">
+                                <p class="text-[#1877F2] text-center hover:text-[rgb(20,86,171)] cursor-pointer" @click="setManualBDV(true)">
                                     Je saisis mon bureau de vote manuellement
                                 </p>
                             </template>
@@ -202,7 +202,7 @@
                             </template>
 
                             <template x-if="votePlaceUuid && showManualBDV && !isVotePlacesEmpty">
-                                <p class="text-[#1877F2] text-center hover:text-[rgb(20,86,171)] cursor-pointer" x-on:click="setManualBDV(false)">
+                                <p class="text-[#1877F2] text-center hover:text-[rgb(20,86,171)] cursor-pointer" @click="setManualBDV(false)">
                                     Je saisis mon bureau de vote automatiquement
                                 </p>
                             </template>
