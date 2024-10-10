@@ -142,6 +142,16 @@ jobs:
             - name: PHPStan - PHP Static Analysis Tool
               run: make phpstan
 
+            - name: Local PHP Security Checker
+              run: |-
+                  lastReleaseInfo=$(curl --silent "https://api.github.com/repos/fabpot/local-php-security-checker/releases/latest")
+                  securityCheckVersion=$(echo "${lastReleaseInfo}" | grep '"tag_name":' | sed -E 's/.*"v(.+)",/\1/')
+
+                  curl -L https://github.com/fabpot/local-php-security-checker/releases/download/v${securityCheckVersion}/local-php-security-checker_linux_$(dpkg --print-architecture) --output ./local-php-security-checker
+                  chmod +x ./local-php-security-checker
+
+                  ./local-php-security-checker
+
     phpunit:
         name: PHPUnit
         runs-on: ubuntu-latest

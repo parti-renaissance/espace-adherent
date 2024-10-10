@@ -31,8 +31,8 @@
              class="re-field-frame re-field-frame-select overflow-hidden !p-0 !h-auto !justify-between {{ disabled ? 'opacity-50 pointer-events-none cursor-not-allowed' : '' }}
                        {{ (status is defined ? ' re-field-frame--' ~ status) }}"
              x-bind:class="[toggle ? 'active' : '', status ? `re-field-frame--${status}` : '', ].join(' ')"
-             x-on:click.away="handleClickAway"
-             x-on:click="toggle = true"
+             @click.away="handleClickAway"
+             @click="toggle = true"
              @x-inject-option:{{ id }}.window="setEndValues($event.detail, true)"
         >
             <div class="relative flex flex-col justify-center">
@@ -41,11 +41,11 @@
                           x-autogrow
                           rows="1"
                           class="re-field-frame w-full !border-0 min-h-[51px] overflow-hidden !outline-0 !rounded-none resize-none"
-                          x-on:keyDown="handleKeyDown($event)"
+                          @keyDown="handleKeyDown($event)"
                           x-model="query"
-                          x-on:input.debounce.600ms="handleInput($event);"
+                          @input.debounce.600ms="handleInput($event);"
                           x-bind:class="{'disabled': isValueSet && blocked, '!pr-24': isValueSet && blocked}"
-                          x-on:focus="handleChangeSetValue"
+                          @focus="handleChangeSetValue"
                           x-bind:placeholder="placeholder"
                     {% for key,value in searchBoxProps %}
                         {{ key }}="{{ value }}"
@@ -54,7 +54,7 @@
 
                     <twig:ReIcon x-show="!blocked"
                             name="x:status === 'default' ? 'chevron' : status"
-                            x-on:click="$refs.input.focus()"
+                            @click="$refs.input.focus()"
                             class="flex pr-4 cursor-text"/>
                 </div>
                 <div x-show="isValueSet && blocked" x-cloak @click="handleChangeSetValue"
@@ -68,7 +68,7 @@
                     <template x-for="option in filteredOptions">
                         <twig:Atoms:ReInputOption
                                 xSyncSelected="selected.value === option.value"
-                                x-on:click.stop="setEndValues(option)"
+                                @click.stop="setEndValues(option)"
                                 x-text="option.label"
                                 x-ref="`option-${option.value}`"
                                 x-effect="isOptionSelected(option) ? $el.scrollIntoView({block: 'nearest', inline: 'nearest'}) : ''"

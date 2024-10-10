@@ -28,7 +28,7 @@
                         type="submit"
                         x-bind:disabled="!isFormValid()"
                         onDisabledClick="checkFormValidity()"
-                        x-on:click="handleOnSubmit"
+                        @click="handleOnSubmit"
                 >Recevoir ma carte</twig:ReButton>
 
                 {{ form_widget(form.refuseMemberCard, {label: 'Je ne veux pas recevoir ma carte', attr: {link: 'link'}}) }}

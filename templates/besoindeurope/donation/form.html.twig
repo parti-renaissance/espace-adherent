@@ -45,15 +45,15 @@
 
                                     <twig:Atoms:ReLinkedToggle color="green" name="amount" id="donation_amount_picker" grid label="Choix du montant">
                                         <template x-for="amt in getAmounts()">
-                                            <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="amount" x-on:click="handleAmountClick(amt)" x-bind:value="amt" x-model="amount" x-text="amt" />
+                                            <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="amount" @click="handleAmountClick(amt)" x-bind:value="amt" x-model="amount" x-text="amt" />
                                         </template>
                                         <span></span>
                                     </twig:Atoms:ReLinkedToggle>
 
                                     <twig:Molecules:ReTextField
                                         id="amount_custom"
-                                        x-on:input="handleCustomFieldChange($event)"
-                                        x-on:change="handleCustomFieldChange($event)"
+                                        @input="handleCustomFieldChange($event)"
+                                        @change="handleCustomFieldChange($event)"
                                         x-bind:value="defaultCustomAmount"
                                         center
                                         type="text"
@@ -71,7 +71,7 @@
                                         </div>
                                     </div>
 
-                                    <twig:ReButton color="black" class="w-full" x-on:click="handleOnSubmit($event, $dispatch)">Suivant</twig:ReButton>
+                                    <twig:ReButton color="black" class="w-full" @click="handleOnSubmit($event, $dispatch)">Suivant</twig:ReButton>
 
                                     <p class="text-center">Vous préférez effectuer un don par chèque ? Retrouver ici le bulletin de don à joindre à votre règlement.</p>
 
@@ -127,7 +127,7 @@
                                         <twig:ReButton
                                             class="w-full"
                                             color="green"
-                                            x-on:click="handleOnSubmit($event, $dispatch)"
+                                            @click="handleOnSubmit($event, $dispatch)"
                                             onDisabledClick="checkFormValidity($event)"
                                             disabled="x:!checkValidity()"
                                         >Suivant</twig:ReButton>
@@ -140,7 +140,7 @@
                                         attr: { onCheck:"setFieldValid('autorisations')", validate: "['required']" }
                                     }) }}
 
-                                    <div class="w-full re-field-frame !h-auto cursor-pointer" x-on:click="dom('.frc-button')?.click()">
+                                    <div class="w-full re-field-frame !h-auto cursor-pointer" @click="dom('.frc-button')?.click()">
                                         {% include 'renaissance/partials/friendly-captcha.html.twig' with {friendly_captcha_site_key: friendly_captcha_europe_site_key} %}
                                     </div>
                                     <twig:ReButton
@@ -149,7 +149,7 @@
                                         loading="x:loading"
                                         disabled="x:!checkValidity()"
                                         onDisabledClick="triggerValidateOnAllField()"
-                                        x-on:click="handleOnSubmit($event)"
+                                        @click="handleOnSubmit($event)"
                                     >Passer au paiement</twig:ReButton>
                                 </twig:Atoms:ReCard>
 

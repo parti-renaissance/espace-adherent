@@ -1,6 +1,6 @@
 {% set isDisabledMode = disabled and onDisabledClick %}
 
-{% if isDisabledMode  %} <div x-on:click="{{ onDisabledClick }}"> {% endif %}
+{% if isDisabledMode  %} <div @click="{{ onDisabledClick }}"> {% endif %}
     <{{ tag }}
         {{ attributes.without('x-text', 'x-html', 'class') }}
 

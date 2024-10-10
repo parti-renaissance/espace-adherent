@@ -11,7 +11,7 @@
                 class="flex justify-center items-center flex-col w-full gap-2 cursor-pointer
                        [&:nth-child(2)>div]:border-l-0
                        [&:nth-child(2)>span]:pl-0"
-                x-on:click="handleStepClick(index)">
+                @click="handleStepClick(index)">
                 <span
                     x-text="step"
                     class="pl-1 w-full text-xs xs:text-sm font-medium transition-colors md:text-base"

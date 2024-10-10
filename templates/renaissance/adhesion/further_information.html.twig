@@ -21,7 +21,7 @@
 
                 <fieldset>
                     <twig:Atoms:ReLabel>Informations complémentaires</twig:Atoms:ReLabel>
-                    <twig:Molecules:ReCheckboxField id="is-elu" class="w-full" x-on:change="handleIsElu($event)">
+                    <twig:Molecules:ReCheckboxField id="is-elu" class="w-full" @change="handleIsElu($event)">
                         <label for="is-elu">Je suis élu(e)</label>
                     </twig:Molecules:ReCheckboxField>
                 </fieldset>
@@ -45,7 +45,7 @@
                             placeholder: 'Jour',
                             validate: "['required']",
                             onCheck: "setFieldValid('birthDay')",
-                            'x-on:change': "setDay($event.target.value)",
+                            '@change': "setDay($event.target.value)",
                             searchBoxProps: {'x-numberonly': ''}
                         }}) }}
 
@@ -54,7 +54,7 @@
                             placeholder: 'Mois',
                             validate: "['required']",
                             onCheck: "setFieldValid('birthMonth')",
-                            'x-on:change': "setMonth($event.target.value)",
+                            '@change': "setMonth($event.target.value)",
                         }}) }}
 
                         {{ form_widget(form.birthdate.year, {label: false, attr: {
@@ -62,7 +62,7 @@
                             placeholder: 'Année',
                             validate: "['required']",
                             onCheck: "setFieldValid('birthYear')",
-                            'x-on:change': "setYear($event.target.value)",
+                            '@change': "setYear($event.target.value)",
                             searchBoxProps: {'x-numberonly': ''}
                         }}) }}
                     </fieldset>
@@ -90,7 +90,7 @@
                 <twig:ReButton
                     class="w-full"
                     loading="x:loading"
-                    x-on:click="handleSubmit($event)"
+                    @click="handleSubmit($event)"
                     x-bind:class="{disabled: !checkValidity()}"
                 >Continuer</twig:ReButton>
             {{ form_end(form) }}

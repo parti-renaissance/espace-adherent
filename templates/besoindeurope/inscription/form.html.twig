@@ -68,7 +68,7 @@
                                 attr: { onCheck:"setFieldValid('acceptCgu')", validate: "['required']" }
                             }) }}
 
-                            <div class="w-full re-field-frame !h-auto cursor-pointer" x-on:click="dom('.frc-button')?.click()">
+                            <div class="w-full re-field-frame !h-auto cursor-pointer" @click="dom('.frc-button')?.click()">
                                 {% include 'renaissance/partials/friendly-captcha.html.twig' %}
                             </div>
 
@@ -76,7 +76,7 @@
                                 color="black"
                                 class="w-full"
                                 loading="x:loading"
-                                x-on:click="handleOnSubmit($event)"
+                                @click="handleOnSubmit($event)"
                             >Suivant</twig:ReButton>
                         </twig:Atoms:ReCard>
 
@@ -101,7 +101,7 @@
                                 color="black"
                                 class="w-full"
                                 loading="x:loading"
-                                x-on:click="handleOnSubmit($event)"
+                                @click="handleOnSubmit($event)"
                             >Suivant</twig:ReButton>
                         </twig:Atoms:ReCard>
 
