@@ -18,8 +18,6 @@ services:
             - '../tests/Behat/Context/JsonContext.php'
             - '../tests/Behat/Context/RestContext.php'
 
-    Tests\App\Controller\TestUXComponentController: ~
-
     Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader: '@doctrine.fixtures.loader'
 
     League\Glide\Server:
@@ -30,28 +28,15 @@ services:
               response: '@League\Glide\Responses\SymfonyResponseFactory'
               max_image_size: 4000000 # Max image size in number of pixels (2000x2000)
 
+    test.App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler: '@App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler'
+    test.App\Vision\IdentityDocumentParser: '@App\Vision\IdentityDocumentParser'
+    App\Image\ImageManagerInterface: '@Tests\App\Test\Image\DummyImageManager'
+    App\Messenger\MessageRecorder\MessageRecorderInterface: '@App\Messenger\MessageRecorder\MessageRecorder'
+
+    Tests\App\HttpClient\MockHttpClientCallback: ~
+    Tests\App\Test\Image\DummyImageManager: ~
+    Tests\App\Controller\TestUXComponentController: ~
+
     Tests\App\Test\Payment\PayboxProvider:
         arguments:
             - '%env(SSL_PRIVATE_KEY)%'
-
-    test.App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler:
-        alias: App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler
-
-    test.App\Vision\IdentityDocumentParser: '@App\Vision\IdentityDocumentParser'
-
-    Tests\App\Test\Image\DummyImageManager: ~
-
-    App\Image\ImageManagerInterface: '@Tests\App\Test\Image\DummyImageManager'
-
-    App\Repository\DonatorRepository: ~
-    App\Repository\DonationRepository: ~
-    App\Repository\EmailRepository: ~
-    App\Repository\AdherentRepository: ~
-
-    App\Messenger\MessageRecorder\MessageRecorderInterface: '@App\Messenger\MessageRecorder\MessageRecorder'
-
-    App\Committee\Feed\CommitteeFeedManager: ~
-
-    App\Committee\CommitteeManager: ~
-
-    Tests\App\HttpClient\MockHttpClientCallback: ~

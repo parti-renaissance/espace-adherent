@@ -277,15 +277,6 @@
             "ref": "fc6a6baeee961a34a70eca0f91e868d03ce7bd9b"
         }
     },
-    "snc/redis-bundle": {
-        "version": "3.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "main",
-            "version": "2.0",
-            "ref": "36b3d9ab65be62de4e085a25e6ca899efa96b1f3"
-        }
-    },
     "sonata-project/admin-bundle": {
         "version": "3.107",
         "recipe": {

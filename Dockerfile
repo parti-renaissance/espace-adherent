@@ -51,6 +51,7 @@ RUN set -eux; \
         pdo_mysql \
         amqp \
         zip \
+        redis \
         sockets \
     ;
 

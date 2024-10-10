@@ -3,23 +3,6 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <!-- Cache -->
-        <service id="cache.adapter.null" class="Symfony\Component\Cache\Adapter\NullAdapter" abstract="true">
-            <argument/>
-            <argument/>
-            <argument/>
-        </service>
-
-        <service id="cache.redis_doctrine_provider" class="Symfony\Component\Cache\DoctrineProvider">
-            <argument type="service">
-                <service class="Symfony\Component\Cache\Adapter\RedisAdapter">
-                    <argument type="service" id="snc_redis.default" />
-                    <argument />
-                    <argument>86400</argument>
-                </service>
-            </argument>
-        </service>
-
         <!-- Form -->
         <service id="App\Form\TypeExtension\FormTypeExtension">
             <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType" />

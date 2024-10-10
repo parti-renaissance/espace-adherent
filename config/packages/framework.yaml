@@ -13,11 +13,10 @@ framework:
     assets:
         json_manifest_path: '%kernel.project_dir%/public/built/manifest.json'
     cache:
-        app: cache.adapter.doctrine
-        default_doctrine_provider: cache.redis_doctrine_provider
+        app: cache.adapter.redis_tag_aware
+        default_redis_provider: '%env(REDIS_DSN)%'
         pools:
-            app.cache.redirection:
-                adapter: cache.adapter.doctrine
+            app.cache.redirection: ~
             app.cache.france_cities: ~
             app.cache.geocoder: ~
             app.cache.captain_verify:
