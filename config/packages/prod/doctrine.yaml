@@ -3,6 +3,7 @@ framework:
         pools:
             doctrine.system_cache_pool:
                 adapter: cache.adapter.apcu
+            doctrine.result_cache_pool: ~
 
 doctrine:
     orm:
@@ -13,5 +14,5 @@ doctrine:
             type: pool
             pool: doctrine.system_cache_pool
         result_cache_driver:
-            type: service
-            id: cache.redis_doctrine_provider
+            type: pool
+            pool: doctrine.result_cache_pool
