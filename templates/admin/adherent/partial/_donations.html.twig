@@ -1,4 +1,3 @@
-
 {% import 'admin/donation/_macros.html.twig' as macros %}
 
 {% set donations = get_donations_history(adherent) %}
@@ -97,6 +96,7 @@
                     <th>Type</th>
                     <th>Méthode</th>
                     <th>Statut</th>
+                    <th>Donateur</th>
                 </thead>
                 <tbody>
                     {% for donation in donations %}
@@ -121,6 +121,16 @@
                             </td>
                             <td>
                                 {{ macros.get_donation_status_badge(donation.status) }}
+                            </td>
+                            <td>
+                                {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_APP_ADMIN_DONATOR_EDIT') %}
+                                    <a href="{{ path('admin_app_donator_edit', { id: donation.donator.id }) }}" class="btn btn-xs btn-default" title="Afficher">
+                                        <i class="fa fa-search-plus" aria-hidden="true"></i>
+                                        {{ donation.donator }}
+                                    </a>
+                                {% else %}
+                                    {{ donation.donator }}
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
