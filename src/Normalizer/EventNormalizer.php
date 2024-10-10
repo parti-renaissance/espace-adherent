@@ -42,18 +42,18 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $apiContext = $context[PrivatePublicContextBuilder::CONTEXT_KEY] ?? null;
         $user = $this->getUser();
 
-        if (PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $apiContext) {
-            if ($user) {
+        if (\in_array($apiContext, [PrivatePublicContextBuilder::CONTEXT_PRIVATE, PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER])) {
+            if (PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $apiContext) {
                 $registration = $this->eventRegistrationRepository->findAdherentRegistration($object->getUuidAsString(), $user->getUuidAsString());
-
                 $event['user_registered_at'] = $registration?->getCreatedAt()->format(\DateTimeInterface::RFC3339);
             }
-        } elseif (\in_array($apiContext, [PrivatePublicContextBuilder::CONTEXT_PRIVATE, PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER])) {
+
             $event['editable'] = PrivatePublicContextBuilder::CONTEXT_PRIVATE === $apiContext ? $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT, $object) : $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT_ITEM, [
                 'uuid' => $object->getUuidAsString(),
                 'author_uuid' => $object->getAuthor()?->getUuidAsString(),
                 'scope' => $object->getAuthorScope(),
             ]);
+
             if ($event['editable']) {
                 $event['edit_link'] = $this->loginLinkHandler->createLoginLink($user, targetPath: '/cadre?state='.urlencode('/evenements/'.$object->getUuidAsString().'?scope='.$object->getAuthorScope()))->getUrl();
             }

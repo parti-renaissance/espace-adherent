@@ -979,7 +979,8 @@ Feature:
                 "image_url": null,
                 "link": "@string@.isUrl()",
                 "user_registered_at": null,
-                "object_state": "full"
+                "object_state": "full",
+                "editable": false
             }
             """
         When I send a "GET" request to "/api/v3/events/:last_response.slug:"
@@ -1027,7 +1028,8 @@ Feature:
                 "image_url": null,
                 "link": "@string@.isUrl()",
                 "user_registered_at": null,
-                "object_state": "full"
+                "object_state": "full",
+                "editable": false
             }
             """
 
