@@ -2604,6 +2604,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->imageName ? \sprintf('images/profile/%s', $this->getImageName()) : '';
     }
 
+    /**
+     * @return AdherentStaticLabel[]|Collection
+     */
     public function getStaticLabels(): Collection
     {
         return $this->staticLabels;
