@@ -12,6 +12,7 @@ use App\Repository\EventRegistrationRepository;
 use App\Security\Voter\Event\CanManageEventVoter;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -27,6 +28,7 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
         private readonly EventRegistrationRepository $eventRegistrationRepository,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly EventCleaner $eventCleaner,
+        private readonly LoginLinkHandlerInterface $loginLinkHandler,
     ) {
     }
 
@@ -42,12 +44,19 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
         if (PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $apiContext) {
             if ($user) {
-                $registration = $this->eventRegistrationRepository->findAdherentRegistration($object->getUuid()->toString(), $user->getUuid()->toString());
+                $registration = $this->eventRegistrationRepository->findAdherentRegistration($object->getUuidAsString(), $user->getUuidAsString());
 
                 $event['user_registered_at'] = $registration?->getCreatedAt()->format(\DateTimeInterface::RFC3339);
             }
-        } elseif (PrivatePublicContextBuilder::CONTEXT_PRIVATE === $apiContext) {
-            $event['editable'] = $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT, $object);
+        } elseif (\in_array($apiContext, [PrivatePublicContextBuilder::CONTEXT_PRIVATE, PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER])) {
+            $event['editable'] = PrivatePublicContextBuilder::CONTEXT_PRIVATE === $apiContext ? $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT, $object) : $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT_ITEM, [
+                'uuid' => $object->getUuidAsString(),
+                'author_uuid' => $object->getAuthor()?->getUuidAsString(),
+                'scope' => $object->getAuthorScope(),
+            ]);
+            if ($event['editable']) {
+                $event['edit_link'] = $this->loginLinkHandler->createLoginLink($user, targetPath: '/cadre?state='.urlencode('/evenements/'.$object->getUuidAsString().'?scope='.$object->getAuthorScope()))->getUrl();
+            }
         }
 
         return $this->cleanEventDataIfNeed($object, $user, $event, $apiContext);
