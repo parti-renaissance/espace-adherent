@@ -33,7 +33,8 @@ class JecouteAdherentNormalizer extends AdherentNormalizer
         ];
 
         if ($data['cadre_access'] = $this->authorizationChecker->isGranted(DataCornerVoter::DATA_CORNER, $object)) {
-            $data['cadre_auth_path'] = '/oauth/v2/auth?scope='.Scope::JEMENGAGE_ADMIN.'&response_type=code&client_id='.$this->clientRepository->findOneBy(['code' => AppCodeEnum::JEMENGAGE_WEB])->getUuid();
+            $client = $this->clientRepository->getCadreClient();
+            $data['cadre_auth_path'] = '/oauth/v2/auth?scope='.Scope::JEMENGAGE_ADMIN.'&response_type=code&client_id='.$client->getUuid().'&redirect_uri='.urlencode($client->getRedirectUris()[0]);
         }
 
         return $data;
