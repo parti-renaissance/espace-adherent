@@ -98,6 +98,14 @@ class AdminEmailCRUDController extends CRUDController
     {
         $this->admin->checkAccess('content', $template);
 
+        $listRedirectResponse = $this->redirect($this->admin->generateObjectUrl('list', $template));
+
+        if (!$template->identifier) {
+            $this->addFlash('sonata_flash_error', 'Vous ne pouvez pas envoyer en prod un template sans identifier');
+
+            return $listRedirectResponse;
+        }
+
         $response = $templateWebhookClient->request('POST', '/templates', [
             'json' => [
                 'identifier' => $template->identifier,
@@ -111,10 +119,11 @@ class AdminEmailCRUDController extends CRUDController
         if (200 === $response->getStatusCode()) {
             $this->addFlash('sonata_flash_success', 'Le template a été envoyé en production');
         } else {
-            $this->addFlash('sonata_flash_error', 'Erreur lors de l\'envoi du template en production');
+            $content = $response->toArray(false);
+            $this->addFlash('sonata_flash_error', $content['message'] ?? 'Erreur lors de l\'envoi du template en production');
         }
 
-        return $this->redirect($this->admin->generateObjectUrl('list', $template));
+        return $listRedirectResponse;
     }
 
     public function previewContentAction(TransactionalEmailTemplate $template, Manager $templateManager): Response

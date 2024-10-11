@@ -75,6 +75,7 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
         $form
             ->add('identifier', ChoiceType::class, [
                 'label' => 'Identifiant',
+                'required' => false,
                 'choices' => array_combine($classes = $this->getMessageClassNames($template?->getId()), $classes),
                 'placeholder' => 'Choisir un identifiant',
             ])
