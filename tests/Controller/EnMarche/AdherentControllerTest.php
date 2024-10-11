@@ -2,22 +2,17 @@
 
 namespace Tests\App\Controller\EnMarche;
 
-use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
-use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Reporting\EmailSubscriptionHistory;
-use App\Entity\Unregistration;
 use App\Mailer\Message\AdherentContactMessage;
 use App\Mailer\Message\CommitteeCreationConfirmationMessage;
 use App\Repository\CommitteeRepository;
 use App\Repository\Email\EmailLogRepository;
-use App\Repository\UnregistrationRepository;
 use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractEnMarcheWebTestCase;
