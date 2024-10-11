@@ -34,7 +34,13 @@ class UpdateTransactionalEmailTemplateController extends AbstractController
         }
 
         if ($command->parent) {
-            $command->parentObject = $repository->findOneBy(['identifier' => $command->parent]);
+            if (!$parent = $repository->findOneBy(['identifier' => $command->parent.'123'])) {
+                return $this->json([
+                    'status' => 'error',
+                    'message' => 'Template parent n\'existe pas',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            $command->parentObject = $parent;
         }
 
         /** @var TransactionalEmailTemplate $existingTemplate */

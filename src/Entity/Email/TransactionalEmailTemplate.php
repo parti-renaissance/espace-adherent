@@ -25,8 +25,7 @@ class TransactionalEmailTemplate implements EntityAdministratorBlameableInterfac
     use EntityAdministratorBlameableTrait;
 
     #[Assert\Length(max: '255')]
-    #[Assert\NotBlank]
-    #[ORM\Column(unique: true)]
+    #[ORM\Column(unique: true, nullable: true)]
     public ?string $identifier = null;
 
     #[Assert\Length(max: '255')]
@@ -48,7 +47,7 @@ class TransactionalEmailTemplate implements EntityAdministratorBlameableInterfac
 
     public function __toString(): string
     {
-        return (string) $this->identifier;
+        return (string) ($this->identifier ?? $this->subject);
     }
 
     public function __clone()
