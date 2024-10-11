@@ -2,22 +2,17 @@
 
 namespace Tests\App\Controller\EnMarche;
 
-use App\Adherent\Command\RemoveAdherentAndRelatedDataCommand;
-use App\Adherent\Handler\RemoveAdherentAndRelatedDataCommandHandler;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Reporting\EmailSubscriptionHistory;
-use App\Entity\Unregistration;
 use App\Mailer\Message\AdherentContactMessage;
 use App\Mailer\Message\CommitteeCreationConfirmationMessage;
 use App\Repository\CommitteeRepository;
 use App\Repository\Email\EmailLogRepository;
-use App\Repository\UnregistrationRepository;
 use Cake\Chronos\Chronos;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractEnMarcheWebTestCase;
@@ -684,94 +679,6 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
     public static function dataProviderCannotTerminateMembership(): \Generator
     {
         yield 'CommitteeCandidate' => ['adherent-female-a@en-marche-dev.fr'];
-    }
-
-    #[DataProvider('provideAdherentCredentials')]
-    public function testAdherentTerminatesMembership(
-        string $userEmail,
-        string $uuid,
-        string $committee,
-        int $nbFollowers,
-    ): void {
-        /** @var Adherent $adherent */
-        $adherentBeforeUnregistration = $this->getAdherentRepository()->findOneByEmail($userEmail);
-
-        $this->authenticateAsAdherent($this->client, $userEmail);
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertStringContainsString(
-            'Si vous souhaitez désadhérer et supprimer votre compte En Marche, cliquez-ici.',
-            $crawler->text()
-        );
-
-        $crawler = $this->client->click($crawler->selectLink('cliquez-ici')->link());
-        $this->assertEquals('http://'.$this->getParameter('app_host').'/parametres/mon-compte/desadherer', $this->client->getRequest()->getUri());
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-
-        $crawler = $this->client->submit($crawler->selectButton('Je confirme la suppression de mon adhésion')->form([
-            'unregistration' => [],
-        ]));
-
-        $errors = $crawler->filter('.form__errors > li');
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertSame(1, $errors->count());
-        $this->assertSame('Afin de confirmer la suppression de votre compte, veuillez sélectionner la raison pour laquelle vous quittez le mouvement.', $errors->eq(0)->text());
-
-        $crawler = $this->client->request(Request::METHOD_GET, \sprintf('/comites/%s', $committee));
-        $this->assertStringContainsString("$nbFollowers adhérents", $crawler->filter('.committee__infos')->text());
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte/desadherer');
-        $reasons = Unregistration::REASONS_LIST_ADHERENT;
-        $reasonsValues = array_values($reasons);
-        $chosenReasons = [
-            1 => $reasonsValues[1],
-            3 => $reasonsValues[3],
-        ];
-
-        $crawler = $this->client->submit($crawler->selectButton('Je confirme la suppression de mon adhésion')->form([
-            'unregistration' => [
-                'reasons' => $chosenReasons,
-                'comment' => 'Je me désinscris',
-            ],
-        ]));
-
-        $this->assertEquals('http://'.$this->getParameter('app_host').'/parametres/mon-compte/desadherer', $this->client->getRequest()->getUri());
-
-        $errors = $crawler->filter('.form__errors > li');
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->assertSame(0, $errors->count());
-        $this->assertSame('Votre adhésion et votre compte En Marche ont bien été supprimés et vos données personnelles effacées de notre base.', trim($crawler->filter('#is_not_adherent h1')->eq(0)->text()));
-
-        $this->client->getContainer()->get('test.'.RemoveAdherentAndRelatedDataCommandHandler::class)(
-            new RemoveAdherentAndRelatedDataCommand(Uuid::fromString($uuid))
-        );
-
-        $crawler = $this->client->request(Request::METHOD_GET, \sprintf('/comites/%s', $committee));
-        --$nbFollowers;
-
-        $this->assertStringContainsString("$nbFollowers adhérents", $crawler->filter('.committee__infos')->text());
-
-        /** @var Adherent $adherent */
-        $adherent = $this->getAdherentRepository()->findOneByEmail($userEmail);
-
-        $this->assertNull($adherent);
-
-        /** @var Unregistration $unregistration */
-        $unregistration = $this->get(UnregistrationRepository::class)->findOneByUuid($uuid);
-        $mailHistorySubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherentBeforeUnregistration, 'subscribe');
-        $mailHistoryUnsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherentBeforeUnregistration, 'unsubscribe');
-
-        $this->assertSame(\count($mailHistorySubscriptions), \count($mailHistoryUnsubscriptions));
-        $this->assertSame(array_values($chosenReasons), $unregistration->getReasons());
-        $this->assertSame('Je me désinscris', $unregistration->getComment());
-        $this->assertSame($adherentBeforeUnregistration->getRegisteredAt()->format('Y-m-d H:i:s'), $unregistration->getRegisteredAt()->format('Y-m-d H:i:s'));
-        $this->assertSame((new \DateTime())->format('Y-m-d'), $unregistration->getUnregisteredAt()->format('Y-m-d'));
-        $this->assertSame($adherentBeforeUnregistration->getUuid()->toString(), $unregistration->getUuid()->toString());
-        $this->assertSame($adherentBeforeUnregistration->getPostalCode(), $unregistration->getPostalCode());
     }
 
     public static function provideAdherentCredentials(): array

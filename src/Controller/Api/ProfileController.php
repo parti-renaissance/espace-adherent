@@ -269,7 +269,13 @@ class ProfileController extends AbstractController
             ],
         ]);
 
-        $violations = $validator->validate($unregistrationCommand, null, ['unregister']);
+        $validationGroups = [$user->isAdherent() ? 'unregister_adherent' : 'unregister_user'];
+
+        if ($user->getAuthAppVersion() >= 5100) {
+            $validationGroups[] = 'unregister';
+        }
+
+        $violations = $validator->validate($unregistrationCommand, null, $validationGroups);
 
         if (0 < $violations->count()) {
             $errors = $serializer->serialize($violations, 'jsonproblem');
