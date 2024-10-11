@@ -87,7 +87,8 @@ Feature:
                         "designation",
                         "statutory_message",
                         "procurations",
-                        "actions"
+                        "actions",
+                        "featurebase"
                     ]
                 },
                 {
@@ -220,7 +221,8 @@ Feature:
                     "designation",
                     "statutory_message",
                     "procurations",
-                    "actions"
+                    "actions",
+                    "featurebase"
                 ],
                 "attributes": null,
                 "delegated_access": null
@@ -468,7 +470,8 @@ Feature:
                     "designation",
                     "statutory_message",
                     "procurations",
-                    "actions"
+                    "actions",
+                    "featurebase"
                 ],
                 "delegated_access": {
                     "delegator": {
@@ -520,7 +523,8 @@ Feature:
                     "designation",
                     "statutory_message",
                     "procurations",
-                    "actions"
+                    "actions",
+                    "featurebase"
                 ],
                 "attributes": {
                     "committees": [{ "name": "Comité des 3 communes", "uuid": "@uuid@" }],
