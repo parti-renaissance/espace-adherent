@@ -2,7 +2,6 @@
 
 namespace App\Normalizer;
 
-use App\AppCodeEnum;
 use App\OAuth\Model\Scope;
 use App\Repository\Jecoute\DataSurveyRepository;
 use App\Repository\OAuth\ClientRepository;
