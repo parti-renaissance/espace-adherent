@@ -3,8 +3,6 @@
 namespace App\Adherent\Tag;
 
 use App\Adherent\Tag\StaticTag\EventTagBuilder;
-use App\Entity\AdherentStaticLabel;
-use App\Entity\AdherentStaticLabelCategory;
 use App\Repository\AdherentStaticLabelCategoryRepository;
 use App\Repository\AdherentStaticLabelRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -29,19 +27,18 @@ class TagTranslator
 
             $parts = explode(':', $tag);
 
+            if (
+                2 === \count($parts)
+                && \array_key_exists($parts[0], $this->staticLabelCategories)
+                && \array_key_exists($parts[1], $this->staticLabels)
+            ) {
+                return implode(' - ', [
+                    $this->staticLabelCategories[$parts[0]],
+                    $this->staticLabels[$parts[1]],
+                ]);
+            }
+
             foreach ($parts as $index => $part) {
-                if (0 === $index && \array_key_exists($part, $this->staticLabelCategories)) {
-                    $parts[$index] = $this->staticLabelCategories[$part];
-
-                    continue;
-                }
-
-                if (1 === $index && \array_key_exists($part, $this->staticLabels)) {
-                    $parts[$index] = $this->staticLabels[$part];
-
-                    continue;
-                }
-
                 if ($negation = str_ends_with($part, '--')) {
                     $part = substr($part, 0, -2);
                 }
@@ -84,21 +81,11 @@ class TagTranslator
     private function loadStaticLabels(): void
     {
         if (empty($this->staticLabelCategories)) {
-            /** @var AdherentStaticLabelCategory[] $staticLabelCategories */
-            $staticLabelCategories = $this->staticLabelCategoryRepository->findAll();
-
-            foreach ($staticLabelCategories as $staticLabelCategory) {
-                $this->staticLabelCategories[$staticLabelCategory->code] = $staticLabelCategory->label;
-            }
+            $this->staticLabelCategories = $this->staticLabelCategoryRepository->findIndexedCodes();
         }
 
         if (empty($this->staticLabels)) {
-            /** @var AdherentStaticLabel[] $staticLabels */
-            $staticLabels = $this->staticLabelRepository->findAll();
-
-            foreach ($staticLabels as $staticLabel) {
-                $this->staticLabels[$staticLabel->code] = $staticLabel->label;
-            }
+            $this->staticLabels = $this->staticLabelRepository->findIndexedCodes();
         }
     }
 }

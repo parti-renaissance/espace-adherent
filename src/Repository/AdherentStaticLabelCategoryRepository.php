@@ -12,4 +12,21 @@ class AdherentStaticLabelCategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, AdherentStaticLabelCategory::class);
     }
+
+    public function findIndexedCodes(): array
+    {
+        $qb = $this->createQueryBuilder('category');
+
+        $query = $qb
+            ->select('category.code, category.label')
+            ->getQuery()
+        ;
+
+        $categories = [];
+        foreach ($query->getArrayResult() as $category) {
+            $categories[$category['code']] = $category['label'];
+        }
+
+        return $categories;
+    }
 }
