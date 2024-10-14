@@ -85,6 +85,7 @@ Feature:
                 "mode": null,
                 "local_begin_at": null,
                 "local_finish_at": null,
+                "editable": false,
                 "image_url": null
             }
             """

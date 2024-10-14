@@ -41,6 +41,7 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
         $apiContext = $context[PrivatePublicContextBuilder::CONTEXT_KEY] ?? null;
         $user = $this->getUser();
+        $event['editable'] = false;
 
         if (\in_array($apiContext, [PrivatePublicContextBuilder::CONTEXT_PRIVATE, PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER])) {
             if (PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $apiContext) {
