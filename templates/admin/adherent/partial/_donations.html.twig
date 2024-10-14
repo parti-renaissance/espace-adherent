@@ -124,12 +124,12 @@
                             </td>
                             <td>
                                 {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_APP_ADMIN_DONATOR_EDIT') %}
-                                    <a href="{{ path('admin_app_donator_edit', { id: donation.donator.id }) }}" class="btn btn-xs btn-default" title="Afficher">
+                                    <a href="{{ path('admin_app_donator_edit', { id: donation.donatorId }) }}" class="btn btn-xs btn-default" title="Afficher">
                                         <i class="fa fa-search-plus" aria-hidden="true"></i>
-                                        {{ donation.donator }}
+                                        {{ donation.donatorFullName }} ({{ donation.donatorIdentifier }})
                                     </a>
                                 {% else %}
-                                    {{ donation.donator }}
+                                    {{ donation.donatorFullName }} ({{ donation.donatorIdentifier }})
                                 {% endif %}
                             </td>
                         </tr>

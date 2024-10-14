@@ -2,7 +2,6 @@
 
 namespace App\Donation;
 
-use App\Entity\Donator;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -17,7 +16,9 @@ class DonationValueObject
         private bool $membership,
         private string $status,
         private UuidInterface $uuid,
-        private Donator $donator,
+        private int $donatorId,
+        private string $donatorIdentifier,
+        private string $donatorFullName,
     ) {
     }
 
@@ -64,8 +65,18 @@ class DonationValueObject
         return $this->uuid;
     }
 
-    public function getDonator(): Donator
+    public function getDonatorId(): int
     {
-        return $this->donator;
+        return $this->donatorId;
+    }
+
+    public function getDonatorFullName(): string
+    {
+        return $this->donatorFullName;
+    }
+
+    public function getDonatorIdentifier(): string
+    {
+        return $this->donatorIdentifier;
     }
 }

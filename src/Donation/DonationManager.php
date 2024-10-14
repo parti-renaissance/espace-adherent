@@ -67,6 +67,17 @@ class DonationManager
         UuidInterface $uuid,
         Donator $donator,
     ): DonationValueObject {
-        return new DonationValueObject($date, $amount, $type, $isSubscription, $isMembership, $status, $uuid, $donator);
+        return new DonationValueObject(
+            $date,
+            $amount,
+            $type,
+            $isSubscription,
+            $isMembership,
+            $status,
+            $uuid,
+            $donator->getId(),
+            $donator->getIdentifier(),
+            $donator->getFullName()
+        );
     }
 }
