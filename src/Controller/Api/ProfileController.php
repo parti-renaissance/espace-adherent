@@ -52,9 +52,7 @@ class ProfileController extends AbstractController
         'profile_write',
     ];
 
-    private const WRITE_UNCERTIFIED_PROFILE_SERIALIZATION_GROUPS = [
-        'uncertified_profile_write',
-    ];
+    private const WRITE_UNCERTIFIED_PROFILE_SERIALIZATION_GROUPS = 'uncertified_profile_write';
 
     #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
     #[Route(path: '/me', name: '_show', methods: ['GET'])]
@@ -151,7 +149,9 @@ class ProfileController extends AbstractController
 
         $groups = self::WRITE_PROFILE_SERIALIZATION_GROUPS;
         if (!$adherent->isCertified()) {
-            $groups = array_merge($groups, self::WRITE_UNCERTIFIED_PROFILE_SERIALIZATION_GROUPS);
+            $groups[] = self::WRITE_UNCERTIFIED_PROFILE_SERIALIZATION_GROUPS;
+        } elseif (!$adherent->getBirthdate()) {
+            $groups[] = 'empty_profile_data';
         }
 
         $serializer->deserialize($json, AdherentProfile::class, 'json', [
