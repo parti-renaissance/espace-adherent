@@ -1658,3 +1658,8 @@ Feature:
             }
             """
         Then the response status code should be 200
+
+    Scenario: As a logged-in user I can unregister with empty body
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile"
+        When I send a "POST" request to "/api/v3/profile/unregister"
+        Then the response status code should be 400

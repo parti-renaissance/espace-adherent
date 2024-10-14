@@ -263,7 +263,7 @@ class ProfileController extends AbstractController
         $user = $this->getUser();
 
         /** @var UnregistrationCommand $unregistrationCommand */
-        $unregistrationCommand = $serializer->deserialize($request->getContent(), UnregistrationCommand::class, 'json', [
+        $unregistrationCommand = $serializer->deserialize($request->getContent() ?: '{}', UnregistrationCommand::class, 'json', [
             AbstractObjectNormalizer::GROUPS => [
                 'unregister',
             ],
