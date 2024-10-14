@@ -230,7 +230,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->setType(DesignationTypeEnum::COMMITTEE_SUPERVISOR);
         $designation->setCandidacyStartDate(new \DateTime());
         $designation->setCandidacyEndDate(new \DateTime('+2 days'));
-        $designation->setVoteStartDate(new \DateTime('+2 days'));
+        $designation->setVoteStartDate(new \DateTime('+2.5 days'));
         $designation->setVoteEndDate(new \DateTime('+5 day'));
         $designation->electionCreationDate = new \DateTime('+1 days');
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit');

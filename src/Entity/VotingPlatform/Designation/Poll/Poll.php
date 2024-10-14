@@ -17,6 +17,7 @@ class Poll
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
 
+    #[Assert\Length(max: 255, groups: ['api_designation_write'])]
     #[Assert\NotBlank]
     #[ORM\Column]
     public ?string $label = null;

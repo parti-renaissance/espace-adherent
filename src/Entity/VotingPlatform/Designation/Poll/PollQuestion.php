@@ -18,6 +18,7 @@ class PollQuestion
     use EntityIdentityTrait;
     use Sortable;
 
+    #[Assert\Length(max: 500, groups: ['api_designation_write'])]
     #[Assert\NotBlank]
     #[Groups(['designation_read'])]
     #[ORM\Column(length: 500)]

@@ -21,11 +21,10 @@ class UpdateDesignationGroupGenerator implements ValidationGroupsGeneratorInterf
         /** @var Designation $oldDesignation */
         $oldDesignation = $request?->attributes->get('previous_data');
 
-        if ($oldDesignation->isVotePeriodStarted()
-        ) {
-            return ['api_designation_write_limited'];
+        if ($oldDesignation->isFullyEditable()) {
+            return ['api_designation_write'];
         }
 
-        return ['api_designation_write'];
+        return ['api_designation_write_limited'];
     }
 }

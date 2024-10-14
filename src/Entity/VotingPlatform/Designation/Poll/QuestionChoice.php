@@ -14,6 +14,7 @@ class QuestionChoice
 {
     use EntityIdentityTrait;
 
+    #[Assert\Length(max: 255, groups: ['api_designation_write'])]
     #[Assert\NotBlank]
     #[Groups(['designation_read'])]
     #[ORM\Column]

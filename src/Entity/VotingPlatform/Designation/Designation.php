@@ -103,6 +103,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\Column(nullable: true)]
     private $label;
 
+    #[Assert\Length(max: 255, groups: ['api_designation_write', 'api_designation_write_limited'])]
     #[Assert\NotBlank(groups: ['api_designation_write', 'api_designation_write_limited'])]
     #[Groups(['designation_read', 'designation_write', 'designation_list', 'designation_write_limited', 'committee_election:read'])]
     #[ORM\Column(nullable: true)]
@@ -118,6 +119,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\Column]
     private $type;
 
+    #[Assert\Expression('!this.isConsultationType() or value', groups: ['api_designation_write', 'api_designation_write_limited'])]
     #[Groups(['designation_read', 'designation_write'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
     public array $target = [];
@@ -213,6 +215,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private $pools;
 
+    #[Assert\Length(max: 2000, groups: ['api_designation_write', 'api_designation_write_limited'])]
+    #[Assert\NotBlank(groups: ['api_designation_write', 'api_designation_write_limited'])]
     #[Groups(['designation_read', 'designation_write', 'designation_write_limited'])]
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
@@ -223,7 +227,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\Column(type: 'boolean')]
     private bool $isBlankVoteEnabled = true;
 
-    #[Assert\Expression('!(this.isLocalPollType() || this.isConsultationType()) or value', message: 'Vous devez préciser le questionnaire qui sera utilisé pour cette élection.')]
+    #[Assert\Expression('!(this.isLocalPollType() || this.isConsultationType()) or value', message: 'Vous devez préciser le questionnaire qui sera utilisé pour cette élection.', groups: ['Admin_creation', 'api_designation_write'])]
+    #[Assert\Valid(groups: ['api_designation_write'])]
     #[ORM\ManyToOne(targetEntity: Poll::class, cascade: ['persist'])]
     public ?Poll $poll = null;
 

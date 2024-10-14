@@ -18,7 +18,7 @@ Feature:
             {
                 "type": "https://tools.ietf.org/html/rfc2616#section-10",
                 "title": "An error occurred",
-                "detail": "custom_title: Cette valeur ne doit pas être vide.\ntype: Cette valeur ne doit pas être vide.\nvote_end_date: La date de clôture doit être postérieur à la date de début",
+                "detail": "custom_title: Cette valeur ne doit pas être vide.\ntype: Cette valeur ne doit pas être vide.\nvote_end_date: La date de clôture doit être postérieur à la date de début\ndescription: Cette valeur ne doit pas être vide.",
                 "violations": [
                     {
                         "propertyPath": "custom_title",
@@ -33,6 +33,11 @@ Feature:
                     {
                         "propertyPath": "vote_end_date",
                         "message": "La date de clôture doit être postérieur à la date de début",
+                        "code": "@uuid@"
+                    },
+                    {
+                        "propertyPath": "description",
+                        "message": "Cette valeur ne doit pas être vide.",
                         "code": "@uuid@"
                     }
                 ]
