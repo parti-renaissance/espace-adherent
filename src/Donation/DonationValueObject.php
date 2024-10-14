@@ -16,6 +16,9 @@ class DonationValueObject
         private bool $membership,
         private string $status,
         private UuidInterface $uuid,
+        private int $donatorId,
+        private string $donatorIdentifier,
+        private string $donatorFullName,
     ) {
     }
 
@@ -60,5 +63,20 @@ class DonationValueObject
     public function getUuid(): string
     {
         return $this->uuid;
+    }
+
+    public function getDonatorId(): int
+    {
+        return $this->donatorId;
+    }
+
+    public function getDonatorFullName(): string
+    {
+        return $this->donatorFullName;
+    }
+
+    public function getDonatorIdentifier(): string
+    {
+        return $this->donatorIdentifier;
     }
 }
