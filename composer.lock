@@ -6955,29 +6955,32 @@
         },
         {
             "name": "league/iso3166",
-            "version": "4.3.1",
+            "version": "4.3.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thephpleague/iso3166.git",
-                "reference": "11703e0313f34920add11c0228f0dd43ebd10f9a"
+                "url": "https://github.com/alcohol/iso3166.git",
+                "reference": "5133fed7d54728222f4058702487dccedda20472"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/iso3166/zipball/11703e0313f34920add11c0228f0dd43ebd10f9a",
-                "reference": "11703e0313f34920add11c0228f0dd43ebd10f9a",
+                "url": "https://api.github.com/repos/alcohol/iso3166/zipball/5133fed7d54728222f4058702487dccedda20472",
+                "reference": "5133fed7d54728222f4058702487dccedda20472",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
-                "php": "^7.3|^8.0"
+                "php": "^7.4 || ^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9.5"
+                "phpstan/phpstan": "^1.12.6",
+                "phpstan/phpstan-deprecation-rules": "^1.2.1",
+                "phpstan/phpstan-strict-rules": "^1.6.1",
+                "phpunit/phpunit": "^9.6.21"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.x-dev"
+                    "dev-master": "4.x-dev"
                 }
             },
             "autoload": {
@@ -6996,7 +6999,7 @@
                 }
             ],
             "description": "ISO 3166-1 PHP Library",
-            "homepage": "https://github.com/thephpleague/iso3166",
+            "homepage": "https://github.com/alcohol/iso3166",
             "keywords": [
                 "3166",
                 "3166-1",
@@ -7006,10 +7009,16 @@
                 "library"
             ],
             "support": {
-                "issues": "https://github.com/thephpleague/iso3166/issues",
-                "source": "https://github.com/thephpleague/iso3166"
+                "issues": "https://github.com/alcohol/iso3166/issues",
+                "source": "https://github.com/alcohol/iso3166"
             },
-            "time": "2023-09-11T07:59:36+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/alcohol",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-10-10T07:39:24+00:00"
         },
         {
             "name": "league/mime-type-detection",
