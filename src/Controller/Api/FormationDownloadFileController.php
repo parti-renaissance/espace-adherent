@@ -6,22 +6,24 @@ use App\Entity\AdherentFormation\Formation;
 use App\Utils\HttpUtils;
 use Cocur\Slugify\Slugify;
 use League\Flysystem\FilesystemOperator;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class FormationDownloadFileController extends AbstractController
+class FormationDownloadFileController extends AbstractFormationContentController
 {
-    public function __construct(private readonly FilesystemOperator $defaultStorage)
-    {
-    }
+    public function __invoke(
+        FilesystemOperator $defaultStorage,
+        Formation $formation,
+    ): Response {
+        if (!$formation->isFileContent()) {
+            throw $this->createNotFoundException('Formation has no file.');
+        }
 
-    public function __invoke(Request $request, Formation $formation): Response
-    {
+        $this->printFormation($formation);
+
         $filePath = $formation->getFilePath();
 
         return HttpUtils::createResponse(
-            $this->defaultStorage,
+            $defaultStorage,
             $filePath,
             (new Slugify())->slugify($formation->getTitle()).'.'.pathinfo($filePath, \PATHINFO_EXTENSION)
         );

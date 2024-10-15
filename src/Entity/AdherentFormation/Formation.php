@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Api\Filter\ScopeVisibilityFilter;
 use App\Controller\Api\FormationDownloadFileController;
+use App\Controller\Api\FormationLinkController;
 use App\Controller\Api\FormationUploadFileController;
 use App\Entity\Adherent;
 use App\Entity\EntityAdherentBlameableInterface;
@@ -61,7 +62,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/formations/{uuid}/file',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: FormationDownloadFileController::class,
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'adherent_formations\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: 'is_granted(\'ROLE_USER\')'
+        ),
+        new Get(
+            uriTemplate: '/formations/{uuid}/link',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: FormationLinkController::class,
+            security: 'is_granted(\'ROLE_USER\')'
         ),
         new Delete(
             uriTemplate: '/formations/{uuid}',
@@ -126,7 +133,7 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     private ?string $filePath = null;
 
     #[Assert\Url]
-    #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
+    #[Groups(['formation_read', 'formation_list_read', 'formation_write', 'formation_read_link'])]
     #[ORM\Column(nullable: true)]
     private ?string $link = null;
 
