@@ -7,7 +7,7 @@ use App\Entity\AdherentFormation\Formation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class AbstractFormationContentController extends AbstractController
+abstract class AbstractFormationContentController extends AbstractController
 {
     public function __construct(private readonly EntityManagerInterface $entityManager)
     {
@@ -20,7 +20,7 @@ class AbstractFormationContentController extends AbstractController
 
         if (
             !$adherent instanceof Adherent
-            && $this->isGranted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN')
+            || $this->isGranted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN')
         ) {
             return;
         }

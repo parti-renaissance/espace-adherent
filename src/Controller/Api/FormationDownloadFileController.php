@@ -6,13 +6,11 @@ use App\Entity\AdherentFormation\Formation;
 use App\Utils\HttpUtils;
 use Cocur\Slugify\Slugify;
 use League\Flysystem\FilesystemOperator;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class FormationDownloadFileController extends AbstractFormationContentController
 {
     public function __invoke(
-        Request $request,
         FilesystemOperator $defaultStorage,
         Formation $formation,
     ): Response {
