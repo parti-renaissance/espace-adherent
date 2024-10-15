@@ -38,6 +38,9 @@ class AdherentStaticLabelCategoryAdmin extends AbstractAdmin
             ->add('label', null, [
                 'label' => 'Label',
             ])
+            ->add('sync', null, [
+                'label' => 'Synchro tags',
+            ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
@@ -57,6 +60,9 @@ class AdherentStaticLabelCategoryAdmin extends AbstractAdmin
                 ])
                 ->add('label', null, [
                     'label' => 'Label',
+                ])
+                ->add('sync', null, [
+                    'label' => 'Synchro vers les tags adhérents?',
                 ])
             ->end()
         ;
