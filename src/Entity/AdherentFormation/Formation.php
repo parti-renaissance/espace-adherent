@@ -55,7 +55,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/formations/{uuid}/file',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: FormationUploadFileController::class,
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'adherent_formations\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: 'is_granted(\'ROLE_USER\')'
         ),
         new Get(
             uriTemplate: '/formations/{uuid}/file',
