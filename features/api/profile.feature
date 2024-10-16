@@ -1670,3 +1670,47 @@ Feature:
         And I add "X-App-Version" header equal to "v5.10.0"
         When I send a "POST" request to "/api/v3/profile/unregister"
         Then the response status code should be 400
+
+    Scenario: As a logged-in user I can get the list of my instances
+        Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile" with scopes "read:profile"
+        When I send a "GET" request to "/api/v3/profile/instances"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            [
+                {
+                    "type": "assembly",
+                    "name": "Français de l'Étranger"
+                },
+                {
+                    "type": "committee",
+                    "name": null,
+                    "members_count": null,
+                    "assembly_committees_count": 0
+                }
+            ]
+            """
+        When I am logged with "gisele-berthoux@caramail.com" via OAuth client "JeMengage Mobile" with scopes "read:profile"
+        And I send a "GET" request to "/api/v3/profile/instances"
+        Then the response status code should be 200
+        And the response should be in JSON
+        And the JSON should be equal to:
+            """
+            [
+                {
+                    "type": "assembly",
+                    "name": "Hauts-de-Seine (92)"
+                },
+                {
+                    "type": "circonscription",
+                    "name": "4ème circonscription • Hauts-de-Seine (92-4)"
+                },
+                {
+                    "type": "committee",
+                    "name": "Second Comité des 3 communes",
+                    "members_count": 3,
+                    "assembly_committees_count": 2
+                }
+            ]
+            """

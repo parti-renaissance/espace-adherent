@@ -218,6 +218,42 @@ class ProfileController extends AbstractController
         return $this->json($committeeRepository->findInAdherentZone($adherent), context: ['groups' => ['committee:list']]);
     }
 
+    #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
+    #[Route(path: '/instances', methods: ['GET'])]
+    public function myInstances(UserInterface $adherent, CommitteeRepository $committeeRepository): Response
+    {
+        $instance = [];
+
+        /** @var Adherent $adherent */
+        if ($mainZone = $adherent->getMainZone()) {
+            $zoneName = $mainZone->isCountry() ? 'Français de l\'Étranger' : $mainZone->getName();
+            $instance[] = [
+                'type' => 'assembly',
+                'name' => \sprintf("$zoneName%s", $mainZone->isCountry() ? '' : \sprintf(' (%s)', $mainZone->getCode())),
+            ];
+        }
+
+        if ($districtZone = ($adherent->getZonesOfType(Zone::DISTRICT)[0] ?? null)) {
+            $code = explode('-', $districtZone->getCode());
+            $name = explode(' (', $districtZone->getName());
+
+            $instance[] = [
+                'type' => 'circonscription',
+                'name' => \sprintf('%s%s circonscription • %s (%s)', $code[1], $code[1] > 1 ? 'ème' : 'ère', $name[0], $districtZone->getCode()),
+            ];
+        }
+
+        $myCommitteeMembership = $adherent->getCommitteeV2Membership();
+        $instance[] = [
+            'type' => 'committee',
+            'name' => $myCommitteeMembership?->getCommittee()->getName(),
+            'members_count' => $myCommitteeMembership?->getCommittee()->getMembersCount(),
+            'assembly_committees_count' => \count($committeeRepository->findInAdherentZone($adherent)),
+        ];
+
+        return $this->json($instance);
+    }
+
     #[Route(path: '/committees/{uuid}/join', methods: ['PUT'])]
     #[Security('is_granted("ROLE_OAUTH_SCOPE_WRITE:PROFILE") and user.isRenaissanceAdherent()')]
     public function saveMyNewCommittee(Committee $committee, UserInterface $adherent, CommitteeMembershipManager $committeeMembershipManager): Response
