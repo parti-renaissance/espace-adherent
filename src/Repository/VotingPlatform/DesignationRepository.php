@@ -136,13 +136,7 @@ class DesignationRepository extends ServiceEntityRepository
                     ELSE 0
                 END AS HIDDEN score'
             )
-            ->where(
-                'designation.voteEndDate > :now
-                OR (
-                    designation.resultDisplayDelay > 0
-                    AND DATE_ADD(designation.voteEndDate, designation.resultDisplayDelay, \'DAY\') > :now
-                )'
-            )
+            ->where('DATE_ADD(designation.voteEndDate, 3, \'DAY\') > :now')
             ->andWhere('designation.isCanceled = false')
             ->setParameters(['now' => new \DateTime()])
             ->setMaxResults($limit)
