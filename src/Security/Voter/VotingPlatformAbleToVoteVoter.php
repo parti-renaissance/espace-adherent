@@ -2,6 +2,7 @@
 
 namespace App\Security\Voter;
 
+use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\VotingPlatform\Election;
@@ -40,7 +41,14 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
 
         if ($designation->isConsultationType()) {
             if ($designation->target) {
-                if (!array_sum(array_map([$adherent, 'hasTag'], $designation->target))) {
+                $foundTargetTag = false;
+                foreach (range($designation->getTargetYear(), date('Y')) as $year) {
+                    if ($adherent->hasTag(TagEnum::getAdherentYearTag($year))) {
+                        $foundTargetTag = true;
+                        break;
+                    }
+                }
+                if (!$foundTargetTag) {
                     return false;
                 }
             } elseif (!$adherent->hasActiveMembership()) {

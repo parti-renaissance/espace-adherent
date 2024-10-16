@@ -16,6 +16,13 @@ class CancelElectionController extends AbstractController
         EntityManagerInterface $entityManager,
         ElectionRepository $electionRepository,
     ): Response {
+        if (!$designation->isFullyEditable()) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'Consultation is not editable',
+            ], Response::HTTP_CONFLICT);
+        }
+
         foreach ($electionRepository->findAllForDesignation($designation) as $election) {
             $election->cancel(ElectionCancelReasonEnum::Manual);
         }

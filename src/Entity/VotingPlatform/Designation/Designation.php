@@ -262,6 +262,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\Column(type: 'uuid', nullable: true)]
     private ?UuidInterface $electionEntityIdentifier = null;
 
+    #[Groups(['designation_read', 'designation_list'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $isCanceled = false;
 
@@ -877,5 +878,12 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             DesignationTypeEnum::TERRITORIAL_ASSEMBLY,
             DesignationTypeEnum::COMMITTEE_SUPERVISOR,
         ], true);
+    }
+
+    public function getTargetYear(): ?int
+    {
+        $year = $this->target ? substr($this->target[0], -4) : null;
+
+        return $year > 2022 ? $year : date('Y') - 1;
     }
 }

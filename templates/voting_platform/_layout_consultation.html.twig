@@ -29,9 +29,8 @@
 
 {% block vote_finish_action_block %}
     <div class="b__nudge--bottom-large b__nudge--top-large">
-        <a href="{{ path('app_renaissance_adherent_space') }}"
-           class="btn btn--blue">
-            Retour à mon espace
+        <a href="{{ path('app_sas_election_index', {uuid: designation.uuid}) }}" class="btn btn--blue">
+            Retour
         </a>
     </div>
 {% endblock %}
