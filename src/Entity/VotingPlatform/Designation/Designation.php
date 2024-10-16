@@ -168,7 +168,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[Assert\GreaterThanOrEqual(0)]
     #[Assert\NotBlank]
     #[ORM\Column(type: 'smallint', options: ['unsigned' => true])]
-    private $resultDisplayDelay = 14;
+    private $resultDisplayDelay = 30;
 
     /**
      * Display the election results after this delay (in hours)
@@ -877,6 +877,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             DesignationTypeEnum::LOCAL_ELECTION,
             DesignationTypeEnum::TERRITORIAL_ASSEMBLY,
             DesignationTypeEnum::COMMITTEE_SUPERVISOR,
+            DesignationTypeEnum::CONSULTATION,
         ], true);
     }
 
