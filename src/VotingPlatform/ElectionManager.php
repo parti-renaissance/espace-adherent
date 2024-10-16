@@ -9,8 +9,6 @@ use App\VotingPlatform\Designation\DesignationTypeEnum;
 
 class ElectionManager
 {
-    private array $cache = [];
-
     public function __construct(private readonly DesignationRepository $designationRepository)
     {
     }
@@ -24,12 +22,6 @@ class ElectionManager
         ?int $limit = null,
         bool $withVoteActiveOnly = false,
     ): array {
-        $cacheKey = implode('-', array_merge([$adherent->getId(), $withVoteActiveOnly], $types));
-
-        if (!empty($this->cache[$cacheKey])) {
-            return $this->cache[$cacheKey];
-        }
-
-        return $this->cache[$cacheKey] = $this->designationRepository->findAllActiveForAdherent($adherent, $types, $limit, $withVoteActiveOnly);
+        return $this->designationRepository->findAllActiveForAdherent($adherent, $types, $limit, $withVoteActiveOnly);
     }
 }
