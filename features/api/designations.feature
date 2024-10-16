@@ -96,9 +96,11 @@ Feature:
                 "description": "lorem ipsum...",
                 "target": [],
                 "fully_editable": true,
+                "created_at": "@string@.isDateTime()",
                 "questions": [],
                 "election_entity_identifier": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
-                "uuid": "@uuid@"
+                "uuid": "@uuid@",
+                "is_canceled": false
             }
             """
 
@@ -125,7 +127,9 @@ Feature:
                 "questions": [],
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                 "election_entity_identifier": "5e00c264-1d4b-43b8-862e-29edc38389b3",
-                "uuid": "7fb0693e-1dad-44c6-984b-19e99603ea2c"
+                "uuid": "7fb0693e-1dad-44c6-984b-19e99603ea2c",
+                "is_canceled": false,
+                "created_at": "@string@.isDateTime()"
             }
             """
 
@@ -162,7 +166,9 @@ Feature:
                 "questions": [],
                 "description": "lorem ipsum...",
                 "election_entity_identifier": "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3",
-                "uuid": "6c7ca0c7-d656-47c3-a345-170fb43ffd1a"
+                "uuid": "6c7ca0c7-d656-47c3-a345-170fb43ffd1a",
+                "is_canceled": false,
+                "created_at": "@string@.isDateTime()"
             }
             """
 
@@ -313,7 +319,7 @@ Feature:
     Scenario Outline: As a grand user with local scope, I can cancel an election
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "PUT" request to "/api/v3/designations/7fb0693e-1dad-44c6-984b-19e99603ea2c/cancel?scope=<scope>"
-        Then the response status code should be 204
+        Then the response status code should be 409
         When I send a "GET" request to "/api/v3/designations/7fb0693e-1dad-44c6-984b-19e99603ea2c?scope=<scope>"
         Then the response status code should be 200
         And the response should be in JSON
@@ -330,7 +336,9 @@ Feature:
                 "questions": [],
                 "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                 "election_entity_identifier": "5e00c264-1d4b-43b8-862e-29edc38389b3",
-                "uuid": "7fb0693e-1dad-44c6-984b-19e99603ea2c"
+                "uuid": "7fb0693e-1dad-44c6-984b-19e99603ea2c",
+                "is_canceled": false,
+                "created_at": "@string@.isDateTime()"
             }
             """
 
