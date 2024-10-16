@@ -40,9 +40,9 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
         }
 
         if ($designation->isConsultationType()) {
-            if ($designation->target) {
+            if ($designation->targetYear) {
                 $foundTargetTag = false;
-                foreach (range($designation->getTargetYear(), date('Y')) as $year) {
+                foreach (range($designation->targetYear, date('Y')) as $year) {
                     if ($adherent->hasTag(TagEnum::getAdherentYearTag($year))) {
                         $foundTargetTag = true;
                         break;

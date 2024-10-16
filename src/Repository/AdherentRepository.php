@@ -1269,7 +1269,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $this->getEntityManager()->flush();
     }
 
-    public function findAllForConsultation(array $target, array $zones): array
+    public function findAllForConsultation(int $minYear, array $zones): array
     {
         $qb = $this
             ->createQueryBuilder('a')
@@ -1278,10 +1278,10 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->setParameter('status', Adherent::ENABLED)
         ;
 
-        foreach ($target as $key => $value) {
+        foreach (range($minYear, date('Y')) as $key => $year) {
             $qb
                 ->orWhere('a.tags LIKE :tag'.$key)
-                ->setParameter('tag'.$key, '%'.$value.'%')
+                ->setParameter('tag'.$key, '%'.TagEnum::getAdherentYearTag($year).'%')
             ;
         }
 

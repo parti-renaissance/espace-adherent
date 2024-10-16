@@ -121,8 +121,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
     #[Assert\Expression('!this.isConsultationType() or value', groups: ['api_designation_write', 'api_designation_write_limited'])]
     #[Groups(['designation_read', 'designation_write'])]
-    #[ORM\Column(type: 'simple_array', nullable: true)]
-    public array $target = [];
+    #[ORM\Column(type: 'smallint', nullable: true)]
+    public ?int $targetYear = null;
 
     /**
      * @var string[]|null
@@ -879,12 +879,5 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             DesignationTypeEnum::COMMITTEE_SUPERVISOR,
             DesignationTypeEnum::CONSULTATION,
         ], true);
-    }
-
-    public function getTargetYear(): ?int
-    {
-        $year = $this->target ? substr($this->target[0], -4) : null;
-
-        return $year > 2022 ? $year : date('Y') - 1;
     }
 }
