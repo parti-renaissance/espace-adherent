@@ -1685,6 +1685,7 @@ Feature:
                 },
                 {
                     "type": "committee",
+                    "uuid": null,
                     "name": null,
                     "members_count": null,
                     "assembly_committees_count": 0
@@ -1708,6 +1709,7 @@ Feature:
                 },
                 {
                     "type": "committee",
+                    "uuid": "@uuid@",
                     "name": "Second Comité des 3 communes",
                     "members_count": 3,
                     "assembly_committees_count": 2
