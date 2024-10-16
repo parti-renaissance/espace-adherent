@@ -47,7 +47,7 @@
 {% block header_actions '' %}
 {% block voting_platform_ornametns '' %}
 
-{% block voting_platform_content %}
+{% block voting_platform_content_default %}
     <div class="voting-platform__results election-results">
         <div>
             <div class="l__wrapper{{ not designation.isMajorityType ? '--medium' }}">
@@ -101,16 +101,6 @@
     {{ parent() }}
 
     <script type="text/javascript">
-        findAll(dom('.results__menu'), 'a.results-tab--toggle').forEach(function(link, index) {
-            on(link, 'click', function (event) {
-                event.preventDefault();
-                toggleVoteTab(index);
-
-                removeClass(dom('.results__menu li.active'), 'active');
-                addClass(link.parentNode, 'active');
-            });
-        });
-
         function toggleVoteTab(id) {
             findAll(document, '.candidate-tabs--container > div').forEach(function(tab, index) {
                 if (index === id) {
@@ -118,6 +108,19 @@
                 } else {
                     hide(tab);
                 }
+            });
+        }
+
+        const menu = dom('.results__menu');
+        if (menu) {
+            findAll(dom('.results__menu'), 'a.results-tab--toggle').forEach(function(link, index) {
+                on(link, 'click', function (event) {
+                    event.preventDefault();
+                    toggleVoteTab(index);
+
+                    removeClass(dom('.results__menu li.active'), 'active');
+                    addClass(link.parentNode, 'active');
+                });
             });
         }
     </script>

@@ -72,7 +72,7 @@
                 </div>
             {% endblock %}
 
-            {% block voting_platform_content '' %}
+            {{ block('voting_platform_content') ?? block('voting_platform_content_default') }}
         </div>
     </main>
 {% endblock %}
