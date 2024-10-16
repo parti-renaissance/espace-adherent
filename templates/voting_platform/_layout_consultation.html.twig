@@ -50,9 +50,11 @@
             Du {{ designation.voteStartDate|format_datetime('none', 'none', "d MMMM yyyy à HH:mm") }} au
             {{ designation.voteEndDate|format_datetime('none', 'none', "d MMMM yyyy à HH:mm") }}
         </p>
-        <p class="text--muted">
-            À parti des adhérents à jour {{ designation.getTargetYear() }}
-        </p>
+        {% if designation.targetYear %}
+            <p class="text--muted">
+                À parti des adhérents à jour {{ designation.targetYear }}
+            </p>
+        {% endif %}
 
         {% set pool_result = election_round_result.getElectionPoolResults|first %}
         {% set voters = pool_result.participated ?? 0 %}
