@@ -246,6 +246,7 @@ class ProfileController extends AbstractController
         $myCommitteeMembership = $adherent->getCommitteeV2Membership();
         $instance[] = [
             'type' => 'committee',
+            'uuid' => $myCommitteeMembership?->getCommittee()->getUuid(),
             'name' => $myCommitteeMembership?->getCommittee()->getName(),
             'members_count' => $myCommitteeMembership?->getCommittee()->getMembersCount(),
             'assembly_committees_count' => \count($committeeRepository->findInAdherentZone($adherent)),
