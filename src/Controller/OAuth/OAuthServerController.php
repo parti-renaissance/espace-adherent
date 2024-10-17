@@ -5,6 +5,7 @@ namespace App\Controller\OAuth;
 use App\Form\ConfirmActionType;
 use App\OAuth\OAuthAuthorizationManager;
 use App\Repository\OAuth\ClientRepository;
+use App\Security\Voter\OAuthClientVoter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Token\Parser;
 use Lcobucci\JWT\Token\RegisteredClaims;
@@ -39,9 +40,7 @@ class OAuthServerController extends AbstractController
 
             $client = $repository->findClientByUuid(Uuid::fromString($authRequest->getClient()->getIdentifier()));
 
-            foreach ($client->getRequestedRoles() ?? [] as $role) {
-                $this->denyAccessUnlessGranted($role, $user);
-            }
+            $this->denyAccessUnlessGranted(OAuthClientVoter::PERMISSION, $client);
 
             $form = $this
                 ->createForm(ConfirmActionType::class)

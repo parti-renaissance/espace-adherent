@@ -4,7 +4,8 @@ namespace App\Controller\OAuth;
 
 use App\Entity\Adherent;
 use App\Entity\OAuth\Client;
-use Firebase\JWT\JWT;
+use App\OAuth\JWTTokenGenerator;
+use App\Security\Voter\OAuthClientVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(path: '/sso/{uuid}', name: 'app_front_oauth_sso', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
 class SsoController extends AbstractController
 {
-    public function __invoke(Request $request, Client $client): Response
+    public function __invoke(Request $request, Client $client, JWTTokenGenerator $tokenGenerator): Response
     {
         $user = $this->getUser();
 
@@ -23,32 +24,15 @@ class SsoController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        foreach ($client->getRequestedRoles() ?? [] as $role) {
-            $this->denyAccessUnlessGranted($role, $user);
-        }
+        $this->denyAccessUnlessGranted(OAuthClientVoter::PERMISSION, $client);
 
         $clientRedirectUri = current($client->getRedirectUris());
 
         $queryParams = [
-            'jwt' => $this->generateJwt($user, $client),
+            'jwt' => $tokenGenerator->generate($user, $client),
             'return_to' => $request->query->get('return_to'),
         ];
 
         return $this->redirect($clientRedirectUri.'?'.http_build_query($queryParams));
-    }
-
-    private function generateJwt(Adherent $user, Client $client): string
-    {
-        $payload = [
-            'email' => $user->getEmailAddress(),
-            'name' => $user->getFullName(),
-            'locale' => 'fr',
-        ];
-
-        if ($user->getImagePath()) {
-            $payload['profilePicture'] = $this->generateUrl('asset_url', ['path' => $user->getImagePath()]);
-        }
-
-        return JWT::encode($payload, $client->getSecret(), 'HS256');
     }
 }
