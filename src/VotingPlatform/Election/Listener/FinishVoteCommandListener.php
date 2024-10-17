@@ -10,15 +10,9 @@ use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\VoteChoice;
 use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VoteResult;
-use App\Mailer\MailerService;
-use App\Mailer\Message\Renaissance\VotingPlatform\VotingPlatformConsultationVoteConfirmationMessage;
-use App\Mailer\Message\Renaissance\VotingPlatform\VotingPlatformDefaultVoteConfirmationMessage;
-use App\Mailer\Message\VotingPlatformElectionVoteConfirmationMessage;
-use App\Mailer\Message\VotingPlatformVoteStatusesVoteConfirmationMessage;
 use App\Repository\VotingPlatform\CandidateGroupRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoterRepository;
-use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\Election\Event\NewVote;
 use App\VotingPlatform\Election\VoteCommand\VoteCommand;
 use App\VotingPlatform\Election\VoteCommandStateEnum;
@@ -31,33 +25,15 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class FinishVoteCommandListener implements EventSubscriberInterface
 {
-    private $entityManager;
-    private $security;
-    private $voterRepository;
-    private $electionRepository;
-    private $candidateGroupRepository;
-    private $storage;
-    private $mailer;
-    private $eventDispatcher;
-
     public function __construct(
-        EntityManagerInterface $entityManager,
-        Security $security,
-        VoterRepository $voterRepository,
-        ElectionRepository $electionRepository,
-        CandidateGroupRepository $candidateGroupRepository,
-        VoteCommandStorage $storage,
-        MailerService $transactionalMailer,
-        EventDispatcherInterface $eventDispatcher,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly Security $security,
+        private readonly VoterRepository $voterRepository,
+        private readonly ElectionRepository $electionRepository,
+        private readonly CandidateGroupRepository $candidateGroupRepository,
+        private readonly VoteCommandStorage $storage,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
-        $this->entityManager = $entityManager;
-        $this->security = $security;
-        $this->voterRepository = $voterRepository;
-        $this->electionRepository = $electionRepository;
-        $this->candidateGroupRepository = $candidateGroupRepository;
-        $this->storage = $storage;
-        $this->mailer = $transactionalMailer;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public static function getSubscribedEvents(): array
@@ -117,9 +93,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
 
         $this->saveVoterKeyInSession($voterKey);
 
-        $this->sendVoteConfirmationEmail($vote, $voterKey);
-
-        $this->eventDispatcher->dispatch(new NewVote($election, $voter));
+        $this->eventDispatcher->dispatch(new NewVote($election, $voter, $voterKey));
     }
 
     private function getVoter(Adherent $adherent, Election $election): Voter
@@ -173,29 +147,6 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         }
 
         return $voteResult;
-    }
-
-    private function sendVoteConfirmationEmail(Vote $vote, string $voterKey): void
-    {
-        $designation = $vote->getElection()->getDesignation();
-
-        switch ($designation->getType()) {
-            case DesignationTypeEnum::POLL:
-                $message = VotingPlatformVoteStatusesVoteConfirmationMessage::create($vote, $voterKey);
-                break;
-            case DesignationTypeEnum::CONSULTATION:
-                $message = VotingPlatformConsultationVoteConfirmationMessage::create($vote);
-                break;
-            default:
-                if ($designation->isRenaissanceElection()) {
-                    $message = VotingPlatformDefaultVoteConfirmationMessage::create($vote, $voterKey);
-                } else {
-                    $message = VotingPlatformElectionVoteConfirmationMessage::create($vote, $voterKey);
-                }
-                break;
-        }
-
-        $this->mailer->sendMessage($message);
     }
 
     private function saveVoterKeyInSession(string $voterKey): void

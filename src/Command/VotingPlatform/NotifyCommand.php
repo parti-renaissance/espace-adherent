@@ -7,7 +7,7 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\VotersList;
 use App\Mailer\MailerService;
-use App\Mailer\Message\Renaissance\VotingPlatform\VotingPlatformResultsReadyMessage;
+use App\Mailer\Message\Renaissance\VotingPlatform\ResultsReadyMessage;
 use App\Repository\CommitteeElectionRepository;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\VotingPlatform\DesignationRepository;
@@ -108,7 +108,7 @@ class NotifyCommand extends Command
         foreach ($designations as $designation) {
             foreach ($this->electionRepository->findAllForDesignation($designation) as $election) {
                 $this->notifyVotersOfElection($election, function (Election $election, array $adherents) {
-                    return VotingPlatformResultsReadyMessage::create(
+                    return ResultsReadyMessage::create(
                         $election,
                         $adherents,
                         $this->generateResultPageUrl($election)

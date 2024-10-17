@@ -2,7 +2,7 @@
 
 namespace App\VotingPlatform\Listener;
 
-use App\VotingPlatform\Designation\DesignationTypeEnum;
+use App\VotingPlatform\Election\Event\NewVote;
 use App\VotingPlatform\Notifier\ElectionNotifier;
 use App\VotingPlatform\Notifier\Event\CommitteeElectionCandidacyPeriodIsOverEvent;
 use App\VotingPlatform\Notifier\Event\VotingPlatformElectionVoteIsOpenEvent;
@@ -13,11 +13,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class NotifierListener implements EventSubscriberInterface
 {
-    private $notifier;
-
-    public function __construct(ElectionNotifier $notifier)
+    public function __construct(private readonly ElectionNotifier $notifier)
     {
-        $this->notifier = $notifier;
     }
 
     public static function getSubscribedEvents(): array
@@ -29,17 +26,16 @@ class NotifierListener implements EventSubscriberInterface
             VotingPlatformElectionVoteIsOpenEvent::class => 'onVoteOpen',
             VotingPlatformElectionVoteIsOverEvent::class => 'onVoteClose',
             VotingPlatformSecondRoundNotificationEvent::class => 'onVoteSecondRound',
+            NewVote::class => 'onVoteCreated',
         ];
     }
 
     public function onVoteOpen(VotingPlatformElectionVoteIsOpenEvent $event): void
     {
         $election = $event->getElection();
+        $designation = $election->getDesignation();
 
-        if (
-            DesignationTypeEnum::COMMITTEE_SUPERVISOR !== $election->getDesignationType()
-            || $election->getDesignation()->isLimited()
-        ) {
+        if (!$designation->isCommitteeSupervisorType() || $election->getDesignation()->isLimited()) {
             $this->notifier->notifyElectionVoteIsOpen($election);
         }
     }
@@ -66,5 +62,10 @@ class NotifierListener implements EventSubscriberInterface
     public function onVoteSecondRound(VotingPlatformSecondRoundNotificationEvent $event): void
     {
         $this->notifier->notifyElectionSecondRound($event->getElection());
+    }
+
+    public function onVoteCreated(NewVote $event): void
+    {
+        $this->notifier->notifyVoteConfirmation($event->election, $event->voter, $event->voterKey);
     }
 }

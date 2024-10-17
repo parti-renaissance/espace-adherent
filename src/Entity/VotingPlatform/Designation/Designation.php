@@ -206,8 +206,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     /**
      * @var string
      */
-    #[ORM\Column(options: ['default' => self::DENOMINATION_DESIGNATION])]
-    private $denomination = self::DENOMINATION_DESIGNATION;
+    #[ORM\Column(options: ['default' => self::DENOMINATION_ELECTION])]
+    private $denomination = self::DENOMINATION_ELECTION;
 
     /**
      * @var array|null
@@ -222,7 +222,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     private ?string $description = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private $notifications = 15;
+    private $notifications = self::NOTIFICATION_VOTE_OPENED + self::NOTIFICATION_RESULT_READY + self::NOTIFICATION_VOTE_REMINDER;
 
     #[ORM\Column(type: 'boolean')]
     private bool $isBlankVoteEnabled = true;
@@ -656,11 +656,6 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         return DesignationTypeEnum::NATIONAL_COUNCIL === $this->type;
     }
 
-    public function isRenaissanceElection(): bool
-    {
-        return \in_array($this->type, DesignationTypeEnum::RENAISSANCE_TYPES, true);
-    }
-
     public function getDenomination(bool $withDeterminer = false, bool $ucfirst = false): string
     {
         if ($withDeterminer) {
@@ -833,7 +828,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[Groups(['designation_read'])]
     public function isFullyEditable(): bool
     {
-        return !$this->isCanceled() && $this->getVoteStartDate() > (new \DateTime('+ 3 days'));
+        return !$this->isCanceled() && $this->getVoteStartDate() > (new \DateTime('+2 days'));
     }
 
     #[Groups(['designation_read'])]

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Mailer\Message;
+namespace App\Mailer\Message\Renaissance\VotingPlatform;
 
 use App\Entity\Adherent;
 use App\Entity\VotingPlatform\Election;
+use App\Mailer\Message\Renaissance\AbstractRenaissanceMessage;
 use Ramsey\Uuid\Uuid;
 
-final class VotingPlatformElectionVoteIsOpenMessage extends AbstractVotingPlatformMessage
+abstract class AbstractIsOpenMessage extends AbstractRenaissanceMessage
 {
     /**
      * @param Adherent[] $adherents
@@ -15,16 +16,17 @@ final class VotingPlatformElectionVoteIsOpenMessage extends AbstractVotingPlatfo
     {
         $first = array_shift($adherents);
 
-        $message = new self(
+        $message = new static(
             Uuid::uuid4(),
             $first->getEmailAddress(),
             $first->getFullName(),
-            \sprintf('[%s] Le vote est ouvert !', self::getMailSubjectPrefix($election->getDesignation())),
+            static::generateSubject(),
             [
-                'vote_end_date' => static::formatDate($election->getVoteEndDate(), 'EEEE d MMMM y, HH\'h\'mm'),
-                'name' => $election->getElectionEntityName(),
-                'election_type' => $election->getDesignationType(),
-                'page_url' => $url,
+                'vote_title' => $election->getTitle(),
+                'vote_end_date' => static::formatDate($election->getVoteEndDate(), 'd MMMM y'),
+                'vote_end_hour' => static::formatDate($election->getVoteEndDate(), 'HH\'h\'mm'),
+                'description' => nl2br($election->getDesignation()->getDescription() ?? ''),
+                'primary_link' => $url,
             ],
             [
                 'first_name' => $first->getFirstName(),
@@ -39,4 +41,6 @@ final class VotingPlatformElectionVoteIsOpenMessage extends AbstractVotingPlatfo
 
         return $message;
     }
+
+    abstract protected static function generateSubject(): string;
 }

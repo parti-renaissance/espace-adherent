@@ -8,22 +8,10 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class NewVote extends Event
 {
-    private $election;
-    private $voter;
-
-    public function __construct(Election $election, Voter $voter)
-    {
-        $this->election = $election;
-        $this->voter = $voter;
-    }
-
-    public function getElection(): Election
-    {
-        return $this->election;
-    }
-
-    public function getVoter(): Voter
-    {
-        return $this->voter;
+    public function __construct(
+        public readonly Election $election,
+        public readonly Voter $voter,
+        public readonly string $voterKey,
+    ) {
     }
 }

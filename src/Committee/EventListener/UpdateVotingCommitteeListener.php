@@ -52,15 +52,15 @@ class UpdateVotingCommitteeListener implements EventSubscriberInterface
 
     public function onVoteCreated(NewVote $event): void
     {
-        if (!$event->getElection()->getDesignation()->isCommitteeTypes()) {
+        if (!$event->election->getDesignation()->isCommitteeTypes()) {
             return;
         }
 
-        if (!$committee = $event->getElection()->getElectionEntity()->getCommittee()) {
+        if (!$committee = $event->election->getElectionEntity()->getCommittee()) {
             return;
         }
 
-        if (!$adherent = $event->getVoter()->getAdherent()) {
+        if (!$adherent = $event->voter->getAdherent()) {
             return;
         }
 

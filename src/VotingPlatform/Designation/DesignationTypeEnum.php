@@ -55,13 +55,6 @@ final class DesignationTypeEnum extends Enum
         self::TERRITORIAL_ASSEMBLY,
     ];
 
-    public const RENAISSANCE_TYPES = [
-        self::CONSULTATION,
-        self::LOCAL_ELECTION,
-        self::COMMITTEE_SUPERVISOR,
-        self::TERRITORIAL_ASSEMBLY,
-    ];
-
     public const NATIONAL_TYPES = [
         self::POLL,
         self::CONSULTATION,
