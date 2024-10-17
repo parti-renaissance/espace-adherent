@@ -34,7 +34,7 @@ class CampaignHistoryRepository extends ServiceEntityRepository
     public function findPhoningCampaignAverageCallingTime(Campaign $campaign): int
     {
         return (int) $this->createQueryBuilder('campaignHistory')
-            ->select('AVG(TIME_TO_SEC(TIMEDIFF(campaignHistory.finishAt, campaignHistory.beginAt))) AS average_calling_time')
+            ->select('ABS(AVG(TIMESTAMPDIFF(SECOND, campaignHistory.finishAt, campaignHistory.beginAt))) AS average_calling_time')
             ->where('campaignHistory.campaign = :campaign AND campaignHistory.status != :send')
             ->setParameters([
                 'campaign' => $campaign,

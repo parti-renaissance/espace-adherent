@@ -561,21 +561,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         ;
     }
 
-    /**
-     * @return CommitteeMembership[]
-     */
-    public function findVotingForSupervisorMembershipsToNotify(Committee $committee, Designation $designation): array
-    {
-        return $this->createQueryBuilderForVotingMemberships($committee, $designation, false)
-            ->innerJoin('adherent.subscriptionTypes', 'subscription_type', Join::WITH, 'subscription_type.code = :subscription_code')
-            ->andWhere('adherent.notifiedForElection = :false')
-            ->setParameter('subscription_code', SubscriptionTypeEnum::LOCAL_HOST_EMAIL)
-            ->setParameter('false', false)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     public function committeeHasVotersForElection(Committee $committee, Designation $designation): bool
     {
         return 0 < (int) $this->createQueryBuilderForVotingMemberships($committee, $designation, false)

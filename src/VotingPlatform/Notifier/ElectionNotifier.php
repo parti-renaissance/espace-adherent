@@ -9,14 +9,13 @@ use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\Voter;
 use App\Mailer\MailerService;
 use App\Mailer\Message\CommitteeElectionCandidacyPeriodIsOverMessage;
-use App\Mailer\Message\Renaissance\VotingPlatform\VotingPlatformLocalElectionVoteIsOpenMessage;
-use App\Mailer\Message\Renaissance\VotingPlatform\VotingPlatformLocalElectionVoteIsOverMessage;
+use App\Mailer\Message\Renaissance\VotingPlatform\ConsultationIsOpenMessage;
+use App\Mailer\Message\Renaissance\VotingPlatform\ResultsReadyMessage;
+use App\Mailer\Message\Renaissance\VotingPlatform\VoteConfirmationMessage;
+use App\Mailer\Message\Renaissance\VotingPlatform\VoteIsOpenMessage;
+use App\Mailer\Message\Renaissance\VotingPlatform\VoteReminder1DMessage;
+use App\Mailer\Message\Renaissance\VotingPlatform\VoteReminder1HMessage;
 use App\Mailer\Message\VotingPlatformElectionSecondRoundNotificationMessage;
-use App\Mailer\Message\VotingPlatformElectionVoteIsOpenMessage;
-use App\Mailer\Message\VotingPlatformElectionVoteIsOverMessage;
-use App\Mailer\Message\VotingPlatformVoteReminderMessage;
-use App\Mailer\Message\VotingPlatformVoteStatusesIsOpenMessage;
-use App\Mailer\Message\VotingPlatformVoteStatusesIsOverMessage;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,15 +46,11 @@ class ElectionNotifier
         $this->batchSendEmail(
             $getRecipientsCallback,
             function (array $recipients) use ($election, $electionType, $url) {
-                if (DesignationTypeEnum::POLL === $electionType) {
-                    return VotingPlatformVoteStatusesIsOpenMessage::create($election, $recipients, $url);
+                if (DesignationTypeEnum::CONSULTATION === $electionType) {
+                    return ConsultationIsOpenMessage::create($election, $recipients, $url);
                 }
 
-                if ($election->getDesignation()->isRenaissanceElection()) {
-                    return VotingPlatformLocalElectionVoteIsOpenMessage::create($election, $recipients, $url);
-                }
-
-                return VotingPlatformElectionVoteIsOpenMessage::create($election, $recipients, $url);
+                return VoteIsOpenMessage::create($election, $recipients, $url);
             }
         );
 
@@ -77,18 +72,29 @@ class ElectionNotifier
         ));
     }
 
-    public function notifyVotingPlatformVoteReminder(Election $election, Adherent $adherent): void
+    public function notifyVotingPlatformVoteReminder(Election $election, int $notification): void
     {
-        if (!$this->isValid($election, Designation::NOTIFICATION_VOTE_REMINDER)) {
+        if (!$this->isValid($election, $notification)) {
             return;
         }
 
-        $this->transactionalMailer->sendMessage(VotingPlatformVoteReminderMessage::create(
-            $election,
-            $adherent,
-            $this->getUrl($election)
-        ));
+        $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
+            return $this->getAdherentForElection($election, $offset, $limit);
+        };
+        $url = $this->getUrl($election);
 
+        $this->batchSendEmail(
+            $getRecipientsCallback,
+            function (array $recipients) use ($notification, $election, $url) {
+                if (Designation::NOTIFICATION_VOTE_REMINDER_1H === $notification) {
+                    return VoteReminder1HMessage::create($election, $recipients, $url);
+                }
+
+                return VoteReminder1DMessage::create($election, $recipients, $url);
+            }
+        );
+
+        $election->markSentNotification($notification);
         $this->entityManager->flush();
     }
 
@@ -98,7 +104,15 @@ class ElectionNotifier
             return;
         }
 
-        $electionType = $election->getDesignationType();
+        $designation = $election->getDesignation();
+        /**
+         * If the election does not have a delay for displaying the results, we don't send the email for availability of the results here.
+         * The email will be sent by notify CronJob.
+         */
+        if ($designation->isNotificationEnabled(Designation::NOTIFICATION_RESULT_READY) && !$designation->getResultScheduleDelay()) {
+            return;
+        }
+
         $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
             return $this->getAdherentForElection($election, $offset, $limit);
         };
@@ -107,20 +121,35 @@ class ElectionNotifier
 
         $this->batchSendEmail(
             $getRecipientsCallback,
-            function (array $recipients) use ($election, $electionType, $url) {
-                if (DesignationTypeEnum::POLL === $electionType) {
-                    return VotingPlatformVoteStatusesIsOverMessage::create($election, $recipients, $url);
-                }
-
-                if ($election->getDesignation()->isRenaissanceElection()) {
-                    return VotingPlatformLocalElectionVoteIsOverMessage::create($election, $recipients, $url);
-                }
-
-                return VotingPlatformElectionVoteIsOverMessage::create($election, $recipients, $url);
+            function (array $recipients) use ($election, $url) {
+                return ResultsReadyMessage::create($election, $recipients, $url);
             }
         );
 
         $election->markSentNotification(Designation::NOTIFICATION_VOTE_CLOSED);
+        $this->entityManager->flush();
+    }
+
+    public function notifyForForElectionResults(Election $election): void
+    {
+        if (!$this->isValid($election, Designation::NOTIFICATION_RESULT_READY)) {
+            return;
+        }
+
+        $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
+            return $this->getAdherentForElection($election, $offset, $limit);
+        };
+
+        $url = $this->getUrl($election);
+
+        $this->batchSendEmail(
+            $getRecipientsCallback,
+            function (array $recipients) use ($election, $url) {
+                return ResultsReadyMessage::create($election, $recipients, $url);
+            }
+        );
+
+        $election->markSentNotification(Designation::NOTIFICATION_RESULT_READY);
         $this->entityManager->flush();
     }
 
@@ -146,6 +175,16 @@ class ElectionNotifier
         }
     }
 
+    public function notifyVoteConfirmation(Election $election, Voter $voter, string $voterKey): void
+    {
+        $this->transactionalMailer->sendMessage(VoteConfirmationMessage::create(
+            $election,
+            $voter->getAdherent(),
+            $voterKey,
+            $this->getUrl($election)
+        ));
+    }
+
     /**
      * @return Adherent[]
      */
@@ -159,29 +198,7 @@ class ElectionNotifier
 
     private function getUrl(Election $election): string
     {
-        $designation = $election->getDesignation();
-
-        if ($designation->isPollType()) {
-            return $this->urlGenerator->generate('app_poll_election_index', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL);
-        }
-
-        if ($designation->isLocalElectionType()) {
-            return $this->urlGenerator->generate('app_renaissance_departmental_election_lists', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL);
-        }
-
-        if ($designation->isLocalElectionTypes()) {
-            return $this->urlGenerator->generate('app_renaissance_local_election_home', [], UrlGeneratorInterface::ABSOLUTE_URL);
-        }
-
-        if ($designation->isTerritorialAssemblyType()) {
-            return $this->urlGenerator->generate('app_sas_election_index', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL);
-        }
-
-        if ($designation->isCommitteeSupervisorType() && $election->getElectionEntity()->getCommittee()) {
-            return $this->urlGenerator->generate('app_renaissance_committee_election_candidacies_lists_view', ['uuid' => $election->getElectionEntity()->getCommittee()->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL);
-        }
-
-        return $this->urlGenerator->generate($designation->isRenaissanceElection() ? 'app_renaissance_adherent_space' : 'homepage', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->urlGenerator->generate('app_sas_election_index', ['uuid' => $election->getDesignation()->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     private function batchSendEmail(callable $getRecipientsCallback, callable $createMessageCallback): void
