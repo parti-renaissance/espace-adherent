@@ -91,7 +91,7 @@ class ConfigureCommand extends Command
                 $this->configureLocalElection($designation);
             } elseif ($designation->isLocalPollType()) {
                 $this->configureLocalPoll($designation);
-            } elseif ($designation->isConsultationType()) {
+            } elseif ($designation->isConsultationType() || $designation->isVoteType()) {
                 $this->configureConsultation($designation);
             } elseif ($designation->isTerritorialAssemblyType()) {
                 $this->configureTerritorialAssembly($designation);

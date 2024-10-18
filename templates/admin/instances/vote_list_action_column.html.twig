@@ -4,6 +4,6 @@
     {% set filters = filters|merge({committee: {value: object.election.electionEntity.committee.id}}) %}
 {% endif %}
 
-<a href="{{ path('admin_app_algolia_algoliacandidature_list', {filter: filters}) }}" class="btn btn-sm btn-default" title="Candidatures">
+<a href="#" class="btn btn-sm btn-default" title="Candidatures">
     <i class="fa fa-users"></i>
 </a>

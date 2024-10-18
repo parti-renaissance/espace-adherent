@@ -9,13 +9,16 @@ use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\Voter;
 use App\Mailer\MailerService;
 use App\Mailer\Message\CommitteeElectionCandidacyPeriodIsOverMessage;
+use App\Mailer\Message\Renaissance\VotingPlatform\ConsultationAnnouncementMessage;
 use App\Mailer\Message\Renaissance\VotingPlatform\ConsultationIsOpenMessage;
 use App\Mailer\Message\Renaissance\VotingPlatform\ResultsReadyMessage;
+use App\Mailer\Message\Renaissance\VotingPlatform\VoteAnnouncementMessage;
 use App\Mailer\Message\Renaissance\VotingPlatform\VoteConfirmationMessage;
 use App\Mailer\Message\Renaissance\VotingPlatform\VoteIsOpenMessage;
 use App\Mailer\Message\Renaissance\VotingPlatform\VoteReminder1DMessage;
 use App\Mailer\Message\Renaissance\VotingPlatform\VoteReminder1HMessage;
 use App\Mailer\Message\VotingPlatformElectionSecondRoundNotificationMessage;
+use App\Repository\AdherentRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,23 +31,18 @@ class ElectionNotifier
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly EntityManagerInterface $entityManager,
         private readonly VoterRepository $voterRepository,
+        private readonly AdherentRepository $adherentRepository,
     ) {
     }
 
     public function notifyElectionVoteIsOpen(Election $election): void
     {
-        if (!$this->isValid($election, Designation::NOTIFICATION_VOTE_OPENED)) {
-            return;
-        }
-
         $electionType = $election->getDesignationType();
-        $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
-            return $this->getAdherentForElection($election, $offset, $limit);
-        };
         $url = $this->getUrl($election);
 
-        $this->batchSendEmail(
-            $getRecipientsCallback,
+        $this->sendNotification(
+            Designation::NOTIFICATION_VOTE_OPENED,
+            $election,
             function (array $recipients) use ($election, $electionType, $url) {
                 if (DesignationTypeEnum::CONSULTATION === $electionType) {
                     return ConsultationIsOpenMessage::create($election, $recipients, $url);
@@ -53,10 +51,111 @@ class ElectionNotifier
                 return VoteIsOpenMessage::create($election, $recipients, $url);
             }
         );
+    }
 
-        $election->markSentNotification(Designation::NOTIFICATION_VOTE_OPENED);
+    public function notifyVoteAnnouncement(Election $election): void
+    {
+        $electionType = $election->getDesignationType();
+        $url = $this->getUrl($election);
 
-        $this->entityManager->flush();
+        $this->sendNotification(
+            Designation::NOTIFICATION_VOTE_ANNOUNCEMENT,
+            $election,
+            function (array $recipients) use ($election, $electionType, $url) {
+                if (DesignationTypeEnum::CONSULTATION === $electionType) {
+                    return ConsultationAnnouncementMessage::create($election, $recipients, $url);
+                }
+
+                return VoteAnnouncementMessage::create($election, $recipients, $url);
+            }
+        );
+    }
+
+    public function notifyVoteReminder(Election $election, int $notification): void
+    {
+        if (!\in_array($notification, [Designation::NOTIFICATION_VOTE_REMINDER_1D, Designation::NOTIFICATION_VOTE_REMINDER_1H], true)) {
+            return;
+        }
+
+        $zones = $election->getDesignation()->getZones()->toArray();
+        $url = $this->getUrl($election);
+
+        $this->sendNotification(
+            $notification,
+            $election,
+            function (array $recipients) use ($election, $url, $notification) {
+                if (Designation::NOTIFICATION_VOTE_REMINDER_1H === $notification) {
+                    return VoteReminder1HMessage::create($election, $recipients, $url);
+                }
+
+                return VoteReminder1DMessage::create($election, $recipients, $url);
+            },
+            $zones ? function (int $offset, int $limit) use ($election, $zones): array {
+                return $this->adherentRepository->getAllInZonesAndNotVoted($election, $zones, $offset, $limit);
+            } : null
+        );
+    }
+
+    public function notifyElectionVoteIsOver(Election $election): void
+    {
+        $designation = $election->getDesignation();
+        /**
+         * If the election does not have a delay for displaying the results, we don't send the email for availability of the results here.
+         * The email will be sent by notify CronJob.
+         */
+        if ($designation->isNotificationEnabled(Designation::NOTIFICATION_RESULT_READY) && !$designation->getResultScheduleDelay()) {
+            return;
+        }
+
+        $url = $this->getUrl($election);
+
+        $this->sendNotification(
+            Designation::NOTIFICATION_VOTE_CLOSED,
+            $election,
+            function (array $recipients) use ($election, $url) {
+                return ResultsReadyMessage::create($election, $recipients, $url);
+            }
+        );
+    }
+
+    public function notifyForForElectionResults(Election $election): void
+    {
+        $url = $this->getUrl($election);
+
+        $this->sendNotification(
+            Designation::NOTIFICATION_RESULT_READY,
+            $election,
+            function (array $recipients) use ($election, $url) {
+                return ResultsReadyMessage::create($election, $recipients, $url);
+            }
+        );
+    }
+
+    public function notifyElectionSecondRound(Election $election): void
+    {
+        if (!$election->getDesignation()->isSecondRoundEnabled()) {
+            return;
+        }
+
+        $url = $this->getUrl($election);
+
+        $this->sendNotification(
+            Designation::NOTIFICATION_SECOND_ROUND,
+            $election,
+            function (array $recipients) use ($election, $url) {
+                return VotingPlatformElectionSecondRoundNotificationMessage::create($election, $recipients, $url);
+            }
+        );
+    }
+
+    public function notifyVoteConfirmation(Election $election, Voter $voter, string $voterKey): void
+    {
+        $this->transactionalMailer->sendMessage(VoteConfirmationMessage::create(
+            $election,
+            $voter->getAdherent(),
+            $voterKey,
+            $this->getUrl($election)
+        ));
     }
 
     public function notifyCommitteeElectionCandidacyPeriodIsOver(
@@ -72,117 +171,29 @@ class ElectionNotifier
         ));
     }
 
-    public function notifyVotingPlatformVoteReminder(Election $election, int $notification): void
+    private function sendNotification(int $notification, Election $election, callable $createMessageCallback, ?callable $getRecipientsCallback = null): void
     {
         if (!$this->isValid($election, $notification)) {
             return;
         }
 
-        $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
-            return $this->getAdherentForElection($election, $offset, $limit);
-        };
-        $url = $this->getUrl($election);
-
-        $this->batchSendEmail(
-            $getRecipientsCallback,
-            function (array $recipients) use ($notification, $election, $url) {
-                if (Designation::NOTIFICATION_VOTE_REMINDER_1H === $notification) {
-                    return VoteReminder1HMessage::create($election, $recipients, $url);
-                }
-
-                return VoteReminder1DMessage::create($election, $recipients, $url);
+        if (!$getRecipientsCallback) {
+            $designation = $election->getDesignation();
+            if ($zones = $designation->getZones()->toArray()) {
+                $getRecipientsCallback = function (int $offset, int $limit) use ($zones): array {
+                    return $this->adherentRepository->getAllInZones($zones, true, false, $offset, $limit);
+                };
+            } else {
+                $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
+                    return $this->getAdherentForElection($election, $offset, $limit);
+                };
             }
-        );
+        }
 
-        $election->markSentNotification($notification);
+        $this->batchSendEmail($getRecipientsCallback, $createMessageCallback);
+
+        $election->markSentNotification(Designation::NOTIFICATION_VOTE_OPENED);
         $this->entityManager->flush();
-    }
-
-    public function notifyElectionVoteIsOver(Election $election): void
-    {
-        if (!$this->isValid($election, Designation::NOTIFICATION_VOTE_CLOSED)) {
-            return;
-        }
-
-        $designation = $election->getDesignation();
-        /**
-         * If the election does not have a delay for displaying the results, we don't send the email for availability of the results here.
-         * The email will be sent by notify CronJob.
-         */
-        if ($designation->isNotificationEnabled(Designation::NOTIFICATION_RESULT_READY) && !$designation->getResultScheduleDelay()) {
-            return;
-        }
-
-        $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
-            return $this->getAdherentForElection($election, $offset, $limit);
-        };
-
-        $url = $this->getUrl($election);
-
-        $this->batchSendEmail(
-            $getRecipientsCallback,
-            function (array $recipients) use ($election, $url) {
-                return ResultsReadyMessage::create($election, $recipients, $url);
-            }
-        );
-
-        $election->markSentNotification(Designation::NOTIFICATION_VOTE_CLOSED);
-        $this->entityManager->flush();
-    }
-
-    public function notifyForForElectionResults(Election $election): void
-    {
-        if (!$this->isValid($election, Designation::NOTIFICATION_RESULT_READY)) {
-            return;
-        }
-
-        $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
-            return $this->getAdherentForElection($election, $offset, $limit);
-        };
-
-        $url = $this->getUrl($election);
-
-        $this->batchSendEmail(
-            $getRecipientsCallback,
-            function (array $recipients) use ($election, $url) {
-                return ResultsReadyMessage::create($election, $recipients, $url);
-            }
-        );
-
-        $election->markSentNotification(Designation::NOTIFICATION_RESULT_READY);
-        $this->entityManager->flush();
-    }
-
-    public function notifyElectionSecondRound(Election $election): void
-    {
-        if (!$election->getDesignation()->isSecondRoundEnabled()) {
-            return;
-        }
-
-        if (!$this->isValid($election, Designation::NOTIFICATION_SECOND_ROUND)) {
-            return;
-        }
-
-        if ($adherents = $this->getAdherentForElection($election)) {
-            $this->transactionalMailer->sendMessage(VotingPlatformElectionSecondRoundNotificationMessage::create(
-                $election,
-                $adherents,
-                $this->getUrl($election)
-            ));
-
-            $election->markSentNotification(Designation::NOTIFICATION_SECOND_ROUND);
-            $this->entityManager->flush();
-        }
-    }
-
-    public function notifyVoteConfirmation(Election $election, Voter $voter, string $voterKey): void
-    {
-        $this->transactionalMailer->sendMessage(VoteConfirmationMessage::create(
-            $election,
-            $voter->getAdherent(),
-            $voterKey,
-            $this->getUrl($election)
-        ));
     }
 
     /**

@@ -205,4 +205,24 @@ class ElectionRepository extends ServiceEntityRepository
 
         return $qb->getResult();
     }
+
+    public function findIncomingElections(\DateTimeInterface $date)
+    {
+        return $this->createQueryBuilder('election')
+            ->addSelect('designation')
+            ->innerJoin('election.designation', 'designation')
+            ->where('designation.voteStartDate BETWEEN :start_date AND :end_date')
+            ->andWhere('election.status = :open')
+            ->andWhere('designation.isCanceled = false')
+            ->andWhere('BIT_AND(designation.notifications, :notification) > 0 AND BIT_AND(election.notificationsSent, :notification) = 0')
+            ->setParameters([
+                'start_date' => $date,
+                'end_date' => (clone $date)->modify('+2 days'),
+                'open' => ElectionStatusEnum::OPEN,
+                'notification' => Designation::NOTIFICATION_VOTE_ANNOUNCEMENT,
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

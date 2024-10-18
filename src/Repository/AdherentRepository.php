@@ -26,6 +26,10 @@ use App\Entity\Pap\CampaignHistory as PapCampaignHistory;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Phoning\CampaignHistory;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Entity\VotingPlatform\Election;
+use App\Entity\VotingPlatform\ElectionRound;
+use App\Entity\VotingPlatform\Vote;
+use App\Entity\VotingPlatform\Voter;
 use App\Entity\VotingPlatform\VotersList;
 use App\Membership\MembershipSourceEnum;
 use App\Pap\CampaignHistoryStatusEnum as PapCampaignHistoryStatusEnum;
@@ -937,15 +941,57 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    public function getAllInZones(array $zones, bool $adherentRenaissance, bool $sympathizerRenaissance): array
+    public function getAllInZones(array $zones, bool $adherentRenaissance, bool $sympathizerRenaissance, ?int $offset = null, ?int $limit = null): array
     {
         if (!$zones) {
             return [];
         }
 
-        return $this
+        $qb = $this
             ->createQueryBuilderForZones($zones, $adherentRenaissance, $sympathizerRenaissance)
             ->select('PARTIAL adherent.{id, uuid, emailAddress, source, firstName, lastName, lastMembershipDonation}')
+        ;
+
+        if (null !== $offset && null !== $limit) {
+            $qb
+                ->setMaxResults($limit)
+                ->setFirstResult($offset)
+            ;
+        }
+
+        return $qb
+            ->getQuery()
+            ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+            ->getResult()
+        ;
+    }
+
+    public function getAllInZonesAndNotVoted(Election $election, array $zones, ?int $offset = null, ?int $limit = null): array
+    {
+        if (!$zones) {
+            return [];
+        }
+
+        $qb = $this
+            ->createQueryBuilderForZones($zones, true, false)
+            ->select('PARTIAL adherent.{id, uuid, emailAddress, source, firstName, lastName, lastMembershipDonation}')
+            ->leftJoin(Voter::class, 'voter', Join::WITH, 'voter.adherent = adherent')
+            ->leftJoin('voter.votersLists', 'voters_lists', Join::WITH, 'voters_lists.election = :election')
+            ->leftJoin(ElectionRound::class, 'election_round', Join::WITH, 'election_round.election = :election')
+            ->leftJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound = election_round')
+            ->andWhere('vote.id IS NULL')
+            ->groupBy('adherent.id')
+            ->setParameter('election', $election)
+        ;
+
+        if (null !== $offset && null !== $limit) {
+            $qb
+                ->setMaxResults($limit)
+                ->setFirstResult($offset)
+            ;
+        }
+
+        return $qb
             ->getQuery()
             ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
             ->getResult()
@@ -977,10 +1023,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         bool $sympathizerRenaissance,
     ): QueryBuilder {
         $qb = $this->createQueryBuilder('adherent')
-            ->where('adherent.source = :source')
             ->andWhere('adherent.status = :status')
             ->setParameters([
-                'source' => MembershipSourceEnum::RENAISSANCE,
                 'status' => Adherent::ENABLED,
             ])
         ;
