@@ -2,7 +2,6 @@
 
 namespace App\Admin\VotingPlatform\Designation;
 
-use App\Adherent\Tag\TagEnum;
 use App\Admin\AbstractAdmin;
 use App\Entity\Geo\Zone;
 use App\Entity\VotingPlatform\Designation\CandidacyPool\CandidacyPool;
@@ -86,10 +85,10 @@ class DesignationAdmin extends AbstractAdmin
                         'help' => 'Obligatoire pour les élections départementales',
                         'btn_add' => false,
                     ])
-                    ->add('target', ChoiceType::class, [
-                        'label' => 'Personnes concernées',
-                        'choices' => array_combine($tags = TagEnum::getAdherentTags(true), $tags),
-                        'multiple' => true,
+                    ->add('targetYear', ChoiceType::class, [
+                        'required' => false,
+                        'label' => 'Collège électoral : Adhérent à jour à partir de :',
+                        'choices' => array_combine($years = range(2022, date('Y')), $years),
                     ])
                 ->end()
                 ->with('Candidature 🎎', ['class' => 'col-md-6', 'box_class' => 'box box-solid box-default'])
@@ -139,7 +138,7 @@ class DesignationAdmin extends AbstractAdmin
             ->end()
             ->tab('Notifications 📯')
                 ->with('Envoi d\'email')
-                    ->add('notifications', DesignationNotificationType::class, ['required' => false])
+                    ->add('notifications', DesignationNotificationType::class, ['label' => false, 'required' => false])
                 ->end()
             ->end()
             ->tab('Questionnaire ❓')

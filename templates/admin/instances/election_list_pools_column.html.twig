@@ -6,10 +6,4 @@
     {% if object.designation.isCommitteeTypes() and object.electionEntity.committee %}
         {% set filters = filters|merge({committee: {value: object.electionEntity.committee.id}}) %}
     {% endif %}
-
-    <ul>
-        {% for pool in object.electionPools %}
-            <li>{{ get_election_pool_title_key(pool)|trans }} : <a href="{{ path('admin_app_algolia_algoliacandidature_list', {filter: filters}) }}">{{ pool.countCandidateGroups }}</a></li>
-        {% endfor %}
-    </ul>
 {% endblock %}

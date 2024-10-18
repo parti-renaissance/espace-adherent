@@ -86,8 +86,10 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         'Ouverture du vote' => self::NOTIFICATION_VOTE_OPENED,
         'Fermeture du vote' => self::NOTIFICATION_VOTE_CLOSED,
         'Résultats disponible' => self::NOTIFICATION_RESULT_READY,
-        'Rappel de vote' => self::NOTIFICATION_VOTE_REMINDER_1D,
+        'Rappel de vote J-1' => self::NOTIFICATION_VOTE_REMINDER_1D,
+        'Rappel de vote H-1' => self::NOTIFICATION_VOTE_REMINDER_1H,
         'Ouverture du tour bis' => self::NOTIFICATION_SECOND_ROUND,
+        'Annonce du vote J-2' => self::NOTIFICATION_VOTE_ANNOUNCEMENT,
     ];
 
     public const NOTIFICATION_VOTE_OPENED = 1;
@@ -96,6 +98,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     public const NOTIFICATION_SECOND_ROUND = 8;
     public const NOTIFICATION_RESULT_READY = 16;
     public const NOTIFICATION_VOTE_REMINDER_1H = 32;
+    public const NOTIFICATION_VOTE_ANNOUNCEMENT = 64;
 
     /**
      * @var string|null
@@ -223,7 +226,12 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     private ?string $description = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private $notifications = self::NOTIFICATION_VOTE_OPENED + self::NOTIFICATION_RESULT_READY + self::NOTIFICATION_VOTE_REMINDER_1D + self::NOTIFICATION_VOTE_REMINDER_1H;
+    private ?int $notifications =
+        self::NOTIFICATION_VOTE_OPENED +
+        self::NOTIFICATION_RESULT_READY +
+        self::NOTIFICATION_VOTE_REMINDER_1D +
+        self::NOTIFICATION_VOTE_REMINDER_1H +
+        self::NOTIFICATION_VOTE_ANNOUNCEMENT;
 
     #[ORM\Column(type: 'boolean')]
     private bool $isBlankVoteEnabled = true;
@@ -487,6 +495,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             DesignationTypeEnum::POLL,
             DesignationTypeEnum::LOCAL_POLL,
             DesignationTypeEnum::CONSULTATION,
+            DesignationTypeEnum::VOTE,
             DesignationTypeEnum::TERRITORIAL_ASSEMBLY,
         ], true)) {
             return true;
@@ -595,6 +604,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             DesignationTypeEnum::LOCAL_POLL,
             DesignationTypeEnum::LOCAL_ELECTION,
             DesignationTypeEnum::CONSULTATION,
+            DesignationTypeEnum::VOTE,
         ]);
     }
 
@@ -606,6 +616,11 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     public function isConsultationType(): bool
     {
         return DesignationTypeEnum::CONSULTATION === $this->type;
+    }
+
+    public function isVoteType(): bool
+    {
+        return DesignationTypeEnum::VOTE === $this->type;
     }
 
     public function isTerritorialAssemblyType(): bool
@@ -840,6 +855,18 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             DesignationTypeEnum::TERRITORIAL_ASSEMBLY,
             DesignationTypeEnum::COMMITTEE_SUPERVISOR,
             DesignationTypeEnum::CONSULTATION,
+            DesignationTypeEnum::VOTE,
         ], true);
+    }
+
+    public function initCreationDate(): void
+    {
+        if ($this->getVoteStartDate()) {
+            $electionCreationDate = (clone $this->getVoteStartDate())->modify(\sprintf('-%d days', $this->isCommitteeSupervisorType() ? 15 : 2));
+
+            if ($this->electionCreationDate !== $electionCreationDate) {
+                $this->electionCreationDate = $electionCreationDate;
+            }
+        }
     }
 }

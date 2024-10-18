@@ -15,7 +15,6 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[AsCommand(
@@ -24,8 +23,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 )]
 class NotifyCommand extends Command
 {
-    private SymfonyStyle $io;
-
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly DesignationRepository $designationRepository,
@@ -38,16 +35,12 @@ class NotifyCommand extends Command
         parent::__construct();
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output): void
-    {
-        $this->io = new SymfonyStyle($input, $output);
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $date = new \DateTime();
 
         $this->notifyForEndForCandidacy($date);
+        $this->notifyBeforeVote($date);
         $this->notifyWithReminderToVote($date, Designation::NOTIFICATION_VOTE_REMINDER_1D);
         $this->notifyWithReminderToVote($date, Designation::NOTIFICATION_VOTE_REMINDER_1H);
         $this->notifyForForElectionResults($date);
@@ -59,15 +52,11 @@ class NotifyCommand extends Command
     {
         $designations = $this->designationRepository->getWithFinishCandidacyPeriod($date, [DesignationTypeEnum::COMMITTEE_ADHERENT]);
 
-        $this->io->progressStart();
-
         foreach ($designations as $designation) {
             if (DesignationTypeEnum::COMMITTEE_ADHERENT === $designation->getType()) {
                 $this->notifyCommitteeElections($designation);
             }
         }
-
-        $this->io->progressFinish();
     }
 
     public function notifyCommitteeElections(Designation $designation): void
@@ -87,8 +76,6 @@ class NotifyCommand extends Command
                 $committeeElection->setAdherentNotified(true);
 
                 $this->entityManager->flush();
-
-                $this->io->progressAdvance();
             }
 
             $this->entityManager->clear();
@@ -100,7 +87,16 @@ class NotifyCommand extends Command
         $elections = $this->electionRepository->getElectionsToClose($date, $notification);
 
         foreach ($elections as $election) {
-            $this->electionNotifier->notifyVotingPlatformVoteReminder($election, $notification);
+            $this->electionNotifier->notifyVoteReminder($election, $notification);
+        }
+    }
+
+    private function notifyBeforeVote(\DateTimeInterface $date): void
+    {
+        $elections = $this->electionRepository->findIncomingElections($date);
+
+        foreach ($elections as $election) {
+            $this->electionNotifier->notifyVoteAnnouncement($election);
         }
     }
 

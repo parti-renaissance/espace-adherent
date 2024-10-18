@@ -21,9 +21,10 @@ final class DesignationTypeEnum extends Enum
     public const POLL = 'poll';
     public const LOCAL_POLL = 'local_poll';
     public const LOCAL_ELECTION = 'local_election';
+    public const TERRITORIAL_ASSEMBLY = 'territorial_assembly';
 
     public const CONSULTATION = 'consultation';
-    public const TERRITORIAL_ASSEMBLY = 'territorial_assembly';
+    public const VOTE = 'vote';
 
     public const TITLES = [
         self::COMMITTEE_SUPERVISOR => 'Élection du binôme paritaire d’Animateurs locaux',
@@ -64,5 +65,6 @@ final class DesignationTypeEnum extends Enum
     public const API_AVAILABLE_TYPES = [
         self::COMMITTEE_SUPERVISOR,
         self::CONSULTATION,
+        self::VOTE,
     ];
 }

@@ -1263,7 +1263,7 @@ Feature:
             """
             {
                 "adherent": 6,
-                "sympathizer": 1
+                "sympathizer": 2
             }
             """
         When I send a "POST" request to "/api/v3/adherents/count?scope=president_departmental_assembly" with body:

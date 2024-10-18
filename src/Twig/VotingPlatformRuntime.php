@@ -39,6 +39,7 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
                 DesignationTypeEnum::POLL,
                 DesignationTypeEnum::COMMITTEE_SUPERVISOR,
                 DesignationTypeEnum::CONSULTATION,
+                DesignationTypeEnum::VOTE,
             ];
 
             if (\count($adherent->findActifLocalMandates())) {

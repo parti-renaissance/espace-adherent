@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block voting_platform_subtitle %}
-    La consultation est ouverte du
+    Le vote est ouvert du
     {% if election.isSecondRoundVotePeriodActive %}
         {{ election.voteEndDate|date('d/m/Y \à H:i') }} au {{ election.secondRoundEndDate|date('d/m/Y \à H:i') }}
     {% else %}

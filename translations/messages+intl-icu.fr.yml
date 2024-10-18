@@ -960,6 +960,7 @@ voting_platform.designation.type_poll: Vote des statuts
 voting_platform.designation.type_local_election: Élection départementale
 voting_platform.designation.type_local_poll: Sondage local
 voting_platform.designation.type_consultation: Consultation
+voting_platform.designation.type_vote: Vote
 voting_platform.designation.type_territorial_assembly: Élection du Bureau de l'Assemblée des territoires
 voting_platform.designation.zone_fr: France
 voting_platform.designation.zone_fde: FDE
