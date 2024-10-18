@@ -1661,13 +1661,13 @@ Feature:
 
     Scenario: As a logged-in user I can unregister with empty body
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile"
-        And I add "X-App-Version" header equal to "v5.9.0"
+        And I add "X-App-Version" header equal to "v5.10.0"
         When I send a "POST" request to "/api/v3/profile/unregister"
         Then the response status code should be 200
 
     Scenario: As a logged-in user with new app version I can not unregister with empty body
         Given I am logged with "michelle.dufour@example.ch" via OAuth client "JeMengage Mobile"
-        And I add "X-App-Version" header equal to "v5.10.0"
+        And I add "X-App-Version" header equal to "v5.11.0"
         When I send a "POST" request to "/api/v3/profile/unregister"
         Then the response status code should be 400
 
