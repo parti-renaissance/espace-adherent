@@ -83,6 +83,9 @@ class DonationRequest implements DonationRequestInterface, RecaptchaChallengeInt
 
     private ?int $adherentId = null;
 
+    public ?string $utmSource = null;
+    public ?string $utmCampaign = null;
+
     public function __construct(
         ?string $clientIp = null,
         float $amount = self::DEFAULT_AMOUNT,

@@ -56,6 +56,9 @@ class DonationFactory
             $donation->setDonatedAt($request->getDonatedAt());
         }
 
+        $donation->utmSource = $request->utmSource;
+        $donation->utmCampaign = $request->utmCampaign;
+
         return $donation;
     }
 
