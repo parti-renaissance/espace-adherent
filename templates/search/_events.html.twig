@@ -58,7 +58,7 @@
                         Événement complet
                     </div>
                 {% endif %}
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% if is_granted('ROLE_USER') %}
                     <div class="text--body text--gray icon--with-text l__row--center">
                         {{ 'participants_count'|trans({ count: event.participantsCount }) }}
                     </div>

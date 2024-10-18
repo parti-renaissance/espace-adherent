@@ -6,7 +6,7 @@
         <div class="l__row">
             {% if event.organizer %}
                 <div class="committee-event-organizer text--body text--white">
-                    Organisé par <span class="text--bold">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span>
+                    Organisé par <span class="text--bold">{{ is_granted('ROLE_USER') ? event.organizer.fullName : event.organizer.partialName }}</span>
                     {% if committee is defined and committee %}
                         du comité
                         <a class="link--white" href="{{ path('app_committee_show', {'slug': committee.slug}) }}">
@@ -49,7 +49,7 @@
                 {% endif %}
             {% endif %}
         {% endif %}
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% if is_granted('ROLE_USER') %}
             <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10 committee-event-attendees event-attendees">
                 {{ include('components/participants.html.twig') }}
                 {{ 'participants_count'|trans({ count: event.participantsCount }) }}

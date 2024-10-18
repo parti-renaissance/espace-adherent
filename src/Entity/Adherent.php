@@ -767,10 +767,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_CORRESPONDENT';
         }
 
-        if ($this->isRenaissanceAdherent() || $this->isRenaissanceSympathizer()) {
-            $roles[] = 'ROLE_RENAISSANCE_USER';
-        }
-
         // Must be at the end as it uses $roles array
         if ($this->isAdherentMessageRedactor($roles)) {
             $roles[] = 'ROLE_MESSAGE_REDACTOR';

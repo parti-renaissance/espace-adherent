@@ -54,7 +54,7 @@
                                 {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}
                                     <div class="text--body">Organisé par le comité <span class="text--bold">{{ event.committee.name }}</span></div>
                                 {% elseif event.organizer %}
-                                    <div class="text--body">Organisé par <span class="text--bold">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span></div>
+                                    <div class="text--body">Organisé par <span class="text--bold">{{ is_granted('ROLE_USER') ? event.organizer.fullName : event.organizer.partialName }}</span></div>
                                 {% endif %}
                             </div>
 
