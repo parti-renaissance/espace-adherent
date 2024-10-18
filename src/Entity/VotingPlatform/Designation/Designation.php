@@ -86,15 +86,16 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         'Ouverture du vote' => self::NOTIFICATION_VOTE_OPENED,
         'Fermeture du vote' => self::NOTIFICATION_VOTE_CLOSED,
         'Résultats disponible' => self::NOTIFICATION_RESULT_READY,
-        'Rappel de vote' => self::NOTIFICATION_VOTE_REMINDER,
+        'Rappel de vote' => self::NOTIFICATION_VOTE_REMINDER_1D,
         'Ouverture du tour bis' => self::NOTIFICATION_SECOND_ROUND,
     ];
 
     public const NOTIFICATION_VOTE_OPENED = 1;
     public const NOTIFICATION_VOTE_CLOSED = 2;
-    public const NOTIFICATION_VOTE_REMINDER = 4;
+    public const NOTIFICATION_VOTE_REMINDER_1D = 4;
     public const NOTIFICATION_SECOND_ROUND = 8;
     public const NOTIFICATION_RESULT_READY = 16;
+    public const NOTIFICATION_VOTE_REMINDER_1H = 32;
 
     /**
      * @var string|null
@@ -206,8 +207,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     /**
      * @var string
      */
-    #[ORM\Column(options: ['default' => self::DENOMINATION_DESIGNATION])]
-    private $denomination = self::DENOMINATION_DESIGNATION;
+    #[ORM\Column(options: ['default' => self::DENOMINATION_ELECTION])]
+    private $denomination = self::DENOMINATION_ELECTION;
 
     /**
      * @var array|null
@@ -222,7 +223,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     private ?string $description = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private $notifications = 15;
+    private $notifications = self::NOTIFICATION_VOTE_OPENED + self::NOTIFICATION_RESULT_READY + self::NOTIFICATION_VOTE_REMINDER_1D + self::NOTIFICATION_VOTE_REMINDER_1H;
 
     #[ORM\Column(type: 'boolean')]
     private bool $isBlankVoteEnabled = true;
@@ -451,26 +452,6 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         return 0 !== ($this->notifications & $notificationBit);
     }
 
-    public function isNotificationVoteOpenedEnabled(): bool
-    {
-        return $this->isNotificationEnabled(self::NOTIFICATION_VOTE_OPENED);
-    }
-
-    public function isNotificationVoteClosedEnabled(): bool
-    {
-        return $this->isNotificationEnabled(self::NOTIFICATION_VOTE_CLOSED);
-    }
-
-    public function isNotificationVoteReminderEnabled(): bool
-    {
-        return $this->isNotificationEnabled(self::NOTIFICATION_VOTE_REMINDER);
-    }
-
-    public function isNotificationSecondRoundEnabled(): bool
-    {
-        return $this->isNotificationEnabled(self::NOTIFICATION_SECOND_ROUND);
-    }
-
     #[Assert\IsTrue(message: 'La combinaison des dates est invalide.')]
     public function hasValidDates(): bool
     {
@@ -575,15 +556,6 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         $this->uuid = Uuid::uuid4();
     }
 
-    public function getPoolTypes(): array
-    {
-        return match ($this->getType()) {
-            DesignationTypeEnum::COMMITTEE_ADHERENT => ElectionPoolCodeEnum::COMMITTEE_ADHERENT,
-            DesignationTypeEnum::COPOL => ElectionPoolCodeEnum::COPOL,
-            default => [],
-        };
-    }
-
     public function isCommitteeTypes(): bool
     {
         return \in_array($this->type, [DesignationTypeEnum::COMMITTEE_ADHERENT, DesignationTypeEnum::COMMITTEE_SUPERVISOR], true);
@@ -597,11 +569,6 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     public function isCommitteeSupervisorType(): bool
     {
         return DesignationTypeEnum::COMMITTEE_SUPERVISOR === $this->type;
-    }
-
-    public function isCopolType(): bool
-    {
-        return \in_array($this->type, [DesignationTypeEnum::COPOL, DesignationTypeEnum::NATIONAL_COUNCIL], true);
     }
 
     public function isBinomeDesignation(): bool
@@ -654,11 +621,6 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     public function isMajorityType(): bool
     {
         return DesignationTypeEnum::NATIONAL_COUNCIL === $this->type;
-    }
-
-    public function isRenaissanceElection(): bool
-    {
-        return \in_array($this->type, DesignationTypeEnum::RENAISSANCE_TYPES, true);
     }
 
     public function getDenomination(bool $withDeterminer = false, bool $ucfirst = false): string
@@ -833,7 +795,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[Groups(['designation_read'])]
     public function isFullyEditable(): bool
     {
-        return !$this->isCanceled() && $this->getVoteStartDate() > (new \DateTime('+ 3 days'));
+        return !$this->isCanceled() && $this->getVoteStartDate() > (new \DateTime('+2 days'));
     }
 
     #[Groups(['designation_read'])]

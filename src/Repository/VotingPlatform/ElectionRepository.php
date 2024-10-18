@@ -154,28 +154,28 @@ class ElectionRepository extends ServiceEntityRepository
     /**
      * @return Election[]
      */
-    public function getElectionsToClose(\DateTime $date, ?int $limit = null): array
+    public function getElectionsToClose(\DateTimeInterface $date, int $notification): array
     {
-        $qb = $this->createQueryBuilder('election')
+        return $this->createQueryBuilder('election')
             ->addSelect('designation')
             ->innerJoin('election.designation', 'designation')
             ->where((new Orx())->addMultiple([
-                'election.secondRoundEndDate IS NULL AND designation.voteEndDate IS NOT NULL AND designation.voteEndDate < :date',
-                'election.secondRoundEndDate IS NOT NULL AND election.secondRoundEndDate < :date',
+                'election.secondRoundEndDate IS NULL AND designation.voteEndDate BETWEEN :start_date AND :end_date',
+                'election.secondRoundEndDate IS NOT NULL AND election.secondRoundEndDate BETWEEN :start_date AND :end_date',
             ]))
             ->andWhere('election.status = :open')
+            ->andWhere('designation.isCanceled = false')
+            ->andWhere('BIT_AND(designation.notifications, :notification) > 0 AND BIT_AND(election.notificationsSent, :notification) = 0')
+            ->andWhere(\sprintf('TIMESTAMPDIFF(%s, designation.voteStartDate, designation.voteEndDate) > 2', Designation::NOTIFICATION_VOTE_REMINDER_1H === $notification ? 'HOUR' : 'DAY'))
             ->setParameters([
-                'date' => $date,
+                'start_date' => $date,
+                'end_date' => (clone $date)->modify('+1 '.(Designation::NOTIFICATION_VOTE_REMINDER_1H === $notification ? 'hour' : 'day')),
                 'open' => ElectionStatusEnum::OPEN,
+                'notification' => $notification,
             ])
             ->getQuery()
+            ->getResult()
         ;
-
-        if ($limit) {
-            $qb->setMaxResults($limit);
-        }
-
-        return $qb->getResult();
     }
 
     /**

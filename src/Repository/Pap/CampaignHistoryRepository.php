@@ -163,7 +163,7 @@ class CampaignHistoryRepository extends ServiceEntityRepository
     public function findCampaignAverageVisitTime(Campaign $campaign, array $zones = []): int
     {
         return (int) ($zones ? $this->createQueryBuilderWithGeoZonesCondition($zones) : $this->createQueryBuilder('campaignHistory'))
-            ->select('AVG(TIME_TO_SEC(TIMEDIFF(campaignHistory.finishAt, campaignHistory.beginAt))) AS average_visit_time')
+            ->select('ABS(AVG(TIMESTAMPDIFF(SECOND, campaignHistory.finishAt, campaignHistory.beginAt))) AS average_visit_time')
             ->andWhere('campaignHistory.campaign = :campaign AND campaignHistory.finishAt IS NOT NULL')
             ->setParameter('campaign', $campaign)
             ->getQuery()

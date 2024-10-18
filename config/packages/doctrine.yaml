@@ -51,13 +51,12 @@ doctrine:
                 now: DoctrineExtensions\Query\Mysql\Now
                 date: DoctrineExtensions\Query\Mysql\Date
                 date_add: DoctrineExtensions\Query\Mysql\DateAdd
-                timediff: DoctrineExtensions\Query\Mysql\TimeDiff
+                date_sub: DoctrineExtensions\Query\Mysql\DateSub
             numeric_functions:
                 acos: DoctrineExtensions\Query\Mysql\Acos
                 cos: DoctrineExtensions\Query\Mysql\Cos
                 radians: DoctrineExtensions\Query\Mysql\Radians
                 sin: DoctrineExtensions\Query\Mysql\Sin
-                time_to_sec: DoctrineExtensions\Query\Mysql\TimeToSec
                 st_geomfromtext: LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StGeomFromText
                 st_within: LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StWithin
                 point: LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StPoint
