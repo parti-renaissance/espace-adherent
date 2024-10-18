@@ -152,9 +152,15 @@
                             {% endif %}
                         </td>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                            Adresse: {{ donation.getInlineFormattedAddress }}
+                            <strong>Adresse :</strong> {{ donation.getInlineFormattedAddress }}
                             <br>
-                            Nationalité: {{ donation.nationality }}
+                            <strong>Nationalité :</strong> {{ donation.nationality }}
+                            {% if donation.utmSource or donation.utmCampaign %}
+                                <br>
+                                <strong>UTM Source :</strong> {{ donation.utmSource }}
+                                <br>
+                                <strong>UTM Campagne :</strong> {{ donation.utmCampaign }}
+                            {% endif %}
                         </td>
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                             <a href="{{ path('admin_app_donation_edit', { id: choice.vars.value }) }}" target="_blank">

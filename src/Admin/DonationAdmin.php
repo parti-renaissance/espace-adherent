@@ -214,12 +214,10 @@ class DonationAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('Administration', ['class' => 'col-md-6'])
-                ->add('tags', null, [
-                    'label' => 'Tags',
-                ])
-                ->add('comment', null, [
-                    'label' => 'Commentaire',
-                ])
+                ->add('tags', null, ['label' => 'Tags'])
+                ->add('comment', null, ['label' => 'Commentaire'])
+                ->add('utmSource', null, ['label' => 'Source UTM'])
+                ->add('utmCampaign', null, ['label' => 'Campagne UTM'])
             ->end()
         ;
     }
@@ -243,9 +241,9 @@ class DonationAdmin extends AbstractAdmin
                     ],
                 ],
             ])
-            ->add('code', null, [
-                'label' => 'Code don',
-            ])
+            ->add('code', null, ['label' => 'Code don'])
+            ->add('utmSource', null, ['label' => 'Source UTM'])
+            ->add('utmCampaign', null, ['label' => 'Campagne UTM'])
             ->add('zone', CallbackFilter::class, [
                 'label' => 'Destination',
                 'show_filter' => true,
