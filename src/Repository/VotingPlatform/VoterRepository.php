@@ -108,6 +108,8 @@ class VoterRepository extends ServiceEntityRepository
             ->innerJoin('voter.adherent', 'adherent')
             ->where('list.election = :election')
             ->andWhere('voter.isGhost = :false')
+            ->andWhere('adherent.status = :active')
+            ->setParameter('active', Adherent::ENABLED)
             ->setParameter('election', $election)
             ->setParameter('false', false)
         ;
