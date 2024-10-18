@@ -31,7 +31,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[IsGranted('ROLE_RENAISSANCE_USER')]
+#[IsGranted('ROLE_USER')]
 #[Route(path: '/espace-adherent/evenements', name: 'app_renaissance_event')]
 class EventController extends AbstractController
 {

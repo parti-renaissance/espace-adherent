@@ -38,7 +38,7 @@
                                     {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}
                                         Par le comité <span class="font-medium text-gray-700">{{ event.committee.name }}</span>
                                     {% elseif event.organizer %}
-                                        Par <span class="font-medium text-gray-700">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span>
+                                        Par <span class="font-medium text-gray-700">{{ is_granted('ROLE_USER') ? event.organizer.fullName : event.organizer.partialName }}</span>
                                     {% endif %}
                                 </span>
                             </p>
@@ -83,4 +83,3 @@
         } %}
     {% endif %}
 {% endif %}
-

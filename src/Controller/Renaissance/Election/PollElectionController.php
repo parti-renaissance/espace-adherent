@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted('ROLE_RENAISSANCE_USER')]
+#[IsGranted('ROLE_USER')]
 #[Route(path: '/changement-des-statuts/{uuid}', name: 'app_poll_election')]
 class PollElectionController extends AbstractController
 {

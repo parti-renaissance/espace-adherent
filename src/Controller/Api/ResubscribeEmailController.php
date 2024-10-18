@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted('IS_AUTHENTICATED_FULLY')]
+#[IsGranted('ROLE_USER')]
 #[Route(path: '/resubscribe-email', name: 'api_resubscribe_email_payload', methods: ['GET'])]
 #[Route(path: '/v3/resubscribe-config', methods: ['GET'])]
 class ResubscribeEmailController extends AbstractController

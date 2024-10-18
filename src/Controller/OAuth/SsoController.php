@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted('IS_AUTHENTICATED_FULLY')]
+#[IsGranted('ROLE_USER')]
 #[Route(path: '/sso/{uuid}', name: 'app_front_oauth_sso', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
 class SsoController extends AbstractController
 {

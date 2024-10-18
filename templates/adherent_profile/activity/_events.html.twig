@@ -24,7 +24,7 @@
                     {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}
                         <div class="text--body text--gray b__nudge--bottom-small">Organisé par le comité <span class="text--black">{{ event.committee.name }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
                     {% elseif event.organizer %}
-                        <div class="text--body text--gray b__nudge--bottom-small">Organisé par <span class="text--black">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
+                        <div class="text--body text--gray b__nudge--bottom-small">Organisé par <span class="text--black">{{ is_granted('ROLE_USER') ? event.organizer.fullName : event.organizer.partialName }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
                     {% endif %}
                     <div class="l__row l__row--wrap font-roboto text--gray b__nudge--bottom-small">
                         <div class="l__row b__nudge--bottom-small">
@@ -75,7 +75,7 @@
                     {% if event is instanceof('App\\Entity\\Event\\CommitteeEvent') and event.committee %}
                         <div class="text--body text--gray b__nudge--bottom-small">Organisé par le comité <span class="text--black">{{ event.committee.name }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
                     {% elseif event.organizer %}
-                        <div class="text--body text--gray b__nudge--bottom-small">Organisé par <span class="text--black">{{ is_granted('IS_AUTHENTICATED_FULLY') ? event.organizer.fullName : event.organizer.partialName }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
+                        <div class="text--body text--gray b__nudge--bottom-small">Organisé par <span class="text--black">{{ is_granted('ROLE_USER') ? event.organizer.fullName : event.organizer.partialName }}</span> à <span class="text--black">{{ event.cityName }}</span></div>
                     {% endif %}
                     <div class="l__row l__row--wrap font-roboto text--gray b__nudge--bottom-small">
                         <div class="l__row b__nudge--bottom-small">
