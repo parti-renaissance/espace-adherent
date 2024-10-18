@@ -308,7 +308,7 @@ class ProfileController extends AbstractController
 
         $validationGroups = [$user->isAdherent() ? 'unregister_adherent' : 'unregister_user'];
 
-        if ($user->getAuthAppVersion() >= 5100) {
+        if ($user->getAuthAppVersion() >= 5110) {
             $validationGroups[] = 'unregister';
         }
 
