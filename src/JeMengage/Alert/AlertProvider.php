@@ -14,14 +14,14 @@ class AlertProvider
 
     public function getAlerts(Adherent $adherent): array
     {
-        $alerts = [];
+        $allAlerts = [];
 
         foreach ($this->providers as $provider) {
-            if ($alert = $provider->getAlert($adherent)) {
-                $alerts[] = $alert;
+            if ($alerts = $provider->getAlerts($adherent)) {
+                $allAlerts = array_merge($allAlerts, $alerts);
             }
         }
 
-        return $alerts;
+        return $allAlerts;
     }
 }
