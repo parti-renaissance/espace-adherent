@@ -174,10 +174,7 @@ class DesignationRepository extends ServiceEntityRepository
                 false
             );
 
-            $conditions->add(
-                \sprintf('(designation.electionCreationDate IS NULL OR designation.electionCreationDate > :adhesion_date) AND designation.id IN (%s)', $zoneQueryBuilder->getDQL())
-            );
-            $queryBuilder->setParameter('adhesion_date', $adherent->getRegisteredAt());
+            $conditions->add(\sprintf('designation.id IN (%s)', $zoneQueryBuilder->getDQL()));
         }
 
         $votingPlatformElectionQueryBuilder = $this->getEntityManager()->createQueryBuilder()
