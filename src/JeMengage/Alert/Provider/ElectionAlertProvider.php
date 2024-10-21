@@ -16,7 +16,7 @@ class ElectionAlertProvider implements AlertProviderInterface
     ) {
     }
 
-    public function getAlert(Adherent $adherent): ?Alert
+    public function getAlerts(Adherent $adherent): array
     {
         $designations = $this->electionManager->findActiveDesignations(
             $adherent,
@@ -24,12 +24,14 @@ class ElectionAlertProvider implements AlertProviderInterface
         );
 
         if (!$designations) {
-            return null;
+            return [];
         }
+
+        $alerts = [];
 
         foreach ($designations as $designation) {
             if ($designation->alertTitle && $designation->alertDescription) {
-                return new Alert(
+                $alerts[] = new Alert(
                     'Consultation / Élection',
                     $designation->alertTitle,
                     $designation->alertDescription,
@@ -39,6 +41,6 @@ class ElectionAlertProvider implements AlertProviderInterface
             }
         }
 
-        return null;
+        return $alerts;
     }
 }
