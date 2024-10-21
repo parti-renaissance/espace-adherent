@@ -123,7 +123,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\Column]
     private $type;
 
-    #[Assert\Expression('!this.isConsultationType() or value', groups: ['api_designation_write', 'api_designation_write_limited'])]
+    #[Assert\Expression('!(this.isConsultationType() or this.isVoteType()) or value', groups: ['api_designation_write', 'api_designation_write_limited'])]
     #[Groups(['designation_read', 'designation_write'])]
     #[ORM\Column(type: 'smallint', nullable: true)]
     public ?int $targetYear = null;
@@ -236,7 +236,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\Column(type: 'boolean')]
     private bool $isBlankVoteEnabled = true;
 
-    #[Assert\Expression('!(this.isLocalPollType() || this.isConsultationType()) or value', message: 'Vous devez préciser le questionnaire qui sera utilisé pour cette élection.', groups: ['Admin_creation', 'api_designation_write'])]
+    #[Assert\Expression('!(this.isLocalPollType() or this.isConsultationType() or this.isVoteType()) or value', message: 'Vous devez préciser le questionnaire qui sera utilisé pour cette élection.', groups: ['Admin_creation', 'api_designation_write'])]
     #[Assert\Valid(groups: ['api_designation_write'])]
     #[ORM\ManyToOne(targetEntity: Poll::class, cascade: ['persist'])]
     public ?Poll $poll = null;
@@ -668,6 +668,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             !$this->isLocalElectionTypes()
             && !$this->isCommitteeSupervisorType()
             && !$this->isConsultationType()
+            && !$this->isVoteType()
             && !$this->isTerritorialAssemblyType();
     }
 

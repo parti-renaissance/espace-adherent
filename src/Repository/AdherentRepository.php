@@ -1322,12 +1322,14 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->setParameter('status', Adherent::ENABLED)
         ;
 
+        $condition = new Orx();
+
         foreach (range($minYear, date('Y')) as $key => $year) {
-            $qb
-                ->orWhere('a.tags LIKE :tag'.$key)
-                ->setParameter('tag'.$key, '%'.TagEnum::getAdherentYearTag($year).'%')
-            ;
+            $condition->add('a.tags LIKE :tag'.$key);
+            $qb->setParameter('tag'.$key, '%'.TagEnum::getAdherentYearTag($year).'%');
         }
+
+        $qb->andWhere($condition);
 
         $this->withGeoZones(
             $zones,

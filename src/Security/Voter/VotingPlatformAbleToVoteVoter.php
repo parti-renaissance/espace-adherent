@@ -39,7 +39,7 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
             return false;
         }
 
-        if ($designation->isConsultationType()) {
+        if ($designation->isConsultationType() || $designation->isVoteType()) {
             if ($designation->targetYear) {
                 $foundTargetTag = false;
                 foreach (range($designation->targetYear, date('Y')) as $year) {
@@ -76,7 +76,7 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
 
         if (!$adherentIsInVotersList) {
             // Allow to vote adherent who are not on the list for CONSULTATION election
-            if ($designation->isConsultationType()) {
+            if ($designation->isConsultationType() || $designation->isVoteType()) {
                 return true;
             }
 

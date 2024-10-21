@@ -192,7 +192,7 @@ class ElectionNotifier
 
         $this->batchSendEmail($getRecipientsCallback, $createMessageCallback);
 
-        $election->markSentNotification(Designation::NOTIFICATION_VOTE_OPENED);
+        $election->markSentNotification($notification);
         $this->entityManager->flush();
     }
 
