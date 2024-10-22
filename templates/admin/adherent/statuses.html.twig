@@ -95,8 +95,10 @@
 
 {% if object.staticLabels is not empty %}
     {% for staticLabel in object.staticLabels %}
-        <br>
-        {{ _self.label(staticLabel.label, 'grey') }}
+        {% if not object.hasTag(staticLabel.category.code ~ ':' ~ staticLabel.code) %}
+            <br>
+            {{ _self.label(staticLabel.label, 'grey') }}
+        {% endif %}
     {% endfor %}
 {% endif %}
 
