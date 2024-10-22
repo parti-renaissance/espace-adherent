@@ -37,6 +37,7 @@ class RefreshAdherentsTagsCommand extends Command
         $this
             ->addOption('id', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
             ->addOption('email', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
+            ->addOption('tag', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY)
             ->addOption('source', null, InputOption::VALUE_REQUIRED)
             ->addOption('procuration-only', null, InputOption::VALUE_NONE, 'Only refresh adherents linked to procurations')
             ->addOption('batch-size', null, InputOption::VALUE_REQUIRED, '', 500)
@@ -56,6 +57,7 @@ class RefreshAdherentsTagsCommand extends Command
         $paginator = $this->getQueryBuilder(
             $input->getOption('id'),
             $input->getOption('email'),
+            $input->getOption('tag'),
             $input->getOption('source'),
             $input->getOption('procuration-only')
         );
@@ -94,7 +96,7 @@ class RefreshAdherentsTagsCommand extends Command
     /**
      * @return Paginator|Adherent[]
      */
-    private function getQueryBuilder(array $ids, array $emails, ?string $source, bool $procurationsOnly): Paginator
+    private function getQueryBuilder(array $ids, array $emails, array $tags, ?string $source, bool $procurationsOnly): Paginator
     {
         $queryBuilder = $this->adherentRepository
             ->createQueryBuilder('adherent')
@@ -113,6 +115,19 @@ class RefreshAdherentsTagsCommand extends Command
                 ->andWhere('adherent.emailAddress IN (:emails)')
                 ->setParameter('emails', $emails)
             ;
+        }
+
+        if ($tags) {
+            $adherentTagsCondition = $queryBuilder->expr()->orX();
+
+            foreach (array_unique($tags) as $index => $tag) {
+                $key = "adherent_tag_$index";
+
+                $adherentTagsCondition->add("FIND_IN_SET(:$key, adherent.tags) > 0");
+                $queryBuilder->setParameter($key, $tag);
+            }
+
+            $queryBuilder->andWhere($adherentTagsCondition);
         }
 
         if ($source) {
