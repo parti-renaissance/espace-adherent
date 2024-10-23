@@ -1,71 +1,81 @@
-{% if adherent.contributionStatus %}
-    <div class="box-body table-responsive no-padding">
-        <table class="table">
-            <tbody>
-                <tr class="sonata-ba-view-container">
-                    <th>Dernière déclaration le</th>
-                    <td>
+<div class="box-body table-responsive no-padding">
+    <table class="table">
+        <tbody>
+            <tr class="sonata-ba-view-container">
+                <th>Dernière déclaration le</th>
+                <td>
+                    {% if adherent.contributedAt %}
                         {{ adherent.contributedAt|date('d/m/Y') }}
-                    </td>
-                </tr>
-                <tr class="sonata-ba-view-container">
-                    <th>Status</th>
-                    <td>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr class="sonata-ba-view-container">
+                <th>Status</th>
+                <td>
+                    {% if adherent.contributionStatus %}
                         <span class="label label-{{ adherent.contributionStatus is same as constant('App\\Contribution\\ContributionStatusEnum::ELIGIBLE') ? 'success': 'danger' }}">
                             {{ ('elected_representative.contribution.status.' ~ adherent.contributionStatus)|trans }}
                         </span>
-                    </td>
-                </tr>
-                <tr class="sonata-ba-view-container">
-                    <th>Paiements</th>
-                    <td>
-                        <div class="box-body table-responsive no-padding">
-                            <table class="table">
-                                <thead>
-                                    <th>Montant</th>
-                                    <th>Date</th>
-                                    <th>Méthode</th>
-                                    <th>Statut</th>
-                                </thead>
-                                <tbody>
-                                    {% for payment in adherent.payments|filter(p => p.amount is not empty) %}
-                                        <tr class="sonata-ba-view-container">
-                                            <td>
-                                                <span class="label label-warning">
-                                                    {{ payment.amount }}€
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="label label-info">
-                                                    {{ payment.date|date('d/m/Y') }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="label label-default">
-                                                    {{ payment.method }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="label label-{{ payment.status is same as 'confirmed' ? 'success' : 'danger' }}">
-                                                    {{ payment.status }}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    {% else %}
-                                        <tr>
-                                            <td colspan="4">
-                                                Aucune information de paiement.
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-{% else %}
-    Aucune information de cotisation.
-{% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr class="sonata-ba-view-container">
+                <th>Dernier revenu déclaré</th>
+                <td>
+                    {% set revenueDeclaration = adherent.lastRevenueDeclaration %}
+
+                    {% if revenueDeclaration %}
+                        {{ revenueDeclaration.amount|format_currency('EUR') }} (le {{ revenueDeclaration.createdAt|date('d/m/Y') }})
+                    {% endif %}
+                </td>
+            </tr>
+            <tr class="sonata-ba-view-container">
+                <th>Paiements</th>
+                <td>
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table">
+                            <thead>
+                                <th>Montant</th>
+                                <th>Date</th>
+                                <th>Méthode</th>
+                                <th>Statut</th>
+                            </thead>
+                            <tbody>
+                                {% for payment in adherent.payments|filter(p => p.amount is not empty) %}
+                                    <tr class="sonata-ba-view-container">
+                                        <td>
+                                            <span class="label label-warning">
+                                                {{ payment.amount|format_currency('EUR') }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="label label-info">
+                                                {{ payment.date|date('d/m/Y') }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="label label-default">
+                                                {{ payment.method }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="label label-{{ payment.status is same as 'confirmed' ? 'success' : 'danger' }}">
+                                                {{ payment.status }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="4">
+                                            Aucune information de paiement.
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

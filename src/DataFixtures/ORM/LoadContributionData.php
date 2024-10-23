@@ -35,6 +35,7 @@ class LoadContributionData extends Fixture implements DependentFixtureInterface
         $erDepartment92->setLastContribution($contribution);
         $erDepartment92->setContributionStatus(ContributionStatusEnum::ELIGIBLE);
         $erDepartment92->setContributedAt($contributionDate);
+        $erDepartment92->addRevenueDeclaration(10000);
 
         $manager->persist($contribution);
 
