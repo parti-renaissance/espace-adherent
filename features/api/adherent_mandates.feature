@@ -15,9 +15,14 @@ Feature:
                 "mandates": ["depute_europeen"],
                 "contribution_status": "eligible",
                 "contributed_at": "@string@.isDateTime()",
-                "contribution_amount": null,
+                "contribution_amount": 200,
                 "exempt_from_cotisation": false,
                 "last_revenue_declaration": null,
+                "last_revenue_declaration": {
+                    "amount": 10000,
+                    "created_at": "@string@.isDateTime()",
+                    "uuid": "@uuid@"
+                },
                 "payments": [
                     {
                         "date": "@string@.isDateTime()",
