@@ -948,10 +948,8 @@ Feature:
                             "options": {
                                 "favorite": true,
                                 "choices": {
-                                    "national_event:event-national-1": "Event National 1",
-                                    "national_event:event-national-1--": "Non inscrit à Event National 1",
-                                    "national_event:event-national-2": "Event National 2",
-                                    "national_event:event-national-2--": "Non inscrit à Event National 2",
+                                    "national_event:2024": "Événement national 2024",
+                                    "national_event:2024--": "Non inscrit à Événement national 2024",
                                     "procuration:mandant": "Mandant",
                                     "procuration:mandant--": "Non Mandant",
                                     "procuration:mandataire": "Mandataire",
