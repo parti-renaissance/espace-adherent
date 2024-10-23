@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "550dc76092f2a93b57c26c6c506d9ab1",
+    "content-hash": "279b1ffaa4aebab31213d58b78f72262",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -478,16 +478,16 @@
         },
         {
             "name": "bacon/bacon-qr-code",
-            "version": "v3.0.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Bacon/BaconQrCode.git",
-                "reference": "510de6eca6248d77d31b339d62437cc995e2fb41"
+                "reference": "f9cc1f52b5a463062251d666761178dbdb6b544f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Bacon/BaconQrCode/zipball/510de6eca6248d77d31b339d62437cc995e2fb41",
-                "reference": "510de6eca6248d77d31b339d62437cc995e2fb41",
+                "url": "https://api.github.com/repos/Bacon/BaconQrCode/zipball/f9cc1f52b5a463062251d666761178dbdb6b544f",
+                "reference": "f9cc1f52b5a463062251d666761178dbdb6b544f",
                 "shasum": ""
             },
             "require": {
@@ -526,9 +526,9 @@
             "homepage": "https://github.com/Bacon/BaconQrCode",
             "support": {
                 "issues": "https://github.com/Bacon/BaconQrCode/issues",
-                "source": "https://github.com/Bacon/BaconQrCode/tree/v3.0.0"
+                "source": "https://github.com/Bacon/BaconQrCode/tree/v3.0.1"
             },
-            "time": "2024-04-18T11:16:25+00:00"
+            "time": "2024-10-01T13:55:55+00:00"
         },
         {
             "name": "beberlei/doctrineextensions",
@@ -1288,23 +1288,23 @@
         },
         {
             "name": "dasprid/enum",
-            "version": "1.0.5",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DASPRiD/Enum.git",
-                "reference": "6faf451159fb8ba4126b925ed2d78acfce0dc016"
+                "reference": "8dfd07c6d2cf31c8da90c53b83c026c7696dda90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DASPRiD/Enum/zipball/6faf451159fb8ba4126b925ed2d78acfce0dc016",
-                "reference": "6faf451159fb8ba4126b925ed2d78acfce0dc016",
+                "url": "https://api.github.com/repos/DASPRiD/Enum/zipball/8dfd07c6d2cf31c8da90c53b83c026c7696dda90",
+                "reference": "8dfd07c6d2cf31c8da90c53b83c026c7696dda90",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1 <9.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^7 | ^8 | ^9",
+                "phpunit/phpunit": "^7 || ^8 || ^9 || ^10 || ^11",
                 "squizlabs/php_codesniffer": "*"
             },
             "type": "library",
@@ -1332,9 +1332,9 @@
             ],
             "support": {
                 "issues": "https://github.com/DASPRiD/Enum/issues",
-                "source": "https://github.com/DASPRiD/Enum/tree/1.0.5"
+                "source": "https://github.com/DASPRiD/Enum/tree/1.0.6"
             },
-            "time": "2023-08-25T16:18:39+00:00"
+            "time": "2024-08-09T14:30:48+00:00"
         },
         {
             "name": "defuse/php-encryption",
@@ -2950,21 +2950,21 @@
         },
         {
             "name": "endroid/installer",
-            "version": "1.4.5",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/installer.git",
-                "reference": "308051404c8370b9641cd61d86a464f2c6938265"
+                "reference": "39109e825057b2e7436123d5ad5dc8c2467a4cf6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/installer/zipball/308051404c8370b9641cd61d86a464f2c6938265",
-                "reference": "308051404c8370b9641cd61d86a464f2c6938265",
+                "url": "https://api.github.com/repos/endroid/installer/zipball/39109e825057b2e7436123d5ad5dc8c2467a4cf6",
+                "reference": "39109e825057b2e7436123d5ad5dc8c2467a4cf6",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^2.0",
-                "php": "^8.1"
+                "php": "^8.2"
             },
             "require-dev": {
                 "composer/composer": "^2.0",
@@ -2976,7 +2976,7 @@
             "type": "composer-plugin",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.x-dev"
+                    "dev-main": "1.x-dev"
                 },
                 "class": "Endroid\\Installer\\Installer"
             },
@@ -2998,7 +2998,7 @@
             "description": "Composer plugin for installing configuration files",
             "support": {
                 "issues": "https://github.com/endroid/installer/issues",
-                "source": "https://github.com/endroid/installer/tree/1.4.5"
+                "source": "https://github.com/endroid/installer/tree/1.5.0"
             },
             "funding": [
                 {
@@ -3006,25 +3006,25 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-11-07T12:11:36+00:00"
+            "time": "2024-10-20T18:31:36+00:00"
         },
         {
             "name": "endroid/qr-code",
-            "version": "5.0.9",
+            "version": "6.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/qr-code.git",
-                "reference": "3dcdfab4c9122874f3915d8bf80a43b9df11852d"
+                "reference": "86f264ac7f88e06352d046e5b72b441f28bfa5d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/qr-code/zipball/3dcdfab4c9122874f3915d8bf80a43b9df11852d",
-                "reference": "3dcdfab4c9122874f3915d8bf80a43b9df11852d",
+                "url": "https://api.github.com/repos/endroid/qr-code/zipball/86f264ac7f88e06352d046e5b72b441f28bfa5d0",
+                "reference": "86f264ac7f88e06352d046e5b72b441f28bfa5d0",
                 "shasum": ""
             },
             "require": {
                 "bacon/bacon-qr-code": "^3.0",
-                "php": "^8.1"
+                "php": "^8.2"
             },
             "require-dev": {
                 "endroid/quality": "dev-main",
@@ -3041,7 +3041,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "5.x-dev"
+                    "dev-main": "6.x-dev"
                 }
             },
             "autoload": {
@@ -3070,7 +3070,7 @@
             ],
             "support": {
                 "issues": "https://github.com/endroid/qr-code/issues",
-                "source": "https://github.com/endroid/qr-code/tree/5.0.9"
+                "source": "https://github.com/endroid/qr-code/tree/6.0.2"
             },
             "funding": [
                 {
@@ -3078,26 +3078,26 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-05-08T08:09:28+00:00"
+            "time": "2024-10-21T23:03:19+00:00"
         },
         {
             "name": "endroid/qr-code-bundle",
-            "version": "5.0.2",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/qr-code-bundle.git",
-                "reference": "74cf5dbaed4f05f369f04f25dc1a34ff83668cae"
+                "reference": "b1e6972cf7ec154f646f0b0d9d12ca901bc0b9d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/qr-code-bundle/zipball/74cf5dbaed4f05f369f04f25dc1a34ff83668cae",
-                "reference": "74cf5dbaed4f05f369f04f25dc1a34ff83668cae",
+                "url": "https://api.github.com/repos/endroid/qr-code-bundle/zipball/b1e6972cf7ec154f646f0b0d9d12ca901bc0b9d1",
+                "reference": "b1e6972cf7ec154f646f0b0d9d12ca901bc0b9d1",
                 "shasum": ""
             },
             "require": {
                 "endroid/installer": "^1.2.2",
-                "endroid/qr-code": "^5.0",
-                "php": "^8.1",
+                "endroid/qr-code": "^6.0.1",
+                "php": "^8.2",
                 "symfony/framework-bundle": "^5.4||^6.4||^7.0",
                 "symfony/twig-bundle": "^5.4||^6.4||^7.0",
                 "symfony/yaml": "^5.4||^6.4||^7.0"
@@ -3111,7 +3111,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "4.x-dev"
+                    "dev-main": "6.x-dev"
                 }
             },
             "autoload": {
@@ -3141,7 +3141,7 @@
             ],
             "support": {
                 "issues": "https://github.com/endroid/qr-code-bundle/issues",
-                "source": "https://github.com/endroid/qr-code-bundle/tree/5.0.2"
+                "source": "https://github.com/endroid/qr-code-bundle/tree/6.0.0"
             },
             "funding": [
                 {
@@ -3149,7 +3149,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-08-03T13:50:37+00:00"
+            "time": "2024-10-21T23:18:20+00:00"
         },
         {
             "name": "enmarche/majority-judgment",
