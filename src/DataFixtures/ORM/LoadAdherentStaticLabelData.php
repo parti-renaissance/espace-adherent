@@ -20,8 +20,8 @@ class LoadAdherentStaticLabelData extends Fixture implements DependentFixtureInt
         $manager->persist($this->create('burex_member', 'Membre bureau exécutif', $categoryBurex));
         $manager->persist($this->create('old_burex_member', 'Ancien membre du bunrex', $categoryBurex));
 
-        $manager->persist($this->create('lille_2024', 'Participant Meeting Lille 2024', $categoryMeeting));
-        $manager->persist($this->create('nice_2024', 'Participant Meeting Nice 2024', $categoryMeeting));
+        $manager->persist($this->create('national_event:2023', 'Participant Meeting 2023', $categoryMeeting));
+        $manager->persist($this->create('national_event:2024', 'Participant Meeting 2024', $categoryMeeting));
 
         $manager->flush();
     }

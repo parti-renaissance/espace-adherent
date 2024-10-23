@@ -32,7 +32,7 @@ class TagTranslator
                 }
                 // Matches a national_event tag in the format national_event:slug
                 elseif (TagEnum::NATIONAL_EVENT === TagEnum::getMainLevel($tag) && $index > 0) {
-                    $parts[$index] = $this->eventTagBuilder->buildLabelFromSlug($part);
+                    $parts[$index] = \sprintf('%s %s', $this->translator->trans('adherent.tag.'.TagEnum::NATIONAL_EVENT), $part);
                 } else {
                     $parts[$index] = $this->translate('adherent.tag.'.$part, $part);
                 }

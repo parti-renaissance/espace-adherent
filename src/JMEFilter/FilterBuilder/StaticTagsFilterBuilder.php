@@ -16,12 +16,12 @@ class StaticTagsFilterBuilder extends AbstractTagsFilterBuilder
 
     protected function init(): void
     {
-        $this->tags = array_merge(
+        $this->tags = array_unique(array_merge(
             ...array_map(
                 fn (string $tag) => [$tag, $tag.'--'],
                 array_merge($this->eventTagBuilder->buildAll(), TagEnum::getStaticTags())
             )
-        );
+        ));
 
         $this->fieldName = 'static_tags';
         $this->fieldLabel = 'Labels divers';
