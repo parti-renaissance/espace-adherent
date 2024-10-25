@@ -41,10 +41,11 @@ function initializeTimer(element, refreshPage) {
             if (0 < diff) {
                 duration = moment.duration(diff, 'milliseconds');
 
-                d = moment.duration(duration).days();
-                h = moment.duration(duration).hours();
-                m = moment.duration(duration).minutes();
-                s = moment.duration(duration).seconds();
+                const durationObj = moment.duration(duration);
+                d = durationObj.asDays();
+                h = durationObj.hours();
+                m = durationObj.minutes();
+                s = durationObj.seconds();
             } else if (refreshPage) {
                 window.location.reload();
             }
