@@ -13897,16 +13897,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v5.4.44",
+            "version": "v5.4.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "58d3dc6bfa5fb37137e32d52ddc202ba4d1cea04"
+                "reference": "54118c6340dc6831a00f10b296ea6e80592ec89d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/58d3dc6bfa5fb37137e32d52ddc202ba4d1cea04",
-                "reference": "58d3dc6bfa5fb37137e32d52ddc202ba4d1cea04",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/54118c6340dc6831a00f10b296ea6e80592ec89d",
+                "reference": "54118c6340dc6831a00f10b296ea6e80592ec89d",
                 "shasum": ""
             },
             "require": {
@@ -13968,7 +13968,7 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v5.4.44"
+                "source": "https://github.com/symfony/http-client/tree/v5.4.45"
             },
             "funding": [
                 {
@@ -13984,7 +13984,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-16T14:04:28+00:00"
+            "time": "2024-09-25T14:11:13+00:00"
         },
         {
             "name": "symfony/http-client-contracts",
@@ -14764,16 +14764,16 @@
         },
         {
             "name": "symfony/notifier",
-            "version": "v5.4.44",
+            "version": "v5.4.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/notifier.git",
-                "reference": "1507e437c76a72211c341d9b1838c771964e1981"
+                "reference": "d3c9c31224684ab10a4b9614aaf21985b2e0d41b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/notifier/zipball/1507e437c76a72211c341d9b1838c771964e1981",
-                "reference": "1507e437c76a72211c341d9b1838c771964e1981",
+                "url": "https://api.github.com/repos/symfony/notifier/zipball/d3c9c31224684ab10a4b9614aaf21985b2e0d41b",
+                "reference": "d3c9c31224684ab10a4b9614aaf21985b2e0d41b",
                 "shasum": ""
             },
             "require": {
@@ -14839,7 +14839,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/notifier/tree/v5.4.44"
+                "source": "https://github.com/symfony/notifier/tree/v5.4.45"
             },
             "funding": [
                 {
@@ -14855,7 +14855,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-08T09:19:02+00:00"
+            "time": "2024-09-25T14:11:13+00:00"
         },
         {
             "name": "symfony/options-resolver",
@@ -16759,16 +16759,16 @@
         },
         {
             "name": "symfony/telegram-notifier",
-            "version": "v5.4.40",
+            "version": "v5.4.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/telegram-notifier.git",
-                "reference": "a421b9210169393ddfe86a2aecd116be3a4b3a88"
+                "reference": "4d20227fe442980af5a0caa65f273ba6282d46ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/telegram-notifier/zipball/a421b9210169393ddfe86a2aecd116be3a4b3a88",
-                "reference": "a421b9210169393ddfe86a2aecd116be3a4b3a88",
+                "url": "https://api.github.com/repos/symfony/telegram-notifier/zipball/4d20227fe442980af5a0caa65f273ba6282d46ca",
+                "reference": "4d20227fe442980af5a0caa65f273ba6282d46ca",
                 "shasum": ""
             },
             "require": {
@@ -16806,7 +16806,7 @@
                 "telegram"
             ],
             "support": {
-                "source": "https://github.com/symfony/telegram-notifier/tree/v5.4.40"
+                "source": "https://github.com/symfony/telegram-notifier/tree/v5.4.45"
             },
             "funding": [
                 {
@@ -16822,7 +16822,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:33:22+00:00"
+            "time": "2024-09-25T14:11:13+00:00"
         },
         {
             "name": "symfony/templating",
