@@ -50,7 +50,7 @@ class CreateAccountController extends AbstractController
 
         $membershipRequest = $this->serializer->deserialize($request->getContent(), MembershipRequest::class, JsonEncoder::FORMAT);
 
-        if ($membershipRequest->email !== $emailIdentifier) {
+        if (!$currentUser && $membershipRequest->email !== $emailIdentifier) {
             return $this->json([
                 'message' => 'Validation Failed',
                 'status' => 'error',
