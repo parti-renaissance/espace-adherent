@@ -22,6 +22,7 @@ class AdherentAdmin extends AbstractAdherentAdmin
             'extract' => 'EXTRACT',
             'create_renaissance' => 'CREATE_RENAISSANCE',
             'create_renaissance_verify_email' => 'CREATE_RENAISSANCE_VERIFY_EMAIL',
+            'refresh_tags' => 'REFRESH_TAGS',
         ];
     }
 
@@ -38,6 +39,7 @@ class AdherentAdmin extends AbstractAdherentAdmin
             ->add('send_resubscribe_email', $this->getRouterIdParameter().'/send-resubscribe-email')
             ->add('create_renaissance', 'create-renaissance')
             ->add('create_renaissance_verify_email', 'create-adherent-verify-email')
+            ->add('refresh_tags', $this->getRouterIdParameter().'/refresh-tags')
         ;
     }
 
@@ -68,6 +70,10 @@ class AdherentAdmin extends AbstractAdherentAdmin
 
             if ($this->hasAccess('uncertify', $object) && $this->hasRoute('uncertify')) {
                 $actions['uncertify'] = ['template' => 'admin/adherent/action_button_uncertify.html.twig'];
+            }
+
+            if ($this->hasAccess('refresh_tags', $object) && $this->hasRoute('refresh_tags')) {
+                $actions['refresh_tags'] = ['template' => 'admin/adherent/action_button_refresh_tags.html.twig'];
             }
         }
 
