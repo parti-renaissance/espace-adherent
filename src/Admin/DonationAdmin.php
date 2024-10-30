@@ -138,7 +138,7 @@ class DonationAdmin extends AbstractAdmin
                 ->add('membership', CheckboxType::class, [
                     'label' => 'Cotisation',
                     'required' => false,
-                    'disabled' => $donation->isMembership(),
+                    'disabled' => $donation->isMembership() || null === $donation->getDonator()?->getAdherent(),
                 ])
                 ->add('code', null, [
                     'label' => 'Code don',
@@ -619,13 +619,24 @@ class DonationAdmin extends AbstractAdmin
     /**
      * @param Donation $object
      */
+    protected function postUpdate(object $object): void
+    {
+        parent::postUpdate($object);
+
+        if ($adherent = $object->getDonator()?->getAdherent()) {
+            $this->refreshAdherent($adherent);
+        }
+    }
+
+    /**
+     * @param Donation $object
+     */
     protected function postRemove(object $object): void
     {
         parent::postRemove($object);
 
         if ($object->isMembership() && $adherent = $object->getDonator()?->getAdherent()) {
-            $this->adherentRepository->refreshLastDonationDate($adherent);
-            $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED_IN_ADMIN);
+            $this->refreshAdherent($adherent);
         }
 
         if ($object->hasFileUploaded()) {
@@ -644,6 +655,12 @@ class DonationAdmin extends AbstractAdmin
         $donation->setPostAddress(PostAddress::createEmptyAddress());
 
         return $donation;
+    }
+
+    private function refreshAdherent(Adherent $adherent): void
+    {
+        $this->adherentRepository->refreshLastDonationDate($adherent);
+        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED_IN_ADMIN);
     }
 
     private function handleAdherentMembership(Donation $donation): void
