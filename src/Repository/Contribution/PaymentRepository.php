@@ -36,7 +36,7 @@ class PaymentRepository extends ServiceEntityRepository
             ->select('YEAR(payment.date) AS year')
             ->addSelect('SUM(payment.amount) AS total')
             ->where('payment.adherent = :adherent')
-            ->andWhere('donation.status IN (:status)')
+            ->andWhere('payment.status IN (:status)')
             ->setParameters([
                 'adherent' => $adherent,
                 'status' => [
