@@ -2,6 +2,7 @@
 
 namespace App\Repository\Contribution;
 
+use App\Entity\Adherent;
 use App\Entity\Contribution\Payment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -27,5 +28,27 @@ class PaymentRepository extends ServiceEntityRepository
     {
         $this->_em->persist($payment);
         $this->_em->flush();
+    }
+
+    public function getTotalPaymentByYearForAdherent(Adherent $adherent): array
+    {
+        return array_column($this->createQueryBuilder('payment')
+            ->select('YEAR(payment.date) AS year')
+            ->addSelect('SUM(payment.amount) AS total')
+            ->where('payment.adherent = :adherent')
+            ->andWhere('donation.status IN (:status)')
+            ->setParameters([
+                'adherent' => $adherent,
+                'status' => [
+                    'paid_out',
+                    'confirmed',
+                    'cheque_cashed',
+                ],
+            ])
+            ->groupBy('year')
+            ->orderBy('year', 'DESC')
+            ->getQuery()
+            ->getResult(), 'total', 'year'
+        );
     }
 }

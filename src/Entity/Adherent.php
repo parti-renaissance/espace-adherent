@@ -2387,6 +2387,13 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $this->contributions->removeElement($contribution);
     }
 
+    public function hasRecentContribution(): bool
+    {
+        $date = new \DateTime('-21 days 00:00');
+
+        return $this->contributedAt && $this->contributedAt >= $date;
+    }
+
     #[Groups(['adherent_elect_read'])]
     public function getContributionAmount(): ?int
     {
