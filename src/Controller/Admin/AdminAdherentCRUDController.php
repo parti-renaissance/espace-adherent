@@ -8,6 +8,7 @@ use App\Adherent\BanManager;
 use App\Adherent\Certification\CertificationAuthorityManager;
 use App\Adherent\Certification\CertificationPermissions;
 use App\Adherent\Command\SendResubscribeEmailCommand;
+use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
 use App\Adherent\UnregistrationManager;
 use App\Entity\Adherent;
 use App\Form\Admin\Adherent\CreateRenaissanceType;
@@ -26,6 +27,20 @@ class AdminAdherentCRUDController extends CRUDController
 {
     public function __construct(private readonly AdherentRepository $adherentRepository)
     {
+    }
+
+    public function refreshTagsAction(Request $request, MessageBusInterface $bus): Response
+    {
+        /** @var Adherent $adherent */
+        $adherent = $this->admin->getSubject();
+
+        $this->admin->checkAccess('refresh_tags', $adherent);
+
+        $bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
+
+        $this->addFlash('success', 'Les tags ont été rafraichis avec succès.');
+
+        return $this->redirectTo($request, $adherent);
     }
 
     public function banAction(Request $request, BanManager $adherentManagementAuthority): Response
