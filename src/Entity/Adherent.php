@@ -2277,12 +2277,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             return [];
         }
 
-        if (!$this->lastMembershipDonation) {
+        $lastYear = $this->getLastAdherentYearTag();
+
+        if (!$lastYear) {
             return [date('Y')];
         }
 
         return range(
-            ((int) $this->lastMembershipDonation->format('Y')) + 1,
+            ((int) $lastYear) + 1,
             (int) date('Y')
         );
     }
@@ -2502,6 +2504,38 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function hasTag(string $tag): bool
     {
         return TagEnum::includesTag($tag, $this->tags ?? []);
+    }
+
+    public function getLastAdherentYearTag(): ?string
+    {
+        $allTags = array_map(
+            fn (int $year) => TagEnum::getAdherentYearTag($year),
+            array_reverse(range(2022, date('Y')))
+        );
+
+        foreach ($this->tags as $tag) {
+            if (\in_array($tag, $allTags, true)) {
+                return $tag;
+            }
+        }
+
+        return null;
+    }
+
+    public function getLastMembershipYearFromTags(): ?string
+    {
+        $lastAdherentYearTag = $this->getLastAdherentYearTag();
+
+        if (!$lastAdherentYearTag) {
+            return null;
+        }
+
+        $matches = [];
+        if (preg_match('/^adherent:a_jour_([\d]{4})$/', $lastAdherentYearTag, $matches)) {
+            return $matches[1];
+        }
+
+        return null;
     }
 
     public function updateFromMembershipRequest(MembershipRequest $membershipRequest): void
