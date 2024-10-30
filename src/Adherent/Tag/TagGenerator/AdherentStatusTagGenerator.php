@@ -63,10 +63,10 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
                 }
             }
 
-            $allYears = array_unique(array_merge(array_keys(
-                $countCotisationByYear,
-                $totalContributionPaymentsByYear
-            )));
+            $allYears = array_unique(array_merge(
+                array_keys($countCotisationByYear),
+                array_keys($totalContributionPaymentsByYear)
+            ));
             unset($allYears[$currentYear]);
 
             foreach ($allYears as $year) {
