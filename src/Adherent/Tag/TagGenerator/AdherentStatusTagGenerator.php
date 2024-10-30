@@ -53,7 +53,7 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
             if (!empty($totalContributionPaymentsByYear)) {
                 if (
                     \array_key_exists($currentYear, $totalContributionPaymentsByYear)
-                    && $totalContributionPaymentsByYear[$currentYear] > 30
+                    && $totalContributionPaymentsByYear[$currentYear] >= 30
                     && (
                         !$adherent->findElectedRepresentativeMandates(true)
                         || $adherent->exemptFromCotisation
