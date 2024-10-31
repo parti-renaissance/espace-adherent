@@ -12245,16 +12245,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v6.4.12",
+            "version": "v6.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "a463451b7f6ac4a47b98dbfc78ec2d3560c759d8"
+                "reference": "8079a3006f53805e7771d086b62428b7cac481dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/a463451b7f6ac4a47b98dbfc78ec2d3560c759d8",
-                "reference": "a463451b7f6ac4a47b98dbfc78ec2d3560c759d8",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/8079a3006f53805e7771d086b62428b7cac481dd",
+                "reference": "8079a3006f53805e7771d086b62428b7cac481dd",
                 "shasum": ""
             },
             "require": {
@@ -12321,7 +12321,7 @@
                 "psr6"
             ],
             "support": {
-                "source": "https://github.com/symfony/cache/tree/v6.4.12"
+                "source": "https://github.com/symfony/cache/tree/v6.4.13"
             },
             "funding": [
                 {
@@ -12337,7 +12337,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-16T16:01:33+00:00"
+            "time": "2024-10-25T15:39:47+00:00"
         },
         {
             "name": "symfony/cache-contracts",
@@ -13384,16 +13384,16 @@
         },
         {
             "name": "symfony/expression-language",
-            "version": "v5.4.43",
+            "version": "v5.4.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/expression-language.git",
-                "reference": "9d23f7bfd1d602fddc6d6520decedc99739497dd"
+                "reference": "a784b66edc4c151eb05076d04707906ee2c209a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/expression-language/zipball/9d23f7bfd1d602fddc6d6520decedc99739497dd",
-                "reference": "9d23f7bfd1d602fddc6d6520decedc99739497dd",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/a784b66edc4c151eb05076d04707906ee2c209a9",
+                "reference": "a784b66edc4c151eb05076d04707906ee2c209a9",
                 "shasum": ""
             },
             "require": {
@@ -13427,7 +13427,7 @@
             "description": "Provides an engine that can compile and evaluate expressions",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/expression-language/tree/v5.4.43"
+                "source": "https://github.com/symfony/expression-language/tree/v5.4.45"
             },
             "funding": [
                 {
@@ -13443,7 +13443,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-09T07:10:35+00:00"
+            "time": "2024-10-04T14:55:40+00:00"
         },
         {
             "name": "symfony/filesystem",
@@ -17626,16 +17626,16 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v7.1.2",
+            "version": "v7.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
-                "reference": "b80a669a2264609f07f1667f891dbfca25eba44c"
+                "reference": "90173ef89c40e7c8c616653241048705f84130ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/b80a669a2264609f07f1667f891dbfca25eba44c",
-                "reference": "b80a669a2264609f07f1667f891dbfca25eba44c",
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/90173ef89c40e7c8c616653241048705f84130ef",
+                "reference": "90173ef89c40e7c8c616653241048705f84130ef",
                 "shasum": ""
             },
             "require": {
@@ -17682,7 +17682,7 @@
                 "serialize"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-exporter/tree/v7.1.2"
+                "source": "https://github.com/symfony/var-exporter/tree/v7.1.6"
             },
             "funding": [
                 {
@@ -17698,7 +17698,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-06-28T08:00:31+00:00"
+            "time": "2024-09-25T14:20:29+00:00"
         },
         {
             "name": "symfony/web-link",
