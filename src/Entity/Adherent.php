@@ -2393,7 +2393,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
         $date = new \DateTime('-21 days 00:00');
 
-        return $this->contributedAt && $this->contributedAt >= $date;
+        $lastContribution = $this->getLastContribution();
+
+        return $lastContribution && $lastContribution->getCreatedAt() >= $date;
     }
 
     #[Groups(['adherent_elect_read'])]
