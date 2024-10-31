@@ -2277,7 +2277,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             return [];
         }
 
-        $lastYear = $this->getLastAdherentYearTag();
+        $lastYear = $this->getLastMembershipYearFromTags();
 
         if (!$lastYear) {
             return [date('Y')];
@@ -2508,32 +2508,22 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return TagEnum::includesTag($tag, $this->tags ?? []);
     }
 
-    public function getLastAdherentYearTag(): ?string
+    public function getLastMembershipYearFromTags(): ?string
     {
-        $allTags = array_map(
-            fn (int $year) => TagEnum::getAdherentYearTag($year),
-            array_reverse(range(2022, date('Y')))
-        );
-
+        $adherentTag = null;
         foreach ($this->tags as $tag) {
-            if (\in_array($tag, $allTags, true)) {
-                return $tag;
+            if (preg_match('/^adherent:a_jour_[\d]{4}/', $tag)) {
+                $adherentTag = $tag;
+                break;
             }
         }
 
-        return null;
-    }
-
-    public function getLastMembershipYearFromTags(): ?string
-    {
-        $lastAdherentYearTag = $this->getLastAdherentYearTag();
-
-        if (!$lastAdherentYearTag) {
+        if (!$adherentTag) {
             return null;
         }
 
         $matches = [];
-        if (preg_match('/^adherent:a_jour_([\d]{4})$/', $lastAdherentYearTag, $matches)) {
+        if (preg_match('/^adherent:a_jour_([\d]{4})/', $adherentTag, $matches)) {
             return $matches[1];
         }
 
