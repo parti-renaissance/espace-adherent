@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use App\Address\AddressInterface;
+use App\Adherent\MandateTypeEnum;
 use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TagTranslator;
 use App\AdherentProfile\AdherentProfileHandler;
@@ -46,6 +47,9 @@ use App\Query\Utils\MultiColumnsSearchHelper;
 use App\Utils\PhoneNumberUtils;
 use App\Utils\PhpConfigurator;
 use App\ValueObject\Genders;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -96,6 +100,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
     private TagTranslator $tagTranslator;
     private CommitteeMembershipManager $committeeMembershipManager;
     private Security $security;
+    private EntityManagerInterface $entityManager;
 
     /**
      * State of adherent data before update
@@ -103,6 +108,13 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
      * @var Adherent
      */
     protected $beforeUpdate;
+
+    /**
+     * State of adhernet elected representative mandates before update
+     *
+     * @var Collection
+     */
+    protected $electedMandatesBeforeUpdate;
 
     public function __construct(
         $code,
@@ -125,6 +137,8 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
         $this->franceCities = $franceCities;
         $this->tagTranslator = $tagTranslator;
         $this->translator = $translator;
+
+        $this->electedMandatesBeforeUpdate = new ArrayCollection();
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void
@@ -916,6 +930,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
     {
         if (null === $this->beforeUpdate) {
             $this->beforeUpdate = clone $object;
+            $this->electedMandatesBeforeUpdate = new ArrayCollection($object->getElectedRepresentativeMandates());
 
             $this->dispatcher->dispatch(
                 new AdministratorActionEvent($this->getAdministrator(), $object),
@@ -947,6 +962,23 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
             new AdministratorActionEvent($this->getAdministrator(), $object),
             AdministratorActionEvents::ADMIN_USER_PROFILE_AFTER_UPDATE
         );
+
+        foreach ($object->getElectedRepresentativeMandates() as $mandate) {
+            if (
+                \in_array($mandate->mandateType, [
+                    MandateTypeEnum::DEPUTE,
+                    MandateTypeEnum::DEPUTE_EUROPEEN,
+                    MandateTypeEnum::SENATEUR,
+                ])
+                && !$mandate->isEnded()
+                && !$this->electedMandatesBeforeUpdate->contains($mandate)
+            ) {
+                $object->setContributionStatus(ContributionStatusEnum::ELIGIBLE);
+                $object->addRevenueDeclaration(10000);
+
+                break;
+            }
+        }
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -1101,6 +1133,12 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
+    }
+
+    #[Required]
+    public function setEntityManager(EntityManagerInterface $entityManager): void
+    {
+        $this->entityManager = $entityManager;
     }
 
     private function getAdministrator(): Administrator
