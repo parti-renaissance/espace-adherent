@@ -36,6 +36,7 @@ const FirstForm = ({ amounts: uniqAmounts = [30, 60, 120, 250, 500, 1000] } = {}
 
         handleAmountClick(amount) {
             this.animateSvg(amount);
+            this.amount = amount;
             document.querySelector('#amount_custom').value = '';
         },
 
@@ -44,7 +45,7 @@ const FirstForm = ({ amounts: uniqAmounts = [30, 60, 120, 250, 500, 1000] } = {}
          */
         handleCustomFieldChange(e) {
             const { value } = e.target;
-            this.amount = '' === value ? '60' : value;
+            this.amount = '' === value ? 60 : value;
             this.animateSvg(this.amount);
         },
 

@@ -58,7 +58,7 @@
                         {{ form_row(form.validate, { label: 'Confirmer mon adresse email', attr: {
                             color: "black",
                             class: "w-full",
-                            'x-bind:class': "{disabled: !checkValidity()}",
+                            '!x-bind:class': "{disabled: !checkValidity()}",
                         }}) }}
                     </div>
                 </template>
@@ -91,7 +91,7 @@
                         {{ form_row(form.changeEmail, { label: 'Changer mon email', attr: {
                             color: "blue",
                             class: "w-full",
-                            'x-bind:class': "{disabled: !checkValidity()}",
+                            '!x-bind:class': "{disabled: !checkValidity()}",
                         }}) }}
                     </div>
                 </template>

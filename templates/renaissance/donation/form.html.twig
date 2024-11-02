@@ -76,27 +76,20 @@
                                         <twig:Atoms:ReToggleButton
                                             id="duration_monthly" value="{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') }}" name="duration"
                                             x-model="duration"
-                                            @click="amount = '10'" >
+                                            @click="amount = 10" >
                                             Mensuel
                                         </twig:Atoms:ReToggleButton>
                                         <twig:Atoms:ReToggleButton
                                             id="duration_punctual" value="{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::NONE') }}" name="duration"
                                             x-model="duration"
-                                            @click="amount = '60'" >
+                                            @click="amount = 60" >
                                             Unique
                                         </twig:Atoms:ReToggleButton>
                                     </twig:Atoms:ReLinkedToggle>
                                     {{ form_errors(form.duration) }}
                                     <twig:Atoms:ReLinkedToggle color="green" name="amount" id="donation_amount_picker" grid label="">
-                                        <template x-if="duration === '{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::UNLIMITED') }}'">
-                                            <template x-for="amt in getAmounts()">
-                                                <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="`amount_1`" @click="handleAmountClick(amt)" x-bind:value="amt" x-model="amount" x-text="amt" />
-                                            </template>
-                                        </template>
-                                        <template x-if="duration === '{{ constant('App\\Donation\\Paybox\\PayboxPaymentSubscription::NONE') }}'">
-                                            <template x-for="amt in getAmounts()">
-                                                <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="amount" @click="handleAmountClick(amt)" x-bind:value="amt" x-model="amount" x-text="amt" />
-                                            </template>
+                                        <template x-for="amt in getAmounts()" :key="amt">
+                                            <twig:Atoms:ReToggleButton id="x:`amount_${amt}`" name="amount" @click="handleAmountClick(amt)" !x-bind:value="amt" x-model="amount" x-text="amt" />
                                         </template>
                                     </twig:Atoms:ReLinkedToggle>
 
@@ -105,7 +98,7 @@
                                             id="amount_custom"
                                             @input="handleCustomFieldChange($event)"
                                             @change="handleCustomFieldChange($event)"
-                                            x-bind:value="defaultCustomAmount"
+                                            !x-bind:value="defaultCustomAmount"
                                             center
                                             type="text"
                                             x-numberonly.5.625
@@ -117,7 +110,7 @@
                                             id="amount_custom"
                                             @input="handleCustomFieldChange($event)"
                                             @change="handleCustomFieldChange($event)"
-                                            x-bind:value="defaultCustomAmount"
+                                            !x-bind:value="defaultCustomAmount"
                                             center
                                             type="text"
                                             x-numberonly.10.7500
@@ -126,8 +119,8 @@
 
                                     {{ form_errors(form.amount) }}
 
-                                    {{ form_row(form.amount, {attr: { 'x-bind:value': 'amount'}}) }}
-                                    {{ form_row(form.duration, {attr: { 'x-bind:value': 'duration'}}) }}
+                                    {{ form_row(form.amount, {attr: { '!x-bind:value': 'amount'}}) }}
+                                    {{ form_row(form.duration, {attr: { '!x-bind:value': 'duration'}}) }}
 
                                     {{ form_row(form.localDestination, {
                                         label: 'donation.local_destination.label', label_html: true,
@@ -155,7 +148,7 @@
                                                     <twig:Atoms:ReLabel>Vous avez déjà un compte Renaissance ? </twig:Atoms:ReLabel>
                                                     Connectez vous pour pré-remplir toutes vos informations.
                                                 </p>
-                                                <twig:ReButton stroke color="black" tag="a" x-bind:href="connectUrl()">
+                                                <twig:ReButton stroke color="black" tag="a" !x-bind:href="connectUrl()">
                                                     Me connecter
                                                 </twig:ReButton>
                                             {% endif %}
