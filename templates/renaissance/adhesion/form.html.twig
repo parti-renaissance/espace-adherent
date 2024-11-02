@@ -57,7 +57,7 @@
                                 <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
                                     <template x-if="generalNotification">
                                         <twig:ReParagraphStatus
-                                                !x-bind:data-status="generalNotification.status"
+                                                x-bind:data-status!="generalNotification.status"
                                                 status="x:generalNotification.status"
                                                 x-text="generalNotification.message"/>
                                     </template>
@@ -136,7 +136,7 @@
                                 <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_3" x-data="ThirdFormStep">
                                     <template x-if="generalNotification">
                                         <twig:ReParagraphStatus
-                                                !x-bind:data-status="generalNotification.status"
+                                                x-bind:data-status!="generalNotification.status"
                                                 status="x:generalNotification.status"
                                                 x-text="generalNotification.message"/>
                                     </template>
@@ -201,7 +201,7 @@
                                                 class="w-full"
                                                 loading="x:loading"
                                                 @click="handleOnSubmit($event, $dispatch)"
-                                                !x-bind:class="{disabled: !checkValidity()}"
+                                                x-bind:class!="{disabled: !checkValidity()}"
                                         >J'adhère</twig:ReButton>
                                     </template>
                                 </twig:Atoms:ReCard>
@@ -318,7 +318,7 @@
                                     {% endif %}
 
                                     {{ form_errors(form.amount) }}
-                                    {{ form_row(form.amount, {attr: {'!x-bind:value': 'calcCotisTotal().total'}}) }}
+                                    {{ form_row(form.amount, {attr: {'x-bind:value!': 'calcCotisTotal().total'}}) }}
 
                                     <twig:ReButton
                                         color="green"
