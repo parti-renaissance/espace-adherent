@@ -1,7 +1,6 @@
 @renaissance_user
 @javascript
 @javascript2
-@skip
 Feature:
 
     Scenario: I can become adherent
@@ -64,7 +63,7 @@ Feature:
         And I click the ".textCenter:last-child a" selector
         And I should be on "/paiement" wait otherwise
         When I simulate IPN call with "00000" code for the last donation of "test@test.com"
-        And I should be on "/adhesion/confirmation-email" wait otherwise
+        Then I should be on "/adhesion/confirmation-email" wait otherwise
         And I should see "Votre paiement a bien été validé !"
         And I should see "Confirmer votre adresse email"
         And I should see "test@test.com"
