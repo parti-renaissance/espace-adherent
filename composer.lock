@@ -17345,12 +17345,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/parti-renaissance/ux-twig-component.git",
-                "reference": "2b6bf9b5294ec11b1f14beddaa895f9d142fea42"
+                "reference": "d2ae11b0eea616a3192b16be7cb23e3109fea4db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/parti-renaissance/ux-twig-component/zipball/2b6bf9b5294ec11b1f14beddaa895f9d142fea42",
-                "reference": "2b6bf9b5294ec11b1f14beddaa895f9d142fea42",
+                "url": "https://api.github.com/repos/parti-renaissance/ux-twig-component/zipball/d2ae11b0eea616a3192b16be7cb23e3109fea4db",
+                "reference": "d2ae11b0eea616a3192b16be7cb23e3109fea4db",
                 "shasum": ""
             },
             "require": {
@@ -17410,7 +17410,7 @@
             "support": {
                 "source": "https://github.com/parti-renaissance/ux-twig-component/tree/cancel-dynamic-props"
             },
-            "time": "2024-11-02T12:51:43+00:00"
+            "time": "2024-11-02T15:51:04+00:00"
         },
         {
             "name": "symfony/validator",
