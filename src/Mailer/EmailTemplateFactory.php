@@ -23,7 +23,7 @@ class EmailTemplateFactory
         $email = new EmailTemplate(
             $message->getUuid(),
             $templateObject ? '' : ($message->getTemplate() ?? $message->generateTemplateName()),
-            $message->getSubject(),
+            $templateObject && $templateObject->subject ? $templateObject->subject : $message->getSubject(),
             $message->getSenderEmail() ?: $this->senderEmail,
             $message->getSenderName() ?: $this->senderName,
             $message->getReplyTo(),
