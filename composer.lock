@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "550dc76092f2a93b57c26c6c506d9ab1",
+    "content-hash": "0f56f3b5bad98ad56ce4a75d6a02f656",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -17341,16 +17341,16 @@
         },
         {
             "name": "symfony/ux-twig-component",
-            "version": "v2.21.0",
+            "version": "dev-cancel-dynamic-props",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/ux-twig-component.git",
-                "reference": "5b60b239fffcb04fc8bdb2a5a4001d19442d575d"
+                "url": "https://github.com/parti-renaissance/ux-twig-component.git",
+                "reference": "2b6bf9b5294ec11b1f14beddaa895f9d142fea42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-twig-component/zipball/5b60b239fffcb04fc8bdb2a5a4001d19442d575d",
-                "reference": "5b60b239fffcb04fc8bdb2a5a4001d19442d575d",
+                "url": "https://api.github.com/repos/parti-renaissance/ux-twig-component/zipball/2b6bf9b5294ec11b1f14beddaa895f9d142fea42",
+                "reference": "2b6bf9b5294ec11b1f14beddaa895f9d142fea42",
                 "shasum": ""
             },
             "require": {
@@ -17386,7 +17386,11 @@
                     "Symfony\\UX\\TwigComponent\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Symfony\\UX\\TwigComponent\\Tests\\": "tests/"
+                }
+            },
             "license": [
                 "MIT"
             ],
@@ -17404,23 +17408,9 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-twig-component/tree/v2.21.0"
+                "source": "https://github.com/parti-renaissance/ux-twig-component/tree/cancel-dynamic-props"
             },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2024-10-05T22:11:16+00:00"
+            "time": "2024-11-02T12:51:43+00:00"
         },
         {
             "name": "symfony/validator",
@@ -23432,7 +23422,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "symfony/ux-twig-component": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -23450,6 +23442,6 @@
         "ext-pdo": "*",
         "ext-zip": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

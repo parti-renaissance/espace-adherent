@@ -133,7 +133,7 @@
         "symfony/thanks": "^1.2",
         "symfony/translation": "^5.4",
         "symfony/twig-bundle": "^5.4",
-        "symfony/ux-twig-component": "^2.20",
+        "symfony/ux-twig-component": "dev-cancel-dynamic-props",
         "symfony/validator": "^5.4",
         "symfony/workflow": "^5.4",
         "symfony/yaml": "^5.4",
@@ -211,6 +211,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/parti-renaissance/contexts"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/parti-renaissance/ux-twig-component"
         },
         {
             "type": "vcs",
