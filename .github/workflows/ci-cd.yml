@@ -232,7 +232,6 @@ jobs:
                 tags:
                     - '@javascript1'
                     - '@javascript2'
-                    - '@javascript3'
                     - '@ux-component'
 
         steps:

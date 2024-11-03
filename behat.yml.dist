@@ -3,7 +3,7 @@ default:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: tests/bootstrap.php
         Behat\MinkExtension:
-            base_url: "http://test.enmarche.code"
+            base_url: "http://test.renaissance.code"
             files_path: 'tests/Fixtures'
             sessions:
                 default:

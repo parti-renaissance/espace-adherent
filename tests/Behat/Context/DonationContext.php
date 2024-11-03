@@ -3,8 +3,7 @@
 namespace Tests\App\Behat\Context;
 
 use App\Entity\Donation;
-use App\Entity\Donator;
-use App\Repository\DonatorRepository;
+use App\Repository\DonationRepository;
 use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -50,17 +49,18 @@ class DonationContext extends RawMinkContext
 
     private function getDonation(string $email): ?Donation
     {
-        /** @var DonatorRepository $repository */
-        $repository = $this->getService(DonatorRepository::class);
+        /** @var DonationRepository $repository */
+        $repository = $this->getService(DonationRepository::class);
 
-        /** @var Donator $donator */
-        $donator = $repository->findOneBy(['emailAddress' => $email]);
-
-        if ($donator->getDonations()->isEmpty()) {
-            return null;
-        }
-
-        return $donator->getDonations()->first();
+        return $repository->createQueryBuilder('d')
+            ->innerJoin('d.donator', 'donator')
+            ->andWhere('donator.emailAddress = :email')
+            ->setParameter('email', $email)
+            ->orderBy('d.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 
     private function getContainer(): ContainerInterface
