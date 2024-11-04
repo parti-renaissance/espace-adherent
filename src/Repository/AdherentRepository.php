@@ -927,18 +927,30 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    public function countInZones(array $zones, bool $adherentRenaissance, bool $sympathizerRenaissance): int
+    public function countInZones(array $zones, bool $adherentRenaissance, bool $sympathizerRenaissance, ?int $since = null): int
     {
         if (!$zones) {
             return 0;
         }
 
-        return $this
+        $queryBuilder = $this
             ->createQueryBuilderForZones($zones, $adherentRenaissance, $sympathizerRenaissance)
             ->select('COUNT(1)')
-            ->getQuery()
-            ->getSingleScalarResult()
         ;
+
+        if ($since >= 2022 && $since <= date('Y')) {
+            $yearCondition = new Orx();
+            foreach (range($since, date('Y')) as $year) {
+                $yearCondition->add('adherent.tags like :adherent_tag_'.$year);
+                $queryBuilder->setParameter('adherent_tag_'.$year, '%'.TagEnum::getAdherentYearTag($year).'%');
+            }
+
+            if ($yearCondition->count() > 0) {
+                $queryBuilder->andWhere($yearCondition);
+            }
+        }
+
+        return $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
     public function getAllInZones(array $zones, bool $adherentRenaissance, bool $sympathizerRenaissance, ?int $offset = null, ?int $limit = null): array

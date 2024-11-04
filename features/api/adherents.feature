@@ -1266,6 +1266,16 @@ Feature:
                 "sympathizer": 2
             }
             """
+        When I send a "GET" request to "/api/v3/adherents/count?scope=president_departmental_assembly&since=2022"
+        Then the response status code should be 200
+        And the JSON should be equal to:
+            """
+            {
+                "adherent": 6,
+                "adherent_since": 5,
+                "sympathizer": 2
+            }
+            """
         When I send a "POST" request to "/api/v3/adherents/count?scope=president_departmental_assembly" with body:
             """
             ["e3efe6fd-906e-11eb-a875-0242ac150002"]
