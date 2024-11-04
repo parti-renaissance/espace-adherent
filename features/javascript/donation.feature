@@ -1,7 +1,6 @@
 @renaissance_user
 @javascript
 @javascript1
-@skip
 Feature: The goal is to donate one time or multiple time with a subscription
     In order to donate
     As an anonymous user or connected user
@@ -48,8 +47,9 @@ Feature: The goal is to donate one time or multiple time with a subscription
         And I press "Valider"
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
         And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
-        When I click the "td#ticketCell img" selector
-        And I simulate IPN call with "00000" code for the last donation of "marine.dupont@parti.re"
+        And I wait 1 seconds
+        And I click the ".textCenter:last-child a" selector
+        When I simulate IPN call with "00000" code for the last donation of "marine.dupont@parti.re"
         Then I should be on "/don/merci" wait otherwise
         And I should see "Merci Marine pour votre don !"
 
@@ -93,8 +93,9 @@ Feature: The goal is to donate one time or multiple time with a subscription
         And I press "Valider"
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
         And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
-        When I click the "td#ticketCell img" selector
-        And I simulate IPN call with "00000" code for the last donation of "marine.dupont@parti.re"
+        And I wait 1 seconds
+        And I click the ".textCenter:last-child a" selector
+        When I simulate IPN call with "00000" code for the last donation of "marine.dupont@parti.re"
         Then I should be on "/don/merci" wait otherwise
         And I should see "Merci Marine pour votre don !"
 
@@ -157,7 +158,8 @@ Feature: The goal is to donate one time or multiple time with a subscription
         And I press "Valider"
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
         And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
-        When I click the "td#ticketCell img" selector
-        And I simulate IPN call with "00000" code for the last donation of "marine.dupont@parti.re"
+        And I wait 1 seconds
+        And I click the ".textCenter:last-child a" selector
+        When I simulate IPN call with "00000" code for the last donation of "marine.dupont@parti.re"
         Then I should be on "/don/merci" wait otherwise
         And I should see "Merci Marine pour votre don !"
