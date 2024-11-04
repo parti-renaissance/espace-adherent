@@ -231,10 +231,14 @@ class Driver implements LoggerAwareInterface
 
     public function isSuccessfulResponse(?ResponseInterface $response, bool $log = false): bool
     {
-        $isSuccessful = $response && 200 <= $response->getStatusCode() && $response->getStatusCode() < 300;
+        try {
+            $isSuccessful = $response && 200 <= $response->getStatusCode() && $response->getStatusCode() < 300;
+        } catch (TransportExceptionInterface $e) {
+            $isSuccessful = false;
+        }
 
-        if (!$isSuccessful && $log && $response) {
-            $this->logger->error(\sprintf('[API] Error: %s', $response->getContent(false)));
+        if (!$isSuccessful && $log) {
+            $this->logger->error(\sprintf('[API] Error: %s', $response ? $response->getContent(false) : 'unknown'));
         }
 
         return $isSuccessful;
