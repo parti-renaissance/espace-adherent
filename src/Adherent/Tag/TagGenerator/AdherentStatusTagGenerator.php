@@ -2,6 +2,7 @@
 
 namespace App\Adherent\Tag\TagGenerator;
 
+use App\Adherent\Contribution\ContributionStatusEnum;
 use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
 use App\Membership\MembershipSourceEnum;
@@ -56,7 +57,10 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
                     && $totalContributionPaymentsByYear[$currentYear] >= 30
                     && (
                         !$adherent->findElectedRepresentativeMandates(true)
-                        || $adherent->exemptFromCotisation
+                        || (
+                            $adherent->exemptFromCotisation
+                            || ContributionStatusEnum::NOT_ELIGIBLE === $adherent->getContributionStatus()
+                        )
                     )
                 ) {
                     return [\sprintf(TagEnum::ADHERENT_YEAR_ELU_TAG_PATTERN, $currentYear)];
@@ -81,7 +85,10 @@ class AdherentStatusTagGenerator extends AbstractTagGenerator
                     && $totalContributionPaymentsByYear[$year] >= 30
                     && (
                         !$adherent->findElectedRepresentativeMandates(true)
-                        || $adherent->exemptFromCotisation
+                        || (
+                            $adherent->exemptFromCotisation
+                            || ContributionStatusEnum::NOT_ELIGIBLE === $adherent->getContributionStatus()
+                        )
                     )
                 ) {
                     return [\sprintf(TagEnum::ADHERENT_YEAR_TAG_PATTERN, $year)];
