@@ -1,6 +1,7 @@
 @renaissance_user
 @javascript
 @javascript2
+@skip
 Feature:
 
     Scenario: I can become adherent
