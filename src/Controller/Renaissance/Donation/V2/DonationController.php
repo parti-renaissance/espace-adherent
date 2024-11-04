@@ -85,6 +85,8 @@ class DonationController extends AbstractController
 
         if ($request->query->has(UtmParams::UTM_SOURCE)) {
             $donationRequest->utmSource = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_SOURCE));
+        }
+        if ($request->query->has(UtmParams::UTM_CAMPAIGN)) {
             $donationRequest->utmCampaign = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_CAMPAIGN));
         }
 

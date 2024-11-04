@@ -91,6 +91,8 @@ class AdhesionController extends AbstractController
 
         if ($request->query->has(UtmParams::UTM_SOURCE)) {
             $membershipRequest->utmSource = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_SOURCE));
+        }
+        if ($request->query->has(UtmParams::UTM_CAMPAIGN)) {
             $membershipRequest->utmCampaign = UtmParams::filterUtmParameter($request->query->get(UtmParams::UTM_CAMPAIGN));
         }
 
