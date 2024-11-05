@@ -59,9 +59,15 @@ class CountAdherentController extends AbstractController
             );
         }
 
-        return $this->json([
+        $data = [
             'adherent' => $this->adherentRepository->countInZones($zonesFromRequest ?: $scopeZones, true, false),
             'sympathizer' => $this->adherentRepository->countInZones($zonesFromRequest ?: $scopeZones, false, true),
-        ]);
+        ];
+
+        if ($since = (int) $request->query->get('since')) {
+            $data['adherent_since'] = $this->adherentRepository->countInZones($zonesFromRequest ?: $scopeZones, true, false, $since);
+        }
+
+        return $this->json($data);
     }
 }
