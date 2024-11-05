@@ -3,6 +3,7 @@
 namespace App\Repository\VotingPlatform;
 
 use App\Entity\Adherent;
+use App\Entity\Committee;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
@@ -171,20 +172,40 @@ class VoterRepository extends ServiceEntityRepository
         ;
     }
 
-    public function isInVoterListForCommitteeElection(Adherent $adherent): bool
-    {
-        return 0 < (int) $this->createQueryBuilder('voter')
-            ->select('COUNT(1)')
-            ->innerJoin('voter.votersLists', 'list')
-            ->innerJoin('list.election', 'election')
-            ->innerJoin('election.designation', 'designation', Join::WITH, 'designation.type = :designation_type')
-            ->innerJoin('election.electionEntity', 'election_entity')
-            ->innerJoin('election_entity.committee', 'committee', Join::WITH, 'committee.version = 2')
-            ->where('voter.adherent = :adherent')
-            ->setParameters([
-                'adherent' => $adherent,
-                'designation_type' => DesignationTypeEnum::COMMITTEE_SUPERVISOR,
-            ])
+    public function isInVoterListForCommitteeElection(
+        Adherent $adherent,
+        ?Committee $committee = null,
+        ?\DateTimeInterface $after = null,
+    ): bool {
+        $qb = $this->createQueryBuilder('voter')
+                ->select('COUNT(1)')
+                ->innerJoin('voter.votersLists', 'list')
+                ->innerJoin('list.election', 'election')
+                ->innerJoin('election.designation', 'designation', Join::WITH, 'designation.type = :designation_type')
+                ->innerJoin('election.electionEntity', 'election_entity')
+                ->innerJoin('election_entity.committee', 'committee', Join::WITH, 'committee.version = 2')
+                ->where('voter.adherent = :adherent')
+                ->setParameters([
+                    'adherent' => $adherent,
+                    'designation_type' => DesignationTypeEnum::COMMITTEE_SUPERVISOR,
+                ])
+        ;
+
+        if ($committee) {
+            $qb
+                ->andWhere('committee = :committee')
+                ->setParameter('committee', $committee)
+            ;
+        }
+
+        if ($after) {
+            $qb
+                ->andWhere('designation.voteEndDate >= :after')
+                ->setParameter('after', $after)
+            ;
+        }
+
+        return 0 < (int) $qb
             ->getQuery()
             ->getSingleScalarResult()
         ;

@@ -24,6 +24,7 @@ use App\OAuth\TokenRevocationAuthority;
 use App\Repository\CommitteeRepository;
 use App\Repository\DonationRepository;
 use App\Repository\TaxReceiptRepository;
+use App\Repository\VotingPlatform\VoterRepository;
 use App\Utils\HttpUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
@@ -233,7 +234,7 @@ class ProfileController extends AbstractController
 
     #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
     #[Route(path: '/instances', methods: ['GET'])]
-    public function myInstances(UserInterface $adherent, CommitteeRepository $committeeRepository): Response
+    public function myInstances(UserInterface $adherent, CommitteeRepository $committeeRepository, VoterRepository $voterRepository): Response
     {
         $instance = [];
 
@@ -256,13 +257,22 @@ class ProfileController extends AbstractController
             ];
         }
 
-        $myCommitteeMembership = $adherent->getCommitteeV2Membership();
+        $currentCommittee = $adherent->getCommitteeV2Membership()?->getCommittee();
+
+        $recentElectionParticipation = $currentCommittee && $voterRepository->isInVoterListForCommitteeElection(
+            $adherent,
+            $currentCommittee,
+            new \DateTime('-3 months')
+        );
+
         $instance[] = [
             'type' => 'committee',
-            'uuid' => $myCommitteeMembership?->getCommittee()->getUuid(),
-            'name' => $myCommitteeMembership?->getCommittee()->getName(),
-            'members_count' => $myCommitteeMembership?->getCommittee()->getMembersCount(),
+            'uuid' => $currentCommittee?->getUuid(),
+            'name' => $currentCommittee?->getName(),
+            'members_count' => $currentCommittee?->getMembersCount(),
             'assembly_committees_count' => \count($committeeRepository->findInAdherentZone($adherent)),
+            'can_change_committee' => !$recentElectionParticipation,
+            'message' => $recentElectionParticipation ? 'Vous avez participé à une élection interne il y a moins de 3 mois dans votre comité. Il ne vous est pas possible d\'en changer.' : null,
         ];
 
         return $this->json($instance);
@@ -270,8 +280,12 @@ class ProfileController extends AbstractController
 
     #[Route(path: '/committees/{uuid}/join', methods: ['PUT'])]
     #[Security('is_granted("ROLE_OAUTH_SCOPE_WRITE:PROFILE") and user.isRenaissanceAdherent()')]
-    public function saveMyNewCommittee(Committee $committee, UserInterface $adherent, CommitteeMembershipManager $committeeMembershipManager): Response
-    {
+    public function saveMyNewCommittee(
+        Committee $committee,
+        UserInterface $adherent,
+        CommitteeMembershipManager $committeeMembershipManager,
+        VoterRepository $voterRepository,
+    ): Response {
         /** @var Adherent $adherent */
         if (
             !array_intersect(
@@ -281,6 +295,21 @@ class ProfileController extends AbstractController
         ) {
             return $this->json([
                 'message' => 'Le comité choisi n\'est pas dans l\'assemblée départementale',
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $currentCommittee = $adherent->getCommitteeV2Membership()?->getCommittee();
+
+        if (
+            $currentCommittee
+            && $voterRepository->isInVoterListForCommitteeElection(
+                $adherent,
+                $currentCommittee,
+                new \DateTime('-3 months')
+            )
+        ) {
+            return $this->json([
+                'message' => 'Vous avez participé à une élection interne il y a moins de 3 mois dans votre comité. Il ne vous est pas possible d\'en changer.',
             ], Response::HTTP_BAD_REQUEST);
         }
 
