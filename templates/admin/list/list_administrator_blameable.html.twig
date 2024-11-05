@@ -1,11 +1,10 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
-{% macro display(user) %}
+{% macro display(user, admin) %}
     {% if user is instanceof('App\\Entity\\Administrator') %}
-        {% if is_granted('ROLE_ADMIN_ADMINISTRATORS') %}
+        {% if admin.isGranted('EDIT', user) %}
             <a class="btn btn-xs btn-danger" href="{{ path('admin_app_administrator_edit', { id: user.id }) }}">
-                {{ user }}
-                &nbsp; <i class="fa fa-external-link"></i>
+                {{ user }} <i class="fa fa-external-link"></i>
             </a>
         {% else %}
             <span class="label label-danger">
@@ -13,10 +12,9 @@
             </span>
         {% endif %}
     {% elseif user is instanceof('App\\Entity\\Adherent') %}
-        {% if is_granted('ROLE_ADMIN_ADHERENTS') %}
+        {% if admin.isGranted('EDIT', user) %}
             <a class="btn btn-xs btn-primary" href="{{ path('admin_app_adherent_edit', { id: user.id }) }}">
-                {{ user }}
-                &nbsp; <i class="fa fa-external-link"></i>
+                {{ user }} <i class="fa fa-external-link"></i>
             </a>
         {% else %}
             <span class="label label-primary">
@@ -38,7 +36,7 @@
     {% endif %}
 
     {% if createdBy %}
-        Créé par: {{ _self.display(createdBy) }}
+        Créé par: {{ _self.display(createdBy, admin) }}
     {% endif %}
 
     {% if createdBy and updatedBy %}
@@ -46,6 +44,6 @@
     {% endif %}
 
     {% if updatedBy %}
-        Modifié par: {{ _self.display(updatedBy) }}
+        Modifié par: {{ _self.display(updatedBy, admin) }}
     {% endif %}
 {% endblock %}
