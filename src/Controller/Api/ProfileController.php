@@ -24,6 +24,7 @@ use App\OAuth\TokenRevocationAuthority;
 use App\Repository\CommitteeRepository;
 use App\Repository\DonationRepository;
 use App\Repository\TaxReceiptRepository;
+use App\Repository\VotingPlatform\VoterRepository;
 use App\Utils\HttpUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
@@ -270,8 +271,12 @@ class ProfileController extends AbstractController
 
     #[Route(path: '/committees/{uuid}/join', methods: ['PUT'])]
     #[Security('is_granted("ROLE_OAUTH_SCOPE_WRITE:PROFILE") and user.isRenaissanceAdherent()')]
-    public function saveMyNewCommittee(Committee $committee, UserInterface $adherent, CommitteeMembershipManager $committeeMembershipManager): Response
-    {
+    public function saveMyNewCommittee(
+        Committee $committee,
+        UserInterface $adherent,
+        CommitteeMembershipManager $committeeMembershipManager,
+        VoterRepository $voterRepository,
+    ): Response {
         /** @var Adherent $adherent */
         if (
             !array_intersect(
@@ -281,6 +286,18 @@ class ProfileController extends AbstractController
         ) {
             return $this->json([
                 'message' => 'Le comité choisi n\'est pas dans l\'assemblée départementale',
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        if (
+            $voterRepository->isInVoterListForCommitteeElection(
+                $adherent,
+                $committee,
+                new \DateTime('-3 months')
+            )
+        ) {
+            return $this->json([
+                'message' => 'Vous avez participé à une élection interne il y a moins de 3 mois dans votre comité. Il ne vous est pas possible d\'en changer.',
             ], Response::HTTP_BAD_REQUEST);
         }
 
