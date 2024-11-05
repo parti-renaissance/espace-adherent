@@ -103,7 +103,7 @@ class OAuthAuthenticator extends AbstractAuthenticator
     {
         $user = $this->getUser($this->getCredentials($request));
 
-        return new SelfValidatingPassport(new UserBadge($user->getIdentifier(), fn () => $user));
+        return new SelfValidatingPassport(new UserBadge($user->getUsername(), fn () => $user));
     }
 
     public function supports(Request $request): ?bool
