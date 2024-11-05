@@ -137,6 +137,7 @@ class DesignationRepository extends ServiceEntityRepository
                 END AS HIDDEN score'
             )
             ->where('DATE_ADD(designation.voteEndDate, 3, \'DAY\') > :now')
+            ->andWhere('DATE_SUB(designation.voteStartDate, 2, \'DAY\') < :now')
             ->andWhere('designation.isCanceled = false')
             ->setParameters(['now' => new \DateTime()])
             ->setMaxResults($limit)
