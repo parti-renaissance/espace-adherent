@@ -289,10 +289,13 @@ class ProfileController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
+        $currentCommittee = $adherent->getCommitteeV2Membership()?->getCommittee();
+
         if (
-            $voterRepository->isInVoterListForCommitteeElection(
+            $currentCommittee
+            && $voterRepository->isInVoterListForCommitteeElection(
                 $adherent,
-                $committee,
+                $currentCommittee,
                 new \DateTime('-3 months')
             )
         ) {
