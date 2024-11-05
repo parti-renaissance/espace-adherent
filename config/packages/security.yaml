@@ -446,9 +446,8 @@ security:
             pattern: ^/api/(me$|webhooks|statistics/|jecoute/|crm-paris/|v3/)
             stateless: true
             provider: users_db
-            guard:
-                authenticators:
-                    - 'App\OAuth\OAuthAuthenticator'
+            custom_authenticators:
+                - App\OAuth\OAuthAuthenticator
 
         admin:
             context: main_context

@@ -17,44 +17,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-class OAuthAuthenticator extends AbstractGuardAuthenticator
+class OAuthAuthenticator extends AbstractAuthenticator
 {
-    private $resourceServer;
-    private $httpMessageFactory;
-    private $adherentRepository;
-    private $deviceRepository;
-
     public function __construct(
-        ResourceServer $resourceServer,
-        HttpMessageFactoryInterface $httpMessageFactory,
-        AdherentRepository $adherentRepository,
-        DeviceRepository $deviceRepository,
+        private readonly ResourceServer $resourceServer,
+        private readonly HttpMessageFactoryInterface $httpMessageFactory,
+        private readonly AdherentRepository $adherentRepository,
+        private readonly DeviceRepository $deviceRepository,
     ) {
-        $this->resourceServer = $resourceServer;
-        $this->httpMessageFactory = $httpMessageFactory;
-        $this->adherentRepository = $adherentRepository;
-        $this->deviceRepository = $deviceRepository;
     }
 
-    public function start(Request $request, ?AuthenticationException $authException = null)
-    {
-        $data = [
-            'message' => 'Authentication Required.',
-        ];
-
-        if ($authException) {
-            $data['message'] = $authException->getMessage();
-        }
-
-        return new JsonResponse($data, 401);
-    }
-
-    public function getCredentials(Request $request)
+    public function getCredentials(Request $request): array
     {
         $psrRequest = $this->httpMessageFactory->createRequest($request);
 
@@ -74,7 +52,7 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
         ];
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function getUser($credentials): Adherent|DeviceApiUser|ClientApiUser
     {
         $roles = array_map(
             function ($scope) {return 'ROLE_OAUTH_SCOPE_'.mb_strtoupper($scope); },
@@ -96,7 +74,7 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
         }
 
         if (!$user = $this->adherentRepository->loadUserByUuid(Uuid::fromString($credentials['oauth_user_id']))) {
-            $e = new UsernameNotFoundException(\sprintf('Unable to find User by UUID "%s".', $credentials['oauth_user_id']));
+            $e = new UserNotFoundException(\sprintf('Unable to find User by UUID "%s".', $credentials['oauth_user_id']));
 
             throw new BadCredentialsException('Invalid credentials.', 0, $e);
         }
@@ -107,29 +85,28 @@ class OAuthAuthenticator extends AbstractGuardAuthenticator
         return $user;
     }
 
-    public function checkCredentials($credentials, UserInterface $user)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        return true;
+        return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_UNAUTHORIZED);
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
-    {
-        return $this->start($request, $exception);
-    }
-
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         if (($user = $token->getUser()) instanceof Adherent) {
             $user->setAuthAppVersion($request->headers->get('X-App-Version'));
         }
+
+        return null;
     }
 
-    public function supportsRememberMe()
+    public function authenticate(Request $request): SelfValidatingPassport
     {
-        return false;
+        $user = $this->getUser($this->getCredentials($request));
+
+        return new SelfValidatingPassport(new UserBadge($user->getUsername(), fn () => $user));
     }
 
-    public function supports(Request $request)
+    public function supports(Request $request): ?bool
     {
         return true;
     }

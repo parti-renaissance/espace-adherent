@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Component\Security\Http\SecurityEvents;
 
 /**
  * Migrate the user to the new hashing algorithm if is using the legacy one.
@@ -22,7 +21,7 @@ class LegacyMigrationListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin'];
+        return [InteractiveLoginEvent::class => 'onSecurityInteractiveLogin'];
     }
 
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void
