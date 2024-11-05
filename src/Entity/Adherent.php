@@ -641,7 +641,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $adherent;
     }
 
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->getUuidAsString();
     }

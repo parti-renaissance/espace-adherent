@@ -3,22 +3,18 @@
 namespace App\Security;
 
 use App\Entity\Adherent;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Component\Security\Http\SecurityEvents;
 
 class AdherentLoginTimestampRecorder implements EventSubscriberInterface
 {
-    private $manager;
-
-    public function __construct(ObjectManager $manager)
+    public function __construct(private readonly EntityManagerInterface $manager)
     {
-        $this->manager = $manager;
     }
 
-    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
+    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $token = $event->getAuthenticationToken();
 
@@ -40,7 +36,7 @@ class AdherentLoginTimestampRecorder implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
+            InteractiveLoginEvent::class => 'onSecurityInteractiveLogin',
         ];
     }
 }

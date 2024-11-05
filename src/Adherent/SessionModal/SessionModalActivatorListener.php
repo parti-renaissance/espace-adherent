@@ -6,7 +6,6 @@ use App\Entity\Adherent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Component\Security\Http\SecurityEvents;
 
 class SessionModalActivatorListener implements EventSubscriberInterface
 {
@@ -18,7 +17,7 @@ class SessionModalActivatorListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
+            InteractiveLoginEvent::class => 'onSecurityInteractiveLogin',
         ];
     }
 

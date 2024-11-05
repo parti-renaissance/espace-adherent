@@ -82,7 +82,7 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
         }
     }
 
-    public function onKernelResponse(ResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event): void
     {
         $request = $event->getRequest();
         $routeName = $request->get('_route');
