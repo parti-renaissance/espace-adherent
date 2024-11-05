@@ -144,7 +144,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         $this->formationHandler->handleFile($formation);
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdminData::class,
