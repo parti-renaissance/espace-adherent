@@ -234,7 +234,7 @@ class ProfileController extends AbstractController
 
     #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
     #[Route(path: '/instances', methods: ['GET'])]
-    public function myInstances(UserInterface $adherent, CommitteeRepository $committeeRepository): Response
+    public function myInstances(UserInterface $adherent, CommitteeRepository $committeeRepository, VoterRepository $voterRepository): Response
     {
         $instance = [];
 
@@ -257,13 +257,22 @@ class ProfileController extends AbstractController
             ];
         }
 
-        $myCommitteeMembership = $adherent->getCommitteeV2Membership();
+        $currentCommittee = $adherent->getCommitteeV2Membership()?->getCommittee();
+
+        $recentElectionParticipation = $currentCommittee && $voterRepository->isInVoterListForCommitteeElection(
+            $adherent,
+            $currentCommittee,
+            new \DateTime('-3 months')
+        );
+
         $instance[] = [
             'type' => 'committee',
-            'uuid' => $myCommitteeMembership?->getCommittee()->getUuid(),
-            'name' => $myCommitteeMembership?->getCommittee()->getName(),
-            'members_count' => $myCommitteeMembership?->getCommittee()->getMembersCount(),
+            'uuid' => $currentCommittee?->getUuid(),
+            'name' => $currentCommittee?->getName(),
+            'members_count' => $currentCommittee?->getMembersCount(),
             'assembly_committees_count' => \count($committeeRepository->findInAdherentZone($adherent)),
+            'can_change_committee' => !$recentElectionParticipation,
+            'message' => $recentElectionParticipation ? 'Vous avez participé à une élection interne il y a moins de 3 mois dans votre comité. Il ne vous est pas possible d\'en changer.' : null,
         ];
 
         return $this->json($instance);
