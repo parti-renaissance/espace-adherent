@@ -1,11 +1,8 @@
-import moment from 'moment';
-
 function initializeTimer(element, refreshPage) {
     const container = findOne(element, '.clock-container');
 
     const interval = 1000;
-    const diffTime = element.dataset.eventTimestamp - element.dataset.nowTimestamp;
-    let duration = moment.duration(diffTime * 1000, 'milliseconds');
+    let diffTime = (element.dataset.eventTimestamp - element.dataset.nowTimestamp) * 1000;
 
     if (0 < diffTime) {
         const days = document.createElement('span');
@@ -36,16 +33,21 @@ function initializeTimer(element, refreshPage) {
             let s;
             s = h = m = d = 0;
 
-            const diff = duration.asMilliseconds() - interval;
+            diffTime -= interval;
 
-            if (0 < diff) {
-                duration = moment.duration(diff, 'milliseconds');
+            if (0 < diffTime) {
+                let delta = diffTime / 1000;
 
-                const durationObj = moment.duration(duration);
-                d = durationObj.asDays();
-                h = durationObj.hours();
-                m = durationObj.minutes();
-                s = durationObj.seconds();
+                d = Math.floor(delta / 86400);
+                delta -= d * 86400;
+
+                h = Math.floor(delta / 3600) % 24;
+                delta -= h * 3600;
+
+                m = Math.floor(delta / 60) % 60;
+                delta -= m * 60;
+
+                s = delta % 60;
             } else if (refreshPage) {
                 window.location.reload();
             }

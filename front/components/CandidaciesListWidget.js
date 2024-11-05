@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import Modal from './Modal';
 import Loader from './Loader';
 import ReqwestApiClient from '../services/api/ReqwestApiClient';
@@ -58,7 +57,6 @@ export default class CandidaciesListWidget extends Modal {
                     <div className='text--smallest'>
                         Déclaré{'female' === candidacy.gender ? 'e ' : ' '}
                         candidat{'female' === candidacy.gender ? 'e ' : ' '}
-                        le {moment(candidacy.created_at).format('DD/MM/YYYY')}
                     </div>
                 </div>
             </div>;

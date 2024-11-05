@@ -181,12 +181,6 @@ class App {
         });
     }
 
-    runCountdownClock(clockSelector, refreshPage = false) {
-        import('services/utils/countdownClock').catch((error) => { throw error; }).then((module) => {
-            module.default(clockSelector, refreshPage);
-        });
-    }
-
     runCommitteeCandidacy(slug, submitButtonSelector, wrapperSelector) {
         import('pages/committee_candidacy').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('api'), slug, submitButtonSelector, wrapperSelector);
