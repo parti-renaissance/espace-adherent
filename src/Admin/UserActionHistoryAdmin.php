@@ -3,13 +3,16 @@
 namespace App\Admin;
 
 use App\Entity\Adherent;
+use App\History\UserActionHistoryTypeEnum;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Symfony\Component\Form\Extension\Core\Type\EnumType;
 
 class UserActionHistoryAdmin extends AbstractAdmin
 {
@@ -57,6 +60,18 @@ class UserActionHistoryAdmin extends AbstractAdmin
                     'property' => [
                         'emailAddress',
                     ],
+                ],
+            ])
+            ->add('type', ChoiceFilter::class, [
+                'label' => 'Type',
+                'show_filter' => true,
+                'field_type' => EnumType::class,
+                'field_options' => [
+                    'class' => UserActionHistoryTypeEnum::class,
+                    'choice_label' => static function (UserActionHistoryTypeEnum $type): string {
+                        return 'user_action_history.type.'.$type->value;
+                    },
+                    'multiple' => true,
                 ],
             ])
         ;
