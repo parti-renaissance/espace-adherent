@@ -20,7 +20,7 @@ class ElectionVotersListController extends AbstractController
         VoterRepository $voterRepository,
     ): Response {
         if (!$election = $electionRepository->findOneByDesignation($designation)) {
-            throw $this->createNotFoundException();
+            return $this->json([]);
         }
 
         return $this->json($voterRepository->getVotersForElection($election));

@@ -3,6 +3,8 @@
 namespace App\Repository\VotingPlatform;
 
 use App\Entity\Committee;
+use App\Entity\VotingPlatform\Candidate;
+use App\Entity\VotingPlatform\CandidateGroup;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionPool;
@@ -114,8 +116,9 @@ class ElectionRepository extends ServiceEntityRepository
 
     public function getSingleAggregatedData(ElectionRound $electionRound): array
     {
-        return $this->createQueryBuilder('election')
+        return array_column($this->createQueryBuilder('election')
             ->select('pool.code AS pool_code')
+            ->addSelect('pool.id')
             ->addSelect(
                 \sprintf(
                     '(SELECT COUNT(1)
@@ -141,14 +144,13 @@ class ElectionRepository extends ServiceEntityRepository
                 ),
             )
             ->innerJoin('election.electionRounds', 'election_round')
-            ->leftJoin('election.electionPools', 'pool')
+            ->innerJoin('election.electionPools', 'pool')
             ->where('election_round = :election_round')
             ->setParameters([
                 'election_round' => $electionRound,
             ])
             ->getQuery()
-            ->getArrayResult()
-        ;
+            ->getArrayResult(), null, 'id');
     }
 
     /**
@@ -224,5 +226,68 @@ class ElectionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function getLiveResults(ElectionRound $electionRound): array
+    {
+        $results = [];
+
+        foreach ($electionRound->getElectionPools() as $pool) {
+            $poolResult = $this->createQueryBuilder('el')
+                ->select(\sprintf(
+                    '(SELECT COUNT(1) FROM %s AS t1
+                    INNER JOIN t1.electionPool AS election_pool1
+                    WHERE election_pool1.id = pool.id AND t1.isBlank = 0) AS expressed',
+                    VoteChoice::class
+                ))
+                ->addSelect(\sprintf(
+                    '(SELECT COUNT(1) FROM %s AS t2
+                    INNER JOIN t2.electionPool AS election_pool2
+                    WHERE election_pool2.id = pool.id AND t2.isBlank = 1) AS blank',
+                    VoteChoice::class
+                ))
+                ->innerJoin('el.electionPools', 'pool')
+                ->where('pool = :pool')
+                ->setParameter('pool', $pool)
+                ->getQuery()
+                ->getSingleResult()
+            ;
+
+            $candidateGroupsResult = array_column($this->createQueryBuilder('el')
+                ->select('candidate_group.id')
+                ->addSelect('COUNT(DISTINCT vc.id) AS total')
+                ->innerJoin('el.electionPools', 'pool')
+                ->innerJoin('pool.candidateGroups', 'candidate_group')
+                ->leftJoin(VoteChoice::class, 'vc', Join::WITH, 'vc.electionPool = pool AND vc.candidateGroup = candidate_group')
+                ->where('pool = :pool')
+                ->setParameter('pool', $pool)
+                ->groupBy('candidate_group.id')
+                ->getQuery()
+                ->getArrayResult(), 'total', 'id');
+
+            $results[] = [
+                'expressed' => $expressed = $poolResult['expressed'],
+                'blank' => $poolResult['blank'],
+                'participated' => 0,
+                'abstentions' => 0,
+                'bulletin_count' => 0,
+                'code' => $pool->getCode(),
+                'candidate_group_results' => array_map(fn (CandidateGroup $candidateGroup) => [
+                    'candidate_group' => [
+                        'candidates' => $candidates = array_map(fn (Candidate $candidate) => [
+                            'first_name' => $candidate->getFirstName(),
+                            'last_name' => $candidate->getLastName(),
+                            'gender' => $candidate->getGender(),
+                        ], $candidateGroup->getCandidatesSorted(true)),
+                        'elected' => false,
+                        'title' => $candidates[0]['first_name'],
+                    ],
+                    'total' => $total = $candidateGroupsResult[$candidateGroup->getId()] ?? 0,
+                    'rate' => $expressed > 0 ? round($total * 100.0 / $expressed, 1) : 0,
+                ], $pool->getCandidateGroups()),
+            ];
+        }
+
+        return $results;
     }
 }
