@@ -2,6 +2,7 @@
 
 namespace App\Adherent\Contribution;
 
+use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
 use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\Contribution\Contribution;
@@ -10,6 +11,7 @@ use App\GoCardless\Subscription;
 use App\Repository\Contribution\ContributionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use GoCardlessPro\Core\Exception\InvalidStateException;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class ContributionRequestHandler
 {
@@ -17,6 +19,7 @@ class ContributionRequestHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly ClientInterface $gocardless,
         private readonly ContributionRepository $contributionRepository,
+        private readonly MessageBusInterface $bus,
     ) {
     }
 
@@ -48,6 +51,8 @@ class ContributionRequestHandler
         $adherent->setContributedAt(new \DateTime());
 
         $this->entityManager->flush();
+
+        $this->bus->dispatch(new RefreshAdherentTagCommand($adherent->getUuid()));
     }
 
     private function cancelContributionSubscription(Contribution $contribution): void

@@ -55,7 +55,7 @@ class ElectProfileController extends AbstractController
     }
 
     #[Route(path: '/elect-payment', methods: ['POST'])]
-    public function savePayment(ValidatorInterface $validator, SerializerInterface $serializer, Request $request, UserInterface $adherent, EntityManagerInterface $entityManager, ContributionRequestHandler $contributionRequestHandler): Response
+    public function savePayment(ValidatorInterface $validator, SerializerInterface $serializer, Request $request, UserInterface $adherent, ContributionRequestHandler $contributionRequestHandler): Response
     {
         $command = $serializer->deserialize($request->getContent(), ContributionRequest::class, 'json');
         $errors = $validator->validate($command, null, ['fill_contribution_informations']);
