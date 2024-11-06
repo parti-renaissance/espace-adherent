@@ -34,14 +34,14 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            {{ form_row(form.firstName, { label: 'Prénom' }) }}
+                            {{ form_row(form.firstName, {label: 'Prénom'}) }}
                         </div>
                         <div class="col-md-6">
-                            {{ form_row(form.lastName, { label: 'Nom' }) }}
+                            {{ form_row(form.lastName, {label: 'Nom'}) }}
                         </div>
                     </div>
 
-                    {{ form_row(form.nationality, { label: 'Nationalité' }) }}
+                    {{ form_row(form.nationality, {label: 'Nationalité'}) }}
 
                     <div class="form-group {% if not form.address.vars.valid %} has-error{% endif %}" id="sonata-ba-field-container-{{ form.address.vars.id }}">
                         {% if not form.address.vars.valid %}
@@ -50,27 +50,27 @@
                             </div>
                         {% endif %}
 
-                        {{ form_row(form.address.address, { label: 'Adresse postale' }) }}
+                        {{ form_row(form.address.address, {label: 'Adresse postale'}) }}
 
-                        {{ form_row(form.address.additionalAddress, { label: 'Complément d\'adresse' }) }}
+                        {{ form_row(form.address.additionalAddress, {label: 'Complément d\'adresse'}) }}
 
                         <div class="row">
                             <div class="col-md-4">
-                                {{ form_row(form.address.postalCode, { label: 'Code postal' }) }}
+                                {{ form_row(form.address.postalCode, {label: 'Code postal'}) }}
                             </div>
                             <div class="col-md-4">
-                                {{ form_row(form.address.cityName, { label: 'Ville' }) }}
+                                {{ form_row(form.address.cityName, {label: 'Ville'}) }}
                                 {{ form_row(form.address.city) }}
                             </div>
                             <div class="col-md-4">
-                                {{ form_row(form.address.country, { label: 'Pays', placeholder: false }) }}
+                                {{ form_row(form.address.country, {label: 'Pays', placeholder: false}) }}
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-lg-5">
-                            {{ form_row(form.email, { label: 'Email' }) }}
+                            {{ form_row(form.email, {label: 'Email'}) }}
                         </div>
                         <div class="col-lg-7">
                             <div class="form-group {% if not form.phone.vars.valid %} has-error{% endif %}" id="sonata-ba-field-container-{{ form.phone.vars.id }}">
@@ -95,9 +95,9 @@
                         </div>
                     </div>
 
-                    {{ form_row(form.birthdate, { label: 'Né(e) le' }) }}
+                    {{ form_row(form.birthdate, {label: 'Né(e) le'}) }}
 
-                    {{ form_row(form.partyMembership, { label: false }) }}
+                    {{ form_row(form.partyMembership, {label: false}) }}
                 </div>
             </div>
 
@@ -109,14 +109,14 @@
                     <h4 class="box-title">Cotisation</h4>
                 </div>
                 <div class="box-body">
-                    {{ form_row(form.cotisationTypeChoice, { label: 'Type' }) }}
-                    {{ form_row(form.cotisationAmountChoice, { label: 'Montant' }) }}
+                    {{ form_row(form.cotisationTypeChoice, {label: 'Type'}) }}
+                    {{ form_row(form.cotisationAmountChoice, {label: 'Montant'}) }}
                     <div class="row">
                         <div class="col-lg-4">
-                            {{ form_row(form.cotisationCustomAmount, { label: false }) }}
+                            {{ form_row(form.cotisationCustomAmount, {label: false}) }}
                         </div>
                     </div>
-                    {{ form_row(form.cotisationDate, { label: 'Date' }) }}
+                    {{ form_row(form.cotisationDate, {label: 'Date'}) }}
                 </div>
             </div>
         </div>
@@ -154,7 +154,7 @@
                     return;
                 }
 
-                if ('{{ constant('App\\Renaissance\\Membership\\Admin\\CotisationAmountChoiceEnum::AMOUNT_OTHER')}}' == $(this).val()) {
+                if ('{{ constant('App\\Renaissance\\Membership\\Admin\\CotisationAmountChoiceEnum::AMOUNT_OTHER') }}' == $(this).val()) {
                     cotisationCustomAmountBlock.show();
                 } else {
                     cotisationCustomAmountBlock.hide();

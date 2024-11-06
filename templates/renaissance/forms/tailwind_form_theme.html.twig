@@ -1,4 +1,4 @@
-{% use "form_div_layout.html.twig" %}
+{% use 'form_div_layout.html.twig' %}
 
 {% block button_widget %}
     <twig:ReButton
@@ -143,7 +143,7 @@
                     checked="{{ child.vars.checked }}"
                     {{ ...child.vars.attr }}
                 >
-                    {{ form_label(child, child.vars.label, {label_attr: {class: 'grow shrink basis-0 text-gray-700 font-normal', id: child.vars.id~'_label'}}) }}
+                    {{ form_label(child, child.vars.label, {label_attr: {class: 'grow shrink basis-0 text-gray-700 font-normal', id: child.vars.id ~ '_label'}}) }}
                 </twig:ReRadioField>
             {% endfor %}
         </twig:ReRadioFieldset>
@@ -173,9 +173,9 @@
                 label: false,
                 attr: {
                     placeholder: 'Saisissez et sélectionnez une adresse postale',
-                    validate:"['required']",
-                    associatedFieldsPrefix:"membership_request_address",
-                    blocked:"blocked"
+                    validate: "['required']",
+                    associatedFieldsPrefix: 'membership_request_address',
+                    blocked: 'blocked'
                 }
             }) }}
 
@@ -188,15 +188,15 @@
         {# ---- Manuel ---- -#}
 
         <div class="address-fields-wrapper gap-8 flex-col flex" x-show="!showAutoComplete">
-            {{ form_row(form.address, { label: false, attr:{ placeholder: 'Adresse', validate:"['?:isFranceCountry','required']",  onCheck:"setFieldValid('address')" } }) }}
-            {{ form_row(form.additionalAddress, { label: false, attr: { placeholder: 'Complément d\'adresse' } }) }}
+            {{ form_row(form.address, {label: false, attr: {placeholder: 'Adresse', validate: "['?:isFranceCountry','required']", onCheck: "setFieldValid('address')"}}) }}
+            {{ form_row(form.additionalAddress, {label: false, attr: {placeholder: 'Complément d\'adresse'}}) }}
 
             <div class="flex flex-col xs:flex-row gap-5">
-                {{ form_row(form.postalCode, { label: false, attr: { placeholder: 'Code Postal', validate:"['?:isFranceCountry', 'required', 'max:15']", onCheck:"setFieldValid('postalCode')"} }) }}
-                {{ form_row(form.cityName, { label: false, attr: { placeholder: 'Ville', validate:"['required']",  onCheck:"setFieldValid('cityName')" } })}}
+                {{ form_row(form.postalCode, {label: false, attr: {placeholder: 'Code Postal', validate: "['?:isFranceCountry', 'required', 'max:15']", onCheck: "setFieldValid('postalCode')"}}) }}
+                {{ form_row(form.cityName, {label: false, attr: {placeholder: 'Ville', validate: "['required']", onCheck: "setFieldValid('cityName')"}}) }}
             </div>
 
-            {{ form_row(form.country, { label: false, attr: { validate:"['required']", onCheck:"setFieldValid('country')", blocked:"blocked" } }) }}
+            {{ form_row(form.country, {label: false, attr: {validate: "['required']", onCheck: "setFieldValid('country')", blocked: 'blocked'}}) }}
 
             <div class="text-gray-700 cursor-pointer text-center aucomplete-fields-toggle" @click="showAutoComplete = true">
                 <span class="text-ui_blue-50">Revenir</span> à la saisie d’adresse simplifiée
@@ -210,7 +210,7 @@
         <div class="w-52 h-full border-r border-ui_gray-40 re-tel">
             <div class="relative w-full h-full">
                 {{ form_widget(form.country, {label: false, attr: {
-                    class: "w-full absolute !max-h-[40px] left-0 top-0 p-0 background-transparent re-textfield-select",
+                    class: 'w-full absolute !max-h-[40px] left-0 top-0 p-0 background-transparent re-textfield-select',
                     placeholder: 'Code'
                 }}) }}
             </div>
@@ -218,11 +218,11 @@
 
         {{ form_widget(form.number, {label: false, attr: {
             placeholder: 'Numéro de téléphone',
-            autocomplete: "phone",
+            autocomplete: 'phone',
             status: valid ? 'default' : 'error',
             'x-numberonly': '',
             ...attr,
-            class: "w-full re-phone" ~ (attr and attr.class ? ' ' ~ attr.class : ''),
+            class: 'w-full re-phone' ~ (attr and attr.class ? ' ' ~ attr.class : ''),
         }}) }}
     </div>
 {% endblock %}

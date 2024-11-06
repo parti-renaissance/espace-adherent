@@ -5,7 +5,7 @@
 {% block contribution_content %}
     <div class="flex">
         <div class="shrink-0">
-            {% include 'icons/check-circle.svg.twig' with { svg_class: 'h-5 w-5 text-green-400' } %}
+            {{ include('icons/check-circle.svg.twig', {svg_class: 'h-5 w-5 text-green-400'}) }}
         </div>
         <div class="ml-3">
             <h3 class="text-base font-medium text-green-800">Mandat de prélèvement complété</h3>

@@ -14,8 +14,8 @@
         <div class="datagrid__pre-table b__nudge--bottom">
             <h3>{{ designation.getTitle() }}
                 <span class="text--muted">
-                    {{ designation.voteStartDate|format_datetime('none', 'none', "d MMM yyyy à HH:mm") }} ~
-                    {{ designation.voteEndDate|format_datetime('none', 'none', "d MMM yyyy à HH:mm") }}
+                    {{ designation.voteStartDate|format_datetime('none', 'none', 'd MMM yyyy à HH:mm') }} ~
+                    {{ designation.voteEndDate|format_datetime('none', 'none', 'd MMM yyyy à HH:mm') }}
                 </span>
             </h3>
         </div>
@@ -68,7 +68,7 @@
                 <div class="manager-overview__case">
                     <span class="manager-overview__case--section">Candidatures</span>
                     <span class="manager-overview__case--value">
-                        {{ election_stats|map(stats_row => '<span class="text--pink">'~stats_row.candidate_group_count~'</span><span class="text--small text--uppercase b__nudge--left-small">'~('designation.dashboard.stats.block_label.'~stats_row.pool_code)|trans~(stats_row.candidate_group_count > 1 ? 's')~'</span>')|join(' / ')|raw }}
+                        {{ election_stats|map(stats_row => '<span class="text--pink">' ~ stats_row.candidate_group_count ~ '</span><span class="text--small text--uppercase b__nudge--left-small">' ~ ('designation.dashboard.stats.block_label.' ~ stats_row.pool_code)|trans ~ (stats_row.candidate_group_count > 1 ? 's') ~ '</span>')|join(' / ')|raw }}
                     </span>
                     <h1 class="manager-overview__case--title">Candidatures</h1>
                 </div>

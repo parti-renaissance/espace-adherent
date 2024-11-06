@@ -3,11 +3,11 @@
 {% block field %}
     {% if object.isAdherent %}
         {% if is_granted('ROLE_APP_ADMIN_ADHERENT_EDIT') %}
-            <a href="{{ path('admin_app_adherent_edit', { id: object.adherent.id }) }}">
+            <a href="{{ path('admin_app_adherent_edit', {id: object.adherent.id}) }}">
                 {{ object.adherent }}
             </a>
         {% elseif is_granted('ROLE_APP_ADMIN_ADHERENT_VIEW') %}
-            <a href="{{ path('admin_app_adherent_show', { id: object.adherent.id }) }}">
+            <a href="{{ path('admin_app_adherent_show', {id: object.adherent.id}) }}">
                 {{ object.adherent }}
             </a>
         {% else %}

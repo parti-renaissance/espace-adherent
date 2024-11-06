@@ -14,24 +14,24 @@
             <p class="text--error">Le formulaire est invalide</p>
         {% endif %}
 
-        {{ form_start(form, { attr: { class: 'em-form b__nudge--top-40' } }) }}
+        {{ form_start(form, {attr: {class: 'em-form b__nudge--top-40'}}) }}
 
         <div class="em-form__group">
             {{ form_errors(form.question) }}
-            {{ form_label(form.question, 'Question', { label_attr: { class: 'em-form__label' } }) }}
-            {{ form_widget(form.question, { attr: { class: 'em-form__field committee_event__form__name', placeholder: 'Entrez votre question (255 caractères max.)' } }) }}
+            {{ form_label(form.question, 'Question', {label_attr: {class: 'em-form__label'}}) }}
+            {{ form_widget(form.question, {attr: {class: 'em-form__field committee_event__form__name', placeholder: 'Entrez votre question (255 caractères max.)'}}) }}
         </div>
 
         <div class="em-form__group">
             {{ form_errors(form.finishAt) }}
-            {{ form_label(form.finishAt, 'Date de fin', { label_attr: { class: 'em-form__label' } }) }}
-            {{ form_widget(form.finishAt, { attr: { class: 'em-form__field' } }) }}
+            {{ form_label(form.finishAt, 'Date de fin', {label_attr: {class: 'em-form__label'}}) }}
+            {{ form_widget(form.finishAt, {attr: {class: 'em-form__field'}}) }}
         </div>
 
         {% if form.zone is defined %}
             <div class="em-form__group em-form__checkbox--inline">
                 <label class="em-form__label required">Zone concernée</label>
-                {{ form_widget(form.zone, { attr: { class: 'em-form__field committee_event__form__name', placeholder: "Sélectionner une seule zone" } }) }}
+                {{ form_widget(form.zone, {attr: {class: 'em-form__field committee_event__form__name', placeholder: 'Sélectionner une seule zone'}}) }}
                 {{ form_errors(form.zone) }}
             </div>
         {% endif %}
@@ -39,7 +39,7 @@
         <div class="em-form__group em-form__group--cgu">
             <div class="form__checkbox">
                 {{ form_errors(form.published) }}
-                {{ form_widget(form.published, { attr: { class: 'committee_event__form__name' } }) }}
+                {{ form_widget(form.published, {attr: {class: 'committee_event__form__name'}}) }}
                 {{ form_label(form.published, 'Publiée') }}
             </div>
         </div>

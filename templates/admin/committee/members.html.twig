@@ -28,7 +28,7 @@
             Retour à la liste
         </a>
         {% if not committee.isClosed %}
-            <a href="{{ path('admin_app_committee_edit', { id: committee.id }) }}" class="btn btn-default">
+            <a href="{{ path('admin_app_committee_edit', {id: committee.id}) }}" class="btn btn-default">
                 <i class="fa fa-pencil" aria-hidden="true"></i>
                 Editer le comité
             </a>
@@ -76,14 +76,14 @@
                                     {{ membership.id }}
                                 </td>
                                 <td>
-                                    <a href="{{ path('admin_app_adherent_show', { id: member.id }) }}">
+                                    <a href="{{ path('admin_app_adherent_show', {id: member.id}) }}">
                                         {{ member.fullName }}
                                     </a>
                                     <br />
                                     {{ member.emailAddress }}
                                 </td>
                                 <td>
-                                    {{ member.gender ? ('common.gender.'~member.gender)|trans }}
+                                    {{ member.gender ? ('common.gender.' ~ member.gender)|trans }}
                                 </td>
                                 <td>
                                     {% if membership.isSupervisor(false) %}
@@ -106,12 +106,12 @@
                                 <td>
                                     {% if committee.isApproved %}
                                         {% if membership.isFollower and can_add_host %}
-                                            <a href="{{ path('app_admin_committee_change_privilege', { committee: committee.id, adherent: member.id, privilege: constant('COMMITTEE_HOST', membership), token: token }) }}"
+                                            <a href="{{ path('app_admin_committee_change_privilege', {committee: committee.id, adherent: member.id, privilege: constant('COMMITTEE_HOST', membership), token: token}) }}"
                                                class="btn btn-default btn-sm">
                                                 Transformer en co-animateur
                                             </a>
                                         {% elseif membership.isHostMember %}
-                                            <a href="{{ path('app_admin_committee_change_privilege', { committee: committee.id, adherent: member.id, privilege: constant('COMMITTEE_FOLLOWER', membership), token: token }) }}"
+                                            <a href="{{ path('app_admin_committee_change_privilege', {committee: committee.id, adherent: member.id, privilege: constant('COMMITTEE_FOLLOWER', membership), token: token}) }}"
                                                class="btn btn-default btn-sm">
                                                 Transformer en membre normal
                                             </a>

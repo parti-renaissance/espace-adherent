@@ -33,7 +33,7 @@
             </form>
         </li>
         <li>
-            <a href="{{ current_page > 1 ? path(pagination_route_name, pagination_route_params|merge({ page: current_page - 1 })) : 'javascript:void(0);' }}" class="pager__action switch">
+            <a href="{{ current_page > 1 ? path(pagination_route_name, pagination_route_params|merge({page: current_page - 1})) : 'javascript:void(0);' }}" class="pager__action switch">
                 <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
                     <polygon fill="#444" points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571" transform="rotate(45 30.642 -5.743)"/>
                 </svg>
@@ -41,7 +41,7 @@
         </li>
 
         <li>
-            <a href="{{ current_page < total_pages ? path(pagination_route_name, pagination_route_params|merge({ page: current_page + 1 })) : 'javascript:void(0);' }}" class="pager__action switch">
+            <a href="{{ current_page < total_pages ? path(pagination_route_name, pagination_route_params|merge({page: current_page + 1})) : 'javascript:void(0);' }}" class="pager__action switch">
                 <svg xmlns="http://www.w3.org/2000/svg" width="9" height="14" viewBox="0 0 9 14">
                     <polygon fill="#444" points="27.45 22.571 27.45 24.571 18.45 24.571 18.45 15.571 20.45 15.571 20.45 22.571" transform="scale(-1 1) rotate(45 26.142 -16.607)"/>
                 </svg>

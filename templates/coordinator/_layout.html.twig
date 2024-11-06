@@ -24,7 +24,7 @@
             <ul>
                 {% for page in pages %}
                     <li class="{{ app.request.query.has('s') and app.request.query.get('s') == page.status ? 'active' : '' }}">
-                        <a class="tabs-nav__item" href="{{ path(page.route, { 's': page.status }) }}">
+                        <a class="tabs-nav__item" href="{{ path(page.route, {s: page.status}) }}">
                             {{ page.label }}
                         </a>
                     </li>

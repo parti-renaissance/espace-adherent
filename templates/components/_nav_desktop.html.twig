@@ -62,7 +62,7 @@
                         {{ app.user.firstName is defined ? app.user.firstName }}
 
                         {% if is_certified %}
-                            {% include('components/_certification_logo.html.twig') %}
+                            {{ include(('components/_certification_logo.html.twig')) }}
                         {% endif %}
                     </span>
 

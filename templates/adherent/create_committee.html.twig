@@ -62,7 +62,7 @@
                 </div>
             {% else %}
                 <div>
-                    {{ form_start(form, { attr: { id: 'create-committee-form', class: 'form committee-form' } }) }}
+                    {{ form_start(form, {attr: {id: 'create-committee-form', class: 'form committee-form'}}) }}
                         {{ include('committee/_form.html.twig') }}
 
                         <div class="form__row">
@@ -70,7 +70,7 @@
                             {{ form_errors(form.phone) }}
                             <div class="form--full">
                                 {{ form_widget(form.phone.country) }}
-                                {{ form_widget(form.phone.number, {attr: {placeholder: "Vous pourrez être contacté" ~ (app.user.isFemale ? 'e') ~ " pour l'approbation de votre comité"}}) }}
+                                {{ form_widget(form.phone.number, {attr: {placeholder: 'Vous pourrez être contacté' ~ (app.user.isFemale ? 'e') ~ " pour l'approbation de votre comité"}}) }}
                             </div>
                         </div>
                         <div class="form__group">
@@ -85,7 +85,7 @@
 
                         <div class="form__row form__checkbox" id="field-contacting-terms">
                             {{ form_widget(form.acceptContactingTerms) }}
-                            {{ form_label(form.acceptContactingTerms, "J'accepte d'être contacté" ~ (app.user.isFemale ? 'e') ~ " dans le cadre de la création de mon comité") }}
+                            {{ form_label(form.acceptContactingTerms, "J'accepte d'être contacté" ~ (app.user.isFemale ? 'e') ~ ' dans le cadre de la création de mon comité') }}
                             {{ form_errors(form.acceptContactingTerms) }}
                         </div>
 

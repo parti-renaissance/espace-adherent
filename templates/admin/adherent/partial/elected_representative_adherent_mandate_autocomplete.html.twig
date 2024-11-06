@@ -6,14 +6,14 @@
         {%- if disabled %} disabled="disabled"{% endif %}
         {%- if multiple %} multiple="multiple"{% endif %}
     >
-        {%- for idx, val in value|filter((val, idx) => idx~'' != '_labels') -%}
+        {%- for idx, val in value|filter((val, idx) => idx ~ '' != '_labels') -%}
             <option value="{{ val }}" selected>{{ value['_labels'][idx] }}</option>
         {%- endfor -%}
     </select>
 
     <div id="{{ id }}_hidden_inputs_wrap">
         {% if multiple -%}
-            {%- for idx, val in value|filter((val, idx) => idx~'' != '_labels') -%}
+            {%- for idx, val in value|filter((val, idx) => idx ~ '' != '_labels') -%}
                 <input type="hidden" name="{{ full_name }}[]" {%- if disabled %} disabled="disabled"{% endif %} value="{{ val }}">
             {%- endfor -%}
         {% else -%}
@@ -46,8 +46,8 @@
                     : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
                     }}
                 </a>
-                {% include '@SonataAdmin/CRUD/Association/edit_modal.html.twig' %}
-                {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
+                {{ include('@SonataAdmin/CRUD/Association/edit_modal.html.twig') }}
+                {{ include('@SonataAdmin/CRUD/Association/edit_many_script.html.twig') }}
             {% endif %}
         </div>
     {% endif %}
@@ -108,7 +108,7 @@
                             {% endif %}
 
                             {% if context == 'filter' %}
-                            'field':  '{{ full_name|replace({'filter[': '', '][value]': '', '__':'.'}) }}',
+                            'field':  '{{ full_name|replace({'filter[': '', '][value]': '', __: '.'}) }}',
                             '_context': 'filter'
                             {% else %}
                             'field':  '{{ name }}'

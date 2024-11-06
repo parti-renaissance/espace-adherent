@@ -6,7 +6,7 @@
             </li>
         {% endif %}
         <li class="{{ is_active_route(app.request, 'app_committee_manager_edit') ? 'active' }}">
-            <a href="{{ path('app_committee_manager_edit', {slug: committee.slug }) }}">Mon comité</a>
+            <a href="{{ path('app_committee_manager_edit', {slug: committee.slug}) }}">Mon comité</a>
         </li>
 
         {% if committee.isApproved %}

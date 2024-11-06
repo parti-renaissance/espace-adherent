@@ -66,7 +66,7 @@
                     {% if is_host and app.user.equals(host) %}
                         <span class="text--small m-auto--left">(vous)</span>
                     {% elseif has_role_user %}
-                        <a href="{{ path('app_adherent_contact', {'uuid': host.uuid, 'from': 'committee', 'id': committee.uuid.toString}) }}"
+                        <a href="{{ path('app_adherent_contact', {uuid: host.uuid, from: 'committee', id: committee.uuid.toString}) }}"
                            class="link--no-decor text--blue--dark text--small m-auto--left">
                             Contacter
                         </a>
@@ -100,8 +100,8 @@
         <div class="committee__card">
             <h5>Suivez notre comité</h5>
             {% for key, link in committee.socialNetworksLinks %}
-                <a href="{{ link.url }}" target="_blank" rel="noopener" class="committee__social--{{ key }} btn btn--{{key}} b__nudge--bottom-tiny">
-                    <i class="fa fa--auto fa-{{key}} text--medium"></i>
+                <a href="{{ link.url }}" target="_blank" rel="noopener" class="committee__social--{{ key }} btn btn--{{ key }} b__nudge--bottom-tiny">
+                    <i class="fa fa--auto fa-{{ key }} text--medium"></i>
                     {{- link.label -}}
                 </a>
             {% endfor %}

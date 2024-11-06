@@ -32,8 +32,8 @@
                     {{ form_errors(form) }}
 
                     <div class="sonata-ba-collapsed-fields">
-                        {{ form_row(form.sourceDonator, { label: 'Numéro du donateur source', attr: { min: 1 } }) }}
-                        {{ form_row(form.destinationDonator, { label: 'Numéro du donateur de destination', attr: { min: 1 } }) }}
+                        {{ form_row(form.sourceDonator, {label: 'Numéro du donateur source', attr: {min: 1}}) }}
+                        {{ form_row(form.destinationDonator, {label: 'Numéro du donateur de destination', attr: {min: 1}}) }}
                         <div>
                             <button type="submit" class="btn btn-success">Fusionner</button>
                             <a href="{{ path('admin_app_donator_list') }}" class="btn btn-danger">

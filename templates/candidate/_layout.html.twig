@@ -32,15 +32,15 @@
     {% block candidate_content %}{% endblock %}
 
     {% if not hasCharterAccepted %}
-        {% include 'chart_dialog.html.twig' with {
-            'title': 'candidate.popup.title'|trans,
-            'subtitle': 'candidate.popup.subtitle'|trans,
-            'fileUrl': 'candidate.popup.file_url'|trans
-        } %}
+        {{ include('chart_dialog.html.twig', {
+            title: 'candidate.popup.title'|trans,
+            subtitle: 'candidate.popup.subtitle'|trans,
+            fileUrl: 'candidate.popup.file_url'|trans
+        }) }}
     {% endif %}
 
     {% if has_datacorner_access %}
-        {% include 'candidate/_data-corner-modal.html.twig' %}
+        {{ include('candidate/_data-corner-modal.html.twig') }}
     {% endif %}
 {% endblock %}
 

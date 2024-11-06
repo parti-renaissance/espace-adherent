@@ -2,12 +2,12 @@
     {% if block.type == 'video' %}
         <div class="csv card--small card--small__video {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             {% if block.media and block.media.video %}
-                {% include 'video.html.twig' with {'block': block, 'width': 300, 'height': 200} %}
+                {{ include('video.html.twig', {block: block, width: 300, height: 200}) }}
             {% else %}
                 <a href="{{ block.link }}" class="background-container">
                     <div class="background card__background progressive-background"
-                         data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
-                         data-hd="{{ media_asset(block.media, {'w': 1200, 'q': 70}) }}"
+                         data-sd="{{ media_asset(block.media, {w: 300, q: 20}) }}"
+                         data-hd="{{ media_asset(block.media, {w: 1200, q: 70}) }}"
                          style="background-color: #000000;">
                         <i class="play-icon"></i>
                     </div>
@@ -28,11 +28,11 @@
         </div>
         <div class="cmv card--medium card--medium__video {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             {% if block.media and block.media.video %}
-                {% include 'video.html.twig' with {'block': block, 'width': 585, 'height': 350} %}
+                {{ include('video.html.twig', {block: block, width: 585, height: 350}) }}
             {% else %}
                 <a href="{{ block.link }}" class="background-container card__background progressive-background link--no-decor"
-                   data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
-                   data-hd="{{ media_asset(block.media, {'w': 1200, 'q': 70}) }}"
+                   data-sd="{{ media_asset(block.media, {w: 300, q: 20}) }}"
+                   data-hd="{{ media_asset(block.media, {w: 1200, q: 70}) }}"
                    style="background-color: #000000;">
                     <div class="background">
                         <div class="content">
@@ -59,12 +59,12 @@
     {% else %}
         <div class="cs card--small {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             {% if block.media and block.media.video %}
-                {% include 'video.html.twig' with {'block': block, 'width': 300, 'height': 200} %}
+                {{ include('video.html.twig', {block: block, width: 300, height: 200}) }}
             {% else %}
                 <a href="{{ block.link }}" class="background-container">
                     <div class="background card__background progressive-background"
-                         data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
-                         data-hd="{{ media_asset(block.media, {'w': 1200, 'q': 70}) }}"
+                         data-sd="{{ media_asset(block.media, {w: 300, q: 20}) }}"
+                         data-hd="{{ media_asset(block.media, {w: 1200, q: 70}) }}"
                          style="background-color: #000000;">
                     </div>
                 </a>
@@ -84,11 +84,11 @@
         </div>
         <div class="cm card--medium {{ block.hasDisplayFilter ? '' : ' card--no-gradient' }}">
             {% if block.media and block.media.video %}
-                {% include 'video.html.twig' with {'block': block, 'width': 585, 'height': 350} %}
+                {{ include('video.html.twig', {block: block, width: 585, height: 350}) }}
             {% else %}
                 <a href="{{ block.link }}" class="background-container card__background progressive-background link--no-decor"
-                   data-sd="{{ media_asset(block.media, {'w': 300, 'q': 20}) }}"
-                   data-hd="{{ media_asset(block.media, {'w': 1200, 'q': 70}) }}"
+                   data-sd="{{ media_asset(block.media, {w: 300, q: 20}) }}"
+                   data-hd="{{ media_asset(block.media, {w: 1200, q: 70}) }}"
                    style="background-color: #000000;">
                     <div class="background">
                         <div class="content">

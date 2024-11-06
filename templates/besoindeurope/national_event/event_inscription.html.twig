@@ -17,7 +17,7 @@
         <div class="flex flex-col md:flex-row md:gap-12 gap-8 bg-white justify-center items-center p-8">
             <p class="w-[310px]">L’événement est malheureusement complet, suivez le sur nos réseaux sociaux de campagne.</p>
             <div class="flex gap-8">
-                {% include 'besoindeurope/partials/sn_links.html.twig' %}
+                {{ include('besoindeurope/partials/sn_links.html.twig') }}
             </div>
         </div>
 
@@ -26,11 +26,11 @@
             <h1 class="font-sharp font-bold p-8 md:p-12 min-w-[90vw] md:min-w-[70vw] lg:min-w-[50vw] transform rotate-12 text-center rounded-lg bg-[#FF005C] text-4xl md:text-9xl">COMPLET</h1>
         </div>
     {% endif %}
-{%  endblock %}
+{% endblock %}
 
 {% block content_section %}
     <main class="bg-[#F4F4F7] re_new_ui bg-primary">
-        {% include 'besoindeurope/national_event/partials/background_video.html.twig' %}
+        {{ include('besoindeurope/national_event/partials/background_video.html.twig') }}
 
         {{ form_start(form) }}
         <div class="md:grid sm:items-center mb-[120px] md:grid-cols-2 w-full z-10 relative" x-data="xNationalEventPage">
@@ -49,17 +49,17 @@
                     <div class="flex-col flex gap-4">
                         {{ form_row(form.civility, {
                             label: false,
-                            attr: { onCheck:"setFieldValid('gender')", validate: "['required']" }
+                            attr: {onCheck: "setFieldValid('gender')", validate: "['required']"}
                         }) }}
 
                         <div class="flex flex-col xs:flex-row gap-5 ">
                             {{ form_row(form.firstName, {
                                 label: false,
-                                attr: { placeholder: 'Prénom', onCheck:"setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']" }
+                                attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"}
                             }) }}
                             {{ form_row(form.lastName, {
                                 label: false,
-                                attr: { placeholder: 'Nom', onCheck:"setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']" }
+                                attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"}
                             }) }}
                         </div>
                     </div>
@@ -68,15 +68,15 @@
                         label: 'Mon adresse email',
                         attr: {
                             placeholder: 'adresse@mail.com',
-                            validate:"['required', 'email']",
+                            validate: "['required', 'email']",
                             autocomplete: 'email',
-                            onCheck:"setFieldValid('email')",
+                            onCheck: "setFieldValid('email')",
                         }
                     }) }}
 
                     {{ form_row(form.postalCode, {
                         label: 'Code postal',
-                        attr: { placeholder: '75000', onCheck:"setFieldValid('postalCode')", validate: "['required']" }
+                        attr: {placeholder: '75000', onCheck: "setFieldValid('postalCode')", validate: "['required']"}
                     }) }}
 
                     <fieldset class="relative">
@@ -84,7 +84,7 @@
 
                         <fieldset class="flex gap-2.5 relative">
                             {{ form_widget(form.birthdate.day, {label: false, attr: {
-                                class: "w-full",
+                                class: 'w-full',
                                 placeholder: 'Jour',
                                 validate: "['required']",
                                 onCheck: "setFieldValid('birthDay')",
@@ -92,14 +92,14 @@
                             }}) }}
 
                             {{ form_widget(form.birthdate.month, {label: false, attr: {
-                                class: "w-full",
+                                class: 'w-full',
                                 placeholder: 'Mois',
                                 validate: "['required']",
                                 onCheck: "setFieldValid('birthMonth')",
                             }}) }}
 
                             {{ form_widget(form.birthdate.year, {label: false, attr: {
-                                class: "w-full",
+                                class: 'w-full',
                                 placeholder: 'Année',
                                 validate: "['required']",
                                 onCheck: "setFieldValid('birthYear')",
@@ -111,22 +111,22 @@
                     </fieldset>
 
                     <fieldset>
-                        {{ form_row(form.qualities, {label: 'Je suis (optionnel)' }) }}
+                        {{ form_row(form.qualities, {label: 'Je suis (optionnel)'}) }}
                     </fieldset>
 
                     <fieldset>
-                        {{ form_row(form.phone, {label: 'Numéro de téléphone (optionnel)', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.' }) }}
+                        {{ form_row(form.phone, {label: 'Numéro de téléphone (optionnel)', help: 'En nous communiquant votre téléphone, vous recevrez votre billet par SMS.'}) }}
                     </fieldset>
 
-                    {{ form_row(form.allowNotifications, { label: "Je m’abonne à la newsletter pour ne rien rater des actualités de Besoin d'Europe (optionnel)" }) }}
+                    {{ form_row(form.allowNotifications, {label: "Je m’abonne à la newsletter pour ne rien rater des actualités de Besoin d'Europe (optionnel)"}) }}
 
-                    {{ form_row(form.acceptCgu, {label: 'national_event.inscription.accept_cgu', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptCgu')"} }) }}
+                    {{ form_row(form.acceptCgu, {label: 'national_event.inscription.accept_cgu', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptCgu')"}}) }}
 
-                    {{ form_row(form.acceptMedia, {label: "En participant à cet événement, je suis informé(e) qu’il sera filmé et autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et la voix d’un mineur dont je suis le représentant légal, à l’exploiter et à la diffuser en intégralité ou par extrait (1)", attr: {validate: '["required"]', onCheck: "setFieldValid('acceptMedia')"} }) }}
+                    {{ form_row(form.acceptMedia, {label: 'En participant à cet événement, je suis informé(e) qu’il sera filmé et autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer sur tous supports mon image et ma voix et/ou mon image et la voix d’un mineur dont je suis le représentant légal, à l’exploiter et à la diffuser en intégralité ou par extrait (1)', attr: {validate: '["required"]', onCheck: "setFieldValid('acceptMedia')"}}) }}
 
                     <div class="w-full re-field-frame !h-auto cursor-pointer"
                          @click="dom('.frc-button')?.click()">
-                        {% include 'renaissance/partials/friendly-captcha.html.twig' with {friendly_captcha_site_key: friendly_captcha_europe_site_key} %}
+                        {{ include('renaissance/partials/friendly-captcha.html.twig', {friendly_captcha_site_key: friendly_captcha_europe_site_key}) }}
                     </div>
 
                     <twig:ReButton
@@ -148,7 +148,7 @@
                     </p>
 
                     <p>
-                        (1)	J’autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer, à fixer mon image et/ou ma voix sur tous supports, à l’exploiter et à la diffuser en intégralité ou par extrait sans limitation du nombre de reproduction, sur tous canaux, sites web et réseaux sociaux édités par les équipes de Renaissance ou ses associations partenaires, dans le cadre de sa communication politique, sous toutes formes, par quelque moyen technique que ce soit, et dans le monde entier, et ce, pour une durée de 2 ans. J’accepte également que cette vidéo soit partagée en intégralité ou par extrait, sur les réseaux sociaux par d’autres utilisateurs. Cette autorisation est consentie à titre gratuit, sans aucune exploitation commerciale.
+                        (1)    J’autorise Renaissance ou toute structure qui se substituerait à elle, à enregistrer, à fixer mon image et/ou ma voix sur tous supports, à l’exploiter et à la diffuser en intégralité ou par extrait sans limitation du nombre de reproduction, sur tous canaux, sites web et réseaux sociaux édités par les équipes de Renaissance ou ses associations partenaires, dans le cadre de sa communication politique, sous toutes formes, par quelque moyen technique que ce soit, et dans le monde entier, et ce, pour une durée de 2 ans. J’accepte également que cette vidéo soit partagée en intégralité ou par extrait, sur les réseaux sociaux par d’autres utilisateurs. Cette autorisation est consentie à titre gratuit, sans aucune exploitation commerciale.
                         Si je participe en compagnie d’une personne mineure, en qualité de représentant légal de cette personne mineure, j’autorise sans réserve Renaissance ou toute structure qui se substituerait à elle, à enregistrer, à fixer les images de la personne participante dont j’ai la responsabilité, ainsi que les éléments sonores dont elle serait l’émettrice, durant l’événement autorise Renaissance à exploiter ces images et/ou éléments sonores, à les diffuser intégralement ou par extrait, sans limitation du nombre de reproduction, sur tous canaux, sites web et réseaux sociaux édités par Renaissance ou ses partenaires, dans le cadre de sa communication politique, sous toutes formes, par quelque moyen technique que ce soit, et dans le monde entier, et ce, pour un durée de 2 ans. J’accepte également que cette vidéo contenant l’image et/ou la voix de la personne dont j’ai la responsabilité soit partagée sur les réseaux sociaux par d’autres utilisateurs. Cette autorisation est consentie à titre gratuit, sans aucune exploitation commerciale.
                     </p>
                 </twig:Atoms:ReCard>

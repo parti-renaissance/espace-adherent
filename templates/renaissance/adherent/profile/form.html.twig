@@ -37,7 +37,7 @@
                             <div class="rounded-md bg-sky-50 p-4">
                                 <div class="flex">
                                     <div class="shrink-0">
-                                        {% include 'icons/check-blue.svg.twig' with { svg_class: 'h-5 w-5 text-sky-500'} %}
+                                        {{ include('icons/check-blue.svg.twig', {svg_class: 'h-5 w-5 text-sky-500'}) }}
                                     </div>
                                     <div class="ml-3 flex-1 md:flex md:justify-between">
                                         <p class="text-sm text-sky-700">Votre profil est certifié, vous ne pouvez donc plus modifier votre civilité, nom, prénom et date de naissance.</p>
@@ -163,7 +163,7 @@
                             Cliquez ci-dessous si vous souhaitez supprimer votre compte.
                         </p>
                         <div class="mt-5">
-                            <a href="{{ path('app_user_terminate_membership', { app_domain: app_renaissance_host }) }}" class="inline-flex items-center justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 font-medium text-red-700 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:text-sm">
+                            <a href="{{ path('app_user_terminate_membership', {app_domain: app_renaissance_host}) }}" class="inline-flex items-center justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 font-medium text-red-700 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:text-sm">
                                 Supprimer mon compte
                             </a>
                         </div>

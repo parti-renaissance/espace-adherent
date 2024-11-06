@@ -24,26 +24,26 @@
                 </p>
 
                 <div class="newsletter-page__form">
-                    {{ form_start(form, { attr: { class: 'em-form'} }) }}
+                    {{ form_start(form, {attr: {class: 'em-form'}}) }}
 
                     {{ form_errors(form) }}
 
                     <div class="em-form__group">
-                        {{ form_label(form.email, 'Votre adresse email', { 'label_attr': {'class': 'em-form__label'} }) }}
+                        {{ form_label(form.email, 'Votre adresse email', {label_attr: {class: 'em-form__label'}}) }}
                         {{ form_errors(form.email) }}
-                        {{ form_widget(form.email, { attr: { class: 'em-form__field' } }) }}
+                        {{ form_widget(form.email, {attr: {class: 'em-form__field'}}) }}
                     </div>
 
                     <div class="em-form__group">
-                        {{ form_label(form.postalCode, 'Votre code postal', { 'label_attr': {'class': 'em-form__label'} }) }}
+                        {{ form_label(form.postalCode, 'Votre code postal', {label_attr: {class: 'em-form__label'}}) }}
                         {{ form_errors(form.postalCode) }}
-                        {{ form_widget(form.postalCode, { attr: { class: 'em-form__field' } }) }}
+                        {{ form_widget(form.postalCode, {attr: {class: 'em-form__field'}}) }}
                     </div>
 
                     <div class="em-form__group">
-                        {{ form_label(form.country, 'Votre pays', { 'label_attr': {'class': 'em-form__label'} }) }}
+                        {{ form_label(form.country, 'Votre pays', {label_attr: {class: 'em-form__label'}}) }}
                         {{ form_errors(form.country) }}
-                        {{ form_widget(form.country, { attr: { class: 'em-form__field' } }) }}
+                        {{ form_widget(form.country, {attr: {class: 'em-form__field'}}) }}
                     </div>
 
                     <div class="em-form__group em-form__group--cgu">
@@ -53,7 +53,7 @@
                     <div class="form__captcha">
                         <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
                         {% if recaptcha_public_key is not empty %}
-                            {% for flashMessage in app.flashes("error_recaptcha") %}
+                            {% for flashMessage in app.flashes('error_recaptcha') %}
                                 <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
                             {% endfor %}
                             <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 30px auto 10px auto;"></div>
@@ -70,7 +70,6 @@
                             Vous pouvez exercer vos droits en nous adressant votre demande accompagnée d’une copie de votre pièce d’identité à l’adresse postale ou électronique suivante : La République En Marche, 68 rue du Rocher, 75008 Paris, France ou <a href="mailto:mes-donnees@en-marche.fr">mes-donnees@en-marche.fr</a>.
                         </p>
                     </div>
-
 
                     <button type="submit" class="btn btn--blue btn--large-and-full">
                         Je m'inscris

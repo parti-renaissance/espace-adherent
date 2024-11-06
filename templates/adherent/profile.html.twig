@@ -20,7 +20,7 @@
         <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&amp;libraries=places" async defer></script>
     {% endif %}
 
-    {% include 'membership/_profile_script.html.twig' with {genderField: '#adherent_profile_gender', customGenderField: '#adherent_profile_customGender'} %}
+    {{ include('membership/_profile_script.html.twig', {genderField: '#adherent_profile_gender', customGenderField: '#adherent_profile_customGender'}) }}
 
     <script type="text/javascript">
         Kernel.onLoad(function() {
@@ -143,7 +143,7 @@
 
         <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
         {% if recaptcha_public_key is not empty %}
-            {% for flashMessage in app.flashes("error_recaptcha") %}
+            {% for flashMessage in app.flashes('error_recaptcha') %}
                 <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
             {% endfor %}
             <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>

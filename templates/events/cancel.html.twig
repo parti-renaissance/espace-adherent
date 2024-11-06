@@ -15,7 +15,7 @@
                         Organisé par <span class="text--bold">{{ event.organizer }}</span>
                         {% if committee is defined and committee %}
                             du comité
-                            <a class="link--white" href="{{ path('app_committee_show', {'slug': committee.slug}) }}">
+                            <a class="link--white" href="{{ path('app_committee_show', {slug: committee.slug}) }}">
                                 {{- committee.name -}}
                             </a>
                         {% endif %}
@@ -25,7 +25,7 @@
                     <a class="btn btn--no-border btn--full" href="{{ path('app_committee_event_attend', {slug: event.slug}) }}">Je veux participer</a>
                     <div class="text--body text--white icon--with-text l__row--center b__nudge--top-10">
                         {{ include('components/participants.html.twig') }}
-                        {{ 'participants_count'|trans({ count: event.participantsCount }) }}
+                        {{ 'participants_count'|trans({count: event.participantsCount}) }}
                     </div>
                     <ul class="committee__event__header__cta__social list__links list__links--row list__links--svgs list__links--svgs--small text--white">
                         <li class="head">Partagez</li>
@@ -64,7 +64,7 @@
                     Cette action est irréversible et enverra un email d'annulation à tous les inscrits.
                 </div>
 
-                {{ form_start(form, { attr: { class: 'b__nudge--top-40'} }) }}
+                {{ form_start(form, {attr: {class: 'b__nudge--top-40'}}) }}
 
                     {{ form_errors(form) }}
 

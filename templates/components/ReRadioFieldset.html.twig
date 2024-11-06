@@ -1,4 +1,4 @@
-<fieldset {{ attributes.defaults({class:'flex flex-col gap-8'}) }}
+<fieldset {{ attributes.defaults({class: 'flex flex-col gap-8'}) }}
     x-data="xValidateField({ status: 'default', message: '',
         validate: {{ validate is defined ? validate : '[]' }},
         onCheck: {{ onCheck is defined ? onCheck : '()=>{}' }}

@@ -12,7 +12,7 @@
 
             <div class="mt-4 text-gray-500 text-base leading-5" x-data="{open: false}">
                 <p class="flex items-center space-x-3">
-                    {% include 'icons/map.svg.twig' %}
+                    {{ include('icons/map.svg.twig') }}
                     {% if committee.getZones|length > 1 %}
                         {% set first_zone = committee.getZones()|first %}
                         {{ first_zone }} <span class="text-blue-500 hover:underline font-medium cursor-pointer" @click="open = ! open">(+ {{ committee.getZones|length - 1 }})</span>
@@ -32,7 +32,7 @@
     <section class="mx-auto w-full max-w-5xl px-4 md:px-6 py-12 md:py-16">
         {% if designation.isActive() %}
             <div class="mb-10">
-                {% include 'renaissance/committee_election/_election_box.html.twig' %}
+                {{ include('renaissance/committee_election/_election_box.html.twig') }}
             </div>
         {% endif %}
 

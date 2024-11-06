@@ -17,5 +17,5 @@
     {% if object.profession is not null %}
         - Métier : {{ object.profession }}<br />
     {% endif %}
-    {{ object.note ? '- Note : '~object.note }}
+    {{ object.note ? '- Note : ' ~ object.note }}
 {% endblock %}

@@ -15,15 +15,15 @@
                     {{ form_errors(form) }}
 
                     <div class="sonata-ba-collapsed-fields">
-                        {{ form_row(form.name, { label: 'Nom' }) }}
-                        {{ form_row(form.slug, { label: 'Slug' }) }}
-                        {{ form_row(form.description, { label: 'Description' }) }}
-                        {{ form_row(form.address.address, { label: 'Adresse', placeholder: 'Elle déterminera l\'affichage du comité sur la page' }) }}
-                        {{ form_row(form.address.postalCode, { label: 'Code postal' }) }}
-                        {{ form_row(form.address.city, { label: 'Ville 2' }) }}
-                        {{ form_row(form.address.cityName, { label: 'Ville' }) }}
-                        {{ form_row(form.address.country, { label: 'Pays' }) }}
-                        {{ form_row(form.nameLocked, { label: 'Verrouiller les modifications' }) }}
+                        {{ form_row(form.name, {label: 'Nom'}) }}
+                        {{ form_row(form.slug, {label: 'Slug'}) }}
+                        {{ form_row(form.description, {label: 'Description'}) }}
+                        {{ form_row(form.address.address, {label: 'Adresse', placeholder: 'Elle déterminera l\'affichage du comité sur la page'}) }}
+                        {{ form_row(form.address.postalCode, {label: 'Code postal'}) }}
+                        {{ form_row(form.address.city, {label: 'Ville 2'}) }}
+                        {{ form_row(form.address.cityName, {label: 'Ville'}) }}
+                        {{ form_row(form.address.country, {label: 'Pays'}) }}
+                        {{ form_row(form.nameLocked, {label: 'Verrouiller les modifications'}) }}
                     </div>
                 </div>
             </div>
@@ -34,8 +34,8 @@
                     <h4 class="box-title">Animation</h4>
                 </div>
                 <div class="table-responsive margin-bottom">
-                    {% include 'admin/committee/approve/_provisional_supervisors.html.twig'
-                        with { female: object.provisionalSupervisorFemale, male: object.provisionalSupervisorMale } %}
+                    {{ include('admin/committee/approve/_provisional_supervisors.html.twig'
+                        , {female: object.provisionalSupervisorFemale, male: object.provisionalSupervisorMale}) }}
                 </div>
                 <div class="box-body">
                     {{ form_errors(form) }}
@@ -43,12 +43,12 @@
                     <div class="sonata-ba-collapsed-fields">
                         {{ form_row(form.provisionalSupervisorFemale, {
                             label: 'Animatrice provisoire',
-                            attr: { min: 1 },
+                            attr: {min: 1},
                             placeholder: 'Insérez un id d\'adhérente pour ajouter ou modifier l\'animatrice provisoire'
                         }) }}
                         {{ form_row(form.provisionalSupervisorMale, {
                             label: 'Animateur provisoire',
-                            attr: { min: 1 },
+                            attr: {min: 1},
                             placeholder: 'Insérez un id d\'adhérent pour ajouter ou modifier l\'animateur provisoire'
                         }) }}
                     </div>

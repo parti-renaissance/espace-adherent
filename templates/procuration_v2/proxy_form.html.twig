@@ -2,10 +2,10 @@
 
 {% block page_title 'Procuration - Proposition (Mandataire)' %}
 
-{% block open_graph_image "https://assets.parti-renaissance.fr/sharer/mandataire.png" %}
-{% block open_graph_title "Votez pour une personne proche de chez vous • ENSEMBLE" %}
-{% block open_graph_description "Entre le front populiste et le front nationaliste, aucune voie ne doit manquer pour nos candidats Renaissance, MoDem et Horizons." %}
-{% block canonical_url url('app_procuration_v2_proxy', { slug: election.slug }) %}
+{% block open_graph_image 'https://assets.parti-renaissance.fr/sharer/mandataire.png' %}
+{% block open_graph_title 'Votez pour une personne proche de chez vous • ENSEMBLE' %}
+{% block open_graph_description 'Entre le front populiste et le front nationaliste, aucune voie ne doit manquer pour nos candidats Renaissance, MoDem et Horizons.' %}
+{% block canonical_url url('app_procuration_v2_proxy', {slug: election.slug}) %}
 
 {% block content_title 'Proposition (Mandataire)' %}
 
@@ -29,7 +29,7 @@
         <br>
         <a
             class="text-[#1877F2] text-center hover:text-[rgb(20,86,171)] cursor-pointer"
-            href="{{ url('app_procuration_v2_request', { slug: election.slug }) }}">
+            href="{{ url('app_procuration_v2_request', {slug: election.slug}) }}">
             Je dépose une demande
         </a>
     </p>
@@ -46,12 +46,11 @@
     </fieldset>
 {% endblock %}
 
-
 {% block inner_content_section %}
     <fieldset>
         <twig:Atoms:ReLabel>Mon numéro d’électeur</twig:Atoms:ReLabel>
         <p class="text-[#555555] opacity-50">Il facilitera la démarche pour vous faire procuration.</p>
-        {{ form_row(form.electorNumber, {attr: { placeholder: 'Mon numéro d’électeur', 'x-numberonly':'', validate: '["max:9"]' }}) }}
+        {{ form_row(form.electorNumber, {attr: {placeholder: 'Mon numéro d’électeur', 'x-numberonly': '', validate: '["max:9"]'}}) }}
     </fieldset>
 
     <fieldset x-show="isNotInFrance">

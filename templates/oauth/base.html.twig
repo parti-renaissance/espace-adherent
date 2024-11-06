@@ -38,7 +38,7 @@
             on(window, 'load', function() {
                 Kernel.boot(
                     '{{ app_version }}',
-                    {{ sentry_dsn ? ('\''~sentry_dsn~'\'')|raw : 'null' }},
+                    {{ sentry_dsn ? ('\'' ~ sentry_dsn ~ '\'')|raw : 'null' }},
                     '{{ app_environment }}',
                     '{{ app.user ? app.user.getUsername() }}'
                 );

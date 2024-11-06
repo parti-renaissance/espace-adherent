@@ -129,9 +129,9 @@
                                                     <br/><strong>{{ row.addressEmail }}</strong>
                                                 </td>
                                                 <td>{{ row.postalCode }}</td>
-                                                <td>{% include 'admin/adherent/_tags.html.twig' with { tags: row.adherent ? row.adherent.tags : [] } %}</td>
+                                                <td>{{ include('admin/adherent/_tags.html.twig', {tags: row.adherent ? row.adherent.tags : []}) }}</td>
                                                 <td>{{ row.status|trans }}</td>
-                                                <td>{{ row.ticketSentAt|format_datetime('none', 'none', "d MMM yyyy à HH:mm") }}</td>
+                                                <td>{{ row.ticketSentAt|format_datetime('none', 'none', 'd MMM yyyy à HH:mm') }}</td>
                                                 <td>
                                                     <div class="btn-group" style="display: flex;">
                                                         <a href="{{ path('admin_app_nationalevent_eventinscription_edit', {id: row.id}) }}" class="btn btn-sm btn-default">
@@ -150,11 +150,11 @@
                                 </table>
                             </div>
 
-                            {% include 'admin/partial/_pagination.html.twig' with {
+                            {{ include('admin/partial/_pagination.html.twig', {
                                 current_page: event_inscriptions.currentPage,
                                 total_pages: event_inscriptions.lastPage,
                                 pagination_route_params: {id: national_event.id}|merge(app.request.query.all)
-                            } %}
+                            }) }}
                         </div>
                     </div>
                 </div>

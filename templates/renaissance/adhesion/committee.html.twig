@@ -10,7 +10,7 @@
         defaultCommittee: '{{ default_committee.uuid }}',
     })">
         <twig:Atoms:ReCard class="max-w-[500px] w-full flex-1 flex">
-            {% include 'renaissance/partials/flashes.html.twig' with {slim: true} %}
+            {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
 
             <form method="post" class="flex gap-8 flex-col w-full" x-ref="form">
                 <twig:Atoms:ReLabel class="!mb-0">Comité local</twig:Atoms:ReLabel>

@@ -57,7 +57,7 @@
                 <div class="aspect-w-4 aspect-h-2">
                     {% if event is defined and event.imageName is not empty %}
                         <img class="object-cover shadow-lg rounded-lg"
-                             src="{{ path('asset_url', { path: event.imagePath, app_domain: app_renaissance_host }) }}" alt="photo">
+                             src="{{ path('asset_url', {path: event.imagePath, app_domain: app_renaissance_host}) }}" alt="photo">
                     {% else %}
                         <div
                             class="bg-gray-100 rounded-lg border border-gray-200 w-full h-auto flex items-center justify-center">
@@ -74,7 +74,7 @@
                 <div class="border border-gray-200 rounded-xl bg-white p-4 space-y-4">
                     <div class="flex items-start space-x-4">
                         <dt>
-                            {% include 'icons/user.svg.twig' with { svg_class: 'h-5 w-5 text-gray-500' } %}
+                            {{ include('icons/user.svg.twig', {svg_class: 'h-5 w-5 text-gray-500'}) }}
                         </dt>
                         <dd class="text-sm leading-5 space-y-1">
                             <h4 class="text-gray-400">Organisé par</h4>
@@ -89,14 +89,14 @@
                     </div>
                     <div class="flex items-start space-x-4">
                         <dt>
-                            {% include 'icons/calendar.svg.twig' with { svg_class: 'h-5 w-5 text-gray-500' } %}
+                            {{ include('icons/calendar.svg.twig', {svg_class: 'h-5 w-5 text-gray-500'}) }}
                         </dt>
                         <dd class="text-sm leading-5 space-y-1">
                             <h4 class="text-gray-400">Date & Heure</h4>
                             <p class="text-gray-700 font-medium">
                                 {{- event.localBeginAt|format_datetime('full', 'none', '', event.timeZone)|capitalize }}, {{ event.localBeginAt|date('G\\hi', event.timeZone) -}}{{ event.timeZone|utc_offset }}
                             </p>
-                            <a href="{{ path('app_renaissance_event_ical', { slug: event.slug }) }}" class="text-re-blue-500 hover:text-re-blue-800 hover:underline">
+                            <a href="{{ path('app_renaissance_event_ical', {slug: event.slug}) }}" class="text-re-blue-500 hover:text-re-blue-800 hover:underline">
                                 Ajouter au calendrier
                             </a>
                         </dd>
@@ -104,7 +104,7 @@
                     {% if event.getAddress() %}
                         <div class="flex items-start space-x-4">
                             <dt>
-                                {% include 'icons/map.svg.twig' with { svg_class: 'h-5 w-5 text-gray-500' } %}
+                                {{ include('icons/map.svg.twig', {svg_class: 'h-5 w-5 text-gray-500'}) }}
                             </dt>
                             <dd class="text-sm leading-5 space-y-1.5">
                                 <h4 class="text-gray-400">Adresse</h4>
@@ -114,11 +114,11 @@
                     {% endif %}
                     <div class="flex items-start space-x-4">
                         <dt>
-                            {% include 'icons/participants.svg.twig' with { svg_class: 'h-5 w-5 text-gray-500' } %}
+                            {{ include('icons/participants.svg.twig', {svg_class: 'h-5 w-5 text-gray-500'}) }}
                         </dt>
                         <dd class="text-sm leading-5 space-y-1.5">
                             <h4 class="text-gray-400">Participants</h4>
-                            <p class="text-gray-700 font-medium">{{ 'participants_count'|trans({ count: event.participantsCount }) }} {% if event.full %}(Complet){% endif %}</p>
+                            <p class="text-gray-700 font-medium">{{ 'participants_count'|trans({count: event.participantsCount}) }} {% if event.full %}(Complet){% endif %}</p>
                         </dd>
                     </div>
                 </div>
@@ -130,13 +130,13 @@
                     {% if not event.cancelled and not event.finished %}
                         {% if event.organizer is not same as (app.user) %}
                             {% if is_event_already_participating(event, app.user) %}
-                                <a href="{{ path('app_renaissance_event_unregistration', { slug: event.slug }) }}"
+                                <a href="{{ path('app_renaissance_event_unregistration', {slug: event.slug}) }}"
                                     class="rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 unregister-event"
                                 >
                                     Je ne peux plus participer
                                 </a>
                             {% elseif not event.full %}
-                                <a href="{{ path('app_renaissance_event_registration', { slug: event.slug }) }}"
+                                <a href="{{ path('app_renaissance_event_registration', {slug: event.slug}) }}"
                                    class="rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
                                     Je participe
                                 </a>
@@ -144,13 +144,13 @@
                         {% endif %}
                         {% if not event.finished %}
                             {% if not event.full and is_event_already_participating(event, app.user) %}
-                                <a href="{{ path('app_renaissance_event_invitation', { slug: event.slug }) }}"
+                                <a href="{{ path('app_renaissance_event_invitation', {slug: event.slug}) }}"
                                    class="rounded-md bg-blue-50 px-3 py-2 border border-re-blue-200 text-sm font-medium text-blue-600 shadow-sm hover:bg-blue-100">
                                     Inviter des amis
                                 </a>
                             {% endif %}
-                            {% if event.organizer is not same as (app.user)  %}
-                                <a href="{{ path('app_renaissance_event_contact_organizer', { slug: event.slug }) }}"
+                            {% if event.organizer is not same as (app.user) %}
+                                <a href="{{ path('app_renaissance_event_contact_organizer', {slug: event.slug}) }}"
                                    class="rounded-md bg-blue-50 px-3 py-2 border border-re-blue-200 text-sm font-medium text-blue-600 shadow-sm hover:bg-blue-100">
                                     Contact
                                 </a>

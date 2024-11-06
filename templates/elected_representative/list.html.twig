@@ -142,7 +142,7 @@
                                         </div>
                                         <div class="adherent-caracs">
                                             {{ elected_representative.gender ? ('male' == elected_representative.gender ? 'common.gender.man' : 'common.gender.woman')|trans : '~' }},
-                                            {{ elected_representative.age ? elected_representative.age ~ ' ans' : '~'}}
+                                            {{ elected_representative.age ? elected_representative.age ~ ' ans' : '~' }}
                                         </div>
                                     </td>
                                     <td>
@@ -192,7 +192,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <a href="{{ path("app_#{space_name}_elected_representatives_show", { uuid: elected_representative.uuid }) }}" class="text--blue--dark link--no-decor">Afficher</a>
+                                        <a href="{{ path("app_#{space_name}_elected_representatives_show", {uuid: elected_representative.uuid}) }}" class="text--blue--dark link--no-decor">Afficher</a>
                                     </td>
                                 </tr>
                             {% else %}
@@ -209,11 +209,11 @@
                 </div>
 
                 {% if elected_representatives.count %}
-                    {% include 'components/_modern_pagination.html.twig' with {
+                    {{ include('components/_modern_pagination.html.twig', {
                         current_page: elected_representatives.currentPage,
                         total_pages: elected_representatives.lastPage,
                         pagination_route_params: {f: filter.toArray()},
-                    } %}
+                    }) }}
                 {% endif %}
             </div>
         </section>

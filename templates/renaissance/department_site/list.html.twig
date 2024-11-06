@@ -4,7 +4,7 @@
 {% block canonical_url url('app_renaissance_department_site_list') %}
 
 {% block content %}
-    {% include 'renaissance/partials/site-header.html.twig' with { theme_bg: 'border-b border-re-blue-400 bg-re-blue-500' } %}
+    {{ include('renaissance/partials/site-header.html.twig', {theme_bg: 'border-b border-re-blue-400 bg-re-blue-500'}) }}
 
     <div class="max-w-8xl mx-auto px-4 lg:px-8">
         <div class="border-b border-gray-200 py-8 md:py-10">
@@ -16,7 +16,7 @@
                 Je découvre tous les sites départementaux du parti Renaissance !
             </p>
         </div>
-        <div id="container-map" data-departments="{{ department_sites | json_encode }}" class="mt-8 pb-10 grid lg:grid-cols-3 lg:gap-x-10 lg:pb-0">
+        <div id="container-map" data-departments="{{ department_sites|json_encode }}" class="mt-8 pb-10 grid lg:grid-cols-3 lg:gap-x-10 lg:pb-0">
             <div x-data class="hidden lg:block lg:col-span-2">
                 <div id="department-map" data-federation-path="{{ path('app_renaissance_department_site_list') }}" class="relative overflow-hidden py-12">
                     <svg id="svg" class="relative department-map cursor-move draggable" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 612 584">
@@ -358,7 +358,7 @@
         </div>
     </div>
 
-    {% include 'renaissance/partials/small-footer.html.twig' %}
+    {{ include('renaissance/partials/small-footer.html.twig') }}
 {% endblock %}
 
 {% block javascripts %}

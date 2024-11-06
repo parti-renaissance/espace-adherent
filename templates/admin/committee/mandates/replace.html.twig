@@ -9,7 +9,7 @@
 
 {% block action_title 'Remplacer' %}
 {% block action_title_left %}
-    Ancien {{ include('admin/committee/mandates/_type.html.twig', { mandate: mandate })|lower }}
+    Ancien {{ include('admin/committee/mandates/_type.html.twig', {mandate: mandate})|lower }}
 {% endblock %}
 
 {% block action_title_right %}
@@ -18,7 +18,7 @@
 
 {% block action_content_left %}
     <div class="table-responsive margin-bottom">
-        {% include('admin/committee/mandates/_mandate_as_table.html.twig') with { mandate: mandate, show_all: true } %}
+        {{ include(('admin/committee/mandates/_mandate_as_table.html.twig'), {mandate: mandate, show_all: true}) }}
     </div>
 {% endblock %}
 
@@ -26,7 +26,7 @@
     {{ form_errors(form) }}
 
     <div class="sonata-ba-collapsed-fields">
-        {{ form_row(form.adherent, { label: new_mandate_name, attr: { placeholder: 'Insérer un Id d\'adhérent' } }) }}
+        {{ form_row(form.adherent, {label: new_mandate_name, attr: {placeholder: 'Insérer un Id d\'adhérent'}}) }}
     </div>
     {% do form.confirm.setRendered %}
 {% endblock %}
@@ -34,7 +34,7 @@
 {% block action_buttons %}
     <div>
         <button type="submit" class="btn btn-success">Suivant</button>
-        <a href="{{ path('app_admin_committee_mandates', { id: mandate.committee.id }) }}" class="btn btn-danger">
+        <a href="{{ path('app_admin_committee_mandates', {id: mandate.committee.id}) }}" class="btn btn-danger">
             Retour à la liste des mandats
         </a>
     </div>

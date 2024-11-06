@@ -2,7 +2,7 @@
 {% set pagination_route_name = 'app_search_all_events' %}
 
 {% block page_title %}Tous les événements - Page {{ currentPage }}{% endblock %}
-{% block canonical_url url(pagination_route_name, { page: currentPage }) %}
+{% block canonical_url url(pagination_route_name, {page: currentPage}) %}
 
 {%- block meta_description -%}
     Accédez à la liste de tous les événements organisés par les comités locaux et équipes territoriales du mouvement La République En Marche ! - page {{ currentPage }}
@@ -11,11 +11,11 @@
 {% block extra_link %}
     {{ parent() }}
     {% if currentPage > 1 %}
-        <link rel="prev" href="{{ url(pagination_route_name, { page: currentPage-1 }) }}">
+        <link rel="prev" href="{{ url(pagination_route_name, {page: currentPage - 1}) }}">
     {% endif %}
 
     {% if currentPage < totalPages %}
-        <link rel="next" href="{{ url(pagination_route_name, { page: currentPage+1 }) }}">
+        <link rel="next" href="{{ url(pagination_route_name, {page: currentPage + 1}) }}">
     {% endif %}
 {% endblock %}
 
@@ -29,7 +29,7 @@
         <div class="l__wrapper">
             <div class="search__results" id="search-results">
                 {% apply spaceless %}
-                    {{ include("search/_events.html.twig") }}
+                    {{ include('search/_events.html.twig') }}
                 {% endapply %}
             </div>
         </div>

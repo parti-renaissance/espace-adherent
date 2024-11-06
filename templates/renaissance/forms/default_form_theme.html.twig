@@ -1,4 +1,4 @@
-{% use "form_div_layout.html.twig" %}
+{% use 'form_div_layout.html.twig' %}
 
 {% block form_label %}
     {% set label_attr = label_attr|merge({'x-ref': form.vars.id}) %}
@@ -16,9 +16,9 @@
     {%- else -%}
         <div {{ block('widget_container_attributes') }} class="flex flex-row space-x-4 w-full">
             {{- date_pattern|replace({
-                '{{ year }}':  form_widget(form.year),
+                '{{ year }}': form_widget(form.year),
                 '{{ month }}': form_widget(form.month),
-                '{{ day }}':   form_widget(form.day),
+                '{{ day }}': form_widget(form.day),
             })|raw -}}
         </div>
     {%- endif -%}
@@ -31,7 +31,7 @@
         {%- for child in form %}
             <div class="mr-3">
                 {{- form_widget(child) -}}
-                {{- form_label(child, null, {label_attr: { class: 'ml-2' }, translation_domain: choice_translation_domain}) -}}
+                {{- form_label(child, null, {label_attr: {class: 'ml-2'}, translation_domain: choice_translation_domain}) -}}
             </div>
         {% endfor -%}
     </div>
@@ -44,8 +44,8 @@
 
 {% block form_row -%}
     {%- set row_attr = row_attr|merge({
-        'x-data': "",
-        '@click': "$refs." ~ form.vars.id ~ ".focus()",
+        'x-data': '',
+        '@click': '$refs.' ~ form.vars.id ~ '.focus()',
         class: (row_attr.class|default('') ~ ' form-group')|trim,
     }) -%}
     {{- parent() -}}
@@ -67,7 +67,7 @@
 {% endblock %}
 
 {% block _app_renaissance_membership_gender_row %}
-    {{- form_label(form, null, {label_attr: { class: 'text-sm uppercase tracking-wider text-re-blue-500 font-medium' }}) -}}
+    {{- form_label(form, null, {label_attr: {class: 'text-sm uppercase tracking-wider text-re-blue-500 font-medium'}}) -}}
     {{ form_errors(form) }}
     <div class="mt-1 isolate flex rounded-md w-full max-w-xs">
         {%- for child in form %}
@@ -87,7 +87,7 @@
 
         <div class="address-autocomplete-wrapper hidden">
 
-            {{ form_row(form.autocomplete, { label: 'Adresse postale', attr: { placeholder: 'Saisissez et sélectionnez une adresse postale' } }) }}
+            {{ form_row(form.autocomplete, {label: 'Adresse postale', attr: {placeholder: 'Saisissez et sélectionnez une adresse postale'}}) }}
             <p class="text-gray-600 text-sm italic">
                 Commencez à saisir votre adresse puis sélectionnez une proposition dans la liste d'adresses affichée.
             </p>
@@ -95,7 +95,7 @@
             <div class="rounded-md bg-blue-50/30 p-4">
                 <div class="flex">
                     <div class="flex-shrink-0">
-                        {% include 'icons/info.svg.twig' %}
+                        {{ include('icons/info.svg.twig') }}
                     </div>
                     <div class="ml-3 flex-1 text-sm leading-5">
                         <p class="text-gray-900">
@@ -109,18 +109,18 @@
         </div>
 
         <div class="address-fields-wrapper">
-            {{ form_row(form.address, { label: 'Adresse' }) }}
-            {{ form_row(form.cityName, { label: 'Ville' }) }}
+            {{ form_row(form.address, {label: 'Adresse'}) }}
+            {{ form_row(form.cityName, {label: 'Ville'}) }}
 
             <div class="flex space-x-4">
-                {{ form_row(form.postalCode, { label: 'Code postal' }) }}
-                {{ form_row(form.country, { label: 'Pays', attr: { placeholder: 'Sélectionner un pays' } }) }}
+                {{ form_row(form.postalCode, {label: 'Code postal'}) }}
+                {{ form_row(form.country, {label: 'Pays', attr: {placeholder: 'Sélectionner un pays'}}) }}
             </div>
 
             <div class="rounded-md bg-blue-50/30 p-4">
                 <div class="flex">
                     <div class="flex-shrink-0">
-                        {% include 'icons/info.svg.twig' %}
+                        {{ include('icons/info.svg.twig') }}
                     </div>
                     <div class="ml-3 flex-1 text-sm leading-5">
                         <p class="text-gray-900">

@@ -1,18 +1,18 @@
 <li>
-    <a href="{{ path('app_admin_committee_members', { id: object.id }) }}" class="sonata-action-element" title="Membres">
+    <a href="{{ path('app_admin_committee_members', {id: object.id}) }}" class="sonata-action-element" title="Membres">
         <i class="fa fa-users" aria-hidden="true"></i>
         Membres
     </a>
 </li>
 <li>
-    <a href="{{ path('app_admin_committee_mandates', { id: object.id }) }}" class="sonata-action-element" title="Mandats">
+    <a href="{{ path('app_admin_committee_mandates', {id: object.id}) }}" class="sonata-action-element" title="Mandats">
         <i class="fa fa-id-badge" aria-hidden="true"></i>
         Mandats
     </a>
 </li>
 {% if object.isApproved %}
     <li>
-        <a href="{{ path('app_committee_show', {'slug': object.slug}) }}"
+        <a href="{{ path('app_committee_show', {slug: object.slug}) }}"
            class="sonata-action-element" title="Voir sur le site">
             <i class="fa fa-eye" aria-hidden="true"></i>
             Voir sur le site
@@ -20,13 +20,13 @@
     </li>
 {% endif %}
 <li>
-    <a href="{{ path('admin_app_committee_show', { id: object.id }) }}" class="sonata-action-element" title="Afficher">
+    <a href="{{ path('admin_app_committee_show', {id: object.id}) }}" class="sonata-action-element" title="Afficher">
         <i class="fa fa-eye" aria-hidden="true"></i>
         Afficher
     </a>
 </li>
 <li>
-    <a href="{{ path('admin_app_committee_edit', { id: object.id }) }}" class="sonata-action-element" title="Éditer">
+    <a href="{{ path('admin_app_committee_edit', {id: object.id}) }}" class="sonata-action-element" title="Éditer">
         <i class="fa fa-pencil" aria-hidden="true"></i>
         Éditer
     </a>

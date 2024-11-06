@@ -9,7 +9,7 @@
 {% block content %}
     <twig:ReStandaloneLayout class="re_new_ui">
         <twig:Atoms:ReCard class="max-w-[500px]">
-            {{ form_start(form, { attr: { 'x-ref': 'form', class: 'flex gap-8 flex-col'} }) }}
+            {{ form_start(form, {attr: {'x-ref': 'form', class: 'flex gap-8 flex-col'}}) }}
                 <twig:ReParagraphStatus status="warning">
                     {% if not accept_email and not accept_sms and not has_phone %}
                         <span class="font-medium">Attention, vous ne recevrez jamais aucune communication de notre part</span> (hors email statutaire) :

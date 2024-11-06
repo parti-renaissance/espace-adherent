@@ -9,7 +9,7 @@
             <div class="action-dropdown-menu--content">
                 {% for item in items %}
                     <a{% if item.href is defined %} href="{{ item.href }}"{% endif %}
-                        {% for attr,value in item.linkAttr|default({class: 'row-action'}) %}
+                        {% for attr, value in item.linkAttr|default({class: 'row-action'}) %}
                             {{ attr }}="{{ value }}"
                         {% endfor %}
                     >{{ item.label|raw }}</a>

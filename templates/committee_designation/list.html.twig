@@ -30,7 +30,7 @@
                             <td>
                                 {% set status = election.status %}
                                 <span class="status {{ status in constant('App\\VotingPlatform\\Designation\\DesignationStatusEnum::ACTIVE_STATUSES') ? 'status__1' : 'status__2' }}">
-                                    {{ ('designation.status.'~status)|trans }}
+                                    {{ ('designation.status.' ~ status)|trans }}
                                 </span>
                             </td>
                             <td>
@@ -65,7 +65,7 @@
                                         linkAttr: {class: 'row-action link--no-decor'}
                                     }] %}
 
-                                    {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                                    {{ include('components/_annimated_sub_menu.html.twig', {items: items}) }}
                                 {% endif %}
                             </td>
                         </tr>

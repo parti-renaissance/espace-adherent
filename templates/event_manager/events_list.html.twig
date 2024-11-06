@@ -99,7 +99,7 @@
                                     ]) %}
                                 {% endif %}
 
-                                {% include 'components/_annimated_sub_menu.html.twig' with {items: items} %}
+                                {{ include('components/_annimated_sub_menu.html.twig', {items: items}) }}
                             </td>
                         </tr>
                     {% else %}
@@ -116,10 +116,10 @@
         </div>
 
         {% if events.count and events.lastPage != 1 %}
-            {% include 'components/_modern_pagination.html.twig' with {
+            {{ include('components/_modern_pagination.html.twig', {
                 current_page: events.currentPage,
                 total_pages: events.lastPage,
-            } %}
+            }) }}
         {% endif %}
     </div>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'events/_layout.html.twig' %}
 
 {% block page_title "Inscription à #{event.name} - #{event.cityName}, #{event.beginAt|date('d/m/Y')}" %}
-{% block canonical_url url('app_committee_event_attend', { slug: event.slug }) %}
+{% block canonical_url url('app_committee_event_attend', {slug: event.slug}) %}
 {% block meta_description "S'inscrire à #{event.name} qui est un événement local du mouvement La République En Marche ! organisé par #{event.organizer} le #{event.beginAt|date('d/m/Y')} à #{event.beginAt|date('G\\hi')}, dans la ville de #{event.cityName}." %}
 
 {% block event_name %}
@@ -15,15 +15,15 @@
         <div class="committee-event-registration">
             <h2 class="b__nudge--bottom text--normal">Participer à l'événement</h2>
 
-            <form action="{{ path('app_committee_event_attend', { slug: event.slug }) }}" method="post" id="committee-event-registration-form">
+            <form action="{{ path('app_committee_event_attend', {slug: event.slug}) }}" method="post" id="committee-event-registration-form">
                 {{ form_errors(form) }}
 
                 <div class="form__row" id="field-first-name">
                     {{ form_errors(form.firstName) }}
                     {{ form_widget(form.firstName, {
-                        'attr': {
-                            'class': 'form--full',
-                            'placeholder': 'Prénom',
+                        attr: {
+                            class: 'form--full',
+                            placeholder: 'Prénom',
                         }
                     }) }}
                 </div>
@@ -31,9 +31,9 @@
                 <div class="form__row" id="field-last-name">
                     {{ form_errors(form.lastName) }}
                     {{ form_widget(form.lastName, {
-                        'attr': {
-                            'class': 'form--full',
-                            'placeholder': 'Nom',
+                        attr: {
+                            class: 'form--full',
+                            placeholder: 'Nom',
                         }
                     }) }}
                 </div>
@@ -41,9 +41,9 @@
                 <div class="form__row" id="field-email-address">
                     {{ form_errors(form.emailAddress) }}
                     {{ form_widget(form.emailAddress, {
-                        'attr': {
-                            'class': 'form--full',
-                            'placeholder': 'Adresse email',
+                        attr: {
+                            class: 'form--full',
+                            placeholder: 'Adresse email',
                         }
                     }) }}
                 </div>

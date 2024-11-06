@@ -117,21 +117,21 @@
 
             <div class="form__row b__nudge--bottom-large">
                 {{ form_label(form.type, 'Quelle action avez-vous réalisée ?') }}
-                {{ form_widget(form.type, { attr: { 'class': 'b__nudge--top-10 form--full' } }) }}
+                {{ form_widget(form.type, {attr: {class: 'b__nudge--top-10 form--full'}}) }}
                 {{ form_errors(form.type) }}
             </div>
 
             <div class="form__row b__nudge--bottom-large">
                 {{ form_label(form.postalCode, 'Où l\'avez-vous réalisée (code postal) ?') }}
                 <br />
-                {{ form_widget(form.postalCode, { attr: { 'class': 'b__nudge--top-10', 'placeholder': 'Code postal' } }) }}
+                {{ form_widget(form.postalCode, {attr: {class: 'b__nudge--top-10', placeholder: 'Code postal'}}) }}
                 {{ form_errors(form.postalCode) }}
             </div>
 
             <div class="form__row b__nudge--bottom-large">
                 {{ form_label(form.convinced, 'Personnes convaincues') }}
                 <div class="text--small text--gray b__nudge--bottom-small">Elles ont dit: "Je vais voter pour Emmanuel Macron et je souhaite être tenu(e) informé(e) de la campagne et/ou m'engager".</div>
-                {{ form_widget(form.convinced, { attr: { placeholder: 'Saisissez une adresse email par ligne', 'class': 'form--full form__field--textarea-120' } }) }}
+                {{ form_widget(form.convinced, {attr: {placeholder: 'Saisissez une adresse email par ligne', class: 'form--full form__field--textarea-120'}}) }}
                 {{ form_errors(form.convinced) }}
                 <div class="text--small"><a href="https://enmarche.typeform.com/to/OjHb7I">
                     Saisissez ici une ou plusieurs adresses postales et/ou numéros de téléphones
@@ -141,7 +141,7 @@
             <div class="form__row b__nudge--bottom-large">
                 {{ form_label(form.almostConvinced, 'Personnes réceptives') }}
                 <div class="text--small text--gray b__nudge--bottom-small">Elles ont dit: "Je ne sais pas encore pour qui je vais voter et je souhaite en savoir davantage sur Emmanuel Macron".</div>
-                {{ form_widget(form.almostConvinced, { attr: { placeholder: 'Saisissez une adresse email par ligne', 'class': 'form--full form__field--textarea-120' } }) }}
+                {{ form_widget(form.almostConvinced, {attr: {placeholder: 'Saisissez une adresse email par ligne', class: 'form--full form__field--textarea-120'}}) }}
                 {{ form_errors(form.almostConvinced) }}
                 <div class="text--small"><a href="https://enmarche.typeform.com/to/wRRu15">
                     Saisissez ici une ou plusieurs adresses postales et/ou numéros de téléphones
@@ -157,13 +157,13 @@
 
             <div class="form__row b__nudge--bottom-large">
                 {{ form_label(form.reaction, 'Réaction des personnes rencontrées / commentaires') }}
-                {{ form_widget(form.reaction, { attr: { placeholder: 'Décrivez ici les réactions des personnes avec lesquelles vous avez échangé', 'class': 'b__nudge--top-10 form--full form__field--textarea-120' } }) }}
+                {{ form_widget(form.reaction, {attr: {placeholder: 'Décrivez ici les réactions des personnes avec lesquelles vous avez échangé', class: 'b__nudge--top-10 form--full form__field--textarea-120'}}) }}
                 {{ form_errors(form.reaction) }}
             </div>
 
             <div class="form__row">
                 {{ form_label(form.emailAddress, 'Votre email') }}
-                {{ form_widget(form.emailAddress, { attr: { placeholder: 'Saisissez votre email', 'class': 'b__nudge--top-10 form--full' } }) }}
+                {{ form_widget(form.emailAddress, {attr: {placeholder: 'Saisissez votre email', class: 'b__nudge--top-10 form--full'}}) }}
                 {{ form_errors(form.emailAddress) }}
             </div>
 

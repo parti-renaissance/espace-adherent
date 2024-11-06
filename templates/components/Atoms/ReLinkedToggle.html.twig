@@ -1,4 +1,4 @@
-<div {{ attributes.defaults({class: 're-linked-toggle' ~ (grid ? ' re-linked-toggle--grid' : '') ~ (' re-linked-toggle--' ~  color) }) }}
+<div {{ attributes.defaults({class: 're-linked-toggle' ~ (grid ? ' re-linked-toggle--grid' : '') ~ (' re-linked-toggle--' ~ color)}) }}
     x-data="xValidateField({
         status: '{{ status is defined ? status : 'default' }}',
         message: '{{ message is defined ? message : '' }}',

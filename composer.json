@@ -173,6 +173,7 @@
         "symfony/phpunit-bridge": "^7.1",
         "symfony/var-dumper": "^5.4",
         "symfony/web-profiler-bundle": "^5.4",
+        "vincentlanglet/twig-cs-fixer": "^3.2",
         "webmozart/assert": "^1.10"
     },
     "scripts": {

@@ -1,5 +1,5 @@
 {% extends '@SonataAdmin/CRUD/base_edit.html.twig' %}
 
 {% block actions %}
-    {% include('admin/committee/_actions_menu_li.html.twig') %}
+    {{ include(('admin/committee/_actions_menu_li.html.twig')) }}
 {% endblock %}

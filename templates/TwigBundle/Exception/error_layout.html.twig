@@ -3,10 +3,10 @@
 {% block page_title 'Une erreur est survenue.' %}
 
 {% block content_left_side %}
-    {% include 'renaissance/partials/left-side-content.html.twig' with {
+    {{ include('renaissance/partials/left-side-content.html.twig', {
         re_logo_class: 'w-20 h-20 re-logo-blue',
         text_color_class: 'text-blue',
-    } %}
+    }) }}
 {% endblock %}
 
 {% block content_right_side %}

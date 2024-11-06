@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block security_content %}
-    {{ form_start(form, { action: path('app_user_login_check', {app_domain: user_vox_host}), attr: { class: 'grid grid-cols-1 gap-6 lg:gap-4 w-[280px] lg:w-[420px]' } }) }}
+    {{ form_start(form, {action: path('app_user_login_check', {app_domain: user_vox_host}), attr: {class: 'grid grid-cols-1 gap-6 lg:gap-4 w-[280px] lg:w-[420px]'}}) }}
         {% if error %}
             <twig:ReParagraphStatus status="error" icon>
                 {{- error.messageKey|trans(error.messageData)|raw -}}
@@ -19,16 +19,16 @@
         {{ form_row(form._login_email, {
             attr: {
                 placeholder: 'Adresse email',
-                validate:"['required']",
+                validate: "['required']",
                 autocomplete: 'email',
             }, label: false}) }}
 
-        {{ form_row(form._login_password, { attr: {
+        {{ form_row(form._login_password, {attr: {
             placeholder: 'Mot de passe',
-            validate:"['required']",
-        }, label: false }) }}
+            validate: "['required']",
+        }, label: false}) }}
 
-        {{ form_row(form._remember_me, { label: 'Se souvenir de moi' }) }}
+        {{ form_row(form._remember_me, {label: 'Se souvenir de moi'}) }}
 
         <twig:ReButton class="w-full"> Me connecter</twig:ReButton>
     {{ form_end(form) }}
@@ -50,7 +50,7 @@
         >Me connecter avec un lien</twig:ReButton>
 
         <p class="text-center text-[13px] lg:text-base font-normal">
-            {% include 'renaissance/partials/contact_info.html.twig' %}
+            {{ include('renaissance/partials/contact_info.html.twig') }}
         </p>
     </div>
 {% endblock %}

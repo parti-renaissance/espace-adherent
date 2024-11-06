@@ -48,10 +48,10 @@
         </section>
 
         {% if not hasCharterAccepted %}
-            {% include 'chart_dialog.html.twig' with {
-                'title': 'senatorial_candidate.popup.title'|trans,
-                'fileUrl': 'senatorial_candidate.popup.file_url'|trans
-            } %}
+            {{ include('chart_dialog.html.twig', {
+                title: 'senatorial_candidate.popup.title'|trans,
+                fileUrl: 'senatorial_candidate.popup.file_url'|trans
+            }) }}
         {% endif %}
     </main>
 {% endblock %}

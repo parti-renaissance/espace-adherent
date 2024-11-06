@@ -1,7 +1,7 @@
 {% extends 'events/_layout.html.twig' %}
 
 {% block page_title "Invitation pour #{event.name} - #{event.cityName}, #{event.beginAt|date('d/m/Y')}" %}
-{% block canonical_url url('app_committee_event_invite', { slug: event.slug }) %}
+{% block canonical_url url('app_committee_event_invite', {slug: event.slug}) %}
 {% block meta_description "Envoyer une invitation pour #{event.name} qui est un événement local du mouvement La République En Marche ! organisé par #{event.organizer} le #{event.beginAt|date('d/m/Y')} à #{event.beginAt|date('G\\hi')}, dans la ville de #{event.cityName}." %}
 
 {% block javascripts %}
@@ -28,37 +28,37 @@
                 <div class="form__row">
                     {{ form_label(invitation_form.email, 'Votre adresse email') }}
                     {{ form_errors(invitation_form.email) }}
-                    {{ form_widget(invitation_form.email, { 'attr': { 'class': 'form--full' } }) }}
+                    {{ form_widget(invitation_form.email, {attr: {class: 'form--full'}}) }}
                 </div>
 
                 <div class="form__row">
                     {{ form_label(invitation_form.firstName, 'Votre prénom') }}
                     {{ form_errors(invitation_form.firstName) }}
-                    {{ form_widget(invitation_form.firstName, { 'attr': { 'class': 'form--full' } }) }}
+                    {{ form_widget(invitation_form.firstName, {attr: {class: 'form--full'}}) }}
                 </div>
 
                 <div class="form__row">
                     {{ form_label(invitation_form.lastName, 'Votre nom') }}
                     {{ form_errors(invitation_form.lastName) }}
-                    {{ form_widget(invitation_form.lastName, { 'attr': { 'class': 'form--full' } }) }}
+                    {{ form_widget(invitation_form.lastName, {attr: {class: 'form--full'}}) }}
                 </div>
 
                 <div class="form__row">
                     {{ form_label(invitation_form.message, 'Message d\'invitation') }}
                     {{ form_errors(invitation_form.message) }}
-                    {{ form_widget(invitation_form.message, { 'attr': { 'class': 'form--full form__field--textarea-120' } }) }}
+                    {{ form_widget(invitation_form.message, {attr: {class: 'form--full form__field--textarea-120'}}) }}
                 </div>
 
                 {% for guest in invitation_form.guests %}
                     <div class="form__row">
                         {{ form_errors(guest) }}
-                        {{ form_widget(guest, { 'attr': { 'class': 'form--full' } }) }}
+                        {{ form_widget(guest, {attr: {class: 'form--full'}}) }}
                     </div>
                 {% endfor %}
 
                 <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />
                 {% if recaptcha_public_key is not empty %}
-                    {% for flashMessage in app.flashes("error_recaptcha") %}
+                    {% for flashMessage in app.flashes('error_recaptcha') %}
                         <p id="recapture_error" class="form__error">{{ flashMessage|trans }}</p>
                     {% endfor %}
                     <div class="g-recaptcha" data-sitekey="{{ recaptcha_public_key }}" style="margin: 10px auto 50px auto;"></div>

@@ -15,7 +15,7 @@
                            })"
     >
         <twig:Atoms:ReCard class="max-w-[500px]">
-            {% include 'renaissance/partials/flashes.html.twig' with {slim: true} %}
+            {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
 
             <div>
                 <twig:Atoms:ReLabel>Confirmer votre adresse email</twig:Atoms:ReLabel>
@@ -30,7 +30,7 @@
                 </p>
             </div>
 
-            {{ form_start(form, { attr: { 'x-ref': 'form', class: 'flex gap-8 flex-col'} }) }}
+            {{ form_start(form, {attr: {'x-ref': 'form', class: 'flex gap-8 flex-col'}}) }}
                 {{ form_errors(form) }}
 
                 <template x-if="!isChangeMailMode">
@@ -53,10 +53,10 @@
                             '@input': 'handleCodeInput($event)',
                         }}) }}
 
-                        {{ form_row(form.validate, { label: 'Valider', attr: {
-                            color: "blue",
-                            class: "w-full",
-                            'x-bind:class!': "{disabled: !checkValidity()}",
+                        {{ form_row(form.validate, {label: 'Valider', attr: {
+                            color: 'blue',
+                            class: 'w-full',
+                            'x-bind:class!': '{disabled: !checkValidity()}',
                         }}) }}
                     </div>
                 </template>
@@ -76,20 +76,20 @@
                                 placeholder: 'Adresse email',
                                 validate: "['required']",
                                 onCheck: "setFieldValid('email')",
-                                '@input': "handleEmailInput($event)",
+                                '@input': 'handleEmailInput($event)',
                             }}) }}
                             {{ form_row(form.emailAddress.second, {attr: {
                                 placeholder: 'Confirmer mon adresse email',
                                 validate: "['required']",
                                 onCheck: "setFieldValid('confirmEmail')",
-                                '@input': "handleEmailInput($event)",
+                                '@input': 'handleEmailInput($event)',
                             }}) }}
                         </div>
 
-                        {{ form_row(form.changeEmail, { label: 'Changer mon email', attr: {
-                            color: "blue",
-                            class: "w-full",
-                            'x-bind:class!': "{disabled: !checkValidity()}",
+                        {{ form_row(form.changeEmail, {label: 'Changer mon email', attr: {
+                            color: 'blue',
+                            class: 'w-full',
+                            'x-bind:class!': '{disabled: !checkValidity()}',
                         }}) }}
                     </div>
                 </template>
@@ -98,7 +98,7 @@
             {{ form_start(new_code_form, {action: path('app_adhesion_request_new_activation_code')}) }}
                 {{ form_widget(new_code_form.allow, {attr: {
                     link: 'link',
-                    class: "w-full",
+                    class: 'w-full',
                 }}) }}
             {{ form_end(new_code_form) }}
         </twig:Atoms:ReCard>

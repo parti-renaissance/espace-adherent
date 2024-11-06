@@ -14,10 +14,10 @@
                                 <div class="name l__row">
                                     {{ app.user.partialName }}
                                     {% if app.user.certified %}
-                                        {% include('components/_certification_logo.html.twig') %}
+                                        {{ include(('components/_certification_logo.html.twig')) }}
                                     {% endif %}
                                 </div>
-                                <div class="adhesion-date">Inscrit{{ app.user.female ? "e" }} en {{ app.user.registeredAt|format_datetime('none', 'none', 'MMMM yyyy') }}</div>
+                                <div class="adhesion-date">Inscrit{{ app.user.female ? 'e' }} en {{ app.user.registeredAt|format_datetime('none', 'none', 'MMMM yyyy') }}</div>
                             </div>
                         </div>
                         <ul class="adherent-profile__roles b__nudge--bottom-large">

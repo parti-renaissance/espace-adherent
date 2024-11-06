@@ -24,7 +24,7 @@
                 </section>
             </div>
 
-            {{ form_start(form, { attr: { class: 're-form' } }) }}
+            {{ form_start(form, {attr: {class: 're-form'}}) }}
                 {{ form_errors(form) }}
 
                 {% set help_messages = {} %}
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="mt-10">
-                    {{ form_widget(form.submit, { attr: { class: 'button button-blue' } }) }}
+                    {{ form_widget(form.submit, {attr: {class: 'button button-blue'}}) }}
                 </div>
             {{ form_end(form) }}
         </div>

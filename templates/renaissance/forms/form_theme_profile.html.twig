@@ -1,9 +1,9 @@
-{% use "form_div_layout.html.twig" %}
+{% use 'form_div_layout.html.twig' %}
 
 {%- block form_row -%}
     <div class="form__group{% if half is defined and half %} half{% endif %} {{ attr.class|default('') }}">
         {{- form_label(form) -}}
-        {{- form_widget(form, { attr: attr }) -}}
+        {{- form_widget(form, {attr: attr}) -}}
         {{- form_errors(form) -}}
     </div>
 {%- endblock form_row -%}
@@ -21,7 +21,7 @@
 {%- block choice_widget_expanded -%}
     {%- for child in form %}
         <div class="form__{{ multiple ? 'checkbox' : 'radio' }}">
-            {{- form_widget(child, { attr: { class: 'h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500' } }) -}}
+            {{- form_widget(child, {attr: {class: 'h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500'}}) -}}
             {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
         </div>
     {% endfor -%}
@@ -80,7 +80,7 @@
         {%- for child in form %}
             <div>
                 <div class="flex items-center space-x-2 {{ multiple ? 'checkbox' : 'radio' }}">
-                    {{- form_widget(child, { attr: { class: 'h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500' } }) -}}
+                    {{- form_widget(child, {attr: {class: 'h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500'}}) -}}
                     {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
                 </div>
             </div>
@@ -90,7 +90,7 @@
 
 {% block _adherent_email_subscription_subscriptionTypes_entry_row %}
     <div class="flex items-center space-x-2 checkbox">
-        {{- form_widget(form, { attr: { class: 'h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500' } }) -}}
+        {{- form_widget(form, {attr: {class: 'h-4 w-4 rounded border-gray-300 text-re-blue-600 focus:ring-re-blue-500'}}) -}}
         {{- form_label(form) -}}
     </div>
 {% endblock %}
@@ -102,7 +102,7 @@
 
         <div class="address-autocomplete-wrapper hidden">
             <div class="mt-6">
-                {{ form_row(form.autocomplete, { label: 'Adresse postale', attr: { placeholder: 'Saisissez et sélectionnez une adresse postale' } }) }}
+                {{ form_row(form.autocomplete, {label: 'Adresse postale', attr: {placeholder: 'Saisissez et sélectionnez une adresse postale'}}) }}
             </div>
 
             <div class="mt-2 text-gray-500">
@@ -127,19 +127,19 @@
         <div class="address-fields-wrapper">
             <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 md:grid-cols-6">
                 <div class="md:col-span-3">
-                    {{ form_row(form.address, { label: 'Adresse' }) }}
+                    {{ form_row(form.address, {label: 'Adresse'}) }}
                 </div>
                 <div class="md:col-span-3">
-                    {{ form_row(form.postalCode, { label: 'Code postal' }) }}
+                    {{ form_row(form.postalCode, {label: 'Code postal'}) }}
                 </div>
                 <div class="md:col-span-3">
-                    {{ form_row(form.additionalAddress, { label: 'Complément d\'adresse' }) }}
+                    {{ form_row(form.additionalAddress, {label: 'Complément d\'adresse'}) }}
                 </div>
                 <div class="md:col-span-3">
-                    {{ form_row(form.cityName, { label: 'Ville' }) }}
+                    {{ form_row(form.cityName, {label: 'Ville'}) }}
                 </div>
                 <div class="md:col-span-3">
-                    {{ form_row(form.country, { label: 'Pays', attr: { placeholder: 'Sélectionner un pays' } }) }}
+                    {{ form_row(form.country, {label: 'Pays', attr: {placeholder: 'Sélectionner un pays'}}) }}
                 </div>
             </div>
             <div class="mt-2 rounded-md bg-blue-50 p-4 max-w-2xl">

@@ -2,6 +2,6 @@
 
 {% block field %}
     {% if object.adherent %}
-        {% include 'admin/adherent/_tags.html.twig' with { tags: object.adherent.tags } %}
+        {{ include('admin/adherent/_tags.html.twig', {tags: object.adherent.tags}) }}
     {% endif %}
 {% endblock %}

@@ -13,7 +13,7 @@
             </div>
         {% endif %}
 
-        {{ form_start(form, { attr: { class: 'em-form' } }) }}
+        {{ form_start(form, {attr: {class: 'em-form'}}) }}
             {{ form_errors(form) }}
 
             {% set help_messages = {
@@ -41,7 +41,7 @@
             {% endfor %}
 
             <div class="b__nudge--top">
-                {{ form_widget(form.submit, { attr: { class: 'btn--blue' } }) }}
+                {{ form_widget(form.submit, {attr: {class: 'btn--blue'}}) }}
             </div>
         {{ form_end(form) }}
     </section>

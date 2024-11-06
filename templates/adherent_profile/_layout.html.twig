@@ -24,14 +24,14 @@
                                 <div class="name l__row">
                                     {{ app.user }}
                                     {% if app.user.certified %}
-                                        {% include('components/_certification_logo.html.twig') %}
+                                        {{ include(('components/_certification_logo.html.twig')) }}
                                     {% endif %}
                                 </div>
                                 <div class="adhesion-date">
                                     {% if has_role_adherent and app.user.activatedAt %}
-                                        Adhérent{{ app.user.female ? "e" }} depuis le<br/>{{ app.user.registeredAt|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}
+                                        Adhérent{{ app.user.female ? 'e' }} depuis le<br/>{{ app.user.registeredAt|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}
                                     {% else %}
-                                        Non adhérent{{ app.user.female ? "e" }}.
+                                        Non adhérent{{ app.user.female ? 'e' }}.
                                     {% endif %}
                                 </div>
                             </div>
@@ -51,8 +51,8 @@
                                 'app_user_change_password',
                                 'app_adherent_pin_interests',
                                 'app_user_set_email_notifications',
-                            ] ) %}
-                            {% set isActivityRoute = is_active_route(app.request, 'app_adherent_profile_activity' ) %}
+                            ]) %}
+                            {% set isActivityRoute = is_active_route(app.request, 'app_adherent_profile_activity') %}
 
                             <div class="menu-section accordion{{ isInformationRoute ? ' opened' }}">
                                 <div class="menu-section__heading menu-section-informations accordion--title {{ isInformationRoute ? 'active' }}">
@@ -83,9 +83,9 @@
                                     <span class="trigger-container"></span>
                                 </div>
                                 <ul class="menu-section__items"{% if isActivityRoute %} style="display: block;"{% endif %}>
-                                    <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'committees'}) }}">Mes comités</a></li>
-                                    <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'events'}) }}">Mes événements</a></li>
-                                    <li><a href="{{ path('app_adherent_profile_activity', {'_fragment': 'donations'}) }}">Mes dons</a></li>
+                                    <li><a href="{{ path('app_adherent_profile_activity', {_fragment: 'committees'}) }}">Mes comités</a></li>
+                                    <li><a href="{{ path('app_adherent_profile_activity', {_fragment: 'events'}) }}">Mes événements</a></li>
+                                    <li><a href="{{ path('app_adherent_profile_activity', {_fragment: 'donations'}) }}">Mes dons</a></li>
                                 </ul>
                             </div>
                             <div class="menu-section">
