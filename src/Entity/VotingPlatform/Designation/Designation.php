@@ -497,6 +497,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             DesignationTypeEnum::CONSULTATION,
             DesignationTypeEnum::VOTE,
             DesignationTypeEnum::TERRITORIAL_ASSEMBLY,
+            DesignationTypeEnum::CONGRESS_CN,
         ], true)) {
             return true;
         }
@@ -628,6 +629,11 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
         return DesignationTypeEnum::TERRITORIAL_ASSEMBLY === $this->type;
     }
 
+    public function isCongressCNType(): bool
+    {
+        return DesignationTypeEnum::CONGRESS_CN === $this->type;
+    }
+
     public function isExecutiveOfficeType(): bool
     {
         return DesignationTypeEnum::EXECUTIVE_OFFICE === $this->type;
@@ -669,7 +675,8 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             && !$this->isCommitteeSupervisorType()
             && !$this->isConsultationType()
             && !$this->isVoteType()
-            && !$this->isTerritorialAssemblyType();
+            && !$this->isTerritorialAssemblyType()
+            && !$this->isCongressCNType();
     }
 
     public function equals(self $other): bool
@@ -761,7 +768,9 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
 
     public function isCandidacyPeriodEnabled(): bool
     {
-        return !$this->isLocalElectionTypes();
+        return
+            !$this->isLocalElectionTypes()
+            && !$this->isCongressCNType();
     }
 
     public function getElectionEntityIdentifier(): ?UuidInterface
@@ -857,6 +866,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             DesignationTypeEnum::COMMITTEE_SUPERVISOR,
             DesignationTypeEnum::CONSULTATION,
             DesignationTypeEnum::VOTE,
+            DesignationTypeEnum::CONGRESS_CN,
         ], true);
     }
 

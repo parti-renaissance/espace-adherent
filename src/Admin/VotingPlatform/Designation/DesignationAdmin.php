@@ -317,7 +317,7 @@ class DesignationAdmin extends AbstractAdmin
 
     public function toString(object $object): string
     {
-        return 'Désignation';
+        return 'Désignation - '.$object->getUuid();
     }
 
     public static function prepareZoneAutocompleteCallback(
