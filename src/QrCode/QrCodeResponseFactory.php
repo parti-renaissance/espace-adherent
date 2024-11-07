@@ -38,13 +38,13 @@ class QrCodeResponseFactory
         return $response;
     }
 
-    private function getQrContent(string $text, string $writerByName): ResultInterface
+    public function getQrContent(string $text, string $writerByName = self::DEFAULT_WRITER): ResultInterface
     {
         $writer = match ($writerByName) {
             'svg' => new SvgWriter(),
             default => new PngWriter(),
         };
 
-        return $this->builder->writer($writer)->data($text)->build();
+        return $this->builder->build($writer, data: $text);
     }
 }

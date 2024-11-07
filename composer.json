@@ -16,12 +16,12 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "symfony/flex": true,
-            "symfony/thanks": true,
             "endroid/installer": false,
-            "phpstan/extension-installer": true,
             "php-http/discovery": true,
-            "symfony/runtime": true
+            "phpstan/extension-installer": true,
+            "symfony/flex": true,
+            "symfony/runtime": true,
+            "symfony/thanks": true
         }
     },
     "require": {

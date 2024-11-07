@@ -9,19 +9,17 @@ use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator
 
 class QrCodeResponseFactory
 {
-    private $qrCodeFactory;
-    private $googleAuthenticator;
-
-    public function __construct(BaseQrCodeResponseFactory $qrCodeFactory, GoogleAuthenticator $googleAuthenticator)
-    {
-        $this->qrCodeFactory = $qrCodeFactory;
-        $this->googleAuthenticator = $googleAuthenticator;
+    public function __construct(
+        private readonly BaseQrCodeResponseFactory $qrCodeFactory,
+        private readonly GoogleAuthenticator $googleAuthenticator,
+    ) {
     }
 
     public function createResponseFor(Administrator $administrator): QrCodeResponse
     {
-        $qrContent = $this->googleAuthenticator->getQRContent($administrator);
-
-        return $this->qrCodeFactory->createResponse($qrContent, $administrator->getEmailAddress());
+        return $this->qrCodeFactory->createResponse(
+            $this->googleAuthenticator->getQRContent($administrator),
+            $administrator->getEmailAddress()
+        );
     }
 }

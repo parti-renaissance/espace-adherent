@@ -8,13 +8,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class QrCodeEntityHandler
 {
-    private $qrCodeFactory;
-    private $urlGenerator;
-
-    public function __construct(QrCodeResponseFactory $qrCodeFactory, UrlGeneratorInterface $urlGenerator)
-    {
-        $this->qrCodeFactory = $qrCodeFactory;
-        $this->urlGenerator = $urlGenerator;
+    public function __construct(
+        private readonly QrCodeResponseFactory $qrCodeFactory,
+        private readonly UrlGeneratorInterface $urlGenerator,
+    ) {
     }
 
     public function generateQrCode(QrCode $qrCode, string $writerByName, bool $download = false): QrCodeResponse
@@ -30,13 +27,10 @@ class QrCodeEntityHandler
 
     private function getRedirectUrlRouteName(QrCode $qrCode): string
     {
-        switch ($qrCode->getHost()) {
-            case QrCodeHostEnum::HOST_ENMARCHE:
-                return 'app_qr_code';
-            case QrCodeHostEnum::HOST_RENAISSANCE:
-                return 'renaissance_qr_code';
-            default:
-                throw new \InvalidArgumentException(\sprintf('Unknow QrCode host "%s" for uuid: "%s".', $qrCode->getHost(), $qrCode->getUuid()));
-        }
+        return match ($qrCode->getHost()) {
+            QrCodeHostEnum::HOST_ENMARCHE => 'app_qr_code',
+            QrCodeHostEnum::HOST_RENAISSANCE => 'renaissance_qr_code',
+            default => throw new \InvalidArgumentException(\sprintf('Unknown QrCode host "%s" for uuid: "%s".', $qrCode->getHost(), $qrCode->getUuid())),
+        };
     }
 }
