@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "29390a53a1a9e0aea273f59658e6e606",
+    "content-hash": "eb3779e5a973b079ef62a06882fcf141",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -4215,16 +4215,16 @@
         },
         {
             "name": "gocardless/gocardless-pro",
-            "version": "5.11.0",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gocardless/gocardless-pro-php.git",
-                "reference": "694ca92b2ba80f38b7af61f9baa3d3866905c1a6"
+                "reference": "2644a71db4f34640513a385e39df1fdeb4bc642d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gocardless/gocardless-pro-php/zipball/694ca92b2ba80f38b7af61f9baa3d3866905c1a6",
-                "reference": "694ca92b2ba80f38b7af61f9baa3d3866905c1a6",
+                "url": "https://api.github.com/repos/gocardless/gocardless-pro-php/zipball/2644a71db4f34640513a385e39df1fdeb4bc642d",
+                "reference": "2644a71db4f34640513a385e39df1fdeb4bc642d",
                 "shasum": ""
             },
             "require": {
@@ -4264,9 +4264,9 @@
             ],
             "support": {
                 "issues": "https://github.com/gocardless/gocardless-pro-php/issues",
-                "source": "https://github.com/gocardless/gocardless-pro-php/tree/v5.11.0"
+                "source": "https://github.com/gocardless/gocardless-pro-php/tree/v6.0.0"
             },
-            "time": "2024-08-13T10:46:11+00:00"
+            "time": "2024-09-24T11:45:38+00:00"
         },
         {
             "name": "google/auth",
