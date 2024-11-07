@@ -72,8 +72,8 @@
                                             linkAttr: {
                                                 class: 'row-action share-by-email',
                                                 'data-url': url('app_committee_event_show', {slug: event.slug}),
-                                            }
-                                        }
+                                            },
+                                        },
                                     ] %}
                                 {% else %}
                                     {% set items = [] %}
@@ -93,7 +93,7 @@
                                             label: 'Annuler',
                                             href: path("app_#{space_name}_event_manager_cancel", {slug: event.slug}),
                                             linkAttr: {
-                                                class: 'row-action text--error em-confirm--trigger'
+                                                class: 'row-action text--error em-confirm--trigger',
                                             },
                                         },
                                     ]) %}

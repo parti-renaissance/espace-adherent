@@ -75,7 +75,7 @@
                                             validate: "['required']",
                                             onCheck: "setFieldValid('consentDataCollect')",
                                         },
-                                        label: 'Je consens au traitement de mes données personnelles'
+                                        label: 'Je consens au traitement de mes données personnelles',
                                     }) }}
 
                                     <div class="w-full re-field-frame !h-auto cursor-pointer"
@@ -104,22 +104,22 @@
                                 <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_2" x-data="SecondFormStep">
                                     {{ form_row(form.civility, {
                                         label: 'Mes informations',
-                                        attr: {onCheck: "setFieldValid('gender')", validate: "['required']", autocomplete: 'civility'}
+                                        attr: {onCheck: "setFieldValid('gender')", validate: "['required']", autocomplete: 'civility'},
                                     }) }}
                                     <div class="flex flex-col xs:flex-row gap-5 ">
                                         {{ form_row(form.lastName, {
                                             label: false,
-                                            attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"}
+                                            attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"},
                                         }) }}
                                         {{ form_row(form.firstName, {
                                             label: false,
-                                            attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"}
+                                            attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"},
                                         }) }}
                                     </div>
 
                                     {{ form_row(form.nationality, {
                                         label: 'Nationalité',
-                                        attr: {onCheck: "setFieldValid('nationality')", validate: "['required']"}
+                                        attr: {onCheck: "setFieldValid('nationality')", validate: "['required']"},
                                     }) }}
 
                                     {{ form_row(form.address, {label: 'Adresse postale'}) }}
@@ -145,8 +145,8 @@
                                              attr: {
                                                  '@change': 'handleExclusiveMembershipChange($event)',
                                                  validate: "['required']",
-                                                 onCheck: 'setFieldValid("exclusiveMembership")'
-                                             }
+                                                 onCheck: 'setFieldValid("exclusiveMembership")',
+                                             },
                                          }) }}
                                     <div x-show="notExclusiveMember" x-cloak class="flex flex-col gap-8">
                                         <hr>
@@ -155,8 +155,8 @@
                                             attr: {
                                                 '@change': 'handlePartyMembershipChange($event)',
                                                 validate: "['?:isExlusiveMember', 'required']",
-                                                onCheck: 'setFieldValid("partyMembership")'
-                                            }
+                                                onCheck: 'setFieldValid("partyMembership")',
+                                            },
                                         }) }}
                                     </div>
 
@@ -176,13 +176,13 @@
                                             </template>
 
                                             {{ form_row(form.allowNotifications, {
-                                                label: 'Je souhaite recevoir les informations sur l’actualité de Renaissance et ses communications politiques par email'
+                                                label: 'Je souhaite recevoir les informations sur l’actualité de Renaissance et ses communications politiques par email',
                                             }) }}
                                         </div>
                                     </div>
                                     {{ form_row(form.isPhysicalPerson, {
                                         label: 'adhesion.physical_person.label', label_html: true,
-                                        attr: {onCheck: "setFieldValid('isPhysicalPerson')", validate: "['required']"}
+                                        attr: {onCheck: "setFieldValid('isPhysicalPerson')", validate: "['required']"},
                                     }) }}
 
                                     <template x-if="isMemberOfAnotherParty && notExclusiveMember" x-cloak>

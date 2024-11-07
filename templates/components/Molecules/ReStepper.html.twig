@@ -2,7 +2,7 @@
 <div
     x-data="xReStepper({{ this.jsProps() }})"
     {{ attributes.defaults({
-        class: 're-stepper re-stepper--' ~ color ~ ' w-full flex-col flex bg-white relative'
+        class: 're-stepper re-stepper--' ~ color ~ ' w-full flex-col flex bg-white relative',
     }) }}
     @setcurrentstep:{{ id }}.window="setCurrentStep($event.detail)">
     <div class="w-full flex-row flex">

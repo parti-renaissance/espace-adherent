@@ -59,13 +59,13 @@
                                 attr: {
                                     placeholder: 'Adresse email',
                                     onCheck: "setFieldValid('email')",
-                                    validate: "['required', 'email']"
-                                }
+                                    validate: "['required', 'email']",
+                                },
                             }) }}
 
                             {{ form_row(form.acceptCgu, {
                                 label: 'Je consens au traitement de mes données personnelles.',
-                                attr: {onCheck: "setFieldValid('acceptCgu')", validate: "['required']"}
+                                attr: {onCheck: "setFieldValid('acceptCgu')", validate: "['required']"},
                             }) }}
 
                             <div class="w-full re-field-frame !h-auto cursor-pointer" @click="dom('.frc-button')?.click()">
@@ -87,12 +87,12 @@
 
                             {{ form_row(form.firstName, {
                                 label: false,
-                                attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"}
+                                attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"},
                             }) }}
 
                             {{ form_row(form.lastName, {
                                 label: false,
-                                attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"}
+                                attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"},
                             }) }}
 
                             {{ form_row(form.address, {label: false}) }}

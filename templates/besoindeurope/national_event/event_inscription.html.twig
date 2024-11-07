@@ -49,17 +49,17 @@
                     <div class="flex-col flex gap-4">
                         {{ form_row(form.civility, {
                             label: false,
-                            attr: {onCheck: "setFieldValid('gender')", validate: "['required']"}
+                            attr: {onCheck: "setFieldValid('gender')", validate: "['required']"},
                         }) }}
 
                         <div class="flex flex-col xs:flex-row gap-5 ">
                             {{ form_row(form.firstName, {
                                 label: false,
-                                attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"}
+                                attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"},
                             }) }}
                             {{ form_row(form.lastName, {
                                 label: false,
-                                attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"}
+                                attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"},
                             }) }}
                         </div>
                     </div>
@@ -71,12 +71,12 @@
                             validate: "['required', 'email']",
                             autocomplete: 'email',
                             onCheck: "setFieldValid('email')",
-                        }
+                        },
                     }) }}
 
                     {{ form_row(form.postalCode, {
                         label: 'Code postal',
-                        attr: {placeholder: '75000', onCheck: "setFieldValid('postalCode')", validate: "['required']"}
+                        attr: {placeholder: '75000', onCheck: "setFieldValid('postalCode')", validate: "['required']"},
                     }) }}
 
                     <fieldset class="relative">
@@ -88,7 +88,7 @@
                                 placeholder: 'Jour',
                                 validate: "['required']",
                                 onCheck: "setFieldValid('birthDay')",
-                                searchBoxProps: {'x-numberonly': ''}
+                                searchBoxProps: {'x-numberonly': ''},
                             }}) }}
 
                             {{ form_widget(form.birthdate.month, {label: false, attr: {
@@ -103,7 +103,7 @@
                                 placeholder: 'Année',
                                 validate: "['required']",
                                 onCheck: "setFieldValid('birthYear')",
-                                searchBoxProps: {'x-numberonly': ''}
+                                searchBoxProps: {'x-numberonly': ''},
                             }}) }}
                         </fieldset>
 

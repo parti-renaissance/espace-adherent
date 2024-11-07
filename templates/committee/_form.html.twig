@@ -7,7 +7,7 @@
         attr: {
             class: 'form--full',
             placeholder: 'Choisissez un nom qui représente le territoire de votre comité',
-        }
+        },
     }) }}
 </div>
 
@@ -18,7 +18,7 @@
         attr: {
             class: 'form--full form__field--textarea-120',
             placeholder: 'Cette description sera visible dans le comité (Max 140 caractères)',
-        }
+        },
     }) }}
 </div>
 
@@ -58,7 +58,7 @@
         {{ form_errors(form.facebookPageUrl) }}
         {{ form_widget(form.facebookPageUrl, {attr: {
             class: 'form--full',
-            placeholder: 'URL de la page Facebook de votre comité (si vous en avez une)'
+            placeholder: 'URL de la page Facebook de votre comité (si vous en avez une)',
         }}) }}
     </div>
 {% endif %}
@@ -69,7 +69,7 @@
         {{ form_errors(form.twitterNickname) }}
         {{ form_widget(form.twitterNickname, {attr: {
             class: 'form--full',
-            placeholder: '@compte Twitter de votre comité (si vous en avez un)'
+            placeholder: '@compte Twitter de votre comité (si vous en avez un)',
         }}) }}
     </div>
 {% endif %}

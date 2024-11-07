@@ -23173,21 +23173,20 @@
         },
         {
             "name": "symfony/process",
-            "version": "v5.4.46",
+            "version": "v7.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "01906871cb9b5e3cf872863b91aba4ec9767daf4"
+                "reference": "9b8a40b7289767aa7117e957573c2a535efe6585"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/01906871cb9b5e3cf872863b91aba4ec9767daf4",
-                "reference": "01906871cb9b5e3cf872863b91aba4ec9767daf4",
+                "url": "https://api.github.com/repos/symfony/process/zipball/9b8a40b7289767aa7117e957573c2a535efe6585",
+                "reference": "9b8a40b7289767aa7117e957573c2a535efe6585",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
-                "symfony/polyfill-php80": "^1.16"
+                "php": ">=8.2"
             },
             "type": "library",
             "autoload": {
@@ -23215,7 +23214,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v5.4.46"
+                "source": "https://github.com/symfony/process/tree/v7.1.7"
             },
             "funding": [
                 {
@@ -23231,7 +23230,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-11-06T09:18:28+00:00"
+            "time": "2024-11-06T09:25:12+00:00"
         },
         {
             "name": "symfony/web-profiler-bundle",
@@ -23365,16 +23364,16 @@
         },
         {
             "name": "vincentlanglet/twig-cs-fixer",
-            "version": "3.2.0",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/VincentLanglet/Twig-CS-Fixer.git",
-                "reference": "ce4b0f16b72520bef70de346a6cc8da1a331ce76"
+                "reference": "595fe48a3bf43282d21e6930e433d22014f9ecbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/VincentLanglet/Twig-CS-Fixer/zipball/ce4b0f16b72520bef70de346a6cc8da1a331ce76",
-                "reference": "ce4b0f16b72520bef70de346a6cc8da1a331ce76",
+                "url": "https://api.github.com/repos/VincentLanglet/Twig-CS-Fixer/zipball/595fe48a3bf43282d21e6930e433d22014f9ecbd",
+                "reference": "595fe48a3bf43282d21e6930e433d22014f9ecbd",
                 "shasum": ""
             },
             "require": {
@@ -23433,7 +23432,7 @@
             "homepage": "https://github.com/VincentLanglet/Twig-CS-Fixer",
             "support": {
                 "issues": "https://github.com/VincentLanglet/Twig-CS-Fixer/issues",
-                "source": "https://github.com/VincentLanglet/Twig-CS-Fixer/tree/3.2.0"
+                "source": "https://github.com/VincentLanglet/Twig-CS-Fixer/tree/3.3.1"
             },
             "funding": [
                 {
@@ -23441,7 +23440,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-11-05T10:15:53+00:00"
+            "time": "2024-11-06T16:21:28+00:00"
         },
         {
             "name": "webmozart/assert",

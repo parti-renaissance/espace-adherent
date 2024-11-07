@@ -3,7 +3,7 @@
     class="{{ this.tw(
         're-paragraph-status',
         this.props.status.twig ? 're-paragraph-status--' ~ this.props.status.twig : '',
-        slim ? 're-paragraph-status--slim' : ''
+        slim ? 're-paragraph-status--slim' : '',
     ) }}"
     {% if this.props.status.alpine %}
         x-bind:class="'re-paragraph-status--' + {{ this.props.status.alpine }}"

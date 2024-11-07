@@ -62,7 +62,7 @@
                                     {% set items = [{
                                         href: path("app_#{space_type}_designations_dashboard", {committee_slug: committee.slug, uuid: row.voting_platform_election_uuid}),
                                         label: 'Voir les détails',
-                                        linkAttr: {class: 'row-action link--no-decor'}
+                                        linkAttr: {class: 'row-action link--no-decor'},
                                     }] %}
 
                                     {{ include('components/_annimated_sub_menu.html.twig', {items: items}) }}
