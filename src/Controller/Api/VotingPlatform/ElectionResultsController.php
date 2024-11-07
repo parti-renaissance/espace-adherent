@@ -20,7 +20,7 @@ class ElectionResultsController extends AbstractController
         }
 
         if (!$election->hasResult()) {
-            return $this->json([]);
+            return $this->json($electionRepository->getLiveResults($election->getCurrentRound()));
         }
 
         $electionResult = $election->getElectionResult();

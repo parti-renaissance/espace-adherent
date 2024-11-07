@@ -50,7 +50,8 @@
 {% endblock %}
 
 {% block round_dashboard %}
-    {% set details_by_pool = get_election_participation_details(round)|first %}
+    {% set details_by_pool = get_election_participation_details(round) %}
+    {% set details_first_pool = details_by_pool|first %}
 
     <div class="row">
         <div class="col-md-6">
@@ -68,7 +69,7 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text">Inscrits</span>
-                        <span class="info-box-number">{{ details_by_pool.voters_count }}</span>
+                        <span class="info-box-number">{{ details_first_pool.voters_count }}</span>
 
                         <div class="progress">
                             <div class="progress-bar" style="width: 100%"></div>
@@ -86,9 +87,9 @@
 
                     <div class="info-box-content">
                         <span class="info-box-text">Participants</span>
-                        <span class="info-box-number">{{ details_by_pool.votes_count }}</span>
+                        <span class="info-box-number">{{ details_first_pool.votes_count }}</span>
 
-                        {% set votes_percent = (details_by_pool.voters_count > 0 ? details_by_pool.votes_count * 100 / details_by_pool.voters_count : 0)|round(1) %}
+                        {% set votes_percent = (details_first_pool.voters_count > 0 ? details_first_pool.votes_count * 100 / details_first_pool.voters_count : 0)|round(1) %}
 
                         <div class="progress">
                             <div class="progress-bar" style="width: {{ votes_percent }}%"></div>
@@ -98,24 +99,26 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="info-box bg-yellow">
-                    <span class="info-box-icon">
-                        <i class="fa fa-close"></i>
-                    </span>
+            {% if details_by_pool|length == 1 %}
+                <div class="col-md-6">
+                    <div class="info-box bg-yellow">
+                        <span class="info-box-icon">
+                            <i class="fa fa-close"></i>
+                        </span>
 
-                    <div class="info-box-content">
-                        <span class="info-box-text">Blancs</span>
-                        <span class="info-box-number">{{ details_by_pool.votes_blank_count }}</span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Blancs</span>
+                            <span class="info-box-number">{{ details_first_pool.votes_blank_count }}</span>
 
-                        {% set vote_blanc_percent = (details_by_pool.votes_count > 0 ? details_by_pool.votes_blank_count * 100 / details_by_pool.votes_count : 0)|round(1) %}
-                        <div class="progress">
-                            <div class="progress-bar" style="width: {{ vote_blanc_percent }}%"></div>
+                            {% set vote_blanc_percent = (details_first_pool.votes_count > 0 ? details_first_pool.votes_blank_count * 100 / details_first_pool.votes_count : 0)|round(1) %}
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ vote_blanc_percent }}%"></div>
+                            </div>
+                            <span class="progress-description">{{ vote_blanc_percent }}% vote blanc</span>
                         </div>
-                        <span class="progress-description">{{ vote_blanc_percent }}% vote blanc</span>
                     </div>
                 </div>
-            </div>
+            {% endif %}
         </div>
     </div>
 
@@ -124,6 +127,7 @@
     <div class="row">
         {% for pool in round.getElectionPools() %}
             {% set pool_results = aggregate_pool_results(pool) %}
+            {% set votes = details_by_pool[pool.id] ?? [] %}
             {% set candidate_groups = pool.getCandidateGroups() %}
 
             <div class="col-md-6">
@@ -143,10 +147,10 @@
                                 {
                                     type: 'bar',
                                     data: {
-                                        labels: ["{{ candidate_groups|map(candidate_group => candidate_group.getTitle())|join('", "')|raw }}"],
+                                        labels: ["{{ candidate_groups|map(candidate_group => candidate_group.getTitle())|join('", "')|raw }}", "Blanc"],
                                         datasets: [{
                                             axis: 'y',
-                                            data: [{{ candidate_groups|map(candidate_group => pool_results[candidate_group.getId()].count ?? 0)|join(', ')|raw }}],
+                                            data: [{{ candidate_groups|map(candidate_group => pool_results[candidate_group.getId()].count ?? 0)|join(', ')|raw }}, {{ votes.votes_blank_count ?? 0 }}],
                                             backgroundColor: [
                                                 'rgba(255, 99, 132)',
                                                 'rgba(255, 159, 64)',
