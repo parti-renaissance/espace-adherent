@@ -24,7 +24,7 @@
                         attr: {
                             class: 'form--full',
                             placeholder: 'Prénom',
-                        }
+                        },
                     }) }}
                 </div>
 
@@ -34,7 +34,7 @@
                         attr: {
                             class: 'form--full',
                             placeholder: 'Nom',
-                        }
+                        },
                     }) }}
                 </div>
 
@@ -44,7 +44,7 @@
                         attr: {
                             class: 'form--full',
                             placeholder: 'Adresse email',
-                        }
+                        },
                     }) }}
                 </div>
 
@@ -55,7 +55,7 @@
                         {{ 'event.personal_data_collect'|trans({'%organisator_name%':
                             event.organizer ?
                                 (has_role_adherent ? event.organizer.fullName : event.organizer.partialName)
-                                : ''
+                                : '',
                         }) }}
                     </label>
                 </div>

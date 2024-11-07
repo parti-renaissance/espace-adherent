@@ -175,8 +175,8 @@
                     placeholder: 'Saisissez et sélectionnez une adresse postale',
                     validate: "['required']",
                     associatedFieldsPrefix: 'membership_request_address',
-                    blocked: 'blocked'
-                }
+                    blocked: 'blocked',
+                },
             }) }}
 
             <div class="text-gray-700 cursor-pointer text-center aucomplete-fields-toggle" @click="showAutoComplete = false">
@@ -211,7 +211,7 @@
             <div class="relative w-full h-full">
                 {{ form_widget(form.country, {label: false, attr: {
                     class: 'w-full absolute !max-h-[40px] left-0 top-0 p-0 background-transparent re-textfield-select',
-                    placeholder: 'Code'
+                    placeholder: 'Code',
                 }}) }}
             </div>
         </div>

@@ -77,13 +77,13 @@
                     attr: {
                         placeholder: 'adresse@mail.com',
                         onCheck: "setFieldValid('email')",
-                        validate: "['required', 'email']"
-                    }
+                        validate: "['required', 'email']",
+                    },
                 }) }}
 
                 {{ form_row(form.acceptCgu, {
                     label: 'procuration.accept_cgu.label',
-                    attr: {onCheck: "setFieldValid('acceptCgu')", validate: "['required']"}
+                    attr: {onCheck: "setFieldValid('acceptCgu')", validate: "['required']"},
                 }) }}
 
                 <div class="w-full re-field-frame !h-auto cursor-pointer"
@@ -107,21 +107,21 @@
                 </h3>
 
                 {{ form_row(form.gender, {
-                    label: 'Civilité'
+                    label: 'Civilité',
                 }) }}
 
                 {{ form_row(form.firstNames, {
                     label: 'Prénom(s)',
                     attr: {
-                        placeholder: 'Marie, Claude, Anne'
-                    }
+                        placeholder: 'Marie, Claude, Anne',
+                    },
                 }) }}
 
                 {{ form_row(form.lastName, {
                     label: 'Nom (spécifier votre nom de jeune fille)',
                     attr: {
-                        placeholder: 'Mon nom de famille complet'
-                    }
+                        placeholder: 'Mon nom de famille complet',
+                    },
                 }) }}
 
                 <fieldset class="relative h-[100px]">
@@ -129,15 +129,15 @@
 
                     <fieldset class="flex gap-2.5 relative">
                         {{ form_widget(form.birthdate.day, {
-                            label: 'Jour'
+                            label: 'Jour',
                         }) }}
 
                         {{ form_widget(form.birthdate.month, {
-                            label: 'Mois'
+                            label: 'Mois',
                         }) }}
 
                         {{ form_widget(form.birthdate.year, {
-                            label: 'Année'
+                            label: 'Année',
                         }) }}
                     </fieldset>
 
@@ -145,7 +145,7 @@
                 </fieldset>
 
                 {{ form_row(form.address, {
-                    label: 'Adresse postale'
+                    label: 'Adresse postale',
                 }) }}
 
                 <fieldset>

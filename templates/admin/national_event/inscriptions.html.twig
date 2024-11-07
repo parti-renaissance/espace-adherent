@@ -153,7 +153,7 @@
                             {{ include('admin/partial/_pagination.html.twig', {
                                 current_page: event_inscriptions.currentPage,
                                 total_pages: event_inscriptions.lastPage,
-                                pagination_route_params: {id: national_event.id}|merge(app.request.query.all)
+                                pagination_route_params: {id: national_event.id}|merge(app.request.query.all),
                             }) }}
                         </div>
                     </div>

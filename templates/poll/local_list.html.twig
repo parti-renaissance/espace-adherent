@@ -56,15 +56,15 @@
                                         label: 'Editer',
                                         linkAttr: {
                                             class: 'row-action',
-                                        }
+                                        },
                                     },
                                     {
                                         href: path("app_#{space_name}_polls_#{publish}", {uuid: poll.uuid}),
                                         label: poll.isPublished ? 'Dépublier' : 'Publier',
                                         linkAttr: {
                                             class: 'row-action text--' ~ (poll.isPublished ? 'plue' : 'pink') ~ ' link--no-decor',
-                                        }
-                                    }
+                                        },
+                                    },
                                 ] %}
 
                                 {{ include('components/_annimated_sub_menu.html.twig', {items: items}) }}

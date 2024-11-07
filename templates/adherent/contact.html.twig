@@ -31,7 +31,7 @@
                 {{ form_errors(form.content) }}
                 {{ form_widget(form.content, {attr: {
                     class: 'form--full form__field--textarea-300',
-                    placeholder: 'Entrez le message que vous souhaitez envoyer à ' ~ adherent.fullName
+                    placeholder: 'Entrez le message que vous souhaitez envoyer à ' ~ adherent.fullName,
                 }}) }}
 
             <input type="hidden" class="nojs-g-recaptcha-response" name="g-recaptcha-response" value="" />

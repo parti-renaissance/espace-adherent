@@ -40,7 +40,7 @@
                             validate: "['required']",
                             onCheck: "setFieldValid('birthDay')",
                             '@change': 'setDay($event.target.value)',
-                            searchBoxProps: {'x-numberonly': ''}
+                            searchBoxProps: {'x-numberonly': ''},
                         }}) }}
 
                         {{ form_widget(form.birthdate.month, {label: false, attr: {
@@ -57,7 +57,7 @@
                             validate: "['required']",
                             onCheck: "setFieldValid('birthYear')",
                             '@change': 'setYear($event.target.value)',
-                            searchBoxProps: {'x-numberonly': ''}
+                            searchBoxProps: {'x-numberonly': ''},
                         }}) }}
                     </fieldset>
 

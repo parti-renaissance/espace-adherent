@@ -62,27 +62,27 @@
                         {% set menu = [
                             {
                                 label: 'Éditer',
-                                url: path("app_jecoute_news_#{space_name}_news_edit", {uuid: data.uuid})
-                            }
+                                url: path("app_jecoute_news_#{space_name}_news_edit", {uuid: data.uuid}),
+                            },
                         ] %}
                         {% if data.published %}
                             {% set menu = menu|merge([
                                 {
                                     label: 'Dépublier',
-                                    url: path("app_jecoute_news_#{space_name}_news_unpublish", {uuid: data.uuid})
-                                }
+                                    url: path("app_jecoute_news_#{space_name}_news_unpublish", {uuid: data.uuid}),
+                                },
                             ]) %}
                         {% else %}
                             {% set menu = menu|merge([
                                 {
                                     label: 'Publier',
-                                    url: path("app_jecoute_news_#{space_name}_news_publish", {uuid: data.uuid})
-                                }
+                                    url: path("app_jecoute_news_#{space_name}_news_publish", {uuid: data.uuid}),
+                                },
                             ]) %}
                         {% endif %}
 
                         {% set row = row|merge({
-                            menu: menu
+                            menu: menu,
                         }) %}
 
                         {{ row|json_encode|raw }},

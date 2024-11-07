@@ -265,7 +265,7 @@
             {{ include('components/_modern_pagination.html.twig', {
                 current_page: members.currentPage,
                 total_pages: members.lastPage,
-                pagination_route_params: {filter: filter.toArray}|merge({slug: committee.slug})
+                pagination_route_params: {filter: filter.toArray}|merge({slug: committee.slug}),
             }) }}
         {% endif %}
     </section>

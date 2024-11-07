@@ -17,7 +17,7 @@
                 {% for choice in form.poolChoice %}
                     {{ include('voting_platform/vote_step/' ~ (designation.isMajorityType() ? '_majority_vote') ~ (designation.isPollType or designation.isConsultationType() or designation.isVoteType() ? '_poll') ~ '_candidate_box.html.twig', {
                         candidate_group: candidate_groups|filter(group => (designation.isMajorityType ? choice.vars.name : choice.vars.value) == group.uuid.toString)|first,
-                        form: choice
+                        form: choice,
                     }) }}
                 {% endfor %}
             </div>

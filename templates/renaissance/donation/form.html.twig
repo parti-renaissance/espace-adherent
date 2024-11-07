@@ -124,7 +124,7 @@
 
                                     {{ form_row(form.localDestination, {
                                         label: 'donation.local_destination.label', label_html: true,
-                                        attr: {onCheck: "setFieldValid('localDestination')", 'x-model': 'localDestination'}
+                                        attr: {onCheck: "setFieldValid('localDestination')", 'x-model': 'localDestination'},
                                     }) }}
 
                                     <div>
@@ -164,17 +164,17 @@
                                     <twig:Atoms:ReCard class="max-w-[500px]">
                                         {{ form_row(form.gender, {
                                             label: 'Mes informations',
-                                            attr: {color: 'green', onCheck: "setFieldValid('gender')", validate: "['required']", autocomplete: 'gender'}
+                                            attr: {color: 'green', onCheck: "setFieldValid('gender')", validate: "['required']", autocomplete: 'gender'},
                                         }) }}
 
                                         <div class="flex flex-col xs:flex-row gap-5 ">
                                             {{ form_row(form.lastName, {
                                                 label: false,
-                                                attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"}
+                                                attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"},
                                             }) }}
                                             {{ form_row(form.firstName, {
                                                 label: false,
-                                                attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"}
+                                                attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"},
                                             }) }}
                                         </div>
 
@@ -189,7 +189,7 @@
 
                                         {{ form_row(form.nationality, {
                                             label: 'Nationalité',
-                                            attr: {onCheck: "setFieldValid('nationality')", validate: "['required']"}
+                                            attr: {onCheck: "setFieldValid('nationality')", validate: "['required']"},
                                         }) }}
 
                                         {{ form_row(form.address, {label: 'Adresse postale'}) }}
@@ -207,7 +207,7 @@
                                     <twig:Atoms:ReLabel>Autorisations</twig:Atoms:ReLabel>
                                     {{ form_row(form.autorisations, {
                                         label: 'donation.autorisations.label', label_html: true,
-                                        attr: {onCheck: "setFieldValid('autorisations')", validate: "['required']"}
+                                        attr: {onCheck: "setFieldValid('autorisations')", validate: "['required']"},
                                     }) }}
 
                                     <div class="w-full re-field-frame !h-auto cursor-pointer"

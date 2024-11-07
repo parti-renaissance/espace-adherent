@@ -80,15 +80,15 @@
                             {% set menu = [
                                 {
                                     label: 'Éditer',
-                                    url: path("app_jecoute_#{space_name}_local_survey_edit", {uuid: survey.uuid})
-                                }
+                                    url: path("app_jecoute_#{space_name}_local_survey_edit", {uuid: survey.uuid}),
+                                },
                             ] %}
                         {% else %}
                             {% set menu = [
                                 {
                                     label: 'Voir',
-                                    url: path("app_jecoute_#{space_name}_survey_show", {uuid: survey.uuid})
-                                }
+                                    url: path("app_jecoute_#{space_name}_survey_show", {uuid: survey.uuid}),
+                                },
                             ] %}
                         {% endif %}
 
@@ -98,26 +98,26 @@
                                 menu: menu|merge([
                                     {
                                         label: 'Statistiques',
-                                        url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid})
+                                        url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid}),
                                     },
                                     {
                                         label: 'Télécharger les résultats',
-                                        url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid, export: 'xlsx'})
+                                        url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid, export: 'xlsx'}),
                                     },
-                                ])
+                                ]),
                             }) %}
                         {% else %}
                             {% set row = row|merge({
                                 menu: menu|merge([
                                     {
                                         label: 'Statistiques',
-                                        url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid})
+                                        url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid}),
                                     },
                                     {
                                         label: 'Télécharger les résultats',
-                                        url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid, export: 'xlsx'})
+                                        url: path("app_jecoute_#{space_name}_survey_stats", {uuid: survey.uuid, export: 'xlsx'}),
                                     },
-                                ])
+                                ]),
                             }) %}
                         {% endif %}
 

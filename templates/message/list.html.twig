@@ -83,7 +83,7 @@
                                             label: 'Modifier',
                                             linkAttr: {
                                                 class: 'row-action text--blue--dark link--no-decor',
-                                            }
+                                            },
                                         }]) %}
                                     {% endif %}
 
@@ -95,8 +95,8 @@
                                                 linkAttr: {
                                                     class: 'row-action text--blue--dark link--no-decor adherent-message-statistics-button',
                                                     'data-uuid': message.uuid,
-                                                    'data-subject': message.subject
-                                                }
+                                                    'data-subject': message.subject,
+                                                },
                                             }]) %}
                                         {% endif %}
                                     {% else %}
@@ -105,7 +105,7 @@
                                             label: 'Filtrer',
                                             linkAttr: {
                                                 class: 'row-action text--blue--dark link--no-decor',
-                                            }
+                                            },
                                         }]) %}
                                     {% endif %}
 
@@ -116,8 +116,8 @@
                                                 label: 'Visualiser',
                                                 linkAttr: {
                                                     class: 'row-action text--blue--dark link--no-decor',
-                                                }
-                                            }
+                                                },
+                                            },
                                         ]) %}
 
                                         {% if message.isMailchimp %}
@@ -127,9 +127,9 @@
                                                     label: 'Obtenir le lien du message',
                                                     linkAttr: {
                                                         class: 'row-action text--blue--dark link--no-decor',
-                                                        target: '_blank'
-                                                    }
-                                                }
+                                                        target: '_blank',
+                                                    },
+                                                },
                                             ]) %}
                                         {% endif %}
                                     {% else %}
@@ -138,7 +138,7 @@
                                             label: 'Visualiser<br/><span class="text--smallest">(en cours de préparation ...)</span>',
                                             linkAttr: {
                                                 class: 'row-action btn--disabled',
-                                            }
+                                            },
                                         }]) %}
                                     {% endif %}
 
@@ -147,7 +147,7 @@
                                         label: 'Supprimer',
                                         linkAttr: {
                                             class: 'row-action text--dark link--no-decor',
-                                        }
+                                        },
                                     }]) %}
 
                                     {{ include('components/_annimated_sub_menu.html.twig', {items: items}) }}
@@ -169,7 +169,7 @@
         {{ include('components/_modern_pagination.html.twig', {
             current_page: messages.currentPage,
             total_pages: messages.lastPage,
-            pagination_route_params: route_params|default({})|merge(message_filter_status ? {status: message_filter_status} : {})|merge(app.request.attributes.has('delegated_access_uuid') ? {delegated_access_uuid: app.request.attributes.get('delegated_access_uuid')} : {})
+            pagination_route_params: route_params|default({})|merge(message_filter_status ? {status: message_filter_status} : {})|merge(app.request.attributes.has('delegated_access_uuid') ? {delegated_access_uuid: app.request.attributes.get('delegated_access_uuid')} : {}),
         }) }}
     {% endif %}
 {% endblock %}
