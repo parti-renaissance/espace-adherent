@@ -957,6 +957,7 @@ voting_platform.designation.type_copol: Comité politique
 voting_platform.designation.type_national_council: Conseil national
 voting_platform.designation.type_executive_office: Bureau Exécutif
 voting_platform.designation.type_poll: Vote des statuts
+voting_platform.designation.type_congress_cn: Élection des représentants des adhérents au Conseil National
 voting_platform.designation.type_local_election: Élection départementale
 voting_platform.designation.type_local_poll: Sondage local
 voting_platform.designation.type_consultation: Consultation

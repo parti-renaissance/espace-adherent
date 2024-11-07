@@ -25,6 +25,7 @@ final class DesignationTypeEnum extends Enum
 
     public const CONSULTATION = 'consultation';
     public const VOTE = 'vote';
+    public const CONGRESS_CN = 'congress_cn';
 
     public const TITLES = [
         self::COMMITTEE_SUPERVISOR => 'Élection du binôme paritaire d’Animateurs locaux',
@@ -41,6 +42,7 @@ final class DesignationTypeEnum extends Enum
         self::LOCAL_POLL => 'Élection locale',
         self::CONSULTATION => 'Consultation nationale',
         self::TERRITORIAL_ASSEMBLY => 'Élection du Bureau de l’Assemblée des territoires',
+        self::CONGRESS_CN => 'Élection des représentants des adhérents au Conseil National',
     ];
 
     public const MAIN_TYPES = [
@@ -54,12 +56,14 @@ final class DesignationTypeEnum extends Enum
         self::LOCAL_POLL,
         self::CONSULTATION,
         self::TERRITORIAL_ASSEMBLY,
+        self::CONGRESS_CN,
     ];
 
     public const NATIONAL_TYPES = [
         self::POLL,
         self::CONSULTATION,
         self::TERRITORIAL_ASSEMBLY,
+        self::CONGRESS_CN,
     ];
 
     public const API_AVAILABLE_TYPES = [
