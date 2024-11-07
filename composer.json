@@ -16,12 +16,12 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "symfony/flex": true,
-            "symfony/thanks": true,
             "endroid/installer": false,
-            "phpstan/extension-installer": true,
             "php-http/discovery": true,
-            "symfony/runtime": true
+            "phpstan/extension-installer": true,
+            "symfony/flex": true,
+            "symfony/runtime": true,
+            "symfony/thanks": true
         }
     },
     "require": {
@@ -47,7 +47,7 @@
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "egulias/email-validator": "^4.0",
-        "endroid/qr-code-bundle": "^5.0",
+        "endroid/qr-code-bundle": "^6.0",
         "enmarche/majority-judgment": "^0.0.3",
         "exercise/htmlpurifier-bundle": "^5.0",
         "firebase/php-jwt": "^6.10",

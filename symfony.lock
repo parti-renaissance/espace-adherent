@@ -91,7 +91,7 @@
         ]
     },
     "endroid/qr-code-bundle": {
-        "version": "3.4.3"
+        "version": "6.0.0"
     },
     "exercise/htmlpurifier-bundle": {
         "version": "3.1",
