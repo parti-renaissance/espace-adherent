@@ -6,6 +6,7 @@ use App\Adherent\Tag\TagEnum;
 use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CommitteeEvent;
 use App\Event\EventCleaner;
 use App\Event\EventVisibilityEnum;
 use App\Repository\EventRegistrationRepository;
@@ -49,11 +50,13 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
                 $event['user_registered_at'] = $registration?->getCreatedAt()->format(\DateTimeInterface::RFC3339);
             }
 
-            $event['editable'] = PrivatePublicContextBuilder::CONTEXT_PRIVATE === $apiContext ? $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT, $object) : $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT_ITEM, [
-                'uuid' => $object->getUuidAsString(),
-                'author_uuid' => $object->getAuthor()?->getUuidAsString(),
-                'scope' => $object->getAuthorScope(),
-            ]);
+            $event['editable'] = PrivatePublicContextBuilder::CONTEXT_PRIVATE === $apiContext ?
+                $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT, $object) :
+                $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT_ITEM, [
+                    'instance' => $object->getAuthorInstance(),
+                    'zones' => $object->getZones()->toArray(),
+                    'committee_uuid' => $object instanceof CommitteeEvent ? $object->getCommitteeUuid() : null,
+                ]);
 
             if ($event['editable']) {
                 $event['edit_link'] = $this->loginLinkHandler->createLoginLink($user, targetPath: '/cadre?state='.urlencode('/evenements/'.$object->getUuidAsString().'?scope='.$object->getAuthorScope()))->getUrl();
@@ -78,7 +81,8 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
         }
 
         $needClean =
-            (PrivatePublicContextBuilder::CONTEXT_PUBLIC_ANONYMOUS === $apiContext && !$event->isPublic())
+            true !== $eventData['editable']
+            && ((PrivatePublicContextBuilder::CONTEXT_PUBLIC_ANONYMOUS === $apiContext && !$event->isPublic())
             || (
                 PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $apiContext
                 && $event->isForAdherent()
@@ -87,7 +91,7 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
                     || (EventVisibilityEnum::ADHERENT === $event->visibility && !$adherent->hasTag(TagEnum::ADHERENT))
                     || (EventVisibilityEnum::ADHERENT_DUES === $event->visibility && !$adherent->hasTag(TagEnum::getAdherentYearTag()))
                 )
-            );
+            ));
 
         if ($needClean) {
             $eventData = $this->eventCleaner->cleanEventData($eventData, $event->isForAdherent() && PrivatePublicContextBuilder::CONTEXT_PUBLIC_ANONYMOUS === $apiContext);

@@ -32,9 +32,11 @@ final class AuthorDenormalizer implements DenormalizerInterface, DenormalizerAwa
 
         if (!$data->getId()) {
             $scope = $this->scopeGeneratorResolver->generate();
-            $data->setAuthor($scope ? $scope->getMainUser() : $this->security->getUser());
+            $currentUser = $this->security->getUser();
+            $data->setAuthor($scope ? $scope->getMainUser() : $currentUser);
 
             if ($scope && $data instanceof AuthorInstanceInterface) {
+                $data->setAuthor($currentUser);
                 $data->setAuthorScope($scope->getCode());
                 $data->setAuthorRole($scope->getRoleName());
                 $data->setAuthorInstance($scope->getScopeInstance());

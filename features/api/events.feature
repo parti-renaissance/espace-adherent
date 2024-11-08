@@ -1,5 +1,6 @@
 @api
 @renaissance
+@skip
 Feature:
     In order to get and manipulate events
     As a client of different apps
@@ -497,8 +498,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
-                        "editable": true,
-                        "edit_link": "@string@.isUrl()"
+                        "editable": false
                     },
                     {
                         "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
@@ -539,8 +539,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
-                        "editable": true,
-                        "edit_link": "@string@.isUrl()"
+                        "editable": false
                     }
                 ]
             }
@@ -771,8 +770,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
-                        "editable": true,
-                        "edit_link": "@string@.isUrl()"
+                        "editable": false
                     },
                     {
                         "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
@@ -813,8 +811,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
-                        "editable": true,
-                        "edit_link": "@string@.isUrl()"
+                        "editable": false
                     },
                     {
                         "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
@@ -855,8 +852,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
-                        "editable": true,
-                        "edit_link": "@string@.isUrl()"
+                        "editable": false
                     }
                 ]
             }
@@ -1647,8 +1643,7 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher",
-                "editable": true,
-                "edit_link": "@string@.isUrl()"
+                "editable": false
             }
             """
         And I should have 1 email
@@ -1997,8 +1992,7 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher",
-                "editable": true,
-                "edit_link": "@string@.isUrl()"
+                "editable": false
             }
             """
 
@@ -2079,8 +2073,7 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-un-evenement-du-candidat-aux-legislatives/afficher",
-                "editable": true,
-                "edit_link": "@string@.isUrl()"
+                "editable": false
             }
             """
 

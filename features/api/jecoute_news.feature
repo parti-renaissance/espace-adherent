@@ -885,7 +885,7 @@ Feature:
                 "published": true,
                 "enriched": false,
                 "pinned": false,
-                "creator": "Referent Referent"
+                "creator": "<name>"
             }
             """
         And I should have 1 notification "NewsCreatedNotification" with data:
@@ -895,9 +895,9 @@ Feature:
             | body  | Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula. |
 
         Examples:
-            | user                      | scope                                          |
-            | referent@en-marche-dev.fr | president_departmental_assembly                |
-            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+            | user                      | name              | scope                                          |
+            | referent@en-marche-dev.fr | Referent Referent | president_departmental_assembly                |
+            | senateur@en-marche-dev.fr | Bob Senateur (59) | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a (delegated) correspondent I can create a news
         Given I am logged with "<user>" via OAuth client "JeMengage Web"
@@ -937,7 +937,7 @@ Feature:
                 "published": true,
                 "enriched": true,
                 "pinned": true,
-                "creator": "Jules Fullstack"
+                "creator": "<name>"
             }
             """
         And I should have 1 notification "NewsCreatedNotification" with data:
@@ -947,9 +947,9 @@ Feature:
             | body  | Vestibulum et lectus vehicula. Sed eget neque nec… |
 
         Examples:
-            | user                               | scope                                          |
-            | je-mengage-user-1@en-marche-dev.fr | correspondent                                  |
-            | laura@deloche.com                  | delegated_2c6134f7-4312-45c4-9ab7-89f2b0731f86 |
+            | user                               | name            | scope                                          |
+            | je-mengage-user-1@en-marche-dev.fr | Jules Fullstack | correspondent                                  |
+            | laura@deloche.com                  | Laura Deloche   | delegated_2c6134f7-4312-45c4-9ab7-89f2b0731f86 |
 
     Scenario Outline: As a (delegated) correspondent I can update a news
         Given I am logged with "<user>" via OAuth client "JeMengage Web"
@@ -1034,7 +1034,7 @@ Feature:
                 "published": true,
                 "enriched": true,
                 "pinned": true,
-                "creator": "Jean-Baptiste Fortin"
+                "creator": "<name>"
             }
             """
         And I should have 1 notification "NewsCreatedNotification" with data:
@@ -1044,9 +1044,9 @@ Feature:
             | body  | Duis ut elit vel felis mattis pretium. Curabitur ut…  |
 
         Examples:
-            | user                                  | scope                                          |
-            | senatorial-candidate@en-marche-dev.fr | legislative_candidate                          |
-            | gisele-berthoux@caramail.com          | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c |
+            | user                                  | name                 | scope                                          |
+            | senatorial-candidate@en-marche-dev.fr | Jean-Baptiste Fortin | legislative_candidate                          |
+            | gisele-berthoux@caramail.com          | Gisele Berthoux      | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c |
 
     Scenario Outline: As a (delegated) legislative candidate I can update a news
         Given I am logged with "<user>" via OAuth client "JeMengage Web"

@@ -4,9 +4,12 @@ namespace App\Security\Voter\Event;
 
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CommitteeEvent;
+use App\Repository\Geo\ZoneRepository;
 use App\Scope\Exception\ScopeExceptionInterface;
 use App\Scope\FeatureEnum;
 use App\Scope\GeneralScopeGenerator;
+use App\Scope\Scope;
 use App\Scope\ScopeGeneratorResolver;
 use App\Security\Voter\AbstractAdherentVoter;
 
@@ -18,6 +21,7 @@ class CanManageEventVoter extends AbstractAdherentVoter
     public function __construct(
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
         private readonly GeneralScopeGenerator $generalScopeGenerator,
+        private readonly ZoneRepository $zoneRepository,
     ) {
     }
 
@@ -51,25 +55,44 @@ class CanManageEventVoter extends AbstractAdherentVoter
             return false;
         }
 
-        return $scope->getMainUser() === $subject->getAuthor();
+        if ($subject->getAuthorInstance() !== $scope->getScopeInstance()) {
+            return false;
+        }
+
+        if ($subject instanceof CommitteeEvent) {
+            return \in_array($subject->getCommitteeUuid(), $scope->getCommitteeUuids());
+        }
+
+        return $this->zoneRepository->isInZones($subject->getZones()->toArray(), $scope->getZones());
     }
 
     private function canManageEventItem(Adherent $adherent, array $event): bool
     {
-        if (empty($event['scope'])) {
-            return false;
-        }
-
         try {
-            $scope = $this->generalScopeGenerator->getGenerator($event['scope'], $adherent)->generate($adherent);
+            $scopes = array_filter(
+                $this->generalScopeGenerator->generateScopes($adherent),
+                fn (Scope $scope) => $scope->getScopeInstance() === $event['instance'] && $scope->hasFeature(FeatureEnum::EVENTS)
+            );
         } catch (ScopeExceptionInterface $e) {
             return false;
         }
 
-        if (!$scope->hasFeature(FeatureEnum::EVENTS)) {
+        if (empty($scopes)) {
             return false;
         }
 
-        return $scope->getMainUser()->getUuidAsString() === $event['author_uuid'];
+        foreach ($scopes as $scope) {
+            if (!empty($event['committee_uuid'])) {
+                if (\in_array($event['committee_uuid'], $scope->getCommitteeUuids())) {
+                    return true;
+                }
+            } else {
+                if ($this->zoneRepository->isInZones($event['zones'], $scope->getZones())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
