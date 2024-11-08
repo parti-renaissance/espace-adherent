@@ -26,7 +26,6 @@ use App\Entity\Invite;
 use App\Entity\JeMarcheReport;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\Member;
-use App\Entity\NewsletterInvite;
 use App\Entity\NewsletterSubscription;
 use App\Entity\NullablePostAddress;
 use App\Entity\Pap\Building;
@@ -63,7 +62,6 @@ use App\Repository\InviteRepository;
 use App\Repository\JeMarcheReportRepository;
 use App\Repository\MyTeam\DelegatedAccessRepository;
 use App\Repository\MyTeam\MemberRepository;
-use App\Repository\NewsletterInviteRepository;
 use App\Repository\NewsletterSubscriptionRepository;
 use App\Repository\Pap\BuildingEventRepository;
 use App\Repository\Pap\BuildingRepository;
@@ -234,11 +232,6 @@ trait TestHelperTrait
     public function getInvitationRepository(): InviteRepository
     {
         return $this->getRepository(Invite::class);
-    }
-
-    public function getNewsletterInvitationRepository(): NewsletterInviteRepository
-    {
-        return $this->getRepository(NewsletterInvite::class);
     }
 
     public function getNewsletterSubscriptionRepository(): NewsletterSubscriptionRepository
