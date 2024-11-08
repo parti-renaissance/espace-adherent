@@ -883,4 +883,23 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
             }
         }
     }
+
+    public function getFullAlertDescription(): ?string
+    {
+        $descriptionParts = [
+            \sprintf(
+                '%s du %s au %s.',
+                match ($this->type) {
+                    DesignationTypeEnum::CONSULTATION => 'La consultation sera ouverte',
+                    DesignationTypeEnum::VOTE => 'Le vote sera ouvert',
+                    default => 'L\'élection sera ouverte',
+                },
+                $this->voteStartDate?->format('d/m/Y à H:i'),
+                $this->voteEndDate?->format('d/m/Y à H:i'),
+            ),
+            $this->alertDescription,
+        ];
+
+        return implode("\n\n", array_filter($descriptionParts));
+    }
 }
