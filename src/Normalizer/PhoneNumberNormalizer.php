@@ -38,6 +38,10 @@ class PhoneNumberNormalizer implements NormalizerInterface, DenormalizerInterfac
         }
 
         if (\is_array($data)) {
+            if (empty($data['number']) || empty($data['country'])) {
+                return null;
+            }
+
             try {
                 $phoneNumber = $this->util->parse($data['number'], $data['country']);
             } catch (NumberParseException $e) {

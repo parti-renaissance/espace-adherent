@@ -164,7 +164,7 @@ class SecurityController extends AbstractController
             $this->addFlash('info', 'adherent.change_email.expired_key');
         }
 
-        return $this->redirectToRoute('app_renaissance_adherent_space');
+        return $this->redirectToRoute('vox_app_redirect');
     }
 
     public function logoutAction()
