@@ -185,7 +185,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->customTitle = 'Mon super sondage';
         $designation->setType(DesignationTypeEnum::LOCAL_POLL);
         $designation->electionCreationDate = new \DateTime('-2 hours');
-        $designation->setVoteStartDate(new \DateTime('-5 minutes'));
+        $designation->setVoteStartDate($startDate = new \DateTime('-5 minutes'));
         $designation->setVoteEndDate(new \DateTime('+10 days'));
         $designation->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
         $designation->poll = $this->getReference('designation-poll-1');
@@ -193,6 +193,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->alertTitle = 'Élection en cours !!';
         $designation->alertDescription = "# Élection\nvous avez **5 jours** pour voter.";
         $designation->alertCtaLabel = 'Consulter';
+        $designation->alertBeginAt = (clone $startDate)->modify('-2 days');
 
         $this->setReference('designation-14', $designation);
         $manager->persist($designation);
