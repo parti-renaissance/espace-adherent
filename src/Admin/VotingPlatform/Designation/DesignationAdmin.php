@@ -190,6 +190,13 @@ class DesignationAdmin extends AbstractAdmin
                         'required' => false,
                         'label' => 'CTA Label',
                     ])
+                    ->add('alertBeginAt', DateTimeType::class, [
+                        'label' => 'Date d\'affichage de l\'alerte',
+                        'required' => false,
+                        'widget' => 'single_text',
+                        'with_seconds' => true,
+                        'attr' => ['step' => 30],
+                    ])
                     ->add('alertDescription', SimpleMDEContent::class, [
                         'required' => false,
                         'label' => 'Description',
