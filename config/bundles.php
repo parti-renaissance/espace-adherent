@@ -35,7 +35,6 @@ return [
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
     DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
     Algolia\SearchBundle\AlgoliaSearchBundle::class => ['all' => true],
-    Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle::class => ['all' => true],
     Kreait\Firebase\Symfony\Bundle\FirebaseBundle::class => ['all' => true],
     Sentry\SentryBundle\SentryBundle::class => ['prod' => true],
     FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle::class => ['test' => true],

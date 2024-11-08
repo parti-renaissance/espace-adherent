@@ -580,9 +580,6 @@
             "config/packages/workflow.yaml"
         ]
     },
-    "tetranz/select2entity-bundle": {
-        "version": "v3.1.0"
-    },
     "twig/extra-bundle": {
         "version": "v3.4.0"
     },
