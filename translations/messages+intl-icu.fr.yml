@@ -517,19 +517,6 @@ procuration.initial_request.type.request: Mandant
 procuration.initial_request.type.proxy: Mandataire
 
 #
-# Newsletter
-#
-newsletter.invitation.form.first_name: Votre prénom
-newsletter.invitation.form.last_name: Votre nom
-newsletter.invitation.form.guest: Email d'un ami
-newsletter.invitation.form.invite: J'invite des amis
-newsletter.invitation.form.invite_sent: >-
-    {count, plural,
-        one {Votre invitation a bien été envoyée !}
-        other {Vos # invitations ont bien été envoyées !}
-    }
-
-#
 # Legislative candidate
 #
 legislative_candidate.careers.1: Vient de la société civile

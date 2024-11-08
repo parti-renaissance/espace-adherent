@@ -19,47 +19,9 @@ class NewsletterSubscriptionRepository extends ServiceEntityRepository
         return $this->disableSoftDeleteableFilter()->find($id);
     }
 
-    public function isSubscribed(string $email): bool
-    {
-        return (bool) $this
-            ->createQueryBuilder('newsletter')
-            ->select('COUNT(newsletter)')
-            ->where('newsletter.email = :email')
-            ->setParameter('email', $email)
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
     public function findOneByEmail(string $email): ?NewsletterSubscription
     {
         return $this->findOneBy(['email' => $email]);
-    }
-
-    public function findOneNotConfirmedByEmail(string $email): ?NewsletterSubscription
-    {
-        return $this
-            ->createQueryBuilder('newsletter')
-            ->where('newsletter.email = :email')
-            ->andWhere('newsletter.confirmedAt IS NULL')
-            ->setParameter('email', $email)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-
-    public function findOneNotConfirmedByUuidAndToken(string $uuid, string $token): ?NewsletterSubscription
-    {
-        return $this
-            ->createQueryBuilder('newsletter')
-            ->where('newsletter.uuid = :uuid')
-            ->andWhere('newsletter.token = :token')
-            ->andWhere('newsletter.confirmedAt IS NULL')
-            ->setParameter('uuid', $uuid)
-            ->setParameter('token', $token)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
     }
 
     public function disableSoftDeleteableFilter(): self
