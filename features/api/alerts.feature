@@ -13,7 +13,7 @@ Feature:
                 {
                     "label": "Consultation / Élection",
                     "title": "Élection en cours !!",
-                    "description": "# Élection\nvous avez **5 jours** pour voter.",
+                    "description": "L'élection sera ouverte du @string@ au @string@.\n\n# Élection\nvous avez **5 jours** pour voter.",
                     "cta_label": "Consulter",
                     "cta_url": "http://test.renaissance.code/election-sas/@uuid@"
                 }

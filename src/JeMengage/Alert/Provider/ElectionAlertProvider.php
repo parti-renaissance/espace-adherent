@@ -39,7 +39,7 @@ class ElectionAlertProvider implements AlertProviderInterface
                 $alerts[] = new Alert(
                     'Consultation / Élection',
                     $designation->alertTitle,
-                    $designation->alertDescription,
+                    $designation->getFullAlertDescription(),
                     $designation->alertCtaLabel,
                     $this->urlGenerator->generate('app_sas_election_index', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL)
                 );
