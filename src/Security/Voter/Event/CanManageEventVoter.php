@@ -87,7 +87,7 @@ class CanManageEventVoter extends AbstractAdherentVoter
                     return true;
                 }
             } else {
-                if ($this->zoneRepository->isInZones($event['zones'], $scope->getZones())) {
+                if ($this->zoneRepository->isInZonesUsingCodes($event['zones'], $scope->getZones())) {
                     return true;
                 }
             }
