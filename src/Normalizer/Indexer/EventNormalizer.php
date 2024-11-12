@@ -4,6 +4,7 @@ namespace App\Normalizer\Indexer;
 
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
+use App\Entity\Event\CommitteeEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
@@ -127,5 +128,10 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     protected function getParticipantsCount(object $object): ?int
     {
         return $object->getParticipantsCount();
+    }
+
+    protected function getCommitteeUuid(object $object): ?string
+    {
+        return $object instanceof CommitteeEvent ? $object->getCommitteeUuid() : null;
     }
 }

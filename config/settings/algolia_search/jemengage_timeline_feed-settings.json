@@ -11,6 +11,7 @@
         "author",
         "begin_at",
         "category",
+        "committee_uuid",
         "cta_label",
         "cta_link",
         "date",
@@ -28,7 +29,8 @@
         "title",
         "type",
         "url",
-        "visibility"
+        "visibility",
+        "zone_codes"
     ],
     "unretrievableAttributes": [],
     "optionalWords": null,

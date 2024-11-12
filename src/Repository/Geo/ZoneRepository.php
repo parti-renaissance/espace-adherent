@@ -212,17 +212,27 @@ class ZoneRepository extends ServiceEntityRepository
             return !empty(array_intersect(array_filter($zones, $filterDistrictZoneCallback), $districtParents));
         }
 
-        $count = (int) $this->createQueryBuilder('zone')
+        return $this->isInZonesUsingCodes($zones, $parents);
+    }
+
+    public function isInZonesUsingCodes(array $zones, array $parents): bool
+    {
+        $zoneCodes = array_unique(array_map(fn ($zone) => $zone instanceof Zone ? $zone->getCode() : $zone, $zones));
+        $parentCodes = array_unique(array_map(fn ($zone) => $zone instanceof Zone ? $zone->getCode() : $zone, $parents));
+
+        if (!empty(array_intersect($zoneCodes, $parentCodes))) {
+            return true;
+        }
+
+        return $this->createQueryBuilder('zone')
             ->select('COUNT(1)')
             ->innerJoin('zone.parents', 'parent')
-            ->where('zone IN (:zones) AND parent IN (:parents)')
-            ->setParameter('zones', $zones)
-            ->setParameter('parents', $parents)
+            ->where('zone.code IN (:zones) AND parent.code IN (:parents)')
+            ->setParameter('zones', $zoneCodes)
+            ->setParameter('parents', $parentCodes)
             ->getQuery()
-            ->getSingleScalarResult()
+            ->getSingleScalarResult() > 0
         ;
-
-        return $count > 0;
     }
 
     public function findByPostalCode(string $postalCode): array
