@@ -11,6 +11,7 @@ use App\Membership\Event\UserResetPasswordEvent;
 use App\Membership\UserEvents;
 use App\Utils\ArrayUtils;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\Event\LoginFailureEvent;
@@ -23,6 +24,7 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
     private array $userBeforeUpdate = [];
 
     public function __construct(
+        private readonly Security $security,
         private readonly NormalizerInterface $normalizer,
         private readonly UserActionHistoryHandler $userActionHistoryHandler,
     ) {
@@ -70,8 +72,8 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
 
     public function onSwitchUser(SwitchUserEvent $event): void
     {
-        $user = $event->getToken()?->getUser();
-        $targetUser = $event->getTargetUser();
+        $user = $this->security->getUser();
+        $targetUser = $event->getToken()?->getUser();
 
         if ($user instanceof Administrator && $targetUser instanceof Adherent) {
             $this->userActionHistoryHandler->createImpersonationStart($user, $targetUser);

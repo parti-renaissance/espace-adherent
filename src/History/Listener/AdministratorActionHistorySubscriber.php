@@ -11,7 +11,6 @@ use App\Utils\ArrayUtils;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
@@ -69,14 +68,8 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
 
     public function onSwitchUser(SwitchUserEvent $event): void
     {
-        $token = $event->getToken();
-
-        if (!$token instanceof SwitchUserToken) {
-            return;
-        }
-
-        $user = $token->getOriginalToken()->getUser();
-        $targetUser = $token->getUser();
+        $user = $this->security->getUser();
+        $targetUser = $event->getToken()?->getUser();
 
         if ($user instanceof Administrator && $targetUser instanceof Adherent) {
             $this->administratorActionHistoryHandler->createImpersonationStart($user, $targetUser);
