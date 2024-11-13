@@ -20,6 +20,7 @@ test.*.code:80 {
 :80
 
 log
+log_skip /healthcheck
 
 route {
 	root * /srv/app/public
