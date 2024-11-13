@@ -68,8 +68,8 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
 
     public function onSwitchUser(SwitchUserEvent $event): void
     {
-        $user = $event->getToken()?->getUser();
-        $targetUser = $event->getTargetUser();
+        $user = $this->security->getUser();
+        $targetUser = $event->getToken()?->getUser();
 
         if ($user instanceof Administrator && $targetUser instanceof Adherent) {
             $this->administratorActionHistoryHandler->createImpersonationStart($user, $targetUser);
