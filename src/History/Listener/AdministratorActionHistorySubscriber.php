@@ -16,6 +16,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 use Symfony\Component\Security\Http\Event\SwitchUserEvent;
+use Symfony\Component\Security\Http\SecurityEvents;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AdministratorActionHistorySubscriber implements EventSubscriberInterface
@@ -34,7 +35,7 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
         return [
             InteractiveLoginEvent::class => ['onInteractiveLogin', -4096],
             LoginFailureEvent::class => ['onLoginFailure', -4096],
-            SwitchUserEvent::class => ['onSwitchUser', -4096],
+            SecurityEvents::SWITCH_USER => ['onSwitchUser', -4096],
             KernelEvents::RESPONSE => ['onKernelResponse', -4096],
             AdministratorActionEvents::ADMIN_USER_PROFILE_BEFORE_UPDATE => ['onAdherentProfileBeforeUpdate', -4096],
             AdministratorActionEvents::ADMIN_USER_PROFILE_AFTER_UPDATE => ['onAdherentProfileAfterUpdate', -4096],
