@@ -60,7 +60,7 @@ class MandateTypeEnum
             ],
         ],
         self::DEPUTE => [
-            'types' => [Zone::DISTRICT],
+            'types' => [Zone::DISTRICT, Zone::FOREIGN_DISTRICT],
         ],
         self::PRESIDENT_CONSEIL_REGIONAL => [
             'types' => [Zone::DEPARTMENT],
