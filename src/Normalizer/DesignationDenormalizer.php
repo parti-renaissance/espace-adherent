@@ -29,7 +29,7 @@ class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwar
             $designation->setLabel($designation->customTitle);
         }
 
-        if (\in_array('designation_write', $context['groups'] ?? [], true)) {
+        if (array_intersect(['designation_write', 'designation_write_limited'], $context['groups'] ?? [])) {
             if ($designation->isCommitteeSupervisorType()) {
                 if (!$designation->getCandidacyStartDate()) {
                     $designation->setCandidacyStartDate(new \DateTime());
@@ -39,9 +39,9 @@ class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwar
                     $designation->setCandidacyEndDate($voteDate);
                 }
             } elseif ($designation->isConsultationType() || $designation->isVoteType()) {
-                $designation->alertTitle = $designation->alertTitle ?: $designation->getTitle();
+                $designation->alertTitle = $designation->getTitle();
                 $designation->alertCtaLabel = $designation->alertCtaLabel ?: 'Voir';
-                $designation->alertDescription = $designation->alertDescription ?: (new UnicodeString($designation->getDescription() ?? ''))->truncate(200, '…', false);
+                $designation->alertDescription = (new UnicodeString($designation->getDescription() ?? ''))->truncate(200, '…', false);
                 $designation->alertBeginAt = $designation->getVoteStartDate() ? (clone $designation->getVoteStartDate())->modify('-2 days') : null;
             }
 

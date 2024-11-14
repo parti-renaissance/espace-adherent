@@ -78,8 +78,11 @@ class CandidateGroupResult
     #[Groups(['election_result'])]
     public function getRate(): float
     {
-        return $this->electionPoolResult->getExpressed() < 1 ? 0 :
-            $this->total * 100.0 / $this->electionPoolResult->getExpressed();
+        if ($this->electionPoolResult->getExpressed() > 0) {
+            return round($this->total * 100.0 / $this->electionPoolResult->getExpressed(), 2);
+        }
+
+        return 0;
     }
 
     public function incrementMention(string $mention): void

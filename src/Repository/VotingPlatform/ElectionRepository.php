@@ -283,7 +283,7 @@ class ElectionRepository extends ServiceEntityRepository
                         'title' => $candidates[0]['first_name'],
                     ],
                     'total' => $total = $candidateGroupsResult[$candidateGroup->getId()] ?? 0,
-                    'rate' => $expressed > 0 ? round($total * 100.0 / $expressed, 1) : 0,
+                    'rate' => $expressed > 0 ? round($total * 100.0 / $expressed, 2) : 0,
                 ], $pool->getCandidateGroups()),
             ];
         }

@@ -16,7 +16,7 @@ class ElectionResultsController extends AbstractController
     public function __invoke(Designation $designation, ElectionRepository $electionRepository): Response
     {
         if (!$election = $electionRepository->findOneByDesignation($designation)) {
-            throw $this->createNotFoundException();
+            return $this->json([]);
         }
 
         if (!$election->hasResult()) {
