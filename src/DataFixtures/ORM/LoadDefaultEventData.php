@@ -6,6 +6,7 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventVisibilityEnum;
+use App\Scope\ScopeEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
@@ -43,6 +44,8 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $event1->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
         $event1->setPostAddress($this->createPostAddress('47 rue Martre', '92110-92024', null, 48.9015986, 2.3052684));
         $event1->setAuthor($referent);
+        $event1->setAuthorInstance(ScopeEnum::SCOPE_INSTANCES[ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY]);
+        $event1->setAuthorRole(ScopeEnum::ROLE_NAMES[ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY]);
 
         $event2 = new DefaultEvent(Uuid::fromString(self::EVENT_2_UUID));
         $event2->setName('Nouvel événement online privé et électoral');
@@ -86,6 +89,8 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $event4->setMode(BaseEvent::MODE_MEETING);
         $event4->setTimeZone('Europe/Paris');
         $event4->setAuthor($senatorialCandidate);
+        $event4->setAuthorInstance(ScopeEnum::SCOPE_INSTANCES[ScopeEnum::LEGISLATIVE_CANDIDATE]);
+        $event4->setAuthorRole(ScopeEnum::ROLE_NAMES[ScopeEnum::LEGISLATIVE_CANDIDATE]);
         $event4->setPostAddress($this->createPostAddress('74 Avenue des Champs-Élysées, 75008 Paris', '75008-75108', null, 48.862725, 2.287592));
         $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
         $event4->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));

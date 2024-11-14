@@ -1,6 +1,5 @@
 @api
 @renaissance
-@skip
 Feature:
     In order to get and manipulate events
     As a client of different apps
@@ -56,9 +55,9 @@ Feature:
                 "created_at": null,
                 "object_state": "partial",
                 "begin_at": "@string@.isDateTime()",
-                "finish_at": "@string@.isDateTime()",
+                "finish_at": null,
                 "organizer": {
-                    "uuid": "a9fc8d48-6f57-4d89-ae73-50b3f9b586f4",
+                    "uuid": null,
                     "first_name": "Francis",
                     "last_name": "B",
                     "scope": null,
@@ -70,8 +69,16 @@ Feature:
                 "participants_count": null,
                 "status": "SCHEDULED",
                 "capacity": null,
-                "post_address": null,
-                "link": "@string@.isUrl()",
+                "post_address": {
+                    "address": null,
+                    "postal_code": null,
+                    "city": null,
+                    "city_name": "Fontainebleau",
+                    "country": "FR",
+                    "latitude": null,
+                    "longitude": null
+                },
+                "link": null,
                 "category": {
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
@@ -83,7 +90,7 @@ Feature:
                     "slug": "reunion-dequipe"
                 },
                 "visio_url": null,
-                "mode": null,
+                "mode": "meeting",
                 "local_begin_at": null,
                 "local_finish_at": null,
                 "editable": false,
@@ -515,8 +522,8 @@ Feature:
                             "first_name": "Referent",
                             "last_name": "Referent",
                             "scope": null,
-                            "role": null,
-                            "instance": null,
+                            "role": "Président",
+                            "instance": "Assemblée départementale",
                             "image_url": null,
                             "zone": null
                         },
@@ -539,7 +546,8 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
-                        "editable": false
+                        "editable": true,
+                        "edit_link": "@string@.isUrl()"
                     }
                 ]
             }
@@ -787,8 +795,8 @@ Feature:
                             "first_name": "Referent",
                             "last_name": "Referent",
                             "scope": null,
-                            "role": null,
-                            "instance": null,
+                            "role": "Président",
+                            "instance": "Assemblée départementale",
                             "image_url": null,
                             "zone": null
                         },
@@ -811,7 +819,8 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
-                        "editable": false
+                        "editable": true,
+                        "edit_link": "@string@.isUrl()"
                     },
                     {
                         "uuid": "2b7238f9-10ca-4a39-b8a4-ad7f438aa95f",
@@ -1610,8 +1619,8 @@ Feature:
                     "first_name": "Referent",
                     "last_name": "Referent",
                     "scope": null,
-                    "role": null,
-                    "instance": null,
+                    "role": "Président",
+                    "instance": "Assemblée départementale",
                     "image_url": null,
                     "zone": null
                 },
@@ -1643,7 +1652,8 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher",
-                "editable": false
+                "editable": true,
+                "edit_link": "@string@.isUrl()"
             }
             """
         And I should have 1 email
@@ -1744,9 +1754,9 @@ Feature:
             """
 
         Examples:
-            | user                      | scope                                          |
-            | referent@en-marche-dev.fr | president_departmental_assembly                |
-            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+            | user                            | scope                                          |
+            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
+            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a (delegated) referent I can cancel my (delegator's) default event
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
@@ -1965,14 +1975,14 @@ Feature:
                 "begin_at": "2023-01-29T16:30:30+01:00",
                 "finish_at": "2023-01-30T16:30:30+01:00",
                 "organizer": {
-                    "uuid": "ab03c939-8f70-40a8-b2cd-d147ec7fd09e",
-                    "first_name": "Jean-Baptiste",
-                    "last_name": "Fortin",
-                    "scope": "@string@",
-                    "role": "@string@",
-                    "instance": "@string@",
+                    "uuid": "<uuid>",
+                    "first_name": "<first_name>",
+                    "last_name": "<last_name>",
+                    "scope": "<scope>",
+                    "role": "<role>",
+                    "instance": "Circonscription",
                     "image_url": null,
-                    "zone": "@string@"
+                    "zone": "Paris (1) (75-1)"
                 },
                 "participants_count": 1,
                 "status": "SCHEDULED",
@@ -1992,14 +2002,15 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher",
-                "editable": false
+                "editable": true,
+                "edit_link": "@string@.isUrl()"
             }
             """
 
         Examples:
-            | user                                  | scope                                          |
-            | senatorial-candidate@en-marche-dev.fr | legislative_candidate                          |
-            | gisele-berthoux@caramail.com          | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c |
+            | user                                  | uuid                                 | scope                                          | first_name    | last_name | role                      |
+            | senatorial-candidate@en-marche-dev.fr | ab03c939-8f70-40a8-b2cd-d147ec7fd09e | legislative_candidate                          | Jean-Baptiste | Fortin    | Candidat                  |
+            | gisele-berthoux@caramail.com          | b4219d47-3138-5efd-9762-2ef9f9495084 | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c | Gisele        | Berthoux  | Responsable communication |
 
     Scenario Outline: As a (delegated) legislative candidate I can edit my (delegator's) event
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
@@ -2040,8 +2051,8 @@ Feature:
                     "last_name": "Fortin",
                     "uuid": "ab03c939-8f70-40a8-b2cd-d147ec7fd09e",
                     "scope": null,
-                    "role": null,
-                    "instance": null,
+                    "role": "Candidat",
+                    "instance": "Circonscription",
                     "image_url": null,
                     "zone": null
                 },
@@ -2073,7 +2084,8 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-un-evenement-du-candidat-aux-legislatives/afficher",
-                "editable": false
+                "editable": true,
+                "edit_link": "@string@.isUrl()"
             }
             """
 
