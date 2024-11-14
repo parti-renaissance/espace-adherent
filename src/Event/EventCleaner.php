@@ -4,14 +4,65 @@ namespace App\Event;
 
 class EventCleaner
 {
-    private const ALLOWED_KEYS_FOR_DEEP = ['name', 'title', 'type', 'objectID', 'uuid', 'slug', 'status', 'visibility', 'category'];
-    private const ALLOWED_KEYS = ['name', 'organizer', 'author', 'title', 'type', 'objectID', 'uuid', 'slug', 'time_zone', 'begin_at', 'finish_at', 'status', 'visibility', 'image', 'image_url', 'link', 'category', 'editable'];
+    private const ALLOWED_KEYS = [
+        'name',
+        'title',
 
-    public function cleanEventData(array $eventData, bool $deep = false): array
+        'author',
+        'author_instance',
+        'author_role',
+        'author_zone',
+        'author' => [
+            'first_name',
+            'last_name',
+            'instance',
+            'role',
+            'zone',
+        ],
+        'organizer',
+        'organizer' => [
+            'first_name',
+            'last_name',
+            'instance',
+            'role',
+            'zone',
+        ],
+
+        'post_address',
+        'post_address' => [
+            'city_name',
+            'country',
+        ],
+
+        'type',
+        'objectID',
+        'uuid',
+        'slug',
+        'time_zone',
+        'begin_at',
+        'status',
+        'visibility',
+        'category',
+        'mode',
+        'editable',
+        'user_registered_at',
+    ];
+
+    public function cleanEventData(array $eventData, array $allowedKeys = self::ALLOWED_KEYS): array
     {
         foreach ($eventData as $key => $value) {
-            if (!\in_array($key, $deep ? self::ALLOWED_KEYS_FOR_DEEP : self::ALLOWED_KEYS)) {
+            if (!\in_array($key, $allowedKeys)) {
                 $eventData[$key] = null;
+                continue;
+            }
+
+            if (\is_array($value) && !empty($allowedKeys[$key]) && \is_array($allowedKeys[$key])) {
+                $eventData[$key] = $this->cleanEventData($value, $allowedKeys[$key]);
+                continue;
+            }
+
+            if (str_ends_with($key, '_at')) {
+                $eventData[$key] = substr($value, 0, 10);
             }
         }
 
