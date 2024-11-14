@@ -11,14 +11,12 @@
         <twig:Atoms:ReCard class="max-w-[500px]" x-data="xMemberCardForm">
             {{ form_start(form, {attr: {'x-ref': 'form', class: 'flex gap-8 flex-col'}}) }}
                 <div>
-                    <twig:Atoms:ReLabel>Carte d'adhérant</twig:Atoms:ReLabel>
-                    <p>
-                        Votre carte d’adhérent dématérialisée vient d’être générée rien que pour vous.
-                    </p>
+                    <twig:Atoms:ReLabel class="mb-6">Carte d'adhérant</twig:Atoms:ReLabel>
+                    <p>Votre carte d’adhérent dématérialisée vient d’être générée rien que pour vous.</p>
                 </div>
 
                 <div>
-                    <twig:Atoms:ReLabel>Adresse postale</twig:Atoms:ReLabel>
+                    <twig:Atoms:ReLabel class="mb-6">Adresse postale</twig:Atoms:ReLabel>
                     <p>Nous utiliserons cette adresse pour vous envoyer votre reçu fiscal et votre carte d’adhérent.</p>
                 </div>
 

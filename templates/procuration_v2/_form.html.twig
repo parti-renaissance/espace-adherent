@@ -125,7 +125,7 @@
                 }) }}
 
                 <fieldset class="relative h-[100px]">
-                    <twig:Atoms:ReLabel>Date de naissance</twig:Atoms:ReLabel>
+                    <twig:Atoms:ReLabel class="mb-6">Date de naissance</twig:Atoms:ReLabel>
 
                     <fieldset class="flex gap-2.5 relative">
                         {{ form_widget(form.birthdate.day, {
@@ -149,7 +149,7 @@
                 }) }}
 
                 <fieldset>
-                    <twig:Atoms:ReLabel>Numéro de téléphone</twig:Atoms:ReLabel>
+                    <twig:Atoms:ReLabel class="mb-6">Numéro de téléphone</twig:Atoms:ReLabel>
                     <p class="text-[#555555] opacity-50">Nous n’utiliserons ce numéro de téléphone que dans le cadre de la procuration, pour traiter votre demande.</p>
                     {{ form_row(form.phone) }}
                 </fieldset>
@@ -175,7 +175,7 @@
 
                     <fieldset>
                         <template x-if="showManualBDV || (votePlaceUuid && isNotInFrance)">
-                            <twig:Atoms:ReLabel x-text="`Mon bureau de vote ${isNotInFrance ? '(optionnel)' : ''}`"></twig:Atoms:ReLabel>
+                            <twig:Atoms:ReLabel class="mb-6" x-text="`Mon bureau de vote ${isNotInFrance ? '(optionnel)' : ''}`"></twig:Atoms:ReLabel>
                             <p class="text-[#555555] opacity-50 pb-4" x-show="isNotInFrance">
                                 Si vous connaissez votre bureau de vote, il aidera notre équipe à vous trouver le meilleur mandataire. Si vous ne l’avez pas, nous utiliserons votre adresse postale.
                             </p>

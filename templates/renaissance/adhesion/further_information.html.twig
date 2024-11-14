@@ -20,7 +20,7 @@
                 {{ form_errors(form) }}
 
                 <fieldset>
-                    <twig:Atoms:ReLabel>Informations complémentaires</twig:Atoms:ReLabel>
+                    <twig:Atoms:ReLabel class="mb-6">Informations complémentaires</twig:Atoms:ReLabel>
                     <twig:Molecules:ReCheckboxField id="is-elu" class="w-full" @change="handleIsElu($event)">
                         <label for="is-elu">Je suis élu(e)</label>
                     </twig:Molecules:ReCheckboxField>
@@ -37,7 +37,7 @@
                 </fieldset>
 
                 <fieldset class="relative h-[100px]">
-                    <twig:Atoms:ReLabel>Date de naissance</twig:Atoms:ReLabel>
+                    <twig:Atoms:ReLabel class="mb-6">Date de naissance</twig:Atoms:ReLabel>
 
                     <fieldset class="flex gap-2.5 relative">
                         {{ form_widget(form.birthdate.day, {label: false, attr: {

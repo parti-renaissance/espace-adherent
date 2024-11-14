@@ -41,20 +41,20 @@
     </fieldset>
 
     <fieldset>
-        <twig:Atoms:ReLabel>Je prends une procuration pour :</twig:Atoms:ReLabel>
+        <twig:Atoms:ReLabel class="mb-6">Je prends une procuration pour :</twig:Atoms:ReLabel>
         {{ form_row(form.rounds) }}
     </fieldset>
 {% endblock %}
 
 {% block inner_content_section %}
     <fieldset>
-        <twig:Atoms:ReLabel>Mon numéro d’électeur</twig:Atoms:ReLabel>
+        <twig:Atoms:ReLabel class="mb-6">Mon numéro d’électeur</twig:Atoms:ReLabel>
         <p class="text-[#555555] opacity-50">Il facilitera la démarche pour vous faire procuration.</p>
         {{ form_row(form.electorNumber, {attr: {placeholder: 'Mon numéro d’électeur', 'x-numberonly': '', validate: '["max:9"]'}}) }}
     </fieldset>
 
     <fieldset x-show="isNotInFrance">
-        <twig:Atoms:ReLabel>Et si vous votiez une 3e ou 4e fois ?</twig:Atoms:ReLabel>
+        <twig:Atoms:ReLabel class="mb-6">Et si vous votiez une 3e ou 4e fois ?</twig:Atoms:ReLabel>
         <p class="text-[#555555] opacity-50">En tant que FDE, vous pouvez porter jusqu’à 3 procurations dès lors que seule l’une d’entre elles, au maximum, a été enregistrée dans une gendarmerie ou un commissariat en France.</p>
         {{ form_row(form.slots) }}
     </fieldset>

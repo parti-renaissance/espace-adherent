@@ -18,7 +18,7 @@
     type="radio-group"
 >
     {% if id and label %}
-        <twig:Atoms:ReLabel id="{{ id }}">{{ label }}</twig:Atoms:ReLabel>
+        <twig:Atoms:ReLabel id="{{ id }}" class="mb-6">{{ label }}</twig:Atoms:ReLabel>
     {% endif %}
 
     <div class="re-linked-toggle-content {{ disabled ? 're-linked-toggle-content--disabled' }}">

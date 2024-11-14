@@ -167,12 +167,12 @@
                                             <twig:ReParagraphStatus status="warning" icon="warning">
                                                 Si vous êtes déjà affilié à un parti politique, il vous est impossible de devenir membre de Renaissance. Toutefois, il vous est tout à fait possible d'exprimer votre soutien en tant que sympathisant.
                                             </twig:ReParagraphStatus>
-                                            <twig:Atoms:ReLabel>En devenant sympathisant :</twig:Atoms:ReLabel>
+                                            <twig:Atoms:ReLabel class="mb-6">En devenant sympathisant :</twig:Atoms:ReLabel>
                                         </template>
 
                                         <div>
                                             <template x-if="!(isMemberOfAnotherParty && notExclusiveMember)">
-                                                <twig:Atoms:ReLabel>En adhérant :</twig:Atoms:ReLabel>
+                                                <twig:Atoms:ReLabel class="mb-6">En adhérant :</twig:Atoms:ReLabel>
                                             </template>
 
                                             {{ form_row(form.allowNotifications, {
@@ -223,7 +223,7 @@
                                 {% set missing_membership_years = app.user ? app.user.missingMembershipYears : ['now'|date('Y')] %}
                                 <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_4" x-data="FourthFormStep({missingYears: {{ missing_membership_years|length }}})">
                                     <header>
-                                        <twig:Atoms:ReLabel>Cotisation adhérent</twig:Atoms:ReLabel>
+                                        <twig:Atoms:ReLabel class="mb-6">Cotisation adhérent</twig:Atoms:ReLabel>
                                         <div class="text-ui_gray-80">
                                             <span class="font-medium">
                                                 Nous avons fait le choix d'une cotisation pour l’année civile.
