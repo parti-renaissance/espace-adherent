@@ -38,7 +38,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
             return;
         }
 
-        $this->modifyQuery($queryBuilder, $context);
+        $this->modifyQuery($queryBuilder);
     }
 
     public function applyToCollection(
@@ -53,7 +53,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
         }
         $filters = $context['filters'] ?? [];
 
-        $this->modifyQuery($queryBuilder, $context, $filters['status'] ?? BaseEvent::STATUS_SCHEDULED);
+        $this->modifyQuery($queryBuilder, PrivatePublicContextBuilder::CONTEXT_PRIVATE === $context[PrivatePublicContextBuilder::CONTEXT_KEY] ? null : ($filters['status'] ?? BaseEvent::STATUS_SCHEDULED));
 
         $alias = $queryBuilder->getRootAliases()[0];
 
@@ -69,7 +69,11 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
                 ));
                 $queryBuilder->setParameter('committee_uuids', $committeeUuids);
             }
-        } elseif (PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $context[PrivatePublicContextBuilder::CONTEXT_KEY]) {
+
+            return;
+        }
+
+        if (PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $context[PrivatePublicContextBuilder::CONTEXT_KEY]) {
             /** @var Adherent $user */
             $user = $this->security->getUser();
             if ($zone = $user->getParisBoroughOrDepartment()) {
@@ -92,9 +96,16 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
                 ->setParameter('public_visibilities', [EventVisibilityEnum::PUBLIC, EventVisibilityEnum::PRIVATE])
             ;
         }
+
+        $queryBuilder
+            ->addSelect("CASE WHEN $alias.beginAt >= NOW() THEN 1 ELSE 0 END AS HIDDEN is_future")
+            ->addSelect("ABS(TIMESTAMPDIFF(SECOND, NOW(), $alias.beginAt)) AS HIDDEN time_to_begin")
+            ->addOrderBy('is_future', 'DESC')
+            ->addOrderBy('time_to_begin', 'ASC')
+        ;
     }
 
-    private function modifyQuery(QueryBuilder $queryBuilder, array $context, ?string $eventStatus = null): void
+    private function modifyQuery(QueryBuilder $queryBuilder, ?string $eventStatus = null): void
     {
         $alias = $queryBuilder->getRootAliases()[0];
 
@@ -103,7 +114,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
             ->setParameter('true', true)
         ;
 
-        if (PrivatePublicContextBuilder::CONTEXT_PRIVATE !== $context[PrivatePublicContextBuilder::CONTEXT_KEY] && $eventStatus) {
+        if ($eventStatus) {
             $queryBuilder
                 ->andWhere("$alias.status = :status")
                 ->setParameter('status', $eventStatus)
