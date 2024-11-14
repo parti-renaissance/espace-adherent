@@ -7,12 +7,14 @@ use App\JeMengage\Alert\Alert;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use App\VotingPlatform\ElectionManager;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
 class ElectionAlertProvider implements AlertProviderInterface
 {
     public function __construct(
         private readonly ElectionManager $electionManager,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly LoginLinkHandlerInterface $loginLinkHandler,
     ) {
     }
 
@@ -41,7 +43,10 @@ class ElectionAlertProvider implements AlertProviderInterface
                     $designation->alertTitle,
                     $designation->getFullAlertDescription(),
                     $designation->alertCtaLabel,
-                    $this->urlGenerator->generate('app_sas_election_index', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL)
+                    $this->loginLinkHandler->createLoginLink(
+                        $adherent,
+                        targetPath: $this->urlGenerator->generate('app_sas_election_index', ['uuid' => $designation->getUuid()], UrlGeneratorInterface::ABSOLUTE_URL)
+                    )
                 );
             }
         }
