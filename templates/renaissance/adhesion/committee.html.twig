@@ -13,7 +13,7 @@
             {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
 
             <form method="post" class="flex gap-8 flex-col w-full" x-ref="form">
-                <twig:Atoms:ReLabel class="!mb-0">Comité local</twig:Atoms:ReLabel>
+                <twig:Atoms:ReLabel>Comité local</twig:Atoms:ReLabel>
                 <twig:ReParagraphStatus x-show="isOpen" x-cloak status="valid">
                     Vous ne pouvez appartenir qu'à un seul comité local.
                     Celui-ci doit nécessairement être dans votre département.

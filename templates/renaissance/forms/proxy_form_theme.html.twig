@@ -2,7 +2,7 @@
 
 {% block procuration_voteZone_row %}
     <fieldset>
-        <twig:Atoms:ReLabel>Ma commune / mon pays de vote</twig:Atoms:ReLabel>
+        <twig:Atoms:ReLabel class="mb-6">Ma commune / mon pays de vote</twig:Atoms:ReLabel>
         <twig:Molecules:ReSelect
             onQuery="getVoteZone"
             name="{{ full_name }}"

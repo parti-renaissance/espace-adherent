@@ -128,7 +128,7 @@
                                     }) }}
 
                                     <div>
-                                        <twig:Atoms:ReLabel>Après réduction d’impôt :</twig:Atoms:ReLabel>
+                                        <twig:Atoms:ReLabel class="mb-6">Après réduction d’impôt :</twig:Atoms:ReLabel>
                                         <div class="rounded-[10px] bg-ui_gray-10 text-ui_green-90 text-center h-[51px] flex flex-col items-center justify-center">
                                             <span x-text="getTaxTextReduction()"></span>
                                         </div>
@@ -145,7 +145,7 @@
                                         <twig:Atoms:ReCard class="max-w-[500px]">
                                             {% if not app.user %}
                                                 <p>
-                                                    <twig:Atoms:ReLabel>Vous avez déjà un compte Renaissance ? </twig:Atoms:ReLabel>
+                                                    <twig:Atoms:ReLabel class="mb-6">Vous avez déjà un compte Renaissance ? </twig:Atoms:ReLabel>
                                                     Connectez vous pour pré-remplir toutes vos informations.
                                                 </p>
                                                 <twig:ReButton stroke color="black" tag="a" x-bind:href!="connectUrl()">
@@ -224,7 +224,7 @@
                                     >Passer au paiement</twig:ReButton>
                                 </twig:Atoms:ReCard>
                                 <twig:Atoms:ReCard class="max-w-[500px]">
-                                    <twig:Atoms:ReLabel class="!mb-0">Légalités</twig:Atoms:ReLabel>
+                                    <twig:Atoms:ReLabel>Légalités</twig:Atoms:ReLabel>
                                     <p>Une question relative aux dons ? Écrivez-nous à <a class="text-ui_green-50" href="mailto:dons@parti-renaissance.fr">dons@parti-renaissance.fr</a>.</p>
                                     <p>66 % de votre don vient en réduction de votre Impôt sur le Revenu des Personnes Physiques (IRPP), dans la limite de 20 % du revenu imposable.</p>
                                     <p>
@@ -233,7 +233,6 @@
                                     <p>
                                         Les données recueillies sur ce formulaire sont traitées par Renaissance, en sa qualité de responsable de traitement, afin de gérer les opérations liées aux dons et les informations relatives à ses donateurs. Les informations marquées d’un astérisque sont obligatoires. L’absence de réponse dans ces champs ne permettra pas à Renaissance de traiter votre demande. Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès. Vous pouvez exercer vos droits en nous adressant votre demande à l'adresse postale : Renaissance, 68 rue du Rocher, 75008 Paris, France ou à l’adresse électronique : <a class="text-ui_green-50" href="mailto:mes-donnees@parti-renaissance.fr">mes-donnees@parti-renaissance.fr</a>. Dans certains cas, Renaissance peut vous demander un justificatif d’identité afin de traiter votre demande. Pour toute information relative au traitement de vos données, vous pouvez consulter notre politique de protection des données en cliquant ici.
                                     </p>
-
                                 </twig:Atoms:ReCard>
 
                                 <div class="spacer h-[50vh]"></div>

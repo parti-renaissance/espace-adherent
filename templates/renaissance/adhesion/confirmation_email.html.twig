@@ -18,7 +18,7 @@
             {{ include('renaissance/partials/flashes.html.twig', {slim: true}) }}
 
             <div>
-                <twig:Atoms:ReLabel>Confirmer votre adresse email</twig:Atoms:ReLabel>
+                <twig:Atoms:ReLabel class="mb-6">Confirmer votre adresse email</twig:Atoms:ReLabel>
 
                 <p class="gap-2.5 flex flex-col">
                     <span class="text-ui_gray-80">
@@ -68,9 +68,7 @@
                         </div>
 
                         <div>
-                            <twig:Atoms:ReLabel>
-                                Mon adresse email
-                            </twig:Atoms:ReLabel>
+                            <twig:Atoms:ReLabel class="mb-6">Mon adresse email</twig:Atoms:ReLabel>
 
                             {{ form_row(form.emailAddress.first, {attr: {
                                 placeholder: 'Adresse email',
