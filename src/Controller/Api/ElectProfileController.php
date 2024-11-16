@@ -8,19 +8,20 @@ use App\Adherent\Contribution\ContributionStatusEnum;
 use App\Adherent\Tag\Command\RefreshAdherentTagCommand;
 use App\Entity\Adherent;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+#[IsGranted(new Expression('is_granted(\'ROLE_OAUTH_SCOPE_READ:PROFILE\') and is_granted(\'ongoing_eletected_representative\')'))]
 #[Route(path: '/v3/profile', name: 'app_api_user_profile')]
-#[Security('is_granted(\'ROLE_OAUTH_SCOPE_READ:PROFILE\') and is_granted(\'ongoing_eletected_representative\')')]
 class ElectProfileController extends AbstractController
 {
     #[Route(path: '/elect-declaration', methods: ['POST'])]

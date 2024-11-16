@@ -4,11 +4,12 @@ namespace App\Controller\EnMarche\Jecoute;
 
 use App\Entity\Adherent;
 use App\Jecoute\JecouteSpaceEnum;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted(new Expression("is_granted('ROLE_CANDIDATE') or (is_granted('ROLE_DELEGATED_CANDIDATE') and is_granted('HAS_DELEGATED_ACCESS_JECOUTE'))"))]
 #[Route(path: '/espace-candidat/questionnaires', name: 'app_jecoute_candidate_')]
-#[Security("is_granted('ROLE_CANDIDATE') or (is_granted('ROLE_DELEGATED_CANDIDATE') and is_granted('HAS_DELEGATED_ACCESS_JECOUTE'))")]
 class JecouteCandidateController extends AbstractJecouteController
 {
     protected function getSpaceName(): string

@@ -5,7 +5,7 @@ namespace App\Controller\Webhook\Telegram;
 use App\Chatbot\Telegram\ConversationManager;
 use App\Controller\CanaryControllerTrait;
 use App\Entity\Chatbot\Chatbot;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +14,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use TelegramBot\Api\BotApi;
 use TelegramBot\Api\Types\Update;
 
-#[Entity('chatbot', expr: 'repository.findOneEnabledBySecret(secret)')]
 #[Route('/telegram/chatbot/{secret}', name: self::ROUTE_NAME, methods: ['POST'])]
 class ChatbotController extends AbstractController
 {
@@ -26,8 +25,11 @@ class ChatbotController extends AbstractController
     {
     }
 
-    public function __invoke(Request $request, Chatbot $chatbot): Response
-    {
+    public function __invoke(
+        Request $request,
+        #[MapEntity(expr: 'repository.findOneEnabledBySecret(secret)')]
+        Chatbot $chatbot,
+    ): Response {
         $this->disableInProduction();
 
         if (!$content = $request->getContent()) {

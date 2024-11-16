@@ -6,10 +6,10 @@ use App\Csv\CsvResponseFactory;
 use App\Repository\AdherentRepository;
 use League\Csv\CharsetConverter;
 use League\Csv\Writer;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_OAUTH_SCOPE_CRM_PARIS')]
 #[Route(path: '/crm-paris')]
