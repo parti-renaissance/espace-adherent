@@ -44,7 +44,7 @@ class CommitteeController extends AbstractController
         Committee $committee,
         AnonymousFollowerSession $anonymousFollowerSession,
     ): Response {
-        if ($this->isGranted('IS_ANONYMOUS') && $authenticate = $anonymousFollowerSession->start($request)) {
+        if ($authenticate = $anonymousFollowerSession->start($request)) {
             return $authenticate;
         }
 

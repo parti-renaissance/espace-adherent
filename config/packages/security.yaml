@@ -5,7 +5,7 @@ security:
     erase_credentials: false
     enable_authenticator_manager: true
 
-    encoders:
+    password_hashers:
         App\Entity\Administrator: bcrypt
         App\Entity\Adherent: bcrypt
         legacy_encoder:
@@ -491,12 +491,11 @@ security:
                 token_provider: Symfony\Bridge\Doctrine\Security\RememberMe\DoctrineTokenProvider
             logout:
                 path: logout
-                success_handler: App\Security\LogoutSuccessHandler
             user_checker: App\Security\UserChecker
-            guard:
-                authenticators:
-                    - App\Security\LoginFormGuardAuthenticator
-            entry_point: App\Security\LoginFormGuardAuthenticator
+            #            guard:
+            #                authenticators:
+            #                    - App\Security\LoginFormGuardAuthenticator
+            #            entry_point: App\Security\LoginFormGuardAuthenticator
             access_denied_handler: App\Security\AccessDeniedHandler
             login_link:
                 check_route: app_user_connect_with_magic_link
@@ -518,7 +517,7 @@ security:
         - {
               host: '%admin_renaissance_host%',
               path: '^/login',
-              roles: [IS_AUTHENTICATED_ANONYMOUSLY],
+              roles: [PUBLIC_ACCESS],
           }
         - {
               host: '%admin_renaissance_host%',

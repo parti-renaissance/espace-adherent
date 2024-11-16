@@ -4,8 +4,6 @@ namespace App\Committee;
 
 final class CommitteePermissionEnum
 {
-    public const PRE_APPROVE = 'PRE_APPROVE_COMMITTEE';
-    public const PRE_REFUSE = 'PRE_REFUSE_COMMITTEE';
     public const SHOW = 'SHOW_COMMITTEE';
     public const FOLLOW = 'FOLLOW_COMMITTEE';
     public const UNFOLLOW = 'UNFOLLOW_COMMITTEE';

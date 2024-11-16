@@ -30,18 +30,18 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
     {
         $this->assertInstanceOf(
             Adherent::class,
-            $this->adherentRepository->loadUserByUsername('carl999@example.fr'),
+            $this->adherentRepository->loadUserByIdentifier('carl999@example.fr'),
             'Enabled adherent must be returned.'
         );
 
         $this->assertInstanceOf(
             Adherent::class,
-            $this->adherentRepository->loadUserByUsername('michelle.dufour@example.ch'),
+            $this->adherentRepository->loadUserByIdentifier('michelle.dufour@example.ch'),
             'Disabled adherent must be returned.'
         );
 
         $this->assertNull(
-            $this->adherentRepository->loadUserByUsername('someone@foobar.tld'),
+            $this->adherentRepository->loadUserByIdentifier('someone@foobar.tld'),
             'Non registered adherent must not be returned.'
         );
     }

@@ -9,7 +9,7 @@ use App\Security\AdherentLoginTimestampRecorder;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class AdherentLoginTimestampRecorderTest extends TestCase
@@ -22,7 +22,7 @@ class AdherentLoginTimestampRecorderTest extends TestCase
         $adherent = $this->createAdherent();
 
         $request = Request::create('POST', '/connexion');
-        $token = new PostAuthenticationGuardToken($adherent, 'main', $adherent->getRoles());
+        $token = new UsernamePasswordToken($adherent, 'main', $adherent->getRoles());
 
         $recorder = new AdherentLoginTimestampRecorder($manager);
 

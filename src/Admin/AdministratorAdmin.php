@@ -14,14 +14,12 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class AdministratorAdmin extends AbstractAdmin
 {
-    /**
-     * @var EncoderFactoryInterface
-     */
-    private $encoders;
+    private ?UserPasswordHasherInterface $userPasswordHasher = null;
 
     /**
      * @var GoogleAuthenticator
@@ -111,7 +109,7 @@ class AdministratorAdmin extends AbstractAdmin
             function () { return ''; },
             function ($plain) use ($admin) {
                 return \is_string($plain) && '' !== $plain
-                    ? $this->encoders->getEncoder($admin)->encodePassword($plain, null)
+                    ? $this->userPasswordHasher->hashPassword($admin, $plain)
                     : $admin->getPassword();
             }
         ));
@@ -167,9 +165,10 @@ class AdministratorAdmin extends AbstractAdmin
         $collection->remove('delete');
     }
 
-    public function setEncoders(EncoderFactoryInterface $encoders): void
+    #[Required]
+    public function setUserPasswordHasher(UserPasswordHasherInterface $userPasswordHasher): void
     {
-        $this->encoders = $encoders;
+        $this->userPasswordHasher = $userPasswordHasher;
     }
 
     public function setGoogleAuthenticator(GoogleAuthenticator $googleAuthenticator): void

@@ -3,8 +3,8 @@
 namespace App\Security;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 
 final class AuthenticationUtils
 {
@@ -23,6 +23,6 @@ final class AuthenticationUtils
 
     private function doAuthenticateUser(UserInterface $user): void
     {
-        $this->tokenStorage->setToken(new PostAuthenticationGuardToken($user, 'main', $user->getRoles()));
+        $this->tokenStorage->setToken(new UsernamePasswordToken($user, 'main', $user->getRoles()));
     }
 }

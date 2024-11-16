@@ -2,11 +2,11 @@
 
 namespace App\Security\Exception;
 
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
-class BadCredentialsException extends UsernameNotFoundException
+class BadCredentialsException extends UserNotFoundException
 {
-    public function getMessageKey()
+    public function getMessageKey(): string
     {
         return 'Invalid credentials.';
     }

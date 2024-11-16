@@ -5,7 +5,7 @@ namespace App\Membership\EventListener;
 use App\Entity\Adherent;
 use App\Repository\AdherentChangeEmailTokenRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -16,22 +16,14 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
 {
     private const MESSAGE = 'adherent.change_email.email_sent';
 
-    private $tokenStorage;
-    private $repository;
-    private $session;
-    private $translator;
     private $message;
 
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        AdherentChangeEmailTokenRepository $repository,
-        SessionInterface $session,
-        TranslatorInterface $translator,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly AdherentChangeEmailTokenRepository $repository,
+        private readonly RequestStack $requestStack,
+        private readonly TranslatorInterface $translator,
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->repository = $repository;
-        $this->session = $session;
-        $this->translator = $translator;
     }
 
     public static function getSubscribedEvents(): array
@@ -49,7 +41,7 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
         }
 
         if ($token = $this->repository->findLastUnusedByAdherent($this->tokenStorage->getToken()?->getUser())) {
-            $this->session->getFlashBag()->add('info', $this->message = $this->translator->trans(
+            $this->requestStack->getSession()->getFlashBag()->add('info', $this->message = $this->translator->trans(
                 self::MESSAGE,
                 ['email' => $token->getEmail()]
             ));
@@ -59,8 +51,8 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
     public function removeMessageOnRedirection(ResponseEvent $event): void
     {
         if ($event->getResponse()->isRedirection()) {
-            $messages = $this->session->getFlashBag()->peek('info');
-            $this->session->getFlashBag()->set('info', array_filter($messages, function (string $message) {
+            $messages = $this->requestStack->getSession()->getFlashBag()->peek('info');
+            $this->requestStack->getSession()->getFlashBag()->set('info', array_filter($messages, function (string $message) {
                 return $this->message !== $message;
             }));
         }
@@ -93,7 +85,7 @@ class ChangeEmailFlashMessageSubscriber implements EventSubscriberInterface
             return false;
         }
 
-        if (\in_array($this->message, $this->session->getFlashBag()->peek('info'), true)) {
+        if (\in_array($this->message, $this->requestStack->getSession()->getFlashBag()->peek('info'), true)) {
             return false;
         }
 

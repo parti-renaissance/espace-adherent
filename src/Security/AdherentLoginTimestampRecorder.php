@@ -5,7 +5,7 @@ namespace App\Security;
 use App\Entity\Adherent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class AdherentLoginTimestampRecorder implements EventSubscriberInterface
@@ -25,7 +25,7 @@ class AdherentLoginTimestampRecorder implements EventSubscriberInterface
         }
 
         // OAuth calls are not login attempts
-        if ($token instanceof PostAuthenticationGuardToken && 'api_oauth' === $token->getProviderKey()) {
+        if ($token instanceof UsernamePasswordToken && 'api_oauth' === $token->getProviderKey()) {
             return;
         }
 

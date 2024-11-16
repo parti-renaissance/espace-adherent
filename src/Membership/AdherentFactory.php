@@ -15,16 +15,16 @@ use App\Membership\MembershipRequest\MembershipInterface;
 use App\Renaissance\Membership\Admin\AdherentCreateCommand;
 use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 class AdherentFactory
 {
-    private $encoders;
     private $addressFactory;
 
-    public function __construct(EncoderFactoryInterface $encoders, ?PostAddressFactory $addressFactory = null)
-    {
-        $this->encoders = $encoders;
+    public function __construct(
+        private readonly PasswordHasherFactoryInterface $hasherFactory,
+        ?PostAddressFactory $addressFactory = null,
+    ) {
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
     }
 
@@ -194,8 +194,6 @@ class AdherentFactory
 
     private function encodePassword(string $password): string
     {
-        $encoder = $this->encoders->getEncoder(Adherent::class);
-
-        return $encoder->encodePassword($password, null);
+        return $this->hasherFactory->getPasswordHasher(Adherent::class)->hash($password);
     }
 }

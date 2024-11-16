@@ -127,7 +127,7 @@ class EventController extends AbstractController
             return $this->redirectToRoute('app_committee_event_show', ['slug' => $event->getSlug()]);
         }
 
-        if ($this->isGranted('IS_ANONYMOUS') && $authenticate = $anonymousFollowerSession->start($request)) {
+        if ($authenticate = $anonymousFollowerSession->start($request)) {
             return $authenticate;
         }
 

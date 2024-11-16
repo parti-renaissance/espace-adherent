@@ -4,7 +4,7 @@ namespace App\Twig;
 
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Extension\AbstractExtension;
@@ -12,19 +12,13 @@ use Twig\TwigFunction;
 
 class AdherentDelegatedAccessesExtension extends AbstractExtension
 {
-    /** @var Security */
-    private $security;
-
-    /** @var SessionInterface */
-    private $session;
-
-    public function __construct(Security $security, SessionInterface $session)
+    public function __construct(
+        private readonly Security $security,
+        private readonly RequestStack $requestStack)
     {
-        $this->security = $security;
-        $this->session = $session;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('current_user', [$this, 'getCurrentUser']),
@@ -46,6 +40,6 @@ class AdherentDelegatedAccessesExtension extends AbstractExtension
         /** @var Adherent $user */
         $user = $this->security->getUser();
 
-        return $user->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY));
+        return $user->getReceivedDelegatedAccessByUuid($this->requestStack->getSession()->get(DelegatedAccess::ATTRIBUTE_KEY));
     }
 }

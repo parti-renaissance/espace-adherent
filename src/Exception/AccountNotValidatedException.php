@@ -19,12 +19,12 @@ class AccountNotValidatedException extends AccountStatusException
         $this->messageKey = !$adherent->getSource() ? 'adherent.error.must_be_validated' : 'user.error.must_be_validated';
     }
 
-    public function getMessageKey()
+    public function getMessageKey(): string
     {
         return $this->messageKey;
     }
 
-    public function getMessageData()
+    public function getMessageData(): array
     {
         return [
             'url' => $this->redirect,

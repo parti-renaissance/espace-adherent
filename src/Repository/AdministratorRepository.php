@@ -16,21 +16,12 @@ class AdministratorRepository extends ServiceEntityRepository implements UserLoa
         parent::__construct($registry, Administrator::class);
     }
 
-    /**
-     * Loads the user for the given username.
-     *
-     * This method must return null if the user is not found.
-     *
-     * @param string $username The username
-     *
-     * @return UserInterface|null
-     */
-    public function loadUserByUsername($username)
+    public function loadUserByIdentifier(string $identifier): ?UserInterface
     {
         $query = $this
             ->createActivatedQueryBuilder('a')
-            ->andWhere('a.emailAddress = :username')
-            ->setParameter('username', $username)
+            ->andWhere('a.emailAddress = :email')
+            ->setParameter('email', $identifier)
             ->getQuery()
         ;
 

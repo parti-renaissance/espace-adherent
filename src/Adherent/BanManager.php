@@ -8,13 +8,13 @@ use App\Entity\Administrator;
 use App\Entity\BannedAdherent;
 use App\Membership\MembershipRequestHandler;
 use App\OAuth\TokenRevocationAuthority;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class BanManager
 {
     public function __construct(
         private readonly MembershipRequestHandler $membershipRequestHandler,
-        private readonly ObjectManager $entityManager,
+        private readonly EntityManagerInterface $entityManager,
         private readonly TokenRevocationAuthority $tokenRevocationAuthority,
     ) {
     }

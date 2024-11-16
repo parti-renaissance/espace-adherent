@@ -4,7 +4,7 @@ namespace App\Security\Http\Session;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
 
 /**
@@ -28,7 +28,7 @@ final class AnonymousFollowerSession
     ];
 
     public function __construct(
-        private readonly SessionInterface $session,
+        private readonly RequestStack $requestStack,
         private readonly Security $security,
     ) {
     }
@@ -48,14 +48,14 @@ final class AnonymousFollowerSession
             return null;
         }
 
-        $this->session->set(self::SESSION_KEY, $this->buildIntentionUrl($request));
+        $this->requestStack->getSession()->set(self::SESSION_KEY, $this->buildIntentionUrl($request));
 
         return new RedirectResponse($intentionUrl);
     }
 
     public function isStarted(): bool
     {
-        return $this->session->has(self::SESSION_KEY);
+        return $this->requestStack->getSession()->has(self::SESSION_KEY);
     }
 
     /**
@@ -65,7 +65,7 @@ final class AnonymousFollowerSession
     {
         $follow = $this->terminate();
 
-        $this->session->set(self::SESSION_KEY, $callback);
+        $this->requestStack->getSession()->set(self::SESSION_KEY, $callback);
 
         return $follow;
     }
@@ -79,7 +79,7 @@ final class AnonymousFollowerSession
             throw new \LogicException('The event registration session is not started.');
         }
 
-        return new RedirectResponse($this->session->remove(self::SESSION_KEY));
+        return new RedirectResponse($this->requestStack->getSession()->remove(self::SESSION_KEY));
     }
 
     public function buildIntentionUrl(Request $request): string

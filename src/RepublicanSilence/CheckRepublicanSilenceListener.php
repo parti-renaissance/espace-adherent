@@ -7,8 +7,8 @@ use App\Entity\MyTeam\DelegatedAccess;
 use App\RepublicanSilence\ZoneExtractor\ZoneExtractorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -50,24 +50,13 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         'app_message_*' => ZoneExtractorInterface::NONE,
     ];
 
-    private TokenStorageInterface $tokenStorage;
-    private RepublicanSilenceManager $republicanSilenceManager;
-    private Environment $templateEngine;
-    private ZoneExtractorFactory $zoneExtractorFactory;
-    private SessionInterface $session;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        RepublicanSilenceManager $manager,
-        Environment $engine,
-        ZoneExtractorFactory $zoneExtractorFactory,
-        SessionInterface $session,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly RepublicanSilenceManager $manager,
+        private readonly Environment $engine,
+        private readonly ZoneExtractorFactory $zoneExtractorFactory,
+        private readonly RequestStack $requestStack,
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->republicanSilenceManager = $manager;
-        $this->templateEngine = $engine;
-        $this->zoneExtractorFactory = $zoneExtractorFactory;
-        $this->session = $session;
     }
 
     public static function getSubscribedEvents(): array
@@ -88,7 +77,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
             return;
         }
 
-        if ($delegatedAccess = $user->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
+        if ($delegatedAccess = $user->getReceivedDelegatedAccessByUuid($this->requestStack->getSession()->get(DelegatedAccess::ATTRIBUTE_KEY))) {
             $user = $delegatedAccess->getDelegator();
         }
 
@@ -99,7 +88,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         }
 
         if (ZoneExtractorInterface::NONE === $type) {
-            if ($this->republicanSilenceManager->hasStartedSilence()) {
+            if ($this->manager->hasStartedSilence()) {
                 $this->setResponse($event);
             }
 
@@ -112,7 +101,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
             return;
         }
 
-        if ($this->republicanSilenceManager->hasStartedSilence($zones)) {
+        if ($this->manager->hasStartedSilence($zones)) {
             $this->setResponse($event);
         }
     }
@@ -124,7 +113,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
                 return $type;
             }
 
-            if ('*' === substr($routeName, -1) && str_contains($currentRoute, rtrim($routeName, '*'))) {
+            if (str_ends_with($routeName, '*') && str_contains($currentRoute, rtrim($routeName, '*'))) {
                 return $type;
             }
         }
@@ -139,9 +128,8 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
 
     private function getSlug(Request $request, string $type): ?string
     {
-        switch ($type) {
-            case ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR:
-                return $request->attributes->get('slug', $request->attributes->get('committee_slug'));
+        if (ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR == $type) {
+            return $request->attributes->get('slug', $request->attributes->get('committee_slug'));
         }
 
         return null;
@@ -149,6 +137,6 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
 
     private function setResponse(RequestEvent $event): void
     {
-        $event->setResponse(new Response($this->templateEngine->render('republican_silence/landing.html.twig')));
+        $event->setResponse(new Response($this->engine->render('republican_silence/landing.html.twig')));
     }
 }

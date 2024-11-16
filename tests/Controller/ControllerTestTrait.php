@@ -13,8 +13,8 @@ use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 use Tests\App\TestHelperTrait;
 
 /**
@@ -78,7 +78,7 @@ trait ControllerTestTrait
 
     public function authenticateAsAdmin(KernelBrowser $client, string $email = 'admin@en-marche-dev.fr'): void
     {
-        if (!$user = $this->getAdministratorRepository()->loadUserByUsername($email)) {
+        if (!$user = $this->getAdministratorRepository()->loadUserByIdentifier($email)) {
             throw new \Exception(\sprintf('Admin %s not found', $email));
         }
 
@@ -169,7 +169,7 @@ trait ControllerTestTrait
     {
         $session = $client->getContainer()->get('session');
 
-        $token = new PostAuthenticationGuardToken($user, $firewallName, $user->getRoles());
+        $token = new UsernamePasswordToken($user, $firewallName, $user->getRoles());
         $session->set('_security_main_context', serialize($token));
         $session->save();
 

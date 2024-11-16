@@ -6,14 +6,14 @@ use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Renaissance\App\UrlGenerator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class InactiveAdminListener
 {
     public function __construct(
-        private readonly SessionInterface $session,
+        private readonly RequestStack $requestStack,
         private readonly TokenStorageInterface $tokenStorage,
         private readonly UrlGenerator $urlGenerator,
         private readonly int $maxIdleTime = 0,
@@ -42,7 +42,7 @@ class InactiveAdminListener
         }
 
         if ($this->maxIdleTime > 0 && ($user instanceof Administrator || ($user instanceof Adherent && $isPreviousAdmin))) {
-            $lapse = time() - $this->session->getMetadataBag()->getLastUsed();
+            $lapse = time() - $this->requestStack->getSession()->getMetadataBag()->getLastUsed();
 
             if ($lapse > $this->maxIdleTime) {
                 $this->tokenStorage->setToken(null);

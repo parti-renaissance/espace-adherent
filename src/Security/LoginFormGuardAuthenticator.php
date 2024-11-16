@@ -11,23 +11,25 @@ use App\Security\Http\Session\AnonymousFollowerSession;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
+class LoginFormGuardAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
@@ -44,7 +46,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
         CsrfTokenManagerInterface $csrfTokenManager,
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordEncoder,
         AnonymousFollowerSession $anonymousFollowerSession,
         FailedLoginAttemptRepository $failedLoginAttemptRepository,
         AuthAppUrlManager $appUrlManager,
@@ -61,13 +63,13 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
         $this->besoinDEuropeRedirectHandler = $besoinDEuropeRedirectHandler;
     }
 
-    public function supports(Request $request)
+    public function supports(Request $request): bool
     {
         return 'app_user_login_check' === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
 
-    public function getCredentials(Request $request)
+    public function getCredentials(Request $request): array
     {
         $credentials = [
             'emailAddress' => $request->request->get('_login_email'),
@@ -89,7 +91,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $userProvider->loadUserByUsername($credentials['emailAddress']);
+        $user = $userProvider->loadUserByIdentifier($credentials['emailAddress']);
 
         if (!$user) {
             throw new CustomUserMessageAuthenticationException('Invalid credentials.');
@@ -98,19 +100,13 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
         return $user;
     }
 
-    /** @param UserInterface|Adherent $user */
-    public function checkCredentials($credentials, UserInterface $user)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $firewallName): ?Response
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
-    }
-
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
-    {
-        if (!$token instanceof AnonymousToken && !$token instanceof NullToken && $this->anonymousFollowerSession->isStarted()) {
+        if (!$token instanceof NullToken && $this->anonymousFollowerSession->isStarted()) {
             return $this->anonymousFollowerSession->terminate();
         }
 
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
@@ -128,7 +124,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
         return new RedirectResponse($this->urlGenerator->generate('app_search_events'));
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         $this->failedLoginAttemptRepository->save(FailedLoginAttempt::createFromRequest($request));
 
@@ -137,7 +133,7 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
         return parent::onAuthenticationFailure($request, $exception);
     }
 
-    public function start(Request $request, ?AuthenticationException $authException = null)
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
     {
         if (
             \in_array('application/json', $request->getAcceptableContentTypes())
@@ -151,12 +147,17 @@ class LoginFormGuardAuthenticator extends AbstractFormLoginAuthenticator
         return parent::start($request, $authException);
     }
 
-    protected function getLoginUrl(): string
+    protected function getLoginUrl(Request $request): string
     {
         if ($this->currentAppCode) {
             return $this->appUrlManager->getUrlGenerator($this->currentAppCode)->generateLoginLink();
         }
 
         return $this->urlGenerator->generate('app_user_login');
+    }
+
+    public function authenticate(Request $request): Passport
+    {
+        return new SelfValidatingPassport(new UserBadge($request->request->get('_login_email')));
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Controller\EnMarche\Security;
 
-use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentChangeEmailToken;
 use App\Entity\AdherentResetPasswordToken;
@@ -125,7 +124,6 @@ class SecurityController extends AbstractController
                     $adherent,
                     $resetPasswordToken,
                     $newPassword,
-                    AppCodeEnum::RENAISSANCE,
                     $request->query->has('is_creation')
                 );
                 $this->addFlash('info', 'adherent.reset_password.success');

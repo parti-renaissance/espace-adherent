@@ -9,12 +9,12 @@ class ICalEncoder implements EncoderInterface
 {
     public const FORMAT = 'ical';
 
-    public function encode($data, $format, array $context = [])
+    public function encode($data, $format, array $context = []): string
     {
         return (new VCalendar($data))->serialize();
     }
 
-    public function supportsEncoding($format)
+    public function supportsEncoding($format): bool
     {
         return self::FORMAT === $format;
     }

@@ -4,27 +4,13 @@ namespace App\Security\Voter;
 
 use App\AdherentCharter\AdherentCharterTypeEnum;
 use App\Entity\Adherent;
-use App\Entity\MyTeam\DelegatedAccess;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class CharterVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'CAN_ACCEPT_CHARTER';
 
-    /** @var SessionInterface */
-    private $session;
-
-    public function __construct(SessionInterface $session)
-    {
-        $this->session = $session;
-    }
-
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
-            $adherent = $delegatedAccess->getDelegator();
-        }
-
         switch ($subject) {
             case AdherentCharterTypeEnum::TYPE_PHONING_CAMPAIGN:
                 return $adherent->isPhoningCampaignTeamMember();

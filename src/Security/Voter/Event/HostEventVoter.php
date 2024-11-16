@@ -5,16 +5,10 @@ namespace App\Security\Voter\Event;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
-use App\Entity\MyTeam\DelegatedAccess;
 use App\Security\Voter\AbstractAdherentVoter;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class HostEventVoter extends AbstractAdherentVoter
 {
-    public function __construct(private readonly SessionInterface $session)
-    {
-    }
-
     protected function supports(string $attribute, $subject): bool
     {
         return 'HOST_EVENT' === $attribute && $subject instanceof BaseEvent;
@@ -25,10 +19,6 @@ class HostEventVoter extends AbstractAdherentVoter
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $event): bool
     {
-        if ($delegatedAccessUuid = $this->session->get(DelegatedAccess::ATTRIBUTE_KEY)) {
-            $adherent = $adherent->getReceivedDelegatedAccessByUuid($delegatedAccessUuid)->getDelegator();
-        }
-
         if ($event->getOrganizer() && $adherent->equals($event->getOrganizer())) {
             return true;
         }

@@ -5,7 +5,7 @@ namespace App\BesoinDEurope\Inscription;
 use App\Adhesion\AdhesionStepEnum;
 use App\Entity\Adherent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
 
@@ -15,7 +15,7 @@ class FinishInscriptionRedirectHandler
 
     public function __construct(
         private readonly Security $security,
-        private readonly SessionInterface $session,
+        private readonly RequestStack $requestStack,
         private readonly UrlGeneratorInterface $urlGenerator,
     ) {
     }
@@ -39,7 +39,7 @@ class FinishInscriptionRedirectHandler
         }
 
         if ($initialTargetUrl) {
-            $this->session->set(self::SESSION_KEY, $initialTargetUrl);
+            $this->requestStack->getSession()->set(self::SESSION_KEY, $initialTargetUrl);
         }
 
         return new RedirectResponse($this->urlGenerator->generate($nextStepRouteName));

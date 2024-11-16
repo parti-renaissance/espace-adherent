@@ -9,7 +9,7 @@ use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Entity\AdherentMessage\Filter\MessageFilter;
 use App\Entity\AdherentMessage\TransactionalMessageInterface;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentMessageManager
@@ -19,7 +19,7 @@ class AdherentMessageManager
     /** @var SenderInterface[] */
     private $senders;
 
-    public function __construct(ObjectManager $em, EventDispatcherInterface $eventDispatcher, iterable $senders)
+    public function __construct(EntityManagerInterface $em, EventDispatcherInterface $eventDispatcher, iterable $senders)
     {
         $this->em = $em;
         $this->eventDispatcher = $eventDispatcher;
