@@ -4,17 +4,17 @@ namespace App\Controller\Api\AppLink;
 
 use App\Controller\Renaissance\Adhesion\AdhesionController;
 use App\Entity\Adherent;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
+#[IsGranted('ROLE_USER')]
 #[Route(path: '/v3/app-link/{key}', name: 'api_app_link_authenticated', methods: ['GET'])]
-#[Security("is_granted('ROLE_USER')")]
 class AuthenticatedAppLinkController extends AbstractController
 {
     private const KEYS_TO_ROUTES = [

@@ -13,8 +13,7 @@ use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use App\Security\Voter\Committee\ChangeCommitteeVoter;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/comites/{slug}')]
 class CommitteeController extends AbstractController
@@ -66,13 +66,13 @@ class CommitteeController extends AbstractController
     }
 
     #[IsGranted('ADMIN_FEED_COMMITTEE', subject: 'committeeFeedItem')]
-    #[ParamConverter('committee', options: ['mapping' => ['slug' => 'slug']])]
-    #[ParamConverter('committeeFeedItem', options: ['mapping' => ['id' => 'id']])]
     #[Route(path: '/timeline/{id}/modifier', name: 'app_committee_timeline_edit', methods: ['GET', 'POST'])]
     public function timelineEditAction(
         EntityManagerInterface $manager,
         Request $request,
+        #[MapEntity(mapping: ['slug' => 'slug'])]
         Committee $committee,
+        #[MapEntity(mapping: ['id' => 'id'])]
         CommitteeFeedItem $committeeFeedItem,
     ): Response {
         $form = $this
@@ -95,13 +95,13 @@ class CommitteeController extends AbstractController
     }
 
     #[IsGranted('ADMIN_FEED_COMMITTEE', subject: 'committeeFeedItem')]
-    #[ParamConverter('committee', options: ['mapping' => ['slug' => 'slug']])]
-    #[ParamConverter('committeeFeedItem', options: ['mapping' => ['id' => 'id']])]
     #[Route(path: '/timeline/{id}/supprimer', name: 'app_committee_timeline_delete', methods: ['DELETE'])]
     public function timelineDeleteAction(
         EntityManagerInterface $em,
         Request $request,
+        #[MapEntity(mapping: ['slug' => 'slug'])]
         Committee $committee,
+        #[MapEntity(mapping: ['id' => 'id'])]
         CommitteeFeedItem $committeeFeedItem,
     ): Response {
         $form = $this->createDeleteForm('', 'committee_feed_delete', $request);

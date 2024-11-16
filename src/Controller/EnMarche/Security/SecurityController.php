@@ -14,7 +14,7 @@ use App\Membership\AdherentResetPasswordHandler;
 use App\OAuth\App\AuthAppUrlManager;
 use App\OAuth\App\PlatformAuthUrlGenerator;
 use App\Repository\AdherentRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -94,11 +94,11 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    #[Entity('adherent', expr: 'repository.findOneByUuid(adherent_uuid)')]
-    #[Entity('resetPasswordToken', expr: 'repository.findByToken(reset_password_token)')]
     public function resetPasswordAction(
         Request $request,
+        #[MapEntity(expr: 'repository.findOneByUuid(adherent_uuid)')]
         Adherent $adherent,
+        #[MapEntity(expr: 'repository.findByToken(reset_password_token)')]
         AdherentResetPasswordToken $resetPasswordToken,
         AdherentResetPasswordHandler $handler,
         AuthAppUrlManager $appUrlManager,
@@ -141,10 +141,10 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    #[Entity('adherent', expr: 'repository.findOneByUuid(adherent_uuid)')]
-    #[Entity('token', expr: 'repository.findByToken(change_email_token)')]
     public function activateNewEmailAction(
+        #[MapEntity(expr: 'repository.findOneByUuid(adherent_uuid)')]
         Adherent $adherent,
+        #[MapEntity(expr: 'repository.findByToken(change_email_token)')]
         AdherentChangeEmailToken $token,
         AdherentChangeEmailHandler $handler,
         TokenStorageInterface $tokenStorage,

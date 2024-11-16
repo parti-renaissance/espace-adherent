@@ -6,19 +6,19 @@ use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Repository\VotingPlatform\VoteResultRepository;
 use App\Security\Voter\VotingPlatformAbleToVoteVoter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted(VotingPlatformAbleToVoteVoter::PERMISSION_RESULTS, subject: 'election')]
-#[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
 #[Route(path: '/resultats/{election_round_uuid}', name: 'app_voting_platform_results', defaults: ['election_round_uuid' => null], methods: ['GET'])]
 class ResultsController extends AbstractController
 {
     public function __invoke(
         VoteResultRepository $voteResultRepository,
         Election $election,
+        #[MapEntity(mapping: ['election_round_uuid' => 'uuid'])]
         ?ElectionRound $electionRound = null,
     ): Response {
         if (!$election->isResultsDisplayable() || !$election->isResultPeriodActive()) {

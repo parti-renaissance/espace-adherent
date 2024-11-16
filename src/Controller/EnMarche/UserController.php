@@ -17,7 +17,6 @@ use App\Membership\AdherentChangePasswordHandler;
 use App\Membership\MembershipRequestHandler;
 use App\OAuth\App\AuthAppUrlManager;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/parametres/mon-compte')]
 class UserController extends AbstractController
@@ -104,8 +104,8 @@ class UserController extends AbstractController
         );
     }
 
+    #[IsGranted('UNREGISTER', subject: 'user')]
     #[Route(path: '/desadherer', name: 'app_user_terminate_membership', methods: ['GET', 'POST'])]
-    #[Security("is_granted('UNREGISTER', user)")]
     public function terminateMembershipAction(
         Request $request,
         MembershipRequestHandler $handler,

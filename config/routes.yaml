@@ -55,7 +55,7 @@ app_user_connect_with_magic_link:
 #
 app_assets:
     resource: '../src/Controller/AssetsController.php'
-    type: 'annotation'
+    type: 'attribute'
     host: '{app_domain}'
     defaults:
         app_domain: '%user_vox_host%'
@@ -67,14 +67,14 @@ app_assets:
 #
 app_mooc:
     resource: '../src/Controller/MoocController.php'
-    type: 'annotation'
+    type: 'attribute'
 
 #
 # User uploaded documents
 #
 app_documents:
     resource: '../src/Controller/UploadDocumentController.php'
-    type: 'annotation'
+    type: 'attribute'
 
 #
 # API
@@ -82,7 +82,7 @@ app_documents:
 app_api:
     host: '{app_domain}'
     resource: '../src/Controller/Api'
-    type: 'annotation'
+    type: 'attribute'
     prefix: '%api_path_prefix%'
     defaults:
         _format: 'json'
@@ -104,7 +104,7 @@ api_platform:
 app_oauth:
     host: '{app_domain}'
     resource: '../src/Controller/OAuth'
-    type: 'annotation'
+    type: 'attribute'
     prefix: '/oauth/v2'
     defaults:
         app_domain: '%user_vox_host%'
@@ -126,7 +126,7 @@ admin_crud:
 app_admin:
     host: '%admin_renaissance_host%'
     resource: '../src/Controller/Admin'
-    type: 'annotation'
+    type: 'attribute'
 
 lexik_paybox_ipn:
     host: '%webhook_renaissance_host%'
@@ -137,7 +137,7 @@ lexik_paybox_ipn:
 app_enmarche:
     host: '%app_host%'
     resource: '../src/Controller/EnMarche'
-    type: 'annotation'
+    type: 'attribute'
 
 app_renaissance_adherent_space:
     host: '%app_renaissance_host%'
@@ -148,7 +148,7 @@ app_renaissance_adherent_space:
 
 app_voting_platform:
     resource: '../src/Controller/EnMarche/VotingPlatform'
-    type: 'annotation'
+    type: 'attribute'
     prefix: '/elections/{uuid}'
     trailing_slash_on_root: false
     requirements:
@@ -157,13 +157,13 @@ app_voting_platform:
 app_procuration:
     host: '%procuration_host%'
     resource: '../src/Controller/Procuration'
-    type: 'annotation'
+    type: 'attribute'
 
 app_api_intl:
     host: '{app_domain}'
     prefix: '%api_path_prefix%'
     resource: '../src/Controller/IntlController.php'
-    type: 'annotation'
+    type: 'attribute'
     defaults:
         app_domain: '%app_host%'
     requirements:
@@ -172,22 +172,22 @@ app_api_intl:
 app_webhook_renaissance:
     host: '%webhook_renaissance_host%'
     resource: '../src/Controller/Webhook'
-    type: 'annotation'
+    type: 'attribute'
 
 app_renaissance:
     host: '%user_vox_host%'
     resource: '../src/Controller/Renaissance'
-    type: 'annotation'
+    type: 'attribute'
 
 app_besoindeurope:
     host: '%user_vox_host%'
     resource: '../src/Controller/BesoinDEurope'
-    type: 'annotation'
+    type: 'attribute'
 
 app_bde_national_event:
     host: '%national_event_host%'
     resource: '../src/Controller/BesoinDEurope/NationalEvent'
-    type: 'annotation'
+    type: 'attribute'
 
 renaissance_site:
     host: '%renaissance_host%'
@@ -296,7 +296,7 @@ app_renaissance_newsletter_confirm:
 
 app_profile:
     host: '{app_domain}'
-    type: 'annotation'
+    type: 'attribute'
     resource: '../src/Controller/EnMarche/UserController.php'
     defaults:
         app_domain: '%app_host%'
@@ -305,7 +305,7 @@ app_profile:
 
 app_certification:
     host: '{app_domain}'
-    type: 'annotation'
+    type: 'attribute'
     resource: '../src/Controller/EnMarche/CertificationRequestController.php'
     defaults:
         app_domain: '%app_host%'
