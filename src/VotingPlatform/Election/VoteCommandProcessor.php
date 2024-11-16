@@ -3,15 +3,15 @@
 namespace App\VotingPlatform\Election;
 
 use App\VotingPlatform\Election\VoteCommand\VoteCommand;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 class VoteCommandProcessor
 {
-    private $workflow;
+    private WorkflowInterface $workflow;
 
-    public function __construct(StateMachine $votingProcessWorkflow)
+    public function __construct(WorkflowInterface $votingProcessStateMachine)
     {
-        $this->workflow = $votingProcessWorkflow;
+        $this->workflow = $votingProcessStateMachine;
     }
 
     public function canStart(VoteCommand $voteCommand): bool
