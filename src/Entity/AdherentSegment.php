@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/adherent-segments',
             normalizationContext: ['iri' => true, 'groups' => ['public']],
             denormalizationContext: ['groups' => ['write']],
-            security: 'is_granted(\'ROLE_MESSAGE_REDACTOR\')'
+            security: "is_granted('ROLE_MESSAGE_REDACTOR')"
         ),
     ]
 )]

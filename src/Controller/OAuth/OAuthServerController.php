@@ -15,11 +15,12 @@ use League\OAuth2\Server\ResourceServer;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Ramsey\Uuid\Uuid;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\PsrHttpMessage\HttpFoundationFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class OAuthServerController extends AbstractController
 {
@@ -29,8 +30,8 @@ class OAuthServerController extends AbstractController
     ) {
     }
 
+    #[IsGranted(new Expression("is_granted('IS_AUTHENTICATED_REMEMBERED') and not is_granted('ROLE_ADMIN_DASHBOARD')"))]
     #[Route(path: '/auth', name: 'app_front_oauth_authorize', methods: ['GET', 'POST'])]
-    #[Security("is_granted('IS_AUTHENTICATED_REMEMBERED') and not is_granted('ROLE_ADMIN_DASHBOARD')")]
     public function authorizeAction(Request $request, ClientRepository $repository, OAuthAuthorizationManager $manager)
     {
         try {

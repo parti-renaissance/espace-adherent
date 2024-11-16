@@ -11,11 +11,12 @@ use App\Poll\PollManager;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Poll\LocalPollRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 abstract class AbstractPollController extends AbstractController
 {
@@ -72,8 +73,8 @@ abstract class AbstractPollController extends AbstractController
         ]);
     }
 
+    #[IsGranted(new Expression("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', subject) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', subject)"), subject: 'localPoll')]
     #[Route(path: '/{uuid}/editer', name: 'local_edit', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET|POST'])]
-    #[Security("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', localPoll) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', localPoll)")]
     public function editLocalPoll(
         Request $request,
         LocalPoll $localPoll,
@@ -109,9 +110,9 @@ abstract class AbstractPollController extends AbstractController
         ]);
     }
 
+    #[IsGranted(new Expression("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', subject) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', subject)"), subject: 'poll')]
     #[Route(path: '/{uuid}/depublier', name: 'unpublish', methods: ['GET'], defaults: ['publish' => false])]
     #[Route(path: '/{uuid}/publier', name: 'publish', methods: ['GET'], defaults: ['publish' => true])]
-    #[Security("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', poll) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', poll)")]
     public function togglePublish(bool $publish, Poll $poll, PollManager $pollManager): Response
     {
         if (!($publish xor $poll->isPublished())) {
