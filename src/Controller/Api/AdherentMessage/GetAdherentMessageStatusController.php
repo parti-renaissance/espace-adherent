@@ -3,14 +3,15 @@
 namespace App\Controller\Api\AdherentMessage;
 
 use App\Entity\AdherentMessage\AbstractAdherentMessage;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
+#[IsGranted(new Expression("is_granted('ROLE_USER') and (message.getAuthor() == user or user.hasDelegatedFromUser(message.getAuthor(), 'messages'))"))]
 #[Route(path: '/adherent_messages/{uuid}', name: 'app_api_get_adherent_message_status', methods: ['GET'])]
-#[Security("is_granted('ROLE_USER') and (message.getAuthor() == user or user.hasDelegatedFromUser(message.getAuthor(), 'messages'))")]
 class GetAdherentMessageStatusController extends AbstractController
 {
     public function __invoke(AbstractAdherentMessage $message, SerializerInterface $serializer): Response

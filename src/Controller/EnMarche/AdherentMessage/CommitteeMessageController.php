@@ -17,24 +17,24 @@ use App\Form\AdherentMessage\AdherentMessageType;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[ParamConverter('committee', options: ['mapping' => ['committee_slug' => 'slug']])]
+#[IsGranted(new Expression("is_granted('HOST_COMMITTEE', committee) and committee.isApproved()"))]
 #[Route(path: '/espace-animateur/{committee_slug}/messagerie', name: 'app_message_committee_')]
-#[Security("is_granted('HOST_COMMITTEE', committee) and committee.isApproved()")]
 class CommitteeMessageController extends AbstractController
 {
     #[Route(name: 'list', methods: ['GET'])]
     public function messageListAction(
         Request $request,
         AdherentMessageRepository $repository,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
     ): Response {
         /** @var Adherent $adherent */
@@ -248,8 +248,8 @@ class CommitteeMessageController extends AbstractController
         return $this->redirectToRoute('app_message_committee_list', ['committee_slug' => $committee->getSlug()]);
     }
 
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', message) and message.isSent()"))]
     #[Route(path: '/{uuid}/confirmation', name: 'send_success', methods: ['GET'])]
-    #[Security("is_granted('IS_AUTHOR_OF', message) and message.isSent()")]
     public function sendSuccessAction(AbstractAdherentMessage $message, Committee $committee): Response
     {
         return $this->renderTemplate('message/send_success/committee.html.twig', $committee, ['message' => $message]);

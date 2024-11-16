@@ -16,8 +16,7 @@ use App\Exception\InvalidUuidException;
 use App\Form\ContactMembersType;
 use App\Form\EventCommandType;
 use App\Repository\EventRegistrationRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -25,6 +24,7 @@ use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('HOST_EVENT', subject: 'event')]
 #[Route(path: '/evenements/{slug}')]
@@ -45,10 +45,13 @@ class CommitteeEventManagerController extends AbstractController
         $this->eventRegistrationRepository = $eventRegistrationRepository;
     }
 
-    #[Entity('event', expr: 'repository.findOneActiveBySlug(slug)')]
     #[Route(path: '/modifier', name: 'app_committee_event_edit', methods: ['GET', 'POST'])]
-    public function editAction(Request $request, CommitteeEvent $event, EventCommandHandler $handler): Response
-    {
+    public function editAction(
+        Request $request,
+        #[MapEntity(expr: 'repository.findOneActiveBySlug(slug)')]
+        CommitteeEvent $event,
+        EventCommandHandler $handler,
+    ): Response {
         $form = $this->createForm(
             EventCommandType::class,
             $command = EventCommand::createFromEvent($event),
@@ -74,10 +77,10 @@ class CommitteeEventManagerController extends AbstractController
         ]);
     }
 
-    #[Entity('event', expr: 'repository.findOneActiveBySlug(slug)')]
     #[Route(path: '/annuler', name: 'app_committee_event_cancel', methods: ['GET', 'POST'])]
     public function cancelAction(
         Request $request,
+        #[MapEntity(expr: 'repository.findOneActiveBySlug(slug)')]
         CommitteeEvent $event,
         EventCanceledHandler $eventCanceledHandler,
     ): Response {

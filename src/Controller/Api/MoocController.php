@@ -4,7 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Mooc\Mooc;
 use App\Repository\MoocRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,10 +18,11 @@ class MoocController extends AbstractController
         return $this->json($moocRepository->findAllOrdered(), Response::HTTP_OK, [], ['groups' => ['mooc_list']]);
     }
 
-    #[Entity('mooc', expr: 'repository.findOneBySlug(slug)')]
     #[Route(path: '/{slug}', name: 'api_mooc', methods: ['GET'])]
-    public function moocAction(Mooc $mooc): Response
-    {
+    public function moocAction(
+        #[MapEntity(expr: 'repository.findOneBySlug(slug)')]
+        Mooc $mooc,
+    ): Response {
         return $this->json($mooc, Response::HTTP_OK, [], ['groups' => ['mooc_read']]);
     }
 }

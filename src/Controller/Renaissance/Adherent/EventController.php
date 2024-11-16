@@ -19,14 +19,14 @@ use App\Form\EventInvitationType;
 use App\Repository\Event\BaseEventRepository;
 use App\Repository\EventRegistrationRepository;
 use App\Serializer\Encoder\ICalEncoder;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -91,9 +91,9 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Entity('event', expr: 'repository.findOneActiveBySlug(slug)')]
     #[Route(path: '/{slug}/inscription', name: '_registration', methods: ['GET'])]
     public function registrationAction(
+        #[MapEntity(expr: 'repository.findOneActiveBySlug(slug)')]
         BaseEvent $event,
         ValidatorInterface $validator,
         EventRegistrationCommandHandler $eventRegistrationCommandHandler,
@@ -135,10 +135,13 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_renaissance_event_show', ['slug' => $event->getSlug()]);
     }
 
-    #[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
     #[Route(path: '/{slug}/invitation', name: '_invitation', methods: ['GET', 'POST'])]
-    public function invitationAction(Request $request, BaseEvent $event, EventInvitationHandler $handler): Response
-    {
+    public function invitationAction(
+        Request $request,
+        #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
+        BaseEvent $event,
+        EventInvitationHandler $handler,
+    ): Response {
         $eventInvitation = EventInvitation::createFromAdherent(
             $this->getUser(),
             $request->request->get('frc-captcha-solution')
@@ -166,10 +169,11 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
     #[Route(path: '/{slug}/desinscription', name: '_unregistration', methods: ['GET'])]
-    public function unregistrationAction(BaseEvent $event): Response
-    {
+    public function unregistrationAction(
+        #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
+        BaseEvent $event,
+    ): Response {
         if (!$adherentEventRegistration = $this->manager->searchRegistration($event, $this->getUser()->getEmailAddress(), null)) {
             throw $this->createNotFoundException('Impossible de se désinscrire à cet évévenement. Inscription non trouvée.');
         }
@@ -181,10 +185,12 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_renaissance_event_show', ['slug' => $event->getSlug()]);
     }
 
-    #[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
     #[Route(path: '/{slug}/ical', name: '_ical', methods: ['GET'])]
-    public function icalAction(BaseEvent $event, SerializerInterface $serializer): Response
-    {
+    public function icalAction(
+        #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
+        BaseEvent $event,
+        SerializerInterface $serializer,
+    ): Response {
         $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$event->getSlug().'.ics';
 
         $response = new Response($serializer->serialize($event, ICalEncoder::FORMAT), Response::HTTP_OK);
@@ -194,10 +200,10 @@ class EventController extends AbstractController
         return $response;
     }
 
-    #[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
     #[Route(path: '/{slug}/contact', name: '_contact_organizer', methods: ['GET', 'POST'])]
     public function contactAction(
         Request $request,
+        #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
         BaseEvent $event,
         ContactMessageHandler $handler,
     ): Response {

@@ -8,8 +8,9 @@ use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -26,14 +27,14 @@ class ElectedRepresentativeSimilarAdherentProfilesController extends AbstractCon
         ]);
     }
 
-    #[ParamConverter('adherent', options: ['mapping' => ['adherent_id' => 'id']])]
     #[Route(path: '/elected-representative/{id}/adherent-similar-profiles/{adherent_id}/link', name: 'admin_app_electedrepresentative_adherent_similar_profiles_link', methods: ['GET'])]
     public function linkAdherentToElectedRepresentativeAction(
         ElectedRepresentative $electedRepresentative,
+        #[MapEntity(mapping: ['adherent_id' => 'id'])]
         Adherent $adherent,
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $dispatcher,
-    ) {
+    ): Response {
         $dispatcher->dispatch(new ElectedRepresentativeEvent($electedRepresentative), ElectedRepresentativeEvents::BEFORE_UPDATE);
 
         $electedRepresentative->setAdherent($adherent);

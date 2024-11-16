@@ -5,14 +5,15 @@ namespace App\Controller\Api\Phoning;
 use App\Entity\Phoning\Campaign;
 use App\Exporter\PhoningCampaignSurveyRepliesExporter;
 use App\Repository\Jecoute\DataSurveyRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use App\Scope\FeatureEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route(path: '/v3/phoning_campaigns/{uuid}/replies.{_format}', name: 'api_phoning_camapign_get_campaign_survey_replies', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%', '_format' => 'json|csv|xlsx'], defaults: ['_format' => 'json'])]
-#[Security("is_granted('REQUEST_SCOPE_GRANTED', 'phoning_campaign')")]
+#[IsGranted('REQUEST_SCOPE_GRANTED', subject: FeatureEnum::PHONING_CAMPAIGN)]
+#[Route(path: '/v3/phoning_campaigns/{uuid}/replies.{_format}', name: 'api_phoning_campaign_get_campaign_survey_replies', requirements: ['uuid' => '%pattern_uuid%', '_format' => 'json|csv|xlsx'], defaults: ['_format' => 'json'], methods: ['GET'])]
 class GetPhoningCampaignSurveyRepliesController extends AbstractController
 {
     public function __invoke(

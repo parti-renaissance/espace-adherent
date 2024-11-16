@@ -18,15 +18,15 @@ use App\Form\CommitteeMemberFilterType;
 use App\Form\EventCommandType;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeMembershipRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sonata\Exporter\Exporter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[IsGranted('HOST_COMMITTEE', subject: 'committee')]
@@ -69,8 +69,8 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
+    #[IsGranted(new Expression('committee.isApproved()'))]
     #[Route(path: '/evenements/ajouter', name: 'app_committee_manager_add_event', methods: ['GET', 'POST'])]
-    #[Security('committee.isApproved()')]
     public function addEventAction(
         Request $request,
         Committee $committee,
@@ -102,8 +102,8 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
+    #[IsGranted(new Expression('committee.isApproved()'))]
     #[Route(path: '/membres', name: 'app_committee_manager_list_members', methods: ['GET'])]
-    #[Security('committee.isApproved()')]
     public function listMembersAction(
         Request $request,
         Committee $committee,
@@ -160,11 +160,14 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
-    #[Entity('member', expr: 'repository.findOneByUuid(member_uuid)')]
+    #[IsGranted(new Expression("is_granted('SUPERVISE_COMMITTEE', committee) and is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', committee)"))]
     #[Route(path: '/promouvoir-suppleant/{member_uuid}', name: 'app_committee_promote_host', methods: ['GET', 'POST'])]
-    #[Security("is_granted('SUPERVISE_COMMITTEE', committee) and is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', committee)")]
-    public function promoteHostAction(Request $request, Committee $committee, Adherent $member): Response
-    {
+    public function promoteHostAction(
+        Request $request,
+        Committee $committee,
+        #[MapEntity(expr: 'repository.findOneByUuid(member_uuid)')]
+        Adherent $member,
+    ): Response {
         if (!$this->manager->isPromotableHost($member, $committee)) {
             throw $this->createNotFoundException(\sprintf('Member "%s" of committee "%s" can not be promoted as a host privileged person.', $member->getUuid(), $committee->getUuid()));
         }
@@ -194,11 +197,14 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
-    #[Entity('member', expr: 'repository.findOneByUuid(member_uuid)')]
     #[IsGranted('SUPERVISE_COMMITTEE', subject: 'committee')]
     #[Route(path: '/retirer-suppleant/{member_uuid}', name: 'app_committee_demote_host', methods: ['GET', 'POST'])]
-    public function demoteHostAction(Request $request, Committee $committee, Adherent $member): Response
-    {
+    public function demoteHostAction(
+        Request $request,
+        Committee $committee,
+        #[MapEntity(expr: 'repository.findOneByUuid(member_uuid)')]
+        Adherent $member,
+    ): Response {
         if (!$this->manager->isDemotableHost($member, $committee)) {
             throw $this->createNotFoundException(\sprintf('Member "%s" of committee "%s" can not be demoted as a simple follower.', $member->getUuid(), $committee->getUuid()));
         }

@@ -3,11 +3,11 @@
 namespace App\Controller\Api\Jecoute;
 
 use App\Repository\Geo\DepartmentRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[IsGranted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')]

@@ -9,13 +9,12 @@ use App\Entity\Committee;
 use App\Entity\CommitteeMembership;
 use App\Repository\CommitteeMembershipRepository;
 use App\Security\Voter\Committee\CommitteeElectionVoter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CommitteesController extends AbstractController
 {
@@ -25,8 +24,8 @@ class CommitteesController extends AbstractController
         return new JsonResponse($provider->getApprovedCommittees());
     }
 
+    #[IsGranted('MEMBER_OF_COMMITTEE', subject: 'committee')]
     #[Route(path: '/committees/{uuid}/candidacies', name: 'app_api_committee_candidacies_get', methods: ['GET'])]
-    #[Security("is_granted('MEMBER_OF_COMMITTEE', committee)")]
     public function getCommitteeCandidaciesAction(
         Committee $committee,
         CommitteeMembershipRepository $repository,

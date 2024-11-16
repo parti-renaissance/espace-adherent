@@ -4,12 +4,12 @@ namespace App\Controller\Api\Filter;
 
 use App\JMEFilter\FiltersGenerator;
 use App\Scope\ScopeGeneratorResolver;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/v3/filters', name: 'app_collection_filters_get', methods: ['GET'])]
 #[Security("is_granted('REQUEST_SCOPE_GRANTED', ['contacts', 'messages'])")]

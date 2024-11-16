@@ -10,12 +10,13 @@ use App\Jecoute\NewsHandler;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Jecoute\NewsRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 abstract class AbstractNewsController extends AbstractController
 {
@@ -76,8 +77,8 @@ abstract class AbstractNewsController extends AbstractController
         ]);
     }
 
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', news) or is_granted('CAN_EDIT_CANDIDATE_JECOUTE_NEWS', news) or is_granted('CAN_EDIT_REFERENT_JECOUTE_NEWS', news)"))]
     #[Route(path: '/{uuid}/editer', name: 'news_edit', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET|POST'])]
-    #[Security("is_granted('IS_AUTHOR_OF', news) or is_granted('CAN_EDIT_CANDIDATE_JECOUTE_NEWS', news) or is_granted('CAN_EDIT_REFERENT_JECOUTE_NEWS', news)")]
     public function jecouteNewsEditAction(Request $request, News $news, ObjectManager $manager): Response
     {
         $zones = $this->getZones($this->getMainUser($request->getSession()));
@@ -105,8 +106,8 @@ abstract class AbstractNewsController extends AbstractController
         ]);
     }
 
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)"))]
     #[Route(path: '/{uuid}/publier', name: 'news_publish', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
-    #[Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)")]
     public function jecouteNewsPublishAction(Request $request, News $news, NewsHandler $handler): Response
     {
         if ($news->isPublished()) {
@@ -120,8 +121,8 @@ abstract class AbstractNewsController extends AbstractController
         return $this->redirectToNewsRoute('news_list');
     }
 
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)"))]
     #[Route(path: '/{uuid}/depublier', name: 'news_unpublish', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
-    #[Security("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)")]
     public function jecouteNewsUnpublishAction(Request $request, News $news, NewsHandler $handler): Response
     {
         if (!$news->isPublished()) {
@@ -160,6 +161,6 @@ abstract class AbstractNewsController extends AbstractController
 
     protected function redirectToNewsRoute(string $subName, array $parameters = []): Response
     {
-        return $this->redirectToRoute("app_jecoute_news_{$this->getSpaceName()}_{$subName}", $parameters);
+        return $this->redirectToRoute("app_jecoute_news_{$this->getSpaceName()}_$subName", $parameters);
     }
 }

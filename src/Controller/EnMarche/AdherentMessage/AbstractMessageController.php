@@ -16,13 +16,13 @@ use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Form\AdherentMessage\AdherentMessageType;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 abstract class AbstractMessageController extends AbstractController
 {
@@ -198,8 +198,8 @@ abstract class AbstractMessageController extends AbstractController
         ]);
     }
 
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', message) and is_granted('USER_CAN_SEND_MESSAGE', message)"))]
     #[Route(path: '/{uuid}/send', name: 'send', methods: ['GET'])]
-    #[Security("is_granted('IS_AUTHOR_OF', message) and is_granted('USER_CAN_SEND_MESSAGE', message)")]
     public function sendMessageAction(AbstractAdherentMessage $message, AdherentMessageManager $manager): Response
     {
         $this->checkAccess();
@@ -235,8 +235,8 @@ abstract class AbstractMessageController extends AbstractController
         return $this->redirectToMessageRoute('list');
     }
 
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', message) and message.isSent()"))]
     #[Route(path: '/{uuid}/confirmation', name: 'send_success', methods: ['GET'])]
-    #[Security("is_granted('IS_AUTHOR_OF', message) and message.isSent()")]
     public function sendSuccessAction(AbstractAdherentMessage $message): Response
     {
         $this->checkAccess();
@@ -287,7 +287,7 @@ abstract class AbstractMessageController extends AbstractController
 
     protected function redirectToMessageRoute(string $subName, array $parameters = []): Response
     {
-        return $this->redirectToRoute("app_message_{$this->getMessageType()}_{$subName}", $parameters);
+        return $this->redirectToRoute("app_message_{$this->getMessageType()}_$subName", $parameters);
     }
 
     protected function checkAccess(): void

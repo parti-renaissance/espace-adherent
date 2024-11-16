@@ -5,17 +5,18 @@ namespace App\Controller\Api\ElectedRepresentative;
 use App\ElectedRepresentative\Filter\ListFilter;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use App\Scope\ScopeGeneratorResolver;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'elected_representative')"))]
 #[Route(path: '/v3/elected_representatives', name: 'app_elected_representatives_list_get', methods: ['GET'])]
-#[Security("is_granted('REQUEST_SCOPE_GRANTED', 'elected_representative')")]
 class ElectedRepresentativeListController extends AbstractController
 {
     public function __construct(

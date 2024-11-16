@@ -17,12 +17,13 @@ use App\OAuth\Model\DeviceApiUser;
 use App\OAuth\OAuthTokenGenerator;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Nyholm\Psr7\Response as PsrResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -64,12 +65,12 @@ class UserController extends AbstractController
         return $context;
     }
 
-    #[Entity('user', expr: 'repository.findOneByUuid(user_uuid)')]
-    #[Entity('createPasswordToken', expr: 'repository.findByToken(create_password_token)')]
     #[Route(path: '/profile/mot-de-passe/{user_uuid}/{create_password_token}', name: 'user_create_password', requirements: ['user_uuid' => '%pattern_uuid%', 'reset_password_token' => '%pattern_sha1%'], methods: ['POST'])]
     public function createPassword(
         Request $request,
+        #[MapEntity(expr: 'repository.findOneByUuid(user_uuid)')]
         Adherent $user,
+        #[MapEntity(expr: 'repository.findByToken(create_password_token)')]
         AdherentResetPasswordToken $createPasswordToken,
         AdherentResetPasswordHandler $handler,
         SerializerInterface $serializer,

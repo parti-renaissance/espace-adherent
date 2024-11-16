@@ -18,13 +18,13 @@ use App\Repository\Jecoute\LocalSurveyRepository;
 use App\Repository\Jecoute\NationalSurveyRepository;
 use App\Repository\Jecoute\SuggestedQuestionRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 abstract class AbstractJecouteController extends AbstractController
 {
@@ -125,10 +125,11 @@ abstract class AbstractJecouteController extends AbstractController
         ]);
     }
 
-    #[Entity('survey', expr: 'repository.findOnePublishedByUuid(uuid)')]
     #[Route(path: '/questionnaire/{uuid}', name: 'survey_show', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
-    public function jecouteSurveyShowAction(Survey $survey): Response
-    {
+    public function jecouteSurveyShowAction(
+        #[MapEntity(expr: 'repository.findOnePublishedByUuid(uuid)')]
+        Survey $survey,
+    ): Response {
         $isLocalSurvey = $survey instanceof LocalSurvey;
         $form = $this->createForm(SurveyFormType::class, $survey, [
             'zones' => $isLocalSurvey ? [$survey->getZone()] : [],
@@ -141,11 +142,11 @@ abstract class AbstractJecouteController extends AbstractController
         ]);
     }
 
-    #[Entity('survey', expr: 'repository.findOneByUuid(uuid)')]
+    #[IsGranted(new Expression("(is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)) or survey.isNational()"))]
     #[Route(path: '/questionnaire/{uuid}/stats', name: 'survey_stats', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
-    #[Security("(is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)) or survey.isNational()")]
     public function jecouteSurveyStatsAction(
         Request $request,
+        #[MapEntity(expr: 'repository.findOneByUuid(uuid)')]
         Survey $survey,
         StatisticsProvider $provider,
         SurveyExporter $exporter,
@@ -175,11 +176,10 @@ abstract class AbstractJecouteController extends AbstractController
         return $this->renderTemplate('jecoute/stats.html.twig', ['data' => $provider->getStatsBySurvey($survey)]);
     }
 
-    #[Entity('survey', expr: 'repository.findOneByUuid(uuid)')]
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)"))]
     #[Route(path: '/questionnaire/{uuid}/dupliquer', name: 'local_survey_duplicate', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
-    #[Security("is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)")]
     public function jecouteSurveyDuplicateAction(
-        Request $request,
+        #[MapEntity(expr: 'repository.findOneByUuid(uuid)')]
         LocalSurvey $survey,
         ObjectManager $manager,
     ): Response {
@@ -193,8 +193,8 @@ abstract class AbstractJecouteController extends AbstractController
         return $this->redirectToJecouteRoute('local_surveys_list');
     }
 
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', surveyQuestion.getSurvey()) or is_granted('IS_SURVEY_MANAGER_OF', surveyQuestion.getSurvey()) or surveyQuestion.getSurvey().isNational()"))]
     #[Route(path: '/question/{uuid}/reponses', name: 'survey_stats_answers_list', condition: 'request.isXmlHttpRequest()')]
-    #[Security("is_granted('IS_AUTHOR_OF', surveyQuestion.getSurvey()) or is_granted('IS_SURVEY_MANAGER_OF', surveyQuestion.getSurvey()) or surveyQuestion.getSurvey().isNational()")]
     public function jecouteSurveyAnswersListAction(
         SurveyQuestion $surveyQuestion,
         DataAnswerRepository $dataAnswerRepository,
@@ -229,7 +229,7 @@ abstract class AbstractJecouteController extends AbstractController
 
     protected function redirectToJecouteRoute(string $subName, array $parameters = []): Response
     {
-        return $this->redirectToRoute("app_jecoute_{$this->getSpaceName()}_{$subName}", $parameters);
+        return $this->redirectToRoute("app_jecoute_{$this->getSpaceName()}_$subName", $parameters);
     }
 
     protected function checkCreateAccess(): void

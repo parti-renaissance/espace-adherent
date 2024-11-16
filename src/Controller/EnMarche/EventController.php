@@ -17,8 +17,7 @@ use App\Form\EventRegistrationType;
 use App\Repository\EventRepository;
 use App\Security\Http\Session\AnonymousFollowerSession;
 use App\Serializer\Encoder\ICalEncoder;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,17 +25,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
 #[IsGranted('CAN_ACCESS_EVENT', subject: 'event')]
 #[Route(path: '/evenements/{slug}', name: 'app_committee_event')]
 class EventController extends AbstractController
 {
     #[Route(name: '_show', methods: ['GET'])]
-    public function showAction(BaseEvent $event, EventRepository $eventRepository): Response
-    {
+    public function showAction(
+        #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
+        BaseEvent $event,
+        EventRepository $eventRepository,
+    ): Response {
         $params = [
             'event' => $event,
             'eventsNearby' => null,
@@ -54,8 +56,11 @@ class EventController extends AbstractController
     }
 
     #[Route(path: '/ical', name: '_export_ical', methods: ['GET'])]
-    public function exportIcalAction(BaseEvent $event, SerializerInterface $serializer): Response
-    {
+    public function exportIcalAction(
+        #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
+        BaseEvent $event,
+        SerializerInterface $serializer,
+    ): Response {
         $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT.'; filename='.$event->getSlug().'.ics';
 
         $response = new Response($serializer->serialize($event, ICalEncoder::FORMAT), Response::HTTP_OK);
@@ -65,10 +70,10 @@ class EventController extends AbstractController
         return $response;
     }
 
-    #[Entity('event', expr: 'repository.findOneActiveBySlug(slug)')]
     #[IsGranted('ROLE_USER')]
     #[Route(path: '/inscription-adherent', name: '_attend_adherent', methods: ['GET'])]
     public function attendAdherentAction(
+        #[MapEntity(expr: 'repository.findOneActiveBySlug(slug)')]
         BaseEvent $event,
         ValidatorInterface $validator,
         EventRegistrationCommandHandler $eventRegistrationCommandHandler,
@@ -103,10 +108,10 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_committee_event_show', ['slug' => $event->getSlug()]);
     }
 
-    #[Entity('event', expr: 'repository.findOneActiveBySlug(slug)')]
     #[Route(path: '/inscription', name: '_attend', methods: ['GET', 'POST'])]
     public function attendAction(
         Request $request,
+        #[MapEntity(expr: 'repository.findOneActiveBySlug(slug)')]
         BaseEvent $event,
         EventRegistrationCommandHandler $eventRegistrationCommandHandler,
         AnonymousFollowerSession $anonymousFollowerSession,
@@ -155,6 +160,7 @@ class EventController extends AbstractController
     #[Route(path: '/confirmation', name: '_attend_confirmation', condition: "request.query.has('registration')", methods: ['GET'])]
     public function attendConfirmationAction(
         Request $request,
+        #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
         BaseEvent $event,
         EventRegistrationManager $manager,
     ): Response {
@@ -177,8 +183,12 @@ class EventController extends AbstractController
     }
 
     #[Route(path: '/invitation', name: '_invite', methods: ['GET', 'POST'])]
-    public function inviteAction(Request $request, BaseEvent $event, EventInvitationHandler $handler): Response
-    {
+    public function inviteAction(
+        Request $request,
+        #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
+        BaseEvent $event,
+        EventInvitationHandler $handler,
+    ): Response {
         $eventInvitation = EventInvitation::createFromAdherent(
             $this->getUser(),
             $request->request->get('g-recaptcha-response')
@@ -208,8 +218,11 @@ class EventController extends AbstractController
     }
 
     #[Route(path: '/invitation/merci', name: '_invitation_sent', methods: ['GET'])]
-    public function invitationSentAction(Request $request, BaseEvent $event): Response
-    {
+    public function invitationSentAction(
+        Request $request,
+        #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
+        BaseEvent $event,
+    ): Response {
         if (!$invitationsCount = $request->getSession()->remove('event_invitations_count')) {
             return $this->redirectToRoute('app_committee_event_invite', [
                 'slug' => $event->getSlug(),
@@ -225,6 +238,7 @@ class EventController extends AbstractController
     #[Route(path: '/desinscription', name: '_unregistration', condition: 'request.isXmlHttpRequest()', methods: ['GET', 'POST'])]
     public function unregistrationAction(
         Request $request,
+        #[MapEntity(expr: 'repository.findOnePublishedBySlug(slug)')]
         BaseEvent $event,
         EventRegistrationManager $eventRegistrationManager,
     ): JsonResponse {
