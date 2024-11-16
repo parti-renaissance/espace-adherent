@@ -4,23 +4,13 @@ namespace App\Security\Voter;
 
 use App\AdherentCharter\AdherentCharterTypeEnum;
 use App\Entity\Adherent;
-use App\Entity\MyTeam\DelegatedAccess;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class CharterVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'CAN_ACCEPT_CHARTER';
 
-    public function __construct(private readonly RequestStack $requestStack)
-    {
-    }
-
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->requestStack->getSession()->get(DelegatedAccess::ATTRIBUTE_KEY))) {
-            $adherent = $delegatedAccess->getDelegator();
-        }
-
         switch ($subject) {
             case AdherentCharterTypeEnum::TYPE_PHONING_CAMPAIGN:
                 return $adherent->isPhoningCampaignTeamMember();

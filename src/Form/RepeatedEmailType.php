@@ -31,7 +31,7 @@ class RepeatedEmailType extends AbstractType
                         $this->secondName = end($keys);
                     }
 
-                    public function transform($value)
+                    public function transform($value): array
                     {
                         $result = parent::transform($value);
                         $result[$this->secondName] = null;

@@ -6,6 +6,7 @@ use App\Entity\SocialShare;
 use App\Entity\SocialShareCategory;
 use App\Repository\SocialShareCategoryRepository;
 use App\Repository\SocialShareRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,10 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class SocialShareController extends AbstractController
 {
     #[Route(path: '/jepartage', name: 'app_social_share_list', methods: ['GET'])]
-    public function listAction(): Response
+    public function listAction(EntityManagerInterface $manager): Response
     {
-        $manager = $this->getDoctrine();
-
         return $this->render('social_share/wall.html.twig', [
             'currentCategory' => null,
             'socialShareCategories' => $manager->getRepository(SocialShareCategory::class)->findForWall(),

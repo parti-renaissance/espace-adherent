@@ -5,6 +5,7 @@ namespace App\Security\Http\LoginLink\Authentication;
 use App\BesoinDEurope\Inscription\FinishInscriptionRedirectHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationSuccessHandler as BaseAuthenticationSuccessHandler;
@@ -17,7 +18,7 @@ class DefaultAuthenticationSuccessHandler implements AuthenticationSuccessHandle
     ) {
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token): ?Response
     {
         $response = $this->decorated->onAuthenticationSuccess($request, $token);
 

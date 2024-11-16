@@ -5,7 +5,6 @@ namespace App\Security\Http\Session;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Security;
 
 /**
  * Marks a registration process starting as anonymous for any event or group,
@@ -27,17 +26,13 @@ final class AnonymousFollowerSession
         '/adhesion',
     ];
 
-    public function __construct(
-        private readonly Security $security,
-        private readonly RequestStack $requestStack,
-    ) {
+    public function __construct(private readonly RequestStack $requestStack)
+    {
     }
 
     public function start(Request $request): ?RedirectResponse
     {
-        if (
-            !$request->query->has(self::AUTHENTICATION_INTENTION)
-        ) {
+        if (!$request->query->has(self::AUTHENTICATION_INTENTION)) {
             return null;
         }
 

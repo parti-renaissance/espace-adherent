@@ -9,21 +9,21 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 
 class SecurityContext extends RawMinkContext
 {
-    private SessionInterface $session;
+    //    private SessionInterface $session;
     private AdherentRepository $adherentRepository;
     private AdministratorRepository $administratorRepository;
 
     public function __construct(
-        SessionInterface $session,
+        //        SessionInterface $session,
         AdherentRepository $adherentRepository,
         AdministratorRepository $administratorRepository,
     ) {
-        $this->session = $session;
+        //        $this->session = $session;
         $this->adherentRepository = $adherentRepository;
         $this->administratorRepository = $administratorRepository;
     }
@@ -45,7 +45,7 @@ class SecurityContext extends RawMinkContext
      */
     public function iAmLoggedAsAdmin(string $email): void
     {
-        if (!$user = $this->administratorRepository->loadUserByUsername($email)) {
+        if (!$user = $this->administratorRepository->loadUserByIdentifier($email)) {
             throw new \Exception(\sprintf('Admin %s not found', $email));
         }
 
@@ -68,7 +68,7 @@ class SecurityContext extends RawMinkContext
             return;
         }
 
-        $token = new PostAuthenticationGuardToken($user, $firewallName, $user->getRoles());
+        $token = new UsernamePasswordToken($user, $firewallName, $user->getRoles());
         $this->session->set('_security_main_context', serialize($token));
         $this->session->save();
 

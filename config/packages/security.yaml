@@ -522,7 +522,7 @@ security:
         - {
               host: '%admin_renaissance_host%',
               path: '^/login',
-              roles: [IS_AUTHENTICATED_ANONYMOUSLY],
+              roles: [PUBLIC_ACCESS],
           }
         - {
               host: '%admin_renaissance_host%',
