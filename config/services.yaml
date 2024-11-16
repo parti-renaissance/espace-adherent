@@ -45,8 +45,6 @@ services:
             $canaryMode: '%env(ENABLE_CANARY)%'
             $mailchimpListId: '%env(MAILCHIMP_MEMBER_LIST_ID)%'
             $mailchimpElectedRepresentativeListId: '%env(MAILCHIMP_ELECTED_REPRESENTATIVE_LIST_ID)%'
-            $electedRepresentativeContributionProcessWorkflow: '@state_machine.contribution_request'
-            $votingProcessWorkflow: '@state_machine.voting_process'
             $patternUuid: '%pattern_uuid%'
             $adherentInterests: '%adherent_interests%'
             $mailchimpWebhookKey: '%env(MAILCHIMP_WEBHOOK_KEY)%'

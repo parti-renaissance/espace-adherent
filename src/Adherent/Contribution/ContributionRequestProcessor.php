@@ -5,17 +5,17 @@ namespace App\Adherent\Contribution;
 use App\Adherent\AdherentRoleEnum;
 use App\Entity\Adherent;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 class ContributionRequestProcessor
 {
-    private StateMachine $workflow;
+    private WorkflowInterface $workflow;
 
     public function __construct(
-        StateMachine $electedRepresentativeContributionProcessWorkflow,
+        WorkflowInterface $contributionProcessStateMachine,
         private readonly Security $security,
     ) {
-        $this->workflow = $electedRepresentativeContributionProcessWorkflow;
+        $this->workflow = $contributionProcessStateMachine;
     }
 
     public function canFillRevenue(ContributionRequest $contributionRequest): bool
