@@ -30,14 +30,15 @@ use App\Utils\HttpUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
 use Psr\Log\LoggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -83,7 +84,7 @@ class ProfileController extends AbstractController
                 $donationManager->getHistory($user),
                 'json',
                 [
-                    AbstractObjectNormalizer::GROUPS => ['donation_read'],
+                    AbstractNormalizer::GROUPS => ['donation_read'],
                 ]
             )
         );
@@ -137,8 +138,8 @@ class ProfileController extends AbstractController
         return new JsonResponse('OK');
     }
 
+    #[IsGranted(new Expression("is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE') and user == adherent"))]
     #[Route(path: '/{uuid}', name: '_update', methods: ['PUT'])]
-    #[Security("is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE') and user == adherent")]
     public function update(
         Request $request,
         SerializerInterface $serializer,
@@ -193,8 +194,8 @@ class ProfileController extends AbstractController
         return JsonResponse::fromJsonString($errors, JsonResponse::HTTP_BAD_REQUEST);
     }
 
+    #[IsGranted('ROLE_OAUTH_SCOPE_WRITE:PROFILE')]
     #[Route(path: '/me/password-change', name: '_password_change', methods: ['POST'])]
-    #[Security("is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE')")]
     public function changePassword(
         Request $request,
         SerializerInterface $serializer,
@@ -241,8 +242,8 @@ class ProfileController extends AbstractController
         return $this->json(array_values(array_filter($adherentInstances->generate($adherent))));
     }
 
+    #[IsGranted(new Expression('is_granted("ROLE_OAUTH_SCOPE_WRITE:PROFILE") and user.isRenaissanceAdherent()'))]
     #[Route(path: '/committees/{uuid}/join', methods: ['PUT'])]
-    #[Security('is_granted("ROLE_OAUTH_SCOPE_WRITE:PROFILE") and user.isRenaissanceAdherent()')]
     public function saveMyNewCommittee(
         Committee $committee,
         UserInterface $adherent,
@@ -292,8 +293,8 @@ class ProfileController extends AbstractController
         return new JsonResponse($adherentProfileConfiguration->build());
     }
 
+    #[IsGranted('UNREGISTER', subject: 'user')]
     #[Route(path: '/unregister', name: '_unregister', methods: ['POST'])]
-    #[Security("is_granted('UNREGISTER', user)")]
     public function terminateMembershipAction(
         Request $request,
         SerializerInterface $serializer,

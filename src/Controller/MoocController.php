@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\Entity\Mooc\AttachmentFile;
 use App\Utils\HttpUtils;
 use League\Flysystem\FilesystemOperator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/mooc')]

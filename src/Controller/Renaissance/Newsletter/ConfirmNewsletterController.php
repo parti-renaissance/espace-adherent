@@ -7,15 +7,15 @@ use App\Newsletter\Events;
 use App\Newsletter\NewsletterEvent;
 use App\Newsletter\NewsletterTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ConfirmNewsletterController extends AbstractController
 {
-    #[Entity('subscription', expr: 'repository.findOneByUuidAndToken(uuid, confirm_token)')]
     public function __invoke(
+        #[MapEntity(expr: 'repository.findOneByUuidAndToken(uuid, confirm_token)')]
         NewsletterSubscription $subscription,
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher,
