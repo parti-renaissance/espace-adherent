@@ -9,11 +9,11 @@ use App\Adherent\Tag\Command\AsyncRefreshAdherentTagCommand;
 use App\Entity\Adherent;
 use App\Form\Renaissance\Adherent\Contribution\RevenueType;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted(AdherentRoleEnum::ONGOING_ELECTED_REPRESENTATIVE)]
 #[Route(path: '/espace-elus/cotisation', name: 'app_renaissance_contribution_fill_revenue', methods: ['GET|POST'])]

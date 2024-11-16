@@ -15,15 +15,15 @@ use App\Repository\CommitteeCandidacyRepository;
 use App\Security\Voter\Committee\CommitteeElectionVoter;
 use App\ValueObject\Genders;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('MEMBER_OF_COMMITTEE', subject: 'committee')]
 #[Route(path: '/comites/{slug}/candidature', name: 'app_committee_candidature')]
@@ -217,13 +217,13 @@ class CandidatureController extends AbstractController
         ]);
     }
 
-    #[ParamConverter('committee', class: Committee::class, options: ['mapping' => ['slug' => 'slug']])]
-    #[ParamConverter('votePlace', class: CommitteeCandidacyInvitation::class, options: ['mapping' => ['uuid' => 'uuid']])]
+    #[IsGranted(new Expression('invitation.getMembership() == user.getMembershipFor(committee)'))]
     #[Route(path: '/mes-invitations/{uuid}/accepter', name: '_invitation_accept', methods: ['GET', 'POST'])]
-    #[Security('invitation.getMembership() == user.getMembershipFor(committee)')]
     public function acceptInvitationAction(
+        #[MapEntity(mapping: ['slug' => 'slug'])]
         Committee $committee,
         Request $request,
+        #[MapEntity(mapping: ['uuid' => 'uuid'])]
         CommitteeCandidacyInvitation $invitation,
     ): Response {
         /** @var Adherent $adherent */
@@ -266,12 +266,14 @@ class CandidatureController extends AbstractController
         ]);
     }
 
-    #[ParamConverter('committee', class: Committee::class, options: ['mapping' => ['slug' => 'slug']])]
-    #[ParamConverter('votePlace', class: CommitteeCandidacyInvitation::class, options: ['mapping' => ['uuid' => 'uuid']])]
+    #[IsGranted(new Expression('invitation.getMembership() == user.getMembershipFor(committee)'))]
     #[Route(path: '/mes-invitations/{uuid}/decliner', name: '_invitation_decline', methods: ['GET'])]
-    #[Security('invitation.getMembership() == user.getMembershipFor(committee)')]
-    public function declineInvitationAction(Committee $committee, CommitteeCandidacyInvitation $invitation): Response
-    {
+    public function declineInvitationAction(
+        #[MapEntity(mapping: ['slug' => 'slug'])]
+        Committee $committee,
+        #[MapEntity(mapping: ['uuid' => 'uuid'])]
+        CommitteeCandidacyInvitation $invitation,
+    ): Response {
         if (!($election = $committee->getCommitteeElection()) || !$election->isCandidacyPeriodActive()) {
             return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
         }
