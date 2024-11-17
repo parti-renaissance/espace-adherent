@@ -5,7 +5,7 @@ namespace Tests\App\Security;
 use App\Entity\Adherent;
 use App\Entity\PostAddress;
 use App\Membership\ActivityPositionsEnum;
-use App\Security\AdherentLoginTimestampRecorder;
+use App\Security\Listener\AdherentLoginTimestampListener;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +24,7 @@ class AdherentLoginTimestampRecorderTest extends TestCase
         $request = Request::create('POST', '/connexion');
         $token = new UsernamePasswordToken($adherent, 'main', $adherent->getRoles());
 
-        $recorder = new AdherentLoginTimestampRecorder($manager);
+        $recorder = new AdherentLoginTimestampListener($manager);
 
         $this->assertNull($adherent->getLastLoggedAt());
 

@@ -7,13 +7,11 @@ use App\Entity\Geo\Zone;
 use App\Messenger\MessageRecorder\MessageRecorderInterface;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Tests\App\TestHelperTrait;
 
@@ -32,7 +30,7 @@ trait ControllerTestTrait
     public function assertClientIsRedirectedTo(
         string $path,
         KernelBrowser $client,
-        bool $withSchemes = false,
+        bool $withSchemes = true,
         bool $permanent = false,
         bool $withParameters = true,
     ): void {
@@ -40,11 +38,11 @@ trait ControllerTestTrait
 
         $this->assertResponseStatusCode($permanent ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND, $response);
 
+        $currentUrl = $response->headers->get('location');
+
         $this->assertSame(
             $withSchemes ? $client->getRequest()->getSchemeAndHttpHost().$path : $path,
-            $withParameters
-                    ? $response->headers->get('location')
-                    : substr($response->headers->get('location'), 0, strpos($response->headers->get('location'), '?'))
+            $withParameters ? $currentUrl : substr($currentUrl, 0, strpos($currentUrl, '?'))
         );
     }
 
@@ -147,7 +145,7 @@ trait ControllerTestTrait
         string $author,
         string $role,
         string $text,
-    ) {
+    ): void {
         $message = $crawler->filter('.committee__timeline__message')->eq($position);
 
         $this->assertStringContainsString($author, $message->filter('h3')->text());
@@ -155,25 +153,9 @@ trait ControllerTestTrait
         $this->assertStringContainsString($text, $message->filter('div')->first()->text());
     }
 
-    protected function assertHavePublishedMessage(string $queue, string $msgBody): void
-    {
-        $messages = array_filter(
-            $this->getMessages($queue),
-            function ($message) use ($msgBody) { return $msgBody === $message->getBody(); }
-        );
-
-        self::assertEquals(1, \count($messages), 'Expected message not found.');
-    }
-
     private function authenticate(KernelBrowser $client, UserInterface $user, string $firewallName): void
     {
-        $session = $client->getContainer()->get('session');
-
-        $token = new UsernamePasswordToken($user, $firewallName, $user->getRoles());
-        $session->set('_security_main_context', serialize($token));
-        $session->save();
-
-        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        $client->loginUser($user, $firewallName);
     }
 
     private static function assertAdherentHasZone(Adherent $adherent, string $code): void

@@ -38,8 +38,8 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertCount(0, $crawler->filter('.re-paragraph-status--error'));
 
         $this->client->submit($crawler->selectButton('Me connecter')->form([
-            '_login_email' => $email,
-            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
+            '_username' => $email,
+            '_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
         $adherent = $this->adherentRepository->findOneByEmail($email);
@@ -49,7 +49,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
 
         $this->client->followRedirect();
-        $this->assertClientIsRedirectedTo('/oauth/v2/auth?response_type=code&client_id=8128979a-cfdb-45d1-a386-f14f22bb19ae&redirect_uri=http://localhost:8081&scope=jemarche_app%20read:profile%20write:profile', $this->client);
+        $this->assertClientIsRedirectedTo('/oauth/v2/auth?response_type=code&client_id=8128979a-cfdb-45d1-a386-f14f22bb19ae&redirect_uri=http://localhost:8081&scope=jemarche_app%20read:profile%20write:profile', $this->client, false);
     }
 
     public static function getAdherentEmails(): array
@@ -69,8 +69,8 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertCount(0, $crawler->filter('.re-paragraph-status--error'));
 
         $this->client->submit($crawler->selectButton('Me connecter')->form([
-            '_login_email' => $username,
-            '_login_password' => $password,
+            '_username' => $username,
+            '_password' => $password,
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -146,7 +146,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->client->submit($crawler->selectButton('Réinitialiser')->form(), $formData);
 
-        $this->assertClientIsRedirectedTo('/mot-de-passe-oublie', $this->client);
+        $this->assertClientIsRedirectedTo('/mot-de-passe-oublie', $this->client, false);
 
         $crawler = $this->client->followRedirect();
 
@@ -168,7 +168,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->client->submit($crawler->selectButton('Réinitialiser')->form(), $formData);
 
-        $this->assertClientIsRedirectedTo('/mot-de-passe-oublie', $this->client);
+        $this->assertClientIsRedirectedTo('/mot-de-passe-oublie', $this->client, false);
 
         $crawler = $this->client->followRedirect();
 
@@ -204,7 +204,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         ]);
 
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(RenaissanceResetPasswordConfirmationMessage::class, 'michelle.dufour@example.ch'), 'A confirmation email should have been sent.');
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client, false);
 
         $this->client->followRedirect();
 

@@ -4,7 +4,6 @@ namespace App\Adherent\SessionModal;
 
 use App\Entity\Adherent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class SessionModalActivatorListener implements EventSubscriberInterface
@@ -24,11 +23,6 @@ class SessionModalActivatorListener implements EventSubscriberInterface
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $token = $event->getAuthenticationToken();
-
-        if ($token instanceof UsernamePasswordToken && 'api_oauth' === $token->getProviderKey()) {
-            return;
-        }
-
         $adherent = $token->getUser();
 
         if (!$adherent instanceof Adherent) {

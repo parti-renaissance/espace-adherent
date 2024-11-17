@@ -19,12 +19,10 @@ class AdherentTest extends AbstractKernelTestCase
 
         $this->assertInstanceOf(PhoneNumber::class, $adherent->getPhone());
         $this->assertFalse($adherent->isEnabled());
-        $this->assertNull($adherent->getSalt());
         $this->assertNull($adherent->getLastLoggedAt());
         $this->assertNull($adherent->getLastLoginGroup());
         $this->assertSame(['ROLE_USER'], $adherent->getRoles());
-        $this->assertNull($adherent->eraseCredentials());
-        $this->assertSame('john.smith@example.org', $adherent->getUsername());
+        $this->assertSame('john.smith@example.org', $adherent->getUserIdentifier());
         $this->assertSame('john.smith@example.org', $adherent->getEmailAddress());
         $this->assertSame('super-password', $adherent->getPassword());
         $this->assertSame('male', $adherent->getGender());

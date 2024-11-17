@@ -4,16 +4,6 @@ app_forgot_password:
     path: '/mot-de-passe-oublie'
     controller: App\Controller\EnMarche\Security\SecurityController::retrieveForgotPasswordAction
 
-app_user_login_check:
-    host: '{app_domain}'
-    path: '/connexion/check'
-    methods: 'POST'
-    controller: App\Controller\EnMarche\Security\SecurityController::loginCheckAction
-    defaults:
-        app_domain: '%app_host%'
-    requirements:
-        app_domain: '%app_host%|%app_renaissance_host%|%user_vox_host%'
-
 logout:
     host: '{app_domain}'
     path: '/deconnexion'

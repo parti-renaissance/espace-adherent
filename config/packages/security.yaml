@@ -1,9 +1,5 @@
 security:
-    # Providers auth exceptions must not be hidden to customize the error message
-    # see usages of App\Security\Exception\BadCredentialsException
     hide_user_not_found: false
-    erase_credentials: false
-    enable_authenticator_manager: true
 
     password_hashers:
         App\Entity\Administrator: bcrypt
@@ -12,6 +8,110 @@ security:
             algorithm: sha1
             encode_as_base64: false
             iterations: 1
+
+    access_decision_manager:
+        strategy: unanimous
+
+    providers:
+        admins_db:
+            entity:
+                class: App\Entity\Administrator
+        users_db:
+            entity:
+                class: App\Entity\Adherent
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        api_oauth:
+            pattern: ^/api/(me$|webhooks|statistics/|jecoute/|crm-paris/|v3/)
+            stateless: true
+            provider: users_db
+            custom_authenticators:
+                - App\OAuth\OAuthAuthenticator
+
+        admin:
+            context: main_context
+            host: '%admin_renaissance_host%'
+            pattern: ^/(?!(oauth|vox))
+            provider: admins_db
+            switch_user: true
+            access_denied_handler: App\Security\AccessDeniedHandler
+            login_throttling: null
+            form_login:
+                login_path: app_admin_login
+                check_path: app_admin_login
+                enable_csrf: true
+                default_target_path: sonata_admin_dashboard
+                always_use_default_target_path: true
+
+                failure_handler: App\Security\Http\AuthenticationFailureHandler
+            two_factor:
+                auth_form_path: admin_security_2fa
+                check_path: admin_security_2fa_check
+                default_target_path: sonata_admin_dashboard
+                always_use_default_target_path: true
+            logout:
+                path: logout
+                target: /
+
+        main:
+            context: main_context
+            stateless: false
+            # No pattern means every path is behind this firewall
+            provider: users_db
+            switch_user: true
+            login_throttling: null
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 7890000 # 3 months in seconds
+                path: /
+                token_provider:
+                    doctrine: true
+            form_login:
+                login_path: app_renaissance_login
+                check_path: app_renaissance_login
+                enable_csrf: true
+                default_target_path: vox_app_redirect
+            logout:
+                path: logout
+            user_checker: App\Security\UserChecker
+            access_denied_handler: App\Security\AccessDeniedHandler
+            login_link:
+                check_route: app_user_connect_with_magic_link
+                check_post_only: true
+                signature_properties: ['uuid', 'emailAddress', 'registeredAt']
+                max_uses: 1
+                lifetime: 600
+                failure_path: app_renaissance_login
+                default_target_path: vox_app_redirect
+
+    access_control:
+        - { path: '^/parametres', roles: [ROLE_USER] }
+        - { path: '^/espace-adherent', roles: [ROLE_ADHERENT] }
+        - {
+              host: '%admin_renaissance_host%',
+              path: '^/login/(2fa|logout)',
+              role: [IS_AUTHENTICATED_2FA_IN_PROGRESS],
+          }
+        - {
+              host: '%admin_renaissance_host%',
+              path: '^/login',
+              roles: [PUBLIC_ACCESS],
+          }
+        - {
+              host: '%admin_renaissance_host%',
+              path: '^/(?!(oauth|vox))',
+              roles: [ROLE_ADMIN_DASHBOARD],
+          }
+        - { path: '^/membre/.*', roles: [IS_AUTHENTICATED_REMEMBERED] }
+        - { path: '^/elections/.+', roles: [ROLE_ADHERENT] }
+        - {
+              path: '^/(adhesion|don|espace-elus)',
+              allow_if: "not is_granted('ROLE_ADMIN_DASHBOARD')",
+          }
 
     role_hierarchy:
         ## ALL
@@ -427,106 +527,3 @@ security:
             - ROLE_NATIONAL_COUNCIL_MEMBER
         ROLE_PHONING_MANAGER:
             - ROLE_AUDIENCE
-
-    access_decision_manager:
-        strategy: unanimous
-
-    providers:
-        admins_db:
-            id: app.security.admin_provider
-        users_db:
-            id: app.security.user_provider
-
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
-        api_oauth:
-            pattern: ^/api/(me$|webhooks|statistics/|jecoute/|crm-paris/|v3/)
-            stateless: true
-            provider: users_db
-            custom_authenticators:
-                - App\OAuth\OAuthAuthenticator
-
-        admin:
-            context: main_context
-            host: '%admin_renaissance_host%'
-            pattern: ^/(?!(oauth|vox))
-            provider: admins_db
-            switch_user: true
-            access_denied_handler: App\Security\AccessDeniedHandler
-            form_login:
-                login_path: app_admin_login
-                check_path: app_admin_login_check
-
-                default_target_path: sonata_admin_dashboard
-                always_use_default_target_path: true
-
-                username_parameter: _login_email
-                password_parameter: _login_password
-                csrf_parameter: _login_csrf
-                csrf_token_id: authenticate
-
-                failure_handler: App\Security\Http\AuthenticationFailureHandler
-            two_factor:
-                auth_form_path: admin_security_2fa
-                check_path: admin_security_2fa_check
-                default_target_path: sonata_admin_dashboard
-                always_use_default_target_path: true
-            logout:
-                path: logout
-                target: /
-
-        main:
-            context: main_context
-            stateless: false
-            # No pattern means every path is behind this firewall
-            provider: users_db
-            switch_user: true
-            remember_me:
-                secret: '%kernel.secret%'
-                lifetime: 7890000 # 3 months in seconds
-                path: /
-                token_provider: Symfony\Bridge\Doctrine\Security\RememberMe\DoctrineTokenProvider
-            logout:
-                path: logout
-            user_checker: App\Security\UserChecker
-            #            guard:
-            #                authenticators:
-            #                    - App\Security\LoginFormGuardAuthenticator
-            #            entry_point: App\Security\LoginFormGuardAuthenticator
-            access_denied_handler: App\Security\AccessDeniedHandler
-            login_link:
-                check_route: app_user_connect_with_magic_link
-                check_post_only: true
-                signature_properties: ['uuid', 'emailAddress', 'registeredAt']
-                max_uses: 1
-                lifetime: 600
-                failure_path: app_renaissance_login
-                default_target_path: vox_app_redirect
-
-    access_control:
-        - { path: '^/parametres', roles: [ROLE_USER] }
-        - { path: '^/espace-adherent', roles: [ROLE_ADHERENT] }
-        - {
-              host: '%admin_renaissance_host%',
-              path: '^/login/(2fa|logout)',
-              role: [IS_AUTHENTICATED_2FA_IN_PROGRESS],
-          }
-        - {
-              host: '%admin_renaissance_host%',
-              path: '^/login',
-              roles: [PUBLIC_ACCESS],
-          }
-        - {
-              host: '%admin_renaissance_host%',
-              path: '^/(?!(oauth|vox))',
-              roles: [ROLE_ADMIN_DASHBOARD],
-          }
-        - { path: '^/membre/.*', roles: [IS_AUTHENTICATED_REMEMBERED] }
-        - { path: '^/elections/.+', roles: [ROLE_ADHERENT] }
-        - {
-              path: '^/(adhesion|don|espace-elus)',
-              allow_if: "not is_granted('ROLE_ADMIN_DASHBOARD')",
-          }

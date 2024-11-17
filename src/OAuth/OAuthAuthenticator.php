@@ -7,7 +7,6 @@ use App\OAuth\Model\ClientApiUser;
 use App\OAuth\Model\DeviceApiUser;
 use App\Repository\AdherentRepository;
 use App\Repository\DeviceRepository;
-use App\Security\Exception\BadCredentialsException;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use Ramsey\Uuid\Uuid;
@@ -17,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -103,7 +103,7 @@ class OAuthAuthenticator extends AbstractAuthenticator
     {
         $user = $this->getUser($this->getCredentials($request));
 
-        return new SelfValidatingPassport(new UserBadge($user->getUsername(), fn () => $user));
+        return new SelfValidatingPassport(new UserBadge($user->getUserIdentifier(), fn () => $user));
     }
 
     public function supports(Request $request): ?bool

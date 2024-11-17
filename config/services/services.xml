@@ -16,16 +16,6 @@
         <!-- Security -->
         <prototype namespace="App\Security\Voter\" resource="../../src/Security/Voter"/>
 
-<!--        <service id="App\Security\LoginFormGuardAuthenticator">-->
-<!--            <argument key="$apiPathPrefix" type="string">%api_path_prefix%</argument>-->
-<!--        </service>-->
-        <service id="app.security.user_provider" class="App\Security\UserProvider">
-            <argument key="$classOrAlias" type="string">App\Entity\Adherent</argument>
-        </service>
-        <service id="app.security.admin_provider" class="App\Security\UserProvider">
-            <argument key="$classOrAlias" type="string">App\Entity\Administrator</argument>
-        </service>
-
         <service id="App\Security\Listener\InactiveAdminListener">
             <argument key="$maxIdleTime">%env(SESSION_MAX_IDLE_TIME)%</argument>
             <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />

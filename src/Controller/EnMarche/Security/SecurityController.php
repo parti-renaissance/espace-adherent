@@ -17,7 +17,6 @@ use App\Repository\AdherentRepository;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,8 +27,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
-    #[Route(path: '/connexion', name: 'app_user_login', methods: ['GET'])]
-    public function loginAction(AuthenticationUtils $securityUtils, FormFactoryInterface $formFactory, ?string $app = null): Response
+    #[Route(path: '/connexion', name: 'app_user_login', methods: ['GET', 'POST'])]
+    public function loginAction(AuthenticationUtils $securityUtils, ?string $app = null): Response
     {
         if ($user = $this->getUser()) {
             if ($user instanceof Administrator) {
@@ -43,18 +42,14 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_search_events');
         }
 
-        $form = $formFactory->createNamed('', LoginType::class, [
-            '_login_email' => $securityUtils->getLastUsername(),
+        $form = $this->createForm(LoginType::class, [
+            '_username' => $securityUtils->getLastUsername(),
         ], ['remember_me' => true]);
 
-        return $this->render($app ? 'security/renaissance_user_login.html.twig' : 'security/adherent_login.html.twig', [
+        return $this->render('security/renaissance_user_login.html.twig', [
             'form' => $form->createView(),
             'error' => $securityUtils->getLastAuthenticationError(),
         ]);
-    }
-
-    public function loginCheckAction()
-    {
     }
 
     public function retrieveForgotPasswordAction(

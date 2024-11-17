@@ -27,15 +27,15 @@
         {{ form_start(form, {action: path('app_admin_login')}) }}
             <ul class="form">
                 <li>
-                     {{ form_label(form._login_email, 'Email', {label_attr: {class: 'visually-hidden'}}) }}
-                     {{ form_errors(form._login_email) }}
-                     {{ form_widget(form._login_email, {attr: {placeholder: 'Email'}}) }}
+                     {{ form_label(form._username, 'Email', {label_attr: {class: 'visually-hidden'}}) }}
+                     {{ form_errors(form._username) }}
+                     {{ form_widget(form._username, {attr: {placeholder: 'Email'}}) }}
                 </li>
 
                 <li>
-                    {{ form_label(form._login_password, 'Mot de passe', {label_attr: {class: 'visually-hidden'}}) }}
-                    {{ form_errors(form._login_password) }}
-                    {{ form_widget(form._login_password, {attr: {placeholder: 'Mot de passe'}}) }}
+                    {{ form_label(form._password, 'Mot de passe', {label_attr: {class: 'visually-hidden'}}) }}
+                    {{ form_errors(form._password) }}
+                    {{ form_widget(form._password, {attr: {placeholder: 'Mot de passe'}}) }}
                 </li>
 
                 <li>

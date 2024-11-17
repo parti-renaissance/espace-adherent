@@ -3,7 +3,7 @@
 namespace App\Security;
 
 use App\Entity\Adherent;
-use App\Exception\AccountNotValidatedException;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
@@ -15,7 +15,7 @@ class UserChecker implements UserCheckerInterface
     {
     }
 
-    public function checkPostAuth(UserInterface $user)
+    public function checkPostAuth(UserInterface $user): void
     {
         /** @var Adherent $user */
         if (!$user instanceof Adherent) {
@@ -33,7 +33,7 @@ class UserChecker implements UserCheckerInterface
                 throw $ex;
             }
 
-            throw new AccountNotValidatedException($user);
+            throw new CustomUserMessageAccountStatusException('adherent.error.must_be_validated');
         }
     }
 }

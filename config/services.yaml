@@ -206,7 +206,7 @@ services:
 
     App\OAuth\Repository\OAuthUserRepository:
         arguments:
-            $userProvider: '@app.security.user_provider'
+            $userProvider: '@security.user.provider.concrete.users_db'
 
     App\OAuth\AuthorizationServerFactory:
         arguments:
@@ -333,8 +333,6 @@ services:
 
     Sonata\AdminBundle\Builder\ShowBuilderInterface: '@sonata.admin.builder.orm_show'
     Sonata\Exporter\Exporter: '@sonata.exporter.exporter'
-
-    Symfony\Bridge\Doctrine\Security\RememberMe\DoctrineTokenProvider: ~
 
     cache.adapter.redis_tag_aware:
         class: Symfony\Component\Cache\Adapter\RedisTagAwareAdapter

@@ -7,8 +7,8 @@ use App\Adhesion\CreateAdherentResult;
 use App\Adhesion\Request\MembershipRequest;
 use App\Controller\Renaissance\Adhesion\ActivateEmailController;
 use App\Entity\Adherent;
-use App\Security\AuthenticationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\HandleTrait;
@@ -26,7 +26,7 @@ class CreateAccountController extends AbstractController
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly SerializerInterface $serializer,
-        private readonly AuthenticationUtils $authenticationUtils,
+        private readonly Security $security,
         MessageBusInterface $messageBus,
     ) {
         $this->messageBus = $messageBus;
@@ -70,7 +70,7 @@ class CreateAccountController extends AbstractController
         $result = $this->handle(new CreateAccountCommand($membershipRequest, $currentUser));
 
         if ($result instanceof CreateAdherentResult) {
-            $this->authenticationUtils->authenticateAdherent($result->getAdherent());
+            $this->security->login($result->getAdherent());
 
             if ($result->isNextStepPayment()) {
                 return $this->json([

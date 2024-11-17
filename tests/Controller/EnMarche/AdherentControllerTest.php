@@ -137,8 +137,8 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_login_email' => 'michelle.dufour@example.ch',
-            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
+            '_username' => 'michelle.dufour@example.ch',
+            '_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
         $this->assertClientIsRedirectedTo('/connexion', $this->client);
