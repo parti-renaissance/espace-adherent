@@ -33,7 +33,6 @@ security:
                 - App\OAuth\OAuthAuthenticator
 
         admin:
-            context: main_context
             host: '%admin_renaissance_host%'
             pattern: ^/(?!(oauth|vox))
             provider: admins_db
@@ -58,8 +57,6 @@ security:
                 target: /
 
         main:
-            context: main_context
-            stateless: false
             # No pattern means every path is behind this firewall
             provider: users_db
             switch_user: true
