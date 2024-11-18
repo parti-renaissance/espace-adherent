@@ -71,7 +71,7 @@ Feature:
                 "capacity": null,
                 "post_address": {
                     "address": null,
-                    "postal_code": null,
+                    "postal_code": "77300",
                     "city": null,
                     "city_name": "Fontainebleau",
                     "country": "FR",
