@@ -25,12 +25,16 @@ class BaseEventCommand
     private $uuid;
     private $author;
 
-    #[Assert\Length(min: 5, max: 100, options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(min: 5, max: 100),
+    ])]
     private $name;
 
-    #[Assert\Length(min: 10, options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(min: 10),
+    ])]
     private $description;
 
     #[Assert\NotBlank]

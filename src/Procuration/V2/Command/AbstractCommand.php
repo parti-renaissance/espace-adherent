@@ -33,7 +33,8 @@ abstract class AbstractCommand
     public ?string $email = null;
 
     #[Assert\NotBlank(message: 'procuration.birthdate.not_blank')]
-    #[Assert\Range(min: '-120 years', max: '-17 years', minMessage: 'procuration.birthdate.maximum_required_age', maxMessage: 'procuration.birthdate.minimum_required_age')]
+    #[Assert\Range(minMessage: 'procuration.birthdate.maximum_required_age', min: '-120 years')]
+    #[Assert\Range(maxMessage: 'procuration.birthdate.minimum_required_age', max: '-17 years')]
     public ?\DateTimeInterface $birthdate = null;
 
     #[AssertPhoneNumber(message: 'common.phone_number.invalid')]

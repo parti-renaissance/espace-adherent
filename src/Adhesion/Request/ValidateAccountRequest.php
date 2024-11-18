@@ -11,8 +11,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueMembership(groups: ['change-email'])]
 class ValidateAccountRequest implements MembershipInterface
 {
-    #[Assert\Length(min: 4, max: 4, groups: ['validate-code'], options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank(groups: ['validate-code'])]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(groups: ['validate-code']),
+        new Assert\Length(min: 4, max: 4, groups: ['validate-code']),
+    ], groups: ['validate-code'])]
     public ?string $code = null;
 
     #[Assert\NotBlank(groups: ['change-email'])]

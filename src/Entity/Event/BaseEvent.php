@@ -203,8 +203,10 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
     /**
      * @var string|null
      */
-    #[Assert\Length(min: 5, max: 100, options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(min: 5, max: 100),
+    ])]
     #[Groups(['event_read', 'event_write', 'event_list_read'])]
     #[ORM\Column(length: 100)]
     protected $name;
@@ -229,8 +231,10 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
     /**
      * @var string
      */
-    #[Assert\Length(min: 10, options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(min: 10),
+    ])]
     #[Groups(['event_read', 'event_write'])]
     #[ORM\Column(type: 'text')]
     protected $description;
