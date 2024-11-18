@@ -68,7 +68,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -106,7 +106,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'adherents')]
 #[UniqueEntity(fields: ['nickname'], groups: ['anonymize'])]
 #[UniqueMembership(groups: ['Admin'])]
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, EncoderAwareInterface, MembershipInterface, ZoneableEntityInterface, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface, TranslatedTagInterface, EntityPostAddressInterface, ExposedImageOwnerInterface
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, PasswordHasherAwareInterface, MembershipInterface, ZoneableEntityInterface, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface, TranslatedTagInterface, EntityPostAddressInterface, ExposedImageOwnerInterface
 {
     use EntityIdentityTrait;
     use EntityPersonNameTrait;
@@ -824,7 +824,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return null !== $this->oldPassword;
     }
 
-    public function getEncoderName(): ?string
+    public function getPasswordHasherName(): ?string
     {
         if ($this->hasLegacyPassword()) {
             return 'legacy_encoder';

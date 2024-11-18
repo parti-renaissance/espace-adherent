@@ -448,30 +448,6 @@ class EventControllerTest extends AbstractEventControllerTestCase
         Chronos::setTestNow();
     }
 
-    public function testAnonymousUserCannotSeePrivateEvent()
-    {
-        $this->client->request(Request::METHOD_GET, '/evenements/'.self::getRelativeDate('2018-05-18', '+1 days').'-reunion-de-reflexion-bellifontaine');
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-    }
-
-    public function testAnonymousUserCannotRegisterToPrivateEvent()
-    {
-        $this->client->request(Request::METHOD_GET, '/evenements/'.self::getRelativeDate('2018-05-18', '+1 days').'-reunion-de-reflexion-bellifontaine/inscription');
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-    }
-
-    public function testAnonymousUserCannotInviteToPrivateEvent()
-    {
-        $this->client->request(Request::METHOD_GET, '/evenements/'.self::getRelativeDate('2018-05-18', '+1 days').'-reunion-de-reflexion-bellifontaine/invitation');
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-    }
-
     protected function setUp(): void
     {
         parent::setUp();

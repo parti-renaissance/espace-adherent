@@ -23,7 +23,7 @@ class LoginAttemptSignature
 
     public static function createFromRequest(Request $request): self
     {
-        $login = mb_strtolower($request->request->get('_login_email'));
+        $login = mb_strtolower($request->request->get('_username'));
 
         return new self($login, $request->getClientIp());
     }

@@ -11,40 +11,34 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LoginType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add($options['username_parameter'], EmailType::class)
-            ->add($options['password_parameter'], PasswordType::class)
+            ->add('_username', EmailType::class)
+            ->add('_password', PasswordType::class)
         ;
 
         if ($options['remember_me']) {
-            $builder->add($options['remember_me_parameter'], CheckboxType::class, ['required' => false]);
+            $builder->add('_remember_me', CheckboxType::class, ['required' => false]);
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
-                'username_parameter' => '_login_email',
-                'password_parameter' => '_login_password',
-                'remember_me_parameter' => '_remember_me',
-                'csrf_field_name' => '_login_csrf',
-                'csrf_token_id' => 'authenticate',
                 'remember_me' => false,
                 'data_class' => null,
                 'translation_domain' => false,
+                'csrf_field_name' => '_csrf_token',
+                'csrf_token_id' => 'authenticate',
             ])
-            ->setAllowedTypes('username_parameter', 'string')
-            ->setAllowedTypes('password_parameter', 'string')
-            ->setAllowedTypes('remember_me_parameter', 'string')
             ->setAllowedTypes('remember_me', 'bool')
         ;
     }
 
     public function getBlockPrefix(): string
     {
-        return 'app_login';
+        return '';
     }
 }

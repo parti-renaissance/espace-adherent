@@ -748,10 +748,6 @@
             <argument>App\Entity\Administrator</argument>
             <argument />
 
-            <call method="setEncoders">
-                <argument type="service" id="security.encoder_factory" />
-            </call>
-
             <call method="setGoogleAuthenticator">
                 <argument type="service" id="scheb_two_factor.security.google_authenticator" />
             </call>

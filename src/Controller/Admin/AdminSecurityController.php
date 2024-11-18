@@ -6,39 +6,21 @@ use App\Entity\Administrator;
 use App\Form\LoginType;
 use App\Security\QrCodeResponseFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AdminSecurityController extends AbstractController
 {
-    #[Route(path: '/login', name: 'app_admin_login', methods: ['GET'])]
-    public function loginAction(AuthenticationUtils $securityUtils, FormFactoryInterface $formFactory): Response
+    #[Route(path: '/login', name: 'app_admin_login', methods: ['GET', 'POST'])]
+    public function loginAction(AuthenticationUtils $securityUtils): Response
     {
-        $form = $formFactory->createNamed(
-            '',
-            LoginType::class,
-            [
-                '_login_email' => $securityUtils->getLastUsername(),
-            ],
-            [
-                'username_parameter' => '_login_email',
-                'password_parameter' => '_login_password',
-                'csrf_field_name' => '_login_csrf',
-                'csrf_token_id' => 'authenticate',
-            ]
-        );
+        $form = $this->createForm(LoginType::class, ['_username' => $securityUtils->getLastUsername()]);
 
         return $this->render('security/admin_login.html.twig', [
             'form' => $form->createView(),
             'error' => $securityUtils->getLastAuthenticationError(),
         ]);
-    }
-
-    #[Route(path: '/login', name: 'app_admin_login_check', methods: ['POST'])]
-    public function loginCheckAction()
-    {
     }
 
     /**

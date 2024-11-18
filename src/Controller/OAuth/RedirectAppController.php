@@ -28,7 +28,7 @@ class RedirectAppController extends AbstractController
         $redirectUri = current($client->getRedirectUris());
 
         return $this->redirectToRoute('app_front_oauth_authorize', [
-            'app_domain' => $this->isGranted('ROLE_PREVIOUS_ADMIN') ? $this->adminRenaissanceHost : $urlGenerator?->getAppHost(),
+            'app_domain' => $this->isGranted('IS_IMPERSONATOR') ? $this->adminRenaissanceHost : $urlGenerator?->getAppHost(),
             'response_type' => 'code',
             'client_id' => $client->getUuid(),
             'redirect_uri' => $redirectUri,

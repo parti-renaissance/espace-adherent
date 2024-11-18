@@ -22,19 +22,17 @@ class AdministratorRepository extends ServiceEntityRepository implements UserLoa
      * This method must return null if the user is not found.
      *
      * @param string $username The username
-     *
-     * @return UserInterface|null
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername(string $username): ?UserInterface
     {
-        $query = $this
-            ->createActivatedQueryBuilder('a')
+        return $this->createActivatedQueryBuilder('a')
+            ->addSelect('role')
+            ->leftJoin('a.administratorRoles', 'role')
             ->andWhere('a.emailAddress = :username')
             ->setParameter('username', $username)
             ->getQuery()
+            ->getOneOrNullResult()
         ;
-
-        return $query->getOneOrNullResult();
     }
 
     /**

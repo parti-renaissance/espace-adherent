@@ -1118,7 +1118,9 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                 '_zone_based_role',
                 '_zone_based_role_zone',
                 '_animator_committees',
+                '_static_labels',
             )
+            ->leftJoin($alias.'.staticLabels', '_static_labels')
             ->leftJoin($alias.'.adherentMandates', '_adherent_mandate')
             ->leftJoin($alias.'.memberships', '_committee_membership')
             ->leftJoin($alias.'.receivedDelegatedAccesses', '_delegated_access')

@@ -9,27 +9,18 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\RenaissanceResetPasswordConfirmationMessage;
 use App\Membership\Event\UserEvent;
 use App\Membership\Event\UserResetPasswordEvent;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentResetPasswordHandler
 {
-    private $mailer;
-    private $manager;
-    private $encoderFactory;
-    private $dispatcher;
-
     public function __construct(
-        MailerService $transactionalMailer,
-        ObjectManager $manager,
-        EncoderFactoryInterface $encoderFactory,
-        EventDispatcherInterface $dispatcher,
+        private readonly MailerService $transactionalMailer,
+        private readonly EntityManagerInterface $manager,
+        private readonly UserPasswordHasherInterface $hasher,
+        private readonly EventDispatcherInterface $dispatcher,
     ) {
-        $this->mailer = $transactionalMailer;
-        $this->manager = $manager;
-        $this->encoderFactory = $encoderFactory;
-        $this->dispatcher = $dispatcher;
     }
 
     public function handle(Adherent $adherent): void
@@ -46,15 +37,9 @@ class AdherentResetPasswordHandler
         Adherent $adherent,
         AdherentResetPasswordToken $token,
         string $newPassword,
-        ?string $appCode = null,
         bool $isCreation = false,
     ): void {
-        $newEncodedPassword = $this->encoderFactory
-            ->getEncoder(Adherent::class)
-            ->encodePassword($newPassword, $adherent->getSalt())
-        ;
-
-        $token->setNewPassword($newEncodedPassword);
+        $token->setNewPassword($this->hasher->hashPassword($adherent, $newPassword));
         $adherent->resetPassword($token);
 
         $hasBeenActivated = false;
@@ -69,7 +54,7 @@ class AdherentResetPasswordHandler
         $this->manager->flush();
 
         if (!$isCreation) {
-            $this->mailer->sendMessage(RenaissanceResetPasswordConfirmationMessage::createFromAdherent($adherent));
+            $this->transactionalMailer->sendMessage(RenaissanceResetPasswordConfirmationMessage::createFromAdherent($adherent));
         } else {
             if ($hasBeenActivated) {
                 $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_VALIDATED);
