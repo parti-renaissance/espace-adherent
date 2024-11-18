@@ -18,6 +18,7 @@ class EventCleaner
             'instance',
             'role',
             'zone',
+            'image_url',
         ],
         'organizer',
         'organizer' => [
@@ -26,12 +27,14 @@ class EventCleaner
             'instance',
             'role',
             'zone',
+            'image_url',
         ],
 
         'post_address',
         'post_address' => [
             'city_name',
             'country',
+            'postal_code',
         ],
 
         'type',
