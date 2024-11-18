@@ -227,6 +227,7 @@ adherent.mandate.type.conseiller_arrondissement: Conseiller d'arrondissement
 adherent.mandate.type.membre_assemblee_fde: Membre de l'Assemblée des Français de l'étranger
 adherent.mandate.type.conseiller_fde: Conseiller FDE
 adherent.mandate.type.delegue_consulaire: Délégué consulaire
+adherent.mandate.type.ministre: Ministre
 
 adherent.form.elected: Je suis élu(e)
 adherent.form.mandate.placeholder: Choisissez un ou plusieurs mandats

@@ -949,6 +949,24 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
      */
     protected function postUpdate(object $object): void
     {
+        foreach ($object->getElectedRepresentativeMandates() as $mandate) {
+            if (
+                \in_array($mandate->mandateType, [
+                    MandateTypeEnum::DEPUTE,
+                    MandateTypeEnum::DEPUTE_EUROPEEN,
+                    MandateTypeEnum::SENATEUR,
+                    MandateTypeEnum::MINISTER,
+                ])
+                && !$mandate->isEnded()
+                && !$this->electedMandatesBeforeUpdate->contains($mandate)
+            ) {
+                $object->setContributionStatus(ContributionStatusEnum::ELIGIBLE);
+                $object->addRevenueDeclaration(10000);
+
+                break;
+            }
+        }
+
         $this->adherentProfileHandler->updateReferentTagsAndSubscriptionHistoryIfNeeded($object);
 
         $this->dispatcher->dispatch(new AdherentEvent($object), AdherentEvents::PROFILE_UPDATED);
@@ -962,23 +980,6 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
             new AdministratorActionEvent($this->getAdministrator(), $object),
             AdministratorActionEvents::ADMIN_USER_PROFILE_AFTER_UPDATE
         );
-
-        foreach ($object->getElectedRepresentativeMandates() as $mandate) {
-            if (
-                \in_array($mandate->mandateType, [
-                    MandateTypeEnum::DEPUTE,
-                    MandateTypeEnum::DEPUTE_EUROPEEN,
-                    MandateTypeEnum::SENATEUR,
-                ])
-                && !$mandate->isEnded()
-                && !$this->electedMandatesBeforeUpdate->contains($mandate)
-            ) {
-                $object->setContributionStatus(ContributionStatusEnum::ELIGIBLE);
-                $object->addRevenueDeclaration(10000);
-
-                break;
-            }
-        }
     }
 
     protected function configureListFields(ListMapper $list): void
