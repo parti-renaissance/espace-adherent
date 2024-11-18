@@ -5,7 +5,7 @@ namespace App\Normalizer;
 use App\Entity\Adherent;
 use App\Entity\PushToken;
 use App\OAuth\Model\DeviceApiUser;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

@@ -5,7 +5,7 @@ namespace App\Validator;
 use App\Address\Address;
 use App\Geo\ManagedZoneProvider;
 use App\Geo\ZoneMatcher;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;

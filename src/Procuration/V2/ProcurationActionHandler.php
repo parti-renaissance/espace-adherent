@@ -14,7 +14,7 @@ use App\Entity\ProcurationV2\RequestSlotAction;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class ProcurationActionHandler
 {

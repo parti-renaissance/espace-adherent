@@ -7,7 +7,7 @@ use App\Entity\Jecoute\Survey;
 use App\Geo\ManagedZoneProvider;
 use App\Jecoute\SurveyTypeEnum;
 use App\Scope\ScopeGeneratorResolver;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

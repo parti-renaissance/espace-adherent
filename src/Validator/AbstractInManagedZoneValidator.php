@@ -5,7 +5,7 @@ namespace App\Validator;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Geo\ManagedZoneProvider;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

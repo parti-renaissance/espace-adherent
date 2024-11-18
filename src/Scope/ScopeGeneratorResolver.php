@@ -4,9 +4,9 @@ namespace App\Scope;
 
 use App\Entity\Adherent;
 use App\Scope\Generator\ScopeGeneratorInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Security;
 
 class ScopeGeneratorResolver
 {
