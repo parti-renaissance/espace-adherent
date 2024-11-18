@@ -25,6 +25,6 @@ class PlatformAuthUrlGenerator extends AbstractAppUrlGenerator
 
     public function generateLoginLink(): string
     {
-        return $this->urlGenerator->generate('app_user_login');
+        return $this->urlGenerator->generate('app_renaissance_login');
     }
 }

@@ -59,7 +59,7 @@ class OAuthServerController extends AbstractController
 
                 $response = $this->authorizationServer->completeAuthorizationRequest($authRequest, new Response());
 
-                if ($this->isGranted('ROLE_PREVIOUS_ADMIN') && $response->hasHeader('location')) {
+                if ($this->isGranted('IS_IMPERSONATOR') && $response->hasHeader('location')) {
                     $currentLocation = $response->getHeaderLine('location');
 
                     $response = $response->withHeader('location', $currentLocation.(!str_contains($currentLocation, '?') ? '?' : '&').'_switch_user=true');

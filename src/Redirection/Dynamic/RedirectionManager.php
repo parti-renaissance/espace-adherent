@@ -10,30 +10,21 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class RedirectionManager
 {
-    private $cache;
-    private $entityManager;
-    private $serializer;
-    private $repository;
-
     public function __construct(
-        CacheItemPoolInterface $cache,
-        EntityManagerInterface $entityManager,
-        SerializerInterface $serializer,
-        RedirectionRepository $repository,
+        private readonly CacheItemPoolInterface $appCacheRedirection,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly SerializerInterface $serializer,
+        private readonly RedirectionRepository $repository,
     ) {
-        $this->cache = $cache;
-        $this->entityManager = $entityManager;
-        $this->serializer = $serializer;
-        $this->repository = $repository;
     }
 
     public function refreshRedirectionCache(Redirection $redirection): void
     {
-        $item = $this->cache
+        $item = $this->appCacheRedirection
             ->getItem(md5($redirection->getFrom()))
             ->set($this->serializer->serialize($redirection, 'json'))
         ;
-        $this->cache->save($item);
+        $this->appCacheRedirection->save($item);
     }
 
     public function optimiseRedirection(Redirection $originRedirection): void
@@ -66,12 +57,12 @@ class RedirectionManager
 
     public function removeRedirectionFromCache(string $source): void
     {
-        $this->cache->deleteItem(md5($source));
+        $this->appCacheRedirection->deleteItem(md5($source));
     }
 
     public function getRedirection(string $source): ?Redirection
     {
-        $item = $this->cache->getItem(md5($source));
+        $item = $this->appCacheRedirection->getItem(md5($source));
 
         if ($item && $item->isHit()) {
             return $this->serializer->deserialize($item->get(), Redirection::class, 'json');

@@ -2,18 +2,18 @@
 
 namespace App\OAuth\Repository;
 
-use App\Security\UserProvider;
+use App\Entity\Adherent;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class OAuthUserRepository implements UserRepositoryInterface
 {
     public function __construct(
-        private readonly UserProvider $userProvider,
+        private readonly UserProviderInterface $userProvider,
         private readonly UserPasswordHasherInterface $userPasswordHasher,
     ) {
     }
@@ -30,7 +30,7 @@ class OAuthUserRepository implements UserRepositoryInterface
             return null;
         }
 
-        if (null === $user || !($user instanceof PasswordAuthenticatedUserInterface)) {
+        if (!$user instanceof Adherent) {
             return null;
         }
 

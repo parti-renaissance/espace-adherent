@@ -23,8 +23,8 @@ class SecurityControllerCaseTest extends AbstractAdminWebTestCase
         $this->assertCount(0, $crawler->filter('#auth-error'));
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_login_email' => 'admin@en-marche-dev.fr',
-            '_login_password' => 'admin',
+            '_username' => 'admin@en-marche-dev.fr',
+            '_password' => 'admin',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -42,8 +42,8 @@ class SecurityControllerCaseTest extends AbstractAdminWebTestCase
         $this->assertCount(0, $crawler->filter('#auth-error'));
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_login_email' => 'titouan.galopin@en-marche.fr',
-            '_login_password' => 'secret!12345',
+            '_username' => 'titouan.galopin@en-marche.fr',
+            '_password' => 'secret!12345',
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
@@ -72,8 +72,8 @@ class SecurityControllerCaseTest extends AbstractAdminWebTestCase
         $crawler = $this->client->request(Request::METHOD_GET, '/login');
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_login_email' => 'jean.dupond@en-marche.fr',
-            '_login_password' => 'secret!12345',
+            '_username' => 'jean.dupond@en-marche.fr',
+            '_password' => 'secret!12345',
         ]));
 
         $this->client->followRedirect();
@@ -93,8 +93,8 @@ class SecurityControllerCaseTest extends AbstractAdminWebTestCase
         $this->assertCount(0, $crawler->filter('#auth-error'));
 
         $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_login_email' => $username,
-            '_login_password' => $password,
+            '_username' => $username,
+            '_password' => $password,
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());

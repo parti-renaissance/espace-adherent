@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route(path: '/espace-adherent/mon-comite-local/modifier', name: 'app_my_committee_show_list', methods: ['GET'])]
-#[Security('is_granted("ABLE_TO_CHANGE_COMMITTEE") or is_granted("ROLE_PREVIOUS_ADMIN")')]
+#[Security('is_granted("ABLE_TO_CHANGE_COMMITTEE") or is_granted("IS_IMPERSONATOR")')]
 class ShowCommitteeListController extends AbstractController
 {
     public function __invoke(CommitteeRepository $committeeRepository): Response
@@ -19,7 +19,7 @@ class ShowCommitteeListController extends AbstractController
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
-        if ($adherent->isForeignResident() && !$this->isGranted('ROLE_PREVIOUS_ADMIN')) {
+        if ($adherent->isForeignResident() && !$this->isGranted('IS_IMPERSONATOR')) {
             return $this->redirect($this->generateUrl('app_renaissance_adherent_space', [], UrlGeneratorInterface::ABSOLUTE_URL));
         }
 

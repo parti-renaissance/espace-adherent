@@ -34,7 +34,7 @@ class InactiveAdminListener
 
         $isPreviousAdmin = false;
         foreach ($token->getRoleNames() as $role) {
-            if ('ROLE_PREVIOUS_ADMIN' == $role) {
+            if ('IS_IMPERSONATOR' == $role) {
                 $isPreviousAdmin = true;
 
                 break;

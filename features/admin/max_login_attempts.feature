@@ -8,38 +8,38 @@ Feature:
         And I am on "/login"
 
         When I fill in the following:
-            | _login_email    | superadmin@en-marche-dev.fr |
-            | _login_password | wrongPassword               |
+            | _username | superadmin@en-marche-dev.fr |
+            | _password | wrongPassword               |
         And I press "Connexion"
         Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
         When I fill in the following:
-            | _login_email    | superadmin@en-marche-dev.fr |
-            | _login_password | wrongPassword               |
+            | _username | superadmin@en-marche-dev.fr |
+            | _password | wrongPassword               |
         And I press "Connexion"
         Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
         When I fill in the following:
-            | _login_email    | suPeradmin@en-marche-dev.fr |
-            | _login_password | wrongPassword               |
+            | _username | suPeradmin@en-marche-dev.fr |
+            | _password | wrongPassword               |
         And I press "Connexion"
         Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
         When I fill in the following:
-            | _login_email    | superadmin@en-marche-dev.fr |
-            | _login_password | wrongPassword               |
+            | _username | superadmin@en-marche-dev.fr |
+            | _password | wrongPassword               |
         And I press "Connexion"
         Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
         When I fill in the following:
-            | _login_email    | superAdmin@en-marche-dev.fr |
-            | _login_password | wrongPassword               |
+            | _username | superAdmin@en-marche-dev.fr |
+            | _password | wrongPassword               |
         And I press "Connexion"
         Then I should see "L'adresse email et le mot de passe que vous avez saisis ne correspondent pas."
 
         # Refuse login with good credential
         When I fill in the following:
-            | _login_email    | superadmin@en-marche-dev.fr |
-            | _login_password | superadmin                  |
+            | _username | superadmin@en-marche-dev.fr |
+            | _password | superadmin                  |
         And I press "Connexion"
         Then I should see "Vous avez effectué 5 tentatives de connexion erronées. Veuillez attendre 1 minute avant de réessayer."

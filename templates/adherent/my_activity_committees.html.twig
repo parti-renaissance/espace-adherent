@@ -28,7 +28,7 @@
                         </a>
 
                         {% if committee_candidacy_membership == membership and committee.committeeElection %}
-                            {% if committee.committeeElection.isCandidacyPeriodActive or (not committee.committeeElection.isVotePeriodStarted and is_granted('ROLE_PREVIOUS_ADMIN')) %}
+                            {% if committee.committeeElection.isCandidacyPeriodActive or (not committee.committeeElection.isVotePeriodStarted and is_granted('IS_IMPERSONATOR')) %}
                                 <a href="{{ path('app_committee_candidature_remove', {slug: committee.slug}) }}"
                                    class="btn btn--ghosting--pink b__nudge--right-small em-confirm--trigger"
                                    data-confirm-title="Candidature"

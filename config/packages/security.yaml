@@ -5,7 +5,7 @@ security:
     erase_credentials: false
     enable_authenticator_manager: true
 
-    encoders:
+    password_hashers:
         App\Entity\Administrator: bcrypt
         App\Entity\Adherent: bcrypt
         legacy_encoder:
@@ -433,9 +433,11 @@ security:
 
     providers:
         admins_db:
-            id: app.security.admin_provider
+            entity:
+                class: App\Entity\Administrator
         users_db:
-            id: app.security.user_provider
+            entity:
+                class: App\Entity\Adherent
 
     firewalls:
         dev:
@@ -456,18 +458,14 @@ security:
             provider: admins_db
             switch_user: true
             access_denied_handler: App\Security\AccessDeniedHandler
+            login_throttling: ~
             form_login:
                 login_path: app_admin_login
-                check_path: app_admin_login_check
-
+                check_path: app_admin_login
+                enable_csrf: true
                 default_target_path: sonata_admin_dashboard
                 always_use_default_target_path: true
-
-                username_parameter: _login_email
-                password_parameter: _login_password
-                csrf_parameter: _login_csrf
-                csrf_token_id: authenticate
-
+                form_only: true
                 failure_handler: App\Security\Http\AuthenticationFailureHandler
             two_factor:
                 auth_form_path: admin_security_2fa
@@ -480,24 +478,30 @@ security:
 
         main:
             context: main_context
-            stateless: false
             # No pattern means every path is behind this firewall
             provider: users_db
             switch_user: true
+            login_throttling: ~
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 7890000 # 3 months in seconds
                 path: /
-                token_provider: Symfony\Bridge\Doctrine\Security\RememberMe\DoctrineTokenProvider
+                token_provider:
+                    doctrine: true
             logout:
                 path: logout
-                success_handler: App\Security\LogoutSuccessHandler
+                target: vox_app
             user_checker: App\Security\UserChecker
-            guard:
-                authenticators:
-                    - App\Security\LoginFormGuardAuthenticator
-            entry_point: App\Security\LoginFormGuardAuthenticator
+            form_login:
+                login_path: app_renaissance_login
+                check_path: app_renaissance_login
+                enable_csrf: true
+                default_target_path: vox_app_redirect
+                form_only: true
+                success_handler: App\Security\Http\AuthenticationSuccessHandler
+                failure_handler: App\Security\Http\AuthenticationFailureHandler
             access_denied_handler: App\Security\AccessDeniedHandler
+            entry_point: App\Security\ApiAuthenticationEntryPoint
             login_link:
                 check_route: app_user_connect_with_magic_link
                 check_post_only: true

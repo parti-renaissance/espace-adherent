@@ -5,11 +5,14 @@ namespace Tests\App\Redirection\Dynamic;
 use App\Entity\Redirection;
 use App\Redirection\Dynamic\RedirectionManager;
 use PHPUnit\Framework\Attributes\Group;
+use Psr\Cache\CacheItemPoolInterface;
 use Tests\App\AbstractKernelTestCase;
 
 #[Group('functional')]
 class RedirectionManagerTest extends AbstractKernelTestCase
 {
+    private CacheItemPoolInterface $cache;
+
     public function testSimpleResolveRedirection(): void
     {
         $redirectionManager = $this->get(RedirectionManager::class);
@@ -63,5 +66,19 @@ class RedirectionManagerTest extends AbstractKernelTestCase
         self::assertSame($source, $redirection->getFrom());
         self::assertSame($target, $redirection->getTo());
         self::assertSame($type, $redirection->getType());
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->cache = $this->get('app.cache.redirection');
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->cache->clear();
     }
 }

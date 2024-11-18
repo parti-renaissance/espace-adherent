@@ -23,7 +23,7 @@ class ContributionControllerTest extends AbstractWebTestCase
         $this->client->request(Request::METHOD_GET, '/espace-elus/cotisation');
         $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
 
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
     }
 
     public function testNonElectedRepresentativeAdherentCanNotSeeFormations(): void

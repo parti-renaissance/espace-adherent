@@ -3,23 +3,20 @@
 namespace App\Membership;
 
 use App\Entity\Adherent;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AdherentChangePasswordHandler
 {
-    private $manager;
-    private $encoder;
-
-    public function __construct(ObjectManager $manager, UserPasswordEncoderInterface $encoder)
-    {
-        $this->manager = $manager;
-        $this->encoder = $encoder;
+    public function __construct(
+        private readonly EntityManagerInterface $manager,
+        private readonly UserPasswordHasherInterface $hasher,
+    ) {
     }
 
-    public function changePassword(Adherent $adherent, string $newPassword)
+    public function changePassword(Adherent $adherent, string $newPassword): void
     {
-        $adherent->changePassword($this->encoder->encodePassword($adherent, $newPassword));
+        $adherent->changePassword($this->hasher->hashPassword($adherent, $newPassword));
 
         $this->manager->flush();
     }

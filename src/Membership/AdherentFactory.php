@@ -15,16 +15,17 @@ use App\Membership\MembershipRequest\MembershipInterface;
 use App\Renaissance\Membership\Admin\AdherentCreateCommand;
 use App\Utils\PhoneNumberUtils;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
 class AdherentFactory
 {
-    private $encoders;
-    private $addressFactory;
+    private PasswordHasherInterface $hasher;
+    private PostAddressFactory $addressFactory;
 
-    public function __construct(EncoderFactoryInterface $encoders, ?PostAddressFactory $addressFactory = null)
+    public function __construct(PasswordHasherFactoryInterface $hasherFactory, ?PostAddressFactory $addressFactory = null)
     {
-        $this->encoders = $encoders;
+        $this->hasher = $hasherFactory->getPasswordHasher(Adherent::class);
         $this->addressFactory = $addressFactory ?: new PostAddressFactory();
     }
 
@@ -42,7 +43,7 @@ class AdherentFactory
         $adherent = Adherent::create(
             Adherent::createUuid($request->getEmailAddress()),
             $request->getEmailAddress(),
-            $this->encodePassword(Uuid::uuid4()),
+            $this->hashPassword(Uuid::uuid4()),
             null,
             $request->firstName,
             $request->lastName,
@@ -62,7 +63,7 @@ class AdherentFactory
         $adherent = Adherent::create(
             Adherent::createUuid($request->getEmailAddress()),
             $request->getEmailAddress(),
-            $this->encodePassword(Uuid::uuid4()),
+            $this->hashPassword(Uuid::uuid4()),
             $request->gender,
             $request->firstName,
             $request->lastName,
@@ -156,7 +157,7 @@ class AdherentFactory
         $adherent = Adherent::create(
             isset($data['uuid']) ? Uuid::fromString($data['uuid']) : Adherent::createUuid($data['email']),
             $data['email'],
-            $this->encodePassword($data['password']),
+            $this->hashPassword($data['password']),
             $data['gender'] ?? null,
             $data['first_name'],
             $data['last_name'],
@@ -192,10 +193,8 @@ class AdherentFactory
         return new \DateTime($birthdate);
     }
 
-    private function encodePassword(string $password): string
+    private function hashPassword(string $password): string
     {
-        $encoder = $this->encoders->getEncoder(Adherent::class);
-
-        return $encoder->encodePassword($password, null);
+        return $this->hasher->hash($password);
     }
 }

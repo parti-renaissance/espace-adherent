@@ -88,7 +88,6 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
 
     public function getSalt()
     {
-        return;
     }
 
     public function getUsername()

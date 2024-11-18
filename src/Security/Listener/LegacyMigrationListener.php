@@ -5,7 +5,7 @@ namespace App\Security\Listener;
 use App\Entity\Adherent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 /**
@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 class LegacyMigrationListener implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly EncoderFactoryInterface $encoderFactory,
+        private readonly UserPasswordHasherInterface $hasher,
         private readonly EntityManagerInterface $manager,
     ) {
     }
@@ -32,20 +32,13 @@ class LegacyMigrationListener implements EventSubscriberInterface
             return;
         }
 
-        $request = $event->getRequest();
-
-        if ('app_user_login_check' !== $request->attributes->get('_route')) {
-            return;
-        }
-
         $token = $event->getAuthenticationToken();
 
         if ($user->hasLegacyPassword()) {
             $user->clearOldPassword();
 
-            $encoder = $this->encoderFactory->getEncoder($user);
             $user->migratePassword(
-                $encoder->encodePassword($event->getRequest()->request->get('_login_password'), null)
+                $this->hasher->hashPassword($user, $event->getRequest()->request->get('_password'))
             );
 
             $this->manager->persist($user);

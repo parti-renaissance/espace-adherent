@@ -94,8 +94,7 @@ Gender: Genre
 Invalid credentials.: L'adresse email et le mot de passe que vous avez saisis ne correspondent pas.
 Invalid or expired login link.: Le lien de connexion n'est plus actif ou invalide
 Username could not be found.: L'adresse email et le mot de passe que vous avez saisis ne correspondent pas.
-Max attempts reached.: Vous avez effectué 5 tentatives de connexion erronées. Veuillez attendre 1 minute avant de réessayer.
-adherent.error.must_be_validated: Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu l'email de validation, vous pouvez <a href="{url}">cliquer ici</a> pour le recevoir à nouveau.
+Too many failed login attempts, please try again in %minutes% minute.: Vous avez effectué 5 tentatives de connexion erronées. Veuillez attendre {minutes} minute avant de réessayer.
 user.error.must_be_validated: Pour vous connecter vous devez confirmer votre adresse email.
 adherent.activity_position.form_label: Profession
 adherent.activity_position.student: Étudiant

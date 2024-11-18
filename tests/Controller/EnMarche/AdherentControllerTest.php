@@ -6,7 +6,6 @@ use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Reporting\EmailSubscriptionHistory;
-use App\Mailer\Message\AdherentContactMessage;
 use App\Mailer\Message\CommitteeCreationConfirmationMessage;
 use App\Repository\CommitteeRepository;
 use App\Repository\Email\EmailLogRepository;
@@ -30,14 +29,6 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
     /* @var EmailLogRepository */
     private $emailRepository;
     private $subscriptionTypeRepository;
-
-    public function testMyEventsPageIsProtected(): void
-    {
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/mes-evenements');
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-    }
 
     public function testAuthenticatedAdherentCanSeeHisUpcomingAndPastEvents(): void
     {
@@ -74,15 +65,6 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertSame('Grand Meeting de Marseille', trim($titles->last()->text()));
 
         Chronos::setTestNow();
-    }
-
-    #[DataProvider('provideProfilePage')]
-    public function testProfileActionIsSecured(string $profilePage): void
-    {
-        $this->client->request(Request::METHOD_GET, $profilePage);
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
     }
 
     #[DataProvider('provideProfilePage')]
@@ -128,179 +110,6 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSame('Thomas Leclerc', $crawler->filter('.adherent-profile__id .name')->text());
         $this->assertStringContainsString('Non adhérent.', $crawler->filter('.adherent-profile__id .adhesion-date')->text());
-    }
-
-    public function testProfileActionIsNotAccessibleForDisabledAdherent(): void
-    {
-        $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->client->submit($crawler->selectButton('Connexion')->form([
-            '_login_email' => 'michelle.dufour@example.ch',
-            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
-        ]));
-
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-
-        $crawler = $this->client->followRedirect();
-
-        $this->assertStringContainsString('Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu l\'email de validation, vous pouvez cliquer ici pour le recevoir à nouveau.', $crawler->filter('#auth-error')->text());
-    }
-
-    public function testEditAdherentProfile(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
-
-        $adherent = $this->getAdherentRepository()->findOneByEmail('carl999@example.fr');
-        $oldLatitude = $adherent->getLatitude();
-        $oldLongitude = $adherent->getLongitude();
-        $histories06Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe');
-        $histories06Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe');
-        $histories77Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe');
-        $histories77Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe');
-
-        $this->assertCount(6, $histories77Subscriptions);
-        $this->assertCount(0, $histories77Unsubscriptions);
-        $this->assertCount(6, $histories06Subscriptions);
-        $this->assertCount(0, $histories06Unsubscriptions);
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mon-compte');
-
-        $inputPattern = 'input[name="adherent_profile[%s]"]';
-        $optionPattern = 'select[name="adherent_profile[%s]"] option[selected="selected"]';
-
-        self::assertSame('male', $crawler->filter(\sprintf($optionPattern, 'gender'))->attr('value'));
-        self::assertSame('Carl', $crawler->filter(\sprintf($inputPattern, 'firstName'))->attr('value'));
-        self::assertSame('Mirabeau', $crawler->filter(\sprintf($inputPattern, 'lastName'))->attr('value'));
-        self::assertSame('826 avenue du lys', $crawler->filter(\sprintf($inputPattern, 'postAddress][address'))->attr('value'));
-        self::assertSame('77190', $crawler->filter(\sprintf($inputPattern, 'postAddress][postalCode'))->attr('value'));
-        self::assertSame('77190-77152', $crawler->filter(\sprintf($inputPattern, 'postAddress][city'))->attr('value'));
-        self::assertSame('France', $crawler->filter(\sprintf($optionPattern, 'postAddress][country'))->text());
-        self::assertSame('01 11 22 33 44', $crawler->filter(\sprintf($inputPattern, 'phone][number'))->attr('value'));
-        self::assertSame('Retraité', $crawler->filter(\sprintf($optionPattern, 'position'))->text());
-        self::assertSame('1950-07-08', $crawler->filter(\sprintf($inputPattern, 'birthdate'))->attr('value'));
-
-        // Submit the profile form with invalid data
-        $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
-            'adherent_profile' => [
-                'emailAddress' => '',
-                'gender' => 'male',
-                'firstName' => '',
-                'lastName' => '',
-                'nationality' => '',
-                'postAddress' => [
-                    'address' => '',
-                    'country' => 'FR',
-                    'postalCode' => '',
-                    'city' => '10102-45029',
-                    'cityName' => '',
-                ],
-                'phone' => [
-                    'country' => 'FR',
-                    'number' => '',
-                ],
-                'position' => 'student',
-            ],
-        ]));
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-
-        $errors = $crawler->filter('.em-form--error');
-        self::assertSame(6, $errors->count());
-        self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(0)->text());
-        self::assertSame('Cette valeur ne doit pas être vide.', $errors->eq(1)->text());
-        self::assertSame('L\'adresse est obligatoire.', $errors->eq(2)->text());
-        self::assertSame('Veuillez renseigner un code postal.', $errors->eq(3)->text());
-        self::assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(4)->text());
-        self::assertSame('L\'adresse email est requise.', $errors->eq(5)->text());
-
-        // Submit the profile form with too long input
-        $crawler = $this->client->submit($crawler->selectButton('Enregistrer')->form([
-            'adherent_profile' => [
-                'emailAddress' => 'carl999@example.fr',
-                'gender' => 'female',
-                'firstName' => 'Jean',
-                'lastName' => 'Dupont',
-                'nationality' => 'FR',
-                'postAddress' => [
-                    'address' => 'Une adresse de 150 caractères, ça peut arriver.Une adresse de 150 caractères, ça peut arriver.Une adresse de 150 caractères, ça peut arriver.Oui oui oui.',
-                    'country' => 'FR',
-                    'postalCode' => '0600000000000000',
-                    'city' => '06000-6088',
-                    'cityName' => 'Nice, France',
-                ],
-                'phone' => [
-                    'country' => 'FR',
-                    'number' => '01 01 02 03 04',
-                ],
-                'position' => 'student',
-                'birthdate' => '1985-10-27',
-            ],
-        ]));
-
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-
-        $errors = $crawler->filter('.em-form--error');
-        self::assertSame(4, $errors->count());
-        self::assertSame('L\'adresse ne peut pas dépasser 150 caractères.', $errors->eq(0)->text());
-        self::assertSame('Le code postal doit contenir moins de 15 caractères.', $errors->eq(1)->text());
-        self::assertSame('Votre adresse n\'est pas reconnue. Vérifiez qu\'elle soit correcte.', $errors->eq(2)->text());
-        self::assertSame('Cette valeur n\'est pas un code postal français valide.', $errors->eq(3)->text());
-
-        // Submit the profile form with valid data
-        $this->client->submit($crawler->selectButton('Enregistrer')->form([
-            'adherent_profile' => [
-                'gender' => 'female',
-                'firstName' => 'Jean',
-                'lastName' => 'Dupont',
-                'postAddress' => [
-                    'address' => '9 rue du Lycée',
-                    'country' => 'FR',
-                    'postalCode' => '06000',
-                    'city' => '06000-6088',
-                    'cityName' => 'Nice',
-                ],
-                'phone' => [
-                    'country' => 'FR',
-                    'number' => '01 01 02 03 04',
-                ],
-                'position' => 'student',
-                'birthdate' => '1985-10-27',
-            ],
-        ]));
-
-        $this->assertClientIsRedirectedTo('/parametres/mon-compte', $this->client);
-
-        $crawler = $this->client->followRedirect();
-
-        $this->seeFlashMessage($crawler, 'Vos informations ont été mises à jour avec succès.');
-
-        // We need to reload the manager reference to get the updated data
-        /** @var Adherent $adherent */
-        $adherent = $this->client->getContainer()->get('doctrine')->getManager()->getRepository(Adherent::class)->findOneByEmail('carl999@example.fr');
-
-        self::assertSame('female', $adherent->getGender());
-        self::assertSame('Jean Dupont', $adherent->getFullName());
-        self::assertSame('9 rue du Lycée', $adherent->getAddress());
-        self::assertSame('06000', $adherent->getPostalCode());
-        self::assertSame('Nice', $adherent->getCityName());
-        self::assertSame('101020304', $adherent->getPhone()->getNationalNumber());
-        self::assertSame('student', $adherent->getPosition());
-        $this->assertNotNull($newLatitude = $adherent->getLatitude());
-        $this->assertNotNull($newLongitude = $adherent->getLongitude());
-        $this->assertNotSame($oldLatitude, $newLatitude);
-        $this->assertNotSame($oldLongitude, $newLongitude);
-
-        $histories06Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe');
-        $histories06Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe');
-        $histories77Subscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'subscribe');
-        $histories77Unsubscriptions = $this->findEmailSubscriptionHistoryByAdherent($adherent, 'unsubscribe');
-
-        $this->assertCount(6, $histories77Subscriptions);
-        $this->assertCount(0, $histories77Unsubscriptions);
-        $this->assertCount(6, $histories06Subscriptions);
-        $this->assertCount(0, $histories06Unsubscriptions);
     }
 
     public function testCertifiedAdherentCanNotEditFields(): void
@@ -586,14 +395,6 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
         ];
     }
 
-    public function testDocumentsActionSecured(): void
-    {
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-    }
-
     public function testDocumentsActionIsAccessibleAsAdherent(): void
     {
         $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
@@ -601,38 +402,6 @@ class AdherentControllerTest extends AbstractEnMarcheWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertStringContainsString('Documents', $this->client->getResponse()->getContent());
-    }
-
-    public function testContactActionSecured(): void
-    {
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/contacter/'.LoadAdherentData::ADHERENT_1_UUID);
-
-        $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-    }
-
-    public function testContactActionForAdherent(): void
-    {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->request(Request::METHOD_GET, '/espace-adherent/contacter/'.LoadAdherentData::ADHERENT_1_UUID);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertStringContainsString('Contacter Michelle Dufour', $this->client->getResponse()->getContent());
-
-        $this->client->submit($crawler->selectButton('Envoyer')->form([
-            'g-recaptcha-response' => 'dummy',
-            'contact_message' => [
-                'content' => 'A message I would like to send to Miss Dufour',
-            ],
-        ]));
-
-        $this->assertStatusCode(Response::HTTP_FOUND, $this->client);
-        $crawler = $this->client->followRedirect();
-        $this->assertStatusCode(Response::HTTP_OK, $this->client);
-        $this->seeFlashMessage($crawler, 'Votre message a bien été envoyé.');
-
-        // Email should have been sent
-        $this->assertCount(1, $this->getEmailRepository()->findMessages(AdherentContactMessage::class));
     }
 
     public function testContactActionWithInvalidUuid(): void

@@ -19,13 +19,6 @@ class CommitteeAdherentVotingPlatformControllerTest extends AbstractEnMarcheWebT
 
     private const VOTER_1 = 'assesseur@en-marche-dev.fr';
 
-    public function testAsAnonymousICannotAccessToVotingPlatform(): void
-    {
-        $this->client->request(Request::METHOD_GET, self::ELECTION_URI_1);
-
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-    }
-
     public function testAsConnectedUserICannotAccessToVotingPlatformIfIAmNotInVotersList(): void
     {
         self::authenticateAsAdherent($this->client, 'carl999@example.fr');

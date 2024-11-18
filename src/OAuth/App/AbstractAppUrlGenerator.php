@@ -26,11 +26,6 @@ abstract class AbstractAppUrlGenerator implements AuthAppUrlGeneratorInterface
         return $this->generateHomepageLink();
     }
 
-    public function generateForLogoutSuccess(Request $request): string
-    {
-        return $this->generateHomepageLink();
-    }
-
     public function getAppHost(): string
     {
         return '';

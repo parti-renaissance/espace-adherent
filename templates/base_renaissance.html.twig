@@ -1,6 +1,6 @@
 {% apply spaceless %}
 {% set homepage_url = 'https://' ~ renaissance_host %}
-{% set is_previous_admin = is_granted('ROLE_PREVIOUS_ADMIN') %}
+{% set is_previous_admin = is_granted('IS_IMPERSONATOR') %}
 {% endapply %}<!DOCTYPE html>
 <html lang="fr">
 <head>

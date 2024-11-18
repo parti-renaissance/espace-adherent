@@ -1,5 +1,5 @@
 security:
-    encoders:
+    password_hashers:
         App\Entity\Administrator:
             algorithm: md5
             encode_as_base64: false

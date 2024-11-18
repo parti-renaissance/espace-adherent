@@ -73,7 +73,7 @@ class UpdateVotingCommitteeListener implements EventSubscriberInterface
 
     public function onUpdateCommitteeMembership(CommitteeEventInterface $event): void
     {
-        if (!$this->authorizationChecker->isGranted('ROLE_PREVIOUS_ADMIN')) {
+        if (!$this->authorizationChecker->isGranted('IS_IMPERSONATOR')) {
             return;
         }
 

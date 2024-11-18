@@ -3,22 +3,19 @@
 namespace App\Admin;
 
 use App\Entity\Administrator;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 class AdministratorFactory
 {
-    private $encoders;
-
-    public function __construct(EncoderFactoryInterface $encoders)
+    public function __construct(private readonly PasswordHasherFactoryInterface $hasherFactory)
     {
-        $this->encoders = $encoders;
     }
 
     public function createFromArray(array $data): Administrator
     {
         $admin = new Administrator();
         $admin->setEmailAddress($data['email']);
-        $admin->setPassword($this->encodePassword($data['password']));
+        $admin->setPassword($this->hashPassword($data['password']));
         $admin->setGoogleAuthenticatorSecret($data['secret'] ?? null);
         if (isset($data['activated'])) {
             $admin->setActivated($data['activated']);
@@ -31,8 +28,8 @@ class AdministratorFactory
         return $admin;
     }
 
-    private function encodePassword(string $password): string
+    private function hashPassword(string $password): string
     {
-        return $this->encoders->getEncoder(Administrator::class)->encodePassword($password, null);
+        return $this->hasherFactory->getPasswordHasher(Administrator::class)->hash($password);
     }
 }

@@ -6,6 +6,6 @@ services:
 framework:
     test: true
     session:
-        storage_id: session.storage.mock_file
+        storage_factory_id: session.storage.factory.mock_file
     cache:
-        app: cache.adapter.null
+        app: cache.adapter.apcu

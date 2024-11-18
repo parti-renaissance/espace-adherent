@@ -7,14 +7,12 @@ use App\Entity\Geo\Zone;
 use App\Messenger\MessageRecorder\MessageRecorderInterface;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 use Tests\App\TestHelperTrait;
 
 /**
@@ -73,7 +71,7 @@ trait ControllerTestTrait
             throw new \Exception(\sprintf('Adherent %s not found', $emailAddress));
         }
 
-        $this->authenticate($client, $user, 'main');
+        $this->authenticate($client, $user);
     }
 
     public function authenticateAsAdmin(KernelBrowser $client, string $email = 'admin@en-marche-dev.fr'): void
@@ -82,7 +80,7 @@ trait ControllerTestTrait
             throw new \Exception(\sprintf('Admin %s not found', $email));
         }
 
-        $this->authenticate($client, $user, 'admin');
+        $this->authenticate($client, $user);
     }
 
     protected function authenticateAsAdherentWithChoosingSpace(string $email, string $spaceLinkName): void
@@ -165,15 +163,9 @@ trait ControllerTestTrait
         self::assertEquals(1, \count($messages), 'Expected message not found.');
     }
 
-    private function authenticate(KernelBrowser $client, UserInterface $user, string $firewallName): void
+    private function authenticate(KernelBrowser $client, UserInterface $user): void
     {
-        $session = $client->getContainer()->get('session');
-
-        $token = new PostAuthenticationGuardToken($user, $firewallName, $user->getRoles());
-        $session->set('_security_main_context', serialize($token));
-        $session->save();
-
-        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        $client->loginUser($user, 'main_context');
     }
 
     private static function assertAdherentHasZone(Adherent $adherent, string $code): void

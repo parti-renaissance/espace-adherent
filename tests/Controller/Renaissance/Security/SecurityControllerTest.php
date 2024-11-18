@@ -38,14 +38,14 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertCount(0, $crawler->filter('.re-paragraph-status--error'));
 
         $this->client->submit($crawler->selectButton('Me connecter')->form([
-            '_login_email' => $email,
-            '_login_password' => LoadAdherentData::DEFAULT_PASSWORD,
+            '_username' => $email,
+            '_password' => LoadAdherentData::DEFAULT_PASSWORD,
         ]));
 
         $adherent = $this->adherentRepository->findOneByEmail($email);
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/app', $this->client);
+        $this->assertClientIsRedirectedTo('/app', $this->client, true);
         $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
 
         $this->client->followRedirect();
@@ -69,12 +69,12 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertCount(0, $crawler->filter('.re-paragraph-status--error'));
 
         $this->client->submit($crawler->selectButton('Me connecter')->form([
-            '_login_email' => $username,
-            '_login_password' => $password,
+            '_username' => $username,
+            '_password' => $password,
         ]));
 
         $this->assertResponseStatusCode(Response::HTTP_FOUND, $this->client->getResponse());
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client, true);
 
         $crawler = $this->client->followRedirect();
 
@@ -99,7 +99,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
             'Registered not validated account' => [
                 'michelle.dufour@example.ch',
                 'secret!12345',
-                'Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu l\'email de validation, vous pouvez cliquer ici pour le recevoir à nouveau.',
+                'Pour vous connecter vous devez confirmer votre adresse email.',
             ],
             'Registered disabled account' => [
                 'simple-user-disabled@example.ch',

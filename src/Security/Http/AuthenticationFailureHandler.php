@@ -6,6 +6,7 @@ use App\Entity\FailedLoginAttempt;
 use App\Repository\FailedLoginAttemptRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authentication\DefaultAuthenticationFailureHandler;
@@ -27,7 +28,7 @@ class AuthenticationFailureHandler extends DefaultAuthenticationFailureHandler
         $this->failedLoginAttemptRepository = $failedLoginAttemptRepository;
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         $this->failedLoginAttemptRepository->save(FailedLoginAttempt::createFromRequest($request));
 
