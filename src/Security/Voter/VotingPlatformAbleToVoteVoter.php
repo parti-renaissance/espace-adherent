@@ -6,6 +6,7 @@ use App\Adherent\Tag\TagEnum;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\VotingPlatform\Election;
+use App\Repository\DonationRepository;
 use App\Repository\VotingPlatform\VoteRepository;
 use App\Repository\VotingPlatform\VoterRepository;
 
@@ -17,6 +18,7 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
     public function __construct(
         private readonly VoterRepository $voterRepository,
         private readonly VoteRepository $voteRepository,
+        private readonly DonationRepository $donationRepository,
     ) {
     }
 
@@ -37,6 +39,22 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
 
         if (!$designation->isLocalPollType() && $adherent->isRenaissanceSympathizer()) {
             return false;
+        }
+
+        if ($designation->isCongressCNType()) {
+            if (!$adherent->hasActiveMembership()) {
+                return false;
+            }
+
+            if ($adherent->hasParliamentaryMandates()) {
+                return $adherent->isContributionUpToDate();
+            }
+
+            if (!$this->donationRepository->countCotisationForAdherent($adherent, new \DateTime('2024-11-05 00:00:00'))) {
+                return false;
+            }
+
+            return true;
         }
 
         if ($designation->isConsultationType() || $designation->isVoteType()) {

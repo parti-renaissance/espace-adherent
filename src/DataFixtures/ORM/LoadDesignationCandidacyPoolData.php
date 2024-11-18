@@ -66,8 +66,12 @@ class LoadDesignationCandidacyPoolData extends Fixture implements DependentFixtu
         $candidacy->isSubstitute = true;
 
         /** @var Designation $designation */
-        $designation = $this->getReference('designation-16');
-        $designation->addCandidacyPool($pool);
+        foreach ([
+            $this->getReference('designation-16'),
+            $this->getReference('designation-17'),
+        ] as $designation) {
+            $designation->addCandidacyPool($pool);
+        }
 
         $manager->flush();
     }

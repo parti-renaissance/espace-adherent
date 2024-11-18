@@ -2,12 +2,6 @@
 
 {% set start_button_label = 'J\'accède au vote' %}
 
-{% block election_sub_title %}
-    <p class="text-gray-500">
-        Le vote est ouvert du {{ election.voteStartDate|date('d/m/Y \à H:i') }} au {{ election.voteEndDate|date('d/m/Y \à H:i') }}
-    </p>
-{% endblock %}
-
 {% block vote_finish_action_block %}
     <div class="b__nudge--bottom-large b__nudge--top-large">
         <a href="{{ path('app_sas_election_index', {uuid: designation.getUuid()}) }}" class="btn btn--blue">

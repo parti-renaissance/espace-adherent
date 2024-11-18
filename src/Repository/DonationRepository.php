@@ -125,4 +125,23 @@ class DonationRepository extends ServiceEntityRepository
             ->getResult(), 'total', 'year'
         );
     }
+
+    public function countCotisationForAdherent(Adherent $adherent, \DateTime $before): int
+    {
+        return (int) $this->createQueryBuilder('donation')
+            ->select('COUNT(DISTINCT donation.id)')
+            ->innerJoin('donation.donator', 'donator')
+            ->where('donator.adherent = :adherent')
+            ->andWhere('donation.membership = 1')
+            ->andWhere('donation.status = :status')
+            ->andWhere('donation.donatedAt < :before')
+            ->setParameters([
+                'adherent' => $adherent,
+                'status' => Donation::STATUS_FINISHED,
+                'before' => $before,
+            ])
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
 }

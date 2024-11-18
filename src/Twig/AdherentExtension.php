@@ -18,6 +18,7 @@ class AdherentExtension extends AbstractExtension
             new TwigFunction('get_session_modal_context', [AdherentRuntime::class, 'getSessionModalContext']),
             new TwigFunction('get_name_by_uuid', [AdherentRuntime::class, 'getNameByUuid']),
             new TwigFunction('translate_tag', [AdherentRuntime::class, 'translateTag']),
+            new TwigFunction('count_contribution', [AdherentRuntime::class, 'countContribution']),
         ];
     }
 }

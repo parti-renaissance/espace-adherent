@@ -8,7 +8,7 @@
             {{ include('voting_platform/confirmation/candidate_box/poll_content.html.twig') }}
         {% elseif designation.isConsultationType() or designation.isVoteType() %}
             {{ include('voting_platform/confirmation/candidate_box/consultation_content.html.twig') }}
-        {% elseif designation.isTerritorialAssemblyType() or designation.isLocalElectionTypes() or designation.isCommitteeSupervisorType() %}
+        {% elseif designation.isTerritorialAssemblyType() or designation.isCongressCNType() or designation.isLocalElectionTypes() or designation.isCommitteeSupervisorType() %}
             {{ include('voting_platform/confirmation/candidate_box/local_election_content.html.twig') }}
         {% else %}
             {{ include('voting_platform/confirmation/candidate_box/default_content.html.twig') }}
