@@ -14,14 +14,6 @@
     <h2 class="text--extra-large text-base font-medium lg:text-xl mt-3">{{ designation.getTitle() }}</h2>
 {% endblock %}
 
-{% block banner %}
-    <div class="max-w-8xl mx-auto py-3 px-4 md:px-6">
-        <a href="{{ path('app_renaissance_local_election_home', {uuid: designation.getUuid()}) }}" class="text-base text-gray-500 hover:text-gray-900">
-            ← Retourner
-        </a>
-    </div>
-{% endblock %}
-
 {% block voting_platform_subtitle %}
     {{ designation.getZones()|join(', ') }}
 {% endblock %}

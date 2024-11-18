@@ -95,6 +95,8 @@ class ConfigureCommand extends Command
                 $this->configureConsultation($designation);
             } elseif ($designation->isTerritorialAssemblyType()) {
                 $this->configureTerritorialAssembly($designation);
+            } elseif ($designation->isCongressCNType()) {
+                $this->configureCongressCN($designation);
             }
 
             $this->io->progressAdvance();
@@ -394,6 +396,49 @@ class ConfigureCommand extends Command
         }
 
         $adherents = $this->adherentRepository->findAllWithActifLocalMandates();
+
+        $this->entityManager->persist($this->createVoterList($election, $adherents));
+        $this->entityManager->persist($election);
+        $this->entityManager->flush();
+
+        if ($election->isVotePeriodStarted()) {
+            $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+        }
+    }
+
+    private function configureCongressCN(Designation $designation): void
+    {
+        if ($election = $this->electionRepository->findOneByDesignation($designation)) {
+            if (
+                !$election->isNotificationAlreadySent(Designation::NOTIFICATION_VOTE_OPENED)
+                && $election->isVotePeriodStarted()
+            ) {
+                $this->dispatcher->dispatch(new VotingPlatformElectionVoteIsOpenEvent($election));
+            }
+
+            return;
+        }
+
+        if (!\count($designation->getCandidacyPools())) {
+            return;
+        }
+
+        $election = $this->createNewElection($designation);
+
+        foreach ($designation->getCandidacyPools() as $candidacyPool) {
+            $election->getCurrentRound()->addElectionPool($pool = new ElectionPool(''));
+            $election->addElectionPool($pool);
+
+            foreach ($candidacyPool->getCandidaciesGroups() as $candidaciesGroup) {
+                $pool->addCandidateGroup($group = new CandidateGroup());
+
+                foreach ($candidaciesGroup->getCandidacies() as $candidacy) {
+                    $group->addCandidate(new Candidate($candidacy->getFirstName(), $candidacy->getLastName(), $candidacy->getGender(), null, null, $candidacy->isSubstitute));
+                }
+            }
+        }
+
+        $adherents = $this->adherentRepository->findAllForCongressCNElection();
 
         $this->entityManager->persist($this->createVoterList($election, $adherents));
         $this->entityManager->persist($election);

@@ -8,39 +8,30 @@ use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\AdherentRepository;
+use App\Repository\DonationRepository;
 use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class AdherentRuntime implements RuntimeExtensionInterface
 {
-    private $memberInterests;
-    private $electedRepresentativeRepository;
-    private $committeeMandateRepository;
-    private $adherentRepository;
-    private $tagTranslator;
-
     public function __construct(
-        ElectedRepresentativeRepository $electedRepresentativeRepository,
-        CommitteeAdherentMandateRepository $committeeMandateRepository,
-        AdherentRepository $adherentRepository,
-        TagTranslator $tagTranslator,
-        array $adherentInterests,
+        private readonly ElectedRepresentativeRepository $electedRepresentativeRepository,
+        private readonly CommitteeAdherentMandateRepository $committeeMandateRepository,
+        private readonly AdherentRepository $adherentRepository,
+        private readonly DonationRepository $donationRepository,
+        private readonly TagTranslator $tagTranslator,
+        private readonly array $adherentInterests,
     ) {
-        $this->electedRepresentativeRepository = $electedRepresentativeRepository;
-        $this->committeeMandateRepository = $committeeMandateRepository;
-        $this->adherentRepository = $adherentRepository;
-        $this->tagTranslator = $tagTranslator;
-        $this->memberInterests = $adherentInterests;
     }
 
     public function getMemberInterestLabel(string $interest)
     {
-        if (!isset($this->memberInterests[$interest])) {
+        if (!isset($this->adherentInterests[$interest])) {
             return '';
         }
 
-        return $this->memberInterests[$interest];
+        return $this->adherentInterests[$interest];
     }
 
     public function translateTag(string $tag, bool $fullTag = true): string
@@ -137,5 +128,10 @@ class AdherentRuntime implements RuntimeExtensionInterface
         }
 
         return $request->getSession()->remove(SessionModalActivatorListener::SESSION_KEY);
+    }
+
+    public function countContribution(Adherent $adherent, \DateTime $before): int
+    {
+        return $this->donationRepository->countCotisationForAdherent($adherent, $before);
     }
 }

@@ -2,14 +2,6 @@
 
 {% set start_button_label = 'J\'accède au vote' %}
 
-{% block banner %}
-    <div class="max-w-8xl mx-auto py-3 px-4 md:px-6">
-        <a href="{{ path('app_renaissance_departmental_election_lists', {uuid: designation.getUuid()}) }}" class="text-base text-gray-500 hover:text-gray-900">
-            ← Retourner
-        </a>
-    </div>
-{% endblock %}
-
 {% block voting_platform_subtitle %}
     {{ designation.getZones()|join(', ') }}
 {% endblock %}

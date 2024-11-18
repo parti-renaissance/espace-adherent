@@ -50,6 +50,7 @@
                     constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR'),
                     constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::CONSULTATION'),
                     constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::VOTE'),
+                    constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::CONGRESS_CN'),
                 ] %}
                     <p>{{ designation.getDescription()|nl2br }}</p>
                 {% elseif election.designationType == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::NATIONAL_COUNCIL') %}

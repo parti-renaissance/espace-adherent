@@ -132,4 +132,9 @@ class MandateTypeEnum
         self::CONSEILLER_FDE,
         self::DELEGUE_CONSULAIRE,
     ];
+
+    public const PARLIAMENTARY_TYPES = [
+        self::SENATEUR,
+        self::DEPUTE,
+    ];
 }

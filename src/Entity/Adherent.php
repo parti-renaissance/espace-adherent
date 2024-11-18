@@ -10,6 +10,7 @@ use App\Address\AddressInterface;
 use App\Address\PostAddressFactory;
 use App\Adherent\Contribution\ContributionAmountUtils;
 use App\Adherent\LastLoginGroupEnum;
+use App\Adherent\MandateTypeEnum;
 use App\Adherent\Tag\TagEnum;
 use App\Adherent\Tag\TranslatedTagInterface;
 use App\AdherentProfile\AdherentProfile;
@@ -2050,6 +2051,17 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         ;
     }
 
+    public function hasParliamentaryMandates(): bool
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->in('mandateType', array_merge(MandateTypeEnum::PARLIAMENTARY_TYPES, [MandateTypeEnum::MINISTER])))
+            ->andWhere(Criteria::expr()->eq('finishAt', null))
+            ->andWhere(Criteria::expr()->eq('quality', null))
+        ;
+
+        return !$this->adherentMandates->matching($criteria)->isEmpty();
+    }
+
     /**
      * @return ElectedRepresentativeAdherentMandate[]
      */
@@ -2396,6 +2408,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $lastContribution = $this->getLastContribution();
 
         return $lastContribution && $lastContribution->getCreatedAt() >= $date;
+    }
+
+    public function isContributionUpToDate(): bool
+    {
+        return $this->hasTag(TagEnum::ELU_COTISATION_OK) || $this->hasRecentContribution();
     }
 
     #[Groups(['adherent_elect_read'])]

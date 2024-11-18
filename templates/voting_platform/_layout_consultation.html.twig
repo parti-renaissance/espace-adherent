@@ -3,17 +3,6 @@
 {% set start_button_label = 'J\'accède au vote' %}
 {% set vote_blanc_label = 'Ne se prononce pas' %}
 
-{% block banner %}
-    <div class="max-w-8xl mx-auto py-3 px-4 md:px-6">
-        <a href="{{ path('app_sas_election_index', {uuid: designation.getUuid()}) }}"
-           class="text-base text-gray-500 hover:text-gray-900">
-            ← Retourner
-        </a>
-    </div>
-{% endblock %}
-
-{% block election_sub_title '' %}
-
 {% block vote_step_pool_title %}
     {{ pool.code }}
 {% endblock %}

@@ -18,6 +18,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
     public const DESIGNATION_COMMITTEE_4_UUID = '95da3939-f178-4d67-9237-61d4ea57e33c';
     public const DESIGNATION_15_UUID = '18341df4-1654-432b-90f1-a432cda56d08';
     public const DESIGNATION_16_UUID = 'aa7b270a-51e7-4d74-8140-57a516da3084';
+    public const DESIGNATION_17_UUID = '39325008-4baf-4628-a909-96f0e6b66e65';
 
     public function load(ObjectManager $manager)
     {
@@ -283,10 +284,21 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
 
         $this->setReference('designation-16', $designation);
 
+        $manager->persist($designation = new Designation('Élection CN', Uuid::fromString(self::DESIGNATION_17_UUID)));
+        $designation->setType(DesignationTypeEnum::CONGRESS_CN);
+        $designation->setVoteStartDate(new \DateTime('-1 day'));
+        $designation->setVoteEndDate(new \DateTime('+10 days'));
+        $designation->alertTitle = 'Élection en cours !!';
+        $designation->alertBeginAt = new \DateTime('-3 day');
+        $designation->alertDescription = "# Élection\nvous avez **5 jours** pour voter.";
+        $designation->alertCtaLabel = 'Voir';
+        $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $this->setReference('designation-17', $designation);
+
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadGeoZoneData::class,
