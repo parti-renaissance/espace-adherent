@@ -10,7 +10,7 @@ use App\Scope\Exception\ScopeExceptionInterface;
 use App\Scope\GeneralScopeGenerator;
 use App\Scope\Generator\ScopeGeneratorInterface;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractScopeFilter extends AbstractFilter

@@ -15,7 +15,7 @@ use App\Repository\Event\BaseEventRepository;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class EventExtension implements QueryItemExtensionInterface, QueryCollectionExtensionInterface
 {

@@ -7,7 +7,7 @@ use App\Entity\AdherentMessage\Filter\AudienceFilter;
 use App\Geo\ManagedZoneProvider;
 use App\Repository\CommitteeRepository;
 use App\Scope\ScopeGeneratorResolver;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

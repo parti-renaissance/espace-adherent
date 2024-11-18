@@ -9,7 +9,7 @@ use App\Entity\Action\Action;
 use App\Entity\Action\ActionParticipant;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Service\Attribute\Required;
 
 final class MySubscribedActionsFilter extends AbstractFilter

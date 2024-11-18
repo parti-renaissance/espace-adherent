@@ -6,10 +6,10 @@ use App\AdherentSegment\AdherentSegmentTypeEnum;
 use App\Entity\AdherentMessage\Filter\AdherentSegmentAwareFilterInterface;
 use App\Form\AdherentSegmentType;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Security;
 
 class AdherentSegmentFilterType extends AbstractType
 {
