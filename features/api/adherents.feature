@@ -985,6 +985,7 @@ Feature:
                                     "conseiller_municipal": "Conseiller municipal",
                                     "conseiller_arrondissement": "Conseiller d'arrondissement",
                                     "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
+                                    "ministre": "Ministre",
                                     "conseiller_fde": "Conseiller FDE",
                                     "delegue_consulaire": "Délégué consulaire"
                                 },
@@ -1029,6 +1030,7 @@ Feature:
                                     "conseiller_municipal": "Conseiller municipal",
                                     "conseiller_arrondissement": "Conseiller d'arrondissement",
                                     "membre_assemblee_fde": "Membre de l'Assemblée des Français de l'étranger",
+                                    "ministre": "Ministre",
                                     "conseiller_fde": "Conseiller FDE",
                                     "delegue_consulaire": "Délégué consulaire"
                                 },

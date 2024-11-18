@@ -7,6 +7,7 @@ use App\Entity\Geo\Zone;
 class MandateTypeEnum
 {
     private const CORSICA_REGION_CODE = '94';
+    private const FRANCE_COUNTRY_CODE = 'FR';
 
     public const DEPUTE_EUROPEEN = 'depute_europeen';
     public const SENATEUR = 'senateur';
@@ -24,6 +25,7 @@ class MandateTypeEnum
     public const MEMBRE_ASSEMBLEE_FDE = 'membre_assemblee_fde';
     public const CONSEILLER_FDE = 'conseiller_fde';
     public const DELEGUE_CONSULAIRE = 'delegue_consulaire';
+    public const MINISTER = 'ministre';
 
     public const ALL = [
         self::DEPUTE_EUROPEEN,
@@ -42,6 +44,7 @@ class MandateTypeEnum
         self::MEMBRE_ASSEMBLEE_FDE,
         self::CONSEILLER_FDE,
         self::DELEGUE_CONSULAIRE,
+        self::MINISTER,
     ];
 
     public const ZONE_FILTER_BY_MANDATE = [
@@ -107,6 +110,10 @@ class MandateTypeEnum
         ],
         self::DELEGUE_CONSULAIRE => [
             'types' => [Zone::CONSULAR_DISTRICT],
+        ],
+        self::MINISTER => [
+            'types' => [Zone::COUNTRY],
+            'codes' => [self::FRANCE_COUNTRY_CODE],
         ],
     ];
 
