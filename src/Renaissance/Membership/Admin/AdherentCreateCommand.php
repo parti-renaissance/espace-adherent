@@ -18,12 +18,16 @@ class AdherentCreateCommand implements MembershipInterface
     #[Assert\NotBlank(message: 'common.gender.not_blank', groups: ['admin_adherent_renaissance_create'])]
     public ?string $gender = null;
 
-    #[Assert\Length(min: 2, max: 50, minMessage: 'admin.common.first_name.min_length', maxMessage: 'admin.common.first_name.max_length', groups: ['admin_adherent_renaissance_create'], options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank(groups: ['admin_adherent_renaissance_create'])]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(groups: ['admin_adherent_renaissance_create']),
+        new Assert\Length(min: 2, max: 50, minMessage: 'admin.common.first_name.min_length', maxMessage: 'admin.common.first_name.max_length', groups: ['admin_adherent_renaissance_create']),
+    ], groups: ['admin_adherent_renaissance_create'])]
     public ?string $firstName = null;
 
-    #[Assert\Length(min: 1, max: 50, minMessage: 'admin.common.last_name.min_length', maxMessage: 'admin.common.last_name.max_length', groups: ['admin_adherent_renaissance_create'], options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank(groups: ['admin_adherent_renaissance_create'])]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(groups: ['admin_adherent_renaissance_create']),
+        new Assert\Length(min: 1, max: 50, minMessage: 'admin.common.last_name.min_length', maxMessage: 'admin.common.last_name.max_length', groups: ['admin_adherent_renaissance_create']),
+    ], groups: ['admin_adherent_renaissance_create'])]
     public ?string $lastName = null;
 
     #[Assert\Country(message: 'common.nationality.invalid', groups: ['admin_adherent_renaissance_create'])]
@@ -59,7 +63,8 @@ class AdherentCreateCommand implements MembershipInterface
     public ?string $cotisationAmountChoice = CotisationAmountChoiceEnum::AMOUNT_30;
 
     #[Assert\Expression("this.cotisationAmountChoice != 'amount_other' or this.cotisationCustomAmount > 0", groups: ['admin_adherent_renaissance_create'], message: 'Le montant de la cotisation doit être positif')]
-    #[Assert\Range(minMessage: 'donation.amount.greater_than_0', maxMessage: 'donation.amount.less_than_7500', min: '0.01', max: 7500, groups: ['admin_adherent_renaissance_create'])]
+    #[Assert\Range(minMessage: 'donation.amount.greater_than_0', min: '0.01', groups: ['admin_adherent_renaissance_create'])]
+    #[Assert\Range(maxMessage: 'donation.amount.less_than_7500', max: 7500, groups: ['admin_adherent_renaissance_create'])]
     public ?float $cotisationCustomAmount = null;
 
     #[Assert\LessThanOrEqual('today')]

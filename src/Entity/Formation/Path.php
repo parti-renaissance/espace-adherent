@@ -44,8 +44,10 @@ class Path
     /**
      * @var string|null
      */
-    #[Assert\Length(min: 2, minMessage: 'path.description.min_length', options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank(message: 'path.description.not_blank')]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(message: 'path.description.not_blank'),
+        new Assert\Length(min: 2, minMessage: 'path.description.min_length'),
+    ])]
     #[ORM\Column(type: 'text')]
     private $description;
 

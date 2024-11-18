@@ -42,8 +42,10 @@ class LegislativeDistrictZone
     #[ORM\Column(name: '`rank`', type: 'smallint', options: ['unsigned' => true])]
     private $rank;
 
-    #[Assert\Length(min: 2, max: 100, groups: ['Admin'], options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank(groups: ['Admin'])]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(groups: ['Admin']),
+        new Assert\Length(min: 2, max: 100, groups: ['Admin']),
+    ], groups: ['Admin'])]
     #[ORM\Column(length: 100)]
     private $name;
 
