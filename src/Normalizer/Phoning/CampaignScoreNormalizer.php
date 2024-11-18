@@ -5,7 +5,7 @@ namespace App\Normalizer\Phoning;
 use App\Entity\Adherent;
 use App\Entity\Phoning\Campaign;
 use App\Repository\AdherentRepository;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

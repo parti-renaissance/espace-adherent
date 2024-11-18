@@ -9,7 +9,7 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Service\Attribute\Required;
 
 final class MySubscribedEventsFilter extends AbstractFilter

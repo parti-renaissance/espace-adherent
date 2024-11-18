@@ -4,7 +4,7 @@ namespace App\Adherent\Contribution;
 
 use App\Adherent\AdherentRoleEnum;
 use App\Entity\Adherent;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 class ContributionRequestProcessor

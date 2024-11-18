@@ -8,8 +8,8 @@ use App\Entity\Reporting\DeclaredMandateHistory;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Security;
 
 class DeclaredMandateChangeListener implements EventSubscriberInterface
 {

@@ -18,8 +18,8 @@ use App\VotingPlatform\Election\VoteCommand\VoteCommand;
 use App\VotingPlatform\Election\VoteCommandStateEnum;
 use App\VotingPlatform\Election\VoteCommandStorage;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 

@@ -7,12 +7,12 @@ use App\Entity\Event\EventCategory;
 use App\Entity\Geo\Zone;
 use App\Event\ListFilter;
 use App\Geo\ManagedZoneProvider;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Security;
 
 class EventFilterType extends AbstractType
 {
