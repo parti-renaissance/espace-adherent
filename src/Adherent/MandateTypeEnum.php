@@ -136,5 +136,6 @@ class MandateTypeEnum
     public const PARLIAMENTARY_TYPES = [
         self::SENATEUR,
         self::DEPUTE,
+        self::DEPUTE_EUROPEEN,
     ];
 }

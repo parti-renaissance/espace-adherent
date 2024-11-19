@@ -23,6 +23,7 @@ use App\Collection\ZoneCollection;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Controller\Api\UpdateImageController;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
+use App\Entity\AdherentMandate\AbstractAdherentMandate;
 use App\Entity\AdherentMandate\AdherentMandateInterface;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
@@ -428,7 +429,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var AdherentMandateInterface[]|Collection
      */
     #[Assert\Valid]
-    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentMandate\AbstractAdherentMandate::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AbstractAdherentMandate::class, cascade: ['all'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private $adherentMandates;
 
     /**
@@ -2054,12 +2055,19 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function hasParliamentaryMandates(): bool
     {
         $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->in('mandateType', array_merge(MandateTypeEnum::PARLIAMENTARY_TYPES, [MandateTypeEnum::MINISTER])))
             ->andWhere(Criteria::expr()->eq('finishAt', null))
             ->andWhere(Criteria::expr()->eq('quality', null))
         ;
 
-        return !$this->adherentMandates->matching($criteria)->isEmpty();
+        $types = array_merge(MandateTypeEnum::PARLIAMENTARY_TYPES, [MandateTypeEnum::MINISTER]);
+
+        return !$this->adherentMandates
+            ->matching($criteria)
+            ->filter(
+                fn (AbstractAdherentMandate $mandate) => $mandate instanceof ElectedRepresentativeAdherentMandate && \in_array($mandate->mandateType, $types)
+            )
+            ->isEmpty()
+        ;
     }
 
     /**
