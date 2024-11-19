@@ -26,4 +26,17 @@ class DeclaredMandateHistoryRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    /**
+     * @return DeclaredMandateHistory[]
+     */
+    public function findToNotifyOnTelegram(): array
+    {
+        return $this
+            ->createQueryBuilder('history')
+            ->where('history.telegramNotifiedAt IS NULL')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -32,6 +32,9 @@ class DeclaredMandateHistory
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeInterface $notifiedAt = null;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeInterface $telegramNotifiedAt = null;
+
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
     private ?Administrator $administrator = null;
@@ -80,6 +83,16 @@ class DeclaredMandateHistory
     public function setNotifiedAt(\DateTimeInterface $notifiedAt): void
     {
         $this->notifiedAt = $notifiedAt;
+    }
+
+    public function isTelegramNotifiedAt(): bool
+    {
+        return null !== $this->telegramNotifiedAt;
+    }
+
+    public function setTelegramNotifiedAt(\DateTimeInterface $telegramNotifiedAt): void
+    {
+        $this->telegramNotifiedAt = $telegramNotifiedAt;
     }
 
     public function getAdministrator(): ?Administrator
