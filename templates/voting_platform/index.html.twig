@@ -8,7 +8,16 @@
 
                 {{ block('election_sub_title') }}
 
-                {% if designation.isCommitteeAdherentType() %}
+                {% if designation.wordingWelcomePage %}
+                    {{ designation.wordingWelcomePage.content|markdown_to_html }}
+                {% elseif election.designationType in [
+                    constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR'),
+                    constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::CONSULTATION'),
+                    constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::VOTE'),
+                    constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::CONGRESS_CN'),
+                ] %}
+                    <p>{{ designation.getDescription()|nl2br }}</p>
+                {% elseif designation.isCommitteeAdherentType() %}
                     <p>Vous allez participer à la désignation des binômes paritaires d'adhérents au sein de votre comité. C’est un grand temps fort de démocratie interne pour notre mouvement et une première étape importante pour la représentativité des adhérentes et des adhérents au sein du Conseil territorial.</p>
 
                     <h2>Comment ça marche ?</h2>
@@ -46,13 +55,6 @@
 
                     <h2>Pour les territoires avec un nombre de membres supplémentaires voté par le Conseil territorial pour respecter la règle de parité au sein du Comité politique :</h2>
                     <p>A l’issue du vote des 5 binômes paritaires pour le Comité politique, seront élus individuellement (le(s) femme(s) ou le(es)’hommes(s)) figurant dans les binômes ayant obtenu le plus de voix en valeur absolue, tous types de binômes confondus, à la suite des binômes paritaires élus.</p>
-                {% elseif election.designationType in [
-                    constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::COMMITTEE_SUPERVISOR'),
-                    constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::CONSULTATION'),
-                    constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::VOTE'),
-                    constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::CONGRESS_CN'),
-                ] %}
-                    <p>{{ designation.getDescription()|nl2br }}</p>
                 {% elseif election.designationType == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::NATIONAL_COUNCIL') %}
                     <p>Pour assurer une meilleure représentativité et poursuivre nos objectifs de démocratie interne et de parité dans nos instances, nous vous invitions à désigner un trio composé d'un élu local, d'un animateur local et d'un adhérent qui constituera un quatuor paritaire avec le référent territorial. Le trio désigné siégera au Conseil national pendant 2 ans.</p>
 
@@ -75,8 +77,6 @@
                     <p>Ici, vous êtes comme dans l’isoloir. Votre choix ne sera connu que de vous seul. Lors de votre vote, vous recevrez un numéro anonymisé qui vous permettra de retrouver votre choix lors de l’affichage des résultats dans l’espace du Conseil national.</p>
                 {% elseif election.designationType == constant('App\\VotingPlatform\\Designation\\DesignationTypeEnum::POLL') %}
                     {{ cms_block('vote-statuses-voting-platform-description')|markdown_to_html }}
-                {% elseif designation.wordingWelcomePage %}
-                    {{ designation.wordingWelcomePage.content|markdown_to_html }}
                 {% else %}
                     {{ cms_block('voting-platform-index-election-description-' ~ designation.getType())|markdown_to_html }}
                 {% endif %}
