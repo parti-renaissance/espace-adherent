@@ -72,6 +72,7 @@ services:
             $voxHost: '%env(VOX_HOST)%'
             $templateWebhookKey: '%env(TEMPLATE_WEBHOOK_KEY)%'
             $telegramChatIdPrimoAdhesion: '%env(TELEGRAM_CHAT_ID_PRIMO_ADHESION)%'
+            $telegramChatIdDeclaredMandates: '%env(TELEGRAM_CHAT_ID_DECLARED_MANDATES)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
