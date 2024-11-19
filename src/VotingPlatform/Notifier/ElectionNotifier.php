@@ -11,6 +11,7 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\CommitteeElectionCandidacyPeriodIsOverMessage;
 use App\Mailer\Message\Renaissance\VotingPlatform\ConsultationAnnouncementMessage;
 use App\Mailer\Message\Renaissance\VotingPlatform\ConsultationIsOpenMessage;
+use App\Mailer\Message\Renaissance\VotingPlatform\ElectionIsOpenMessage;
 use App\Mailer\Message\Renaissance\VotingPlatform\ResultsReadyMessage;
 use App\Mailer\Message\Renaissance\VotingPlatform\VoteAnnouncementMessage;
 use App\Mailer\Message\Renaissance\VotingPlatform\VoteConfirmationMessage;
@@ -46,9 +47,11 @@ class ElectionNotifier
             function (array $recipients) use ($election, $electionType, $url) {
                 if (DesignationTypeEnum::CONSULTATION === $electionType) {
                     return ConsultationIsOpenMessage::create($election, $recipients, $url);
+                } elseif (DesignationTypeEnum::VOTE === $electionType) {
+                    return VoteIsOpenMessage::create($election, $recipients, $url);
                 }
 
-                return VoteIsOpenMessage::create($election, $recipients, $url);
+                return ElectionIsOpenMessage::create($election, $recipients, $url);
             }
         );
     }
@@ -57,6 +60,10 @@ class ElectionNotifier
     {
         $electionType = $election->getDesignationType();
         $url = $this->getUrl($election);
+
+        if (!\in_array($electionType, [DesignationTypeEnum::CONSULTATION, DesignationTypeEnum::VOTE], true)) {
+            return;
+        }
 
         $this->sendNotification(
             Designation::NOTIFICATION_VOTE_ANNOUNCEMENT,
