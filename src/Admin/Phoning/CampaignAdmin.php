@@ -110,6 +110,7 @@ class CampaignAdmin extends AbstractAdmin
                     'multiple' => true,
                     'model_manager' => $this->getModelManager(),
                     'admin_code' => AudienceAdmin::SERVICE_CODE,
+                    'minimum_input_length' => 1,
                 ])
                 ->add('hasSmsSubscription', BooleanType::class, [
                     'transform' => true,
