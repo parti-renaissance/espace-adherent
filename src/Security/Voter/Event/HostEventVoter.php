@@ -7,11 +7,11 @@ use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Security\Voter\AbstractAdherentVoter;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class HostEventVoter extends AbstractAdherentVoter
 {
-    public function __construct(private readonly SessionInterface $session)
+    public function __construct(private readonly RequestStack $requestStack)
     {
     }
 
@@ -25,7 +25,7 @@ class HostEventVoter extends AbstractAdherentVoter
      */
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $event): bool
     {
-        if ($delegatedAccessUuid = $this->session->get(DelegatedAccess::ATTRIBUTE_KEY)) {
+        if ($delegatedAccessUuid = $this->requestStack->getSession()->get(DelegatedAccess::ATTRIBUTE_KEY)) {
             $adherent = $adherent->getReceivedDelegatedAccessByUuid($delegatedAccessUuid)->getDelegator();
         }
 

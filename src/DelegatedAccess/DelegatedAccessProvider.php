@@ -4,15 +4,12 @@ namespace App\DelegatedAccess;
 
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class DelegatedAccessProvider
 {
-    private SessionInterface $session;
-
-    public function __construct(SessionInterface $session)
+    public function __construct(private readonly RequestStack $requestStack)
     {
-        $this->session = $session;
     }
 
     public function getMainUser(Adherent $user): Adherent
@@ -26,7 +23,7 @@ class DelegatedAccessProvider
 
     private function getDelegatedAccess(Adherent $user): ?DelegatedAccess
     {
-        if (null !== $delegatedAccessUuid = $this->session->get(DelegatedAccess::ATTRIBUTE_KEY)) {
+        if (null !== $delegatedAccessUuid = $this->requestStack->getSession()->get(DelegatedAccess::ATTRIBUTE_KEY)) {
             return $user->getReceivedDelegatedAccessByUuid($delegatedAccessUuid);
         }
 

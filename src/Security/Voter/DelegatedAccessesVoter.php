@@ -4,7 +4,7 @@ namespace App\Security\Voter;
 
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class DelegatedAccessesVoter extends AbstractAdherentVoter
 {
@@ -20,12 +20,8 @@ class DelegatedAccessesVoter extends AbstractAdherentVoter
     private const HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES = 'HAS_DELEGATED_ACCESS_ELECTED_REPRESENTATIVES';
     private const HAS_DELEGATED_ACCESS_FILES = 'HAS_DELEGATED_ACCESS_FILES';
 
-    /** @var SessionInterface */
-    private $session;
-
-    public function __construct(SessionInterface $session)
+    public function __construct(private readonly RequestStack $requestStack)
     {
-        $this->session = $session;
     }
 
     protected function supports(string $attribute, $subject): bool
@@ -35,7 +31,7 @@ class DelegatedAccessesVoter extends AbstractAdherentVoter
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        $delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY));
+        $delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->requestStack->getSession()->get(DelegatedAccess::ATTRIBUTE_KEY));
 
         if (null === $delegatedAccess) {
             return false;

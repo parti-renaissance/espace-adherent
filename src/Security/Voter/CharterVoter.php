@@ -5,23 +5,19 @@ namespace App\Security\Voter;
 use App\AdherentCharter\AdherentCharterTypeEnum;
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CharterVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'CAN_ACCEPT_CHARTER';
 
-    /** @var SessionInterface */
-    private $session;
-
-    public function __construct(SessionInterface $session)
+    public function __construct(private readonly RequestStack $requestStack)
     {
-        $this->session = $session;
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
+        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->requestStack->getSession()->get(DelegatedAccess::ATTRIBUTE_KEY))) {
             $adherent = $delegatedAccess->getDelegator();
         }
 

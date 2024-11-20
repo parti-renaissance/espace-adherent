@@ -2,32 +2,29 @@
 
 namespace App\ElectedRepresentative\Contribution;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ContributionRequestStorage
 {
     public const SESSION_KEY_COMMAND = 'elected_representative.contribution_request.command';
 
-    private SessionInterface $session;
-
-    public function __construct(SessionInterface $session)
+    public function __construct(private readonly RequestStack $requestStack)
     {
-        $this->session = $session;
     }
 
     public function save(ContributionRequest $contributionRequest): void
     {
-        $this->session->set(self::SESSION_KEY_COMMAND, $contributionRequest);
+        $this->requestStack->getSession()->set(self::SESSION_KEY_COMMAND, $contributionRequest);
     }
 
     public function clear(): void
     {
-        $this->session->remove(self::SESSION_KEY_COMMAND);
+        $this->requestStack->getSession()->remove(self::SESSION_KEY_COMMAND);
     }
 
     public function getContributionRequest(): ContributionRequest
     {
-        if (($command = $this->session->get(self::SESSION_KEY_COMMAND)) instanceof ContributionRequest) {
+        if (($command = $this->requestStack->getSession()->get(self::SESSION_KEY_COMMAND)) instanceof ContributionRequest) {
             return $command;
         }
 

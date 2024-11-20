@@ -6,22 +6,18 @@ use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Geo\ManagedZoneProvider;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 abstract class AbstractInManagedZoneValidator extends ConstraintValidator
 {
-    private ManagedZoneProvider $managedZoneProvider;
-    private Security $security;
-    private SessionInterface $session;
-
-    public function __construct(ManagedZoneProvider $managedZoneProvider, Security $security, SessionInterface $session)
-    {
-        $this->managedZoneProvider = $managedZoneProvider;
-        $this->security = $security;
-        $this->session = $session;
+    public function __construct(
+        private readonly ManagedZoneProvider $managedZoneProvider,
+        private readonly Security $security,
+        private readonly RequestStack $requestStack,
+    ) {
     }
 
     /**
@@ -80,7 +76,7 @@ abstract class AbstractInManagedZoneValidator extends ConstraintValidator
             return null;
         }
 
-        if (($delegatedAccessUuid = $this->session->get(DelegatedAccess::ATTRIBUTE_KEY)) && ($access = $user->getReceivedDelegatedAccessByUuid($delegatedAccessUuid))) {
+        if (($delegatedAccessUuid = $this->requestStack->getSession()->get(DelegatedAccess::ATTRIBUTE_KEY)) && ($access = $user->getReceivedDelegatedAccessByUuid($delegatedAccessUuid))) {
             return $access->getDelegator();
         }
 

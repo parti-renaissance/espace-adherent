@@ -6,24 +6,20 @@ use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\Poll\LocalPoll;
 use App\Security\Voter\AbstractAdherentVoter;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class EditCandidateLocalPollVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'CAN_EDIT_CANDIDATE_LOCAL_POLL';
 
-    /** @var SessionInterface */
-    private $session;
-
-    public function __construct(SessionInterface $session)
+    public function __construct(private readonly RequestStack $requestStack)
     {
-        $this->session = $session;
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
         $managedZone = null;
-        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
+        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->requestStack->getSession()->get(DelegatedAccess::ATTRIBUTE_KEY))) {
             $adherent = $delegatedAccess->getDelegator();
         }
 
