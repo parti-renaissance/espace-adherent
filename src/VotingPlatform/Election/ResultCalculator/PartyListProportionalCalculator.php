@@ -15,7 +15,7 @@ class PartyListProportionalCalculator extends MajoritarianCalculator
 {
     public function support(Designation $designation): bool
     {
-        return $designation->isLocalElectionType();
+        return $designation->isPartyListProportionalType();
     }
 
     public static function getPriority(): int
