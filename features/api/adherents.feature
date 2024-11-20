@@ -30,7 +30,15 @@ Feature:
                 "email_subscribed": true,
                 "firstName": "Referent75and77",
                 "lastName": "Referent75and77",
-                "zipCode": "75001"
+                "zipCode": "75001",
+                "main_zone": {
+                    "code": "75",
+                    "name": "Paris",
+                    "type": "department",
+                    "uuid": "@uuid@"
+                },
+                "district": null,
+                "committee_v2": null
             }
             """
 
@@ -55,7 +63,20 @@ Feature:
                 "email_subscribed": true,
                 "firstName": "Jacques",
                 "lastName": "Picard",
-                "zipCode": "75008"
+                "zipCode": "75008",
+                "main_zone": {
+                    "code": "75",
+                    "name": "Paris",
+                    "type": "department",
+                    "uuid": "@uuid@"
+                },
+                "district": {
+                    "code": "75-1",
+                    "name": "Paris (1)",
+                    "type": "district",
+                    "uuid": "@uuid@"
+                },
+                "committee_v2": null
             }
             """
 
