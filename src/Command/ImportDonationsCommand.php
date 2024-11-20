@@ -58,6 +58,7 @@ class ImportDonationsCommand extends Command
         'autriche' => 'AT',
         'belgique' => 'BE',
         'burkina faso' => 'BF',
+        'cameroun' => 'CM',
         'canada' => 'CA',
         'chine' => 'CN',
         'danemark' => 'DK',
@@ -124,6 +125,7 @@ class ImportDonationsCommand extends Command
         'congolaise' => 'CD',
         'italienne' => 'IT',
         'togolaise' => 'TG',
+        'tunisienne' => 'TN',
     ];
 
     /**
