@@ -29,7 +29,6 @@ use App\Controller\Api\Event\SubscribeAsAnonymousController;
 use App\Controller\Api\UpdateImageController;
 use App\Entity\AddressHolderInterface;
 use App\Entity\Adherent;
-use App\Entity\AdvancedImageOwnerInterface;
 use App\Entity\AdvancedImageTrait;
 use App\Entity\AuthorInstanceInterface;
 use App\Entity\AuthorInstanceTrait;
@@ -37,6 +36,7 @@ use App\Entity\EntityIdentityTrait;
 use App\Entity\EntityNullablePostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
+use App\Entity\ExposedAdvancedImageOwnerInterface;
 use App\Entity\ExposedObjectInterface;
 use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
@@ -159,7 +159,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['status'])]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: '`events`')]
-abstract class BaseEvent implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, AdvancedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, ExposedObjectInterface
+abstract class BaseEvent implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ExposedAdvancedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, ExposedObjectInterface
 {
     use EntityIdentityTrait;
     use EntityNullablePostAddressTrait;
