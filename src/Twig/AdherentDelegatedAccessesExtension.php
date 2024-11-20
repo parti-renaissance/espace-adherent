@@ -14,8 +14,8 @@ class AdherentDelegatedAccessesExtension extends AbstractExtension
 {
     public function __construct(
         private readonly Security $security,
-        private readonly RequestStack $requestStack)
-    {
+        private readonly RequestStack $requestStack,
+    ) {
     }
 
     public function getFunctions(): array
