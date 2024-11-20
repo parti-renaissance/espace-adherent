@@ -253,7 +253,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\ManyToOne(targetEntity: CmsBlock::class)]
     public ?CmsBlock $wordingRegulationPage = null;
 
-    #[Assert\Expression('!this.isLocalElectionType() or value', message: 'Vous devez préciser le nombre des sièges à distribuer.')]
+    #[Assert\Expression('!this.isPartyListProportionalType() or value', message: 'Vous devez préciser le nombre des sièges à distribuer.')]
     #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     public ?int $seats = null;
 
@@ -262,7 +262,7 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     #[ORM\Column(type: 'smallint', nullable: true, options: ['unsigned' => true])]
     public ?int $majorityPrime = null;
 
-    #[Assert\Expression('!this.isLocalElectionType() or !this.majorityPrime or null != value', message: "Vous devez préciser le mode d'arrondi pour la prime majoritaire.")]
+    #[Assert\Expression('!this.isPartyListProportionalType() or !this.majorityPrime or null != value', message: "Vous devez préciser le mode d'arrondi pour la prime majoritaire.")]
     #[ORM\Column(type: 'boolean', nullable: true)]
     public ?bool $majorityPrimeRoundSupMode = null;
 
@@ -645,6 +645,11 @@ class Designation implements EntityAdministratorBlameableInterface, EntityAdhere
     public function isMajorityType(): bool
     {
         return DesignationTypeEnum::NATIONAL_COUNCIL === $this->type;
+    }
+
+    public function isPartyListProportionalType(): bool
+    {
+        return $this->isLocalElectionType() || $this->isCongressCNType();
     }
 
     public function getDenomination(bool $withDeterminer = false, bool $ucfirst = false): string

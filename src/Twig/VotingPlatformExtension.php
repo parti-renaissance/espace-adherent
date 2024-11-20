@@ -38,6 +38,7 @@ class VotingPlatformExtension extends AbstractExtension
             case DesignationTypeEnum::CONSULTATION:
             case DesignationTypeEnum::VOTE:
             case DesignationTypeEnum::TERRITORIAL_ASSEMBLY:
+            case DesignationTypeEnum::CONGRESS_CN:
                 $key = '';
                 break;
         }

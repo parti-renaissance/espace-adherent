@@ -15,46 +15,103 @@
 {% block voting_platform_result_tab_pool_title 'Listes' %}
 
 {% block voting_platform_result_header %}
-    <h1 class="text-xl text-center font-bold">Résultats de {{ designation.getDenomination(true) }}</h1>
+    <div>
+        <h1 class="text-2xl font-bold mb-2">{{ designation.title }}</h1>
 
-    {% set pool_result = election_round_result.getElectionPoolResults|first %}
-    {% set voters = pool_result.participated ?? 0 %}
-    {% set expressed = pool_result.expressed ?? 0 %}
-    {% set participated = pool_result.getBulletinCount() ?? 0 %}
-    {% set blank = pool_result.blank ?? 0 %}
+        <p class="text--muted italic mb-2">
+            Du {{ designation.voteStartDate|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }} au
+            {{ designation.voteEndDate|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}
+        </p>
 
-    <div class="flex flex-col">
-        <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+        {% set pool_result = election_round_result.getElectionPoolResults|first %}
+        {% set voters = pool_result.participated ?? 0 %}
+        {% set participated = pool_result.getBulletinCount() ?? 0 %}
+
+        <div class="inline-block min-w-full py-2 align-middle mt-2">
+            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
+                <table class="min-w-full divide-y divide-gray-300">
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                        <tr>
+                            <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Taux de participation</td>
+                            <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (voters == 0 ? 0 : participated / voters * 100)|number_format(2, ',') }} %</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block voting_platform_content %}
+    <h2 class="text-xl font-bold">Résultats</h2>
+
+    {% for pool_result in election_round_result.getElectionPoolResults %}
+        {% if designation.isBlankVoteEnabled() %}
+            {% set blank = pool_result.getBlank() ?? 0 %}
+        {% endif %}
+
+        <div>
+            <div class="inline-block min-w-full py-2 align-middle">
                 <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
                     <table class="min-w-full divide-y divide-gray-300">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-6"></th>
-                                <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">% Inscrits</th>
-                                <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Votants</th>
+                                <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-6">Bulletin</th>
+                                <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">% de bulletins</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
-                            {% if designation.isBlankVoteEnabled() %}
+                            {% for candidate_group_result in pool_result.getCandidateGroupResults() %}
+                                {% set candidate_group = candidate_group_result.getCandidateGroup() %}
+                                {% set candidate = candidate_group.getCandidates|first %}
+                                <tr>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Liste : {{ candidate.getFirstName() }} {{ candidate.getLastName()|upper }}</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ pool_result.getBulletinCount() > 0 ? (candidate_group_result.getTotal() * 100 / pool_result.getBulletinCount())|number_format(2, ',') : 0 }} %</td>
+                                </tr>
+                            {% endfor %}
+
+                            {% if blank is defined %}
                                 <tr>
                                     <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Blancs</td>
-                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (voters == 0 ? 0 : blank / voters * 100)|number_format(2, ',') }}%</td>
-                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (participated == 0 ? 0 : blank / participated * 100)|number_format(2, ',') }}%</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ pool_result.getBulletinCount() > 0 ? (blank * 100 / pool_result.getBulletinCount())|number_format(2, ',') : 0 }} %</td>
                                 </tr>
                             {% endif %}
-
-                            <tr>
-                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Exprimés</td>
-                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (voters == 0 ? 0 : expressed / voters * 100)|number_format(2, ',') }}%</td>
-                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (participated == 0 ? 0 : expressed / participated * 100)|number_format(2, ',') }}%</td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-    </div>
 
-    <h1 class="text-xl text-center font-bold">Exprimés</h1>
+        {% for candidate_group_result in pool_result.getCandidateGroupResults() %}
+            {% set candidate_group = candidate_group_result.getCandidateGroup() %}
+            {% set candidate = candidate_group.getCandidates|first %}
+
+            <h2 class="text-xl font-bold">Liste : {{ candidate.getFirstName() }} {{ candidate.getLastName()|upper }}</h2>
+
+            <div class="inline-block min-w-full py-2 align-middle">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-300">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-6">
+                                    Bulletin
+                                </th>
+                                <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                                    Élu ?
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 bg-white">
+                            {% for candidate in candidate_group.getCandidates %}
+                                <tr>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ candidate.getFirstName() }} {{ candidate.getLastName()|upper }}</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ candidate.isAdditionallyElected() ? 'Oui' : 'Non' }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
 {% endblock %}
