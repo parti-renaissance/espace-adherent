@@ -29,6 +29,7 @@ class AdherentZoneBasedRoleType extends AbstractType
                 'model_manager' => $options['model_manager'],
                 'admin_code' => AdherentZoneBasedRoleAdmin::SERVICE_ID,
                 'template' => 'admin/adherent/partial/zone_based_role_autocomplete.html.twig',
+                'minimum_input_length' => 1,
             ])
         ;
     }
