@@ -39,7 +39,15 @@ Feature:
                         "type": "sympathisant"
                     }
                 ],
-                "cadre_access": false
+                "cadre_access": false,
+                "main_zone": {
+                    "code": "77",
+                    "name": "Seine-et-Marne",
+                    "type": "department",
+                    "uuid": "@uuid@"
+                },
+                "district": null,
+                "committee_v2": null
             }
             """
 
@@ -68,7 +76,20 @@ Feature:
                 },
                 "tags": [],
                 "cadre_access": true,
-                "cadre_auth_path": "/oauth/v2/auth?scope=jemengage_admin&response_type=code&client_id=4498e44f-f214-110d-8b76-98a83f9d2b0c&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth"
+                "cadre_auth_path": "/oauth/v2/auth?scope=jemengage_admin&response_type=code&client_id=4498e44f-f214-110d-8b76-98a83f9d2b0c&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth",
+                "main_zone": {
+                    "code": "75",
+                    "name": "Paris",
+                    "type": "department",
+                    "uuid": "@uuid@"
+                },
+                "district": {
+                    "code": "75-1",
+                    "name": "Paris (1)",
+                    "type": "district",
+                    "uuid": "@uuid@"
+                },
+                "committee_v2": null
             }
             """
 
