@@ -2,6 +2,7 @@
 
 namespace App\Normalizer;
 
+use App\Entity\ExposedAdvancedImageOwnerInterface;
 use App\Entity\ExposedImageOwnerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
@@ -23,14 +24,24 @@ class ImageOwnerExposedNormalizer implements NormalizerInterface, NormalizerAwar
     {
         $context[self::ALREADY_CALLED.$object::class] = true;
 
-        /** @var ExposedImageOwnerInterface $object */
+        /** @var ExposedImageOwnerInterface|ExposedAdvancedImageOwnerInterface $object */
         $data = $this->normalizer->normalize($object, $format, $context);
 
-        $data['image_url'] = $object->getImageName() ? $this->urlGenerator->generate(
+        $imageUrl = $object->getImageName() ? $this->urlGenerator->generate(
             'asset_url',
             ['path' => $object->getImagePath()],
             UrlGeneratorInterface::ABSOLUTE_URL
         ) : null;
+
+        $data['image_url'] = $imageUrl;
+
+        if ($object instanceof ExposedAdvancedImageOwnerInterface) {
+            $data['image'] = $imageUrl ? [
+                'url' => $imageUrl,
+                'width' => $object->getImageWidth(),
+                'height' => $object->getImageHeight(),
+            ] : null;
+        }
 
         return $data;
     }
@@ -39,7 +50,10 @@ class ImageOwnerExposedNormalizer implements NormalizerInterface, NormalizerAwar
     {
         return
             \in_array(self::NORMALIZATION_GROUP, $context['groups'] ?? [])
-            && $data instanceof ExposedImageOwnerInterface
+            && (
+                $data instanceof ExposedImageOwnerInterface
+                || $data instanceof ExposedAdvancedImageOwnerInterface
+            )
             && !isset($context[self::ALREADY_CALLED.$data::class]);
     }
 }

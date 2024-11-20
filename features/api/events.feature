@@ -94,7 +94,8 @@ Feature:
                 "local_begin_at": null,
                 "local_finish_at": null,
                 "editable": false,
-                "image_url": null
+                "image_url": null,
+                "image": null
             }
             """
 
@@ -174,7 +175,8 @@ Feature:
                         "mode": null,
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "2017-02-20T19:00:00+01:00",
-                        "image_url": null
+                        "image_url": null,
+                        "image": null
                     },
                     {
                         "uuid": "67e75e81-ad27-4414-bb0b-9e0c6e12b275",
@@ -224,7 +226,8 @@ Feature:
                         "mode": null,
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
-                        "image_url": null
+                        "image_url": null,
+                        "image": null
                     }
                 ]
             }
@@ -298,6 +301,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
+                        "image": null,
                         "editable": false
                     },
                     {
@@ -348,6 +352,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
+                        "image": null,
                         "editable": false
                     },
                     {
@@ -398,6 +403,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
+                        "image": null,
                         "editable": false
                     }
                 ]
@@ -464,6 +470,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
+                        "image": null,
                         "editable": false
                     },
                     {
@@ -505,6 +512,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
+                        "image": null,
                         "editable": false
                     },
                     {
@@ -546,6 +554,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
+                        "image": null,
                         "editable": true,
                         "edit_link": "@string@.isUrl()"
                     }
@@ -613,6 +622,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
+                        "image": null,
                         "editable": false
                     },
                     {
@@ -663,6 +673,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
+                        "image": null,
                         "editable": false
                     },
                     {
@@ -713,6 +724,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
+                        "image": null,
                         "editable": false
                     }
                 ]
@@ -778,6 +790,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
+                        "image": null,
                         "editable": false
                     },
                     {
@@ -819,6 +832,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
+                        "image": null,
                         "editable": true,
                         "edit_link": "@string@.isUrl()"
                     },
@@ -861,6 +875,7 @@ Feature:
                         "local_begin_at": "@string@.isDateTime()",
                         "local_finish_at": "@string@.isDateTime()",
                         "image_url": null,
+                        "image": null,
                         "editable": false
                     }
                 ]
@@ -933,6 +948,7 @@ Feature:
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
+                "image": null,
                 "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
                 "editable": false
             }
@@ -983,6 +999,7 @@ Feature:
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
+                "image": null,
                 "link": "@string@.isUrl()",
                 "user_registered_at": null,
                 "object_state": "full",
@@ -1032,6 +1049,7 @@ Feature:
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
+                "image": null,
                 "link": "@string@.isUrl()",
                 "user_registered_at": null,
                 "object_state": "full",
@@ -1100,6 +1118,7 @@ Feature:
                 "visio_url": null,
                 "mode": null,
                 "image_url": null,
+                "image": null,
                 "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
                 "editable": false
             }
@@ -1269,6 +1288,7 @@ Feature:
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
+                "image": null,
                 "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher",
                 "editable": true,
                 "edit_link": "@string@.isUrl()"
@@ -1359,6 +1379,7 @@ Feature:
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
+                "image": null,
                 "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher",
                 "editable": true,
                 "edit_link": "@string@.isUrl()"
@@ -1651,6 +1672,7 @@ Feature:
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
+                "image": null,
                 "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher",
                 "editable": true,
                 "edit_link": "@string@.isUrl()"
@@ -2001,6 +2023,7 @@ Feature:
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
+                "image": null,
                 "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher",
                 "editable": true,
                 "edit_link": "@string@.isUrl()"
@@ -2083,6 +2106,7 @@ Feature:
                 "local_begin_at": "@string@.isDateTime()",
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
+                "image": null,
                 "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-un-evenement-du-candidat-aux-legislatives/afficher",
                 "editable": true,
                 "edit_link": "@string@.isUrl()"
@@ -2129,7 +2153,10 @@ Feature:
         When I send a "GET" request to "/api/v3/events/594e7ad0-c289-49ae-8c23-0129275d128b?scope=<scope>"
         Then the JSON should be a superset of:
             """
-            { "image_url": null }
+            {
+                "image_url": null,
+                "image": null
+            }
             """
 
         Examples:
