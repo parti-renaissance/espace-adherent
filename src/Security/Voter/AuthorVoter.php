@@ -5,13 +5,13 @@ namespace App\Security\Voter;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
 use App\Entity\MyTeam\DelegatedAccess;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class AuthorVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'IS_AUTHOR_OF';
 
-    public function __construct(private readonly SessionInterface $session)
+    public function __construct(private readonly RequestStack $requestStack)
     {
     }
 
@@ -24,7 +24,7 @@ class AuthorVoter extends AbstractAdherentVoter
             return false;
         }
 
-        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
+        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->requestStack->getSession()->get(DelegatedAccess::ATTRIBUTE_KEY))) {
             return $subject->getAuthor()->equals($delegatedAccess->getDelegator());
         }
 

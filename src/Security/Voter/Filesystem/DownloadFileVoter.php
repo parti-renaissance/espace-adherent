@@ -7,23 +7,19 @@ use App\Entity\Filesystem\File;
 use App\Entity\Filesystem\FilePermissionEnum;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Security\Voter\AbstractAdherentVoter;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class DownloadFileVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'CAN_DOWNLOAD_FILE';
 
-    /** @var SessionInterface */
-    private $session;
-
-    public function __construct(SessionInterface $session)
+    public function __construct(private readonly RequestStack $requestStack)
     {
-        $this->session = $session;
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
     {
-        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
+        if ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->requestStack->getSession()->get(DelegatedAccess::ATTRIBUTE_KEY))) {
             $adherent = $delegatedAccess->getDelegator();
         }
 

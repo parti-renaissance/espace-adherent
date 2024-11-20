@@ -5,7 +5,7 @@ namespace App\Validator;
 use App\Address\Address;
 use App\Geo\ManagedZoneProvider;
 use App\Geo\ZoneMatcher;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -16,12 +16,12 @@ class AddressInManagedZonesValidator extends AbstractInManagedZoneValidator
     private $zoneMatcher;
 
     public function __construct(
-        Security $security,
-        SessionInterface $session,
-        ZoneMatcher $zoneMatcher,
         ManagedZoneProvider $managedZoneProvider,
+        Security $security,
+        RequestStack $requestStack,
+        ZoneMatcher $zoneMatcher,
     ) {
-        parent::__construct($managedZoneProvider, $security, $session);
+        parent::__construct($managedZoneProvider, $security, $requestStack);
 
         $this->zoneMatcher = $zoneMatcher;
     }

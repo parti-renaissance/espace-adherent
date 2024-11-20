@@ -11,7 +11,7 @@ use App\Entity\ZoneableEntityInterface;
 use App\Entity\ZoneableWithScopeEntityInterface;
 use App\Geo\ManagedZoneProvider;
 use App\Scope\ScopeGeneratorResolver;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ManageZoneableItemVoter extends AbstractAdherentVoter
@@ -19,7 +19,7 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
     public const PERMISSION = 'MANAGE_ZONEABLE_ITEM__';
 
     public function __construct(
-        private readonly SessionInterface $session,
+        private readonly RequestStack $requestStack,
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
         private readonly ManagedZoneProvider $managedZoneProvider,
         private readonly AuthorizationCheckerInterface $authorizationChecker,
@@ -32,7 +32,7 @@ class ManageZoneableItemVoter extends AbstractAdherentVoter
             $adherent = $scope->getDelegator() ?? $adherent;
             $zoneIds = array_map(fn (Zone $zone) => $zone->getId(), $scope->getZones());
             $committeeUuids = $scope->getCommitteeUuids();
-        } elseif ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->session->get(DelegatedAccess::ATTRIBUTE_KEY))) {
+        } elseif ($delegatedAccess = $adherent->getReceivedDelegatedAccessByUuid($this->requestStack->getSession()->get(DelegatedAccess::ATTRIBUTE_KEY))) {
             $adherent = $delegatedAccess->getDelegator();
         }
 
