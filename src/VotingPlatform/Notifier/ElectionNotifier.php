@@ -52,7 +52,10 @@ class ElectionNotifier
                 }
 
                 return ElectionIsOpenMessage::create($election, $recipients, $url);
-            }
+            },
+            DesignationTypeEnum::CONGRESS_CN === $electionType ? function (int $offset, int $limit): array {
+                return $this->adherentRepository->findAllForCongressCNElection(false, $offset, $limit);
+            } : null
         );
     }
 

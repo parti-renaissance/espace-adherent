@@ -1248,20 +1248,43 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    public function findAllForCongressCNElection(): array
+    public function findAllForCongressCNElection(bool $votersOnly = true, ?int $offset = null, ?int $limit = null): array
     {
-        return $this->createQueryBuilder('adherent')
-            ->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}')
-            ->innerJoin(Donator::class, 'donator', Join::WITH, 'donator.adherent = adherent')
+        $subQuery = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('DISTINCT a.id')
+            ->from(Donator::class, 'donator')
             ->innerJoin('donator.donations', 'donation', Join::WITH, 'donation.donatedAt < :date AND donation.membership = 1 AND donation.status = :donation_status')
-            ->andWhere('adherent.tags LIKE :adherent_tag')
-            ->andWhere('adherent.status = :status')
+            ->innerJoin('donator.adherent', 'a')
+            ->where('a.status = :status')
+        ;
+
+        $qb = $this->createQueryBuilder('adherent')
+            ->select('PARTIAL adherent.{id, emailAddress, firstName, lastName}')
+            ->andWhere(\sprintf('adherent.id IN (%s)', $subQuery->getDQL()))
             ->setParameters([
-                'adherent_tag' => '%'.TagEnum::getAdherentYearTag(2024).'%',
                 'status' => Adherent::ENABLED,
                 'date' => '2024-11-05 00:00:00',
                 'donation_status' => Donation::STATUS_FINISHED,
             ])
+        ;
+
+        if (null !== $offset && null !== $limit) {
+            $qb
+                ->orderBy('adherent.id')
+                ->setMaxResults($limit)
+                ->setFirstResult($offset)
+            ;
+        }
+
+        if ($votersOnly) {
+            $qb
+                ->andWhere('adherent.tags LIKE :adherent_tag')
+                ->setParameter('adherent_tag', '%'.TagEnum::getAdherentYearTag(2024).'%')
+            ;
+        }
+
+        return $qb
             ->getQuery()
             ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
             ->getResult()
