@@ -31,14 +31,22 @@ Feature:
                 "firstName": "Referent75and77",
                 "lastName": "Referent75and77",
                 "zipCode": "75001",
-                "main_zone": {
-                    "code": "75",
-                    "name": "Paris",
-                    "type": "department",
-                    "uuid": "@uuid@"
-                },
-                "district": null,
-                "committee_v2": null
+                "instances": {
+                    "assembly": {
+                        "type": "assembly",
+                        "name": "Paris (75)"
+                    },
+                    "circonscription": null,
+                    "committee": {
+                        "type": "committee",
+                        "uuid": null,
+                        "name": null,
+                        "members_count": null,
+                        "assembly_committees_count": 0,
+                        "can_change_committee": true,
+                        "message": null
+                    }
+                }
             }
             """
 
@@ -64,19 +72,25 @@ Feature:
                 "firstName": "Jacques",
                 "lastName": "Picard",
                 "zipCode": "75008",
-                "main_zone": {
-                    "code": "75",
-                    "name": "Paris",
-                    "type": "department",
-                    "uuid": "@uuid@"
-                },
-                "district": {
-                    "code": "75-1",
-                    "name": "Paris (1)",
-                    "type": "district",
-                    "uuid": "@uuid@"
-                },
-                "committee_v2": null
+                "instances": {
+                    "assembly": {
+                        "type": "assembly",
+                        "name": "Paris (75)"
+                    },
+                    "circonscription": {
+                        "type": "circonscription",
+                        "name": "1ère circonscription • Paris (75-1)"
+                    },
+                    "committee": {
+                        "type": "committee",
+                        "uuid": null,
+                        "name": null,
+                        "members_count": null,
+                        "assembly_committees_count": 0,
+                        "can_change_committee": true,
+                        "message": null
+                    }
+                }
             }
             """
 

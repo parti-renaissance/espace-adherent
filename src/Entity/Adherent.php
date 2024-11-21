@@ -1012,20 +1012,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->getMainZone()?->getCode();
     }
 
-    #[Groups(['user_profile', 'profile_read'])]
+    #[Groups(['profile_read'])]
     public function getMainZone(): ?Zone
     {
         if ($zones = $this->getZonesOfType($this->isForeignResident() ? Zone::COUNTRY : Zone::DEPARTMENT, true)) {
-            return current($zones);
-        }
-
-        return null;
-    }
-
-    #[Groups(['user_profile'])]
-    public function getDistrict(): ?Zone
-    {
-        if ($zones = $this->getZonesOfType($this->isForeignResident() ? Zone::FOREIGN_DISTRICT : Zone::DISTRICT, true)) {
             return current($zones);
         }
 
@@ -1327,12 +1317,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getCommitteeV2Membership(): ?CommitteeMembership
     {
         return current($this->getMemberships()->getCommitteeV2Memberships()) ?: null;
-    }
-
-    #[Groups(['user_profile'])]
-    public function getCommitteeV2(): ?Committee
-    {
-        return $this->getCommitteeV2Membership()?->getCommittee();
     }
 
     public function hasVotingCommitteeMembership(): bool
