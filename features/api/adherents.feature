@@ -81,7 +81,7 @@ Feature:
                     },
                     "circonscription": {
                         "type": "circonscription",
-                        "code": "75-1
+                        "code": "75-1",
                         "name": "1ère circonscription • Paris (75-1)"
                     },
                     "committee": {
