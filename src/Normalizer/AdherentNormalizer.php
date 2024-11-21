@@ -28,9 +28,6 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly ClientRepository $clientRepository,
     ) {
-        if (!$adherentInstances) {
-            throw new \LogicException('AdherentInstances service is not initialized.');
-        }
     }
 
     private const LEGACY_MAPPING = [
