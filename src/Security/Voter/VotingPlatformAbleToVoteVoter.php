@@ -42,7 +42,11 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
         }
 
         if ($designation->isCongressCNType()) {
-            if (!$adherent->hasActiveMembership()) {
+            if (!$adherent->isRenaissanceAdherent()) {
+                return false;
+            }
+
+            if (!$this->donationRepository->countCotisationForAdherent($adherent, new \DateTime('2024-11-05 00:00:00'))) {
                 return false;
             }
 
@@ -50,11 +54,7 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
                 return $adherent->isContributionUpToDate();
             }
 
-            if (!$this->donationRepository->countCotisationForAdherent($adherent, new \DateTime('2024-11-05 00:00:00'))) {
-                return false;
-            }
-
-            return true;
+            return $adherent->hasActiveMembership();
         }
 
         if ($designation->isConsultationType() || $designation->isVoteType()) {

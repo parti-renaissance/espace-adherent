@@ -2420,7 +2420,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function isContributionUpToDate(): bool
     {
-        return $this->hasTag(TagEnum::ELU_COTISATION_OK) || $this->hasRecentContribution();
+        return $this->hasTag(TagEnum::ELU_COTISATION_OK_SOUMIS);
     }
 
     #[Groups(['adherent_elect_read'])]
