@@ -228,12 +228,6 @@ services:
     App\AdherentMessage\Listener\AdherentMessageChangeSubscriber:
         tags: ['doctrine.event_subscriber']
 
-    App\Normalizer\JecouteAdherentNormalizer:
-        tags: [{ name: 'serializer.normalizer', priority: 1 }]
-
-    App\Normalizer\AdherentNormalizer:
-        tags: [{ name: 'serializer.normalizer', priority: 10 }]
-
     App\Normalizer\JecouteDeviceNormalizer:
         tags: [{ name: 'serializer.normalizer', priority: 1 }]
 

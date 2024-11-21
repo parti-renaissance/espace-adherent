@@ -1727,6 +1727,7 @@ Feature:
             [
                 {
                     "type": "assembly",
+                    "code": "CH",
                     "name": "Français de l'Étranger"
                 },
                 {
@@ -1749,10 +1750,12 @@ Feature:
             [
                 {
                     "type": "assembly",
+                    "code": "92",
                     "name": "Hauts-de-Seine (92)"
                 },
                 {
                     "type": "circonscription",
+                    "code": "92-4",
                     "name": "4ème circonscription • Hauts-de-Seine (92-4)"
                 },
                 {

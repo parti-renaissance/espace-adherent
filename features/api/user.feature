@@ -39,7 +39,24 @@ Feature:
                         "type": "sympathisant"
                     }
                 ],
-                "cadre_access": false
+                "cadre_access": false,
+                "instances": {
+                    "assembly": {
+                        "type": "assembly",
+                        "code": "77",
+                        "name": "Seine-et-Marne (77)"
+                    },
+                    "circonscription": null,
+                    "committee": {
+                        "type": "committee",
+                        "name": null,
+                        "assembly_committees_count": 0,
+                        "can_change_committee": true,
+                        "members_count": null,
+                        "message": null,
+                        "uuid": null
+                    }
+                }
             }
             """
 
@@ -68,7 +85,28 @@ Feature:
                 },
                 "tags": [],
                 "cadre_access": true,
-                "cadre_auth_path": "/oauth/v2/auth?scope=jemengage_admin&response_type=code&client_id=4498e44f-f214-110d-8b76-98a83f9d2b0c&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth"
+                "cadre_auth_path": "/oauth/v2/auth?scope=jemengage_admin&response_type=code&client_id=4498e44f-f214-110d-8b76-98a83f9d2b0c&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth",
+                "instances": {
+                    "assembly": {
+                        "type": "assembly",
+                        "code": "75",
+                        "name": "Paris (75)"
+                    },
+                    "circonscription": {
+                        "type": "circonscription",
+                        "code": "75-1",
+                        "name": "1ère circonscription • Paris (75-1)"
+                    },
+                    "committee": {
+                        "type": "committee",
+                        "name": null,
+                        "assembly_committees_count": 0,
+                        "can_change_committee": true,
+                        "members_count": null,
+                        "message": null,
+                        "uuid": null
+                    }
+                }
             }
             """
 

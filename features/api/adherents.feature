@@ -30,7 +30,24 @@ Feature:
                 "email_subscribed": true,
                 "firstName": "Referent75and77",
                 "lastName": "Referent75and77",
-                "zipCode": "75001"
+                "zipCode": "75001",
+                "instances": {
+                    "assembly": {
+                        "type": "assembly",
+                        "code": "75",
+                        "name": "Paris (75)"
+                    },
+                    "circonscription": null,
+                    "committee": {
+                        "type": "committee",
+                        "name": null,
+                        "uuid": null,
+                        "members_count": null,
+                        "assembly_committees_count": 0,
+                        "can_change_committee": true,
+                        "message": null
+                    }
+                }
             }
             """
 
@@ -55,7 +72,28 @@ Feature:
                 "email_subscribed": true,
                 "firstName": "Jacques",
                 "lastName": "Picard",
-                "zipCode": "75008"
+                "zipCode": "75008",
+                "instances": {
+                    "assembly": {
+                        "type": "assembly",
+                        "code": "75",
+                        "name": "Paris (75)"
+                    },
+                    "circonscription": {
+                        "type": "circonscription",
+                        "code": "75-1",
+                        "name": "1ère circonscription • Paris (75-1)"
+                    },
+                    "committee": {
+                        "type": "committee",
+                        "name": null,
+                        "uuid": null,
+                        "members_count": null,
+                        "assembly_committees_count": 0,
+                        "can_change_committee": true,
+                        "message": null
+                    }
+                }
             }
             """
 

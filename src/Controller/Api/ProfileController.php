@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Adherent\AdherentInstances;
 use App\Adherent\Unregistration\UnregistrationCommand;
 use App\AdherentProfile\AdherentProfile;
 use App\AdherentProfile\AdherentProfileConfiguration;
@@ -234,48 +235,10 @@ class ProfileController extends AbstractController
 
     #[IsGranted('ROLE_OAUTH_SCOPE_READ:PROFILE')]
     #[Route(path: '/instances', methods: ['GET'])]
-    public function myInstances(UserInterface $adherent, CommitteeRepository $committeeRepository, VoterRepository $voterRepository): Response
+    public function myInstances(UserInterface $adherent, AdherentInstances $adherentInstances): Response
     {
-        $instance = [];
-
         /** @var Adherent $adherent */
-        if ($mainZone = $adherent->getMainZone()) {
-            $zoneName = $mainZone->isCountry() ? 'Français de l\'Étranger' : $mainZone->getName();
-            $instance[] = [
-                'type' => 'assembly',
-                'name' => \sprintf("$zoneName%s", $mainZone->isCountry() ? '' : \sprintf(' (%s)', $mainZone->getCode())),
-            ];
-        }
-
-        if ($districtZone = ($adherent->getZonesOfType(Zone::DISTRICT)[0] ?? null)) {
-            $code = explode('-', $districtZone->getCode());
-            $name = explode(' (', $districtZone->getName());
-
-            $instance[] = [
-                'type' => 'circonscription',
-                'name' => \sprintf('%s%s circonscription • %s (%s)', $code[1], $code[1] > 1 ? 'ème' : 'ère', $name[0], $districtZone->getCode()),
-            ];
-        }
-
-        $currentCommittee = $adherent->getCommitteeV2Membership()?->getCommittee();
-
-        $recentElectionParticipation = $currentCommittee && $voterRepository->isInVoterListForCommitteeElection(
-            $adherent,
-            $currentCommittee,
-            new \DateTime('-3 months')
-        );
-
-        $instance[] = [
-            'type' => 'committee',
-            'uuid' => $currentCommittee?->getUuid(),
-            'name' => $currentCommittee?->getName(),
-            'members_count' => $currentCommittee?->getMembersCount(),
-            'assembly_committees_count' => \count($committeeRepository->findInAdherentZone($adherent)),
-            'can_change_committee' => !$recentElectionParticipation,
-            'message' => $recentElectionParticipation ? 'Vous avez participé à une élection interne il y a moins de 3 mois dans votre comité. Il ne vous est pas possible d\'en changer.' : null,
-        ];
-
-        return $this->json($instance);
+        return $this->json(array_values(array_filter($adherentInstances->generate($adherent))));
     }
 
     #[Route(path: '/committees/{uuid}/join', methods: ['PUT'])]
