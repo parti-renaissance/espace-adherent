@@ -34,7 +34,7 @@ class UpdateTransactionalEmailTemplateController extends AbstractController
         }
 
         if ($command->parent) {
-            if (!$parent = $repository->findOneBy(['identifier' => $command->parent.'123'])) {
+            if (!$parent = $repository->findOneBy(['identifier' => $command->parent])) {
                 return $this->json([
                     'status' => 'error',
                     'message' => 'Template parent n\'existe pas',
