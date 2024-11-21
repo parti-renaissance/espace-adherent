@@ -29,11 +29,11 @@
 
         <div class="inline-block min-w-full py-2 align-middle mt-2">
             <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
-                <table class="min-w-full divide-y divide-gray-300">
+                <table class="table-fixed w-full divide-y divide-gray-300">
                     <tbody class="divide-y divide-gray-200 bg-white">
                         <tr>
-                            <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Taux de participation</td>
-                            <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ (voters == 0 ? 0 : participated / voters * 100)|number_format(2, ',') }} %</td>
+                            <td class="py-4 pl-4 pr-3 w-2/3 text-sm font-medium text-gray-900">Taux de participation</td>
+                            <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900">{{ (voters == 0 ? 0 : participated / voters * 100)|number_format(2, ',') }} %</td>
                         </tr>
                     </tbody>
                 </table>
@@ -53,11 +53,11 @@
         <div>
             <div class="inline-block min-w-full py-2 align-middle">
                 <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-300">
+                    <table class="table-fixed w-full divide-y divide-gray-300">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-6">Bulletin</th>
-                                <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">% de bulletins</th>
+                                <th scope="col" class="py-3 pl-4 w-2/3 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Listes</th>
+                                <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Résultat</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
@@ -65,15 +65,15 @@
                                 {% set candidate_group = candidate_group_result.getCandidateGroup() %}
                                 {% set candidate = candidate_group.getCandidates|first %}
                                 <tr>
-                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Liste : {{ candidate.getFirstName() }} {{ candidate.getLastName()|upper }}</td>
-                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ pool_result.getBulletinCount() > 0 ? (candidate_group_result.getTotal() * 100 / pool_result.getBulletinCount())|number_format(2, ',') : 0 }} %</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900">Liste : {{ candidate.getFirstName() }} {{ candidate.getLastName()|upper }}</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900">{{ pool_result.getBulletinCount() > 0 ? (candidate_group_result.getTotal() * 100 / pool_result.getBulletinCount())|number_format(2, ',') : 0 }} %</td>
                                 </tr>
                             {% endfor %}
 
                             {% if blank is defined %}
                                 <tr>
-                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Blancs</td>
-                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ pool_result.getBulletinCount() > 0 ? (blank * 100 / pool_result.getBulletinCount())|number_format(2, ',') : 0 }} %</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900">Blancs</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900">{{ pool_result.getBulletinCount() > 0 ? (blank * 100 / pool_result.getBulletinCount())|number_format(2, ',') : 0 }} %</td>
                                 </tr>
                             {% endif %}
                         </tbody>
@@ -82,30 +82,35 @@
             </div>
         </div>
 
+        <p>
+            Nombre de sièges à pourvoir : {{ designation.seats }}<br/>
+            Prime majoritaire : {{ designation.majorityPrime }} %
+        </p>
+
         {% for candidate_group_result in pool_result.getCandidateGroupResults() %}
             {% set candidate_group = candidate_group_result.getCandidateGroup() %}
             {% set candidate = candidate_group.getCandidates|first %}
 
-            <h2 class="text-xl font-bold">Liste : {{ candidate.getFirstName() }} {{ candidate.getLastName()|upper }}</h2>
+            <h2 class="text-xl font-bold">{{ candidate.getFirstName() }} {{ candidate.getLastName()|upper }}</h2>
 
             <div class="inline-block min-w-full py-2 align-middle">
                 <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-300">
+                    <table class="table-fixed w-full divide-y divide-gray-300">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 sm:pl-6">
-                                    Bulletin
+                                <th scope="col" class="py-3 w-2/3 pl-4 pr-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                                    Candidats
                                 </th>
                                 <th scope="col" class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                                    Élu ?
+                                    Résultat
                                 </th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
                             {% for candidate in candidate_group.getCandidates %}
                                 <tr>
-                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ candidate.getFirstName() }} {{ candidate.getLastName()|upper }}</td>
-                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ candidate.isAdditionallyElected() ? 'Oui' : 'Non' }}</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900">{{ candidate.getFirstName() }} {{ candidate.getLastName()|upper }}</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900">{{ candidate.isAdditionallyElected() ? 'ÉLU' : 'NON-ÉLU' }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
