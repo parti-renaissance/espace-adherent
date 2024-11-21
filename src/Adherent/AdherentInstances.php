@@ -36,6 +36,7 @@ class AdherentInstances
 
         return [
             'type' => 'assembly',
+            'code' => $mainZone->getCode(),
             'name' => \sprintf(
                 "$zoneName%s",
                 $mainZone->isCountry() ? '' : \sprintf(' (%s)', $mainZone->getCode())
@@ -56,6 +57,7 @@ class AdherentInstances
 
         return [
             'type' => 'circonscription',
+            'code' => $districtZone->getCode(),
             'name' => \sprintf(
                 '%s%s circonscription • %s (%s)',
                 $code[1],
@@ -78,8 +80,8 @@ class AdherentInstances
 
         return [
             'type' => 'committee',
-            'uuid' => $currentCommittee?->getUuid(),
             'name' => $currentCommittee?->getName(),
+            'uuid' => $currentCommittee?->getUuid(),
             'members_count' => $currentCommittee?->getMembersCount(),
             'assembly_committees_count' => \count($this->committeeRepository->findInAdherentZone($adherent)),
             'can_change_committee' => !$recentElectionParticipation,

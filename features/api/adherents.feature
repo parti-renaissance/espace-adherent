@@ -34,13 +34,14 @@ Feature:
                 "instances": {
                     "assembly": {
                         "type": "assembly",
+                        "code": "75",
                         "name": "Paris (75)"
                     },
                     "circonscription": null,
                     "committee": {
                         "type": "committee",
-                        "uuid": null,
                         "name": null,
+                        "uuid": null,
                         "members_count": null,
                         "assembly_committees_count": 0,
                         "can_change_committee": true,
@@ -75,16 +76,18 @@ Feature:
                 "instances": {
                     "assembly": {
                         "type": "assembly",
+                        "code": "75",
                         "name": "Paris (75)"
                     },
                     "circonscription": {
                         "type": "circonscription",
+                        "code": "75-1
                         "name": "1ère circonscription • Paris (75-1)"
                     },
                     "committee": {
                         "type": "committee",
-                        "uuid": null,
                         "name": null,
+                        "uuid": null,
                         "members_count": null,
                         "assembly_committees_count": 0,
                         "can_change_committee": true,

@@ -43,16 +43,17 @@ Feature:
                 "instances": {
                     "assembly": {
                         "type": "assembly",
+                        "code": "77",
                         "name": "Seine-et-Marne (77)"
                     },
                     "circonscription": null,
                     "committee": {
                         "type": "committee",
+                        "name": null,
                         "assembly_committees_count": 0,
                         "can_change_committee": true,
                         "members_count": null,
                         "message": null,
-                        "name": null,
                         "uuid": null
                     }
                 }
@@ -88,19 +89,21 @@ Feature:
                 "instances": {
                     "assembly": {
                         "type": "assembly",
+                        "code": "75",
                         "name": "Paris (75)"
                     },
                     "circonscription": {
                         "type": "circonscription",
+                        "code": "75-1",
                         "name": "1ère circonscription • Paris (75-1)"
                     },
                     "committee": {
                         "type": "committee",
+                        "name": null,
                         "assembly_committees_count": 0,
                         "can_change_committee": true,
                         "members_count": null,
                         "message": null,
-                        "name": null,
                         "uuid": null
                     }
                 }
