@@ -125,6 +125,10 @@
       @apply bg-re-blue-50 font-medium hover:bg-white border border-re-blue-300 no-underline;
       color: theme('colors.re.blue.500') !important;
     }
+
+    &.btn-disabled {
+        @apply opacity-60 cursor-not-allowed;
+    }
   }
 
   .anonymous {

@@ -2,6 +2,7 @@
 
 namespace App\Repository\VotingPlatform;
 
+use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\VoteResult;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -69,5 +70,25 @@ class VoteResultRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->getArrayResult();
+    }
+
+    public function getVotes(Designation $designation): array
+    {
+        return $this->createQueryBuilder('vote_result')
+            ->select('vote_result.voterKey AS Cle')
+            ->addSelect('candidate_group.label AS Liste')
+            ->addSelect('IF(choice.isBlank = 1, \'oui\', \'non\') AS Blanc')
+            ->innerJoin('vote_result.electionRound', 'election_round')
+            ->innerJoin('election_round.election', 'election')
+            ->innerJoin('election.designation', 'designation')
+            ->innerJoin('vote_result.voteChoices', 'choice')
+            ->leftJoin('choice.candidateGroup', 'candidate_group')
+            ->where('designation.id = :designation_id')
+            ->setParameters([
+                'designation_id' => $designation->getId(),
+            ])
+            ->getQuery()
+            ->getArrayResult()
+        ;
     }
 }

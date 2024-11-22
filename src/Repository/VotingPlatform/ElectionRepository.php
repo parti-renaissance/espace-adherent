@@ -12,6 +12,7 @@ use App\Entity\VotingPlatform\ElectionRound;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\VoteChoice;
 use App\Entity\VotingPlatform\Voter;
+use App\Entity\VotingPlatform\VoteResult;
 use App\Repository\UuidEntityRepositoryTrait;
 use App\VotingPlatform\Election\ElectionStatusEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -289,5 +290,31 @@ class ElectionRepository extends ServiceEntityRepository
         }
 
         return $results;
+    }
+
+    public function getElectionStats(Designation $designation): array
+    {
+        return $this->createQueryBuilder('el')
+            ->select(\sprintf('(
+                SELECT COUNT(DISTINCT v1.id) FROM %s AS v1
+                INNER JOIN v1.electionRound AS er1
+                INNER JOIN er1.election AS e1
+                INNER JOIN e1.designation AS d1
+                WHERE d1.id = :designation_id
+            ) AS voters', Vote::class))
+            ->addSelect(\sprintf('(
+                SELECT COUNT(DISTINCT v2.id) FROM %s AS v2
+                INNER JOIN v2.electionRound AS er2
+                INNER JOIN er2.election AS e2
+                INNER JOIN e2.designation AS d2
+                WHERE d2.id = :designation_id
+            ) AS votes', VoteResult::class))
+            ->setMaxResults(1)
+            ->setParameters([
+                'designation_id' => $designation->getId(),
+            ])
+            ->getQuery()
+            ->getSingleResult()
+        ;
     }
 }

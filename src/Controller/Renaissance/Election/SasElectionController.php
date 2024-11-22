@@ -3,28 +3,50 @@
 namespace App\Controller\Renaissance\Election;
 
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Repository\VotingPlatform\ElectionRepository;
+use App\Repository\VotingPlatform\VoteResultRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sonata\Exporter\Exporter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[IsGranted('ROLE_USER')]
 #[Route(path: '/election-sas/{uuid}', name: 'app_sas_election')]
 class SasElectionController extends AbstractController
 {
     #[Route(path: '', name: '_index')]
-    public function indexAction(Designation $designation): Response
+    public function indexAction(Designation $designation, ElectionRepository $electionRepository): Response
     {
-        return $this->render('renaissance/election/sas.html.twig', ['designation' => $designation]);
+        return $this->render('renaissance/election/sas.html.twig', [
+            'designation' => $designation,
+            'election' => $electionRepository->findOneByDesignation($designation),
+        ]);
     }
 
     #[Route(path: '/reglement', name: '_regulation')]
     public function regulationAction(Designation $designation): Response
     {
         if (!$designation->wordingRegulationPage) {
-            $this->createNotFoundException();
+            throw $this->createNotFoundException();
         }
 
         return $this->render('renaissance/election/regulation.html.twig', ['designation' => $designation]);
+    }
+
+    #[IsGranted('ROLE_VOTE_INSPECTOR')]
+    #[Route(path: '/bulletins.csv', name: '_export')]
+    public function exportVotesAction(Designation $designation, VoteResultRepository $repository, Exporter $exporter): Response
+    {
+        if (!$designation->isResultPeriodActive()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        return $exporter->getResponse(
+            'csv',
+            (new AsciiSlugger())->slug($designation->getTitle()).'.csv',
+            new \ArrayIterator($repository->getVotes($designation))
+        );
     }
 }

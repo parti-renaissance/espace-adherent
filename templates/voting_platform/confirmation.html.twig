@@ -18,7 +18,8 @@
 
     {{ form_start(form) }}
         <div class="l__wrapper--slim">
-            {{ form_widget(form.allow, {label: 'Confirmer mon choix', attr: {class: 'btn btn--blue btn--large-and-full', disabled: not workflow_can(vote_command, 'to_finish') ? 'disabled' : false}}) }}
+            {% set allow_to_confirm = workflow_can(vote_command, 'to_finish') %}
+            {{ form_widget(form.allow, {label: 'Confirmer mon choix', attr: {class: 'btn btn--blue btn--large-and-full ' ~ (not allow_to_confirm ? 'btn-disabled'), disabled: not allow_to_confirm ? 'disabled' : false}}) }}
         </div>
     {{ form_end(form) }}
 {% endblock %}
