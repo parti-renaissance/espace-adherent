@@ -11,6 +11,9 @@
                 <span class="text-gray-500">{{ first.getFirstName() }}</span>
             {% else %}
                 <ul>
+                    {% if candidate_group.label %}
+                        <li class="text-gray-500">{{ candidate_group.label }}</li>
+                    {% endif %}
                     <li class="text-gray-500">
                         {{ first.getFirstName() }}
                         <span class="uppercase font-medium"> {{ first.getLastName() }}</span>

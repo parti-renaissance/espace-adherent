@@ -19,6 +19,7 @@ class LoadDesignationCandidacyPoolData extends Fixture implements DependentFixtu
         $pool->label = 'Listes pour l\'élection du bureau de l\'ADT';
 
         $pool->addCandidaciesGroup($group = new CandidaciesGroup());
+        $group->label = 'Ensemble';
         $group->addCandidacy($candidacy = new Candidacy());
         $candidacy->setFirstName('Albert');
         $candidacy->setLastName('Dupont');
@@ -46,6 +47,7 @@ class LoadDesignationCandidacyPoolData extends Fixture implements DependentFixtu
         $candidacy->isSubstitute = true;
 
         $pool->addCandidaciesGroup($group = new CandidaciesGroup());
+        $group->label = 'Avec Vous';
         $group->addCandidacy($candidacy = new Candidacy());
         $candidacy->setFirstName('Philippe');
         $candidacy->setLastName('Petit');
