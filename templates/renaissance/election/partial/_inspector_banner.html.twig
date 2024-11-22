@@ -4,10 +4,15 @@
     <h2 class="text-xl font-bold">MODE INSPECTEUR DE VOTE</h2>
 
     <div class="mt-4 flex flex-col md:flex-row space-y-5 md:space-y-0 md:space-x-5">
-        <ul class="p-4 space-y-1 list-disc list-inside bg-gray-50 rounded">
-            <li>Nombre de bulletins dans l'urne : <span class="font-bold">{{ inspector_stats.votes }}</span></li>
-            <li>Nombre d'émargements : <span class="font-bold">{{ inspector_stats.voters }}</span></li>
-        </ul>
+        <div class="p-4 space-y-1 bg-gray-50 rounded">
+            <p>Scrutin {{ election and election.isVotePeriodActive() ? 'ouvert' : 'fermé' }}</p>
+
+            <ul class="list-disc list-inside">
+                <li>Nombre de bulletins dans l'urne : <span class="font-bold">{{ inspector_stats.votes }}</span></li>
+                <li>Nombre d'émargements : <span class="font-bold">{{ inspector_stats.voters }}</span></li>
+            </ul>
+        </div>
+
         {% set results = election.getElectionResult() %}
 
         {% if designation.isResultPeriodActive() and results %}
