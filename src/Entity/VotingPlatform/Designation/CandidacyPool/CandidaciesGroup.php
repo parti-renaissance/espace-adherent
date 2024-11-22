@@ -32,6 +32,9 @@ class CandidaciesGroup extends BaseCandidaciesGroup implements EntityAdministrat
     #[ORM\OrderBy(['position' => 'ASC'])]
     protected $candidacies;
 
+    #[ORM\Column(nullable: true)]
+    public ?string $label = null;
+
     public function addCandidacy(CandidacyInterface $candidacy): void
     {
         if ($this->candidacies->isEmpty()) {

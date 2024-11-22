@@ -114,10 +114,10 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
-                            {% for candidate in candidate_group.getCandidates %}
+                            {% for candidate in candidate_group.getCandidates() %}
                                 <tr>
-                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900">{{ candidate.getFirstName() }} {{ candidate.getLastName()|upper }}</td>
-                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900">{{ candidate.isAdditionallyElected() ? 'ÉLU' : 'NON-ÉLU' }}</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900">{{ candidate.isFemale ? 'Mme' : 'M' }} {{ candidate.getFirstName() }} {{ candidate.getLastName()|upper }}</td>
+                                    <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900">{{ candidate.isAdditionallyElected() ? 'ÉLU' : 'NON-ÉLU' }}{{ candidate.isFemale ? 'E' }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

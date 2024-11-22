@@ -19,7 +19,7 @@
                     <li>Collège électoral : <span class="font-bold">{{ results.getParticipated() }}</span></li>
 
                     {% for candidate_group_result in election_pool_result.getCandidateGroupResults() %}
-                        <li>Nombre de bulletins Liste "{{ candidate_group_result.getCandidateGroup().getLabel() }}" : <span class="font-bold">{{ candidate_group_result.getTotal() }}</span></li>
+                        <li>Nombre de bulletins liste "{{ candidate_group_result.getCandidateGroup().getLabel() }}" : <span class="font-bold">{{ candidate_group_result.getTotal() }}</span></li>
                     {% endfor %}
                     <li>Nombre de bulletins blancs : <span class="font-bold">{{ election_pool_result.getBlank() }}</span></li>
                 </ul>

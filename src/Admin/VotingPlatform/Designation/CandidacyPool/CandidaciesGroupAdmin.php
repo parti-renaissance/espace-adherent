@@ -13,6 +13,7 @@ class CandidaciesGroupAdmin extends AbstractAdmin
     {
         $form
             ->add('hidden', HiddenType::class, ['label' => false, 'mapped' => false])
+            ->add('label', null, ['label' => 'Libellé'])
             ->add('candidacies', CollectionType::class, [
                 'label' => false,
                 'error_bubbling' => false,

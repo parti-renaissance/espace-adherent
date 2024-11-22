@@ -431,6 +431,7 @@ class ConfigureCommand extends Command
 
             foreach ($candidacyPool->getCandidaciesGroups() as $candidaciesGroup) {
                 $pool->addCandidateGroup($group = new CandidateGroup());
+                $group->setLabel($candidaciesGroup->label);
 
                 foreach ($candidaciesGroup->getCandidacies() as $candidacy) {
                     $group->addCandidate(new Candidate($candidacy->getFirstName(), $candidacy->getLastName(), $candidacy->getGender(), null, null, $candidacy->isSubstitute));
