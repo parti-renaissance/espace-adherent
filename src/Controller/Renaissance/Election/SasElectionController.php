@@ -5,9 +5,11 @@ namespace App\Controller\Renaissance\Election;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoteResultRepository;
+use App\Security\Http\Session\AnonymousFollowerSession;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sonata\Exporter\Exporter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\AsciiSlugger;
@@ -17,8 +19,12 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 class SasElectionController extends AbstractController
 {
     #[Route(path: '', name: '_index')]
-    public function indexAction(Designation $designation, ElectionRepository $electionRepository): Response
+    public function indexAction(Request $request, AnonymousFollowerSession $anonymousFollowerSession, Designation $designation, ElectionRepository $electionRepository): Response
     {
+        if ($response = $anonymousFollowerSession->start($request)) {
+            return $response;
+        }
+
         return $this->render('renaissance/election/sas.html.twig', [
             'designation' => $designation,
             'election' => $electionRepository->findOneByDesignation($designation),
