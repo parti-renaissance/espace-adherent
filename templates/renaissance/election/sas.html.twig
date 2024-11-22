@@ -1,5 +1,11 @@
 {% extends 'renaissance/election/_layout.html.twig' %}
 
+{% block banner %}
+    {% if is_granted('ROLE_VOTE_INSPECTOR') %}
+        {{ include('renaissance/election/partial/_inspector_banner.html.twig') }}
+    {% endif %}
+{% endblock %}
+
 {% block sub_content %}
     {% if designation.poll %}
         {{ include('renaissance/election/partial/_poll.html.twig', {poll: designation.poll}) }}

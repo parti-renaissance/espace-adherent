@@ -42,6 +42,10 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
         }
 
         if ($designation->isCongressCNType()) {
+            if (self::PERMISSION_RESULTS === $attribute) {
+                return $adherent->isRenaissanceAdherent();
+            }
+
             if (!$adherent->isRenaissanceAdherent()) {
                 return false;
             }

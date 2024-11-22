@@ -101,4 +101,9 @@ class VotingPlatformRuntime implements RuntimeExtensionInterface
     {
         return $this->committeeRepository->findCommitteeForRecentVote($designation, $adherent);
     }
+
+    public function getElectionStats(Designation $designation): array
+    {
+        return $this->electionRepository->getElectionStats($designation);
+    }
 }

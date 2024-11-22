@@ -24,7 +24,7 @@
             <p class="lg:text-lg font-medium text-gray-700 text-center">Le vote commencera dans quelques instants.</p>
         {% else %}
             {% if voting_platform_election.isVotePeriodActive %}
-                {% if is_granted('ABLE_TO_VOTE', voting_platform_election) %}
+                {% if is_granted('ROLE_VOTE_INSPECTOR') or is_granted('ABLE_TO_VOTE', voting_platform_election) %}
                     <div class="em-countdown-clock l__col--full text-base leading-6 text-gray-600" data-event-timestamp="{{ voting_platform_election.realVoteEndDate.timestamp }}" data-now-timestamp="{{ date().timestamp }}">
                         <span class="text--dark text--small">Il vous reste</span>
                         <span class="clock-container text-re-blue-600 font-medium"></span>
@@ -76,7 +76,12 @@
             {% elseif voting_platform_election.isResultPeriodActive %}
                 <p class="text-gray-600 text-base leading-6">
                     {% if voting_platform_election.isResultsDisplayable() %}
-                        Consulter les <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" class="underline font-medium text-re-blue-600 decoration-2 decoration-red-500">résultats détaillés</a>
+                        {% if is_granted('ABLE_TO_SEE_RESULTS', voting_platform_election) %}
+                            Consulter les <a href="{{ path('app_voting_platform_results', {uuid: voting_platform_election.uuid}) }}" class="underline font-medium text-re-blue-600 decoration-2 decoration-red-500">résultats détaillés</a>
+                        {% elseif designation.isCongressCNType() and not app.user.isRenaissanceAdherent() %}
+                            <span class="mb-5 md:mb-0">Vous devez être adhérent pour consulter les résultats.</span>
+                            <a href="{{ path('app_adhesion_index') }}" class="rounded-full w-fit px-4 py-2 bg-[#c89533] text-white">Adhérer</a>
+                        {% endif %}
                     {% else %}
                         Le dépouillement est en cours, encore quelques secondes !
                     {% endif %}

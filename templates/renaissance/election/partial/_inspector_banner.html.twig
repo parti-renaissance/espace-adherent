@@ -1,0 +1,31 @@
+<div class="w-full py-3 px-4 md:px-6 bg-red-300">
+    {% set inspector_stats = get_election_stats(designation) %}
+
+    <h2 class="text-xl font-bold">MODE INSPECTEUR DE VOTE</h2>
+
+    <div class="mt-4 flex flex-col md:flex-row space-y-5 md:space-y-0 md:space-x-5">
+        <ul class="p-4 space-y-1 list-disc list-inside bg-gray-50 rounded">
+            <li>Nombre de bulletins dans l'urne : <span class="font-bold">{{ inspector_stats.votes }}</span></li>
+            <li>Nombre d'émargements : <span class="font-bold">{{ inspector_stats.voters }}</span></li>
+        </ul>
+        {% set results = election.getElectionResult() %}
+
+        {% if designation.isResultPeriodActive() and results %}
+            <div class="p-4 space-y-1 bg-gray-50 rounded flex flex-col">
+                {% set election_round_result = results.getElectionRoundResult(election.getCurrentRound()) %}
+                {% set election_pool_result = election_round_result.getElectionPoolResults()|first %}
+
+                <ul class="list-disc list-inside">
+                    <li>Collège électoral : <span class="font-bold">{{ results.getParticipated() }}</span></li>
+
+                    {% for candidate_group_result in election_pool_result.getCandidateGroupResults() %}
+                        <li>Nombre de bulletins Liste "{{ candidate_group_result.getCandidateGroup().getLabel() }}" : <span class="font-bold">{{ candidate_group_result.getTotal() }}</span></li>
+                    {% endfor %}
+                    <li>Nombre de bulletins blancs : <span class="font-bold">{{ election_pool_result.getBlank() }}</span></li>
+                </ul>
+
+                <a href="{{ path('app_sas_election_export', {uuid: designation.uuid}) }}" class="underline">Télécharger les bulletins</a>
+            </div>
+        {% endif %}
+    </div>
+</div>

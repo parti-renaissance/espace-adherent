@@ -10,6 +10,14 @@
     </div>
 {% endblock %}
 
+{% block banner %}
+    {% if is_granted('ROLE_VOTE_INSPECTOR') %}
+        {{ include('renaissance/election/partial/_inspector_banner.html.twig') }}
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}
+
 {% block voting_platform_result_tab_votes_list_title 'Détails des résultats' %}
 
 {% block voting_platform_result_tab_pool_title 'Listes' %}
