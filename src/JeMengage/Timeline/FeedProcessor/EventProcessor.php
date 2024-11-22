@@ -24,9 +24,9 @@ class EventProcessor extends AbstractFeedProcessor
 
     public function process(array $item, Adherent $user): array
     {
-        $item = $this->cleanEventDataIfNeed($item, $user);
-        $item = $this->appendEventRegistrationDate($item, $user);
         $item = $this->appendEventManagerData($item, $user);
+        $item = $this->appendEventRegistrationDate($item, $user);
+        $item = $this->cleanEventDataIfNeed($item, $user);
 
         return $item;
     }
@@ -38,10 +38,14 @@ class EventProcessor extends AbstractFeedProcessor
 
     private function cleanEventDataIfNeed(array $item, Adherent $user): array
     {
-        $needClean = EventVisibilityEnum::isForAdherent($visibility = $item['visibility'] ?? EventVisibilityEnum::ADHERENT_DUES->value)
+        $needClean =
+            true !== $item['editable']
             && (
-                (EventVisibilityEnum::ADHERENT->value === $visibility && !$user->hasTag(TagEnum::ADHERENT))
-                || (EventVisibilityEnum::ADHERENT_DUES->value === $visibility && !$user->hasTag(TagEnum::getAdherentYearTag()))
+                EventVisibilityEnum::isForAdherent($visibility = $item['visibility'] ?? EventVisibilityEnum::ADHERENT_DUES->value)
+                && (
+                    (EventVisibilityEnum::ADHERENT->value === $visibility && !$user->hasTag(TagEnum::ADHERENT))
+                    || (EventVisibilityEnum::ADHERENT_DUES->value === $visibility && !$user->hasTag(TagEnum::getAdherentYearTag()))
+                )
             );
 
         if ($needClean) {
