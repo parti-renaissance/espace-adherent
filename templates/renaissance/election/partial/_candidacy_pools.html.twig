@@ -13,7 +13,7 @@
                     <div class="min-w-0 flex-1">
                         <div class="focus:outline-none group space-y-2">
                             <p class="text-sm font-medium text-gray-900">
-                                Liste {{ loop.index }} (<span class="truncate text-sm text-gray-500">{{ group.candidacies|length }} membres</span>)
+                                Liste {{ group.label ?? loop.index }} (<span class="truncate text-sm text-gray-500">{{ group.candidacies|length }} membres</span>)
                             </p>
                             {% set candidacy = group.candidacies|first %}
                             <p class="font-medium text-gray-900">{{ candidacy.firstName }} <span class="uppercase">{{ candidacy.lastName }}</span></p>
