@@ -64,8 +64,9 @@ class EventCleaner
                 continue;
             }
 
-            if (str_ends_with($key, '_at')) {
-                $eventData[$key] = substr($value, 0, 10);
+            // Keep only date part of datetime fields
+            if ($value && str_ends_with($key, '_at')) {
+                $eventData[$key] = $value instanceof \DateTimeInterface ? $value->format('Y-m-d') : substr($value, 0, 10);
             }
         }
 
