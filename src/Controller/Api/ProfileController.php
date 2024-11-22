@@ -300,11 +300,9 @@ class ProfileController extends AbstractController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         MembershipRequestHandler $handler,
+        UserInterface $user,
         TokenRevocationAuthority $tokenRevocationAuthority,
     ): Response {
-        /** @var Adherent $user */
-        $user = $this->getUser();
-
         /** @var UnregistrationCommand $unregistrationCommand */
         $unregistrationCommand = $serializer->deserialize($request->getContent() ?: '{}', UnregistrationCommand::class, 'json', [
             AbstractObjectNormalizer::GROUPS => [
