@@ -11,6 +11,7 @@ class AnonymousExtension extends AbstractExtension
     {
         return [
             new TwigFunction('login_path_for_anonymous_follower', [AnonymousRuntime::class, 'generateLoginPathForAnonymousFollower']),
+            new TwigFunction('adhesion_path_for_anonymous_follower', [AnonymousRuntime::class, 'generateAdhesionPathForAnonymousFollower']),
         ];
     }
 }

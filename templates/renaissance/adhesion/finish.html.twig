@@ -61,10 +61,16 @@
                 </p>
             {% endif %}
 
-            {% set parameters = (type is same as('readhesion')) ? {state: '/profil'} : [] %}
-            <twig:ReButton tag="a" href="{{ path('vox_app_redirect', parameters) }}" class="w-full" >
-                Accéder à mon espace
-            </twig:ReButton>
+            {% if callback_path %}
+                <twig:ReButton tag="a" href="{{ callback_path }}" class="w-full" >
+                    Retourner à l'élection
+                </twig:ReButton>
+            {% else %}
+                {% set parameters = (type is same as('readhesion')) ? {state: '/profil'} : [] %}
+                <twig:ReButton tag="a" href="{{ path('vox_app_redirect', parameters) }}" class="w-full" >
+                    Accéder à mon espace
+                </twig:ReButton>
+            {% endif %}
         </twig:Atoms:ReCard>
     </twig:ReStandaloneLayout>
 {% endblock %}

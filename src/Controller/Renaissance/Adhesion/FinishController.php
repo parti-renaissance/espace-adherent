@@ -5,6 +5,7 @@ namespace App\Controller\Renaissance\Adhesion;
 use App\Controller\Renaissance\Payment\StatusController;
 use App\Entity\Adherent;
 use App\Repository\DonationRepository;
+use App\Security\Http\Session\AnonymousFollowerSession;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,6 +32,11 @@ class FinishController extends AbstractController
             $type = $donation->isReAdhesion() ? 'readhesion' : 'adhesion';
         }
 
-        return $this->render('renaissance/adhesion/finish.html.twig', ['type' => $type]);
+        $callbackPath = $request->getSession()->remove(AnonymousFollowerSession::SESSION_KEY);
+
+        return $this->render('renaissance/adhesion/finish.html.twig', [
+            'type' => $type,
+            'callback_path' => $callbackPath,
+        ]);
     }
 }

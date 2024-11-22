@@ -20,7 +20,7 @@ final class AnonymousFollowerSession
     public const AUTHENTICATION_INTENTION = 'callback';
 
     // The subject uri that the anonymous tried to reach before authentication (i.e. following a committee)
-    private const SESSION_KEY = 'app.anonymous_follower.callback_path';
+    public const SESSION_KEY = 'app.anonymous_follower.callback_path';
 
     private const VALID_INTENTION_URLS = [
         '/connexion',
@@ -37,7 +37,6 @@ final class AnonymousFollowerSession
     {
         if (
             !$request->query->has(self::AUTHENTICATION_INTENTION)
-            || $this->security->getUser()
         ) {
             return null;
         }
