@@ -91,7 +91,6 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Entity('event', expr: 'repository.findOneActiveBySlug(slug)')]
     #[Route(path: '/{slug}/inscription', name: '_registration', methods: ['GET'])]
     public function registrationAction(
         #[MapEntity(expr: 'repository.findOneActiveBySlug(slug)')]

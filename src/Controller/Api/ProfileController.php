@@ -37,8 +37,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -135,7 +135,7 @@ class ProfileController extends AbstractController
         return new JsonResponse('OK');
     }
 
-    #[IsGranted(new Expression("is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE') and user == adherent"))]
+    #[IsGranted(new Expression("is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE') and user == subject"), subject: 'adherent')]
     #[Route(path: '/{uuid}', name: '_update', methods: ['PUT'])]
     public function update(
         Request $request,
@@ -285,11 +285,9 @@ class ProfileController extends AbstractController
         SerializerInterface $serializer,
         ValidatorInterface $validator,
         MembershipRequestHandler $handler,
+        UserInterface $user,
         TokenRevocationAuthority $tokenRevocationAuthority,
     ): Response {
-        /** @var Adherent $user */
-        $user = $this->getUser();
-
         /** @var UnregistrationCommand $unregistrationCommand */
         $unregistrationCommand = $serializer->deserialize($request->getContent() ?: '{}', UnregistrationCommand::class, 'json', [
             AbstractNormalizer::GROUPS => ['unregister'],

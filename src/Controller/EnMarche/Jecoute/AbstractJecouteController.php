@@ -142,7 +142,7 @@ abstract class AbstractJecouteController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression("(is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)) or survey.isNational()"))]
+    #[IsGranted(new Expression("(is_granted('IS_AUTHOR_OF', subject) or is_granted('IS_SURVEY_MANAGER_OF', subject)) or subject.isNational()"), subject: 'survey')]
     #[Route(path: '/questionnaire/{uuid}/stats', name: 'survey_stats', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
     public function jecouteSurveyStatsAction(
         Request $request,
@@ -176,7 +176,7 @@ abstract class AbstractJecouteController extends AbstractController
         return $this->renderTemplate('jecoute/stats.html.twig', ['data' => $provider->getStatsBySurvey($survey)]);
     }
 
-    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', survey) or is_granted('IS_SURVEY_MANAGER_OF', survey)"))]
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', subject) or is_granted('IS_SURVEY_MANAGER_OF', subject)"), subject: 'survey')]
     #[Route(path: '/questionnaire/{uuid}/dupliquer', name: 'local_survey_duplicate', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
     public function jecouteSurveyDuplicateAction(
         #[MapEntity(expr: 'repository.findOneByUuid(uuid)')]
@@ -193,7 +193,7 @@ abstract class AbstractJecouteController extends AbstractController
         return $this->redirectToJecouteRoute('local_surveys_list');
     }
 
-    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', surveyQuestion.getSurvey()) or is_granted('IS_SURVEY_MANAGER_OF', surveyQuestion.getSurvey()) or surveyQuestion.getSurvey().isNational()"))]
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', subject.getSurvey()) or is_granted('IS_SURVEY_MANAGER_OF', subject.getSurvey()) or subject.getSurvey().isNational()"), subject: 'surveyQuestion')]
     #[Route(path: '/question/{uuid}/reponses', name: 'survey_stats_answers_list', condition: 'request.isXmlHttpRequest()')]
     public function jecouteSurveyAnswersListAction(
         SurveyQuestion $surveyQuestion,

@@ -73,7 +73,7 @@ abstract class AbstractPollController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', localPoll) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', localPoll)"))]
+    #[IsGranted(new Expression("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', subject) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', subject)"), subject: 'localPoll')]
     #[Route(path: '/{uuid}/editer', name: 'local_edit', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET|POST'])]
     public function editLocalPoll(
         Request $request,
@@ -110,7 +110,7 @@ abstract class AbstractPollController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', poll) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', poll)"))]
+    #[IsGranted(new Expression("is_granted('CAN_EDIT_CANDIDATE_LOCAL_POLL', subject) or is_granted('CAN_EDIT_REFERENT_LOCAL_POLL', subject)"), subject: 'poll')]
     #[Route(path: '/{uuid}/depublier', name: 'unpublish', methods: ['GET'], defaults: ['publish' => false])]
     #[Route(path: '/{uuid}/publier', name: 'publish', methods: ['GET'], defaults: ['publish' => true])]
     public function togglePublish(bool $publish, Poll $poll, PollManager $pollManager): Response
