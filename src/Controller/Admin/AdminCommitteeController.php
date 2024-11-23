@@ -100,7 +100,7 @@ class AdminCommitteeController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('ADD_MANDATE_TO_COMMITTEE', committee)"))]
+    #[IsGranted(new Expression("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('ADD_MANDATE_TO_COMMITTEE', 'committee')"))]
     #[Route(path: '/{id}/mandates/add', name: 'app_admin_committee_add_mandate', methods: ['GET|POST'])]
     public function addMandateAction(
         Request $request,
@@ -137,7 +137,7 @@ class AdminCommitteeController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', mandate.getCommittee())"))]
+    #[IsGranted(new Expression("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', 'mandate.getCommittee()')"))]
     #[Route(path: '/mandates/{id}/replace', name: 'app_admin_committee_replace_mandate', methods: ['GET|POST'])]
     public function replaceMandateAction(Request $request, CommitteeAdherentMandate $mandate): Response
     {
@@ -180,7 +180,7 @@ class AdminCommitteeController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', mandate.getCommittee())"))]
+    #[IsGranted(new Expression("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', 'mandate.getCommittee()')"))]
     #[Route(path: '/mandates/{id}/close', name: 'app_admin_committee_close_mandate', methods: ['GET|POST'])]
     public function closeMandateAction(
         Request $request,

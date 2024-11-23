@@ -834,6 +834,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return null;
     }
 
+    public function getSalt()
+    {
+    }
+
     public function getUserIdentifier(): string
     {
         return $this->emailAddress;

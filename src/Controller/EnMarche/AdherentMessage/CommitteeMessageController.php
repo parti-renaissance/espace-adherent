@@ -28,7 +28,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(new Expression("is_granted('HOST_COMMITTEE', committee) and committee.isApproved()"))]
+#[IsGranted(new Expression("is_granted('HOST_COMMITTEE', 'committee')"))]
 #[Route(path: '/espace-animateur/{committee_slug}/messagerie', name: 'app_message_committee_')]
 class CommitteeMessageController extends AbstractController
 {
@@ -65,6 +65,7 @@ class CommitteeMessageController extends AbstractController
     #[Route(path: '/creer', name: 'create', methods: ['GET', 'POST'])]
     public function createMessageAction(
         Request $request,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
         AdherentMessageManager $manager,
     ): Response {
@@ -110,6 +111,7 @@ class CommitteeMessageController extends AbstractController
         Request $request,
         CommitteeAdherentMessage $message,
         AdherentMessageManager $manager,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
     ): Response {
         if ($message->isSent()) {
@@ -147,6 +149,7 @@ class CommitteeMessageController extends AbstractController
     public function filterMessageAction(
         Request $request,
         CommitteeAdherentMessage $message,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
         AdherentMessageManager $manager,
         FilterFormFactory $formFactory,
@@ -196,8 +199,11 @@ class CommitteeMessageController extends AbstractController
 
     #[IsGranted('IS_AUTHOR_OF', subject: 'message')]
     #[Route(path: '/{uuid}/visualiser', name: 'preview', methods: ['GET'])]
-    public function previewMessageAction(CommitteeAdherentMessage $message, Committee $committee): Response
-    {
+    public function previewMessageAction(
+        CommitteeAdherentMessage $message,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
+        Committee $committee,
+    ): Response {
         if (!$message->isSynchronized()) {
             throw new BadRequestHttpException('Message preview is not ready yet.');
         }
@@ -210,6 +216,7 @@ class CommitteeMessageController extends AbstractController
     public function deleteMessageAction(
         CommitteeAdherentMessage $message,
         ObjectManager $manager,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
     ): Response {
         $manager->remove($message);
@@ -225,6 +232,7 @@ class CommitteeMessageController extends AbstractController
     public function sendMessageAction(
         CommitteeAdherentMessage $message,
         AdherentMessageManager $manager,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
     ): Response {
         if (!$message->isSynchronized()) {
@@ -250,18 +258,22 @@ class CommitteeMessageController extends AbstractController
         return $this->redirectToRoute('app_message_committee_list', ['committee_slug' => $committee->getSlug()]);
     }
 
-    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', message) and message.isSent()"))]
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', 'message') and message.isSent()"))]
     #[Route(path: '/{uuid}/confirmation', name: 'send_success', methods: ['GET'])]
-    public function sendSuccessAction(AbstractAdherentMessage $message, Committee $committee): Response
-    {
+    public function sendSuccessAction(
+        AbstractAdherentMessage $message,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
+        Committee $committee,
+    ): Response {
         return $this->renderTemplate('message/send_success/committee.html.twig', $committee, ['message' => $message]);
     }
 
-    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', message) and !message.isSendToTimeline()"))]
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', 'message') and !message.isSendToTimeline()"))]
     #[Route(path: '/{uuid}/publish', name: 'publish_message', methods: ['GET'])]
     public function publishMessageAction(
         AbstractAdherentMessage $message,
         EntityManagerInterface $manager,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
     ): Response {
         $message->setSendToTimeline(true);
@@ -282,6 +294,7 @@ class CommitteeMessageController extends AbstractController
     public function sendTestMessageAction(
         CommitteeAdherentMessage $message,
         Manager $manager,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
     ): Response {
         if (!$message->isSynchronized()) {

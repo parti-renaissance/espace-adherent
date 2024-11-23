@@ -30,7 +30,7 @@ trait ControllerTestTrait
     public function assertClientIsRedirectedTo(
         string $path,
         KernelBrowser $client,
-        bool $withSchemes = true,
+        bool $withSchemes = false,
         bool $permanent = false,
         bool $withParameters = true,
     ): void {
@@ -58,11 +58,7 @@ trait ControllerTestTrait
 
     public function logout(KernelBrowser $client): void
     {
-        $session = $client->getContainer()->get('session');
-
-        $client->getCookieJar()->clear();
-        $session->set('_security_main_context', null);
-        $session->save();
+        $client->getContainer()->get('security.untracked_token_storage')->reset();
     }
 
     public function authenticateAsAdherent(KernelBrowser $client, string $emailAddress): void
@@ -76,7 +72,7 @@ trait ControllerTestTrait
 
     public function authenticateAsAdmin(KernelBrowser $client, string $email = 'admin@en-marche-dev.fr'): void
     {
-        if (!$user = $this->getAdministratorRepository()->loadUserByUsername($email)) {
+        if (!$user = $this->getAdministratorRepository()->loadUserByIdentifier($email)) {
             throw new \Exception(\sprintf('Admin %s not found', $email));
         }
 

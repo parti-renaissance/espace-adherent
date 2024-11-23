@@ -160,7 +160,7 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression("is_granted('SUPERVISE_COMMITTEE', committee) and is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', committee)"))]
+    #[IsGranted(new Expression("is_granted('SUPERVISE_COMMITTEE', 'committee') and is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', 'committee')"))]
     #[Route(path: '/promouvoir-suppleant/{member_uuid}', name: 'app_committee_promote_host', methods: ['GET', 'POST'])]
     public function promoteHostAction(
         Request $request,
