@@ -10,10 +10,11 @@
             {% if designation.isLocalPollType() %}
                 <span class="text-gray-500">{{ first.getFirstName() }}</span>
             {% else %}
-                <ul>
-                    {% if candidate_group.label %}
-                        <li class="text-gray-500">{{ candidate_group.label }}</li>
-                    {% endif %}
+                {% if candidate_group.label %}
+                    <p class="text-lg !m-0 font-medium text-gray-900">{{ candidate_group.label }}</p>
+                {% endif %}
+
+                <ul class="!mt-3">
                     <li class="text-gray-500">
                         {{ first.getFirstName() }}
                         <span class="uppercase font-medium"> {{ first.getLastName() }}</span>
