@@ -105,7 +105,7 @@ jobs:
             - name: Cache PHP CS Fixer
               uses: actions/cache@v4
               with:
-                  path: var/.php_cs/.php_cs.cache
+                  path: var/.php_cs
                   key: cache-${{ env.CACHE_KEY }}-phpcsfixer-${{ github.sha }}
                   restore-keys: |
                       cache-${{ env.CACHE_KEY }}-phpcsfixer-
