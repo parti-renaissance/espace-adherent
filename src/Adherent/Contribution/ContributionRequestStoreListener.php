@@ -14,7 +14,7 @@ class ContributionRequestStoreListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            'workflow.contribution_request.completed' => 'manageCommandStore',
+            'workflow.contribution_process.completed' => 'manageCommandStore',
         ];
     }
 
