@@ -165,9 +165,4 @@ trait AddressTrait
 
         return $address;
     }
-
-    public function isSame(AddressInterface $address): bool
-    {
-        return $this->getFullAddress() === $address->getFullAddress();
-    }
 }
