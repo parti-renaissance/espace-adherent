@@ -40,7 +40,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route(path: '/v3/profile', name: 'app_api_user_profile')]
@@ -149,7 +148,6 @@ class ProfileController extends AbstractController
         $json = $request->getContent();
 
         $adherentProfile = AdherentProfile::createFromAdherent($adherent);
-        $oldAddress = clone $adherentProfile->getPostAddress();
 
         $groups = self::WRITE_PROFILE_SERIALIZATION_GROUPS;
         if (!$adherent->isCertified()) {
@@ -170,17 +168,6 @@ class ProfileController extends AbstractController
         }
 
         $violations = $validator->validate($adherentProfile, null, $validationGroups);
-
-        if (!$oldAddress->isSame($adherentProfile->getPostAddress())) {
-            $violations->add(new ConstraintViolation(
-                "En raison du congrès organisé les 23 et 24 novembre, il n'est plus possible de changer son adresse postale jusqu'à la fin du vote.",
-                null,
-                [],
-                $oldAddress,
-                'post_address',
-                $adherentProfile->getPostAddress()
-            ));
-        }
 
         if (0 === $violations->count()) {
             $handler->update($adherent, $adherentProfile);
