@@ -72,7 +72,7 @@ class EventProcessor extends AbstractFeedProcessor
     {
         $item['editable'] = $this->authorizationChecker->isGranted(CanManageEventVoter::CAN_MANAGE_EVENT_ITEM, [
             'instance' => $item['author']['instance'] ?? null,
-            'zones' => $item['zone_codes'] ?? [],
+            'zones' => array_map(fn (string $code) => explode('_', $code, 2)[1], $item['zone_codes'] ?? []),
             'committee_uuid' => $item['committee_uuid'] ?? null,
         ]);
 
