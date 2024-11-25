@@ -37,7 +37,6 @@ use App\Entity\EntityNullablePostAddressTrait;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
 use App\Entity\ExposedAdvancedImageOwnerInterface;
-use App\Entity\ExposedObjectInterface;
 use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\NullablePostAddress;
@@ -159,7 +158,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['status'])]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: '`events`')]
-abstract class BaseEvent implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ExposedAdvancedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, ExposedObjectInterface
+abstract class BaseEvent implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ExposedAdvancedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface
 {
     use EntityIdentityTrait;
     use EntityNullablePostAddressTrait;
@@ -589,21 +588,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
     public function getImagePath(): string
     {
         return $this->imageName ? \sprintf('images/events/%s', $this->getImageName()) : '';
-    }
-
-    public function getNormalizationGroups(): array
-    {
-        return ['event_read'];
-    }
-
-    public function getExposedRouteName(): string
-    {
-        return 'app_renaissance_event_show';
-    }
-
-    public function getExposedRouteParams(): array
-    {
-        return ['slug' => $this->slug];
     }
 
     public function update(

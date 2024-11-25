@@ -78,7 +78,6 @@ Feature:
                     "latitude": null,
                     "longitude": null
                 },
-                "link": null,
                 "category": {
                     "event_group_category": {
                         "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
@@ -949,7 +948,6 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "image": null,
-                "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
                 "editable": false
             }
             """
@@ -1000,7 +998,6 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "image": null,
-                "link": "@string@.isUrl()",
                 "user_registered_at": null,
                 "object_state": "full",
                 "editable": false
@@ -1050,7 +1047,6 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "image": null,
-                "link": "@string@.isUrl()",
                 "user_registered_at": null,
                 "object_state": "full",
                 "editable": false
@@ -1119,7 +1115,6 @@ Feature:
                 "mode": null,
                 "image_url": null,
                 "image": null,
-                "link": "http://test.renaissance.code/espace-adherent/evenements/@string@-evenement-de-la-categorie-masquee/afficher",
                 "editable": false
             }
             """
@@ -1289,7 +1284,6 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "image": null,
-                "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher",
                 "editable": true,
                 "edit_link": "@string@.isUrl()"
             }
@@ -1380,7 +1374,6 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "image": null,
-                "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher",
                 "editable": true,
                 "edit_link": "@string@.isUrl()"
             }
@@ -1417,7 +1410,7 @@ Feature:
                         },
                         {
                             "name": "event_slug",
-                            "content": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher"
+                            "content": "http://test.renaissance.code/app/evenements/2023-01-29-nouveau-evenement"
                         },
                         {
                             "name": "event_description",
@@ -1673,7 +1666,6 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "image": null,
-                "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-nouvel-evenement-online/afficher",
                 "editable": true,
                 "edit_link": "@string@.isUrl()"
             }
@@ -2024,7 +2016,6 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "image": null,
-                "link": "http://test.renaissance.code/espace-adherent/evenements/2023-01-29-nouveau-evenement/afficher",
                 "editable": true,
                 "edit_link": "@string@.isUrl()"
             }
@@ -2107,7 +2098,6 @@ Feature:
                 "local_finish_at": "@string@.isDateTime()",
                 "image_url": null,
                 "image": null,
-                "link": "http://test.renaissance.code/espace-adherent/evenements/2022-12-12-un-evenement-du-candidat-aux-legislatives/afficher",
                 "editable": true,
                 "edit_link": "@string@.isUrl()"
             }

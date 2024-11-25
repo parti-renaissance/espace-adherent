@@ -50,7 +50,7 @@
                                         Les parlementaires et ministres doivent être à jour de cotisation élu pour participer. <a href="https://doc.parti.re/congres/circulaire-congres-et-cn-2024-et-annexes.pdf" target="_blank" class="text-blue-600">Voir la circulaire</a>.<br/>
                                         Un problème ? Appelez-nous au <a href="tel:+33680151424" class="text-blue-600">+33 6 80 15 14 24</a>.
                                     </span>
-                                    <a href="{{ url('vox_app_redirect', {state: '/profil/informations-elu'}) }}" class="rounded-full px-4 w-fit py-2 bg-[#c89533] text-white">Me mettre à jour</a>
+                                    <a href="{{ path('vox_app_elect') }}" class="rounded-full px-4 w-fit py-2 bg-[#c89533] text-white">Me mettre à jour</a>
                                 {% elseif not app.user.hasActiveMembership() %}
                                     <span class="mb-5 md:mb-0">Seuls les adhérents à jour {{ 'now'|date('Y') }} peuvent participer.</span>
                                     <a href="{{ adhesion_path_for_anonymous_follower('app_sas_election_index', {uuid: designation.uuid}) }}" class="rounded-full w-fit px-4 py-2 bg-[#c89533] text-white">

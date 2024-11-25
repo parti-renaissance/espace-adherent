@@ -91,13 +91,6 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Entity('event', expr: 'repository.findOnePublishedBySlug(slug)')]
-    #[Route(path: '/{slug}/afficher', name: '_show', methods: ['GET'])]
-    public function showAction(BaseEvent $event): Response
-    {
-        return $this->render('renaissance/adherent/events/show.html.twig', ['event' => $event]);
-    }
-
     #[Entity('event', expr: 'repository.findOneActiveBySlug(slug)')]
     #[Route(path: '/{slug}/inscription', name: '_registration', methods: ['GET'])]
     public function registrationAction(

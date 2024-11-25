@@ -36,4 +36,14 @@ class RedirectAppController extends AbstractController
             'state' => $request->query->get('state'),
         ]);
     }
+
+    public function redirectToState(Request $request): Response
+    {
+        $path = $request->getPathInfo();
+        if (str_starts_with($path, '/app')) {
+            $state = substr($request->getPathInfo(), 4);
+        }
+
+        return $this->redirectToRoute('vox_app_redirect', ['state' => $state ?? null]);
+    }
 }
