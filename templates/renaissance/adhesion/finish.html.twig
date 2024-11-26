@@ -66,8 +66,7 @@
                     Retourner à l'élection
                 </twig:ReButton>
             {% else %}
-                {% set parameters = (type is same as('readhesion')) ? {state: '/profil'} : [] %}
-                <twig:ReButton tag="a" href="{{ path('vox_app_redirect', parameters) }}" class="w-full" >
+                <twig:ReButton tag="a" href="{{ type is same as ('readhesion') ? path('vox_app_profile') : path('vox_app_redirect') }}" class="w-full" >
                     Accéder à mon espace
                 </twig:ReButton>
             {% endif %}

@@ -311,3 +311,14 @@ app_certification:
         app_domain: '%app_host%'
     requirements:
         app_domain: '%app_host%|%app_renaissance_host%'
+
+# VOX redirect paths
+app_renaissance_event_show:
+    path: '/app/evenements/{slug}'
+    controller: App\Controller\OAuth\RedirectAppController::redirectToState
+vox_app_profile:
+    path: '/app/profil'
+    controller: App\Controller\OAuth\RedirectAppController::redirectToState
+vox_app_elect:
+    path: '/app/profil/informations-elu'
+    controller: App\Controller\OAuth\RedirectAppController::redirectToState
