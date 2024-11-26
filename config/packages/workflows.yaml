@@ -33,7 +33,7 @@ framework:
                     from: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::CONFIRM
                     to: !php/const App\VotingPlatform\Election\VoteCommandStateEnum::FINISH
 
-        contribution_request:
+        contribution_process:
             type: 'state_machine'
             marking_store:
                 type: 'method'
