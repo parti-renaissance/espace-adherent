@@ -5,9 +5,9 @@ Feature:
     As a client of different apps
     I should be able to access events API
 
-    Scenario: As a logged-in Jemarche App user I can get events of my borough
+    Scenario: As a logged-in Jemarche App user I can get events by department
         Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "J'écoute" with scope "jemarche_app"
-        And I send a "GET" request to "/api/v3/events"
+        And I send a "GET" request to "/api/v3/events?zone=75"
         Then the response status code should be 200
         And the JSON nodes should match:
             | metadata.total_items | 14 |
@@ -15,20 +15,6 @@ Feature:
         Then the response status code should be 200
         And the JSON nodes should match:
             | metadata.total_items | 5 |
-
-    Scenario: As a logged-in Jemarche App user I can get events of my borough (with zipCode filter)
-        Given I am logged with "jacques.picard@en-marche.fr" via OAuth client "J'écoute" with scope "jemarche_app"
-        And I send a "GET" request to "/api/v3/events?zipCode=75008"
-        Then the response status code should be 200
-        And the JSON nodes should match:
-            | metadata.total_items | 14 |
-
-    Scenario: As a logged-in Jemarche App user I can get events of my department
-        When I am logged with "benjyd@aol.com" via OAuth client "J'écoute" with scope "jemarche_app"
-        And I send a "GET" request to "/api/v3/events"
-        Then the response status code should be 200
-        And the JSON nodes should match:
-            | metadata.total_items | 2 |
 
     Scenario: As a non logged-in user I can get scheduled and published event
         When I send a "GET" request to "/api/events/0e5f9f02-fa33-4c2c-a700-4235d752315b"
