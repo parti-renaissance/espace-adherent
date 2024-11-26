@@ -10,7 +10,6 @@ use App\Entity\CommitteeFeedItem;
 use App\Entity\CommitteeMembership;
 use App\Entity\Event\CommitteeEvent;
 use App\Mailer\Message\BesoinDEurope\BesoinDEuropeEventRegistrationConfirmationMessage;
-use App\Mailer\Message\CommitteeMessageNotificationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceEventNotificationMessage;
 use App\Repository\CommitteeFeedItemRepository;
 use App\Repository\CommitteeMembershipRepository;
@@ -347,72 +346,6 @@ class CommitteeManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertSame('Mercredi 2 mars 2022, 9h30 UTC +08:00', $crawler->filter('.committee-event-date')->text());
         $this->assertSame('6 rue Neyret, 69001 Lyon 1er', $crawler->filter('.committee-event-address')->text());
         $this->assertSame('♻ Cette journée sera consacrée à un grand débat sur la question de l\'agriculture écologique. ♻', $crawler->filter('.committee-event-description')->text());
-    }
-
-    public function testAuthenticatedCommitteeHostCanPostMessages()
-    {
-        $this->markTestSkipped('Skipped temporary, need to implement this feature with a new Message form');
-
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
-        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
-
-        $committeeUrl = $this->client->getRequest()->getPathInfo();
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeMessageForm($crawler));
-        $this->assertFalse($this->seeFlashMessage($crawler));
-        $this->assertCountTimelineMessages($crawler, 9);
-
-        $crawler = $this->client->submit($crawler->selectButton('committee_feed_message[send]')->form([
-            'committee_feed_message' => ['subject' => 'bonsoir', 'content' => 'yo'],
-        ]));
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeMessageForm($crawler, ['Le message doit contenir au moins 10 caractères.']));
-        $this->assertFalse($this->seeFlashMessage($crawler));
-
-        $this->client->submit($crawler->selectButton('committee_feed_message[send]')->form([
-            'committee_feed_message' => ['subject' => 'bonsoir', 'content' => 'Bienvenue !'],
-        ]));
-
-        $this->assertClientIsRedirectedTo($committeeUrl, $this->client);
-
-        $crawler = $this->client->followRedirect();
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeMessageForm($crawler));
-        $this->assertTrue($this->seeFlashMessage($crawler, 'Votre message a bien été envoyé.'));
-        $this->assertCountTimelineMessages($crawler, 9, 'Message should not be published');
-
-        $message = $this->committeeFeedItemRepository->findMostRecentFeedMessage(LoadCommitteeV1Data::COMMITTEE_1_UUID);
-        $this->assertInstanceOf(CommitteeFeedItem::class, $message);
-        $this->assertSame('Bienvenue !', $message->getContent());
-
-        $mail = $this->getEmailRepository()->findMostRecentMessage(CommitteeMessageNotificationMessage::class);
-        $this->assertMailCountRecipients(
-            $this->getCommitteeSubscribersCount(
-                $this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)
-            ),
-            $mail
-        );
-
-        $this->client->submit($crawler->selectButton('committee_feed_message[send]')->form([
-            'committee_feed_message' => [
-                'subject' => 'Bonsoir',
-                'content' => 'Première publication !',
-                'published' => '1',
-            ],
-        ]));
-
-        $this->assertClientIsRedirectedTo($committeeUrl, $this->client);
-
-        $crawler = $this->client->followRedirect();
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertTrue($this->seeMessageForm($crawler));
-        $this->assertTrue($this->seeFlashMessage($crawler, 'Votre message a bien été publié.'));
-        $this->assertSeeCommitteeTimelineMessage($crawler, 0, 'Gisele Berthoux', 'co-animateur', 'Première publication !');
     }
 
     #[DataProvider('provideFollowerCredentials')]

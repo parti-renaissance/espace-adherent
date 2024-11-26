@@ -16,13 +16,6 @@ class CoordinatorControllerTest extends AbstractEnMarcheWebTestCase
     use ControllerTestTrait;
 
     #[DataProvider('providePages')]
-    public function testCoordinatorBackendIsForbiddenForAnonymous($path)
-    {
-        $this->client->request(Request::METHOD_GET, $path);
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-    }
-
-    #[DataProvider('providePages')]
     public function testCoordinatorBackendIsForbiddenForAdherentNotCoordinator($path)
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');

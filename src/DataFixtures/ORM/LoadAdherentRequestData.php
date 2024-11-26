@@ -9,8 +9,8 @@ use App\FranceCities\FranceCities;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
 class LoadAdherentRequestData extends AbstractLoadPostAddressData implements DependentFixtureInterface
 {
@@ -18,13 +18,13 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
     public const ADHERENT_REQUEST_2_UUID = '3edb2e0a-f0d7-4fb5-aa75-b8b965beb3cb';
     public const ADHERENT_REQUEST_3_UUID = '37aa3e2a-0928-41d0-a6f1-af06c3facac1';
 
-    private PasswordEncoderInterface $encoder;
+    private PasswordHasherInterface $hasher;
 
-    public function __construct(FranceCities $franceCities, EncoderFactoryInterface $encoders)
+    public function __construct(FranceCities $franceCities, PasswordHasherFactoryInterface $hasherFactory)
     {
         parent::__construct($franceCities);
 
-        $this->encoder = $encoders->getEncoder(Adherent::class);
+        $this->hasher = $hasherFactory->getPasswordHasher(Adherent::class);
     }
 
     public function load(ObjectManager $manager)
@@ -66,7 +66,7 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdherentData::class,
@@ -89,7 +89,7 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
         $adherentRequest->email = $email;
         $adherentRequest->amount = $amount;
         $adherentRequest->setPostAddress($address);
-        $adherentRequest->password = $this->encoder->encodePassword(LoadAdherentData::DEFAULT_PASSWORD, null);
+        $adherentRequest->password = $this->hasher->hash(LoadAdherentData::DEFAULT_PASSWORD);
         $adherentRequest->allowEmailNotifications = $allowEmailNotifications;
         $adherentRequest->allowMobileNotifications = $allowMobileNotifications;
 

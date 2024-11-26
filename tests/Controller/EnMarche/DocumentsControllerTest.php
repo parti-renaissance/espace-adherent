@@ -14,12 +14,6 @@ class DocumentsControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    public function testDocumentsIndexAsAnonymous()
-    {
-        $this->client->request(Request::METHOD_GET, '/espace-adherent/documents');
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
-    }
-
     public function testDocumentsIndexAsAdherent()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');

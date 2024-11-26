@@ -33,7 +33,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
             return new RedirectResponse($this->urlGenerator->generate('admin_app_adherent_list'));
         }
 
-        if ($this->security->isGranted('ROLE_PREVIOUS_ADMIN')) {
+        if ($this->security->isGranted('IS_IMPERSONATOR')) {
             try {
                 return new RedirectResponse(
                     $this->urlGenerator->generate($request->attributes->get('_route'), ['_switch_user' => '_exit'])

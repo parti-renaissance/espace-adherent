@@ -35,18 +35,6 @@ class UrlGenerator extends AbstractAppUrlGenerator
         return $this->urlGenerator->generate('vox_app_redirect');
     }
 
-    public function generateForLogoutSuccess(Request $request): string
-    {
-        $client = $this->clientRepository->getVoxClient();
-        $redirectUri = $request->query->get('redirect_uri');
-
-        if (!$redirectUri || !\in_array($redirectUri, $client->getRedirectUris())) {
-            return current($client->getRedirectUris());
-        }
-
-        return $redirectUri;
-    }
-
     public function generateSuccessResetPasswordLink(Request $request): string
     {
         return $this->generateLoginLink();

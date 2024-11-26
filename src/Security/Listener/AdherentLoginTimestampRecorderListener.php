@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Security;
+namespace App\Security\Listener;
 
 use App\Entity\Adherent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
-class AdherentLoginTimestampRecorder implements EventSubscriberInterface
+class AdherentLoginTimestampRecorderListener implements EventSubscriberInterface
 {
     public function __construct(private readonly EntityManagerInterface $manager)
     {
@@ -17,15 +16,10 @@ class AdherentLoginTimestampRecorder implements EventSubscriberInterface
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $token = $event->getAuthenticationToken();
-
         $user = $token->getUser();
+
         // Only record adherent logins
         if (!$user instanceof Adherent) {
-            return;
-        }
-
-        // OAuth calls are not login attempts
-        if ($token instanceof PostAuthenticationGuardToken && 'api_oauth' === $token->getProviderKey()) {
             return;
         }
 

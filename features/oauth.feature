@@ -26,8 +26,8 @@ Feature: Using OAuth for 2-legged OAuth flow (client credentials)
             | response_type | code                                 |
         Then I should be redirected to "/connexion"
         When I fill in the following:
-            | _login_email    | carl999@example.fr |
-            | _login_password | secret!12345       |
+            | _username | carl999@example.fr |
+            | _password | secret!12345       |
         And I press "Me connecter"
         Then I should be on "/oauth/v2/auth"
         And the response status code should be 200

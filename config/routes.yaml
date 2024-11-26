@@ -1,34 +1,12 @@
-app_forgot_password:
-    host: '%user_vox_host%'
-    methods: 'GET|POST'
-    path: '/mot-de-passe-oublie'
-    controller: App\Controller\EnMarche\Security\SecurityController::retrieveForgotPasswordAction
-
-app_user_login_check:
-    host: '{app_domain}'
-    path: '/connexion/check'
-    methods: 'POST'
-    controller: App\Controller\EnMarche\Security\SecurityController::loginCheckAction
-    defaults:
-        app_domain: '%app_host%'
-    requirements:
-        app_domain: '%app_host%|%app_renaissance_host%|%user_vox_host%'
-
 logout:
     host: '{app_domain}'
     path: '/deconnexion'
     methods: 'GET'
-    controller: App\Controller\EnMarche\Security\SecurityController::logoutAction
+    controller: App\Controller\Renaissance\SecurityController::logoutAction
     defaults:
-        app_domain: '%app_renaissance_host%'
+        app_domain: '%user_vox_host%'
     requirements:
-        app_domain: '%app_host%|%app_renaissance_host%|%admin_renaissance_host%|%user_vox_host%'
-
-app_adherent_reset_password:
-    host: '%user_vox_host%'
-    path: '/changer-mot-de-passe/{adherent_uuid}/{reset_password_token}'
-    methods: 'GET|POST'
-    controller: App\Controller\EnMarche\Security\SecurityController::resetPasswordAction
+        app_domain: '%admin_renaissance_host%|%user_vox_host%'
 
 app_user_get_magic_link:
     host: '{app_domain}'
@@ -231,22 +209,6 @@ user_renaissance_redirect:
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
     defaults:
         route: 'app_renaissance_login'
-
-app_renaissance_login:
-    host: '%user_vox_host%'
-    path: '/connexion'
-    controller: App\Controller\EnMarche\Security\SecurityController::loginAction
-    defaults:
-        app: renaissance
-
-user_validate_new_email:
-    host: '%user_vox_host%'
-    path: '/valider-changement-email/{adherent_uuid}/{change_email_token}'
-    controller: App\Controller\EnMarche\Security\SecurityController::activateNewEmailAction
-    methods: GET
-    requirements:
-        'adherent_uuid': '%pattern_uuid%'
-        'change_email_token': '%pattern_sha1%'
 
 renaissance_qr_code:
     host: '%renaissance_qrcode_host%'
