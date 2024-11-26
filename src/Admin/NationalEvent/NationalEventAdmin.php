@@ -4,7 +4,7 @@ namespace App\Admin\NationalEvent;
 
 use App\Admin\AbstractAdmin;
 use App\Entity\NationalEvent\NationalEvent;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use App\Form\CkEditorType;
 use League\Flysystem\FilesystemOperator;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -61,13 +61,13 @@ class NationalEventAdmin extends AbstractAdmin
                     ->add('intoImageFile', FileType::class, ['label' => 'Image de cover', 'required' => false])
                 ->end()
                 ->with('Introduction', ['class' => 'col-md-6'])
-                    ->add('textIntro', CKEditorType::class, ['label' => false, 'required' => true, 'config' => ['versionCheck' => false]])
+                    ->add('textIntro', CkEditorType::class, ['label' => false, 'required' => true])
                 ->end()
                 ->with('Message d\'aide', ['class' => 'col-md-6'])
-                    ->add('textHelp', CKEditorType::class, ['label' => false, 'required' => true, 'config' => ['versionCheck' => false]])
+                    ->add('textHelp', CkEditorType::class, ['label' => false, 'required' => true])
                 ->end()
                 ->with('Message de confirmation', ['class' => 'col-md-6'])
-                    ->add('textConfirmation', CKEditorType::class, ['label' => false, 'required' => true, 'config' => ['versionCheck' => false]])
+                    ->add('textConfirmation', CkEditorType::class, ['label' => false, 'required' => true])
                 ->end()
             ->end()
             ->tab('Alerte & OG')
@@ -88,7 +88,7 @@ class NationalEventAdmin extends AbstractAdmin
                 ->with('Contenu du mail de billet', ['class' => 'col-md-6'])
                     ->add('subjectTicketEmail', TextType::class, ['label' => 'Objet', 'required' => true])
                     ->add('imageTicketEmail', UrlType::class, ['label' => 'URL de l\'image', 'required' => true])
-                    ->add('textTicketEmail', CKEditorType::class, ['label' => 'Détail', 'required' => true, 'config' => ['versionCheck' => false]])
+                    ->add('textTicketEmail', CkEditorType::class, ['label' => 'Détail', 'required' => true])
                 ->end()
             ->end()
         ;

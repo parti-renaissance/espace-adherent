@@ -7,6 +7,7 @@ use App\Event\BaseEventCommand;
 use App\Form\DataTransformer\EventDateTimeZoneTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -35,9 +36,7 @@ class BaseEventCommandType extends AbstractType
             ->add('category', EventCategoryType::class, [
                 'class' => $options['event_category_class'],
             ])
-            ->add('description', PurifiedTextareaType::class, [
-                'purify_html_profile' => 'enrich_content',
-            ])
+            ->add('description', TextareaType::class)
             ->add('address', AddressType::class)
             ->add('timeZone', TimezoneType::class, [
                 'choice_loader' => null,

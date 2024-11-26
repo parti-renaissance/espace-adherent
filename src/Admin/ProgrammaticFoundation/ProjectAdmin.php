@@ -5,7 +5,6 @@ namespace App\Admin\ProgrammaticFoundation;
 use App\Entity\ProgrammaticFoundation\Measure;
 use App\Entity\ProgrammaticFoundation\Project;
 use App\Entity\ProgrammaticFoundation\Tag;
-use App\Form\PurifiedTextareaType;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -18,6 +17,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ProjectAdmin extends AbstractAdmin
 {
@@ -111,10 +111,8 @@ class ProjectAdmin extends AbstractAdmin
                 ->add('title', null, [
                     'label' => 'Titre',
                 ])
-                ->add('content', PurifiedTextareaType::class, [
+                ->add('content', TextareaType::class, [
                     'label' => 'Contenu',
-                    'attr' => ['class' => 'ck-editor-advanced'],
-                    'purify_html_profile' => 'enrich_content',
                 ])
                 ->add('city', ChoiceType::class, [
                     'label' => 'Taille de ville',

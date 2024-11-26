@@ -81,15 +81,6 @@
     "endroid/qr-code-bundle": {
         "version": "6.0.0"
     },
-    "exercise/htmlpurifier-bundle": {
-        "version": "3.1",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "main",
-            "version": "3.0",
-            "ref": "99590c5352b58fadacd5535337589aba7e44f5a7"
-        }
-    },
     "friends-of-behat/symfony-extension": {
         "version": "2.3",
         "recipe": {

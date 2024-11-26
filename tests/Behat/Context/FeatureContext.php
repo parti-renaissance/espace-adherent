@@ -4,7 +4,7 @@ namespace Tests\App\Behat\Context;
 
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Webmozart\Assert\Assert;
+use PHPUnit\Framework\Assert;
 
 class FeatureContext extends RawMinkContext
 {
@@ -31,7 +31,7 @@ class FeatureContext extends RawMinkContext
     {
         $field = $this->getSession()->getPage()->findById($elementId);
 
-        Assert::notNull($field, 'Cannot find "'.$elementId.'"');
+        Assert::assertNotNull($field, 'Cannot find "'.$elementId.'"');
 
         $field->click();
     }
@@ -74,7 +74,7 @@ class FeatureContext extends RawMinkContext
     {
         $field = $this->getSession()->getPage()->find('css', $cssElementSelector);
 
-        Assert::notNull($field, "Cannot find '$cssElementSelector'");
+        Assert::assertNotNull($field, "Cannot find '$cssElementSelector'");
         sleep(1);
 
         $field->click();

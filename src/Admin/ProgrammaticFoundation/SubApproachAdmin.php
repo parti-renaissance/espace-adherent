@@ -3,7 +3,6 @@
 namespace App\Admin\ProgrammaticFoundation;
 
 use App\Entity\ProgrammaticFoundation\Approach;
-use App\Form\PurifiedTextareaType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -12,6 +11,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class SubApproachAdmin extends AbstractAdmin
 {
@@ -87,10 +87,8 @@ class SubApproachAdmin extends AbstractAdmin
                 ->add('subtitle', null, [
                     'label' => 'Sous-titre',
                 ])
-                ->add('content', PurifiedTextareaType::class, [
+                ->add('content', TextareaType::class, [
                     'label' => 'Contenu',
-                    'attr' => ['class' => 'ck-editor-advanced'],
-                    'purify_html_profile' => 'enrich_content',
                     'required' => false,
                 ])
                 ->add('isExpanded', null, [

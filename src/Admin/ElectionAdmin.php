@@ -3,11 +3,11 @@
 namespace App\Admin;
 
 use App\Form\ElectionRoundType;
-use App\Form\PurifiedTextareaType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ElectionAdmin extends AbstractAdmin
@@ -18,22 +18,16 @@ class ElectionAdmin extends AbstractAdmin
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])
-            ->add('introduction', PurifiedTextareaType::class, [
+            ->add('introduction', TextareaType::class, [
                 'label' => 'Introduction',
-                'purify_html_profile' => 'enrich_content',
-                'attr' => ['class' => 'ck-editor'],
             ])
-            ->add('proposalContent', PurifiedTextareaType::class, [
+            ->add('proposalContent', TextareaType::class, [
                 'label' => 'Contenu affiché avant le bouton pour les propositions',
                 'required' => false,
-                'purify_html_profile' => 'enrich_content',
-                'attr' => ['class' => 'ck-editor'],
             ])
-            ->add('requestContent', PurifiedTextareaType::class, [
+            ->add('requestContent', TextareaType::class, [
                 'label' => 'Contenu affiché avant le bouton pour les demandes',
                 'required' => false,
-                'purify_html_profile' => 'enrich_content',
-                'attr' => ['class' => 'ck-editor'],
             ])
             ->add('rounds', CollectionType::class, [
                 'label' => 'Tours',

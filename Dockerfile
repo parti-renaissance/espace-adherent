@@ -3,8 +3,8 @@
 
 ARG CADDY_VERSION=2
 # Fix the version of PHP to avoid this bug https://github.com/php/php-src/issues/14480
-ARG PHP_VERSION=8.3
-ARG NODE_VERSION=18
+ARG PHP_VERSION=8.4
+ARG NODE_VERSION=20
 
 FROM node:${NODE_VERSION}-alpine AS node
 RUN apk add --no-cache git

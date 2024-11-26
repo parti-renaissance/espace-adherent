@@ -2,7 +2,6 @@
 
 namespace App\Admin\ProgrammaticFoundation;
 
-use App\Form\PurifiedTextareaType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -10,6 +9,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ApproachAdmin extends AbstractAdmin
 {
@@ -57,10 +57,8 @@ class ApproachAdmin extends AbstractAdmin
                 ->add('title', null, [
                     'label' => 'Titre',
                 ])
-                ->add('content', PurifiedTextareaType::class, [
+                ->add('content', TextareaType::class, [
                     'label' => 'Contenu',
-                    'attr' => ['class' => 'ck-editor-advanced'],
-                    'purify_html_profile' => 'enrich_content',
                     'required' => false,
                 ])
                 ->add('position', IntegerType::class, [

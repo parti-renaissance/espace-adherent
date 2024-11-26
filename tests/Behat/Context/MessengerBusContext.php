@@ -5,8 +5,8 @@ namespace Tests\App\Behat\Context;
 use App\Messenger\MessageRecorder\MessageRecorderInterface;
 use Behat\Behat\Context\Context;
 use Behat\MinkExtension\Context\RawMinkContext;
+use PHPUnit\Framework\Assert;
 use Tests\App\MessengerTestTrait;
-use Webmozart\Assert\Assert;
 
 class MessengerBusContext extends RawMinkContext implements Context
 {
@@ -26,7 +26,7 @@ class MessengerBusContext extends RawMinkContext implements Context
     {
         $this->setUpMessageRecorder();
 
-        Assert::true($this->assertMessageIsDispatched($messageClass, false));
+        Assert::assertTrue($this->assertMessageIsDispatched($messageClass, false));
     }
 
     private function setUpMessageRecorder(): void
