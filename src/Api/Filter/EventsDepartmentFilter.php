@@ -14,6 +14,8 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 final class EventsDepartmentFilter extends AbstractFilter
 {
+    public const PROPERTY_NAME = 'zone';
+
     private BaseEventRepository $baseEventRepository;
     private ZoneRepository $zoneRepository;
 
@@ -28,7 +30,7 @@ final class EventsDepartmentFilter extends AbstractFilter
     ): void {
         if (
             !is_a($resourceClass, BaseEvent::class, true)
-            || 'zone' !== $property
+            || self::PROPERTY_NAME !== $property
             || empty($value)
         ) {
             return;
@@ -64,13 +66,13 @@ final class EventsDepartmentFilter extends AbstractFilter
 
         $description = [];
         foreach ($this->properties as $property => $strategy) {
-            $description['zone'] = [
+            $description[self::PROPERTY_NAME] = [
                 'property' => $property,
                 'type' => 'string',
                 'required' => false,
                 'swagger' => [
                     'description' => 'Filter by zone code.',
-                    'name' => 'zone',
+                    'name' => self::PROPERTY_NAME,
                     'type' => 'string',
                 ],
             ];

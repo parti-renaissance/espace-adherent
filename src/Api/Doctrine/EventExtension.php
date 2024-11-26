@@ -6,6 +6,7 @@ use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
+use App\Api\Filter\EventsDepartmentFilter;
 use App\Api\Serializer\PrivatePublicContextBuilder;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
@@ -76,7 +77,7 @@ class EventExtension implements QueryItemExtensionInterface, QueryCollectionExte
         if (PrivatePublicContextBuilder::CONTEXT_PUBLIC_CONNECTED_USER === $context[PrivatePublicContextBuilder::CONTEXT_KEY]) {
             /** @var Adherent $user */
             $user = $this->security->getUser();
-            if ($zone = $user->getParisBoroughOrDepartment()) {
+            if (empty($filters[EventsDepartmentFilter::PROPERTY_NAME]) && $zone = $user->getParisBoroughOrDepartment()) {
                 $this->baseEventRepository->withGeoZones(
                     [$zone],
                     $queryBuilder,
