@@ -40,6 +40,9 @@ class TransactionalEmailTemplate implements EntityAdministratorBlameableInterfac
     #[ORM\ManyToOne(targetEntity: self::class)]
     public ?self $parent = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    public bool $isSync = false;
+
     public function __construct(?UuidInterface $uuid = null)
     {
         $this->uuid = $uuid ?? Uuid::uuid4();
@@ -71,5 +74,6 @@ class TransactionalEmailTemplate implements EntityAdministratorBlameableInterfac
         $this->content = $command->content;
         $this->jsonContent = $command->jsonContent;
         $this->parent = $command->parentObject;
+        $this->isSync = true;
     }
 }

@@ -18,6 +18,8 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
 {
     private EntityRepository $transactionEmailTemplateRepository;
 
+    private ?TransactionalEmailTemplate $beforeUpdate = null;
+
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
@@ -46,6 +48,7 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
         $filter
             ->add('identifier', null, ['label' => 'Identifiant', 'show_filter' => true])
             ->add('subject', null, ['label' => 'Objet', 'show_filter' => true])
+            ->add('isSync', null, ['label' => 'Synchro avec la PROD', 'show_filter' => true])
             ->add('parent', null, ['label' => 'Parent'])
         ;
     }
@@ -56,6 +59,7 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
             ->add('id', null, ['label' => '#'])
             ->add('messageClass', 'url', ['label' => 'Identifiant', 'route' => ['name' => 'admin_app_email_transactionalemailtemplate_content', 'identifier_parameter_name' => 'id']])
             ->add('subject', null, ['label' => 'Objet'])
+            ->add('isSync', null, ['label' => 'Sync avec Prod'])
             ->add('parent', 'url', ['label' => 'Parent', 'route' => ['name' => 'admin_app_email_transactionalemailtemplate_content', 'identifier_parameter_name' => 'id']])
             ->add('updatedAt', null, ['label' => 'Modifié le'])
             ->add(ListMapper::NAME_ACTIONS, null, [
@@ -161,5 +165,21 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
     public function setTransactionEmailTemplateRepository(TransactionalEmailTemplateRepository $transactionEmailTemplateRepository): void
     {
         $this->transactionEmailTemplateRepository = $transactionEmailTemplateRepository;
+    }
+
+    protected function alterObject(object $object): void
+    {
+        if (null === $this->beforeUpdate) {
+            $this->beforeUpdate = clone $object;
+        }
+    }
+
+    protected function preUpdate(object $object): void
+    {
+        if (!$this->beforeUpdate) {
+            return;
+        }
+
+        $object->isSync = $this->beforeUpdate->getJsonContent() === $object->getJsonContent() && $this->beforeUpdate->subject === $object->subject;
     }
 }
