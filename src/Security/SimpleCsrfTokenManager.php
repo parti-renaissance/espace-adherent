@@ -19,7 +19,7 @@ class SimpleCsrfTokenManager implements CsrfTokenManagerInterface
     ) {
     }
 
-    public function getToken(string $tokenId)
+    public function getToken(string $tokenId): CsrfToken
     {
         if ($this->storage->hasToken($tokenId)) {
             $value = $this->storage->getToken($tokenId);
@@ -32,7 +32,7 @@ class SimpleCsrfTokenManager implements CsrfTokenManagerInterface
         return new CsrfToken($tokenId, $value);
     }
 
-    public function refreshToken(string $tokenId)
+    public function refreshToken(string $tokenId): CsrfToken
     {
         $value = $this->generator->generateToken();
 
@@ -41,12 +41,12 @@ class SimpleCsrfTokenManager implements CsrfTokenManagerInterface
         return new CsrfToken($tokenId, $value);
     }
 
-    public function removeToken(string $tokenId)
+    public function removeToken(string $tokenId): ?string
     {
         return $this->storage->removeToken($tokenId);
     }
 
-    public function isTokenValid(CsrfToken $token)
+    public function isTokenValid(CsrfToken $token): bool
     {
         if (!$this->storage->hasToken($tokenId = $token->getId())) {
             return false;

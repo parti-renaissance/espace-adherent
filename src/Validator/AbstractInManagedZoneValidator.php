@@ -4,9 +4,7 @@ namespace App\Validator;
 
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
-use App\Entity\MyTeam\DelegatedAccess;
 use App\Geo\ManagedZoneProvider;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -16,7 +14,6 @@ abstract class AbstractInManagedZoneValidator extends ConstraintValidator
     public function __construct(
         private readonly ManagedZoneProvider $managedZoneProvider,
         private readonly Security $security,
-        private readonly RequestStack $requestStack,
     ) {
     }
 
@@ -74,10 +71,6 @@ abstract class AbstractInManagedZoneValidator extends ConstraintValidator
 
         if (!$user instanceof Adherent) {
             return null;
-        }
-
-        if (($delegatedAccessUuid = $this->requestStack->getSession()->get(DelegatedAccess::ATTRIBUTE_KEY)) && ($access = $user->getReceivedDelegatedAccessByUuid($delegatedAccessUuid))) {
-            return $access->getDelegator();
         }
 
         return $user;

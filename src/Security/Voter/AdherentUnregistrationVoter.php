@@ -15,7 +15,7 @@ class AdherentUnregistrationVoter extends Voter
         return self::PERMISSION_UNREGISTER === $attribute && $subject instanceof Adherent;
     }
 
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         /** @var Adherent $subject */
         if ($subject->isToDelete()) {

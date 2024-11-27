@@ -47,11 +47,10 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -154,10 +153,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     /**
      * Finds an Adherent instance by its unique UUID.
-     *
-     * @return Adherent|null
      */
-    public function findByUuid(string $uuid)
+    public function findByUuid(string $uuid): ?Adherent
     {
         return $this->findOneBy(['uuid' => $uuid]);
     }
@@ -172,17 +169,17 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    public function loadUserByUsername($username)
+    public function loadUserByIdentifier(string $identifier): UserInterface
     {
         return $this->createQueryBuilderForAdherentWithRoles($alias = 'a')
             ->where($alias.'.emailAddress = :username')
-            ->setParameter('username', $username)
+            ->setParameter('username', $identifier)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
 
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         $class = $user::class;
         $username = $user->getUsername();
@@ -191,14 +188,14 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             throw new UnsupportedUserException(\sprintf('User of type "%s" and identified by "%s" is not supported by this provider.', $class, $username));
         }
 
-        if (!$user = $this->loadUserByUsername($username)) {
-            throw new UsernameNotFoundException(\sprintf('Unable to find Adherent user identified by "%s".', $username));
+        if (!$user = $this->loadUserByIdentifier($username)) {
+            throw new UserNotFoundException(\sprintf('Unable to find Adherent user identified by "%s".', $username));
         }
 
         return $user;
     }
 
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return Adherent::class === $class;
     }
