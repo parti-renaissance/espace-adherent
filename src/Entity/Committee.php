@@ -747,11 +747,21 @@ class Committee implements SynchronizedEntity, StaticSegmentInterface, AddressHo
     /**
      * Marks this committee as refused/rejected.
      */
-    public function refused(string $timestamp = 'now')
+    public function refused(string $timestamp = 'now'): void
     {
         $this->status = self::REFUSED;
         $this->refusedAt = new \DateTime($timestamp);
         $this->approvedAt = null;
+    }
+
+    public function getRefusedAt(): ?\DateTimeInterface
+    {
+        return $this->refusedAt;
+    }
+
+    public function getClosedAt(): ?\DateTimeInterface
+    {
+        return $this->closedAt;
     }
 
     public function getCreatedBy(): ?string
