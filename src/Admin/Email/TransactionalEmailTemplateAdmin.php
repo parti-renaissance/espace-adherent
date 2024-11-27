@@ -76,8 +76,9 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
             ->add('identifier', ChoiceType::class, [
                 'label' => 'Identifiant',
                 'required' => false,
-                'choices' => array_combine($classes = $this->getMessageClassNames($template?->getId()), $classes),
+                'choices' => array_combine($classes = $this->getMessageClassNames($template), $classes),
                 'placeholder' => 'Choisir un identifiant',
+                'attr' => ['data-sonata-select2-allow-tags' => 'true'],
             ])
             ->add('subject', null, ['label' => 'Objet', 'required' => false])
             ->add('parent', null, [
@@ -93,9 +94,10 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
                 },
             ])
         ;
+        $form->getFormBuilder()->get('identifier')->resetViewTransformers();
     }
 
-    private function getMessageClassNames(?int $currentTemplateId): array
+    private function getMessageClassNames(?TransactionalEmailTemplate $currentTemplate): array
     {
         $classNames = [];
         foreach ($this->scanDir($dir = \dirname((new \ReflectionClass(Message::class))->getFileName())) as $file) {
@@ -115,12 +117,12 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
 
         $existingTemplates = array_filter(
             $this->transactionEmailTemplateRepository->findAll(),
-            function (TransactionalEmailTemplate $template) use ($currentTemplateId) { return $template->getId() != $currentTemplateId; }
+            function (TransactionalEmailTemplate $template) use ($currentTemplate) { return $template->getId() != $currentTemplate?->getId(); }
         );
 
         $templates = array_map(fn (TransactionalEmailTemplate $template) => $template->identifier, $existingTemplates);
 
-        return array_diff($classNames, $templates);
+        return array_diff(array_merge($classNames, array_filter([$currentTemplate?->identifier])), $templates);
     }
 
     private function scanDir(string $directory): array
