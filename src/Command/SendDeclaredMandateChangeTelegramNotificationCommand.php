@@ -136,8 +136,16 @@ class SendDeclaredMandateChangeTelegramNotificationCommand extends Command
 
     private function translateMandates(array $mandates): array
     {
-        return array_map(function (string $mandate): string {
-            return $this->translator->trans("adherent.mandate.type.$mandate");
+        $chars = implode('', array_map('preg_quote', ['\\', '_', '*', '[', ']', '(', ')', '~', '`', '>', '<', '&', '#', '+', '-', '=', '|', '{', '}', '.', '!']));
+
+        return array_map(function (string $mandate) use ($chars): string {
+            $translation = $this->translator->trans("adherent.mandate.type.$mandate");
+
+            if (str_starts_with($translation, 'adherent.mandate.type.')) {
+                $translation = $mandate;
+            }
+
+            return addcslashes($translation, $chars);
         }, $mandates);
     }
 }
