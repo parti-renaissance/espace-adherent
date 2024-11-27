@@ -52,8 +52,10 @@ class AdminEmailCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
-    public function contentAction(TransactionalEmailTemplate $template, Request $request): Response
+    public function contentAction(Request $request): Response
     {
+        $template = $this->admin->getSubject();
+
         $this->admin->checkAccess('content', $template);
 
         $form = $this->createFormBuilder($template)
@@ -118,6 +120,8 @@ class AdminEmailCRUDController extends CRUDController
 
         if (200 === $response->getStatusCode()) {
             $this->addFlash('sonata_flash_success', 'Le template a été envoyé en production');
+            $template->isSync = true;
+            $this->admin->getModelManager()->update($template);
         } else {
             $content = $response->toArray(false);
             $this->addFlash('sonata_flash_error', $content['message'] ?? 'Erreur lors de l\'envoi du template en production');
