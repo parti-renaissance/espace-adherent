@@ -49,7 +49,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
 
         $this->client->followRedirect();
-        $this->assertClientIsRedirectedTo('/oauth/v2/auth?response_type=code&client_id=8128979a-cfdb-45d1-a386-f14f22bb19ae&redirect_uri=http://localhost:8081&scope=jemarche_app%20read:profile%20write:profile', $this->client);
+        $this->assertClientIsRedirectedTo('/oauth/v2/auth?response_type=code&client_id=8128979a-cfdb-45d1-a386-f14f22bb19ae&redirect_uri=http://localhost:8081&scope=jemarche_app%20read:profile%20write:profile', $this->client, false);
     }
 
     public static function getAdherentEmails(): array
@@ -146,7 +146,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->client->submit($crawler->selectButton('Réinitialiser')->form(), $formData);
 
-        $this->assertClientIsRedirectedTo('/mot-de-passe-oublie', $this->client);
+        $this->assertClientIsRedirectedTo('/mot-de-passe-oublie', $this->client, false);
 
         $crawler = $this->client->followRedirect();
 
@@ -168,7 +168,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->client->submit($crawler->selectButton('Réinitialiser')->form(), $formData);
 
-        $this->assertClientIsRedirectedTo('/mot-de-passe-oublie', $this->client);
+        $this->assertClientIsRedirectedTo('/mot-de-passe-oublie', $this->client, false);
 
         $crawler = $this->client->followRedirect();
 
@@ -204,7 +204,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         ]);
 
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(RenaissanceResetPasswordConfirmationMessage::class, 'michelle.dufour@example.ch'), 'A confirmation email should have been sent.');
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client, false);
 
         $this->client->followRedirect();
 

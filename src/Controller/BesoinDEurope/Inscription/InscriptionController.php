@@ -11,10 +11,10 @@ use App\Membership\AdherentFactory;
 use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
-use App\Security\AuthenticationUtils;
 use App\Utils\UtmParams;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,7 +33,7 @@ class InscriptionController extends AbstractController
         private readonly AdherentFactory $adherentFactory,
         private readonly EntityManagerInterface $entityManager,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly AuthenticationUtils $authenticationUtils,
+        private readonly Security $security,
     ) {
     }
 
@@ -58,7 +58,7 @@ class InscriptionController extends AbstractController
             $this->eventDispatcher->dispatch(new UserEvent($adherent, $inscriptionRequest->allowNotifications), UserEvents::USER_CREATED);
             $this->eventDispatcher->dispatch(new AdherentEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
 
-            $this->authenticationUtils->authenticateAdherent($adherent);
+            $this->security->login($adherent);
 
             $this->addFlash('success', 'Votre compte vient d’être créé');
 
