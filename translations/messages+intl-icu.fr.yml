@@ -211,6 +211,8 @@ adherent.contact.success: Votre message a bien été envoyé.
 adherent.mandate.admin.label: Mandat(s)
 adherent.mandate.label: Votre ou vos mandats
 adherent.mandate.type.depute_europeen: Député européen
+adherent.mandate.type.epci_member: Membre d'EPCI
+adherent.mandate.type.mayor_assistant: Adjoint au maire
 adherent.mandate.type.senateur: Sénateur
 adherent.mandate.type.depute: Député
 adherent.mandate.type.president_conseil_regional: Président du Conseil régional
