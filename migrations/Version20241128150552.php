@@ -5,7 +5,7 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20241128143112 extends AbstractMigration
+final class Version20241128150552 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
@@ -38,7 +38,9 @@ final class Version20241128143112 extends AbstractMigration
         $this->addSql('ALTER TABLE
           user_role_history
         ADD
-          CONSTRAINT FK_1BBBA9B2F6957EFF FOREIGN KEY (user_author_id) REFERENCES adherents (id)');
+          CONSTRAINT FK_1BBBA9B2F6957EFF FOREIGN KEY (user_author_id) REFERENCES adherents (id) ON DELETE
+        SET
+          NULL');
     }
 
     public function down(Schema $schema): void

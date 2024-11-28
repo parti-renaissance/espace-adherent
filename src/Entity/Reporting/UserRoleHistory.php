@@ -4,6 +4,7 @@ namespace App\Entity\Reporting;
 
 use App\Entity\Adherent;
 use App\Entity\Administrator;
+use App\Repository\Reporting\UserRoleHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRoleHistoryRepository::class)]
@@ -35,8 +36,8 @@ class UserRoleHistory
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
     public ?Administrator $adminAuthor;
 
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class)]
-    #[ORM\ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     public ?Adherent $userAuthor;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
