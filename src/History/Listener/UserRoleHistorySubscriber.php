@@ -77,7 +77,7 @@ class UserRoleHistorySubscriber implements EventSubscriberInterface
 
     private function getAdherentRoles(Adherent $adherent): array
     {
-        $scopes = $this->generalScopeGenerator->generateScopes($adherent);
+        $scopes = $this->generalScopeGenerator->generateScopes($adherent, false);
 
         $roles = [];
         foreach ($scopes as $scope) {
