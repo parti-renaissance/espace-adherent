@@ -33,8 +33,10 @@ class Module implements EntityMediaInterface
     /**
      * @var string|null
      */
-    #[Assert\Length(min: 2, minMessage: 'Le titre doit faire au moins 2 caractères.', options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank(message: 'Veuillez renseigner un titre.')]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(message: 'Veuillez renseigner un titre.'),
+        new Assert\Length(min: 2, minMessage: 'Le titre doit faire au moins 2 caractères.'),
+    ])]
     #[ORM\Column(unique: true)]
     private $title;
 
@@ -48,8 +50,10 @@ class Module implements EntityMediaInterface
     /**
      * @var string|null
      */
-    #[Assert\Length(min: 2, minMessage: 'La description doit faire au moins 2 caractères.', options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank(message: 'Veuillez renseigner une description.')]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(message: 'Veuillez renseigner une description.'),
+        new Assert\Length(min: 2, minMessage: 'La description doit faire au moins 2 caractères.'),
+    ])]
     #[ORM\Column(type: 'text')]
     private $description;
 

@@ -81,8 +81,10 @@ class GeneralMeetingReport implements EntityScopeVisibilityWithZoneInterface, En
     use EntityAdherentBlameableTrait;
     use EntityScopeVisibilityTrait;
 
-    #[Assert\Length(min: 2, minMessage: 'Le titre doit faire au moins 2 caractères.', options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank(message: 'Veuillez renseigner un titre.')]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(message: 'Veuillez renseigner un titre.'),
+        new Assert\Length(min: 2, minMessage: 'Le titre doit faire au moins 2 caractères.'),
+    ])]
     #[Groups(['general_meeting_report_list_read', 'general_meeting_report_read', 'general_meeting_report_write'])]
     #[ORM\Column]
     private ?string $title = null;

@@ -87,8 +87,10 @@ abstract class BaseMoocElement
     #[ORM\Column]
     private $shareEmailSubject;
 
-    #[Assert\Length(min: 5, max: 500, options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(min: 5, max: 500),
+    ])]
     #[ORM\Column(length: 500)]
     protected $shareEmailBody;
 

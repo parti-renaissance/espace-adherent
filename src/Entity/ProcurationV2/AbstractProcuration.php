@@ -52,7 +52,8 @@ abstract class AbstractProcuration implements TranslatedTagInterface
     #[ORM\Column(length: 100)]
     public string $lastName;
 
-    #[Assert\Range(min: '-120 years', max: '-17 years', minMessage: 'procuration.birthdate.maximum_required_age', maxMessage: 'procuration.birthdate.minimum_required_age')]
+    #[Assert\Range(minMessage: 'procuration.birthdate.maximum_required_age', min: '-120 years')]
+    #[Assert\Range(maxMessage: 'procuration.birthdate.minimum_required_age', max: '-17 years')]
     #[Groups(['procuration_request_read', 'procuration_request_list', 'procuration_proxy_list', 'procuration_matched_proxy'])]
     #[ORM\Column(type: 'date')]
     public \DateTimeInterface $birthdate;

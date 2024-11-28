@@ -50,8 +50,10 @@ class Document implements EntityAdministratorBlameableInterface
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
 
-    #[Assert\Length(min: 2, minMessage: 'Le titre doit faire au moins 2 caractères.', options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank(message: 'Veuillez renseigner un titre.')]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(message: 'Veuillez renseigner un titre.'),
+        new Assert\Length(min: 2, minMessage: 'Le titre doit faire au moins 2 caractères.'),
+    ])]
     #[Groups(['document_read'])]
     #[ORM\Column(unique: true)]
     public ?string $title = null;

@@ -321,7 +321,17 @@ Feature:
                     {
                         "code": "@uuid@",
                         "propertyPath": "first_name",
+                        "message": "Votre prénom doit comporter au moins 2 caractères."
+                    },
+                    {
+                        "code": "@uuid@",
+                        "propertyPath": "first_name",
                         "message": "Cette valeur ne doit pas être vide."
+                    },
+                    {
+                        "code": "@uuid@",
+                        "propertyPath": "last_name",
+                        "message": "Votre nom doit comporter au moins 1 caractères."
                     },
                     {
                         "code": "@uuid@",
@@ -800,23 +810,6 @@ Feature:
                 "other_party_membership": false,
                 "image_url": null,
                 "change_email_token": null
-            }
-            """
-        # Update blank last name
-        When I send a "PUT" request to "/api/v3/profile/313bd28f-efc8-57c9-8ab7-2106c8be9699" with body:
-            """
-            {
-                "last_name": ""
-            }
-            """
-        Then the response status code should be 200
-        Then I send a "GET" request to "/api/v3/profile/me"
-        Then the response status code should be 200
-        And the response should be in JSON
-        And the JSON should be a superset of:
-            """
-            {
-                "last_name": ""
             }
             """
 
