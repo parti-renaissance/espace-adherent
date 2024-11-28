@@ -20,12 +20,16 @@ class CommitteeCommand
     /** @var Committee */
     protected $committee;
 
-    #[Assert\Length(min: 2, max: 50, options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(min: 2, max: 50),
+    ])]
     public $name;
 
-    #[Assert\Length(min: 5, max: 140, minMessage: 'committee.description.min_length', maxMessage: 'committee.description.max_length', options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(min: 5, max: 140, minMessage: 'committee.description.min_length', maxMessage: 'committee.description.max_length'),
+    ])]
     public $description;
 
     /**
@@ -44,7 +48,10 @@ class CommitteeCommand
     #[Assert\Url]
     public $facebookPageUrl;
 
-    #[Assert\Length(min: 1, max: 15, options: ['allowEmptyString' => true])]
+    #[Assert\AtLeastOneOf([
+        new Assert\Blank(),
+        new Assert\Length(min: 1, max: 15),
+    ])]
     #[Assert\Regex('/^@?([a-zA-Z0-9_]){1,15}$/', message: 'common.twitter_nickname.invalid_format')]
     public $twitterNickname;
 

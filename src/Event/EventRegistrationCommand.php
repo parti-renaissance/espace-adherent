@@ -21,13 +21,17 @@ class EventRegistrationCommand
      */
     private $adherent;
 
-    #[Assert\Length(min: 2, max: 50, options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(min: 2, max: 50),
+    ])]
     #[Groups(['event_registration_write'])]
     private $firstName;
 
-    #[Assert\Length(min: 1, max: 50, options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(min: 1, max: 50),
+    ])]
     #[Groups(['event_registration_write'])]
     private $lastName;
 

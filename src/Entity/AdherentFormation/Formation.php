@@ -105,8 +105,10 @@ class Formation implements EntityScopeVisibilityWithZoneInterface, EntityAdheren
     use EntityScopeVisibilityTrait;
     use PositionTrait;
 
-    #[Assert\Length(min: 2, minMessage: 'Le titre doit faire au moins 2 caractères.', options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank(message: 'Veuillez renseigner un titre.')]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(message: 'Veuillez renseigner un titre.'),
+        new Assert\Length(min: 2, minMessage: 'Le titre doit faire au moins 2 caractères.'),
+    ])]
     #[Groups(['formation_read', 'formation_list_read', 'formation_write'])]
     #[ORM\Column]
     private ?string $title = null;
