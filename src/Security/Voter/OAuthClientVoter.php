@@ -5,7 +5,7 @@ namespace App\Security\Voter;
 use App\Entity\Adherent;
 use App\Entity\AuthoredInterface;
 use App\Entity\OAuth\Client;
-use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Security;
 
 class OAuthClientVoter extends AbstractAdherentVoter
 {

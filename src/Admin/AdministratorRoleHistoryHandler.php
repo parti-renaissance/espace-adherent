@@ -5,7 +5,7 @@ namespace App\Admin;
 use App\Entity\Administrator;
 use App\Entity\Reporting\AdministratorRoleHistory;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Security;
 
 class AdministratorRoleHistoryHandler
 {

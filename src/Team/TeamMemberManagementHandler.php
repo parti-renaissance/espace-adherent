@@ -9,7 +9,7 @@ use App\Entity\Team\Member;
 use App\Entity\Team\Team;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Security;
 
 class TeamMemberManagementHandler
 {

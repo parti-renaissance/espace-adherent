@@ -6,7 +6,7 @@ use App\Controller\EnMarche\VotingPlatform\AbstractController;
 use App\Entity\Phoning\Campaign;
 use App\Repository\AdherentRepository;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN_PHONING_CAMPAIGNS')]

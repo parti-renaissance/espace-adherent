@@ -9,7 +9,7 @@ use App\Entity\Email\EmailTemplate;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Security;
 
 class EmailTemplateExtension implements QueryCollectionExtensionInterface
 {

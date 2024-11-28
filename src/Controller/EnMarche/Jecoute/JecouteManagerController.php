@@ -4,7 +4,7 @@ namespace App\Controller\EnMarche\Jecoute;
 
 use App\Entity\Adherent;
 use App\Jecoute\JecouteSpaceEnum;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_JECOUTE_MANAGER')]

@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Email\EmailTemplate;
 use App\Scope\FeatureEnum;
 use App\Scope\ScopeGeneratorResolver;
-use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Security;
 
 class CanReadEmailTemplateVoter extends AbstractAdherentVoter
 {

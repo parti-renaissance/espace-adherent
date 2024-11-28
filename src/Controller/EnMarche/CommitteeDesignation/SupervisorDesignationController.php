@@ -3,7 +3,7 @@
 namespace App\Controller\EnMarche\CommitteeDesignation;
 
 use Symfony\Component\ExpressionLanguage\Expression;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted(new Expression("is_granted('MANAGE_COMMITTEE_DESIGNATIONS', subject) and subject.isApproved()"), subject: 'committee')]

@@ -8,7 +8,7 @@ use ApiPlatform\Metadata\Operation;
 use App\Entity\Adherent;
 use App\Entity\AuthoredItemsCollectionInterface;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Security;
 
 class AuthoredItemsCollectionExtension implements QueryCollectionExtensionInterface
 {

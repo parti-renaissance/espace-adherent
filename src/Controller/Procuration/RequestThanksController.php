@@ -5,7 +5,7 @@ namespace App\Controller\Procuration;
 use App\Entity\ProcurationV2\Request as ProcurationRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/mandant/{uuid}/merci', name: 'app_procuration_v2_request_thanks', methods: ['GET'])]
 class RequestThanksController extends AbstractController

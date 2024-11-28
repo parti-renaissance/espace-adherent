@@ -11,7 +11,7 @@ use App\Entity\Adherent;
 use App\Entity\AdherentFormation\Formation;
 use App\Scope\ScopeVisibilityEnum;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Security;
 
 class AdherentFormationExtension implements QueryItemExtensionInterface, QueryCollectionExtensionInterface
 {
