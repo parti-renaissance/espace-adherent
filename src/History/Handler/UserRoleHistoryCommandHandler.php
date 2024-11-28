@@ -32,6 +32,7 @@ class UserRoleHistoryCommandHandler
             $user,
             $command->action,
             $command->role,
+            $command->zones,
             $command->adminAuthorId ? $this->administratorRepository->find($command->adminAuthorId) : null,
             $command->userAuthorUuid ? $this->adherentRepository->findOneByUuid($command->userAuthorUuid) : null,
         );

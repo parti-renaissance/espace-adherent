@@ -21,6 +21,7 @@ class LoadUserRoleHistoryData extends Fixture implements DependentFixtureInterfa
             $adherent5,
             UserRoleHistory::ACTION_ADD,
             'deputy',
+            ['Hauts de Seine (92)'],
             $admin
         ));
 
@@ -28,6 +29,7 @@ class LoadUserRoleHistoryData extends Fixture implements DependentFixtureInterfa
             $adherent5,
             UserRoleHistory::ACTION_REMOVE,
             'deputy',
+            ['Hauts de Seine (92)'],
             $admin
         ));
 
@@ -35,6 +37,7 @@ class LoadUserRoleHistoryData extends Fixture implements DependentFixtureInterfa
             $adherent13,
             UserRoleHistory::ACTION_ADD,
             'deputy',
+            ['Hauts de Seine (92)'],
             null,
             $adherent5
         ));
@@ -46,10 +49,11 @@ class LoadUserRoleHistoryData extends Fixture implements DependentFixtureInterfa
         Adherent $adherent,
         string $action,
         string $role,
+        array $zones,
         ?Administrator $adminAuthor = null,
         ?Adherent $userAuthor = null,
     ): UserRoleHistory {
-        return new UserRoleHistory($adherent, $action, $role, $adminAuthor, $userAuthor);
+        return new UserRoleHistory($adherent, $action, $role, $zones, $adminAuthor, $userAuthor);
     }
 
     public function getDependencies()

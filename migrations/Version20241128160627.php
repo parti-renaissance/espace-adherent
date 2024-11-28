@@ -5,13 +5,8 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20241128155119 extends AbstractMigration
+final class Version20241128160627 extends AbstractMigration
 {
-    public function getDescription(): string
-    {
-        return '';
-    }
-
     public function up(Schema $schema): void
     {
         $this->addSql('CREATE TABLE user_role_history (
@@ -21,21 +16,13 @@ final class Version20241128155119 extends AbstractMigration
           user_author_id INT UNSIGNED DEFAULT NULL,
           action VARCHAR(255) NOT NULL,
           role VARCHAR(255) NOT NULL,
+          zones LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\',
           date DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\',
           telegram_notified_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\',
           INDEX IDX_1BBBA9B2A76ED395 (user_id),
           INDEX IDX_1BBBA9B21F82F629 (admin_author_id),
           INDEX IDX_1BBBA9B2F6957EFF (user_author_id),
           PRIMARY KEY(id)
-        ) DEFAULT CHARACTER
-        SET
-          utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE user_role_history_zone (
-          user_role_history_id INT UNSIGNED NOT NULL,
-          zone_id INT UNSIGNED NOT NULL,
-          INDEX IDX_C797678C83ED82F1 (user_role_history_id),
-          INDEX IDX_C797678C9F2C3FAB (zone_id),
-          PRIMARY KEY(user_role_history_id, zone_id)
         ) DEFAULT CHARACTER
         SET
           utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -55,14 +42,6 @@ final class Version20241128155119 extends AbstractMigration
           CONSTRAINT FK_1BBBA9B2F6957EFF FOREIGN KEY (user_author_id) REFERENCES adherents (id) ON DELETE
         SET
           NULL');
-        $this->addSql('ALTER TABLE
-          user_role_history_zone
-        ADD
-          CONSTRAINT FK_C797678C83ED82F1 FOREIGN KEY (user_role_history_id) REFERENCES user_role_history (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE
-          user_role_history_zone
-        ADD
-          CONSTRAINT FK_C797678C9F2C3FAB FOREIGN KEY (zone_id) REFERENCES geo_zone (id) ON DELETE CASCADE');
     }
 
     public function down(Schema $schema): void
@@ -70,9 +49,6 @@ final class Version20241128155119 extends AbstractMigration
         $this->addSql('ALTER TABLE user_role_history DROP FOREIGN KEY FK_1BBBA9B2A76ED395');
         $this->addSql('ALTER TABLE user_role_history DROP FOREIGN KEY FK_1BBBA9B21F82F629');
         $this->addSql('ALTER TABLE user_role_history DROP FOREIGN KEY FK_1BBBA9B2F6957EFF');
-        $this->addSql('ALTER TABLE user_role_history_zone DROP FOREIGN KEY FK_C797678C83ED82F1');
-        $this->addSql('ALTER TABLE user_role_history_zone DROP FOREIGN KEY FK_C797678C9F2C3FAB');
         $this->addSql('DROP TABLE user_role_history');
-        $this->addSql('DROP TABLE user_role_history_zone');
     }
 }

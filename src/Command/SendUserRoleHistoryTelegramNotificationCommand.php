@@ -86,6 +86,22 @@ class SendUserRoleHistoryTelegramNotificationCommand extends Command
                 ),
             ];
 
+            if (UserRoleHistory::ACTION_ADD === $history->action) {
+                $messageBlock[] = \sprintf(
+                    '❇️ %s (%s)',
+                    $history->role,
+                    implode(', ', $history->zones)
+                );
+            }
+
+            if (UserRoleHistory::ACTION_REMOVE === $history->action) {
+                $messageBlock[] = \sprintf(
+                    '❌ %s (%s)',
+                    $history->role,
+                    implode(', ', $history->zones)
+                );
+            }
+
             if ($administrator = $history->adminAuthor) {
                 $messageBlock[] = \sprintf(\PHP_EOL.'Par Admin : %s', $administrator->getEmailAddress());
             }
