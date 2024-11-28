@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -57,7 +58,7 @@ class MagicLinkController extends AbstractController
         return $this->render('security/renaissance_user_magic_link.html.twig', ['form' => $form->createView()]);
     }
 
-    public function connectViaMagicLinkAction(Request $request): Response
+    public function connectViaMagicLinkAction(Request $request, TokenStorageInterface $tokenStorage): Response
     {
         /** @var Adherent|Administrator $currentUser */
         $currentUser = $this->getUser();
@@ -81,6 +82,9 @@ class MagicLinkController extends AbstractController
 
                 return $this->redirectToRoute('vox_app_redirect');
             }
+
+            $tokenStorage->setToken(null);
+            $request->getSession()->invalidate();
         }
 
         return $this->render('security/renaissance_connect_magic_link.html.twig', [
