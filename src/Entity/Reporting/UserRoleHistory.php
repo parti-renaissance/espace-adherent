@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'user_role_history')]
 class UserRoleHistory
 {
-    private const ACTION_ADD = 'add';
-    private const ACTION_REMOVE = 'remove';
+    public const ACTION_ADD = 'add';
+    public const ACTION_REMOVE = 'remove';
 
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     #[ORM\GeneratedValue]
