@@ -6,7 +6,7 @@ use App\Entity\VotingPlatform\Election;
 use App\Form\ConfirmActionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/confirmer', name: 'app_voting_platform_confirm_step', methods: ['GET', 'POST'])]
 class ConfirmController extends AbstractController

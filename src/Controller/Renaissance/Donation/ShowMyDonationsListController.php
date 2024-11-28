@@ -7,7 +7,7 @@ use App\Entity\Adherent;
 use App\Repository\DonationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/espace-adherent/mes-dons', name: 'app_my_donations_show_list', methods: ['GET'])]
 class ShowMyDonationsListController extends AbstractController

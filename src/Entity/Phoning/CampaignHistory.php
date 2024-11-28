@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Put(
             uriTemplate: '/v3/phoning_campaign_histories/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'IS_CAMPAIGN_HISTORY_CALLER\', object)'
+            security: "is_granted('IS_CAMPAIGN_HISTORY_CALLER', object)"
         ),
         new Post(
             uriTemplate: '/v3/phoning_campaign_histories/{uuid}/reply',
@@ -47,7 +47,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(
             uriTemplate: '/v3/phoning_campaign_histories',
             normalizationContext: ['groups' => ['phoning_campaign_history_read_list']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\')'
+            security: "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
         ),
     ],
     normalizationContext: ['iri' => true, 'groups' => ['phoning_campaign_history_read']],

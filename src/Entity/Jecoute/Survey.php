@@ -61,7 +61,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/surveys',
             paginationMaximumItemsPerPage: 1000,
             normalizationContext: ['groups' => ['survey_list_dc']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'survey\', \'phoning_campaign\', \'pap_v2\'])'
+            security: "is_granted('IS_FEATURE_GRANTED', ['survey', 'phoning_campaign', 'pap_v2'])"
         ),
         new Post(
             uriTemplate: '/v3/surveys',

@@ -3,7 +3,7 @@
 namespace App\Controller\Api\UserListDefinition;
 
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/elected-representative/user-list-definitions', name: 'app_elected_representative_')]
 class ElectedRepresentativeUserListDefinitionController extends AbstractUserListDefinitionController

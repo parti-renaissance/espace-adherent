@@ -6,7 +6,7 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\Repository\LocalElection\LocalElectionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('RENAISSANCE_ADHERENT')]

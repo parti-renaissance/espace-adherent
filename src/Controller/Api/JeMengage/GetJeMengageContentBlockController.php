@@ -5,7 +5,7 @@ namespace App\Controller\Api\JeMengage;
 use App\CmsBlock\CmsBlockManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/je-mengage/{slug}', name: 'api_get_je_mengage_block_content', methods: ['GET'])]
 class GetJeMengageContentBlockController extends AbstractController

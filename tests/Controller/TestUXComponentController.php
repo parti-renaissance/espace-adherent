@@ -5,7 +5,7 @@ namespace Tests\App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/test/ux-component/{component}/{template}', requirements: ['component' => '[a-zA-Z:]+', 'template' => '[a-zA-Z:]+'], methods: ['GET'])]
 class TestUXComponentController extends AbstractController

@@ -11,7 +11,7 @@ use App\Geo\ManagedZoneProvider;
 use App\Repository\Event\DefaultEventRepository;
 use App\Repository\EventGroupCategoryRepository;
 use Symfony\Component\ExpressionLanguage\Expression;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted(new Expression("is_granted('ROLE_CANDIDATE') or (is_granted('ROLE_DELEGATED_CANDIDATE') and is_granted('HAS_DELEGATED_ACCESS_EVENTS'))"))]

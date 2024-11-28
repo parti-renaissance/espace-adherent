@@ -7,7 +7,7 @@ use App\Repository\Geo\ZoneRepository;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/federations', name: 'app_renaissance_department_site_')]
 class DepartmentSiteController extends AbstractController

@@ -7,7 +7,7 @@ use App\Phoning\CampaignHistoryEngagementEnum;
 use App\Phoning\CampaignHistoryStatusEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/v3/phoning_campaign_histories/{uuid}/survey-config', requirements: ['uuid' => '%pattern_uuid%'], name: 'api_get_phoning_campaign_history_survey_config', methods: ['GET'])]
 class GetPhoningCampaignHistoriesSurveyConfigController extends AbstractController

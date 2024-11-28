@@ -51,34 +51,34 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/v3/phoning_campaigns/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\')'
+            security: "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
         ),
         new Put(
             uriTemplate: '/v3/phoning_campaigns/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign') and is_granted('SCOPE_CAN_MANAGE', object)"
         ),
         new Get(
             uriTemplate: '/v3/phoning_campaigns/{uuid}/scores',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['phoning_campaign_read_with_score']],
-            security: 'is_granted(\'CAN_MANAGE_PHONING_CAMPAIGN\', object)'
+            security: "is_granted('CAN_MANAGE_PHONING_CAMPAIGN', object)"
         ),
         new Get(
             uriTemplate: '/v3/phoning_campaigns/{uuid}/callers',
             defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: GetPhoningCampaignCallersStatsController::class,
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\')'
+            security: "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
         ),
         new GetCollection(
             uriTemplate: '/v3/phoning_campaigns',
             normalizationContext: ['groups' => ['phoning_campaign_list']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\')'
+            security: "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
         ),
         new Post(
             uriTemplate: '/v3/phoning_campaigns',
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\')'
+            security: "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
         ),
         new GetCollection(
             uriTemplate: '/v3/phoning_campaigns/scores',
@@ -88,7 +88,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(
             uriTemplate: '/v3/phoning_campaigns/kpi',
             controller: GetPhoningCampaignsKpiController::class,
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\')'
+            security: "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
         ),
     ],
     normalizationContext: ['groups' => ['phoning_campaign_read']],

@@ -8,7 +8,7 @@ use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_MESSAGE_REDACTOR')]

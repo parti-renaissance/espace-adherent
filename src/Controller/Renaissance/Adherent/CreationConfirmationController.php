@@ -4,7 +4,7 @@ namespace App\Controller\Renaissance\Adherent;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/bienvenue', name: 'app_renaissance_adherent_creation_confirmation', methods: ['GET'])]
 class CreationConfirmationController extends AbstractController
