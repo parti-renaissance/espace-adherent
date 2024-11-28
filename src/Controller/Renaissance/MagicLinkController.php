@@ -3,6 +3,7 @@
 namespace App\Controller\Renaissance;
 
 use App\AppCodeEnum;
+use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
@@ -58,21 +59,28 @@ class MagicLinkController extends AbstractController
 
     public function connectViaMagicLinkAction(Request $request): Response
     {
-        if ($user = $this->getUser()) {
-            if ($user instanceof Administrator) {
+        /** @var Adherent|Administrator $currentUser */
+        $currentUser = $this->getUser();
+        $queryUserEmail = $request->query->get('user');
+
+        if ($currentUser) {
+            if ($currentUser instanceof Administrator && $queryUserEmail === $currentUser->getEmailAddress()) {
                 return $this->redirectToRoute('admin_app_adherent_list');
             }
-            if ($targetPath = $request->query->get('_target_path')) {
-                $redirectUri = parse_url($targetPath, \PHP_URL_PATH);
 
-                if ($queryParams = parse_url($targetPath, \PHP_URL_QUERY)) {
-                    $redirectUri .= '?'.$queryParams;
+            if ($currentUser instanceof Adherent && $queryUserEmail === $currentUser->getEmailAddress()) {
+                if ($targetPath = $request->query->get('_target_path')) {
+                    $redirectUri = parse_url($targetPath, \PHP_URL_PATH);
+
+                    if ($queryParams = parse_url($targetPath, \PHP_URL_QUERY)) {
+                        $redirectUri .= '?' . $queryParams;
+                    }
+
+                    return $this->redirect($redirectUri ?: '/');
                 }
 
-                return $this->redirect($redirectUri ?: '/');
+                return $this->redirectToRoute('vox_app_redirect');
             }
-
-            return $this->redirectToRoute('vox_app_redirect');
         }
 
         return $this->render('security/renaissance_connect_magic_link.html.twig', [
