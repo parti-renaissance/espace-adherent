@@ -28,7 +28,7 @@ class GetCampaignBuildingStatisticsController extends AbstractController
     {
         $this->denyAccessUnlessGranted(ScopeVisibilityVoter::PERMISSION, $campaign);
 
-        if (!\is_array($order = $request->query->get('order'))) {
+        if (!\is_array($order = $request->query->all('order'))) {
             $order = [];
         }
 

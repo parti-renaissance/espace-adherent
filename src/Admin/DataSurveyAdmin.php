@@ -81,7 +81,7 @@ class DataSurveyAdmin extends AbstractAdmin
             ])
         ;
 
-        if (($filter = $this->getRequest()->query->get('filter'))
+        if (($filter = $this->getRequest()->query->all('filter'))
             && !empty($surveyId = $filter['survey']['value'])
         ) {
             $survey = $this->surveyRepository->find($surveyId);
