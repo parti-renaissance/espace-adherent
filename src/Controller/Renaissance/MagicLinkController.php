@@ -74,7 +74,7 @@ class MagicLinkController extends AbstractController
                     $redirectUri = parse_url($targetPath, \PHP_URL_PATH);
 
                     if ($queryParams = parse_url($targetPath, \PHP_URL_QUERY)) {
-                        $redirectUri .= '?' . $queryParams;
+                        $redirectUri .= '?'.$queryParams;
                     }
 
                     return $this->redirect($redirectUri ?: '/');
