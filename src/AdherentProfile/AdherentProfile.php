@@ -39,7 +39,7 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var string
      */
-    #[Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length', groups: ['Default', 'api_put_validation'], options: ['allowEmptyString' => true])]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length', groups: ['Default', 'api_put_validation'])]
     #[Assert\NotBlank(groups: ['Default', 'api_put_validation'])]
     #[Groups(['uncertified_profile_write'])]
     private $firstName;
@@ -47,8 +47,8 @@ class AdherentProfile implements MembershipInterface
     /**
      * @var string
      */
-    #[Assert\Length(min: 1, max: 50, minMessage: 'common.last_name.min_length', maxMessage: 'common.last_name.max_length', groups: ['Default', 'api_put_validation'], options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 50, minMessage: 'common.last_name.min_length', maxMessage: 'common.last_name.max_length', groups: ['Default', 'api_put_validation'])]
+    #[Assert\NotBlank(groups: ['Default', 'api_put_validation'])]
     #[Groups(['uncertified_profile_write'])]
     private $lastName;
 
@@ -94,7 +94,8 @@ class AdherentProfile implements MembershipInterface
      * @var \DateTime|null
      */
     #[Assert\NotBlank(message: 'adherent.birthdate.not_blank')]
-    #[Assert\Range(min: '-120 years', max: '-15 years', minMessage: 'adherent.birthdate.maximum_required_age', maxMessage: 'adherent.birthdate.minimum_required_age', groups: ['Default', 'api_put_validation'])]
+    #[Assert\Range(minMessage: 'adherent.birthdate.maximum_required_age', min: '-120 years', groups: ['Default', 'api_put_validation'])]
+    #[Assert\Range(maxMessage: 'adherent.birthdate.minimum_required_age', max: '-15 years', groups: ['Default', 'api_put_validation'])]
     #[Groups(['uncertified_profile_write', 'empty_profile_data'])]
     private $birthdate;
 

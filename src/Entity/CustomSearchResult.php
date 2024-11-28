@@ -32,8 +32,10 @@ class CustomSearchResult implements EntityMediaInterface
     /**
      * @var string|null
      */
-    #[Assert\Length(min: 10, max: 255, options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(min: 10, max: 255),
+    ])]
     #[ORM\Column]
     private $description;
 

@@ -21,12 +21,16 @@ class InscriptionRequest implements MembershipInterface
     #[Assert\NotBlank]
     public ?string $civility = null;
 
-    #[Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length', options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(min: 2, max: 50, minMessage: 'common.first_name.min_length', maxMessage: 'common.first_name.max_length'),
+    ])]
     public ?string $firstName = null;
 
-    #[Assert\Length(min: 1, max: 50, minMessage: 'common.last_name.min_length', maxMessage: 'common.last_name.max_length', options: ['allowEmptyString' => true])]
-    #[Assert\NotBlank]
+    #[Assert\Sequentially([
+        new Assert\NotBlank(),
+        new Assert\Length(min: 1, max: 50, minMessage: 'common.last_name.min_length', maxMessage: 'common.last_name.max_length'),
+    ])]
     public ?string $lastName = null;
 
     #[Assert\Valid]

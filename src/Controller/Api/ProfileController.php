@@ -38,6 +38,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -65,7 +66,7 @@ class ProfileController extends AbstractController
 
         return JsonResponse::fromJsonString(
             $serializer->serialize($user, 'json', [
-                AbstractObjectNormalizer::GROUPS => self::READ_PROFILE_SERIALIZATION_GROUPS,
+                AbstractNormalizer::GROUPS => self::READ_PROFILE_SERIALIZATION_GROUPS,
             ])
         );
     }
@@ -81,9 +82,7 @@ class ProfileController extends AbstractController
             $serializer->serialize(
                 $donationManager->getHistory($user),
                 'json',
-                [
-                    AbstractObjectNormalizer::GROUPS => ['donation_read'],
-                ]
+                [AbstractNormalizer::GROUPS => ['donation_read']]
             )
         );
     }
@@ -156,10 +155,10 @@ class ProfileController extends AbstractController
             $groups[] = 'empty_profile_data';
         }
 
-        $serializer->deserialize($json, AdherentProfile::class, 'json', [
-            AbstractObjectNormalizer::OBJECT_TO_POPULATE => $adherentProfile,
+        $serializer->deserialize($json, AdherentProfile::class, 'json', context: [
+            AbstractNormalizer::OBJECT_TO_POPULATE => $adherentProfile,
             AbstractObjectNormalizer::DEEP_OBJECT_TO_POPULATE => true,
-            AbstractObjectNormalizer::GROUPS => $groups,
+            AbstractNormalizer::GROUPS => $groups,
         ]);
 
         $validationGroups = ['api_put_validation'];
@@ -177,7 +176,7 @@ class ProfileController extends AbstractController
 
         $errors = $serializer->serialize($violations, 'jsonproblem');
 
-        return JsonResponse::fromJsonString($errors, JsonResponse::HTTP_BAD_REQUEST);
+        return JsonResponse::fromJsonString($errors, Response::HTTP_BAD_REQUEST);
     }
 
     #[Route(path: '/me/password-change', name: '_password_change', methods: ['POST'])]
@@ -195,7 +194,7 @@ class ProfileController extends AbstractController
         $passwordChangeRequest = new PasswordChangeRequest();
 
         $serializer->deserialize($json, PasswordChangeRequest::class, 'json', [
-            AbstractObjectNormalizer::OBJECT_TO_POPULATE => $passwordChangeRequest,
+            AbstractNormalizer::OBJECT_TO_POPULATE => $passwordChangeRequest,
             AbstractObjectNormalizer::DEEP_OBJECT_TO_POPULATE => true,
         ]);
 
@@ -293,9 +292,7 @@ class ProfileController extends AbstractController
 
         /** @var UnregistrationCommand $unregistrationCommand */
         $unregistrationCommand = $serializer->deserialize($request->getContent() ?: '{}', UnregistrationCommand::class, 'json', [
-            AbstractObjectNormalizer::GROUPS => [
-                'unregister',
-            ],
+            AbstractNormalizer::GROUPS => ['unregister'],
         ]);
 
         $validationGroups = [$user->isAdherent() ? 'unregister_adherent' : 'unregister_user'];
