@@ -34,6 +34,7 @@ abstract class AbstractDesignationController extends AbstractController
         CommitteeElectionRepository $repository,
     ): Response {
         return $this->renderTemplate('committee_designation/list.html.twig', $request, [
+            'committee' => $committee,
             'elections' => $repository->findElections(new CommitteeDesignationsListFilter([], $committee), 1, 200),
         ]);
     }
@@ -58,6 +59,7 @@ abstract class AbstractDesignationController extends AbstractController
 
         return $this->renderTemplate('committee_designation/dashboard.html.twig', $request, [
             'election_round' => $electionRound,
+            'committee' => $committee,
             'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
         ]);
     }
@@ -84,6 +86,7 @@ abstract class AbstractDesignationController extends AbstractController
 
         return $this->renderTemplate('committee_designation/voters_list.html.twig', $request, [
             'election_round' => $electionRound,
+            'committee' => $committee,
             'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
             'voters' => $voterRepository->findForElectionRound($electionRound),
         ]);
@@ -112,6 +115,7 @@ abstract class AbstractDesignationController extends AbstractController
 
         return $this->renderTemplate('committee_designation/results.html.twig', $request, [
             'election_round' => $electionRound,
+            'committee' => $committee,
             'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
             'election_pool_result' => current(array_filter(
                 $election->getElectionResult()->getElectionRoundResult($electionRound)->getElectionPoolResults(),
@@ -144,6 +148,7 @@ abstract class AbstractDesignationController extends AbstractController
 
         return $this->renderTemplate('committee_designation/votes_list.html.twig', $request, [
             'election_round' => $electionRound,
+            'committee' => $committee,
             'election_stats' => $this->electionRepository->getSingleAggregatedData($electionRound),
             'votes' => $voteResultRepository->getResultsForRound($electionRound),
         ]);
@@ -159,7 +164,6 @@ abstract class AbstractDesignationController extends AbstractController
                 'base_template' => \sprintf('committee_designation/_base_%s.html.twig', $spaceType = $this->getSpaceType()),
                 'space_type' => $spaceType,
                 'route_params' => $this->getRouteParameters($request),
-                'committee' => $request->attributes->get('committee'),
             ]
         ));
     }

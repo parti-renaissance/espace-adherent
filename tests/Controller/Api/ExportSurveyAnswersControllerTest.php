@@ -50,7 +50,6 @@ class ExportSurveyAnswersControllerTest extends AbstractApiTestCase
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
-        ob_start();
         $this->client->request(
             Request::METHOD_GET,
             \sprintf('/api/v3/surveys/4c3594d4-fb6f-4e25-ac2e-7ef81694ec47/replies.xlsx?scope=%s', $scope),
@@ -58,7 +57,7 @@ class ExportSurveyAnswersControllerTest extends AbstractApiTestCase
             [],
             ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]
         );
-        $content = ob_get_clean();
+        $content = $this->client->getInternalResponse()->getContent();
 
         $this->isSuccessful($response = $this->client->getResponse());
 

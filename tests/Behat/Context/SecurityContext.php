@@ -73,8 +73,7 @@ class SecurityContext extends RawMinkContext
         $this->session->save();
 
         $client = $driver->getClient();
-        var_dump($client);
-        dd(1);
+
         $client->getCookieJar()->set(new Cookie($this->session->getName(), $this->session->getId()));
         $this->getSession()->setCookie($this->session->getName(), $this->session->getId());
     }

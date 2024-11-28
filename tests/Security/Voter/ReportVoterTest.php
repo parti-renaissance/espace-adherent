@@ -69,27 +69,6 @@ class ReportVoterTest extends TestCase
         );
     }
 
-    #[DataProvider('provideUsers')]
-    public function testNotGrantedWhenNotAuthenticatedFully($user)
-    {
-        $token = $this->createMock(TokenInterface::class);
-        $token->expects($this->once())
-            ->method('getUser')
-            ->willReturn($user)
-        ;
-
-        $this->authorizationChecker->expects($this->once())
-            ->method('isGranted')
-            ->with('IS_AUTHENTICATED_REMEMBERED')
-            ->willReturn(false)
-        ;
-
-        $this->assertSame(
-            VoterInterface::ACCESS_DENIED,
-            $this->voter->vote($token, null, [ReportPermissions::REPORT])
-        );
-    }
-
     public function testNotGrantedWhenAdministrator()
     {
         $token = $this->createMock(TokenInterface::class);

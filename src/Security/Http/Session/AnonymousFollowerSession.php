@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * The goal is to be able to redirect after login or account creation back to
  * the subject process (i.e following a committee).
  */
-final class AnonymousFollowerSession
+class AnonymousFollowerSession
 {
     // Either login or register path
     public const AUTHENTICATION_INTENTION = 'callback';

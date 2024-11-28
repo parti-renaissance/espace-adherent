@@ -60,7 +60,6 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiTestCa
         $content = $this->client->getInternalResponse()->getContent();
 
         $response = $this->client->getResponse();
-        var_dump($response->getContent());
         $this->isSuccessful($response);
 
         self::assertSame('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $response->headers->get('Content-Type'));

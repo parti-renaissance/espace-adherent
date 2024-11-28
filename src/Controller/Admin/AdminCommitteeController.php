@@ -139,7 +139,7 @@ class AdminCommitteeController extends AbstractController
 
     #[IsGranted(
         new Expression("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', subject)"),
-        subject: new Expression('args["mandate"].getCommittee()')
+        new Expression('args["mandate"].getCommittee()')
     )]
     #[Route(path: '/mandates/{id}/replace', name: 'app_admin_committee_replace_mandate', methods: ['GET|POST'])]
     public function replaceMandateAction(Request $request, CommitteeAdherentMandate $mandate): Response
@@ -185,7 +185,7 @@ class AdminCommitteeController extends AbstractController
 
     #[IsGranted(
         new Expression("is_granted('ROLE_ADMIN_TERRITOIRES_COMMITTEES') and is_granted('CHANGE_MANDATE_OF_COMMITTEE', subject)"),
-        subject: new Expression('args["mandate"].getCommittee()')
+        new Expression('args["mandate"].getCommittee()')
     )]
     #[Route(path: '/mandates/{id}/close', name: 'app_admin_committee_close_mandate', methods: ['GET|POST'])]
     public function closeMandateAction(
