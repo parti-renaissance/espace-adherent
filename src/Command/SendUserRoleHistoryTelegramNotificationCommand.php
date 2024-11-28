@@ -31,7 +31,7 @@ class SendUserRoleHistoryTelegramNotificationCommand extends Command
         private readonly TranslatorInterface $translator,
         private readonly ChatterInterface $chatter,
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly string $telegramChatIdDeclaredMandates,
+        private readonly string $telegramChatIdNominations,
     ) {
         parent::__construct();
     }
@@ -109,7 +109,7 @@ class SendUserRoleHistoryTelegramNotificationCommand extends Command
             $chatMessage = new ChatMessage(
                 implode(\PHP_EOL, $messageBlock),
                 (new TelegramOptions())
-                    ->chatId($this->telegramChatIdDeclaredMandates)
+                    ->chatId($this->telegramChatIdNominations)
                     ->parseMode(TelegramOptions::PARSE_MODE_MARKDOWN)
                     ->disableWebPagePreview(true)
                     ->disableNotification(true)
