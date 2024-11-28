@@ -783,6 +783,9 @@
             <argument />
             <argument>App\Entity\Email\TransactionalEmailTemplate</argument>
             <argument>App\Controller\Admin\AdminEmailCRUDController</argument>
+            <call method="setAppEnvironment">
+                <argument>%env(APP_ENVIRONMENT)%</argument>
+            </call>
         </service>
 
         <service id="app.admin.subscription_type" class="App\Admin\SubscriptionTypeAdmin">

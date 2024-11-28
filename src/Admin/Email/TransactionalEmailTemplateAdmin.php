@@ -17,6 +17,7 @@ use Symfony\Contracts\Service\Attribute\Required;
 class TransactionalEmailTemplateAdmin extends AbstractAdmin
 {
     private EntityRepository $transactionEmailTemplateRepository;
+    private string $appEnvironment;
 
     private ?TransactionalEmailTemplate $beforeUpdate = null;
 
@@ -48,9 +49,11 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
         $filter
             ->add('identifier', null, ['label' => 'Identifiant', 'show_filter' => true])
             ->add('subject', null, ['label' => 'Objet', 'show_filter' => true])
-            ->add('isSync', null, ['label' => 'Synchro avec la PROD', 'show_filter' => true])
             ->add('parent', null, ['label' => 'Parent'])
         ;
+        if ('production' !== $this->appEnvironment) {
+            $filter->add('isSync', null, ['label' => 'Synchro avec la PROD', 'show_filter' => true]);
+        }
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -59,7 +62,13 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
             ->add('id', null, ['label' => '#'])
             ->add('messageClass', 'url', ['label' => 'Identifiant', 'route' => ['name' => 'admin_app_email_transactionalemailtemplate_content', 'identifier_parameter_name' => 'id']])
             ->add('subject', null, ['label' => 'Objet'])
-            ->add('isSync', null, ['label' => 'Sync avec Prod'])
+        ;
+
+        if ('production' !== $this->appEnvironment) {
+            $list->add('isSync', null, ['label' => 'Sync avec Prod']);
+        }
+
+        $list
             ->add('parent', 'url', ['label' => 'Parent', 'route' => ['name' => 'admin_app_email_transactionalemailtemplate_content', 'identifier_parameter_name' => 'id']])
             ->add('updatedAt', null, ['label' => 'Modifié le'])
             ->add(ListMapper::NAME_ACTIONS, null, [
@@ -150,6 +159,29 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
         return $files;
     }
 
+    protected function alterObject(object $object): void
+    {
+        if (null === $this->beforeUpdate) {
+            $this->beforeUpdate = clone $object;
+        }
+    }
+
+    /**
+     * @param TransactionalEmailTemplate $object
+     */
+    protected function preUpdate(object $object): void
+    {
+        if (!$this->beforeUpdate) {
+            return;
+        }
+
+        $object->isSync =
+            $this->beforeUpdate->getJsonContent() === $object->getJsonContent()
+            && $this->beforeUpdate->subject === $object->subject
+            && $this->beforeUpdate->identifier === $object->identifier
+            && $this->beforeUpdate->parent === $object->parent;
+    }
+
     protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
         $actions = parent::configureActionButtons($buttonList, $action, $object);
@@ -167,19 +199,8 @@ class TransactionalEmailTemplateAdmin extends AbstractAdmin
         $this->transactionEmailTemplateRepository = $transactionEmailTemplateRepository;
     }
 
-    protected function alterObject(object $object): void
+    public function setAppEnvironment(string $appEnvironment): void
     {
-        if (null === $this->beforeUpdate) {
-            $this->beforeUpdate = clone $object;
-        }
-    }
-
-    protected function preUpdate(object $object): void
-    {
-        if (!$this->beforeUpdate) {
-            return;
-        }
-
-        $object->isSync = $this->beforeUpdate->getJsonContent() === $object->getJsonContent() && $this->beforeUpdate->subject === $object->subject;
+        $this->appEnvironment = $appEnvironment;
     }
 }
