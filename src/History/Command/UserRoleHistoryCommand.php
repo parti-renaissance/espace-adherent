@@ -11,6 +11,7 @@ class UserRoleHistoryCommand implements AsynchronousMessageInterface
         public readonly UuidInterface $userUuid,
         public readonly string $action,
         public readonly string $role,
+        public readonly array $zones,
         public readonly ?int $adminAuthorId = null,
         public readonly ?UuidInterface $userAuthorUuid = null,
     ) {

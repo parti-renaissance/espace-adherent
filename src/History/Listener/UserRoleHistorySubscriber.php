@@ -6,8 +6,8 @@ use App\Entity\Adherent;
 use App\Entity\Reporting\UserRoleHistory;
 use App\History\AdministratorActionEvent;
 use App\History\AdministratorActionEvents;
+use App\History\Command\UserRoleHistoryCommand;
 use App\Scope\GeneralScopeGenerator;
-use App\Scope\Scope;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -46,27 +46,29 @@ class UserRoleHistorySubscriber implements EventSubscriberInterface
 
         $userRolesAfterUpdate = $this->getAdherentRoles($adherent);
 
-        foreach ($userRolesAfterUpdate as $userRole) {
-            if (!\in_array($userRole, $this->userRolesBeforeUpdate, true)) {
+        foreach ($userRolesAfterUpdate as $roleCode => $roleZones) {
+            if (!\array_key_exists($roleCode, $this->userRolesBeforeUpdate)) {
                 $this->bus->dispatch(
-                    new UserRoleHistory(
-                        $adherent,
+                    new UserRoleHistoryCommand(
+                        $adherent->getUuid(),
                         UserRoleHistory::ACTION_ADD,
-                        $userRole,
-                        $event->administrator
+                        $roleCode,
+                        $roleZones,
+                        $event->administrator->getId()
                     )
                 );
             }
         }
 
-        foreach ($this->userRolesBeforeUpdate as $userRole) {
-            if (!\in_array($userRole, $userRolesAfterUpdate, true)) {
+        foreach ($this->userRolesBeforeUpdate as $roleCode => $roleZones) {
+            if (!\array_key_exists($roleCode, $userRolesAfterUpdate)) {
                 $this->bus->dispatch(
-                    new UserRoleHistory(
-                        $adherent,
+                    new UserRoleHistoryCommand(
+                        $adherent->getUuid(),
                         UserRoleHistory::ACTION_REMOVE,
-                        $userRole,
-                        $event->administrator
+                        $roleCode,
+                        $roleZones,
+                        $event->administrator->getId()
                     )
                 );
             }
@@ -77,8 +79,11 @@ class UserRoleHistorySubscriber implements EventSubscriberInterface
     {
         $scopes = $this->generalScopeGenerator->generateScopes($adherent);
 
-        return array_map(function (Scope $scope): string {
-            return $scope->getCode();
-        }, $scopes);
+        $roles = [];
+        foreach ($scopes as $scope) {
+            $roles[$scope->getMainCode()] = $scope->getZoneNames();
+        }
+
+        return $roles;
     }
 }

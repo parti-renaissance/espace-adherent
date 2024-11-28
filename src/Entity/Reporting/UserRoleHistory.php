@@ -4,7 +4,10 @@ namespace App\Entity\Reporting;
 
 use App\Entity\Adherent;
 use App\Entity\Administrator;
+use App\Entity\Geo\Zone;
 use App\Repository\Reporting\UserRoleHistoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRoleHistoryRepository::class)]
@@ -24,10 +27,16 @@ class UserRoleHistory
     public Adherent $user;
 
     #[ORM\Column]
-    public string $role;
+    public string $action;
 
     #[ORM\Column]
-    public string $action;
+    public string $role;
+
+    /**
+     * @var Collection|Zone[]
+     */
+    #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['all'])]
+    public Collection $zones;
 
     #[ORM\Column(type: 'datetime_immutable')]
     public \DateTimeInterface $date;
@@ -47,12 +56,14 @@ class UserRoleHistory
         Adherent $user,
         string $action,
         string $role,
+        array $zones,
         ?Administrator $adminAuthor = null,
         ?Adherent $userAuthor = null,
     ) {
         $this->user = $user;
         $this->action = $action;
         $this->role = $role;
+        $this->zones = new ArrayCollection($zones);
         $this->adminAuthor = $adminAuthor;
         $this->userAuthor = $userAuthor;
         $this->date = new \DateTimeImmutable();
