@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -56,12 +57,22 @@ class MagicLinkController extends AbstractController
         return $this->render('security/renaissance_user_magic_link.html.twig', ['form' => $form->createView()]);
     }
 
-    public function connectViaMagicLinkAction(Request $request): Response
+    public function connectViaMagicLinkAction(Request $request, TokenStorageInterface $tokenStorage): Response
     {
-        if ($user = $this->getUser()) {
-            if ($user instanceof Administrator) {
+        $currentUser = $this->getUser();
+
+        if ($currentUser) {
+            if ($currentUser->getUsername() !== $request->query->get('user')) {
+                $tokenStorage->setToken(null);
+                $request->getSession()->invalidate();
+
+                return $this->redirect($request->getRequestUri());
+            }
+
+            if ($currentUser instanceof Administrator) {
                 return $this->redirectToRoute('admin_app_adherent_list');
             }
+
             if ($targetPath = $request->query->get('_target_path')) {
                 $redirectUri = parse_url($targetPath, \PHP_URL_PATH);
 
