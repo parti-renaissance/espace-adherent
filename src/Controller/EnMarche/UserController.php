@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route(path: '/parametres/mon-compte')]
 class UserController extends AbstractController
@@ -111,20 +112,18 @@ class UserController extends AbstractController
         MembershipRequestHandler $handler,
         TokenStorageInterface $tokenStorage,
         AuthAppUrlManager $appUrlManager,
+        UserInterface $user,
     ): Response {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
         $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
 
-        /** @var Adherent $adherent */
-        $adherent = $this->getUser();
-
-        if (!$isRenaissanceApp && $adherent->isRenaissanceUser()) {
+        if (!$isRenaissanceApp && $user->isRenaissanceUser()) {
             return $this->render('adherent/renaissance_profile.html.twig');
         }
 
         $unregistrationCommand = new UnregistrationCommand();
-        $viewFolder = $adherent->isUser() ? 'user' : 'adherent';
-        $reasons = $adherent->isUser() ? Unregistration::REASONS_LIST_USER : Unregistration::REASONS_LIST_ADHERENT;
+        $viewFolder = $user->isUser() ? 'user' : 'adherent';
+        $reasons = $user->isUser() ? Unregistration::REASONS_LIST_USER : Unregistration::REASONS_LIST_ADHERENT;
 
         $form = $this->createForm(UnregistrationType::class, $unregistrationCommand, [
             'csrf_token_id' => self::UNREGISTER_TOKEN,
@@ -135,7 +134,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $handler->terminateMembership($adherent, $unregistrationCommand, $adherent->isAdherent());
+            $handler->terminateMembership($user, $unregistrationCommand, $user->isAdherent());
             $tokenStorage->setToken(null);
             $request->getSession()->invalidate();
 

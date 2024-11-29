@@ -38,11 +38,11 @@ trait ControllerTestTrait
 
         $this->assertResponseStatusCode($permanent ? Response::HTTP_MOVED_PERMANENTLY : Response::HTTP_FOUND, $response);
 
+        $currentUrl = $response->headers->get('location');
+
         $this->assertSame(
             $withSchemes ? $client->getRequest()->getSchemeAndHttpHost().$path : $path,
-            $withParameters
-                    ? $response->headers->get('location')
-                    : substr($response->headers->get('location'), 0, strpos($response->headers->get('location'), '?'))
+            $withParameters ? $currentUrl : substr($currentUrl, 0, strpos($currentUrl, '?'))
         );
     }
 
@@ -58,11 +58,7 @@ trait ControllerTestTrait
 
     public function logout(KernelBrowser $client): void
     {
-        $session = $client->getContainer()->get('session');
-
-        $client->getCookieJar()->clear();
-        $session->set('_security_main_context', null);
-        $session->save();
+        $client->getContainer()->get('security.untracked_token_storage')->reset();
     }
 
     public function authenticateAsAdherent(KernelBrowser $client, string $emailAddress): void
@@ -76,7 +72,7 @@ trait ControllerTestTrait
 
     public function authenticateAsAdmin(KernelBrowser $client, string $email = 'admin@en-marche-dev.fr'): void
     {
-        if (!$user = $this->getAdministratorRepository()->loadUserByUsername($email)) {
+        if (!$user = $this->getAdministratorRepository()->loadUserByIdentifier($email)) {
             throw new \Exception(\sprintf('Admin %s not found', $email));
         }
 
@@ -145,22 +141,12 @@ trait ControllerTestTrait
         string $author,
         string $role,
         string $text,
-    ) {
+    ): void {
         $message = $crawler->filter('.committee__timeline__message')->eq($position);
 
         $this->assertStringContainsString($author, $message->filter('h3')->text());
         $this->assertSame($role, $message->filter('h3 span')->text());
         $this->assertStringContainsString($text, $message->filter('div')->first()->text());
-    }
-
-    protected function assertHavePublishedMessage(string $queue, string $msgBody): void
-    {
-        $messages = array_filter(
-            $this->getMessages($queue),
-            function ($message) use ($msgBody) { return $msgBody === $message->getBody(); }
-        );
-
-        self::assertEquals(1, \count($messages), 'Expected message not found.');
     }
 
     private function authenticate(KernelBrowser $client, UserInterface $user): void

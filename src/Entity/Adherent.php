@@ -828,7 +828,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     {
     }
 
-    public function getUsername()
+    public function getUserIdentifier(): string
     {
         return $this->emailAddress;
     }
@@ -1602,7 +1602,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     /**
      * @param UserInterface|self $user
      */
-    public function isEqualTo(UserInterface $user)
+    public function isEqualTo(UserInterface $user): bool
     {
         return $this->id === $user->getId() && $this->roles === $user->getRoles();
     }

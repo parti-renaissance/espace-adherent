@@ -17,7 +17,7 @@ abstract class AbstractUserListDefinitionController extends AbstractController
         Request $request,
         UserListDefinitionManager $userListDefinitionManager,
     ): Response {
-        if (!$members = $request->request->get('members')) {
+        if (!$members = $request->request->all('members')) {
             return $this->json('"members" not provided', Response::HTTP_BAD_REQUEST);
         }
 
@@ -37,7 +37,7 @@ abstract class AbstractUserListDefinitionController extends AbstractController
         string $type,
         UserListDefinitionManager $userListDefinitionManager,
     ): JsonResponse {
-        if (!$ids = $request->request->get('ids')) {
+        if (!$ids = $request->request->all('ids')) {
             return $this->json('"ids" not provided', Response::HTTP_BAD_REQUEST);
         }
 

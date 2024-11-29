@@ -5,7 +5,6 @@ namespace Tests\App\Controller\Renaissance\Security;
 use App\DataFixtures\ORM\LoadAdherentData;
 use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
-use App\Mailer\Message\AdherentResetPasswordMessage;
 use App\Mailer\Message\Renaissance\RenaissanceResetPasswordConfirmationMessage;
 use App\Mailer\Message\Renaissance\RenaissanceResetPasswordMessage;
 use App\Repository\AdherentRepository;
@@ -153,7 +152,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(0, $crawler->filter('.re-text-status--error'));
         $this->assertStringContainsString('Si toto@example.org existe, vous recevrez un email dans quelques instants.Cliquez sur le bouton qu\'il contient pour changer votre mot de passe.Si vous n\'avez rien reçu, vérifiez votre saisie avant de réessayer', $crawler->text());
-        $this->assertCount(0, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'toto@example.org'), 'No email should have been sent to unknown account.');
+        $this->assertCount(0, $this->emailRepository->findRecipientMessages(RenaissanceResetPasswordMessage::class, 'toto@example.org'), 'No email should have been sent to unknown account.');
     }
 
     public function testRetrieveForgotPasswordActionWithKnownEmailSendEmail(): void
@@ -168,7 +167,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
 
         $this->client->submit($crawler->selectButton('Réinitialiser')->form(), $formData);
 
-        $this->assertClientIsRedirectedTo('/mot-de-passe-oublie', $this->client);
+        $this->assertClientIsRedirectedTo('/mot-de-passe-oublie', $this->client, false);
 
         $crawler = $this->client->followRedirect();
 
@@ -204,7 +203,7 @@ class SecurityControllerTest extends AbstractRenaissanceWebTestCase
         ]);
 
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(RenaissanceResetPasswordConfirmationMessage::class, 'michelle.dufour@example.ch'), 'A confirmation email should have been sent.');
-        $this->assertClientIsRedirectedTo('/connexion', $this->client);
+        $this->assertClientIsRedirectedTo('/connexion', $this->client, false);
 
         $this->client->followRedirect();
 

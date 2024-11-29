@@ -669,11 +669,11 @@ Feature:
                             }
                         }
                     },
-                    "profession": ["Cette valeur n'est pas valide."],
-                    "ageRange": ["Cette valeur n'est pas valide."],
-                    "latitude": ["Cette valeur n'est pas valide."],
-                    "longitude": ["Cette valeur n'est pas valide."],
-                    "gender": ["Cette valeur n'est pas valide."]
+                    "profession": ["Le choix sélectionné est invalide."],
+                    "ageRange": ["Le choix sélectionné est invalide."],
+                    "latitude": ["Veuillez saisir un nombre."],
+                    "longitude": ["Veuillez saisir un nombre."],
+                    "gender": ["Le choix sélectionné est invalide."]
                 }
             }
             """
@@ -728,10 +728,10 @@ Feature:
                             }
                         }
                     },
-                    "profession": ["Cette valeur n'est pas valide."],
-                    "ageRange": ["Cette valeur n'est pas valide."],
-                    "latitude": ["Cette valeur n'est pas valide."],
-                    "longitude": ["Cette valeur n'est pas valide."]
+                    "profession": ["Le choix sélectionné est invalide."],
+                    "ageRange": ["Le choix sélectionné est invalide."],
+                    "latitude": ["Veuillez saisir un nombre."],
+                    "longitude": ["Veuillez saisir un nombre."]
                 }
             }
             """

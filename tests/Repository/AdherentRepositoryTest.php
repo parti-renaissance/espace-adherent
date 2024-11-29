@@ -11,6 +11,7 @@ use App\Repository\AdherentRepository;
 use App\Repository\Phoning\CampaignRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Tests\App\AbstractKernelTestCase;
 
 #[Group('functional')]
@@ -30,20 +31,18 @@ class AdherentRepositoryTest extends AbstractKernelTestCase
     {
         $this->assertInstanceOf(
             Adherent::class,
-            $this->adherentRepository->loadUserByUsername('carl999@example.fr'),
+            $this->adherentRepository->loadUserByIdentifier('carl999@example.fr'),
             'Enabled adherent must be returned.'
         );
 
         $this->assertInstanceOf(
             Adherent::class,
-            $this->adherentRepository->loadUserByUsername('michelle.dufour@example.ch'),
+            $this->adherentRepository->loadUserByIdentifier('michelle.dufour@example.ch'),
             'Disabled adherent must be returned.'
         );
 
-        $this->assertNull(
-            $this->adherentRepository->loadUserByUsername('someone@foobar.tld'),
-            'Non registered adherent must not be returned.'
-        );
+        $this->expectException(UserNotFoundException::class);
+        $this->adherentRepository->loadUserByIdentifier('someone@foobar.tld');
     }
 
     public function testFindCommitteeHostMembersList()

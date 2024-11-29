@@ -8,10 +8,10 @@ use League\Glide\Responses\SymfonyResponseFactory;
 use League\Glide\Server;
 use League\Glide\Signatures\SignatureException;
 use League\Glide\Signatures\SignatureFactory;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AssetsController extends AbstractController
