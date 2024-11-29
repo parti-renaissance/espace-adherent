@@ -264,7 +264,8 @@ Feature:
                         "renaissance_membership": null,
                         "city_code": "77288",
                         "sms_subscription": false,
-                        "email_subscription": false
+                        "email_subscription": false,
+                        "available_for_resubscribe_email": false
                     },
                     {
                         "adherent_uuid": "@uuid@",
@@ -370,7 +371,8 @@ Feature:
                         "renaissance_membership": null,
                         "city_code": "92024",
                         "sms_subscription": true,
-                        "email_subscription": true
+                        "email_subscription": true,
+                        "available_for_resubscribe_email": false
                     },
                     {
                         "adherent_uuid": "@uuid@",
@@ -430,7 +432,8 @@ Feature:
                         "renaissance_membership": null,
                         "city_code": null,
                         "sms_subscription": false,
-                        "email_subscription": false
+                        "email_subscription": false,
+                        "available_for_resubscribe_email": false
                     }
                 ]
             }
@@ -552,7 +555,8 @@ Feature:
                         "renaissance_membership": null,
                         "city_code": "92024",
                         "sms_subscription": true,
-                        "email_subscription": true
+                        "email_subscription": true,
+                        "available_for_resubscribe_email": false
                     }
                 ]
             }
@@ -608,7 +612,8 @@ Feature:
                 ],
                 "certified": false,
                 "sms_subscription": false,
-                "email_subscription": false
+                "email_subscription": false,
+                "available_for_resubscribe_email": false
             }
             """
 
@@ -736,7 +741,8 @@ Feature:
                         "renaissance_membership": null,
                         "city_code": "92024",
                         "sms_subscription": true,
-                        "email_subscription": true
+                        "email_subscription": true,
+                        "available_for_resubscribe_email": false
                     },
                     {
                         "adherent_uuid": "@uuid@",
@@ -796,7 +802,8 @@ Feature:
                         "renaissance_membership": null,
                         "city_code": null,
                         "sms_subscription": false,
-                        "email_subscription": false
+                        "email_subscription": false,
+                        "available_for_resubscribe_email": false
                     }
                 ]
             }
@@ -1156,7 +1163,8 @@ Feature:
                         "renaissance_membership": null,
                         "city_code": "75056",
                         "sms_subscription": true,
-                        "email_subscription": true
+                        "email_subscription": true,
+                        "available_for_resubscribe_email": false
                     },
                     {
                         "adherent_uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
@@ -1208,7 +1216,8 @@ Feature:
                         "renaissance_membership": null,
                         "city_code": "75056",
                         "sms_subscription": true,
-                        "email_subscription": true
+                        "email_subscription": true,
+                        "available_for_resubscribe_email": false
                     }
                 ]
             }
@@ -1276,7 +1285,8 @@ Feature:
                         "renaissance_membership": null,
                         "city_code": "75056",
                         "sms_subscription": true,
-                        "email_subscription": true
+                        "email_subscription": true,
+                        "available_for_resubscribe_email": false
                     }
                 ]
             }

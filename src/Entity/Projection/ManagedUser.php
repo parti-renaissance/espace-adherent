@@ -120,6 +120,9 @@ class ManagedUser implements TranslatedTagInterface, ExposedImageOwnerInterface
     #[ORM\Column(nullable: true)]
     public ?string $mailchimpStatus = null;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $resubscribeEmailSentAt = null;
+
     /**
      * @var string|null
      */
@@ -577,6 +580,12 @@ class ManagedUser implements TranslatedTagInterface, ExposedImageOwnerInterface
     public function isEmailSubscribed(): bool
     {
         return ContactStatusEnum::SUBSCRIBED === $this->mailchimpStatus;
+    }
+
+    #[Groups(['managed_users_list', 'managed_user_read'])]
+    public function isAvailableForResubscribeEmail(): bool
+    {
+        return !$this->isEmailSubscribed() && (!$this->resubscribeEmailSentAt || $this->resubscribeEmailSentAt->diff(new \DateTime())->y >= 1);
     }
 
     public function getCommitteeUuids(): ?array

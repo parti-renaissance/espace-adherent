@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\HttpOperation;
+use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Address\AddressInterface;
 use App\Address\PostAddressFactory;
@@ -21,6 +22,7 @@ use App\Collection\CertificationRequestCollection;
 use App\Collection\CommitteeMembershipCollection;
 use App\Collection\ZoneCollection;
 use App\Committee\CommitteeMembershipTriggerEnum;
+use App\Controller\Api\SendResubscribeEmailController;
 use App\Controller\Api\UpdateImageController;
 use App\Entity\AdherentCharter\AdherentCharterInterface;
 use App\Entity\AdherentMandate\AbstractAdherentMandate;
@@ -83,6 +85,13 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/adherents/{uuid}/elect',
             requirements: ['uuid' => '%pattern_uuid%'],
             security: '(is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'elected_representative\')) or (is_granted(\'ROLE_OAUTH_SCOPE_READ:PROFILE\') and object === user)'
+        ),
+        new Post(
+            uriTemplate: '/adherents/{uuid}/send-resubscribe-email',
+            requirements: ['uuid' => '%pattern_uuid%'],
+            controller: SendResubscribeEmailController::class,
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'contacts')",
+            deserialize: false,
         ),
         new Put(
             uriTemplate: '/adherents/{uuid}/elect',
@@ -199,6 +208,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     #[ORM\Column(type: 'simple_array', nullable: true)]
     private $interests = [];
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $resubscribeEmailSentAt = null;
 
     /**
      * @var SubscriptionType[]|Collection
