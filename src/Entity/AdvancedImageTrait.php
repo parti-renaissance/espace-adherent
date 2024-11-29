@@ -12,10 +12,10 @@ trait AdvancedImageTrait
     }
 
     #[ORM\Column(type: 'bigint', nullable: true)]
-    protected $imageSize;
+    protected ?int $imageSize = null;
 
     #[ORM\Column(length: 50, nullable: true)]
-    protected $imageMimeType;
+    protected ?string $imageMimeType = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     protected ?int $imageWidth = null;
@@ -63,5 +63,25 @@ trait AdvancedImageTrait
     public function getImageHeight(): ?int
     {
         return $this->imageHeight;
+    }
+
+    public function setImageSize(?int $size): void
+    {
+        $this->imageSize = $size;
+    }
+
+    public function setImageMimeType(?string $mimeType): void
+    {
+        $this->imageMimeType = $mimeType;
+    }
+
+    public function setImageWidth(?int $width): void
+    {
+        $this->imageWidth = $width;
+    }
+
+    public function setImageHeight(?int $height): void
+    {
+        $this->imageHeight = $height;
     }
 }
