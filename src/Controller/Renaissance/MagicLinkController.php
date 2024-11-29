@@ -3,7 +3,6 @@
 namespace App\Controller\Renaissance;
 
 use App\AppCodeEnum;
-use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
