@@ -5,7 +5,7 @@ namespace App\Normalizer;
 use App\Entity\Projection\ManagedUser;
 use App\Scope\ScopeGeneratorResolver;
 use App\Subscription\SubscriptionTypeEnum;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

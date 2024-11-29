@@ -8,7 +8,7 @@ use App\Form\Renaissance\Adherent\Contribution\InformationsType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[IsGranted(AdherentRoleEnum::ONGOING_ELECTED_REPRESENTATIVE)]
 #[Route(path: '/espace-elus/cotisation/informations', name: 'app_renaissance_contribution_fill_informations', methods: ['GET|POST'])]

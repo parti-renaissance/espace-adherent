@@ -9,7 +9,7 @@ use App\Security\Http\Session\AnonymousFollowerSession;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/adhesion/felicitations', name: 'app_adhesion_finish', methods: ['GET'])]
 class FinishController extends AbstractController

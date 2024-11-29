@@ -8,7 +8,7 @@ use App\Entity\Donation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/paiement/retry/{uuid}', name: 'app_payment_retry', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
 class RetryController extends AbstractController

@@ -6,7 +6,7 @@ use App\Repository\AdherentRepository;
 use App\Repository\Geo\ZoneRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class AdminStatsController extends AbstractController
 {

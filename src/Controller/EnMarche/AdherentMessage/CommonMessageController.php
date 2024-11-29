@@ -9,7 +9,7 @@ use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[IsGranted('ROLE_MESSAGE_REDACTOR')]
 #[Route(path: '/adherent-message', name: 'app_message_common_')]

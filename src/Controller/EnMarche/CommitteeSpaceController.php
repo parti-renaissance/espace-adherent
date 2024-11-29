@@ -7,7 +7,7 @@ use App\Repository\CommitteeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/espace-comite', name: 'app_committee_space_dashboard')]
 #[Security("is_granted('ROLE_SUPERVISOR') or is_granted('ROLE_HOST')")]

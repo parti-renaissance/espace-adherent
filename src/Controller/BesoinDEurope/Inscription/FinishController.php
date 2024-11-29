@@ -4,7 +4,7 @@ namespace App\Controller\BesoinDEurope\Inscription;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/inscription/felicitations', name: self::ROUTE_NAME, methods: ['GET'])]
 class FinishController extends AbstractController

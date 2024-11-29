@@ -4,11 +4,11 @@ namespace App\EventListener;
 
 use App\Adhesion\AdhesionStepEnum;
 use App\Entity\Adherent;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Security;
 
 class FinishAdhesionListener implements EventSubscriberInterface
 {

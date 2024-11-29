@@ -4,10 +4,10 @@ namespace App\BesoinDEurope\Inscription;
 
 use App\Adhesion\AdhesionStepEnum;
 use App\Entity\Adherent;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Security;
 
 class FinishInscriptionRedirectHandler
 {

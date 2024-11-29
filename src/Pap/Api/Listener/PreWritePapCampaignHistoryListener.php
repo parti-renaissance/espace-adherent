@@ -5,11 +5,11 @@ namespace App\Pap\Api\Listener;
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\Adherent;
 use App\Entity\Pap\CampaignHistory;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Security;
 
 class PreWritePapCampaignHistoryListener implements EventSubscriberInterface
 {

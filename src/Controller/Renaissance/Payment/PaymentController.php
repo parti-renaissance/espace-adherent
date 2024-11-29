@@ -8,7 +8,7 @@ use App\Entity\Donation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/paiement/{uuid}', name: 'app_payment', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
 class PaymentController extends AbstractController

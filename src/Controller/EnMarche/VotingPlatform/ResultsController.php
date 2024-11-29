@@ -8,7 +8,7 @@ use App\Security\Voter\VotingPlatformAbleToVoteVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[IsGranted(VotingPlatformAbleToVoteVoter::PERMISSION_RESULTS, subject: 'election')]
 #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]

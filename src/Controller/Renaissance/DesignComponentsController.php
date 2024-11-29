@@ -5,7 +5,7 @@ namespace App\Controller\Renaissance;
 use App\Controller\CanaryControllerTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/design-components', name: 'app_design_components')]
 class DesignComponentsController extends AbstractController

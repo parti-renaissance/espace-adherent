@@ -10,7 +10,7 @@ use App\Entity\ProcurationV2\AbstractProcuration;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class ProcurationExtension implements QueryCollectionExtensionInterface
 {

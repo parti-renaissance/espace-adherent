@@ -26,7 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[ParamConverter('committee', options: ['mapping' => ['committee_slug' => 'slug']])]
 #[Route(path: '/espace-animateur/{committee_slug}/messagerie', name: 'app_message_committee_')]

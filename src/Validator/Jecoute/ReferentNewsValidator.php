@@ -6,7 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
 use App\Jecoute\JecouteSpaceEnum;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
