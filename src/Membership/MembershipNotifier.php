@@ -2,6 +2,7 @@
 
 namespace App\Membership;
 
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
@@ -14,6 +15,7 @@ use App\OAuth\CallbackManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
@@ -28,14 +30,21 @@ class MembershipNotifier implements LoggerAwareInterface
         private readonly AuthAppUrlManager $appUrlManager,
         private readonly LoginLinkHandlerInterface $linkHandler,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly LoginLinkHandlerInterface $loginLinkHandler,
+        private readonly RequestStack $requestStack,
     ) {
     }
 
     public function sendEmailReminder(Adherent $adherent): bool
     {
-        $donationUrl = $this->callbackManager->generateUrl('app_donation_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $adhesionUrl = $this->loginLinkHandler->createLoginLink(
+            $adherent,
+            $this->requestStack->getMainRequest(),
+            AppCodeEnum::RENAISSANCE,
+            $this->urlGenerator->generate('app_adhesion_index', [], UrlGeneratorInterface::ABSOLUTE_URL)
+        );
 
-        return $this->transactionalMailer->sendMessage(Message\AdherentMembershipReminderMessage::create($adherent, $donationUrl));
+        return $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentMembershipReminderMessage::create($adherent, $adhesionUrl));
     }
 
     public function sendConfirmationJoinMessage(Adherent $adherent): void

@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
     name: 'app:membership:remind-activated',
-    description: 'This command finds activated adherents and send an email reminder',
+    description: 'This command finds newly registered adherents without membership and send an email reminder',
 )]
 class RemindActivatedMembershipCommand extends Command
 {
@@ -37,13 +37,13 @@ class RemindActivatedMembershipCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('hours', InputArgument::REQUIRED, 'Number of hours before sending an email reminder')
+            ->addArgument('minutes', InputArgument::REQUIRED, 'Number of minutes before sending an email reminder')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $from = (new \DateTime())->modify(\sprintf('-%d hours', (int) $input->getArgument('hours')));
+        $from = (new \DateTime())->modify(\sprintf('-%d minutes', (int) $input->getArgument('minutes')));
 
         while ($adherents = $this->findActivated($from, 100)) {
             foreach ($adherents as $adherent) {
@@ -67,12 +67,10 @@ class RemindActivatedMembershipCommand extends Command
     {
         return $this->adherentRepository
             ->createQueryBuilder('adherent')
-            ->where('adherent.status = :status')
-            ->andWhere('adherent.adherent = 1')
+            ->where('adherent.adherent = 1')
             ->andWhere('adherent.membershipRemindedAt IS NULL')
-            ->andWhere('adherent.activatedAt IS NOT NULL')
-            ->andWhere('adherent.activatedAt > :date')
-            ->setParameter('status', Adherent::ENABLED)
+            ->andWhere('adherent.lastMembershipDonation IS NULL')
+            ->andWhere('adherent.registeredAt < :date')
             ->setParameter('date', $from)
             ->setMaxResults($limit)
             ->getQuery()
