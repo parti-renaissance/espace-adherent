@@ -12,10 +12,10 @@ trait AdvancedImageTrait
     }
 
     #[ORM\Column(type: 'bigint', nullable: true)]
-    protected ?int $imageSize;
+    protected ?int $imageSize = null;
 
     #[ORM\Column(length: 50, nullable: true)]
-    protected ?string $imageMimeType;
+    protected ?string $imageMimeType = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     protected ?int $imageWidth = null;
