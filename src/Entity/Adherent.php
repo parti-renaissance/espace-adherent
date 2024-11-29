@@ -185,9 +185,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $activatedAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private $activationRemindedAt;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
     private $membershipRemindedAt;
 
     #[Gedmo\Timestampable(on: 'update')]
@@ -254,15 +251,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      * @var string[]
      */
     private $roles = [];
-
-    /**
-     * Activation token was already sent after 48h of registration
-     */
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $remindSent = false;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    public ?\DateTime $globalNotificationSentAt = null;
 
     #[Groups(['adherent_elect_read'])]
     #[ORM\Column(type: 'simple_array', nullable: true)]
@@ -386,12 +374,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
      */
     #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: AdherentCharter\AbstractAdherentCharter::class, cascade: ['all'])]
     private $charters;
-
-    /**
-     * @var ConsularManagedArea|null
-     */
-    #[ORM\OneToOne(targetEntity: ConsularManagedArea::class, cascade: ['all'], orphanRemoval: true)]
-    private $consularManagedArea;
 
     /**
      * @var bool
@@ -685,10 +667,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_FDE_COORDINATOR';
         }
 
-        if ($this->isConsular()) {
-            $roles[] = 'ROLE_CONSULAR';
-        }
-
         if ($this->isRegionalCoordinator()) {
             $roles[] = 'ROLE_REGIONAL_COORDINATOR';
         }
@@ -962,19 +940,9 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->activatedAt;
     }
 
-    public function setActivationReminded(): void
-    {
-        $this->activationRemindedAt = new \DateTime();
-    }
-
     public function setMembershipReminded(): void
     {
         $this->membershipRemindedAt = new \DateTime();
-    }
-
-    public function isMembershipReminded(): bool
-    {
-        return null !== $this->membershipRemindedAt;
     }
 
     public function changePassword(string $newPassword): void
@@ -1487,11 +1455,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         [$this->id, $this->emailAddress, $this->password, $this->roles] = $serialized;
     }
 
-    public function setRemindSent(bool $remindSent): void
-    {
-        $this->remindSent = $remindSent;
-    }
-
     public function getMandates(): ?array
     {
         return $this->mandates;
@@ -1500,21 +1463,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function setMandates(?array $mandates): void
     {
         $this->mandates = $mandates;
-    }
-
-    public function hasMandate(): bool
-    {
-        return !empty($this->mandates);
-    }
-
-    public function getConsularManagedArea(): ?ConsularManagedArea
-    {
-        return $this->consularManagedArea;
-    }
-
-    public function setConsularManagedArea(?ConsularManagedArea $consularManagedArea): void
-    {
-        $this->consularManagedArea = $consularManagedArea;
     }
 
     public function getMedia(): ?Media
@@ -1637,11 +1585,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $charter->setAdherent($this);
             $this->charters->add($charter);
         }
-    }
-
-    public function isConsular(): bool
-    {
-        return !empty($this->consularManagedArea);
     }
 
     /**
