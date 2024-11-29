@@ -60,16 +60,21 @@ class MagicLinkController extends AbstractController
 
     public function connectViaMagicLinkAction(Request $request, TokenStorageInterface $tokenStorage): Response
     {
-        /** @var Adherent|Administrator $currentUser */
         $currentUser = $this->getUser();
-        $queryUserEmail = $request->query->get('user');
 
         if ($currentUser) {
-            if ($currentUser instanceof Administrator && $queryUserEmail === $currentUser->getEmailAddress()) {
+            if ($currentUser->getUsername() !== $request->query->get('user')) {
+                $tokenStorage->setToken(null);
+                $request->getSession()->invalidate();
+
+                return $this->redirect($request->getRequestUri());
+            }
+
+            if ($currentUser instanceof Administrator) {
                 return $this->redirectToRoute('admin_app_adherent_list');
             }
 
-            if ($currentUser instanceof Adherent && $queryUserEmail === $currentUser->getEmailAddress()) {
+            if ($currentUser instanceof Adherent) {
                 if ($targetPath = $request->query->get('_target_path')) {
                     $redirectUri = parse_url($targetPath, \PHP_URL_PATH);
 
@@ -82,9 +87,6 @@ class MagicLinkController extends AbstractController
 
                 return $this->redirectToRoute('vox_app_redirect');
             }
-
-            $tokenStorage->setToken(null);
-            $request->getSession()->invalidate();
         }
 
         return $this->render('security/renaissance_connect_magic_link.html.twig', [
