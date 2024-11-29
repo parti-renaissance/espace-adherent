@@ -44,7 +44,7 @@ class MembershipNotifier implements LoggerAwareInterface
             $this->urlGenerator->generate('app_adhesion_index', [], UrlGeneratorInterface::ABSOLUTE_URL)
         );
 
-        return $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentMembershipReminderMessage::create($adherent, $adhesionUrl));
+        return $this->transactionalMailer->sendMessage(Message\Renaissance\AdherentMembershipReminderMessage::create($adherent, $adhesionUrl));
     }
 
     public function sendConfirmationJoinMessage(Adherent $adherent): void
