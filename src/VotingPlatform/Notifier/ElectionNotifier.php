@@ -100,7 +100,7 @@ class ElectionNotifier
 
                 return VoteReminder1DMessage::create($election, $recipients, $url);
             },
-            $zones ? function (int $offset, int $limit) use ($election, $zones): array {
+            !$election->getDesignation()->isCommitteeSupervisorType() && $zones ? function (int $offset, int $limit) use ($election, $zones): array {
                 return $this->adherentRepository->getAllInZonesAndNotVoted($election, $zones, $offset, $limit);
             } : null
         );
@@ -189,7 +189,7 @@ class ElectionNotifier
 
         if (!$getRecipientsCallback) {
             $designation = $election->getDesignation();
-            if ($zones = $designation->getZones()->toArray()) {
+            if (!$designation->isCommitteeSupervisorType() && $zones = $designation->getZones()->toArray()) {
                 $getRecipientsCallback = function (int $offset, int $limit) use ($zones): array {
                     return $this->adherentRepository->getAllInZones($zones, true, false, $offset, $limit);
                 };
