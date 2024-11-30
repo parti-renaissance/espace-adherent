@@ -111,8 +111,8 @@ class TagEnum extends Enum
         return explode(':', $tag)[0];
     }
 
-    public static function getNationalEventTag(string $eventSlug): string
+    public static function getNationalEventTag(string $year): string
     {
-        return \sprintf(self::NATIONAL_EVENT_PATTERN, $eventSlug);
+        return \sprintf(self::NATIONAL_EVENT_PATTERN, $year);
     }
 }
