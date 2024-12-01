@@ -102,6 +102,7 @@ class VoterRepository extends ServiceEntityRepository
         bool $partial = false,
         ?int $offset = null,
         ?int $limit = null,
+        bool $excludeVoted = false,
     ): array {
         $queryBuilder = $this->createQueryBuilder('voter')
             ->addSelect($partial ? 'PARTIAL adherent.{id, uuid, emailAddress, firstName, lastName}' : 'adherent')
@@ -114,6 +115,14 @@ class VoterRepository extends ServiceEntityRepository
             ->setParameter('election', $election)
             ->setParameter('false', false)
         ;
+
+        if ($excludeVoted) {
+            $queryBuilder
+                ->leftJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound = :current_round')
+                ->andWhere('vote IS NULL')
+                ->setParameter('current_round', $election->getCurrentRound())
+            ;
+        }
 
         if (null !== $offset && null !== $limit) {
             $queryBuilder
