@@ -87,7 +87,19 @@ class ElectionNotifier
             return;
         }
 
+        $designation = $election->getDesignation();
         $zones = $election->getDesignation()->getZones()->toArray();
+
+        if (!$designation->isCommitteeSupervisorType() && $zones) {
+            $getRecipientsCallback = function (int $offset, int $limit) use ($election, $zones): array {
+                return $this->adherentRepository->getAllInZonesAndNotVoted($election, $zones, $offset, $limit);
+            };
+        } else {
+            $getRecipientsCallback = function (int $offset, int $limit) use ($election): array {
+                return $this->getAdherentForElection($election, $offset, $limit, true);
+            };
+        }
+
         $url = $this->getUrl($election);
 
         $this->sendNotification(
@@ -100,9 +112,7 @@ class ElectionNotifier
 
                 return VoteReminder1DMessage::create($election, $recipients, $url);
             },
-            !$election->getDesignation()->isCommitteeSupervisorType() && $zones ? function (int $offset, int $limit) use ($election, $zones): array {
-                return $this->adherentRepository->getAllInZonesAndNotVoted($election, $zones, $offset, $limit);
-            } : null
+            $getRecipientsCallback
         );
     }
 
@@ -209,11 +219,11 @@ class ElectionNotifier
     /**
      * @return Adherent[]
      */
-    private function getAdherentForElection(Election $election, ?int $offset = null, ?int $limit = null): array
+    private function getAdherentForElection(Election $election, ?int $offset = null, ?int $limit = null, bool $excludeVoted = false): array
     {
         return array_map(
             function (Voter $voter) { return $voter->getAdherent(); },
-            $this->voterRepository->findForElection($election, true, $offset, $limit)
+            $this->voterRepository->findForElection($election, true, $offset, $limit, $excludeVoted)
         );
     }
 
