@@ -36,7 +36,7 @@ class AdherentTagsConditionBuilder implements SegmentConditionBuilderInterface
     {
         $conditions = [];
 
-        foreach ([$filter->adherentTags, $filter->electTags, $filter->staticTags] as $tag) {
+        foreach (array_filter([$filter->adherentTags, $filter->electTags, $filter->staticTags]) as $tag) {
             $operator = $filter->includeFilter($tag) ? 'contains' : 'notcontain';
             $tag = ltrim($tag, '!');
 
