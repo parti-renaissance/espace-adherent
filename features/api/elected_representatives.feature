@@ -362,6 +362,7 @@ Feature:
                             "code": "adherent_tags",
                             "label": "Labels adhérent",
                             "options": {
+                                "advanced": false,
                                 "favorite": true,
                                 "choices": {
                                     "adherent": "Adhérent",
@@ -412,16 +413,13 @@ Feature:
                             "code": "static_tags",
                             "label": "Labels divers",
                             "options": {
+                                "advanced": false,
                                 "favorite": true,
                                 "choices": {
                                     "national_event:event-national-1": "Event National 1",
-                                    "national_event:event-national-1--": "Non inscrit à Event National 1",
                                     "national_event:event-national-2": "Event National 2",
-                                    "national_event:event-national-2--": "Non inscrit à Event National 2",
                                     "procuration:mandant": "Mandant",
-                                    "procuration:mandant--": "Non Mandant",
-                                    "procuration:mandataire": "Mandataire",
-                                    "procuration:mandataire--": "Non Mandataire"
+                                    "procuration:mandataire": "Mandataire"
                                 }
                             },
                             "type": "select"
@@ -436,6 +434,7 @@ Feature:
                             "code": "elect_tags",
                             "label": "Labels élu",
                             "options": {
+                                "advanced": false,
                                 "favorite": true,
                                 "choices": {
                                     "elu": "Élu",

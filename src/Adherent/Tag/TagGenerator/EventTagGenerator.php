@@ -2,7 +2,7 @@
 
 namespace App\Adherent\Tag\TagGenerator;
 
-use App\Adherent\Tag\StaticTag\EventTagBuilder;
+use App\Adherent\Tag\StaticTag\TagBuilder;
 use App\Entity\Adherent;
 use App\Entity\NationalEvent\EventInscription;
 use App\Repository\NationalEvent\EventInscriptionRepository;
@@ -11,7 +11,7 @@ class EventTagGenerator extends AbstractTagGenerator
 {
     public function __construct(
         private readonly EventInscriptionRepository $eventInscriptionRepository,
-        private readonly EventTagBuilder $eventTagBuilder,
+        private readonly TagBuilder $eventTagBuilder,
     ) {
     }
 

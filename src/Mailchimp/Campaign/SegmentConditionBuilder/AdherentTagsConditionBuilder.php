@@ -36,39 +36,18 @@ class AdherentTagsConditionBuilder implements SegmentConditionBuilderInterface
     {
         $conditions = [];
 
-        if ($filter->adherentTags && $tagValue = $this->transformTagValue($filter->adherentTags)) {
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => 'contains',
-                'field' => MemberRequest::MERGE_FIELD_ADHERENT_TAGS,
-                'value' => $tagValue,
-            ];
-        }
+        foreach ([$filter->adherentTags, $filter->electTags, $filter->staticTags] as $tag) {
+            $operator = $filter->includeFilter($tag) ? 'contains' : 'notcontain';
+            $tag = ltrim($tag, '!');
 
-        if ($filter->electTags && $tagValue = $this->transformTagValue($filter->electTags)) {
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => 'contains',
-                'field' => MemberRequest::MERGE_FIELD_ADHERENT_TAGS,
-                'value' => $tagValue,
-            ];
-        }
-
-        if ($staticTag = $filter->staticTags) {
-            $operator = 'contains';
-            if (str_ends_with($staticTag, '--')) {
-                $operator = 'notcontain';
-                $staticTag = substr($staticTag, 0, -2);
+            if ($tag && $tagValue = $this->transformTagValue($tag)) {
+                $conditions[] = [
+                    'condition_type' => 'TextMerge',
+                    'op' => $operator,
+                    'field' => MemberRequest::MERGE_FIELD_ADHERENT_TAGS,
+                    'value' => $tagValue,
+                ];
             }
-
-            $tagValue = $this->tagTranslator->trans($staticTag);
-
-            $conditions[] = [
-                'condition_type' => 'TextMerge',
-                'op' => $operator,
-                'field' => MemberRequest::MERGE_FIELD_ADHERENT_TAGS,
-                'value' => $tagValue,
-            ];
         }
 
         return $conditions;

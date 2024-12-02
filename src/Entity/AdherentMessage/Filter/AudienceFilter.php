@@ -3,7 +3,6 @@
 namespace App\Entity\AdherentMessage\Filter;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Adherent\MandateTypeEnum;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Entity\ZoneableEntityInterface;
@@ -62,12 +61,10 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
     #[ORM\Column(type: 'boolean', nullable: true)]
     private ?bool $isCommitteeMember = null;
 
-    #[Assert\Choice(choices: MandateTypeEnum::ALL)]
     #[Groups(['adherent_message_update_filter'])]
     #[ORM\Column(nullable: true)]
     private ?string $mandateType = null;
 
-    #[Assert\Choice(choices: MandateTypeEnum::ALL)]
     #[Groups(['adherent_message_update_filter'])]
     #[ORM\Column(nullable: true)]
     private ?string $declaredMandate = null;
@@ -247,5 +244,10 @@ class AudienceFilter extends AbstractAdherentMessageFilter implements ZoneableEn
         $this->staticTags = null;
 
         parent::reset();
+    }
+
+    public function includeFilter(string $value): bool
+    {
+        return !str_starts_with($value, '!');
     }
 }

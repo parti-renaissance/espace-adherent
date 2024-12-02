@@ -32,6 +32,11 @@ class AdherentStaticLabel
     #[ORM\ManyToOne(targetEntity: AdherentStaticLabelCategory::class)]
     public ?AdherentStaticLabelCategory $category = null;
 
+    public function getIdentifier(): string
+    {
+        return implode(':', array_filter([$this->category?->code, $this->code]));
+    }
+
     public function __toString(): string
     {
         return \sprintf('%s (%s:%s)', $this->label, $this->category->code, $this->code);

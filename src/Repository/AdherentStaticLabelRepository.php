@@ -23,4 +23,16 @@ class AdherentStaticLabelRepository extends ServiceEntityRepository
             'code'
         );
     }
+
+    public function findAllLikeAdherentTags(): array
+    {
+        return $this->createQueryBuilder('label')
+            ->addSelect('category')
+            ->innerJoin('label.category', 'category')
+            ->where('category.sync = :sync')
+            ->setParameter('sync', true)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

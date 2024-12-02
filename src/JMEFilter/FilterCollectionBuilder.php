@@ -18,6 +18,7 @@ use App\JMEFilter\Types\Text;
  * @method self setMultiple(bool $multiple)
  * @method self setRequired(bool $value)
  * @method self setFavorite(bool $value)
+ * @method self setAdvanced(bool $value)
  */
 class FilterCollectionBuilder
 {

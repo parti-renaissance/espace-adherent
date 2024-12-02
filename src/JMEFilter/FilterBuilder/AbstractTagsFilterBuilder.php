@@ -4,6 +4,7 @@ namespace App\JMEFilter\FilterBuilder;
 
 use App\Adherent\Tag\TagTranslator;
 use App\JMEFilter\FilterCollectionBuilder;
+use App\Scope\FeatureEnum;
 use App\Scope\ScopeEnum;
 
 abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
@@ -28,6 +29,7 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
         return (new FilterCollectionBuilder())
             ->createSelect($this->fieldName, $this->fieldLabel)
             ->setFavorite(true)
+            ->setAdvanced(FeatureEnum::MESSAGES === $feature)
             ->setChoices($this->getTranslatedChoices())
             ->getFilters()
         ;
