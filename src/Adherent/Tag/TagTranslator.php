@@ -2,7 +2,7 @@
 
 namespace App\Adherent\Tag;
 
-use App\Adherent\Tag\StaticTag\EventTagBuilder;
+use App\Adherent\Tag\StaticTag\TagBuilder;
 use App\Repository\AdherentStaticLabelCategoryRepository;
 use App\Repository\AdherentStaticLabelRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -14,7 +14,7 @@ class TagTranslator
 
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly EventTagBuilder $eventTagBuilder,
+        private readonly TagBuilder $tagBuilder,
         private readonly AdherentStaticLabelCategoryRepository $staticLabelCategoryRepository,
         private readonly AdherentStaticLabelRepository $staticLabelRepository,
     ) {
@@ -51,7 +51,7 @@ class TagTranslator
                 }
                 // Matches a national_event tag in the format national_event:slug
                 elseif (TagEnum::NATIONAL_EVENT === TagEnum::getMainLevel($tag) && $index > 0) {
-                    $parts[$index] = $this->eventTagBuilder->buildLabelFromSlug($part);
+                    $parts[$index] = $this->tagBuilder->buildLabelFromSlug($part);
                 } else {
                     $parts[$index] = $this->translate('adherent.tag.'.$part, $part);
                 }

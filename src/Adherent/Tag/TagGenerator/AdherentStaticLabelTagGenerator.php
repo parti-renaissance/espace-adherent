@@ -17,7 +17,7 @@ class AdherentStaticLabelTagGenerator extends AbstractTagGenerator
                 continue;
             }
 
-            $tags[] = $category->code.':'.$staticLabel->code;
+            $tags[] = $staticLabel->getIdentifier();
         }
 
         return $tags;

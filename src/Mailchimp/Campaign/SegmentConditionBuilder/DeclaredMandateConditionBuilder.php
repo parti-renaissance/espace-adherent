@@ -24,10 +24,12 @@ class DeclaredMandateConditionBuilder implements SegmentConditionBuilderInterfac
      */
     public function buildFromFilter(SegmentFilterInterface $filter): array
     {
+        $value = $filter->getDeclaredMandate();
+
         return [[
             'condition_type' => 'TextMerge',
-            'op' => 'contains',
-            'value' => '"'.$filter->getDeclaredMandate().'"',
+            'op' => $filter->includeFilter($value) ? 'contains' : 'notcontain',
+            'value' => '"'.ltrim($value, '!').'"',
             'field' => MemberRequest::MERGE_FIELD_DECLARED_MANDATES,
         ]];
     }

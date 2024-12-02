@@ -62,6 +62,11 @@ abstract class AbstractFilter implements FilterInterface
         $this->addOption('favorite', $value);
     }
 
+    public function setAdvanced(bool $value): void
+    {
+        $this->addOption('advanced', $value);
+    }
+
     protected function addOption(string $key, $value): void
     {
         $this->options[$key] = $value;
