@@ -8,7 +8,7 @@ use ApiPlatform\Metadata\Operation;
 use App\Entity\Event\BaseEvent;
 use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Service\Attribute\Required;
 
 final class MyCreatedEventsFilter extends AbstractFilter

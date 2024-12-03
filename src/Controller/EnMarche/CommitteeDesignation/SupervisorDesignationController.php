@@ -4,7 +4,7 @@ namespace App\Controller\EnMarche\CommitteeDesignation;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[ParamConverter('committee', options: ['mapping' => ['committee_slug' => 'slug']])]
 #[Route(path: '/espace-animateur/{committee_slug}/designations', name: 'app_supervisor_designations')]

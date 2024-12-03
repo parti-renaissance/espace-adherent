@@ -5,9 +5,9 @@ namespace App\History;
 use App\Entity\Adherent;
 use App\Entity\Administrator;
 use App\History\Command\UserActionHistoryCommand;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
-use Symfony\Component\Security\Core\Security;
 
 class UserActionHistoryHandler
 {

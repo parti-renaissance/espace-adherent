@@ -5,7 +5,7 @@ namespace App\Controller\EnMarche\Jecoute;
 use App\Entity\Adherent;
 use App\Jecoute\JecouteSpaceEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[IsGranted('ROLE_JECOUTE_MANAGER')]
 #[Route(path: '/espace-responsable-des-questionnaires', name: 'app_jecoute_manager_')]

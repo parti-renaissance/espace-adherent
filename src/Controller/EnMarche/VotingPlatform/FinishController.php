@@ -4,7 +4,7 @@ namespace App\Controller\EnMarche\VotingPlatform;
 
 use App\Entity\VotingPlatform\Election;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/fin', name: 'app_voting_platform_finish_step', methods: ['GET'])]
 class FinishController extends AbstractController

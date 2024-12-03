@@ -9,7 +9,7 @@ use App\ValueObject\Genders;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/v3/pap_campaigns/{uuid}/survey-config', requirements: ['uuid' => '%pattern_uuid%'], name: 'api_get_pap_campaign_survey_config', methods: ['GET'])]
 #[Security("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')")]

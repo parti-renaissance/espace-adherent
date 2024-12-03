@@ -5,7 +5,7 @@ namespace App\Controller\EnMarche;
 use App\Entity\ProgrammaticFoundation\Measure;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/projets-qui-marchent')]
 class ProgrammaticFoundationController extends AbstractController

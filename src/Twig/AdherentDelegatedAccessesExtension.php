@@ -4,8 +4,8 @@ namespace App\Twig;
 
 use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;

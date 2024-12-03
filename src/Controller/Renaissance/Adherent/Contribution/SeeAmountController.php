@@ -6,7 +6,7 @@ use App\Adherent\AdherentRoleEnum;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[IsGranted(AdherentRoleEnum::ONGOING_ELECTED_REPRESENTATIVE)]
 #[Route(path: '/espace-elus/cotisation/montant', name: 'app_renaissance_contribution_see_amount', methods: ['GET'])]

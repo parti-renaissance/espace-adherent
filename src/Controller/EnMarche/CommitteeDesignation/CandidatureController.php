@@ -23,7 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[IsGranted('MEMBER_OF_COMMITTEE', subject: 'committee')]
 #[Route(path: '/comites/{slug}/candidature', name: 'app_committee_candidature')]

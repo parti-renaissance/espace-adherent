@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Entity('adherent', expr: 'repository.findOneByUuid(adherent_uuid)')]
 #[Route(path: '/v3/teams/{uuid}/members/{adherent_uuid}', requirements: ['uuid' => '%pattern_uuid%', 'adherent_uuid' => '%pattern_uuid%'], name: 'api_team_remove_member', methods: ['DELETE'])]

@@ -6,7 +6,7 @@ use App\Entity\VotingPlatform\Election;
 use App\Form\VotingPlatform\VotePoolCollectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/vote', name: 'app_voting_platform_vote_step', methods: ['GET', 'POST'])]
 class VoteController extends AbstractController

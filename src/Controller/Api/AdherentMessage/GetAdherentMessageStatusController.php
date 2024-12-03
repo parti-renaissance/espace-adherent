@@ -6,7 +6,7 @@ use App\Entity\AdherentMessage\AbstractAdherentMessage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route(path: '/adherent_messages/{uuid}', name: 'app_api_get_adherent_message_status', methods: ['GET'])]

@@ -6,7 +6,7 @@ use App\Entity\QrCode;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/qr-code/{uuid}', name: 'app_qr_code', methods: 'GET')]
 class QrCodeController

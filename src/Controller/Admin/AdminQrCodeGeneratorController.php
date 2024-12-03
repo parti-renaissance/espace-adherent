@@ -7,7 +7,7 @@ use App\QrCode\QrCodeEntityHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[IsGranted('ROLE_ADMIN_QR_CODES')]
 #[Route(path: '/qr-code/{uuid}/generate.{_format}', name: 'app_admin_qr_code_generate', methods: 'GET', defaults: ['_format' => 'png'], requirements: ['_format' => 'png|svg'])]

@@ -7,7 +7,7 @@ use App\Entity\Phoning\Campaign;
 use App\Repository\AdherentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[IsGranted('ROLE_ADMIN_PHONING_CAMPAIGNS')]
 #[Route(path: '/phoning-campaign/{id}/stats', name: 'app_admin_phoning_campaign_stats', methods: 'GET')]

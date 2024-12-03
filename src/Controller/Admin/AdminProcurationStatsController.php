@@ -7,7 +7,7 @@ use App\Procuration\V2\ProcurationStatsHandler;
 use App\Repository\Procuration\ElectionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class AdminProcurationStatsController extends AbstractController
 {
