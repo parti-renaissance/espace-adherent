@@ -28,18 +28,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SecurityController extends AbstractController
 {
     #[Route(path: '/connexion', name: 'app_renaissance_login', methods: ['GET', 'POST'])]
-    public function loginAction(AuthenticationUtils $securityUtils, ?string $app = null): Response
+    public function loginAction(AuthenticationUtils $securityUtils): Response
     {
         if ($user = $this->getUser()) {
             if ($user instanceof Administrator) {
                 return $this->redirectToRoute('admin_app_adherent_list');
             }
 
-            if ($app) {
-                return $this->redirectToRoute('vox_app_redirect');
-            }
-
-            return $this->redirectToRoute('app_search_events');
+            return $this->redirectToRoute('vox_app_redirect');
         }
 
         $form = $this->createForm(LoginType::class, [
