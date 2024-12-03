@@ -49,11 +49,10 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
-        ob_start();
         $this->client->request(Request::METHOD_GET, '/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xlsx?scope=pap_national_manager', [], [], [
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ]);
-        $content = ob_get_clean();
+        $content = $this->client->getInternalResponse()->getContent();
 
         $this->isSuccessful($response = $this->client->getResponse());
 
@@ -77,11 +76,10 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
-        ob_start();
         $this->client->request(Request::METHOD_GET, '/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xlsx?scope=president_departmental_assembly', [], [], [
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ]);
-        $content = ob_get_clean();
+        $content = $this->client->getInternalResponse()->getContent();
 
         $this->isSuccessful($response = $this->client->getResponse());
 
@@ -108,7 +106,6 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
-        ob_start();
         $this->client->request(
             Request::METHOD_GET,
             \sprintf('/api/v3/pap_campaigns/d0fa7f9c-e976-44ad-8a52-2a0a0d8acaf9/replies.xlsx?scope=%s', $scope),
@@ -116,7 +113,7 @@ class ExportPapCampaignSurveyAnswersControllerTest extends AbstractApiTestCase
             [],
             ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]
         );
-        $content = ob_get_clean();
+        $content = $this->client->getInternalResponse()->getContent();
 
         $this->isSuccessful($response = $this->client->getResponse());
 

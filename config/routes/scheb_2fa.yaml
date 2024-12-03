@@ -5,7 +5,7 @@ admin_security_2fa:
     host: '%admin_renaissance_host%'
     path: /login/2fa
     defaults:
-        _controller: 'scheb_two_factor.form_controller:form'
+        _controller: 'scheb_two_factor.form_controller::form'
 
 admin_security_2fa_check:
     host: '%admin_renaissance_host%'

@@ -14,18 +14,14 @@ use Symfony\Component\Security\Http\HttpUtils;
 
 class AuthenticationFailureHandler extends DefaultAuthenticationFailureHandler
 {
-    private $failedLoginAttemptRepository;
-
     public function __construct(
-        FailedLoginAttemptRepository $failedLoginAttemptRepository,
+        private readonly FailedLoginAttemptRepository $failedLoginAttemptRepository,
         HttpKernelInterface $httpKernel,
         HttpUtils $httpUtils,
         array $options = [],
         ?LoggerInterface $logger = null,
     ) {
         parent::__construct($httpKernel, $httpUtils, $options, $logger);
-
-        $this->failedLoginAttemptRepository = $failedLoginAttemptRepository;
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response

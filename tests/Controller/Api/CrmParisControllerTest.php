@@ -22,12 +22,11 @@ class CrmParisControllerTest extends AbstractApiTestCase
             'crm_paris'
         );
 
-        ob_start();
         $this->client->request(Request::METHOD_GET, '/api/crm-paris/adherents', [], [], [
             'HTTP_AUTHORIZATION' => "Bearer $accessToken",
         ]);
 
-        $responseContent = ob_get_clean();
+        $responseContent = $this->client->getInternalResponse()->getContent();
 
         $this->isSuccessful($response = $this->client->getResponse());
 

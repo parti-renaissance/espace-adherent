@@ -109,7 +109,7 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
                 return $type;
             }
 
-            if ('*' === substr($routeName, -1) && str_contains($currentRoute, rtrim($routeName, '*'))) {
+            if (str_ends_with($routeName, '*') && str_contains($currentRoute, rtrim($routeName, '*'))) {
                 return $type;
             }
         }
@@ -124,9 +124,8 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
 
     private function getSlug(Request $request, string $type): ?string
     {
-        switch ($type) {
-            case ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR:
-                return $request->attributes->get('slug', $request->attributes->get('committee_slug'));
+        if (ZoneExtractorInterface::ADHERENT_TYPE_COMMITTEE_ADMINISTRATOR == $type) {
+            return $request->attributes->get('slug', $request->attributes->get('committee_slug'));
         }
 
         return null;

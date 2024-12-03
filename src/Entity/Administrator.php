@@ -90,7 +90,7 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
     {
     }
 
-    public function getUsername()
+    public function getUserIdentifier(): string
     {
         return $this->emailAddress;
     }

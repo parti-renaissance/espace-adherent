@@ -36,22 +36,12 @@ abstract class AbstractApiUser implements UserInterface
         return $this->uuid;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         return $this->roles;
     }
 
-    public function getPassword()
-    {
-        return '';
-    }
-
-    public function getSalt()
-    {
-        return '';
-    }
-
-    public function getUsername()
+    public function getUserIdentifier(): string
     {
         return $this->username;
     }

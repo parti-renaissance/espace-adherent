@@ -12,14 +12,11 @@ use Symfony\Component\HttpFoundation\Response;
 #[Security("is_granted('IS_FEATURE_GRANTED', 'messages') and (message.getAuthor() == user or user.hasDelegatedFromUser(message.getAuthor(), 'messages'))")]
 class SendTestAdherentMessageController extends AbstractController
 {
-    private $manager;
-
-    public function __construct(AdherentMessageManager $manager)
+    public function __construct(private readonly AdherentMessageManager $manager)
     {
-        $this->manager = $manager;
     }
 
-    public function __invoke(AbstractAdherentMessage $message)
+    public function __invoke(AbstractAdherentMessage $message): Response
     {
         /** @var Adherent $user */
         $user = $this->getUser();

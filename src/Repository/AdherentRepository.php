@@ -47,15 +47,16 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class AdherentRepository extends ServiceEntityRepository implements UserLoaderInterface, UserProviderInterface
+class AdherentRepository extends ServiceEntityRepository implements UserLoaderInterface, UserProviderInterface, PasswordUpgraderInterface
 {
     use NearbyTrait;
     use UuidEntityRepositoryTrait {
@@ -154,10 +155,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
     /**
      * Finds an Adherent instance by its unique UUID.
-     *
-     * @return Adherent|null
      */
-    public function findByUuid(string $uuid)
+    public function findByUuid(string $uuid): ?Adherent
     {
         return $this->findOneBy(['uuid' => $uuid]);
     }
@@ -172,33 +171,35 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    public function loadUserByUsername($username)
+    public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        return $this->createQueryBuilderForAdherentWithRoles($alias = 'a')
+        $user = $this->createQueryBuilderForAdherentWithRoles($alias = 'a')
             ->where($alias.'.emailAddress = :username')
-            ->setParameter('username', $username)
+            ->setParameter('username', $identifier)
             ->getQuery()
             ->getOneOrNullResult()
         ;
-    }
 
-    public function refreshUser(UserInterface $user)
-    {
-        $class = $user::class;
-        $username = $user->getUsername();
-
-        if (!$this->supportsClass($class)) {
-            throw new UnsupportedUserException(\sprintf('User of type "%s" and identified by "%s" is not supported by this provider.', $class, $username));
-        }
-
-        if (!$user = $this->loadUserByUsername($username)) {
-            throw new UsernameNotFoundException(\sprintf('Unable to find Adherent user identified by "%s".', $username));
+        if (!$user) {
+            throw new UserNotFoundException(\sprintf('User "%s" not found.', $identifier));
         }
 
         return $user;
     }
 
-    public function supportsClass($class)
+    public function refreshUser(UserInterface $user): UserInterface
+    {
+        $class = $user::class;
+        $username = $user->getUserIdentifier();
+
+        if (!$this->supportsClass($class)) {
+            throw new UnsupportedUserException(\sprintf('User of type "%s" and identified by "%s" is not supported by this provider.', $class, $username));
+        }
+
+        return $this->loadUserByIdentifier($username);
+    }
+
+    public function supportsClass($class): bool
     {
         return Adherent::class === $class;
     }
@@ -406,42 +407,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->getQuery()
             ->getResult()
         ;
-    }
-
-    public function findForProvisionalSupervisorAutocomplete(
-        string $name,
-        ?string $gender,
-        array $zones,
-        int $limit = 10,
-    ): array {
-        if (!$zones || !$name) {
-            return [];
-        }
-
-        $qb = $this->createQueryBuilder('a')
-            ->select('DISTINCT a.id', 'a.firstName', 'a.lastName', 'a.gender', 'a.registeredAt')
-            ->innerJoin('a.zones', 'zone')
-            ->innerJoin('zone.parents', 'parent')
-            ->where('(zone IN (:zones) OR parent IN (:zones))')
-            ->andWhere('CONCAT(LOWER(a.firstName), \' \', LOWER(a.lastName)) LIKE :name')
-            ->andWhere('a.status = :status AND a.birthdate <= :dateMax')
-            ->setParameters([
-                'zones' => $zones,
-                'status' => Adherent::ENABLED,
-                'name' => '%'.strtolower($name).'%',
-                'dateMax' => new \DateTime('-18 years'),
-            ])
-            ->setMaxResults($limit)
-        ;
-
-        if ($gender) {
-            $qb
-                ->andWhere('a.gender = :gender')
-                ->setParameter('gender', $gender)
-            ;
-        }
-
-        return $qb->getQuery()->getResult();
     }
 
     public function findNameByUuid(string $uuid): array
@@ -1397,5 +1362,17 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         );
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function upgradePassword(PasswordAuthenticatedUserInterface|self $user, string $newHashedPassword): void
+    {
+        if (!$user->hasLegacyPassword()) {
+            return;
+        }
+
+        $user->clearOldPassword();
+        $user->migratePassword($newHashedPassword);
+
+        $this->getEntityManager()->flush();
     }
 }

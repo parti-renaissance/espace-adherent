@@ -37,7 +37,7 @@ class SubscriptionController extends AbstractController
         }
 
         $type = $request->request->get('type');
-        $data = $request->request->get('data');
+        $data = $request->request->all('data');
 
         if (0 === $request->request->count() || !$type || !isset($data['email']) || !isset($data['list_id'])) {
             throw new BadRequestHttpException('The request should contain correct data.');

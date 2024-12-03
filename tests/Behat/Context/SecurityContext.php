@@ -7,25 +7,14 @@ use App\Repository\AdherentRepository;
 use App\Repository\AdministratorRepository;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 
 class SecurityContext extends RawMinkContext
 {
-    private SessionInterface $session;
-    private AdherentRepository $adherentRepository;
-    private AdministratorRepository $administratorRepository;
-
     public function __construct(
-        SessionInterface $session,
-        AdherentRepository $adherentRepository,
-        AdministratorRepository $administratorRepository,
+        private readonly AdherentRepository $adherentRepository,
+        private readonly AdministratorRepository $administratorRepository,
     ) {
-        $this->session = $session;
-        $this->adherentRepository = $adherentRepository;
-        $this->administratorRepository = $administratorRepository;
     }
 
     /**
@@ -37,7 +26,7 @@ class SecurityContext extends RawMinkContext
             throw new \Exception(\sprintf('Adherent %s not found', $email));
         }
 
-        $this->loginAs($user, 'main');
+        $this->loginAs($user);
     }
 
     /**
@@ -45,14 +34,14 @@ class SecurityContext extends RawMinkContext
      */
     public function iAmLoggedAsAdmin(string $email): void
     {
-        if (!$user = $this->administratorRepository->loadUserByUsername($email)) {
+        if (!$user = $this->administratorRepository->loadUserByIdentifier($email)) {
             throw new \Exception(\sprintf('Admin %s not found', $email));
         }
 
-        $this->loginAs($user, 'admin');
+        $this->loginAs($user);
     }
 
-    private function loginAs(UserInterface $user, string $firewallName): void
+    private function loginAs(UserInterface $user): void
     {
         $driver = $this->getSession()->getDriver();
 
@@ -60,7 +49,7 @@ class SecurityContext extends RawMinkContext
             $page = $this->getSession()->getPage();
 
             $this->visitPath('/connexion');
-            $page->findField('_username')->setValue($user->getUsername());
+            $page->findField('_username')->setValue($user->getUserIdentifier());
             $page->findField('_password')->setValue(LoadAdherentData::DEFAULT_PASSWORD);
             $loginButton = $page->findButton('Connexion') ?? $page->findButton('Me connecter');
             $loginButton->press();
@@ -68,12 +57,6 @@ class SecurityContext extends RawMinkContext
             return;
         }
 
-        $token = new PostAuthenticationGuardToken($user, $firewallName, $user->getRoles());
-        $this->session->set('_security_main_context', serialize($token));
-        $this->session->save();
-
-        $client = $driver->getClient();
-        $client->getCookieJar()->set(new Cookie($this->session->getName(), $this->session->getId()));
-        $this->getSession()->setCookie($this->session->getName(), $this->session->getId());
+        $driver->getClient()->loginUser($user, 'main_context');
     }
 }

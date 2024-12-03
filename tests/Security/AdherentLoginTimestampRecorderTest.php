@@ -5,12 +5,13 @@ namespace Tests\App\Security;
 use App\Entity\Adherent;
 use App\Entity\PostAddress;
 use App\Membership\ActivityPositionsEnum;
-use App\Security\Listener\AdherentLoginTimestampRecorderListener;
+use App\Security\Http\AuthenticationSuccessHandler;
+use App\Security\Http\Session\AnonymousFollowerSession;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\HttpUtils;
 
 class AdherentLoginTimestampRecorderTest extends TestCase
 {
@@ -22,13 +23,15 @@ class AdherentLoginTimestampRecorderTest extends TestCase
         $adherent = $this->createAdherent();
 
         $request = Request::create('POST', '/connexion');
-        $token = new PostAuthenticationGuardToken($adherent, 'main', $adherent->getRoles());
-
-        $recorder = new AdherentLoginTimestampRecorderListener($manager);
+        $token = new UsernamePasswordToken($adherent, 'main', $adherent->getRoles());
 
         $this->assertNull($adherent->getLastLoggedAt());
 
-        $recorder->onSecurityInteractiveLogin(new InteractiveLoginEvent($request, $token));
+        $handler = new AuthenticationSuccessHandler($this->getMockBuilder(HttpUtils::class)->getMock());
+        $handler->setManager($manager);
+        $handler->setAnonymousFollowerSession($this->getMockBuilder(AnonymousFollowerSession::class)->disableOriginalConstructor()->getMock());
+
+        $handler->onAuthenticationSuccess($request, $token);
 
         $this->assertInstanceOf(\DateTime::class, $adherent->getLastLoggedAt());
     }

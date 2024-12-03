@@ -62,7 +62,7 @@ class MagicLinkController extends AbstractController
         $currentUser = $this->getUser();
 
         if ($currentUser) {
-            if ($currentUser->getUsername() !== $request->query->get('user')) {
+            if ($currentUser->getUserIdentifier() !== $request->query->get('user')) {
                 $tokenStorage->setToken(null);
                 $request->getSession()->invalidate();
 

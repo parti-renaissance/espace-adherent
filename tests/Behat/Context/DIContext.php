@@ -3,24 +3,21 @@
 namespace Tests\App\Behat\Context;
 
 use Behat\Behat\Context\Context;
-use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DIContext implements Context
 {
-    private ContainerInterface $container;
-
-    public function __construct(ContainerInterface $container)
+    public function __construct(private readonly ContainerInterface $driverContainer)
     {
-        $this->container = $container;
     }
 
-    public function get(string $id)
+    public function get(string $id): ?object
     {
-        return $this->container->get($id);
+        return $this->driverContainer->get($id);
     }
 
     public function getParameter(string $id)
     {
-        return $this->container->getParameter($id);
+        return $this->driverContainer->getParameter($id);
     }
 }

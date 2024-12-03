@@ -51,7 +51,7 @@ class OAuthTokenGenerator
                 'client_id' => $clientId,
                 'client_secret' => $client->getSecret(),
                 'grant_type' => GrantTypeEnum::PASSWORD,
-                'username' => $user->getUsername(),
+                'username' => $user->getUserIdentifier(),
                 'password' => $password,
             ])
         );

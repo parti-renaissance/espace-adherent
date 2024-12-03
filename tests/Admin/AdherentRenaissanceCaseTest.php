@@ -619,19 +619,19 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
         ];
         yield 'Invalid birthdate year' => [
             ['birthdate' => ['year' => '3000', 'month' => '2', 'day' => '2'], 'email' => 'renaissance-user-1@en-marche-dev.fr'],
-            ['birthdate' => ['Cette valeur n\'est pas valide.']],
+            ['birthdate' => ['Veuillez entrer une date de naissance valide.']],
         ];
         yield 'Invalid birthdate month' => [
             ['birthdate' => ['year' => '2000', 'month' => '13', 'day' => '2'], 'email' => 'renaissance-user-1@en-marche-dev.fr'],
-            ['birthdate' => ['Cette valeur n\'est pas valide.']],
+            ['birthdate' => ['Veuillez entrer une date de naissance valide.']],
         ];
         yield 'Invalid birthdate day' => [
             ['birthdate' => ['year' => '2000', 'month' => '2', 'day' => '32'], 'email' => 'renaissance-user-1@en-marche-dev.fr'],
-            ['birthdate' => ['Cette valeur n\'est pas valide.']],
+            ['birthdate' => ['Veuillez entrer une date de naissance valide.']],
         ];
         yield 'Too young for adhesion' => [
             ['birthdate' => ['year' => (new \DateTime('-5 years'))->format('Y'), 'month' => '2', 'day' => '2'], 'email' => 'renaissance-user-1@en-marche-dev.fr'],
-            ['birthdate' => ['Cette valeur n\'est pas valide.']],
+            ['birthdate' => ['Veuillez entrer une date de naissance valide.']],
         ];
         yield 'No membership type' => [
             ['partyMembership' => '', 'email' => 'renaissance-user-1@en-marche-dev.fr'],

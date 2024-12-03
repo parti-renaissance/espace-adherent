@@ -50,7 +50,6 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiTestCa
             LoadAdherentData::DEFAULT_PASSWORD
         );
 
-        ob_start();
         $this->client->request(
             Request::METHOD_GET,
             \sprintf('/api/v3/phoning_campaigns/9ca189b7-7635-4c3a-880b-6ce5cd10e8bc/replies.xlsx?scope=%s', $scope),
@@ -58,9 +57,10 @@ class ExportPhoningCampaignSurveyAnswersControllerTest extends AbstractApiTestCa
             [],
             ['HTTP_AUTHORIZATION' => "Bearer $accessToken"]
         );
-        $content = ob_get_clean();
+        $content = $this->client->getInternalResponse()->getContent();
 
-        $this->isSuccessful($response = $this->client->getResponse());
+        $response = $this->client->getResponse();
+        $this->isSuccessful($response);
 
         self::assertSame('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $response->headers->get('Content-Type'));
         self::assertMatchesRegularExpression(
