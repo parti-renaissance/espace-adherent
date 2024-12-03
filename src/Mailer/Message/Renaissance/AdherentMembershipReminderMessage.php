@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Mailer\Message;
+namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\Adherent;
 use Ramsey\Uuid\Uuid;
 
-final class AdherentMembershipReminderMessage extends Message
+class AdherentMembershipReminderMessage extends AbstractRenaissanceMessage
 {
-    public static function create(Adherent $adherent, string $donationUrl): self
+    public static function create(Adherent $adherent, string $adhesionUrl): self
     {
         return new self(
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
-            '[Adhérent] Zéro cotisation, donnez si vous le pouvez !',
+            'Terminez votre adhésion',
             [],
             [
                 'first_name' => self::escape($adherent->getFirstName()),
-                'donation_url' => $donationUrl,
+                'primary_link' => $adhesionUrl,
             ]
         );
     }

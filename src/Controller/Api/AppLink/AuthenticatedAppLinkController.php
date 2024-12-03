@@ -39,8 +39,7 @@ class AuthenticatedAppLinkController extends AbstractController
             $loginLinkHandler->createLoginLink(
                 $user,
                 $request,
-                null,
-                $this->generateUrl(self::KEYS_TO_ROUTES[$key], [], UrlGeneratorInterface::ABSOLUTE_URL)
+                targetPath: $this->generateUrl(self::KEYS_TO_ROUTES[$key], [], UrlGeneratorInterface::ABSOLUTE_URL)
             ),
         );
     }

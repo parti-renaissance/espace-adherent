@@ -44,7 +44,7 @@ class MagicLinkController extends AbstractController
             $email = $form->getData();
 
             if ($adherent = $adherentRepository->findOneActiveByEmail($email)) {
-                $loginLink = $loginLinkHandler->createLoginLink($adherent, $request, AppCodeEnum::VOX);
+                $loginLink = $loginLinkHandler->createLoginLink($adherent, $request, appCode: AppCodeEnum::VOX);
 
                 $transactionalMailer->sendMessage(RenaissanceMagicLinkMessage::create($adherent, $loginLink->getUrl()));
             }

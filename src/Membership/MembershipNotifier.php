@@ -2,6 +2,7 @@
 
 namespace App\Membership;
 
+use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\Entity\AdherentResetPasswordToken;
 use App\Mailer\MailerService;
@@ -28,14 +29,21 @@ class MembershipNotifier implements LoggerAwareInterface
         private readonly AuthAppUrlManager $appUrlManager,
         private readonly LoginLinkHandlerInterface $linkHandler,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly LoginLinkHandlerInterface $loginLinkHandler,
     ) {
     }
 
     public function sendEmailReminder(Adherent $adherent): bool
     {
-        $donationUrl = $this->callbackManager->generateUrl('app_donation_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $adhesionUrl = $this->loginLinkHandler->createLoginLink(
+            $adherent,
+            null,
+            60 * 60 * 48,
+            AppCodeEnum::RENAISSANCE,
+            $this->urlGenerator->generate('app_adhesion_index', [], UrlGeneratorInterface::ABSOLUTE_URL)
+        );
 
-        return $this->transactionalMailer->sendMessage(Message\AdherentMembershipReminderMessage::create($adherent, $donationUrl));
+        return $this->transactionalMailer->sendMessage(Message\Renaissance\AdherentMembershipReminderMessage::create($adherent, $adhesionUrl));
     }
 
     public function sendConfirmationJoinMessage(Adherent $adherent): void
@@ -79,7 +87,7 @@ class MembershipNotifier implements LoggerAwareInterface
 
     public function sendConnexionDetailsMessage(Adherent $adherent, ?string $appCode = null): void
     {
-        $url = $this->linkHandler->createLoginLink($adherent, null, $appCode);
+        $url = $this->linkHandler->createLoginLink($adherent, appCode: $appCode);
 
         if ($adherent->isRenaissanceAdherent()) {
             $this->transactionalMailer->sendMessage(AdhesionAlreadyAdherentMessage::create(

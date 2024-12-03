@@ -24,7 +24,7 @@ class GenerateActivationCodeCommandHandler
         $adherent = $command->adherent;
 
         $code = $this->activationCodeGenerator->generate($adherent, $command->force)->value;
-        $magicLink = $this->loginLinkHandler->createLoginLink($adherent, null, $adherent->getSource())->getUrl();
+        $magicLink = $this->loginLinkHandler->createLoginLink($adherent, appCode: $adherent->getSource())->getUrl();
 
         $this->transactionalMailer->sendMessage(AdhesionCodeValidationMessage::create($adherent, $code, $magicLink));
     }
