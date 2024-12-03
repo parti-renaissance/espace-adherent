@@ -18,6 +18,7 @@ final class ZoneBasedRoleTypeEnum
         ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
         ScopeEnum::PROCURATIONS_MANAGER,
         ScopeEnum::FDE_COORDINATOR,
+        ScopeEnum::SENATOR,
     ];
 
     public const ZONE_TYPE_CONDITIONS = [
@@ -51,6 +52,9 @@ final class ZoneBasedRoleTypeEnum
         ],
         ScopeEnum::FDE_COORDINATOR => [
             Zone::FOREIGN_DISTRICT,
+        ],
+        ScopeEnum::SENATOR => [
+            Zone::DEPARTMENT,
         ],
     ];
 }

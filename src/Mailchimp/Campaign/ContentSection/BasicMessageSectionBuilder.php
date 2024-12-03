@@ -5,7 +5,6 @@ namespace App\Mailchimp\Campaign\ContentSection;
 use App\Entity\AdherentMessage\AdherentMessageInterface;
 use App\Entity\AdherentMessage\CandidateAdherentMessage;
 use App\Entity\AdherentMessage\LegislativeCandidateAdherentMessage;
-use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Mailchimp\Campaign\Request\EditCampaignContentRequest;
 use App\Utils\StringCleaner;
 
@@ -17,7 +16,6 @@ class BasicMessageSectionBuilder implements ContentSectionBuilderInterface
             $message::class,
             [
                 LegislativeCandidateAdherentMessage::class,
-                SenatorAdherentMessage::class,
                 CandidateAdherentMessage::class,
             ],
             true

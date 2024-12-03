@@ -17,6 +17,7 @@ class AdherentRoles
             ScopeEnum::REGIONAL_DELEGATE,
             ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY,
             ScopeEnum::DEPUTY,
+            ScopeEnum::SENATOR,
             AdherentRoleEnum::DELEGATED_DEPUTY,
             AdherentRoleEnum::ANIMATOR,
         ],
