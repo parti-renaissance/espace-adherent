@@ -1640,9 +1640,9 @@ ajv@^8.0.0, ajv@^8.9.0:
     uri-js "^4.2.2"
 
 alpinejs@^3.13.10:
-  version "3.14.5"
-  resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-3.14.5.tgz#10794510e10e22895931aed1fba746c4d59cf627"
-  integrity sha512-S2Y9s15ONh9SiStZ8h7UYmCzMfM7chB4ddGHv2G1IXzAOrTVci01UcsafMgIOefjfiUXxPs3kPBzoYcyMZ2TZA==
+  version "3.14.6"
+  resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-3.14.6.tgz#3eb54aeccfed91a7d91a4eb7fa35f03bedd65743"
+  integrity sha512-8Abdd6u8oVurOChPqWCHS2Lr3C9g4+zb/kL1vNPykK/2dVkb3giTcpQ1wykzzWmX7wbTvWLnHX3I3CPPnnAMCA==
   dependencies:
     "@vue/reactivity" "~3.1.1"
 
