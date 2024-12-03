@@ -8,13 +8,11 @@ class DelegatedAccessEnum extends Enum
 {
     public const TYPE_REFERENT = 'referent';
     public const TYPE_DEPUTY = 'deputy';
-    public const TYPE_SENATOR = 'senator';
     public const TYPE_CANDIDATE = 'candidate';
 
     public const TYPES = [
         self::TYPE_REFERENT,
         self::TYPE_DEPUTY,
-        self::TYPE_SENATOR,
         self::TYPE_CANDIDATE,
     ];
 
