@@ -15,7 +15,6 @@ use App\OAuth\CallbackManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
@@ -31,7 +30,6 @@ class MembershipNotifier implements LoggerAwareInterface
         private readonly LoginLinkHandlerInterface $linkHandler,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly LoginLinkHandlerInterface $loginLinkHandler,
-        private readonly RequestStack $requestStack,
     ) {
     }
 
