@@ -3,22 +3,14 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\ProgrammaticFoundation\Project;
+use App\Entity\ProgrammaticFoundation\Tag;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class LoadApproachProjectData extends Fixture implements DependentFixtureInterface
 {
-    private const CITIES = [
-        'Lyon',
-        'Paris',
-        'St Jean des Vignes',
-        'Lozanne',
-        'St Rambert',
-        'Toulouse',
-    ];
-
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         for ($i = 0; $i < 24; ++$i) {
             $project = new Project(
@@ -33,8 +25,8 @@ class LoadApproachProjectData extends Fixture implements DependentFixtureInterfa
                 0 === $i % 4
             );
 
-            $project->addTag($this->getReference(\sprintf('programmatic-foundation-tag-%d', $i % 6)));
-            $project->addTag($this->getReference(\sprintf('programmatic-foundation-tag-%d', ($i + 1) % 6)));
+            $project->addTag($this->getReference(\sprintf('programmatic-foundation-tag-%d', $i % 6), Tag::class));
+            $project->addTag($this->getReference(\sprintf('programmatic-foundation-tag-%d', ($i + 1) % 6), Tag::class));
 
             $manager->persist($project);
 
@@ -44,7 +36,7 @@ class LoadApproachProjectData extends Fixture implements DependentFixtureInterfa
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadProgrammaticFoundationTagData::class,

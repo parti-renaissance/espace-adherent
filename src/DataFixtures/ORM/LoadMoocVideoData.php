@@ -10,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadMoocVideoData extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $video1 = new MoocVideoElement(
             'Les produits transformés dans une première vidéo',

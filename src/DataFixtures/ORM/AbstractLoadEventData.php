@@ -32,7 +32,7 @@ abstract class AbstractLoadEventData extends Fixture
         $this->franceCities = $franceCities;
     }
 
-    final public function load(ObjectManager $manager)
+    final public function load(ObjectManager $manager): void
     {
         if ('test' === $this->environment) {
             Chronos::setTestNow($this->getDateTestNow());

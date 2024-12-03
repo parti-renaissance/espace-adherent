@@ -10,12 +10,10 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadAdherentStaticLabelData extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        /** @var AdherentStaticLabelCategory $categoryBurex */
-        $categoryBurex = $this->getReference('adherent-static-label-category-burex');
-        /** @var AdherentStaticLabelCategory $categoryMeeting */
-        $categoryMeeting = $this->getReference('adherent-static-label-category-meeting');
+        $categoryBurex = $this->getReference('adherent-static-label-category-burex', AdherentStaticLabelCategory::class);
+        $categoryMeeting = $this->getReference('adherent-static-label-category-meeting', AdherentStaticLabelCategory::class);
 
         $manager->persist($this->create('burex_member', 'Membre bureau exécutif', $categoryBurex));
         $manager->persist($this->create('old_burex_member', 'Ancien membre du bunrex', $categoryBurex));
@@ -40,7 +38,7 @@ class LoadAdherentStaticLabelData extends Fixture implements DependentFixtureInt
         return $staticLabel;
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdherentStaticLabelCategoryData::class,

@@ -25,10 +25,10 @@ class LoadDocumentData extends Fixture implements DependentFixtureInterface
         $this->faker = Factory::create('fr_FR');
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var Administrator $administrator */
-        $administrator = $this->getReference('administrator-renaissance');
+        $administrator = $this->getReference('administrator-renaissance', Administrator::class);
 
         $document = $this->createDocument(self::DOCUMENT_1_UUID, 'Document #1');
         $document->setCreatedByAdministrator($administrator);
@@ -65,7 +65,7 @@ class LoadDocumentData extends Fixture implements DependentFixtureInterface
         $this->documentHandler->handleFile($document);
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdminData::class,

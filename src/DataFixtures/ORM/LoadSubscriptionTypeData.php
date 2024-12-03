@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadSubscriptionTypeData extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach ($this->getSubscriptionTypes() as $row) {
             $type = new SubscriptionType($row['label'], $row['code'], $row['externalId'] ?? null);

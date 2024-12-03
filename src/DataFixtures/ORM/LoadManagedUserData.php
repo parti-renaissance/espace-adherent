@@ -5,6 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Address\AddressInterface;
 use App\Adherent\MandateTypeEnum;
 use App\Entity\Adherent;
+use App\Entity\Committee;
 use App\Entity\Projection\ManagedUser;
 use App\Entity\Projection\ManagedUserFactory;
 use App\Membership\MembershipSourceEnum;
@@ -16,19 +17,19 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadManagedUserData extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $managedUserFactory = $this->getManagedUserFactory();
 
-        $committee1 = $this->getReference('committee-1');
-        $committee3 = $this->getReference('committee-3');
-        $committee4 = $this->getReference('committee-4');
-        $committee5 = $this->getReference('committee-5');
-        $committee10 = $this->getReference('committee-10');
-        $committee11 = $this->getReference('committee-v2-2');
+        $committee1 = $this->getReference('committee-1', Committee::class);
+        $committee3 = $this->getReference('committee-3', Committee::class);
+        $committee4 = $this->getReference('committee-4', Committee::class);
+        $committee5 = $this->getReference('committee-5', Committee::class);
+        $committee10 = $this->getReference('committee-10', Committee::class);
+        $committee11 = $this->getReference('committee-v2-2', Committee::class);
 
         /** @var Adherent $adherent */
-        $adherent = $this->getReference('adherent-1');
+        $adherent = $this->getReference('adherent-1', Adherent::class);
         $managedUser1 = $managedUserFactory->createFromArray([
             'status' => ManagedUser::STATUS_READY,
             'source' => null,
@@ -63,7 +64,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         $managedUser1->setRoles($this->getRoles($adherent));
 
         /** @var Adherent $adherent */
-        $adherent = $this->getReference('adherent-13');
+        $adherent = $this->getReference('adherent-13', Adherent::class);
         $managedUser2 = $managedUserFactory->createFromArray([
             'status' => ManagedUser::STATUS_READY,
             'source' => null,
@@ -100,7 +101,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         $managedUser2->setRoles($this->getRoles($adherent));
 
         /** @var Adherent $adherent */
-        $adherent = $this->getReference('adherent-5');
+        $adherent = $this->getReference('adherent-5', Adherent::class);
         $managedUser3 = $managedUserFactory->createFromArray([
             'status' => ManagedUser::STATUS_READY,
             'source' => null,
@@ -140,7 +141,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         $managedUser3->setRoles($this->getRoles($adherent));
 
         /** @var Adherent $adherent */
-        $adherent = $this->getReference('adherent-7');
+        $adherent = $this->getReference('adherent-7', Adherent::class);
         $managedUser4 = $managedUserFactory->createFromArray([
             'status' => ManagedUser::STATUS_READY,
             'source' => null,
@@ -176,7 +177,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         $managedUser4->setRoles($this->getRoles($adherent));
 
         /** @var Adherent $adherent */
-        $adherent = $this->getReference('adherent-3');
+        $adherent = $this->getReference('adherent-3', Adherent::class);
         $managedUser5 = $managedUserFactory->createFromArray([
             'status' => ManagedUser::STATUS_READY,
             'source' => null,
@@ -213,7 +214,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         $managedUser5->setRoles($this->getRoles($adherent));
 
         /** @var Adherent $adherent */
-        $adherent = $this->getReference('deputy-75-1');
+        $adherent = $this->getReference('deputy-75-1', Adherent::class);
         $managedUser6 = $managedUserFactory->createFromArray([
             'status' => ManagedUser::STATUS_READY,
             'source' => null,
@@ -248,7 +249,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         $managedUser6->setRoles($this->getRoles($adherent));
 
         /** @var Adherent $adherent */
-        $adherent = $this->getReference('correspondent-1');
+        $adherent = $this->getReference('correspondent-1', Adherent::class);
         $managedUser7 = $managedUserFactory->createFromArray([
             'status' => ManagedUser::STATUS_READY,
             'source' => MembershipSourceEnum::JEMENGAGE,
@@ -304,7 +305,7 @@ class LoadManagedUserData extends Fixture implements DependentFixtureInterface
         return $roles;
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadCommitteeV1Data::class,

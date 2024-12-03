@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LoadRedirectionData extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist($this->createRedirection(
             '/dynamic-redirection-301/',

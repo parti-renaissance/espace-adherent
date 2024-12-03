@@ -27,10 +27,10 @@ class LoadGeneralMeetingReportData extends Fixture implements DependentFixtureIn
         $this->faker = Factory::create('fr_FR');
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var Adherent $referent77 */
-        $referent77 = $this->getReference('adherent-8');
+        $referent77 = $this->getReference('adherent-8', Adherent::class);
         /** @var Zone $zoneDepartment77 */
         $zoneDepartment77 = LoadGeoZoneData::getZoneReference($manager, 'zone_department_77');
 
@@ -57,7 +57,7 @@ class LoadGeneralMeetingReportData extends Fixture implements DependentFixtureIn
         $manager->persist($generalMeetingReport);
 
         /** @var Adherent $referent06 */
-        $referent06 = $this->getReference('renaissance-user-3');
+        $referent06 = $this->getReference('renaissance-user-3', Adherent::class);
         /** @var Zone $zoneDepartment06 */
         $zoneDepartment06 = LoadGeoZoneData::getZoneReference($manager, 'zone_department_06');
 
@@ -117,7 +117,7 @@ class LoadGeneralMeetingReportData extends Fixture implements DependentFixtureIn
         $this->generalMeetingReportHandler->handleFile($generalMeetingReport);
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdherentData::class,

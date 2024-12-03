@@ -27,7 +27,7 @@ class LoadUserData extends Fixture
         $this->adherentFactory = $adherentFactory;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         // Create adherent users list
         $user1 = $this->adherentFactory->createFromArray([

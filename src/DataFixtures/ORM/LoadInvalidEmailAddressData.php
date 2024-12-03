@@ -16,7 +16,7 @@ class LoadInvalidEmailAddressData extends Fixture
         $this->hashGenerator = $hashGenerator;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist(new InvalidEmailAddress($this->hashGenerator->generate('invalid-email@en-marche-dev.code')));
 

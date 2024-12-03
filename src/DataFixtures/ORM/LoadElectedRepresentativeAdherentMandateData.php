@@ -16,12 +16,12 @@ class LoadElectedRepresentativeAdherentMandateData extends Fixture implements De
     private const MANDATE_UUID_02 = 'a31bfe33-9d13-4b65-ad6c-653e75c6adb9';
     private const MANDATE_UUID_03 = 'd91df367-14df-474d-ac9a-8e2176657f71';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var Adherent $gisele */
-        $gisele = $this->getReference('adherent-5');
+        $gisele = $this->getReference('adherent-5', Adherent::class);
         /** @var Adherent $erDepartment92 */
-        $erDepartment92 = $this->getReference('renaissance-user-2');
+        $erDepartment92 = $this->getReference('renaissance-user-2', Adherent::class);
 
         $manager->persist(ElectedRepresentativeAdherentMandate::create(
             Uuid::fromString(self::MANDATE_UUID_01),
@@ -56,7 +56,7 @@ class LoadElectedRepresentativeAdherentMandateData extends Fixture implements De
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdherentData::class,

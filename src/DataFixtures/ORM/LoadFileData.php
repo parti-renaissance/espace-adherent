@@ -13,10 +13,10 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadFileData extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        $admin = $this->getReference('administrator-1');
-        $superadmin = $this->getReference('administrator-2');
+        $admin = $this->getReference('administrator-1', Administrator::class);
+        $superadmin = $this->getReference('administrator-2', Administrator::class);
 
         $images = $this->createDirectory('images', $superadmin);
         $videos = $this->createDirectory('videos', $superadmin);
@@ -135,7 +135,7 @@ class LoadFileData extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdminData::class,

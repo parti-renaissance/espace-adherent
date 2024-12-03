@@ -23,7 +23,7 @@ class LoadProcurationV2ElectionData extends Fixture
         $this->faker = Factory::create('fr_FR');
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $election = $this->createElection('Européennes 2024', 'europeennes-2024');
         $election->addRound($round = $this->createRound('Premier tour', '2024-06-09'));

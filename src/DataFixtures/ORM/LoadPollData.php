@@ -26,16 +26,16 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
     public const POLL_01_CHOICE_02_UUID = '26aba15c-b49a-4cb7-99ef-585e12bcff50';
     public const POLL_01_CHOICE_03_UUID = 'c140e1fb-749c-4b13-97f6-327999004247';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        $michelle = $this->getReference('adherent-1');
-        $carl = $this->getReference('adherent-2');
-        $jacques = $this->getReference('adherent-3');
-        $gisele = $this->getReference('adherent-5');
+        $michelle = $this->getReference('adherent-1', Adherent::class);
+        $carl = $this->getReference('adherent-2', Adherent::class);
+        $jacques = $this->getReference('adherent-3', Adherent::class);
+        $gisele = $this->getReference('adherent-5', Adherent::class);
 
         // National
         $nationalPoll1 = $this->createNationalPoll(
-            $this->getReference('administrator-2'),
+            $this->getReference('administrator-2', Administrator::class),
             self::NATIONAL_POLL_01_UUID,
             'Plutôt thé ou café ?',
             new \DateTime('+1 day')
@@ -58,7 +58,7 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
 
         // Local
         $localPoll1 = $this->createLocalPoll(
-            $this->getReference('adherent-3'),
+            $this->getReference('adherent-3', Adherent::class),
             self::LOCAL_POLL_01_UUID,
             'Tu dis "oui" ?',
             new \DateTime('+7 day'),
@@ -70,7 +70,7 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
             Choice::NO => [$gisele],
         ]);
         $localPoll2 = $this->createLocalPoll(
-            $this->getReference('adherent-3'),
+            $this->getReference('adherent-3', Adherent::class),
             self::LOCAL_POLL_02_UUID,
             'Tu dis "non" ?',
             new \DateTime('+5 day'),
@@ -81,7 +81,7 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
             Choice::NO => [$michelle, $gisele],
         ]);
         $localPoll3 = $this->createLocalPoll(
-            $this->getReference('adherent-5'),
+            $this->getReference('adherent-5', Adherent::class),
             self::LOCAL_POLL_03_UUID,
             'Tu dis quoi ?',
             new \DateTime('+3 day'),
@@ -92,7 +92,7 @@ class LoadPollData extends Fixture implements DependentFixtureInterface
             Choice::NO => [],
         ]);
         $localPoll4 = $this->createLocalPoll(
-            $this->getReference('adherent-3'),
+            $this->getReference('adherent-3', Adherent::class),
             self::LOCAL_POLL_04_UUID,
             'Non publié ?',
             new \DateTime('+1 day'),

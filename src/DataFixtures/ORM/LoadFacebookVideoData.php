@@ -9,7 +9,7 @@ use Faker\Factory;
 
 class LoadFacebookVideoData extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $video = new FacebookVideo();
         $video->setFacebookUrl('https://www.facebook.com/EnMarche/videos/771225236389014/');

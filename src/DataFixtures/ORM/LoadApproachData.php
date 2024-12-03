@@ -3,18 +3,19 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\ProgrammaticFoundation\Approach;
+use App\Entity\ProgrammaticFoundation\SubApproach;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class LoadApproachData extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        $subApproach1 = $this->getReference('sub-approach-0');
+        $subApproach1 = $this->getReference('sub-approach-0', SubApproach::class);
         $subApproach1->setPosition(1);
 
-        $subApproach2 = $this->getReference('sub-approach-1');
+        $subApproach2 = $this->getReference('sub-approach-1', SubApproach::class);
         $subApproach2->setPosition(2);
 
         $manager->persist($subApproach1);
@@ -30,7 +31,7 @@ class LoadApproachData extends Fixture implements DependentFixtureInterface
 
         $manager->persist($approach);
 
-        $subApproach3 = $this->getReference('sub-approach-2');
+        $subApproach3 = $this->getReference('sub-approach-2', SubApproach::class);
         $subApproach3->setPosition(1);
 
         $manager->persist($subApproach3);
@@ -44,10 +45,10 @@ class LoadApproachData extends Fixture implements DependentFixtureInterface
 
         $manager->persist($approach);
 
-        $subApproach4 = $this->getReference('sub-approach-3');
+        $subApproach4 = $this->getReference('sub-approach-3', SubApproach::class);
         $subApproach4->setPosition(1);
 
-        $subApproach5 = $this->getReference('sub-approach-4');
+        $subApproach5 = $this->getReference('sub-approach-4', SubApproach::class);
         $subApproach5->setPosition(2);
 
         $manager->persist($subApproach4);
@@ -62,7 +63,7 @@ class LoadApproachData extends Fixture implements DependentFixtureInterface
 
         $manager->persist($approach);
 
-        $subApproach6 = $this->getReference('sub-approach-5');
+        $subApproach6 = $this->getReference('sub-approach-5', SubApproach::class);
         $subApproach6->setPosition(1);
 
         $manager->persist($subApproach6);
@@ -78,7 +79,7 @@ class LoadApproachData extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadSubApproachData::class,

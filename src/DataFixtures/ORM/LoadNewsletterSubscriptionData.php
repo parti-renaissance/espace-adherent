@@ -15,7 +15,7 @@ class LoadNewsletterSubscriptionData extends Fixture
         $this->newsletterSubscriptionFactory = $newsletterSubscriptionFactory;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $newsletterSubscription92 = $this->newsletterSubscriptionFactory->create('abc@en-marche-dev.fr', '92110');
         $newsletterSubscription92->setConfirmedAt(new \DateTime('2020-08-03'));

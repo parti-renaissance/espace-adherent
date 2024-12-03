@@ -3,8 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Committee\CommitteeMembershipTriggerEnum;
+use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeElection;
+use App\Entity\VotingPlatform\Designation\Designation;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
@@ -18,7 +20,7 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
     public const COMMITTEE_ELECTION_2_UUID = 'f86ee969-5eca-4666-bcd4-7f7388372e0b';
     public const COMMITTEE_ELECTION_3_UUID = '9d31ac39-f9ac-4b3b-b1cc-351bc30704b6';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist($object = Committee::createSimple(
             Uuid::fromString(self::COMMITTEE_1_UUID),
@@ -30,11 +32,11 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92002'));
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92004'));
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92007'));
-        $object->setCurrentElection(new CommitteeElection($this->getReference('designation-committee-01'), Uuid::fromString(self::COMMITTEE_ELECTION_3_UUID)));
-        $object->animator = $this->getReference('adherent-55');
+        $object->setCurrentElection(new CommitteeElection($this->getReference('designation-committee-01', Designation::class), Uuid::fromString(self::COMMITTEE_ELECTION_3_UUID)));
+        $object->animator = $this->getReference('adherent-55', Adherent::class);
 
         foreach (range(51, 60) as $index) {
-            $manager->persist($this->getReference('adherent-'.$index)->followCommittee($object, new \DateTime('-2 months'), CommitteeMembershipTriggerEnum::COMMITTEE_EDITION));
+            $manager->persist($this->getReference('adherent-'.$index, Adherent::class)->followCommittee($object, new \DateTime('-2 months'), CommitteeMembershipTriggerEnum::COMMITTEE_EDITION));
         }
 
         $this->setReference('committee-v2-1', $object);
@@ -51,19 +53,19 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92014'));
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
 
-        $object->animator = $this->getReference('adherent-56');
-        $object->setCurrentElection(new CommitteeElection($this->getReference('designation-committee-02'), Uuid::fromString(self::COMMITTEE_ELECTION_1_UUID)));
-        $object->addElection($election = new CommitteeElection($this->getReference('designation-committee-03'), Uuid::fromString(self::COMMITTEE_ELECTION_2_UUID)));
+        $object->animator = $this->getReference('adherent-56', Adherent::class);
+        $object->setCurrentElection(new CommitteeElection($this->getReference('designation-committee-02', Designation::class), Uuid::fromString(self::COMMITTEE_ELECTION_1_UUID)));
+        $object->addElection($election = new CommitteeElection($this->getReference('designation-committee-03', Designation::class), Uuid::fromString(self::COMMITTEE_ELECTION_2_UUID)));
 
         $this->setReference('committee-election-2', $election);
 
-        $adherentRe4 = $this->getReference('renaissance-user-4');
+        $adherentRe4 = $this->getReference('renaissance-user-4', Adherent::class);
         $manager->persist($adherentRe4->followCommittee($object, trigger: CommitteeMembershipTriggerEnum::COMMITTEE_EDITION));
 
-        $adherent5 = $this->getReference('adherent-5');
+        $adherent5 = $this->getReference('adherent-5', Adherent::class);
         $manager->persist($adherent5->followCommittee($object, trigger: CommitteeMembershipTriggerEnum::COMMITTEE_EDITION));
 
-        $adherent16 = $this->getReference('adherent-16');
+        $adherent16 = $this->getReference('adherent-16', Adherent::class);
         $manager->persist($adherent16->followCommittee($object, trigger: CommitteeMembershipTriggerEnum::COMMITTEE_EDITION));
 
         $this->setReference('committee-v2-2', $object);

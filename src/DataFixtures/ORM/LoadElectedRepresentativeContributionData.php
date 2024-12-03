@@ -18,7 +18,7 @@ class LoadElectedRepresentativeContributionData extends Fixture implements Depen
     public function load(ObjectManager $manager): void
     {
         /** @var ElectedRepresentative $erDepartment92 */
-        $erDepartment92 = $this->getReference('elected-representative-dpt-92');
+        $erDepartment92 = $this->getReference('elected-representative-dpt-92', ElectedRepresentative::class);
 
         $contribution = new Contribution(Uuid::fromString(self::CONTRIBUTION_01_UUID));
         $contribution->startDate = $contributionDate = new \DateTime('2023-03-15');

@@ -15,6 +15,7 @@ use App\Entity\AdherentResetPasswordToken;
 use App\Entity\AdherentZoneBasedRole;
 use App\Entity\ManagedArea\CandidateManagedArea;
 use App\Entity\PostAddress;
+use App\Entity\SubscriptionType;
 use App\FranceCities\FranceCities;
 use App\Jecoute\GenderEnum;
 use App\Membership\ActivityPositionsEnum;
@@ -76,7 +77,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $this->adherentFactory = $adherentFactory;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         // Create adherent users list
         $adherent1 = $this->adherentFactory->createFromArray([
@@ -111,7 +112,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         ]);
         $adherent2->tags = [TagEnum::SYMPATHISANT_COMPTE_EM];
         $adherent2->setSubscriptionTypes($this->getStandardSubscriptionTypes());
-        $adherent2->removeSubscriptionType($this->getReference('st-'.SubscriptionTypeEnum::LOCAL_HOST_EMAIL));
+        $adherent2->removeSubscriptionType($this->getReference('st-'.SubscriptionTypeEnum::LOCAL_HOST_EMAIL, SubscriptionType::class));
 
         $adherent2->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
         $this->addReference('adherent-2', $adherent2);
@@ -193,7 +194,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $adherent5->setSubscriptionTypes($this->getStandardSubscriptionTypes());
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::CANDIDATE_EMAIL);
         $adherent5->removeSubscriptionTypeByCode(SubscriptionTypeEnum::REFERENT_EMAIL);
-        $adherent5->addSubscriptionType($this->getReference('st-militant_action_sms'));
+        $adherent5->addSubscriptionType($this->getReference('st-militant_action_sms', SubscriptionType::class));
         $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'));
         $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_92-4'));
         $adherent5->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_canton_9209'));
@@ -1204,11 +1205,11 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
     private function getStandardSubscriptionTypes(): array
     {
         return array_map(function (string $type) {
-            return $this->getReference('st-'.$type);
+            return $this->getReference('st-'.$type, SubscriptionType::class);
         }, SubscriptionTypeEnum::DEFAULT_EMAIL_TYPES);
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadSubscriptionTypeData::class,

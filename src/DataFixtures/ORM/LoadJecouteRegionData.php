@@ -16,7 +16,7 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
     public const REGION_3_UUID = '62c6bf4c-72c9-4a29-bd5e-bf27b8ee2228';
     public const REGION_4_UUID = '00e75c62-caff-49c2-885c-e6e8d188d3af';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist($this->createRegion(
             self::REGION_1_UUID,
@@ -64,7 +64,7 @@ class LoadJecouteRegionData extends AbstractFixtures implements DependentFixture
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [LoadGeoZoneData::class];
     }

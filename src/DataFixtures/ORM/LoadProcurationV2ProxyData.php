@@ -3,9 +3,11 @@
 namespace App\DataFixtures\ORM;
 
 use App\Address\PostAddressFactory;
+use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\Proxy;
 use App\Entity\ProcurationV2\ProxySlot;
+use App\Entity\ProcurationV2\Round;
 use App\Utils\PhoneNumberUtils;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -30,11 +32,11 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
         $this->faker = Factory::create('fr_FR');
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $proxy = $this->createProxy(
             null,
-            $rounds = [$this->getReference('procuration-v2-europeennes-2024-round-1')],
+            $rounds = [$this->getReference('procuration-v2-europeennes-2024-round-1', Round::class)],
             'john.durand@test.dev',
             Genders::MALE,
             'John, Patrick',
@@ -47,9 +49,9 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             '57 Boulevard de la Madeleine',
             false,
             LoadGeoZoneData::getZone($manager, 'zone_city_06088'),
-            $this->getReference('zone_vote_place_nice_1')
+            $this->getReference('zone_vote_place_nice_1', Zone::class)
         );
-        $proxy->adherent = $this->getReference('president-ad-1');
+        $proxy->adherent = $this->getReference('president-ad-1', Adherent::class);
         $manager->persist($proxy);
 
         $manager->persist($this->createProxy(
@@ -95,7 +97,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
 
         $manager->persist($proxy = $this->createProxy(
             Uuid::fromString(self::UUID_PROXY_1),
-            [$this->getReference('procuration-v2-legislatives-2024-round-1')],
+            [$this->getReference('procuration-v2-legislatives-2024-round-1', Round::class)],
             'john.durand@test.dev',
             Genders::MALE,
             'John, Patrick',
@@ -108,15 +110,15 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             '57 Boulevard de la Madeleine',
             false,
             LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
-            $this->getReference('zone_vote_place_clichy_1')
+            $this->getReference('zone_vote_place_clichy_1', Zone::class)
         ));
         $this->setReference('proxy_slot_1', $proxy->proxySlots->first());
 
         $manager->persist($this->createProxy(
             null,
             [
-                $round1 = $this->getReference('procuration-v2-legislatives-2024-round-1'),
-                $this->getReference('procuration-v2-legislatives-2024-round-2'),
+                $round1 = $this->getReference('procuration-v2-legislatives-2024-round-1', Round::class),
+                $this->getReference('procuration-v2-legislatives-2024-round-2', Round::class),
             ],
             'pierre.durand@test.dev',
             Genders::MALE,
@@ -130,7 +132,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             '57 Boulevard de la Madeleine',
             false,
             LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
-            $this->getReference('zone_vote_place_clichy_1'),
+            $this->getReference('zone_vote_place_clichy_1', Zone::class),
             null,
             false,
             '123456789',
@@ -142,7 +144,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
 
         $manager->persist($this->createProxy(
             Uuid::fromString(self::UUID_PROXY_2),
-            [$this->getReference('procuration-v2-legislatives-2024-round-2')],
+            [$this->getReference('procuration-v2-legislatives-2024-round-2', Round::class)],
             'jacques.durand@test.dev',
             Genders::MALE,
             'Jacques, Charles',
@@ -155,7 +157,7 @@ class LoadProcurationV2ProxyData extends Fixture implements DependentFixtureInte
             '57 Boulevard de la Madeleine',
             false,
             LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
-            $this->getReference('zone_vote_place_clichy_1')
+            $this->getReference('zone_vote_place_clichy_1', Zone::class)
         ));
 
         $manager->flush();

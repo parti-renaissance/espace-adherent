@@ -32,10 +32,10 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         $this->faker = Factory::create('fr_FR');
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var Administrator $administrator */
-        $administrator = $this->getReference('administrator-renaissance');
+        $administrator = $this->getReference('administrator-renaissance', Administrator::class);
 
         $formation = $this->createNationalFormation(self::FORMATION_1_UUID, $administrator, 'Première formation nationale');
         $formation->setCategory('Catégorie 1');
@@ -58,9 +58,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         $this->createFile($formation);
         $manager->persist($formation);
 
-        /** @var Adherent $referent92 */
-        $referent92 = $this->getReference('adherent-8');
-        /** @var Zone $zoneDepartment92 */
+        $referent92 = $this->getReference('adherent-8', Adherent::class);
         $zoneDepartment92 = LoadGeoZoneData::getZoneReference($manager, 'zone_department_92');
 
         $formation = $this->createLocalFormation(self::FORMATION_4_UUID, $referent92, $zoneDepartment92, 'Première formation du 92');
@@ -76,7 +74,7 @@ class LoadAdherentFormationData extends Fixture implements DependentFixtureInter
         $manager->persist($formation);
 
         /** @var Adherent $referent06 */
-        $referent06 = $this->getReference('renaissance-user-3');
+        $referent06 = $this->getReference('renaissance-user-3', Adherent::class);
         /** @var Zone $zoneDepartment06 */
         $zoneDepartment06 = LoadGeoZoneData::getZoneReference($manager, 'zone_department_06');
 

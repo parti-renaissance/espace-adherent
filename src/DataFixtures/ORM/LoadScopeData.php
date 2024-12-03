@@ -31,7 +31,7 @@ class LoadScopeData extends Fixture
     {
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach (ScopeEnum::ALL as $code) {
             $manager->persist($this->createScope($code, \in_array($code, [ScopeEnum::PHONING, ScopeEnum::PAP]) ? [AppEnum::JEMARCHE] : [AppEnum::DATA_CORNER]));

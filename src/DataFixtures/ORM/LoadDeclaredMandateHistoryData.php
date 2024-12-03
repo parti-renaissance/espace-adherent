@@ -12,12 +12,12 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadDeclaredMandateHistoryData extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        $adherent5 = $this->getReference('adherent-5');
-        $adherent13 = $this->getReference('adherent-13');
-        $renaissanceUser2 = $this->getReference('renaissance-user-2');
-        $admin = $this->getReference('administrator-2');
+        $adherent5 = $this->getReference('adherent-5', Adherent::class);
+        $adherent13 = $this->getReference('adherent-13', Adherent::class);
+        $renaissanceUser2 = $this->getReference('renaissance-user-2', Adherent::class);
+        $admin = $this->getReference('administrator-2', Administrator::class);
 
         $manager->persist($this->createHistory(
             $adherent5,
@@ -62,7 +62,7 @@ class LoadDeclaredMandateHistoryData extends Fixture implements DependentFixture
         return $history;
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdherentData::class,

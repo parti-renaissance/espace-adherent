@@ -8,7 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadAdherentStaticLabelCategoryData extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist($this->create('burex', 'Bureau exécutif'));
         $manager->persist($this->create('meeting', 'Meeting'));

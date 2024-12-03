@@ -22,30 +22,29 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
     public const HISTORY_4_UUID = '5587ce1f-bf4d-486f-a356-e75b06a62e2e';
     public const HISTORY_5_UUID = 'e369f31b-d339-4ba7-b303-baa980c430cc';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var NationalSurvey $nationalSurvey1 */
-        $nationalSurvey1 = $this->getReference('national-survey-1');
+        $nationalSurvey1 = $this->getReference('national-survey-1', NationalSurvey::class);
 
         /** @var NationalSurvey $nationalSurvey3 */
-        $nationalSurvey3 = $this->getReference('national-survey-3');
+        $nationalSurvey3 = $this->getReference('national-survey-3', NationalSurvey::class);
 
         /** @var Campaign $campaign1 */
-        $campaign1 = $this->getReference('campaign-1');
+        $campaign1 = $this->getReference('campaign-1', Campaign::class);
         /** @var Campaign $campaign2 */
-        $campaign2 = $this->getReference('campaign-2');
-
+        $campaign2 = $this->getReference('campaign-2', Campaign::class);
         /** @var Campaign $campaign3 */
-        $campaign3 = $this->getReference('campaign-3');
+        $campaign3 = $this->getReference('campaign-3', Campaign::class);
 
-        $adherent3 = $this->getReference('adherent-3');
-        $adherent4 = $this->getReference('adherent-4');
-        $adherent12 = $this->getReference('adherent-12');
-        $deputy_75_1 = $this->getReference('deputy-75-1');
+        $adherent3 = $this->getReference('adherent-3', Adherent::class);
+        $adherent4 = $this->getReference('adherent-4', Adherent::class);
+        $adherent12 = $this->getReference('adherent-12', Adherent::class);
+        $deputy_75_1 = $this->getReference('deputy-75-1', Adherent::class);
 
         $phoningDataSurvey1 = $this->createPhoningCampaignHistory(
             $adherent3,
-            $this->getReference('adherent-21'),
+            $this->getReference('adherent-21', Adherent::class),
             $campaign1,
             CampaignHistoryStatusEnum::TO_UNSUBSCRIBE,
             $nationalSurvey1,
@@ -53,7 +52,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey2 = $this->createPhoningCampaignHistory(
             $adherent3,
-            $this->getReference('adherent-23'),
+            $this->getReference('adherent-23', Adherent::class),
             $campaign2,
             CampaignHistoryStatusEnum::TO_UNSUBSCRIBE,
             $nationalSurvey1,
@@ -61,7 +60,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey3 = $this->createPhoningCampaignHistory(
             $adherent3,
-            $this->getReference('adherent-25'),
+            $this->getReference('adherent-25', Adherent::class),
             $campaign1,
             CampaignHistoryStatusEnum::TO_UNJOIN,
             $nationalSurvey1,
@@ -69,7 +68,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey4 = $this->createPhoningCampaignHistory(
             $deputy_75_1,
-            $this->getReference('adherent-27'),
+            $this->getReference('adherent-27', Adherent::class),
             $campaign2,
             CampaignHistoryStatusEnum::TO_UNJOIN,
             $nationalSurvey1,
@@ -77,7 +76,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey5 = $this->createPhoningCampaignHistory(
             $adherent3,
-            $this->getReference('adherent-29'),
+            $this->getReference('adherent-29', Adherent::class),
             $campaign1,
             CampaignHistoryStatusEnum::FAILED,
             null,
@@ -85,7 +84,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey6 = $this->createPhoningCampaignHistory(
             $adherent3,
-            $this->getReference('adherent-33'),
+            $this->getReference('adherent-33', Adherent::class),
             $campaign2,
             CampaignHistoryStatusEnum::FAILED,
             null,
@@ -93,7 +92,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey7 = $this->createPhoningCampaignHistory(
             $adherent12,
-            $this->getReference('adherent-35'),
+            $this->getReference('adherent-35', Adherent::class),
             $campaign1,
             CampaignHistoryStatusEnum::INTERRUPTED_DONT_REMIND,
             $nationalSurvey1,
@@ -102,7 +101,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         // should be returned for campaign1
         $phoningDataSurvey8 = $this->createPhoningCampaignHistory(
             $adherent3,
-            $this->getReference('adherent-37'),
+            $this->getReference('adherent-37', Adherent::class),
             $campaign2,
             CampaignHistoryStatusEnum::INTERRUPTED_DONT_REMIND,
             $nationalSurvey1,
@@ -110,7 +109,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey9 = $this->createPhoningCampaignHistory(
             $adherent3,
-            $this->getReference('adherent-39'),
+            $this->getReference('adherent-39', Adherent::class),
             $campaign1,
             CampaignHistoryStatusEnum::SEND,
             null,
@@ -119,7 +118,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey9a = $this->createPhoningCampaignHistory(
             $adherent12,
-            $this->getReference('adherent-39'),
+            $this->getReference('adherent-39', Adherent::class),
             $campaign1,
             CampaignHistoryStatusEnum::SEND,
             null,
@@ -127,7 +126,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey10 = $this->createPhoningCampaignHistory(
             $adherent12,
-            $this->getReference('adherent-41'),
+            $this->getReference('adherent-41', Adherent::class),
             $campaign1,
             CampaignHistoryStatusEnum::NOT_RESPOND,
             null,
@@ -135,7 +134,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey10a = $this->createPhoningCampaignHistory(
             $adherent12,
-            $this->getReference('adherent-41'),
+            $this->getReference('adherent-41', Adherent::class),
             $campaign1,
             CampaignHistoryStatusEnum::NOT_RESPOND,
             null,
@@ -143,14 +142,14 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey11 = $this->createPhoningCampaignHistory(
             $adherent12,
-            $this->getReference('adherent-43'),
+            $this->getReference('adherent-43', Adherent::class),
             $campaign1,
             CampaignHistoryStatusEnum::TO_REMIND,
             $nationalSurvey1
         );
         $phoningDataSurvey11a = $this->createPhoningCampaignHistory(
             $adherent12,
-            $this->getReference('adherent-43'),
+            $this->getReference('adherent-43', Adherent::class),
             $campaign1,
             CampaignHistoryStatusEnum::SEND,
             null,
@@ -158,7 +157,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey12 = $this->createPhoningCampaignHistory(
             $adherent3,
-            $this->getReference('adherent-45'),
+            $this->getReference('adherent-45', Adherent::class),
             $campaign1,
             CampaignHistoryStatusEnum::INTERRUPTED,
             $nationalSurvey1,
@@ -166,7 +165,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey13 = $this->createPhoningCampaignHistory(
             $adherent3,
-            $this->getReference('adherent-47'),
+            $this->getReference('adherent-47', Adherent::class),
             $campaign1,
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey1,
@@ -174,7 +173,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         );
         $phoningDataSurvey14 = $this->createPhoningCampaignHistory(
             $adherent12,
-            $this->getReference('adherent-49'),
+            $this->getReference('adherent-49', Adherent::class),
             $campaign2,
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey1,
@@ -183,7 +182,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         // should be returned for campaign1
         $phoningDataSurvey15 = $this->createPhoningCampaignHistory(
             $adherent3,
-            $this->getReference('adherent-2'),
+            $this->getReference('adherent-2', Adherent::class),
             $campaign2,
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey1,
@@ -192,7 +191,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
 
         $phoningDataSurvey16 = $this->createPhoningCampaignHistory(
             $adherent4,
-            $this->getReference('adherent-40'),
+            $this->getReference('adherent-40', Adherent::class),
             $campaign3,
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey3,
@@ -204,7 +203,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
 
         $phoningDataSurvey17 = $this->createPhoningCampaignHistory(
             $adherent4,
-            $this->getReference('adherent-34'),
+            $this->getReference('adherent-34', Adherent::class),
             $campaign3,
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey3,
@@ -216,7 +215,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
 
         $phoningDataSurvey18 = $this->createPhoningCampaignHistory(
             $adherent4,
-            $this->getReference('adherent-35'),
+            $this->getReference('adherent-35', Adherent::class),
             $campaign3,
             CampaignHistoryStatusEnum::FAILED,
             null,
@@ -225,7 +224,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
 
         $phoningDataSurvey19 = $this->createPhoningCampaignHistory(
             $adherent4,
-            $this->getReference('adherent-37'),
+            $this->getReference('adherent-37', Adherent::class),
             $campaign3,
             CampaignHistoryStatusEnum::COMPLETED,
             $nationalSurvey3,
@@ -236,9 +235,9 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         $this->addReference('phoning-data-survey-3', $phoningDataSurvey19->getDataSurvey());
 
         $manager->persist($this->createPhoningCampaignHistory(
-            $this->getReference('adherent-1'),
+            $this->getReference('adherent-1', Adherent::class),
             null,
-            $this->getReference('campaign-permanent'),
+            $this->getReference('campaign-permanent', Campaign::class),
             CampaignHistoryStatusEnum::SEND,
             null,
             new \DateTime('-2 days'),
@@ -277,13 +276,13 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         Campaign $campaign,
         string $status,
         ?Survey $survey = null,
-        ?\DateTime $begitAt = null,
+        ?\DateTime $beganAt = null,
         ?string $uuid = null,
     ): CampaignHistory {
         $campaignHistory = CampaignHistory::createForCampaign($campaign, $author, $called, $uuid ? Uuid::fromString($uuid) : Uuid::uuid4());
 
         $campaignHistory->setStatus($status);
-        $campaignHistory->setBeginAt($begitAt ?? new \DateTime('-10 minutes'));
+        $campaignHistory->setBeginAt($beganAt ?? new \DateTime('-10 minutes'));
 
         if ($survey) {
             $dataSurvey = new DataSurvey($survey);
@@ -296,7 +295,7 @@ class LoadPhoningCampaignHistoryData extends Fixture implements DependentFixture
         return $campaignHistory;
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadJecouteSurveyData::class,

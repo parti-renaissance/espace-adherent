@@ -18,7 +18,7 @@ class LoadAdministratorRoleData extends Fixture
         $this->faker = Factory::create('fr_FR');
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach ($this->getRoles() as $administratorRole) {
             $manager->persist($administratorRole);

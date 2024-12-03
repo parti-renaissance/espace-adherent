@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Image;
+use App\Entity\Mooc\Chapter;
 use App\Entity\Mooc\Mooc;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -12,7 +13,7 @@ use Ramsey\Uuid\Uuid;
 
 class LoadMoocData extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $mooc = new Mooc(
             'Faire de sa fourchette un acte politique',
@@ -26,8 +27,8 @@ class LoadMoocData extends Fixture implements DependentFixtureInterface
             'Voici le contenu de l\'email de partage. Merci.'
         );
 
-        $mooc->addChapter($this->getReference('mooc-chapter-1'));
-        $mooc->addChapter($this->getReference('mooc-chapter-2'));
+        $mooc->addChapter($this->getReference('mooc-chapter-1', Chapter::class));
+        $mooc->addChapter($this->getReference('mooc-chapter-2', Chapter::class));
         $manager->persist($mooc);
 
         $moocWithImage = new Mooc(
@@ -54,7 +55,7 @@ class LoadMoocData extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadMoocChapterData::class,

@@ -22,10 +22,10 @@ class LoadCommitteeV2CandidacyData extends Fixture implements DependentFixtureIn
     public const CANDIDACY_1_UUID = '50dd9672-69ca-46e1-9353-c2e0d6c03333';
     public const CANDIDACY_2_UUID = 'd229453d-a9dc-4392-a320-d9536c93b5fe';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var Committee $committee */
-        $committee = $this->getReference('committee-v2-1');
+        $committee = $this->getReference('committee-v2-1', Committee::class);
         /** @var CommitteeElection $election */
         $election = $committee->getCurrentElection();
         $candidacyGroup = null;
@@ -35,16 +35,16 @@ class LoadCommitteeV2CandidacyData extends Fixture implements DependentFixtureIn
                 $election->addCandidaciesGroups($candidacyGroup = new CommitteeCandidaciesGroup());
             }
             /** @var Adherent $adherent */
-            $adherent = $this->getReference('adherent-'.$index);
+            $adherent = $this->getReference('adherent-'.$index, Adherent::class);
             $candidacyGroup->addCandidacy($candidate = new CommitteeCandidacy($election, $adherent->getGender()));
             $candidate->setCommitteeMembership($adherent->getMembershipFor($committee));
         }
 
         /** @var Committee $committee */
-        $committee = $this->getReference('committee-v2-2');
+        $committee = $this->getReference('committee-v2-2', Committee::class);
         /** @var CommitteeElection $election1 */
         $election1 = $committee->getCurrentElection();
-        $adherent5 = $this->getReference('adherent-5');
+        $adherent5 = $this->getReference('adherent-5', Adherent::class);
 
         $election1->addCandidaciesGroups($list = new CommitteeCandidaciesGroup(Uuid::fromString(self::CANDIDACIES_GROUP_1_UUID)));
         $list->addCandidacy($candidate = new CommitteeCandidacy($election1, Genders::FEMALE, Uuid::fromString(self::CANDIDACY_1_UUID)));
@@ -53,8 +53,7 @@ class LoadCommitteeV2CandidacyData extends Fixture implements DependentFixtureIn
         $election1->addCandidaciesGroups($list = new CommitteeCandidaciesGroup(Uuid::fromString(self::CANDIDACIES_GROUP_2_UUID)));
         $list->setCreatedAt(new \DateTime('-3 hours'));
 
-        /** @var CommitteeElection $election2 */
-        $election2 = $this->getReference('committee-election-2');
+        $election2 = $this->getReference('committee-election-2', CommitteeElection::class);
         $election2->addCandidaciesGroups($list = new CommitteeCandidaciesGroup(Uuid::fromString(self::CANDIDACIES_GROUP_3_UUID)));
         $list->addCandidacy($candidate = new CommitteeCandidacy($election2, Genders::FEMALE, Uuid::fromString(self::CANDIDACY_2_UUID)));
         $candidate->setCommitteeMembership($adherent5->getMembershipFor($committee));
@@ -62,7 +61,7 @@ class LoadCommitteeV2CandidacyData extends Fixture implements DependentFixtureIn
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadCommitteeV2Data::class,

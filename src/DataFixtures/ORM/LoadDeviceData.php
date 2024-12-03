@@ -13,7 +13,7 @@ class LoadDeviceData extends Fixture implements DependentFixtureInterface
     public const DEVICE_1_UUID = '64a85323-fade-4d05-9db0-e06825fc5e61';
     public const DEVICE_2_UUID = '2d5f91ce-547f-44e0-b5f2-037c7a5a99ec';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $device1 = $this->createDevice(
             self::DEVICE_1_UUID,
@@ -46,7 +46,7 @@ class LoadDeviceData extends Fixture implements DependentFixtureInterface
         return $device;
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadGeoZoneData::class,

@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Audience\AudienceSnapshot;
 use App\Entity\Geo\Zone;
+use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Team\Team;
@@ -27,13 +28,13 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
     public const CAMPAIGN_9_UUID = 'd687cd2a-0870-49de-ba12-468202f70099';
     public const CAMPAIGN_10_UUID = 'f909c7b5-aafd-4785-8b09-edebbf5814ee';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        $team1 = $this->getReference('team-1');
-        $team2 = $this->getReference('team-2');
-        $nationalSurvey1 = $this->getReference('national-survey-1');
-        $nationalSurvey2 = $this->getReference('national-survey-2');
-        $nationalSurvey3 = $this->getReference('national-survey-3');
+        $team1 = $this->getReference('team-1', Team::class);
+        $team2 = $this->getReference('team-2', Team::class);
+        $nationalSurvey1 = $this->getReference('national-survey-1', NationalSurvey::class);
+        $nationalSurvey2 = $this->getReference('national-survey-2', NationalSurvey::class);
+        $nationalSurvey3 = $this->getReference('national-survey-3', NationalSurvey::class);
 
         $campaign1 = $this->createCampaign(
             self::CAMPAIGN_1_UUID,
@@ -185,7 +186,7 @@ class LoadPhoningCampaignData extends Fixture implements DependentFixtureInterfa
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadTeamData::class,

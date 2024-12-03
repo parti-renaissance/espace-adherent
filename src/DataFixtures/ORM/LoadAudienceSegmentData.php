@@ -17,11 +17,11 @@ class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterfa
 {
     public const SEGMENT_2_UUID = 'f6c36dd7-0517-4caf-ba6f-ec6822f2ec12';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $segment2 = $this->createSegment(
             self::SEGMENT_2_UUID,
-            $this->getReference('deputy-75-1'),
+            $this->getReference('deputy-75-1', Adherent::class),
             ScopeEnum::DEPUTY,
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_92024'),
             null,
@@ -75,7 +75,7 @@ class LoadAudienceSegmentData extends Fixture implements DependentFixtureInterfa
         return $segment;
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdminData::class,

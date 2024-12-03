@@ -12,7 +12,7 @@ class LoadContactData extends Fixture
 {
     public const CONTACT_1_UUID = 'fdbc1c47-2c2e-4caf-b9d7-1212cabcd26f';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist($this->createContact(
             self::CONTACT_1_UUID,

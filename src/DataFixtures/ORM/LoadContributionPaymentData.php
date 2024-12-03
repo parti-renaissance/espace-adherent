@@ -17,7 +17,7 @@ class LoadContributionPaymentData extends Fixture implements DependentFixtureInt
     public function load(ObjectManager $manager): void
     {
         /** @var Adherent $erDepartment92 */
-        $erDepartment92 = $this->getReference('renaissance-user-2');
+        $erDepartment92 = $this->getReference('renaissance-user-2', Adherent::class);
 
         $payment = new Payment(Uuid::fromString(self::PAYMENT_01_UUID));
         $payment->adherent = $erDepartment92;

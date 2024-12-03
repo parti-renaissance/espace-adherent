@@ -2,8 +2,10 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\DefaultEvent;
+use App\Entity\Event\EventCategory;
 use App\Event\EventRegistrationCommand;
 use App\Event\EventVisibilityEnum;
 use App\Scope\ScopeEnum;
@@ -23,13 +25,13 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
 
     public function loadEvents(ObjectManager $manager): void
     {
-        $referent = $this->getReference('adherent-8');
-        $senatorialCandidate = $this->getReference('senatorial-candidate');
-        $adherent5 = $this->getReference('adherent-5');
-        $adherentRe4 = $this->getReference('renaissance-user-4');
-        $pad92 = $this->getReference('renaissance-user-4');
+        $referent = $this->getReference('adherent-8', Adherent::class);
+        $senatorialCandidate = $this->getReference('senatorial-candidate', Adherent::class);
+        $adherent5 = $this->getReference('adherent-5', Adherent::class);
+        $adherentRe4 = $this->getReference('renaissance-user-4', Adherent::class);
+        $pad92 = $this->getReference('renaissance-user-4', Adherent::class);
 
-        $eventCategory7 = $this->getReference('CE007');
+        $eventCategory7 = $this->getReference('CE007', EventCategory::class);
 
         $event1 = new DefaultEvent(Uuid::fromString(self::EVENT_1_UUID));
         $event1->setName('Nouvel événement online');
@@ -159,8 +161,8 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $manager->persist($event7);
 
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $referent)));
-        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $this->getReference('adherent-7'))));
-        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $this->getReference('user-1'))));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $this->getReference('adherent-7', Adherent::class))));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event1, $this->getReference('user-1', Adherent::class))));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event5, $adherent5)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event6, $adherent5)));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event6, $pad92)));
@@ -173,7 +175,7 @@ class LoadDefaultEventData extends AbstractLoadEventData implements DependentFix
         $eventRegistration1->setEmailAddress('marie.claire@test.com');
         $manager->persist($this->eventRegistrationFactory->createFromCommand($eventRegistration1));
         $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event2, $referent)));
-        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event2, $this->getReference('adherent-7'))));
+        $manager->persist($this->eventRegistrationFactory->createFromCommand(new EventRegistrationCommand($event2, $this->getReference('adherent-7', Adherent::class))));
 
         for ($i = 1; $i <= 5; ++$i) {
             $event = new DefaultEvent();

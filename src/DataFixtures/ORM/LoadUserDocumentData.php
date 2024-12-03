@@ -12,7 +12,7 @@ class LoadUserDocumentData extends Fixture
     public const USER_DOCUMENT_1_UUID = '5f279d90-712c-4335-a83b-a82851b43dfe';
     public const USER_DOCUMENT_2_UUID = 'd2abac78-6004-41cd-a88d-e3e1e83a6f65';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $userDocumentPng = UserDocument::create(
             Uuid::fromString(self::USER_DOCUMENT_1_UUID),

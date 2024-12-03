@@ -32,25 +32,25 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
 
     public const MEMBER_8_UUID = '18753e30-9c37-4a0e-b498-fd1bafee4c46';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        $team1 = $this->createMyTeam(self::TEAM_1_UUID, $this->getReference('adherent-8'), ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
+        $team1 = $this->createMyTeam(self::TEAM_1_UUID, $this->getReference('adherent-8', Adherent::class), ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
         $member1_1 = $this->createMember(
-            $this->getReference('adherent-5'),
+            $this->getReference('adherent-5', Adherent::class),
             RoleEnum::COMMUNICATION_MANAGER,
             [FeatureEnum::CONTACTS, FeatureEnum::MESSAGES, FeatureEnum::EVENTS],
             self::MEMBER_1_UUID
         );
         $this->setReference('my_team_member_1_1', $member1_1);
         $member1_2 = $this->createMember(
-            $this->getReference('adherent-3'),
+            $this->getReference('adherent-3', Adherent::class),
             RoleEnum::MOBILIZATION_MANAGER,
             [FeatureEnum::CONTACTS, FeatureEnum::EVENTS],
             self::MEMBER_2_UUID
         );
         $this->setReference('my_team_member_1_2', $member1_2);
         $member1_3 = $this->createMember(
-            $this->getReference('senator-59'),
+            $this->getReference('senator-59', Adherent::class),
             RoleEnum::MOBILIZATION_MANAGER,
             FeatureEnum::ALL,
             self::MEMBER_3_UUID
@@ -61,16 +61,16 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         $team1->addMember($member1_3);
         $this->setReference('my-team-referent-1', $team1);
 
-        $team2 = $this->createMyTeam(self::TEAM_2_UUID, $this->getReference('correspondent-1'), ScopeEnum::CORRESPONDENT);
+        $team2 = $this->createMyTeam(self::TEAM_2_UUID, $this->getReference('correspondent-1', Adherent::class), ScopeEnum::CORRESPONDENT);
         $member2_1 = $this->createMember(
-            $this->getReference('adherent-5'),
+            $this->getReference('adherent-5', Adherent::class),
             RoleEnum::LOGISTICS_MANAGER,
             [FeatureEnum::CONTACTS],
             self::MEMBER_4_UUID
         );
         $this->setReference('my_team_member_2_1', $member2_1);
         $member2_2 = $this->createMember(
-            $this->getReference('adherent-9'),
+            $this->getReference('adherent-9', Adherent::class),
             RoleEnum::COMPLIANCE_AND_FINANCE_MANAGER,
             [FeatureEnum::CONTACTS, FeatureEnum::MESSAGES, FeatureEnum::EVENTS, FeatureEnum::NEWS],
             self::MEMBER_5_UUID
@@ -80,16 +80,16 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         $team2->addMember($member2_2);
         $this->setReference('my-team-correspondent-1', $team2);
 
-        $team3 = $this->createMyTeam(self::TEAM_3_UUID, $this->getReference('adherent-19'), ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
+        $team3 = $this->createMyTeam(self::TEAM_3_UUID, $this->getReference('adherent-19', Adherent::class), ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY);
         $member3_1 = $this->createMember(
-            $this->getReference('adherent-7'),
+            $this->getReference('adherent-7', Adherent::class),
             RoleEnum::COMMUNICATION_MANAGER,
             [FeatureEnum::EVENTS, FeatureEnum::PAP, FeatureEnum::SURVEY, FeatureEnum::TEAM],
             self::MEMBER_6_UUID
         );
         $this->setReference('my_team_member_3_1', $member3_1);
         $member3_2 = $this->createMember(
-            $this->getReference('referent-child'),
+            $this->getReference('referent-child', Adherent::class),
             RoleEnum::LOGISTICS_MANAGER,
             [],
             self::MEMBER_7_UUID
@@ -99,9 +99,9 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         $team3->addMember($member3_2);
         $this->setReference('my-team-referent-2', $team3);
 
-        $team_lc_1 = $this->createMyTeam(self::TEAM_4_UUID, $this->getReference('senatorial-candidate'), ScopeEnum::LEGISLATIVE_CANDIDATE);
+        $team_lc_1 = $this->createMyTeam(self::TEAM_4_UUID, $this->getReference('senatorial-candidate', Adherent::class), ScopeEnum::LEGISLATIVE_CANDIDATE);
         $member_lc_1 = $this->createMember(
-            $this->getReference('adherent-5'),
+            $this->getReference('adherent-5', Adherent::class),
             RoleEnum::COMMUNICATION_MANAGER,
             [FeatureEnum::NEWS, FeatureEnum::EVENTS, FeatureEnum::CONTACTS],
             self::MEMBER_8_UUID
@@ -118,7 +118,7 @@ class LoadMyTeamData extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdherentData::class,

@@ -2,7 +2,9 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Entity\CmsBlock;
 use App\Entity\VotingPlatform\Designation\Designation;
+use App\Entity\VotingPlatform\Designation\Poll\Poll;
 use App\VotingPlatform\Designation\DesignationGlobalZoneEnum;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -20,7 +22,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
     public const DESIGNATION_16_UUID = 'aa7b270a-51e7-4d74-8140-57a516da3084';
     public const DESIGNATION_17_UUID = '39325008-4baf-4628-a909-96f0e6b66e65';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         // Committee designation with started CANDIDATURE period in France
         $designation = new Designation('Désignation avec les candidatures ouvertes');
@@ -172,7 +174,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->setVoteStartDate(new \DateTime('-5 minutes'));
         $designation->setVoteEndDate(new \DateTime('+10 days'));
         $designation->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
-        $designation->wordingWelcomePage = $this->getReference('cms-block-local-election-welcome-page');
+        $designation->wordingWelcomePage = $this->getReference('cms-block-local-election-welcome-page', CmsBlock::class);
         $designation->seats = 7;
         $designation->majorityPrime = 10;
         $designation->majorityPrimeRoundSupMode = true;
@@ -189,8 +191,8 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->setVoteStartDate($startDate = new \DateTime('-5 minutes'));
         $designation->setVoteEndDate(new \DateTime('+10 days'));
         $designation->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'));
-        $designation->poll = $this->getReference('designation-poll-1');
-        $designation->wordingWelcomePage = $this->getReference('cms-block-local-poll-welcome-page');
+        $designation->poll = $this->getReference('designation-poll-1', Poll::class);
+        $designation->wordingWelcomePage = $this->getReference('cms-block-local-poll-welcome-page', CmsBlock::class);
         $designation->alertTitle = 'Élection en cours !!';
         $designation->alertDescription = "# Élection\nvous avez **5 jours** pour voter.";
         $designation->alertCtaLabel = 'Consulter';
@@ -206,7 +208,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
             $designation->setVoteStartDate(new \DateTime('+1 day'));
             $designation->setVoteEndDate(new \DateTime('+10 days'));
             $designation->addZone(LoadGeoZoneData::getZoneReference($manager, "zone_department_$department"));
-            $designation->wordingWelcomePage = $this->getReference('cms-block-local-election-welcome-page');
+            $designation->wordingWelcomePage = $this->getReference('cms-block-local-election-welcome-page', CmsBlock::class);
 
             $this->setReference("designation-local-dpt-$department", $designation);
             $manager->persist($designation);
@@ -264,8 +266,8 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->setCandidacyEndDate(new \DateTime('-1 month'));
         $designation->setVoteStartDate(new \DateTime('-1 day'));
         $designation->setVoteEndDate(new \DateTime('+10 days'));
-        $designation->wordingWelcomePage = $this->getReference('cms-block-national-consultation-welcome-page');
-        $designation->poll = $this->getReference('designation-poll-2');
+        $designation->wordingWelcomePage = $this->getReference('cms-block-national-consultation-welcome-page', CmsBlock::class);
+        $designation->poll = $this->getReference('designation-poll-2', Poll::class);
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
 
         $this->setReference('designation-15', $designation);
@@ -279,7 +281,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->alertTitle = 'Élection en cours !!';
         $designation->alertDescription = "# Élection\nvous avez **5 jours** pour voter.";
         $designation->alertCtaLabel = 'Consulter';
-        $designation->wordingWelcomePage = $this->getReference('cms-block-territorial-assembly-election-welcome-page');
+        $designation->wordingWelcomePage = $this->getReference('cms-block-territorial-assembly-election-welcome-page', CmsBlock::class);
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
 
         $this->setReference('designation-16', $designation);

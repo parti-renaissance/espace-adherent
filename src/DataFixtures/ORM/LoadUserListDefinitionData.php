@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadUserListDefinitionData extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $userListDefinitionSupportLaREM = new UserListDefinition(
             UserListDefinitionEnum::TYPE_ELECTED_REPRESENTATIVE,
