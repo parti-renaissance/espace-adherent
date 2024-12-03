@@ -18,7 +18,7 @@ class SendResubscribeEmailController extends AbstractController
         }
 
         if ($adherent->resubscribeEmailSentAt && $adherent->resubscribeEmailSentAt->diff(new \DateTime())->y < 1) {
-            return $this->json(['message' => 'Un autre email de réabonnement a déjà été envoyé'], Response::HTTP_BAD_REQUEST);
+            return $this->json(['message' => \sprintf('Un email de réabonnement a déjà été envoyé le %s. Vous ne pouvez en envoyer qu\'un par an.', $adherent->resubscribeEmailSentAt->format('d/m/Y'))], Response::HTTP_BAD_REQUEST);
         }
 
         $bus->dispatch(new SendResubscribeEmailCommand($adherent));
