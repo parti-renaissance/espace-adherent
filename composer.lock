@@ -4273,23 +4273,23 @@
         },
         {
             "name": "google/auth",
-            "version": "v1.42.0",
+            "version": "v1.43.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-auth-library-php.git",
-                "reference": "0c25599a91530b5847f129b271c536f75a7563f5"
+                "reference": "b6a80acd906492086db59aada9196dcfb9c512fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/0c25599a91530b5847f129b271c536f75a7563f5",
-                "reference": "0c25599a91530b5847f129b271c536f75a7563f5",
+                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/b6a80acd906492086db59aada9196dcfb9c512fe",
+                "reference": "b6a80acd906492086db59aada9196dcfb9c512fe",
                 "shasum": ""
             },
             "require": {
                 "firebase/php-jwt": "^6.0",
                 "guzzlehttp/guzzle": "^7.4.5",
                 "guzzlehttp/psr7": "^2.4.5",
-                "php": "^8.0",
+                "php": "^8.1",
                 "psr/cache": "^2.0||^3.0",
                 "psr/http-message": "^1.1||^2.0"
             },
@@ -4327,9 +4327,9 @@
             "support": {
                 "docs": "https://googleapis.github.io/google-auth-library-php/main/",
                 "issues": "https://github.com/googleapis/google-auth-library-php/issues",
-                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.42.0"
+                "source": "https://github.com/googleapis/google-auth-library-php/tree/v1.43.0"
             },
-            "time": "2024-08-26T18:33:48+00:00"
+            "time": "2024-11-07T19:35:20+00:00"
         },
         {
             "name": "google/cloud-core",
@@ -4399,16 +4399,16 @@
         },
         {
             "name": "google/cloud-recaptcha-enterprise",
-            "version": "v1.15.0",
+            "version": "v1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise.git",
-                "reference": "f60821eea911b9a84a5bbc7449811021a7605cde"
+                "reference": "b0a3d139a60fa311f6f3311a77f74e474e46dc80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/f60821eea911b9a84a5bbc7449811021a7605cde",
-                "reference": "f60821eea911b9a84a5bbc7449811021a7605cde",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-recaptcha-enterprise/zipball/b0a3d139a60fa311f6f3311a77f74e474e46dc80",
+                "reference": "b0a3d139a60fa311f6f3311a77f74e474e46dc80",
                 "shasum": ""
             },
             "require": {
@@ -4443,9 +4443,9 @@
             ],
             "description": "Google Cloud Recaptcha Enterprise Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.15.0"
+                "source": "https://github.com/googleapis/google-cloud-php-recaptcha-enterprise/tree/v1.17.0"
             },
-            "time": "2024-08-30T22:10:16+00:00"
+            "time": "2024-11-16T00:28:46+00:00"
         },
         {
             "name": "google/cloud-storage",
@@ -4725,16 +4725,16 @@
         },
         {
             "name": "google/longrunning",
-            "version": "0.4.4",
+            "version": "0.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/php-longrunning.git",
-                "reference": "ce921cf2a59082b09ab04f36b1afef4686c3a9ab"
+                "reference": "062eab0f3b9310da9498bfe20b273f074580b916"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/php-longrunning/zipball/ce921cf2a59082b09ab04f36b1afef4686c3a9ab",
-                "reference": "ce921cf2a59082b09ab04f36b1afef4686c3a9ab",
+                "url": "https://api.github.com/repos/googleapis/php-longrunning/zipball/062eab0f3b9310da9498bfe20b273f074580b916",
+                "reference": "062eab0f3b9310da9498bfe20b273f074580b916",
                 "shasum": ""
             },
             "require-dev": {
@@ -4763,22 +4763,22 @@
             ],
             "description": "Google LongRunning Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/php-longrunning/tree/v0.4.4"
+                "source": "https://github.com/googleapis/php-longrunning/tree/v0.4.5"
             },
-            "time": "2024-11-06T21:50:43+00:00"
+            "time": "2024-11-16T00:28:46+00:00"
         },
         {
             "name": "google/protobuf",
-            "version": "v4.28.3",
+            "version": "v4.29.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "c5c311e0f3d89928251ac5a2f0e3db283612c100"
+                "reference": "0ef6b2eb74b782f3f9023276c324d22e440f7587"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/c5c311e0f3d89928251ac5a2f0e3db283612c100",
-                "reference": "c5c311e0f3d89928251ac5a2f0e3db283612c100",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/0ef6b2eb74b782f3f9023276c324d22e440f7587",
+                "reference": "0ef6b2eb74b782f3f9023276c324d22e440f7587",
                 "shasum": ""
             },
             "require": {
@@ -4807,9 +4807,9 @@
                 "proto"
             ],
             "support": {
-                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v4.28.3"
+                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v4.29.0"
             },
-            "time": "2024-10-22T22:27:17+00:00"
+            "time": "2024-11-27T18:37:40+00:00"
         },
         {
             "name": "grpc/grpc",
