@@ -24,7 +24,7 @@
 
                 <twig:ReButton
                         type="submit"
-                        x-bind:disabled!="!isFormValid()"
+                        x-bind:disabled="!isFormValid()"
                         onDisabledClick="checkFormValidity()"
                         @click="handleOnSubmit"
                 >Recevoir ma carte</twig:ReButton>
