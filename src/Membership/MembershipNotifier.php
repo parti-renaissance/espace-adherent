@@ -39,7 +39,7 @@ class MembershipNotifier implements LoggerAwareInterface
     {
         $adhesionUrl = $this->loginLinkHandler->createLoginLink(
             $adherent,
-            $this->requestStack->getMainRequest(),
+            null,
             60 * 60 * 48,
             AppCodeEnum::RENAISSANCE,
             $this->urlGenerator->generate('app_adhesion_index', [], UrlGeneratorInterface::ABSOLUTE_URL)
