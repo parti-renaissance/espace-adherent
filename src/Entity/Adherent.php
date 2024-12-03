@@ -671,6 +671,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
             $roles[] = 'ROLE_DEPUTY';
         }
 
+        if ($this->isSenator()) {
+            $roles[] = 'ROLE_SENATOR';
+        }
+
         if ($this->isPresidentDepartmentalAssembly()) {
             $roles[] = 'ROLE_PRESIDENT_DEPARTMENTAL_ASSEMBLY';
         }
@@ -1859,6 +1863,11 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isDeputy(): bool
     {
         return $this->hasZoneBasedRole(ScopeEnum::DEPUTY);
+    }
+
+    public function isSenator(): bool
+    {
+        return $this->hasZoneBasedRole(ScopeEnum::SENATOR);
     }
 
     public function isPresidentDepartmentalAssembly(): bool
