@@ -12,6 +12,7 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
     protected array $tags;
     protected string $fieldName;
     protected string $fieldLabel;
+    protected ?string $placeholder = null;
     protected bool $fullTag = true;
 
     public function __construct(private readonly TagTranslator $translator)
@@ -26,13 +27,18 @@ abstract class AbstractTagsFilterBuilder implements FilterBuilderInterface
 
     public function build(string $scope, ?string $feature = null): array
     {
-        return (new FilterCollectionBuilder())
+        $builder = (new FilterCollectionBuilder())
             ->createSelect($this->fieldName, $this->fieldLabel)
             ->setFavorite(true)
             ->setAdvanced(FeatureEnum::MESSAGES === $feature)
             ->setChoices($this->getTranslatedChoices())
-            ->getFilters()
         ;
+
+        if ($this->placeholder) {
+            $builder->setPlaceholder($this->placeholder);
+        }
+
+        return $builder->getFilters();
     }
 
     public function getTranslatedChoices(): array

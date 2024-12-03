@@ -343,6 +343,7 @@ Feature:
                             "code": "adherent_tags",
                             "label": "Labels adhérent",
                             "options": {
+                                "placeholder": "Tous les militants",
                                 "advanced": true,
                                 "favorite": true,
                                 "choices": {
@@ -408,19 +409,6 @@ Feature:
                             "label": "Inscrit",
                             "options": null,
                             "type": "date_interval"
-                        },
-                        {
-                            "code": "renaissance_membership",
-                            "label": "Renaissance",
-                            "options": {
-                                "choices": {
-                                    "adherent_or_sympathizer_re": "Adhérent RE ou sympathisant RE",
-                                    "adherent_re": "Adhérent RE seulement",
-                                    "sympathizer_re": "Sympathisant RE seulement",
-                                    "others_adherent": "Ni adhérent RE ni sympathisant RE"
-                                }
-                            },
-                            "type": "select"
                         },
                         {
                             "code": "static_tags",

@@ -11,6 +11,7 @@ use App\JMEFilter\Types\Text;
 /**
  * @method self setPosition(int $position)
  * @method self setChoices(string[] $choices)
+ * @method self setPlaceholder(?string $placeholder)
  * @method self setUrl(string $url)
  * @method self setQueryParam(string $queryParam)
  * @method self setValueParam(string $valueParam)

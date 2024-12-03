@@ -12,6 +12,7 @@ class AdherentTagsFilterBuilder extends AbstractTagsFilterBuilder
         $this->tags = TagEnum::getAdherentTags();
         $this->fieldName = 'adherent_tags';
         $this->fieldLabel = 'Labels adhérent';
+        $this->placeholder = 'Tous les militants';
     }
 
     public function getGroup(): string
