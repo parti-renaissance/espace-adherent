@@ -32,7 +32,6 @@ parameters:
     adherent_message_referent_limit: 1000
     adherent_message_committee_limit: 1000
     adherent_message_deputy_limit: 1000
-    adherent_message_senator_limit: 1000
 
 services:
     _defaults:
@@ -221,7 +220,6 @@ services:
             - referent: '%adherent_message_referent_limit%'
               committee: '%adherent_message_committee_limit%'
               deputy: '%adherent_message_deputy_limit%'
-              senator: '%adherent_message_senator_limit%'
 
     App\AdherentMessage\Listener\AdherentMessageChangeSubscriber:
         tags: ['doctrine.event_subscriber']

@@ -34,10 +34,6 @@ class CheckRepublicanSilenceListener implements EventSubscriberInterface
         'app_message_deputy_*' => ZoneExtractorInterface::ADHERENT_TYPE_DEPUTY,
         'app_deputy_event_manager_create' => ZoneExtractorInterface::ADHERENT_TYPE_DEPUTY,
 
-        // Senator Space
-        'app_message_senator_*' => ZoneExtractorInterface::ADHERENT_TYPE_SENATOR,
-        'app_senator_event_manager_create' => ZoneExtractorInterface::ADHERENT_TYPE_SENATOR,
-
         // Candidate Space
         'app_candidate_*' => ZoneExtractorInterface::NONE,
         'app_jecoute_candidate_*' => ZoneExtractorInterface::NONE,
