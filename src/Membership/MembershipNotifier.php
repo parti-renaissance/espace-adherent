@@ -40,6 +40,7 @@ class MembershipNotifier implements LoggerAwareInterface
         $adhesionUrl = $this->loginLinkHandler->createLoginLink(
             $adherent,
             $this->requestStack->getMainRequest(),
+            60 * 60 * 48,
             AppCodeEnum::RENAISSANCE,
             $this->urlGenerator->generate('app_adhesion_index', [], UrlGeneratorInterface::ABSOLUTE_URL)
         );
@@ -88,7 +89,7 @@ class MembershipNotifier implements LoggerAwareInterface
 
     public function sendConnexionDetailsMessage(Adherent $adherent, ?string $appCode = null): void
     {
-        $url = $this->linkHandler->createLoginLink($adherent, null, $appCode);
+        $url = $this->linkHandler->createLoginLink($adherent, appCode: $appCode);
 
         if ($adherent->isRenaissanceAdherent()) {
             $this->transactionalMailer->sendMessage(AdhesionAlreadyAdherentMessage::create(

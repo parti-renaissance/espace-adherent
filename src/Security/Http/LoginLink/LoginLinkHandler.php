@@ -19,9 +19,9 @@ class LoginLinkHandler implements LoginLinkHandlerInterface
     ) {
     }
 
-    public function createLoginLink(UserInterface $user, ?Request $request = null, ?string $appCode = null, ?string $targetPath = null): LoginLinkDetails
+    public function createLoginLink(UserInterface $user, ?Request $request = null, ?int $lifetime = null, ?string $appCode = null, ?string $targetPath = null): LoginLinkDetails
     {
-        $link = $this->decorated->createLoginLink($user, $request);
+        $link = $this->decorated->createLoginLink($user, $request, $lifetime);
 
         $queryParams = [
             '_failure_path' => '/connexion',
