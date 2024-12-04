@@ -21,7 +21,7 @@ class LoadCommitteeV1CandidacyData extends Fixture implements DependentFixtureIn
         $this->imageManager = $imageManager;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $adherentCandidates = [
             [
@@ -107,9 +107,9 @@ class LoadCommitteeV1CandidacyData extends Fixture implements DependentFixtureIn
 
         foreach ($adherentCandidates as $i => $row) {
             /** @var Adherent $adherent */
-            $adherent = $this->getReference($row['adherent']);
+            $adherent = $this->getReference($row['adherent'], Adherent::class);
             /** @var Committee $committee */
-            $committee = $this->getReference($row['committee']);
+            $committee = $this->getReference($row['committee'], Committee::class);
             $membership = $adherent->getMembershipFor($committee);
             $election = $committee->getCurrentElection();
 
@@ -124,7 +124,7 @@ class LoadCommitteeV1CandidacyData extends Fixture implements DependentFixtureIn
                 $candidacy->setIsPublicFaithStatement(!empty($row['public_faith_statement']));
 
                 /** @var Adherent $invited */
-                $invited = $this->getReference($row['binome']);
+                $invited = $this->getReference($row['binome'], Adherent::class);
                 $candidacy->addInvitation($invitation = new CommitteeCandidacyInvitation());
                 $invitation->setMembership($invited->getMembershipFor($committee));
 
@@ -149,7 +149,7 @@ class LoadCommitteeV1CandidacyData extends Fixture implements DependentFixtureIn
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadCommitteeV1Data::class,

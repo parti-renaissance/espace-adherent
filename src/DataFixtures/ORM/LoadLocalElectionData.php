@@ -6,6 +6,7 @@ use App\Entity\LocalElection\CandidaciesGroup;
 use App\Entity\LocalElection\Candidacy;
 use App\Entity\LocalElection\LocalElection;
 use App\Entity\LocalElection\SubstituteCandidacy;
+use App\Entity\VotingPlatform\Designation\Designation;
 use App\LocalElection\Manager;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -25,15 +26,15 @@ class LoadLocalElectionData extends Fixture implements DependentFixtureInterface
         $this->faker = Factory::create('FR_fr');
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        $manager->persist($object = new LocalElection($this->getReference('designation-13'), Uuid::fromString(self::UUID1)));
+        $manager->persist($object = new LocalElection($this->getReference('designation-13', Designation::class), Uuid::fromString(self::UUID1)));
         $this->fillLists($object, 5, 12);
 
         $this->setReference('local-election-1', $object);
 
         foreach (['06', '77', '93'] as $department) {
-            $manager->persist($election = new LocalElection($this->getReference("designation-local-dpt-$department"), Uuid::uuid4()));
+            $manager->persist($election = new LocalElection($this->getReference("designation-local-dpt-$department", Designation::class), Uuid::uuid4()));
             $this->fillLists($election, 5, 12);
 
             $this->setReference("local-election-dpt-$department", $object);
@@ -42,7 +43,7 @@ class LoadLocalElectionData extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadDesignationData::class,

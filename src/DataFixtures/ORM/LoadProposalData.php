@@ -26,7 +26,7 @@ class LoadProposalData extends Fixture
         $this->storage = $defaultStorage;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         // Media
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/guadeloupe.jpg');

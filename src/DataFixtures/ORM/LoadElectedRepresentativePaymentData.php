@@ -17,7 +17,7 @@ class LoadElectedRepresentativePaymentData extends Fixture implements DependentF
     public function load(ObjectManager $manager): void
     {
         /** @var ElectedRepresentative $erDepartment92 */
-        $erDepartment92 = $this->getReference('elected-representative-dpt-92');
+        $erDepartment92 = $this->getReference('elected-representative-dpt-92', ElectedRepresentative::class);
 
         $payment = new Payment(Uuid::fromString(self::PAYMENT_01_UUID));
         $payment->electedRepresentative = $erDepartment92;

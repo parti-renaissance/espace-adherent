@@ -25,7 +25,7 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
         $this->riposteOpenGraphHandler = $riposteOpenGraphHandler;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $riposteTodayLast = $this->createRiposte(
             self::RIPOSTE_1_UUID,
@@ -46,7 +46,7 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
             '-12 hours',
             false,
             true,
-            $this->getReference('deputy-75-1')
+            $this->getReference('deputy-75-1', Adherent::class)
         );
         $riposte12hoursWithoutNotification->incrementNbRipostes();
         $riposte12hoursWithoutNotification->incrementNbViews();
@@ -98,7 +98,7 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
         }
 
         if (!$author && !$admin) {
-            $riposte->setCreatedBy($this->getReference('administrator-2'));
+            $riposte->setCreatedBy($this->getReference('administrator-2', Administrator::class));
         }
 
         $this->riposteOpenGraphHandler->handle($riposte);
@@ -106,7 +106,7 @@ class LoadJecouteRiposteData extends Fixture implements DependentFixtureInterfac
         return $riposte;
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdminData::class,

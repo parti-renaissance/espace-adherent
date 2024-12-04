@@ -28,7 +28,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
     public const NEWS_13_UUID = '2c28b246-b17e-409d-992a-b8a57481fb7a';
     public const NEWS_14_UUID = '4f5db386-1819-4055-abbd-fb5d840cd6c0';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist($this->createNews(
             self::NEWS_1_UUID,
@@ -88,7 +88,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             true,
             false,
             false,
-            $this->getReference('adherent-8'),
+            $this->getReference('adherent-8', Adherent::class),
             new \DateTime('-3 hours')
         ));
 
@@ -105,7 +105,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             false,
             false,
             false,
-            $this->getReference('senator-59'),
+            $this->getReference('senator-59', Adherent::class),
             new \DateTime('-4 hours')
         ));
 
@@ -139,7 +139,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             true,
             false,
             false,
-            $this->getReference('adherent-19'),
+            $this->getReference('adherent-19', Adherent::class),
             new \DateTime('-6 hours')
         ));
 
@@ -156,7 +156,7 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             true,
             true,
             false,
-            $this->getReference('adherent-8'),
+            $this->getReference('adherent-8', Adherent::class),
             new \DateTime('-2 days')
         ));
 
@@ -164,24 +164,24 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             self::NEWS_9_UUID,
             'Actualité épinglée et enrichie à 92 du référent',
             '**Tincidunt** Sed vitae erat sagittis, *ultricies* nulla et, tincidunt eros.
-# In hac habitasse platea dictumst  
+# In hac habitasse platea dictumst
 ## Pellentesque imperdiet erat arcu
-Cras hendrerit, mi et malesuada convallis, elit orci hendrerit purus, a euismod erat nisl at lorem. 
+Cras hendrerit, mi et malesuada convallis, elit orci hendrerit purus, a euismod erat nisl at lorem.
 
-### Eget varius felis sodales sit amet 
+### Eget varius felis sodales sit amet
 
 Nulla at odio non augue congue sollicitudin.  [Mon URL](https://en-marche.fr)
 Nulla ac augue sapien. In tincidunt nec massa ac rhoncus.![Mon image](https://cdn.futura-sciences.com/buildsv6/images/mediumoriginal/6/5/2/652a7adb1b_98148_01-intro-773.jpg)
 
-Cras vitae fringilla nunc. Suspendisse facilisis rhoncus urna a placerat. 
+Cras vitae fringilla nunc. Suspendisse facilisis rhoncus urna a placerat.
 
-* Vestibulum facilisis convallis mauris eu eleifend. 
-* Aenean sit amet elementum ex. 
+* Vestibulum facilisis convallis mauris eu eleifend.
+* Aenean sit amet elementum ex.
 * In erat enim, pulvinar quis dui et, volutpat imperdiet nulla.
 
-Sed eu nibh tempor, pulvinar lectus ac, mattis nunc. 
+Sed eu nibh tempor, pulvinar lectus ac, mattis nunc.
 
-1. Praesent scelerisque sagittis orci in sagittis. 
+1. Praesent scelerisque sagittis orci in sagittis.
 2. Phasellus iaculis elementum iaculis.
 
 Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.',
@@ -194,7 +194,7 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             true,
             true,
             true,
-            $this->getReference('adherent-8'),
+            $this->getReference('adherent-8', Adherent::class),
             new \DateTime('-3 days')
         ));
 
@@ -228,7 +228,7 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             true,
             false,
             false,
-            $this->getReference('correspondent-1'),
+            $this->getReference('correspondent-1', Adherent::class),
             new \DateTime('-7 hours')
         ));
 
@@ -245,7 +245,7 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             true,
             false,
             false,
-            $this->getReference('adherent-9'),
+            $this->getReference('adherent-9', Adherent::class),
             new \DateTime('-8 hours')
         ));
 
@@ -262,7 +262,7 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             true,
             false,
             false,
-            $this->getReference('senatorial-candidate'),
+            $this->getReference('senatorial-candidate', Adherent::class),
             new \DateTime('-10 hours')
         ));
 
@@ -279,7 +279,7 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             true,
             false,
             false,
-            $this->getReference('adherent-5'),
+            $this->getReference('adherent-5', Adherent::class),
             new \DateTime('-9 hours')
         ));
 
@@ -324,7 +324,7 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
         return $news;
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadGeoZoneData::class,

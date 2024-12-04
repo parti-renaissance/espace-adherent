@@ -3,8 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Committee\CommitteeFactory;
+use App\Entity\Adherent;
 use App\Entity\CommitteeElection;
 use App\Entity\NullablePostAddress;
+use App\Entity\VotingPlatform\Designation\Designation;
 use App\FranceCities\FranceCities;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -37,7 +39,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
         $this->committeeFactory = $committeeFactory;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         // Create some default committees and make people join them
         $committee1 = $this->committeeFactory->createFromArray([
@@ -53,8 +55,8 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'twitter_nickname' => 'enmarche75008',
         ]);
         $committee1->approved('2017-01-12 15:54:18');
-        $committee1->addElection(new CommitteeElection($this->getReference('designation-3')));
-        $committee1->addElection(new CommitteeElection($this->getReference('designation-4')));
+        $committee1->addElection(new CommitteeElection($this->getReference('designation-3', Designation::class)));
+        $committee1->addElection(new CommitteeElection($this->getReference('designation-4', Designation::class)));
         $this->addReference('committee-1', $committee1);
 
         $committee2 = $this->committeeFactory->createFromArray([
@@ -80,7 +82,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'name_locked' => true,
         ]);
         $committee3->approved('2017-01-27 09:18:33');
-        $committee3->addElection(new CommitteeElection($this->getReference('designation-3')));
+        $committee3->addElection(new CommitteeElection($this->getReference('designation-3', Designation::class)));
         $this->addReference('committee-3', $committee3);
 
         $committee4 = $this->committeeFactory->createFromArray([
@@ -93,7 +95,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'phone' => '+33673654349',
         ]);
         $committee4->approved('-35 days');
-        $committee4->setCurrentElection(new CommitteeElection($this->getReference('designation-3')));
+        $committee4->setCurrentElection(new CommitteeElection($this->getReference('designation-3', Designation::class)));
         $this->addReference('committee-4', $committee4);
 
         $committee5 = $this->committeeFactory->createFromArray([
@@ -106,7 +108,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'phone' => '+33673654349',
         ]);
         $committee5->approved();
-        $committee5->setCurrentElection(new CommitteeElection($this->getReference('designation-2')));
+        $committee5->setCurrentElection(new CommitteeElection($this->getReference('designation-2', Designation::class)));
         $this->addReference('committee-5', $committee5);
 
         $committee6 = $this->committeeFactory->createFromArray([
@@ -119,7 +121,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'phone' => '+33234823644',
         ]);
         $committee6->approved('2017-03-19 09:17:24');
-        $committee6->setCurrentElection(new CommitteeElection($this->getReference('designation-1')));
+        $committee6->setCurrentElection(new CommitteeElection($this->getReference('designation-1', Designation::class)));
         $this->addReference('committee-6', $committee6);
 
         $committee7 = $this->committeeFactory->createFromArray([
@@ -132,7 +134,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'phone' => '+492211653540',
         ]);
         $committee7->approved('2017-03-19 13:43:26');
-        $committee7->setCurrentElection(new CommitteeElection($this->getReference('designation-1')));
+        $committee7->setCurrentElection(new CommitteeElection($this->getReference('designation-1', Designation::class)));
         $this->addReference('committee-7', $committee7);
 
         $committee8 = $this->committeeFactory->createFromArray([
@@ -145,7 +147,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'phone' => '+6566888868',
         ]);
         $committee8->approved('2017-04-10 20:23:18');
-        $committee8->setCurrentElection(new CommitteeElection($this->getReference('designation-5')));
+        $committee8->setCurrentElection(new CommitteeElection($this->getReference('designation-5', Designation::class)));
         $this->addReference('committee-8', $committee8);
 
         $committee9 = $this->committeeFactory->createFromArray([
@@ -158,7 +160,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'phone' => '+12123150100',
         ]);
         $committee9->approved('2017-04-09 13:27:42');
-        $committee9->setCurrentElection(new CommitteeElection($this->getReference('designation-5')));
+        $committee9->setCurrentElection(new CommitteeElection($this->getReference('designation-5', Designation::class)));
         $this->addReference('committee-9', $committee9);
 
         $committee10 = $this->committeeFactory->createFromArray([
@@ -171,7 +173,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'phone' => '+33673654349',
         ]);
         $committee10->approved('2021-01-02 13:17:42');
-        $committee10->setCurrentElection(new CommitteeElection($this->getReference('designation-5')));
+        $committee10->setCurrentElection(new CommitteeElection($this->getReference('designation-5', Designation::class)));
         $this->addReference('committee-10', $committee10);
 
         $committee11 = $this->committeeFactory->createFromArray([
@@ -197,7 +199,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'phone' => '+33673654349',
         ]);
         $committee12->approved('2020-10-29 12:00:00');
-        $committee12->setCurrentElection(new CommitteeElection($this->getReference('designation-5')));
+        $committee12->setCurrentElection(new CommitteeElection($this->getReference('designation-5', Designation::class)));
         $this->addReference('committee-12', $committee12);
 
         $committee13 = $this->committeeFactory->createFromArray([
@@ -210,7 +212,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'phone' => '+33673654349',
         ]);
         $committee13->approved('2020-10-29 12:00:00');
-        $committee13->setCurrentElection(new CommitteeElection($this->getReference('designation-8')));
+        $committee13->setCurrentElection(new CommitteeElection($this->getReference('designation-8', Designation::class)));
         $this->addReference('committee-13', $committee13);
 
         $committee14 = $this->committeeFactory->createFromArray([
@@ -223,7 +225,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'phone' => '+33673654349',
         ]);
         $committee14->approved('2020-10-29 12:00:00');
-        $committee14->setCurrentElection(new CommitteeElection($this->getReference('designation-8')));
+        $committee14->setCurrentElection(new CommitteeElection($this->getReference('designation-8', Designation::class)));
         $this->addReference('committee-14', $committee14);
 
         $committee15 = $this->committeeFactory->createFromArray([
@@ -236,7 +238,7 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
             'phone' => '+33673654349',
         ]);
         $committee15->approved('2020-10-29 12:00:00');
-        $committee15->setCurrentElection(new CommitteeElection($this->getReference('designation-9')));
+        $committee15->setCurrentElection(new CommitteeElection($this->getReference('designation-9', Designation::class)));
         $this->addReference('committee-15', $committee15);
 
         $committee16 = $this->committeeFactory->createFromArray([
@@ -268,25 +270,25 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
         $manager->persist($committee16);
 
         // Make adherents join committees
-        $adherent2 = $this->getReference('adherent-2');
-        $adherent3 = $this->getReference('adherent-3');
-        $adherent4 = $this->getReference('adherent-4');
-        $adherent5 = $this->getReference('adherent-5');
-        $adherent6 = $this->getReference('adherent-6');
-        $adherent7 = $this->getReference('adherent-7');
-        $adherent9 = $this->getReference('adherent-9');
-        $adherent10 = $this->getReference('adherent-10');
-        $adherent11 = $this->getReference('adherent-11');
-        $adherent12 = $this->getReference('adherent-12');
-        $adherent13 = $this->getReference('adherent-13');
-        $adherent14 = $this->getReference('adherent-14');
-        $adherent16 = $this->getReference('adherent-16');
-        $adherent19 = $this->getReference('adherent-19');
-        $adherent20 = $this->getReference('senatorial-candidate');
-        $adherent21 = $this->getReference('adherent-20');
-        $adherent22 = $this->getReference('adherent-49');
-        $referent = $this->getReference('adherent-8');
-        $assessor = $this->getReference('assessor-1');
+        $adherent2 = $this->getReference('adherent-2', Adherent::class);
+        $adherent3 = $this->getReference('adherent-3', Adherent::class);
+        $adherent4 = $this->getReference('adherent-4', Adherent::class);
+        $adherent5 = $this->getReference('adherent-5', Adherent::class);
+        $adherent6 = $this->getReference('adherent-6', Adherent::class);
+        $adherent7 = $this->getReference('adherent-7', Adherent::class);
+        $adherent9 = $this->getReference('adherent-9', Adherent::class);
+        $adherent10 = $this->getReference('adherent-10', Adherent::class);
+        $adherent11 = $this->getReference('adherent-11', Adherent::class);
+        $adherent12 = $this->getReference('adherent-12', Adherent::class);
+        $adherent13 = $this->getReference('adherent-13', Adherent::class);
+        $adherent14 = $this->getReference('adherent-14', Adherent::class);
+        $adherent16 = $this->getReference('adherent-16', Adherent::class);
+        $adherent19 = $this->getReference('adherent-19', Adherent::class);
+        $adherent20 = $this->getReference('senatorial-candidate', Adherent::class);
+        $adherent21 = $this->getReference('adherent-20', Adherent::class);
+        $adherent22 = $this->getReference('adherent-49', Adherent::class);
+        $referent = $this->getReference('adherent-8', Adherent::class);
+        $assessor = $this->getReference('assessor-1', Adherent::class);
 
         // Committee 1
         $manager->persist($membership = $adherent3->followCommittee($committee1, new \DateTime('2017-01-12 13:25:54')));
@@ -369,36 +371,36 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
         $manager->persist($adherent14->followCommittee($committee12));
 
         // Committee 13
-        $manager->persist($this->getReference('adherent-21')->followCommittee($committee13, new \DateTime('-2 months')));
-        $manager->persist($this->getReference('adherent-22')->followCommittee($committee13, new \DateTime('-2 months')));
-        $manager->persist($this->getReference('adherent-23')->followCommittee($committee13, new \DateTime('-2 months')));
-        $manager->persist($this->getReference('adherent-24')->followCommittee($committee13, new \DateTime('-2 months')));
-        $manager->persist($this->getReference('adherent-25')->followCommittee($committee13, new \DateTime('-2 months')));
-        $manager->persist($this->getReference('adherent-26')->followCommittee($committee13, new \DateTime('-2 months')));
-        $manager->persist($this->getReference('adherent-27')->followCommittee($committee13, new \DateTime('-2 months')));
-        $manager->persist($this->getReference('adherent-28')->followCommittee($committee13, new \DateTime('-2 months')));
-        $manager->persist($this->getReference('adherent-29')->followCommittee($committee13, new \DateTime('-2 months')));
-        $manager->persist($this->getReference('adherent-30')->followCommittee($committee13, new \DateTime('-2 months')));
-        $adherent31 = $this->getReference('adherent-31');
+        $manager->persist($this->getReference('adherent-21', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-22', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-23', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-24', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-25', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-26', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-27', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-28', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-29', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-30', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
+        $adherent31 = $this->getReference('adherent-31', Adherent::class);
         $manager->persist($adherent31->followCommittee($committee13, new \DateTime('-2 months')));
 
         // Committee 14
-        $manager->persist($this->getReference('adherent-21')->followCommittee($committee14, new \DateTime('-2 months')));
-        $manager->persist($this->getReference('adherent-29')->followCommittee($committee14, new \DateTime('-2 months')));
-        $manager->persist($this->getReference('adherent-30')->followCommittee($committee14, new \DateTime('-2 months')));
-        $manager->persist($this->getReference('adherent-31')->followCommittee($committee14, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-21', Adherent::class)->followCommittee($committee14, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-29', Adherent::class)->followCommittee($committee14, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-30', Adherent::class)->followCommittee($committee14, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-31', Adherent::class)->followCommittee($committee14, new \DateTime('-2 months')));
 
         // Committee 15
-        $adherent32 = $this->getReference('adherent-32');
+        $adherent32 = $this->getReference('adherent-32', Adherent::class);
         $manager->persist($adherent32->followCommittee($committee15, new \DateTime('-2 months')));
         foreach (range(33, 50) as $index) {
-            $manager->persist($this->getReference('adherent-'.$index)->followCommittee($committee15, new \DateTime('-2 months')));
+            $manager->persist($this->getReference('adherent-'.$index, Adherent::class)->followCommittee($committee15, new \DateTime('-2 months')));
         }
 
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdherentData::class,

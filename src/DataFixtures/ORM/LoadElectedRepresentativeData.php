@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Adherent\MandateTypeEnum;
+use App\Entity\Adherent;
 use App\Entity\ElectedRepresentative\CandidateNameEnum;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
 use App\Entity\ElectedRepresentative\ElectedRepresentativeLabel;
@@ -13,6 +14,7 @@ use App\Entity\ElectedRepresentative\PoliticalFunction;
 use App\Entity\ElectedRepresentative\PoliticalFunctionNameEnum;
 use App\Entity\ElectedRepresentative\SocialLinkTypeEnum;
 use App\Entity\ElectedRepresentative\SocialNetworkLink;
+use App\Entity\UserListDefinition;
 use App\Utils\PhoneNumberUtils;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -56,8 +58,8 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             'female',
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_1_UUID)
         );
-        $erAdherent92->setAdherent($this->getReference('adherent-5'));
-        $erAdherent92->addUserListDefinition($this->getReference('user-list-definition-instances_member'));
+        $erAdherent92->setAdherent($this->getReference('adherent-5', Adherent::class));
+        $erAdherent92->addUserListDefinition($this->getReference('user-list-definition-instances_member', UserListDefinition::class));
         foreach ($erAdherent92->getSponsorships() as $sponsorship) {
             if (2012 === $sponsorship->getPresidentialElectionYear()) {
                 $sponsorship->setCandidate(CandidateNameEnum::FRANCOIS_HOLLANDE, $erAdherent92);
@@ -116,8 +118,8 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_2_UUID)
         );
         $erCityCouncilWithFinishedFunction->setContactPhone(PhoneNumberUtils::create('+330999887766'));
-        $erCityCouncilWithFinishedFunction->addUserListDefinition($this->getReference('user-list-definition-supporting_la_rem'));
-        $erCityCouncilWithFinishedFunction->addUserListDefinition($this->getReference('user-list-definition-instances_member'));
+        $erCityCouncilWithFinishedFunction->addUserListDefinition($this->getReference('user-list-definition-supporting_la_rem', UserListDefinition::class));
+        $erCityCouncilWithFinishedFunction->addUserListDefinition($this->getReference('user-list-definition-instances_member', UserListDefinition::class));
         $label = new ElectedRepresentativeLabel(
             LabelNameEnum::PS,
             $erCityCouncilWithFinishedFunction,
@@ -178,7 +180,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
             null,
             Uuid::fromString(self::ELECTED_REPRESENTATIVE_3_UUID)
         );
-        $er2Mandates->addUserListDefinition($this->getReference('user-list-definition-supporting_la_rem'));
+        $er2Mandates->addUserListDefinition($this->getReference('user-list-definition-supporting_la_rem', UserListDefinition::class));
         $label1 = new ElectedRepresentativeLabel(
             LabelNameEnum::PS,
             $er2Mandates,
@@ -391,7 +393,7 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
         $er2Mandates2Functions->addPoliticalFunction($politicalFunction1);
         $er2Mandates2Functions->addPoliticalFunction($politicalFunction2);
         $er2Mandates2Functions->addPoliticalFunction($politicalFunction3);
-        $er2Mandates2Functions->setAdherent($this->getReference('deputy-75-1'));
+        $er2Mandates2Functions->setAdherent($this->getReference('deputy-75-1', Adherent::class));
 
         $manager->persist($er2Mandates2Functions);
 
@@ -487,8 +489,8 @@ class LoadElectedRepresentativeData extends Fixture implements DependentFixtureI
 
         // with adherent and ongoing mandate
         $erDepartment92 = $this->createElectedRepresentative('Département', '92', new \DateTime('1982-03-03'), 'male', self::ELECTED_REPRESENTATIVE_8_UUID);
-        $erDepartment92->setAdherent($this->getReference('renaissance-user-2'));
-        $erDepartment92->setCreatedByAdherent($this->getReference('adherent-8'));
+        $erDepartment92->setAdherent($this->getReference('renaissance-user-2', Adherent::class));
+        $erDepartment92->setCreatedByAdherent($this->getReference('adherent-8', Adherent::class));
         $mandate = new Mandate(
             Uuid::fromString(self::ELECTED_MANDATE_15_UUID),
             MandateTypeEnum::SENATEUR,

@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadTransactionalEmailTemplateData extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist($templateA = new TransactionalEmailTemplate());
         $templateA->identifier = 'template-a';

@@ -12,12 +12,12 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadAdministratorActionHistoryData extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var Administrator $administrator1 */
-        $administrator1 = $this->getReference('administrator-2');
+        $administrator1 = $this->getReference('administrator-2', Administrator::class);
         /** @var Adherent $adherent1 */
-        $adherent1 = $this->getReference('adherent-1');
+        $adherent1 = $this->getReference('adherent-1', Adherent::class);
 
         $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::LOGIN_FAILURE, new \DateTime('-10 minutes')));
         $manager->persist($this->create($administrator1, AdministratorActionHistoryTypeEnum::LOGIN_SUCCESS, new \DateTime('-9 minutes')));

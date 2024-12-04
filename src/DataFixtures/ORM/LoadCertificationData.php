@@ -26,20 +26,20 @@ class LoadCertificationData extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         /** @var Adherent $adherent1 */
-        $adherent1 = $this->getReference('adherent-1');
+        $adherent1 = $this->getReference('adherent-1', Adherent::class);
         /** @var Adherent $adherent2 */
-        $adherent2 = $this->getReference('adherent-2');
+        $adherent2 = $this->getReference('adherent-2', Adherent::class);
         /** @var Adherent $adherent3 */
-        $adherent3 = $this->getReference('adherent-3');
+        $adherent3 = $this->getReference('adherent-3', Adherent::class);
         /** @var Adherent $adherent4 */
-        $adherent4 = $this->getReference('adherent-4');
+        $adherent4 = $this->getReference('adherent-4', Adherent::class);
         /** @var Adherent $adherent5 */
-        $adherent5 = $this->getReference('adherent-5');
+        $adherent5 = $this->getReference('adherent-5', Adherent::class);
         /** @var Adherent $adherent6 */
-        $adherent6 = $this->getReference('senatorial-candidate');
+        $adherent6 = $this->getReference('senatorial-candidate', Adherent::class);
 
         /** @var Administrator $administrator */
-        $administrator = $this->getReference('administrator-2');
+        $administrator = $this->getReference('administrator-2', Administrator::class);
 
         // Adherent certified without certification request
         $adherent1->certify();
@@ -109,7 +109,7 @@ class LoadCertificationData extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdherentData::class,

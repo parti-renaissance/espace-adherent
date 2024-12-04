@@ -10,12 +10,10 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadAdherentChangeEmailTokenData extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        /** @var Adherent $adherent1 */
-        $adherent1 = $this->getReference('adherent-1');
-        /** @var Adherent $adherent2 */
-        $adherent2 = $this->getReference('adherent-2');
+        $adherent1 = $this->getReference('adherent-1', Adherent::class);
+        $adherent2 = $this->getReference('adherent-2', Adherent::class);
 
         // Unused token
         $token1 = AdherentChangeEmailToken::generate($adherent1);
@@ -33,7 +31,7 @@ class LoadAdherentChangeEmailTokenData extends Fixture implements DependentFixtu
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdherentData::class,

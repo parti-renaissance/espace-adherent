@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Event\BaseEventCategory;
 use App\Entity\Event\EventCategory;
+use App\Entity\Event\EventGroupCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -62,11 +63,11 @@ class LoadEventCategoryData extends Fixture implements DependentFixtureInterface
         ],
     ];
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach (self::LEGACY_EVENT_CATEGORIES as $reference => $name) {
             $category = new EventCategory($name);
-            $category->setEventGroupCategory($this->getReference('event-group-category-0'));
+            $category->setEventGroupCategory($this->getReference('event-group-category-0', EventGroupCategory::class));
             $category->description = 'Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.';
             $this->addReference($reference, $category);
 
@@ -78,7 +79,7 @@ class LoadEventCategoryData extends Fixture implements DependentFixtureInterface
             $category->description = 'Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.';
 
             if ($dataCategory['group']) {
-                $category->setEventGroupCategory($this->getReference($dataCategory['group']));
+                $category->setEventGroupCategory($this->getReference($dataCategory['group'], EventGroupCategory::class));
             }
             $this->addReference($reference, $category);
             $manager->persist($category);
@@ -87,7 +88,7 @@ class LoadEventCategoryData extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadEventGroupCategoryData::class,

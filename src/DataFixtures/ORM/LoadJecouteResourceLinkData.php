@@ -22,7 +22,7 @@ class LoadJecouteResourceLinkData extends Fixture
         $this->imageManager = $imageManager;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $resourceLink1 = $this->createResourceLink(
             self::RESOURCE_LINK_1_UUID,

@@ -17,7 +17,7 @@ class LoadProgrammaticFoundationTagData extends Fixture
         'Jeunesse',
     ];
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach (self::TAG_LABELS as $key => $label) {
             $tag = new Tag($label);

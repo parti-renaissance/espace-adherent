@@ -18,7 +18,7 @@ class LoadContributionData extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         /** @var Adherent $erDepartment92 */
-        $erDepartment92 = $this->getReference('renaissance-user-2');
+        $erDepartment92 = $this->getReference('renaissance-user-2', Adherent::class);
 
         $contribution = new Contribution(Uuid::fromString(self::CONTRIBUTION_01_UUID));
         $contribution->startDate = $contributionDate = new \DateTime('2023-03-15');

@@ -8,7 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadElectedRepresentativeZoneCategoryData extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach (ZoneCategory::ALL as $name) {
             $category = new ZoneCategory($name);

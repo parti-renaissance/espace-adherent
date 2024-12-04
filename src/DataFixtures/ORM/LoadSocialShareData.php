@@ -21,7 +21,7 @@ class LoadSocialShareData extends Fixture
         $this->storage = $defaultStorage;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         // Medias
         $medias = [];

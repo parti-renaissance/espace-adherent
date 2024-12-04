@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Admin\AdministratorFactory;
+use App\Entity\AdministratorRole;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -13,7 +14,7 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
     {
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $adminRoles = $this->getRoles([
             'ROLE_ADMIN_COMMUNICATION_MEDIAS',
@@ -153,13 +154,13 @@ class LoadAdminData extends Fixture implements DependentFixtureInterface
         $roles = [];
 
         foreach ($roleCodes as $roleCode) {
-            $roles[] = $this->getReference("administrator-role-$roleCode");
+            $roles[] = $this->getReference("administrator-role-$roleCode", AdministratorRole::class);
         }
 
         return $roles;
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdministratorRoleData::class,

@@ -12,7 +12,7 @@ class LoadDepartmentSiteData extends Fixture implements DependentFixtureInterfac
 {
     public const UUID1 = '51e507e5-3d7c-4f08-b05d-b7cb45e960d3';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $zone92 = LoadGeoZoneData::getZoneReference($manager, 'zone_department_92');
         $manager->refresh($zone92);
@@ -27,7 +27,7 @@ class LoadDepartmentSiteData extends Fixture implements DependentFixtureInterfac
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadGeoZoneData::class,

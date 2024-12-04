@@ -15,7 +15,7 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
     public const LEGISLATIVE_NEWSLETTER_SUBSCRIPTION_2_UUID = '9e0e1a9e-2c5d-4d3a-a6c8-4a582ff78e22';
     public const LEGISLATIVE_NEWSLETTER_SUBSCRIPTION_2_TOKEN = 'bd879a23-43bf-47d2-b67b-9c7cbb085547';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $newsletterSubscription758 = $this->createSubscription(
             self::LEGISLATIVE_NEWSLETTER_SUBSCRIPTION_1_UUID,
@@ -64,7 +64,7 @@ class LoadLegislativeNewsletterSubscriptionData extends Fixture implements Depen
         return $subscription;
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadGeoZoneData::class,

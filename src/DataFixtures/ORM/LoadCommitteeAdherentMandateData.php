@@ -2,43 +2,45 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
+use App\Entity\Committee;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class LoadCommitteeAdherentMandateData extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        $committee1 = $this->getReference('committee-1');
-        $committee3 = $this->getReference('committee-3');
-        $committee4 = $this->getReference('committee-4');
-        $committee5 = $this->getReference('committee-5');
-        $committee6 = $this->getReference('committee-6');
-        $committee7 = $this->getReference('committee-7');
-        $committee8 = $this->getReference('committee-8');
-        $committee9 = $this->getReference('committee-9');
-        $committee10 = $this->getReference('committee-10');
-        $committee11 = $this->getReference('committee-11');
-        $committee12 = $this->getReference('committee-12');
-        $committee13 = $this->getReference('committee-13');
-        $committee15 = $this->getReference('committee-15');
+        $committee1 = $this->getReference('committee-1', Committee::class);
+        $committee3 = $this->getReference('committee-3', Committee::class);
+        $committee4 = $this->getReference('committee-4', Committee::class);
+        $committee5 = $this->getReference('committee-5', Committee::class);
+        $committee6 = $this->getReference('committee-6', Committee::class);
+        $committee7 = $this->getReference('committee-7', Committee::class);
+        $committee8 = $this->getReference('committee-8', Committee::class);
+        $committee9 = $this->getReference('committee-9', Committee::class);
+        $committee10 = $this->getReference('committee-10', Committee::class);
+        $committee11 = $this->getReference('committee-11', Committee::class);
+        $committee12 = $this->getReference('committee-12', Committee::class);
+        $committee13 = $this->getReference('committee-13', Committee::class);
+        $committee15 = $this->getReference('committee-15', Committee::class);
 
-        $carl = $this->getReference('adherent-2');
-        $jacques = $this->getReference('adherent-3');
-        $lucie = $this->getReference('adherent-4');
-        $gisele = $this->getReference('adherent-5');
-        $francis = $this->getReference('adherent-7');
-        $referent = $this->getReference('adherent-8');
-        $laura = $this->getReference('adherent-9');
-        $martine = $this->getReference('adherent-10');
-        $elodie = $this->getReference('adherent-11');
-        $kiroule = $this->getReference('adherent-12');
-        $adherent31 = $this->getReference('adherent-31');
-        $adherent32 = $this->getReference('adherent-32');
-        $senatorialCandidate = $this->getReference('senatorial-candidate');
+        $carl = $this->getReference('adherent-2', Adherent::class);
+        $jacques = $this->getReference('adherent-3', Adherent::class);
+        $lucie = $this->getReference('adherent-4', Adherent::class);
+        $gisele = $this->getReference('adherent-5', Adherent::class);
+        $francis = $this->getReference('adherent-7', Adherent::class);
+        $referent = $this->getReference('adherent-8', Adherent::class);
+        $laura = $this->getReference('adherent-9', Adherent::class);
+        $martine = $this->getReference('adherent-10', Adherent::class);
+        $elodie = $this->getReference('adherent-11', Adherent::class);
+        $kiroule = $this->getReference('adherent-12', Adherent::class);
+        $adherent31 = $this->getReference('adherent-31', Adherent::class);
+        $adherent32 = $this->getReference('adherent-32', Adherent::class);
+        $senatorialCandidate = $this->getReference('senatorial-candidate', Adherent::class);
 
         // Designed adherent mandates
         $manager->persist(CommitteeAdherentMandate::createForCommittee($committee1, $gisele, new \DateTime('2020-06-06')));
@@ -70,7 +72,7 @@ class LoadCommitteeAdherentMandateData extends Fixture implements DependentFixtu
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadCommitteeV1Data::class,

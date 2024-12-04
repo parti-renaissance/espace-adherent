@@ -8,7 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadDonationTagData extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist(new DonationTag('Inachevé', '#32cd32'));
         $manager->persist(new DonationTag('En cours', '#ff4500'));

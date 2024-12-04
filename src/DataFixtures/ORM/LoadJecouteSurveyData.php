@@ -7,6 +7,7 @@ use App\Entity\Administrator;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Question;
+use App\Entity\Jecoute\SuggestedQuestion;
 use App\Entity\Jecoute\SurveyQuestion;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -24,22 +25,22 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
     public const SURVEY_LOCAL_3 = '478a2e65-7e86-1bb9-8078-8b70de061a8a';
     public const SURVEY_LOCAL_4 = '0de90b18-47f5-1606-af9d-74eb1fa4a30a';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var Adherent $referent1 */
-        $referent1 = $this->getReference('adherent-8');
+        $referent1 = $this->getReference('adherent-8', Adherent::class);
 
         /** @var Adherent $referent2 */
-        $referent2 = $this->getReference('adherent-19');
+        $referent2 = $this->getReference('adherent-19', Adherent::class);
 
         /** @var Adherent $headedRegionalCandidate */
-        $headedRegionalCandidate = $this->getReference('adherent-3');
+        $headedRegionalCandidate = $this->getReference('adherent-3', Adherent::class);
 
         /** @var Administrator $administrator1 */
-        $administrator1 = $this->getReference('administrator-1');
+        $administrator1 = $this->getReference('administrator-1', Administrator::class);
 
         /** @var Administrator $administrator2 */
-        $administrator2 = $this->getReference('administrator-2');
+        $administrator2 = $this->getReference('administrator-2', Administrator::class);
 
         /**
          * Local Surveys
@@ -58,16 +59,16 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         $localSurvey4->setBlockedChanges(true);
 
         /** @var Question $question1 */
-        $question1 = $this->getReference('question-1');
+        $question1 = $this->getReference('question-1', Question::class);
 
         /** @var Question $question2 */
-        $question2 = $this->getReference('question-2');
+        $question2 = $this->getReference('question-2', Question::class);
 
         /** @var Question $question3 */
-        $question3 = $this->getReference('question-3');
+        $question3 = $this->getReference('question-3', Question::class);
 
-        /** @var Question $suggestedQuestion1 */
-        $suggestedQuestion1 = $this->getReference('suggested-question-1');
+        /** @var SuggestedQuestion $suggestedQuestion1 */
+        $suggestedQuestion1 = $this->getReference('suggested-question-1', SuggestedQuestion::class);
 
         $surveyQuestion1 = new SurveyQuestion($localSurvey1, $question1);
         $surveyQuestion2 = new SurveyQuestion($localSurvey1, $question2);
@@ -87,7 +88,7 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         $localSurvey1->setZone(LoadGeoZoneData::getZoneReference($manager, 'zone_department_77'));
 
         /** @var Question $question4 */
-        $question4 = $this->getReference('question-4');
+        $question4 = $this->getReference('question-4', Question::class);
 
         $localSurvey2Question1 = new SurveyQuestion($localSurvey2, $question4);
 
@@ -119,10 +120,10 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         $nationalSurvey1->setCreatedByAdministrator($administrator1);
 
         /** @var Question $nationalQuestion1 */
-        $nationalQuestion1 = $this->getReference('national-question-1');
+        $nationalQuestion1 = $this->getReference('national-question-1', Question::class);
 
         /** @var Question $nationalQuestion2 */
-        $nationalQuestion2 = $this->getReference('national-question-2');
+        $nationalQuestion2 = $this->getReference('national-question-2', Question::class);
 
         $nationalSurveyQuestion1 = new SurveyQuestion($nationalSurvey1, $nationalQuestion1);
         $nationalSurveyQuestion2 = new SurveyQuestion($nationalSurvey1, $nationalQuestion2);
@@ -142,7 +143,7 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         $nationalSurvey2->setCreatedByAdministrator($administrator2);
 
         /** @var Question $nationalQuestion3 */
-        $nationalQuestion3 = $this->getReference('national-question-3');
+        $nationalQuestion3 = $this->getReference('national-question-3', Question::class);
 
         $nationalSurveyQuestion3 = new SurveyQuestion($nationalSurvey2, $nationalQuestion3);
 
@@ -159,10 +160,10 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         $nationalSurvey3->setCreatedByAdministrator($administrator1);
 
         /** @var Question $nationalQuestion4 */
-        $nationalQuestion4 = $this->getReference('national-question-4');
+        $nationalQuestion4 = $this->getReference('national-question-4', Question::class);
 
         /** @var Question $nationalQuestion5 */
-        $nationalQuestion5 = $this->getReference('national-question-5');
+        $nationalQuestion5 = $this->getReference('national-question-5', Question::class);
 
         $nationalSurveyQuestion4 = new SurveyQuestion($nationalSurvey3, $nationalQuestion4);
         $nationalSurveyQuestion5 = new SurveyQuestion($nationalSurvey3, $nationalQuestion5);
@@ -180,7 +181,7 @@ class LoadJecouteSurveyData extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdherentData::class,

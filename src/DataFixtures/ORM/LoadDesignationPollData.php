@@ -10,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadDesignationPollData extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist($poll = new Poll());
         $poll->label = 'Petit questionnaire';

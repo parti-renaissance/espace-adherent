@@ -8,7 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadMoocQuizData extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $quiz = new MoocQuizElement(
             'Le test de votre vie',

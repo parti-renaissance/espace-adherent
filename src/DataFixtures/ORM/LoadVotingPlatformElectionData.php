@@ -2,11 +2,14 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Entity\Adherent;
+use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
 use App\Entity\LocalElection\LocalElection;
 use App\Entity\VotingPlatform\Candidate;
 use App\Entity\VotingPlatform\CandidateGroup;
+use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\Election;
 use App\Entity\VotingPlatform\ElectionEntity;
 use App\Entity\VotingPlatform\ElectionPool;
@@ -57,7 +60,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     {
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $this->faker = Factory::create('fr_FR');
         $this->manager = $manager;
@@ -65,12 +68,12 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         // -------------------------------------------
 
         $election = new Election(
-            $this->getReference('designation-1'),
+            $this->getReference('designation-1', Designation::class),
             Uuid::fromString(self::ELECTION_UUID1),
             [new ElectionRound()]
         );
         $this->manager->persist($election);
-        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-6')));
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-6', Committee::class)));
 
         $this->loadCommitteeAdherentElectionCandidates($election);
         $this->loadVoters($election);
@@ -78,12 +81,12 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         // -------------------------------------------
 
         $election = new Election(
-            $this->getReference('designation-2'),
+            $this->getReference('designation-2', Designation::class),
             Uuid::fromString(self::ELECTION_UUID2),
             [$round = new ElectionRound()]
         );
         $this->manager->persist($election);
-        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-5')));
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-5', Committee::class)));
 
         $this->loadCommitteeAdherentElectionCandidates($election);
         $votersList = $this->loadVoters($election);
@@ -92,12 +95,12 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         // -------------------------------------------
 
         $election = new Election(
-            $this->getReference('designation-3'),
+            $this->getReference('designation-3', Designation::class),
             Uuid::fromString(self::ELECTION_UUID3),
             [$round = new ElectionRound()]
         );
         $this->manager->persist($election);
-        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-4')));
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-4', Committee::class)));
 
         $this->loadCommitteeAdherentElectionCandidates($election);
         $votersList = $this->loadVoters($election);
@@ -106,12 +109,12 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         // -------------------------------------------
 
         $election = new Election(
-            $this->getReference('designation-3'),
+            $this->getReference('designation-3', Designation::class),
             Uuid::fromString(self::ELECTION_UUID4),
             [$round = new ElectionRound()]
         );
         $this->manager->persist($election);
-        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-1')));
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-1', Committee::class)));
 
         $this->loadCommitteeAdherentElectionCandidates($election);
         $votersList = $this->loadVoters($election);
@@ -121,12 +124,12 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         // -------------------------------------------
 
         $election = new Election(
-            $this->getReference('designation-4'),
+            $this->getReference('designation-4', Designation::class),
             Uuid::fromString(self::ELECTION_UUID7),
             [$round = new ElectionRound()]
         );
         $this->manager->persist($election);
-        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-1')));
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-1', Committee::class)));
 
         $this->loadCommitteeAdherentElectionCandidates($election);
         $votersList = $this->loadVoters($election);
@@ -137,12 +140,12 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
 
         // Election with started second round
         $election = new Election(
-            $this->getReference('designation-3'),
+            $this->getReference('designation-3', Designation::class),
             Uuid::fromString(self::ELECTION_UUID5),
             [$round = new ElectionRound()]
         );
         $this->manager->persist($election);
-        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-3')));
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-3', Committee::class)));
 
         $this->loadCommitteeAdherentElectionCandidates($election);
         $votersList = $this->loadVoters($election);
@@ -152,36 +155,36 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         // -------------------------------------------
 
         $election = new Election(
-            $this->getReference('designation-8'),
+            $this->getReference('designation-8', Designation::class),
             Uuid::fromString(self::ELECTION_UUID9),
             [new ElectionRound()]
         );
         $this->manager->persist($election);
-        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-13')));
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-13', Committee::class)));
         $this->loadCommitteeSupervisorElectionCandidates($election);
         $this->manager->persist($this->loadCommitteeSupervisorElectionVoters($election));
 
         // -------------------------------------------
 
         $election = new Election(
-            $this->getReference('designation-8'),
+            $this->getReference('designation-8', Designation::class),
             Uuid::fromString(self::ELECTION_UUID10),
             [new ElectionRound()]
         );
         $this->manager->persist($election);
-        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-14')));
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-14', Committee::class)));
         $this->loadCommitteeSupervisorElectionCandidates($election);
         $this->manager->persist($this->loadCommitteeSupervisorElectionVoters($election));
 
         // -------------------------------------------
 
         $election = new Election(
-            $this->getReference('designation-9'),
+            $this->getReference('designation-9', Designation::class),
             Uuid::fromString(self::ELECTION_UUID11),
             [$round = new ElectionRound()]
         );
         $this->manager->persist($election);
-        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-15')));
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-15', Committee::class)));
         $this->loadCommitteeSupervisorElectionCandidates($election);
         $this->manager->persist($votersList = $this->loadCommitteeSupervisorElectionVoters($election));
         $this->loadResults($round, $votersList, false);
@@ -189,19 +192,19 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         // -------------------------------------------
 
         $election = new Election(
-            $this->getReference('designation-13'),
+            $this->getReference('designation-13', Designation::class),
             Uuid::fromString(self::ELECTION_UUID6),
             [$round = new ElectionRound()]
         );
         $this->manager->persist($election);
-        $this->loadLocalElectionCandidates($election, $this->getReference('local-election-1'));
+        $this->loadLocalElectionCandidates($election, $this->getReference('local-election-1', LocalElection::class));
         $votersList = $this->loadVoters($election);
         $this->loadResults($round, $votersList);
 
         // -------------------------------------------
 
         $election = new Election(
-            $this->getReference('designation-14'),
+            $this->getReference('designation-14', Designation::class),
             Uuid::fromString(self::ELECTION_UUID12),
             [$round = new ElectionRound()]
         );
@@ -213,11 +216,11 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         // -------------------------------------------
 
         $election = new Election(
-            $this->getReference('designation-committee-01'),
+            $this->getReference('designation-committee-01', Designation::class),
             Uuid::fromString(self::ELECTION_UUID13),
             [new ElectionRound()]
         );
-        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-v2-1')));
+        $election->setElectionEntity(new ElectionEntity($this->getReference('committee-v2-1', Committee::class)));
         $this->manager->persist($election);
         $this->loadCommitteeSupervisorElectionCandidates($election);
         $this->manager->persist($this->loadCommitteeSupervisorElectionVoters($election));
@@ -303,23 +306,22 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
     private function getCandidates(): array
     {
         $candidates = [
-            $candidate1 = new Candidate($this->faker->firstNameFemale(), $this->faker->lastName(), Genders::FEMALE, $this->getReference('adherent-1')),
-            new Candidate($this->faker->firstNameFemale(), $this->faker->lastName(), Genders::FEMALE, $this->getReference('adherent-2')),
-            new Candidate($this->faker->firstNameFemale(), $this->faker->lastName(), Genders::FEMALE, $this->getReference('adherent-3')),
-            new Candidate($this->faker->firstNameFemale(), $this->faker->lastName(), Genders::FEMALE, $this->getReference('adherent-4')),
-            new Candidate($this->faker->firstNameFemale(), $this->faker->lastName(), Genders::FEMALE, $this->getReference('adherent-5')),
-            new Candidate($this->faker->firstNameMale(), $this->faker->lastName(), Genders::MALE, $this->getReference('adherent-6')),
-            $candidate2 = new Candidate($this->faker->firstNameMale(), $this->faker->lastName(), Genders::MALE, $this->getReference('adherent-7')),
-            new Candidate($this->faker->firstNameMale(), $this->faker->lastName(), Genders::MALE, $this->getReference('adherent-8')),
-            new Candidate($this->faker->firstNameMale(), $this->faker->lastName(), Genders::MALE, $this->getReference('adherent-9')),
-            new Candidate($this->faker->firstNameMale(), $this->faker->lastName(), Genders::MALE, $this->getReference('adherent-10')),
+            $candidate1 = new Candidate($this->faker->firstNameFemale(), $this->faker->lastName(), Genders::FEMALE, $this->getReference('adherent-1', Adherent::class)),
+            new Candidate($this->faker->firstNameFemale(), $this->faker->lastName(), Genders::FEMALE, $this->getReference('adherent-2', Adherent::class)),
+            new Candidate($this->faker->firstNameFemale(), $this->faker->lastName(), Genders::FEMALE, $this->getReference('adherent-3', Adherent::class)),
+            new Candidate($this->faker->firstNameFemale(), $this->faker->lastName(), Genders::FEMALE, $this->getReference('adherent-4', Adherent::class)),
+            new Candidate($this->faker->firstNameFemale(), $this->faker->lastName(), Genders::FEMALE, $this->getReference('adherent-5', Adherent::class)),
+            new Candidate($this->faker->firstNameMale(), $this->faker->lastName(), Genders::MALE, $this->getReference('adherent-6', Adherent::class)),
+            $candidate2 = new Candidate($this->faker->firstNameMale(), $this->faker->lastName(), Genders::MALE, $this->getReference('adherent-7', Adherent::class)),
+            new Candidate($this->faker->firstNameMale(), $this->faker->lastName(), Genders::MALE, $this->getReference('adherent-8', Adherent::class)),
+            new Candidate($this->faker->firstNameMale(), $this->faker->lastName(), Genders::MALE, $this->getReference('adherent-9', Adherent::class)),
+            new Candidate($this->faker->firstNameMale(), $this->faker->lastName(), Genders::MALE, $this->getReference('adherent-10', Adherent::class)),
         ];
 
         $candidate1->setBiography($this->faker->paragraph(10));
         $candidate2->setBiography($this->faker->paragraph(10));
 
-        /** @var CommitteeCandidacy $committeeCandidacy */
-        $committeeCandidacy = $this->getReference('committee-candidacy-committee_adherent-1');
+        $committeeCandidacy = $this->getReference('committee-candidacy-committee_adherent-1', CommitteeCandidacy::class);
 
         foreach ($candidates as $index => $candidate) {
             if (0 === $index % 2) {
@@ -334,9 +336,9 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
 
     private function loadVoters(Election $election): VotersList
     {
-        $adherent1 = $this->getReference('assessor-1');
-        $adherent2 = $this->getReference('adherent-20');
-        $adherent3 = $this->getReference('adherent-5');
+        $adherent1 = $this->getReference('assessor-1', Adherent::class);
+        $adherent2 = $this->getReference('adherent-20', Adherent::class);
+        $adherent3 = $this->getReference('adherent-5', Adherent::class);
 
         $list = new VotersList($election);
         $list->addVoter($this->voters[$adherent1->getId()] ?? $this->voters[$adherent1->getId()] = new Voter($adherent1));
@@ -444,7 +446,7 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
         }
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadCommitteeV1Data::class,

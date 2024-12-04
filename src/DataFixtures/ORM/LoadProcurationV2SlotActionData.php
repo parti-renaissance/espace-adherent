@@ -18,16 +18,16 @@ use Ramsey\Uuid\Uuid;
 
 class LoadProcurationV2SlotActionData extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var RequestSlot $requestSlot1 */
-        $requestSlot1 = $this->getReference('request_slot_1');
+        $requestSlot1 = $this->getReference('request_slot_1', RequestSlot::class);
         /** @var ProxySlot $proxySlot1 */
-        $proxySlot1 = $this->getReference('proxy_slot_1');
+        $proxySlot1 = $this->getReference('proxy_slot_1', ProxySlot::class);
         /** @var Adherent $matcher1 */
-        $matcher1 = $this->getReference('adherent-4');
+        $matcher1 = $this->getReference('adherent-4', Adherent::class);
         /** @var Adherent $matcher2 */
-        $matcher2 = $this->getReference('adherent-8');
+        $matcher2 = $this->getReference('adherent-8', Adherent::class);
 
         // Create status update history for $proxySlot1->proxy
         $proxySlot1->proxy->actions->add($this->createProxyAction(
@@ -89,7 +89,7 @@ class LoadProcurationV2SlotActionData extends Fixture implements DependentFixtur
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadProcurationV2ProxyData::class,

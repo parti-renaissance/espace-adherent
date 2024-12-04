@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Action\ActionTypeEnum;
 use App\Entity\Action\Action;
+use App\Entity\Adherent;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Tests\App\Test\Geocoder\DummyGeocoder;
@@ -17,8 +18,8 @@ class LoadActionData extends AbstractLoadPostAddressData implements DependentFix
         $types = array_keys(ActionTypeEnum::LABELS);
 
         $adherents = [
-            $this->getReference('adherent-1'),
-            $this->getReference('president-ad-1'),
+            $this->getReference('adherent-1', Adherent::class),
+            $this->getReference('president-ad-1', Adherent::class),
         ];
 
         for ($i = 1; $i <= 50; ++$i) {

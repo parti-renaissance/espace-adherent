@@ -13,7 +13,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadDesignationCandidacyPoolData extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist($pool = new CandidacyPool());
         $pool->label = 'Listes pour l\'élection du bureau de l\'ADT';
@@ -69,8 +69,8 @@ class LoadDesignationCandidacyPoolData extends Fixture implements DependentFixtu
 
         /** @var Designation $designation */
         foreach ([
-            $this->getReference('designation-16'),
-            $this->getReference('designation-17'),
+            $this->getReference('designation-16', Designation::class),
+            $this->getReference('designation-17', Designation::class),
         ] as $designation) {
             $designation->addCandidacyPool($pool);
         }
@@ -78,7 +78,7 @@ class LoadDesignationCandidacyPoolData extends Fixture implements DependentFixtu
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadDesignationData::class,

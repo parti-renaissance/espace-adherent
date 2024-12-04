@@ -12,53 +12,53 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var SurveyQuestion $survey1Question1 */
-        $survey1Question1 = $this->getReference('survey-1-question-1');
+        $survey1Question1 = $this->getReference('survey-1-question-1', SurveyQuestion::class);
         /** @var SurveyQuestion $survey1Question2 */
-        $survey1Question2 = $this->getReference('survey-1-question-2');
+        $survey1Question2 = $this->getReference('survey-1-question-2', SurveyQuestion::class);
         /** @var SurveyQuestion $survey1Question3 */
-        $survey1Question3 = $this->getReference('survey-1-question-3');
+        $survey1Question3 = $this->getReference('survey-1-question-3', SurveyQuestion::class);
 
         /** @var SurveyQuestion $nationalSurvey1Question1 */
-        $nationalSurvey1Question1 = $this->getReference('national-survey-1-question-1');
+        $nationalSurvey1Question1 = $this->getReference('national-survey-1-question-1', SurveyQuestion::class);
         /** @var SurveyQuestion $nationalSurvey1Question2 */
-        $nationalSurvey1Question2 = $this->getReference('national-survey-1-question-2');
+        $nationalSurvey1Question2 = $this->getReference('national-survey-1-question-2', SurveyQuestion::class);
         /** @var SurveyQuestion $nationalSurvey2Question1 */
-        $nationalSurvey2Question1 = $this->getReference('national-survey-2-question-1');
+        $nationalSurvey2Question1 = $this->getReference('national-survey-2-question-1', SurveyQuestion::class);
         /** @var SurveyQuestion $nationalSurvey3Question1 */
-        $nationalSurvey3Question1 = $this->getReference('national-survey-3-question-4');
+        $nationalSurvey3Question1 = $this->getReference('national-survey-3-question-4', SurveyQuestion::class);
         /** @var SurveyQuestion $nationalSurvey3Question2 */
-        $nationalSurvey3Question2 = $this->getReference('national-survey-3-question-5');
+        $nationalSurvey3Question2 = $this->getReference('national-survey-3-question-5', SurveyQuestion::class);
 
         /** @var DataSurvey $dataSurvey1 */
-        $dataSurvey1 = $this->getReference('data-survey-1');
+        $dataSurvey1 = $this->getReference('data-survey-1', DataSurvey::class);
         /** @var DataSurvey $dataSurvey2 */
-        $dataSurvey2 = $this->getReference('data-survey-2');
+        $dataSurvey2 = $this->getReference('data-survey-2', DataSurvey::class);
         /** @var DataSurvey $dataSurvey3 */
-        $dataSurvey3 = $this->getReference('data-survey-3');
+        $dataSurvey3 = $this->getReference('data-survey-3', DataSurvey::class);
 
         /** @var DataSurvey $nationalSurvey1 */
-        $nationalSurvey1 = $this->getReference('data-national-survey-1');
+        $nationalSurvey1 = $this->getReference('data-national-survey-1', DataSurvey::class);
         /** @var DataSurvey $nationalSurvey2 */
-        $nationalSurvey2 = $this->getReference('data-national-survey-2');
+        $nationalSurvey2 = $this->getReference('data-national-survey-2', DataSurvey::class);
         /** @var DataSurvey $nationalSurvey3 */
-        $nationalSurvey3 = $this->getReference('data-national-survey-3');
+        $nationalSurvey3 = $this->getReference('data-national-survey-3', DataSurvey::class);
 
         /** @var DataSurvey $phoningDataSurvey1 */
-        $phoningDataSurvey1 = $this->getReference('phoning-data-survey-1');
+        $phoningDataSurvey1 = $this->getReference('phoning-data-survey-1', DataSurvey::class);
         /** @var DataSurvey $phoningDataSurvey2 */
-        $phoningDataSurvey2 = $this->getReference('phoning-data-survey-2');
+        $phoningDataSurvey2 = $this->getReference('phoning-data-survey-2', DataSurvey::class);
         /** @var DataSurvey $phoningDataSurvey3 */
-        $phoningDataSurvey3 = $this->getReference('phoning-data-survey-3');
+        $phoningDataSurvey3 = $this->getReference('phoning-data-survey-3', DataSurvey::class);
 
         /** @var DataSurvey $papDataSurvey1 */
-        $papDataSurvey1 = $this->getReference('pap-data-survey-1');
+        $papDataSurvey1 = $this->getReference('pap-data-survey-1', DataSurvey::class);
         /** @var DataSurvey $papDataSurvey2 */
-        $papDataSurvey2 = $this->getReference('pap-data-survey-2');
+        $papDataSurvey2 = $this->getReference('pap-data-survey-2', DataSurvey::class);
         /** @var DataSurvey $papDataSurvey3 */
-        $papDataSurvey3 = $this->getReference('pap-data-survey-3');
+        $papDataSurvey3 = $this->getReference('pap-data-survey-3', DataSurvey::class);
 
         // Data Survey 1
 
@@ -68,7 +68,7 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         $dataSurvey1Answer1->setTextField('Bonsoir, ceci est une réponse A');
 
         /** @var Choice $surveyQuestion2Choice1 */
-        $surveyQuestion2Choice1 = $this->getReference('question-2-choice-1');
+        $surveyQuestion2Choice1 = $this->getReference('question-2-choice-1', Choice::class);
 
         $dataSurvey1Answer2 = new DataAnswer();
         $dataSurvey1Answer2->setSurveyQuestion($survey1Question2);
@@ -76,7 +76,7 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         $dataSurvey1Answer2->addSelectedChoice($surveyQuestion2Choice1);
 
         /** @var Choice $surveyQuestion3Choice1 */
-        $surveyQuestion3Choice1 = $this->getReference('question-3-choice-1');
+        $surveyQuestion3Choice1 = $this->getReference('question-3-choice-1', Choice::class);
 
         $dataSurvey1Answer3 = new DataAnswer();
         $dataSurvey1Answer3->setSurveyQuestion($survey1Question3);
@@ -95,7 +95,7 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         $dataSurvey2Answer1->setTextField('Bonsoir, ceci est une réponse B');
 
         /** @var Choice $surveyQuestion2Choice1 */
-        $surveyQuestion2Choice1 = $this->getReference('question-2-choice-1');
+        $surveyQuestion2Choice1 = $this->getReference('question-2-choice-1', Choice::class);
 
         $dataSurvey2Answer2 = new DataAnswer();
         $dataSurvey2Answer2->setSurveyQuestion($survey1Question2);
@@ -103,7 +103,7 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         $dataSurvey2Answer2->addSelectedChoice($surveyQuestion2Choice1);
 
         /** @var Choice $surveyQuestion3Choice2 */
-        $surveyQuestion3Choice2 = $this->getReference('question-3-choice-2');
+        $surveyQuestion3Choice2 = $this->getReference('question-3-choice-2', Choice::class);
 
         $dataSurvey2Answer3 = new DataAnswer();
         $dataSurvey2Answer3->setSurveyQuestion($survey1Question3);
@@ -126,7 +126,7 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         $dataSurvey3Answer1->setTextField('Bonsoir, ceci est une réponse C');
 
         /** @var Choice $surveyQuestion2Choice2 */
-        $surveyQuestion2Choice2 = $this->getReference('question-2-choice-2');
+        $surveyQuestion2Choice2 = $this->getReference('question-2-choice-2', Choice::class);
 
         $dataSurvey3Answer2 = new DataAnswer();
         $dataSurvey3Answer2->setSurveyQuestion($survey1Question2);
@@ -148,8 +148,8 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         $dataNationalSurvey1Answer2 = new DataAnswer();
         $dataNationalSurvey1Answer2->setSurveyQuestion($nationalSurvey1Question2);
         $dataNationalSurvey1Answer2->setDataSurvey($nationalSurvey1);
-        $dataNationalSurvey1Answer2->addSelectedChoice($this->getReference('national-question-2-choice-2'));
-        $dataNationalSurvey1Answer2->addSelectedChoice($this->getReference('national-question-2-choice-3'));
+        $dataNationalSurvey1Answer2->addSelectedChoice($this->getReference('national-question-2-choice-2', Choice::class));
+        $dataNationalSurvey1Answer2->addSelectedChoice($this->getReference('national-question-2-choice-3', Choice::class));
 
         $manager->persist($dataNationalSurvey1Answer2);
 
@@ -163,15 +163,15 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         $dataNationalSurvey2Answer2 = new DataAnswer();
         $dataNationalSurvey2Answer2->setSurveyQuestion($nationalSurvey1Question2);
         $dataNationalSurvey2Answer2->setDataSurvey($nationalSurvey2);
-        $dataNationalSurvey2Answer2->addSelectedChoice($this->getReference('national-question-2-choice-1'));
-        $dataNationalSurvey2Answer2->addSelectedChoice($this->getReference('national-question-2-choice-4'));
+        $dataNationalSurvey2Answer2->addSelectedChoice($this->getReference('national-question-2-choice-1', Choice::class));
+        $dataNationalSurvey2Answer2->addSelectedChoice($this->getReference('national-question-2-choice-4', Choice::class));
 
         $manager->persist($dataNationalSurvey2Answer2);
 
         $dataNationalSurvey3Answer1 = new DataAnswer();
         $dataNationalSurvey3Answer1->setSurveyQuestion($nationalSurvey2Question1);
         $dataNationalSurvey3Answer1->setDataSurvey($nationalSurvey3);
-        $dataNationalSurvey3Answer1->addSelectedChoice($this->getReference('national-question-3-choice-1'));
+        $dataNationalSurvey3Answer1->addSelectedChoice($this->getReference('national-question-3-choice-1', Choice::class));
 
         $manager->persist($dataNationalSurvey3Answer1);
 
@@ -186,8 +186,8 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         $phoningDataSurvey1Answer2 = new DataAnswer();
         $phoningDataSurvey1Answer2->setSurveyQuestion($nationalSurvey3Question2);
         $phoningDataSurvey1Answer2->setDataSurvey($phoningDataSurvey1);
-        $phoningDataSurvey1Answer2->addSelectedChoice($this->getReference('national-question-5-choice-1'));
-        $phoningDataSurvey1Answer2->addSelectedChoice($this->getReference('national-question-5-choice-2'));
+        $phoningDataSurvey1Answer2->addSelectedChoice($this->getReference('national-question-5-choice-1', Choice::class));
+        $phoningDataSurvey1Answer2->addSelectedChoice($this->getReference('national-question-5-choice-2', Choice::class));
 
         $manager->persist($phoningDataSurvey1Answer2);
 
@@ -202,8 +202,8 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         $phoningDataSurvey2Answer2 = new DataAnswer();
         $phoningDataSurvey2Answer2->setSurveyQuestion($nationalSurvey3Question2);
         $phoningDataSurvey2Answer2->setDataSurvey($phoningDataSurvey2);
-        $phoningDataSurvey2Answer2->addSelectedChoice($this->getReference('national-question-5-choice-3'));
-        $phoningDataSurvey2Answer2->addSelectedChoice($this->getReference('national-question-5-choice-4'));
+        $phoningDataSurvey2Answer2->addSelectedChoice($this->getReference('national-question-5-choice-3', Choice::class));
+        $phoningDataSurvey2Answer2->addSelectedChoice($this->getReference('national-question-5-choice-4', Choice::class));
 
         $manager->persist($phoningDataSurvey2Answer2);
 
@@ -218,8 +218,8 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         $phoningDataSurvey3Answer2 = new DataAnswer();
         $phoningDataSurvey3Answer2->setSurveyQuestion($nationalSurvey3Question2);
         $phoningDataSurvey3Answer2->setDataSurvey($phoningDataSurvey3);
-        $phoningDataSurvey3Answer2->addSelectedChoice($this->getReference('national-question-5-choice-1'));
-        $phoningDataSurvey3Answer2->addSelectedChoice($this->getReference('national-question-5-choice-2'));
+        $phoningDataSurvey3Answer2->addSelectedChoice($this->getReference('national-question-5-choice-1', Choice::class));
+        $phoningDataSurvey3Answer2->addSelectedChoice($this->getReference('national-question-5-choice-2', Choice::class));
 
         $manager->persist($phoningDataSurvey3Answer2);
 
@@ -234,8 +234,8 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         $papDataSurvey1Answer2 = new DataAnswer();
         $papDataSurvey1Answer2->setSurveyQuestion($nationalSurvey3Question2);
         $papDataSurvey1Answer2->setDataSurvey($papDataSurvey1);
-        $papDataSurvey1Answer2->addSelectedChoice($this->getReference('national-question-5-choice-1'));
-        $papDataSurvey1Answer2->addSelectedChoice($this->getReference('national-question-5-choice-2'));
+        $papDataSurvey1Answer2->addSelectedChoice($this->getReference('national-question-5-choice-1', Choice::class));
+        $papDataSurvey1Answer2->addSelectedChoice($this->getReference('national-question-5-choice-2', Choice::class));
 
         $manager->persist($papDataSurvey1Answer2);
 
@@ -250,8 +250,8 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         $papDataSurvey2Answer2 = new DataAnswer();
         $papDataSurvey2Answer2->setSurveyQuestion($nationalSurvey3Question2);
         $papDataSurvey2Answer2->setDataSurvey($papDataSurvey2);
-        $papDataSurvey2Answer2->addSelectedChoice($this->getReference('national-question-5-choice-3'));
-        $papDataSurvey2Answer2->addSelectedChoice($this->getReference('national-question-5-choice-4'));
+        $papDataSurvey2Answer2->addSelectedChoice($this->getReference('national-question-5-choice-3', Choice::class));
+        $papDataSurvey2Answer2->addSelectedChoice($this->getReference('national-question-5-choice-4', Choice::class));
 
         $manager->persist($papDataSurvey2Answer2);
 
@@ -266,15 +266,15 @@ class LoadJecouteDataAnswerData extends Fixture implements DependentFixtureInter
         $papDataSurvey3Answer2 = new DataAnswer();
         $papDataSurvey3Answer2->setSurveyQuestion($nationalSurvey3Question2);
         $papDataSurvey3Answer2->setDataSurvey($papDataSurvey3);
-        $papDataSurvey3Answer2->addSelectedChoice($this->getReference('national-question-5-choice-1'));
-        $papDataSurvey3Answer2->addSelectedChoice($this->getReference('national-question-5-choice-2'));
+        $papDataSurvey3Answer2->addSelectedChoice($this->getReference('national-question-5-choice-1', Choice::class));
+        $papDataSurvey3Answer2->addSelectedChoice($this->getReference('national-question-5-choice-2', Choice::class));
 
         $manager->persist($papDataSurvey3Answer2);
 
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadJecouteSurveyData::class,

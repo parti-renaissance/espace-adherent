@@ -18,9 +18,9 @@ class LoadPushTokenData extends Fixture implements DependentFixtureInterface
     public const PUSH_TOKEN_3_UUID = '611bd38d-3150-4843-ad6a-51732b308e36';
     public const PUSH_TOKEN_4_UUID = 'c523cdd0-c4ad-4692-aa77-619c95a36414';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        $adherent77 = $this->getReference('adherent-7');
+        $adherent77 = $this->getReference('adherent-7', Adherent::class);
 
         $pushToken1 = $this->createPushTokenForAdherent(
             self::PUSH_TOKEN_1_UUID,
@@ -38,14 +38,14 @@ class LoadPushTokenData extends Fixture implements DependentFixtureInterface
 
         $pushToken3 = $this->createPushTokenForDevice(
             self::PUSH_TOKEN_3_UUID,
-            $this->getReference('device-1'),
+            $this->getReference('device-1', Device::class),
             'token-device-1-jemarche',
             PushTokenSourceEnum::JE_MARCHE
         );
 
         $pushToken4 = $this->createPushTokenForDevice(
             self::PUSH_TOKEN_4_UUID,
-            $this->getReference('device-2'),
+            $this->getReference('device-2', Device::class),
             'token-device-2-jemarche',
             PushTokenSourceEnum::JE_MARCHE
         );
@@ -86,7 +86,7 @@ class LoadPushTokenData extends Fixture implements DependentFixtureInterface
         );
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdherentData::class,

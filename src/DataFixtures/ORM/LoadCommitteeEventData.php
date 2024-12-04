@@ -9,6 +9,7 @@ use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\CommitteeEvent as EntityEvent;
+use App\Entity\Event\EventCategory;
 use App\Entity\NullablePostAddress;
 use App\Event\EventFactory;
 use App\Event\EventRegistrationCommand;
@@ -61,41 +62,41 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
 
     public function loadEvents(ObjectManager $manager): void
     {
-        $eventCategory1 = $this->getReference('CE001');
-        $eventCategory2 = $this->getReference('CE002');
-        $eventCategory3 = $this->getReference('CE003');
-        $eventCategory5 = $this->getReference('CE005');
-        $eventCategory6 = $this->getReference('CE006');
-        $eventCategory9 = $this->getReference('CE009');
-        $eventCategory10 = $this->getReference('CE010');
-        $hiddenEventCategory = $this->getReference('CE016');
+        $eventCategory1 = $this->getReference('CE001', EventCategory::class);
+        $eventCategory2 = $this->getReference('CE002', EventCategory::class);
+        $eventCategory3 = $this->getReference('CE003', EventCategory::class);
+        $eventCategory5 = $this->getReference('CE005', EventCategory::class);
+        $eventCategory6 = $this->getReference('CE006', EventCategory::class);
+        $eventCategory9 = $this->getReference('CE009', EventCategory::class);
+        $eventCategory10 = $this->getReference('CE010', EventCategory::class);
+        $hiddenEventCategory = $this->getReference('CE016', EventCategory::class);
 
-        $author3 = $this->getReference('adherent-3');
-        $author7 = $this->getReference('adherent-7');
-        $author11 = $this->getReference('adherent-11');
-        $author12 = $this->getReference('adherent-12');
-        $author13 = $this->getReference('adherent-13');
-        $author56 = $this->getReference('adherent-56');
-        $referent75and77 = $this->getReference('adherent-19');
+        $author3 = $this->getReference('adherent-3', Adherent::class);
+        $author7 = $this->getReference('adherent-7', Adherent::class);
+        $author11 = $this->getReference('adherent-11', Adherent::class);
+        $author12 = $this->getReference('adherent-12', Adherent::class);
+        $author13 = $this->getReference('adherent-13', Adherent::class);
+        $author56 = $this->getReference('adherent-56', Adherent::class);
+        $referent75and77 = $this->getReference('adherent-19', Adherent::class);
 
-        $adherent4 = $this->getReference('adherent-4');
-        $adherent5 = $this->getReference('adherent-5');
-        $coordinator = $this->getReference('adherent-17');
-        $adherentRe4 = $this->getReference('renaissance-user-4');
+        $adherent4 = $this->getReference('adherent-4', Adherent::class);
+        $adherent5 = $this->getReference('adherent-5', Adherent::class);
+        $coordinator = $this->getReference('adherent-17', Adherent::class);
+        $adherentRe4 = $this->getReference('renaissance-user-4', Adherent::class);
 
-        $committee1 = $this->getReference('committee-1');
-        $committee2 = $this->getReference('committee-2');
-        $committee3 = $this->getReference('committee-3');
-        $committee4 = $this->getReference('committee-4');
-        $committee5 = $this->getReference('committee-5');
-        $committee10 = $this->getReference('committee-10');
-        $committee11 = $this->getReference('committee-v2-2');
+        $committee1 = $this->getReference('committee-1', Committee::class);
+        $committee2 = $this->getReference('committee-2', Committee::class);
+        $committee3 = $this->getReference('committee-3', Committee::class);
+        $committee4 = $this->getReference('committee-4', Committee::class);
+        $committee5 = $this->getReference('committee-5', Committee::class);
+        $committee10 = $this->getReference('committee-10', Committee::class);
+        $committee11 = $this->getReference('committee-v2-2', Committee::class);
 
         // Singapore
-        $committee8 = $this->getReference('committee-8');
+        $committee8 = $this->getReference('committee-8', Committee::class);
 
         // New York
-        $committee9 = $this->getReference('committee-9');
+        $committee9 = $this->getReference('committee-9', Committee::class);
 
         $eventHidden = $this->eventFactory->createFromArray([
             'uuid' => self::EVENT_21_UUID,
@@ -547,9 +548,9 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         );
     }
 
-    private function publishCommitteeEvent(EntityEvent $event)
+    private function publishCommitteeEvent(EntityEvent $event): void
     {
-        return $this->committeeFeedManager->createEvent(new CommitteeEvent($event->getOrganizer(), $event));
+        $this->committeeFeedManager->createEvent(new CommitteeEvent($event->getOrganizer(), $event));
     }
 
     private function getCommitteeMessageData(Committee $committee): \Generator
@@ -598,7 +599,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         }
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadEventCategoryData::class,

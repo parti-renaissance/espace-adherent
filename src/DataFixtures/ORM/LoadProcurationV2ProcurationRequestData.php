@@ -18,7 +18,7 @@ class LoadProcurationV2ProcurationRequestData extends Fixture
         $this->faker = Factory::create('fr_FR');
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist($this->createProcurationRequest('john.durand@test.dev', InitialRequestTypeEnum::PROXY));
         $manager->persist($this->createProcurationRequest('jane.martin@test.dev', InitialRequestTypeEnum::PROXY));

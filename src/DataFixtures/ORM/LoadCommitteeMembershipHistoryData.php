@@ -14,7 +14,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadCommitteeMembershipHistoryData extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $memberships = $manager->getRepository(CommitteeMembership::class)->findAll();
 
@@ -24,17 +24,17 @@ class LoadCommitteeMembershipHistoryData extends Fixture implements DependentFix
             $manager->persist($event);
         }
 
-        $manager->persist($this->createJoinHistory($this->getReference('adherent-3'), $this->getReference('committee-1'), '2018-01-18'));
-        $manager->persist($this->createLeaveHistory($this->getReference('adherent-3'), $this->getReference('committee-1'), '2018-02-18'));
+        $manager->persist($this->createJoinHistory($this->getReference('adherent-3', Adherent::class), $this->getReference('committee-1', Committee::class), '2018-01-18'));
+        $manager->persist($this->createLeaveHistory($this->getReference('adherent-3', Adherent::class), $this->getReference('committee-1', Committee::class), '2018-02-18'));
 
-        $manager->persist($this->createJoinHistory($this->getReference('adherent-4'), $this->getReference('committee-1'), '2018-03-18'));
-        $manager->persist($this->createLeaveHistory($this->getReference('adherent-4'), $this->getReference('committee-1'), '2018-04-18'));
+        $manager->persist($this->createJoinHistory($this->getReference('adherent-4', Adherent::class), $this->getReference('committee-1', Committee::class), '2018-03-18'));
+        $manager->persist($this->createLeaveHistory($this->getReference('adherent-4', Adherent::class), $this->getReference('committee-1', Committee::class), '2018-04-18'));
 
-        $manager->persist($this->createJoinHistory($this->getReference('adherent-7'), $this->getReference('committee-4'), '2017-12-11'));
-        $manager->persist($this->createLeaveHistory($this->getReference('adherent-7'), $this->getReference('committee-4'), '2017-12-13'));
+        $manager->persist($this->createJoinHistory($this->getReference('adherent-7', Adherent::class), $this->getReference('committee-4', Committee::class), '2017-12-11'));
+        $manager->persist($this->createLeaveHistory($this->getReference('adherent-7', Adherent::class), $this->getReference('committee-4', Committee::class), '2017-12-13'));
 
-        $manager->persist($this->createJoinHistory($this->getReference('adherent-7'), $this->getReference('committee-3'), '2017-10-18'));
-        $manager->persist($this->createLeaveHistory($this->getReference('adherent-7'), $this->getReference('committee-3'), '2018-04-19'));
+        $manager->persist($this->createJoinHistory($this->getReference('adherent-7', Adherent::class), $this->getReference('committee-3', Committee::class), '2017-10-18'));
+        $manager->persist($this->createLeaveHistory($this->getReference('adherent-7', Adherent::class), $this->getReference('committee-3', Committee::class), '2018-04-19'));
 
         $manager->flush();
     }
@@ -66,7 +66,7 @@ class LoadCommitteeMembershipHistoryData extends Fixture implements DependentFix
         return new CommitteeMembershipHistory($membership, $action, new Chronos($date));
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadCommitteeV1Data::class,

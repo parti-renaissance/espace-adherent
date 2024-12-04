@@ -24,7 +24,7 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
     public const AUDIENCE_9_UUID = 'aef77422-0797-40fd-a160-2c5f2ee19260';
     public const AUDIENCE_10_UUID = '79b2046c-1722-406e-b5b4-4ddcc0827ead';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $audienceDeputyOnlyRequired = $this->createAudience(
             self::AUDIENCE_2_UUID,
@@ -140,7 +140,7 @@ class LoadAudienceData extends Fixture implements DependentFixtureInterface
         return $audience;
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadGeoZoneData::class,

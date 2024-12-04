@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadElectionData extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $municipalElections2014 = $this->createElection(
             'Élections municipales 2014',

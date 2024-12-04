@@ -27,7 +27,7 @@ class LoadAdherentRequestData extends AbstractLoadPostAddressData implements Dep
         $this->hasher = $hasherFactory->getPasswordHasher(Adherent::class);
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $adherentRequest1 = $this->createAdherentRequest(
             self::ADHERENT_REQUEST_1_UUID,

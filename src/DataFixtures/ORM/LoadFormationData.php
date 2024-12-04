@@ -26,7 +26,7 @@ class LoadFormationData extends Fixture
         $this->faker = Factory::create('fr_FR');
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         // Media
         $mediaFile = new File(__DIR__.'/../../../app/data/dist/10decembre.jpg');

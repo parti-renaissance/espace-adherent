@@ -6,6 +6,7 @@ use App\Address\PostAddressFactory;
 use App\Entity\Geo\Zone;
 use App\Entity\ProcurationV2\Request;
 use App\Entity\ProcurationV2\RequestSlot;
+use App\Entity\ProcurationV2\Round;
 use App\Utils\PhoneNumberUtils;
 use App\ValueObject\Genders;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -30,11 +31,11 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         $this->faker = Factory::create('fr_FR');
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist($this->createRequest(
             null,
-            $rounds = [$this->getReference('procuration-v2-europeennes-2024-round-1')],
+            $rounds = [$this->getReference('procuration-v2-europeennes-2024-round-1', Round::class)],
             'jack.doe@test.dev',
             Genders::MALE,
             'Jack, Didier',
@@ -47,7 +48,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             '58 Boulevard de la Madeleine',
             false,
             LoadGeoZoneData::getZone($manager, 'zone_city_06088'),
-            $this->getReference('zone_vote_place_nice_1')
+            $this->getReference('zone_vote_place_nice_1', Zone::class)
         ));
 
         $manager->persist($this->createRequest(
@@ -96,7 +97,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
 
         $manager->persist($request = $this->createRequest(
             Uuid::fromString(self::UUID_REQUEST_1),
-            [$this->getReference('procuration-v2-legislatives-2024-round-1')],
+            [$this->getReference('procuration-v2-legislatives-2024-round-1', Round::class)],
             'jack.doe@test.dev',
             Genders::MALE,
             'Jack, Didier',
@@ -109,13 +110,13 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             '58 Boulevard de la Madeleine',
             false,
             LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
-            $this->getReference('zone_vote_place_clichy_1')
+            $this->getReference('zone_vote_place_clichy_1', Zone::class)
         ));
         $this->setReference('request_slot_1', $request->requestSlots->first());
 
         $manager->persist($this->createRequest(
             Uuid::fromString(self::UUID_REQUEST_2),
-            [$this->getReference('procuration-v2-legislatives-2024-round-2')],
+            [$this->getReference('procuration-v2-legislatives-2024-round-2', Round::class)],
             'pierre.doe@test.dev',
             Genders::MALE,
             'Pierre',
@@ -128,14 +129,14 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             '58 Boulevard de la Madeleine',
             false,
             LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
-            $this->getReference('zone_vote_place_clichy_1')
+            $this->getReference('zone_vote_place_clichy_1', Zone::class)
         ));
 
         $manager->persist($this->createRequest(
             null,
             [
-                $this->getReference('procuration-v2-legislatives-2024-round-2'),
-                $round1 = $this->getReference('procuration-v2-legislatives-2024-round-1'),
+                $this->getReference('procuration-v2-legislatives-2024-round-2', Round::class),
+                $round1 = $this->getReference('procuration-v2-legislatives-2024-round-1', Round::class),
             ],
             'chris.doe@test.dev',
             Genders::MALE,
@@ -149,7 +150,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
             '58 Boulevard de la Madeleine',
             false,
             LoadGeoZoneData::getZone($manager, 'zone_city_92024'),
-            $this->getReference('zone_vote_place_clichy_1'),
+            $this->getReference('zone_vote_place_clichy_1', Zone::class),
             null,
             true,
             false,
@@ -161,7 +162,7 @@ class LoadProcurationV2RequestData extends Fixture implements DependentFixtureIn
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadGeoZoneData::class,

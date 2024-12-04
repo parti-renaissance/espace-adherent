@@ -38,7 +38,7 @@ class LoadJecouteSuggestedQuestionData extends Fixture
         ],
     ];
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach (self::SUGGESTED_QUESTIONS as $code => $data) {
             $question = new SuggestedQuestion($data['content'], $data['type'], $data['published']);

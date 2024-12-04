@@ -3,8 +3,10 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
+use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Pap\Campaign;
+use App\Entity\Pap\VotePlace;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -27,11 +29,11 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
     public const CAMPAIGN_13_UUID = '91ecd823-0e31-4aa1-880b-1cbbcd262762';
     public const CAMPAIGN_14_UUID = '115efbe5-af28-419a-a0a5-9f61c5d9f527';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
-        $nationalSurvey1 = $this->getReference('national-survey-1');
-        $nationalSurvey2 = $this->getReference('national-survey-2');
-        $nationalSurvey3 = $this->getReference('national-survey-3');
+        $nationalSurvey1 = $this->getReference('national-survey-1', NationalSurvey::class);
+        $nationalSurvey2 = $this->getReference('national-survey-2', NationalSurvey::class);
+        $nationalSurvey3 = $this->getReference('national-survey-3', NationalSurvey::class);
 
         $campaign1 = $this->createCampaign(
             self::CAMPAIGN_1_UUID,
@@ -44,13 +46,13 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             4,
             7
         );
-        $campaign1->addVotePlace($this->getReference('pap-vote-place--paris-8-a'));
-        $campaign1->addVotePlace($this->getReference('pap-vote-place--paris-8-b'));
-        $campaign1->addVotePlace($this->getReference('pap-vote-place--paris-3-b'));
-        $campaign1->addVotePlace($this->getReference('pap-vote-place--anthony-a'));
-        $campaign1->addVotePlace($this->getReference('pap-vote-place--anthony-b'));
-        $campaign1->addVotePlace($this->getReference('pap-vote-place--sartrouville-a'));
-        $campaign1->addVotePlace($this->getReference('pap-vote-place--sartrouville-b'));
+        $campaign1->addVotePlace($this->getReference('pap-vote-place--paris-8-a', VotePlace::class));
+        $campaign1->addVotePlace($this->getReference('pap-vote-place--paris-8-b', VotePlace::class));
+        $campaign1->addVotePlace($this->getReference('pap-vote-place--paris-3-b', VotePlace::class));
+        $campaign1->addVotePlace($this->getReference('pap-vote-place--anthony-a', VotePlace::class));
+        $campaign1->addVotePlace($this->getReference('pap-vote-place--anthony-b', VotePlace::class));
+        $campaign1->addVotePlace($this->getReference('pap-vote-place--sartrouville-a', VotePlace::class));
+        $campaign1->addVotePlace($this->getReference('pap-vote-place--sartrouville-b', VotePlace::class));
 
         $this->addReference('pap-campaign-1', $campaign1);
 
@@ -117,9 +119,9 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             1,
             0,
             [LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')],
-            $this->getReference('adherent-3'),
+            $this->getReference('adherent-3', Adherent::class),
         );
-        $campaign92->addVotePlace($this->getReference('pap-vote-place--anthony-c'));
+        $campaign92->addVotePlace($this->getReference('pap-vote-place--anthony-c', VotePlace::class));
         $this->addReference('pap-campaign-92', $campaign92);
 
         $campaign59350 = $this->createCampaign(
@@ -133,7 +135,7 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             0,
             0,
             [LoadGeoZoneData::getZoneReference($manager, 'zone_city_59350')],
-            $this->getReference('adherent-8'),
+            $this->getReference('adherent-8', Adherent::class),
         );
 
         $campaign06088 = $this->createCampaign(
@@ -148,7 +150,7 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             0,
             [LoadGeoZoneData::getZoneReference($manager, 'zone_city_06088')]
         );
-        $campaign06088->addVotePlace($this->getReference('pap-vote-place--nice-a'));
+        $campaign06088->addVotePlace($this->getReference('pap-vote-place--nice-a', VotePlace::class));
 
         $campaign75_08 = $this->createCampaign(
             self::CAMPAIGN_9_UUID,
@@ -161,9 +163,9 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             1,
             0,
             [LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')],
-            $this->getReference('senatorial-candidate'),
+            $this->getReference('senatorial-candidate', Adherent::class),
         );
-        $campaign75_08->addVotePlace($this->getReference('pap-vote-place--paris-8-d'));
+        $campaign75_08->addVotePlace($this->getReference('pap-vote-place--paris-8-d', VotePlace::class));
         $this->addReference('pap-campaign-75-08', $campaign75_08);
 
         $campaign75_08_r = $this->createCampaign(
@@ -177,9 +179,9 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             1,
             0,
             [LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')],
-            $this->getReference('senatorial-candidate'),
+            $this->getReference('senatorial-candidate', Adherent::class),
         );
-        $campaign75_08_r->addVotePlace($this->getReference('pap-vote-place--paris-8-e'));
+        $campaign75_08_r->addVotePlace($this->getReference('pap-vote-place--paris-8-e', VotePlace::class));
         $this->addReference('pap-campaign-75-08-r', $campaign75_08_r);
 
         $campaign75_08_upcoming = $this->createCampaign(
@@ -193,9 +195,9 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             1,
             0,
             [LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')],
-            $this->getReference('senatorial-candidate'),
+            $this->getReference('senatorial-candidate', Adherent::class),
         );
-        $campaign75_08_upcoming->addVotePlace($this->getReference('pap-vote-place--paris-8-e'));
+        $campaign75_08_upcoming->addVotePlace($this->getReference('pap-vote-place--paris-8-e', VotePlace::class));
         $this->addReference('pap-campaign-75-08-upcoming', $campaign75_08_upcoming);
 
         $campaignNationalUpcoming = $this->createCampaign(
@@ -209,7 +211,7 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             4,
             7,
             [],
-            $this->getReference('deputy-75-1')
+            $this->getReference('deputy-75-1', Adherent::class)
         );
         $this->addReference('pap-campaign-national-upcoming', $campaignNationalUpcoming);
 
@@ -224,7 +226,7 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
             1,
             0,
             [LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1')],
-            $this->getReference('senatorial-candidate'),
+            $this->getReference('senatorial-candidate', Adherent::class),
             false
         );
         $this->addReference('pap-campaign-75-08-disabled', $campaign75_08_disabled);
@@ -263,7 +265,7 @@ class LoadPapCampaignData extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdminData::class,

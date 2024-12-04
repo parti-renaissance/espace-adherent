@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
 use App\Entity\Jecoute\DataSurvey;
+use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Entity\Pap\Building;
 use App\Entity\Pap\Campaign;
@@ -21,32 +22,31 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
 {
     public const HISTORY_1_UUID = '6b3d2e20-8f66-4cbb-a7ce-2a1b740c75da';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var Campaign $campaign1 */
-        $campaign1 = $this->getReference('pap-campaign-1');
+        $campaign1 = $this->getReference('pap-campaign-1', Campaign::class);
         /** @var Campaign $campaign2 */
-        $campaign2 = $this->getReference('pap-campaign-2');
+        $campaign2 = $this->getReference('pap-campaign-2', Campaign::class);
         /** @var Campaign $campaign75_08_r */
-        $campaign75_08_r = $this->getReference('pap-campaign-75-08-r');
+        $campaign75_08_r = $this->getReference('pap-campaign-75-08-r', Campaign::class);
         /** @var Campaign $campaignFinished */
-        $campaignFinished = $this->getReference('pap-campaign-finished');
+        $campaignFinished = $this->getReference('pap-campaign-finished', Campaign::class);
         /** @var Campaign $campaign92 */
-        $campaign92 = $this->getReference('pap-campaign-92');
+        $campaign92 = $this->getReference('pap-campaign-92', Campaign::class);
 
-        $adherent3 = $this->getReference('adherent-3');
-        $adherent12 = $this->getReference('adherent-12');
-        $adherent16 = $this->getReference('adherent-16');
+        $adherent3 = $this->getReference('adherent-3', Adherent::class);
+        $adherent12 = $this->getReference('adherent-12', Adherent::class);
+        $adherent16 = $this->getReference('adherent-16', Adherent::class);
 
-        $nationalSurvey1 = $this->getReference('national-survey-1');
-        $nationalSurvey3 = $this->getReference('national-survey-3');
+        $nationalSurvey3 = $this->getReference('national-survey-3', NationalSurvey::class);
 
         /** @var Building $building3 */
-        $building3 = $this->getReference('building-3');
+        $building3 = $this->getReference('building-3', Building::class);
         /** @var Building $building92_1 */
-        $building92_1 = $this->getReference('building-92-1');
+        $building92_1 = $this->getReference('building-92-1', Building::class);
         /** @var Building $building_75_08_1 */
-        $building_75_08_1 = $this->getReference('building-75-08-1');
+        $building_75_08_1 = $this->getReference('building-75-08-1', Building::class);
 
         $manager->persist($this->createPapCampaignHistory(
             $campaign1,
@@ -225,7 +225,7 @@ class LoadPapCampaignHistoryData extends Fixture implements DependentFixtureInte
         return $campaignHistory;
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadJecouteSurveyData::class,

@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\ElectedRepresentative\Zone;
+use App\Entity\ElectedRepresentative\ZoneCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -96,17 +97,17 @@ class LoadElectedRepresentativeZoneData extends Fixture implements DependentFixt
         '2A001' => 'Corse-du-Sud, 1ère circonscription (2A-01)',
     ];
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach (self::CITIES as $code => $name) {
-            $zoneCity = new Zone($this->getReference('zone-category-ville'), $name);
+            $zoneCity = new Zone($this->getReference('zone-category-ville', ZoneCategory::class), $name);
             $manager->persist($zoneCity);
             $this->setReference("zone-city-$code", $zoneCity);
         }
 
         foreach (self::EPCI as $codeDpt => $arrEpci) {
             foreach ($arrEpci as $key => $epci) {
-                $zoneEPCI = new Zone($this->getReference('zone-category-epci'), $epci);
+                $zoneEPCI = new Zone($this->getReference('zone-category-epci', ZoneCategory::class), $epci);
 
                 $manager->persist($zoneEPCI);
                 ++$key;
@@ -115,14 +116,14 @@ class LoadElectedRepresentativeZoneData extends Fixture implements DependentFixt
         }
 
         foreach (self::DEPARTMENTS as $code => $name) {
-            $zoneDpt = new Zone($this->getReference('zone-category-département'), $name);
+            $zoneDpt = new Zone($this->getReference('zone-category-département', ZoneCategory::class), $name);
 
             $manager->persist($zoneDpt);
             $this->setReference("zone-dpt-$code", $zoneDpt);
         }
 
         foreach (self::REGIONS as $code => $name) {
-            $zoneRegion = new Zone($this->getReference('zone-category-région'), $name);
+            $zoneRegion = new Zone($this->getReference('zone-category-région', ZoneCategory::class), $name);
             $code = str_pad($code, 2, '0', \STR_PAD_LEFT);
 
             $manager->persist($zoneRegion);
@@ -130,25 +131,25 @@ class LoadElectedRepresentativeZoneData extends Fixture implements DependentFixt
         }
 
         foreach (self::DISTRICTS as $code => $name) {
-            $zoneRegion = new Zone($this->getReference('zone-category-circonscription'), $name);
+            $zoneRegion = new Zone($this->getReference('zone-category-circonscription', ZoneCategory::class), $name);
             $code = str_pad($code, 2, '0', \STR_PAD_LEFT);
 
             $manager->persist($zoneRegion);
             $this->setReference("zone-district-$code", $zoneRegion);
         }
 
-        $zoneCorsica = new Zone($this->getReference('zone-category-corse'), 'Corse');
+        $zoneCorsica = new Zone($this->getReference('zone-category-corse', ZoneCategory::class), 'Corse');
         $manager->persist($zoneCorsica);
         $this->setReference('zone-corsica', $zoneCorsica);
 
-        $zoneFOF = new Zone($this->getReference('zone-category-fde'), 'Français de l\'Étranger');
+        $zoneFOF = new Zone($this->getReference('zone-category-fde', ZoneCategory::class), 'Français de l\'Étranger');
         $manager->persist($zoneFOF);
         $this->setReference('zone-fof', $zoneFOF);
 
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadElectedRepresentativeZoneCategoryData::class,

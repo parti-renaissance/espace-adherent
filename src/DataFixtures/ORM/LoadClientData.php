@@ -27,7 +27,7 @@ class LoadClientData extends Fixture
     public const CLIENT_12_UUID = '4498e44f-f214-110d-8b76-98a83f9d2b0c';
     public const CLIENT_13_UUID = '8128979a-cfdb-45d1-a386-f14f22bb19ae';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $client1 = new Client(
             Uuid::fromString(self::CLIENT_01_UUID),

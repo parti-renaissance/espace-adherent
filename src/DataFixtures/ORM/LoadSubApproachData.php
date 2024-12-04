@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Entity\ProgrammaticFoundation\Measure;
 use App\Entity\ProgrammaticFoundation\SubApproach;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -16,7 +17,7 @@ class LoadSubApproachData extends Fixture implements DependentFixtureInterface
         'Afin de circonvenir à la restriction intrinsèque, on ne peut se passer de comprendre la totalité des organisations matricielles envisageables, pour longtemps.',
     ];
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         for ($i = 0; $i < 6; ++$i) {
             $subtitle = 0 === $i % 2 ? 'Subtitle lorem' : '';
@@ -28,10 +29,10 @@ class LoadSubApproachData extends Fixture implements DependentFixtureInterface
                 0 === $i
             ));
 
-            $measure1 = $this->getReference(\sprintf('sub-approach-measure-%d', 2 * $i));
+            $measure1 = $this->getReference(\sprintf('sub-approach-measure-%d', 2 * $i), Measure::class);
             $measure1->setPosition(1);
 
-            $measure2 = $this->getReference(\sprintf('sub-approach-measure-%d', 2 * $i + 1));
+            $measure2 = $this->getReference(\sprintf('sub-approach-measure-%d', 2 * $i + 1), Measure::class);
             $measure2->setPosition(2);
 
             $manager->persist($measure1);
@@ -47,7 +48,7 @@ class LoadSubApproachData extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadApproachMeasureData::class,

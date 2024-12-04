@@ -16,10 +16,10 @@ class LoadQrCodeData extends Fixture implements DependentFixtureInterface
     public const QR_CODE_2_UUID = '9324d566-5f5a-449a-873e-e204154ff939';
     public const QR_CODE_3_UUID = '849ec452-8104-44ba-94b7-9d633a24a895';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var Administrator $admin */
-        $admin = $this->getReference('administrator-2');
+        $admin = $this->getReference('administrator-2', Administrator::class);
 
         $qrCode1 = $this->createQrCode(
             self::QR_CODE_1_UUID,
@@ -49,7 +49,7 @@ class LoadQrCodeData extends Fixture implements DependentFixtureInterface
         return new QrCode(Uuid::fromString($uuid), $name, $url, $host, $count);
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdminData::class,

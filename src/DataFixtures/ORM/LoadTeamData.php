@@ -31,27 +31,27 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
     public const MEMBER_9_UUID = '538ebe4a-afe6-4af7-a264-c3d82ff98222';
     public const MEMBER_10_UUID = 'ddd7755a-a5fc-4030-b409-8333d8719c3c';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $team1 = $this->createTeam(self::TEAM_1_UUID, 'Première équipe de phoning');
         $team1->setCreatedAt(new \DateTime('-12 hours'));
-        $team1->addMember($this->createMember(self::MEMBER_1_UUID, $this->getReference('adherent-1')));
-        $team1->addMember($this->createMember(self::MEMBER_2_UUID, $this->getReference('adherent-3')));
-        $team1->addMember($this->createMember(self::MEMBER_3_UUID, $this->getReference('adherent-12')));
+        $team1->addMember($this->createMember(self::MEMBER_1_UUID, $this->getReference('adherent-1', Adherent::class)));
+        $team1->addMember($this->createMember(self::MEMBER_2_UUID, $this->getReference('adherent-3', Adherent::class)));
+        $team1->addMember($this->createMember(self::MEMBER_3_UUID, $this->getReference('adherent-12', Adherent::class)));
         $this->setReference('team-1', $team1);
 
         $team2 = $this->createTeam(self::TEAM_2_UUID, 'Deuxième équipe de phoning');
         $team2->setCreatedAt(new \DateTime('-9 hours'));
-        $member1 = $this->createMember(self::MEMBER_4_UUID, $this->getReference('adherent-4'));
+        $member1 = $this->createMember(self::MEMBER_4_UUID, $this->getReference('adherent-4', Adherent::class));
         $member1->setCreatedAt(new \DateTime('-1 hours'));
         $team2->addMember($member1);
-        $member2 = $this->createMember(self::MEMBER_5_UUID, $this->getReference('adherent-3'));
+        $member2 = $this->createMember(self::MEMBER_5_UUID, $this->getReference('adherent-3', Adherent::class));
         $member2->setCreatedAt(new \DateTime('-2 hours'));
         $team2->addMember($member2);
-        $member3 = $this->createMember(self::MEMBER_6_UUID, $this->getReference('adherent-12'));
+        $member3 = $this->createMember(self::MEMBER_6_UUID, $this->getReference('adherent-12', Adherent::class));
         $member3->setCreatedAt(new \DateTime('-3 hours'));
         $team2->addMember($member3);
-        $member4 = $this->createMember(self::MEMBER_7_UUID, $this->getReference('deputy-75-1'));
+        $member4 = $this->createMember(self::MEMBER_7_UUID, $this->getReference('deputy-75-1', Adherent::class));
         $member4->setCreatedAt(new \DateTime('-4 hours'));
         $team2->addMember($member4);
         $this->setReference('team-2', $team2);
@@ -62,7 +62,7 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92')
         );
         $team3->setCreatedAt(new \DateTime('-8 hours'));
-        $team3->addMember($this->createMember(self::MEMBER_8_UUID, $this->getReference('adherent-1')));
+        $team3->addMember($this->createMember(self::MEMBER_8_UUID, $this->getReference('adherent-1', Adherent::class)));
 
         $team4 = $this->createTeam(
             self::TEAM_4_UUID,
@@ -70,7 +70,7 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_59350')
         );
         $team4->setCreatedAt(new \DateTime('-7 hours'));
-        $team4->addMember($this->createMember(self::MEMBER_9_UUID, $this->getReference('adherent-4')));
+        $team4->addMember($this->createMember(self::MEMBER_9_UUID, $this->getReference('adherent-4', Adherent::class)));
 
         $team5 = $this->createTeam(
             self::TEAM_5_UUID,
@@ -78,14 +78,14 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
             LoadGeoZoneData::getZoneReference($manager, 'zone_city_06088')
         );
         $team5->setCreatedAt(new \DateTime('-7 hours'));
-        $team5->addMember($this->createMember(self::MEMBER_10_UUID, $this->getReference('adherent-4')));
+        $team5->addMember($this->createMember(self::MEMBER_10_UUID, $this->getReference('adherent-4', Adherent::class)));
 
         $manager->persist($team = $this->createTeam(
             self::TEAM_6_UUID,
             'Équipe à supprimer',
         ));
         $team->setCreatedAt(new \DateTime('-8 hours'));
-        $team->addMember($this->createMember(Uuid::uuid4()->toString(), $this->getReference('adherent-1')));
+        $team->addMember($this->createMember(Uuid::uuid4()->toString(), $this->getReference('adherent-1', Adherent::class)));
 
         $manager->persist($team1);
         $manager->persist($team2);
@@ -96,7 +96,7 @@ class LoadTeamData extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadAdherentData::class,

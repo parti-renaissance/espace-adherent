@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadRepublicanSilenceData extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $entity = new RepublicanSilence();
         $entity->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'));
@@ -23,7 +23,7 @@ class LoadRepublicanSilenceData extends Fixture implements DependentFixtureInter
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadGeoZoneData::class,

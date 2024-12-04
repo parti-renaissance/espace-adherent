@@ -25,7 +25,7 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
     private const UUID_13 = 'b467e84c-74dc-453f-8ee7-7adf338a481f';
     private const UUID_14 = '1cc8f1bf-533d-4c3a-a02b-00ba651e056a';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist($object = new VotePlace(
             48.86291,
@@ -184,7 +184,7 @@ class LoadPapVotePlaceData extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadGeoZoneData::class,

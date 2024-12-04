@@ -14,7 +14,7 @@ class LoadInternalApiApplicationData extends Fixture
     public const INTERNAL_API_APPLICATION_03_UUID = 'b349ac42-a1e9-475f-92bc-c736fac974a7';
     public const INTERNAL_API_APPLICATION_04_UUID = 'd8203641-b7e2-4253-be75-eb3302f603b0';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $data = [
             'application-1' => new InternalApiApplication(

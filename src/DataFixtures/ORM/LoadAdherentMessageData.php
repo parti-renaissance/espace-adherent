@@ -13,6 +13,7 @@ use App\Entity\AdherentMessage\MailchimpCampaign;
 use App\Entity\AdherentMessage\PresidentDepartmentalAssemblyAdherentMessage;
 use App\Entity\AdherentMessage\SenatorAdherentMessage;
 use App\Entity\AdherentMessage\StatutoryAdherentMessage;
+use App\Entity\Committee;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\ORM\EntityManager;
@@ -26,7 +27,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
     public const MESSAGE_01_UUID = '969b1f08-53ec-4a7d-8d6e-7654a001b13f';
     public const MESSAGE_02_UUID = '65f6cdbf-0707-4940-86d8-cc1755aab17e';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var EntityManager $manager */
         $eventManager = $manager->getEventManager();
@@ -112,7 +113,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         }
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadCommitteeV1Data::class,
@@ -135,16 +136,16 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         switch ($class) {
             case PresidentDepartmentalAssemblyAdherentMessage::class:
             case CommitteeAdherentMessage::class:
-                return $this->getReference('adherent-8'); // referent@en-marche-dev.fr
+                return $this->getReference('adherent-8', Adherent::class); // referent@en-marche-dev.fr
             case DeputyAdherentMessage::class:
-                return $this->getReference('deputy-75-1');
+                return $this->getReference('deputy-75-1', Adherent::class);
             case SenatorAdherentMessage::class:
-                return $this->getReference('senator-59');
+                return $this->getReference('senator-59', Adherent::class);
             case StatutoryAdherentMessage::class:
-                return $this->getReference('president-ad-1');
+                return $this->getReference('president-ad-1', Adherent::class);
         }
 
-        return $this->getReference('adherent-3');
+        return $this->getReference('adherent-3', Adherent::class);
     }
 
     private function getFilter(ObjectManager $manager, string $class): ?AdherentMessageFilterInterface
@@ -152,7 +153,7 @@ class LoadAdherentMessageData extends Fixture implements DependentFixtureInterfa
         switch ($class) {
             case CommitteeAdherentMessage::class:
                 $filter = new MessageFilter();
-                $filter->setCommittee($this->getReference('committee-10'));
+                $filter->setCommittee($this->getReference('committee-10', Committee::class));
 
                 return $filter;
             case DeputyAdherentMessage::class:

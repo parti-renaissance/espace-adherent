@@ -23,7 +23,7 @@ class LoadNationalEventInscriptionData extends Fixture
     public function load(ObjectManager $manager): void
     {
         /** @var NationalEvent $event */
-        $event = $this->getReference('event-national-1');
+        $event = $this->getReference('event-national-1', NationalEvent::class);
 
         for ($i = 1; $i <= 100; ++$i) {
             $manager->persist($eventInscription = new EventInscription($event));

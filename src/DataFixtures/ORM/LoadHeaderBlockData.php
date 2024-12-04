@@ -23,7 +23,7 @@ class LoadHeaderBlockData extends Fixture
         $this->imageManager = $imageManager;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $manager->persist($this->createHeaderBlock(
             'page accueil',

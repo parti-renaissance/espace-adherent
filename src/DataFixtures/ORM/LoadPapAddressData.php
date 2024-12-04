@@ -41,22 +41,22 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
     private const VOTER_13_UUID = '4cac97a2-b501-49d6-908a-26d5d314bfc4';
     private const VOTER_14_UUID = 'd3df07e7-71e2-47f8-9e53-d962c35e655e';
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var VotePlace $vpParis8a */
-        $vpParis8a = $this->getReference('pap-vote-place--paris-8-a');
+        $vpParis8a = $this->getReference('pap-vote-place--paris-8-a', VotePlace::class);
         /** @var VotePlace $vpParis8b */
-        $vpParis8b = $this->getReference('pap-vote-place--paris-8-b');
+        $vpParis8b = $this->getReference('pap-vote-place--paris-8-b', VotePlace::class);
         /** @var VotePlace $vpParis8e */
-        $vpParis8e = $this->getReference('pap-vote-place--paris-8-e');
+        $vpParis8e = $this->getReference('pap-vote-place--paris-8-e', VotePlace::class);
         /** @var VotePlace $vpParis3b */
-        $vpParis3b = $this->getReference('pap-vote-place--paris-3-b');
+        $vpParis3b = $this->getReference('pap-vote-place--paris-3-b', VotePlace::class);
         /** @var VotePlace $vpAnthonya */
-        $vpAnthonya = $this->getReference('pap-vote-place--anthony-a');
+        $vpAnthonya = $this->getReference('pap-vote-place--anthony-a', VotePlace::class);
         /** @var VotePlace $vpAnthonyb */
-        $vpAnthonyb = $this->getReference('pap-vote-place--anthony-b');
+        $vpAnthonyb = $this->getReference('pap-vote-place--anthony-b', VotePlace::class);
         /** @var VotePlace $vpNicea */
-        $vpNicea = $this->getReference('pap-vote-place--nice-a');
+        $vpNicea = $this->getReference('pap-vote-place--nice-a', VotePlace::class);
 
         $address = $this->createAddress(
             self::ADDRESS_01_UUID,
@@ -323,7 +323,7 @@ class LoadPapAddressData extends Fixture implements DependentFixtureInterface
         );
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LoadPapVotePlaceData::class,
