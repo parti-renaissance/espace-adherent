@@ -988,22 +988,10 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         });
     }
 
-    /**
-     * Returns dpt code for France, country code otherwise
-     */
-    public function getMainZoneCode(): ?string
-    {
-        return $this->getMainZone()?->getCode();
-    }
-
     #[Groups(['profile_read'])]
     public function getMainZone(): ?Zone
     {
-        if ($zones = $this->getZonesOfType($this->isForeignResident() ? Zone::COUNTRY : Zone::DEPARTMENT, true)) {
-            return current($zones);
-        }
-
-        return null;
+        return $this->getAssemblyZone();
     }
 
     public function hasSubscribedLocalHostEmails(): bool

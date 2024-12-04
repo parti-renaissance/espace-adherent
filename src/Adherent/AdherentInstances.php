@@ -26,20 +26,17 @@ class AdherentInstances
 
     private function generateAssembly(Adherent $adherent): ?array
     {
-        $mainZone = $adherent->getMainZone();
-
-        if (!$mainZone) {
+        if (!$assemblyZone = $adherent->getAssemblyZone()) {
             return null;
         }
 
-        $zoneName = $mainZone->isCountry() ? 'Français de l\'Étranger' : $mainZone->getName();
-
         return [
             'type' => 'assembly',
-            'code' => $mainZone->getCode(),
+            'code' => $assemblyZone->getCode(),
             'name' => \sprintf(
-                "$zoneName%s",
-                $mainZone->isCountry() ? '' : \sprintf(' (%s)', $mainZone->getCode())
+                '%s%s',
+                $assemblyZone->getName(),
+                $assemblyZone->isDepartment() ? \sprintf(' (%s)', $assemblyZone->getCode()) : ''
             ),
         ];
     }
