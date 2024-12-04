@@ -3,9 +3,10 @@
 namespace App\Entity;
 
 use App\History\UserActionHistoryTypeEnum;
+use App\Repository\UserActionHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: UserActionHistoryRepository::class)]
 class UserActionHistory
 {
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
@@ -29,6 +30,9 @@ class UserActionHistory
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Administrator::class)]
     public ?Administrator $impersonator = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeInterface $telegramNotifiedAt = null;
 
     public function __construct(
         Adherent $adherent,

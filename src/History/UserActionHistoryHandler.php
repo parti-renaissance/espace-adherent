@@ -4,6 +4,7 @@ namespace App\History;
 
 use App\Entity\Adherent;
 use App\Entity\Administrator;
+use App\Entity\Geo\Zone;
 use App\History\Command\UserActionHistoryCommand;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Authentication\Token\SwitchUserToken;
@@ -99,6 +100,34 @@ class UserActionHistoryHandler
         );
     }
 
+    /** @param Zone[] $zones */
+    public function createRoleAdd(Adherent $adherent, string $role, array $zones, Administrator $administrator): void
+    {
+        $this->dispatch(
+            $adherent,
+            UserActionHistoryTypeEnum::ROLE_ADD,
+            [
+                'role' => $role,
+                'zones' => $this->getZoneNames($zones),
+            ],
+            $administrator
+        );
+    }
+
+    /** @param Zone[] $zones */
+    public function createRoleRemove(Adherent $adherent, string $role, array $zones, Administrator $administrator): void
+    {
+        $this->dispatch(
+            $adherent,
+            UserActionHistoryTypeEnum::ROLE_REMOVE,
+            [
+                'role' => $role,
+                'zones' => $this->getZoneNames($zones),
+            ],
+            $administrator
+        );
+    }
+
     private function getImpersonator(): ?Administrator
     {
         $token = $this->security->getToken();
@@ -125,6 +154,17 @@ class UserActionHistoryHandler
                 $data,
                 $administrator?->getId()
             )
+        );
+    }
+
+    /** @param Zone[] $zones */
+    private function getZoneNames(array $zones): array
+    {
+        return array_map(
+            function (Zone $zone): string {
+                return $zone->getName();
+            },
+            $zones
         );
     }
 }

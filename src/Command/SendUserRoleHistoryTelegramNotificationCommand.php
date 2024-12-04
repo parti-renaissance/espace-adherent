@@ -2,8 +2,9 @@
 
 namespace App\Command;
 
-use App\Entity\Reporting\UserRoleHistory;
-use App\Repository\Reporting\UserRoleHistoryRepository;
+use App\Entity\UserActionHistory;
+use App\History\UserActionHistoryTypeEnum;
+use App\Repository\UserActionHistoryRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -26,7 +27,7 @@ class SendUserRoleHistoryTelegramNotificationCommand extends Command
     private ?SymfonyStyle $io = null;
 
     public function __construct(
-        private readonly UserRoleHistoryRepository $userRoleHistoryRepository,
+        private readonly UserActionHistoryRepository $userActionHistoryRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly TranslatorInterface $translator,
         private readonly ChatterInterface $chatter,
@@ -43,99 +44,100 @@ class SendUserRoleHistoryTelegramNotificationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $notNotifiedHistories = $this->userRoleHistoryRepository->findToNotifyOnTelegram();
+        $notNotifiedHistories = $this->userActionHistoryRepository->findToNotifyOnTelegram([
+            UserActionHistoryTypeEnum::ROLE_ADD,
+            UserActionHistoryTypeEnum::ROLE_REMOVE,
+        ]);
 
         if (!$notNotifiedHistories) {
-            $this->io->text('No new declared mandate history.');
+            $this->io->text('No new role history.');
 
             return self::SUCCESS;
         }
 
-        $this->notifyTelegram($notNotifiedHistories);
-        $this->markHistoriesAsTelegramNotified($notNotifiedHistories);
-
-        $this->io->success('Notifications sent!');
-
-        return self::SUCCESS;
-    }
-
-    /** @param UserRoleHistory[] $histories */
-    private function notifyTelegram(array $histories): void
-    {
         $this->io->text(\sprintf(
             'Will notify Telegram channel about %d new role historie(s)',
-            \count($histories)
+            $total = \count($notNotifiedHistories)
         ));
 
-        foreach ($histories as $history) {
-            $user = $history->user;
+        $this->io->progressStart($total);
 
-            $civility = match ($user->getGender()) {
-                Genders::FEMALE => 'Mme',
-                Genders::MALE => 'M.',
-                default => '',
-            };
-
-            $messageBlock = [
-                \sprintf(
-                    '*%s %s* ([%s](%s))',
-                    $civility,
-                    $user->getFullName(),
-                    $user->getId(),
-                    $this->urlGenerator->generate('admin_app_adherent_edit', ['id' => $user->getId()], UrlGeneratorInterface::ABSOLUTE_URL)
-                ),
-            ];
-
-            if (UserRoleHistory::ACTION_ADD === $history->action) {
-                $messageBlock[] = \sprintf(
-                    '❇️ %s (%s)',
-                    $history->role,
-                    implode(', ', $history->zones)
-                );
-            }
-
-            if (UserRoleHistory::ACTION_REMOVE === $history->action) {
-                $messageBlock[] = \sprintf(
-                    '❌ %s (%s)',
-                    $history->role,
-                    implode(', ', $history->zones)
-                );
-            }
-
-            if ($administrator = $history->adminAuthor) {
-                $messageBlock[] = \sprintf(\PHP_EOL.'Par Admin : %s', $administrator->getEmailAddress());
-            }
-
-            $chatMessage = new ChatMessage(
-                implode(\PHP_EOL, $messageBlock),
-                (new TelegramOptions())
-                    ->chatId($this->telegramChatIdNominations)
-                    ->parseMode(TelegramOptions::PARSE_MODE_MARKDOWN)
-                    ->disableWebPagePreview(true)
-                    ->disableNotification(true)
-            );
-
-            $this->chatter->send($chatMessage);
-        }
-    }
-
-    /**
-     * @param UserRoleHistory[] $histories
-     */
-    private function markHistoriesAsTelegramNotified(array $histories): void
-    {
-        $this->io->text(\sprintf('Will mark %d new role historie(s) as notified', \count($histories)));
-        $this->io->progressStart(\count($histories));
-
-        foreach ($histories as $userRoleHistory) {
-            $userRoleHistory->telegramNotifiedAt = new \DateTimeImmutable();
+        foreach ($notNotifiedHistories as $history) {
+            $this->process($history);
 
             $this->io->progressAdvance();
         }
 
         $this->io->progressFinish();
 
+        $this->io->success('Notifications sent!');
+
+        return self::SUCCESS;
+    }
+
+    private function process(UserActionHistory $history): void
+    {
+        $user = $history->adherent;
+
+        $civility = match ($user->getGender()) {
+            Genders::FEMALE => 'Mme',
+            Genders::MALE => 'M.',
+            default => '',
+        };
+
+        $messageBlock = [
+            \sprintf(
+                '*%s %s* ([%s](%s))',
+                $civility,
+                $user->getFullName(),
+                $user->getId(),
+                $this->urlGenerator->generate('admin_app_adherent_edit', ['id' => $user->getId()], UrlGeneratorInterface::ABSOLUTE_URL)
+            ),
+        ];
+
+        if (UserActionHistoryTypeEnum::ROLE_ADD === $history->type) {
+            $messageBlock[] = \sprintf(
+                '❇️ %s (%s)',
+                $this->translateRole($history->data['role']),
+                implode(', ', $history->data['zones'])
+            );
+        }
+
+        if (UserActionHistoryTypeEnum::ROLE_REMOVE === $history->type) {
+            $messageBlock[] = \sprintf(
+                '❌ %s (%s)',
+                $this->translateRole($history->data['role']),
+                implode(', ', $history->data['zones'])
+            );
+        }
+
+        if ($administrator = $history->impersonator) {
+            $messageBlock[] = \sprintf(\PHP_EOL.'Par Admin : %s', $administrator->getEmailAddress());
+        }
+
+        $chatMessage = new ChatMessage(
+            implode(\PHP_EOL, $messageBlock),
+            (new TelegramOptions())
+                ->chatId($this->telegramChatIdNominations)
+                ->parseMode(TelegramOptions::PARSE_MODE_MARKDOWN)
+                ->disableWebPagePreview(true)
+                ->disableNotification(true)
+        );
+
+        $this->chatter->send($chatMessage);
+
+        $this->markHistoryAsTelegramNotified($history);
+    }
+
+    private function markHistoryAsTelegramNotified(UserActionHistory $history): void
+    {
+        $history->telegramNotifiedAt = new \DateTimeImmutable();
+
         $this->entityManager->flush();
-        $this->entityManager->clear();
+    }
+
+    private function translateRole(string $role): string
+    {
+        return $this->translator->trans("role.$role");
     }
 }

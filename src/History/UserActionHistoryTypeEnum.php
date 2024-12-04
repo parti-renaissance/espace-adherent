@@ -13,4 +13,6 @@ enum UserActionHistoryTypeEnum: string
     case PASSWORD_RESET_VALIDATE = 'password_reset_validate';
     case EMAIL_CHANGE_REQUEST = 'email_change_request';
     case EMAIL_CHANGE_VALIDATE = 'email_change_validate';
+    case ROLE_ADD = 'role_add';
+    case ROLE_REMOVE = 'role_remove';
 }

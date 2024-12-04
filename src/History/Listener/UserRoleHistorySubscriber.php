@@ -3,23 +3,19 @@
 namespace App\History\Listener;
 
 use App\Entity\Adherent;
-use App\Entity\Reporting\UserRoleHistory;
 use App\History\AdministratorActionEvent;
 use App\History\AdministratorActionEvents;
-use App\History\Command\UserRoleHistoryCommand;
+use App\History\UserActionHistoryHandler;
 use App\Scope\GeneralScopeGenerator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserRoleHistorySubscriber implements EventSubscriberInterface
 {
     private array $userRolesBeforeUpdate = [];
 
     public function __construct(
-        private readonly MessageBusInterface $bus,
+        private readonly UserActionHistoryHandler $userActionHistoryHandler,
         private readonly GeneralScopeGenerator $generalScopeGenerator,
-        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -46,32 +42,28 @@ class UserRoleHistorySubscriber implements EventSubscriberInterface
             return;
         }
 
+        $administrator = $event->administrator;
+
         $userRolesAfterUpdate = $this->getAdherentRoles($adherent);
 
         foreach ($userRolesAfterUpdate as $role => $zones) {
             if (!\array_key_exists($role, $this->userRolesBeforeUpdate)) {
-                $this->bus->dispatch(
-                    new UserRoleHistoryCommand(
-                        $adherent->getUuid(),
-                        UserRoleHistory::ACTION_ADD,
-                        $this->translateRole($role),
-                        $zones,
-                        $event->administrator->getId()
-                    )
+                $this->userActionHistoryHandler->createRoleAdd(
+                    $adherent,
+                    $role,
+                    $zones,
+                    $administrator
                 );
             }
         }
 
         foreach ($this->userRolesBeforeUpdate as $role => $zones) {
             if (!\array_key_exists($role, $userRolesAfterUpdate)) {
-                $this->bus->dispatch(
-                    new UserRoleHistoryCommand(
-                        $adherent->getUuid(),
-                        UserRoleHistory::ACTION_REMOVE,
-                        $this->translateRole($role),
-                        $zones,
-                        $event->administrator->getId()
-                    )
+                $this->userActionHistoryHandler->createRoleRemove(
+                    $adherent,
+                    $role,
+                    $zones,
+                    $administrator
                 );
             }
         }
@@ -83,14 +75,9 @@ class UserRoleHistorySubscriber implements EventSubscriberInterface
 
         $roles = [];
         foreach ($scopes as $scope) {
-            $roles[$scope->getMainCode()] = $scope->getZoneNames();
+            $roles[$scope->getMainCode()] = $scope->getZones();
         }
 
         return $roles;
-    }
-
-    private function translateRole(string $role): string
-    {
-        return $this->translator->trans("role.$role");
     }
 }

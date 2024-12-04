@@ -10,4 +10,6 @@ enum AdministratorActionHistoryTypeEnum: string
     case IMPERSONATION_END = 'impersonation_end';
     case EXPORT = 'export';
     case ADHERENT_PROFILE_UPDATE = 'adherent_profile_update';
+    case ROLE_ADD = 'role_add';
+    case ROLE_REMOVE = 'role_remove';
 }

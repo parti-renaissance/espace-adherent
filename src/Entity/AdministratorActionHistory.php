@@ -26,6 +26,9 @@ class AdministratorActionHistory
     #[ORM\Column(type: 'json', nullable: true)]
     public ?array $data = null;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    public ?\DateTimeInterface $telegramNotifiedAt = null;
+
     public function __construct(
         Administrator $administrator,
         AdministratorActionHistoryTypeEnum $type,
