@@ -1579,6 +1579,7 @@ Feature:
             """
         Then the response status code should be 200
 
+    @debug
     Scenario Outline: As a (delegated) referent I can edit my (delegator's) default event
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "PUT" request to "/api/v3/events/5cab27a7-dbb3-4347-9781-566dad1b9eb5?scope=<scope>" with body:
