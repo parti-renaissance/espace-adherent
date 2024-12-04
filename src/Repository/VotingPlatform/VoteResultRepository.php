@@ -74,15 +74,18 @@ class VoteResultRepository extends ServiceEntityRepository
 
     public function getVotes(Designation $designation): array
     {
-        return $this->createQueryBuilder('vote_result')
-            ->select('vote_result.voterKey AS Cle')
-            ->addSelect('candidate_group.label AS Liste')
-            ->addSelect('IF(choice.isBlank = 1, \'oui\', \'non\') AS Blanc')
+        $rows = $this->createQueryBuilder('vote_result')
+            ->select('vote_result.voterKey AS voter_key')
+            ->addSelect('pool.id as pool_id')
+            ->addSelect('pool.code as pool_code')
+            ->addSelect('candidate_group.label AS choice')
+            ->addSelect('vote_choice.isBlank AS is_blank')
             ->innerJoin('vote_result.electionRound', 'election_round')
             ->innerJoin('election_round.election', 'election')
             ->innerJoin('election.designation', 'designation')
-            ->innerJoin('vote_result.voteChoices', 'choice')
-            ->leftJoin('choice.candidateGroup', 'candidate_group')
+            ->innerJoin('vote_result.voteChoices', 'vote_choice')
+            ->innerJoin('vote_choice.electionPool', 'pool')
+            ->leftJoin('vote_choice.candidateGroup', 'candidate_group')
             ->where('designation.id = :designation_id')
             ->setParameters([
                 'designation_id' => $designation->getId(),
@@ -90,5 +93,16 @@ class VoteResultRepository extends ServiceEntityRepository
             ->getQuery()
             ->getArrayResult()
         ;
+
+        $results = [];
+        foreach ($rows as $row) {
+            if (!isset($results[$row['voter_key']])) {
+                $results[$row['voter_key']] = ['clé' => $row['voter_key']];
+            }
+
+            $results[$row['voter_key']][$row['pool_code']] = true === $row['is_blank'] ? 'blanc' : $row['choice'];
+        }
+
+        return array_values($results);
     }
 }

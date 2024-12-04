@@ -309,6 +309,7 @@ class ConfigureCommand extends Command
 
             foreach ($question->getChoices() as $choice) {
                 $pool->addCandidateGroup($group = new CandidateGroup());
+                $group->setLabel($choice->label);
                 $group->addCandidate(new Candidate($choice->label, '', ''));
             }
         }
@@ -350,6 +351,7 @@ class ConfigureCommand extends Command
 
             foreach ($question->getChoices() as $choice) {
                 $pool->addCandidateGroup($group = new CandidateGroup());
+                $group->setLabel($choice->label);
                 $group->addCandidate(new Candidate($choice->label, '', ''));
             }
         }

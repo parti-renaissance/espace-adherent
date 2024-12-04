@@ -90,7 +90,7 @@ class VoterRepository extends ServiceEntityRepository
             ->setParameter('election', $election)
             ->setParameter('election_round', $election->getCurrentRound())
             ->getQuery()
-            ->getResult()
+            ->getScalarResult()
         ;
     }
 
