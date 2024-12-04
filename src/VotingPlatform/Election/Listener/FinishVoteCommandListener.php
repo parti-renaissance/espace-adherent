@@ -73,7 +73,7 @@ class FinishVoteCommandListener implements EventSubscriberInterface
         $voterKey = VoteResult::generateVoterKey();
 
         // 3. create vote result with unique key
-        $voteResult = $this->createVoteResult($electionRound, $command, $voterKey, $adherent->getMainZoneCode());
+        $voteResult = $this->createVoteResult($electionRound, $command, $voterKey, $adherent->getAssemblyZone()?->getCode());
 
         // 4. delete voters from other voters lists for the same designation
         $voter = $vote->getVoter();

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Collection\ZoneCollection;
 use App\Entity\Geo\Zone;
+use App\Entity\Geo\ZoneTagEnum;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -86,6 +87,20 @@ trait EntityZoneTrait
                 return $type === $zone->getType();
             }
         );
+    }
+
+    /**
+     * Return DPT zone or FDE zone if adherent is outside France
+     */
+    public function getAssemblyZone(): ?Zone
+    {
+        foreach ($this->getDeepZones() as $zone) {
+            if ($zone->hasTag(ZoneTagEnum::ASSEMBLY)) {
+                return $zone;
+            }
+        }
+
+        return null;
     }
 
     /**

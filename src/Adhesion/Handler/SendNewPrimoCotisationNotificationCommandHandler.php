@@ -4,7 +4,7 @@ namespace App\Adhesion\Handler;
 
 use App\Adherent\Tag\TagEnum;
 use App\Adhesion\Command\SendNewPrimoCotisationNotificationCommand;
-use App\Entity\Geo\Zone;
+use App\Entity\Adherent;
 use App\Repository\AdherentRepository;
 use App\ValueObject\Genders;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -26,6 +26,7 @@ class SendNewPrimoCotisationNotificationCommandHandler
 
     public function __invoke(SendNewPrimoCotisationNotificationCommand $command): void
     {
+        /** @var Adherent $adherent */
         if (!$adherent = $this->adherentRepository->findOneByUuid($command->getUuid())) {
             return;
         }
@@ -41,9 +42,10 @@ class SendNewPrimoCotisationNotificationCommandHandler
         };
 
         $zoneLine = '';
-        if ($mainZone = $adherent->getMainZone()) {
-            $zoneName = $mainZone->getName();
-            $zoneCode = $mainZone->isCountry() ? Zone::FDE_CODE : $mainZone->getCode();
+
+        if ($assemblyZone = $adherent->getAssemblyZone()) {
+            $zoneName = $assemblyZone->getName();
+            $zoneCode = $assemblyZone->getCode();
             $zoneLine = "{$zoneCode} - {$zoneName}, ";
         }
 

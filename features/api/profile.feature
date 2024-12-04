@@ -1674,7 +1674,7 @@ Feature:
             [
                 {
                     "type": "assembly",
-                    "code": "CH",
+                    "code": "FDE",
                     "name": "Français de l'Étranger"
                 },
                 {
