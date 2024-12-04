@@ -17,8 +17,9 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(),
     ],
     routePrefix: '/v3',
-    paginationEnabled: false,
     normalizationContext: ['groups' => ['subscription_type_read']],
+    order: ['position' => 'ASC'],
+    paginationEnabled: false,
 )]
 #[ORM\Entity(repositoryClass: SubscriptionTypeRepository::class)]
 #[ORM\Index(columns: ['code'])]
@@ -110,6 +111,11 @@ class SubscriptionType
     public function getPosition(): int
     {
         return $this->position;
+    }
+
+    public function setPosition(?int $position): void
+    {
+        $this->position = $position;
     }
 
     #[Groups(['subscription_type_read'])]

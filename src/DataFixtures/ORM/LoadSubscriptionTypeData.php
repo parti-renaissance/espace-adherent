@@ -13,6 +13,7 @@ class LoadSubscriptionTypeData extends Fixture
     {
         foreach ($this->getSubscriptionTypes() as $row) {
             $type = new SubscriptionType($row['label'], $row['code'], $row['externalId'] ?? null);
+            $type->setPosition($row['position'] ?? 100);
             $this->setReference('st-'.$row['code'], $type);
             $manager->persist($type);
         }
@@ -28,38 +29,46 @@ class LoadSubscriptionTypeData extends Fixture
                 'code' => SubscriptionTypeEnum::MILITANT_ACTION_SMS,
             ],
             [
-                'label' => 'Recevoir les e-mails nationaux',
+                'label' => 'Recevoir les emails du national',
                 'code' => SubscriptionTypeEnum::MOVEMENT_INFORMATION_EMAIL,
                 'externalId' => '123abc',
+                'position' => 1,
             ],
             [
                 'label' => 'Recevoir la newsletter hebdomadaire nationale',
                 'code' => SubscriptionTypeEnum::WEEKLY_LETTER_EMAIL,
                 'externalId' => '456def',
+                'position' => 2,
             ],
             [
-                'label' => 'Recevoir les e-mails de mes candidat(e)s LaREM',
-                'code' => SubscriptionTypeEnum::CANDIDATE_EMAIL,
-            ],
-            [
-                'label' => 'Recevoir les e-mails de mon/ma député(e)',
-                'code' => SubscriptionTypeEnum::DEPUTY_EMAIL,
-            ],
-            [
-                'label' => 'Recevoir les e-mails de mon animateur(trice) local(e) de comité',
-                'code' => SubscriptionTypeEnum::LOCAL_HOST_EMAIL,
-            ],
-            [
-                'label' => 'Recevoir les e-mails de mon/ma référent(e) territorial(e)',
+                'label' => 'Recevoir les emails de mon Assemblée départementale',
                 'code' => SubscriptionTypeEnum::REFERENT_EMAIL,
+                'position' => 3,
             ],
             [
-                'label' => 'Recevoir les e-mails de mon/ma sénateur/trice',
+                'label' => 'Recevoir les emails de ma/mon député(e) ou de ma/mon délégué(e) de circonscription',
+                'code' => SubscriptionTypeEnum::DEPUTY_EMAIL,
+                'position' => 4,
+            ],
+            [
+                'label' => 'Recevoir les emails de mon Comité local',
+                'code' => SubscriptionTypeEnum::LOCAL_HOST_EMAIL,
+                'position' => 5,
+            ],
+            [
+                'label' => 'Recevoir les emails de ma/mon sénateur/trice',
                 'code' => SubscriptionTypeEnum::SENATOR_EMAIL,
+                'position' => 6,
             ],
             [
-                'label' => 'Recevoir les e-mails de JAM',
+                'label' => 'Recevoir les emails des candidats du parti',
+                'code' => SubscriptionTypeEnum::CANDIDATE_EMAIL,
+                'position' => 7,
+            ],
+            [
+                'label' => 'Recevoir les emails des Jeunes avec Macron',
                 'code' => SubscriptionTypeEnum::JAM_EMAIL,
+                'position' => 8,
             ],
         ];
     }

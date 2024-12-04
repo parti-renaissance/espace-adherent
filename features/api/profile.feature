@@ -52,7 +52,7 @@ Feature:
                 "activity_area": null,
                 "subscription_types": [
                     {
-                        "label": "Recevoir les e-mails nationaux",
+                        "label": "Recevoir les emails du national",
                         "code": "subscribed_emails_movement_information"
                     },
                     {
@@ -60,20 +60,20 @@ Feature:
                         "code": "subscribed_emails_weekly_letter"
                     },
                     {
-                        "label": "Recevoir les e-mails de mes candidat(e)s LaREM",
-                        "code": "candidate_email"
-                    },
-                    {
-                        "label": "Recevoir les e-mails de mon/ma député(e)",
-                        "code": "deputy_email"
-                    },
-                    {
-                        "label": "Recevoir les e-mails de mon/ma référent(e) territorial(e)",
+                        "label": "Recevoir les emails de mon Assemblée départementale",
                         "code": "subscribed_emails_referents"
                     },
                     {
-                        "label": "Recevoir les e-mails de mon/ma sénateur/trice",
+                        "label": "Recevoir les emails de ma/mon député(e) ou de ma/mon délégué(e) de circonscription",
+                        "code": "deputy_email"
+                    },
+                    {
+                        "label": "Recevoir les emails de ma/mon sénateur/trice",
                         "code": "senator_email"
+                    },
+                    {
+                        "label": "Recevoir les emails des candidats du parti",
+                        "code": "candidate_email"
                     }
                 ],
                 "interests": [],
@@ -450,7 +450,7 @@ Feature:
                         "code": "militant_action_sms"
                     },
                     {
-                        "label": "Recevoir les e-mails nationaux",
+                        "label": "Recevoir les emails du national",
                         "code": "subscribed_emails_movement_information"
                     }
                 ]
@@ -922,35 +922,35 @@ Feature:
                     },
                     {
                         "code": "subscribed_emails_movement_information",
-                        "label": "Recevoir les e-mails nationaux"
+                        "label": "Recevoir les emails du national"
                     },
                     {
                         "code": "subscribed_emails_weekly_letter",
                         "label": "Recevoir la newsletter hebdomadaire nationale"
                     },
                     {
-                        "code": "candidate_email",
-                        "label": "Recevoir les e-mails de mes candidat(e)s LaREM"
+                        "code": "subscribed_emails_referents",
+                        "label": "Recevoir les emails de mon Assemblée départementale"
                     },
                     {
                         "code": "deputy_email",
-                        "label": "Recevoir les e-mails de mon/ma député(e)"
+                        "label": "Recevoir les emails de ma/mon député(e) ou de ma/mon délégué(e) de circonscription"
                     },
                     {
                         "code": "subscribed_emails_local_host",
-                        "label": "Recevoir les e-mails de mon animateur(trice) local(e) de comité"
-                    },
-                    {
-                        "code": "subscribed_emails_referents",
-                        "label": "Recevoir les e-mails de mon/ma référent(e) territorial(e)"
+                        "label": "Recevoir les emails de mon Comité local"
                     },
                     {
                         "code": "senator_email",
-                        "label": "Recevoir les e-mails de mon/ma sénateur/trice"
+                        "label": "Recevoir les emails de ma/mon sénateur/trice"
+                    },
+                    {
+                        "code": "candidate_email",
+                        "label": "Recevoir les emails des candidats du parti"
                     },
                     {
                         "code": "jam_email",
-                        "label": "Recevoir les e-mails de JAM"
+                        "label": "Recevoir les emails des Jeunes avec Macron"
                     }
                 ],
                 "positions": [
@@ -1272,7 +1272,7 @@ Feature:
                         "code": "militant_action_sms"
                     },
                     {
-                        "label": "Recevoir les e-mails nationaux",
+                        "label": "Recevoir les emails du national",
                         "code": "subscribed_emails_movement_information"
                     },
                     {
@@ -1280,15 +1280,15 @@ Feature:
                         "code": "subscribed_emails_weekly_letter"
                     },
                     {
-                        "label": "Recevoir les e-mails de mon/ma député(e)",
+                        "label": "Recevoir les emails de ma/mon député(e) ou de ma/mon délégué(e) de circonscription",
                         "code": "deputy_email"
                     },
                     {
-                        "label": "Recevoir les e-mails de mon animateur(trice) local(e) de comité",
+                        "label": "Recevoir les emails de mon Comité local",
                         "code": "subscribed_emails_local_host"
                     },
                     {
-                        "label": "Recevoir les e-mails de mon/ma sénateur/trice",
+                        "label": "Recevoir les emails de ma/mon sénateur/trice",
                         "code": "senator_email"
                     }
                 ],
@@ -1384,7 +1384,7 @@ Feature:
                         "code": "militant_action_sms"
                     },
                     {
-                        "label": "Recevoir les e-mails nationaux",
+                        "label": "Recevoir les emails du national",
                         "code": "subscribed_emails_movement_information"
                     },
                     {
@@ -1392,15 +1392,15 @@ Feature:
                         "code": "subscribed_emails_weekly_letter"
                     },
                     {
-                        "label": "Recevoir les e-mails de mon/ma député(e)",
+                        "label": "Recevoir les emails de ma/mon député(e) ou de ma/mon délégué(e) de circonscription",
                         "code": "deputy_email"
                     },
                     {
-                        "label": "Recevoir les e-mails de mon animateur(trice) local(e) de comité",
+                        "label": "Recevoir les emails de mon Comité local",
                         "code": "subscribed_emails_local_host"
                     },
                     {
-                        "label": "Recevoir les e-mails de mon/ma sénateur/trice",
+                        "label": "Recevoir les emails de ma/mon sénateur/trice",
                         "code": "senator_email"
                     }
                 ],
@@ -1470,7 +1470,7 @@ Feature:
                         "code": "militant_action_sms"
                     },
                     {
-                        "label": "Recevoir les e-mails nationaux",
+                        "label": "Recevoir les emails du national",
                         "code": "subscribed_emails_movement_information"
                     },
                     {
@@ -1478,15 +1478,15 @@ Feature:
                         "code": "subscribed_emails_weekly_letter"
                     },
                     {
-                        "label": "Recevoir les e-mails de mon/ma député(e)",
+                        "label": "Recevoir les emails de ma/mon député(e) ou de ma/mon délégué(e) de circonscription",
                         "code": "deputy_email"
                     },
                     {
-                        "label": "Recevoir les e-mails de mon animateur(trice) local(e) de comité",
+                        "label": "Recevoir les emails de mon Comité local",
                         "code": "subscribed_emails_local_host"
                     },
                     {
-                        "label": "Recevoir les e-mails de mon/ma sénateur/trice",
+                        "label": "Recevoir les emails de ma/mon sénateur/trice",
                         "code": "senator_email"
                     }
                 ],
