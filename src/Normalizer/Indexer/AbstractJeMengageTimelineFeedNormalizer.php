@@ -127,6 +127,16 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
         return null;
     }
 
+    protected function getImageWidth(object $object): ?int
+    {
+        return null;
+    }
+
+    protected function getImageHeight(object $object): ?int
+    {
+        return null;
+    }
+
     protected function getZoneCodes(object $object): ?array
     {
         return null;

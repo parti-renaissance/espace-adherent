@@ -109,6 +109,18 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param BaseEvent $object */
+    protected function getImageWidth(object $object): ?int
+    {
+        return $object->hasImageName() ? $object->getImageWidth() : null;
+    }
+
+    /** @param BaseEvent $object */
+    protected function getImageHeight(object $object): ?int
+    {
+        return $object->hasImageName() ? $object->getImageHeight() : null;
+    }
+
+    /** @param BaseEvent $object */
     protected function getZoneCodes(object $object): ?array
     {
         if ($object->getZones()->isEmpty()) {
