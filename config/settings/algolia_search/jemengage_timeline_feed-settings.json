@@ -20,8 +20,6 @@
         "finish_at",
         "identifier",
         "image",
-        "image_width",
-        "image_height",
         "is_local",
         "media_type",
         "mode",

@@ -99,25 +99,19 @@ class EventNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     }
 
     /** @param BaseEvent $object */
-    protected function getImage(object $object): ?string
+    protected function getImage(object $object): ?array
     {
-        return $object->hasImageName() ? $this->urlGenerator->generate(
-            'asset_url',
-            ['path' => $object->getImagePath()],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        ) : null;
-    }
-
-    /** @param BaseEvent $object */
-    protected function getImageWidth(object $object): ?int
-    {
-        return $object->hasImageName() ? $object->getImageWidth() : null;
-    }
-
-    /** @param BaseEvent $object */
-    protected function getImageHeight(object $object): ?int
-    {
-        return $object->hasImageName() ? $object->getImageHeight() : null;
+        return $object->hasImageName() ?
+            [
+                'url' => $this->urlGenerator->generate(
+                    'asset_url',
+                    ['path' => $object->getImagePath()],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ),
+                'width' => $object->getImageWidth(),
+                'height' => $object->getImageHeight(),
+            ]
+            : null;
     }
 
     /** @param BaseEvent $object */

@@ -122,17 +122,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
         return 'Europe/Paris';
     }
 
-    protected function getImage(object $object): ?string
-    {
-        return null;
-    }
-
-    protected function getImageWidth(object $object): ?int
-    {
-        return null;
-    }
-
-    protected function getImageHeight(object $object): ?int
+    protected function getImage(object $object): ?array
     {
         return null;
     }
