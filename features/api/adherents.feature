@@ -969,14 +969,6 @@ Feature:
                             "type": "date_interval"
                         },
                         {
-                            "code": "isNewRenaissanceUser",
-                            "label": "Nouveau militant",
-                            "options": {
-                                "choices": ["Non", "Oui"]
-                            },
-                            "type": "select"
-                        },
-                        {
                             "code": "static_tags",
                             "label": "Labels divers",
                             "options": {
