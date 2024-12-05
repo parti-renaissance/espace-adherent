@@ -26,6 +26,10 @@ class DataProvider
 
         $timelineFeeds['hits'] = $this->processItems($user, $timelineFeeds['hits']);
 
+        if (isset($timelineFeeds['params'])) {
+            unset($timelineFeeds['params']);
+        }
+
         return $timelineFeeds;
     }
 
