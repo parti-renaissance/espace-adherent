@@ -3,11 +3,12 @@
 namespace App\Subscription;
 
 use App\Entity\Adherent;
-use App\Entity\NewsletterSubscription;
-use App\Entity\SubscriptionType;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
+use App\Repository\AdherentRepository;
+use App\Repository\NewsletterSubscriptionRepository;
+use App\Repository\SubscriptionTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -20,25 +21,14 @@ class SubscriptionHandler
         self::ACTION_TYPE_UNSUBSCRIBE,
     ];
 
-    private $em;
-    private $adherentRepository;
-    private $subscriptionTypeRepository;
-    private $newsletterSubscriptionRepository;
-    private $subscriptionHistoryHandler;
-    private $dispatcher;
-
     public function __construct(
-        EntityManagerInterface $em,
-        EmailSubscriptionHistoryHandler $subscriptionHistoryHandler,
-        EventDispatcherInterface $dispatcher,
+        private readonly EntityManagerInterface $em,
+        private readonly EmailSubscriptionHistoryHandler $subscriptionHistoryHandler,
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly AdherentRepository $adherentRepository,
+        private readonly SubscriptionTypeRepository $subscriptionTypeRepository,
+        private readonly NewsletterSubscriptionRepository $newsletterSubscriptionRepository,
     ) {
-        $this->em = $em;
-        $this->subscriptionHistoryHandler = $subscriptionHistoryHandler;
-
-        $this->adherentRepository = $this->em->getRepository(Adherent::class);
-        $this->subscriptionTypeRepository = $this->em->getRepository(SubscriptionType::class);
-        $this->newsletterSubscriptionRepository = $this->em->getRepository(NewsletterSubscription::class);
-        $this->dispatcher = $dispatcher;
     }
 
     public function handleChanges(Adherent $adherent, array $oldEmailsSubscriptions): void
@@ -109,7 +99,7 @@ class SubscriptionHandler
     {
         $oldSubscriptionTypes = $adherent->getSubscriptionTypes();
 
-        $this->subscriptionTypeRepository->addToAdherent($adherent, $newSubscriptionCodes);
+        $adherent->setSubscriptionTypes($this->subscriptionTypeRepository->findByCodes($newSubscriptionCodes));
 
         $this->em->flush();
 

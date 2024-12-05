@@ -27,11 +27,7 @@ class CatchMailchimpWebhookCallCommand implements AsynchronousMessageInterface
 
     public function getListId(): ?string
     {
-        if (!empty($this->getData()['list_id'])) {
-            return $this->getData()['list_id'];
-        }
-
-        return null;
+        return $this->getData()['list_id'] ?? null;
     }
 
     public function getData(): array
