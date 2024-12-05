@@ -20,7 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[IsGranted(new Expression('is_granted(\'ROLE_OAUTH_SCOPE_READ:PROFILE\') and is_granted(\'ongoing_eletected_representative\')'))]
+#[IsGranted(new Expression("is_granted('ROLE_OAUTH_SCOPE_READ:PROFILE') and is_granted('ongoing_eletected_representative')"))]
 #[Route(path: '/v3/profile', name: 'app_api_user_profile')]
 class ElectProfileController extends AbstractController
 {

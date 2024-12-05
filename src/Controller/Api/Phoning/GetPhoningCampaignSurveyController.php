@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(new Expression("campaign.isPermanent() or is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')"))]
+#[IsGranted(new Expression("subject.isPermanent() or is_granted('ROLE_PHONING_CAMPAIGN_MEMBER')"), subject: 'campaign')]
 #[Route(path: '/v3/phoning_campaigns/{uuid}/survey', name: 'api_phoning_camapign_get_campaign_survey', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
 class GetPhoningCampaignSurveyController extends AbstractController
 {

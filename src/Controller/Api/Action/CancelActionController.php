@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'actions') and (action.getAuthor() == user or user.hasDelegatedFromUser(action.getAuthor(), 'actions'))"))]
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'actions') and (subject.getAuthor() == user or user.hasDelegatedFromUser(subject.getAuthor(), 'actions'))"), subject: 'action')]
 class CancelActionController extends AbstractController
 {
     public function __invoke(Action $action, EntityManagerInterface $manager, MessageBusInterface $bus): Response

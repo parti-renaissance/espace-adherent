@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', team)"))]
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', subject)"), subject: 'team')]
 #[Route(path: '/v3/teams/{uuid}/add-members', requirements: ['uuid' => '%pattern_uuid%'], name: 'api_team_add_members', methods: ['PUT'])]
 class AddTeamMembersController extends AbstractController
 {

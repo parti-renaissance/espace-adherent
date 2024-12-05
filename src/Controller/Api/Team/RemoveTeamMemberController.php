@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', team)"))]
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'team') and is_granted('SCOPE_CAN_MANAGE', subject)"), subject: 'team')]
 #[Route(path: '/v3/teams/{uuid}/members/{adherent_uuid}', requirements: ['uuid' => '%pattern_uuid%', 'adherent_uuid' => '%pattern_uuid%'], name: 'api_team_remove_member', methods: ['DELETE'])]
 class RemoveTeamMemberController extends AbstractController
 {

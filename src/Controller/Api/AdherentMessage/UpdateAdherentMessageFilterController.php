@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'messages') and (data.getAuthor() == user or user.hasDelegatedFromUser(data.getAuthor(), 'messages'))"))]
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'messages') and (subject.getAuthor() == user or user.hasDelegatedFromUser(subject.getAuthor(), 'messages'))"), subject: 'data')]
 class UpdateAdherentMessageFilterController extends AbstractController
 {
     public function __construct(

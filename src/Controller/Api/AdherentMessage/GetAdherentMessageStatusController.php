@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[IsGranted(new Expression("is_granted('ROLE_USER') and (message.getAuthor() == user or user.hasDelegatedFromUser(message.getAuthor(), 'messages'))"))]
+#[IsGranted(new Expression("is_granted('ROLE_USER') and (subject.getAuthor() == user or user.hasDelegatedFromUser(subject.getAuthor(), 'messages'))"), subject: 'message')]
 #[Route(path: '/adherent_messages/{uuid}', name: 'app_api_get_adherent_message_status', methods: ['GET'])]
 class GetAdherentMessageStatusController extends AbstractController
 {

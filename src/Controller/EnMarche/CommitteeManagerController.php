@@ -69,7 +69,7 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression('committee.isApproved()'))]
+    #[IsGranted(new Expression('subject.isApproved()'), subject: 'committee')]
     #[Route(path: '/evenements/ajouter', name: 'app_committee_manager_add_event', methods: ['GET', 'POST'])]
     public function addEventAction(
         Request $request,
@@ -102,7 +102,7 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression('committee.isApproved()'))]
+    #[IsGranted(new Expression('subject.isApproved()'), subject: 'committee')]
     #[Route(path: '/membres', name: 'app_committee_manager_list_members', methods: ['GET'])]
     public function listMembersAction(
         Request $request,
@@ -160,7 +160,7 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression("is_granted('SUPERVISE_COMMITTEE', committee) and is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', committee)"))]
+    #[IsGranted(new Expression("is_granted('SUPERVISE_COMMITTEE', subject) and is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', subject)"), subject: 'committee')]
     #[Route(path: '/promouvoir-suppleant/{member_uuid}', name: 'app_committee_promote_host', methods: ['GET', 'POST'])]
     public function promoteHostAction(
         Request $request,

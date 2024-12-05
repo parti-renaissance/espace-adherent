@@ -4,9 +4,9 @@ namespace App\Controller\Api;
 
 use App\Adherent\AdherentAutocompleteFilter;
 use App\Repository\AdherentRepository;
-use App\Scope\FeatureEnum;
 use App\Scope\ScopeGeneratorResolver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-#[IsGranted('REQUEST_SCOPE_GRANTED', subject: [FeatureEnum::TEAM, FeatureEnum::MY_TEAM, FeatureEnum::COMMITTEE])]
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', ['team', 'my_team', 'committee'])"))]
 #[Route(path: '/v3/adherents/autocomplete', name: 'api_adherent_autocomplete', methods: ['GET'])]
 class AdherentAutocompleteController extends AbstractController
 {

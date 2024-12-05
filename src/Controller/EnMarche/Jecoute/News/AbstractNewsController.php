@@ -77,7 +77,7 @@ abstract class AbstractNewsController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', news) or is_granted('CAN_EDIT_CANDIDATE_JECOUTE_NEWS', news) or is_granted('CAN_EDIT_REFERENT_JECOUTE_NEWS', news)"))]
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', subject) or is_granted('CAN_EDIT_CANDIDATE_JECOUTE_NEWS', subject) or is_granted('CAN_EDIT_REFERENT_JECOUTE_NEWS', subject)"), subject: 'news')]
     #[Route(path: '/{uuid}/editer', name: 'news_edit', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET|POST'])]
     public function jecouteNewsEditAction(Request $request, News $news, ObjectManager $manager): Response
     {
@@ -106,7 +106,7 @@ abstract class AbstractNewsController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)"))]
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', subject) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', subject)"), subject: 'news')]
     #[Route(path: '/{uuid}/publier', name: 'news_publish', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
     public function jecouteNewsPublishAction(Request $request, News $news, NewsHandler $handler): Response
     {
@@ -121,7 +121,7 @@ abstract class AbstractNewsController extends AbstractController
         return $this->redirectToNewsRoute('news_list');
     }
 
-    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', news) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', news)"))]
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', subject) or is_granted('IS_ALLOWED_TO_PUBLISH_JECOUTE_NEWS', subject)"), subject: 'news')]
     #[Route(path: '/{uuid}/depublier', name: 'news_unpublish', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
     public function jecouteNewsUnpublishAction(Request $request, News $news, NewsHandler $handler): Response
     {

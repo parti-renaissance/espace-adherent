@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'survey') and is_granted('SCOPE_CAN_MANAGE', survey)"))]
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'survey') and is_granted('SCOPE_CAN_MANAGE', subject)"), subject: 'survey')]
 #[Route(path: '/v3/surveys/{uuid}/replies.{_format}', name: 'api_survey_get_survey_replies', methods: ['GET'], requirements: ['uuid' => '%pattern_uuid%', '_format' => 'json|csv|xlsx'], defaults: ['_format' => 'json'])]
 class GetSurveyRepliesController extends AbstractController
 {

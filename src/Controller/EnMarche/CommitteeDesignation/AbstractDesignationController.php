@@ -29,6 +29,7 @@ abstract class AbstractDesignationController extends AbstractController
     #[Route(path: '', name: '_list', methods: ['GET'])]
     public function listDesignationsAction(
         Request $request,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
         CommitteeElectionRepository $repository,
     ): Response {
@@ -44,6 +45,7 @@ abstract class AbstractDesignationController extends AbstractController
     #[Route(path: '/{uuid}/{election_round_uuid}', name: '_dashboard', methods: ['GET'], defaults: ['election_round_uuid' => null])]
     public function dashboardAction(
         Request $request,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
         Election $election,
         #[MapEntity(mapping: ['election_round_uuid' => 'uuid'])]
@@ -65,6 +67,7 @@ abstract class AbstractDesignationController extends AbstractController
     #[Route(path: '/{uuid}/liste-emargement/{election_round_uuid}', name: '_voters_list', methods: ['GET'], defaults: ['election_round_uuid' => null])]
     public function listVotersAction(
         Request $request,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
         Election $election,
         VoterRepository $voterRepository,
@@ -92,6 +95,7 @@ abstract class AbstractDesignationController extends AbstractController
     #[Route(path: '/{uuid}/resultats/{election_round_uuid}', name: '_results', methods: ['GET'], defaults: ['election_round_uuid' => null])]
     public function showResultsAction(
         Request $request,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
         Election $election,
         #[MapEntity(mapping: ['election_round_uuid' => 'uuid'])]
@@ -125,6 +129,7 @@ abstract class AbstractDesignationController extends AbstractController
     #[Route(path: '/{uuid}/bulletins/{election_round_uuid}', name: '_votes', methods: ['GET'], defaults: ['election_round_uuid' => null])]
     public function listVotesAction(
         Request $request,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
         Election $election,
         VoteResultRepository $voteResultRepository,

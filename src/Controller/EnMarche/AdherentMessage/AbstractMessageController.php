@@ -198,7 +198,7 @@ abstract class AbstractMessageController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', message) and is_granted('USER_CAN_SEND_MESSAGE', message)"))]
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', subject) and is_granted('USER_CAN_SEND_MESSAGE', subject)"), subject: 'message')]
     #[Route(path: '/{uuid}/send', name: 'send', methods: ['GET'])]
     public function sendMessageAction(AbstractAdherentMessage $message, AdherentMessageManager $manager): Response
     {
@@ -235,7 +235,7 @@ abstract class AbstractMessageController extends AbstractController
         return $this->redirectToMessageRoute('list');
     }
 
-    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', message) and message.isSent()"))]
+    #[IsGranted(new Expression("is_granted('IS_AUTHOR_OF', subject) and subject.isSent()"), subject: 'message')]
     #[Route(path: '/{uuid}/confirmation', name: 'send_success', methods: ['GET'])]
     public function sendSuccessAction(AbstractAdherentMessage $message): Response
     {

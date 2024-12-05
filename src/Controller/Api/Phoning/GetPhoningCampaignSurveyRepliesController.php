@@ -5,14 +5,14 @@ namespace App\Controller\Api\Phoning;
 use App\Entity\Phoning\Campaign;
 use App\Exporter\PhoningCampaignSurveyRepliesExporter;
 use App\Repository\Jecoute\DataSurveyRepository;
-use App\Scope\FeatureEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted('REQUEST_SCOPE_GRANTED', subject: FeatureEnum::PHONING_CAMPAIGN)]
+#[IsGranted(new Expression("is_granted('REQUEST_SCOPE_GRANTED', 'phoning_campaign')"))]
 #[Route(path: '/v3/phoning_campaigns/{uuid}/replies.{_format}', name: 'api_phoning_campaign_get_campaign_survey_replies', requirements: ['uuid' => '%pattern_uuid%', '_format' => 'json|csv|xlsx'], defaults: ['_format' => 'json'], methods: ['GET'])]
 class GetPhoningCampaignSurveyRepliesController extends AbstractController
 {
