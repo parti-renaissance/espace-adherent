@@ -2,8 +2,9 @@
 
 namespace App\Command;
 
-use App\Entity\Reporting\DeclaredMandateHistory;
-use App\Repository\Reporting\DeclaredMandateHistoryRepository;
+use App\Entity\UserActionHistory;
+use App\History\UserActionHistoryTypeEnum;
+use App\Repository\UserActionHistoryRepository;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -18,20 +19,20 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCommand(
-    name: 'app:declared-mandates:telegram-notify-changes',
-    description: 'This command send notifications about changes in adherent declared mandates in a Telegram channel',
+    name: 'app:user-role:telegram-notify-changes',
+    description: 'This command send notifications about changes in adherent roles in a Telegram channel',
 )]
-class SendDeclaredMandateChangeTelegramNotificationCommand extends Command
+class SendUserRoleHistoryTelegramNotificationCommand extends Command
 {
     private ?SymfonyStyle $io = null;
 
     public function __construct(
-        private readonly DeclaredMandateHistoryRepository $declaredMandateHistoryRepository,
+        private readonly UserActionHistoryRepository $userActionHistoryRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly TranslatorInterface $translator,
         private readonly ChatterInterface $chatter,
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly string $telegramChatIdDeclaredMandates,
+        private readonly string $telegramChatIdNominations,
     ) {
         parent::__construct();
     }
@@ -43,16 +44,19 @@ class SendDeclaredMandateChangeTelegramNotificationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $notNotifiedHistories = $this->declaredMandateHistoryRepository->findToNotifyOnTelegram();
+        $notNotifiedHistories = $this->userActionHistoryRepository->findToNotifyOnTelegram([
+            UserActionHistoryTypeEnum::ROLE_ADD,
+            UserActionHistoryTypeEnum::ROLE_REMOVE,
+        ]);
 
         if (!$notNotifiedHistories) {
-            $this->io->text('No new declared mandate history.');
+            $this->io->text('No new role history.');
 
             return self::SUCCESS;
         }
 
         $this->io->text(\sprintf(
-            'Will notify Telegram channel about %d new declared mandate historie(s)',
+            'Will notify Telegram channel about %d new role historie(s)',
             $total = \count($notNotifiedHistories)
         ));
 
@@ -71,45 +75,50 @@ class SendDeclaredMandateChangeTelegramNotificationCommand extends Command
         return self::SUCCESS;
     }
 
-    private function process(DeclaredMandateHistory $history): void
+    private function process(UserActionHistory $history): void
     {
-        $adherent = $history->getAdherent();
+        $user = $history->adherent;
 
-        $civility = match ($adherent->getGender()) {
+        $civility = match ($user->getGender()) {
             Genders::FEMALE => 'Mme',
             Genders::MALE => 'M.',
             default => '',
         };
 
-        $added = $this->translateMandates($history->getAddedMandates());
-        $removed = $this->translateMandates($history->getRemovedMandates());
-
         $messageBlock = [
             \sprintf(
                 '*%s %s* ([%s](%s))',
                 $civility,
-                $adherent->getFullName(),
-                $adherent->getId(),
-                $this->urlGenerator->generate('admin_app_adherent_edit', ['id' => $adherent->getId()], UrlGeneratorInterface::ABSOLUTE_URL)
+                $user->getFullName(),
+                $user->getId(),
+                $this->urlGenerator->generate('admin_app_adherent_edit', ['id' => $user->getId()], UrlGeneratorInterface::ABSOLUTE_URL)
             ),
         ];
 
-        if (!empty($added)) {
-            $messageBlock[] = \sprintf('Ajout : %s', implode(', ', $added));
+        if (UserActionHistoryTypeEnum::ROLE_ADD === $history->type) {
+            $messageBlock[] = \sprintf(
+                '❇️ %s (%s)',
+                $this->translateRole($history->data['role']),
+                implode(', ', $history->data['zones'])
+            );
         }
 
-        if (!empty($removed)) {
-            $messageBlock[] = \sprintf('Retrait : %s', implode(', ', $removed));
+        if (UserActionHistoryTypeEnum::ROLE_REMOVE === $history->type) {
+            $messageBlock[] = \sprintf(
+                '❌ %s (%s)',
+                $this->translateRole($history->data['role']),
+                implode(', ', $history->data['zones'])
+            );
         }
 
-        if ($administrator = $history->getAdministrator()) {
+        if ($administrator = $history->impersonator) {
             $messageBlock[] = \sprintf(\PHP_EOL.'Par Admin : %s', $administrator->getEmailAddress());
         }
 
         $chatMessage = new ChatMessage(
             implode(\PHP_EOL, $messageBlock),
             (new TelegramOptions())
-                ->chatId($this->telegramChatIdDeclaredMandates)
+                ->chatId($this->telegramChatIdNominations)
                 ->parseMode(TelegramOptions::PARSE_MODE_MARKDOWN)
                 ->disableWebPagePreview(true)
                 ->disableNotification(true)
@@ -120,25 +129,15 @@ class SendDeclaredMandateChangeTelegramNotificationCommand extends Command
         $this->markHistoryAsTelegramNotified($history);
     }
 
-    private function markHistoryAsTelegramNotified(DeclaredMandateHistory $history): void
+    private function markHistoryAsTelegramNotified(UserActionHistory $history): void
     {
-        $history->setTelegramNotifiedAt(new \DateTimeImmutable());
+        $history->telegramNotifiedAt = new \DateTimeImmutable();
 
         $this->entityManager->flush();
     }
 
-    private function translateMandates(array $mandates): array
+    private function translateRole(string $role): string
     {
-        $chars = implode('', array_map('preg_quote', ['\\', '_', '*', '[', ']', '(', ')', '~', '`', '>', '<', '&', '#', '+', '-', '=', '|', '{', '}', '.', '!']));
-
-        return array_map(function (string $mandate) use ($chars): string {
-            $translation = $this->translator->trans("adherent.mandate.type.$mandate");
-
-            if (str_starts_with($translation, 'adherent.mandate.type.')) {
-                $translation = $mandate;
-            }
-
-            return addcslashes($translation, $chars);
-        }, $mandates);
+        return $this->translator->trans("role.$role");
     }
 }

@@ -19,6 +19,7 @@ class AdherentExtension extends AbstractExtension
             new TwigFunction('get_name_by_uuid', [AdherentRuntime::class, 'getNameByUuid']),
             new TwigFunction('translate_tag', [AdherentRuntime::class, 'translateTag']),
             new TwigFunction('count_contribution', [AdherentRuntime::class, 'countContribution']),
+            new TwigFunction('get_adherent_by_uuid', [AdherentRuntime::class, 'getAdherentByUuid']),
         ];
     }
 }

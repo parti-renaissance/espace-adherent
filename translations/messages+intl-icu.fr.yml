@@ -1294,6 +1294,8 @@ user_action_history.type.password_reset_validate: Mot de passe oublié (changeme
 user_action_history.type.password_change: Changement de mot de passe
 user_action_history.type.email_change_request: Changement d'adresse email (demande)
 user_action_history.type.email_change_validate: Changement d'adresse email (validation)
+user_action_history.type.role_add: Ajout de rôle
+user_action_history.type.role_remove: Suppression de rôle
 
 #
 # AdministratorActionHistory
@@ -1304,3 +1306,5 @@ administrator_action_history.type.impersonation_start: Début d'impersonnificati
 administrator_action_history.type.impersonation_end: Fin d'impersonnification
 administrator_action_history.type.export: Export
 administrator_action_history.type.adherent_profile_update: Mise à jour du profil adhérent
+administrator_action_history.type.adherent_role_add: Ajout de rôle adhérent
+administrator_action_history.type.adherent_role_remove: Suppression de rôle adhérent

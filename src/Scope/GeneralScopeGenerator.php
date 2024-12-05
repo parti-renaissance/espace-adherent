@@ -28,9 +28,10 @@ class GeneralScopeGenerator
     /**
      * @return Scope[]
      */
-    public function generateScopes(Adherent $adherent): array
+    public function generateScopes(Adherent $adherent, bool $useCache = true): array
     {
-        if (!empty($this->cache[$adherentId = $adherent->getId()])) {
+        $adherentId = $adherent->getId();
+        if ($useCache && !empty($this->cache[$adherentId])) {
             return $this->cache[$adherentId];
         }
 

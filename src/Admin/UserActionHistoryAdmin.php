@@ -93,6 +93,7 @@ class UserActionHistoryAdmin extends AbstractAdmin
             ])
             ->add('data', null, [
                 'label' => 'Données',
+                'template' => 'admin/user_action_history/list_data.html.twig',
             ])
             ->add('impersonator', null, [
                 'label' => 'Administrateur',

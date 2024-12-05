@@ -29,6 +29,14 @@ class LoadUserActionHistoryData extends Fixture implements DependentFixtureInter
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::IMPERSONATION_END, new \DateTime('-3 minutes'), null, $administrator1));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::EMAIL_CHANGE_REQUEST, new \DateTime('-2 minutes')));
         $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::EMAIL_CHANGE_VALIDATE, new \DateTime('-1 minutes')));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::ROLE_ADD, new \DateTime('-2 minutes'), [
+            'role' => 'deputy',
+            'zones' => [LoadGeoZoneData::getZone($manager, 'zone_city_92024')->getNameCode()],
+        ], $administrator1));
+        $manager->persist($this->create($adherent1, UserActionHistoryTypeEnum::ROLE_REMOVE, new \DateTime('-1 minutes'), [
+            'role' => 'deputy',
+            'zones' => [LoadGeoZoneData::getZone($manager, 'zone_city_92024')->getNameCode()],
+        ], $administrator1));
 
         $manager->flush();
     }
@@ -54,6 +62,7 @@ class LoadUserActionHistoryData extends Fixture implements DependentFixtureInter
         return [
             LoadAdherentData::class,
             LoadAdminData::class,
+            LoadGeoZoneData::class,
         ];
     }
 }

@@ -70,6 +70,7 @@ services:
             $templateWebhookKey: '%env(TEMPLATE_WEBHOOK_KEY)%'
             $telegramChatIdPrimoAdhesion: '%env(TELEGRAM_CHAT_ID_PRIMO_ADHESION)%'
             $telegramChatIdDeclaredMandates: '%env(TELEGRAM_CHAT_ID_DECLARED_MANDATES)%'
+            $telegramChatIdNominations: '%env(TELEGRAM_CHAT_ID_NOMINATIONS)%'
 
     _instanceof:
         App\Adherent\Unregistration\Handlers\UnregistrationAdherentHandlerInterface:
