@@ -19,7 +19,6 @@ use App\Form\Admin\CommitteeMandateCommandType;
 use App\Form\ConfirmActionType;
 use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use DoctrineExtensions\Query\Mysql\Exp;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;

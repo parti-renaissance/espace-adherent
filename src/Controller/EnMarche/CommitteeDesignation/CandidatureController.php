@@ -217,7 +217,7 @@ class CandidatureController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression('invitation.getMembership() == user.getMembershipFor(committee)'))]
+    #[IsGranted(new Expression('subject.getMembership() == user.getMembershipFor(committee)'), subject: 'invitation')]
     #[Route(path: '/mes-invitations/{uuid}/accepter', name: '_invitation_accept', methods: ['GET', 'POST'])]
     public function acceptInvitationAction(
         #[MapEntity(mapping: ['slug' => 'slug'])]
@@ -266,7 +266,7 @@ class CandidatureController extends AbstractController
         ]);
     }
 
-    #[IsGranted(new Expression('invitation.getMembership() == user.getMembershipFor(committee)'))]
+    #[IsGranted(new Expression('subject.getMembership() == user.getMembershipFor(committee)'), subject: 'invitation')]
     #[Route(path: '/mes-invitations/{uuid}/decliner', name: '_invitation_decline', methods: ['GET'])]
     public function declineInvitationAction(
         #[MapEntity(mapping: ['slug' => 'slug'])]

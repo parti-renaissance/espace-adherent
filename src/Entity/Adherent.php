@@ -84,7 +84,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/adherents/{uuid}/elect',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: '(is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'elected_representative\')) or (is_granted(\'ROLE_OAUTH_SCOPE_READ:PROFILE\') and object === user)'
+            security: "(is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')) or (is_granted('ROLE_OAUTH_SCOPE_READ:PROFILE') and object === user)"
         ),
         new Post(
             uriTemplate: '/adherents/{uuid}/send-resubscribe-email',
@@ -97,20 +97,20 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/adherents/{uuid}/elect',
             requirements: ['uuid' => '%pattern_uuid%'],
             denormalizationContext: ['groups' => ['adherent_elect_update']],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'elected_representative\')',
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')",
             validationContext: ['groups' => ['adherent_elect_update']]
         ),
         new HttpOperation(
             method: 'POST|DELETE',
             uriTemplate: '/profile/{uuid}/image',
             controller: UpdateImageController::class,
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_WRITE:PROFILE\') and object === user',
+            security: "is_granted('ROLE_OAUTH_SCOPE_WRITE:PROFILE') and object === user",
             deserialize: false,
         ),
     ],
     routePrefix: '/v3',
     normalizationContext: ['groups' => ['adherent_elect_read']],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'contacts\')'
+    security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'contacts')"
 )]
 #[ORM\Entity(repositoryClass: AdherentRepository::class)]
 #[ORM\Index(columns: ['tags'], options: ['lengths' => [512]])]
