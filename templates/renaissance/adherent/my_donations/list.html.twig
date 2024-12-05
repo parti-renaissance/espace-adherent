@@ -26,7 +26,7 @@
                     {% if subscribed_donations %}
                             <p class=" text-sm font-medium text-blue-800">
                                 {% for subscribed_donation in subscribed_donations %}
-                                Prochaine échéance du don mensuel de {{ subscribed_donation.amountInEuros|format_currency('EUR', locale='fr')|replace({',00': ''}) }} le {{ subscribed_donation.nextDonationAt|format_datetime('medium', 'none') }}
+                                Prochaine échéance du don mensuel de {{ subscribed_donation.amountInEuros|format_currency('EUR', locale: 'fr')|replace({',00': ''}) }} le {{ subscribed_donation.nextDonationAt|format_datetime('medium', 'none') }}
                                 {% if not loop.last %}
                                     <br />
                                 {% endif %}
@@ -62,7 +62,7 @@
                                     {% for donation in donations_history %}
                                         <tr>
                                             <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ donation.date|format_datetime('medium', 'none') }}</td>
-                                            <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ donation.amountInEuros|format_currency('EUR', locale='fr')|replace({',00': ''}) }}</td>
+                                            <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ donation.amountInEuros|format_currency('EUR', locale: 'fr')|replace({',00': ''}) }}</td>
                                             <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                                 {% if donation.isSubscription %}
                                                     <span class="inline-flex items-center rounded-full bg-green-800 px-2.5 py-0.5 font-medium text-white">Don mensuel</span>
