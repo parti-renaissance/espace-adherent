@@ -25,7 +25,7 @@ class ElectionBallotsController extends AbstractController
         $ballots = $voteResultRepository->getVotes($designation);
 
         if ('json' !== $_format) {
-            return $exporter->getResponse($_format, 'Bulletins.xlsx', new \ArrayIterator($ballots));
+            return $exporter->getResponse($_format, \sprintf('Bulletins - %s.xlsx', $designation->getTitle()), new \ArrayIterator($ballots));
         }
 
         return $this->json($ballots);
