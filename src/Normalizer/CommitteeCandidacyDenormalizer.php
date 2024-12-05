@@ -2,7 +2,7 @@
 
 namespace App\Normalizer;
 
-use ApiPlatform\Exception\ItemNotFoundException;
+use ApiPlatform\Metadata\Exception\ItemNotFoundException;
 use App\Entity\CommitteeCandidacy;
 use App\Repository\CommitteeCandidaciesGroupRepository;
 use App\Repository\CommitteeMembershipRepository;

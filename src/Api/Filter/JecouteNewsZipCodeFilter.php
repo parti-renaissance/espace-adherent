@@ -22,7 +22,7 @@ final class JecouteNewsZipCodeFilter extends AbstractFilter
         string $resourceClass,
         ?Operation $operation = null,
         array $context = [],
-    ) {
+    ): void {
         if (News::class !== $resourceClass
             || 'zipCode' !== $property
             || empty($value)

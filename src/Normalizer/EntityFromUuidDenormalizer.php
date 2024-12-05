@@ -2,7 +2,7 @@
 
 namespace App\Normalizer;
 
-use ApiPlatform\Exception\ItemNotFoundException;
+use ApiPlatform\Metadata\Exception\ItemNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

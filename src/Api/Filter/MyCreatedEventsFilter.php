@@ -26,7 +26,7 @@ final class MyCreatedEventsFilter extends AbstractFilter
         string $resourceClass,
         ?Operation $operation = null,
         array $context = [],
-    ) {
+    ): void {
         if (
             BaseEvent::class !== $resourceClass
             || self::PROPERTY_NAME !== $property
