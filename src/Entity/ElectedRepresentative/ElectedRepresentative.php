@@ -131,7 +131,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      */
     #[Groups(['elected_representative_write', 'elected_representative_read'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $hasFollowedTraining = false;
+    public bool $hasFollowedTraining = false;
 
     /**
      * Mailchimp unsubscribed date

@@ -234,7 +234,7 @@ Feature:
         When I send a "POST" request to "/api/v3/adherent_messages/969b1f08-53ec-4a7d-8d6e-7654a001b13f/send?scope=delegated_08f40730-d807-4975-8773-69d8fae1da74"
         Then the response status code should be 400
         And the response should be in JSON
-        And the JSON node "detail" should be equal to "The message is not yet ready to send."
+        And the JSON node "violations[0].message" should be equal to "The message is not yet ready to send."
 
     Scenario: As a regional coordinator I can create a message
         Given I am logged with "coordinateur@en-marche-dev.fr" via OAuth client "JeMengage Web"

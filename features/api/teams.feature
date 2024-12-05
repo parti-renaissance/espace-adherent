@@ -240,12 +240,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "zone: Un rôle national ne peut pas définir de zone.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "zone",
                         "message": "Un rôle national ne peut pas définir de zone."
                     }
@@ -430,12 +428,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "zone: La zone spécifiée n'est pas gérée par votre rôle.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "zone",
                         "message": "La zone spécifiée n'est pas gérée par votre rôle."
                     }
@@ -466,12 +462,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "zone: Veuillez spécifier une zone.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "zone",
                         "message": "Veuillez spécifier une zone."
                     }
@@ -535,12 +529,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "name: Une équipe porte déjà le même nom.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "name",
                         "message": "Une équipe porte déjà le même nom."
                     }
@@ -570,12 +562,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "name: Une équipe porte déjà le même nom.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "name",
                         "message": "Une équipe porte déjà le même nom."
                     }

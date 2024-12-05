@@ -1232,7 +1232,7 @@ Feature:
             }
             """
         Then the response status code should be 400
-        And the JSON node "detail" should be equal to "Vous ne pouvez pas créer ou modifier un questionnaire de type local avec le scope national."
+        And the JSON node "violations[0].message" should be equal to "Vous ne pouvez pas créer ou modifier un questionnaire de type local avec le scope national."
 
     Scenario: As a user with national scope I cannot create a local survey
         Given I am logged with "referent@en-marche-dev.fr" via OAuth client "JeMengage Web"
@@ -1287,7 +1287,7 @@ Feature:
             }
             """
         Then the response status code should be 400
-        And the JSON node "detail" should be equal to "Vous ne pouvez pas créer ou modifier un questionnaire de type national avec le scope president_departmental_assembly."
+        And the JSON node "violations[0].message" should be equal to "Vous ne pouvez pas créer ou modifier un questionnaire de type national avec le scope president_departmental_assembly."
 
     Scenario: As a user with national role I can create a national survey
         Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"
@@ -1945,12 +1945,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "questions: Le questionnaire doit contenir au moins une question.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "questions",
                         "message": "Le questionnaire doit contenir au moins une question."
                     }
