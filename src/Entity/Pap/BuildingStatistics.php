@@ -10,7 +10,7 @@ use App\Pap\BuildingStatusEnum;
 use App\Repository\Pap\BuildingStatisticsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     operations: [],

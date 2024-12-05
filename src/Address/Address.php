@@ -6,7 +6,7 @@ use App\Geocoder\GeocodableInterface;
 use App\Validator\Address as AssertValidAddress;
 use App\Validator\FrenchAddress;
 use App\Validator\GeocodableAddress as AssertGeocodableAddress;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[AssertGeocodableAddress(groups: ['Default'])]

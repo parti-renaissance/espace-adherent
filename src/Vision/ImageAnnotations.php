@@ -2,7 +2,7 @@
 
 namespace App\Vision;
 
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 class ImageAnnotations
 {
