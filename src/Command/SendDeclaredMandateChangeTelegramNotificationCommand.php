@@ -51,87 +51,80 @@ class SendDeclaredMandateChangeTelegramNotificationCommand extends Command
             return self::SUCCESS;
         }
 
-        $this->notifyTelegram($notNotifiedHistories);
-        $this->markHistoriesAsTelegramNotified($notNotifiedHistories);
-
-        $this->io->success('Notification sent!');
-
-        return self::SUCCESS;
-    }
-
-    /** @param DeclaredMandateHistory[] $histories */
-    private function notifyTelegram(array $histories): void
-    {
         $this->io->text(\sprintf(
             'Will notify Telegram channel about %d new declared mandate historie(s)',
-            \count($histories)
+            $total = \count($notNotifiedHistories)
         ));
 
-        foreach ($histories as $history) {
-            $adherent = $history->getAdherent();
+        $this->io->progressStart($total);
 
-            $civility = match ($adherent->getGender()) {
-                Genders::FEMALE => 'Mme',
-                Genders::MALE => 'M.',
-                default => '',
-            };
-
-            $added = $this->translateMandates($history->getAddedMandates());
-            $removed = $this->translateMandates($history->getRemovedMandates());
-
-            $messageBlock = [
-                \sprintf(
-                    '*%s %s* ([%s](%s))',
-                    $civility,
-                    $adherent->getFullName(),
-                    $adherent->getId(),
-                    $this->urlGenerator->generate('admin_app_adherent_edit', ['id' => $adherent->getId()], UrlGeneratorInterface::ABSOLUTE_URL)
-                ),
-            ];
-
-            if (!empty($added)) {
-                $messageBlock[] = \sprintf('Ajout : %s', implode(', ', $added));
-            }
-
-            if (!empty($removed)) {
-                $messageBlock[] = \sprintf('Retrait : %s', implode(', ', $removed));
-            }
-
-            if ($administrator = $history->getAdministrator()) {
-                $messageBlock[] = \sprintf(\PHP_EOL.'Par Admin : %s', $administrator->getEmailAddress());
-            }
-
-            $chatMessage = new ChatMessage(
-                implode(\PHP_EOL, $messageBlock),
-                (new TelegramOptions())
-                    ->chatId($this->telegramChatIdDeclaredMandates)
-                    ->parseMode(TelegramOptions::PARSE_MODE_MARKDOWN)
-                    ->disableWebPagePreview(true)
-                    ->disableNotification(true)
-            );
-
-            $this->chatter->send($chatMessage);
-        }
-    }
-
-    /**
-     * @param array|DeclaredMandateHistory[] $histories
-     */
-    private function markHistoriesAsTelegramNotified(array $histories): void
-    {
-        $this->io->text(\sprintf('Will mark %d new declared mandate histories as notified', \count($histories)));
-        $this->io->progressStart(\count($histories));
-
-        foreach ($histories as $declaredMandateHistory) {
-            $declaredMandateHistory->setTelegramNotifiedAt(new \DateTimeImmutable());
+        foreach ($notNotifiedHistories as $history) {
+            $this->process($history);
 
             $this->io->progressAdvance();
         }
 
         $this->io->progressFinish();
 
+        $this->io->success('Notifications sent!');
+
+        return self::SUCCESS;
+    }
+
+    private function process(DeclaredMandateHistory $history): void
+    {
+        $adherent = $history->getAdherent();
+
+        $civility = match ($adherent->getGender()) {
+            Genders::FEMALE => 'Mme',
+            Genders::MALE => 'M.',
+            default => '',
+        };
+
+        $added = $this->translateMandates($history->getAddedMandates());
+        $removed = $this->translateMandates($history->getRemovedMandates());
+
+        $messageBlock = [
+            \sprintf(
+                '*%s %s* ([%s](%s))',
+                $civility,
+                $adherent->getFullName(),
+                $adherent->getId(),
+                $this->urlGenerator->generate('admin_app_adherent_edit', ['id' => $adherent->getId()], UrlGeneratorInterface::ABSOLUTE_URL)
+            ),
+        ];
+
+        if (!empty($added)) {
+            $messageBlock[] = \sprintf('Ajout : %s', implode(', ', $added));
+        }
+
+        if (!empty($removed)) {
+            $messageBlock[] = \sprintf('Retrait : %s', implode(', ', $removed));
+        }
+
+        if ($administrator = $history->getAdministrator()) {
+            $messageBlock[] = \sprintf(\PHP_EOL.'Par Admin : %s', $administrator->getEmailAddress());
+        }
+
+        $chatMessage = new ChatMessage(
+            implode(\PHP_EOL, $messageBlock),
+            (new TelegramOptions())
+                ->chatId($this->telegramChatIdDeclaredMandates)
+                ->parseMode(TelegramOptions::PARSE_MODE_MARKDOWN)
+                ->disableWebPagePreview(true)
+                ->disableNotification(true)
+        );
+
+        $this->chatter->send($chatMessage);
+
+        $this->markHistoryAsTelegramNotified($history);
+    }
+
+    private function markHistoryAsTelegramNotified(DeclaredMandateHistory $history): void
+    {
+        $history->setTelegramNotifiedAt(new \DateTimeImmutable());
+
         $this->entityManager->flush();
-        $this->entityManager->clear();
     }
 
     private function translateMandates(array $mandates): array
