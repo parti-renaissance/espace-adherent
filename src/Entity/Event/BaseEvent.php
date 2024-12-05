@@ -92,7 +92,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Delete(
             uriTemplate: '/v3/events/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            openapiContext: ['parameters' => [['name' => 'uuid', 'in' => 'path', 'type' => 'uuid', 'description' => 'The UUID of the Event.', 'example' => 'de7982c4-3729-4f9d-9587-376df25354c3']]],
             security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'CAN_MANAGE_EVENT\', object) and is_granted(\'CAN_DELETE_EVENT\', object)'
         ),
         new HttpOperation(

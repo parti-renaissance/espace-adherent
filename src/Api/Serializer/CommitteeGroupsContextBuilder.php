@@ -2,7 +2,7 @@
 
 namespace App\Api\Serializer;
 
-use ApiPlatform\Serializer\SerializerContextBuilderInterface;
+use ApiPlatform\State\SerializerContextBuilderInterface;
 use App\Entity\Committee;
 use App\Entity\CommitteeElection;
 use App\VotingPlatform\Designation\DesignationStatusEnum;
