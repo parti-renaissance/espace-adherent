@@ -8,10 +8,10 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\RenaissanceMagicLinkMessage;
 use App\Repository\AdherentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -57,14 +57,13 @@ class MagicLinkController extends AbstractController
         return $this->render('security/renaissance_user_magic_link.html.twig', ['form' => $form->createView()]);
     }
 
-    public function connectViaMagicLinkAction(Request $request, TokenStorageInterface $tokenStorage): Response
+    public function connectViaMagicLinkAction(Request $request, Security $security): Response
     {
         $currentUser = $this->getUser();
 
         if ($currentUser) {
             if ($currentUser->getUserIdentifier() !== $request->query->get('user')) {
-                $tokenStorage->setToken(null);
-                $request->getSession()->invalidate();
+                $security->logout(false);
 
                 return $this->redirect($request->getRequestUri());
             }
