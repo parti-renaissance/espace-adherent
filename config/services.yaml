@@ -237,23 +237,6 @@ services:
         arguments:
             - '@serializer.name_converter.metadata_aware'
 
-    App\Normalizer\ItemNormalizerDecorator:
-        decorates: 'api_platform.serializer.normalizer.item'
-        arguments:
-            - '@api_platform.metadata.property.name_collection_factory'
-            - '@api_platform.metadata.property.metadata_factory'
-            - '@api_platform.iri_converter'
-            - '@api_platform.resource_class_resolver'
-            - '@api_platform.property_accessor'
-            - '@api_platform.name_converter'
-            - '@serializer.mapping.class_metadata_factory'
-            - '@api_platform.item_data_provider'
-            - '%api_platform.allow_plain_identifiers%'
-            - []
-            - !tagged_iterator 'api_platform.data_transformer'
-            - ~
-            - '@api_platform.security.resource_access_checker'
-
     App\Normalizer\Indexer\ThrowExceptionNormalizer:
         tags: [{ name: 'serializer.normalizer', priority: -801 }] # to be just after CustomNormalizer
 

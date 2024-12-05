@@ -28,7 +28,7 @@ abstract class AbstractScopeFilter extends AbstractFilter
         string $resourceClass,
         ?Operation $operation = null,
         array $context = [],
-    ) {
+    ): void {
         if (self::PROPERTY_NAME !== $property || !$this->isValidOperation($operation)) {
             return;
         }
