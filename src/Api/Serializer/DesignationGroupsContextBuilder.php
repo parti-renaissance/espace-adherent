@@ -2,7 +2,7 @@
 
 namespace App\Api\Serializer;
 
-use ApiPlatform\Serializer\SerializerContextBuilderInterface;
+use ApiPlatform\State\SerializerContextBuilderInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
 use Symfony\Component\HttpFoundation\Request;
 

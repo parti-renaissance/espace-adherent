@@ -63,7 +63,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Get(
             uriTemplate: '/v3/phoning_campaigns/{uuid}/callers',
-            defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: GetPhoningCampaignCallersStatsController::class,
             security: "is_granted('REQUEST_SCOPE_GRANTED', 'phoning_campaign')"

@@ -14,15 +14,10 @@ class BuildingFloorNormalizer implements NormalizerInterface, NormalizerAwareInt
 {
     use NormalizerAwareTrait;
 
-    protected const ALREADY_CALLED = 'FLOOR_NORMALIZER_ALREADY_CALLED';
-
-    private RequestStack $requestStack;
-    private CampaignRepository $campaignRepository;
-
-    public function __construct(RequestStack $requestStack, CampaignRepository $campaignRepository)
-    {
-        $this->requestStack = $requestStack;
-        $this->campaignRepository = $campaignRepository;
+    public function __construct(
+        private readonly RequestStack $requestStack,
+        private readonly CampaignRepository $campaignRepository,
+    ) {
     }
 
     /**
@@ -30,9 +25,7 @@ class BuildingFloorNormalizer implements NormalizerInterface, NormalizerAwareInt
      */
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $context[static::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         $campaign = null;
         $campaignUuid = $this->requestStack->getMainRequest()->query->get('campaign_uuid');
@@ -68,6 +61,6 @@ class BuildingFloorNormalizer implements NormalizerInterface, NormalizerAwareInt
 
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return $data instanceof Floor && !isset($context[static::ALREADY_CALLED]);
+        return !isset($context[__CLASS__]) && $data instanceof Floor;
     }
 }

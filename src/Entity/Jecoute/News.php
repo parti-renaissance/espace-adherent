@@ -49,7 +49,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/jecoute/news/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            openapiContext: ['summary' => 'Retrieves a News resource by UUID.', 'description' => 'Retrieves a News resource by UUID.', 'parameters' => [['name' => 'uuid', 'in' => 'path', 'type' => 'string', 'description' => 'The UUID of the News resource.', 'example' => '28']]],
             security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\')'
         ),
         new Get(
@@ -66,7 +65,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new GetCollection(
             uriTemplate: '/jecoute/news',
-            openapiContext: ['parameters' => [['name' => 'uuid', 'in' => 'query', 'type' => 'string', 'description' => 'Filter News by exact uuid.', 'example' => 'a046adbe-9c7b-56a9-a676-6151a6785dda'], ['name' => 'title', 'in' => 'query', 'type' => 'string', 'description' => 'Filter News by partial title.', 'example' => 'Rassem']]],
             security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\')'
         ),
         new GetCollection(

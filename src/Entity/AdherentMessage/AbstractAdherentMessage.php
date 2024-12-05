@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\AdherentMessage\AdherentMessageDataObject;
@@ -64,27 +65,31 @@ use Symfony\Component\Validator\Constraints as Assert;
             normalizationContext: ['groups' => ['message_read']],
             security: "is_granted('REQUEST_SCOPE_GRANTED', 'messages') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
         ),
-        new Post(
+        new HttpOperation(
+            method: 'POST',
             uriTemplate: '/v3/adherent_messages/{uuid}/send',
-            defaults: ['_api_receive' => false],
+            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: SendAdherentMessageController::class
         ),
-        new Post(
+        new HttpOperation(
+            method: 'POST',
             uriTemplate: '/v3/adherent_messages/{uuid}/send-test',
-            defaults: ['_api_receive' => false],
+            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: SendTestAdherentMessageController::class
         ),
-        new Put(
+        new HttpOperation(
+            method: 'PUT',
             uriTemplate: '/v3/adherent_messages/{uuid}/filter',
-            defaults: ['_api_receive' => false],
+            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: UpdateAdherentMessageFilterController::class
         ),
-        new Post(
+        new HttpOperation(
+            method: 'POST',
             uriTemplate: '/v3/adherent_messages/{uuid}/duplicate',
-            defaults: ['_api_receive' => false],
+            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: DuplicateMessageController::class
         ),

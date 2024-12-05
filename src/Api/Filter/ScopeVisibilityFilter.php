@@ -96,6 +96,6 @@ final class ScopeVisibilityFilter extends AbstractScopeFilter
             return ['_api_/v3/jecoute/news/{uuid}_get', '_api_/v3/jecoute/news_get_collection'];
         }
 
-        return ['{uuid}_get', '{uuid}.{_format}_get', '_get_collection'];
+        return ['{uuid}_get', '{uuid}{._format}_get', '_get_collection'];
     }
 }

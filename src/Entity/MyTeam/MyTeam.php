@@ -4,7 +4,7 @@ namespace App\Entity\MyTeam;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\HttpOperation;
 use App\Api\Filter\MyTeamScopeFilter;
 use App\Controller\Api\MyTeam\InitializeMyTeamController;
 use App\Entity\Adherent;
@@ -26,9 +26,10 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/my_teams',
             normalizationContext: ['groups' => ['my_team_read_list']]
         ),
-        new Post(
+        new HttpOperation(
+            method: 'POST',
             uriTemplate: '/v3/my_teams',
-            defaults: ['_api_receive' => false],
+            deserialize: false,
             controller: InitializeMyTeamController::class
         ),
     ],

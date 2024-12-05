@@ -2,7 +2,6 @@
 
 namespace App\Repository\Jecoute;
 
-use App\Entity\Adherent;
 use App\Entity\Jecoute\DataSurvey;
 use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\SurveyQuestion;
@@ -90,21 +89,6 @@ class LocalSurveyRepository extends ServiceEntityRepository
             ->setParameter('zones', $zones)
             ->andWhere('survey.published = true')
             ->orderBy('survey.id')
-        ;
-    }
-
-    public function findAllByAuthor(Adherent $adherent): array
-    {
-        return $this
-            ->createQueryBuilder('survey')
-            ->leftJoin('survey.zone', 'zone')
-            ->addSelect('zone')
-            ->addSelect(\sprintf('(SELECT COUNT(q.id) FROM %s AS q WHERE q.survey = survey) AS questions_count', SurveyQuestion::class))
-            ->addSelect(\sprintf('(SELECT COUNT(r.id) FROM %s AS r WHERE r.survey = survey) AS responses_count', DataSurvey::class))
-            ->where('survey.createdByAdherent = :author')
-            ->setParameter('author', $adherent)
-            ->getQuery()
-            ->getResult()
         ;
     }
 }

@@ -36,8 +36,8 @@ class CheckUpdatedStatusListener implements EventSubscriberInterface
         $operationName = $request->attributes->get('_api_operation_name');
 
         if (!\in_array($operationName, [
-            '_api_/requests/{uuid}_patch',
-            '_api_/proxies/{uuid}_patch',
+            '_api_/v3/procuration/requests/{uuid}_patch',
+            '_api_/v3/procuration/proxies/{uuid}_patch',
         ], true)) {
             return;
         }

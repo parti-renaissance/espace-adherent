@@ -59,6 +59,6 @@ class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwar
     {
         return !isset($context[__CLASS__])
             && is_a($type, Designation::class, true)
-            && \in_array($context['operation_name'] ?? null, ['_api_/designations.{_format}_post', '_api_/designations/{uuid}_put'], true);
+            && \in_array($context['operation_name'] ?? null, ['_api_/v3/designations{._format}_post', '_api_/v3/designations/{uuid}_put'], true);
     }
 }

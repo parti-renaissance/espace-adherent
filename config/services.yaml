@@ -230,26 +230,10 @@ services:
         tags: [{ name: 'serializer.normalizer', priority: 1 }]
 
     App\Normalizer\ConstraintViolationListNormalizer:
-        decorates: 'serializer.normalizer.constraint_violation_list'
+        decorates: 'api_platform.problem.normalizer.validation_exception'
+        tags: [{ name: 'serializer.normalizer', priority: -800 }]
         arguments:
             - '@serializer.name_converter.metadata_aware'
-
-    App\Normalizer\ItemNormalizerDecorator:
-        decorates: 'api_platform.serializer.normalizer.item'
-        arguments:
-            - '@api_platform.metadata.property.name_collection_factory'
-            - '@api_platform.metadata.property.metadata_factory'
-            - '@api_platform.iri_converter'
-            - '@api_platform.resource_class_resolver'
-            - '@api_platform.property_accessor'
-            - '@api_platform.name_converter'
-            - '@serializer.mapping.class_metadata_factory'
-            - '@api_platform.item_data_provider'
-            - '%api_platform.allow_plain_identifiers%'
-            - []
-            - !tagged_iterator 'api_platform.data_transformer'
-            - ~
-            - '@api_platform.security.resource_access_checker'
 
     App\Normalizer\Indexer\ThrowExceptionNormalizer:
         tags: [{ name: 'serializer.normalizer', priority: -801 }] # to be just after CustomNormalizer
@@ -261,7 +245,7 @@ services:
     App\Algolia\SearchService:
         decorates: 'Algolia\SearchBundle\SearchService'
         arguments:
-            - '@App\Algolia\SearchService.inner'
+            - '@.inner'
             - '%kernel.debug%'
 
     Geocoder\Geocoder: '@bazinga_geocoder.geocoder'
@@ -360,11 +344,15 @@ services:
 
     App\Api\Serializer\RiposteGroupsContextBuilder:
         decorates: 'api_platform.serializer.context_builder'
-        arguments: ['@App\Api\Serializer\RiposteGroupsContextBuilder.inner']
+        arguments: ['@.inner']
 
     App\Api\Serializer\JecouteNewsGroupsContextBuilder:
         decorates: 'api_platform.serializer.context_builder'
-        arguments: ['@App\Api\Serializer\JecouteNewsGroupsContextBuilder.inner']
+        arguments: ['@.inner']
+
+    App\Api\Serializer\EnforceTypeValidationContextBuilder:
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: ['@.inner']
 
     App\Api\Serializer\PrivatePublicContextBuilder:
         decorates: 'api_platform.serializer.context_builder'
@@ -372,11 +360,11 @@ services:
 
     App\Api\Serializer\CommitteeGroupsContextBuilder:
         decorates: 'api_platform.serializer.context_builder'
-        arguments: ['@App\Api\Serializer\CommitteeGroupsContextBuilder.inner']
+        arguments: ['@.inner']
 
     App\Api\Serializer\DesignationGroupsContextBuilder:
         decorates: 'api_platform.serializer.context_builder'
-        arguments: ['@App\Api\Serializer\DesignationGroupsContextBuilder.inner']
+        arguments: ['@.inner']
 
     Symfony\Bridge\Monolog\Processor\TokenProcessor:
         tags: ['monolog.processor']
@@ -385,13 +373,16 @@ services:
 
     App\Normalizer\DateTimeNormalizer:
         decorates: 'serializer.normalizer.datetime'
-        arguments:
-            - '@App\Normalizer\DateTimeNormalizer.inner'
+        arguments: ['@.inner']
+
+    App\Api\IriConverterDecorator:
+        decorates: 'api_platform.symfony.iri_converter'
+        arguments: ['@.inner']
 
     App\ErrorRenderer\TwigErrorRenderer:
         decorates: 'twig.error_renderer.html'
         arguments:
-            $fallbackErrorRenderer: '@App\ErrorRenderer\TwigErrorRenderer.inner'
+            $fallbackErrorRenderer: '@.inner'
             $debug: !service
                 class: 'bool'
                 factory: Symfony\Bridge\Twig\ErrorRenderer\TwigErrorRenderer::isDebug
@@ -404,7 +395,7 @@ services:
     App\FranceCities\CachedCitiesStorage:
         decorates: App\FranceCities\CitiesStorage
         arguments:
-            $decorated: '@App\FranceCities\CachedCitiesStorage.inner'
+            $decorated: '@.inner'
             $cache: !service
                 class: Symfony\Component\Cache\Psr16Cache
                 arguments:
@@ -437,7 +428,7 @@ services:
 
     App\Messenger\AmqpTransport\AmqpTransportFactory:
         decorates: 'messenger.transport.amqp.factory'
-        arguments: ['@App\Messenger\AmqpTransport\AmqpTransportFactory.inner']
+        arguments: ['@.inner']
 
     League\Glide\Responses\SymfonyResponseFactory: ~
 

@@ -47,14 +47,5 @@
             </argument>
             <tag name="container.service_locator" />
         </service>
-
-        <!-- Swagger -->
-        <service id="App\Swagger\SwaggerDecorator"
-            decorates="api_platform.swagger.normalizer.documentation"
-            autoconfigure="false">
-            <argument key="$decorated" type="service" id="App\Swagger\SwaggerDecorator.inner"/>
-            <argument key="$apiPathPrefix">%api_path_prefix%</argument>
-            <argument key="$operationPathResolver" type="service" id="api_platform.operation_path_resolver"/>
-        </service>
     </services>
 </container>

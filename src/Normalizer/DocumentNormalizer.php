@@ -54,7 +54,7 @@ class DocumentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
     private function getUrl(Document $document): string
     {
         return $this->urlGenerator->generate(
-            '_api_/documents/{uuid}/file_get',
+            '_api_/v3/documents/{uuid}/file_get',
             ['uuid' => $document->getUuid()],
             UrlGeneratorInterface::ABSOLUTE_URL
         );

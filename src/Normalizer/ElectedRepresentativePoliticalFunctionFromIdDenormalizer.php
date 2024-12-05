@@ -2,7 +2,7 @@
 
 namespace App\Normalizer;
 
-use ApiPlatform\Exception\ItemNotFoundException;
+use ApiPlatform\Metadata\Exception\ItemNotFoundException;
 use App\Entity\ElectedRepresentative\PoliticalFunction;
 use App\Repository\ElectedRepresentative\PoliticalFunctionRepository;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

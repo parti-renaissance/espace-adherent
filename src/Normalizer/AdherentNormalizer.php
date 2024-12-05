@@ -37,8 +37,6 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         'last_name' => 'lastName',
     ];
 
-    protected const ALREADY_CALLED = 'ADHERENT_NORMALIZER_ALREADY_CALLED';
-
     /**
      * @param Adherent $object
      *
@@ -46,9 +44,7 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
      */
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $context[static::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
         $groups = $context['groups'] ?? [];
 
         if (\in_array('legacy', $groups)) {
@@ -117,7 +113,7 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
 
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return !isset($context[static::ALREADY_CALLED]) && $data instanceof Adherent;
+        return !isset($context[__CLASS__]) && $data instanceof Adherent;
     }
 
     protected function addBackwardCompatibilityFields(array $data): array

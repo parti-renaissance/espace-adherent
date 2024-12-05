@@ -11,8 +11,6 @@ class DeviceNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
-    protected const ALREADY_CALLED = 'DEVICE_NORMALIZER_ALREADY_CALLED';
-
     /**
      * @param Device $object
      *
@@ -20,9 +18,7 @@ class DeviceNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $context[static::ALREADY_CALLED] = true;
-
-        return $this->normalizer->normalize($object, $format, $context);
+        return $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
     }
 
     public function getSupportedTypes(?string $format): array
@@ -35,6 +31,6 @@ class DeviceNormalizer implements NormalizerInterface, NormalizerAwareInterface
 
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return !isset($context[static::ALREADY_CALLED]) && $data instanceof Device;
+        return !isset($context[__CLASS__]) && $data instanceof Device;
     }
 }

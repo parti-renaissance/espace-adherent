@@ -7,6 +7,8 @@ use App\Entity\Jecoute\LocalSurvey;
 use App\Entity\Jecoute\NationalSurvey;
 use App\Entity\Jecoute\Survey;
 use App\Jecoute\SurveyTypeEnum;
+use App\Repository\Geo\ZoneRepository;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
@@ -16,6 +18,10 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class SurveyDenormalizer implements DenormalizerInterface, DenormalizerAwareInterface
 {
     use DenormalizerAwareTrait;
+
+    public function __construct(private readonly ZoneRepository $zoneRepository)
+    {
+    }
 
     public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
@@ -40,7 +46,15 @@ class SurveyDenormalizer implements DenormalizerInterface, DenormalizerAwareInte
         $operation = $context['operation'];
         $context['operation'] = $operation->withClass($surveyClass);
 
-        return $this->denormalizer->denormalize($data, $surveyClass, $format, $context + [__CLASS__ => true]);
+        $survey = $this->denormalizer->denormalize($data, $surveyClass, $format, $context + [__CLASS__ => true]);
+
+        if ($survey instanceof LocalSurvey && !empty($data['zone']) && Uuid::isValid($data['zone'])) {
+            if ($zone = $this->zoneRepository->findOneByUuid($data['zone'])) {
+                $survey->setZone($zone);
+            }
+        }
+
+        return $survey;
     }
 
     public function getSupportedTypes(?string $format): array
@@ -48,6 +62,8 @@ class SurveyDenormalizer implements DenormalizerInterface, DenormalizerAwareInte
         return [
             '*' => null,
             Survey::class => false,
+            LocalSurvey::class => false,
+            NationalSurvey::class => false,
         ];
     }
 

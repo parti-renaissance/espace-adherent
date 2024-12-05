@@ -22,7 +22,7 @@ final class OrderEventsBySubscriptionsFilter extends AbstractFilter
         string $resourceClass,
         ?Operation $operation = null,
         array $context = [],
-    ) {
+    ): void {
         if (
             !is_a($resourceClass, Event::class, true)
             || self::PROPERTY_NAME !== $property

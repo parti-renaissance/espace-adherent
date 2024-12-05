@@ -7,7 +7,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Put;
 use App\Api\Filter\AdherentIdentityFilter;
 use App\Controller\Api\Phoning\CampaignHistoryReplyController;
@@ -37,9 +37,10 @@ use Symfony\Component\Validator\Constraints as Assert;
             requirements: ['uuid' => '%pattern_uuid%'],
             security: 'is_granted(\'IS_CAMPAIGN_HISTORY_CALLER\', object)'
         ),
-        new Post(
+        new HttpOperation(
+            method: 'POST',
             uriTemplate: '/v3/phoning_campaign_histories/{uuid}/reply',
-            defaults: ['_api_receive' => false],
+            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: CampaignHistoryReplyController::class,
             normalizationContext: ['groups' => ['data_survey_read']]

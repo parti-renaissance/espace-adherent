@@ -22,7 +22,7 @@ class AdherentIdentityFilter extends AbstractFilter
         string $resourceClass,
         ?Operation $operation = null,
         array $context = [],
-    ) {
+    ): void {
         if (
             !\in_array($resourceClass, [PhoningCampaignHistory::class, PapCampaignHistory::class])
             || !\in_array($property, self::PROPERTY_NAMES, true)

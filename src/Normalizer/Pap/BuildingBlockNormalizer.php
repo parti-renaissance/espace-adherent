@@ -13,15 +13,10 @@ class BuildingBlockNormalizer implements NormalizerInterface, NormalizerAwareInt
 {
     use NormalizerAwareTrait;
 
-    protected const ALREADY_CALLED = 'BUILDING_BLOCK_NORMALIZER_ALREADY_CALLED';
-
-    private RequestStack $requestStack;
-    private CampaignRepository $campaignRepository;
-
-    public function __construct(RequestStack $requestStack, CampaignRepository $campaignRepository)
-    {
-        $this->requestStack = $requestStack;
-        $this->campaignRepository = $campaignRepository;
+    public function __construct(
+        private readonly RequestStack $requestStack,
+        private readonly CampaignRepository $campaignRepository,
+    ) {
     }
 
     /**
@@ -29,7 +24,6 @@ class BuildingBlockNormalizer implements NormalizerInterface, NormalizerAwareInt
      */
     public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
-        $context[static::ALREADY_CALLED] = true;
         $campaign = null;
 
         if ($campaignUuid = $this->requestStack->getMainRequest()->query->get('campaign_uuid')) {
@@ -38,7 +32,7 @@ class BuildingBlockNormalizer implements NormalizerInterface, NormalizerAwareInt
             }
         }
 
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         if ($campaign && $campaignUuid && $stats = $object->findStatisticsForCampaign($campaign)) {
             $data['campaign_statistics'] = [
@@ -61,6 +55,6 @@ class BuildingBlockNormalizer implements NormalizerInterface, NormalizerAwareInt
 
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return $data instanceof BuildingBlock && !isset($context[static::ALREADY_CALLED]);
+        return !isset($context[__CLASS__]) && $data instanceof BuildingBlock;
     }
 }
