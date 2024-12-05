@@ -134,4 +134,9 @@ class AdherentRuntime implements RuntimeExtensionInterface
     {
         return $this->donationRepository->countCotisationForAdherent($adherent, $before);
     }
+
+    public function getAdherentByUuid(string $uuid): ?Adherent
+    {
+        return $this->adherentRepository->findOneByUuid($uuid);
+    }
 }

@@ -162,7 +162,7 @@ class UserActionHistoryHandler
     {
         return array_map(
             function (Zone $zone): string {
-                return $zone->getName();
+                return \sprintf('%s (%s)', $zone->getName(), $zone->getCode());
             },
             $zones
         );

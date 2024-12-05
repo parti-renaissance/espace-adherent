@@ -4,6 +4,7 @@ namespace App\History;
 
 use App\Entity\Adherent;
 use App\Entity\Administrator;
+use App\Entity\Geo\Zone;
 use App\History\Command\AdministratorActionHistoryCommand;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -76,6 +77,34 @@ class AdministratorActionHistoryHandler
         );
     }
 
+    /** @param Zone[] $zones */
+    public function createAdherentRoleAdd(Administrator $administrator, Adherent $adherent, string $role, array $zones): void
+    {
+        $this->dispatch(
+            $administrator,
+            AdministratorActionHistoryTypeEnum::ADHERENT_ROLE_ADD,
+            [
+                'adherent_uuid' => $adherent->getUuid()->toString(),
+                'role' => $role,
+                'zones' => $this->getZoneNames($zones),
+            ]
+        );
+    }
+
+    /** @param Zone[] $zones */
+    public function createAdherentRoleRemove(Administrator $administrator, Adherent $adherent, string $role, array $zones): void
+    {
+        $this->dispatch(
+            $administrator,
+            AdministratorActionHistoryTypeEnum::ADHERENT_ROLE_REMOVE,
+            [
+                'adherent_uuid' => $adherent->getUuid()->toString(),
+                'role' => $role,
+                'zones' => $this->getZoneNames($zones),
+            ]
+        );
+    }
+
     private function dispatch(
         Administrator $administrator,
         AdministratorActionHistoryTypeEnum $type,
@@ -87,6 +116,17 @@ class AdministratorActionHistoryHandler
                 $type,
                 $data
             )
+        );
+    }
+
+    /** @param Zone[] $zones */
+    private function getZoneNames(array $zones): array
+    {
+        return array_map(
+            function (Zone $zone): string {
+                return \sprintf('%s (%s)', $zone->getName(), $zone->getCode());
+            },
+            $zones
         );
     }
 }

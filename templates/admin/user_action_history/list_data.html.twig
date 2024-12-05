@@ -1,0 +1,32 @@
+{% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
+
+{% block field %}
+    {% if object.data %}
+        <ul>
+            {% for key, value in object.data %}
+                <li>
+                    {% if not (key matches '/^\\d+$/') %}
+                        <b>{{ key }}:</b>
+                        &nbsp;
+                    {% endif %}
+                    {% if key is same as('adherent_uuid') %}
+                        {% set adherent = get_adherent_by_uuid(value) %}
+
+                        {% if adherent %}
+                            {{ adherent.emailAddress }}
+                        {% else %}
+                            {{ value }} (inconnu)
+                        {% endif %}
+                    {% elseif key is same as('role') %}
+                        {{ ('role.' ~ value)|trans }}
+                    {% elseif key is same as('zones') %}
+                        {{ value|join(', ') }}
+                    {% else %}
+                        {{ value|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endblock %}
