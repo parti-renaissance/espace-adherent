@@ -15,17 +15,7 @@ class MilitantFilterBuilder implements FilterBuilderInterface
 
     public function build(string $scope, ?string $feature = null): array
     {
-        $filterBuilder = (new FilterCollectionBuilder())
-            ->createDateInterval('registered', 'Inscrit')
-        ;
-
-        if (FeatureEnum::CONTACTS === $feature) {
-            $filterBuilder
-                ->createBooleanSelect('isNewRenaissanceUser', 'Nouveau militant')
-            ;
-        }
-
-        return $filterBuilder->getFilters();
+        return (new FilterCollectionBuilder())->createDateInterval('registered', 'Inscrit')->getFilters();
     }
 
     public function getGroup(): string
