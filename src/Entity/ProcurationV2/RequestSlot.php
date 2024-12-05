@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     routePrefix: '/v3/procuration',
     normalizationContext: ['groups' => ['procuration_request_slot_read']],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'procurations\')'
+    security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'procurations')"
 )]
 #[ManualSlot]
 #[ORM\Entity(repositoryClass: RequestSlotRepository::class)]
