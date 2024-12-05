@@ -46,7 +46,6 @@ use App\EntityListener\AlgoliaIndexListener;
 use App\EntityListener\DynamicLinkListener;
 use App\Event\EventTypeEnum;
 use App\Event\EventVisibilityEnum;
-use App\Event\UniqueEventNameHandler;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Geocoder\GeoPointInterface;
@@ -223,7 +222,7 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
     /**
      * @var string|null
      */
-    #[Gedmo\Slug(fields: ['beginAt', 'canonicalName'], handlers: [new Gedmo\SlugHandler(class: UniqueEventNameHandler::class)], dateFormat: 'Y-m-d')]
+    #[Gedmo\Slug(fields: ['beginAt', 'canonicalName'], updatable: false, dateFormat: 'Y-m-d')]
     #[Groups(['event_read', 'event_list_read'])]
     #[ORM\Column(length: 130, unique: true)]
     protected $slug;

@@ -1606,7 +1606,7 @@ Feature:
             {
                 "uuid": "5cab27a7-dbb3-4347-9781-566dad1b9eb5",
                 "name": "Nouvel événement online",
-                "slug": "2022-12-12-nouvel-evenement-online",
+                "slug": "@string@-nouvel-evenement-online",
                 "description": "Nouvelle description",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
@@ -2038,7 +2038,7 @@ Feature:
             {
                 "uuid": "594e7ad0-c289-49ae-8c23-0129275d128b",
                 "name": "Un événement du candidat aux législatives",
-                "slug": "2022-12-12-un-evenement-du-candidat-aux-legislatives",
+                "slug": "@string@-un-evenement-du-candidat-aux-legislatives",
                 "description": "Nouvelle description",
                 "time_zone": "Europe/Paris",
                 "live_url": null,
