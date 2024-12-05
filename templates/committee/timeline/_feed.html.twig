@@ -9,7 +9,7 @@
                 <span class="text--summary text--small text--gray b__nudge--bottom">{{ item.author.isSupervisorOf(committee) ? 'animateur' : (item.author.isHostOf(committee) ? 'co-animateur') }}</span>
             </h3>
         </div>
-        {{ include("committee/timeline/_#{item.type}.html.twig", ignore_missing=true) }}
+        {{ include("committee/timeline/_#{item.type}.html.twig", ignore_missing: true) }}
         <div class="feed__options">
             <span class="time-ago text--small text--muted font-roboto">{{ item.createdAt|ago|capitalize }}</span>
             {% if committee_timeline_forms[item.id] is defined %}

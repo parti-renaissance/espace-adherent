@@ -26,7 +26,7 @@
                     <td>
                         {% if subscribed_donations %}
                             {% for subscribed_donation in subscribed_donations %}
-                                Prochaine échéance de {{ subscribed_donation.amountInEuros|format_currency('EUR', locale='fr')|replace({',00': ''}) }}
+                                Prochaine échéance de {{ subscribed_donation.amountInEuros|format_currency('EUR', locale: 'fr')|replace({',00': ''}) }}
                                 le {{ subscribed_donation.nextDonationAt|format_datetime('medium', 'none') }}
                                 {% if not loop.last %}
                                     <br />
@@ -105,7 +105,7 @@
                                 {{ donation.date|format_datetime('medium', 'none') }}
                             </td>
                             <td>
-                                {{ donation.amountInEuros|format_currency('EUR', locale='fr')|replace({',00': ''}) }}
+                                {{ donation.amountInEuros|format_currency('EUR', locale: 'fr')|replace({',00': ''}) }}
                             </td>
                             <td>
                                 {% if donation.isSubscription %}
