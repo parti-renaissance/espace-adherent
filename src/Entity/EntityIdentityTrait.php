@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Metadata\ApiProperty;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -35,12 +35,19 @@ trait EntityIdentityTrait
         'adherent_message_update_filter',
         'audience_list_read',
         'audience_read',
+        'committee_candidacies_group:write',
+        'elected_representative_write',
+        'elected_mandate_write',
         'audience_segment_read',
+        'my_team_member_write',
         'cause_read',
         'committee:list',
+        'committee:update_animator',
         'committee:read',
         'committee_candidacies_group:read',
         'committee_candidacy:read',
+        'jecoute_news_write',
+        'pap_campaign_history_write',
         'committee_election:read',
         'contact_read',
         'contact_read_after_write',

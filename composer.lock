@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a49f9b2fc011d3123f4936d6d9a0456f",
+    "content-hash": "7231f03648114592d09649cec7da711f",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -532,27 +532,30 @@
         },
         {
             "name": "beberlei/doctrineextensions",
-            "version": "v1.3.0",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/DoctrineExtensions.git",
-                "reference": "008f162f191584a6c37c03a803f718802ba9dd9a"
+                "reference": "249eab82aa35b65741388f38499b3162403d9956"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/DoctrineExtensions/zipball/008f162f191584a6c37c03a803f718802ba9dd9a",
-                "reference": "008f162f191584a6c37c03a803f718802ba9dd9a",
+                "url": "https://api.github.com/repos/beberlei/DoctrineExtensions/zipball/249eab82aa35b65741388f38499b3162403d9956",
+                "reference": "249eab82aa35b65741388f38499b3162403d9956",
                 "shasum": ""
             },
             "require": {
-                "doctrine/orm": "^2.7",
+                "doctrine/orm": "^2.15",
                 "php": "^7.2 || ^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.14",
+                "doctrine/annotations": "^1.14 || ^2",
+                "doctrine/coding-standard": "^9.0.2 || ^12.0",
                 "nesbot/carbon": "*",
                 "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
-                "symfony/yaml": "^4.2 || ^5.0",
+                "squizlabs/php_codesniffer": "^3.8",
+                "symfony/cache": "^4.4 || ^5.4 || ^6.4 || ^7.0",
+                "symfony/yaml": "^4.4 || ^5.3 || ^6.0 || ^7.0",
                 "zf1/zend-date": "^1.12",
                 "zf1/zend-registry": "^1.12"
             },
@@ -583,9 +586,9 @@
                 "orm"
             ],
             "support": {
-                "source": "https://github.com/beberlei/DoctrineExtensions/tree/v1.3.0"
+                "source": "https://github.com/beberlei/DoctrineExtensions/tree/v1.4.0"
             },
-            "time": "2020-11-29T07:37:23+00:00"
+            "time": "2024-02-05T17:02:44+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -1556,82 +1559,6 @@
                 "source": "https://github.com/dflydev/dflydev-dot-access-data/tree/v3.0.3"
             },
             "time": "2024-07-08T12:26:09+00:00"
-        },
-        {
-            "name": "doctrine/annotations",
-            "version": "2.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/annotations.git",
-                "reference": "901c2ee5d26eb64ff43c47976e114bf00843acf7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/901c2ee5d26eb64ff43c47976e114bf00843acf7",
-                "reference": "901c2ee5d26eb64ff43c47976e114bf00843acf7",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/lexer": "^2 || ^3",
-                "ext-tokenizer": "*",
-                "php": "^7.2 || ^8.0",
-                "psr/cache": "^1 || ^2 || ^3"
-            },
-            "require-dev": {
-                "doctrine/cache": "^2.0",
-                "doctrine/coding-standard": "^10",
-                "phpstan/phpstan": "^1.10.28",
-                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
-                "symfony/cache": "^5.4 || ^6.4 || ^7",
-                "vimeo/psalm": "^4.30 || ^5.14"
-            },
-            "suggest": {
-                "php": "PHP 8.0 or higher comes with attributes, a native replacement for annotations"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Doctrine\\Common\\Annotations\\": "lib/Doctrine/Common/Annotations"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Guilherme Blanco",
-                    "email": "guilhermeblanco@gmail.com"
-                },
-                {
-                    "name": "Roman Borschel",
-                    "email": "roman@code-factory.org"
-                },
-                {
-                    "name": "Benjamin Eberlei",
-                    "email": "kontakt@beberlei.de"
-                },
-                {
-                    "name": "Jonathan Wage",
-                    "email": "jonwage@gmail.com"
-                },
-                {
-                    "name": "Johannes Schmitt",
-                    "email": "schmittjoh@gmail.com"
-                }
-            ],
-            "description": "Docblock Annotations Parser",
-            "homepage": "https://www.doctrine-project.org/projects/annotations.html",
-            "keywords": [
-                "annotations",
-                "docblock",
-                "parser"
-            ],
-            "support": {
-                "issues": "https://github.com/doctrine/annotations/issues",
-                "source": "https://github.com/doctrine/annotations/tree/2.0.2"
-            },
-            "time": "2024-09-05T10:17:24+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -5399,16 +5326,16 @@
         },
         {
             "name": "knplabs/knp-menu",
-            "version": "v3.5.0",
+            "version": "v3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenu.git",
-                "reference": "c39403f7c427d1b72cc56f38df0a075b4b9191fe"
+                "reference": "ac96b711cf7b4178747b0ecde79d7e5e05dbcd28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/c39403f7c427d1b72cc56f38df0a075b4b9191fe",
-                "reference": "c39403f7c427d1b72cc56f38df0a075b4b9191fe",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/ac96b711cf7b4178747b0ecde79d7e5e05dbcd28",
+                "reference": "ac96b711cf7b4178747b0ecde79d7e5e05dbcd28",
                 "shasum": ""
             },
             "require": {
@@ -5466,26 +5393,26 @@
             ],
             "support": {
                 "issues": "https://github.com/KnpLabs/KnpMenu/issues",
-                "source": "https://github.com/KnpLabs/KnpMenu/tree/v3.5.0"
+                "source": "https://github.com/KnpLabs/KnpMenu/tree/v3.6.0"
             },
-            "time": "2024-03-23T15:35:09+00:00"
+            "time": "2024-12-20T10:10:51+00:00"
         },
         {
             "name": "knplabs/knp-menu-bundle",
-            "version": "v3.4.2",
+            "version": "v3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenuBundle.git",
-                "reference": "6a1e3e1f4131f9a5a967e36717a1fe680c183637"
+                "reference": "5f85a4908343c3d6a6009c2f8a74c2d102c0aa80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/6a1e3e1f4131f9a5a967e36717a1fe680c183637",
-                "reference": "6a1e3e1f4131f9a5a967e36717a1fe680c183637",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/5f85a4908343c3d6a6009c2f8a74c2d102c0aa80",
+                "reference": "5f85a4908343c3d6a6009c2f8a74c2d102c0aa80",
                 "shasum": ""
             },
             "require": {
-                "knplabs/knp-menu": "^3.3",
+                "knplabs/knp-menu": "^3.6",
                 "php": "^8.1",
                 "symfony/deprecation-contracts": "^2.5 | ^3.3",
                 "symfony/framework-bundle": "^5.4 | ^6.0 | ^7.0"
@@ -5531,9 +5458,9 @@
             ],
             "support": {
                 "issues": "https://github.com/KnpLabs/KnpMenuBundle/issues",
-                "source": "https://github.com/KnpLabs/KnpMenuBundle/tree/v3.4.2"
+                "source": "https://github.com/KnpLabs/KnpMenuBundle/tree/v3.5.0"
             },
-            "time": "2024-06-03T08:48:36+00:00"
+            "time": "2024-12-25T16:34:19+00:00"
         },
         {
             "name": "knplabs/knp-time-bundle",
@@ -9923,28 +9850,28 @@
         },
         {
             "name": "runroom-packages/sortable-behavior-bundle",
-            "version": "0.17.1",
+            "version": "0.18.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Runroom/RunroomSortableBehaviorBundle.git",
-                "reference": "ef29964f1a43c3ffbc297fa4228112c1573fbf6b"
+                "reference": "6004e079a29018d5de469e2a56da45a77235cabe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Runroom/RunroomSortableBehaviorBundle/zipball/ef29964f1a43c3ffbc297fa4228112c1573fbf6b",
-                "reference": "ef29964f1a43c3ffbc297fa4228112c1573fbf6b",
+                "url": "https://api.github.com/repos/Runroom/RunroomSortableBehaviorBundle/zipball/6004e079a29018d5de469e2a56da45a77235cabe",
+                "reference": "6004e079a29018d5de469e2a56da45a77235cabe",
                 "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-bundle": "^2.8",
                 "doctrine/orm": "^2.14",
                 "php": "^8.1",
-                "symfony/config": "^5.4 || ^6.2",
-                "symfony/dependency-injection": "^5.4 || ^6.2",
-                "symfony/http-foundation": "^5.4 || ^6.2",
-                "symfony/http-kernel": "^5.4 || ^6.2",
-                "symfony/property-access": "^5.4 || ^6.2",
-                "symfony/translation": "^5.4 || ^6.2",
+                "symfony/config": "^5.4 || ^6.4",
+                "symfony/dependency-injection": "^5.4 || ^6.4",
+                "symfony/http-foundation": "^5.4 || ^6.4",
+                "symfony/http-kernel": "^5.4 || ^6.4",
+                "symfony/property-access": "^5.4 || ^6.4",
+                "symfony/translation": "^5.4 || ^6.4",
                 "twig/twig": "^3.0"
             },
             "conflict": {
@@ -9952,22 +9879,22 @@
                 "sonata-project/admin-bundle": "<4.0"
             },
             "require-dev": {
-                "dama/doctrine-test-bundle": "^7.2",
+                "dama/doctrine-test-bundle": "^8.0",
                 "gedmo/doctrine-extensions": "^3.11",
                 "knplabs/knp-menu-bundle": "^3.1",
-                "matthiasnoback/symfony-config-test": "^4.2",
-                "matthiasnoback/symfony-dependency-injection-test": "^4.2",
+                "matthiasnoback/symfony-config-test": "^5.1",
+                "matthiasnoback/symfony-dependency-injection-test": "^5.1",
                 "phpunit/phpunit": "^9.6",
                 "psr/container": "^1.1 || ^2.0",
-                "runroom-packages/testing": "^0.17.1",
+                "runroom-packages/testing": "^0.18",
                 "sonata-project/admin-bundle": "^4.20",
                 "sonata-project/doctrine-orm-admin-bundle": "^4.3",
-                "symfony/browser-kit": "^5.4 || ^6.2",
-                "symfony/framework-bundle": "^5.4 || ^6.2",
-                "symfony/phpunit-bridge": "^6.3",
-                "symfony/security-bundle": "^5.4 || ^6.2",
-                "symfony/twig-bundle": "^5.4 || ^6.2",
-                "zenstruck/foundry": "^1.34"
+                "symfony/browser-kit": "^5.4 || ^6.4",
+                "symfony/framework-bundle": "^5.4 || ^6.4",
+                "symfony/phpunit-bridge": "^7.0",
+                "symfony/security-bundle": "^5.4 || ^6.4",
+                "symfony/twig-bundle": "^5.4 || ^6.4",
+                "zenstruck/foundry": "^1.38.2 || ^2.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -9999,9 +9926,9 @@
                 "sortable"
             ],
             "support": {
-                "source": "https://github.com/Runroom/RunroomSortableBehaviorBundle/tree/0.17.1"
+                "source": "https://github.com/Runroom/RunroomSortableBehaviorBundle/tree/0.18.0"
             },
-            "time": "2023-07-18T07:45:45+00:00"
+            "time": "2024-07-09T08:44:46+00:00"
         },
         {
             "name": "sabre/dav",
@@ -10566,84 +10493,6 @@
                 "source": "https://github.com/scheb/2fa-google-authenticator/tree/v6.13.1"
             },
             "time": "2024-11-29T19:22:48+00:00"
-        },
-        {
-            "name": "sensio/framework-extra-bundle",
-            "version": "v6.2.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "2f886f4b31f23c76496901acaedfedb6936ba61f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/2f886f4b31f23c76496901acaedfedb6936ba61f",
-                "reference": "2f886f4b31f23c76496901acaedfedb6936ba61f",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/annotations": "^1.0|^2.0",
-                "php": ">=7.2.5",
-                "symfony/config": "^4.4|^5.0|^6.0",
-                "symfony/dependency-injection": "^4.4|^5.0|^6.0",
-                "symfony/framework-bundle": "^4.4|^5.0|^6.0",
-                "symfony/http-kernel": "^4.4|^5.0|^6.0"
-            },
-            "conflict": {
-                "doctrine/doctrine-cache-bundle": "<1.3.1",
-                "doctrine/persistence": "<1.3"
-            },
-            "require-dev": {
-                "doctrine/dbal": "^2.10|^3.0",
-                "doctrine/doctrine-bundle": "^1.11|^2.0",
-                "doctrine/orm": "^2.5",
-                "symfony/browser-kit": "^4.4|^5.0|^6.0",
-                "symfony/doctrine-bridge": "^4.4|^5.0|^6.0",
-                "symfony/dom-crawler": "^4.4|^5.0|^6.0",
-                "symfony/expression-language": "^4.4|^5.0|^6.0",
-                "symfony/finder": "^4.4|^5.0|^6.0",
-                "symfony/monolog-bridge": "^4.0|^5.0|^6.0",
-                "symfony/monolog-bundle": "^3.2",
-                "symfony/phpunit-bridge": "^4.4.9|^5.0.9|^6.0",
-                "symfony/security-bundle": "^4.4|^5.0|^6.0",
-                "symfony/twig-bundle": "^4.4|^5.0|^6.0",
-                "symfony/yaml": "^4.4|^5.0|^6.0",
-                "twig/twig": "^1.34|^2.4|^3.0"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "6.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Sensio\\Bundle\\FrameworkExtraBundle\\": "src/"
-                },
-                "exclude-from-classmap": [
-                    "/tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                }
-            ],
-            "description": "This bundle provides a way to configure your controllers with annotations",
-            "keywords": [
-                "annotations",
-                "controllers"
-            ],
-            "support": {
-                "source": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/tree/v6.2.10"
-            },
-            "abandoned": "Symfony",
-            "time": "2023-02-24T14:57:12+00:00"
         },
         {
             "name": "sentry/sentry",
@@ -17117,25 +16966,26 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v7.2.0",
+            "version": "v6.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
-                "reference": "1a6a89f95a46af0f142874c9d650a6358d13070d"
+                "reference": "0f605f72a363f8743001038a176eeb2a11223b51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/1a6a89f95a46af0f142874c9d650a6358d13070d",
-                "reference": "1a6a89f95a46af0f142874c9d650a6358d13070d",
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/0f605f72a363f8743001038a176eeb2a11223b51",
+                "reference": "0f605f72a363f8743001038a176eeb2a11223b51",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2"
+                "php": ">=8.1",
+                "symfony/deprecation-contracts": "^2.5|^3"
             },
             "require-dev": {
                 "symfony/property-access": "^6.4|^7.0",
                 "symfony/serializer": "^6.4|^7.0",
-                "symfony/var-dumper": "^6.4|^7.0"
+                "symfony/var-dumper": "^5.4|^6.0|^7.0"
             },
             "type": "library",
             "autoload": {
@@ -17173,7 +17023,7 @@
                 "serialize"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-exporter/tree/v7.2.0"
+                "source": "https://github.com/symfony/var-exporter/tree/v6.4.13"
             },
             "funding": [
                 {
@@ -17189,7 +17039,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-10-18T07:58:17+00:00"
+            "time": "2024-09-25T14:18:03+00:00"
         },
         {
             "name": "symfony/web-link",
@@ -18207,20 +18057,20 @@
     "packages-dev": [
         {
             "name": "aeon-php/calendar",
-            "version": "1.0.9",
+            "version": "1.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aeon-php/calendar.git",
-                "reference": "2cfc45a2cd28b78f1450d8155a1c62df2efe45de"
+                "reference": "41f4b0ff07247c36b232ddfbcddc62af738be6fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aeon-php/calendar/zipball/2cfc45a2cd28b78f1450d8155a1c62df2efe45de",
-                "reference": "2cfc45a2cd28b78f1450d8155a1c62df2efe45de",
+                "url": "https://api.github.com/repos/aeon-php/calendar/zipball/41f4b0ff07247c36b232ddfbcddc62af738be6fe",
+                "reference": "41f4b0ff07247c36b232ddfbcddc62af738be6fe",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.1.10 || ~8.2"
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0"
             },
             "require-dev": {
                 "ext-bcmath": "*",
@@ -18251,9 +18101,19 @@
             ],
             "support": {
                 "issues": "https://github.com/aeon-php/calendar/issues",
-                "source": "https://github.com/aeon-php/calendar/tree/1.0.9"
+                "source": "https://github.com/aeon-php/calendar/tree/1.0.11"
             },
-            "time": "2023-08-29T09:47:37+00:00"
+            "funding": [
+                {
+                    "url": "https://flow-php.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/norberttech",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-01-24T04:47:09+00:00"
         },
         {
             "name": "behat/behat",
@@ -22517,20 +22377,20 @@
         },
         {
             "name": "symfony/process",
-            "version": "v7.2.0",
+            "version": "v6.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "d34b22ba9390ec19d2dd966c40aa9e8462f27a7e"
+                "reference": "3cb242f059c14ae08591c5c4087d1fe443564392"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/d34b22ba9390ec19d2dd966c40aa9e8462f27a7e",
-                "reference": "d34b22ba9390ec19d2dd966c40aa9e8462f27a7e",
+                "url": "https://api.github.com/repos/symfony/process/zipball/3cb242f059c14ae08591c5c4087d1fe443564392",
+                "reference": "3cb242f059c14ae08591c5c4087d1fe443564392",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2"
+                "php": ">=8.1"
             },
             "type": "library",
             "autoload": {
@@ -22558,7 +22418,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v7.2.0"
+                "source": "https://github.com/symfony/process/tree/v6.4.15"
             },
             "funding": [
                 {
@@ -22574,7 +22434,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-11-06T14:24:19+00:00"
+            "time": "2024-11-06T14:19:14+00:00"
         },
         {
             "name": "symfony/web-profiler-bundle",
@@ -22866,6 +22726,6 @@
         "ext-pdo": "*",
         "ext-zip": "*"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
 }

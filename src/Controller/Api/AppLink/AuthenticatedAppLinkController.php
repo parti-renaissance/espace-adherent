@@ -3,8 +3,6 @@
 namespace App\Controller\Api\AppLink;
 
 use App\Controller\Renaissance\Adhesion\AdhesionController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Entity\Adherent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

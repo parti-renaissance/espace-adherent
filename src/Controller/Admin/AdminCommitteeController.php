@@ -22,7 +22,6 @@ use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\CommitteeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\CacheItemPoolInterface;
-use DoctrineExtensions\Query\Mysql\Exp;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;

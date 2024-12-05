@@ -53,7 +53,6 @@ class SecurityControllerCaseTest extends AbstractAdminWebTestCase
         $this->assertClientIsRedirectedTo('/login/2fa', $this->client, true);
 
         $crawler = $this->client->followRedirect();
-        $content = $this->client->getResponse()->getContent();
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(1, $crawler->filter('#_auth_code'));

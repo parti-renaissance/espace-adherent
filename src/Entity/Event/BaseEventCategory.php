@@ -2,7 +2,7 @@
 
 namespace App\Entity\Event;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Metadata\ApiProperty;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -33,7 +33,7 @@ abstract class BaseEventCategory implements EventCategoryInterface
     #[Assert\Length(max: 100)]
     #[Assert\NotBlank]
     #[Gedmo\Slug(fields: ['name'], unique: true)]
-    #[Groups(['event_read', 'event_list_read', 'event_category_read'])]
+    #[Groups(['event_read', 'event_list_read', 'event_category_read', 'event_write'])]
     #[ORM\Column(length: 100, unique: true)]
     protected $slug;
 
