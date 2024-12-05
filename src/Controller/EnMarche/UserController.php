@@ -19,12 +19,12 @@ use App\OAuth\App\AuthAppUrlManager;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security as CoreSecurity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route(path: '/parametres/mon-compte')]
@@ -110,9 +110,9 @@ class UserController extends AbstractController
     public function terminateMembershipAction(
         Request $request,
         MembershipRequestHandler $handler,
-        TokenStorageInterface $tokenStorage,
         AuthAppUrlManager $appUrlManager,
         UserInterface $user,
+        CoreSecurity $security,
     ): Response {
         $appCode = $appUrlManager->getAppCodeFromRequest($request);
         $isRenaissanceApp = AppCodeEnum::isRenaissanceApp($appCode);
@@ -135,8 +135,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $handler->terminateMembership($user, $unregistrationCommand, $user->isAdherent());
-            $tokenStorage->setToken(null);
-            $request->getSession()->invalidate();
+            $security->logout(false);
 
             return $this->render(
                 $isRenaissanceApp
