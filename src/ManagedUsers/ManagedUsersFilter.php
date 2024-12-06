@@ -7,7 +7,7 @@ use App\Adherent\Tag\TagEnum;
 use App\Entity\Committee;
 use App\Entity\Geo\Zone;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
