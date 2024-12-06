@@ -257,22 +257,19 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "title: Cette valeur ne doit pas être vide.\nbody: Cette valeur ne doit pas être vide.\nsource_url: Cette valeur ne doit pas être vide.",
+                "message": "Validation Failed",
+                "status": "error",
+
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "title",
                         "message": "Cette valeur ne doit pas être vide."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "body",
                         "message": "Cette valeur ne doit pas être vide."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "source_url",
                         "message": "Cette valeur ne doit pas être vide."
                     }
@@ -294,27 +291,23 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "title: Vous devez saisir au maximum 255 caractères.\nbody: Cette valeur ne doit pas être vide.\nsource_url: Cette valeur ne doit pas être vide.\nwith_notification: Cette valeur doit être de type bool.",
+                "message": "Validation Failed",
+                "status": "error",
+
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "title",
                         "message": "Vous devez saisir au maximum 255 caractères."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "body",
                         "message": "Cette valeur ne doit pas être vide."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "source_url",
                         "message": "Cette valeur ne doit pas être vide."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "with_notification",
                         "message": "Cette valeur doit être de type bool."
                     }

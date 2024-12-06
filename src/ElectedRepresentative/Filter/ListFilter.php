@@ -7,7 +7,7 @@ use App\Entity\ElectedRepresentative\ElectedRepresentativeTypeEnum;
 use App\Entity\Geo\Zone;
 use App\Entity\UserListDefinition;
 use App\Renaissance\Membership\RenaissanceMembershipFilterEnum;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ListFilter

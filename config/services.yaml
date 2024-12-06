@@ -234,6 +234,7 @@ services:
     App\Normalizer\JecouteRegionNormalizer:
         tags: [{ name: 'serializer.normalizer', priority: 1 }]
 
+    # TODO: remove ?
     App\Normalizer\ConstraintViolationListNormalizer:
         decorates: 'serializer.normalizer.constraint_violation_list'
         arguments:

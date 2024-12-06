@@ -106,10 +106,7 @@ class UserController extends AbstractController
         $errors = $validator->validate($password);
 
         if (0 !== $errors->count()) {
-            return JsonResponse::fromJsonString(
-                $serializer->serialize($errors, ConstraintViolationListNormalizer::FORMAT),
-                Response::HTTP_BAD_REQUEST
-            );
+            return $this->json($errors, Response::HTTP_BAD_REQUEST);
         }
 
         try {
