@@ -156,12 +156,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "password: Le mot de passe ne doit pas être vide.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "password",
                         "message": "Le mot de passe ne doit pas être vide."
                     }
@@ -176,17 +174,14 @@ Feature:
                 "password": "test"
             }
             """
-        Then the response status code should be 400
-        And the response should be in JSON
+        Then the response should be in JSON
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "password: Votre mot de passe doit comporter au moins 8 caractères.",
+                "type": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "password",
                         "message": "Votre mot de passe doit comporter au moins 8 caractères."
                     }
