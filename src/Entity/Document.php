@@ -14,7 +14,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['title' => 'partial'])]
@@ -23,13 +23,13 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/documents/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'documents\')'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'documents')"
         ),
         new Get(
             uriTemplate: '/documents/{uuid}/file',
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: DocumentDownloadFileController::class,
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'documents\')'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'documents')"
         ),
         new GetCollection(
             uriTemplate: '/documents',
@@ -39,7 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     routePrefix: '/v3',
     normalizationContext: ['groups' => ['document_read']],
     order: ['createdAt' => 'DESC'],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'documents\')'
+    security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'documents')"
 )]
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
 #[ORM\Table]

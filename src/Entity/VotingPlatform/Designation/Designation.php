@@ -36,7 +36,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: InZoneOfScopeFilter::class)]
@@ -46,12 +46,12 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/designations/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'designation\')'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')"
         ),
         new Put(
             uriTemplate: '/designations/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'designation\')',
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')",
             validationContext: ['groups' => UpdateDesignationGroupGenerator::class]
         ),
         new Put(
@@ -59,7 +59,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: CancelElectionController::class,
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'designation\')'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')"
         ),
         new GetCollection(normalizationContext: ['groups' => ['designation_list']]),
         new Post(validationContext: ['groups' => ['api_designation_write']]),
@@ -68,7 +68,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['designation_read']],
     denormalizationContext: ['groups' => ['designation_write']],
     order: ['voteStartDate' => 'DESC'],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'designation\')'
+    security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'designation')"
 )]
 #[ORM\Entity(repositoryClass: DesignationRepository::class)]
 class Designation implements EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, ZoneableEntityInterface, InjectScopeZonesInterface

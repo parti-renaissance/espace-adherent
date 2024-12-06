@@ -10,7 +10,7 @@ use App\Collection\ZoneCollection;
 use App\Repository\DeviceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -18,12 +18,12 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/v3/device/{deviceUuid}',
             requirements: ['deviceUuid' => '[\w-]+'],
-            security: 'is_granted(\'ROLE_OAUTH_DEVICE\') and object.equals(user.getDevice())'
+            security: "is_granted('ROLE_OAUTH_DEVICE') and object.equals(user.getDevice())"
         ),
         new Put(
             uriTemplate: '/v3/device/{deviceUuid}',
             requirements: ['deviceUuid' => '[\w-]+'],
-            security: 'is_granted(\'ROLE_OAUTH_DEVICE\') and object.equals(user.getDevice())'
+            security: "is_granted('ROLE_OAUTH_DEVICE') and object.equals(user.getDevice())"
         ),
     ],
     normalizationContext: ['groups' => ['device_read']],

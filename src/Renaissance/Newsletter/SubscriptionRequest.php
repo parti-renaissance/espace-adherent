@@ -8,7 +8,7 @@ use App\Recaptcha\RecaptchaChallengeTrait;
 use App\Validator\Recaptcha as AssertRecaptcha;
 use App\Validator\StrictEmail;
 use App\Validator\UniqueRenaissanceNewsletter;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[AssertRecaptcha]

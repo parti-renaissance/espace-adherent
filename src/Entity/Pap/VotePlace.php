@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     shortName: 'PapVotePlace',
@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['iri' => true, 'groups' => ['pap_vote_place_read']],
     filters: [PapVotePlaceScopeFilter::class],
     paginationClientEnabled: true,
-    security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\']) or (is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\') and is_granted(\'ROLE_PAP_USER\'))'
+    security: "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap']) or (is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER'))"
 )]
 #[ORM\Entity(repositoryClass: VotePlaceRepository::class)]
 #[ORM\Index(columns: ['latitude', 'longitude'])]

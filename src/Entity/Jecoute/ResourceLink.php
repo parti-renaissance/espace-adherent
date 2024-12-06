@@ -14,14 +14,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Runroom\SortableBehaviorBundle\Behaviors\Sortable;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
         new GetCollection(
             uriTemplate: '/v3/jecoute/resource-links',
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\')'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')"
         ),
     ],
     normalizationContext: ['groups' => ['jecoute_resource_links_read', ImageOwnerExposedNormalizer::NORMALIZATION_GROUP]],

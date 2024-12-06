@@ -16,7 +16,6 @@ return (new PhpCsFixer\Config())
         '@PHP82Migration' => true,
         '@PHP80Migration:risky' => true,
         '@Symfony' => true,
-        '@DoctrineAnnotation' => true,
         'phpdoc_summary' => false,
         'no_unneeded_final_method' => false,
         'declare_strict_types' => false,

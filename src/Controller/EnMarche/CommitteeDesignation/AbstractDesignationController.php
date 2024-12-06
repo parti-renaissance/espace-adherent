@@ -11,7 +11,7 @@ use App\Repository\CommitteeElectionRepository;
 use App\Repository\VotingPlatform\ElectionRepository;
 use App\Repository\VotingPlatform\VoteResultRepository;
 use App\Repository\VotingPlatform\VoterRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +29,7 @@ abstract class AbstractDesignationController extends AbstractController
     #[Route(path: '', name: '_list', methods: ['GET'])]
     public function listDesignationsAction(
         Request $request,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
         CommitteeElectionRepository $repository,
     ): Response {
@@ -41,12 +42,13 @@ abstract class AbstractDesignationController extends AbstractController
     /**
      * @param Committee $committee used in Security notation in concretes classes
      */
-    #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
     #[Route(path: '/{uuid}/{election_round_uuid}', name: '_dashboard', methods: ['GET'], defaults: ['election_round_uuid' => null])]
     public function dashboardAction(
         Request $request,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
         Election $election,
+        #[MapEntity(mapping: ['election_round_uuid' => 'uuid'])]
         ?ElectionRound $electionRound = null,
     ): Response {
         if (!$electionRound) {
@@ -62,13 +64,14 @@ abstract class AbstractDesignationController extends AbstractController
         ]);
     }
 
-    #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
     #[Route(path: '/{uuid}/liste-emargement/{election_round_uuid}', name: '_voters_list', methods: ['GET'], defaults: ['election_round_uuid' => null])]
     public function listVotersAction(
         Request $request,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
         Election $election,
         VoterRepository $voterRepository,
+        #[MapEntity(mapping: ['election_round_uuid' => 'uuid'])]
         ?ElectionRound $electionRound = null,
     ): Response {
         if (!$electionRound) {
@@ -89,12 +92,13 @@ abstract class AbstractDesignationController extends AbstractController
         ]);
     }
 
-    #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
     #[Route(path: '/{uuid}/resultats/{election_round_uuid}', name: '_results', methods: ['GET'], defaults: ['election_round_uuid' => null])]
     public function showResultsAction(
         Request $request,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
         Election $election,
+        #[MapEntity(mapping: ['election_round_uuid' => 'uuid'])]
         ?ElectionRound $electionRound = null,
     ): Response {
         if (!$electionRound) {
@@ -122,13 +126,14 @@ abstract class AbstractDesignationController extends AbstractController
         ]);
     }
 
-    #[ParamConverter('electionRound', options: ['mapping' => ['election_round_uuid' => 'uuid']])]
     #[Route(path: '/{uuid}/bulletins/{election_round_uuid}', name: '_votes', methods: ['GET'], defaults: ['election_round_uuid' => null])]
     public function listVotesAction(
         Request $request,
+        #[MapEntity(mapping: ['committee_slug' => 'slug'])]
         Committee $committee,
         Election $election,
         VoteResultRepository $voteResultRepository,
+        #[MapEntity(mapping: ['election_round_uuid' => 'uuid'])]
         ?ElectionRound $electionRound = null,
     ): Response {
         if (!$electionRound) {

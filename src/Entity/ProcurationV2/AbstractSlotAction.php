@@ -5,7 +5,7 @@ namespace App\Entity\ProcurationV2;
 use App\Procuration\V2\SlotActionStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\MappedSuperclass]
 abstract class AbstractSlotAction extends AbstractAction

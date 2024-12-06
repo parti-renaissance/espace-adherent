@@ -39,7 +39,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\String\UnicodeString;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -51,34 +51,34 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/jecoute/news/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             openapiContext: ['summary' => 'Retrieves a News resource by UUID.', 'description' => 'Retrieves a News resource by UUID.', 'parameters' => [['name' => 'uuid', 'in' => 'path', 'type' => 'string', 'description' => 'The UUID of the News resource.', 'example' => '28']]],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\')'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')"
         ),
         new Get(
             uriTemplate: '/v3/jecoute/news/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['jecoute_news_read_dc']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'news\')'
+            security: "is_granted('IS_FEATURE_GRANTED', 'news')"
         ),
         new Put(
             uriTemplate: '/v3/jecoute/news/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['jecoute_news_read_dc']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'news\') and is_granted(\'SCOPE_CAN_MANAGE\', object)'
+            security: "is_granted('IS_FEATURE_GRANTED', 'news') and is_granted('SCOPE_CAN_MANAGE', object)"
         ),
         new GetCollection(
             uriTemplate: '/jecoute/news',
             openapiContext: ['parameters' => [['name' => 'uuid', 'in' => 'query', 'type' => 'string', 'description' => 'Filter News by exact uuid.', 'example' => 'a046adbe-9c7b-56a9-a676-6151a6785dda'], ['name' => 'title', 'in' => 'query', 'type' => 'string', 'description' => 'Filter News by partial title.', 'example' => 'Rassem']]],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\')'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP')"
         ),
         new GetCollection(
             uriTemplate: '/v3/jecoute/news',
             normalizationContext: ['groups' => ['jecoute_news_read_dc']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'news\')'
+            security: "is_granted('IS_FEATURE_GRANTED', 'news')"
         ),
         new Post(
             uriTemplate: '/v3/jecoute/news',
             normalizationContext: ['groups' => ['jecoute_news_read_dc']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'news\')'
+            security: "is_granted('IS_FEATURE_GRANTED', 'news')"
         ),
     ],
     normalizationContext: ['groups' => ['jecoute_news_read']],

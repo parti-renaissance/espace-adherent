@@ -23,7 +23,7 @@ use App\Repository\Phoning\CampaignHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['campaign.uuid' => 'exact', 'campaign.title' => 'partial', 'status' => 'exact'])]
@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Put(
             uriTemplate: '/v3/phoning_campaign_histories/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'IS_CAMPAIGN_HISTORY_CALLER\', object)'
+            security: "is_granted('IS_CAMPAIGN_HISTORY_CALLER', object)"
         ),
         new Post(
             uriTemplate: '/v3/phoning_campaign_histories/{uuid}/reply',
@@ -47,7 +47,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new GetCollection(
             uriTemplate: '/v3/phoning_campaign_histories',
             normalizationContext: ['groups' => ['phoning_campaign_history_read_list']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'phoning_campaign\')'
+            security: "is_granted('IS_FEATURE_GRANTED', 'phoning_campaign')"
         ),
     ],
     normalizationContext: ['iri' => true, 'groups' => ['phoning_campaign_history_read']],

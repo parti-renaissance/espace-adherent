@@ -23,7 +23,7 @@ use App\Validator\RiposteOpenGraph;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/ripostes/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['riposte_read']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'ripostes\') or (is_granted(\'ROLE_USER\') and is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\'))'
+            security: "is_granted('IS_FEATURE_GRANTED', 'ripostes') or (is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))"
         ),
         new Put(
             uriTemplate: '/v3/ripostes/{uuid}',
@@ -47,12 +47,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: IncrementRiposteStatsCounterController::class,
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'ripostes\') or (is_granted(\'ROLE_USER\') and is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\'))'
+            security: "is_granted('IS_FEATURE_GRANTED', 'ripostes') or (is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))"
         ),
         new GetCollection(
             uriTemplate: '/v3/ripostes',
             normalizationContext: ['groups' => ['riposte_list_read']],
-            security: 'is_granted(\'IS_FEATURE_GRANTED\', \'ripostes\') or (is_granted(\'ROLE_USER\') and is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\'))'
+            security: "is_granted('IS_FEATURE_GRANTED', 'ripostes') or (is_granted('ROLE_USER') and is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP'))"
         ),
         new Post(uriTemplate: '/v3/ripostes'),
     ],
@@ -60,7 +60,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     denormalizationContext: ['groups' => ['riposte_write']],
     order: ['createdAt' => 'DESC'],
     paginationEnabled: false,
-    security: 'is_granted(\'IS_FEATURE_GRANTED\', \'ripostes\')'
+    security: "is_granted('IS_FEATURE_GRANTED', 'ripostes')"
 )]
 #[ORM\Entity]
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]

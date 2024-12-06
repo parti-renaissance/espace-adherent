@@ -29,7 +29,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -37,23 +37,23 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/v3/elected_representatives/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'elected_representative\') and is_granted(\'MANAGE_ELECTED_REPRESENTATIVE\', object)'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('MANAGE_ELECTED_REPRESENTATIVE', object)"
         ),
         new Put(
             uriTemplate: '/v3/elected_representatives/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'elected_representative\') and is_granted(\'MANAGE_ELECTED_REPRESENTATIVE\', object)'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('MANAGE_ELECTED_REPRESENTATIVE', object)"
         ),
         new Delete(
             uriTemplate: '/v3/elected_representatives/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'elected_representative\') and is_granted(\'MANAGE_ELECTED_REPRESENTATIVE\', object)'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative') and is_granted('MANAGE_ELECTED_REPRESENTATIVE', object)"
         ),
         new Post(uriTemplate: '/v3/elected_representatives'),
     ],
     normalizationContext: ['groups' => ['elected_representative_read']],
     denormalizationContext: ['groups' => ['elected_representative_write']],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'elected_representative\')'
+    security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
 )]
 #[ORM\Entity(repositoryClass: ElectedRepresentativeRepository::class)]
 #[UniqueEntity(fields: ['adherent'], message: 'elected_representative.invalid_adherent')]

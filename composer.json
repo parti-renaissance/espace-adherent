@@ -87,7 +87,6 @@
         "sabre/dav": "^4.1",
         "scheb/2fa-bundle": "^6.3",
         "scheb/2fa-google-authenticator": "^6.3",
-        "sensio/framework-extra-bundle": "^6.0",
         "sentry/sentry-symfony": "^5.0",
         "sonata-project/admin-bundle": "^4.32",
         "sonata-project/doctrine-orm-admin-bundle": "^4.15",

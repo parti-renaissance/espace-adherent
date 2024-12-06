@@ -13,7 +13,7 @@ use App\Repository\PushTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -21,11 +21,11 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
     operations: [
         new Get(
             uriTemplate: '/v3/push-token/{identifier}',
-            security: 'is_granted(\'IS_AUTHOR_OF_PUSH_TOKEN\', object)'
+            security: "is_granted('IS_AUTHOR_OF_PUSH_TOKEN', object)"
         ),
         new Delete(
             uriTemplate: '/v3/push-token/{identifier}',
-            security: 'is_granted(\'IS_AUTHOR_OF_PUSH_TOKEN\', object)'
+            security: "is_granted('IS_AUTHOR_OF_PUSH_TOKEN', object)"
         ),
         new Post(
             uriTemplate: '/v3/push-token',

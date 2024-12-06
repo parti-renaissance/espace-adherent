@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\TaxReceiptRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: TaxReceiptRepository::class)]
 class TaxReceipt

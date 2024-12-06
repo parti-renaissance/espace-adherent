@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     operations: [
@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             uriTemplate: '/committee_elections/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
             normalizationContext: ['groups' => ['committee_election:read']],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'committee\') and is_granted(\'MANAGE_ZONEABLE_ITEM__FOR_SCOPE\', object.getCommittee())'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'committee') and is_granted('MANAGE_ZONEABLE_ITEM__FOR_SCOPE', object.getCommittee())"
         ),
     ],
     routePrefix: '/v3'

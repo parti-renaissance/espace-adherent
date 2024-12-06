@@ -3,7 +3,7 @@
 namespace App\Scope;
 
 use App\Entity\Adherent;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 class DelegatedAccess
 {

@@ -15,7 +15,7 @@ use App\Repository\AdherentMandate\ElectedRepresentativeAdherentMandateRepositor
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['adherent.uuid' => 'exact'])]
@@ -24,19 +24,19 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Put(
             uriTemplate: '/elected_adherent_mandates/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'elected_representative\')'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
         ),
         new Delete(
             uriTemplate: '/elected_adherent_mandates/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'elected_representative\')'
+            security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
         ),
         new Post(uriTemplate: '/elected_adherent_mandates'),
     ],
     routePrefix: '/v3',
     normalizationContext: ['groups' => ['elected_mandate_read']],
     denormalizationContext: ['groups' => ['elected_mandate_write']],
-    security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'elected_representative\')'
+    security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('IS_FEATURE_GRANTED', 'elected_representative')"
 )]
 #[ORM\Entity(repositoryClass: ElectedRepresentativeAdherentMandateRepository::class)]
 class ElectedRepresentativeAdherentMandate extends AbstractAdherentMandate

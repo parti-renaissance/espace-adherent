@@ -10,12 +10,12 @@ use App\Pap\BuildingStatusEnum;
 use App\Repository\Pap\BuildingStatisticsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     operations: [],
     normalizationContext: ['groups' => ['pap_building_statistics_read']],
-    security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'
+    security: "is_granted('IS_FEATURE_GRANTED', ['pap_v2', 'pap'])"
 )]
 #[ORM\Entity(repositoryClass: BuildingStatisticsRepository::class)]
 #[ORM\Index(columns: ['status'])]

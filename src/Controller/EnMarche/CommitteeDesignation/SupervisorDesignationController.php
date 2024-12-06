@@ -2,13 +2,12 @@
 
 namespace App\Controller\EnMarche\CommitteeDesignation;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[ParamConverter('committee', options: ['mapping' => ['committee_slug' => 'slug']])]
+#[IsGranted(new Expression("is_granted('MANAGE_COMMITTEE_DESIGNATIONS', subject) and subject.isApproved()"), subject: 'committee')]
 #[Route(path: '/espace-animateur/{committee_slug}/designations', name: 'app_supervisor_designations')]
-#[Security("is_granted('MANAGE_COMMITTEE_DESIGNATIONS', committee) and committee.isApproved()")]
 class SupervisorDesignationController extends AbstractDesignationController
 {
     protected function getSpaceType(): string

@@ -18,7 +18,7 @@ use App\Repository\AdherentMessage\Segment\AudienceSegmentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -26,21 +26,21 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             uriTemplate: '/v3/audience-segments/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_MESSAGE_REDACTOR\') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'messages\'))'
+            security: "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
         ),
         new Put(
             uriTemplate: '/v3/audience-segments/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_MESSAGE_REDACTOR\') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'messages\'))'
+            security: "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
         ),
         new Delete(
             uriTemplate: '/v3/audience-segments/{uuid}',
             requirements: ['uuid' => '%pattern_uuid%'],
-            security: 'is_granted(\'ROLE_MESSAGE_REDACTOR\') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'messages\'))'
+            security: "is_granted('ROLE_MESSAGE_REDACTOR') and (object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), 'messages'))"
         ),
         new Post(
             uriTemplate: '/v3/audience-segments',
-            security: 'is_granted(\'ROLE_MESSAGE_REDACTOR\')'
+            security: "is_granted('ROLE_MESSAGE_REDACTOR')"
         ),
     ],
     normalizationContext: ['groups' => ['audience_segment_read']],

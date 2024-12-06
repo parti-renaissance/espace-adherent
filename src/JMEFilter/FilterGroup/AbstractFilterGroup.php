@@ -3,7 +3,7 @@
 namespace App\JMEFilter\FilterGroup;
 
 use App\JMEFilter\FilterInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 class AbstractFilterGroup implements FilterGroupInterface
 {
