@@ -371,9 +371,9 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "zones: Le type de la zone est invalide",
+                "message": "Validation Failed",
+                "status": "error",
+
                 "violations": [
                     {
                         "propertyPath": "zones",
