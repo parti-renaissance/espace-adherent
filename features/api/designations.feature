@@ -16,9 +16,9 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "custom_title: Cette valeur ne doit pas être vide.\ntype: Cette valeur ne doit pas être vide.\nvote_end_date: La date de clôture doit être postérieur à la date de début\ndescription: Cette valeur ne doit pas être vide.",
+                "message": "Validation Failed",
+                "status": "error",
+
                 "violations": [
                     {
                         "propertyPath": "custom_title",

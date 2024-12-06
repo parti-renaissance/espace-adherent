@@ -1945,12 +1945,11 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "questions: Le questionnaire doit contenir au moins une question.",
+                "message": "Validation Failed",
+                "status": "error",
+
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "questions",
                         "message": "Le questionnaire doit contenir au moins une question."
                     }

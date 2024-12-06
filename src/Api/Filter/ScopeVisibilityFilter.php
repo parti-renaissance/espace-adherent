@@ -29,7 +29,7 @@ final class ScopeVisibilityFilter extends AbstractScopeFilter
 
         $scope = $scopeGenerator->generate($currentUser);
 
-        if ($scope->isNational()) {
+        if (true || $scope->isNational()) {
             $queryBuilder
                 ->andWhere("$alias.visibility = :visibility")
                 ->setParameter('visibility', ScopeVisibilityEnum::NATIONAL)
