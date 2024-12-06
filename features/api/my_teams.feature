@@ -77,12 +77,11 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "role: Ce poste n'est pas valide.",
+                "message": "Validation Failed",
+                "status": "error",
+
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "role",
                         "message": "Ce poste n'est pas valide."
                     }
@@ -104,12 +103,11 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "adherent: Veuillez sélectionner un militant.\nscope_features: Vous pouvez déléguer que les accès que vous possédez.",
+                "message": "Validation Failed",
+                "status": "error",
+
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "adherent",
                         "message": "Veuillez sélectionner un militant."
                     },
@@ -137,12 +135,11 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "adherent: Le militant fait déjà partie de cette équipe.",
+                "message": "Validation Failed",
+                "status": "error",
+
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "adherent",
                         "message": "Le militant fait déjà partie de cette équipe."
                     }
@@ -165,9 +162,9 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "adherent: Vous ne pouvez pas ajouter votre compte ou le compte qui vous a délégué l'accès",
+                "message": "Validation Failed",
+                "status": "error",
+
                 "violations": [
                     {
                         "code": null,

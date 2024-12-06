@@ -61,8 +61,9 @@ Feature:
             """
             {
                 "type": "@string@.isUrl()",
-                "title": "An error occurred",
-                "detail": "comment: Vous devez cocher la case \"Autre\" afin de renseigner un commentaire.",
+                "message": "Validation Failed",
+                "status": "error",
+
                 "violations": [
                     {
                         "code": null,
@@ -87,11 +88,11 @@ Feature:
             """
             {
                 "type": "@string@.isUrl()",
-                "title": "An error occurred",
-                "detail": "reasons: Afin de valider votre signalement, veuillez sélectionner au moins une raison.",
+                "message": "Validation Failed",
+                "status": "error",
+
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "reasons",
                         "message": "Afin de valider votre signalement, veuillez sélectionner au moins une raison."
                     }

@@ -8,7 +8,7 @@ api_platform:
     #    allow_plain_identifiers: true
     #    metadata_backward_compatibility_layer: false
     exception_to_status:
-        ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException: 400
+        ApiPlatform\Validator\Exception\ValidationException: !php/const Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST
     formats:
         json:
             mime_types: ['application/json']
@@ -21,6 +21,10 @@ api_platform:
         pagination:
             items_per_page_parameter_name: page_size
     defaults:
+        normalization_context:
+            skip_null_values: false
+        extra_properties:
+            standard_put: false
         pagination_items_per_page: 10
         pagination_maximum_items_per_page: 30
         pagination_client_items_per_page: true
