@@ -50,6 +50,7 @@ class AdhesionController extends AbstractController
             ->createForm(MembershipRequestType::class, $membershipRequest, [
                 'from_certified_adherent' => $currentUser && $currentUser->isCertified(),
                 'validation_groups' => ['adhesion:amount'],
+                'csrf_protection' => false,
             ])
             ->handleRequest($request)
         ;
