@@ -69,8 +69,8 @@ class CreateAccountController extends AbstractController
 
         $result = $this->handle(new CreateAccountCommand($membershipRequest, $currentUser));
 
-        if ($result instanceof CreateAdherentResult) {
-            $this->security->login($result->getAdherent());
+        if ($result instanceof CreateAdherentResult && $result->getAdherent()) {
+            $this->security->login($result->getAdherent(), 'form_login');
 
             if ($result->isNextStepPayment()) {
                 return $this->json([
