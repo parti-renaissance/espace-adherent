@@ -19,7 +19,7 @@
                             md:p-0 md:grid md:grid-cols-4 md:h-20
                             lg:grid-cols-3">
 
-                <div class="pb-6 md:pb-0 md:pl-8 md:px-12 hidden md:block" >
+                <div class="pb-6 md:pb-0 md:pl-8 md:px-12">
                     <a href="{{ path('renaissance_site') }}">
                         <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/>
                     </a>
@@ -42,6 +42,8 @@
                         {{ form_start(form) }}
                             <div class="flex gap-8 flex-col pt-0 p-5">
                                 <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
+                                    <h1 class="font-maax text-2xl font-medium font-black">J'adhère à Renaissance</h1>
+
                                     <template x-if="generalNotification">
                                         <twig:ReParagraphStatus
                                                 x-bind:data-status="generalNotification.status"
