@@ -19,7 +19,7 @@
                             md:p-0 md:grid md:grid-cols-4 md:h-20
                             lg:grid-cols-3">
 
-                <div class="pb-6 md:pb-0 md:pl-8 md:px-12">
+                <div class="pb-6 md:pb-0 md:pl-8 md:px-12 hidden md:block" >
                     <a href="{{ path('renaissance_site') }}">
                         <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/>
                     </a>
@@ -31,27 +31,14 @@
                         initStep="currentStep"
                 />
             </header>
-            <div class="bg-[#F6F7F4] md:flex">
-                <div class="w-full relative mb-8">
-                    <div class="md:sticky top-[80px] md:pt-[6vh]">
-                        <div class="flex flex-col md:items-center text-2xl md:text-4xl w-full pt-10 pl-10 md:p-0">
-                            <h1 class="">
-                                Rejoignez <br>
-                                <img class="h-4 md:h-8 inline" src="{{ asset('images/renaissance/logo-dark.svg') }}" alt="">
-                                <br> dès aujourd'hui !
-                            </h1>
-                        </div>
-                        <figure class="w-full max-w-[75vw] md:max-w-[500px] lg:max-w-[700px] xl:max-w-[1000px] md:pt-[80px]">
-                            {{ include('renaissance/adhesion/form_visual.svg.twig') }}
-                        </figure>
-                    </div>
-                </div>
+            <section class="bg-[#F6F7F4] md:flex bg-cover overflow-y-auto bg-no-repeat" style="height: calc(100vh - 80px);background-position-y: -100px;background-image: url('{{ asset('/images/renaissance/background_adhesion.webp') }}">
+                <div class="w-full">&nbsp;</div>
 
-                <div class="flex flex-col justify-center items-center xl:items-start xl:pl-20 mt-8 gap-10 w-full">
+                <div class="w-full">
+                    <div class="flex flex-col justify-center items-center xl:items-start xl:pl-20 mt-[350px] md:mt-8 gap-10 w-full">
                     <div class="flex-col justify-start items-start gap-8 inline-flex" x-data="{formData:{
                         email: '{{ form.vars.value.email }}'
                     }}">
-
                         {{ form_start(form) }}
                             <div class="flex gap-8 flex-col pt-0 p-5">
                                 <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
@@ -338,6 +325,7 @@
                     </div>
                 </div>
             </div>
+            </section>
         </section>
     </main>
 {% endblock %}
