@@ -16,6 +16,7 @@ use App\Geocoder\GeoPointInterface;
 use App\Membership\AdherentEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -57,6 +58,10 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
 
     public function apiUpdateCoordinates(ViewEvent $viewEvent): void
     {
+        if (!\in_array($viewEvent->getRequest()->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT])) {
+            return;
+        }
+
         $object = $viewEvent->getControllerResult();
         if (!$object instanceof GeocodableInterface || $object instanceof BaseEvent) {
             return;
