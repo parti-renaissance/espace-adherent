@@ -222,7 +222,7 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->orderBy('event_registration.createdAt', 'ASC')
             ->setParameters([
                 'event' => $event,
-                'adherent_tag' => '%'.TagEnum::ADHERENT.':%',
+                'adherent_tag' => TagEnum::ADHERENT.':%',
             ])
         ;
     }

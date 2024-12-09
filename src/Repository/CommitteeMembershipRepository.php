@@ -140,7 +140,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             $qb
                 ->innerJoin('cm.adherent', 'adherent')
                 ->andWhere('adherent.tags LIKE :adherent_tag')
-                ->setParameter('adherent_tag', '%'.($adherentRenaissance ? TagEnum::ADHERENT : TagEnum::SYMPATHISANT).'%')
+                ->setParameter('adherent_tag', ($adherentRenaissance ? TagEnum::ADHERENT : TagEnum::SYMPATHISANT).'%')
             ;
         }
 
@@ -627,7 +627,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         if ($committee->isVersion2()) {
             $qb
                 ->andWhere('adherent.tags LIKE :adherent_tag')
-                ->setParameter('adherent_tag', '%'.TagEnum::ADHERENT.'%')
+                ->setParameter('adherent_tag', TagEnum::ADHERENT.'%')
             ;
         } else {
             $qb
@@ -680,7 +680,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->setParameters([
                 'adherent_uuid' => $adherentUuid,
                 'committee' => $committee,
-                'adherent_tag' => '%'.TagEnum::ADHERENT.'%',
+                'adherent_tag' => TagEnum::ADHERENT.'%',
             ])
             ->getQuery()
             ->getOneOrNullResult()

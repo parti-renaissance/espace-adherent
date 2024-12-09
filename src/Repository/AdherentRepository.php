@@ -91,7 +91,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->setParameters([
                 'committee' => $committee,
                 'status' => Adherent::ENABLED,
-                'adherent_tag' => '%'.TagEnum::ADHERENT.'%',
+                'adherent_tag' => TagEnum::ADHERENT.'%',
             ])
             ->getQuery()
             ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
@@ -736,7 +736,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->andWhere('adherent.registeredAt <= :date')
             ->setParameters([
                 'status' => Adherent::ENABLED,
-                'adherent_tag' => '%'.TagEnum::ADHERENT.'%',
+                'adherent_tag' => TagEnum::ADHERENT.'%',
                 'date' => $startDate,
             ])
         ;
@@ -865,7 +865,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 ->innerJoin('a.memberships', 'membership')
                 ->innerJoin('membership.committee', 'committee', Join::WITH, 'committee.version = 2')
                 ->andWhere('a.tags like :adherent_tag')
-                ->setParameter('adherent_tag', '%'.TagEnum::ADHERENT.'%')
+                ->setParameter('adherent_tag', TagEnum::ADHERENT.'%')
             ;
 
             if ($filter->committee) {
@@ -900,14 +900,14 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         $queryBuilder = $this
             ->createQueryBuilderForZones($zones, $adherentRenaissance, $sympathizerRenaissance)
-            ->select('COUNT(1)')
+            ->select('COUNT(DISTINCT adherent.id)')
         ;
 
         if ($since >= 2022 && $since <= date('Y')) {
             $yearCondition = new Orx();
             foreach (range($since, date('Y')) as $year) {
-                $yearCondition->add('adherent.tags like :adherent_tag_'.$year);
-                $queryBuilder->setParameter('adherent_tag_'.$year, '%'.TagEnum::getAdherentYearTag($year).'%');
+                $yearCondition->add('adherent.tags LIKE :adherent_tag_'.$year);
+                $queryBuilder->setParameter('adherent_tag_'.$year, TagEnum::getAdherentYearTag($year).'%');
             }
 
             if ($yearCondition->count() > 0) {
@@ -1009,7 +1009,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         if ($adherentRenaissance ^ $sympathizerRenaissance) {
             $qb
                 ->andWhere('adherent.tags like :adherent_tag')
-                ->setParameter('adherent_tag', '%'.($adherentRenaissance ? TagEnum::ADHERENT : TagEnum::SYMPATHISANT).'%')
+                ->setParameter('adherent_tag', ($adherentRenaissance ? TagEnum::ADHERENT : TagEnum::SYMPATHISANT).'%')
             ;
         }
 
@@ -1204,7 +1204,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->andWhere('adherent.status = :status')
             ->setParameters([
                 'types' => MandateTypeEnum::LOCAL_TYPES,
-                'adherent_tag' => '%'.TagEnum::ADHERENT.'%',
+                'adherent_tag' => TagEnum::ADHERENT.'%',
                 'status' => Adherent::ENABLED,
             ])
             ->getQuery()
@@ -1245,7 +1245,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         if ($votersOnly) {
             $qb
                 ->andWhere('adherent.tags LIKE :adherent_tag')
-                ->setParameter('adherent_tag', '%'.TagEnum::getAdherentYearTag(2024).'%')
+                ->setParameter('adherent_tag', TagEnum::getAdherentYearTag(2024).'%')
             ;
         }
 
@@ -1271,21 +1271,23 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_primo, a.id, NULL)) AS total_primo')
             ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_recotisation, a.id, NULL)) AS total_recotisation')
             ->addSelect('COUNT(DISTINCT IF(a.tags LIKE :tag_elu, a.id, NULL)) AS total_elu')
+            ->where('a.status = :enabled')
             ->setParameters([
-                'tag_primo' => '%'.\sprintf(TagEnum::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $currentYear).'%',
-                'tag_recotisation' => '%'.\sprintf(TagEnum::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $currentYear).'%',
-                'tag_elu' => '%'.\sprintf(TagEnum::ADHERENT_YEAR_ELU_TAG_PATTERN, $currentYear).'%',
-                'tag_a_jour_n' => '%'.TagEnum::getAdherentYearTag().'%',
-                'tag_a_jour_n1' => '%'.TagEnum::getAdherentYearTag($currentYear - 1).'%',
-                'tag_a_jour_n2' => '%'.TagEnum::getAdherentYearTag($currentYear - 2).'%',
-                'tag_sympathisant' => '%'.TagEnum::SYMPATHISANT.'%',
+                'enabled' => Adherent::ENABLED,
+                'tag_primo' => \sprintf(TagEnum::ADHERENT_YEAR_PRIMO_TAG_PATTERN, $currentYear).'%',
+                'tag_recotisation' => \sprintf(TagEnum::ADHERENT_YEAR_RECOTISATION_TAG_PATTERN, $currentYear).'%',
+                'tag_elu' => \sprintf(TagEnum::ADHERENT_YEAR_ELU_TAG_PATTERN, $currentYear).'%',
+                'tag_a_jour_n' => TagEnum::getAdherentYearTag().'%',
+                'tag_a_jour_n1' => TagEnum::getAdherentYearTag($currentYear - 1).'%',
+                'tag_a_jour_n2' => TagEnum::getAdherentYearTag($currentYear - 2).'%',
+                'tag_sympathisant' => TagEnum::SYMPATHISANT.'%',
             ])
         ;
 
         $zoneQueryBuilder = (clone $baseQueryBuilder)
             ->innerJoin('a.zones', 'z')
             ->innerJoin('z.parents', 'p')
-            ->where('p.id = :zone_id')
+            ->andWhere('p.id = :zone_id')
         ;
         $results = [];
         foreach ($zones as $zone) {
@@ -1308,8 +1310,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             'region' => 'Total',
             'code' => 'Total',
             'department' => 'Total',
-        ], $baseQueryBuilder->getQuery()->getSingleResult()
-        ));
+        ], $baseQueryBuilder->getQuery()->getSingleResult()));
 
         return $results;
     }
@@ -1346,7 +1347,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         foreach (range($minYear, date('Y')) as $key => $year) {
             $condition->add('a.tags LIKE :tag'.$key);
-            $qb->setParameter('tag'.$key, '%'.TagEnum::getAdherentYearTag($year).'%');
+            $qb->setParameter('tag'.$key, TagEnum::getAdherentYearTag($year).'%');
         }
 
         $qb->andWhere($condition);
