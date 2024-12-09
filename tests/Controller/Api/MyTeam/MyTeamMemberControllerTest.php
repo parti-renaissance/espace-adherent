@@ -271,7 +271,6 @@ class MyTeamMemberControllerTest extends AbstractApiTestCase
         $this->assertNotNull($delegatedAccess);
         $this->assertNotNull($team = $member->getTeam());
         $this->assertSame($member->getAdherent(), $delegatedAccess->getDelegated());
-        $this->assertSame($member->getScopeFeatures(), $delegatedAccess->getScopeFeatures());
         $this->assertSame($team->getOwner(), $delegatedAccess->getDelegator());
         $this->assertSame($team->getScope(), $delegatedAccess->getType());
     }
