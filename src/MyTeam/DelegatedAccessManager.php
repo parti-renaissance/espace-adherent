@@ -14,6 +14,7 @@ class DelegatedAccessManager
         private readonly EntityManagerInterface $entityManager,
         private readonly DelegatedAccessRepository $delegatedAccessRepository,
         private readonly TokenRevocationAuthority $tokenRevocationAuthority,
+        private readonly DelegatedAccessNotifier $delegatedAccessNotifier,
     ) {
     }
 
@@ -34,6 +35,8 @@ class DelegatedAccessManager
         $this->entityManager->flush();
 
         $this->tokenRevocationAuthority->revokeUserTokens($member->getAdherent());
+
+        $this->delegatedAccessNotifier->sendNewDelegatedAccessNotification($delegatedAccess);
     }
 
     public function updateDelegatedAccessForMember(Member $member, ?Member $fromMember = null): void
