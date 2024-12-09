@@ -9,12 +9,16 @@ class RenaissanceAdherentAccountConfirmationMessage extends AbstractRenaissanceM
 {
     public static function createFromAdherent(Adherent $adherent): self
     {
-        return new self(
+        $message = new self(
             Uuid::uuid4(),
             $adherent->getEmailAddress(),
             $adherent->getFullName(),
             'Bienvenue chez Renaissance !',
             ['target_firstname' => self::escape($adherent->getFirstName())]
         );
+
+        $message->setSenderName('Gabriel Attal');
+
+        return $message;
     }
 }
