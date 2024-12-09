@@ -113,6 +113,8 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN\') and is_granted(\'IS_FEATURE_GRANTED\', \'contacts\')'
 )]
 #[ORM\Entity(repositoryClass: AdherentRepository::class)]
+#[ORM\Index(columns: ['tags'], options: ['lengths' => [512]])]
+#[ORM\Index(columns: ['status'])]
 #[ORM\Table(name: 'adherents')]
 #[UniqueEntity(fields: ['nickname'], groups: ['anonymize'])]
 #[UniqueMembership(groups: ['Admin'])]
