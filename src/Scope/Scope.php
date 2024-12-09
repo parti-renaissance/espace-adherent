@@ -160,4 +160,9 @@ class Scope
 
         return $zones;
     }
+
+    public function getAutomaticallyDelegatableFeatures(): array
+    {
+        return array_intersect([FeatureEnum::FEATUREBASE], $this->features);
+    }
 }

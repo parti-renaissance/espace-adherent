@@ -193,4 +193,14 @@ trait ControllerTestTrait
 
         return $spreadsheet->getActiveSheet()->toArray();
     }
+
+    protected function assertArrayContainsIgnoringNumericKeys(array $subset, array $array): void
+    {
+        $filteredArray = array_filter(
+            $array,
+            fn ($item) => \in_array($item, $subset, true)
+        );
+
+        $this->assertCount(\count($subset), $filteredArray);
+    }
 }

@@ -6,6 +6,7 @@ use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\Member;
 use App\OAuth\TokenRevocationAuthority;
 use App\Repository\MyTeam\DelegatedAccessRepository;
+use App\Scope\ScopeGeneratorResolver;
 use Doctrine\ORM\EntityManagerInterface;
 
 class DelegatedAccessManager
@@ -14,6 +15,7 @@ class DelegatedAccessManager
         private readonly EntityManagerInterface $entityManager,
         private readonly DelegatedAccessRepository $delegatedAccessRepository,
         private readonly TokenRevocationAuthority $tokenRevocationAuthority,
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
     }
 
@@ -29,7 +31,7 @@ class DelegatedAccessManager
             $this->entityManager->persist($delegatedAccess);
         }
 
-        $delegatedAccess->setScopeFeatures($member->getScopeFeatures());
+        $delegatedAccess->setScopeFeatures($this->calculateFeatures($member->getScopeFeatures()));
 
         $this->entityManager->flush();
 
@@ -44,7 +46,7 @@ class DelegatedAccessManager
 
         if ($delegatedAccess = $this->findDelegatedAccess($member)) {
             if ($member->getScopeFeatures()) {
-                $delegatedAccess->setScopeFeatures($member->getScopeFeatures());
+                $delegatedAccess->setScopeFeatures($this->calculateFeatures($member->getScopeFeatures()));
                 $this->entityManager->flush();
 
                 return;
@@ -78,5 +80,14 @@ class DelegatedAccessManager
         $this->entityManager->flush();
 
         $this->tokenRevocationAuthority->revokeUserTokens($delegatedAccess->getDelegated());
+    }
+
+    private function calculateFeatures(array $memberFeatures): array
+    {
+        if (!$scope = $this->scopeGeneratorResolver->generate()) {
+            return $memberFeatures;
+        }
+
+        return array_values(array_unique(array_merge($scope->getAutomaticallyDelegatableFeatures(), $memberFeatures)));
     }
 }
