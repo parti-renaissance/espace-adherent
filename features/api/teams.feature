@@ -242,10 +242,8 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "zone",
                         "message": "Un rôle national ne peut pas définir de zone."
                     }
@@ -432,10 +430,8 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "zone",
                         "message": "La zone spécifiée n'est pas gérée par votre rôle."
                     }
@@ -471,7 +467,6 @@ Feature:
 
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "zone",
                         "message": "Veuillez spécifier une zone."
                     }

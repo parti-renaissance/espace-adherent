@@ -112,7 +112,6 @@ Feature:
                         "message": "Veuillez sélectionner un militant."
                     },
                     {
-                        "code": null,
                         "propertyPath": "scope_features",
                         "message": "Vous pouvez déléguer que les accès que vous possédez."
                     }
@@ -167,7 +166,6 @@ Feature:
 
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "adherent",
                         "message": "Vous ne pouvez pas ajouter votre compte ou le compte qui vous a délégué l'accès"
                     }

@@ -49,13 +49,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "@string@",
-                "title": "An error occurred",
-                "status": 400,
-                "detail": "name: Cette valeur ne doit pas \u00eatre vide.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "name",
                         "message": "Cette valeur ne doit pas être vide."
                     }
@@ -85,7 +82,6 @@ Feature:
 
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "zone",
                         "message": "La zone choisie ne fait pas partie des zones gérées."
                     },

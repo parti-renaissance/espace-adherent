@@ -383,8 +383,7 @@ Feature:
                 "violations": [
                     {
                         "propertyPath": "zones",
-                        "message": "Le type de la zone est invalide",
-                        "code": null
+                        "message": "Le type de la zone est invalide"
                     }
                 ]
             }
