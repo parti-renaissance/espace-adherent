@@ -20,6 +20,7 @@ class AdherentRoles
             ScopeEnum::SENATOR,
             AdherentRoleEnum::DELEGATED_DEPUTY,
             AdherentRoleEnum::ANIMATOR,
+            AdherentRoleEnum::DELEGATED_ANIMATOR,
         ],
         self::GROUP_ELECTIONS => [
             ScopeEnum::CORRESPONDENT,

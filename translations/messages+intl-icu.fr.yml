@@ -142,6 +142,7 @@ role.senator: Sénateur
 role.delegated_senator: Sénateur délégué
 role.committee_supervisor: Animateur
 role.animator: Responsable comité local
+role.delegated_animator: Responsable comité local délégué
 role.committee_provisional_supervisor: Animateur provisoire
 role.committee_host: Co-Animateur
 role.assessor_manager: Responsable assesseur

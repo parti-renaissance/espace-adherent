@@ -76,6 +76,7 @@ class AdherentRoleFilter extends AbstractCallbackDecoratorFilter
                 if ($delegatedTypes = array_intersect(
                     [
                         AdherentRoleEnum::DELEGATED_DEPUTY,
+                        AdherentRoleEnum::DELEGATED_ANIMATOR,
                     ],
                     $value
                 )) {
