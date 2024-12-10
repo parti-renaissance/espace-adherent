@@ -24,6 +24,7 @@ class Contact
 
     #[ORM\Column(unique: true)]
     public string $ohmeIdentifier;
+
     #[ORM\Column(nullable: true)]
     public ?string $email = null;
 

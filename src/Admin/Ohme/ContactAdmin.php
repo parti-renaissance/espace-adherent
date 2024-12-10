@@ -5,6 +5,7 @@ namespace App\Admin\Ohme;
 use App\Entity\Adherent;
 use App\Entity\Ohme\Contact;
 use App\Ohme\ContactHandler;
+use App\Query\Utils\MultiColumnsSearchHelper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -26,10 +27,7 @@ class ContactAdmin extends AbstractAdmin
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection
-            ->remove('show')
-            ->remove('delete')
-        ;
+        $collection->clearExcept(['list', 'edit']);
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -70,41 +68,23 @@ class ContactAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $search = $value->getValue();
-
-                    $conditions = $qb->expr()->orX();
-
-                    preg_match('/(?<first>.*) (?<last>.*)/', $search, $tokens);
-
-                    if (\array_key_exists('first', $tokens) && \array_key_exists('last', $tokens)) {
-                        $conditions
-                            ->add("$alias.firstname LIKE :search_first_token AND $alias.lastname LIKE :search_last_token")
-                            ->add("$alias.firstname LIKE :search_last_token AND $alias.lastname LIKE :search_first_token")
-                            ->add("$alias.email LIKE :search_first_token AND $alias.email LIKE :search_last_token")
-                        ;
-
-                        $qb
-                            ->setParameter('search_first_token', '%'.$tokens['first'].'%')
-                            ->setParameter('search_last_token', '%'.$tokens['last'].'%')
-                        ;
-                    } else {
-                        $conditions
-                            ->add("$alias.firstname LIKE :search")
-                            ->add("$alias.lastname LIKE :search")
-                            ->add("$alias.email LIKE :search")
-                        ;
-                    }
-
-                    $conditions
-                        ->add("REPLACE(REPLACE($alias.phone, ' ', ''), '+', '') LIKE REPLACE(REPLACE(:search, ' ', ''), '+', '')")
-                        ->add("$alias.ohmeIdentifier = REPLACE(:strict_search, ' ', '')")
-                    ;
-
-                    $qb
-                        ->andWhere($conditions)
-                        ->setParameter('search', "%$search%")
-                        ->setParameter('strict_search', $search)
-                    ;
+                    MultiColumnsSearchHelper::updateQueryBuilderForMultiColumnsSearch(
+                        $qb->getQueryBuilder(),
+                        $value->getValue(),
+                        [
+                            ["$alias.firstname", "$alias.lastname"],
+                            ["$alias.lastname", "$alias.firstname"],
+                            ["$alias.email", "$alias.email"],
+                        ],
+                        [
+                            "$alias.phone",
+                        ],
+                        [
+                            "$alias.id",
+                            "$alias.uuid",
+                            "$alias.ohmeIdentifier",
+                        ]
+                    );
 
                     return true;
                 },
