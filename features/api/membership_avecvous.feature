@@ -209,10 +209,8 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "recaptcha",
                         "message": "Merci de confirmer le captcha avant de continuer."
                     }
@@ -239,10 +237,8 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "recaptcha",
                         "message": "Le captcha soumis est invalide."
                     }
@@ -269,7 +265,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "cgu_accepted",
@@ -298,7 +293,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "email_address",
@@ -327,7 +321,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "email_address",
@@ -356,7 +349,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "first_name",
@@ -385,7 +377,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "first_name",
@@ -414,7 +405,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "first_name",
@@ -443,7 +433,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "source",
@@ -472,7 +461,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "source",
@@ -496,7 +484,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "interests",

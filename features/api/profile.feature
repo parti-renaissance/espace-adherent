@@ -373,7 +373,6 @@ Feature:
             {
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "interests",
                         "message": "Valeur d'intérêt n'est pas valide"
                     }
