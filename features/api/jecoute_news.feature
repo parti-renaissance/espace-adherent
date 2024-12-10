@@ -754,7 +754,6 @@ Feature:
 
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "text",
                         "message": "Le texte est obligatoire."
                     },
@@ -786,7 +785,6 @@ Feature:
 
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "text",
                         "message": "Le texte ne doit pas contenir plus de 1000 caractères."
                     },
@@ -1295,7 +1293,6 @@ Feature:
 
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "zone",
                         "message": "Veuillez spécifier une zone."
                     }
@@ -1323,10 +1320,8 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "zone",
                         "message": "La zone spécifiée n'est pas gérée par votre rôle."
                     }

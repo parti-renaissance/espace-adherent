@@ -1135,12 +1135,10 @@ Feature:
 
                 "violations": [
                     {
-                        "code": null,
                         "message": "Catégorie est requise.",
                         "propertyPath": "category"
                     },
                     {
-                        "code": null,
                         "message": "La date de fin de votre événement ne peut pas dépasser le 4 janv. 2018, 10:10.",
                         "propertyPath": "finish_at"
                     },

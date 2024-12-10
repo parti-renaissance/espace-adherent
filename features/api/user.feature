@@ -178,7 +178,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "Validation Failed",
+                "message": "Validation Failed",
                 "status": "error",
                 "violations": [
                     {

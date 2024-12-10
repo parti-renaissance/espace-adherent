@@ -58,8 +58,7 @@ Feature:
                 "violations": [
                     {
                         "propertyPath": "zone",
-                        "message": "Cette zone ne fait pas partie des zones que vous gérez.",
-                        "code": null
+                        "message": "Cette zone ne fait pas partie des zones que vous gérez."
                     }
                 ]
             }
@@ -130,18 +129,15 @@ Feature:
                 "violations": [
                     {
                         "propertyPath": "zone",
-                        "message": "Le type de la zone est invalide.",
-                        "code": "@uuid@"
+                        "message": "Le type de la zone est invalide."
                     },
                     {
                         "propertyPath": "zone",
-                        "message": "Cette valeur ne doit pas être vide.",
-                        "code": "@uuid@"
+                        "message": "Cette valeur ne doit pas être vide."
                     },
                     {
                         "propertyPath": "content",
-                        "message": "Cette valeur ne doit pas être vide.",
-                        "code": "@uuid@"
+                        "message": "Cette valeur ne doit pas être vide."
                     }
                 ]
             }
