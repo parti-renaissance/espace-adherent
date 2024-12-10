@@ -63,7 +63,6 @@ Feature:
                 "type": "@string@.isUrl()",
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "comment",
@@ -89,7 +88,6 @@ Feature:
                 "type": "@string@.isUrl()",
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "reasons",

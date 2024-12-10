@@ -373,7 +373,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "zones",
@@ -479,7 +478,7 @@ Feature:
             """
         Then the response status code should be 400
         And the response should be in JSON
-        And the JSON node "detail" should be equal to "Vous ne pouvez pas créer de liste sur une élection en cours"
+        And the JSON node "violations[0].message" should be equal to "Vous ne pouvez pas créer de liste sur une élection en cours"
 
         Examples:
             | user                            | scope                                          |
@@ -624,7 +623,7 @@ Feature:
             """
         Then the response status code should be 400
         And the response should be in JSON
-        And the JSON node "detail" should be equal to "Vous ne pouvez pas créer de candidature sur une élection en cours"
+        And the JSON node "violations[0].message" should be equal to "Vous ne pouvez pas créer de candidature sur une élection en cours"
 
         Examples:
             | user                            | scope                                          |
@@ -654,7 +653,7 @@ Feature:
             """
         Then the response status code should be 400
         And the response should be in JSON
-        And the JSON node "detail" should be equal to "committee_membership: L'adhérent ne fait pas partie de votre zone de couverture."
+        And the JSON node "violations[0].message" should be equal to "L'adhérent ne fait pas partie de votre zone de couverture."
 
         Examples:
             | user                            | scope                                          |
