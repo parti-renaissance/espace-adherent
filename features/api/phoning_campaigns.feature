@@ -276,7 +276,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "message": "Un rôle national ne peut pas définir de zone.",
@@ -656,7 +655,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "zone",
@@ -719,7 +717,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "zone",
@@ -1149,7 +1146,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "status",
@@ -1646,7 +1642,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "title",
