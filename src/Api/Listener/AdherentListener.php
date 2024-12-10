@@ -34,7 +34,7 @@ class AdherentListener implements EventSubscriberInterface
 
         if (
             !\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_PUT])
-            || '_api_/adherents/{uuid}/elect_put' !== $request->attributes->get('_api_operation_name')
+            || '_api_/v3/adherents/{uuid}/elect_put' !== $request->attributes->get('_api_operation_name')
         ) {
             return;
         }
