@@ -11,18 +11,10 @@
 
 {% block content %}
     <main class="bg-[#F4F4F7] re_new_ui">
-        <section
-            x-data="xFunnelPage({initStep: {{ step }}, isReContribution: {{ isReContribution }} })"
-            @stepper:adhesion-stepper:change.window="handleStepperChange($event.detail)">
-            <header class="w-full flex flex-col p-4 bg-white sticky top-0 z-50 items-center h-auto
-                            xs:p-6
-                            md:p-0 md:grid md:grid-cols-4 md:h-20
-                            lg:grid-cols-3">
-
+        <section x-data="xFunnelPage({initStep: {{ step }}, isReContribution: {{ isReContribution }} })" @stepper:adhesion-stepper:change.window="handleStepperChange($event.detail)">
+            <header class="w-full flex flex-col p-4 bg-white sticky top-0 z-50 items-center h-auto xs:p-6 md:p-0 md:grid md:grid-cols-4 md:h-20 lg:grid-cols-3">
                 <div class="pb-6 md:pb-0 md:pl-8 md:px-12">
-                    <a href="{{ path('renaissance_site') }}">
-                        <img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/>
-                    </a>
+                    <a href="{{ path('renaissance_site') }}"><img src="{{ asset('/images/renaissance/logo-dark.svg') }}" class="h-4" alt="logo"/></a>
                 </div>
                 <twig:Molecules:ReStepper
                         id="adhesion-stepper"
@@ -31,302 +23,302 @@
                         initStep="currentStep"
                 />
             </header>
+
             <section class="bg-[#F6F7F4] md:flex bg-cover overflow-y-auto bg-no-repeat" style="height: calc(100vh - 80px);background-position-y: -100px;background-image: url('{{ asset('/images/renaissance/background_adhesion.webp') }}">
                 <div class="w-full">&nbsp;</div>
 
                 <div class="w-full">
                     <div class="flex flex-col justify-center items-center xl:items-start xl:pl-20 mt-[350px] md:mt-8 gap-10 w-full">
-                    <div class="flex-col justify-start items-start gap-8 inline-flex" x-data="{formData:{
-                        email: '{{ form.vars.value.email }}'
-                    }}">
-                        {{ form_start(form) }}
-                            <div class="flex gap-8 flex-col pt-0 p-5">
-                                <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
-                                    <h1 class="font-maax text-2xl font-medium font-black">J'adhère à Renaissance</h1>
+                        <div class="flex-col justify-start items-start gap-8 inline-flex" x-data="{formData:{email: '{{ form.vars.value.email }}'}}">
+                            {{ form_start(form) }}
+                                <div class="flex gap-8 flex-col pt-0 p-5">
+                                    <twig:Atoms:ReCard class="max-w-[500px] re-step" x-data="FirstFormStep" id="step_1">
+                                        <h1 class="font-maax text-2xl font-black">J'adhère à Renaissance</h1>
 
-                                    <template x-if="generalNotification">
-                                        <twig:ReParagraphStatus
-                                                x-bind:data-status="generalNotification.status"
-                                                status="x:generalNotification.status"
-                                                x-text="generalNotification.message"/>
-                                    </template>
-
-                                    {{ form_row(form.email, {
-                                        attr: {
-                                            placeholder: 'Adresse email',
-                                            validate: "['required', 'email']",
-                                            autocomplete: 'email',
-                                            onCheck: "setFieldValid('email')",
-                                        }, label: false}) }}
-
-                                    {{ form_row(form.consentDataCollect, {
-                                        attr: {
-                                            validate: "['required']",
-                                            onCheck: "setFieldValid('consentDataCollect')",
-                                        },
-                                        label: 'Je consens au traitement de mes données personnelles',
-                                    }) }}
-
-                                    <div class="w-full re-field-frame !h-auto cursor-pointer"
-                                         @click="dom('.frc-button')?.click()">
-                                        {{ include('renaissance/partials/friendly-captcha.html.twig') }}
-                                    </div>
-
-                                    <twig:ReButton
-                                        class="w-full"
-                                        disabled="x:!checkValidity()"
-                                        onDisabledClick="_handleOnSubmitBase($event)"
-                                        @click="handleOnSubmit($event, $dispatch)"
-                                        loading="x:loading">
-                                        J'adhère
-                                    </twig:ReButton>
-
-                                    {{ include('renaissance/partials/adhesion_paper.html.twig') }}
-
-                                    <hr/>
-
-                                    <twig:ReParagraphStatus status="info">
-                                        {{ include('renaissance/partials/contact_info.html.twig', {adhesion: true}) }}
-                                    </twig:ReParagraphStatus>
-                                </twig:Atoms:ReCard>
-
-                                <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_2" x-data="SecondFormStep">
-                                    {{ form_row(form.civility, {
-                                        label: 'Mes informations',
-                                        attr: {onCheck: "setFieldValid('gender')", validate: "['required']", autocomplete: 'civility'},
-                                    }) }}
-                                    <div class="flex flex-col xs:flex-row gap-5 ">
-                                        {{ form_row(form.lastName, {
-                                            label: false,
-                                            attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"},
-                                        }) }}
-                                        {{ form_row(form.firstName, {
-                                            label: false,
-                                            attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"},
-                                        }) }}
-                                    </div>
-
-                                    {{ form_row(form.nationality, {
-                                        label: 'Nationalité',
-                                        attr: {onCheck: "setFieldValid('nationality')", validate: "['required']"},
-                                    }) }}
-
-                                    {{ form_row(form.address, {label: 'Adresse postale'}) }}
-
-                                    <twig:ReButton
-                                        class="w-full"
-                                        @click="handleOnSubmit($event, $dispatch)"
-                                        onDisabledClick="checkFormValidity($event)"
-                                        disabled="x:!checkValidity()"
-                                        loading="x:loading"
-                                    >Suivant</twig:ReButton>
-                                </twig:Atoms:ReCard>
-
-                                <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_3" x-data="ThirdFormStep">
-                                    <template x-if="generalNotification">
-                                        <twig:ReParagraphStatus
-                                                x-bind:data-status="generalNotification.status"
-                                                status="x:generalNotification.status"
-                                                x-text="generalNotification.message"/>
-                                    </template>
-                                         {{ form_row(form.exclusiveMembership, {
-                                             label: 'Autorisation',
-                                             attr: {
-                                                 '@change': 'handleExclusiveMembershipChange($event)',
-                                                 validate: "['required']",
-                                                 onCheck: 'setFieldValid("exclusiveMembership")',
-                                             },
-                                         }) }}
-                                    <div x-show="notExclusiveMember" x-cloak class="flex flex-col gap-8">
-                                        <hr>
-                                        {{ form_row(form.partyMembership, {
-                                            label: "J'appartiens déjà à un parti politique :",
-                                            attr: {
-                                                '@change': 'handlePartyMembershipChange($event)',
-                                                validate: "['?:isExlusiveMember', 'required']",
-                                                onCheck: 'setFieldValid("partyMembership")',
-                                            },
-                                        }) }}
-                                    </div>
-
-                                    <hr>
-
-                                    <div class="flex flex-col gap-8">
-                                        <template x-if="isMemberOfAnotherParty && notExclusiveMember" x-cloak>
-                                            <twig:ReParagraphStatus status="warning" icon="warning">
-                                                Si vous êtes déjà affilié à un parti politique, il vous est impossible de devenir membre de Renaissance. Toutefois, il vous est tout à fait possible d'exprimer votre soutien en tant que sympathisant.
-                                            </twig:ReParagraphStatus>
-                                            <twig:Atoms:ReLabel class="mb-6">En devenant sympathisant :</twig:Atoms:ReLabel>
+                                        <template x-if="generalNotification">
+                                            <twig:ReParagraphStatus
+                                                    x-bind:data-status="generalNotification.status"
+                                                    status="x:generalNotification.status"
+                                                    x-text="generalNotification.message"/>
                                         </template>
 
-                                        <div>
-                                            <template x-if="!(isMemberOfAnotherParty && notExclusiveMember)">
-                                                <twig:Atoms:ReLabel class="mb-6">En adhérant :</twig:Atoms:ReLabel>
-                                            </template>
+                                        {{ form_row(form.email, {
+                                            attr: {
+                                                placeholder: 'Adresse email',
+                                                validate: "['required', 'email']",
+                                                autocomplete: 'email',
+                                                onCheck: "setFieldValid('email')",
+                                            }, label: false}) }}
 
-                                            {{ form_row(form.allowNotifications, {
-                                                label: 'Je souhaite recevoir les informations sur l’actualité de Renaissance et ses communications politiques par email',
-                                            }) }}
+                                        {{ form_row(form.consentDataCollect, {
+                                            attr: {
+                                                validate: "['required']",
+                                                onCheck: "setFieldValid('consentDataCollect')",
+                                            },
+                                            label: 'Je consens au traitement de mes données personnelles',
+                                        }) }}
+
+                                        <div class="w-full re-field-frame !h-auto cursor-pointer"
+                                             @click="dom('.frc-button')?.click()">
+                                            {{ include('renaissance/partials/friendly-captcha.html.twig') }}
                                         </div>
-                                    </div>
-                                    {{ form_row(form.isPhysicalPerson, {
-                                        label: 'adhesion.physical_person.label', label_html: true,
-                                        attr: {onCheck: "setFieldValid('isPhysicalPerson')", validate: "['required']"},
-                                    }) }}
 
-                                    <template x-if="isMemberOfAnotherParty && notExclusiveMember" x-cloak>
                                         <twig:ReButton
-                                            color="yellow"
                                             class="w-full"
-                                            loading="x:loading"
                                             disabled="x:!checkValidity()"
                                             onDisabledClick="_handleOnSubmitBase($event)"
                                             @click="handleOnSubmit($event, $dispatch)"
-                                        >Je deviens sympathisant</twig:ReButton>
-                                    </template>
+                                            loading="x:loading">
+                                            J'adhère
+                                        </twig:ReButton>
 
-                                    <template x-if="!(isMemberOfAnotherParty && notExclusiveMember)">
+                                        {{ include('renaissance/partials/adhesion_paper.html.twig') }}
+
+                                        <hr/>
+
+                                        <twig:ReParagraphStatus status="info">
+                                            {{ include('renaissance/partials/contact_info.html.twig', {adhesion: true}) }}
+                                        </twig:ReParagraphStatus>
+                                    </twig:Atoms:ReCard>
+
+                                    <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_2" x-data="SecondFormStep">
+                                        {{ form_row(form.civility, {
+                                            label: 'Mes informations',
+                                            attr: {onCheck: "setFieldValid('gender')", validate: "['required']", autocomplete: 'civility'},
+                                        }) }}
+                                        <div class="flex flex-col xs:flex-row gap-5 ">
+                                            {{ form_row(form.lastName, {
+                                                label: false,
+                                                attr: {placeholder: 'Nom', onCheck: "setFieldValid('lastName')", validate: "['required', 'min:1', 'max:50']"},
+                                            }) }}
+                                            {{ form_row(form.firstName, {
+                                                label: false,
+                                                attr: {placeholder: 'Prénom', onCheck: "setFieldValid('firstName')", validate: "['required', 'min:2', 'max:50']"},
+                                            }) }}
+                                        </div>
+
+                                        {{ form_row(form.nationality, {
+                                            label: 'Nationalité',
+                                            attr: {onCheck: "setFieldValid('nationality')", validate: "['required']"},
+                                        }) }}
+
+                                        {{ form_row(form.address, {label: 'Adresse postale'}) }}
+
                                         <twig:ReButton
+                                            class="w-full"
+                                            @click="handleOnSubmit($event, $dispatch)"
+                                            onDisabledClick="checkFormValidity($event)"
+                                            disabled="x:!checkValidity()"
+                                            loading="x:loading"
+                                        >Suivant</twig:ReButton>
+                                    </twig:Atoms:ReCard>
+
+                                    <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_3" x-data="ThirdFormStep">
+                                        <template x-if="generalNotification">
+                                            <twig:ReParagraphStatus
+                                                    x-bind:data-status="generalNotification.status"
+                                                    status="x:generalNotification.status"
+                                                    x-text="generalNotification.message"/>
+                                        </template>
+
+                                        {{ form_row(form.exclusiveMembership, {
+                                            label: 'Autorisation',
+                                            attr: {
+                                                '@change': 'handleExclusiveMembershipChange($event)',
+                                                validate: "['required']",
+                                                onCheck: 'setFieldValid("exclusiveMembership")',
+                                            },
+                                        }) }}
+                                        <div x-show="notExclusiveMember" x-cloak class="flex flex-col gap-8">
+                                            <hr>
+                                            {{ form_row(form.partyMembership, {
+                                                label: "J'appartiens déjà à un parti politique :",
+                                                attr: {
+                                                    '@change': 'handlePartyMembershipChange($event)',
+                                                    validate: "['?:isExlusiveMember', 'required']",
+                                                    onCheck: 'setFieldValid("partyMembership")',
+                                                },
+                                            }) }}
+                                        </div>
+
+                                        <hr>
+
+                                        <div class="flex flex-col gap-8">
+                                            <template x-if="isMemberOfAnotherParty && notExclusiveMember" x-cloak>
+                                                <twig:ReParagraphStatus status="warning" icon="warning">
+                                                    Si vous êtes déjà affilié à un parti politique, il vous est impossible de devenir membre de Renaissance. Toutefois, il vous est tout à fait possible d'exprimer votre soutien en tant que sympathisant.
+                                                </twig:ReParagraphStatus>
+                                                <twig:Atoms:ReLabel class="mb-6">En devenant sympathisant :</twig:Atoms:ReLabel>
+                                            </template>
+
+                                            <div>
+                                                <template x-if="!(isMemberOfAnotherParty && notExclusiveMember)">
+                                                    <twig:Atoms:ReLabel class="mb-6">En adhérant :</twig:Atoms:ReLabel>
+                                                </template>
+
+                                                {{ form_row(form.allowNotifications, {
+                                                    label: 'Je souhaite recevoir les informations sur l’actualité de Renaissance et ses communications politiques par email',
+                                                }) }}
+                                            </div>
+                                        </div>
+                                        {{ form_row(form.isPhysicalPerson, {
+                                            label: 'adhesion.physical_person.label', label_html: true,
+                                            attr: {onCheck: "setFieldValid('isPhysicalPerson')", validate: "['required']"},
+                                        }) }}
+
+                                        <template x-if="isMemberOfAnotherParty && notExclusiveMember" x-cloak>
+                                            <twig:ReButton
+                                                color="yellow"
                                                 class="w-full"
                                                 loading="x:loading"
+                                                disabled="x:!checkValidity()"
+                                                onDisabledClick="_handleOnSubmitBase($event)"
                                                 @click="handleOnSubmit($event, $dispatch)"
-                                                x-bind:class="{disabled: !checkValidity()}"
-                                        >J'adhère</twig:ReButton>
-                                    </template>
-                                </twig:Atoms:ReCard>
+                                            >Je deviens sympathisant</twig:ReButton>
+                                        </template>
 
-                                <twig:Atoms:ReCard class="max-w-[500px] text-ui_gray-80" id="legal-mention">
-                                    <p>
-                                      66 % de votre cotisation/don vient en réduction de votre impôt sur le revenu (dans la limite de 20 % du revenu imposable). Le reçu fiscal pour votre cotisation de l’année N vous sera envoyé au 2e trimestre de l’année N+1.
-                                        <br>
-                                        <br>
-                                      Ces cotisations/dons sont versées exclusivement à l’AFIR (Association de financement de Renaissance agréée le 7 mars 2016 sous le n°1158) au bénéfice du parti politique Renaissance (Numéro RNA W943004354). Aux termes de l’article 11-4 de la loi n° 88-227 du 11 mars 1988 relative à la transparence financière de la vie politique modifiée par la loi n° 2017-286 du 6 mars 2017 : « Les dons consentis et les cotisations versées en qualité d’adhérent d’un ou de plusieurs partis politiques par une personne physique dûment identifiée à une ou plusieurs associations agréées en qualité d’association de financement ou à un ou plusieurs mandataires financiers d’un ou de plusieurs partis politiques ne peuvent annuellement excéder 7 500 euros. […] Les personnes morales à l’exception des partis ou groupements politiques ne peuvent contribuer au financement des partis ou groupements politiques, ni en consentant des dons, sous quelque forme que ce soit, à leurs associations de financement ou à leurs mandataires financiers, ni en leur fournissant des biens, services ou autres avantages directs ou indirects à des prix inférieurs à ceux qui sont habituellement pratiqués. » L’article 11-5 de la même loi précise que les personnes qui ont versé un don ou consenti un prêt à un ou plusieurs partis ou groupements politiques en violation des articles 11-3-1 et 11-4 sont punies de trois ans d’emprisonnement et de 45 000 euros d’amende.
-                                        <br>
-                                        <br>
-                                      Les données recueillies sur ce formulaire sont traitées par Renaissance, en sa qualité de responsable de traitement, dans le cadre de votre demande d’adhésion à Renaissance.
-                                        Ces données permettront à Renaissance notamment d’instruire votre demande de contact et de renseignements, de gérer les adhésions et les paiements de cotisations, d’effectuer et gérer les opérations de communication, de prospection politique et de propagande électorale par tout moyen, d’établir des études statistiques et des consultations publiques ou d’organiser et de gérer vérifie des événements.
-                                        Si vous êtes élu(e) ou ancien(ne) élu(e), nous traitons également vos données dans le cadre de l’animation de notre réseau d’élu(e)s et vos données peuvent être transférer à La République Ensemble ou à l’institut de formation Tous Politiques. Ces données sont conservées par Renaissance jusqu’à (3) trois ans après la fin de votre adhésion lorsque vous êtes adhérents, 3 ans après le dernier contact à votre initiative lorsque vous êtes sympathisant ou jusqu’au retrait de votre consentement, lorsque vous souhaitez recevoir les informations sur l’actualité de Renaissance et ses communications politiques. En envoyant ce formulaire, vous autorisez Renaissance à utiliser vos données pour ces finalités. Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès. Vous pouvez exercer vos droits en nous adressant votre demande à l'adresse postale : Renaissance, 68 rue du Rocher, 75008 Paris, France ou à l’adresse électronique : <a class="text-ui_blue-50" href="mailto:mes-donnees@parti-renaissance.fr">mes-donnees@parti-renaissance.fr</a>. Dans certains cas, Renaissance peut vous demander un justificatif d’identité afin de traiter votre demande. Pour toute information relative au traitement de vos données,
-                                        vous pouvez consulter notre politique de protection des données en cliquant ici.
-                                    </p>
-                                </twig:Atoms:ReCard>
-                                {% set missing_membership_years = app.user ? app.user.missingMembershipYears : ['now'|date('Y')] %}
-                                <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_4" x-data="FourthFormStep({missingYears: {{ missing_membership_years|length }}})">
-                                    <header>
-                                        <twig:Atoms:ReLabel class="mb-6">Cotisation adhérent</twig:Atoms:ReLabel>
-                                        <div class="text-ui_gray-80">
-                                            <span class="font-medium">
-                                                Nous avons fait le choix d'une cotisation pour l’année civile.
-                                            </span>
-                                            <br/>
-                                        </div>
-                                    </header>
+                                        <template x-if="!(isMemberOfAnotherParty && notExclusiveMember)">
+                                            <twig:ReButton
+                                                    class="w-full"
+                                                    loading="x:loading"
+                                                    @click="handleOnSubmit($event, $dispatch)"
+                                                    x-bind:class="{disabled: !checkValidity()}"
+                                            >J'adhère</twig:ReButton>
+                                        </template>
+                                    </twig:Atoms:ReCard>
 
-                                    {% set contributions = [
-                                        {
-                                            value: '1',
-                                            price: '30',
-                                            type: 'simple',
-                                            checked: false,
-                                            name: 'amount',
-                                        },
-                                        {
-                                            value: '2',
-                                            price: '60',
-                                            type: 'classic',
-                                            checked: true,
-                                            tagged: 'tagged',
-                                            name: 'amount',
-                                        },
-                                        {
-                                            value: '3',
-                                            price: '120',
-                                            type: 'support',
-                                            checked: false,
-                                            name: 'amount',
-                                        },
-                                        {
-                                            value: '4',
-                                            price: '10',
-                                            type: 'united',
-                                            checked: false,
-                                            name: 'amount',
-                                        },
-                                        {
-                                            value: '5',
-                                            price: '50',
-                                            type: 'custom',
-                                            checked: false,
-                                            name: 'amount',
-                                        },
-                                    ] %}
-
-                                    {% for contribution in contributions %}
-                                        <twig:Molecules:ReContributionOpt
-                                            {{ ...contribution }}
-                                            id="amount_{{ contribution.value }}"
-                                            onChange="(p) => price = p"
-                                            isMember="{{ (app.user and app.user.isRenaissanceSympathizer() ? '1' : '0') }}"
-                                        />
-                                    {% endfor %}
-
-                                    <template x-if="value === '4'">
-                                        <twig:Molecules:ReCheckboxField
-                                            validate="['required']"
-                                            id="isStudent"
-                                            status="default"
-                                            onCheck="(b) => confirmStudent = b">
-
-                                            <label for="isStudent">
-                                                Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi
-                                            </label>
-                                        </twig:Molecules:ReCheckboxField>
-                                    </template>
-
-                                    {% if missing_membership_years|length > 1 %}
-                                        <hr>
-                                        <twig:ReParagraphStatus status="info">
-                                            Quel plaisir de vous revoir ! <br>
+                                    <twig:Atoms:ReCard class="max-w-[500px] text-ui_gray-80" id="legal-mention">
+                                        <p>
+                                            66 % de votre cotisation/don vient en réduction de votre impôt sur le revenu (dans la limite de 20 % du revenu imposable). Le reçu fiscal pour votre cotisation de l’année N vous sera envoyé au 2e trimestre de l’année N+1.
                                             <br>
-                                            Votre dernière cotisation a été enregistrée en {{ app.user.lastMembershipDonation|date('Y') }}.
-                                            Afin de régulariser votre situation pour {{ 'now'|date('Y') }}, nous vous remercions de procéder à son règlement.
-                                        </twig:ReParagraphStatus>
+                                            <br>
+                                            Ces cotisations/dons sont versées exclusivement à l’AFIR (Association de financement de Renaissance agréée le 7 mars 2016 sous le n°1158) au bénéfice du parti politique Renaissance (Numéro RNA W943004354). Aux termes de l’article 11-4 de la loi n° 88-227 du 11 mars 1988 relative à la transparence financière de la vie politique modifiée par la loi n° 2017-286 du 6 mars 2017 : « Les dons consentis et les cotisations versées en qualité d’adhérent d’un ou de plusieurs partis politiques par une personne physique dûment identifiée à une ou plusieurs associations agréées en qualité d’association de financement ou à un ou plusieurs mandataires financiers d’un ou de plusieurs partis politiques ne peuvent annuellement excéder 7 500 euros. […] Les personnes morales à l’exception des partis ou groupements politiques ne peuvent contribuer au financement des partis ou groupements politiques, ni en consentant des dons, sous quelque forme que ce soit, à leurs associations de financement ou à leurs mandataires financiers, ni en leur fournissant des biens, services ou autres avantages directs ou indirects à des prix inférieurs à ceux qui sont habituellement pratiqués. » L’article 11-5 de la même loi précise que les personnes qui ont versé un don ou consenti un prêt à un ou plusieurs partis ou groupements politiques en violation des articles 11-3-1 et 11-4 sont punies de trois ans d’emprisonnement et de 45 000 euros d’amende.
+                                            <br>
+                                            <br>
+                                            Les données recueillies sur ce formulaire sont traitées par Renaissance, en sa qualité de responsable de traitement, dans le cadre de votre demande d’adhésion à Renaissance.
+                                            Ces données permettront à Renaissance notamment d’instruire votre demande de contact et de renseignements, de gérer les adhésions et les paiements de cotisations, d’effectuer et gérer les opérations de communication, de prospection politique et de propagande électorale par tout moyen, d’établir des études statistiques et des consultations publiques ou d’organiser et de gérer vérifie des événements.
+                                            Si vous êtes élu(e) ou ancien(ne) élu(e), nous traitons également vos données dans le cadre de l’animation de notre réseau d’élu(e)s et vos données peuvent être transférer à La République Ensemble ou à l’institut de formation Tous Politiques. Ces données sont conservées par Renaissance jusqu’à (3) trois ans après la fin de votre adhésion lorsque vous êtes adhérents, 3 ans après le dernier contact à votre initiative lorsque vous êtes sympathisant ou jusqu’au retrait de votre consentement, lorsque vous souhaitez recevoir les informations sur l’actualité de Renaissance et ses communications politiques. En envoyant ce formulaire, vous autorisez Renaissance à utiliser vos données pour ces finalités. Conformément à la règlementation, vous disposez d’un droit d’opposition et d’un droit à la limitation du traitement de données vous concernant, ainsi que d’un droit d’accès, de rectification, de portabilité et d’effacement de vos données. Vous disposez également de la faculté de donner des directives sur le sort de vos données après votre décès. Vous pouvez exercer vos droits en nous adressant votre demande à l'adresse postale : Renaissance, 68 rue du Rocher, 75008 Paris, France ou à l’adresse électronique : <a class="text-ui_blue-50" href="mailto:mes-donnees@parti-renaissance.fr">mes-donnees@parti-renaissance.fr</a>. Dans certains cas, Renaissance peut vous demander un justificatif d’identité afin de traiter votre demande. Pour toute information relative au traitement de vos données,
+                                            vous pouvez consulter notre politique de protection des données en cliquant ici.
+                                        </p>
+                                    </twig:Atoms:ReCard>
 
-                                        <ul class="font-medium leading-loose">
-                                            {% for year in missing_membership_years %}
+                                    {% set missing_membership_years = app.user ? app.user.missingMembershipYears : ['now'|date('Y')] %}
+
+                                    <twig:Atoms:ReCard class="max-w-[500px] re-step" id="step_4" x-data="FourthFormStep({missingYears: {{ missing_membership_years|length }}})">
+                                        <header>
+                                            <twig:Atoms:ReLabel class="mb-6">Cotisation adhérent</twig:Atoms:ReLabel>
+                                            <div class="text-ui_gray-80">
+                                                <span class="font-medium">
+                                                    Nous avons fait le choix d'une cotisation pour l’année civile.
+                                                </span>
+                                                <br/>
+                                            </div>
+                                        </header>
+
+                                        {% set contributions = [
+                                            {
+                                                value: '1',
+                                                price: '30',
+                                                type: 'simple',
+                                                checked: false,
+                                                name: 'amount',
+                                            },
+                                            {
+                                                value: '2',
+                                                price: '60',
+                                                type: 'classic',
+                                                checked: true,
+                                                tagged: 'tagged',
+                                                name: 'amount',
+                                            },
+                                            {
+                                                value: '3',
+                                                price: '120',
+                                                type: 'support',
+                                                checked: false,
+                                                name: 'amount',
+                                            },
+                                            {
+                                                value: '4',
+                                                price: '10',
+                                                type: 'united',
+                                                checked: false,
+                                                name: 'amount',
+                                            },
+                                            {
+                                                value: '5',
+                                                price: '50',
+                                                type: 'custom',
+                                                checked: false,
+                                                name: 'amount',
+                                            },
+                                        ] %}
+
+                                        {% for contribution in contributions %}
+                                            <twig:Molecules:ReContributionOpt
+                                                {{ ...contribution }}
+                                                id="amount_{{ contribution.value }}"
+                                                onChange="(p) => price = p"
+                                                isMember="{{ (app.user and app.user.isRenaissanceSympathizer() ? '1' : '0') }}"
+                                            />
+                                        {% endfor %}
+
+                                        <template x-if="value === '4'">
+                                            <twig:Molecules:ReCheckboxField
+                                                validate="['required']"
+                                                id="isStudent"
+                                                status="default"
+                                                onCheck="(b) => confirmStudent = b">
+
+                                                <label for="isStudent">
+                                                    Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi
+                                                </label>
+                                            </twig:Molecules:ReCheckboxField>
+                                        </template>
+
+                                        {% if missing_membership_years|length > 1 %}
+                                            <hr>
+                                            <twig:ReParagraphStatus status="info">
+                                                Quel plaisir de vous revoir ! <br>
+                                                <br>
+                                                Votre dernière cotisation a été enregistrée en {{ app.user.lastMembershipDonation|date('Y') }}.
+                                                Afin de régulariser votre situation pour {{ 'now'|date('Y') }}, nous vous remercions de procéder à son règlement.
+                                            </twig:ReParagraphStatus>
+
+                                            <ul class="font-medium leading-loose">
+                                                {% for year in missing_membership_years %}
+                                                    <li class="flex justify-between items-center">
+                                                       <span class="text-ui_gray-80">Cotisation pour l’année {{ year }}</span> <span class="text-ui_blue-50" x-text="`${calcCotisTotal().cotis} €`"></span>
+                                                    </li>
+                                                {% endfor %}
                                                 <li class="flex justify-between items-center">
-                                                   <span class="text-ui_gray-80">Cotisation pour l’année {{ year }}</span> <span class="text-ui_blue-50" x-text="`${calcCotisTotal().cotis} €`"></span>
+                                                    <span class="text-ui_gray-80">Don</span> <span class="text-ui_green-50" x-text="`${calcCotisTotal().don} €`"></span>
                                                 </li>
-                                            {% endfor %}
-                                            <li class="flex justify-between items-center">
-                                                <span class="text-ui_gray-80">Don</span> <span class="text-ui_green-50" x-text="`${calcCotisTotal().don} €`"></span>
-                                            </li>
-                                            <li class="flex justify-between items-center">
-                                                <span class="text-ui_gray-80">Montant total</span> <span class="text-ui_green-80" x-text="`${calcCotisTotal().total} €`"></span>
-                                            </li>
-                                        </ul>
-                                    {% endif %}
+                                                <li class="flex justify-between items-center">
+                                                    <span class="text-ui_gray-80">Montant total</span> <span class="text-ui_green-80" x-text="`${calcCotisTotal().total} €`"></span>
+                                                </li>
+                                            </ul>
+                                        {% endif %}
 
-                                    {{ form_errors(form.amount) }}
-                                    {{ form_row(form.amount, {attr: {'x-bind:value': 'calcCotisTotal().total'}}) }}
+                                        {{ form_errors(form.amount) }}
+                                        {{ form_row(form.amount, {attr: {'x-bind:value': 'calcCotisTotal().total'}}) }}
 
-                                    <twig:ReButton
-                                        color="green"
-                                        x-text="`Je cotise pour ${calcCotisTotal().total} €`"
-                                        class="w-full"
-                                        loading="x:loading"
-                                        disabled="x:value === '4' && !confirmStudent"
-                                        onDisabledClick="checkFormValidity($event)"
-                                        @click="submitForm($event)"
-                                    >J'adhère</twig:ReButton>
-                                </twig:Atoms:ReCard>
-
-                                <div class="spacer h-[50vh]"></div>
-                            </div>
-                            <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
-                        {{ form_end(form) }}
+                                        <twig:ReButton
+                                            color="green"
+                                            x-text="`Je cotise pour ${calcCotisTotal().total} €`"
+                                            class="w-full"
+                                            loading="x:loading"
+                                            disabled="x:value === '4' && !confirmStudent"
+                                            onDisabledClick="checkFormValidity($event)"
+                                            @click="submitForm($event)"
+                                        >J'adhère</twig:ReButton>
+                                    </twig:Atoms:ReCard>
+                                </div>
+                                <input type="hidden" id="email-validation-token" value="{{ email_validation_token }}"/>
+                            {{ form_end(form) }}
+                        </div>
                     </div>
                 </div>
-            </div>
             </section>
         </section>
     </main>
