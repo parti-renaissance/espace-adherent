@@ -79,7 +79,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "zone",

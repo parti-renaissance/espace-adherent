@@ -18,7 +18,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "custom_title",
@@ -59,7 +58,7 @@ Feature:
             """
         Then the response status code should be 400
         And the response should be in JSON
-        And the JSON node "detail" should be equal to "election_entity_identifier: Un identifiant est requis pour ce champs."
+        And the JSON node "violations[0].message" should be equal to "Un identifiant est requis pour ce champs."
 
         Examples:
             | user                      | scope                                          |

@@ -127,7 +127,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "nickname",
@@ -152,7 +151,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "nickname",

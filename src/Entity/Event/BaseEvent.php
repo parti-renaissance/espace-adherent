@@ -97,16 +97,17 @@ use Symfony\Component\Validator\Constraints as Assert;
         new HttpOperation(
             method: 'POST|DELETE',
             uriTemplate: '/v3/events/{uuid}/subscribe',
-            defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: SubscribeAsAdherentController::class,
-            security: 'is_granted(\'ROLE_USER\')'
+            security: 'is_granted(\'ROLE_USER\')',
+            deserialize: false
         ),
-        new Post(
+        new HttpOperation(
+            method: 'POST',
             uriTemplate: '/events/{uuid}/subscribe',
-            defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
-            controller: SubscribeAsAnonymousController::class
+            controller: SubscribeAsAnonymousController::class,
+            deserialize: false
         ),
         new HttpOperation(
             method: 'POST|DELETE',
@@ -116,11 +117,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: "is_granted('ROLE_OAUTH_SCOPE_JEMENGAGE_ADMIN') and is_granted('CAN_MANAGE_EVENT', request.attributes.get('data'))",
             deserialize: false
         ),
-        new Put(
+        new HttpOperation(
+            method: 'PUT',
             uriTemplate: '/v3/events/{uuid}/cancel',
-            defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
-            controller: CancelEventController::class
+            controller: CancelEventController::class,
+            deserialize: false
         ),
         new GetCollection(
             uriTemplate: '/v3/events',

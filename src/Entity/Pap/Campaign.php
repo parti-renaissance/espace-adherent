@@ -63,7 +63,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Get(
             uriTemplate: '/v3/pap_campaigns/{uuid}/questioners',
-            defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: GetPapCampaignQuestionersStatsController::class,
             security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'

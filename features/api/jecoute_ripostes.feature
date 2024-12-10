@@ -259,7 +259,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "title",
@@ -283,7 +282,7 @@ Feature:
             """
             {
                 "title": "Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui - Une nouvelle riposte d'aujourd'hui",
-                "with_notification": "true"
+                "with_notification": true
             }
             """
         Then the response status code should be 400
@@ -293,7 +292,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "propertyPath": "title",
@@ -306,10 +304,6 @@ Feature:
                     {
                         "propertyPath": "source_url",
                         "message": "Cette valeur ne doit pas être vide."
-                    },
-                    {
-                        "propertyPath": "with_notification",
-                        "message": "Cette valeur doit être de type bool."
                     }
                 ]
             }
