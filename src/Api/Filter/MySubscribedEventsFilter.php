@@ -27,7 +27,7 @@ final class MySubscribedEventsFilter extends AbstractFilter
         string $resourceClass,
         ?Operation $operation = null,
         array $context = [],
-    ) {
+    ): void {
         if (
             !is_a($resourceClass, BaseEvent::class, true)
             || self::PROPERTY_NAME !== $property

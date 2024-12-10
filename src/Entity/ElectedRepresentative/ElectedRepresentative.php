@@ -29,7 +29,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -131,7 +131,7 @@ class ElectedRepresentative implements EntityAdherentBlameableInterface, EntityA
      */
     #[Groups(['elected_representative_write', 'elected_representative_read'])]
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $hasFollowedTraining = false;
+    public bool $hasFollowedTraining = false;
 
     /**
      * Mailchimp unsubscribed date

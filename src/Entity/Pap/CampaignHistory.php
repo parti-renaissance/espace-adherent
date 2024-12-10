@@ -8,6 +8,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Api\Filter\AdherentIdentityFilter;
@@ -27,7 +28,7 @@ use App\ValueObject\Genders;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['status' => 'exact', 'campaign.uuid' => 'exact'])]
@@ -42,9 +43,10 @@ use Symfony\Component\Validator\Constraints as Assert;
             requirements: ['uuid' => '%pattern_uuid%'],
             security: 'is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\') and object.getQuestioner() == user'
         ),
-        new Post(
+        new HttpOperation(
+            method: 'POST',
             uriTemplate: '/v3/pap_campaign_histories/{uuid}/reply',
-            defaults: ['_api_receive' => false],
+            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: CampaignHistoryReplyController::class,
             normalizationContext: ['groups' => ['data_survey_read']]

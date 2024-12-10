@@ -2,7 +2,7 @@
 
 namespace App\Normalizer;
 
-use ApiPlatform\Exception\ItemNotFoundException;
+use ApiPlatform\Metadata\Exception\ItemNotFoundException;
 use App\Entity\CommitteeCandidacy;
 use App\Repository\CommitteeCandidaciesGroupRepository;
 use App\Repository\CommitteeMembershipRepository;
@@ -42,6 +42,6 @@ class CommitteeCandidacyDenormalizer implements DenormalizerInterface
 
     public function supportsDenormalization($data, string $type, ?string $format = null, array $context = [])
     {
-        return CommitteeCandidacy::class === $type && '_api_/committee_candidacies_post' === $context['operation_name'];
+        return CommitteeCandidacy::class === $type && '_api_/v3/committee_candidacies_post' === $context['operation_name'];
     }
 }

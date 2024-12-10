@@ -43,7 +43,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: ScopeVisibilityFilter::class)]
@@ -63,7 +63,6 @@ use Symfony\Component\Validator\Constraints as Assert;
         ),
         new Get(
             uriTemplate: '/v3/pap_campaigns/{uuid}/questioners',
-            defaults: ['_api_receive' => false],
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: GetPapCampaignQuestionersStatsController::class,
             security: 'is_granted(\'IS_FEATURE_GRANTED\', [\'pap_v2\', \'pap\'])'

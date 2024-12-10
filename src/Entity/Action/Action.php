@@ -36,7 +36,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiFilter(filterClass: SearchFilter::class, properties: ['type' => 'exact'])]
@@ -53,16 +53,17 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/v3/actions/{uuid}',
             security: 'object.getAuthor() == user or user.hasDelegatedFromUser(object.getAuthor(), \'actions\')'
         ),
-        new Put(
+        new HttpOperation(
+            method: 'PUT',
             uriTemplate: '/v3/actions/{uuid}/cancel',
-            defaults: ['_api_receive' => false],
+            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: CancelActionController::class
         ),
         new HttpOperation(
             method: 'POST|DELETE',
             uriTemplate: '/v3/actions/{uuid}/register',
-            defaults: ['_api_receive' => false],
+            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: RegisterController::class
         ),
