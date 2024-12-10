@@ -1132,7 +1132,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "message": "Catégorie est requise.",
@@ -1187,7 +1186,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-
                 "violations": [
                     {
                         "message": "La date de fin de l'événement doit être postérieure à la date de début.",

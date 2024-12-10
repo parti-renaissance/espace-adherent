@@ -5,6 +5,7 @@ namespace App\Api;
 use ApiPlatform\Metadata\IriConverterInterface;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\Metadata\UrlGeneratorInterface;
+use App\Entity\Event\BaseEventCategory;
 use Ramsey\Uuid\Uuid;
 
 class IriConverterDecorator implements IriConverterInterface
@@ -17,6 +18,8 @@ class IriConverterDecorator implements IriConverterInterface
     {
         if (Uuid::isValid($iri)) {
             $iri = $this->decorated->getIriFromResource(resource: $context['resource_class'], context: ['uri_variables' => ['uuid' => $iri]]);
+        } elseif (is_a($context['resource_class'], BaseEventCategory::class, true)) {
+            $iri = $this->decorated->getIriFromResource(resource: $context['resource_class'], context: ['uri_variables' => ['slug' => $iri]]);
         }
 
         return $this->decorated->getResourceFromIri($iri, $context, $operation);

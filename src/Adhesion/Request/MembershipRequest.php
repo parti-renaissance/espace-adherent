@@ -41,7 +41,6 @@ class MembershipRequest implements DonationRequestInterface
     #[Assert\NotBlank]
     public ?string $nationality = null;
 
-    #[Assert\Type('bool')]
     public ?bool $exclusiveMembership = null;
 
     #[Assert\AtLeastOneOf([
