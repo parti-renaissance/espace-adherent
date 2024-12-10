@@ -199,7 +199,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-                "type": "@string@",
                 "violations": [
                     {
                         "propertyPath": "gender",
@@ -262,7 +261,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-                "type": "@string@",
                 "violations": [
                     {
                         "propertyPath": "first_name",
@@ -285,7 +283,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-                "type": "@string@",
                 "violations": [
                     {
                         "propertyPath": "first_name",
@@ -312,7 +309,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-                "type": "@string@",
                 "violations": [
                     {
                         "propertyPath": "first_name",
@@ -412,7 +408,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-                "type": "@string@",
                 "violations": [
                     {
                         "propertyPath": "subscription_types",
@@ -463,7 +458,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-                "type": "@string@",
                 "violations": [
                     {
                         "propertyPath": "position",
@@ -515,7 +509,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-                "type": "@string@",
                 "violations": [
                     {
                         "propertyPath": "nationality",
@@ -576,7 +569,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-                "type": "@string@",
                 "violations": [
                     {
                         "propertyPath": "phone",
@@ -625,7 +617,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-                "type": "@string@",
                 "violations": [
                     {
                         "propertyPath": "facebook_page_url",
@@ -683,7 +674,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-                "type": "@string@",
                 "violations": [
                     {
                         "propertyPath": "email_address",

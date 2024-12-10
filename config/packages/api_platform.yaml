@@ -1,12 +1,11 @@
 api_platform:
     name_converter: serializer.name_converter.camel_case_to_snake_case
+    use_symfony_listeners: true
     resource_class_directories:
         - '%kernel.project_dir%/src/Entity'
     enable_docs: false
     enable_swagger_ui: false
     enable_entrypoint: false
-    #    allow_plain_identifiers: true
-    #    metadata_backward_compatibility_layer: false
     exception_to_status:
         ApiPlatform\Validator\Exception\ValidationException: !php/const Symfony\Component\HttpFoundation\Response::HTTP_BAD_REQUEST
     formats:
