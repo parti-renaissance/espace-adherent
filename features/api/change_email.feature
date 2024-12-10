@@ -46,7 +46,6 @@ Feature:
             {
                 "message": "Validation Failed",
                 "status": "error",
-                "type": "@string@.isUrl()",
                 "violations": [
                     {
                         "message": "Ceci n'est pas une adresse email valide.",

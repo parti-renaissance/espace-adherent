@@ -50,6 +50,6 @@ class CommitteeCandidacyDenormalizer implements DenormalizerInterface
 
     public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
     {
-        return CommitteeCandidacy::class === $type && '_api_/committee_candidacies_post' === $context['operation_name'];
+        return CommitteeCandidacy::class === $type && '_api_/v3/committee_candidacies_post' === $context['operation_name'];
     }
 }
