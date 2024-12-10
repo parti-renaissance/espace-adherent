@@ -42,15 +42,15 @@ class DummyClient implements ClientInterface
 
     private function createContact(
         string $id,
-        string $email,
         string $firstname,
         string $lastname,
+        string $email,
     ): array {
         return [
             'id' => $id,
-            'email' => $email,
             'firstname' => $firstname,
             'lastname' => $lastname,
+            'email' => $email,
         ];
     }
 
