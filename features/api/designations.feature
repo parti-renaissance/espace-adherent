@@ -22,23 +22,19 @@ Feature:
                 "violations": [
                     {
                         "propertyPath": "custom_title",
-                        "message": "Cette valeur ne doit pas être vide.",
-                        "code": "@uuid@"
+                        "message": "Cette valeur ne doit pas être vide."
                     },
                     {
                         "propertyPath": "type",
-                        "message": "Cette valeur ne doit pas être vide.",
-                        "code": "@uuid@"
+                        "message": "Cette valeur ne doit pas être vide."
                     },
                     {
                         "propertyPath": "vote_end_date",
-                        "message": "La date de clôture doit être postérieur à la date de début",
-                        "code": "@uuid@"
+                        "message": "La date de clôture doit être postérieur à la date de début"
                     },
                     {
                         "propertyPath": "description",
-                        "message": "Cette valeur ne doit pas être vide.",
-                        "code": "@uuid@"
+                        "message": "Cette valeur ne doit pas être vide."
                     }
                 ]
             }

@@ -837,7 +837,6 @@ Feature:
 
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "vote_places",
                         "message": "Un ou plusieurs bureaux de vote ne sont pas dans la zone gérée"
                     }
@@ -961,12 +960,10 @@ Feature:
 
                 "violations": [
                     {
-                        "code": null,
                         "message": "La campagne a déjà commencé, vous ne pouvez pas changer le questionnaire.",
                         "propertyPath": "survey"
                     },
                     {
-                        "code": null,
                         "message": "La campagne a déjà commencé, vous ne pouvez pas retirer les bureaux de vote déjà utilisés.",
                         "propertyPath": "vote_places"
                     }

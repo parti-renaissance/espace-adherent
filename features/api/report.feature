@@ -66,7 +66,6 @@ Feature:
 
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "comment",
                         "message": "Vous devez cocher la case \"Autre\" afin de renseigner un commentaire."
                     }
