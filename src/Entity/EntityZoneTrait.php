@@ -13,7 +13,15 @@ trait EntityZoneTrait
     /**
      * @var ZoneCollection|Zone[]
      */
-    #[Groups(['phoning_campaign_read', 'phoning_campaign_write', 'read_api', 'managed_users_list', 'managed_user_read'])]
+    #[Groups([
+        'phoning_campaign_read',
+        'phoning_campaign_write',
+        'read_api',
+        'managed_users_list',
+        'managed_user_read',
+        'zone_based_role_read',
+        'zone_based_role_write',
+    ])]
     #[ORM\ManyToMany(targetEntity: Zone::class, cascade: ['persist'])]
     protected Collection $zones;
 

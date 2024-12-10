@@ -32,6 +32,7 @@ class FeatureEnum extends Enum
     public const PROCURATIONS = 'procurations';
     public const ACTIONS = 'actions';
     public const FEATUREBASE = 'featurebase';
+    public const CIRCONSCRIPTIONS = 'circonscriptions';
 
     public const ALL = [
         self::DASHBOARD,
@@ -60,6 +61,7 @@ class FeatureEnum extends Enum
         self::PROCURATIONS,
         self::ACTIONS,
         self::FEATUREBASE,
+        self::CIRCONSCRIPTIONS,
     ];
 
     public const DELEGATED_ACCESSES_BY_DEFAULT = [
