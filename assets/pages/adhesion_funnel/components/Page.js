@@ -87,16 +87,7 @@ const Page = (props) => ({
         }
         this.retrieveLocalStorage();
         this.blockStep(this.stepToFill);
-        this.$nextTick(() => {
-            if (0 === this.stepToFill) {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth',
-                });
-            } else {
-                reScrollTo(`step_${this.stepToFill + 1}`);
-            }
-        });
+        this.$nextTick(() => reScrollTo(`step_${this.stepToFill + 1}`));
         this.$watch('stepToFill', (value) => {
             this.blockStep(value);
             this.$nextTick(() => {

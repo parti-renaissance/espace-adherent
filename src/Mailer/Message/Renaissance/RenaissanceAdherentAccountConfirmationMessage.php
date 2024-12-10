@@ -3,11 +3,12 @@
 namespace App\Mailer\Message\Renaissance;
 
 use App\Entity\Adherent;
+use App\Mailer\Message\Message;
 use Ramsey\Uuid\Uuid;
 
 class RenaissanceAdherentAccountConfirmationMessage extends AbstractRenaissanceMessage
 {
-    public static function createFromAdherent(Adherent $adherent): self
+    public static function createFromAdherent(Adherent $adherent): Message
     {
         $message = new self(
             Uuid::uuid4(),
@@ -17,8 +18,6 @@ class RenaissanceAdherentAccountConfirmationMessage extends AbstractRenaissanceM
             ['target_firstname' => self::escape($adherent->getFirstName())]
         );
 
-        $message->setSenderName('Gabriel Attal');
-
-        return $message;
+        return self::updateSenderInfo($message);
     }
 }
