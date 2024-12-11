@@ -2,7 +2,7 @@
 
 namespace App\Entity\Geo;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Metadata\ApiProperty;
 use App\Entity\GeoData;
 use App\Entity\GeoPointTrait;
 use Doctrine\ORM\Mapping as ORM;

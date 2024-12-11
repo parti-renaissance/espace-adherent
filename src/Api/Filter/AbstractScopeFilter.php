@@ -28,7 +28,7 @@ abstract class AbstractScopeFilter extends AbstractFilter
         string $resourceClass,
         ?Operation $operation = null,
         array $context = [],
-    ) {
+    ): void {
         if (self::PROPERTY_NAME !== $property || !$this->isValidOperation($operation)) {
             return;
         }
@@ -87,7 +87,7 @@ abstract class AbstractScopeFilter extends AbstractFilter
 
     protected function getAllowedOperationNames(string $resourceClass): array
     {
-        return ['{uuid}_get', '{uuid}.{_format}_get', '_get_collection'];
+        return ['{uuid}_get', '{uuid}{._format}_get', '_get_collection'];
     }
 
     private function isValidOperation(?Operation $operation): bool

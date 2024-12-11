@@ -49,12 +49,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "name: Cette valeur ne doit pas \u00eatre vide.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "name",
                         "message": "Cette valeur ne doit pas être vide."
                     }
@@ -79,32 +77,26 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "zone: La zone choisie ne fait pas partie des zones gérées.\nname: Cette valeur ne doit pas être vide.\nfirst_name: Vous devez saisir au maximum 50 caractères.\nlast_name: Vous devez saisir au maximum 50 caractères.\ngender: Ce sexe n'est pas valide.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "zone",
                         "message": "La zone choisie ne fait pas partie des zones gérées."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "name",
                         "message": "Cette valeur ne doit pas être vide."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "first_name",
                         "message": "Vous devez saisir au maximum 50 caractères."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "last_name",
                         "message": "Vous devez saisir au maximum 50 caractères."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "gender",
                         "message": "Ce sexe n'est pas valide."
                     }

@@ -111,7 +111,6 @@ class Region
     /**
      * @var bool
      */
-    #[Assert\Type('bool')]
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private $enabled;
 
