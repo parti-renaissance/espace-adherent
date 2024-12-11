@@ -4,7 +4,7 @@ namespace App\Scope;
 
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 class Scope
 {

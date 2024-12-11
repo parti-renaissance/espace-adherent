@@ -5,7 +5,7 @@ namespace App\Entity\Poll;
 use App\Entity\Administrator;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity]
 class NationalPoll extends Poll

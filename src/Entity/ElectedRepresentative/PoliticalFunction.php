@@ -5,7 +5,7 @@ namespace App\Entity\ElectedRepresentative;
 use App\Exception\BadPoliticalFunctionNameException;
 use App\Repository\ElectedRepresentative\PoliticalFunctionRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PoliticalFunctionRepository::class)]

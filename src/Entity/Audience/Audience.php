@@ -12,7 +12,7 @@ use App\Controller\Api\Audience\RetrieveAudiencesController;
 use App\Repository\Audience\AudienceRepository;
 use App\Validator\ManagedZone;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(

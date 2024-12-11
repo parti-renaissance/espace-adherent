@@ -7,8 +7,8 @@ use App\Entity\Administrator;
 use App\Entity\EntityIdentityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Context;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Context;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\MappedSuperclass]
