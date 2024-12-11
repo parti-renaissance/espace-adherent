@@ -3,7 +3,7 @@
 namespace App\Mailchimp\Webhook\Command;
 
 use App\Messenger\Message\AsynchronousMessageInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 class CatchMailchimpWebhookCallCommand implements AsynchronousMessageInterface
 {

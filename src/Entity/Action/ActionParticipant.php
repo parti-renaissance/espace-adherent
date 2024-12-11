@@ -8,7 +8,7 @@ use App\Entity\EntityTimestampableTrait;
 use App\Repository\Action\ActionParticipantRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ActionParticipantRepository::class)]
 #[ORM\Table(name: 'vox_action_participant')]

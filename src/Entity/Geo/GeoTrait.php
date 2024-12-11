@@ -6,7 +6,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use App\Entity\GeoData;
 use App\Entity\GeoPointTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 trait GeoTrait
 {

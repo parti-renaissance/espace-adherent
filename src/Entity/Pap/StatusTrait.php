@@ -5,7 +5,7 @@ namespace App\Entity\Pap;
 use App\Entity\Adherent;
 use App\Pap\BuildingStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 trait StatusTrait
 {

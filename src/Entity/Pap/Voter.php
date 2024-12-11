@@ -10,7 +10,7 @@ use App\Repository\Pap\VoterRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     uriTemplate: '/v3/pap/address/{uuid}/voters',
