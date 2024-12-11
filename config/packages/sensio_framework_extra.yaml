@@ -1,0 +1,11 @@
+sensio_framework_extra:
+    router:
+        annotations: false
+    request:
+        converters: false
+    view:
+        annotations: false
+    cache:
+        annotations: false
+    security:
+        annotations: false
