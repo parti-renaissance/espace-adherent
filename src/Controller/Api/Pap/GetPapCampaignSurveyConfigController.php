@@ -6,13 +6,14 @@ use App\Jecoute\AgeRangeEnum;
 use App\Jecoute\ProfessionEnum;
 use App\Pap\CampaignHistoryStatusEnum;
 use App\ValueObject\Genders;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route(path: '/v3/pap_campaigns/{uuid}/survey-config', requirements: ['uuid' => '%pattern_uuid%'], name: 'api_get_pap_campaign_survey_config', methods: ['GET'])]
-#[Security("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')")]
+#[IsGranted(new Expression("is_granted('ROLE_OAUTH_SCOPE_JEMARCHE_APP') and is_granted('ROLE_PAP_USER')"))]
+#[Route(path: '/v3/pap_campaigns/{uuid}/survey-config', name: 'api_get_pap_campaign_survey_config', requirements: ['uuid' => '%pattern_uuid%'], methods: ['GET'])]
 class GetPapCampaignSurveyConfigController extends AbstractController
 {
     public function __invoke(): JsonResponse

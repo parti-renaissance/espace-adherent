@@ -45,7 +45,8 @@ class EventParticipantsExporter
                     $row['Date d\'inscription'] = $registration['subscription_date']->format('Y-m-d H:i:s');
 
                     return $row;
-                })
+                }
+            )
         );
     }
 }

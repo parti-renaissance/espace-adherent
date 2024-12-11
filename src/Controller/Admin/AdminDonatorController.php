@@ -8,11 +8,11 @@ use App\Donation\Handler\DonatorExtractCommandHandler;
 use App\Donation\Handler\DonatorMergeCommandHandler;
 use App\Form\Admin\DonatorMergeType;
 use App\Form\Admin\Extract\DonatorExtractType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_ADMIN_FINANCES_DONATIONS')]
 #[Route(path: '/donator')]

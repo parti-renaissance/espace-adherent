@@ -8,13 +8,12 @@ use App\Utils\HttpUtils;
 use Cocur\Slugify\Slugify;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Entity('formation', expr: 'repository.findOnePublished(uuid)')]
 #[IsGranted('RENAISSANCE_ADHERENT')]
 #[Route(path: '/espace-adherent/formations/{uuid}/contenu', name: 'app_renaissance_adherent_formation_content', methods: ['GET'])]
 class ContentController extends AbstractController
@@ -25,8 +24,10 @@ class ContentController extends AbstractController
     ) {
     }
 
-    public function __invoke(Formation $formation): Response
-    {
+    public function __invoke(
+        #[MapEntity(expr: 'repository.findOnePublished(uuid)')]
+        Formation $formation,
+    ): Response {
         /** @var Adherent $adherent */
         $adherent = $this->getUser();
 
