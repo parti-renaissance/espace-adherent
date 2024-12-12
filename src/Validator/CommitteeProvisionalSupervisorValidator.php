@@ -18,7 +18,7 @@ class CommitteeProvisionalSupervisorValidator extends ConstraintValidator
         $this->electedRepresentativeRepository = $electedRepresentativeRepository;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof CommitteeProvisionalSupervisor) {
             throw new UnexpectedTypeException($constraint, CommitteeProvisionalSupervisor::class);

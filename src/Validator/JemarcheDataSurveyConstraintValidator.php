@@ -11,19 +11,19 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class JemarcheDataSurveyConstraintValidator extends ConstraintValidator
 {
     /**
-     * @param JemarcheDataSurvey $dataSurvey
+     * @param JemarcheDataSurvey $value
      */
-    public function validate($dataSurvey, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof JemarcheDataSurveyConstraint) {
             throw new UnexpectedTypeException($constraint, JemarcheDataSurveyConstraint::class);
         }
 
-        if (null === $dataSurvey) {
+        if (null === $value) {
             return;
         }
 
-        if (!$dataSurvey->getEmailAddress() && $dataSurvey->getAgreedToStayInContact()) {
+        if (!$value->getEmailAddress() && $value->getAgreedToStayInContact()) {
             $this
                 ->context
                 ->buildViolation($constraint->emailAddressRequired)
@@ -32,7 +32,7 @@ class JemarcheDataSurveyConstraintValidator extends ConstraintValidator
             ;
         }
 
-        if (!$dataSurvey->getAgreedToStayInContact() && $dataSurvey->getAgreedToContactForJoin()) {
+        if (!$value->getAgreedToStayInContact() && $value->getAgreedToContactForJoin()) {
             $this
                 ->context
                 ->buildViolation($constraint->agreedToStayInContactRequired)
@@ -41,7 +41,7 @@ class JemarcheDataSurveyConstraintValidator extends ConstraintValidator
             ;
         }
 
-        if (GenderEnum::OTHER === $dataSurvey->getGender() && !$dataSurvey->getGenderOther()) {
+        if (GenderEnum::OTHER === $value->getGender() && !$value->getGenderOther()) {
             $this
                 ->context
                 ->buildViolation($constraint->genderOtherEmptyMessage)
@@ -50,7 +50,7 @@ class JemarcheDataSurveyConstraintValidator extends ConstraintValidator
             ;
         }
 
-        if ($dataSurvey->getGenderOther() && GenderEnum::OTHER !== $dataSurvey->getGender()) {
+        if ($value->getGenderOther() && GenderEnum::OTHER !== $value->getGender()) {
             $this
                 ->context
                 ->buildViolation($constraint->genderChoiceOtherNotSelectedMessage)

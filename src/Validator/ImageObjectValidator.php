@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class ImageObjectValidator extends ImageValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof ImageObject) {
             throw new UnexpectedTypeException($constraint, ImageObject::class);

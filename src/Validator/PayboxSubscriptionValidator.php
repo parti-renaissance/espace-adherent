@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class PayboxSubscriptionValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof PayboxSubscription) {
             throw new UnexpectedTypeException($constraint, PayboxSubscription::class);

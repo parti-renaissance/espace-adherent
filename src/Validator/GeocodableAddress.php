@@ -19,7 +19,7 @@ class GeocodableAddress extends Constraint
         $this->message = $message ?? $this->message;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return $this->service;
     }

@@ -19,21 +19,21 @@ class GeocodableAddressValidator extends ConstraintValidator
         $this->geocoder = $geocoder;
     }
 
-    public function validate($address, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof GeocodableAddress) {
             throw new UnexpectedTypeException($constraint, GeocodableAddress::class);
         }
 
-        if (null === $address || '' === $address) {
+        if (null === $value || '' === $value) {
             return;
         }
 
-        if (!$address instanceof GeocodableInterface) {
-            throw new UnexpectedValueException($address, GeocodableInterface::class);
+        if (!$value instanceof GeocodableInterface) {
+            throw new UnexpectedValueException($value, GeocodableInterface::class);
         }
 
-        if (!$this->isGeocodable($address->getGeocodableAddress())) {
+        if (!$this->isGeocodable($value->getGeocodableAddress())) {
             $this
                 ->context
                 ->buildViolation($constraint->message)

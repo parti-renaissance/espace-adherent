@@ -29,7 +29,7 @@ class SurveyScopeTargetValidator extends ConstraintValidator
         $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof SurveyScopeTarget) {
             throw new UnexpectedTypeException($constraint, SurveyScopeTarget::class);

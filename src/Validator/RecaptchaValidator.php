@@ -19,7 +19,7 @@ class RecaptchaValidator extends ConstraintValidator
         $this->apiClients = $apiClients;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Recaptcha) {
             throw new UnexpectedTypeException($constraint, Recaptcha::class);

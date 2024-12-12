@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class RiposteOpenGraphValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof RiposteOpenGraph) {
             throw new UnexpectedTypeException($constraint, RiposteOpenGraph::class);

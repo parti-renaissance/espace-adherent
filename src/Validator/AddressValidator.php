@@ -18,37 +18,37 @@ class AddressValidator extends ConstraintValidator
         $this->franceCities = $franceCities;
     }
 
-    public function validate($address, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Address) {
             throw new UnexpectedTypeException($constraint, Address::class);
         }
 
-        if (null === $address || '' === $address) {
+        if (null === $value || '' === $value) {
             return;
         }
 
-        if (!$address instanceof AddressInterface) {
-            throw new UnexpectedValueException($address, AddressInterface::class);
+        if (!$value instanceof AddressInterface) {
+            throw new UnexpectedValueException($value, AddressInterface::class);
         }
 
-        if ('fr' !== strtolower($address->getCountry())) {
+        if ('fr' !== strtolower($value->getCountry())) {
             return;
         }
 
-        if (!$address->getPostalCode() || !$address->getCity()) {
+        if (!$value->getPostalCode() || !$value->getCity()) {
             return;
         }
 
         // Invalid postal code
-        if (!\is_scalar($address->getPostalCode()) || 0 === \count($this->franceCities->findCitiesByPostalCode($address->getPostalCode()))) {
+        if (!\is_scalar($value->getPostalCode()) || 0 === \count($this->franceCities->findCitiesByPostalCode($value->getPostalCode()))) {
             $this->context->addViolation($constraint->frenchPostalCodeMessage);
 
             return;
         }
 
         // Invalid city
-        $parts = explode('-', $address->getCity());
+        $parts = explode('-', $value->getCity());
         $city = $this->franceCities->getCityByInseeCode($parts[1]);
         if (2 !== \count($parts) || !\in_array($parts[0], $city ? $city->getPostalCode() : [], true)) {
             $this->context->addViolation($constraint->frenchCityMessage);
@@ -57,7 +57,7 @@ class AddressValidator extends ConstraintValidator
         }
 
         // City and zip code are not associated
-        if ($parts[0] !== $address->getPostalCode()) {
+        if ($parts[0] !== $value->getPostalCode()) {
             $this->context->addViolation($constraint->notAssociatedMessage);
         }
     }

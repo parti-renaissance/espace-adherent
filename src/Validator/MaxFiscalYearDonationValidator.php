@@ -18,22 +18,22 @@ class MaxFiscalYearDonationValidator extends ConstraintValidator
         $this->transactionRepository = $transactionRepository;
     }
 
-    public function validate($donationRequest, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof MaxFiscalYearDonation) {
             throw new UnexpectedTypeException($constraint, MaxFiscalYearDonation::class);
         }
 
-        if (!$donationRequest instanceof DonationRequestInterface) {
-            throw new UnexpectedValueException($donationRequest, DonationRequestInterface::class);
+        if (!$value instanceof DonationRequestInterface) {
+            throw new UnexpectedValueException($value, DonationRequestInterface::class);
         }
 
-        if (!($email = $donationRequest->getEmailAddress()) or !$donationRequest->getAmount()) {
+        if (!($email = $value->getEmailAddress()) or !$value->getAmount()) {
             return;
         }
 
         $totalCurrentAmountInCents = $this->transactionRepository->getTotalAmountInCentsByEmail($email);
-        $amountInCents = (int) $donationRequest->getAmount() * 100;
+        $amountInCents = (int) $value->getAmount() * 100;
         $maxDonationRemainingPossible = $constraint->maxDonationInCents - $totalCurrentAmountInCents;
 
         if ($maxDonationRemainingPossible < $amountInCents) {

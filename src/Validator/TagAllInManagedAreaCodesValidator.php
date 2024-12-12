@@ -10,7 +10,7 @@ class TagAllInManagedAreaCodesValidator extends ConstraintValidator
 {
     private const ALL = 'ALL';
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof TagAllInManagedAreaCodes) {
             throw new UnexpectedTypeException($constraint, TagAllInManagedAreaCodes::class);

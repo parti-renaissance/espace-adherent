@@ -23,7 +23,7 @@ class ReferentNewsValidator extends ConstraintValidator
     /**
      * @param News $value
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof ReferentNews) {
             throw new UnexpectedTypeException($constraint, ReferentNews::class);

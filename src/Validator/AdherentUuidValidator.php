@@ -16,7 +16,7 @@ class AdherentUuidValidator extends ConstraintValidator
         $this->adherentRepository = $adherentRepository;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof AdherentUuid) {
             throw new UnexpectedTypeException($constraint, AdherentUuid::class);

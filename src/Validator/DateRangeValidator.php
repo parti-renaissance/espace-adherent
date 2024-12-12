@@ -17,7 +17,7 @@ class DateRangeValidator extends ConstraintValidator
         $this->propertyAccessor = $propertyAccessor;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof DateRange) {
             throw new UnexpectedTypeException($constraint, DateRange::class);

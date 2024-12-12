@@ -19,7 +19,7 @@ class UniqueCommitteeValidator extends ConstraintValidator
         $this->repository = $repository;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueCommittee) {
             throw new UnexpectedTypeException($constraint, UniqueCommittee::class);

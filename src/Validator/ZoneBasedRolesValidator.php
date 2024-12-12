@@ -17,7 +17,7 @@ class ZoneBasedRolesValidator extends ConstraintValidator
         ScopeEnum::LEGISLATIVE_CANDIDATE => 1,
     ];
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof ZoneBasedRoles) {
             throw new UnexpectedTypeException($constraint, ZoneBasedRoles::class);

@@ -12,7 +12,7 @@ class NewsTextValidator extends ConstraintValidator
     /**
      * @param News $value
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof NewsText) {
             throw new UnexpectedTypeException($constraint, NewsText::class);

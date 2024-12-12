@@ -18,7 +18,7 @@ class UniqueRenaissanceNewsletterValidator extends ConstraintValidator
         $this->repository = $repository;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueRenaissanceNewsletter) {
             throw new UnexpectedTypeException($constraint, UniqueRenaissanceNewsletter::class);

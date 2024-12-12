@@ -11,29 +11,29 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class DataSurveyAnswerTypeChoiceValidator extends ConstraintValidator
 {
     /**
-     * @param DataAnswer $answer
+     * @param DataAnswer $value
      */
-    public function validate($answer, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof DataSurveyAnswerTypeChoice) {
             throw new UnexpectedTypeException($constraint, DataSurveyAnswerTypeChoice::class);
         }
 
-        if (null === $answer || null === $answer->getSurveyQuestion()) {
+        if (null === $value || null === $value->getSurveyQuestion()) {
             return;
         }
 
-        $surveyQuestion = $answer->getSurveyQuestion();
+        $surveyQuestion = $value->getSurveyQuestion();
 
         switch ($surveyQuestion->getQuestion()->getType()) {
             case SurveyQuestionTypeEnum::SIMPLE_FIELD:
-                if (!$answer->getSelectedChoices()->isEmpty()) {
+                if (!$value->getSelectedChoices()->isEmpty()) {
                     $this->processViolation($constraint->simpleFieldAnswerMessage, $surveyQuestion->getId());
                 }
 
                 break;
             case SurveyQuestionTypeEnum::UNIQUE_CHOICE_TYPE:
-                if ($answer->getTextField()) {
+                if ($value->getTextField()) {
                     $this->processViolation(
                         $constraint->uniqueChoiceAnswerWithTextFieldMessage,
                         $surveyQuestion->getId()
@@ -42,7 +42,7 @@ class DataSurveyAnswerTypeChoiceValidator extends ConstraintValidator
 
                 break;
             case SurveyQuestionTypeEnum::MULTIPLE_CHOICE_TYPE:
-                if ($answer->getTextField()) {
+                if ($value->getTextField()) {
                     $this->processViolation(
                         $constraint->multipleChoiceAnswerWithTextFieldMessage,
                         $surveyQuestion->getId()
