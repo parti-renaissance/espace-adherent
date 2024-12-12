@@ -14,20 +14,14 @@ class PostAddressDenormalizer implements DenormalizerInterface, DenormalizerAwar
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'GEOPOINT_DENORMALIZER_ALREADY_CALLED';
-
-    private Geocoder $geocoder;
-
-    public function __construct(Geocoder $geocoder)
+    public function __construct(private readonly Geocoder $geocoder)
     {
-        $this->geocoder = $geocoder;
     }
 
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
         /** @var GeoPointInterface $entity */
-        $entity = $this->denormalizer->denormalize($data, $type, $format, $context);
+        $entity = $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);
 
         try {
             if ($entity->getGeocodableHash() !== md5($address = $entity->getGeocodableAddress())) {
@@ -40,8 +34,16 @@ class PostAddressDenormalizer implements DenormalizerInterface, DenormalizerAwar
         return $entity;
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return is_a($type, GeoPointInterface::class, true) && !isset($context[self::ALREADY_CALLED]);
+        return [
+            '*' => null,
+            GeoPointInterface::class => false,
+        ];
+    }
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && is_a($type, GeoPointInterface::class, true);
     }
 }

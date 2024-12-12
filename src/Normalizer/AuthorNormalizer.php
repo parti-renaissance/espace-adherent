@@ -14,20 +14,16 @@ final class AuthorNormalizer implements NormalizerInterface, NormalizerAwareInte
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'AUTHOR_NORMALIZER_ALREADY_CALLED';
-
     public function __construct(
         private readonly Security $security,
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
     }
 
-    /** @var AuthorInstanceInterface */
+    /** @param AuthorInstanceInterface $object */
     public function normalize($object, ?string $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         $apiContext = $context[PrivatePublicContextBuilder::CONTEXT_KEY] ?? null;
 
@@ -54,12 +50,16 @@ final class AuthorNormalizer implements NormalizerInterface, NormalizerAwareInte
         return $data;
     }
 
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            AuthorInstanceInterface::class => false,
+        ];
+    }
+
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        if (isset($context[self::ALREADY_CALLED])) {
-            return false;
-        }
-
-        return $data instanceof AuthorInstanceInterface;
+        return !isset($context[__CLASS__]) && $data instanceof AuthorInstanceInterface;
     }
 }

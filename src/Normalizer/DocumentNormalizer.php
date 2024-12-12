@@ -13,8 +13,6 @@ class DocumentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'DOCUMENT_NORMALIZER_ALREADY_CALLED';
-
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly MimeTypesInterface $mimeTypes,
@@ -26,9 +24,7 @@ class DocumentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         if (\in_array('document_read', $context['groups'] ?? [])) {
             $data['file_url'] = $data['file_type'] = null;
@@ -42,9 +38,17 @@ class DocumentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return !isset($context[self::ALREADY_CALLED]) && $data instanceof Document;
+        return [
+            '*' => null,
+            Document::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && $data instanceof Document;
     }
 
     private function getUrl(Document $document): string

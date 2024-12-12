@@ -12,18 +12,12 @@ class AddressDenormalizer implements DenormalizerInterface, DenormalizerAwareInt
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'ADDRESS_DENORMALIZER_ALREADY_CALLED';
-
-    private FranceCities $franceCities;
-
-    public function __construct(FranceCities $franceCities)
+    public function __construct(private readonly FranceCities $franceCities)
     {
-        $this->franceCities = $franceCities;
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
         $groups = $context['groups'] ?? [];
 
         if (
@@ -50,11 +44,19 @@ class AddressDenormalizer implements DenormalizerInterface, DenormalizerAwareInt
             $data['country'] = AddressInterface::FRANCE;
         }
 
-        return $this->denormalizer->denormalize($data, $class, $format, $context);
+        return $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return !isset($context[self::ALREADY_CALLED]) && is_a($type, AddressInterface::class, true);
+        return [
+            '*' => null,
+            AddressInterface::class => false,
+        ];
+    }
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && is_a($type, AddressInterface::class, true);
     }
 }

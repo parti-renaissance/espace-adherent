@@ -54,7 +54,15 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
         return $object;
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            BaseEvent::class => true,
+        ];
+    }
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return BaseEvent::class === $type;
     }

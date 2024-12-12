@@ -44,7 +44,15 @@ class XItemCollectionNormalizer implements NormalizerInterface, NormalizerAwareI
         ];
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            PaginatorInterface::class => true,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return self::FORMAT === $format && $data instanceof PaginatorInterface;
     }

@@ -12,24 +12,20 @@ class ExposedObjectNormalizer implements NormalizerInterface, NormalizerAwareInt
 {
     use NormalizerAwareTrait;
 
-    private const EXPOSED_OBJECT_NORMALIZER_ALREADY_CALLED = 'EXPOSED_OBJECT_NORMALIZER_ALREADY_CALLED';
     private const URL_PARAM_NAME = 'link';
 
-    private $urlGenerator;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
     {
-        $this->urlGenerator = $urlGenerator;
     }
 
     /** @param ExposedObjectInterface $object */
     public function normalize($object, $format = null, array $context = [])
     {
-        if (!isset($context[self::EXPOSED_OBJECT_NORMALIZER_ALREADY_CALLED])) {
-            $context[self::EXPOSED_OBJECT_NORMALIZER_ALREADY_CALLED] = [];
+        if (!isset($context[__CLASS__])) {
+            $context[__CLASS__] = [];
         }
 
-        $context[self::EXPOSED_OBJECT_NORMALIZER_ALREADY_CALLED][] = $this->generateCacheKey($object);
+        $context[__CLASS__][] = $this->generateCacheKey($object);
 
         $data = $this->normalizer->normalize($object, $format, $context);
 
@@ -42,13 +38,21 @@ class ExposedObjectNormalizer implements NormalizerInterface, NormalizerAwareInt
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            ExposedObjectInterface::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return
             $data instanceof ExposedObjectInterface
             && (
-                empty($context[self::EXPOSED_OBJECT_NORMALIZER_ALREADY_CALLED])
-                || !\in_array($this->generateCacheKey($data), $context[self::EXPOSED_OBJECT_NORMALIZER_ALREADY_CALLED])
+                !isset($context[__CLASS__])
+                || !\in_array($this->generateCacheKey($data), $context[__CLASS__])
             )
             && array_intersect($data->getNormalizationGroups(), $context['groups'] ?? []);
     }

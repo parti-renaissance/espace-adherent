@@ -107,7 +107,15 @@ class AdherentNormalizer implements NormalizerInterface, NormalizerAwareInterfac
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            Adherent::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return !isset($context[static::ALREADY_CALLED]) && $data instanceof Adherent;
     }

@@ -13,18 +13,14 @@ class AdherentZoneBasedRoleNormalizer implements NormalizerInterface, Normalizer
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'ADHERENT_ZONE_BASED_ROLE_NORMALIZER_ALREADY_CALLED';
-
     public function __construct(private readonly TranslatorInterface $translator)
     {
     }
 
     public function normalize($object, ?string $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         /** @var Adherent $object */
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         $roles = array_map(fn (AdherentZoneBasedRole $role) => $this->translator->trans('role.'.$role->getType()), $object->getZoneBasedRoles());
         $data['roles'] = implode(',', $roles);
@@ -32,10 +28,18 @@ class AdherentZoneBasedRoleNormalizer implements NormalizerInterface, Normalizer
         return $data;
     }
 
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            Adherent::class => false,
+        ];
+    }
+
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return
-            empty($context[self::ALREADY_CALLED])
+            !isset($context[__CLASS__])
             && $data instanceof Adherent
             && \in_array('national_event_inscription:webhook', $context['groups'] ?? []);
     }

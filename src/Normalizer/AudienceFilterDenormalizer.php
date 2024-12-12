@@ -16,8 +16,6 @@ class AudienceFilterDenormalizer implements DenormalizerInterface, DenormalizerA
 {
     use DenormalizerAwareTrait;
 
-    private const AUDIENCE_FILTER_DENORMALIZER_ALREADY_CALLED = 'AUDIENCE_FILTER_DENORMALIZER_ALREADY_CALLED';
-
     public function __construct(
         private readonly ManagedZoneProvider $managedZoneProvider,
         private readonly Security $security,
@@ -28,10 +26,8 @@ class AudienceFilterDenormalizer implements DenormalizerInterface, DenormalizerA
 
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $context[self::AUDIENCE_FILTER_DENORMALIZER_ALREADY_CALLED] = true;
-
         /** @var AudienceFilter $audienceFilter */
-        $audienceFilter = $this->denormalizer->denormalize($data, $type, $format, $context);
+        $audienceFilter = $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);
 
         if ($scope = $this->scopeGeneratorResolver->generate()) {
             $audienceFilter->setZones($scope->getZones());
@@ -50,10 +46,16 @@ class AudienceFilterDenormalizer implements DenormalizerInterface, DenormalizerA
         return $audienceFilter;
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return
-            empty($context[self::AUDIENCE_FILTER_DENORMALIZER_ALREADY_CALLED])
-            && AudienceFilter::class === $type;
+        return [
+            '*' => null,
+            AudienceFilter::class => false,
+        ];
+    }
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && AudienceFilter::class === $type;
     }
 }

@@ -16,7 +16,6 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
 
     public const ENABLE_TAG_TRANSLATOR = 'enable_tag_translator';
     public const NO_STATIC_TAGS = 'no_static_tags';
-    private const ALREADY_CALLED = 'ADHERENT_TAG_NORMALIZER_ALREADY_CALLED';
 
     public function __construct(private readonly TagTranslator $tagTranslator)
     {
@@ -24,9 +23,7 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
 
     public function normalize($object, ?string $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         if (\is_array($data) && \array_key_exists('tags', $data)) {
             if (empty($data['tags']) && $object instanceof AbstractProcuration) {
@@ -58,10 +55,17 @@ class TranslateAdherentTagNormalizer implements NormalizerInterface, NormalizerA
         return $data;
     }
 
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => false,
+        ];
+    }
+
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
         return
-            empty($context[self::ALREADY_CALLED])
+            !isset($context[__CLASS__])
             && !empty($context[self::ENABLE_TAG_TRANSLATOR])
             && $this->validateType($data);
     }

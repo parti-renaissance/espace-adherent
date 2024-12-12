@@ -12,12 +12,8 @@ class UrlDenormalizer implements DenormalizerInterface, DenormalizerAwareInterfa
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'URL_DENORMALIZER_ALREADY_CALLED';
-
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         $urlProperty = 'url';
         if (is_a($type, BaseEvent::class, true)) {
             $urlProperty = 'visio_url';
@@ -31,12 +27,21 @@ class UrlDenormalizer implements DenormalizerInterface, DenormalizerAwareInterfa
             $data[$urlProperty] = 'https://'.$url;
         }
 
-        return $this->denormalizer->denormalize($data, $type, $format, $context);
+        return $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return !isset($context[self::ALREADY_CALLED])
+        return [
+            '*' => null,
+            BaseEvent::class => false,
+            Riposte::class => false,
+        ];
+    }
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__])
             && (
                 is_a($type, BaseEvent::class, true)
                 || Riposte::class === $type

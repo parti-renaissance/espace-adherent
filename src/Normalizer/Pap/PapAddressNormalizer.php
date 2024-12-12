@@ -11,16 +11,12 @@ class PapAddressNormalizer implements NormalizerInterface, NormalizerAwareInterf
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'PAP_ADDRESS_NORMALIZER_ALREADY_CALLED';
-
     /**
      * @param Voter $object
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
-        $voter = $this->normalizer->normalize($object, $format, $context);
+        $voter = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         if (\array_key_exists('groups', $context) && \in_array('pap_address_voter_list', $context['groups'])) {
             $voter['first_name'] = $object->getFirstNameInitial();
@@ -29,8 +25,16 @@ class PapAddressNormalizer implements NormalizerInterface, NormalizerAwareInterf
         return $voter;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return empty($context[self::ALREADY_CALLED]) && $data instanceof Voter;
+        return [
+            '*' => null,
+            Voter::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && $data instanceof Voter;
     }
 }

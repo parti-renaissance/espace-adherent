@@ -19,28 +19,16 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
     use NormalizerAwareTrait;
     use DenormalizerAwareTrait;
 
-    private const NORMALIZER_ALREADY_CALLED = 'NEWS_NORMALIZER_ALREADY_CALLED';
-    private const DENORMALIZER_ALREADY_CALLED = 'NEWS_DENORMALIZER_ALREADY_CALLED';
-
-    private RequestStack $requestStack;
-    private ScopeGeneratorResolver $scopeGeneratorResolver;
-    private $newsTitlePrefix;
-
     public function __construct(
-        RequestStack $requestStack,
-        ScopeGeneratorResolver $scopeGeneratorResolver,
-        NewsTitlePrefix $newsTitlePrefix,
+        private readonly RequestStack $requestStack,
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+        private readonly NewsTitlePrefix $newsTitlePrefix,
     ) {
-        $this->requestStack = $requestStack;
-        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
-        $this->newsTitlePrefix = $newsTitlePrefix;
     }
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::NORMALIZER_ALREADY_CALLED] = true;
-
-        $news = $this->normalizer->normalize($object, $format, $context);
+        $news = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         $news['title'] = $this->newsTitlePrefix->prefixTitle($object);
 
@@ -57,28 +45,34 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
         return $news;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            News::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return
-            empty($context[self::NORMALIZER_ALREADY_CALLED])
+            !isset($context[__CLASS__])
             && $data instanceof News
             && 0 !== \count(array_intersect(['jecoute_news_read', 'jecoute_news_read_dc'], $context['groups'] ?? []));
     }
 
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $context[self::DENORMALIZER_ALREADY_CALLED] = true;
-
         if (isset($context['operation_name']) && '_api_/v3/jecoute/news/{uuid}_put' === $context['operation_name']) {
             unset($data['zone']);
         }
 
         /** @var News $news */
-        $news = $this->denormalizer->denormalize($data, $type, $format, $context);
+        $news = $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);
 
         if (!$news->getId()) {
             $scope = $this->scopeGeneratorResolver->generate();
-            $scopeCode = $scope ? $scope->getMainCode() : null;
+            $scopeCode = $scope?->getMainCode();
             $news->setSpace($scopeCode ? JecouteSpaceEnum::getByScope($scopeCode) : null);
         }
 
@@ -87,8 +81,8 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
         return $news;
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
-        return !isset($context[self::DENORMALIZER_ALREADY_CALLED]) && News::class === $type;
+        return !isset($context[__CLASS__]) && News::class === $type;
     }
 }

@@ -12,17 +12,13 @@ class ActionNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'PROCURATION_ACTION_NORMALIZER_ALREADY_CALLED';
-
     public function __construct(private readonly TranslatorInterface $translator)
     {
     }
 
     public function normalize($object, ?string $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         if (\array_key_exists('author_scope', $data)) {
             $translationKey = 'role.'.$data['author_scope'];
@@ -34,10 +30,16 @@ class ActionNormalizer implements NormalizerInterface, NormalizerAwareInterface
         return $data;
     }
 
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            AbstractAction::class => false,
+        ];
+    }
+
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
-        return
-            empty($context[self::ALREADY_CALLED])
-            && $data instanceof AbstractAction;
+        return !isset($context[__CLASS__]) && $data instanceof AbstractAction;
     }
 }

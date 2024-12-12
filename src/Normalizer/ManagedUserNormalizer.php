@@ -15,8 +15,6 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
 {
     use NormalizerAwareTrait;
 
-    private const MANAGED_USER_NORMALIZER_ALREADY_CALLED = 'MANAGED_USER_NORMALIZER_ALREADY_CALLED';
-
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
@@ -27,9 +25,7 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
     /** @param ManagedUser $object */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::MANAGED_USER_NORMALIZER_ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         $data['email_subscription'] = $object->isEmailSubscribed();
 
@@ -93,8 +89,16 @@ class ManagedUserNormalizer implements NormalizerInterface, NormalizerAwareInter
         return $data;
     }
 
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            ManagedUser::class => false,
+        ];
+    }
+
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return empty($context[self::MANAGED_USER_NORMALIZER_ALREADY_CALLED]) && $data instanceof ManagedUser;
+        return !isset($context[__CLASS__]) && $data instanceof ManagedUser;
     }
 }

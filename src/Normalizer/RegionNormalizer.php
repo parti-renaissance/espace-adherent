@@ -15,15 +15,10 @@ class RegionNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'REGION_NORMALIZER_ALREADY_CALLED';
-
-    private $regionCampaignRepository;
-    private $zoneRepository;
-
-    public function __construct(RegionRepository $regionCampaignRepository, ZoneRepository $zoneRepository)
-    {
-        $this->regionCampaignRepository = $regionCampaignRepository;
-        $this->zoneRepository = $zoneRepository;
+    public function __construct(
+        private readonly RegionRepository $regionCampaignRepository,
+        private readonly ZoneRepository $zoneRepository,
+    ) {
     }
 
     /**
@@ -31,9 +26,7 @@ class RegionNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         $regionCampaignData = null;
 
@@ -48,9 +41,17 @@ class RegionNormalizer implements NormalizerInterface, NormalizerAwareInterface
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return !isset($context[self::ALREADY_CALLED]) && $data instanceof Region;
+        return [
+            '*' => null,
+            Region::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && $data instanceof Region;
     }
 
     private function findRegionCampaign(Region $region, string $postalCode): ?RegionCampaign

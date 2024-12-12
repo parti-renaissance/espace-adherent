@@ -12,7 +12,14 @@ class ThrowExceptionNormalizer implements NormalizerInterface
         throw new \RuntimeException(\sprintf('Normalizer not found for this indexable objet "%s"', $object::class));
     }
 
-    public function supportsNormalization($data, $format = null)
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null): bool
     {
         return Searchable::NORMALIZATION_FORMAT === $format;
     }

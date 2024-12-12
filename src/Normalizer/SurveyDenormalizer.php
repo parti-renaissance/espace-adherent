@@ -17,12 +17,8 @@ class SurveyDenormalizer implements DenormalizerInterface, DenormalizerAwareInte
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'JE_MENGAGE_WEB_SURVEY_DENORMALIZER_ALREADY_CALLED';
-
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         if (!empty($context[AbstractNormalizer::OBJECT_TO_POPULATE])) {
             $surveyClass = \get_class($context[AbstractNormalizer::OBJECT_TO_POPULATE]);
         } else {
@@ -44,12 +40,20 @@ class SurveyDenormalizer implements DenormalizerInterface, DenormalizerAwareInte
         $operation = $context['operation'];
         $context['operation'] = $operation->withClass($surveyClass);
 
-        return $this->denormalizer->denormalize($data, $surveyClass, $format, $context);
+        return $this->denormalizer->denormalize($data, $surveyClass, $format, $context + [__CLASS__ => true]);
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return !isset($context[self::ALREADY_CALLED])
+        return [
+            '*' => null,
+            Survey::class => false,
+        ];
+    }
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__])
             && is_a($type, Survey::class, true)
             && '_api_/v3/surveys_post' === ($context['operation_name'] ?? null);
     }

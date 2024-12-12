@@ -14,21 +14,14 @@ final class PushTokenDenormalizer implements DenormalizerInterface, Denormalizer
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'PUSH_TOKEN_DENORMALIZER_ALREADY_CALLED';
-
-    private $security;
-
-    public function __construct(Security $security)
+    public function __construct(private readonly Security $security)
     {
-        $this->security = $security;
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         /** @var PushToken $data */
-        $data = $this->denormalizer->denormalize($data, $class, $format, $context);
+        $data = $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);
 
         if (!$data->getId()) {
             $user = $this->security->getUser();
@@ -43,15 +36,17 @@ final class PushTokenDenormalizer implements DenormalizerInterface, Denormalizer
         return $data;
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        // Make sure we're not called twice
-        if (isset($context[self::ALREADY_CALLED])) {
-            return false;
-        }
+        return [
+            '*' => null,
+            PushToken::class => false,
+        ];
+    }
 
-        return is_a($type, PushToken::class, true)
-            && $this->security->getUser();
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && is_a($type, PushToken::class, true) && $this->security->getUser();
     }
 
     private function isAdherentUser(): bool

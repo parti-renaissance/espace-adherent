@@ -51,7 +51,15 @@ class BuildingBlockNormalizer implements NormalizerInterface, NormalizerAwareInt
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            BuildingBlock::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof BuildingBlock && !isset($context[static::ALREADY_CALLED]);
     }

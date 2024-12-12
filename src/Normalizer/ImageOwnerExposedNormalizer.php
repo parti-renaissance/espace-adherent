@@ -14,7 +14,6 @@ class ImageOwnerExposedNormalizer implements NormalizerInterface, NormalizerAwar
     use NormalizerAwareTrait;
 
     public const NORMALIZATION_GROUP = 'image_owner_exposed';
-    private const ALREADY_CALLED = 'IMAGE_OWNER_EXPOSED_NORMALIZER_ALREADY_CALLED';
 
     public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
     {
@@ -22,10 +21,8 @@ class ImageOwnerExposedNormalizer implements NormalizerInterface, NormalizerAwar
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED.$object::class] = true;
-
         /** @var ExposedImageOwnerInterface|ExposedAdvancedImageOwnerInterface $object */
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__.$object::class => true]);
 
         $imageUrl = $object->getImageName() ? $this->urlGenerator->generate(
             'asset_url',
@@ -46,7 +43,16 @@ class ImageOwnerExposedNormalizer implements NormalizerInterface, NormalizerAwar
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            ExposedImageOwnerInterface::class => false,
+            ExposedAdvancedImageOwnerInterface::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return
             \in_array(self::NORMALIZATION_GROUP, $context['groups'] ?? [])
@@ -54,6 +60,6 @@ class ImageOwnerExposedNormalizer implements NormalizerInterface, NormalizerAwar
                 $data instanceof ExposedImageOwnerInterface
                 || $data instanceof ExposedAdvancedImageOwnerInterface
             )
-            && !isset($context[self::ALREADY_CALLED.$data::class]);
+            && !isset($context[__CLASS__.$data::class]);
     }
 }

@@ -12,14 +12,10 @@ class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwar
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'JE_MENGAGE_WEB_DESIGNATION_DENORMALIZER_ALREADY_CALLED';
-
     public function denormalize($data, string $class, ?string $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         /** @var Designation $designation */
-        $designation = $this->denormalizer->denormalize($data, $class, $format, $context);
+        $designation = $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);
 
         if (!$designation->isLimited()) {
             $designation->markAsLimited();
@@ -51,9 +47,17 @@ class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwar
         return $designation;
     }
 
-    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return !isset($context[self::ALREADY_CALLED])
+        return [
+            '*' => null,
+            Designation::class => false,
+        ];
+    }
+
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__])
             && is_a($type, Designation::class, true)
             && \in_array($context['operation_name'] ?? null, ['_api_/designations.{_format}_post', '_api_/designations/{uuid}_put'], true);
     }

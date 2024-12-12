@@ -16,8 +16,6 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
 {
     use DenormalizerAwareTrait;
 
-    private const ADHERENT_MESSAGE_DENORMALIZER_ALREADY_CALLED = 'ADHERENT_MESSAGE_DENORMALIZER_ALREADY_CALLED';
-
     public function denormalize($data, $type, $format = null, array $context = [])
     {
         /** @var AdherentMessageInterface|null $oldMessage */
@@ -40,8 +38,6 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
 
         unset($data['type']);
 
-        $context[self::ADHERENT_MESSAGE_DENORMALIZER_ALREADY_CALLED] = true;
-
         if (!isset($context[AbstractNormalizer::OBJECT_TO_POPULATE])) {
             $context[AbstractNormalizer::OBJECT_TO_POPULATE] = new $messageClass();
         }
@@ -51,7 +47,7 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
         $context['operation'] = $operation->withClass($messageClass);
 
         /** @var AdherentMessageInterface $message */
-        $message = $this->denormalizer->denormalize($data, $messageClass, $format, $context);
+        $message = $this->denormalizer->denormalize($data, $messageClass, $format, $context + [__CLASS__ => true]);
 
         $message->setSource(AdherentMessageInterface::SOURCE_API);
 
@@ -69,10 +65,16 @@ class AdherentMessageDenormalizer implements DenormalizerInterface, Denormalizer
         return $message;
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return
-            empty($context[self::ADHERENT_MESSAGE_DENORMALIZER_ALREADY_CALLED])
-            && AbstractAdherentMessage::class === $type;
+        return [
+            '*' => null,
+            AbstractAdherentMessage::class => false,
+        ];
+    }
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && AbstractAdherentMessage::class === $type;
     }
 }

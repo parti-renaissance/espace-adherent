@@ -12,8 +12,6 @@ class JecouteRegionNormalizer implements NormalizerInterface, NormalizerAwareInt
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'REGION_NORMALIZER_ALREADY_CALLED';
-
     public function __construct(private readonly FilesystemOperator $defaultStorage)
     {
     }
@@ -23,9 +21,7 @@ class JecouteRegionNormalizer implements NormalizerInterface, NormalizerAwareInt
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         if (\in_array('jecoute_region_read', $context['groups'] ?? [])) {
             $data['logo'] = $object->hasLogoUploaded() ? $this->getUrl($object->getLogoPathWithDirectory()) : null;
@@ -35,9 +31,17 @@ class JecouteRegionNormalizer implements NormalizerInterface, NormalizerAwareInt
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return !isset($context[self::ALREADY_CALLED]) && $data instanceof Region;
+        return [
+            '*' => null,
+            Region::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && $data instanceof Region;
     }
 
     private function getUrl(string $path): string

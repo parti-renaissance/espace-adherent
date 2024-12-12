@@ -15,17 +15,13 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'JE_MENGAGE_WEB_SURVEY_UPDATE_DENORMALIZER_ALREADY_CALLED';
-
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         $questionData = $data['questions'] ?? null;
         unset($data['questions']);
 
         /** @var Survey $survey */
-        $survey = $this->denormalizer->denormalize($data, $type, $format, $context);
+        $survey = $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);
 
         if (\is_array($questionData)) {
             foreach ($survey->getQuestions()->toArray() as $surveyQuestion) {
@@ -47,9 +43,17 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
         return $survey;
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return !isset($context[self::ALREADY_CALLED])
+        return [
+            '*' => null,
+            Survey::class => false,
+        ];
+    }
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__])
             && is_a($type, Survey::class, true)
             && '_api_/v3/surveys/{uuid}_put' === ($context['operation_name'] ?? null);
     }

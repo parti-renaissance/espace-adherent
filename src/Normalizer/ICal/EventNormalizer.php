@@ -29,7 +29,15 @@ class EventNormalizer implements NormalizerInterface
         return $eventData;
     }
 
-    public function supportsNormalization($data, $format = null)
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            BaseEvent::class => true,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null): bool
     {
         return ICalEncoder::FORMAT === $format && $data instanceof BaseEvent;
     }

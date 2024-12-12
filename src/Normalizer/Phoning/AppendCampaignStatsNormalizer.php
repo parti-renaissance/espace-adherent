@@ -12,13 +12,8 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
 {
     use NormalizerAwareTrait;
 
-    private const CAMPAIGN_ALREADY_CALLED = 'CAMPAIGN_NORMALIZER_ALREADY_CALLED';
-
-    private CampaignHistoryRepository $campaignHistoryRepository;
-
-    public function __construct(CampaignHistoryRepository $campaignHistoryRepository)
+    public function __construct(private readonly CampaignHistoryRepository $campaignHistoryRepository)
     {
-        $this->campaignHistoryRepository = $campaignHistoryRepository;
     }
 
     /**
@@ -26,9 +21,7 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::CAMPAIGN_ALREADY_CALLED] = true;
-
-        $campaign = $this->normalizer->normalize($object, $format, $context);
+        $campaign = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         $campaign['nb_calls'] = $object->getCampaignHistoriesCount();
         $campaign['nb_surveys'] = $object->getCampaignHistoriesWithDataSurvey()->count();
@@ -46,10 +39,18 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
         return $campaign;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            Campaign::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return
-            empty($context[self::CAMPAIGN_ALREADY_CALLED])
+            !isset($context[__CLASS__])
             && $data instanceof Campaign
             && 0 !== \count(array_intersect(['phoning_campaign_list', 'phoning_campaign_read'], $context['groups'] ?? []));
     }

@@ -14,8 +14,6 @@ class GeneralMeetingReportNormalizer implements NormalizerInterface, NormalizerA
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'GENERAL_MEETING_REPORT_NORMALIZER_ALREADY_CALLED';
-
     private ?ScopeGeneratorInterface $currentScope = null;
 
     public function __construct(
@@ -29,9 +27,7 @@ class GeneralMeetingReportNormalizer implements NormalizerInterface, NormalizerA
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         if (array_intersect(['general_meeting_report_list_read', 'general_meeting_report_read'], $context['groups'] ?? [])) {
             $data['file_path'] = $object->hasFilePath() ? $this->getUrl($object) : null;
@@ -40,9 +36,17 @@ class GeneralMeetingReportNormalizer implements NormalizerInterface, NormalizerA
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return !isset($context[self::ALREADY_CALLED]) && $data instanceof GeneralMeetingReport;
+        return [
+            '*' => null,
+            GeneralMeetingReport::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && $data instanceof GeneralMeetingReport;
     }
 
     private function getUrl(GeneralMeetingReport $generalMeetingReport): string

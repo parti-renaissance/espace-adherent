@@ -12,20 +12,13 @@ class ElectedRepresentativeNormalizer implements NormalizerInterface, Normalizer
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'ElECTED_REPRESENTATIVE_NORMALIZER_ALREADY_CALLED';
-
-    private $tagsBuilder;
-
-    public function __construct(ElectedRepresentativeTagsBuilder $tagsBuilder)
+    public function __construct(private readonly ElectedRepresentativeTagsBuilder $tagsBuilder)
     {
-        $this->tagsBuilder = $tagsBuilder;
     }
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         if (\in_array('elected_representative_change_diff', $context['groups'] ?? [])) {
             $data['activeTagCodes'] = $this->tagsBuilder->buildTags($object);
@@ -34,8 +27,16 @@ class ElectedRepresentativeNormalizer implements NormalizerInterface, Normalizer
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return !isset($context[self::ALREADY_CALLED]) && $data instanceof ElectedRepresentative;
+        return [
+            '*' => null,
+            ElectedRepresentative::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && $data instanceof ElectedRepresentative;
     }
 }

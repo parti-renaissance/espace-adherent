@@ -12,18 +12,14 @@ class DepartmentalSiteUrlNormalizer implements NormalizerInterface, NormalizerAw
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'DEPARTMENTAL_SITE_URL_NORMALIZER_ALREADY_CALLED';
-
     public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
     {
     }
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         /** @var DepartmentSite $object */
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         $data['url'] = $object->getSlug() ? $this->urlGenerator->generate(
             'app_renaissance_department_site_view',
@@ -34,8 +30,16 @@ class DepartmentalSiteUrlNormalizer implements NormalizerInterface, NormalizerAw
         return $data;
     }
 
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            DepartmentSite::class => false,
+        ];
+    }
+
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return !isset($context[self::ALREADY_CALLED]) && $data instanceof DepartmentSite;
+        return !isset($context[__CLASS__]) && $data instanceof DepartmentSite;
     }
 }

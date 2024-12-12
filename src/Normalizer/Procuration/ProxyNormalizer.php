@@ -11,13 +11,9 @@ class ProxyNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'PROCURATION_PROXY_NORMALIZER_ALREADY_CALLED';
-
     public function normalize($object, ?string $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         foreach ($data['items'] as &$item) {
             $score = $item['score'];
@@ -35,10 +31,18 @@ class ProxyNormalizer implements NormalizerInterface, NormalizerAwareInterface
         return $data;
     }
 
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            PaginatorInterface::class => false,
+        ];
+    }
+
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
         return
-            empty($context[self::ALREADY_CALLED])
+            !isset($context[__CLASS__])
             && $data instanceof PaginatorInterface
             && \in_array('procuration_matched_proxy', $context['groups'] ?? [], true);
     }

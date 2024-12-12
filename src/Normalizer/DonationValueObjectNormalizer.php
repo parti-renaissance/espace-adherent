@@ -12,9 +12,8 @@ class DonationValueObjectNormalizer implements NormalizerInterface, NormalizerAw
 {
     use NormalizerAwareTrait;
 
-    public function __construct(
-        private readonly TranslatorInterface $translator,
-    ) {
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
     }
 
     protected const ALREADY_CALLED = 'DONATION_VALUE_OBJECT_NORMALIZER_ALREADY_CALLED';
@@ -38,7 +37,15 @@ class DonationValueObjectNormalizer implements NormalizerInterface, NormalizerAw
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            DonationValueObject::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return !isset($context[static::ALREADY_CALLED]) && $data instanceof DonationValueObject;
     }

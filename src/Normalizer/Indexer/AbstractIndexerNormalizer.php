@@ -7,7 +7,15 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 abstract class AbstractIndexerNormalizer implements NormalizerInterface
 {
-    final public function supportsNormalization($data, $format = null): bool
+    final public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            $this->getClassName() => true,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null): bool
     {
         return is_a($data, $this->getClassName()) && Searchable::NORMALIZATION_FORMAT === $format;
     }

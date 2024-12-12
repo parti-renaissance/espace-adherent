@@ -12,29 +12,30 @@ class JeMengageWebSurveyNormalizer implements NormalizerInterface, NormalizerAwa
 {
     use NormalizerAwareTrait;
 
-    private const SURVEY_ALREADY_CALLED = 'JE_MENGAGE_WEB_SURVEY_NORMALIZER_ALREADY_CALLED';
-
-    private DataSurveyRepository $dataSurveyRepository;
-
-    public function __construct(DataSurveyRepository $dataSurveyRepository)
+    public function __construct(private readonly DataSurveyRepository $dataSurveyRepository)
     {
-        $this->dataSurveyRepository = $dataSurveyRepository;
     }
 
     /** @param Survey $object */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::SURVEY_ALREADY_CALLED] = true;
-
-        $survey = $this->normalizer->normalize($object, $format, $context);
+        $survey = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
         $survey['nb_answers'] = $this->dataSurveyRepository->countSurveyDataAnswer($object);
 
         return $survey;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return !isset($context[self::SURVEY_ALREADY_CALLED])
+        return [
+            '*' => null,
+            Survey::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__])
             && $data instanceof Survey
             && \in_array('survey_list_dc', $context['groups'] ?? []);
     }
