@@ -68,30 +68,30 @@ use Symfony\Component\Validator\Constraints as Assert;
         new HttpOperation(
             method: 'POST',
             uriTemplate: '/v3/adherent_messages/{uuid}/send',
-            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
-            controller: SendAdherentMessageController::class
+            controller: SendAdherentMessageController::class,
+            deserialize: false
         ),
         new HttpOperation(
             method: 'POST',
             uriTemplate: '/v3/adherent_messages/{uuid}/send-test',
-            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
-            controller: SendTestAdherentMessageController::class
+            controller: SendTestAdherentMessageController::class,
+            deserialize: false
         ),
         new HttpOperation(
             method: 'PUT',
             uriTemplate: '/v3/adherent_messages/{uuid}/filter',
-            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
-            controller: UpdateAdherentMessageFilterController::class
+            controller: UpdateAdherentMessageFilterController::class,
+            deserialize: false
         ),
         new HttpOperation(
             method: 'POST',
             uriTemplate: '/v3/adherent_messages/{uuid}/duplicate',
-            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
-            controller: DuplicateMessageController::class
+            controller: DuplicateMessageController::class,
+            deserialize: false
         ),
         new Delete(
             uriTemplate: '/v3/adherent_messages/{uuid}',
