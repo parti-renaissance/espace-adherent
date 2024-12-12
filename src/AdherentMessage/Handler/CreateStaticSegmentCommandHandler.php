@@ -6,9 +6,10 @@ use App\AdherentMessage\Command\CreateStaticSegmentCommand;
 use App\AdherentMessage\StaticSegmentInterface;
 use App\Mailchimp\Manager;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class CreateStaticSegmentCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class CreateStaticSegmentCommandHandler
 {
     private $entityManager;
     private $mailchimpManager;

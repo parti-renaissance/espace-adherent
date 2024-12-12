@@ -8,9 +8,10 @@ use App\Mailchimp\Exception\StaticSegmentIdMissingException;
 use App\Mailchimp\Manager;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class SynchronizeAdherentSegmentCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class SynchronizeAdherentSegmentCommandHandler
 {
     private $entityManager;
     private $manager;

@@ -9,9 +9,10 @@ use App\JeMarche\Command\NewsCreatedNotificationCommand;
 use App\JeMarche\Notification\NewsCreatedNotification;
 use App\Repository\Jecoute\NewsRepository;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class NewsCreatedNotificationCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class NewsCreatedNotificationCommandHandler
 {
     private $newsRepository;
     private $messaging;

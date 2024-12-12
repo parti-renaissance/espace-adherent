@@ -10,9 +10,10 @@ use App\JeMarche\Notification\CommitteeEventCreatedNotification;
 use App\PushToken\PushTokenManager;
 use App\Repository\EventRepository;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class CommitteeEventCreationNotificationCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class CommitteeEventCreationNotificationCommandHandler
 {
     private $eventRepository;
     private $pushTokenManager;

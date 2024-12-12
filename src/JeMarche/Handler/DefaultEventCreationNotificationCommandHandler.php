@@ -11,9 +11,10 @@ use App\JeMarche\NotificationTopicBuilder;
 use App\Repository\Event\BaseEventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class DefaultEventCreationNotificationCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class DefaultEventCreationNotificationCommandHandler
 {
     private $entityManager;
     private $eventRepository;

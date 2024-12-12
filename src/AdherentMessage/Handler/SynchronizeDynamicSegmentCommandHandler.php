@@ -6,9 +6,10 @@ use App\AdherentMessage\Command\SynchronizeDynamicSegmentCommand;
 use App\AdherentMessage\DynamicSegmentInterface;
 use App\Mailchimp\Manager;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class SynchronizeDynamicSegmentCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class SynchronizeDynamicSegmentCommandHandler
 {
     private $entityManager;
     private $mailchimpManager;

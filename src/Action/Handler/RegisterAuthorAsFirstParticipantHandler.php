@@ -6,9 +6,10 @@ use App\Action\RegisterManager;
 use App\Entity\Action\Action;
 use App\JeMarche\Command\NotifyForActionCommand;
 use App\Repository\Action\ActionRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class RegisterAuthorAsFirstParticipantHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class RegisterAuthorAsFirstParticipantHandler
 {
     public function __construct(
         private readonly RegisterManager $registerManager,

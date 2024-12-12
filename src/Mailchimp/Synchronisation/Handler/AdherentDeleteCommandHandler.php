@@ -4,9 +4,10 @@ namespace App\Mailchimp\Synchronisation\Handler;
 
 use App\Mailchimp\Manager;
 use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class AdherentDeleteCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class AdherentDeleteCommandHandler
 {
     private $manager;
 

@@ -7,9 +7,10 @@ use App\Chatbot\Exception\RunNotCompletedException;
 use App\Chatbot\Logger;
 use App\Chatbot\ThreadProcessor;
 use App\Repository\Chatbot\ThreadRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class RefreshThreadCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class RefreshThreadCommandHandler
 {
     public function __construct(
         private readonly ThreadRepository $threadRepository,

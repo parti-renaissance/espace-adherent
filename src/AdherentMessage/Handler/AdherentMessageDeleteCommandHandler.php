@@ -4,9 +4,10 @@ namespace App\AdherentMessage\Handler;
 
 use App\AdherentMessage\Command\AdherentMessageDeleteCommand;
 use App\Mailchimp\Manager;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class AdherentMessageDeleteCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class AdherentMessageDeleteCommandHandler
 {
     private $mailchimpManager;
 

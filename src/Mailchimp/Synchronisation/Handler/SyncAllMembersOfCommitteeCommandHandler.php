@@ -7,10 +7,11 @@ use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Mailchimp\Synchronisation\Command\SyncAllMembersOfCommitteeCommand;
 use App\Repository\CommitteeMembershipRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class SyncAllMembersOfCommitteeCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class SyncAllMembersOfCommitteeCommandHandler
 {
     private $bus;
     private $entityManager;

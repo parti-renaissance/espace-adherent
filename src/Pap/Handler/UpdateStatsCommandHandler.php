@@ -8,9 +8,10 @@ use App\Pap\BuildingStatisticsManager;
 use App\Pap\Command\UpdateStatsCommand;
 use App\Repository\Pap\BuildingRepository;
 use App\Repository\Pap\CampaignRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class UpdateStatsCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class UpdateStatsCommandHandler
 {
     private CampaignRepository $campaignRepository;
     private BuildingRepository $buildingRepository;

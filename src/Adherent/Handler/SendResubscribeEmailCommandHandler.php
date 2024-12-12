@@ -5,10 +5,11 @@ namespace App\Adherent\Handler;
 use App\Adherent\Command\SendResubscribeEmailCommand;
 use App\Mailer\MailerService;
 use App\Mailer\Message\Renaissance\AdherentResubscribeEmailMessage;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 
-class SendResubscribeEmailCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class SendResubscribeEmailCommandHandler
 {
     public function __construct(
         private readonly MailerService $transactionalMailer,

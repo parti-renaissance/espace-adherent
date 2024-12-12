@@ -8,9 +8,10 @@ use App\Mailchimp\Manager;
 use App\Newsletter\Command\MailchimpSyncNewsletterSubscriptionEntityCommand;
 use App\Newsletter\NewsletterValueObject;
 use Doctrine\ORM\EntityManagerInterface as ObjectManager;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class MailchimpSyncNewsletterSubscriptionEntityCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class MailchimpSyncNewsletterSubscriptionEntityCommandHandler
 {
     private $manager;
     private $entityManager;

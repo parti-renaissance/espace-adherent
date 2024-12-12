@@ -8,9 +8,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class NewMembershipNotificationCommandHandler implements MessageHandlerInterface, LoggerAwareInterface
+#[AsMessageHandler]
+class NewMembershipNotificationCommandHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

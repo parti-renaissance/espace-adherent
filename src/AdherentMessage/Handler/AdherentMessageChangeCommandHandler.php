@@ -8,9 +8,10 @@ use App\Mailchimp\Manager;
 use App\Repository\AdherentMessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class AdherentMessageChangeCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class AdherentMessageChangeCommandHandler
 {
     private $repository;
     private $mailchimpManager;

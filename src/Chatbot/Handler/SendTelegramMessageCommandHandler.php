@@ -5,9 +5,10 @@ namespace App\Chatbot\Handler;
 use App\Chatbot\Command\SendTelegramMessageCommand;
 use App\Chatbot\Telegram\MessageHandler;
 use App\Repository\Chatbot\MessageRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class SendTelegramMessageCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class SendTelegramMessageCommandHandler
 {
     public function __construct(
         private readonly MessageRepository $messageRepository,

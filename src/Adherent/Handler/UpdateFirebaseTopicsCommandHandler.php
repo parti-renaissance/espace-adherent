@@ -7,9 +7,10 @@ use App\Firebase\JeMarcheMessaging;
 use App\JeMarche\NotificationTopicBuilder;
 use App\Repository\AdherentRepository;
 use App\Repository\PushTokenRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class UpdateFirebaseTopicsCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class UpdateFirebaseTopicsCommandHandler
 {
     private AdherentRepository $adherentRepository;
     private JeMarcheMessaging $messaging;

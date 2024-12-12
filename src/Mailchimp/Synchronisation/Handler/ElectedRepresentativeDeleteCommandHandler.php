@@ -4,9 +4,10 @@ namespace App\Mailchimp\Synchronisation\Handler;
 
 use App\Mailchimp\Manager;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeDeleteCommand;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class ElectedRepresentativeDeleteCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class ElectedRepresentativeDeleteCommandHandler
 {
     private $manager;
 

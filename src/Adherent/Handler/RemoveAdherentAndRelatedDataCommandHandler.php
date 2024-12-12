@@ -10,9 +10,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class RemoveAdherentAndRelatedDataCommandHandler implements MessageHandlerInterface, LoggerAwareInterface
+#[AsMessageHandler]
+class RemoveAdherentAndRelatedDataCommandHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

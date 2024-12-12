@@ -12,9 +12,10 @@ use App\JeMarche\Notification\ActionCreatedNotification;
 use App\JeMarche\Notification\ActionUpdatedNotification;
 use App\Repository\Action\ActionRepository;
 use App\Repository\PushTokenRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class NotifyForActionCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class NotifyForActionCommandHandler
 {
     public function __construct(
         private readonly ActionRepository $actionRepository,

@@ -18,7 +18,6 @@ use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\Handler\HandlersLocator;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBus;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
@@ -90,7 +89,7 @@ class MessengerTransportTest extends TestCase
         return [$message, $email];
     }
 
-    private function getBus(MessageHandlerInterface $handler): MessageBusInterface
+    private function getBus(object $handler): MessageBusInterface
     {
         return new MessageBus([new HandleMessageMiddleware(new HandlersLocator([
             AsyncSendMessageCommand::class => [$handler],
