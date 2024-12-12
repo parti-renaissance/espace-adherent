@@ -14,15 +14,10 @@ class CampaignScoreNormalizer implements NormalizerInterface, NormalizerAwareInt
 {
     use NormalizerAwareTrait;
 
-    private const CAMPAIGN_SCORE_ALREADY_CALLED = 'CAMPAIGN_SCORE_NORMALIZER_ALREADY_CALLED';
-
-    private AdherentRepository $adherentRepository;
-    private Security $security;
-
-    public function __construct(AdherentRepository $adherentRepository, Security $security)
-    {
-        $this->adherentRepository = $adherentRepository;
-        $this->security = $security;
+    public function __construct(
+        private readonly AdherentRepository $adherentRepository,
+        private readonly Security $security,
+    ) {
     }
 
     /**
@@ -30,9 +25,7 @@ class CampaignScoreNormalizer implements NormalizerInterface, NormalizerAwareInt
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::CAMPAIGN_SCORE_ALREADY_CALLED] = true;
-
-        $campaign = $this->normalizer->normalize($object, $format, $context);
+        $campaign = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         /** @var Adherent $caller */
         $caller = $this->security->getUser();
@@ -57,10 +50,18 @@ class CampaignScoreNormalizer implements NormalizerInterface, NormalizerAwareInt
         return $campaign;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            Campaign::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return
-            empty($context[self::CAMPAIGN_SCORE_ALREADY_CALLED])
+            !isset($context[__CLASS__])
             && $data instanceof Campaign
             && \in_array('phoning_campaign_read_with_score', $context['groups'] ?? []);
     }

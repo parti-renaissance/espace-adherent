@@ -16,8 +16,6 @@ class UpdateElectedMandateDenormalizer implements DenormalizerInterface, Denorma
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'JE_MENGAGE_WEB_ELECTED_MANDATE_UPDATE_DENORMALIZER_ALREADY_CALLED';
-
     public function __construct(
         private readonly Security $security,
         private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
@@ -26,8 +24,6 @@ class UpdateElectedMandateDenormalizer implements DenormalizerInterface, Denorma
 
     public function denormalize($data, string $class, ?string $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         $scope = $this->scopeGeneratorResolver->generate();
         $adherent = $scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $this->security->getUser();
 
@@ -35,7 +31,7 @@ class UpdateElectedMandateDenormalizer implements DenormalizerInterface, Denorma
         unset($data['political_functions']);
 
         /** @var Mandate $mandate */
-        $mandate = $this->denormalizer->denormalize($data, $class, $format, $context);
+        $mandate = $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);
 
         if (\is_array($functionsData)) {
             foreach ($mandate->getPoliticalFunctions()->toArray() as $politicalFunction) {
@@ -58,9 +54,17 @@ class UpdateElectedMandateDenormalizer implements DenormalizerInterface, Denorma
         return $mandate;
     }
 
-    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return !isset($context[self::ALREADY_CALLED])
+        return [
+            '*' => null,
+            Mandate::class => false,
+        ];
+    }
+
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__])
             && is_a($type, Mandate::class, true)
             && '_api_/elected_mandates/{uuid}_put' === ($context['operation_name'] ?? null);
     }

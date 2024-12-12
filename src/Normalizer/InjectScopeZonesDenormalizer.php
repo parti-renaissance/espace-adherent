@@ -12,18 +12,14 @@ class InjectScopeZonesDenormalizer implements DenormalizerInterface, Denormalize
 {
     use DenormalizerAwareTrait;
 
-    private const INJECT_SCOPE_ZONES_DENORMALIZER_ALREADY_CALLED = 'INJECT_SCOPE_ZONES_DENORMALIZER_ALREADY_CALLED';
-
     public function __construct(private readonly ScopeGeneratorResolver $scopeGeneratorResolver)
     {
     }
 
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $context[self::INJECT_SCOPE_ZONES_DENORMALIZER_ALREADY_CALLED] = true;
-
         /** @var InjectScopeZonesInterface $object */
-        $object = $this->denormalizer->denormalize($data, $type, $format, $context);
+        $object = $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);
 
         if ($object->getZones()->isEmpty() && $scope = $this->scopeGeneratorResolver->generate()) {
             $object->setZones($scope->getZones());
@@ -32,10 +28,16 @@ class InjectScopeZonesDenormalizer implements DenormalizerInterface, Denormalize
         return $object;
     }
 
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            InjectScopeZonesInterface::class => false,
+        ];
+    }
+
     public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
-        return
-            empty($context[self::INJECT_SCOPE_ZONES_DENORMALIZER_ALREADY_CALLED])
-            && is_a($type, InjectScopeZonesInterface::class, true);
+        return !isset($context[__CLASS__]) && is_a($type, InjectScopeZonesInterface::class, true);
     }
 }

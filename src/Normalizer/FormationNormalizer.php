@@ -14,8 +14,6 @@ class FormationNormalizer implements NormalizerInterface, NormalizerAwareInterfa
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'ADHERENT_FORMATION_NORMALIZER_ALREADY_CALLED';
-
     private ?ScopeGeneratorInterface $currentScope = null;
 
     public function __construct(
@@ -29,9 +27,7 @@ class FormationNormalizer implements NormalizerInterface, NormalizerAwareInterfa
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         if (array_intersect(['formation_read', 'formation_list_read'], $context['groups'] ?? [])) {
             $data['file_path'] = $object->isFileContent() && $object->hasFilePath() ? $this->getUrl($object) : null;
@@ -40,9 +36,17 @@ class FormationNormalizer implements NormalizerInterface, NormalizerAwareInterfa
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return !isset($context[self::ALREADY_CALLED]) && $data instanceof Formation;
+        return [
+            '*' => null,
+            Formation::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && $data instanceof Formation;
     }
 
     private function getUrl(Formation $formation): string

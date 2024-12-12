@@ -16,22 +16,14 @@ class LegislativeNewsletterSubscriptionSourceDenormalizer implements Denormalize
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'LEGISLATIVE_NEWSLETTER_SUBSCRIPTION_ALREADY_CALLED';
-
-    private LegislativeNewsletterSubscriptionRepository $subscriptionRepository;
-    private ZoneRepository $zoneRepository;
-
     public function __construct(
-        LegislativeNewsletterSubscriptionRepository $subscriptionRepository,
-        ZoneRepository $zoneRepository,
+        private readonly LegislativeNewsletterSubscriptionRepository $subscriptionRepository,
+        private readonly ZoneRepository $zoneRepository,
     ) {
-        $this->subscriptionRepository = $subscriptionRepository;
-        $this->zoneRepository = $zoneRepository;
     }
 
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
         $context[AbstractNormalizer::OBJECT_TO_POPULATE] = isset($data['email_address']) ? $this->subscriptionRepository->findOneBy(['emailAddress' => $data['email_address']]) : null;
 
         if (isset($context['api_allow_update']) && true !== $context['api_allow_update']) {
@@ -39,7 +31,7 @@ class LegislativeNewsletterSubscriptionSourceDenormalizer implements Denormalize
         }
 
         /** @var LegislativeNewsletterSubscription $subscription */
-        $subscription = $this->denormalizer->denormalize($data, $type, $format, $context);
+        $subscription = $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);
 
         if (isset($data['from_zone'])) {
             if (!$zone = $this->zoneRepository->findOneBy(['type' => [Zone::DISTRICT, Zone::FOREIGN_DISTRICT], 'code' => $data['from_zone']])) {
@@ -52,9 +44,16 @@ class LegislativeNewsletterSubscriptionSourceDenormalizer implements Denormalize
         return $subscription;
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return !isset($context[self::ALREADY_CALLED])
-            && LegislativeNewsletterSubscription::class === $type;
+        return [
+            '*' => null,
+            LegislativeNewsletterSubscription::class => false,
+        ];
+    }
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && LegislativeNewsletterSubscription::class === $type;
     }
 }

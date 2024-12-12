@@ -69,12 +69,20 @@ class PhoneNumberNormalizer implements NormalizerInterface, DenormalizerInterfac
         }
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            PhoneNumber::class => true,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof PhoneNumber;
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return PhoneNumber::class === $type;
     }

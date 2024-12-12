@@ -25,7 +25,15 @@ class DeviceNormalizer implements NormalizerInterface, NormalizerAwareInterface
         return $this->normalizer->normalize($object, $format, $context);
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            Device::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return !isset($context[static::ALREADY_CALLED]) && $data instanceof Device;
     }

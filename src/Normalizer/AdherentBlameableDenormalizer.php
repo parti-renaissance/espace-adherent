@@ -14,25 +14,18 @@ class AdherentBlameableDenormalizer implements DenormalizerInterface, Denormaliz
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'ADHERENT_BLAMEABLE_DENORMALIZER_ALREADY_CALLED';
-
-    private Security $security;
-    private ScopeGeneratorResolver $scopeGeneratorResolver;
-
-    public function __construct(Security $security, ScopeGeneratorResolver $scopeGeneratorResolver)
-    {
-        $this->security = $security;
-        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
+    public function __construct(
+        private readonly Security $security,
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+    ) {
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         $scope = $this->scopeGeneratorResolver->generate();
         $adherent = $scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $this->security->getUser();
 
-        $data = $this->denormalizer->denormalize($data, $class, $format, $context);
+        $data = $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);
         if (!$data->getId()) {
             $data->setCreatedByAdherent($adherent);
         }
@@ -41,13 +34,18 @@ class AdherentBlameableDenormalizer implements DenormalizerInterface, Denormaliz
         return $data;
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        // Make sure we're not called twice
-        if (isset($context[self::ALREADY_CALLED])) {
-            return false;
-        }
+        return [
+            '*' => null,
+            EntityAdherentBlameableInterface::class => false,
+        ];
+    }
 
-        return is_a($type, EntityAdherentBlameableInterface::class, true) && $this->security->getUser() instanceof Adherent;
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__])
+            && is_a($type, EntityAdherentBlameableInterface::class, true)
+            && $this->security->getUser() instanceof Adherent;
     }
 }

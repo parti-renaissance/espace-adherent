@@ -13,19 +13,12 @@ class TeamsCollectionNormalizer implements NormalizerInterface, NormalizerAwareI
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'TEAMS_COLLECTION_NORMALIZER_ALREADY_CALLED';
-
-    private TeamRepository $repository;
-
-    public function __construct(TeamRepository $repository)
+    public function __construct(private readonly TeamRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         $teams = iterator_to_array($object);
 
         $usedTeams = $this->repository->findUsedTeams(array_map(function (Team $team) {
@@ -36,13 +29,21 @@ class TeamsCollectionNormalizer implements NormalizerInterface, NormalizerAwareI
             $team->isDeletable = !\in_array($team->getId(), $usedTeams, true);
         });
 
-        return $this->normalizer->normalize($object, $format, $context);
+        return $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            PaginatorInterface::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return
-            !isset($context[self::ALREADY_CALLED])
+            !isset($context[__CLASS__])
             && $data instanceof PaginatorInterface
             && \in_array('team_list_read', $context['groups'] ?? []);
     }

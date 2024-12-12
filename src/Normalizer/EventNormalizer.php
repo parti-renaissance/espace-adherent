@@ -22,8 +22,6 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
-    public const EVENT_USER_REGISTRATION_ALREADY_CALLED = 'event_normalizer';
-
     public function __construct(
         private readonly Security $security,
         private readonly EventRegistrationRepository $eventRegistrationRepository,
@@ -36,9 +34,7 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
     /** @param BaseEvent $object */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::EVENT_USER_REGISTRATION_ALREADY_CALLED] = true;
-
-        $event = $this->normalizer->normalize($object, $format, $context);
+        $event = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         $apiContext = $context[PrivatePublicContextBuilder::CONTEXT_KEY] ?? null;
         $user = $this->getUser();
@@ -66,10 +62,18 @@ class EventNormalizer implements NormalizerInterface, NormalizerAwareInterface
         return $this->cleanEventDataIfNeed($object, $user, $event, $apiContext);
     }
 
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            BaseEvent::class => false,
+        ];
+    }
+
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return
-            empty($context[self::EVENT_USER_REGISTRATION_ALREADY_CALLED])
+            !isset($context[__CLASS__])
             && !empty($context[PrivatePublicContextBuilder::CONTEXT_KEY])
             && $data instanceof BaseEvent;
     }

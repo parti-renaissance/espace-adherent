@@ -13,20 +13,16 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'ADHERENT_MESSAGE_NORMALIZER_ALREADY_CALLED';
-
     public function __construct(
         private readonly StatisticsAggregator $statisticsAggregator,
         private readonly MailchimpObjectIdMapping $mailchimpObjectIdMapping,
     ) {
     }
 
-    /** @var AbstractAdherentMessage */
+    /** @param AbstractAdherentMessage $object */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[static::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         $groups = $context['groups'] ?? [];
 
@@ -41,10 +37,16 @@ class AdherentMessageNormalizer implements NormalizerInterface, NormalizerAwareI
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return
-            empty($context[self::ALREADY_CALLED])
-            && $data instanceof AbstractAdherentMessage;
+        return [
+            '*' => null,
+            AbstractAdherentMessage::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && $data instanceof AbstractAdherentMessage;
     }
 }

@@ -11,14 +11,10 @@ class AudienceSegmentDenormalizer implements DenormalizerInterface, Denormalizer
 {
     use DenormalizerAwareTrait;
 
-    private const AUDIENCE_SEGMENT_DENORMALIZER_ALREADY_CALLED = 'AUDIENCE_SEGMENT_DENORMALIZER_ALREADY_CALLED';
-
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        $context[self::AUDIENCE_SEGMENT_DENORMALIZER_ALREADY_CALLED] = true;
-
         /** @var AudienceSegment $audienceSegment */
-        $audienceSegment = $this->denormalizer->denormalize($data, $type, $format, $context);
+        $audienceSegment = $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);
 
         if (isset($context['operation_name']) && '_api_/v3/audience-segments/{uuid}_put' === $context['operation_name']) {
             $audienceSegment->setSynchronized(false);
@@ -27,10 +23,16 @@ class AudienceSegmentDenormalizer implements DenormalizerInterface, Denormalizer
         return $audienceSegment;
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return
-            empty($context[self::AUDIENCE_SEGMENT_DENORMALIZER_ALREADY_CALLED])
-            && AudienceSegment::class === $type;
+        return [
+            '*' => null,
+            AudienceSegment::class => false,
+        ];
+    }
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && AudienceSegment::class === $type;
     }
 }

@@ -11,11 +11,8 @@ class JecouteDeviceNormalizer extends DeviceNormalizer
 
     protected const ALREADY_CALLED = 'JECOUTE_DEVICE_NORMALIZER_ALREADY_CALLED';
 
-    private $dataSurveyRepository;
-
-    public function __construct(JemarcheDataSurveyRepository $dataSurveyRepository)
+    public function __construct(private readonly JemarcheDataSurveyRepository $dataSurveyRepository)
     {
-        $this->dataSurveyRepository = $dataSurveyRepository;
     }
 
     public function normalize($object, $format = null, array $context = [])
@@ -30,7 +27,7 @@ class JecouteDeviceNormalizer extends DeviceNormalizer
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return parent::supportsNormalization($data, $format, $context)
             && \in_array('jemarche_user_profile', $context['groups'] ?? []);

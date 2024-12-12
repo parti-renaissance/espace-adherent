@@ -58,7 +58,15 @@ class BuildingFloorNormalizer implements NormalizerInterface, NormalizerAwareInt
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            Floor::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof Floor && !isset($context[static::ALREADY_CALLED]);
     }

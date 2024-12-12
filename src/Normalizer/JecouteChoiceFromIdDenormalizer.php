@@ -9,11 +9,8 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class JecouteChoiceFromIdDenormalizer implements DenormalizerInterface
 {
-    private $repository;
-
-    public function __construct(ChoiceRepository $repository)
+    public function __construct(private readonly ChoiceRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     public function denormalize($data, $type, $format = null, array $context = [])
@@ -26,7 +23,15 @@ class JecouteChoiceFromIdDenormalizer implements DenormalizerInterface
         throw new ItemNotFoundException();
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            Choice::class => true,
+        ];
+    }
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return Choice::class === $type && \is_int($data);
     }

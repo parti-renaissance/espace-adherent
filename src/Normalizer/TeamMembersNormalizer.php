@@ -12,16 +12,12 @@ class TeamMembersNormalizer implements NormalizerInterface, NormalizerAwareInter
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'TEAM_MEMBERS_NORMALIZER_ALREADY_CALLED';
-
     /**
      * @param Team $object
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         $data['members'] = array_map(function (Member $member) {
             return [
@@ -36,10 +32,18 @@ class TeamMembersNormalizer implements NormalizerInterface, NormalizerAwareInter
         return $data;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            Team::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return
-            !isset($context[self::ALREADY_CALLED])
+            !isset($context[__CLASS__])
             && $data instanceof Team
             && \in_array('team_read', $context['groups'] ?? []);
     }

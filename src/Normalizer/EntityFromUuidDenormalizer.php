@@ -9,11 +9,8 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class EntityFromUuidDenormalizer implements DenormalizerInterface
 {
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private readonly EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     public function denormalize($data, $type, $format = null, array $context = [])
@@ -25,7 +22,14 @@ class EntityFromUuidDenormalizer implements DenormalizerInterface
         throw new ItemNotFoundException(\sprintf('Entity "%s" with UUID "%s" not found', $type, $data));
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => true,
+        ];
+    }
+
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return \is_string($data)
             && Uuid::isValid($data)

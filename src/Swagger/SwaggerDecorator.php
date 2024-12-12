@@ -51,7 +51,7 @@ final class SwaggerDecorator implements NormalizerInterface
         return $docs;
     }
 
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $this->decorated->supportsNormalization($data, $format);
     }
@@ -85,10 +85,17 @@ final class SwaggerDecorator implements NormalizerInterface
     private function getPath(string $resourceShortName, array $operation, string $operationType): string
     {
         $path = $this->operationPathResolver->resolveOperationPath($resourceShortName, $operation, $operationType);
-        if ('.{_format}' === substr($path, -10)) {
+        if (str_ends_with($path, '.{_format}')) {
             $path = substr($path, 0, -10);
         }
 
         return $path;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => false,
+        ];
     }
 }

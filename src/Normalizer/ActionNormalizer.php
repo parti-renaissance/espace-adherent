@@ -17,8 +17,6 @@ class ActionNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
-    public const ACTION_NORMALIZER_ALREADY_CALLED = 'action_normalizer';
-
     private ?array $cache = null;
 
     public function __construct(
@@ -31,9 +29,7 @@ class ActionNormalizer implements NormalizerInterface, NormalizerAwareInterface
     /** @param Action $object */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::ACTION_NORMALIZER_ALREADY_CALLED] = true;
-
-        $action = $this->normalizer->normalize($object, $format, $context);
+        $action = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         $apiContext = $context[PrivatePublicContextBuilder::CONTEXT_KEY] ?? null;
 
@@ -50,10 +46,18 @@ class ActionNormalizer implements NormalizerInterface, NormalizerAwareInterface
         return $action;
     }
 
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            Action::class => false,
+        ];
+    }
+
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return
-            empty($context[self::ACTION_NORMALIZER_ALREADY_CALLED])
+            !isset($context[__CLASS__])
             && !empty($context[PrivatePublicContextBuilder::CONTEXT_KEY])
             && $data instanceof Action;
     }

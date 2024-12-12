@@ -9,11 +9,8 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class SurveyQuestionFromIdDenormalizer implements DenormalizerInterface
 {
-    private $repository;
-
-    public function __construct(SurveyQuestionRepository $repository)
+    public function __construct(private readonly SurveyQuestionRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     public function denormalize($data, $type, $format = null, array $context = [])
@@ -26,7 +23,15 @@ class SurveyQuestionFromIdDenormalizer implements DenormalizerInterface
         throw new ItemNotFoundException();
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            SurveyQuestion::class => true,
+        ];
+    }
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return SurveyQuestion::class === $type && \is_int($data);
     }

@@ -12,14 +12,10 @@ class CampaignHistoryDenormalizer implements DenormalizerInterface, Denormalizer
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'PAP_CAMPAIGN_HISTORY_DENORMALIZER_ALREADY_CALLED';
-
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         /** @var CampaignHistory $data */
-        $data = $this->denormalizer->denormalize($data, $class, $format, $context);
+        $data = $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);
         if (!$data->getBeginAt()) {
             $data->setBeginAt(new \DateTime());
         } elseif (GeoCoder::DEFAULT_TIME_ZONE !== $data->getBeginAt()->getTimezone()->getName()) {
@@ -29,10 +25,16 @@ class CampaignHistoryDenormalizer implements DenormalizerInterface, Denormalizer
         return $data;
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return
-            empty($context[self::ALREADY_CALLED])
-            && CampaignHistory::class === $type;
+        return [
+            '*' => null,
+            CampaignHistory::class => false,
+        ];
+    }
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && CampaignHistory::class === $type;
     }
 }

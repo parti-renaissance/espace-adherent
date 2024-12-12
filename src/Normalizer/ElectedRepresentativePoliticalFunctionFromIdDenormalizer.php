@@ -22,7 +22,15 @@ class ElectedRepresentativePoliticalFunctionFromIdDenormalizer implements Denorm
         throw new ItemNotFoundException();
     }
 
-    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            PoliticalFunction::class => true,
+        ];
+    }
+
+    public function supportsDenormalization($data, string $type, ?string $format = null, array $context = []): bool
     {
         return PoliticalFunction::class === $type && \is_int($data);
     }

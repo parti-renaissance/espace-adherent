@@ -13,33 +13,30 @@ class AdherentSegmentDenormalizer implements DenormalizerInterface, Denormalizer
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'ADHERENT_SEGMENT_DENORMALIZER_ALREADY_CALLED';
-
-    private $adherentRepository;
-
-    public function __construct(AdherentRepository $adherentRepository)
+    public function __construct(private readonly AdherentRepository $adherentRepository)
     {
-        $this->adherentRepository = $adherentRepository;
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         $data['member_ids'] = $this->adherentRepository->findIdByUuids($data['member_ids']);
 
-        return $this->denormalizer->denormalize($data, $class, $format, $context);
+        return $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        // Make sure we're not called twice
-        if (isset($context[self::ALREADY_CALLED])) {
-            return false;
-        }
+        return [
+            '*' => null,
+            AdherentSegment::class => false,
+        ];
+    }
 
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    {
         return
-            AdherentSegment::class === $type
+            !isset($context[__CLASS__])
+            && AdherentSegment::class === $type
             && !empty($data['member_ids'])
             && Uuid::isValid($data['member_ids'][0]);
     }

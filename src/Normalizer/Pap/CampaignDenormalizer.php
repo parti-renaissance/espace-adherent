@@ -13,21 +13,14 @@ class CampaignDenormalizer implements DenormalizerInterface, DenormalizerAwareIn
 {
     use DenormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'PAP_CAMPAIGN_DENORMALIZER_ALREADY_CALLED';
-
-    private ScopeGeneratorResolver $scopeGeneratorResolver;
-
-    public function __construct(ScopeGeneratorResolver $scopeGeneratorResolver)
+    public function __construct(private readonly ScopeGeneratorResolver $scopeGeneratorResolver)
     {
-        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         /** @var Campaign $data */
-        $data = $this->denormalizer->denormalize($data, $class, $format, $context);
+        $data = $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);
         if ('_api_/v3/pap_campaigns_post' === ($context['operation_name'] ?? null)
             && ($scope = $this->scopeGeneratorResolver->generate())) {
             if ($scope->isNational()) {
@@ -41,10 +34,16 @@ class CampaignDenormalizer implements DenormalizerInterface, DenormalizerAwareIn
         return $data;
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
     {
-        return
-            empty($context[self::ALREADY_CALLED])
-            && Campaign::class === $type;
+        return [
+            '*' => null,
+            Campaign::class => false,
+        ];
+    }
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
+    {
+        return !isset($context[__CLASS__]) && Campaign::class === $type;
     }
 }

@@ -15,14 +15,10 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
 {
     use NormalizerAwareTrait;
 
-    private const DATA_SURVEY_ALREADY_CALLED = 'DATA_SURVEY_NORMALIZER_ALREADY_CALLED';
-
-    private SurveyQuestionRepository $surveyQuestionRepository;
     private array $questionsCache = [];
 
-    public function __construct(SurveyQuestionRepository $surveyQuestionRepository)
+    public function __construct(private readonly SurveyQuestionRepository $surveyQuestionRepository)
     {
-        $this->surveyQuestionRepository = $surveyQuestionRepository;
     }
 
     /**
@@ -30,9 +26,7 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::DATA_SURVEY_ALREADY_CALLED] = true;
-
-        $dataSurvey = $this->normalizer->normalize($object, $format, $context);
+        $dataSurvey = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         if (\in_array('survey_replies_list', $context['groups'] ?? [], true)) {
             if ($object->isOfPapCampaignHistory()) {
@@ -118,10 +112,18 @@ class CampaignRepliesDataSurveyNormalizer implements NormalizerInterface, Normal
         return $dataSurvey;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            DataSurvey::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return
-            empty($context[self::DATA_SURVEY_ALREADY_CALLED])
+            !isset($context[__CLASS__])
             && $data instanceof DataSurvey
             && array_intersect(['phoning_campaign_replies_list', 'pap_campaign_replies_list', 'survey_replies_list'], $context['groups'] ?? []);
     }

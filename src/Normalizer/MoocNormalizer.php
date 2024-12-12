@@ -15,11 +15,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MoocNormalizer implements NormalizerInterface
 {
-    private UrlGeneratorInterface $urlGenerator;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
     {
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function normalize($object, $format = null, array $context = [])
@@ -40,7 +37,15 @@ class MoocNormalizer implements NormalizerInterface
         return $this->normalizeMooc($object, $elements);
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            Mooc::class => true,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof Mooc
             && \in_array('mooc_read', $context['groups'] ?? []);
@@ -55,7 +60,7 @@ class MoocNormalizer implements NormalizerInterface
             'youtubeId' => $mooc->getYoutubeId(),
             'youtubeThumbnail' => $mooc->getYoutubeThumbnail(),
             'articleImage' => ($image = $mooc->getArticleImage()) ? $this->urlGenerator->generate('asset_url', ['path' => $image->getFilePath()], UrlGeneratorInterface::ABSOLUTE_URL) : null,
-            'youtubeDuration' => $mooc->getYoutubeDuration() ? $mooc->getYoutubeDuration()->format('H:i:s') : null,
+            'youtubeDuration' => $mooc->getYoutubeDuration()?->format('H:i:s'),
             'shareTwitterText' => $mooc->getShareTwitterText(),
             'shareFacebookText' => $mooc->getShareFacebookText(),
             'shareEmailSubject' => $mooc->getShareEmailSubject(),

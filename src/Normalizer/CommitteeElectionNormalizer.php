@@ -12,18 +12,14 @@ class CommitteeElectionNormalizer implements NormalizerInterface, NormalizerAwar
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'COMMITTEE_ELECTION_NORMALIZER_ALREADY_CALLED';
-
     public function __construct(private readonly ElectionRepository $electionRepository)
     {
     }
 
     public function normalize($object, ?string $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         /** @var CommitteeElection $object */
-        $data = $this->normalizer->normalize($object, $format, $context);
+        $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         $data['voters_count'] = $data['votes_count'] = null;
 
@@ -42,9 +38,17 @@ class CommitteeElectionNormalizer implements NormalizerInterface, NormalizerAwar
         return $data;
     }
 
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            CommitteeElection::class => false,
+        ];
+    }
+
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
-        return !isset($context[self::ALREADY_CALLED])
+        return !isset($context[__CLASS__])
             && $data instanceof CommitteeElection
             && \in_array('committee_election:read', $context['groups'] ?? []);
     }

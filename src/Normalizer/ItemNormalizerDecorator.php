@@ -95,6 +95,13 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         $this->resourceAccessChecker = $resourceAccessChecker;
     }
 
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => false,
+        ];
+    }
+
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         if (!\is_object($data) || is_iterable($data)) {

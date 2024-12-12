@@ -16,20 +16,11 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
 {
     use NormalizerAwareTrait;
 
-    private const CAMPAIGN_ALREADY_CALLED = 'PAP_CAMPAIGN_NORMALIZER_ALREADY_CALLED';
-
-    private CampaignHistoryRepository $campaignHistoryRepository;
-    private BuildingStatisticsRepository $buildingStatisticsRepository;
-    private ScopeGeneratorResolver $scopeGeneratorResolver;
-
     public function __construct(
-        CampaignHistoryRepository $campaignHistoryRepository,
-        BuildingStatisticsRepository $buildingStatisticsRepository,
-        ScopeGeneratorResolver $scopeGeneratorResolver,
+        private readonly CampaignHistoryRepository $campaignHistoryRepository,
+        private readonly BuildingStatisticsRepository $buildingStatisticsRepository,
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
     ) {
-        $this->campaignHistoryRepository = $campaignHistoryRepository;
-        $this->buildingStatisticsRepository = $buildingStatisticsRepository;
-        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
     }
 
     /**
@@ -37,9 +28,7 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $context[self::CAMPAIGN_ALREADY_CALLED] = true;
-
-        $campaign = $this->normalizer->normalize($object, $format, $context);
+        $campaign = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
         $scope = $this->scopeGeneratorResolver->generate();
 
@@ -72,10 +61,18 @@ class AppendCampaignStatsNormalizer implements NormalizerInterface, NormalizerAw
         return $campaign;
     }
 
-    public function supportsNormalization($data, $format = null, array $context = [])
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            Campaign::class => false,
+        ];
+    }
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return
-            empty($context[self::CAMPAIGN_ALREADY_CALLED])
+            !isset($context[__CLASS__])
             && $data instanceof Campaign
             && array_intersect(['pap_campaign_read', 'pap_campaign_read_list'], $context['groups'] ?? []);
     }

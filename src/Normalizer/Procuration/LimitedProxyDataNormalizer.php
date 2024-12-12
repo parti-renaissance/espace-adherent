@@ -11,21 +11,25 @@ class LimitedProxyDataNormalizer implements NormalizerInterface, NormalizerAware
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'PROCURATION_LIMITED_PROXY_NORMALIZER_ALREADY_CALLED';
-
     public function normalize($object, ?string $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         $context['groups'] = ['procuration_request_list_proxy'];
 
-        return $this->normalizer->normalize($object, $format, $context);
+        return $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            Proxy::class => false,
+        ];
     }
 
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
         return
-            empty($context[self::ALREADY_CALLED])
+            !isset($context[__CLASS__])
             && $data instanceof Proxy
             && \in_array('procuration_request_list', $context['groups'] ?? [], true);
     }

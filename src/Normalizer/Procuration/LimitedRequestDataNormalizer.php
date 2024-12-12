@@ -11,21 +11,25 @@ class LimitedRequestDataNormalizer implements NormalizerInterface, NormalizerAwa
 {
     use NormalizerAwareTrait;
 
-    private const ALREADY_CALLED = 'PROCURATION_LIMITED_REQUEST_NORMALIZER_ALREADY_CALLED';
-
     public function normalize($object, ?string $format = null, array $context = [])
     {
-        $context[self::ALREADY_CALLED] = true;
-
         $context['groups'] = ['procuration_proxy_list_request'];
 
-        return $this->normalizer->normalize($object, $format, $context);
+        return $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => null,
+            Request::class => false,
+        ];
     }
 
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
         return
-            empty($context[self::ALREADY_CALLED])
+            !isset($context[__CLASS__])
             && $data instanceof Request
             && \in_array('procuration_proxy_list', $context['groups'] ?? [], true);
     }
