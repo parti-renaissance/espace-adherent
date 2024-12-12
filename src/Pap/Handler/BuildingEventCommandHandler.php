@@ -15,9 +15,10 @@ use App\Pap\Command\BuildingEventAsyncCommand;
 use App\Pap\Command\BuildingEventCommandInterface;
 use App\Repository\Pap\BuildingEventRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class BuildingEventCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class BuildingEventCommandHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,

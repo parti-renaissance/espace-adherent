@@ -8,9 +8,10 @@ use App\Newsletter\Command\MailchimpSyncLegislativeNewsletterCommand;
 use App\Newsletter\NewsletterValueObject;
 use App\Repository\LegislativeNewsletterSubscriptionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class MailchimpSyncLegislativeNewsletterCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class MailchimpSyncLegislativeNewsletterCommandHandler
 {
     private Manager $manager;
     private EntityManagerInterface $entityManager;

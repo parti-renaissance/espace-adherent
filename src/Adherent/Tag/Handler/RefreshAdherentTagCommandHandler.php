@@ -7,10 +7,11 @@ use App\Adherent\Tag\TagAggregator;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Repository\AdherentRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class RefreshAdherentTagCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class RefreshAdherentTagCommandHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,

@@ -5,9 +5,10 @@ namespace App\Newsletter\Handler;
 use App\Mailchimp\Manager;
 use App\Newsletter\Command\MailchimpSyncSiteNewsletterCommand;
 use App\Newsletter\NewsletterValueObject;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class MailchimpSyncSiteNewsletterCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class MailchimpSyncSiteNewsletterCommandHandler
 {
     private $manager;
 

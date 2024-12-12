@@ -4,9 +4,10 @@ namespace App\Mailchimp\Webhook;
 
 use App\Mailchimp\Webhook\Command\CatchMailchimpWebhookCallCommand;
 use App\Mailchimp\Webhook\Exception\MailchimpWebhookException;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class CatchMailchimpWebhookCallCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class CatchMailchimpWebhookCallCommandHandler
 {
     private WebhookHandler $handler;
 

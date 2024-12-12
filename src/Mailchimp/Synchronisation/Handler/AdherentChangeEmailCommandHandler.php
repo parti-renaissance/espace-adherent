@@ -11,10 +11,11 @@ use App\Repository\ElectedRepresentative\ElectedRepresentativeRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class AdherentChangeEmailCommandHandler implements MessageHandlerInterface, LoggerAwareInterface
+#[AsMessageHandler]
+class AdherentChangeEmailCommandHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

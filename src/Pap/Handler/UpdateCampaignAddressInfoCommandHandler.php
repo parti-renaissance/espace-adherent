@@ -7,9 +7,10 @@ use App\Pap\Command\UpdateCampaignAddressInfoCommand;
 use App\Repository\Pap\AddressRepository;
 use App\Repository\Pap\CampaignRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class UpdateCampaignAddressInfoCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class UpdateCampaignAddressInfoCommandHandler
 {
     private CampaignRepository $campaignRepository;
     private AddressRepository $addressRepository;

@@ -6,9 +6,10 @@ use App\Mailchimp\Campaign\MailchimpObjectIdMapping;
 use App\Mailchimp\Synchronisation\Command\UpdateAdherentCommand;
 use App\Mailchimp\Webhook\EventTypeEnum;
 use App\Mailchimp\Webhook\WebhookHandler;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class UpdateAdherentCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class UpdateAdherentCommandHandler
 {
     private $webhookHandler;
     private $mailchimpObjectIdMapping;

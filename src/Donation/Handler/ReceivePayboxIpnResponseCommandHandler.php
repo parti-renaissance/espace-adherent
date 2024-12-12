@@ -13,11 +13,12 @@ use App\Repository\TransactionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class ReceivePayboxIpnResponseCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class ReceivePayboxIpnResponseCommandHandler
 {
     public function __construct(
         private readonly MailerService $transactionalMailer,

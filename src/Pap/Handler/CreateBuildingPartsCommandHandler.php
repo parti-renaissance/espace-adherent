@@ -7,10 +7,11 @@ use App\Pap\CampaignHistoryManager;
 use App\Pap\Command\CreateBuildingPartsCommand;
 use App\Pap\Command\UpdateStatsCommand;
 use App\Repository\Pap\CampaignHistoryRepository;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class CreateBuildingPartsCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class CreateBuildingPartsCommandHandler
 {
     private CampaignHistoryRepository $repository;
     private CampaignHistoryManager $campaignHistoryManager;

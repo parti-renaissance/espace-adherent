@@ -4,9 +4,10 @@ namespace App\Mailchimp\Synchronisation\Handler;
 
 use App\Mailchimp\Manager;
 use App\Mailchimp\Synchronisation\Command\ElectedRepresentativeArchiveCommand;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class ElectedRepresentativeArchiveCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class ElectedRepresentativeArchiveCommandHandler
 {
     private $manager;
 

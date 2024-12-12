@@ -7,10 +7,11 @@ use App\Mailer\MailerService;
 use App\Mailer\Message\Message;
 use App\Mailer\Message\Renaissance\RenaissanceNewsletterSubscriptionConfirmationMessage;
 use App\Renaissance\Newsletter\Command\SendWelcomeMailCommand;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class SendWelcomeMailCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class SendWelcomeMailCommandHandler
 {
     public function __construct(
         private readonly MailerService $transactionalMailer,

@@ -7,9 +7,10 @@ use App\Event\EventReminderHandler;
 use App\JeMarche\Command\EventReminderNotificationCommand;
 use App\Repository\Event\BaseEventRepository;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class EventReminderNotificationCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class EventReminderNotificationCommandHandler
 {
     private $eventRepository;
     private $eventReminderHandler;

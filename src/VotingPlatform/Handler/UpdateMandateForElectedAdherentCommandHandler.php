@@ -11,9 +11,10 @@ use App\VotingPlatform\AdherentMandate\AdherentMandateFactory;
 use App\VotingPlatform\Command\UpdateMandateForElectedAdherentCommand;
 use App\VotingPlatform\Designation\DesignationTypeEnum;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class UpdateMandateForElectedAdherentCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class UpdateMandateForElectedAdherentCommandHandler
 {
     private $mandateFactory;
     private $entityManager;

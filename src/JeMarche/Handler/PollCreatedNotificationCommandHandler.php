@@ -12,9 +12,10 @@ use App\JeMarche\NotificationTopicBuilder;
 use App\Poll\PollManager;
 use App\Repository\Poll\PollRepository;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class PollCreatedNotificationCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class PollCreatedNotificationCommandHandler
 {
     private $pollRepository;
     private $pollManager;

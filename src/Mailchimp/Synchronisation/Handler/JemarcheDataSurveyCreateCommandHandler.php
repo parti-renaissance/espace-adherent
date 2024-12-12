@@ -13,9 +13,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class JemarcheDataSurveyCreateCommandHandler implements MessageHandlerInterface, LoggerAwareInterface
+#[AsMessageHandler]
+class JemarcheDataSurveyCreateCommandHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

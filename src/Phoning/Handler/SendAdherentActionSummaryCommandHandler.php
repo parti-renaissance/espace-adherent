@@ -5,10 +5,11 @@ namespace App\Phoning\Handler;
 use App\Mailer\MailerService;
 use App\Mailer\Message\PhoningCampaignAdherentActionSummaryMessage;
 use App\Phoning\Command\SendAdherentActionSummaryCommand;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class SendAdherentActionSummaryCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class SendAdherentActionSummaryCommandHandler
 {
     public function __construct(
         private readonly MailerService $transactionalMailer,

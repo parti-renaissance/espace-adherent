@@ -12,10 +12,11 @@ use App\Repository\AdherentRepository;
 use App\Repository\CommitteeRepository;
 use App\Repository\Geo\ZoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class RefreshCommitteeMembershipsInZoneCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class RefreshCommitteeMembershipsInZoneCommandHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,

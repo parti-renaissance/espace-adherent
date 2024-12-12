@@ -9,9 +9,10 @@ use App\JeMarche\Notification\RiposteCreatedNotification;
 use App\JeMarche\NotificationTopicBuilder;
 use App\Repository\Jecoute\RiposteRepository;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class RiposteCreatedNotificationCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class RiposteCreatedNotificationCommandHandler
 {
     private $riposteRepository;
     private $messaging;

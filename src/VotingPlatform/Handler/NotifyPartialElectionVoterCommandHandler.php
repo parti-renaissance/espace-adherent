@@ -11,10 +11,11 @@ use App\Mailer\Message\VotingPlatformPartialElectionIsOpenMessage;
 use App\Repository\CommitteeMembershipRepository;
 use App\Repository\CommitteeRepository;
 use App\VotingPlatform\Command\NotifyPartialElectionVoterCommand;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class NotifyPartialElectionVoterCommandHandler implements MessageHandlerInterface
+#[AsMessageHandler]
+class NotifyPartialElectionVoterCommandHandler
 {
     private $mailer;
     private $committeeRepository;
