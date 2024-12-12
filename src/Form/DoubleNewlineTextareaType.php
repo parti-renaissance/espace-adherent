@@ -16,12 +16,12 @@ class DoubleNewlineTextareaType extends AbstractType
         $this->doubleNewlineTextTransformer = $doubleNewlineTextTransformer;
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return TextareaType::class;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer($this->doubleNewlineTextTransformer);
     }

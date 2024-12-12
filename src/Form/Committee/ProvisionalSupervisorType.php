@@ -48,7 +48,7 @@ class ProvisionalSupervisorType extends AbstractType implements DataTransformerI
         return !empty($value) ? $this->adherentRepository->find($value) : $value;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Adherent::class,

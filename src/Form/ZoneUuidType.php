@@ -20,7 +20,7 @@ class ZoneUuidType extends AbstractType
         $this->entityManager = $entityManager;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new UuidToObjectTransformer($this->entityManager, Zone::class));
     }
@@ -30,7 +30,7 @@ class ZoneUuidType extends AbstractType
         $view->vars['zone'] = ($data = $form->getData()) instanceof Zone ? $data : null;
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return HiddenType::class;
     }

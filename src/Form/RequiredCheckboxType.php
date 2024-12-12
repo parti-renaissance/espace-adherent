@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class RequiredCheckboxType extends AbstractType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'mapped' => false,
@@ -23,7 +23,7 @@ class RequiredCheckboxType extends AbstractType
         ]);
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return CheckboxType::class;
     }

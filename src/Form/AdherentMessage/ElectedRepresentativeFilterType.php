@@ -24,7 +24,7 @@ class ElectedRepresentativeFilterType extends AbstractType
         $this->translator = $translator;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('gender', GenderType::class, [
@@ -71,7 +71,7 @@ class ElectedRepresentativeFilterType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefined('user_list_types')

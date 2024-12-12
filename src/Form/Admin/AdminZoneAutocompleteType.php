@@ -9,12 +9,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AdminZoneAutocompleteType extends AbstractType
 {
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return ModelAutocompleteType::class;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'property' => 'name',

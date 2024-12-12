@@ -17,17 +17,17 @@ class AdherentIdType extends AbstractType
         $this->adherentToIdTransformer = $adherentToIdTransformer;
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return IntegerType::class;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer($this->adherentToIdTransformer);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'invalid_message' => 'adherent.unknown_id',

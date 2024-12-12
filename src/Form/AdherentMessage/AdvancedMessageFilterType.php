@@ -25,12 +25,12 @@ class AdvancedMessageFilterType extends AbstractType
         $this->includeExcludeFilterRoleListener = $includeExcludeFilterRoleListener;
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return SimpleMessageFilterType::class;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('includeAdherentsNoCommittee', CheckboxType::class, ['required' => false])
@@ -66,7 +66,7 @@ class AdvancedMessageFilterType extends AbstractType
         $builder->addEventSubscriber($this->includeExcludeFilterRoleListener);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([

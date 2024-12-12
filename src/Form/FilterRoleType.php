@@ -14,7 +14,7 @@ class FilterRoleType extends AbstractType
         'CommitteeSupervisors',
     ];
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'choices' => self::ROLES,
@@ -27,7 +27,7 @@ class FilterRoleType extends AbstractType
         ]);
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return ChoiceType::class;
     }

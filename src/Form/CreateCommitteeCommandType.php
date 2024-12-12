@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateCommitteeCommandType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('phone', TelNumberType::class)
@@ -23,7 +23,7 @@ class CreateCommitteeCommandType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => CommitteeCreationCommand::class,
@@ -35,7 +35,7 @@ class CreateCommitteeCommandType extends AbstractType
         return 'create_committee';
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return CommitteeCommandType::class;
     }

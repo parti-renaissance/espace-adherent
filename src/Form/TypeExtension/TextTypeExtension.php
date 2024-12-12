@@ -24,7 +24,7 @@ class TextTypeExtension extends AbstractTypeExtension
         return [TextType::class];
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -41,7 +41,7 @@ class TextTypeExtension extends AbstractTypeExtension
         ;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['format_title_case']) {
             $builder->addEventListener(FormEvents::SUBMIT, [__CLASS__, 'formatDataAsTitle']);
@@ -52,7 +52,7 @@ class TextTypeExtension extends AbstractTypeExtension
         }
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['with_character_count'] = $options['with_character_count'];
     }

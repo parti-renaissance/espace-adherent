@@ -19,7 +19,7 @@ class CroppedImageType extends AbstractType
 {
     public const RATIO_16_9 = '16:9';
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('image', FileType::class, [
@@ -76,13 +76,13 @@ class CroppedImageType extends AbstractType
         ));
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['image_path'] = $options['image_path'];
         $view->vars['ratio'] = $options['ratio'];
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([

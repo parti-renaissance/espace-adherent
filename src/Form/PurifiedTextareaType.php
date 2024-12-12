@@ -8,12 +8,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PurifiedTextareaType extends AbstractType
 {
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return TextareaType::class;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'purify_html' => true,

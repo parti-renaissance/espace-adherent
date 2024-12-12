@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class SimpleMDEContent extends AbstractType
 {
-    public function getParent()
+    public function getParent(): string
     {
         return TextareaType::class;
     }

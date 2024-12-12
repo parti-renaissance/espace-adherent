@@ -9,12 +9,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DesignationGlobalZoneType extends AbstractType
 {
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'choices' => array_combine(DesignationGlobalZoneEnum::toArray(), DesignationGlobalZoneEnum::toArray()),

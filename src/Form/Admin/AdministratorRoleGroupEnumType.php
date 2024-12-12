@@ -9,12 +9,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AdministratorRoleGroupEnumType extends AbstractType
 {
-    public function getParent()
+    public function getParent(): string
     {
         return EnumType::class;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([

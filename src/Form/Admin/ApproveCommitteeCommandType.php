@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ApproveCommitteeCommandType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $command = $builder->getData();
         $committee = $command instanceof CommitteeCommand ? $command->getCommittee() : null;
@@ -48,7 +48,7 @@ class ApproveCommitteeCommandType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => CommitteeCommand::class,

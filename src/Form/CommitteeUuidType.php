@@ -19,12 +19,12 @@ class CommitteeUuidType extends AbstractType
         $this->committeeRepository = $committeeRepository;
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return HiddenType::class;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->addViewTransformer(new CallbackTransformer(

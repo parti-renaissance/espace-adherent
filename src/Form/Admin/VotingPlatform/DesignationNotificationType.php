@@ -11,17 +11,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DesignationNotificationType extends AbstractType implements DataTransformerInterface
 {
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer($this);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'choices' => Designation::NOTIFICATION_ALL,

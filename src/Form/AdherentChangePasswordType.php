@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 class AdherentChangePasswordType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('old_password', PasswordType::class, [
             'mapped' => false,
@@ -17,7 +17,7 @@ class AdherentChangePasswordType extends AbstractType
         ]);
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return AdherentResetPasswordType::class;
     }

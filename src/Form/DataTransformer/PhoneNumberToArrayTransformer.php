@@ -25,7 +25,7 @@ class PhoneNumberToArrayTransformer implements DataTransformerInterface
         }
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         return $this->decorated->reverseTransform($value);
     }

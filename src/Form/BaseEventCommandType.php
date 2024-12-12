@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BaseEventCommandType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $beginDate = $builder->getData() ? $builder->getData()->getBeginAt() : null;
         $now = new \DateTime('now');
@@ -74,7 +74,7 @@ class BaseEventCommandType extends AbstractType
         $builder->addModelTransformer(new EventDateTimeZoneTransformer());
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([

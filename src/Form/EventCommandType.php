@@ -14,12 +14,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EventCommandType extends AbstractType
 {
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return BaseEventCommandType::class;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('category', EntityType::class, [
@@ -44,7 +44,7 @@ class EventCommandType extends AbstractType
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([

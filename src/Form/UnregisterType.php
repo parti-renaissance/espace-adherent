@@ -12,7 +12,7 @@ class UnregisterType extends AbstractType
 {
     public const UNREGISTER_WORD = 'SUPPRESSION';
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -23,7 +23,7 @@ class UnregisterType extends AbstractType
         ;
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return TextType::class;
     }

@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RenaissanceAdherentAutocompleteType extends AbstractType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'property' => ['firstName', 'lastName', 'emailAddress'],
@@ -45,7 +45,7 @@ class RenaissanceAdherentAutocompleteType extends AbstractType
         }
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return ModelAutocompleteType::class;
     }

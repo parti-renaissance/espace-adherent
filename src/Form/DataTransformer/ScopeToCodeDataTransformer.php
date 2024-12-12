@@ -22,7 +22,7 @@ class ScopeToCodeDataTransformer implements DataTransformerInterface
         return $scopeCodes;
     }
 
-    public function reverseTransform($scopes)
+    public function reverseTransform($scopes): mixed
     {
         if ($scopes) {
             $scopes = $scopes instanceof Collection ? $scopes->toArray() : $scopes;

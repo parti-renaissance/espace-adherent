@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DatePickerType extends AbstractType
 {
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         if (isset($view->vars['attr']['class'])) {
             $view->vars['attr']['class'] .= ' em-datetime-picker';
@@ -33,7 +33,7 @@ class DatePickerType extends AbstractType
         ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'widget' => 'single_text',
@@ -70,7 +70,7 @@ class DatePickerType extends AbstractType
         parent::configureOptions($resolver);
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return DateType::class;
     }

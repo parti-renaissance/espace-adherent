@@ -8,12 +8,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BooleanChoiceType extends AbstractType
 {
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
