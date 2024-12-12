@@ -14,12 +14,12 @@ use Symfony\Component\Form\FormView;
 
 class PhoneNumberTypeExtension extends AbstractTypeExtension
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'setDefaultRegion']);
     }
 
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         // Bug Fix: https://github.com/misd-service-development/phone-number-bundle/pull/175
         if (PhoneNumberType::WIDGET_COUNTRY_CHOICE === $options['widget']) {

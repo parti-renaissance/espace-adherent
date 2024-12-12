@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\Range;
 
 class PositionType extends AbstractType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'constraints' => new Range(['min' => 0]),
@@ -17,7 +17,7 @@ class PositionType extends AbstractType
         ]);
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return IntegerType::class;
     }

@@ -37,7 +37,7 @@ class RetirementSimulatorType extends AbstractType
         'other',
     ];
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('delayBeforeRetirement', ChoiceType::class, [
@@ -71,7 +71,7 @@ class RetirementSimulatorType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'csrf_protection' => false,

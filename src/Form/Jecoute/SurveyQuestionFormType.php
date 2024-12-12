@@ -21,7 +21,7 @@ class SurveyQuestionFormType extends AbstractType
         $this->questionRepository = $questionRepository;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('question', QuestionType::class, [
@@ -62,7 +62,7 @@ class SurveyQuestionFormType extends AbstractType
         });
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('data_class', SurveyQuestion::class);
     }

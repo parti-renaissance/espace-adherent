@@ -9,12 +9,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DesignationTypeType extends AbstractType
 {
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'choices' => array_combine(DesignationTypeEnum::MAIN_TYPES, DesignationTypeEnum::MAIN_TYPES),

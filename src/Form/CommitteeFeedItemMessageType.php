@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommitteeFeedItemMessageType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->remove('subject')
@@ -17,14 +17,14 @@ class CommitteeFeedItemMessageType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => CommitteeFeedItem::class,
         ]);
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return CommitteeFeedMessageType::class;
     }

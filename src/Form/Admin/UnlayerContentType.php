@@ -14,12 +14,12 @@ class UnlayerContentType extends AbstractType
     {
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['unlayer_template_id'] = $options['unlayer_template_id'];
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefined('unlayer_template_id');
         $resolver->setAllowedTypes('unlayer_template_id', ['int']);
@@ -28,7 +28,7 @@ class UnlayerContentType extends AbstractType
         $resolver->setDefaults(['error_bubbling' => false]);
     }
 
-    public function getParent()
+    public function getParent(): string
     {
         return HiddenType::class;
     }

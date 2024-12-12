@@ -13,12 +13,12 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CommitteeSupervisorCandidacyType extends AbstractType
 {
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return BaseCandidacyBiographyType::class;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('biography', DoubleNewlineTextareaType::class, [
@@ -37,7 +37,7 @@ class CommitteeSupervisorCandidacyType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => CommitteeCandidacy::class,

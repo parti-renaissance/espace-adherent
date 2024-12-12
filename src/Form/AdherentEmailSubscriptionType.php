@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AdherentEmailSubscriptionType extends AbstractType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -27,7 +27,7 @@ class AdherentEmailSubscriptionType extends AbstractType
         ;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('subscriptionTypes', EntityType::class, [
@@ -68,7 +68,7 @@ class AdherentEmailSubscriptionType extends AbstractType
         ;
     }
 
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         $subscriptionTypes = $view->children['subscriptionTypes']->vars['choices'];
 

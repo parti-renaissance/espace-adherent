@@ -20,7 +20,7 @@ class AdherentUuidType extends AbstractType
         $this->entityManager = $entityManager;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new UuidToObjectTransformer($this->entityManager, Adherent::class));
     }
@@ -30,7 +30,7 @@ class AdherentUuidType extends AbstractType
         $view->vars['adherent'] = ($data = $form->getData()) instanceof Adherent ? $data : null;
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return HiddenType::class;
     }

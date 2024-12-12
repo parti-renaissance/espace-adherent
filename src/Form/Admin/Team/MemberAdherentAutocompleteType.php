@@ -13,12 +13,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MemberAdherentAutocompleteType extends AbstractType
 {
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['admin_code'] = 'app.admin.team.member';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -75,7 +75,7 @@ class MemberAdherentAutocompleteType extends AbstractType
         $datagrid->reorderFilters($property);
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return ModelAutocompleteType::class;
     }

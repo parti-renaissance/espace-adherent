@@ -18,12 +18,12 @@ class CommitteeCandidacyInvitedMembershipType extends AbstractType
         $this->entityManager = $entityManager;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new UuidToObjectTransformer($this->entityManager, CommitteeMembership::class));
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return HiddenType::class;
     }

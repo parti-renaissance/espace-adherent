@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ReChoiceTabType extends AbstractType
 {
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }

@@ -28,7 +28,7 @@ class DelegateAccessType extends AbstractType
         $this->transformer = $transformer;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->addRoleField($builder, $options['type'], $builder->getData() ? $builder->getData()->getRole() : null);
 
@@ -91,7 +91,7 @@ class DelegateAccessType extends AbstractType
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefined('type');
         $resolver->setRequired('type');

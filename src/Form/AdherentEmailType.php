@@ -16,12 +16,12 @@ class AdherentEmailType extends AbstractType
         $this->emailToAdherentTransformer = $adherentToEmailTransformer;
     }
 
-    public function getParent(): ?string
+    public function getParent(): string
     {
         return EmailType::class;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer($this->emailToAdherentTransformer);
     }

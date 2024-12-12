@@ -7,7 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ReAutoCompleteType extends AbstractType
 {
-    public function getParent()
+    public function getParent(): string
     {
         return TextType::class;
     }
