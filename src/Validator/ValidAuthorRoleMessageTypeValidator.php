@@ -19,7 +19,7 @@ class ValidAuthorRoleMessageTypeValidator extends ConstraintValidator
         $this->authorizationChecker = $authorizationChecker;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (null === $value) {
             return;

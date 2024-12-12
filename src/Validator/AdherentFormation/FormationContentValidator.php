@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class FormationContentValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof FormationContent) {
             throw new UnexpectedTypeException($constraint, FormationContent::class);

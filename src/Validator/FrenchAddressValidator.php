@@ -18,27 +18,27 @@ class FrenchAddressValidator extends ConstraintValidator
         $this->franceCities = $franceCities;
     }
 
-    public function validate($address, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof FrenchAddress) {
             throw new UnexpectedTypeException($constraint, FrenchAddress::class);
         }
 
-        if (null === $address) {
+        if (null === $value) {
             return;
         }
 
-        if (!$address instanceof AddressInterface) {
-            throw new UnexpectedValueException($address, AddressInterface::class);
+        if (!$value instanceof AddressInterface) {
+            throw new UnexpectedValueException($value, AddressInterface::class);
         }
 
-        if (AddressInterface::FRANCE !== $address->getCountry() || !$address->getPostalCode()) {
+        if (AddressInterface::FRANCE !== $value->getCountry() || !$value->getPostalCode()) {
             return;
         }
 
         if (
-            !\is_scalar($address->getPostalCode())
-            || 0 === \count($this->franceCities->findCitiesByPostalCode($address->getPostalCode()))
+            !\is_scalar($value->getPostalCode())
+            || 0 === \count($this->franceCities->findCitiesByPostalCode($value->getPostalCode()))
         ) {
             $this
                 ->context
@@ -50,8 +50,8 @@ class FrenchAddressValidator extends ConstraintValidator
             return;
         }
 
-        if ($address->getCityName()) {
-            if (!$this->franceCities->getCityByPostalCodeAndName($address->getPostalCode(), $address->getCityName())) {
+        if ($value->getCityName()) {
+            if (!$this->franceCities->getCityByPostalCodeAndName($value->getPostalCode(), $value->getCityName())) {
                 $this
                     ->context
                     ->buildViolation($constraint->postalCodeAndCityNameNotMatchingMessage)
@@ -61,9 +61,9 @@ class FrenchAddressValidator extends ConstraintValidator
             }
         }
 
-        if ($address->getCity()) {
+        if ($value->getCity()) {
             // Invalid city
-            $parts = explode('-', $address->getCity());
+            $parts = explode('-', $value->getCity());
             $city = $this->franceCities->getCityByInseeCode($parts[1]);
             if (2 !== \count($parts) || !\in_array($parts[0], $city ? $city->getPostalCode() : [], true)) {
                 $this->context->addViolation($constraint->invalidCityMessage);
@@ -72,7 +72,7 @@ class FrenchAddressValidator extends ConstraintValidator
             }
 
             // City and zip code are not associated
-            if ($parts[0] !== $address->getPostalCode()) {
+            if ($parts[0] !== $value->getPostalCode()) {
                 $this
                     ->context
                     ->buildViolation($constraint->postalCodeAndCityNotMatchingMessage)

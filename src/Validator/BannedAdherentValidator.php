@@ -14,7 +14,7 @@ class BannedAdherentValidator extends ConstraintValidator
     {
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof BannedAdherent) {
             throw new UnexpectedTypeException($constraint, BannedAdherent::class);

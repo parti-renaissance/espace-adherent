@@ -18,7 +18,7 @@ class UniqueInCollectionValidator extends ConstraintValidator
         $this->propertyAccessor = $propertyAccessor;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueInCollection) {
             throw new UnexpectedTypeException($constraint, UniqueInCollection::class);

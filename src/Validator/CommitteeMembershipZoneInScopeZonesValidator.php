@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class CommitteeMembershipZoneInScopeZonesValidator extends AbstractZonesInScopeZonesValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (null === $value) {
             return;

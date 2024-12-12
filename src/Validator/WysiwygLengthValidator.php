@@ -12,7 +12,7 @@ class WysiwygLengthValidator extends ConstraintValidator
     private const REGEX_TAGS = '/<("[^"]*"|"[^"]*"|[^"">])*>/i';
     private const REGEX_BEGIN_END_STRING_WHITESPACES = '/^\s+|\s+$/';
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof WysiwygLength) {
             throw new UnexpectedTypeException($constraint, WysiwygLength::class);

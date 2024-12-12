@@ -23,21 +23,21 @@ class CommitteeMemberValidator extends ConstraintValidator
     }
 
     /**
-     * @param Committee       $committee
+     * @param Committee       $value
      * @param CommitteeMember $constraint
      */
-    public function validate($committee, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof CommitteeMember) {
             throw new UnexpectedTypeException($constraint, CommitteeMember::class);
         }
 
-        if (null === $committee) {
+        if (null === $value) {
             return;
         }
 
-        if (!$committee instanceof Committee) {
-            throw new UnexpectedValueException($committee, Committee::class);
+        if (!$value instanceof Committee) {
+            throw new UnexpectedValueException($value, Committee::class);
         }
 
         $adherent = $this->security->getUser();
@@ -45,7 +45,7 @@ class CommitteeMemberValidator extends ConstraintValidator
             throw new UnexpectedValueException($adherent, Adherent::class);
         }
 
-        if (!$this->committeeMembershipRepository->isAdherentInCommittee($adherent, $committee)) {
+        if (!$this->committeeMembershipRepository->isAdherentInCommittee($adherent, $value)) {
             $this->context->addViolation($constraint->message);
         }
     }

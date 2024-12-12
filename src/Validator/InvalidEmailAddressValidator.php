@@ -20,7 +20,7 @@ class InvalidEmailAddressValidator extends ConstraintValidator
         $this->hashGenerator = $hashGenerator;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof InvalidEmailAddress) {
             throw new UnexpectedTypeException($constraint, InvalidEmailAddress::class);

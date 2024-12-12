@@ -19,7 +19,7 @@ class WasNotInvitedRecentlyValidator extends ConstraintValidator
         $this->propertyAccessor = $propertyAccessor;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (null === $value || !$constraint instanceof WasNotInvitedRecently) {
             return;

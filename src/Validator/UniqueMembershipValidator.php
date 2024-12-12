@@ -22,18 +22,18 @@ class UniqueMembershipValidator extends ConstraintValidator
     ) {
     }
 
-    public function validate($member, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueMembership) {
             throw new UnexpectedTypeException($constraint, UniqueMembership::class);
         }
 
-        if ($member instanceof MembershipInterface) {
-            $email = $member->getEmailAddress();
-        } elseif (\is_string($member)) {
-            $email = $member;
+        if ($value instanceof MembershipInterface) {
+            $email = $value->getEmailAddress();
+        } elseif (\is_string($value)) {
+            $email = $value;
         } else {
-            throw new UnexpectedValueException($member, MembershipInterface::class);
+            throw new UnexpectedValueException($value, MembershipInterface::class);
         }
 
         // Chosen email address is not already taken by someone else
@@ -41,7 +41,7 @@ class UniqueMembershipValidator extends ConstraintValidator
             return;
         }
 
-        if ($member instanceof Adherent && $member->getUuid()->equals($adherentUuid)) {
+        if ($value instanceof Adherent && $value->getUuid()->equals($adherentUuid)) {
             return;
         }
 

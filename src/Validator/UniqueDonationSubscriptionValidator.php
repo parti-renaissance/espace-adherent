@@ -31,7 +31,7 @@ class UniqueDonationSubscriptionValidator extends ConstraintValidator
      * @param DonationRequest            $value
      * @param UniqueDonationSubscription $constraint
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueDonationSubscription) {
             throw new UnexpectedTypeException($constraint, UniqueDonationSubscription::class);

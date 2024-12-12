@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class ApprovedCommitteeAddressValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof ApprovedCommitteeAddress) {
             throw new UnexpectedTypeException($constraint, ApprovedCommitteeAddress::class);

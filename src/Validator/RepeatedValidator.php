@@ -10,7 +10,7 @@ class RepeatedValidator extends ConstraintValidator
 {
     private static $value;
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Repeated) {
             throw new UnexpectedTypeException($constraint, Repeated::class);

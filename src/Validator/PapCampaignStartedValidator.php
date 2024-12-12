@@ -27,7 +27,7 @@ class PapCampaignStartedValidator extends ConstraintValidator
         $this->votePlaceRepository = $votePlaceRepository;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof PapCampaignStarted) {
             throw new UnexpectedTypeException($constraint, PapCampaignStarted::class);

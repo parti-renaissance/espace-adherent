@@ -21,7 +21,7 @@ class CommitteePartialDesignationValidator extends ConstraintValidator
         $this->committeeMembershipRepository = $committeeMembershipRepository;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof CommitteePartialDesignation) {
             throw new UnexpectedTypeException($constraint, CommitteePartialDesignation::class);
