@@ -121,7 +121,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         return false;
     }
 
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $resourceClass = $this->getObjectClass($object);
         if (!($isTransformed = isset($context[AbstractItemNormalizer::IS_TRANSFORMED_TO_SAME_CLASS])) && $outputClass = $this->getOutputClass($resourceClass, $context)) {
@@ -183,7 +183,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         return $data;
     }
 
-    public function supportsDenormalization($data, $type, $format = null, array $context = [])
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         if (!isset($context['resource_class'])) {
             return false;
@@ -196,7 +196,7 @@ class ItemNormalizerDecorator extends AbstractObjectNormalizer
         return $this->localCache[$type] ?? $this->localCache[$type] = $this->resourceClassResolver->isResourceClass($type);
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = []): mixed
     {
         // Avoid issues with proxies if we populated the object
         if (isset($data['id']) && !isset($context[self::OBJECT_TO_POPULATE])) {

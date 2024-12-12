@@ -17,7 +17,7 @@ class SurveyDenormalizer implements DenormalizerInterface, DenormalizerAwareInte
 {
     use DenormalizerAwareTrait;
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
         if (!empty($context[AbstractNormalizer::OBJECT_TO_POPULATE])) {
             $surveyClass = \get_class($context[AbstractNormalizer::OBJECT_TO_POPULATE]);

@@ -16,7 +16,7 @@ class AddressDenormalizer implements DenormalizerInterface, DenormalizerAwareInt
     {
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = []): mixed
     {
         $groups = $context['groups'] ?? [];
 

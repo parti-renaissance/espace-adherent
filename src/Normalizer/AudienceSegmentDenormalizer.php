@@ -11,7 +11,7 @@ class AudienceSegmentDenormalizer implements DenormalizerInterface, Denormalizer
 {
     use DenormalizerAwareTrait;
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
         /** @var AudienceSegment $audienceSegment */
         $audienceSegment = $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);

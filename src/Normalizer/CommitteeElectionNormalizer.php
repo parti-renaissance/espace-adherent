@@ -16,7 +16,7 @@ class CommitteeElectionNormalizer implements NormalizerInterface, NormalizerAwar
     {
     }
 
-    public function normalize($object, ?string $format = null, array $context = [])
+    public function normalize($object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         /** @var CommitteeElection $object */
         $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);

@@ -14,7 +14,7 @@ class PapAddressNormalizer implements NormalizerInterface, NormalizerAwareInterf
     /**
      * @param Voter $object
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $voter = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 

@@ -17,7 +17,7 @@ class TeamsCollectionNormalizer implements NormalizerInterface, NormalizerAwareI
     {
     }
 
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $teams = iterator_to_array($object);
 

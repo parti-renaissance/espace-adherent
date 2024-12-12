@@ -15,7 +15,7 @@ abstract class AbstractIndexerNormalizer implements NormalizerInterface
         ];
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_a($data, $this->getClassName()) && Searchable::NORMALIZATION_FORMAT === $format;
     }

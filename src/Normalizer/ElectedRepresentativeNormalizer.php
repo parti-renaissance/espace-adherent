@@ -16,7 +16,7 @@ class ElectedRepresentativeNormalizer implements NormalizerInterface, Normalizer
     {
     }
 
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $data = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 

@@ -13,7 +13,7 @@ class EntityFromUuidDenormalizer implements DenormalizerInterface
     {
     }
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
         if ($object = $this->entityManager->getRepository($type)->findOneBy(['uuid' => $data])) {
             return $object;
@@ -29,7 +29,7 @@ class EntityFromUuidDenormalizer implements DenormalizerInterface
         ];
     }
 
-    public function supportsDenormalization($data, $type, $format = null): bool
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return \is_string($data)
             && Uuid::isValid($data)

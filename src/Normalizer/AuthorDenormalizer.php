@@ -21,7 +21,7 @@ final class AuthorDenormalizer implements DenormalizerInterface, DenormalizerAwa
     ) {
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = []): mixed
     {
         /** @var AuthorInterface $data */
         $data = $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);

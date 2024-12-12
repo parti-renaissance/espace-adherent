@@ -7,7 +7,7 @@ use App\Entity\Proposal;
 class ProposalNormalizer extends AbstractIndexerNormalizer
 {
     /** @param Proposal $object */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         return [
             'title' => $object->getTitle(),

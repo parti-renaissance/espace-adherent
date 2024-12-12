@@ -15,7 +15,7 @@ class JecouteDeviceNormalizer extends DeviceNormalizer
     {
     }
 
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $data = parent::normalize($object, $format, $context);
 

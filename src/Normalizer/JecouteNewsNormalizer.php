@@ -26,7 +26,7 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
     ) {
     }
 
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $news = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 
@@ -61,7 +61,7 @@ class JecouteNewsNormalizer implements NormalizerInterface, NormalizerAwareInter
             && 0 !== \count(array_intersect(['jecoute_news_read', 'jecoute_news_read_dc'], $context['groups'] ?? []));
     }
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
         if (isset($context['operation_name']) && '_api_/v3/jecoute/news/{uuid}_put' === $context['operation_name']) {
             unset($data['zone']);

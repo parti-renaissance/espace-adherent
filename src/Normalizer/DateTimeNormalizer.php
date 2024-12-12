@@ -19,7 +19,7 @@ class DateTimeNormalizer implements DenormalizerInterface, NormalizerInterface
         $this->decorated = $decorated;
     }
 
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         return $this->decorated->normalize($object, $format, $context);
     }
@@ -29,12 +29,12 @@ class DateTimeNormalizer implements DenormalizerInterface, NormalizerInterface
         return $this->decorated->getSupportedTypes($format);
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $this->decorated->supportsNormalization($data, $format);
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = []): mixed
     {
         try {
             return $this->decorated->denormalize($data, $class, $format, $context);
@@ -43,7 +43,7 @@ class DateTimeNormalizer implements DenormalizerInterface, NormalizerInterface
         }
     }
 
-    public function supportsDenormalization($data, $type, $format = null): bool
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $this->decorated->supportsDenormalization($data, $type, $format);
     }

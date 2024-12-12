@@ -22,7 +22,7 @@ class UpdateElectedMandateDenormalizer implements DenormalizerInterface, Denorma
     ) {
     }
 
-    public function denormalize($data, string $class, ?string $format = null, array $context = [])
+    public function denormalize($data, string $class, ?string $format = null, array $context = []): mixed
     {
         $scope = $this->scopeGeneratorResolver->generate();
         $adherent = $scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $this->security->getUser();

@@ -18,7 +18,7 @@ class CommitteeCandidacyDenormalizer implements DenormalizerInterface
     ) {
     }
 
-    public function denormalize($data, string $class, ?string $format = null, array $context = [])
+    public function denormalize($data, string $class, ?string $format = null, array $context = []): mixed
     {
         if (!isset($data['candidacies_group']) || !isset($data['adherent'])) {
             throw new NotNormalizableValueException('Missing "candidacies_group" or "adherent" or both keys');

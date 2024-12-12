@@ -12,7 +12,7 @@ class UrlDenormalizer implements DenormalizerInterface, DenormalizerAwareInterfa
 {
     use DenormalizerAwareTrait;
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
         $urlProperty = 'url';
         if (is_a($type, BaseEvent::class, true)) {

@@ -27,7 +27,7 @@ class ActionNormalizer implements NormalizerInterface, NormalizerAwareInterface
     }
 
     /** @param Action $object */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $action = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
 

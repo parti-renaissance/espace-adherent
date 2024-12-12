@@ -7,7 +7,7 @@ use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 abstract class AbstractDesignationCandidatureNormalizer extends AbstractIndexerNormalizer
 {
     /** @param CandidacyInterface $object */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $election = $object->getElection();
         $designation = $election->getDesignation();

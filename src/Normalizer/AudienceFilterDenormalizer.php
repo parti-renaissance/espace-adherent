@@ -24,7 +24,7 @@ class AudienceFilterDenormalizer implements DenormalizerInterface, DenormalizerA
     ) {
     }
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
         /** @var AudienceFilter $audienceFilter */
         $audienceFilter = $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);

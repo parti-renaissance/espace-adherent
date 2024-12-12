@@ -13,7 +13,7 @@ class ElectedRepresentativePoliticalFunctionFromIdDenormalizer implements Denorm
     {
     }
 
-    public function denormalize($data, string $type, ?string $format = null, array $context = [])
+    public function denormalize($data, string $type, ?string $format = null, array $context = []): mixed
     {
         if ($function = $this->repository->find($data)) {
             return $function;
