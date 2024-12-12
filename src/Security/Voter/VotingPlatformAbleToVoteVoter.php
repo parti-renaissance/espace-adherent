@@ -35,18 +35,18 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
             }
         }
 
-        $designation = $subject->getDesignation();
-
-        if (!$designation->isLocalPollType() && $adherent->isRenaissanceSympathizer()) {
+        if ($adherent->isRenaissanceSympathizer()) {
             return false;
         }
 
+        $designation = $subject->getDesignation();
+
         if ($designation->isCongressCNType()) {
             if (self::PERMISSION_RESULTS === $attribute) {
-                return $adherent->isVoteInspector() || $adherent->isRenaissanceAdherent();
+                return true;
             }
 
-            if (!$adherent->isRenaissanceAdherent()) {
+            if ($adherent->getRegisteredAt() > $designation->getElectionCreationDate()) {
                 return false;
             }
 
@@ -62,6 +62,10 @@ class VotingPlatformAbleToVoteVoter extends AbstractAdherentVoter
         }
 
         if ($designation->isConsultationType() || $designation->isVoteType()) {
+            if ($adherent->getRegisteredAt() > $designation->getElectionCreationDate()) {
+                return false;
+            }
+
             if ($designation->targetYear) {
                 $foundTargetTag = false;
                 foreach (range($designation->targetYear, date('Y')) as $year) {
