@@ -3,8 +3,10 @@
 namespace App\Adhesion\Handler;
 
 use App\Adherent\Tag\TagEnum;
+use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Command\SendNewPrimoCotisationNotificationCommand;
 use App\Entity\Adherent;
+use App\Entity\Geo\Zone;
 use App\Repository\AdherentRepository;
 use App\ValueObject\Genders;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -41,28 +43,42 @@ class SendNewPrimoCotisationNotificationCommandHandler
             default => '',
         };
 
-        $zoneLine = '';
+        $zoneLines = [];
 
         if ($assemblyZone = $adherent->getAssemblyZone()) {
             $zoneName = $assemblyZone->getName();
             $zoneCode = $assemblyZone->getCode();
-            $zoneLine = "{$zoneCode} - {$zoneName}, ";
+            $zoneLines[] = "{$zoneCode} - {$zoneName}, {$adherent->getCityName()}";
         }
+
+        if ($districts = $adherent->getZonesOfType(Zone::DISTRICT)) {
+            $zoneLines[] = current($districts)->getName();
+        }
+
+        if ($committeeMembership = $adherent->getCommitteeV2Membership()) {
+            $committee = $committeeMembership->getCommittee();
+            $zoneLines[] = \sprintf('%s (%s)', $committee->getName(), $committee->getId());
+        }
+
+        $zoneLines = implode("\n", $zoneLines);
 
         $smsSubscriber = $adherent->hasSmsSubscriptionType() ? '✅' : '❌';
         $emailSubscriber = $adherent->isEmailSubscribed() ? '✅' : '❌';
 
+        $step = AdhesionStepEnum::LABELS[AdhesionStepEnum::getLastFilledStep($adherent->isRenaissanceAdherent(), $adherent->getFinishedAdhesionSteps())] ?? '';
+        $url = $this->urlGenerator->generate('admin_app_adherent_edit', ['id' => $adherent->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+
         $chatMessage = new ChatMessage(
             <<<MESSAGE
-                *{$civility}{$adherent->getFullName()}*
-                {$zoneLine}{$adherent->getCityName()}
+                *{$civility}{$adherent->getFullName()}* ([{$adherent->getId()}]({$url}))
+                {$zoneLines}
                 {$command->amount} €
 
                 {$smsSubscriber} Abonné SMS
                 {$emailSubscriber} Abonné Email
 
                 Création du compte le {$adherent->getRegisteredAt()->format('d/m/Y')}
-                [Voir la fiche]({$this->urlGenerator->generate('admin_app_adherent_edit', ['id' => $adherent->getId()], UrlGeneratorInterface::ABSOLUTE_URL)})
+                {$step}
                 MESSAGE,
             (new TelegramOptions())
                 ->chatId($this->telegramChatIdPrimoAdhesion)
