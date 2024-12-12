@@ -12,7 +12,7 @@ class DesignationDenormalizer implements DenormalizerInterface, DenormalizerAwar
 {
     use DenormalizerAwareTrait;
 
-    public function denormalize($data, string $class, ?string $format = null, array $context = [])
+    public function denormalize($data, string $class, ?string $format = null, array $context = []): mixed
     {
         /** @var Designation $designation */
         $designation = $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);

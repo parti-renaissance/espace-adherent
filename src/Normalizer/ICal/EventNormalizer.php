@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class EventNormalizer implements NormalizerInterface
 {
     /** @param BaseEvent $object */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $eventData = [
             'VEVENT' => [
@@ -37,7 +37,7 @@ class EventNormalizer implements NormalizerInterface
         ];
     }
 
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return ICalEncoder::FORMAT === $format && $data instanceof BaseEvent;
     }

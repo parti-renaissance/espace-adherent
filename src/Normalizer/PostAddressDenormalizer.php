@@ -18,7 +18,7 @@ class PostAddressDenormalizer implements DenormalizerInterface, DenormalizerAwar
     {
     }
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
         /** @var GeoPointInterface $entity */
         $entity = $this->denormalizer->denormalize($data, $type, $format, $context + [__CLASS__ => true]);

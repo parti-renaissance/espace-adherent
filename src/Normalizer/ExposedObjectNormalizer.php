@@ -19,7 +19,7 @@ class ExposedObjectNormalizer implements NormalizerInterface, NormalizerAwareInt
     }
 
     /** @param ExposedObjectInterface $object */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         if (!isset($context[__CLASS__])) {
             $context[__CLASS__] = [];

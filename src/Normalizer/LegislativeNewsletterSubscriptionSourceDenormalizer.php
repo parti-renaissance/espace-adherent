@@ -22,7 +22,7 @@ class LegislativeNewsletterSubscriptionSourceDenormalizer implements Denormalize
     ) {
     }
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
         $context[AbstractNormalizer::OBJECT_TO_POPULATE] = isset($data['email_address']) ? $this->subscriptionRepository->findOneBy(['emailAddress' => $data['email_address']]) : null;
 

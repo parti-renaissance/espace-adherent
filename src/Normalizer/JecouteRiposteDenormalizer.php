@@ -16,7 +16,7 @@ final class JecouteRiposteDenormalizer implements DenormalizerInterface, Denorma
     {
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = []): mixed
     {
         /** @var Riposte $data */
         $data = $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);

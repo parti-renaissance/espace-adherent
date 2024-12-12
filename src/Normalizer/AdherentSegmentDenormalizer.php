@@ -17,7 +17,7 @@ class AdherentSegmentDenormalizer implements DenormalizerInterface, Denormalizer
     {
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = []): mixed
     {
         $data['member_ids'] = $this->adherentRepository->findIdByUuids($data['member_ids']);
 

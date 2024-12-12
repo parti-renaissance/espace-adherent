@@ -19,7 +19,7 @@ class PhoneNumberNormalizer implements NormalizerInterface, DenormalizerInterfac
         $this->util = PhoneNumberUtil::getInstance();
     }
 
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         if (array_intersect(['profile_read', 'phoning_campaign_call_read'], $context['groups'] ?? [])) {
             return [
@@ -31,7 +31,7 @@ class PhoneNumberNormalizer implements NormalizerInterface, DenormalizerInterfac
         return $this->util->format($object, PhoneNumberFormat::INTERNATIONAL);
     }
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
         if (!\is_array($data) && !\is_string($data)) {
             return null;

@@ -15,7 +15,7 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     {
     }
 
-    final public function normalize($object, $format = null, array $context = [])
+    final public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         return [
             'type' => $this->getType(),

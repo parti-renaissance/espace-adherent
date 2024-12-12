@@ -20,7 +20,7 @@ class AdherentBlameableDenormalizer implements DenormalizerInterface, Denormaliz
     ) {
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = []): mixed
     {
         $scope = $this->scopeGeneratorResolver->generate();
         $adherent = $scope && $scope->getDelegatedAccess() ? $scope->getDelegator() : $this->security->getUser();

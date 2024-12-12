@@ -11,7 +11,7 @@ class CommitteeDenormalizer implements DenormalizerInterface, DenormalizerAwareI
 {
     use DenormalizerAwareTrait;
 
-    public function denormalize($data, string $class, ?string $format = null, array $context = [])
+    public function denormalize($data, string $class, ?string $format = null, array $context = []): mixed
     {
         /** @var Committee $committee */
         $committee = $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);

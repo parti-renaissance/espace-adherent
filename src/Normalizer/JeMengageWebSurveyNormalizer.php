@@ -17,7 +17,7 @@ class JeMengageWebSurveyNormalizer implements NormalizerInterface, NormalizerAwa
     }
 
     /** @param Survey $object */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $survey = $this->normalizer->normalize($object, $format, $context + [__CLASS__ => true]);
         $survey['nb_answers'] = $this->dataSurveyRepository->countSurveyDataAnswer($object);

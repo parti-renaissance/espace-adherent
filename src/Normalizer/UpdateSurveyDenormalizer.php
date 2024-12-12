@@ -15,7 +15,7 @@ class UpdateSurveyDenormalizer implements DenormalizerInterface, DenormalizerAwa
 {
     use DenormalizerAwareTrait;
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
         $questionData = $data['questions'] ?? null;
         unset($data['questions']);

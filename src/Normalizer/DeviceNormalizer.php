@@ -18,7 +18,7 @@ class DeviceNormalizer implements NormalizerInterface, NormalizerAwareInterface
      *
      * @return array
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $context[static::ALREADY_CALLED] = true;
 

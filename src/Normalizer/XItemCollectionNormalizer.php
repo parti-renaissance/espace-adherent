@@ -14,7 +14,7 @@ class XItemCollectionNormalizer implements NormalizerInterface, NormalizerAwareI
 
     private const FORMAT = 'json';
 
-    public function normalize($data, $format = null, array $context = [])
+    public function normalize($data, $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         /*
          * Fix: for blocking iri generation from custom routes

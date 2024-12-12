@@ -17,7 +17,7 @@ class CampaignDenormalizer implements DenormalizerInterface, DenormalizerAwareIn
     {
     }
 
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize($data, $class, $format = null, array $context = []): mixed
     {
         /** @var Campaign $data */
         $data = $this->denormalizer->denormalize($data, $class, $format, $context + [__CLASS__ => true]);

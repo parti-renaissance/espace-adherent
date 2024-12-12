@@ -11,7 +11,7 @@ class LimitedProxyDataNormalizer implements NormalizerInterface, NormalizerAware
 {
     use NormalizerAwareTrait;
 
-    public function normalize($object, ?string $format = null, array $context = [])
+    public function normalize($object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $context['groups'] = ['procuration_request_list_proxy'];
 

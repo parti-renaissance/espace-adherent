@@ -17,7 +17,7 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
 {
     use DenormalizerAwareTrait;
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
         if (!empty($context[AbstractNormalizer::OBJECT_TO_POPULATE])) {
             $eventClass = \get_class($context[AbstractNormalizer::OBJECT_TO_POPULATE]);
@@ -62,7 +62,7 @@ class EventDenormalizer implements DenormalizerInterface, DenormalizerAwareInter
         ];
     }
 
-    public function supportsDenormalization($data, $type, $format = null): bool
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return BaseEvent::class === $type;
     }

@@ -13,7 +13,7 @@ class JecouteChoiceFromIdDenormalizer implements DenormalizerInterface
     {
     }
 
-    public function denormalize($data, $type, $format = null, array $context = [])
+    public function denormalize($data, $type, $format = null, array $context = []): mixed
     {
         /** @var Choice $choice */
         if ($choice = $this->repository->find($data)) {
