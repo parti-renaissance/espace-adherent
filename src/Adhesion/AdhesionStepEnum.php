@@ -11,9 +11,19 @@ final class AdhesionStepEnum
     public const ACTIVATION = 'activation';
     public const PASSWORD = 'password';
     public const FURTHER_INFORMATION = 'further_information';
-    public const COMMITTEE = 'committee';
-    public const COMMUNICATION = 'communication';
     public const MEMBER_CARD = 'member_card';
+    public const COMMUNICATION = 'communication';
+    public const COMMITTEE = 'committee';
+
+    public const LABELS = [
+        self::MAIN_INFORMATION => 'Étape 1/7 Compte créé',
+        self::ACTIVATION => 'Étape 2/7 Email validé',
+        self::PASSWORD => 'Étape 3/7 Mot de passe créé',
+        self::FURTHER_INFORMATION => 'Étape 4/7 Date de naissance, mandats et numéro de tel',
+        self::MEMBER_CARD => 'Étape 5/7 Adresse confirmée',
+        self::COMMUNICATION => 'Étape 6/7 Optins communication confirmés',
+        self::COMMITTEE => 'Étape 7/7 Choix du comité confirmé',
+    ];
 
     public static function all(bool $isAdherent): array
     {
@@ -52,6 +62,20 @@ final class AdhesionStepEnum
     public static function getNextStep(bool $isAdherent, array $finishedSteps): ?string
     {
         return self::getNextStepInCollection(self::all($isAdherent), $finishedSteps);
+    }
+
+    public static function getLastFilledStep(bool $isAdherent, array $finishedSteps): ?string
+    {
+        $previousStep = null;
+        foreach (self::all($isAdherent) as $step) {
+            if (!\in_array($step, $finishedSteps)) {
+                break;
+            }
+
+            $previousStep = $step;
+        }
+
+        return $previousStep;
     }
 
     public static function getBesoinDEuropeNextStep(array $finishedSteps): ?string
