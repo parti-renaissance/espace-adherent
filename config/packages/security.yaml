@@ -474,7 +474,7 @@ security:
                 always_use_default_target_path: true
             logout:
                 path: logout
-                target: /
+                target: sonata_admin_dashboard
 
         main:
             context: main_context

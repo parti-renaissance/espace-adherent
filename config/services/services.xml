@@ -13,14 +13,6 @@
         </service>
         <service id="GeoIp2\ProviderInterface" alias="GeoIp2\WebService\Client"/>
 
-        <!-- Security -->
-        <prototype namespace="App\Security\Voter\" resource="../../src/Security/Voter"/>
-
-        <service id="App\Security\Listener\InactiveAdminListener">
-            <argument key="$maxIdleTime">%env(SESSION_MAX_IDLE_TIME)%</argument>
-            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest" />
-        </service>
-
         <!-- DoctrineExtension -->
         <service id="App\Api\Doctrine\VisibleStatusesExtension">
             <tag name="api_platform.doctrine.orm.query_extension.collection" priority="9" />
