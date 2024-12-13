@@ -67,6 +67,7 @@ services:
             $appEnvironment: '%env(APP_ENVIRONMENT)%'
             $googlePlaceApiKey: '%env(GMAPS_PRIVATE_API_KEY)%'
             $voxHost: '%env(VOX_HOST)%'
+            $maxIdleTime: '%env(SESSION_MAX_IDLE_TIME)%'
             $templateWebhookKey: '%env(TEMPLATE_WEBHOOK_KEY)%'
             $telegramChatIdPrimoAdhesion: '%env(TELEGRAM_CHAT_ID_PRIMO_ADHESION)%'
             $telegramChatIdDeclaredMandates: '%env(TELEGRAM_CHAT_ID_DECLARED_MANDATES)%'
