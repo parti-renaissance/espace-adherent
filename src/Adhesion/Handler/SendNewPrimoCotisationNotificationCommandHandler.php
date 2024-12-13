@@ -49,16 +49,22 @@ class SendNewPrimoCotisationNotificationCommandHandler
             $zoneLines[] = "{$assemblyZone->getCode()} - {$assemblyZone->getName()}";
         }
 
-        if ($city = $adherent->getZonesOfType(Zone::CITY)) {
+        if (
+            !$adherent->isForeignResident()
+            && (
+                ($city = $adherent->getZonesOfType(Zone::BOROUGH))
+                || ($city = $adherent->getZonesOfType(Zone::CITY))
+            )
+        ) {
             $city = current($city);
-            $firstPostalCode = $city->getPostalCode()[0] ?? null;
-            $zoneLines[] = "{$firstPostalCode} - {$city->getName()}";
+            $zoneLines[] = "{$city->getCode()} - {$city->getName()}";
         }
 
-        if ($district = $adherent->getZonesOfType(Zone::DISTRICT)) {
+        if (($district = $adherent->getZonesOfType(Zone::DISTRICT)) || ($district = $adherent->getZonesOfType(Zone::FOREIGN_DISTRICT))) {
             $district = current($district);
             $code = explode('-', $district->getCode());
-            $zoneLines[] = "{$district->getCode()} - {$code[1]}e circonscription";
+            $name = $district->isDistrict() ? $code[1].'e circonscription' : $district->getName();
+            $zoneLines[] = "{$district->getCode()} - {$name}";
         }
 
         if ($committeeMembership = $adherent->getCommitteeV2Membership()) {
