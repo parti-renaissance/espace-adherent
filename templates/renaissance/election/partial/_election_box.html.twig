@@ -62,6 +62,8 @@
                             <p>Vous ne pouvez pas voter lors de cette élection.<br/><br/>Seuls les adhérents au 4 novembre 2024, à jour de cotisation sont en capacité de participer à cette élection.<br/>
                             <a href="https://doc.parti.re/congres/circulaire-congres-et-cn-2024-et-annexes.pdf" target="_blank" class="text-blue-600">Voir la circulaire</a></p>
                         {% endif %}
+                    {% elseif (designation.isConsultationType() or designation.isVoteType()) and designation.getElectionCreationDate() and app.user.getRegisteredAt() > designation.getElectionCreationDate() %}
+                        <span>Vous ne pouvez pas participer.</span>
                     {% elseif app.user.isRenaissanceSympathizer() or not app.user.hasActiveMembership() %}
                         {% if app.user.isEligibleForMembershipPayment() %}
                             <div class="flex flex-col items-start md:flex-row md:justify-between md:items-center">
@@ -78,6 +80,8 @@
                                 {% endif %}
                             </div>
                         {% endif %}
+                    {% else %}
+                        <span>Vous ne pouvez pas participer.</span>
                     {% endif %}
                 {% endif %}
             {% elseif voting_platform_election.isResultPeriodActive %}
