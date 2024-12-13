@@ -18,7 +18,6 @@ class InactiveAdminListener implements EventSubscriberInterface
         private readonly Security $security,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly int $maxIdleTime,
-        private readonly string $adminRenaissanceHost,
     ) {
     }
 
@@ -45,7 +44,7 @@ class InactiveAdminListener implements EventSubscriberInterface
             if ($lapse > $this->maxIdleTime) {
                 $this->security->logout(false);
 
-                $event->setResponse(new RedirectResponse($this->urlGenerator->generate('logout', ['app_domain' => $this->adminRenaissanceHost])));
+                $event->setResponse(new RedirectResponse($this->urlGenerator->generate('sonata_admin_dashboard')));
             }
         }
     }
