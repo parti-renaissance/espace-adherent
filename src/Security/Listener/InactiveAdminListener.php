@@ -4,20 +4,29 @@ namespace App\Security\Listener;
 
 use App\Entity\Adherent;
 use App\Entity\Administrator;
-use App\Renaissance\App\UrlGenerator;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class InactiveAdminListener
+class InactiveAdminListener implements EventSubscriberInterface
 {
     public function __construct(
         private readonly RequestStack $requestStack,
-        private readonly TokenStorageInterface $tokenStorage,
-        private readonly UrlGenerator $urlGenerator,
-        private readonly int $maxIdleTime = 0,
+        private readonly Security $security,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly int $maxIdleTime,
+        private readonly string $adminRenaissanceHost,
     ) {
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            RequestEvent::class => 'onKernelRequest',
+        ];
     }
 
     public function onKernelRequest(RequestEvent $event): void
@@ -26,28 +35,17 @@ class InactiveAdminListener
             return;
         }
 
-        if (!$token = $this->tokenStorage->getToken()) {
+        if (!$user = $this->security->getUser()) {
             return;
         }
 
-        $user = $token->getUser();
-
-        $isPreviousAdmin = false;
-        foreach ($token->getRoleNames() as $role) {
-            if ('IS_IMPERSONATOR' == $role) {
-                $isPreviousAdmin = true;
-
-                break;
-            }
-        }
-
-        if ($this->maxIdleTime > 0 && ($user instanceof Administrator || ($user instanceof Adherent && $isPreviousAdmin))) {
+        if ($this->maxIdleTime > 0 && ($user instanceof Administrator || ($user instanceof Adherent && $this->security->isGranted('IS_IMPERSONATOR')))) {
             $lapse = time() - $this->requestStack->getSession()->getMetadataBag()->getLastUsed();
 
             if ($lapse > $this->maxIdleTime) {
-                $this->tokenStorage->setToken(null);
+                $this->security->logout(false);
 
-                $event->setResponse(new RedirectResponse($this->urlGenerator->generateLogout()));
+                $event->setResponse(new RedirectResponse($this->urlGenerator->generate('logout', ['app_domain' => $this->adminRenaissanceHost])));
             }
         }
     }
