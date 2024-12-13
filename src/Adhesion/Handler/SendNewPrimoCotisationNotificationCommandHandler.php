@@ -46,18 +46,24 @@ class SendNewPrimoCotisationNotificationCommandHandler
         $zoneLines = [];
 
         if ($assemblyZone = $adherent->getAssemblyZone()) {
-            $zoneName = $assemblyZone->getName();
-            $zoneCode = $assemblyZone->getCode();
-            $zoneLines[] = "{$zoneCode} - {$zoneName}, {$adherent->getCityName()}";
+            $zoneLines[] = "{$assemblyZone->getCode()} - {$assemblyZone->getName()}";
         }
 
-        if ($districts = $adherent->getZonesOfType(Zone::DISTRICT)) {
-            $zoneLines[] = current($districts)->getName();
+        if ($city = $adherent->getZonesOfType(Zone::CITY)) {
+            $city = current($city);
+            $firstPostalCode = $city->getPostalCode()[0] ?? null;
+            $zoneLines[] = "{$firstPostalCode} - {$city->getName()}";
+        }
+
+        if ($district = $adherent->getZonesOfType(Zone::DISTRICT)) {
+            $district = current($district);
+            $code = explode('-', $district->getCode());
+            $zoneLines[] = "{$district->getCode()} - {$code[1]}e circonscription";
         }
 
         if ($committeeMembership = $adherent->getCommitteeV2Membership()) {
             $committee = $committeeMembership->getCommittee();
-            $zoneLines[] = \sprintf('%s (%s)', $committee->getName(), $committee->getId());
+            $zoneLines[] = \sprintf('%s - %s', $committee->getAssemblyZone()?->getCode(), $committee->getName());
         }
 
         $zoneLines = implode("\n", $zoneLines);
@@ -72,6 +78,7 @@ class SendNewPrimoCotisationNotificationCommandHandler
             <<<MESSAGE
                 *{$civility}{$adherent->getFullName()}* ([{$adherent->getId()}]({$url}))
                 {$zoneLines}
+
                 {$command->amount} €
 
                 {$smsSubscriber} Abonné SMS
