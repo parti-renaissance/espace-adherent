@@ -1,7 +1,6 @@
 @renaissance_user
 @javascript
 @javascript2
-@skip
 Feature:
 
     Scenario: I can become adherent
@@ -23,12 +22,12 @@ Feature:
         And I click the "membership_request_nationality_select_widget" element
         And I click the "#membership_request_nationality_select_widget .re-input-option--selected" selector
         And I fill in the following:
-            | membership_request[firstName]                  | Marine         |
-            | membership_request[lastName]                   | Dupont         |
-            | membership_request[address][address]           | 9 rue du lycée |
-            | membership_request[address][additionalAddress] | app 9          |
-            | membership_request[address][postalCode]        | 06000          |
-            | membership_request[address][cityName]          | Nice           |
+            | membership_request[firstName]                  | Marine                |
+            | membership_request[lastName]                   | Dupont                |
+            | membership_request[address][address]           | 44 rue des courcelles |
+            | membership_request[address][additionalAddress] | app 9                 |
+            | membership_request[address][postalCode]        | 75008                 |
+            | membership_request[address][cityName]          | Paris                 |
         And I click the "membership_request_address_country_select_widget" element
         And I click the "#membership_request_address_country_select_widget .re-input-option--selected" selector
         And I press "Suivant"
@@ -60,7 +59,7 @@ Feature:
         And I press "Valider"
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
         And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
-        And I wait 2 seconds
+        And I wait 1 seconds
         And I click the ".textCenter:last-child a" selector
         And I should be on "/paiement" wait otherwise
         When I simulate IPN call with "00000" code for the last donation of "test@test.com"
@@ -197,8 +196,8 @@ Feature:
         # Finish step
         Then I should be on "/adhesion/felicitations" wait otherwise
         And I should see "Vous êtes désormais adhérent, félicitations !"
-        When I go to "/espace-adherent"
-        Then I should see "Adhérent"
+        When I click the ".re-button" selector
+        Then I should be on "/app"
 
     Scenario: I can pay for new year as adherent RE
         Given the following fixtures are loaded:
@@ -258,9 +257,9 @@ Feature:
         Then I should be on "/adhesion" wait otherwise
         When I click the ".aucomplete-fields-toggle" selector
         And I fill in the following:
-            | membership_request[address][address]    | 9 rue du lycée |
-            | membership_request[address][postalCode] | 06000          |
-            | membership_request[address][cityName]   | Nice           |
+            | membership_request[address][address]    | 44 rue des courcelles |
+            | membership_request[address][postalCode] | 75008                 |
+            | membership_request[address][cityName]   | Paris                 |
         When I press "Suivant"
         And I wait 3 seconds
         And I should see "Cotisation pour l’année 2022"
@@ -281,14 +280,12 @@ Feature:
         And I press "Valider"
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
         And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
-        And I wait 2 seconds
+        And I wait 1 seconds
         And I click the ".textCenter:last-child a" selector
         And I should be on "/paiement" wait otherwise
         When I simulate IPN call with "00000" code for the last donation of "renaissance-user-4@en-marche-dev.fr"
         Then I should be on "/adhesion/felicitations" wait otherwise
         And I should see "Vous êtes à jour de cotisations, félicitations !"
-        When I go to "/espace-adherent"
-        Then I should see "Adhérent"
 
     Scenario: I can become adherent from EM account
         Given the following fixtures are loaded:
@@ -340,9 +337,9 @@ Feature:
         Then I should be on "/adhesion" wait otherwise
         When I click the ".aucomplete-fields-toggle" selector
         And I fill in the following:
-            | membership_request[address][address]    | 9 rue du lycée |
-            | membership_request[address][postalCode] | 06000          |
-            | membership_request[address][cityName]   | Nice           |
+            | membership_request[address][address]    | 44 rue des courcelles |
+            | membership_request[address][postalCode] | 75008                 |
+            | membership_request[address][cityName]   | Paris                 |
         And I press "Suivant"
         And I wait 3 seconds
         And I scroll element "#step_4 #amount_3_label" into view
@@ -365,11 +362,11 @@ Feature:
         And I press "Valider"
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/MYtraitetransaction.cgi" wait otherwise
         And I wait 5 second until I see "PAIEMENT ACCEPTÉ"
-        And I wait 2 seconds
+        And I wait 1 seconds
         And I click the ".textCenter:last-child a" selector
         And I should be on "/paiement" wait otherwise
         When I simulate IPN call with "00000" code for the last donation of "carl999@example.fr"
         Then I should be on "/adhesion/felicitations" wait otherwise
         And I should see "Vous êtes désormais adhérent, félicitations !"
-        When I go to "/espace-adherent"
-        Then I should see "Adhérent"
+        When I click the ".re-button" selector
+        Then I should be on "/app"
