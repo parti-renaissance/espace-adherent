@@ -153,14 +153,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         ;
     }
 
-    /**
-     * Finds an Adherent instance by its unique UUID.
-     */
-    public function findByUuid(string $uuid): ?Adherent
-    {
-        return $this->findOneBy(['uuid' => $uuid]);
-    }
-
     public function loadUserByUuid(UuidInterface $uuid): ?Adherent
     {
         return $this->createQueryBuilderForAdherentWithRoles($alias = 'a')
@@ -863,7 +855,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         if ($filter->committee || $filter->managedCommitteeUuids) {
             $qb
                 ->innerJoin('a.memberships', 'membership')
-                ->innerJoin('membership.committee', 'committee', Join::WITH, 'committee.version = 2')
+                ->innerJoin('membership.committee', 'committee')
                 ->andWhere('a.tags like :adherent_tag')
                 ->setParameter('adherent_tag', TagEnum::ADHERENT.'%')
             ;
@@ -1182,7 +1174,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->createQueryBuilder('exl_adh')
             ->select('DISTINCT exl_adh.id')
             ->innerJoin('exl_adh.memberships', 'exl_membership', Join::WITH, 'exl_membership.trigger = :manual_trigger')
-            ->innerJoin('exl_membership.committee', 'committee', Join::WITH, 'committee.version = 2')
+            ->innerJoin('exl_membership.committee', 'committee')
             ->where('exl_adh.source IS NULL OR exl_adh.source = :source')
         ;
 

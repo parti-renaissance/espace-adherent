@@ -2,25 +2,23 @@
 
 namespace App\Committee;
 
-use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
+use App\Address\AddressInterface;
 use App\Collection\AdherentCollection;
-use App\Collection\CommitteeMembershipCollection;
 use App\Committee\Event\CommitteeEvent;
 use App\Committee\Event\FollowCommitteeEvent;
-use App\Committee\Event\UnfollowCommitteeEvent;
 use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeAdherentMandate;
 use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
 use App\Entity\CommitteeMembership;
+use App\Entity\Geo\Zone;
 use App\Entity\Reporting\CommitteeMembershipAction;
 use App\Entity\Reporting\CommitteeMembershipHistory;
 use App\Events;
 use App\Exception\CommitteeMembershipException;
-use App\Geocoder\Coordinates;
+use App\Geo\ZoneMatcher;
 use App\Membership\UserEvents;
-use App\Repository\AdherentMandate\CommitteeAdherentMandateRepository;
 use App\Repository\AdherentRepository;
 use App\Repository\CommitteeFeedItemRepository;
 use App\Repository\CommitteeMembershipRepository;
@@ -31,20 +29,28 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CommitteeManager
 {
-    private const COMMITTEE_PROPOSALS_COUNT = 3;
-
-    private $entityManager;
-    private $dispatcher;
-    private $mandateRepository;
-
     public function __construct(
-        EntityManagerInterface $entityManager,
-        EventDispatcherInterface $dispatcher,
-        CommitteeAdherentMandateRepository $mandateRepository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly CommitteeMembershipManager $committeeMembershipManager,
+        private readonly CommitteeRepository $committeeRepository,
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly ZoneMatcher $zoneMatcher,
     ) {
-        $this->entityManager = $entityManager;
-        $this->dispatcher = $dispatcher;
-        $this->mandateRepository = $mandateRepository;
+    }
+
+    public function findCommitteeByAddress(AddressInterface $address): ?Committee
+    {
+        if (!$zones = $this->zoneMatcher->match($address)) {
+            return null;
+        }
+
+        foreach ($this->orderZones($zones, true, Zone::COMMITTEE_TYPES) as $zone) {
+            if ($committee = current($this->committeeRepository->findInZones([$zone], false))) {
+                return $committee;
+            }
+        }
+
+        return null;
     }
 
     public function isPromotableHost(Adherent $adherent, Committee $committee): bool
@@ -85,64 +91,12 @@ class CommitteeManager
 
     public function getCommitteeCreator(Committee $committee): ?Adherent
     {
-        return $committee->getCreatedBy() ? $this->getAdherentRepository()->findByUuid($committee->getCreatedBy()) : null;
+        return $committee->getCreatedBy() ? $this->getAdherentRepository()->findOneByUuid($committee->getCreatedBy()) : null;
     }
 
     public function getOptinCommitteeFollowers(Committee $committee): array
     {
         return $this->getAdherentRepository()->findForCommittee($committee);
-    }
-
-    /**
-     * Returns the list of committees that are located near a point of origin.
-     *
-     * @param int $limit
-     *
-     * @return Committee[]
-     */
-    public function getNearbyCommittees(Coordinates $coordinates, $limit = self::COMMITTEE_PROPOSALS_COUNT): array
-    {
-        $data = [];
-        $committees = $this->getCommitteeRepository()->findNearbyCommittees($coordinates, $limit);
-
-        foreach ($committees as $committee) {
-            $data[(string) $committee->getUuid()] = $committee;
-        }
-
-        return $data;
-    }
-
-    /**
-     * @return CommitteeMembershipCollection|CommitteeMembership[]
-     */
-    public function getCommitteeMemberships(Committee $committee): CommitteeMembershipCollection
-    {
-        return $this->getMembershipRepository()->findCommitteeMemberships($committee);
-    }
-
-    public function getCommitteeMembership(Adherent $adherent, Committee $committee): ?CommitteeMembership
-    {
-        // Optimization to prevent a SQL query if the current adherent already
-        // has a loaded list of related committee memberships entities.
-        if ($adherent->hasLoadedMemberships()) {
-            return $adherent->getMembershipFor($committee);
-        }
-
-        return $this->getMembershipRepository()->findMembership($adherent, $committee);
-    }
-
-    /**
-     * @return CommitteeMembership[]
-     */
-    public function getCommitteeMembershipsForAdherent(Adherent $adherent): array
-    {
-        // Optimization to prevent a SQL query if the current adherent already
-        // has a loaded list of related committee memberships entities.
-        if ($adherent->hasLoadedMemberships()) {
-            return $adherent->getMemberships()->getMembershipsForApprovedCommittees();
-        }
-
-        return $this->getMembershipRepository()->findMemberships($adherent)->getMembershipsForApprovedCommittees();
     }
 
     /**
@@ -187,7 +141,7 @@ class CommitteeManager
                 continue;
             }
 
-            $this->followCommittee($adherent, $committee);
+            $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::ADMIN);
         }
 
         $this->entityManager->flush();
@@ -218,7 +172,7 @@ class CommitteeManager
     {
         $committee->refused();
 
-        $memberships = $this->getCommitteeMemberships($committee);
+        $memberships = $this->committeeMembershipManager->getCommitteeMemberships($committee);
         foreach ($memberships as $membership) {
             if ($membership->isHostMember()) {
                 $committee = $this->getCommitteeRepository()->findOneByUuid($membership->getCommittee()->getUuidAsString());
@@ -259,37 +213,6 @@ class CommitteeManager
         Committee $committee,
         ?CommitteeMembershipTriggerEnum $trigger = null,
     ): void {
-        if ($this->getMembershipRepository()->findMembership($adherent, $committee)) {
-            return;
-        }
-
-        $this->entityManager->persist($membership = $adherent->followCommittee($committee));
-        $membership->setTrigger($trigger);
-        $this->entityManager->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::JOIN()));
-
-        $this->entityManager->flush();
-
-        $this->dispatcher->dispatch(new FollowCommitteeEvent($adherent, $committee), Events::COMMITTEE_NEW_FOLLOWER);
-        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
-    }
-
-    /**
-     * Makes an adherent unfollow one committee.
-     *
-     * @param Adherent  $adherent  The follower
-     * @param Committee $committee The committee to follow
-     */
-    public function unfollowCommittee(Adherent $adherent, Committee $committee): void
-    {
-        if ($adherent->hasLoadedMemberships()) {
-            $membership = $adherent->getMembershipFor($committee);
-        } else {
-            $membership = $this->getMembershipRepository()->findMembership($adherent, $committee);
-        }
-
-        if ($membership) {
-            $this->doUnfollowCommittee($membership, $committee);
-        }
     }
 
     /**
@@ -318,25 +241,6 @@ class CommitteeManager
         $this->entityManager->flush();
     }
 
-    private function doUnfollowCommittee(CommitteeMembership $membership, Committee $committee): void
-    {
-        $this->entityManager->remove($membership);
-        $adherent = $membership->getAdherent();
-
-        $committee->updateMembersCount(false, $adherent->isRenaissanceSympathizer(), $adherent->isRenaissanceAdherent());
-
-        $this->entityManager->persist($this->createCommitteeMembershipHistory($membership, CommitteeMembershipAction::LEAVE()));
-
-        $this->entityManager->flush();
-
-        $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
-
-        $this->dispatcher->dispatch(
-            new UnfollowCommitteeEvent($membership->getAdherent(), $committee),
-            UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE
-        );
-    }
-
     private function getCommitteeRepository(): CommitteeRepository
     {
         return $this->entityManager->getRepository(Committee::class);
@@ -363,7 +267,7 @@ class CommitteeManager
         string $privilege,
         bool $flush = true,
     ): void {
-        if (!$committeeMembership = $this->getCommitteeMembership($adherent, $committee)) {
+        if (!$committeeMembership = $this->committeeMembershipManager->getCommitteeMembership($adherent, $committee)) {
             return;
         }
 
@@ -382,25 +286,7 @@ class CommitteeManager
         return $committees;
     }
 
-    public function hasCommitteeInStatus(Adherent $adherent, array $status): bool
-    {
-        return $this->getCommitteeRepository()->hasCommitteeInStatus($adherent, $status);
-    }
-
-    public function getAvailableMandateTypesFor(Committee $committee): array
-    {
-        return array_diff(
-            CommitteeAdherentMandateTypeEnum::getTypesForCreation(),
-            array_map(function (CommitteeAdherentMandate $mandate) {
-                return $mandate->getType();
-            }, $this->mandateRepository->findAllActiveMandatesForCommittee($committee)));
-    }
-
-    public function hasAvailableMandateTypesFor(Committee $committee): bool
-    {
-        return \count($this->getAvailableMandateTypesFor($committee)) > 0;
-    }
-
+    // Move to the listener
     private function createCommitteeMembershipHistory(
         CommitteeMembership $membership,
         CommitteeMembershipAction $action,
@@ -435,5 +321,20 @@ class CommitteeManager
         }
 
         $this->dispatcher->dispatch(new FollowCommitteeEvent($adherent, $membership->getCommittee()), UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE);
+    }
+
+    /**
+     * @return Zone[]
+     */
+    private function orderZones(array $zones, bool $flattenParents = false, array $types = []): array
+    {
+        $flattenZones = $flattenParents ? $this->zoneMatcher->flattenZones($zones, $types) : $zones;
+
+        usort(
+            $flattenZones,
+            fn (Zone $a, Zone $b) => array_search($a->getType(), Zone::COMMITTEE_TYPES) <=> array_search($b->getType(), Zone::COMMITTEE_TYPES)
+        );
+
+        return $flattenZones;
     }
 }

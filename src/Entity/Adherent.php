@@ -1187,6 +1187,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         \DateTimeInterface $subscriptionDate,
         ?CommitteeMembershipTriggerEnum $trigger = null,
     ): CommitteeMembership {
+        // todo: ??
         $committee->updateMembersCount(true, $this->isRenaissanceSympathizer(), $this->isRenaissanceAdherent());
 
         return CommitteeMembership::createForAdherent($committee, $this, $privilege, $subscriptionDate, $trigger);
@@ -1290,7 +1291,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[SerializedName('committee_membership')]
     public function getCommitteeV2Membership(): ?CommitteeMembership
     {
-        return current($this->getMemberships()->getCommitteeV2Memberships()) ?: null;
+        return $this->getMemberships()->first() ?: null;
     }
 
     public function hasVotingCommitteeMembership(): bool

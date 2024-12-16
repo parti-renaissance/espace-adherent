@@ -3,6 +3,7 @@
 namespace App\Twig;
 
 use App\Committee\CommitteeManager;
+use App\Committee\CommitteeMembershipManager;
 use App\Committee\CommitteePermissionEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
@@ -13,18 +14,12 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class CommitteeRuntime implements RuntimeExtensionInterface
 {
-    private $authorizationChecker;
-    private $committeeManager;
-    private $committeeCandidacyRepository;
-
     public function __construct(
-        AuthorizationCheckerInterface $authorizationChecker,
-        CommitteeCandidacyRepository $committeeCandidacyRepository,
-        ?CommitteeManager $committeeManager = null,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly CommitteeCandidacyRepository $committeeCandidacyRepository,
+        private readonly CommitteeManager $committeeManager,
+        private readonly CommitteeMembershipManager $committeeMembershipManager,
     ) {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->committeeCandidacyRepository = $committeeCandidacyRepository;
-        $this->committeeManager = $committeeManager;
     }
 
     public function isPromotableHost(Adherent $adherent, Committee $committee): bool
@@ -77,7 +72,7 @@ class CommitteeRuntime implements RuntimeExtensionInterface
 
     public function isCandidate(Adherent $adherent, Committee $committee): bool
     {
-        $membership = $this->committeeManager->getCommitteeMembership($adherent, $committee);
+        $membership = $this->committeeMembershipManager->getCommitteeMembership($adherent, $committee);
 
         return $membership && $membership->isVotingCommittee() && $membership->getCommitteeCandidacy($committee->getCommitteeElection());
     }

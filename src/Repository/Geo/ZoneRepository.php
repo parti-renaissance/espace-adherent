@@ -143,7 +143,6 @@ class ZoneRepository extends ServiceEntityRepository
                 ->select('DISTINCT committee_zone.id')
                 ->from(Committee::class, 'committee')
                 ->innerJoin('committee.zones', 'committee_zone')
-                ->where('committee.version = 2')
             ;
 
             $qb

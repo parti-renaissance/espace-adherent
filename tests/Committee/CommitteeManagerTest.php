@@ -74,7 +74,7 @@ class CommitteeManagerTest extends AbstractKernelTestCase
 
     public function testMembershipEventIsRecordedWhenFollowOrUnfollowCommittee(): void
     {
-        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_1_UUID);
+        $adherent = $this->getAdherentRepository()->findOneByUuid(LoadAdherentData::ADHERENT_1_UUID);
         $committee = $this->getCommitteeRepository()->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_1_UUID);
 
         $this->committeeManager->followCommittee($adherent, $committee);
@@ -102,7 +102,7 @@ class CommitteeManagerTest extends AbstractKernelTestCase
 
     public function testFollowThenUnfollowCommittees(): void
     {
-        $adherent = $this->getAdherentRepository()->findByUuid(LoadAdherentData::ADHERENT_1_UUID);
+        $adherent = $this->getAdherentRepository()->findOneByUuid(LoadAdherentData::ADHERENT_1_UUID);
         $committee = $this->getCommitteeRepository()->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_1_UUID);
 
         $this->assertCount(0, $this->getCommitteeMembershipRepository()->findMemberships($adherent));

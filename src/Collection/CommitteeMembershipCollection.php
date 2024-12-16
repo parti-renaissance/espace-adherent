@@ -4,22 +4,11 @@ namespace App\Collection;
 
 use App\Entity\CommitteeMembership;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
 
 class CommitteeMembershipCollection extends ArrayCollection
 {
     public const INCLUDE_SUPERVISORS = 1;
     public const EXCLUDE_SUPERVISORS = 2;
-
-    public function getAdherentUuids(): array
-    {
-        return array_map(
-            function (CommitteeMembership $membership) {
-                return (string) $membership->getAdherentUuid();
-            },
-            $this->getValues()
-        );
-    }
 
     public function getCommitteeUuids(): array
     {
@@ -36,11 +25,6 @@ class CommitteeMembershipCollection extends ArrayCollection
         return \count($this->filter(function (CommitteeMembership $membership) {
             return $membership->isHostMember();
         }));
-    }
-
-    public function countCommitteeSupervisorMemberships(): int
-    {
-        return $this->getCommitteeSupervisorMemberships()->count();
     }
 
     public function getCommitteeHostMemberships(int $withSupervisors = self::INCLUDE_SUPERVISORS): self
@@ -71,13 +55,6 @@ class CommitteeMembershipCollection extends ArrayCollection
         });
     }
 
-    public function getCommitteeSupervisorMemberships(): self
-    {
-        return $this->filter(function (CommitteeMembership $membership) {
-            return $membership->isSupervisor();
-        });
-    }
-
     /**
      * @return CommitteeMembership[]
      */
@@ -88,13 +65,6 @@ class CommitteeMembershipCollection extends ArrayCollection
                 return $membership->getCommittee()->isApproved();
             })->toArray()
         );
-    }
-
-    public function getCommitteeMembershipsInWaitingForApproval(): self
-    {
-        return $this->filter(function (CommitteeMembership $membership) {
-            return $membership->getCommittee()->isWaitingForApproval() && !$membership->isHostMember();
-        });
     }
 
     public function merge(self $other): void
@@ -115,16 +85,6 @@ class CommitteeMembershipCollection extends ArrayCollection
         }
 
         return null;
-    }
-
-    /**
-     * @return CommitteeMembership[]
-     */
-    public function getCommitteeV2Memberships(): array
-    {
-        return $this->matching(
-            Criteria::create()->where(Criteria::expr()->eq('committee.version', 2))
-        )->toArray();
     }
 
     public function getCommitteeCandidacyMembership(?bool $confirmed = null): ?CommitteeMembership

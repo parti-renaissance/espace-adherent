@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter\Committee;
 
-use App\Committee\CommitteeManager;
+use App\Committee\CommitteeAdherentMandateManager;
 use App\Committee\CommitteePermissionEnum;
 use App\Entity\Administrator;
 use App\Entity\Committee;
@@ -10,11 +10,8 @@ use App\Security\Voter\Admin\AbstractAdminVoter;
 
 class ManageCommitteeMandatesVoter extends AbstractAdminVoter
 {
-    private $committeeManager;
-
-    public function __construct(CommitteeManager $committeeManager)
+    public function __construct(private readonly CommitteeAdherentMandateManager $committeeAdherentMandateManager)
     {
-        $this->committeeManager = $committeeManager;
     }
 
     protected function supports(string $attribute, $subject): bool
@@ -33,7 +30,7 @@ class ManageCommitteeMandatesVoter extends AbstractAdminVoter
         }
 
         if (CommitteePermissionEnum::ADD_MANDATE === $attribute) {
-            return $this->committeeManager->hasAvailableMandateTypesFor($committee);
+            return $this->committeeAdherentMandateManager->hasAvailableMandateTypesFor($committee);
         }
 
         return true;

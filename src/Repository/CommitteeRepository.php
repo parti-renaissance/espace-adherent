@@ -211,7 +211,6 @@ class CommitteeRepository extends ServiceEntityRepository
                 FROM committees c2
                 INNER JOIN committees_memberships cm ON cm.committee_id = c2.id
                 INNER JOIN adherents a ON a.id = cm.adherent_id
-                WHERE c2.version = 2
                 GROUP BY c2.id
             ) AS t ON t.id = c.id
             SET
@@ -219,39 +218,6 @@ class CommitteeRepository extends ServiceEntityRepository
                 c.members_em_count = t.members_em_count,
                 c.sympathizers_count = t.sympathizers_count'
         );
-    }
-
-    /**
-     * @param Zone[] $zones
-     */
-    public function countForZones(array $zones): int
-    {
-        $qb = $this
-            ->createQueryBuilder('c')
-            ->select('COUNT(DISTINCT c.id)')
-            ->where('c.status = :status AND c.version = 1')
-            ->setParameters([
-                'status' => Committee::APPROVED,
-            ])
-        ;
-
-        $this->withGeoZones(
-            $zones,
-            $qb,
-            'c',
-            Committee::class,
-            'c2',
-            'zones',
-            'z2',
-            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(\sprintf('%s.status = :status', $entityClassAlias));
-            }
-        );
-
-        return (int) $qb
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
     }
 
     public function findManagedByCoordinator(Adherent $coordinator, CommitteeFilter $filter): array
@@ -264,7 +230,6 @@ class CommitteeRepository extends ServiceEntityRepository
             ->select('c')
             ->orderBy('c.name', 'ASC')
             ->orderBy('c.createdAt', 'DESC')
-            ->where('c.version = 1')
         ;
 
         $this->withGeoZones(
@@ -305,28 +270,13 @@ class CommitteeRepository extends ServiceEntityRepository
         }
 
         return $qb
-            ->andWhere('n.status = :status AND n.version = 1')
+            ->andWhere('n.status = :status')
             ->setParameter('status', Committee::APPROVED)
             ->setFirstResult($search->getOffset())
             ->setMaxResults($search->getMaxResults())
             ->getQuery()
             ->getResult()
         ;
-    }
-
-    public function hasCommitteeInStatus(Adherent $adherent, array $status): bool
-    {
-        $nb = $this->createQueryBuilder('c')
-            ->select('COUNT(c) AS nb')
-            ->where('c.createdBy = :creator')
-            ->andWhere('c.status IN (:status)')
-            ->setParameter('creator', $adherent->getUuid()->toString())
-            ->setParameter('status', $status)
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-
-        return $nb > 0;
     }
 
     public function findCommitteesUuidByCreatorUuids(array $creatorsUuid): array
@@ -391,7 +341,7 @@ class CommitteeRepository extends ServiceEntityRepository
         int $limit = SearchParametersFilter::DEFAULT_MAX_RESULTS,
     ): Paginator {
         $query = $this->createQueryBuilder('c')
-            ->andWhere('c.status = :approved AND c.version = 1')
+            ->andWhere('c.status = :approved')
             ->setParameter('approved', Committee::APPROVED)
             ->getQuery()
             ->setMaxResults($limit)
@@ -401,13 +351,12 @@ class CommitteeRepository extends ServiceEntityRepository
         return new Paginator($query);
     }
 
-    public function createQueryBuilderForZones(array $zones, int $version, bool $withZoneParents = true): QueryBuilder
+    public function createQueryBuilderForZones(array $zones, bool $withZoneParents = true): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c')
-            ->andWhere('c.status = :status AND c.version = :version')
+            ->andWhere('c.status = :status')
             ->setParameters([
                 'status' => Committee::APPROVED,
-                'version' => $version,
             ])
             ->orderBy('c.name', 'ASC')
             ->addOrderBy('c.createdAt', 'DESC')
@@ -429,13 +378,13 @@ class CommitteeRepository extends ServiceEntityRepository
     /**
      * @return Committee[]
      */
-    public function findInZones(array $zones, int $version = 2, bool $withZoneParents = true): array
+    public function findInZones(array $zones, bool $withZoneParents = true): array
     {
         if (!$zones) {
             return [];
         }
 
-        return $this->createQueryBuilderForZones($zones, $version, $withZoneParents)->getQuery()->getResult();
+        return $this->createQueryBuilderForZones($zones, $withZoneParents)->getQuery()->getResult();
     }
 
     public function findInAdherentZone(Adherent $adherent): array
@@ -561,7 +510,7 @@ class CommitteeRepository extends ServiceEntityRepository
                     ->andWhere('(designation2.voteEndDate IS NULL OR :now <= designation2.voteEndDate)')
                     ->getDQL()
             ))
-            ->where('c.status = :status AND c.version = 1')
+            ->where('c.status = :status')
             ->setParameters([
                 'status' => Committee::APPROVED,
                 'male' => Genders::MALE,
@@ -594,7 +543,7 @@ class CommitteeRepository extends ServiceEntityRepository
     {
         $qb = $this
             ->createQueryBuilder('c')
-            ->where('c.createdAt > :from AND c.version = 1')
+            ->where('c.createdAt > :from')
             ->setParameter('from', new \DateTime('2021-01-01 00:00:00'))
         ;
 

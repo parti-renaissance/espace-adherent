@@ -2,6 +2,7 @@
 
 namespace App\Committee;
 
+use App\Admin\Committee\CommitteeAdherentMandateTypeEnum;
 use App\Committee\DTO\CommitteeAdherentMandateCommand;
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Entity\Adherent;
@@ -24,29 +25,13 @@ class CommitteeAdherentMandateManager
         self::FINISH_ACTION,
     ];
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
-    /** @var CommitteeManager */
-    private $committeeManager;
-    /** @var CommitteeAdherentMandateRepository */
-    private $mandateRepository;
-    /** @var ElectedRepresentativeRepository */
-    private $electedRepresentativeRepository;
-    /** @var TranslatorInterface */
-    private $translator;
-
     public function __construct(
-        EntityManagerInterface $entityManager,
-        CommitteeAdherentMandateRepository $mandateRepository,
-        ElectedRepresentativeRepository $electedRepresentativeRepository,
-        CommitteeManager $committeeManager,
-        TranslatorInterface $translator,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly CommitteeAdherentMandateRepository $mandateRepository,
+        private readonly ElectedRepresentativeRepository $electedRepresentativeRepository,
+        private readonly CommitteeMembershipManager $committeeMembershipManager,
+        private readonly TranslatorInterface $translator,
     ) {
-        $this->entityManager = $entityManager;
-        $this->mandateRepository = $mandateRepository;
-        $this->electedRepresentativeRepository = $electedRepresentativeRepository;
-        $this->committeeManager = $committeeManager;
-        $this->translator = $translator;
     }
 
     public function createMandate(Adherent $adherent, Committee $committee): void
@@ -102,7 +87,7 @@ class CommitteeAdherentMandateManager
         $newMandate = CommitteeAdherentMandate::createFromCommand($command);
 
         if (!$adherent->getMembershipFor($committee)) {
-            $this->committeeManager->followCommittee($adherent, $committee);
+            $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::MANUAL);
         }
 
         $mandate->end(new \DateTime(), AdherentMandateInterface::REASON_REPLACED);
@@ -120,7 +105,7 @@ class CommitteeAdherentMandateManager
         $committee = $mandateCommand->getCommittee();
 
         if (!$adherent->getMembershipFor($committee)) {
-            $this->committeeManager->followCommittee($adherent, $committee);
+            $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::MANUAL);
         }
 
         $this->entityManager->persist($newMandate);
@@ -170,6 +155,20 @@ class CommitteeAdherentMandateManager
             || $this->electedRepresentativeRepository->hasActiveParliamentaryMandate($adherent)) {
             $this->throwException('adherent_mandate.committee.adherent.not_valid');
         }
+    }
+
+    public function getAvailableMandateTypesFor(Committee $committee): array
+    {
+        return array_diff(
+            CommitteeAdherentMandateTypeEnum::getTypesForCreation(),
+            array_map(function (CommitteeAdherentMandate $mandate) {
+                return $mandate->getType();
+            }, $this->mandateRepository->findAllActiveMandatesForCommittee($committee)));
+    }
+
+    public function hasAvailableMandateTypesFor(Committee $committee): bool
+    {
+        return \count($this->getAvailableMandateTypesFor($committee)) > 0;
     }
 
     private function checkAdherentForSupervisorMandate(Adherent $adherent): void

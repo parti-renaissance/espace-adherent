@@ -799,11 +799,6 @@ class Committee implements SynchronizedEntity, StaticSegmentInterface, AddressHo
         return $this->version;
     }
 
-    public function isVersion2(): bool
-    {
-        return 2 === $this->version;
-    }
-
     public function allowMembershipsMoving(): bool
     {
         $designation = $this->getCurrentDesignation();

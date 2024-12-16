@@ -29,7 +29,7 @@ class DeputyController extends AbstractController
     ): Response {
         return $this->render('deputy/committees_list.html.twig', [
             'managedCommitteesJson' => $committeesExporter->exportAsJson(
-                $committeeRepository->findInZones([$this->getMainUser($request->getSession())->getDeputyZone()], 1)
+                $committeeRepository->findInZones([$this->getMainUser($request->getSession())->getDeputyZone()])
             ),
         ]);
     }

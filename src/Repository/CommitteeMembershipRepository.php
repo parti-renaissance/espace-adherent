@@ -73,12 +73,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
 
     public function findMembership(Adherent $adherent, Committee $committee): ?CommitteeMembership
     {
-        $query = $this
-            ->createMembershipQueryBuilder($adherent, $committee)
-            ->getQuery()
-        ;
-
-        return $query->getOneOrNullResult();
+        return $this->createMembershipQueryBuilder($adherent, $committee)->getQuery()->getOneOrNullResult();
     }
 
     /**
@@ -607,33 +602,24 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         ;
     }
 
-    private function createQueryBuilderForVotingMemberships(
-        Committee $committee,
-        Designation $designation,
-        bool $onlyCertified = true,
-    ): QueryBuilder {
+    private function createQueryBuilderForVotingMemberships(Committee $committee, Designation $designation, bool $onlyCertified = true): QueryBuilder
+    {
         $refDate = \DateTimeImmutable::createFromMutable($designation->getVoteEndDate());
 
         $qb = $this->createQueryBuilder('membership')
             ->innerJoin('membership.adherent', 'adherent')
             ->where('membership.committee = :committee')
             ->andWhere('membership.joinedAt <= :joined_at_min')
+            ->andWhere('adherent.tags LIKE :adherent_tag')
             ->setParameters([
                 'committee' => $committee,
-                'joined_at_min' => $designation->isCommitteeSupervisorType() && $committee->isVersion2() ? $designation->getElectionCreationDate() : $refDate->modify('-30 days'),
+                'adherent_tag' => TagEnum::ADHERENT.'%',
+                'joined_at_min' => $designation->isCommitteeSupervisorType() ? $designation->getElectionCreationDate() : $refDate->modify('-30 days'),
             ])
         ;
 
-        if ($committee->isVersion2()) {
-            $qb
-                ->andWhere('adherent.tags LIKE :adherent_tag')
-                ->setParameter('adherent_tag', TagEnum::ADHERENT.'%')
-            ;
-        } else {
-            $qb
-                ->andWhere('adherent.registeredAt <= :registered_at_min'.($onlyCertified ? ' AND adherent.certifiedAt IS NOT NULL' : ''))
-                ->setParameter('registered_at_min', $refDate->modify('-3 months'))
-            ;
+        if ($onlyCertified) {
+            $qb->andWhere('adherent.certifiedAt IS NOT NULL');
         }
 
         if (!$designation->isLimited()) {

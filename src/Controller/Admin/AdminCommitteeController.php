@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Committee\CommitteeAdherentMandateManager;
 use App\Committee\CommitteeManagementAuthority;
 use App\Committee\CommitteeManager;
+use App\Committee\CommitteeMembershipManager;
 use App\Committee\DTO\CommitteeAdherentMandateCommand;
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Entity\Adherent;
@@ -81,12 +82,11 @@ class AdminCommitteeController extends AbstractController
 
     #[IsGranted('ROLE_ADMIN_TERRITOIRES_COMMITTEES')]
     #[Route(path: '/{id}/members', name: 'app_admin_committee_members', methods: ['GET'])]
-    public function membersAction(CommitteeManager $manager, Committee $committee): Response
+    public function membersAction(CommitteeMembershipManager $manager, Committee $committee): Response
     {
         return $this->render('admin/committee/members.html.twig', [
             'committee' => $committee,
             'memberships' => $memberships = $manager->getCommitteeMemberships($committee),
-            'supervisors_count' => $memberships->countCommitteeSupervisorMemberships(),
             'active_mandates_adherent_ids' => $this->mandateRepository->findActiveMandateAdherentIds($committee),
         ]);
     }
@@ -105,11 +105,11 @@ class AdminCommitteeController extends AbstractController
     public function addMandateAction(
         Request $request,
         Committee $committee,
-        CommitteeManager $committeeManager,
+        CommitteeAdherentMandateManager $committeeAdherentMandateManager,
     ): Response {
         $newMandateCommand = new CommitteeAdherentMandateCommand($committee);
         $form = $this->createForm(CommitteeMandateCommandType::class, $newMandateCommand, [
-            'types' => $committeeManager->getAvailableMandateTypesFor($committee),
+            'types' => $committeeAdherentMandateManager->getAvailableMandateTypesFor($committee),
         ]);
         $form->handleRequest($request);
 

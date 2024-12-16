@@ -3,6 +3,7 @@
 namespace App\Adherent\Listener;
 
 use App\Address\AddressInterface;
+use App\Committee\CommitteeManager;
 use App\Committee\CommitteeMembershipManager;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\PostAddress;
@@ -16,7 +17,8 @@ class AssignCommitteeByAdherentAddressListener implements EventSubscriberInterfa
     private ?PostAddress $beforeAddress = null;
 
     public function __construct(
-        private readonly CommitteeMembershipManager $committeeManager,
+        private readonly CommitteeMembershipManager $committeeMembershipManager,
+        private readonly CommitteeManager $committeeManager,
         private readonly VoterRepository $voterRepository,
     ) {
     }
@@ -60,7 +62,7 @@ class AssignCommitteeByAdherentAddressListener implements EventSubscriberInterfa
         }
 
         if ($isDptChanged || !$this->voterRepository->isInVoterListForCommitteeElection($adherent)) {
-            $this->committeeManager->followCommittee($adherent, $committeeByAddress, CommitteeMembershipTriggerEnum::ADDRESS_UPDATE);
+            $this->committeeMembershipManager->followCommittee($adherent, $committeeByAddress, CommitteeMembershipTriggerEnum::ADDRESS_UPDATE);
         }
     }
 

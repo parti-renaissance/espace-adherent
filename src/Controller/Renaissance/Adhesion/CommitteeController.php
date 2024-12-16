@@ -3,6 +3,7 @@
 namespace App\Controller\Renaissance\Adhesion;
 
 use App\Adhesion\AdhesionStepEnum;
+use App\Committee\CommitteeManager;
 use App\Committee\CommitteeMembershipManager;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
@@ -20,6 +21,7 @@ class CommitteeController extends AbstractController
 
     public function __construct(
         private readonly CommitteeMembershipManager $committeeMembershipManager,
+        private readonly CommitteeManager $committeeManager,
         private readonly CommitteeRepository $committeeRepository,
         private readonly EntityManagerInterface $entityManager,
     ) {
@@ -45,7 +47,7 @@ class CommitteeController extends AbstractController
 
         $committees = $this->committeeRepository->findInAdherentZone($adherent);
 
-        if (!$defaultCommittee = $this->committeeMembershipManager->findCommitteeByAddress($adherent->getPostAddress())) {
+        if (!$defaultCommittee = $this->committeeManager->findCommitteeByAddress($adherent->getPostAddress())) {
             $defaultCommittee = $committees[0] ?? null;
         }
 

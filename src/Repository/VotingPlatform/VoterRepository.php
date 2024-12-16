@@ -141,46 +141,6 @@ class VoterRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    /**
-     * @return Voter[]|array
-     */
-    public function findVotersToRemindForElection(Election $election): array
-    {
-        return $this->createQueryBuilder('voter')
-            ->addSelect('adherent')
-            ->innerJoin('voter.votersLists', 'list')
-            ->innerJoin('list.election', 'election')
-            ->innerJoin('voter.adherent', 'adherent')
-            ->leftJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound = :current_round')
-            ->andWhere('list.election = :election')
-            ->andWhere('vote IS NULL')
-            ->setParameters([
-                'election' => $election,
-                'current_round' => $election->getCurrentRound(),
-            ])
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    /**
-     * @return Voter[]
-     */
-    public function findVotedForElection(Election $election): array
-    {
-        return $this->createQueryBuilder('voter')
-            ->addSelect('adherent')
-            ->innerJoin('voter.adherent', 'adherent')
-            ->innerJoin(Vote::class, 'vote', Join::WITH, 'vote.voter = voter AND vote.electionRound IN (:election_rounds)')
-            ->setParameters([
-                'election_rounds' => $election->getElectionRounds(),
-            ])
-            ->groupBy('voter.id')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     public function isInVoterListForCommitteeElection(
         Adherent $adherent,
         ?Committee $committee = null,
@@ -192,7 +152,7 @@ class VoterRepository extends ServiceEntityRepository
                 ->innerJoin('list.election', 'election')
                 ->innerJoin('election.designation', 'designation', Join::WITH, 'designation.type = :designation_type')
                 ->innerJoin('election.electionEntity', 'election_entity')
-                ->innerJoin('election_entity.committee', 'committee', Join::WITH, 'committee.version = 2')
+                ->innerJoin('election_entity.committee', 'committee')
                 ->where('voter.adherent = :adherent')
                 ->setParameters([
                     'adherent' => $adherent,
