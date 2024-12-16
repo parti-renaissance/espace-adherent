@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Adherent;
 use App\Entity\SubscriptionType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -27,17 +26,6 @@ class SubscriptionTypeRepository extends ServiceEntityRepository
     public function findOneByCode(string $code): ?SubscriptionType
     {
         return $this->findOneBy(['code' => $code]);
-    }
-
-    public function addToAdherent(Adherent $adherent, array $types): void
-    {
-        $subscriptionTypes = $this->findBy(['code' => $types]);
-
-        foreach ($subscriptionTypes as $subscriptionType) {
-            if (!$adherent->hasSubscriptionType($subscriptionType->getCode())) {
-                $adherent->addSubscriptionType($subscriptionType);
-            }
-        }
     }
 
     /**

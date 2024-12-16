@@ -35,7 +35,7 @@ class NotificationPreferencesController extends AbstractController
         ;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $subscriptionHandler->handleChanges($adherent, $oldEmailsSubscriptions);
+            $subscriptionHandler->handleUpdateSubscription($adherent, []);
 
             $this->addFlash('info', 'adherent.set_emails_notifications.success');
 

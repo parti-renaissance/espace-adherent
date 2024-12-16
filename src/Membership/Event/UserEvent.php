@@ -3,27 +3,25 @@
 namespace App\Membership\Event;
 
 use App\Entity\Adherent;
+use App\Geocoder\GeocodableEntityEventInterface;
+use App\Geocoder\GeocodableInterface;
+use App\Geocoder\GeoHashChangeAwareTrait;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class UserEvent extends Event
+class UserEvent extends Event implements GeocodableEntityEventInterface
 {
-    private Adherent $user;
-    private ?bool $allowEmailNotifications;
-    private ?bool $allowMobileNotifications;
+    use GeoHashChangeAwareTrait;
 
     public function __construct(
-        Adherent $adherent,
-        ?bool $allowEmailNotifications = null,
-        ?bool $allowMobileNotifications = null,
+        private readonly Adherent $adherent,
+        private readonly ?bool $allowEmailNotifications = null,
+        private readonly ?bool $allowMobileNotifications = null,
     ) {
-        $this->user = $adherent;
-        $this->allowEmailNotifications = $allowEmailNotifications;
-        $this->allowMobileNotifications = $allowMobileNotifications;
     }
 
-    public function getUser(): Adherent
+    public function getAdherent(): Adherent
     {
-        return $this->user;
+        return $this->adherent;
     }
 
     public function allowEmailNotifications(): ?bool
@@ -34,5 +32,10 @@ class UserEvent extends Event
     public function allowMobileNotifications(): ?bool
     {
         return $this->allowMobileNotifications;
+    }
+
+    public function getGeocodableEntity(): GeocodableInterface
+    {
+        return $this->adherent;
     }
 }

@@ -29,12 +29,12 @@ class DeclaredMandateChangeListener implements EventSubscriberInterface
 
     public function beforeUpdate(UserEvent $event): void
     {
-        $this->oldDeclaredMandates = $event->getUser()->getMandates();
+        $this->oldDeclaredMandates = $event->getAdherent()->getMandates();
     }
 
     public function afterUpdate(UserEvent $event): void
     {
-        $adherent = $event->getUser();
+        $adherent = $event->getAdherent();
         $newDeclaredMandates = $adherent->getMandates();
 
         $addedMandates = array_diff($newDeclaredMandates, $this->oldDeclaredMandates);

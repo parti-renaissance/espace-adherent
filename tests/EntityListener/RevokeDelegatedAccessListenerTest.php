@@ -17,12 +17,10 @@ class RevokeDelegatedAccessListenerTest extends AbstractKernelTestCase
 
         $this->assertCount(3, $this->manager->getRepository(DelegatedAccess::class)->findBy(['delegator' => $deputy]));
 
-        $this->getEventDispatcher()->dispatch(new UserEvent($deputy), UserEvents::USER_BEFORE_UPDATE);
-
         $deputy->removeZoneBasedRole($deputy->findZoneBasedRole(ScopeEnum::DEPUTY));
         $this->manager->flush();
 
-        $this->getEventDispatcher()->dispatch(new UserEvent($deputy), UserEvents::USER_UPDATED);
+        $this->getEventDispatcher()->dispatch(new UserEvent($deputy), UserEvents::USER_UPDATED_IN_ADMIN);
 
         $this->assertCount(0, $this->manager->getRepository(DelegatedAccess::class)->findBy(['delegator' => $deputy]));
     }

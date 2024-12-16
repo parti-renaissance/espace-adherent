@@ -11,13 +11,10 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class FirebaseTopicSubscriber implements EventSubscriberInterface
 {
-    private MessageBusInterface $bus;
-
     private ?PostAddress $addressBefore = null;
 
-    public function __construct(MessageBusInterface $bus)
+    public function __construct(private readonly MessageBusInterface $bus)
     {
-        $this->bus = $bus;
     }
 
     public static function getSubscribedEvents(): array
@@ -30,12 +27,12 @@ class FirebaseTopicSubscriber implements EventSubscriberInterface
 
     public function onBeforeUpdate(UserEvent $event): void
     {
-        $this->addressBefore = clone $event->getUser()->getPostAddress();
+        $this->addressBefore = clone $event->getAdherent()->getPostAddress();
     }
 
     public function onAfterUpdate(UserEvent $event): void
     {
-        $adherent = $event->getUser();
+        $adherent = $event->getAdherent();
 
         if ($this->addressBefore && !$adherent->getPostAddress()->equals($this->addressBefore)) {
             $this->bus->dispatch(new UpdateFirebaseTopicsCommand($adherent->getUuid()));

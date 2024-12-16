@@ -7,8 +7,6 @@ use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Request\MembershipRequest;
 use App\Entity\Adherent;
 use App\Form\MemberCardType;
-use App\Membership\AdherentEvents;
-use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Referent\ReferentZoneManager;
@@ -73,7 +71,6 @@ class MemberCardController extends AbstractController
 
                     $this->entityManager->flush();
 
-                    $this->dispatcher->dispatch(new AdherentEvent($adherent), AdherentEvents::PROFILE_UPDATED);
                     $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATED);
                 }
 

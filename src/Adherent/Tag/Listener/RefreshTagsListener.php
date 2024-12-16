@@ -36,7 +36,7 @@ class RefreshTagsListener implements EventSubscriberInterface
 
     public function updateAdherentTags(UserEvent $event): void
     {
-        $this->dispatch($event->getUser());
+        $this->dispatch($event->getAdherent());
     }
 
     private function dispatch(Adherent $adherent): void

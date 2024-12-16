@@ -4,8 +4,8 @@ namespace App\Adhesion\Listener;
 
 use App\Adhesion\Command\GenerateActivationCodeCommand;
 use App\Adhesion\Events\NewCotisationEvent;
-use App\Membership\AdherentEvents;
-use App\Membership\Event\AdherentEvent;
+use App\Membership\Event\UserEvent;
+use App\Membership\UserEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -18,12 +18,12 @@ class SendActivationCodeListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            AdherentEvents::REGISTRATION_COMPLETED => 'sendActivationCode',
+            UserEvents::USER_CREATED => 'sendActivationCode',
             NewCotisationEvent::class => 'sendActivationCode',
         ];
     }
 
-    public function sendActivationCode(AdherentEvent $event): void
+    public function sendActivationCode(UserEvent $event): void
     {
         $adherent = $event->getAdherent();
 

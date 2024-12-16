@@ -32,12 +32,12 @@ class AssignCommitteeByAdherentAddressListener implements EventSubscriberInterfa
 
     public function onBeforeUpdate(UserEvent $event): void
     {
-        $this->beforeAddress = clone $event->getUser()->getPostAddress();
+        $this->beforeAddress = clone $event->getAdherent()->getPostAddress();
     }
 
     public function onAfterUpdate(UserEvent $event): void
     {
-        $adherent = $event->getUser();
+        $adherent = $event->getAdherent();
 
         if (!$adherent->isEnabled()) {
             return;

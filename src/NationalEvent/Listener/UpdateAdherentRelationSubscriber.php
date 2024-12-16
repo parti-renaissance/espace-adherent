@@ -2,8 +2,8 @@
 
 namespace App\NationalEvent\Listener;
 
-use App\Membership\AdherentEvents;
-use App\Membership\Event\AdherentEvent;
+use App\Membership\Event\UserEvent;
+use App\Membership\UserEvents;
 use App\Repository\NationalEvent\EventInscriptionRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -16,11 +16,11 @@ class UpdateAdherentRelationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            AdherentEvents::REGISTRATION_COMPLETED => ['onAdherentRegistration', -10],
+            UserEvents::USER_CREATED => ['onAdherentRegistration', -10],
         ];
     }
 
-    public function onAdherentRegistration(AdherentEvent $event): void
+    public function onAdherentRegistration(UserEvent $event): void
     {
         $adherent = $event->getAdherent();
 

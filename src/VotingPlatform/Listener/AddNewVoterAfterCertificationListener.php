@@ -42,7 +42,7 @@ class AddNewVoterAfterCertificationListener implements EventSubscriberInterface
         $voter = null;
         $count = 0;
 
-        foreach ($event->getUser()->getMemberships() as $membership) {
+        foreach ($event->getAdherent()->getMemberships() as $membership) {
             $committee = $membership->getCommittee();
 
             if (!$committee->hasActiveElection()) {

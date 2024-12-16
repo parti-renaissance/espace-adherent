@@ -6,9 +6,7 @@ use App\BesoinDEurope\Inscription\FinishInscriptionRedirectHandler;
 use App\BesoinDEurope\Inscription\InscriptionRequest;
 use App\Controller\BesoinDEurope\Inscription\Api\PersistEmailController;
 use App\Form\BesoinDEurope\InscriptionRequestType;
-use App\Membership\AdherentEvents;
 use App\Membership\AdherentFactory;
-use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Utils\UtmParams;
@@ -56,7 +54,6 @@ class InscriptionController extends AbstractController
             $this->entityManager->flush();
 
             $this->eventDispatcher->dispatch(new UserEvent($adherent, $inscriptionRequest->allowNotifications), UserEvents::USER_CREATED);
-            $this->eventDispatcher->dispatch(new AdherentEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
 
             $this->security->login($adherent);
 

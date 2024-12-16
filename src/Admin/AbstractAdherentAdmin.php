@@ -39,8 +39,6 @@ use App\History\AdministratorActionEvent;
 use App\History\AdministratorActionEvents;
 use App\History\EmailSubscriptionHistoryHandler;
 use App\Mailchimp\Contact\ContactStatusEnum;
-use App\Membership\AdherentEvents;
-use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\UserEvents;
 use App\Query\Utils\MultiColumnsSearchHelper;
@@ -969,12 +967,10 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
 
         $this->adherentProfileHandler->updateReferentTagsAndSubscriptionHistoryIfNeeded($object);
 
-        $this->dispatcher->dispatch(new AdherentEvent($object), AdherentEvents::PROFILE_UPDATED);
         $this->emailSubscriptionHistoryManager->handleSubscriptionsUpdate($object, $this->beforeUpdate->getSubscriptionTypes());
 
-        $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
-        $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATED);
-        $this->dispatcher->dispatch(new UserEvent($object), UserEvents::USER_UPDATED_IN_ADMIN);
+        $this->dispatcher->dispatch($event = new UserEvent($object), UserEvents::USER_UPDATED);
+        $this->dispatcher->dispatch($event, UserEvents::USER_UPDATED_IN_ADMIN);
 
         $this->dispatcher->dispatch(
             new AdministratorActionEvent($this->getAdministrator(), $object),

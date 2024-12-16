@@ -59,10 +59,10 @@ class CommunicationReminderController extends AbstractController
                 $adherent->setPhone($data->phone);
             }
 
-            $this->dispatcher->dispatch(new UserEvent($adherent, $data->acceptEmail, $data->acceptSms), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
-
             $adherent->finishAdhesionStep(AdhesionStepEnum::COMMUNICATION);
             $this->entityManager->flush();
+
+            $this->dispatcher->dispatch(new UserEvent($adherent, $data->acceptEmail, $data->acceptSms), UserEvents::USER_UPDATED);
 
             return $this->redirectToRoute(FinishController::ROUTE_NAME);
         }

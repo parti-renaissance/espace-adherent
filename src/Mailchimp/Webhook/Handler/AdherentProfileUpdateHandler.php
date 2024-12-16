@@ -43,8 +43,6 @@ class AdherentProfileUpdateHandler extends AbstractAdherentHandler implements Lo
 
             $this->updateSubscriptions($adherent, $this->findGroupById($groups, $this->mailchimpObjectIdMapping->getSubscriptionTypeInterestGroupId()));
             $this->updateInterests($adherent, $this->findGroupById($groups, $this->mailchimpObjectIdMapping->getMemberInterestInterestGroupId()));
-
-            $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
         }
     }
 

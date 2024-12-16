@@ -87,7 +87,7 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
 
     public function onProfileBeforeUpdate(UserEvent $event): void
     {
-        $this->userBeforeUpdate = $this->transformToArray($event->getUser());
+        $this->userBeforeUpdate = $this->transformToArray($event->getAdherent());
     }
 
     public function onProfileAfterUpdate(UserEvent $event): void
@@ -95,7 +95,7 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
         $diff = array_keys(
             ArrayUtils::arrayDiffRecursive(
                 $this->userBeforeUpdate,
-                $this->transformToArray($event->getUser())
+                $this->transformToArray($event->getAdherent())
             )
         );
 
@@ -103,7 +103,7 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->userActionHistoryHandler->createProfileUpdate($event->getUser(), $diff);
+        $this->userActionHistoryHandler->createProfileUpdate($event->getAdherent(), $diff);
     }
 
     public function onPasswordResetRequest(UserResetPasswordEvent $event): void
@@ -113,12 +113,12 @@ class UserActionHistorySubscriber implements EventSubscriberInterface
 
     public function onPasswordResetValidate(UserEvent $event): void
     {
-        $this->userActionHistoryHandler->createPasswordResetValidate($event->getUser());
+        $this->userActionHistoryHandler->createPasswordResetValidate($event->getAdherent());
     }
 
     public function onEmailChangeRequest(UserEvent $event): void
     {
-        $this->userActionHistoryHandler->createEmailChangeRequest($event->getUser());
+        $this->userActionHistoryHandler->createEmailChangeRequest($event->getAdherent());
     }
 
     public function onEmailChangeValidate(UserEmailEvent $event): void
