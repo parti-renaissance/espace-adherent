@@ -7,8 +7,12 @@ use Ramsey\Uuid\Uuid;
 
 class DelegatedAccessCreatedMessage extends AbstractRenaissanceMessage
 {
-    public static function create(DelegatedAccess $delegatedAccess, string $zones, string $primaryLink): self
-    {
+    public static function create(
+        DelegatedAccess $delegatedAccess,
+        string $zones,
+        string $delegatorRole,
+        string $primaryLink,
+    ): self {
         $delegator = $delegatedAccess->getDelegator();
         $delegated = $delegatedAccess->getDelegated();
 
@@ -22,7 +26,8 @@ class DelegatedAccessCreatedMessage extends AbstractRenaissanceMessage
                 'first_name' => self::escape($delegated->getFirstName()),
                 'delegator_first_name' => self::escape($delegator->getFirstName()),
                 'delegator_last_name' => self::escape($delegator->getLastName()),
-                'role_name' => self::escape($delegatedAccess->getRole()),
+                'delegator_role_name' => self::escape($delegatorRole),
+                'delegated_role_name' => self::escape($delegatedAccess->getRole()),
                 'zone' => self::escape($zones),
                 'primary_link' => $primaryLink,
             ]
