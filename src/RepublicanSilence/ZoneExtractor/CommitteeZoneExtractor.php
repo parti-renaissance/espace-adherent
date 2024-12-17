@@ -3,7 +3,6 @@
 namespace App\RepublicanSilence\ZoneExtractor;
 
 use App\Entity\Adherent;
-use App\Entity\CommitteeMembership;
 
 class CommitteeZoneExtractor implements ZoneExtractorInterface
 {
@@ -13,8 +12,7 @@ class CommitteeZoneExtractor implements ZoneExtractorInterface
             return [];
         }
 
-        /** @var CommitteeMembership $membership */
-        foreach ($adherent->getMemberships()->getCommitteeHostMemberships() as $membership) {
+        if ($membership = $adherent->getCommitteeMembership()) {
             $committee = $membership->getCommittee();
             if ($committee->getSlug() === $slug) {
                 return $committee->getZones()->toArray();

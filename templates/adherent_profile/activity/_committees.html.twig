@@ -7,7 +7,7 @@
             <a class="btn btn--blue" href="{{ path('app_search_committees') }}">Rejoindre un comité</a>
         </div>
     {% else %}
-        {% set candidacy_membership = app.user.memberships.committeeCandidacyMembership(true) %}
+        {% set candidacy_membership = app.user.getCommitteeMembership() %}
         {% set has_active_parliamentary_mandate = has_active_parliamentary_mandate(app.user) %}
 
         {% for membership in committee_memberships %}

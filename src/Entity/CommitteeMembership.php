@@ -37,7 +37,7 @@ class CommitteeMembership implements UuidEntityInterface
      */
     #[Groups(['export', 'api_candidacy_read', 'committee_candidacy:read', 'committee_election:read'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'memberships')]
+    #[ORM\OneToOne(inversedBy: 'committeeMembership', targetEntity: Adherent::class)]
     private $adherent;
 
     /**

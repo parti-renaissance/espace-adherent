@@ -3,7 +3,6 @@
 namespace App\Mailchimp\Synchronisation;
 
 use App\Adherent\Tag\TagTranslator;
-use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
 use App\Entity\Campus\Registration;
 use App\Entity\ElectedRepresentative\ElectedRepresentative;
@@ -110,7 +109,7 @@ class RequestBuilder implements LoggerAwareInterface
             ->setIsSubscribeRequest($adherent->isEnabled() && $adherent->isEmailSubscribed())
             ->setZones($adherent->getZones())
             ->setDonationYears($this->findDonationYears($adherent))
-            ->setCommitteeUuid($adherent->getCommitteeV2Membership()?->getCommitteeUuid())
+            ->setCommitteeUuid($adherent->getCommitteeMembership()?->getCommitteeUuid())
             ->setMandateTypes($this->mandateRepository->getAdherentMandateTypes($adherent))
             ->setDeclaredMandates($adherent->getMandates() ?? [])
             ->setCampusRegisteredAt($adherent->getValidCampusRegistration())
@@ -629,8 +628,8 @@ class RequestBuilder implements LoggerAwareInterface
                     array_filter([
                         Manager::INTEREST_KEY_COMMITTEE_SUPERVISOR => $adherent->isSupervisor(false),
                         Manager::INTEREST_KEY_COMMITTEE_PROVISIONAL_SUPERVISOR => $adherent->isSupervisor(true),
-                        Manager::INTEREST_KEY_COMMITTEE_HOST => !($memberships = $adherent->getMemberships())->getCommitteeHostMemberships(CommitteeMembershipCollection::EXCLUDE_SUPERVISORS)->isEmpty(),
-                        Manager::INTEREST_KEY_COMMITTEE_FOLLOWER => $isFollower = !$memberships->getCommitteeFollowerMembershipsNotWaitingForApproval()->isEmpty(),
+                        Manager::INTEREST_KEY_COMMITTEE_HOST => (bool) ($membership = $adherent->getCommitteeMembership())?->isHostMember(),
+                        Manager::INTEREST_KEY_COMMITTEE_FOLLOWER => $isFollower = (bool) $membership?->isFollower(),
                         Manager::INTEREST_KEY_COMMITTEE_NO_FOLLOWER => !$isFollower,
                         Manager::INTEREST_KEY_DEPUTY => $adherent->isDeputy(),
                         Manager::INTEREST_KEY_COORDINATOR => $adherent->isRegionalCoordinator(),

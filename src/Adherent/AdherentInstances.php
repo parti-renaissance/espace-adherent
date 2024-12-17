@@ -67,7 +67,7 @@ class AdherentInstances
 
     private function generateCommittee(Adherent $adherent): array
     {
-        $currentCommittee = $adherent->getCommitteeV2Membership()?->getCommittee();
+        $currentCommittee = $adherent->getCommitteeMembership()?->getCommittee();
 
         $recentElectionParticipation = $currentCommittee && $this->voterRepository->isInVoterListForCommitteeElection(
             $adherent,

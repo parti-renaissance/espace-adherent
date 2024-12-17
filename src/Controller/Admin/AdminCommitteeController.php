@@ -86,7 +86,7 @@ class AdminCommitteeController extends AbstractController
     {
         return $this->render('admin/committee/members.html.twig', [
             'committee' => $committee,
-            'memberships' => $memberships = $manager->getCommitteeMemberships($committee),
+            'memberships' => $manager->getCommitteeMemberships($committee),
             'active_mandates_adherent_ids' => $this->mandateRepository->findActiveMandateAdherentIds($committee),
         ]);
     }

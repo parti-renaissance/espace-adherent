@@ -13,8 +13,6 @@ use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
 use App\Entity\CommitteeMembership;
 use App\Entity\Geo\Zone;
-use App\Entity\Reporting\CommitteeMembershipAction;
-use App\Entity\Reporting\CommitteeMembershipHistory;
 use App\Events;
 use App\Exception\CommitteeMembershipException;
 use App\Geo\ZoneMatcher;
@@ -208,13 +206,6 @@ class CommitteeManager
         $this->dispatcher->dispatch(new CommitteeEvent($committee), Events::COMMITTEE_UPDATED);
     }
 
-    public function followCommittee(
-        Adherent $adherent,
-        Committee $committee,
-        ?CommitteeMembershipTriggerEnum $trigger = null,
-    ): void {
-    }
-
     /**
      * Makes an adherent vote in one committee.
      */
@@ -224,7 +215,7 @@ class CommitteeManager
             return;
         }
 
-        if ($existingVotingMembership = $adherent->getMemberships()->getVotingCommitteeMembership()) {
+        if (($existingVotingMembership = $adherent->getCommitteeMembership()) && $existingVotingMembership->isVotingCommittee()) {
             $this->disableVoteInMembership($existingVotingMembership);
         }
 
@@ -267,7 +258,7 @@ class CommitteeManager
         string $privilege,
         bool $flush = true,
     ): void {
-        if (!$committeeMembership = $this->committeeMembershipManager->getCommitteeMembership($adherent, $committee)) {
+        if (!$committeeMembership = $adherent->getMembershipFor($committee)) {
             return;
         }
 
@@ -286,14 +277,6 @@ class CommitteeManager
         return $committees;
     }
 
-    // Move to the listener
-    private function createCommitteeMembershipHistory(
-        CommitteeMembership $membership,
-        CommitteeMembershipAction $action,
-    ): CommitteeMembershipHistory {
-        return new CommitteeMembershipHistory($membership, $action);
-    }
-
     private function changePrivilegeOnMembership(
         CommitteeMembership $membership,
         string $privilege,
@@ -309,7 +292,7 @@ class CommitteeManager
             }
 
             // We can't have more than 2 hosts per committee
-            if ($this->countCommitteeHosts($committee = $membership->getCommittee(), true) > 1) {
+            if ($this->countCommitteeHosts($membership->getCommittee(), true) > 1) {
                 throw CommitteeMembershipException::createNotPromotableHostPrivilegeManyHostsException($membership->getUuid());
             }
         }
@@ -320,7 +303,7 @@ class CommitteeManager
             $this->entityManager->flush();
         }
 
-        $this->dispatcher->dispatch(new FollowCommitteeEvent($adherent, $membership->getCommittee()), UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE);
+        $this->dispatcher->dispatch(new FollowCommitteeEvent($membership), UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE);
     }
 
     /**

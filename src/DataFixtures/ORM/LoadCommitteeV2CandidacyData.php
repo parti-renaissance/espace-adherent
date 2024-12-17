@@ -64,7 +64,7 @@ class LoadCommitteeV2CandidacyData extends Fixture implements DependentFixtureIn
     public function getDependencies(): array
     {
         return [
-            LoadCommitteeV2Data::class,
+            LoadCommitteeData::class,
         ];
     }
 }

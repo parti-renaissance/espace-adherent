@@ -2,28 +2,17 @@
 
 namespace App\Committee\Event;
 
-use App\Entity\Adherent;
-use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
 use Symfony\Contracts\EventDispatcher\Event;
 
 abstract class AbstractCommitteeMembershipEvent extends Event implements CommitteeEventInterface
 {
-    private $committee;
-    private $adherent;
-
-    public function __construct(Adherent $adherent, ?Committee $committee = null)
+    public function __construct(private readonly CommitteeMembership $committeeMembership)
     {
-        $this->committee = $committee;
-        $this->adherent = $adherent;
     }
 
-    public function getCommittee(): ?Committee
+    public function getCommitteeMembership(): CommitteeMembership
     {
-        return $this->committee;
-    }
-
-    public function getAdherent(): Adherent
-    {
-        return $this->adherent;
+        return $this->committeeMembership;
     }
 }

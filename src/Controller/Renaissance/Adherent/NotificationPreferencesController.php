@@ -22,8 +22,6 @@ class NotificationPreferencesController extends AbstractController
         EventDispatcherInterface $dispatcher,
         SubscriptionHandler $subscriptionHandler,
     ): Response {
-        $oldEmailsSubscriptions = $adherent->getSubscriptionTypes();
-
         $dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_BEFORE_UPDATE);
 
         $form = $this

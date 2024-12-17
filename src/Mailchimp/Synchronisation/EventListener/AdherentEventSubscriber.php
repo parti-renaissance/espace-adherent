@@ -4,7 +4,6 @@ namespace App\Mailchimp\Synchronisation\EventListener;
 
 use App\Adherent\Certification\Events as AdherentCertificationEvents;
 use App\Committee\Event\CommitteeEventInterface;
-use App\Events;
 use App\Mailchimp\Synchronisation\Command\AdherentChangeCommand;
 use App\Mailchimp\Synchronisation\Command\AdherentDeleteCommand;
 use App\Membership\Event\UserEvent;
@@ -32,7 +31,6 @@ class AdherentEventSubscriber implements EventSubscriberInterface
             UserEvents::USER_DELETED => 'onDelete',
 
             UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE => 'onCommitteePrivilegeChange',
-            Events::COMMITTEE_NEW_FOLLOWER => 'onCommitteePrivilegeChange',
 
             AdherentCertificationEvents::ADHERENT_CERTIFIED => 'onAfterUpdate',
             AdherentCertificationEvents::ADHERENT_UNCERTIFIED => 'onAfterUpdate',
@@ -52,7 +50,7 @@ class AdherentEventSubscriber implements EventSubscriberInterface
 
     public function onCommitteePrivilegeChange(CommitteeEventInterface $event): void
     {
-        $adherent = $event->getAdherent();
+        $adherent = $event->getCommitteeMembership()->getAdherent();
 
         $this->dispatchAdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress());
     }

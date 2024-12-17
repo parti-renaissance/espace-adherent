@@ -54,7 +54,7 @@ class AdherentController extends AbstractController
         $this->denyAccessUnlessGranted(ManagedUserVoter::IS_MANAGED_USER, $adherent);
 
         return $this->json(
-            $adherent->getMemberships()->getMembershipsForApprovedCommittees(),
+            array_filter([$adherent->getCommitteeMembership()]),
             Response::HTTP_OK,
             [],
             ['groups' => ['adherent_committees_modal']]

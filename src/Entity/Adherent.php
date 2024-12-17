@@ -19,7 +19,6 @@ use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Request\MembershipRequest;
 use App\Collection\AdherentCharterCollection;
 use App\Collection\CertificationRequestCollection;
-use App\Collection\CommitteeMembershipCollection;
 use App\Collection\ZoneCollection;
 use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Controller\Api\SendResubscribeEmailController;
@@ -123,7 +122,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     use EntityIdentityTrait;
     use EntityPersonNameTrait;
     use EntityPostAddressTrait;
-    use LazyCollectionTrait;
     use EntityZoneTrait;
     use EntityUTMTrait;
     use EntityAdministratorBlameableTrait;
@@ -234,11 +232,8 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\OneToOne(targetEntity: JecouteManagedArea::class, cascade: ['all'], orphanRemoval: true)]
     private $jecouteManagedArea;
 
-    /**
-     * @var CommitteeMembership[]|Collection
-     */
-    #[ORM\OneToMany(mappedBy: 'adherent', targetEntity: CommitteeMembership::class, cascade: ['remove'])]
-    private $memberships;
+    #[ORM\OneToOne(mappedBy: 'adherent', targetEntity: CommitteeMembership::class, cascade: ['all'])]
+    private ?CommitteeMembership $committeeMembership = null;
 
     /**
      * @var Committee[]|Collection
@@ -548,7 +543,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function __construct()
     {
-        $this->memberships = new ArrayCollection();
         $this->animatorCommittees = new ArrayCollection();
         $this->subscriptionTypes = new ArrayCollection();
         $this->zones = new ZoneCollection();
@@ -990,12 +984,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         });
     }
 
-    #[Groups(['profile_read'])]
-    public function getMainZone(): ?Zone
-    {
-        return $this->getAssemblyZone();
-    }
-
     public function hasSubscribedLocalHostEmails(): bool
     {
         return $this->hasSubscriptionType(SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
@@ -1187,10 +1175,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         \DateTimeInterface $subscriptionDate,
         ?CommitteeMembershipTriggerEnum $trigger = null,
     ): CommitteeMembership {
-        // todo: ??
-        $committee->updateMembersCount(true, $this->isRenaissanceSympathizer(), $this->isRenaissanceAdherent());
-
-        return CommitteeMembership::createForAdherent($committee, $this, $privilege, $subscriptionDate, $trigger);
+        return $this->committeeMembership = CommitteeMembership::createForAdherent($committee, $this, $privilege, $subscriptionDate, $trigger);
     }
 
     /**
@@ -1251,11 +1236,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->hasZoneBasedRole(ScopeEnum::PROCURATIONS_MANAGER);
     }
 
-    public function canBeProxy(): bool
-    {
-        return $this->isProcurationsManager();
-    }
-
     public function getJecouteManagedArea(): ?JecouteManagedArea
     {
         return $this->jecouteManagedArea;
@@ -1275,49 +1255,30 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->jecouteManagedArea instanceof JecouteManagedArea && $this->jecouteManagedArea->getZone();
     }
 
-    /**
-     * @return CommitteeMembership[]|CommitteeMembershipCollection
-     */
-    public function getMemberships(): CommitteeMembershipCollection
+    #[Groups(['profile_read'])]
+    public function getCommitteeMembership(): ?CommitteeMembership
     {
-        if (!$this->memberships instanceof CommitteeMembershipCollection) {
-            $this->memberships = new CommitteeMembershipCollection($this->memberships->toArray());
-        }
-
-        return $this->memberships;
+        return $this->committeeMembership;
     }
 
-    #[Groups(['profile_read'])]
-    #[SerializedName('committee_membership')]
-    public function getCommitteeV2Membership(): ?CommitteeMembership
+    public function setCommitteeMembership(?CommitteeMembership $committeeMembership): void
     {
-        return $this->getMemberships()->first() ?: null;
+        $this->committeeMembership = $committeeMembership;
     }
 
     public function hasVotingCommitteeMembership(): bool
     {
-        return null !== $this->getMemberships()->getVotingCommitteeMembership();
-    }
-
-    public function hasLoadedMemberships(): bool
-    {
-        return $this->isCollectionLoaded($this->memberships);
+        return (bool) $this->committeeMembership?->isVotingCommittee();
     }
 
     public function getMembershipFor(Committee $committee): ?CommitteeMembership
     {
-        foreach ($this->memberships as $membership) {
-            if ($membership->matches($this, $committee)) {
-                return $membership;
-            }
-        }
-
-        return null;
+        return $this->committeeMembership?->matches($this, $committee) ? $this->committeeMembership : null;
     }
 
     public function isHost(): bool
     {
-        return $this->getMemberships()->countCommitteeHostMemberships() >= 1;
+        return (bool) $this->committeeMembership?->isHostMember();
     }
 
     public function isHostOf(Committee $committee): bool

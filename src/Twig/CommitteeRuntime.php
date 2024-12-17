@@ -72,7 +72,7 @@ class CommitteeRuntime implements RuntimeExtensionInterface
 
     public function isCandidate(Adherent $adherent, Committee $committee): bool
     {
-        $membership = $this->committeeMembershipManager->getCommitteeMembership($adherent, $committee);
+        $membership = $adherent->getMembershipFor($committee);
 
         return $membership && $membership->isVotingCommittee() && $membership->getCommitteeCandidacy($committee->getCommitteeElection());
     }

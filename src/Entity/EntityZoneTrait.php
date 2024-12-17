@@ -8,6 +8,7 @@ use App\Entity\Geo\ZoneTagEnum;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 
 trait EntityZoneTrait
 {
@@ -92,6 +93,8 @@ trait EntityZoneTrait
     /**
      * Return DPT zone or FDE zone if adherent is outside France
      */
+    #[Groups(['profile_read'])]
+    #[SerializedName('main_zone')]
     public function getAssemblyZone(): ?Zone
     {
         foreach ($this->getDeepZones() as $zone) {

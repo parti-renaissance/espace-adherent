@@ -50,7 +50,7 @@ class AssignCommitteeByAdherentAddressListener implements EventSubscriberInterfa
 
         $isDptChanged = $this->isDepartmentChanged($this->beforeAddress, $address);
 
-        $currentCommitteeMembership = $adherent->getCommitteeV2Membership();
+        $currentCommitteeMembership = $adherent->getCommitteeMembership();
         $currentCommittee = $currentCommitteeMembership?->getCommittee();
 
         if (!$isAddressChanged && null !== $currentCommittee) {

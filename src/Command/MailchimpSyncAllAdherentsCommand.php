@@ -185,7 +185,7 @@ class MailchimpSyncAllAdherentsCommand extends Command
         if ($committeeVoterOnly) {
             $queryBuilder
                 ->innerJoin(
-                    'adherent.memberships',
+                    'adherent.committeeMembership',
                     'membership',
                     Join::WITH,
                     'membership.adherent = adherent AND membership.enableVote IS NOT NULL'

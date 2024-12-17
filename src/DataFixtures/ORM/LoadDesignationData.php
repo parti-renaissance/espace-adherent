@@ -223,7 +223,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->setVoteEndDate(new \DateTime('+1 day'));
         $designation->electionCreationDate = new \DateTime('-3 days');
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
-        $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeV2Data::COMMITTEE_1_UUID));
+        $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeData::COMMITTEE_1_UUID));
         $designation->markAsLimited();
 
         $this->setReference('designation-committee-01', $designation);
@@ -238,7 +238,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->setVoteEndDate(new \DateTime('+5 day'));
         $designation->electionCreationDate = new \DateTime('+1 days');
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
-        $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeV2Data::COMMITTEE_2_UUID));
+        $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeData::COMMITTEE_2_UUID));
         $designation->markAsLimited();
 
         $this->setReference('designation-committee-02', $designation);
@@ -253,7 +253,7 @@ class LoadDesignationData extends Fixture implements DependentFixtureInterface
         $designation->setVoteEndDate(new \DateTime('-25 days'));
         $designation->electionCreationDate = new \DateTime('-1 months');
         $designation->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
-        $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeV2Data::COMMITTEE_2_UUID));
+        $designation->setElectionEntityIdentifier(Uuid::fromString(LoadCommitteeData::COMMITTEE_2_UUID));
         $designation->markAsLimited();
 
         $this->setReference('designation-committee-03', $designation);

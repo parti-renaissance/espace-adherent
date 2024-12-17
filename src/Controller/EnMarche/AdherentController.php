@@ -141,7 +141,7 @@ class AdherentController extends AbstractController
     public function committeesAction(UserInterface $adherent): Response
     {
         /** @var Adherent $adherent */
-        $committeeMembership = $adherent->getCommitteeV2Membership();
+        $committeeMembership = $adherent->getCommitteeMembership();
 
         return $this->render('adherent/my_activity_committees.html.twig', [
             'committeeMemberships' => $committeeMembership ? [$committeeMembership] : [],

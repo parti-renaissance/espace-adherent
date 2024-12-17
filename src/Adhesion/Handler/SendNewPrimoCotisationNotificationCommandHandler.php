@@ -67,7 +67,7 @@ class SendNewPrimoCotisationNotificationCommandHandler
             $zoneLines[] = "{$district->getCode()} - {$name}";
         }
 
-        if ($committeeMembership = $adherent->getCommitteeV2Membership()) {
+        if ($committeeMembership = $adherent->getCommitteeMembership()) {
             $committee = $committeeMembership->getCommittee();
             $zoneLines[] = \sprintf('%s - %s', $committee->getAssemblyZone()?->getCode(), $committee->getName());
         }

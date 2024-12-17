@@ -604,7 +604,7 @@ class LoadCommitteeEventData extends AbstractLoadEventData implements DependentF
         return [
             LoadEventCategoryData::class,
             LoadCommitteeV1Data::class,
-            LoadCommitteeV2Data::class,
+            LoadCommitteeData::class,
         ];
     }
 }
