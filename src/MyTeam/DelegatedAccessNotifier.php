@@ -8,6 +8,7 @@ use App\Mailer\Message\Renaissance\DelegatedAccessCreatedMessage;
 use App\Scope\GeneralScopeGenerator;
 use App\Scope\ScopeEnum;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DelegatedAccessNotifier
 {
@@ -15,6 +16,7 @@ class DelegatedAccessNotifier
         private readonly MailerService $transactionalMailer,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly GeneralScopeGenerator $generalScopeGenerator,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -24,6 +26,7 @@ class DelegatedAccessNotifier
             DelegatedAccessCreatedMessage::create(
                 $delegatedAccess,
                 implode(', ', $this->getZoneNames($delegatedAccess)),
+                $this->translator->trans('role.'.$delegatedAccess->getType()),
                 $this->urlGenerator->generate('vox_app'),
             )
         );
