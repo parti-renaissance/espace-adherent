@@ -19,15 +19,13 @@ class SubscriptionListener implements EventSubscriberInterface
     {
         return [
             UserEvents::USER_CREATED => 'onUserCreated',
-            UserEvents::USER_SWITCH_TO_ADHERENT => 'addSubscriptionTypeToAdherent',
-            UserEvents::USER_UPDATE_SUBSCRIPTIONS => ['addSubscriptionTypeToAdherent', 1024],
         ];
     }
 
     public function onUserCreated(UserEvent $event): void
     {
         $this->addSubscriptionTypeToAdherent($event);
-        $this->emailSubscriptionHistoryHandler->handleSubscriptions($event->getUser());
+        $this->emailSubscriptionHistoryHandler->handleSubscriptions($event->getAdherent());
     }
 
     public function addSubscriptionTypeToAdherent(UserEvent $event): void
@@ -37,7 +35,7 @@ class SubscriptionListener implements EventSubscriberInterface
         }
 
         $this->subscriptionHandler->addDefaultTypesToAdherent(
-            $event->getUser(),
+            $event->getAdherent(),
             $event->allowEmailNotifications() ?? false,
             $event->allowMobileNotifications() ?? false
         );

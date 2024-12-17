@@ -4,13 +4,10 @@ namespace App\Subscription;
 
 use App\Entity\Adherent;
 use App\History\EmailSubscriptionHistoryHandler;
-use App\Membership\Event\UserEvent;
-use App\Membership\UserEvents;
 use App\Repository\AdherentRepository;
 use App\Repository\NewsletterSubscriptionRepository;
 use App\Repository\SubscriptionTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class SubscriptionHandler
 {
@@ -24,17 +21,10 @@ class SubscriptionHandler
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly EmailSubscriptionHistoryHandler $subscriptionHistoryHandler,
-        private readonly EventDispatcherInterface $dispatcher,
         private readonly AdherentRepository $adherentRepository,
         private readonly SubscriptionTypeRepository $subscriptionTypeRepository,
         private readonly NewsletterSubscriptionRepository $newsletterSubscriptionRepository,
     ) {
-    }
-
-    public function handleChanges(Adherent $adherent, array $oldEmailsSubscriptions): void
-    {
-        $this->subscriptionHistoryHandler->handleSubscriptionsUpdate($adherent, $oldEmailsSubscriptions);
-        $this->dispatcher->dispatch(new UserEvent($adherent), UserEvents::USER_UPDATE_SUBSCRIPTIONS);
     }
 
     public function changeSubscription(string $type, string $email, string $listId): void
@@ -70,14 +60,23 @@ class SubscriptionHandler
         bool $allowEmailNotifications,
         bool $allowMobileNotifications,
     ): void {
-        $this->subscriptionTypeRepository->addToAdherent(
-            $adherent,
-            array_merge(
-                $allowEmailNotifications ? $this->getEmailDefaultTypes($adherent) : [],
-                $allowMobileNotifications ? SubscriptionTypeEnum::DEFAULT_MOBILE_TYPES : []
-            )
-        );
-        $this->em->flush();
+        $this->handleUpdateSubscription($adherent, array_merge(
+            $allowEmailNotifications ? $this->getEmailDefaultTypes($adherent) : [],
+            $allowMobileNotifications ? SubscriptionTypeEnum::DEFAULT_MOBILE_TYPES : []
+        ));
+    }
+
+    public function handleUpdateSubscription(Adherent $adherent, array $newSubscriptionCodes): void
+    {
+        $oldSubscriptionTypes = $adherent->getSubscriptionTypes();
+        $newSubscriptionTypes = $newSubscriptionCodes ? $this->subscriptionTypeRepository->findByCodes($newSubscriptionCodes) : [];
+
+        if (array_diff($oldSubscriptionTypes, $newSubscriptionTypes) || array_diff($newSubscriptionTypes, $oldSubscriptionTypes)) {
+            $adherent->setSubscriptionTypes($newSubscriptionTypes);
+            $this->em->flush();
+
+            $this->subscriptionHistoryHandler->handleSubscriptionsUpdate($adherent, $oldSubscriptionTypes);
+        }
     }
 
     private function getEmailDefaultTypes(Adherent $adherent): array
@@ -93,16 +92,5 @@ class SubscriptionHandler
         }
 
         return $types;
-    }
-
-    public function handleUpdateSubscription(Adherent $adherent, array $newSubscriptionCodes): void
-    {
-        $oldSubscriptionTypes = $adherent->getSubscriptionTypes();
-
-        $adherent->setSubscriptionTypes($this->subscriptionTypeRepository->findByCodes($newSubscriptionCodes));
-
-        $this->em->flush();
-
-        $this->subscriptionHistoryHandler->handleSubscriptionsUpdate($adherent, $oldSubscriptionTypes);
     }
 }

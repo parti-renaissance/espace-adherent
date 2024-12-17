@@ -6,7 +6,6 @@ use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Repository\GeoZoneTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 class DelegatedAccessRepository extends ServiceEntityRepository
@@ -35,44 +34,14 @@ class DelegatedAccessRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAllDelegatedAccessForUser(Adherent $adherent)
+    public function findDelegatedScopes(Adherent $adherent): array
     {
         return $this->createQueryBuilder('da')
-            ->where('da.delegated = :adherent')
+            ->select('DISTINCT da.type')
+            ->where('da.delegator = :adherent')
             ->setParameter('adherent', $adherent)
             ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    public function findDelegatedAccessFor(Adherent $adherent, string $type)
-    {
-        try {
-            return $this->createQueryBuilder('da')
-                ->where('da.delegated = :adherent')
-                ->andWhere('da.type = :type')
-                ->setParameter('adherent', $adherent)
-                ->setParameter('type', $type)
-                ->getQuery()
-                ->getOneOrNullResult()
-            ;
-        } catch (NonUniqueResultException $exception) {
-            throw new \LogicException("User have multiple \"$type\" delegated accesses.");
-        }
-    }
-
-    public function hasDelegatedAccessWithScopeFeatures(Adherent $adherent, array $types): array
-    {
-        return $this->createQueryBuilder('delegatedAccess')
-            ->where('delegatedAccess.delegated = :adherent')
-            ->andWhere('delegatedAccess.scopeFeatures IS NOT NULL')
-            ->andWhere('delegatedAccess.type IN (:types)')
-            ->setParameters([
-                'adherent' => $adherent,
-                'types' => $types,
-            ])
-            ->getQuery()
-            ->getResult()
+            ->getSingleColumnResult()
         ;
     }
 }

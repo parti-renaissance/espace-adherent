@@ -13,7 +13,7 @@ use App\Geocoder\GeocodableEntityEventInterface;
 use App\Geocoder\GeocodableInterface;
 use App\Geocoder\Geocoder;
 use App\Geocoder\GeoPointInterface;
-use App\Membership\AdherentEvents;
+use App\Membership\UserEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -83,8 +83,8 @@ class EntityAddressGeocodingSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            AdherentEvents::REGISTRATION_COMPLETED => ['updateCoordinates', -256],
-            AdherentEvents::PROFILE_UPDATED => ['updateCoordinates', -256],
+            UserEvents::USER_CREATED => ['updateCoordinates', -256],
+            UserEvents::USER_UPDATED => ['updateCoordinates', -256],
             Events::COMMITTEE_CREATED => ['updateCoordinates', -256],
             Events::COMMITTEE_UPDATED => ['updateCoordinates', -256],
             Events::EVENT_CREATED => ['updateCoordinates', -256],

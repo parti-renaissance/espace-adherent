@@ -2,6 +2,7 @@
 
 namespace App\MyTeam;
 
+use App\Entity\Adherent;
 use App\Entity\MyTeam\DelegatedAccess;
 use App\Entity\MyTeam\Member;
 use App\OAuth\TokenRevocationAuthority;
@@ -92,5 +93,10 @@ class DelegatedAccessManager
         }
 
         return array_values(array_unique(array_merge($scope->getAutomaticallyDelegatableFeatures(), $memberFeatures)));
+    }
+
+    public function getDelegatedScopes(Adherent $adherent): array
+    {
+        return $this->delegatedAccessRepository->findDelegatedScopes($adherent);
     }
 }

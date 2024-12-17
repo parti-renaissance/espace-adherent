@@ -60,5 +60,6 @@ default:
                 - Tests\App\Behat\Context\JsonContext
                 - Tests\App\Behat\Context\EmailContext
                 - Tests\App\Behat\Context\NotificationContext
+                - Tests\App\Behat\Context\AdherentContext
                 - Tests\App\Behat\Context\FeatureContext
                 - Tests\App\Behat\Context\DonationContext

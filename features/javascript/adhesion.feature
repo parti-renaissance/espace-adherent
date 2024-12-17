@@ -37,8 +37,11 @@ Feature:
         When I click the "membership_request_exclusiveMembership_0" element
         Then I should not see "J’appartiens à un autre parti politique"
         When I click the "membership_request_isPhysicalPerson" element
+        And I click the "membership_request_allowNotifications" element
         Then I click the "#step_3 .re-button" selector
         And I wait 5 seconds
+        And User "test@test.com" should have 7 subscription types
+        And User "test@test.com" should have zones "borough_75108, district_75-4"
         And I scroll element "#step_4 #amount_3_label" into view
         And I click the "#step_4 #amount_4_label" selector
         And I should see "Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi"
@@ -172,13 +175,7 @@ Feature:
             | member_card[address][cityName]          | Clichy             |
         When I press "Recevoir ma carte"
 
-        # Step 10 : communication
-        Then I should be on "/adhesion/rappel-communication"
-        And I should see "Attention, vous ne recevrez jamais aucune communication par email de notre part (hors email statutaire)"
-        When I click the "input[name='adhesion_communication[acceptEmail]']" selector
-        And I press "Continuer"
-
-        # Step 11 : committee
+        # Step 10 : committee
         Then I should be on "/adhesion/comite-local" wait otherwise
         And I should see "Comité local"
         And I should see "Comité : Second Comité des 3 communes"
@@ -286,6 +283,7 @@ Feature:
         When I simulate IPN call with "00000" code for the last donation of "renaissance-user-4@en-marche-dev.fr"
         Then I should be on "/adhesion/felicitations" wait otherwise
         And I should see "Vous êtes à jour de cotisations, félicitations !"
+        And User "renaissance-user-4@en-marche-dev.fr" should have zones "borough_75108, district_75-4"
 
     Scenario: I can become adherent from EM account
         Given the following fixtures are loaded:
@@ -368,5 +366,6 @@ Feature:
         When I simulate IPN call with "00000" code for the last donation of "carl999@example.fr"
         Then I should be on "/adhesion/felicitations" wait otherwise
         And I should see "Vous êtes désormais adhérent, félicitations !"
+        And User "carl999@example.fr" should have zones "borough_75108, district_75-4"
         When I click the ".re-button" selector
         Then I should be on "/app"

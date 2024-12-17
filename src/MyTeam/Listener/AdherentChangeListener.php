@@ -39,18 +39,29 @@ class AdherentChangeListener implements EventSubscriberInterface
 
     public function updateDelegatorDelegatedAccesses(UserEvent $event): void
     {
-        $adherent = $event->getUser();
+        $adherent = $event->getAdherent();
         $teams = $this->myTeamRepository->findBy(['owner' => $adherent]);
 
-        foreach ($teams as $team) {
-            try {
-                $this->scopeGenerator->getGenerator($team->getScope(), $adherent);
-                foreach ($team->getMembers() as $member) {
-                    $this->delegatedAccessManager->createDelegatedAccessForMember($member);
-                }
-            } catch (NotFoundScopeGeneratorException $e) {
-                $this->delegatedAccessRepository->removeFromDelegator($team->getOwner(), $team->getScope());
+        $delegatedScopes = $this->delegatedAccessManager->getDelegatedScopes($adherent);
+
+        foreach ($adherent->getZoneBasedRoles() as $zoneBasedRole) {
+            if (false !== ($index = array_search($zoneBasedRole->getType(), $delegatedScopes))) {
+                unset($delegatedScopes[$index]);
             }
+
+            foreach ($teams as $team) {
+                try {
+                    $this->scopeGenerator->getGenerator($team->getScope(), $adherent);
+                    foreach ($team->getMembers() as $member) {
+                        $this->delegatedAccessManager->createDelegatedAccessForMember($member);
+                    }
+                } catch (NotFoundScopeGeneratorException $e) {
+                }
+            }
+        }
+
+        foreach ($delegatedScopes as $scope) {
+            $this->delegatedAccessRepository->removeFromDelegator($adherent, $scope);
         }
     }
 }

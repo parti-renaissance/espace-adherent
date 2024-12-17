@@ -4,9 +4,9 @@ namespace App\Adhesion\Events;
 
 use App\Entity\Adherent;
 use App\Entity\Donation;
-use App\Membership\Event\AdherentEvent;
+use App\Membership\Event\UserEvent;
 
-class NewCotisationEvent extends AdherentEvent
+class NewCotisationEvent extends UserEvent
 {
     public function __construct(Adherent $adherent, public readonly Donation $donation)
     {

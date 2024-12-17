@@ -5,7 +5,6 @@ namespace App\Membership;
 use App\Adherent\Unregistration\UnregistrationCommand;
 use App\Adherent\UnregistrationHandler;
 use App\Entity\Adherent;
-use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\MembershipRequest\JeMengageMembershipRequest;
 use App\Membership\MembershipRequest\MembershipInterface;
@@ -56,8 +55,6 @@ class MembershipRequestHandler
             $membershipRequest->allowEmailNotifications,
             $membershipRequest->allowMobileNotifications
         ), UserEvents::USER_CREATED);
-
-        $this->dispatcher->dispatch(new AdherentEvent($adherent), AdherentEvents::REGISTRATION_COMPLETED);
 
         return $adherent;
     }

@@ -8,9 +8,7 @@ use App\Adhesion\AdhesionStepEnum;
 use App\Adhesion\Command\CreateAccountCommand;
 use App\Adhesion\CreateAdherentResult;
 use App\Entity\Adherent;
-use App\Membership\AdherentEvents;
 use App\Membership\AdherentFactory;
-use App\Membership\Event\AdherentEvent;
 use App\Membership\Event\UserEvent;
 use App\Membership\MembershipNotifier;
 use App\Membership\MembershipSourceEnum;
@@ -72,7 +70,6 @@ class CreateAccountCommandHandler
         $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(new UserEvent($currentUser, $membershipRequest->allowNotifications), UserEvents::USER_CREATED);
-        $this->eventDispatcher->dispatch(new AdherentEvent($currentUser), AdherentEvents::REGISTRATION_COMPLETED);
 
         if (!$currentUser->isEligibleForMembershipPayment()) {
             return CreateAdherentResult::createActivation()->withAdherent($currentUser);

@@ -9,33 +9,19 @@ use App\Mailer\Message\Renaissance\RenaissanceAdherentChangeEmailMessage;
 use App\Membership\Event\UserEmailEvent;
 use App\Membership\Event\UserEvent;
 use App\Repository\AdherentChangeEmailTokenRepository;
-use Doctrine\ORM\EntityManagerInterface as ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdherentChangeEmailHandler
 {
-    private MailerService $mailer;
-    private ObjectManager $manager;
-    private AdherentChangeEmailTokenRepository $repository;
-    private UrlGeneratorInterface $urlGenerator;
-    private EventDispatcherInterface $dispatcher;
-    private string $renaissanceHost;
-
     public function __construct(
-        MailerService $transactionalMailer,
-        ObjectManager $manager,
-        AdherentChangeEmailTokenRepository $repository,
-        UrlGeneratorInterface $urlGenerator,
-        EventDispatcherInterface $dispatcher,
-        string $renaissanceHost,
+        private readonly MailerService $transactionalMailer,
+        private readonly EntityManagerInterface $manager,
+        private readonly AdherentChangeEmailTokenRepository $repository,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly EventDispatcherInterface $dispatcher,
     ) {
-        $this->mailer = $transactionalMailer;
-        $this->manager = $manager;
-        $this->repository = $repository;
-        $this->urlGenerator = $urlGenerator;
-        $this->dispatcher = $dispatcher;
-        $this->renaissanceHost = $renaissanceHost;
     }
 
     public function handleRequest(Adherent $adherent, string $newEmailAddress): void
@@ -70,7 +56,7 @@ class AdherentChangeEmailHandler
     {
         $confirmationLink = $this->createConfirmationLink($adherent, $token);
 
-        $this->mailer->sendMessage(RenaissanceAdherentChangeEmailMessage::createFromAdherent($adherent, $token->getEmail(), $confirmationLink));
+        $this->transactionalMailer->sendMessage(RenaissanceAdherentChangeEmailMessage::createFromAdherent($adherent, $token->getEmail(), $confirmationLink));
     }
 
     private function createConfirmationLink(Adherent $adherent, AdherentChangeEmailToken $token): string
