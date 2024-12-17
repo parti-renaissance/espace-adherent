@@ -989,6 +989,12 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->hasSubscriptionType(SubscriptionTypeEnum::LOCAL_HOST_EMAIL);
     }
 
+    #[Groups(['profile_read'])]
+    public function getMainZone(): ?Zone
+    {
+        return $this->getAssemblyZone();
+    }
+
     public function hasSmsSubscriptionType(): bool
     {
         return $this->hasSubscriptionType(SubscriptionTypeEnum::MILITANT_ACTION_SMS);

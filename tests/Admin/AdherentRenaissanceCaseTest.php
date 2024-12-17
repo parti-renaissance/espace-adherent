@@ -60,7 +60,6 @@ class AdherentRenaissanceCaseTest extends AbstractAdminWebTestCase
         yield 'PAD' => ['president-ad@renaissance-dev.fr'];
         yield 'RCL' => ['adherent-male-55@en-marche-dev.fr'];
         yield 'Délégué de circonscription' => ['deputy@en-marche-dev.fr'];
-        yield 'Candidat comité' => ['adherent-male-a@en-marche-dev.fr'];
     }
 
     #[DataProvider('provideTerminateMembershipSuccess')]

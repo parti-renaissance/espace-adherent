@@ -81,6 +81,8 @@ class LoadCommitteeData extends AbstractLoadPostAddressData implements Dependent
         $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
 
         $manager->flush();
+
+        $manager->getRepository(Committee::class)->updateMembershipsCounters();
     }
 
     public function getDependencies(): array

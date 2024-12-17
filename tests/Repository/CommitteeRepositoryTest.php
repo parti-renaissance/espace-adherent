@@ -16,7 +16,7 @@ class CommitteeRepositoryTest extends AbstractKernelTestCase
 
     public function testFindApprovedCommittees()
     {
-        $this->assertCount(13, $this->repository->findApprovedCommittees());
+        $this->assertCount(16, $this->repository->findApprovedCommittees());
     }
 
     protected function setUp(): void

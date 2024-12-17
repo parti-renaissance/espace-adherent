@@ -2,7 +2,6 @@
 
 namespace Tests\App\Security\Voter;
 
-use App\Collection\CommitteeMembershipCollection;
 use App\Entity\Adherent;
 use App\Entity\CommitteeMembership;
 use App\Security\Voter\AdherentUnregistrationVoter;
@@ -91,14 +90,15 @@ class AdherentUnregistrationVoterTest extends TestCase
             ->willReturn($isRegionalDelegate)
         ;
 
-        $memberships = $this->createMock(CommitteeMembershipCollection::class);
-        $memberships->expects($this->any())
-            ->method('getCommitteeCandidacyMembership')
-            ->willReturn($hasCommitteeCandidacy ? $this->createMock(CommitteeMembership::class) : null)
+        $membership = $this->createMock(CommitteeMembership::class);
+        $membership->expects($this->any())
+            ->method('hasActiveCommitteeCandidacy')
+            ->willReturn($hasCommitteeCandidacy)
         ;
+
         $adherent->expects($this->any())
-            ->method('getMemberships')
-            ->willReturn($memberships)
+            ->method('getCommitteeMembership')
+            ->willReturn($hasCommitteeCandidacy ? $membership : null)
         ;
 
         $this->assertSame(

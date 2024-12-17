@@ -160,7 +160,7 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
-    #[Entity('member', expr: 'repository.findByUuid(member_uuid)')]
+    #[Entity('member', expr: 'repository.findOneByUuid(member_uuid)')]
     #[Route(path: '/promouvoir-suppleant/{member_uuid}', name: 'app_committee_promote_host', methods: ['GET', 'POST'])]
     #[Security("is_granted('SUPERVISE_COMMITTEE', committee) and is_granted('PROMOTE_TO_HOST_IN_COMMITTEE', committee)")]
     public function promoteHostAction(Request $request, Committee $committee, Adherent $member): Response
@@ -194,7 +194,7 @@ class CommitteeManagerController extends AbstractController
         ]);
     }
 
-    #[Entity('member', expr: 'repository.findByUuid(member_uuid)')]
+    #[Entity('member', expr: 'repository.findOneByUuid(member_uuid)')]
     #[IsGranted('SUPERVISE_COMMITTEE', subject: 'committee')]
     #[Route(path: '/retirer-suppleant/{member_uuid}', name: 'app_committee_demote_host', methods: ['GET', 'POST'])]
     public function demoteHostAction(Request $request, Committee $committee, Adherent $member): Response

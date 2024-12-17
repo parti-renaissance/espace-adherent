@@ -50,7 +50,7 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->adherentRepository
             ->expects($this->any())
-            ->method('findByUuid')
+            ->method('findOneByUuid')
             ->with(self::USER_UUID)
             ->willReturn($user = $this->createMock(Adherent::class))
         ;
@@ -90,7 +90,7 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->adherentRepository
             ->expects($this->any())
-            ->method('findByUuid')
+            ->method('findOneByUuid')
             ->with(self::USER_UUID)
             ->willReturn($this->createMock(Adherent::class))
         ;
@@ -119,7 +119,7 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->adherentRepository
             ->expects($this->any())
-            ->method('findByUuid')
+            ->method('findOneByUuid')
             ->with(self::USER_UUID)
             ->willReturn($this->createMock(Adherent::class))
         ;
@@ -149,7 +149,7 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->adherentRepository
             ->expects($this->any())
-            ->method('findByUuid')
+            ->method('findOneByUuid')
             ->with(self::USER_UUID)
             ->willReturn($user = $this->createMock(Adherent::class))
         ;
@@ -187,7 +187,7 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->adherentRepository
             ->expects($this->any())
-            ->method('findByUuid')
+            ->method('findOneByUuid')
             ->with(self::USER_UUID)
             ->willReturn(null)
         ;
@@ -206,7 +206,7 @@ class PersistentTokenFactoryTest extends TestCase
         $this
             ->adherentRepository
             ->expects($this->any())
-            ->method('findByUuid')
+            ->method('findOneByUuid')
             ->with(self::USER_UUID)
             ->willReturn($this->createMock(Adherent::class))
         ;

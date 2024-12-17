@@ -36,7 +36,7 @@ class CommitteeManagerTest extends AbstractKernelTestCase
         );
         // Approved committees
         $this->assertCount(1, $hosts);
-        $this->assertCount(3, $this->committeeManager->getCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_3_UUID)));
+        $this->assertCount(4, $this->committeeManager->getCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_3_UUID)));
         $this->assertCount(1, $this->committeeManager->getCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_4_UUID)));
         $this->assertCount(2, $this->committeeManager->getCommitteeHosts($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_5_UUID)));
 
@@ -47,7 +47,7 @@ class CommitteeManagerTest extends AbstractKernelTestCase
     public function testGetOptinCommitteeFollowers()
     {
         $this->assertCount(0, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_1_UUID)));
-        $this->assertCount(0, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_3_UUID)));
+        $this->assertCount(2, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeV1Data::COMMITTEE_3_UUID)));
         $this->assertCount(10, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeData::COMMITTEE_1_UUID)));
         $this->assertCount(3, $this->committeeManager->getOptinCommitteeFollowers($this->getCommittee(LoadCommitteeData::COMMITTEE_2_UUID)));
     }

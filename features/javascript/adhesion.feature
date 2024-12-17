@@ -193,7 +193,7 @@ Feature:
         # Finish step
         Then I should be on "/adhesion/felicitations" wait otherwise
         And I should see "Vous êtes désormais adhérent, félicitations !"
-        And User "adherent@renaissance.code" should be in "Comité : Comité des 3 communes" committee
+        And User "adherent@renaissance.code" should be in "Comité des 3 communes" committee
         When I click the ".re-button" selector
         Then I should be on "/app"
 

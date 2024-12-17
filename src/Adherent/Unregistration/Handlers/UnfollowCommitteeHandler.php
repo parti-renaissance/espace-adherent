@@ -13,7 +13,7 @@ class UnfollowCommitteeHandler implements UnregistrationAdherentHandlerInterface
 
     public function supports(Adherent $adherent): bool
     {
-        return !$adherent->getCommitteeMembership();
+        return null !== $adherent->getCommitteeMembership();
     }
 
     public function handle(Adherent $adherent): void

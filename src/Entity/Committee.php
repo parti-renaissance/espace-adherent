@@ -77,7 +77,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: CommitteeRepository::class)]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Table(name: 'committees')]
-class Committee implements SynchronizedEntity, StaticSegmentInterface, AddressHolderInterface, ZoneableEntityInterface, ExposedObjectInterface, EntityAdherentBlameableInterface, GeoPointInterface, CoordinatorAreaInterface, ReportableInterface, EntityAdministratorBlameableInterface
+class Committee implements StaticSegmentInterface, AddressHolderInterface, ZoneableEntityInterface, ExposedObjectInterface, EntityAdherentBlameableInterface, GeoPointInterface, CoordinatorAreaInterface, ReportableInterface, EntityAdministratorBlameableInterface
 {
     use EntityNullablePostAddressTrait;
     use EntityZoneTrait;

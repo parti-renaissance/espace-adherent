@@ -141,7 +141,7 @@ class CommitteeController extends AbstractController
             throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow committee.');
         }
 
-        $this->committeeMembershipManager->unfollowCommittee($this->getUser());
+        $this->committeeMembershipManager->unfollowCommittee($this->getUser()->getMembershipFor($committee));
 
         return new JsonResponse([
             'button' => [
