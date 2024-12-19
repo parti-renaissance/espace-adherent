@@ -1,6 +1,6 @@
 <?php
 
-namespace App\JeMarche\Notification;
+namespace App\JeMengage\Push\Notification;
 
 use App\Action\ActionTypeEnum;
 use App\Entity\Action\Action;

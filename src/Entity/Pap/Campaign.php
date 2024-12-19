@@ -29,10 +29,7 @@ use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
 use App\Entity\Jecoute\Survey;
 use App\EntityListener\AlgoliaIndexListener;
-use App\EntityListener\DynamicLinkListener;
 use App\EntityListener\PapCampaignListener;
-use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
-use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Repository\Pap\CampaignRepository;
 use App\Scope\ScopeVisibilityEnum;
 use App\Validator\PapCampaignStarted as AssertStartedPapCampaignValid;
@@ -120,18 +117,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[AssertStartedPapCampaignValid]
 #[AssertVotePlacesValid]
 #[ORM\Entity(repositoryClass: CampaignRepository::class)]
-#[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class, PapCampaignListener::class])]
+#[ORM\EntityListeners([AlgoliaIndexListener::class, PapCampaignListener::class])]
 #[ORM\Index(columns: ['begin_at', 'finish_at'])]
 #[ORM\Table(name: 'pap_campaign')]
 #[ScopeVisibility]
-class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZonesInterface, EntityAdherentBlameableInterface, DynamicLinkObjectInterface
+class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZonesInterface, EntityAdherentBlameableInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityAdministratorTrait;
     use EntityAdherentBlameableTrait;
     use EntityZoneTrait;
-    use DynamicLinkObjectTrait;
 
     /**
      * @var string|null
@@ -426,21 +422,6 @@ class Campaign implements IndexableEntityInterface, EntityScopeVisibilityWithZon
     public function setAssociated(bool $value): void
     {
         $this->associated = $value;
-    }
-
-    public function getDynamicLinkPath(): string
-    {
-        return '/pap-campaigns/'.$this->uuid;
-    }
-
-    public function withSocialMeta(): bool
-    {
-        return true;
-    }
-
-    public function getSocialTitle(): string
-    {
-        return (string) $this->getTitle();
     }
 
     public function setVisibility(string $visibility): void

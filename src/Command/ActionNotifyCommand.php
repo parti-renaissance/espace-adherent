@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Action\Action;
-use App\JeMarche\Command\NotifyForActionCommand;
+use App\JeMengage\Push\Command\NotifyForActionCommand;
 use App\Repository\Action\ActionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;

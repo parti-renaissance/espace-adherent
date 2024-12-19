@@ -6,8 +6,8 @@ use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Event\EventEvent;
 use App\Events;
-use App\JeMarche\Command\CommitteeEventCreationNotificationCommand;
-use App\JeMarche\Command\DefaultEventCreationNotificationCommand;
+use App\JeMengage\Push\Command\CommitteeEventCreationNotificationCommand;
+use App\JeMengage\Push\Command\DefaultEventCreationNotificationCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 

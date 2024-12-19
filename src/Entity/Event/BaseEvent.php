@@ -44,14 +44,11 @@ use App\Entity\NullablePostAddress;
 use App\Entity\Report\ReportableInterface;
 use App\Entity\ZoneableEntityInterface;
 use App\EntityListener\AlgoliaIndexListener;
-use App\EntityListener\DynamicLinkListener;
 use App\Event\EventTypeEnum;
 use App\Event\EventVisibilityEnum;
-use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
-use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Geocoder\GeoPointInterface;
-use App\JeMarche\Command\EventReminderNotificationCommand;
-use App\JeMarche\Command\SendNotificationCommandInterface;
+use App\JeMengage\Push\Command\EventReminderNotificationCommand;
+use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Normalizer\ImageOwnerExposedNormalizer;
 use App\Report\ReportType;
 use App\Repository\Event\BaseEventRepository;
@@ -155,20 +152,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap([EventTypeEnum::TYPE_DEFAULT => DefaultEvent::class, EventTypeEnum::TYPE_COMMITTEE => CommitteeEvent::class])]
 #[ORM\Entity(repositoryClass: BaseEventRepository::class)]
-#[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
+#[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[ORM\Index(columns: ['begin_at'])]
 #[ORM\Index(columns: ['finish_at'])]
 #[ORM\Index(columns: ['status'])]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: '`events`')]
-abstract class BaseEvent implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ExposedAdvancedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, NotificationObjectInterface
+abstract class BaseEvent implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ExposedAdvancedImageOwnerInterface, IndexableEntityInterface, NotificationObjectInterface
 {
     use EntityIdentityTrait;
     use EntityNullablePostAddressTrait;
     use EntityZoneTrait;
     use EntityTimestampableTrait;
     use AdvancedImageTrait;
-    use DynamicLinkObjectTrait;
     use AuthorInstanceTrait;
 
     public const STATUS_SCHEDULED = 'SCHEDULED';
@@ -676,26 +672,6 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
     public function getIndexOptions(): array
     {
         return [];
-    }
-
-    public function getDynamicLinkPath(): string
-    {
-        return \sprintf('/events/%s', $this->getUuid());
-    }
-
-    public function withSocialMeta(): bool
-    {
-        return true;
-    }
-
-    public function getSocialTitle(): string
-    {
-        return $this->getName();
-    }
-
-    public function getSocialDescription(): string
-    {
-        return $this->getDescription();
     }
 
     public function isRenaissanceEvent(): bool

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\JeMarche\Notification;
+namespace App\JeMengage\Push\Notification;
 
 use App\Entity\Event\DefaultEvent;
 use App\Firebase\Notification\AbstractMulticastNotification;
@@ -9,17 +9,15 @@ class DefaultEventCreatedNotification extends AbstractMulticastNotification
 {
     public static function create(DefaultEvent $event): self
     {
-        $notification = new self(
-            '%s, nouvel événement',
+        $assemblyZone = $event->getAssemblyZone();
+
+        return new self(
+            $assemblyZone ? \sprintf('%s, nouvel événement', $assemblyZone->getName()) : 'Nouvel événement',
             implode(' • ', array_filter([
                 $event->getName(),
                 self::formatDate($event->getBeginAt(), 'EEEE d MMMM y à HH\'h\'mm'),
                 $event->getInlineFormattedAddress(),
             ])),
         );
-
-        $notification->setDeepLinkFromObject($event);
-
-        return $notification;
     }
 }

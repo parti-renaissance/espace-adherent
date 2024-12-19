@@ -5,7 +5,6 @@ namespace App\Normalizer\Indexer;
 use App\Entity\Adherent;
 use App\Entity\AuthorInstanceInterface;
 use App\Entity\Geo\Zone;
-use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\JeMengage\Timeline\TimelineFeedTypeEnum;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -37,7 +36,6 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
             'is_national' => $this->isNational($object),
             'zone_codes' => $this->getZoneCodes($object),
             'adherent_ids' => $this->getAdherentIds($object),
-            'deeplink' => $this->getDeepLink($object),
             'mode' => $this->getMode($object),
             'participants_count' => $this->getParticipantsCount($object),
             'visibility' => $this->getVisibility($object),
@@ -135,11 +133,6 @@ abstract class AbstractJeMengageTimelineFeedNormalizer extends AbstractIndexerNo
     protected function getAdherentIds(object $object): ?array
     {
         return null;
-    }
-
-    protected function getDeepLink(object $object): ?string
-    {
-        return $object instanceof DynamicLinkObjectInterface ? $object->getDynamicLink() : null;
     }
 
     protected function getUrl(object $object): ?string

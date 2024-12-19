@@ -27,10 +27,7 @@ use App\Entity\UserDocument;
 use App\Entity\UserDocumentInterface;
 use App\Entity\UserDocumentTrait;
 use App\EntityListener\AlgoliaIndexListener;
-use App\EntityListener\DynamicLinkListener;
-use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
-use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
-use App\JeMarche\Command\SendNotificationCommandInterface;
+use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Scope\ScopeVisibilityEnum;
 use App\Utils\StringCleaner;
 use App\Validator\Jecoute\NewsTarget;
@@ -92,17 +89,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[NewsText]
 #[ORM\AssociationOverrides([new ORM\AssociationOverride(name: 'author', joinColumns: [new ORM\JoinColumn(onDelete: 'SET NULL')])])]
 #[ORM\Entity]
-#[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
+#[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[ORM\Table(name: 'jecoute_news')]
 #[ScopeVisibility]
-class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, DynamicLinkObjectInterface, NotificationObjectInterface
+class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, NotificationObjectInterface
 {
     use EntityTimestampableTrait;
     use AuthorInstanceTrait;
     use EntityScopeVisibilityTrait {
         setZone as traitSetZone;
     }
-    use DynamicLinkObjectTrait;
     use UserDocumentTrait;
     use EntityAdministratorBlameableTrait;
 
@@ -348,21 +344,6 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
     public function isIndexable(): bool
     {
         return $this->isPublished();
-    }
-
-    public function getDynamicLinkPath(): string
-    {
-        return '/news/'.$this->uuid;
-    }
-
-    public function withSocialMeta(): bool
-    {
-        return true;
-    }
-
-    public function getSocialTitle(): string
-    {
-        return (string) $this->getTitle();
     }
 
     public function getContentContainingDocuments(): string

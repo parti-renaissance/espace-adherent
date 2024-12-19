@@ -61,7 +61,7 @@ class NotificationContext extends RawMinkContext
     ): void {
         $actualValue = $this->propertyAccessor->getValue($notification, $property);
 
-        $this->assertMatchesPattern($expectedValue, $actualValue);
+        $this->assertMatchesPattern($expectedValue, \is_array($actualValue) ? json_encode($actualValue) : $actualValue);
     }
 
     private function raiseException(string $message): void

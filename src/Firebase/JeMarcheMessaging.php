@@ -69,7 +69,7 @@ class JeMarcheMessaging
                 'icon', 'https://app.parti-renaissance.fr/images/icons/icon-512x512.png',
             ],
             'fcm_options' => [
-                'link', $notification->getData()['deeplink'] ?? null,
+                'link', $notification->getData()['link'] ?? null,
             ],
         ];
     }
@@ -78,8 +78,8 @@ class JeMarcheMessaging
     {
         $data = $notification->getData();
 
-        if (!empty($data['deeplink'])) {
-            $data['deeplink'] = parse_url($data['deeplink'], \PHP_URL_PATH);
+        if (!empty($data['link'])) {
+            $data['link'] = parse_url($data['link'], \PHP_URL_PATH);
         }
 
         return $data;

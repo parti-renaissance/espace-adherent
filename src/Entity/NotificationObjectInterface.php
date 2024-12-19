@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\JeMarche\Command\SendNotificationCommandInterface;
+use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 
 interface NotificationObjectInterface
 {

@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Event\BaseEvent;
-use App\JeMarche\Command\EventReminderNotificationCommand;
+use App\JeMengage\Push\Command\EventReminderNotificationCommand;
 use App\Repository\Event\BaseEventRepository;
 use Cake\Chronos\Chronos;
 use Symfony\Component\Console\Attribute\AsCommand;
