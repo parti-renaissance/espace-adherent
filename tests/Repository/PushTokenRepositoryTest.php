@@ -30,7 +30,7 @@ class PushTokenRepositoryTest extends AbstractKernelTestCase
             'code' => $zoneCode,
         ]);
 
-        $tokens = $this->pushTokenRepository->findIdentifiersForZones([$zone]);
+        //        $tokens = $this->pushTokenRepository->findIdentifiersForZones([$zone]);
 
         self::assertSame($expectedTokens, $tokens);
     }

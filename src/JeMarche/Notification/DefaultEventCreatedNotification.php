@@ -3,21 +3,19 @@
 namespace App\JeMarche\Notification;
 
 use App\Entity\Event\DefaultEvent;
-use App\Entity\Geo\Zone;
-use App\Firebase\Notification\AbstractTopicNotification;
+use App\Firebase\Notification\AbstractMulticastNotification;
 
-class DefaultEventCreatedNotification extends AbstractTopicNotification
+class DefaultEventCreatedNotification extends AbstractMulticastNotification
 {
-    public static function create(string $topic, DefaultEvent $event, Zone $zone): self
+    public static function create(DefaultEvent $event): self
     {
         $notification = new self(
-            \sprintf('%s, nouvel événement', $zone->getName()),
+            '%s, nouvel événement',
             \sprintf('%s • %s • %s',
                 $event->getName(),
                 self::formatDate($event->getBeginAt(), 'EEEE d MMMM y à HH\'h\'mm'),
                 $event->getInlineFormattedAddress()
             ),
-            $topic
         );
 
         $notification->setDeepLinkFromObject($event);

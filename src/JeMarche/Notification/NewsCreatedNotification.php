@@ -3,16 +3,15 @@
 namespace App\JeMarche\Notification;
 
 use App\Entity\Jecoute\News;
-use App\Firebase\Notification\AbstractTopicNotification;
+use App\Firebase\Notification\AbstractMulticastNotification;
 
-class NewsCreatedNotification extends AbstractTopicNotification
+class NewsCreatedNotification extends AbstractMulticastNotification
 {
-    public static function create(News $news, string $title): self
+    public static function create(News $news): self
     {
         $notification = new self(
-            $title,
+            $news->getTitle(),
             $news->getCleanedCroppedText(50),
-            $news->getTopic()
         );
 
         $notification->setDeepLinkFromObject($news);

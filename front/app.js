@@ -112,12 +112,6 @@ class App {
         });
     }
 
-    runJeMarche() {
-        import('pages/jemarche').catch((error) => { throw error; }).then((module) => {
-            module.default();
-        });
-    }
-
     runSocialShare(urlAll, urlCategory) {
         import('pages/social_share').catch((error) => { throw error; }).then((module) => {
             module.default(urlAll, urlCategory);

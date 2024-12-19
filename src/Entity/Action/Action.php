@@ -26,9 +26,11 @@ use App\Entity\EntityTimestampableTrait;
 use App\Entity\EntityZoneTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
+use App\Entity\NotificationObjectInterface;
 use App\Entity\ZoneableEntityInterface;
 use App\EntityListener\AlgoliaIndexListener;
 use App\Geocoder\GeoPointInterface;
+use App\JeMarche\Command\SendNotificationCommandInterface;
 use App\Normalizer\ImageOwnerExposedNormalizer;
 use App\Repository\Action\ActionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -81,7 +83,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ActionRepository::class)]
 #[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[ORM\Table(name: 'vox_action')]
-class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEntityInterface, IndexableEntityInterface
+class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEntityInterface, IndexableEntityInterface, NotificationObjectInterface
 {
     use EntityIdentityTrait;
     use EntityPostAddressTrait;
@@ -180,5 +182,14 @@ class Action implements AuthorInstanceInterface, GeoPointInterface, ZoneableEnti
     public function isIndexable(): bool
     {
         return !$this->isCancelled();
+    }
+
+    public function isNotificationEnabled(SendNotificationCommandInterface $command): bool
+    {
+        return !$this->isCancelled();
+    }
+
+    public function handleNotificationSent(SendNotificationCommandInterface $command): void
+    {
     }
 }

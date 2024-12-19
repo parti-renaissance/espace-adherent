@@ -3,7 +3,8 @@
 namespace App\Command;
 
 use App\Entity\Event\BaseEvent;
-use App\Event\EventReminderHandler;
+use App\JeMarche\Command\EventReminderNotificationCommand;
+use App\Repository\Event\BaseEventRepository;
 use Cake\Chronos\Chronos;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -12,6 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
     name: 'app:events:remind',
@@ -19,16 +21,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class RemindEventCommand extends Command
 {
-    private $handler;
+    private SymfonyStyle $io;
 
-    /** @var SymfonyStyle */
-    private $io;
-
-    public function __construct(EventReminderHandler $handler)
-    {
+    public function __construct(
+        private readonly MessageBusInterface $bus,
+        private readonly BaseEventRepository $eventRepository,
+    ) {
         parent::__construct();
-
-        $this->handler = $handler;
     }
 
     protected function configure(): void
@@ -59,13 +58,12 @@ class RemindEventCommand extends Command
         } else {
             throw new \InvalidArgumentException(\sprintf('Event mode "%s" is not defined.', $mode));
         }
-
-        $events = $this->handler->findEventsToRemind($startAfter, $startBefore, $mode);
+        $events = $this->eventRepository->findEventsToRemind($startAfter, $startBefore, $mode);
 
         $this->io->progressStart($total = \count($events));
 
         foreach ($events as $event) {
-            $this->handler->scheduleReminder($event);
+            $this->bus->dispatch(new EventReminderNotificationCommand($event->getUuid()));
             $this->io->progressAdvance();
         }
 

@@ -7,7 +7,7 @@ use App\Firebase\Notification\AbstractMulticastNotification;
 
 class EventReminderNotification extends AbstractMulticastNotification
 {
-    public static function create(array $tokens, BaseEvent $event): self
+    public static function create(BaseEvent $event): self
     {
         $body = \sprintf('%s • %s',
             $event->getName(),
@@ -21,7 +21,6 @@ class EventReminderNotification extends AbstractMulticastNotification
         $notification = new self(
             'Votre événement commence bientôt',
             $body,
-            $tokens
         );
 
         $notification->setDeepLinkFromObject($event);

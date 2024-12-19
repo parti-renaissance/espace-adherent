@@ -100,7 +100,7 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
         return $this->password;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
