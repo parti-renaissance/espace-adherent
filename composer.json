@@ -158,7 +158,7 @@
         "bex/behat-skip-tests": "^1.2",
         "coduo/php-matcher": "^6.0",
         "dama/doctrine-test-bundle": "^8.0",
-        "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "doctrine/doctrine-fixtures-bundle": "^4.0",
         "fakerphp/faker": "^1.13",
         "friends-of-behat/mink-extension": "^2.7",
         "friends-of-behat/symfony-extension": "^2.4",
