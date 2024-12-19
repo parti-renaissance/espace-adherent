@@ -2,8 +2,12 @@
 
 namespace App\JeMarche\Command;
 
-use App\Messenger\Message\UuidDefaultAsyncMessage;
+use App\Entity\Event\DefaultEvent;
 
-class DefaultEventCreationNotificationCommand extends UuidDefaultAsyncMessage
+class DefaultEventCreationNotificationCommand extends AbstractSendNotificationCommand
 {
+    public function getClass(): string
+    {
+        return DefaultEvent::class;
+    }
 }

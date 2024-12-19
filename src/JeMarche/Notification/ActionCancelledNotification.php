@@ -8,12 +8,11 @@ use App\Firebase\Notification\AbstractMulticastNotification;
 
 class ActionCancelledNotification extends AbstractMulticastNotification
 {
-    public static function create(Action $action, array $topics): self
+    public static function create(Action $action): self
     {
         return new self(
             static::createTitle($action),
             static::createBody($action),
-            $topics
         );
     }
 

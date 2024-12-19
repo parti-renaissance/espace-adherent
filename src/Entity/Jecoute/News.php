@@ -13,14 +13,16 @@ use ApiPlatform\Metadata\Put;
 use App\Api\Filter\JecouteNewsScopeFilter;
 use App\Api\Filter\JecouteNewsZipCodeFilter;
 use App\Api\Filter\ScopeVisibilityFilter;
-use App\Entity\Administrator;
 use App\Entity\AuthorInstanceInterface;
 use App\Entity\AuthorInstanceTrait;
+use App\Entity\Committee;
+use App\Entity\EntityAdministratorBlameableTrait;
 use App\Entity\EntityScopeVisibilityTrait;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
+use App\Entity\NotificationObjectInterface;
 use App\Entity\UserDocument;
 use App\Entity\UserDocumentInterface;
 use App\Entity\UserDocumentTrait;
@@ -28,11 +30,11 @@ use App\EntityListener\AlgoliaIndexListener;
 use App\EntityListener\DynamicLinkListener;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
-use App\Jecoute\JecouteSpaceEnum;
+use App\JeMarche\Command\SendNotificationCommandInterface;
+use App\Scope\ScopeVisibilityEnum;
 use App\Utils\StringCleaner;
 use App\Validator\Jecoute\NewsTarget;
 use App\Validator\Jecoute\NewsText;
-use App\Validator\Jecoute\ReferentNews;
 use App\Validator\Scope\ScopeVisibility;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -92,15 +94,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
 #[ORM\Table(name: 'jecoute_news')]
-#[ReferentNews]
 #[ScopeVisibility]
-class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, DynamicLinkObjectInterface
+class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableEntityInterface, EntityScopeVisibilityWithZoneInterface, DynamicLinkObjectInterface, NotificationObjectInterface
 {
     use EntityTimestampableTrait;
     use AuthorInstanceTrait;
-    use EntityScopeVisibilityTrait;
+    use EntityScopeVisibilityTrait {
+        setZone as traitSetZone;
+    }
     use DynamicLinkObjectTrait;
     use UserDocumentTrait;
+    use EntityAdministratorBlameableTrait;
 
     #[ApiProperty(identifier: false)]
     #[ORM\Column(type: 'integer')]
@@ -123,6 +127,9 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
     #[ORM\Column(type: 'text')]
     private ?string $text;
 
+    /**
+     * Used in admin for enriched text.
+     */
     private ?string $enrichedText = null;
 
     #[Assert\Url]
@@ -138,10 +145,6 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
 
     #[ORM\Column(nullable: true)]
     private ?string $topic;
-
-    #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    #[ORM\ManyToOne(targetEntity: Administrator::class)]
-    private ?Administrator $createdBy = null;
 
     #[Groups(['jecoute_news_write_national'])]
     private bool $global = false;
@@ -162,9 +165,6 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
     #[ORM\Column(type: 'boolean', options: ['default' => 0])]
     private bool $enriched;
 
-    #[ORM\Column(nullable: true)]
-    private ?string $space = null;
-
     /**
      * @var UserDocument[]|Collection
      */
@@ -174,11 +174,14 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
     #[ORM\ManyToMany(targetEntity: UserDocument::class, cascade: ['all'], orphanRemoval: true)]
     protected Collection $documents;
 
+    #[Groups(['jecoute_news_write'])]
+    #[ORM\ManyToOne(targetEntity: Committee::class)]
+    public ?Committee $committee = null;
+
     public function __construct(
         ?UuidInterface $uuid = null,
         ?string $title = null,
         ?string $text = null,
-        ?string $topic = null,
         ?string $externalLink = null,
         ?string $linkLabel = null,
         ?Zone $zone = null,
@@ -190,7 +193,6 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
         $this->uuid = $uuid ?: Uuid::uuid4();
         $this->title = $title;
         $this->text = $text;
-        $this->topic = $topic;
         $this->externalLink = $externalLink;
         $this->linkLabel = $linkLabel;
         $this->notification = $notification;
@@ -282,26 +284,6 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
         $this->linkLabel = $linkLabel;
     }
 
-    public function getTopic(): ?string
-    {
-        return $this->topic;
-    }
-
-    public function setTopic(?string $topic): void
-    {
-        $this->topic = $topic;
-    }
-
-    public function getCreatedBy(): ?Administrator
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(?Administrator $createdBy): void
-    {
-        $this->createdBy = $createdBy;
-    }
-
     public function isGlobal(): bool
     {
         return $this->global;
@@ -352,27 +334,10 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
         $this->enriched = $enriched;
     }
 
-    public function getSpace(): ?string
+    public function setZone(?Zone $zone): void
     {
-        return $this->space;
-    }
-
-    public function setSpace(?string $space): void
-    {
-        if (null !== $space && !JecouteSpaceEnum::isValid($space)) {
-            throw new \InvalidArgumentException('Invalid space');
-        }
-        $this->space = $space;
-    }
-
-    public function getAuthorFullNameWithRole(): ?string
-    {
-        if ($this->isNationalVisibility()) {
-            return null;
-        }
-
-        return $this->getAuthorFullName()
-            .($this->getSpace() ? ' ('.JecouteSpaceEnum::getLabel($this->getSpace()).')' : '');
+        $this->traitSetZone($zone);
+        $this->visibility = $this->zone || $this->committee ? ScopeVisibilityEnum::LOCAL : $this->visibility;
     }
 
     public function getIndexOptions(): array
@@ -408,5 +373,24 @@ class News implements AuthorInstanceInterface, UserDocumentInterface, IndexableE
     public function getFieldContainingDocuments(): string
     {
         return 'text';
+    }
+
+    public function updateVisibility(): void
+    {
+        $this->visibility = $this->zone || $this->committee ? ScopeVisibilityEnum::LOCAL : $this->visibility;
+    }
+
+    public function getCommittee(): ?Committee
+    {
+        return $this->committee;
+    }
+
+    public function isNotificationEnabled(SendNotificationCommandInterface $command): bool
+    {
+        return $this->isNotification();
+    }
+
+    public function handleNotificationSent(SendNotificationCommandInterface $command): void
+    {
     }
 }

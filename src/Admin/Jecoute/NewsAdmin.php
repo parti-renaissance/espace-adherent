@@ -4,12 +4,10 @@ namespace App\Admin\Jecoute;
 
 use App\Admin\AbstractAdmin;
 use App\Admin\Filter\ZoneAutocompleteFilter;
-use App\Entity\Administrator;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
 use App\Jecoute\NewsHandler;
 use App\Repository\Geo\ZoneRepository;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -18,18 +16,15 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class NewsAdmin extends AbstractAdmin
 {
-    private $security;
     private $zoneRepository;
     private $newsHandler;
 
@@ -37,13 +32,11 @@ class NewsAdmin extends AbstractAdmin
         $code,
         $class,
         $baseControllerName,
-        Security $security,
         ZoneRepository $zoneRepository,
         NewsHandler $newsHandler,
     ) {
         parent::__construct($code, $class, $baseControllerName);
 
-        $this->security = $security;
         $this->zoneRepository = $zoneRepository;
         $this->newsHandler = $newsHandler;
     }
@@ -55,19 +48,9 @@ class NewsAdmin extends AbstractAdmin
         ];
     }
 
-    protected function configureDefaultSortValues(array &$sortValues): void
-    {
-        parent::configureDefaultSortValues($sortValues);
-
-        $sortValues[DatagridInterface::SORT_BY] = 'createdAt';
-        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
-    }
-
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection
-            ->add('pin', $this->getRouterIdParameter().'/pin')
-        ;
+        $collection->add('pin', $this->getRouterIdParameter().'/pin');
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -176,14 +159,6 @@ class NewsAdmin extends AbstractAdmin
         }
     }
 
-    public function submit(FormEvent $event): void
-    {
-        /** @var News $news */
-        $news = $event->getData();
-
-        $this->newsHandler->buildTopic($news);
-    }
-
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
@@ -191,10 +166,6 @@ class NewsAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'label' => 'Date',
                 'field_type' => DateRangePickerType::class,
-            ])
-            ->add('createdBy', null, [
-                'label' => 'Auteur',
-                'show_filter' => true,
             ])
             ->add('pinned', null, [
                 'label' => 'Épinglée',
@@ -272,9 +243,6 @@ class NewsAdmin extends AbstractAdmin
             ->add('createdAt', null, [
                 'label' => 'Date',
             ])
-            ->add('createdBy', null, [
-                'label' => 'Auteur',
-            ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,
                 'actions' => [
@@ -289,15 +257,6 @@ class NewsAdmin extends AbstractAdmin
     }
 
     /** @param News $object */
-    protected function prePersist(object $object): void
-    {
-        /** @var Administrator $administrator */
-        $administrator = $this->security->getUser();
-
-        $object->setCreatedBy($administrator);
-    }
-
-    /** @param News $object */
     protected function postPersist(object $object): void
     {
         $this->newsHandler->handleNotification($object);
@@ -308,11 +267,5 @@ class NewsAdmin extends AbstractAdmin
     protected function postUpdate(object $object): void
     {
         $this->newsHandler->changePinned($object);
-    }
-
-    #[Required]
-    public function setSecurity(Security $security): void
-    {
-        $this->security = $security;
     }
 }

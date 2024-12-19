@@ -46,7 +46,7 @@ abstract class AbstractApiUser implements UserInterface
         return $this->username;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 }

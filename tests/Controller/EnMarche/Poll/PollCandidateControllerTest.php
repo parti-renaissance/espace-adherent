@@ -142,17 +142,6 @@ class PollCandidateControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertStatusCode(200, $this->client);
         $this->assertSame(0, $crawler->filter('.form__errors > li')->count());
         $this->assertSame('La question du jour a bien été enregistrée.', $crawler->filter('.flash--info')->text(null, true));
-
-        $notifications = $this->notificationRepository->findAll();
-        self::assertCount(1, $notifications);
-
-        /** @var Notification $notification */
-        $notification = current($notifications);
-        self::assertSame('PollCreatedNotification', $notification->getNotificationClass());
-        self::assertSame('Ma question "Test"', $notification->getTitle());
-        self::assertSame('Cliquez pour répondre à cette question du jour.', $notification->getBody());
-        self::assertSame('staging_jemarche_region_11', $notification->getTopic());
-        self::assertEmpty($notification->getTokens());
     }
 
     #[DataProvider('provideCandidates')]

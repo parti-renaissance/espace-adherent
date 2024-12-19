@@ -6,6 +6,7 @@ use App\Entity\Adherent;
 use App\Entity\EntityScopeVisibilityInterface;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
 use App\Entity\EntityScopeVisibilityWithZonesInterface;
+use App\Entity\Jecoute\News;
 use App\Entity\Phoning\Campaign;
 use App\Entity\Team\Team;
 use App\Geo\ManagedZoneProvider;
@@ -17,18 +18,11 @@ class ScopeVisibilityVoter extends AbstractAdherentVoter
 {
     public const PERMISSION = 'SCOPE_CAN_MANAGE';
 
-    private ScopeGeneratorResolver $scopeGeneratorResolver;
-    private ManagedZoneProvider $managedZoneProvider;
-    private ZoneRepository $zoneRepository;
-
     public function __construct(
-        ScopeGeneratorResolver $scopeGeneratorResolver,
-        ManagedZoneProvider $managedZoneProvider,
-        ZoneRepository $zoneRepository,
+        private readonly ScopeGeneratorResolver $scopeGeneratorResolver,
+        private readonly ManagedZoneProvider $managedZoneProvider,
+        private readonly ZoneRepository $zoneRepository,
     ) {
-        $this->scopeGeneratorResolver = $scopeGeneratorResolver;
-        $this->managedZoneProvider = $managedZoneProvider;
-        $this->zoneRepository = $zoneRepository;
     }
 
     protected function doVoteOnAttribute(string $attribute, Adherent $adherent, $subject): bool
@@ -51,6 +45,13 @@ class ScopeVisibilityVoter extends AbstractAdherentVoter
             }
 
             return ScopeEnum::LEGISLATIVE_CANDIDATE !== $scope->getMainCode();
+        }
+
+        if (
+            ($committeeUuids = $scope->getCommitteeUuids())
+            && $subject instanceof News
+        ) {
+            return \in_array($subject->committee->getUuid()->toString(), $committeeUuids, true);
         }
 
         // Local scope & Local subject

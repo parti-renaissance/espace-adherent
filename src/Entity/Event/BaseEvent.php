@@ -39,6 +39,7 @@ use App\Entity\EntityZoneTrait;
 use App\Entity\ExposedAdvancedImageOwnerInterface;
 use App\Entity\Geo\Zone;
 use App\Entity\IndexableEntityInterface;
+use App\Entity\NotificationObjectInterface;
 use App\Entity\NullablePostAddress;
 use App\Entity\Report\ReportableInterface;
 use App\Entity\ZoneableEntityInterface;
@@ -49,6 +50,8 @@ use App\Event\EventVisibilityEnum;
 use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Geocoder\GeoPointInterface;
+use App\JeMarche\Command\EventReminderNotificationCommand;
+use App\JeMarche\Command\SendNotificationCommandInterface;
 use App\Normalizer\ImageOwnerExposedNormalizer;
 use App\Report\ReportType;
 use App\Repository\Event\BaseEventRepository;
@@ -158,7 +161,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['status'])]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: '`events`')]
-abstract class BaseEvent implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ExposedAdvancedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface
+abstract class BaseEvent implements ReportableInterface, GeoPointInterface, AddressHolderInterface, ZoneableEntityInterface, AuthorInstanceInterface, ExposedAdvancedImageOwnerInterface, IndexableEntityInterface, DynamicLinkObjectInterface, NotificationObjectInterface
 {
     use EntityIdentityTrait;
     use EntityNullablePostAddressTrait;
@@ -713,5 +716,21 @@ abstract class BaseEvent implements ReportableInterface, GeoPointInterface, Addr
     public function isForAdherent(): bool
     {
         return \in_array($this->visibility, [EventVisibilityEnum::ADHERENT, EventVisibilityEnum::ADHERENT_DUES], true);
+    }
+
+    public function isNotificationEnabled(SendNotificationCommandInterface $command): bool
+    {
+        if ($command instanceof EventReminderNotificationCommand) {
+            return $this->isPublished() && !$this->isReminded();
+        }
+
+        return $this->isPublished();
+    }
+
+    public function handleNotificationSent(SendNotificationCommandInterface $command): void
+    {
+        if ($command instanceof EventReminderNotificationCommand) {
+            $this->setReminded(true);
+        }
     }
 }

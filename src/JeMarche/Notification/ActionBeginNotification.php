@@ -8,12 +8,11 @@ use App\Firebase\Notification\AbstractMulticastNotification;
 
 class ActionBeginNotification extends AbstractMulticastNotification
 {
-    public static function create(Action $action, array $topics, bool $firstNotification): self
+    public static function create(Action $action, bool $firstNotification): self
     {
         return new self(
             static::createTitle($action, $firstNotification),
             static::createBody($action, $firstNotification),
-            $topics
         );
     }
 

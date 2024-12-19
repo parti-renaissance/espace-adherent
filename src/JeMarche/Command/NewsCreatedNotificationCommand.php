@@ -2,8 +2,12 @@
 
 namespace App\JeMarche\Command;
 
-use App\Messenger\Message\UuidDefaultAsyncMessage;
+use App\Entity\Jecoute\News;
 
-class NewsCreatedNotificationCommand extends UuidDefaultAsyncMessage
+class NewsCreatedNotificationCommand extends AbstractSendNotificationCommand
 {
+    public function getClass(): string
+    {
+        return News::class;
+    }
 }

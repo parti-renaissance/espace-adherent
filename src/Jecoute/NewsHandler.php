@@ -3,48 +3,27 @@
 namespace App\Jecoute;
 
 use App\Entity\Jecoute\News;
-use App\JeMarche\JeMarcheDeviceNotifier;
-use App\JeMarche\NotificationTopicBuilder;
+use App\JeMarche\Command\NewsCreatedNotificationCommand;
 use App\Repository\Jecoute\NewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class NewsHandler
 {
-    private NewsRepository $newsRepository;
-    private EntityManagerInterface $entityManager;
-    private JeMarcheDeviceNotifier $deviceNotifier;
-    private NotificationTopicBuilder $topicBuilder;
-
     public function __construct(
-        NewsRepository $newsRepository,
-        EntityManagerInterface $entityManager,
-        JeMarcheDeviceNotifier $deviceNotifier,
-        NotificationTopicBuilder $topicBuilder,
+        private readonly NewsRepository $newsRepository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly MessageBusInterface $bus,
     ) {
-        $this->newsRepository = $newsRepository;
-        $this->entityManager = $entityManager;
-        $this->deviceNotifier = $deviceNotifier;
-        $this->topicBuilder = $topicBuilder;
     }
 
-    public function buildTopic(News $news): void
+    public function handleNotification(News $news): void
     {
         if (!$news->isNotification()) {
             return;
         }
 
-        $topic = $this->topicBuilder->buildTopic($news->getZone());
-
-        $news->setTopic($topic);
-    }
-
-    public function handleNotification(News $news): void
-    {
-        if (!$news->isNotification() || null === $news->getTopic()) {
-            return;
-        }
-
-        $this->deviceNotifier->sendNewsNotification($news);
+        $this->bus->dispatch(new NewsCreatedNotificationCommand($news->getUuid()));
     }
 
     public function changePinned(News $news): void

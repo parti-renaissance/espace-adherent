@@ -87,6 +87,11 @@ Feature:
                 "editable": true
             }
             """
+        And I should have 1 notification "ActionCreatedNotification" with data:
+            | key   | value                                                                                                 |
+            | scope | zone:92                                                                                               |
+            | title | 🚪 Porte à porte le 1 juin à Clichy                                                                   |
+            | body  | Damien vient de créer une nouvelle action de porte à porte le samedi 1 juin à 10h00 à Clichy (92110). |
         When I save this response
         And I send a "PUT" request to "/api/v3/actions/:last_response.uuid:?scope=president_departmental_assembly" with body:
             """
@@ -160,6 +165,11 @@ Feature:
                 "editable": true
             }
             """
+        And I should have 1 notification "ActionUpdatedNotification" with data:
+            | key   | value                                                                              |
+            | scope | action:@number@                                                                    |
+            | title | 📬 Boitage le 1 juin à Clichy                                                      |
+            | body  | Le boitage du samedi 1 juin à 10h00 auquel vous êtes inscrit vient d'être modifié. |
         When I send a "DELETE" request to "/api/v3/actions/:last_response.uuid:/register"
         Then the response status code should be 400
         And the JSON node "message" should be equal to "Vous ne pouvez pas vous désinscrire d'une action que vous avez créé."

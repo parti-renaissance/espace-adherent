@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Collection\ZoneCollection;
 use App\Entity\Geo\Zone;
-use App\Entity\Geo\ZoneTagEnum;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -95,7 +94,7 @@ trait EntityZoneTrait
     public function getAssemblyZone(): ?Zone
     {
         foreach ($this->getDeepZones() as $zone) {
-            if ($zone->hasTag(ZoneTagEnum::ASSEMBLY)) {
+            if ($zone->isAssemblyZone()) {
                 return $zone;
             }
         }
