@@ -65,6 +65,15 @@ class PaymentImporter
             $payment->adherent = $currentContact->adherent;
 
             $this->updatePayment($payment, $paymentData);
+
+            if (
+                !$currentContact->lastPaymentDate
+                || $currentContact->lastPaymentDate < $payment->date
+            ) {
+                $currentContact->lastPaymentDate = $payment->date;
+
+                $this->contactRepository->save($currentContact);
+            }
         }
     }
 
