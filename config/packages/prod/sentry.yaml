@@ -1,22 +1,25 @@
 services:
-    Sentry\Integration\EnvironmentIntegration: ~
     Sentry\Integration\FrameContextifierIntegration: ~
     Sentry\Integration\RequestIntegration: ~
-    Sentry\Integration\TransactionIntegration: ~
+
+    Sentry\Monolog\BreadcrumbHandler:
+        arguments:
+            - '@Sentry\State\HubInterface'
+            - !php/const Monolog\Logger::INFO
 
 sentry:
     dsn: '%env(SENTRY_DSN)%'
     register_error_listener: false
+    register_error_handler: false
     tracing: false
+    messenger: true
     options:
         send_default_pii: true
         default_integrations: false
         ignore_exceptions:
             - App\Sentry\SentryIgnoredExceptionInterface
         integrations:
-            - Sentry\Integration\EnvironmentIntegration
             - Sentry\Integration\FrameContextifierIntegration
             - Sentry\Integration\RequestIntegration
-            - Sentry\Integration\TransactionIntegration
         environment: '%env(APP_ENVIRONMENT)%'
         release: '%env(APP_VERSION)%'
