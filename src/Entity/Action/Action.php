@@ -30,7 +30,7 @@ use App\Entity\NotificationObjectInterface;
 use App\Entity\ZoneableEntityInterface;
 use App\EntityListener\AlgoliaIndexListener;
 use App\Geocoder\GeoPointInterface;
-use App\JeMarche\Command\SendNotificationCommandInterface;
+use App\JeMengage\Push\Command\SendNotificationCommandInterface;
 use App\Normalizer\ImageOwnerExposedNormalizer;
 use App\Repository\Action\ActionRepository;
 use Doctrine\Common\Collections\ArrayCollection;

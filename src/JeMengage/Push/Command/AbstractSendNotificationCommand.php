@@ -1,6 +1,6 @@
 <?php
 
-namespace App\JeMarche\Command;
+namespace App\JeMengage\Push\Command;
 
 use App\Entity\NotificationObjectInterface;
 use App\Messenger\Message\UuidDefaultAsyncMessage;

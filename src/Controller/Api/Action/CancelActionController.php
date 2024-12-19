@@ -3,7 +3,7 @@
 namespace App\Controller\Api\Action;
 
 use App\Entity\Action\Action;
-use App\JeMarche\Command\NotifyForActionCommand;
+use App\JeMengage\Push\Command\NotifyForActionCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

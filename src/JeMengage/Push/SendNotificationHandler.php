@@ -1,6 +1,6 @@
 <?php
 
-namespace App\JeMarche\Handler;
+namespace App\JeMengage\Push;
 
 use App\Entity\Action\Action;
 use App\Entity\EntityScopeVisibilityWithZoneInterface;
@@ -13,16 +13,6 @@ use App\Entity\NotificationObjectInterface;
 use App\Entity\ZoneableEntityInterface;
 use App\Firebase\JeMarcheMessaging;
 use App\Firebase\Notification\NotificationInterface;
-use App\JeMarche\Command\SendNotificationCommandInterface;
-use App\JeMarche\Notification\ActionBeginNotification;
-use App\JeMarche\Notification\ActionCancelledNotification;
-use App\JeMarche\Notification\ActionCreatedNotification;
-use App\JeMarche\Notification\ActionUpdatedNotification;
-use App\JeMarche\Notification\CommitteeEventCreatedNotification;
-use App\JeMarche\Notification\DefaultEventCreatedNotification;
-use App\JeMarche\Notification\EventReminderNotification;
-use App\JeMarche\Notification\NewsCreatedNotification;
-use App\JeMarche\Notification\NotificationFactory;
 use App\Repository\PushTokenRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -34,10 +24,11 @@ class SendNotificationHandler
         private readonly EntityManagerInterface $entityManager,
         private readonly JeMarcheMessaging $messaging,
         private readonly PushTokenRepository $pushTokenRepository,
+        private readonly NotificationFactory $notificationFactory,
     ) {
     }
 
-    public function __invoke(SendNotificationCommandInterface $command): void
+    public function __invoke(Command\SendNotificationCommandInterface $command): void
     {
         if (!$object = $this->getObjectFromCommand($command)) {
             return;
@@ -47,9 +38,9 @@ class SendNotificationHandler
             return;
         }
 
-        $notification = NotificationFactory::create($object, $command);
+        $notification = $this->notificationFactory->create($object, $command);
 
-        $tokens = $this->findTokensForNotification($notification, $object, $command);
+        $tokens = $this->findTokensForNotification($notification, $object);
 
         $notification->setTokens($tokens);
 
@@ -60,7 +51,7 @@ class SendNotificationHandler
         $this->entityManager->flush();
     }
 
-    private function getObjectFromCommand(SendNotificationCommandInterface $command): ?NotificationObjectInterface
+    private function getObjectFromCommand(Command\SendNotificationCommandInterface $command): ?NotificationObjectInterface
     {
         $object = $this->entityManager
             ->getRepository($command->getClass())
@@ -76,18 +67,18 @@ class SendNotificationHandler
         return $object;
     }
 
-    private function findTokensForNotification(NotificationInterface $notification, NotificationObjectInterface $object, SendNotificationCommandInterface $command): array
+    private function findTokensForNotification(NotificationInterface $notification, NotificationObjectInterface $object): array
     {
         // National notification for News
-        if ($notification instanceof NewsCreatedNotification && $object instanceof News && $object->isNationalVisibility()) {
+        if ($notification instanceof Notification\NewsCreatedNotification && $object instanceof News && $object->isNationalVisibility()) {
             $notification->setScope('national');
 
             return $this->pushTokenRepository->findAllForNational();
         }
 
         if (
-            \in_array($notification::class, [ActionCreatedNotification::class, DefaultEventCreatedNotification::class], true)
-            || ($notification instanceof NewsCreatedNotification && $object instanceof News && !$object->getCommittee())
+            \in_array($notification::class, [Notification\ActionCreatedNotification::class, Notification\DefaultEventCreatedNotification::class], true)
+            || ($notification instanceof Notification\NewsCreatedNotification && $object instanceof News && !$object->getCommittee())
         ) {
             /** @var Zone[] $zones */
             $zones = [];
@@ -115,12 +106,12 @@ class SendNotificationHandler
         }
 
         if (\in_array($notification::class, [
-            ActionBeginNotification::class,
-            ActionCancelledNotification::class,
-            ActionUpdatedNotification::class,
-            CommitteeEventCreatedNotification::class,
-            EventReminderNotification::class,
-            NewsCreatedNotification::class,
+            Notification\ActionBeginNotification::class,
+            Notification\ActionCancelledNotification::class,
+            Notification\ActionUpdatedNotification::class,
+            Notification\CommitteeEventCreatedNotification::class,
+            Notification\EventReminderNotification::class,
+            Notification\NewsCreatedNotification::class,
         ], true)) {
             $notification->setScope(match ($object::class) {
                 CommitteeEvent::class, News::class => 'committee:'.$object->getCommittee()->getId(),

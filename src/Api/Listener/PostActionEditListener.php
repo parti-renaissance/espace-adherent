@@ -4,7 +4,7 @@ namespace App\Api\Listener;
 
 use ApiPlatform\Symfony\EventListener\EventPriorities;
 use App\Entity\Action\Action;
-use App\JeMarche\Command\NotifyForActionCommand;
+use App\JeMengage\Push\Command\NotifyForActionCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;

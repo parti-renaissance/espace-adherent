@@ -5,7 +5,6 @@ namespace App\Legislative\App;
 use App\AppCodeEnum;
 use App\Entity\Adherent;
 use App\OAuth\App\AbstractAppUrlGenerator;
-use App\Repository\OAuth\ClientRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -13,7 +12,7 @@ class UrlGenerator extends AbstractAppUrlGenerator
 {
     private string $appHost;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, private readonly ClientRepository $clientRepository, string $userVoxHost)
+    public function __construct(UrlGeneratorInterface $urlGenerator, string $userVoxHost)
     {
         parent::__construct($urlGenerator);
 

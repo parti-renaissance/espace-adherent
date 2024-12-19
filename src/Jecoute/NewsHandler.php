@@ -3,7 +3,7 @@
 namespace App\Jecoute;
 
 use App\Entity\Jecoute\News;
-use App\JeMarche\Command\NewsCreatedNotificationCommand;
+use App\JeMengage\Push\Command\NewsCreatedNotificationCommand;
 use App\Repository\Jecoute\NewsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;

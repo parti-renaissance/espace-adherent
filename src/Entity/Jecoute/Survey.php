@@ -23,9 +23,6 @@ use App\Entity\EntityScopeVisibilityInterface;
 use App\Entity\EntityTimestampableTrait;
 use App\Entity\IndexableEntityInterface;
 use App\EntityListener\AlgoliaIndexListener;
-use App\EntityListener\DynamicLinkListener;
-use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
-use App\Firebase\DynamicLinks\DynamicLinkObjectTrait;
 use App\Jecoute\SurveyTypeEnum;
 use App\Repository\Jecoute\SurveyRepository;
 use App\Scope\ScopeVisibilityEnum;
@@ -82,17 +79,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap([SurveyTypeEnum::LOCAL => LocalSurvey::class, SurveyTypeEnum::NATIONAL => NationalSurvey::class])]
 #[ORM\Entity(repositoryClass: SurveyRepository::class)]
-#[ORM\EntityListeners([DynamicLinkListener::class, AlgoliaIndexListener::class])]
+#[ORM\EntityListeners([AlgoliaIndexListener::class])]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\Table(name: 'jecoute_survey')]
 #[SurveyScopeTarget]
-abstract class Survey implements IndexableEntityInterface, EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, DynamicLinkObjectInterface, EntityScopeVisibilityInterface
+abstract class Survey implements IndexableEntityInterface, EntityAdministratorBlameableInterface, EntityAdherentBlameableInterface, EntityScopeVisibilityInterface
 {
     use EntityIdentityTrait;
     use EntityTimestampableTrait;
     use EntityAdministratorBlameableTrait;
     use EntityAdherentBlameableTrait;
-    use DynamicLinkObjectTrait;
 
     #[Assert\Length(max: 70)]
     #[Assert\NotBlank]
@@ -238,21 +234,6 @@ abstract class Survey implements IndexableEntityInterface, EntityAdministratorBl
     public function isIndexable(): bool
     {
         return $this->isPublished();
-    }
-
-    public function getDynamicLinkPath(): string
-    {
-        return '/surveys/'.$this->uuid;
-    }
-
-    public function withSocialMeta(): bool
-    {
-        return true;
-    }
-
-    public function getSocialTitle(): string
-    {
-        return (string) $this->getName();
     }
 
     public function getVisibility(): string

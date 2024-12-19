@@ -3,4 +3,3 @@ kreait_firebase:
         jemarche_app:
             default: true
             public: false
-            default_dynamic_links_domain: '%env(DYNAMIC_LINKS_DOMAIN_URI_PREFIX)%'

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\JeMarche\Notification;
+namespace App\JeMengage\Push\Notification;
 
 use App\Action\ActionTypeEnum;
 use App\Entity\Action\Action;
 use App\Firebase\Notification\AbstractMulticastNotification;
 
-class ActionUpdatedNotification extends AbstractMulticastNotification
+class ActionCreatedNotification extends AbstractMulticastNotification
 {
     public static function create(Action $action): self
     {
@@ -32,9 +32,12 @@ class ActionUpdatedNotification extends AbstractMulticastNotification
     private static function createBody(Action $action): string
     {
         return \sprintf(
-            'Le %s du %s auquel vous êtes inscrit vient d\'être modifié.',
+            '%s vient de créer une nouvelle action de %s le %s à %s%s.',
+            $action->getAuthor()?->getFirstName(),
             ActionTypeEnum::LABELS[$action->type],
             static::formatDate($action->date, 'EEEE d MMMM à HH\'h\'mm'),
+            $action->getCityName(),
+            $action->getPostalCode() ? \sprintf(' (%s)', $action->getPostalCode()) : ''
         );
     }
 }

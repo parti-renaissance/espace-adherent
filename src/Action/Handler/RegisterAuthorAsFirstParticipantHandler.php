@@ -4,7 +4,7 @@ namespace App\Action\Handler;
 
 use App\Action\RegisterManager;
 use App\Entity\Action\Action;
-use App\JeMarche\Command\NotifyForActionCommand;
+use App\JeMengage\Push\Command\NotifyForActionCommand;
 use App\Repository\Action\ActionRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 

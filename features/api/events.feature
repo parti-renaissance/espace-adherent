@@ -1559,10 +1559,11 @@ Feature:
             }
             """
         And I should have 1 notification "CommitteeEventCreatedNotification" with data:
-            | key   | value                                                    |
-            | scope | committee:17                                             |
-            | title | Nouvel événement dans votre comité Comité des 3 communes |
-            | body  | Nouveau événement • dimanche 29 janvier 2023 à 16h30     |
+            | key   | value                                                              |
+            | data  | {"link":"http://vox.code/evenements/2023-01-29-nouveau-evenement"} |
+            | scope | committee:17                                                       |
+            | title | Nouvel événement dans votre comité Comité des 3 communes           |
+            | body  | Nouveau événement • dimanche 29 janvier 2023 à 16h30               |
         When I save this response
         And I send a "PUT" request to "/api/v3/events/:last_response.uuid:?scope=animator" with body:
             """
@@ -2013,8 +2014,9 @@ Feature:
             """
         And I should have 1 notification "DefaultEventCreatedNotification" with data:
             | key   | value                                                                                     |
+            | data  | {"link":"http://vox.code/evenements/2023-01-29-nouveau-evenement"}                        |
             | scope | zone:75                                                                                   |
-            | title | %s, nouvel événement                                                                      |
+            | title | Paris, nouvel événement                                                                   |
             | body  | Nouveau événement • dimanche 29 janvier 2023 à 16h30 • 226 Rue de Rivoli, 75001 Paris 1er |
 
         Examples:

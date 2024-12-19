@@ -847,6 +847,7 @@ Feature:
             """
         And I should have 1 notification "NewsCreatedNotification" with data:
             | key   | value                                                                                                                                                             |
+            | data  | {"link":"http://vox.code/"}                                                                                                                                       |
             | scope | national                                                                                                                                                          |
             | title | Une nouvelle actualité d'aujourd'hui                                                                                                                              |
             | body  | Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula. |
@@ -893,6 +894,7 @@ Feature:
             """
         And I should have 1 notification "NewsCreatedNotification" with data:
             | key   | value                                                                                                                                                             |
+            | data  | {"link":"http://vox.code/"}                                                                                                                                       |
             | scope | committee:17                                                                                                                                                      |
             | title | Une nouvelle actualité d'aujourd'hui                                                                                                                              |
             | body  | Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula. |
@@ -944,6 +946,7 @@ Feature:
             """
         And I should have 1 notification "NewsCreatedNotification" with data:
             | key   | value                                                                                                                                                             |
+            | data  | {"link":"http://vox.code/"}                                                                                                                                       |
             | scope | zone:77                                                                                                                                                           |
             | title | Une nouvelle actualité d'aujourd'hui                                                                                                                              |
             | body  | Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula. |
@@ -999,6 +1002,7 @@ Feature:
             """
         And I should have 1 notification "NewsCreatedNotification" with data:
             | key   | value                                              |
+            | data  | {"link":"http://vox.code/"}                        |
             | scope | zone:92                                            |
             | title | Une nouvelle actualité d'aujourd'hui               |
             | body  | Vestibulum et lectus vehicula. Sed eget neque nec… |
@@ -1103,6 +1107,7 @@ Feature:
         And I should have 1 notification "NewsCreatedNotification" with data:
             | key   | value                                                 |
             | scope | zone:75                                               |
+            | data  | {"link":"http://vox.code/"}                           |
             | title | Une nouvelle actualité d'un candidat aux législatives |
             | body  | Duis ut elit vel felis mattis pretium. Curabitur ut…  |
 

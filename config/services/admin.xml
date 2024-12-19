@@ -676,14 +676,6 @@
             <argument />
         </service>
 
-        <service id="app.admin.je_mengage.deep_link" class="App\Admin\JeMengage\DeepLinkAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Deep link" group="App mobile" />
-
-            <argument />
-            <argument>App\Entity\JeMengage\DeepLink</argument>
-            <argument />
-        </service>
-
         <!--
         ######################################################
         # Finances
@@ -1241,17 +1233,6 @@
             <tag name="sonata.admin.extension" target="app.admin.report" />
         </service>
 
-        <service id="app.admin.deep_link_extension" class="App\Admin\Extension\DeepLinkExtension">
-            <tag name="sonata.admin.extension" target="app.admin.event" />
-            <tag name="sonata.admin.extension" target="app.admin.jecoute.riposte" />
-            <tag name="sonata.admin.extension" target="app.admin.jecoute.news" />
-            <tag name="sonata.admin.extension" target="app.admin.jecoute_local_survey" />
-            <tag name="sonata.admin.extension" target="app.admin.jecoute_national_survey" />
-            <tag name="sonata.admin.extension" target="app.admin.je_mengage.deep_link" />
-            <tag name="sonata.admin.extension" target="app.admin.phoning.campaign" />
-            <tag name="sonata.admin.extension" target="app.admin.pap.campaign" />
-        </service>
-
         <service id="app.admin.entity_administrator_blameable_extension" class="App\Admin\Extension\EntityAdministratorBlameableAdminExtension">
             <tag name="sonata.admin.extension" priority="-256" />
             <tag name="sonata.admin.extension" target="app.admin.adherent" />
@@ -1261,7 +1242,6 @@
             <tag name="sonata.admin.extension" target="app.admin.phoning.campaign" />
             <tag name="sonata.admin.extension" target="app.admin.jecoute_national_survey" />
             <tag name="sonata.admin.extension" target="app.admin.jecoute_local_survey" />
-            <tag name="sonata.admin.extension" target="app.admin.je_mengage.deep_link" />
             <tag name="sonata.admin.extension" target="app.admin.voting_platform.designation" />
             <tag name="sonata.admin.extension" target="app.admin.local_election.candidacies_group" />
             <tag name="sonata.admin.extension" target="app.admin.adherent_formation" />
