@@ -21,7 +21,7 @@ final class SurveyTypeFilter extends AbstractFilter
         string $resourceClass,
         ?Operation $operation = null,
         array $context = [],
-    ) {
+    ): void {
         if (
             Survey::class !== $resourceClass
             || self::PROPERTY_NAME !== $property

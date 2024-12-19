@@ -205,12 +205,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "detail": "@string@",
-                "title": "An error occurred",
-                "type": "@string@",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "gender",
                         "message": "Ce sexe n'est pas valide."
                     }
@@ -269,12 +267,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "detail": "@string@",
-                "title": "An error occurred",
-                "type": "@string@",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "first_name",
                         "message": "Votre prénom doit comporter au moins 2 caractères."
                     }
@@ -293,17 +289,14 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "detail": "@string@",
-                "title": "An error occurred",
-                "type": "@string@",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "first_name",
                         "message": "Votre prénom ne peut pas dépasser 50 caractères."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "last_name",
                         "message": "Votre nom ne peut pas dépasser 50 caractères."
                     }
@@ -322,27 +315,22 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "detail": "@string@",
-                "title": "An error occurred",
-                "type": "@string@",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "first_name",
                         "message": "Votre prénom doit comporter au moins 2 caractères."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "first_name",
                         "message": "Cette valeur ne doit pas être vide."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "last_name",
                         "message": "Votre nom doit comporter au moins 1 caractères."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "last_name",
                         "message": "Cette valeur ne doit pas être vide."
                     }
@@ -382,7 +370,6 @@ Feature:
             {
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "interests",
                         "message": "Valeur d'intérêt n'est pas valide"
                     }
@@ -427,12 +414,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "detail": "@string@",
-                "title": "An error occurred",
-                "type": "@string@",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "subscription_types",
                         "message": "Une ou plusieurs des valeurs de la suscription aux notifications sont invalides. Merci de contacter le support."
                     }
@@ -479,22 +464,18 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "detail": "@string@",
-                "title": "An error occurred",
-                "type": "@string@",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "position",
                         "message": "Le statut d'activité n'est pas valide."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "job",
                         "message": "Le métier n'est pas valide."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "activity_area",
                         "message": "Le secteur d'activité n'est pas valide."
                     }
@@ -534,12 +515,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "detail": "@string@",
-                "title": "An error occurred",
-                "type": "@string@",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "nationality",
                         "message": "Cette nationalité n'est pas valide."
                     }
@@ -596,12 +575,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "detail": "@string@",
-                "title": "An error occurred",
-                "type": "@string@",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "phone",
                         "message": "Cette valeur n'est pas un numéro de téléphone valide."
                     }
@@ -646,27 +623,22 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "detail": "@string@",
-                "title": "An error occurred",
-                "type": "@string@",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "facebook_page_url",
                         "message": "Cette URL ne semble pas être une URL Facebook valide."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "twitter_page_url",
                         "message": "Cette URL ne semble pas être une URL Twitter valide."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "linkedin_page_url",
                         "message": "Cette URL ne semble pas être une URL LinkedIn valide."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "telegram_page_url",
                         "message": "Cette URL ne semble pas être une URL Telegram valide."
                     }
@@ -708,12 +680,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "detail": "@string@",
-                "title": "An error occurred",
-                "type": "@string@",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": "@uuid@",
                         "propertyPath": "email_address",
                         "message": "Ceci n'est pas une adresse email valide."
                     }
