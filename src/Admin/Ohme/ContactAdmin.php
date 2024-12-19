@@ -16,7 +16,9 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\BooleanType;
+use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Contracts\Service\Attribute\Required;
 
@@ -112,6 +114,38 @@ class ContactAdmin extends AbstractAdmin
                     return true;
                 },
             ])
+            ->add('has_payment', CallbackFilter::class, [
+                'label' => 'Paiement(s) lié(s) ?',
+                'show_filter' => true,
+                'field_type' => BooleanType::class,
+                'callback' => function (ProxyQuery $qb, string $alias, string $field, FilterData $value) {
+                    if (!$value->hasValue()) {
+                        return false;
+                    }
+
+                    switch ($value->getValue()) {
+                        case BooleanType::TYPE_YES:
+                            $qb->andWhere("$alias.paymentCount IS NOT NULL");
+                            $qb->andWhere("$alias.paymentCount > 0");
+
+                            break;
+                        case BooleanType::TYPE_NO:
+                            $conditions = $qb->expr()->orX();
+                            $conditions->add("$alias.paymentCount IS NULL");
+                            $conditions->add("$alias.paymentCount = 0");
+
+                            $qb->andWhere($conditions);
+                            break;
+                    }
+
+                    return true;
+                },
+            ])
+            ->add('lastPaymentAt', DateRangeFilter::class, [
+                'label' => 'Date de dernier paiement',
+                'show_filter' => true,
+                'field_type' => DateRangePickerType::class,
+            ])
         ;
     }
 
@@ -136,6 +170,12 @@ class ContactAdmin extends AbstractAdmin
             ])
             ->add('adherent', null, [
                 'label' => 'Adhérent',
+            ])
+            ->add('paymentCount', null, [
+                'label' => 'Paiement(s)',
+            ])
+            ->add('lastPaymentDate', null, [
+                'label' => 'Dernier paiement',
             ])
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'virtual_field' => true,

@@ -61,6 +61,12 @@ class Contact
     #[ORM\Column(nullable: true)]
     public ?string $phone = null;
 
+    #[ORM\Column(type: 'integer', nullable: true)]
+    public ?int $paymentCount = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTimeInterface $lastPaymentDate = null;
+
     #[ORM\Column(type: 'datetime', nullable: true)]
     public ?\DateTimeInterface $ohmeCreatedAt = null;
 

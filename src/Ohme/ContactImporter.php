@@ -12,6 +12,7 @@ class ContactImporter
         private readonly ClientInterface $client,
         private readonly ContactRepository $contactRepository,
         private readonly AdherentRepository $adherentRepository,
+        private readonly PaymentImporter $paymentImporter,
     ) {
     }
 
@@ -40,6 +41,22 @@ class ContactImporter
             $contact = $this->findContact($identifier) ?? $this->createContact($identifier);
 
             $this->updateContact($contact, $contactData);
+
+            $totalPayments = $this->paymentImporter->getPaymentsCount([], $contact);
+
+            if ($totalPayments !== $contact->paymentCount) {
+                $contact->paymentCount = $totalPayments;
+
+                $this->contactRepository->save($contact);
+            }
+
+            $pageSize = 100;
+            $offset = 0;
+            do {
+                $this->paymentImporter->importPayments($pageSize, $offset, [], $contact);
+
+                $offset += $pageSize;
+            } while ($offset < $totalPayments);
         }
     }
 
