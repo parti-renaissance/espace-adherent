@@ -139,15 +139,6 @@ class EventManagerControllerTest extends AbstractEnMarcheWebTestCase
         $this->assertCount(2, $message->getRecipients());
     }
 
-    public function testCommitteeHostCanEditEvent()
-    {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-
-        $this->client->request('GET', '/evenements/'.self::getRelativeDate('2018-05-18', '+3 days').'-reunion-de-reflexion-parisienne/modifier');
-
-        $this->isSuccessful($this->client->getResponse());
-    }
-
     public function testOrganizerCanSeeRegistrations()
     {
         $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');

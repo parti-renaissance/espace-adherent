@@ -72,7 +72,8 @@ class ElectionAuthorisationChecker
         }
 
         if (
-            ($candidateMembership = $adherent->getMemberships()->getCommitteeCandidacyMembership(true))
+            ($candidateMembership = $adherent->getCommitteeMembership())
+            && $candidateMembership->hasActiveCommitteeCandidacy(true)
             && !$candidateMembership->getCommittee()->equals($committee)
         ) {
             return false;
@@ -106,7 +107,8 @@ class ElectionAuthorisationChecker
         }
 
         if (
-            ($candidateMembership = $adherent->getMemberships()->getCommitteeCandidacyMembership(true))
+            ($candidateMembership = $adherent->getCommitteeMembership())
+            && $candidateMembership->hasActiveCommitteeCandidacy(true)
             && !$candidateMembership->getCommittee()->equals($committee)
         ) {
             return false;

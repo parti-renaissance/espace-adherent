@@ -4,6 +4,7 @@ namespace Tests\App\Committee;
 
 use App\Committee\CommitteeAdherentMandateManager;
 use App\Committee\CommitteeManager;
+use App\Committee\CommitteeMembershipManager;
 use App\Committee\DTO\CommitteeAdherentMandateCommand;
 use App\Committee\Exception\CommitteeAdherentMandateException;
 use App\Entity\Adherent;
@@ -46,7 +47,7 @@ class CommitteeAdherentMandateManagerTest extends AbstractKernelTestCase
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
         $this->mandateRepository = $this->createMock(CommitteeAdherentMandateRepository::class);
         $this->electedRepresentativeRepository = $this->createMock(ElectedRepresentativeRepository::class);
-        $this->committeeManager = $this->createMock(CommitteeManager::class);
+        $this->committeeManager = $this->createMock(CommitteeMembershipManager::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
 
         $this->mandateManager = new CommitteeAdherentMandateManager(

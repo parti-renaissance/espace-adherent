@@ -261,7 +261,7 @@ class ElectedRepresentativeRepository extends ServiceEntityRepository
             }
 
             $qb
-                ->innerJoin('adherent.memberships', 'membership')
+                ->innerJoin('adherent.committeeMembership', 'membership')
                 ->innerJoin('membership.committee', 'committee')
                 ->andWhere('committee.uuid IN (:committees)')
                 ->setParameter('committees', $committees)

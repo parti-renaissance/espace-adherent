@@ -5,7 +5,7 @@ namespace App\Repository;
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Address\Address;
 use App\Address\AddressInterface;
-use App\Committee\Filter\CommitteeDesignationsListFilter;
+use App\Adherent\Tag\TagEnum;
 use App\Committee\Filter\CommitteeListFilter;
 use App\Coordinator\Filter\CommitteeFilter;
 use App\Entity\Adherent;
@@ -19,7 +19,6 @@ use App\Entity\VotingPlatform\Designation\Designation;
 use App\Entity\VotingPlatform\ElectionEntity;
 use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
-use App\Geocoder\Coordinates;
 use App\Intl\FranceCitiesBundle;
 use App\Search\SearchParametersFilter;
 use App\ValueObject\Genders;
@@ -40,8 +39,6 @@ class CommitteeRepository extends ServiceEntityRepository
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
     }
-
-    public const DEFAULT_MAX_RESULTS_LIST = 3;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -90,9 +87,9 @@ class CommitteeRepository extends ServiceEntityRepository
      *
      * @return Committee[]
      */
-    public function findApprovedCommittees()
+    public function findApprovedCommittees(): array
     {
-        return $this->findBy(['status' => Committee::APPROVED, 'version' => 1]);
+        return $this->findBy(['status' => Committee::APPROVED]);
     }
 
     /**
@@ -108,21 +105,6 @@ class CommitteeRepository extends ServiceEntityRepository
         ;
 
         return $query->getOneOrNullResult();
-    }
-
-    /**
-     * @return Committee[]
-     */
-    public function findNearbyCommittees(Coordinates $coordinates, int $count = self::DEFAULT_MAX_RESULTS_LIST)
-    {
-        $qb = $this
-            ->createNearbyQueryBuilder($coordinates)
-            ->andWhere('n.status = :status')
-            ->setParameter('status', Committee::APPROVED)
-            ->setMaxResults($count)
-        ;
-
-        return $qb->getQuery()->getResult();
     }
 
     public function getQueryBuilderForZones(array $zones): QueryBuilder
@@ -159,45 +141,6 @@ class CommitteeRepository extends ServiceEntityRepository
         return $this->configurePaginator($this->createFilterQueryBuilder($filter), $page, $limit);
     }
 
-    /**
-     * @return Committee[]|PaginatorInterface
-     */
-    public function searchRequestsByFilter(
-        CommitteeListFilter $filter,
-        int $page = 1,
-        int $limit = 100,
-    ): PaginatorInterface {
-        $queryBuilder = $this->createRequestsFilterQueryBuilder($filter->getZones() ?: $filter->getManagedZones())
-            ->orderBy('c.createdAt', 'DESC')
-            ->groupBy('c.id')
-        ;
-
-        return $this->configurePaginator($queryBuilder, $page, $limit);
-    }
-
-    /**
-     * @param Zone[] $zones
-     */
-    public function countRequestsForZones(array $zones, ?string $status = null): int
-    {
-        $qb = $this
-            ->createRequestsFilterQueryBuilder($zones)
-            ->select('COUNT(DISTINCT c.id)')
-        ;
-
-        if ($status) {
-            $qb
-                ->andWhere('c.status = :status')
-                ->setParameter('status', $status)
-            ;
-        }
-
-        return (int) $qb
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
     public function updateMembershipsCounters(): void
     {
         $this->getEntityManager()->getConnection()->executeQuery(
@@ -205,53 +148,24 @@ class CommitteeRepository extends ServiceEntityRepository
             INNER JOIN (
                 SELECT
                     c2.id,
-                    SUM(IF(a.last_membership_donation IS NOT NULL, 1, 0)) AS members_count,
-                    SUM(IF(a.last_membership_donation IS NULL AND a.source IS NOT NULL, 1, 0)) AS sympathizers_count,
-                    SUM(IF(a.last_membership_donation IS NULL AND a.source IS NULL, 1, 0)) AS members_em_count
+                    SUM(IF(a.tags LIKE ?, 1, 0)) AS members_count,
+                    SUM(IF(a.tags LIKE ?, 1, 0)) AS sympathizers_count,
+                    SUM(IF(a.tags LIKE ?, 1, 0)) AS members_em_count
                 FROM committees c2
                 INNER JOIN committees_memberships cm ON cm.committee_id = c2.id
                 INNER JOIN adherents a ON a.id = cm.adherent_id
-                WHERE c2.version = 2
                 GROUP BY c2.id
             ) AS t ON t.id = c.id
             SET
                 c.members_count = t.members_count,
                 c.members_em_count = t.members_em_count,
-                c.sympathizers_count = t.sympathizers_count'
+                c.sympathizers_count = t.sympathizers_count',
+            [
+                TagEnum::getAdherentYearTag().'%',
+                TagEnum::SYMPATHISANT.'%',
+                TagEnum::SYMPATHISANT_COMPTE_EM.'%',
+            ]
         );
-    }
-
-    /**
-     * @param Zone[] $zones
-     */
-    public function countForZones(array $zones): int
-    {
-        $qb = $this
-            ->createQueryBuilder('c')
-            ->select('COUNT(DISTINCT c.id)')
-            ->where('c.status = :status AND c.version = 1')
-            ->setParameters([
-                'status' => Committee::APPROVED,
-            ])
-        ;
-
-        $this->withGeoZones(
-            $zones,
-            $qb,
-            'c',
-            Committee::class,
-            'c2',
-            'zones',
-            'z2',
-            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(\sprintf('%s.status = :status', $entityClassAlias));
-            }
-        );
-
-        return (int) $qb
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
     }
 
     public function findManagedByCoordinator(Adherent $coordinator, CommitteeFilter $filter): array
@@ -264,7 +178,6 @@ class CommitteeRepository extends ServiceEntityRepository
             ->select('c')
             ->orderBy('c.name', 'ASC')
             ->orderBy('c.createdAt', 'DESC')
-            ->where('c.version = 1')
         ;
 
         $this->withGeoZones(
@@ -305,28 +218,13 @@ class CommitteeRepository extends ServiceEntityRepository
         }
 
         return $qb
-            ->andWhere('n.status = :status AND n.version = 1')
+            ->andWhere('n.status = :status')
             ->setParameter('status', Committee::APPROVED)
             ->setFirstResult($search->getOffset())
             ->setMaxResults($search->getMaxResults())
             ->getQuery()
             ->getResult()
         ;
-    }
-
-    public function hasCommitteeInStatus(Adherent $adherent, array $status): bool
-    {
-        $nb = $this->createQueryBuilder('c')
-            ->select('COUNT(c) AS nb')
-            ->where('c.createdBy = :creator')
-            ->andWhere('c.status IN (:status)')
-            ->setParameter('creator', $adherent->getUuid()->toString())
-            ->setParameter('status', $status)
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-
-        return $nb > 0;
     }
 
     public function findCommitteesUuidByCreatorUuids(array $creatorsUuid): array
@@ -345,53 +243,12 @@ class CommitteeRepository extends ServiceEntityRepository
         }, array_column($query->getArrayResult(), 'uuid'));
     }
 
-    public function findByPartialName(string $search, int $limit = 10): array
-    {
-        return $this
-            ->createPartialNameQueryBuilder($search, 'committee')
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
-    public function findByPartialNameForDeputy(Adherent $deputy, string $search, int $limit = 10): array
-    {
-        $qb = $this
-            ->createPartialNameQueryBuilder($search, $alias = 'committee')
-            ->setMaxResults($limit)
-        ;
-
-        $this->withGeoZones(
-            [$deputy->getDeputyZone()],
-            $qb,
-            $alias,
-            Committee::class,
-            'c2',
-            'zones',
-            'z2'
-        );
-
-        return $qb->getQuery()->getResult();
-    }
-
-    private function createPartialNameQueryBuilder(string $search, string $alias = 'c'): QueryBuilder
-    {
-        return $this
-            ->createQueryBuilder($alias)
-            ->where("$alias.canonicalName LIKE :search")
-            ->andWhere("$alias.status = :status")
-            ->setParameter('search', '%'.strtolower($search).'%')
-            ->setParameter('status', Committee::APPROVED)
-        ;
-    }
-
     public function paginateAllApprovedCommittees(
         int $offset = 0,
         int $limit = SearchParametersFilter::DEFAULT_MAX_RESULTS,
     ): Paginator {
         $query = $this->createQueryBuilder('c')
-            ->andWhere('c.status = :approved AND c.version = 1')
+            ->andWhere('c.status = :approved')
             ->setParameter('approved', Committee::APPROVED)
             ->getQuery()
             ->setMaxResults($limit)
@@ -401,13 +258,12 @@ class CommitteeRepository extends ServiceEntityRepository
         return new Paginator($query);
     }
 
-    public function createQueryBuilderForZones(array $zones, int $version, bool $withZoneParents = true): QueryBuilder
+    public function createQueryBuilderForZones(array $zones, bool $withZoneParents = true): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c')
-            ->andWhere('c.status = :status AND c.version = :version')
+            ->andWhere('c.status = :status')
             ->setParameters([
                 'status' => Committee::APPROVED,
-                'version' => $version,
             ])
             ->orderBy('c.name', 'ASC')
             ->addOrderBy('c.createdAt', 'DESC')
@@ -429,13 +285,13 @@ class CommitteeRepository extends ServiceEntityRepository
     /**
      * @return Committee[]
      */
-    public function findInZones(array $zones, int $version = 2, bool $withZoneParents = true): array
+    public function findInZones(array $zones, bool $withZoneParents = true): array
     {
         if (!$zones) {
             return [];
         }
 
-        return $this->createQueryBuilderForZones($zones, $version, $withZoneParents)->getQuery()->getResult();
+        return $this->createQueryBuilderForZones($zones, $withZoneParents)->getQuery()->getResult();
     }
 
     public function findInAdherentZone(Adherent $adherent): array
@@ -446,7 +302,7 @@ class CommitteeRepository extends ServiceEntityRepository
     public function findCommitteesForHost(Adherent $adherent): array
     {
         // Prevent SQL query if the adherent doesn't follow any committees yet.
-        if (0 === \count($adherent->getMemberships())) {
+        if (!$adherent->getCommitteeMembership()) {
             return [];
         }
 
@@ -517,18 +373,6 @@ class CommitteeRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findForAdherentWithCommitteeMandates(Adherent $adherent): array
-    {
-        return $this->createQueryBuilder('committee')
-            ->innerJoin('committee.adherentMandates', 'mandate')
-            ->where('mandate.adherent = :adherent')
-            ->andWhere('mandate.quality IS NULL AND mandate.finishAt IS NULL')
-            ->setParameter('adherent', $adherent)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     private function createFilterQueryBuilder(CommitteeListFilter $filter): QueryBuilder
     {
         $qb = $this
@@ -561,7 +405,7 @@ class CommitteeRepository extends ServiceEntityRepository
                     ->andWhere('(designation2.voteEndDate IS NULL OR :now <= designation2.voteEndDate)')
                     ->getDQL()
             ))
-            ->where('c.status = :status AND c.version = 1')
+            ->where('c.status = :status')
             ->setParameters([
                 'status' => Committee::APPROVED,
                 'male' => Genders::MALE,
@@ -588,91 +432,6 @@ class CommitteeRepository extends ServiceEntityRepository
         );
 
         return $qb;
-    }
-
-    private function createRequestsFilterQueryBuilder(array $zones): QueryBuilder
-    {
-        $qb = $this
-            ->createQueryBuilder('c')
-            ->where('c.createdAt > :from AND c.version = 1')
-            ->setParameter('from', new \DateTime('2021-01-01 00:00:00'))
-        ;
-
-        $this->withGeoZones(
-            $zones,
-            $qb,
-            'c',
-            Committee::class,
-            'c2',
-            'zones',
-            'z2',
-            function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                $zoneQueryBuilder->andWhere(\sprintf('%s.createdAt > :from', $entityClassAlias));
-            }
-        );
-
-        return $qb;
-    }
-
-    public function findAvailableForPartials(
-        CommitteeDesignationsListFilter $filter,
-        int $page = 1,
-        int $limit = 100,
-    ): array {
-        $qb = $this->createQueryBuilder('committee')
-            ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality IS NULL THEN 1 ELSE 0 END) AS total_designed_adherents')
-            ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality IS NULL AND mandate.gender = :female THEN 1 ELSE 0 END) AS total_designed_adherents_female')
-            ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality IS NULL AND mandate.gender = :male THEN 1 ELSE 0 END) AS total_designed_adherents_male')
-            ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality = :supervisor AND mandate.provisional = :false THEN 1 ELSE 0 END) AS total_supervisors')
-            ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality = :supervisor AND mandate.provisional = :false AND mandate.gender = :female THEN 1 ELSE 0 END) AS total_supervisors_female')
-            ->addSelect('SUM(CASE WHEN mandate.id IS NOT NULL AND mandate.quality = :supervisor AND mandate.provisional = :false AND mandate.gender = :male THEN 1 ELSE 0 END) AS total_supervisors_male')
-            ->leftJoin('committee.adherentMandates', 'mandate', Join::WITH, 'mandate.finishAt IS NULL')
-            ->leftJoin('committee.currentDesignation', 'designation')
-            ->where('committee.status = :status')
-            ->andWhere('committee.approvedAt <= :d30')
-            ->andWhere('(designation IS NULL OR designation.voteEndDate < :now)')
-            ->groupBy('committee.id')
-            ->orderBy('committee.membersEmCount', 'DESC')
-            ->setParameters([
-                'female' => Genders::FEMALE,
-                'male' => Genders::MALE,
-                'supervisor' => CommitteeMandateQualityEnum::SUPERVISOR,
-                'false' => false,
-                'status' => Committee::APPROVED,
-                'now' => new \DateTime(),
-                'd30' => (new \DateTime())->modify('-30 days'),
-            ])
-            ->having('total_designed_adherents < 2 OR total_supervisors < 2')
-        ;
-
-        if ($filter->getCommitteeName()) {
-            $qb
-                ->andWhere('committee.name LIKE :committee_name')
-                ->setParameter('committee_name', '%'.$filter->getCommitteeName().'%')
-            ;
-        }
-
-        if ($filter->getZones()) {
-            $this->withGeoZones(
-                $filter->getZones(),
-                $qb,
-                'committee',
-                Committee::class,
-                'c2',
-                'zones',
-                'z2',
-                function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
-                    $zoneQueryBuilder->andWhere(\sprintf('%1$s.status = :status AND %1$s.approvedAt <= :d30', $entityClassAlias));
-                }
-            );
-        }
-
-        return $qb
-            ->setMaxResults($limit)
-            ->setFirstResult(($page - 1) * $limit)
-            ->getQuery()
-            ->getResult()
-        ;
     }
 
     public function findCommitteeForRecentCandidate(Designation $designation, Adherent $adherent): ?Committee

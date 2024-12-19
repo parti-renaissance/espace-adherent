@@ -40,10 +40,10 @@ Feature:
                     "circonscription": null,
                     "committee": {
                         "type": "committee",
-                        "name": null,
-                        "uuid": null,
-                        "members_count": null,
-                        "assembly_committees_count": 0,
+                        "name": "Antenne En Marche de Fontainebleau",
+                        "uuid": "d648d486-fbb3-4394-b4b3-016fac3658af",
+                        "members_count": 2,
+                        "assembly_committees_count": 2,
                         "can_change_committee": true,
                         "message": null
                     }
@@ -86,10 +86,10 @@ Feature:
                     },
                     "committee": {
                         "type": "committee",
-                        "name": null,
-                        "uuid": null,
-                        "members_count": null,
-                        "assembly_committees_count": 0,
+                        "name": "En Marche Paris 8",
+                        "uuid": "@uuid@",
+                        "members_count": 0,
+                        "assembly_committees_count": 2,
                         "can_change_committee": true,
                         "message": null
                     }
@@ -942,7 +942,9 @@ Feature:
                             "code": "committeeUuids",
                             "label": "Comités",
                             "options": {
-                                "choices": [],
+                                "choices": {
+                                    "515a56c0-bde8-56ef-b90c-4745b1c93818": "En Marche Paris 8"
+                                },
                                 "multiple": true,
                                 "required": false
                             },

@@ -23,7 +23,7 @@ class RefreshAdherentTagCommandHandler
 
     public function __invoke(RefreshAdherentTagCommand $command): void
     {
-        if (!$adherent = $this->adherentRepository->findByUuid($command->getUuid())) {
+        if (!$adherent = $this->adherentRepository->findOneByUuid($command->getUuid())) {
             return;
         }
 

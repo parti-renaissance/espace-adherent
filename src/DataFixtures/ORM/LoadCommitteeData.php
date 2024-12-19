@@ -11,10 +11,11 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
-class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements DependentFixtureInterface
+class LoadCommitteeData extends AbstractLoadPostAddressData implements DependentFixtureInterface
 {
     public const COMMITTEE_1_UUID = '5e00c264-1d4b-43b8-862e-29edc38389b3';
     public const COMMITTEE_2_UUID = '8c4b48ec-9290-47ae-a5db-d1cf2723e8b3';
+    public const COMMITTEE_3_UUID = '3593a8b3-e7cd-4d84-a1dd-71d3b8fc2070';
 
     public const COMMITTEE_ELECTION_1_UUID = '278fcb58-53b4-4798-a3be-e5bb92f7f0f2';
     public const COMMITTEE_ELECTION_2_UUID = 'f86ee969-5eca-4666-bcd4-7f7388372e0b';
@@ -70,7 +71,18 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
 
         $this->setReference('committee-v2-2', $object);
 
+        $manager->persist($object = Committee::createSimple(
+            Uuid::fromString(self::COMMITTEE_3_UUID),
+            LoadAdherentData::ADHERENT_20_UUID,
+            'Comité du QG',
+            'Un comité du QG',
+        ));
+        $object->approved();
+        $object->addZone(LoadGeoZoneData::getZoneReference($manager, 'zone_borough_75108'));
+
         $manager->flush();
+
+        $manager->getRepository(Committee::class)->updateMembershipsCounters();
     }
 
     public function getDependencies(): array
@@ -78,6 +90,7 @@ class LoadCommitteeV2Data extends AbstractLoadPostAddressData implements Depende
         return [
             LoadAdherentData::class,
             LoadDesignationData::class,
+            LoadGeoZoneData::class,
         ];
     }
 }

@@ -2,27 +2,22 @@
 
 namespace App\Adherent\Unregistration\Handlers;
 
-use App\Committee\CommitteeManager;
+use App\Committee\CommitteeMembershipManager;
 use App\Entity\Adherent;
 
 class UnfollowCommitteeHandler implements UnregistrationAdherentHandlerInterface
 {
-    private $manager;
-
-    public function __construct(CommitteeManager $manager)
+    public function __construct(private readonly CommitteeMembershipManager $manager)
     {
-        $this->manager = $manager;
     }
 
     public function supports(Adherent $adherent): bool
     {
-        return !$adherent->getMemberships()->isEmpty();
+        return null !== $adherent->getCommitteeMembership();
     }
 
     public function handle(Adherent $adherent): void
     {
-        foreach ($adherent->getMemberships() as $membership) {
-            $this->manager->unfollowCommittee($adherent, $membership->getCommittee());
-        }
+        $this->manager->unfollowCommittee($adherent->getCommitteeMembership());
     }
 }

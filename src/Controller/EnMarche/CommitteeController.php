@@ -2,9 +2,9 @@
 
 namespace App\Controller\EnMarche;
 
-use App\Committee\CommitteeManagementAuthority;
 use App\Committee\CommitteeManager;
-use App\Controller\EntityControllerTrait;
+use App\Committee\CommitteeMembershipManager;
+use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeFeedItem;
@@ -26,15 +26,11 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 #[Route(path: '/comites/{slug}')]
 class CommitteeController extends AbstractController
 {
-    use EntityControllerTrait;
-
-    private $committeeManager;
-    private $timelineMaxItems;
-
-    public function __construct(CommitteeManager $committeeManager, int $timelineMaxItems)
-    {
-        $this->committeeManager = $committeeManager;
-        $this->timelineMaxItems = $timelineMaxItems;
+    public function __construct(
+        private readonly CommitteeManager $committeeManager,
+        private readonly CommitteeMembershipManager $committeeMembershipManager,
+        private readonly int $timelineMaxItems,
+    ) {
     }
 
     #[IsGranted('SHOW_COMMITTEE', subject: 'committee')]
@@ -60,7 +56,6 @@ class CommitteeController extends AbstractController
             'committee' => $committee,
             'committee_hosts' => $this->committeeManager->getCommitteeHosts($committee),
             'committee_timeline' => $feeds,
-            'committee_timeline_forms' => $this->createTimelineDeleteForms($feeds),
             'committee_timeline_max_messages' => $this->timelineMaxItems,
         ]);
     }
@@ -94,30 +89,6 @@ class CommitteeController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ADMIN_FEED_COMMITTEE', subject: 'committeeFeedItem')]
-    #[ParamConverter('committee', options: ['mapping' => ['slug' => 'slug']])]
-    #[ParamConverter('committeeFeedItem', options: ['mapping' => ['id' => 'id']])]
-    #[Route(path: '/timeline/{id}/supprimer', name: 'app_committee_timeline_delete', methods: ['DELETE'])]
-    public function timelineDeleteAction(
-        EntityManagerInterface $em,
-        Request $request,
-        Committee $committee,
-        CommitteeFeedItem $committeeFeedItem,
-    ): Response {
-        $form = $this->createDeleteForm('', 'committee_feed_delete', $request);
-
-        if (!$form->isSubmitted() || !$form->isValid()) {
-            throw $this->createNotFoundException($form->isValid() ? 'Invalid token.' : 'No form submitted.');
-        }
-
-        $em->remove($committeeFeedItem);
-        $em->flush();
-
-        $this->addFlash('info', 'common.message_deleted');
-
-        return $this->redirectToRoute('app_committee_show', ['slug' => $committee->getSlug()]);
-    }
-
     #[IsGranted('SHOW_COMMITTEE', subject: 'committee')]
     #[Route(path: '/timeline', name: 'app_committee_timeline', methods: ['GET'])]
     public function timelineAction(Request $request, Committee $committee): Response
@@ -131,7 +102,6 @@ class CommitteeController extends AbstractController
         return $this->render('committee/timeline/_feed.html.twig', [
             'committee' => $committee,
             'committee_timeline' => $timeline,
-            'committee_timeline_forms' => $this->createTimelineDeleteForms($timeline),
             'has_role_adherent' => $this->getUser() instanceof Adherent && $this->getUser()->isAdherent(),
             'has_role_user' => $this->isGranted('ROLE_USER'),
         ]);
@@ -142,14 +112,14 @@ class CommitteeController extends AbstractController
     public function followAction(
         Request $request,
         Committee $committee,
-        CommitteeManagementAuthority $committeeManagementAuthority,
+        CommitteeMembershipManager $committeeMembershipManager,
         CsrfTokenManagerInterface $csrfTokenManager,
     ): Response {
         if (!$this->isCsrfTokenValid('committee.follow', $request->request->get('token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF protection token to follow committee.');
         }
 
-        $committeeManagementAuthority->followCommittee($this->getUser(), $committee);
+        $committeeMembershipManager->followCommittee($this->getUser(), $committee, CommitteeMembershipTriggerEnum::MANUAL);
 
         return new JsonResponse([
             'button' => [
@@ -171,7 +141,7 @@ class CommitteeController extends AbstractController
             throw $this->createAccessDeniedException('Invalid CSRF protection token to unfollow committee.');
         }
 
-        $this->committeeManager->unfollowCommittee($this->getUser(), $committee);
+        $this->committeeMembershipManager->unfollowCommittee($this->getUser()->getMembershipFor($committee));
 
         return new JsonResponse([
             'button' => [
@@ -212,27 +182,5 @@ class CommitteeController extends AbstractController
         $bus->dispatch(new AdherentChangeCommand($adherent->getUuid(), $adherent->getEmailAddress()));
 
         return $this->json(['status' => 'OK'], Response::HTTP_OK);
-    }
-
-    /**
-     * @param CommitteeFeedItem[]|iterable $feeds
-     */
-    private function createTimelineDeleteForms(iterable $feeds): array
-    {
-        $forms = [];
-        foreach ($feeds as $feed) {
-            if ($this->isGranted('ADMIN_FEED_COMMITTEE', $feed)) {
-                $forms[$feed->getId()] = $this->createDeleteForm(
-                    $this->generateUrl('app_committee_timeline_delete',
-                        [
-                            'id' => $feed->getId(),
-                            'slug' => $feed->getCommittee()->getSlug(),
-                        ]),
-                    'committee_feed_delete'
-                )->createView();
-            }
-        }
-
-        return $forms;
     }
 }

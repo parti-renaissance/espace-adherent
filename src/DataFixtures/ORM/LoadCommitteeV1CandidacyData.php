@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures\ORM;
 
+use App\Committee\CommitteeMembershipManager;
 use App\Entity\Adherent;
 use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
@@ -14,91 +15,46 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class LoadCommitteeV1CandidacyData extends Fixture implements DependentFixtureInterface
 {
-    private $imageManager;
-
-    public function __construct(ImageManager $imageManager)
-    {
-        $this->imageManager = $imageManager;
+    public function __construct(
+        private readonly ImageManager $imageManager,
+        private readonly CommitteeMembershipManager $committeeMembershipManager,
+    ) {
     }
 
     public function load(ObjectManager $manager): void
     {
         $adherentCandidates = [
             [
-                'adherent' => 'assessor-1',
                 'committee' => 'committee-6',
                 'with_photo' => true,
                 'enable_vote' => true,
             ],
             [
-                'adherent' => 'adherent-2',
                 'committee' => 'committee-6',
                 'enable_vote' => true,
             ],
             [
-                'adherent' => 'adherent-3',
                 'committee' => 'committee-4',
             ],
             [
-                'adherent' => 'adherent-21',
+                'count' => 4,
                 'committee' => 'committee-13',
-                'binome' => 'adherent-22',
+                'binome' => true,
                 'confirmed' => true,
                 'public_faith_statement' => true,
                 'with_photo' => true,
             ],
             [
-                'adherent' => 'adherent-23',
-                'committee' => 'committee-13',
-                'binome' => 'adherent-24',
-                'confirmed' => true,
-                'public_faith_statement' => true,
-                'with_photo' => true,
-            ],
-            [
-                'adherent' => 'adherent-25',
-                'committee' => 'committee-13',
-                'binome' => 'adherent-26',
-                'confirmed' => true,
-                'public_faith_statement' => true,
-                'with_photo' => true,
-            ],
-            [
-                'adherent' => 'adherent-27',
-                'committee' => 'committee-13',
-                'binome' => 'adherent-28',
-                'confirmed' => true,
-                'public_faith_statement' => true,
-                'with_photo' => true,
-            ],
-            [
-                'adherent' => 'adherent-29',
                 'committee' => 'committee-14',
-                'binome' => 'adherent-30',
+                'binome' => true,
                 'confirmed' => true,
                 'public_faith_statement' => true,
                 'with_photo' => true,
             ],
             [
-                'adherent' => 'adherent-32',
+                'count' => 3,
                 'committee' => 'committee-15',
-                'binome' => 'adherent-33',
-                'confirmed' => true,
-                'public_faith_statement' => true,
-                'with_photo' => true,
-            ],
-            [
-                'adherent' => 'adherent-34',
-                'committee' => 'committee-15',
-                'binome' => 'adherent-35',
-                'confirmed' => true,
-                'public_faith_statement' => true,
-                'with_photo' => true,
-            ],
-            [
-                'adherent' => 'adherent-36',
-                'committee' => 'committee-15',
-                'binome' => 'adherent-37',
+                'binome' => true,
                 'confirmed' => true,
                 'public_faith_statement' => true,
                 'with_photo' => true,
@@ -106,44 +62,46 @@ class LoadCommitteeV1CandidacyData extends Fixture implements DependentFixtureIn
         ];
 
         foreach ($adherentCandidates as $i => $row) {
-            /** @var Adherent $adherent */
-            $adherent = $this->getReference($row['adherent'], Adherent::class);
-            /** @var Committee $committee */
-            $committee = $this->getReference($row['committee'], Committee::class);
-            $membership = $adherent->getMembershipFor($committee);
-            $election = $committee->getCurrentElection();
+            $memberships = $this->committeeMembershipManager->getCommitteeMemberships($committee = $this->getReference($row['committee'], Committee::class));
 
-            if (!empty($row['enable_vote'])) {
-                $membership->enableVote();
-            }
+            for ($c = 1; $c <= ($row['count'] ?? 1); ++$c) {
+                $membership = $memberships[$c - 1];
+                $adherent = $membership->getAdherent();
+                $election = $committee->getCurrentElection();
 
-            $candidacy = $this->createCandidacy($committee, $adherent, !empty($row['with_photo']));
-
-            if (!empty($row['binome'])) {
-                $candidacy->setFaithStatement('Eum earum explicabo assumenda nesciunt hic ea. Veniam magni assumenda ab fugiat dolores consequatur voluptatem. Recusandae explicabo quia voluptatem magnam.');
-                $candidacy->setIsPublicFaithStatement(!empty($row['public_faith_statement']));
-
-                /** @var Adherent $invited */
-                $invited = $this->getReference($row['binome'], Adherent::class);
-                $candidacy->addInvitation($invitation = new CommitteeCandidacyInvitation());
-                $invitation->setMembership($invited->getMembershipFor($committee));
-
-                if (!empty($row['confirmed'])) {
-                    $candidacyBinome = $this->createCandidacy($committee, $invited, !empty($row['with_photo']));
-                    $manager->persist($candidacyBinome);
-                    $candidacy->candidateWith($candidacyBinome);
-                    $candidacy->syncWithOtherCandidacies();
-
-                    $candidacy->confirm();
-                    $candidacyBinome->confirm();
-                    $invitation->accept();
-
-                    $manager->persist($candidacyBinome);
+                if (!empty($row['enable_vote'])) {
+                    $membership->enableVote();
                 }
-            }
 
-            $manager->persist($candidacy);
-            $this->setReference(\sprintf('committee-candidacy-%s-%d', $election->getDesignationType(), $i + 1), $candidacy);
+                $candidacy = $this->createCandidacy($committee, $adherent, !empty($row['with_photo']));
+                $candidacy->setCommitteeMembership($membership);
+
+                if (!empty($row['binome'])) {
+                    $candidacy->setFaithStatement('Eum earum explicabo assumenda nesciunt hic ea. Veniam magni assumenda ab fugiat dolores consequatur voluptatem. Recusandae explicabo quia voluptatem magnam.');
+                    $candidacy->setIsPublicFaithStatement(!empty($row['public_faith_statement']));
+
+                    if ($invited = $memberships[++$c]) {
+                        $candidacy->addInvitation($invitation = new CommitteeCandidacyInvitation());
+                        $invitation->setMembership($invited);
+
+                        if (!empty($row['confirmed'])) {
+                            $candidacyBinome = $this->createCandidacy($committee, $invited->getAdherent(), !empty($row['with_photo']));
+                            $manager->persist($candidacyBinome);
+                            $candidacy->candidateWith($candidacyBinome);
+                            $candidacy->syncWithOtherCandidacies();
+
+                            $candidacy->confirm();
+                            $candidacyBinome->confirm();
+                            $invitation->accept();
+
+                            $manager->persist($candidacyBinome);
+                        }
+                    }
+                }
+
+                $manager->persist($candidacy);
+                $this->setReference(\sprintf('committee-candidacy-%s-%d', $election->getDesignationType(), $i + 1), $candidacy);
+            }
         }
 
         $manager->flush();

@@ -281,7 +281,7 @@ trait TestHelperTrait
 
     protected function getAdherent(string $uuid): ?Adherent
     {
-        return $this->getAdherentRepository()->findByUuid($uuid);
+        return $this->getAdherentRepository()->findOneByUuid($uuid);
     }
 
     protected function getCommittee(string $uuid): ?Committee

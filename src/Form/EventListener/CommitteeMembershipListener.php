@@ -32,7 +32,7 @@ class CommitteeMembershipListener implements EventSubscriberInterface
 
         if (
             !$adherent instanceof Adherent
-            || !($membership = $adherent->getCommitteeV2Membership())
+            || !($membership = $adherent->getCommitteeMembership())
             || !($committee = $membership->getCommittee())
         ) {
             return;
@@ -51,7 +51,7 @@ class CommitteeMembershipListener implements EventSubscriberInterface
             return;
         }
 
-        $membershipBefore = $adherent->getCommitteeV2Membership();
+        $membershipBefore = $adherent->getCommitteeMembership();
         $committeeBefore = $membershipBefore?->getCommittee();
 
         /** @var Committee|null $committee */

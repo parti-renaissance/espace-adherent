@@ -79,7 +79,15 @@ Feature:
                 "interests": [],
                 "adherent": true,
                 "last_membership_donation": null,
-                "committee_membership": null,
+                "committee_membership": {
+                    "committee": {
+                        "description": "Le comité « En Marche ! » des habitants du 8ème arrondissement de Paris.",
+                        "name": "En Marche Paris 8",
+                        "uuid": "@uuid@"
+                    },
+                    "subscription_date": "@string@.isDateTime()",
+                    "uuid": "@uuid@"
+                },
                 "party_membership": "exclusive",
                 "other_party_membership": false,
                 "image_url": null,
@@ -1351,7 +1359,7 @@ Feature:
                     "name": "Comité des 3 communes"
                 },
                 {
-                    "members_count": 3,
+                    "members_count": 2,
                     "sympathizers_count": 0,
                     "members_em_count": 0,
                     "description": "Un petit comité avec seulement 3 communes",
@@ -1682,7 +1690,7 @@ Feature:
                     "uuid": null,
                     "name": null,
                     "members_count": null,
-                    "assembly_committees_count": 0,
+                    "assembly_committees_count": 8,
                     "can_change_committee": true,
                     "message": null
                 }
@@ -1709,7 +1717,7 @@ Feature:
                     "type": "committee",
                     "uuid": "@uuid@",
                     "name": "Second Comité des 3 communes",
-                    "members_count": 3,
+                    "members_count": 2,
                     "assembly_committees_count": 2,
                     "can_change_committee": true,
                     "message": null

@@ -4,7 +4,6 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
 use App\Entity\LocalElection\LocalElection;
 use App\Entity\VotingPlatform\Candidate;
@@ -320,14 +319,6 @@ class LoadVotingPlatformElectionData extends Fixture implements DependentFixture
 
         $candidate1->setBiography($this->faker->paragraph(10));
         $candidate2->setBiography($this->faker->paragraph(10));
-
-        $committeeCandidacy = $this->getReference('committee-candidacy-committee_adherent-1', CommitteeCandidacy::class);
-
-        foreach ($candidates as $index => $candidate) {
-            if (0 === $index % 2) {
-                $candidate->setImagePath($committeeCandidacy->getImagePath());
-            }
-        }
 
         shuffle($candidates);
 

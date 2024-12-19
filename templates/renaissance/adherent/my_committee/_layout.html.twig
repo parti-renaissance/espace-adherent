@@ -2,5 +2,5 @@
 
 {% block page_title 'Comité local' %}
 
-{% set committee_membership = app.user.getCommitteeV2Membership() %}
+{% set committee_membership = app.user.getCommitteeMembership() %}
 {% set my_committee = committee_membership ? committee_membership.getCommittee() : null %}

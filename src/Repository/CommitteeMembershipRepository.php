@@ -5,8 +5,6 @@ namespace App\Repository;
 use ApiPlatform\State\Pagination\PaginatorInterface;
 use App\Adherent\Tag\TagEnum;
 use App\Collection\AdherentCollection;
-use App\Collection\CommitteeMembershipCollection;
-use App\Committee\CommitteeMembershipTriggerEnum;
 use App\Committee\Filter\ListFilterObject;
 use App\Entity\Adherent;
 use App\Entity\AdherentMandate\CommitteeMandateQualityEnum;
@@ -56,29 +54,22 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         );
     }
 
-    /**
-     * @return CommitteeMembershipCollection|CommitteeMembership[]
-     */
-    public function findMemberships(Adherent $adherent): CommitteeMembershipCollection
+    public function findMembership(Adherent $adherent, ?Committee $committee = null): ?CommitteeMembership
     {
-        $query = $this
+        $qb = $this
             ->createQueryBuilder('cm')
             ->where('cm.adherent = :adherent')
             ->setParameter('adherent', $adherent)
-            ->getQuery()
         ;
 
-        return new CommitteeMembershipCollection($query->getResult());
-    }
+        if ($committee) {
+            $qb
+                ->andWhere('cm.committee = :committee')
+                ->setParameter('committee', $committee)
+            ;
+        }
 
-    public function findMembership(Adherent $adherent, Committee $committee): ?CommitteeMembership
-    {
-        $query = $this
-            ->createMembershipQueryBuilder($adherent, $committee)
-            ->getQuery()
-        ;
-
-        return $query->getOneOrNullResult();
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     /**
@@ -98,21 +89,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ])
             ->getQuery()
             ->getResult()
-        ;
-    }
-
-    /**
-     * Creates the query builder to fetch the membership relationship between
-     * an adherent and a committee.
-     */
-    private function createMembershipQueryBuilder(Adherent $adherent, Committee $committee): QueryBuilder
-    {
-        return $this
-            ->createQueryBuilder('cm')
-            ->where('cm.adherent = :adherent')
-            ->andWhere('cm.committee = :committee')
-            ->setParameter('adherent', $adherent)
-            ->setParameter('committee', $committee)
         ;
     }
 
@@ -155,14 +131,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         ;
     }
 
-    /**
-     * Returns the list of all hosts memberships of a committee.
-     */
-    public function findHostMemberships(Committee $committee): CommitteeMembershipCollection
-    {
-        return $this->findPrivilegedMemberships($committee, [CommitteeMembership::COMMITTEE_HOST]);
-    }
-
     public function findPushTokenIdentifiers(Committee $committee): array
     {
         $tokens = $this->createQueryBuilder('cm')
@@ -179,27 +147,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     }
 
     /**
-     * Returns the list of all privileged memberships of a committee.
-     *
-     * @param Committee $committee  The committee
-     * @param array     $privileges An array of privilege constants (see {@link : CommitteeMembership}
-     */
-    private function findPrivilegedMemberships(Committee $committee, array $privileges): CommitteeMembershipCollection
-    {
-        $qb = $this->createQueryBuilder('cm');
-
-        $query = $qb
-            ->where('cm.committee = :committee')
-            ->andWhere($qb->expr()->in('cm.privilege', $privileges))
-            ->orderBy('cm.joinedAt', 'ASC')
-            ->setParameter('committee', $committee)
-            ->getQuery()
-        ;
-
-        return new CommitteeMembershipCollection($query->getResult());
-    }
-
-    /**
      * Returns the list of all members of a committee.
      *
      * @return Adherent[]|AdherentCollection
@@ -210,43 +157,15 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
     }
 
     /**
-     * Returns the list of all members of $sourceCommittee
-     * that does not already belongs to list of all members of $destinationCommittee
-     *
-     * NOTE: this returns poorly hydrated instances of Adherent, but is optimized for merging of committees
-     *
-     * @return CommitteeMembership[]
+     * Returns the list of all committee memberships of a committee.
      */
-    public function findMembersToMerge(Committee $sourceCommittee, Committee $destinationCommittee): array
+    public function findCommitteeMemberships(Committee $committee): array
     {
-        return $this
-            ->createQueryBuilder('cm_src')
-            ->select('PARTIAL adherent.{id, uuid, emailAddress, firstName, lastName}')
-            ->addSelect('PARTIAL cm_src.{id, joinedAt}')
-            ->innerJoin('cm_src.adherent', 'adherent')
-            ->leftJoin(CommitteeMembership::class, 'cm_dest', Join::WITH, 'cm_dest.adherent = adherent AND cm_dest.committee = :dest_committee')
-            ->where('cm_dest.id IS NULL AND cm_src.committee = :src_committee')
-            ->setParameters([
-                'src_committee' => $sourceCommittee,
-                'dest_committee' => $destinationCommittee,
-            ])
+        return $this->createCommitteeMembershipsQueryBuilder($committee)
+            ->addSelect('a')
             ->getQuery()
             ->getResult()
         ;
-    }
-
-    /**
-     * Returns the list of all committee memberships of a committee.
-     */
-    public function findCommitteeMemberships(Committee $committee): CommitteeMembershipCollection
-    {
-        return new CommitteeMembershipCollection(
-            $this
-                ->createCommitteeMembershipsQueryBuilder($committee)
-                ->addSelect('a')
-                ->getQuery()
-                ->getResult()
-        );
     }
 
     /**
@@ -529,24 +448,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         ;
     }
 
-    public function updateVoteStatusForAdherents(Committee $committee, array $adherents, bool $value): void
-    {
-        $this->createQueryBuilder('cm')
-            ->update()
-            ->set('cm.enableVote', ':value')
-            ->Where('cm IN (:memberships)')
-            ->setParameters([
-                'memberships' => $this->findBy([
-                    'adherent' => $adherents,
-                    'committee' => $committee,
-                ]),
-                'value' => true === $value ?: null,
-            ])
-            ->getQuery()
-            ->execute()
-        ;
-    }
-
     /**
      * @return CommitteeMembership[]
      */
@@ -607,33 +508,24 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
         ;
     }
 
-    private function createQueryBuilderForVotingMemberships(
-        Committee $committee,
-        Designation $designation,
-        bool $onlyCertified = true,
-    ): QueryBuilder {
+    private function createQueryBuilderForVotingMemberships(Committee $committee, Designation $designation, bool $onlyCertified = true): QueryBuilder
+    {
         $refDate = \DateTimeImmutable::createFromMutable($designation->getVoteEndDate());
 
         $qb = $this->createQueryBuilder('membership')
             ->innerJoin('membership.adherent', 'adherent')
             ->where('membership.committee = :committee')
             ->andWhere('membership.joinedAt <= :joined_at_min')
+            ->andWhere('adherent.tags LIKE :adherent_tag')
             ->setParameters([
                 'committee' => $committee,
-                'joined_at_min' => $designation->isCommitteeSupervisorType() && $committee->isVersion2() ? $designation->getElectionCreationDate() : $refDate->modify('-30 days'),
+                'adherent_tag' => TagEnum::ADHERENT.'%',
+                'joined_at_min' => $designation->isCommitteeSupervisorType() ? $designation->getElectionCreationDate() : $refDate->modify('-30 days'),
             ])
         ;
 
-        if ($committee->isVersion2()) {
-            $qb
-                ->andWhere('adherent.tags LIKE :adherent_tag')
-                ->setParameter('adherent_tag', TagEnum::ADHERENT.'%')
-            ;
-        } else {
-            $qb
-                ->andWhere('adherent.registeredAt <= :registered_at_min'.($onlyCertified ? ' AND adherent.certifiedAt IS NOT NULL' : ''))
-                ->setParameter('registered_at_min', $refDate->modify('-3 months'))
-            ;
+        if ($onlyCertified) {
+            $qb->andWhere('adherent.certifiedAt IS NOT NULL');
         }
 
         if (!$designation->isLimited()) {
@@ -643,7 +535,7 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
                 ->innerJoin('candidacy.committeeElection', 'election')
                 ->innerJoin('candidacy.committeeMembership', 'membership')
                 ->innerJoin('membership.adherent', 'adherent')
-                ->innerJoin('adherent.memberships', 'other_membership', Join::WITH, 'other_membership.committee = :committee')
+                ->innerJoin('adherent.committeeMembership', 'other_membership', Join::WITH, 'other_membership.committee = :committee')
                 ->where('election.designation = :designation')
                 ->andWhere('candidacy.status = :status')
                 ->andWhere('election.committee != :committee')
@@ -684,23 +576,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ])
             ->getQuery()
             ->getOneOrNullResult()
-        ;
-    }
-
-    public function unfollowAllCommittees(array $adherentsIds, Committee $exceptCommittee): void
-    {
-        $this->createQueryBuilder('cm')
-            ->delete()
-            ->where('cm.adherent IN (:adherents_ids)')
-            ->andWhere('cm.committee != :committee_id')
-            ->andWhere('cm.trigger != :manual_trigger')
-            ->setParameters([
-                'manual_trigger' => CommitteeMembershipTriggerEnum::MANUAL,
-                'adherents_ids' => $adherentsIds,
-                'committee_id' => $exceptCommittee->getId(),
-            ])
-            ->getQuery()
-            ->execute()
         ;
     }
 }

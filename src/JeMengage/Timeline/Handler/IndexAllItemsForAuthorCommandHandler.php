@@ -24,7 +24,7 @@ class IndexAllItemsForAuthorCommandHandler
     {
         /** @var AdherentRepository $adherentRepository */
         $adherentRepository = $this->entityManager->getRepository(Adherent::class);
-        if (!$adherent = $adherentRepository->findByUuid($command->getUuid()->toString())) {
+        if (!$adherent = $adherentRepository->findOneByUuid($command->getUuid()->toString())) {
             return;
         }
 

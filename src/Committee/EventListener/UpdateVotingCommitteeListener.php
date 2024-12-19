@@ -31,7 +31,6 @@ class UpdateVotingCommitteeListener implements EventSubscriberInterface
             Events::CANDIDACY_CREATED => 'onCandidacyCreated',
             NewVote::class => 'onVoteCreated',
             UserEvents::USER_UPDATE_COMMITTEE_PRIVILEGE => 'onUpdateCommitteeMembership',
-            \App\Events::COMMITTEE_NEW_FOLLOWER => 'onUpdateCommitteeMembership',
         ];
     }
 
@@ -77,11 +76,13 @@ class UpdateVotingCommitteeListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$committee = $event->getCommittee()) {
+        $membership = $event->getCommitteeMembership();
+
+        if (!$committee = $membership->getCommittee()) {
             return;
         }
 
-        $adherent = $event->getAdherent();
+        $adherent = $membership->getAdherent();
 
         if ($event instanceof UnfollowCommitteeEvent) {
             $this->votersListManager->removeFromCommitteeElection($adherent, $committee);

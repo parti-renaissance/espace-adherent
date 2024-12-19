@@ -247,7 +247,7 @@ class ProfileController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $currentCommittee = $adherent->getCommitteeV2Membership()?->getCommittee();
+        $currentCommittee = $adherent->getCommitteeMembership()?->getCommittee();
 
         if (
             $currentCommittee

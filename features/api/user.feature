@@ -16,7 +16,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "id": "e69755",
+                "id": "e69785",
                 "uuid": "e6977a4d-2646-5f6c-9c82-88e58dca8458",
                 "email_address": "carl999@example.fr",
                 "email_subscribed": true,
@@ -49,12 +49,12 @@ Feature:
                     "circonscription": null,
                     "committee": {
                         "type": "committee",
-                        "name": null,
+                        "name": "En Marche Paris 8",
                         "assembly_committees_count": 0,
                         "can_change_committee": true,
-                        "members_count": null,
+                        "members_count": 0,
                         "message": null,
-                        "uuid": null
+                        "uuid": "@uuid@"
                     }
                 }
             }
@@ -67,7 +67,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "id": "a04656",
+                "id": "a04686",
                 "nickname": "kikouslove",
                 "email_address": "jacques.picard@en-marche.fr",
                 "uuid": "a046adbe-9c7b-56a9-a676-6151a6785dda",
@@ -99,12 +99,12 @@ Feature:
                     },
                     "committee": {
                         "type": "committee",
-                        "name": null,
-                        "assembly_committees_count": 0,
+                        "name": "En Marche Paris 8",
+                        "assembly_committees_count": 2,
                         "can_change_committee": true,
-                        "members_count": null,
+                        "members_count": 0,
                         "message": null,
-                        "uuid": null
+                        "uuid": "@uuid@"
                     }
                 }
             }

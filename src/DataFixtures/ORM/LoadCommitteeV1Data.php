@@ -4,6 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Committee\CommitteeFactory;
 use App\Entity\Adherent;
+use App\Entity\Committee;
 use App\Entity\CommitteeElection;
 use App\Entity\NullablePostAddress;
 use App\Entity\VotingPlatform\Designation\Designation;
@@ -269,109 +270,82 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
         $manager->persist($committee15);
         $manager->persist($committee16);
 
-        // Make adherents join committees
-        $adherent2 = $this->getReference('adherent-2', Adherent::class);
-        $adherent3 = $this->getReference('adherent-3', Adherent::class);
-        $adherent4 = $this->getReference('adherent-4', Adherent::class);
-        $adherent5 = $this->getReference('adherent-5', Adherent::class);
-        $adherent6 = $this->getReference('adherent-6', Adherent::class);
-        $adherent7 = $this->getReference('adherent-7', Adherent::class);
-        $adherent9 = $this->getReference('adherent-9', Adherent::class);
-        $adherent10 = $this->getReference('adherent-10', Adherent::class);
-        $adherent11 = $this->getReference('adherent-11', Adherent::class);
-        $adherent12 = $this->getReference('adherent-12', Adherent::class);
-        $adherent13 = $this->getReference('adherent-13', Adherent::class);
-        $adherent14 = $this->getReference('adherent-14', Adherent::class);
-        $adherent16 = $this->getReference('adherent-16', Adherent::class);
-        $adherent19 = $this->getReference('adherent-19', Adherent::class);
-        $adherent20 = $this->getReference('senatorial-candidate', Adherent::class);
-        $adherent21 = $this->getReference('adherent-20', Adherent::class);
-        $adherent22 = $this->getReference('adherent-49', Adherent::class);
-        $referent = $this->getReference('adherent-8', Adherent::class);
-        $assessor = $this->getReference('assessor-1', Adherent::class);
-
         // Committee 1
-        $manager->persist($membership = $adherent3->followCommittee($committee1, new \DateTime('2017-01-12 13:25:54')));
+        $manager->persist($membership = $this->getReference('adherent-3', Adherent::class)->followCommittee($committee1, new \DateTime('2017-01-12 13:25:54')));
         $membership->enableVote();
-        $manager->persist($membership = $adherent5->hostCommittee($committee1));
-        $membership->enableVote();
-        $manager->persist($adherent2->followCommittee($committee1));
-        $manager->persist($adherent4->followCommittee($committee1));
-        $manager->persist($adherent16->followCommittee($committee1));
+        $manager->persist($this->getReference('adherent-2', Adherent::class)->followCommittee($committee1));
+        $manager->persist($this->getReference('adherent-4', Adherent::class)->followCommittee($committee1));
 
         // Committee 2
-        $committee2->addProvisionalSupervisor($adherent6);
+        $committee2->addProvisionalSupervisor($adherent6 = $this->getReference('adherent-6', Adherent::class));
         $manager->persist($adherent6->followCommittee($committee2));
-        $manager->persist($adherent4->followCommittee($committee2));
+        $manager->persist($this->getReference('adherent-84', Adherent::class)->followCommittee($committee2));
 
         // Committee 3
-        $manager->persist($membership = $adherent7->followCommittee($committee3, new \DateTime('2017-01-26 16:08:24')));
+        $manager->persist($membership = $this->getReference('adherent-7', Adherent::class)->followCommittee($committee3, new \DateTime('2017-01-26 16:08:24')));
         $membership->enableVote();
-        $manager->persist($adherent3->hostCommittee($committee3));
-        $manager->persist($adherent5->followCommittee($committee3));
+        $manager->persist($this->getReference('adherent-85', Adherent::class)->hostCommittee($committee3));
+        $manager->persist($this->getReference('adherent-86', Adherent::class)->followCommittee($committee3));
 
         // Committee 4
-        $manager->persist($adherent7->followCommittee($committee4));
-        $manager->persist($adherent3->followCommittee($committee4));
-        $manager->persist($adherent19->followCommittee($committee4));
+        $manager->persist($this->getReference('adherent-87', Adherent::class)->followCommittee($committee4));
+        $manager->persist($this->getReference('adherent-88', Adherent::class)->followCommittee($committee4));
+        $manager->persist($this->getReference('adherent-19', Adherent::class)->followCommittee($committee4));
 
         // Committee 5
-        $manager->persist($adherent7->followCommittee($committee5));
-        $manager->persist($adherent5->followCommittee($committee16, new \DateTime('-2 months')));
-        $manager->persist($adherent3->followCommittee($committee5));
-        $manager->persist($adherent21->followCommittee($committee5));
-        $manager->persist($adherent9->followCommittee($committee5));
-        $manager->persist($assessor->followCommittee($committee5));
-        $manager->persist($membership = $adherent19->followCommittee($committee5));
+        $manager->persist($this->getReference('adherent-61', Adherent::class)->followCommittee($committee5));
+        $manager->persist($this->getReference('adherent-62', Adherent::class)->followCommittee($committee16, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-63', Adherent::class)->followCommittee($committee5));
+        $manager->persist($this->getReference('adherent-21', Adherent::class)->followCommittee($committee5));
+        $manager->persist($this->getReference('adherent-9', Adherent::class)->followCommittee($committee5));
+        $manager->persist($membership = $this->getReference('adherent-64', Adherent::class)->followCommittee($committee5));
         $membership->enableVote();
 
         // Committee 6
-        $manager->persist($membership = $adherent9->followCommittee($committee6));
+        $manager->persist($membership = $this->getReference('adherent-65', Adherent::class)->followCommittee($committee6));
         $membership->enableVote();
-        $manager->persist($adherent2->followCommittee($committee6));
-        $manager->persist($adherent3->followCommittee($committee6));
-        $manager->persist($assessor->followCommittee($committee6));
+        $manager->persist($this->getReference('adherent-66', Adherent::class)->followCommittee($committee6));
+        $manager->persist($this->getReference('adherent-67', Adherent::class)->followCommittee($committee6));
 
         // Committee 7
-        $manager->persist($membership = $adherent10->followCommittee($committee7));
+        $manager->persist($membership = $this->getReference('adherent-10', Adherent::class)->followCommittee($committee7));
         $membership->enableVote();
-        $manager->persist($membership = $adherent20->followCommittee($committee7));
+        $manager->persist($membership = $this->getReference('adherent-20', Adherent::class)->followCommittee($committee7));
         $membership->enableVote();
-        $manager->persist($adherent3->followCommittee($committee7));
-        $manager->persist($assessor->followCommittee($committee7, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-68', Adherent::class)->followCommittee($committee7));
+        $manager->persist($this->getReference('assessor-1', Adherent::class)->followCommittee($committee7, new \DateTime('-2 months')));
 
         // Committee 8
-        $manager->persist($membership = $adherent11->followCommittee($committee8));
+        $manager->persist($membership = $this->getReference('adherent-11', Adherent::class)->followCommittee($committee8));
         $membership->enableVote();
-        $manager->persist($adherent3->followCommittee($committee8));
-        $manager->persist($assessor->followCommittee($committee8));
+        $manager->persist($this->getReference('adherent-69', Adherent::class)->followCommittee($committee8));
 
         // Committee 9
-        $manager->persist($membership = $adherent12->followCommittee($committee9));
+        $manager->persist($membership = $this->getReference('adherent-12', Adherent::class)->followCommittee($committee9));
         $membership->enableVote();
-        $manager->persist($adherent3->followCommittee($committee9));
-        $manager->persist($adherent11->followCommittee($committee9));
+        $manager->persist($this->getReference('adherent-70', Adherent::class)->followCommittee($committee9));
+        $manager->persist($this->getReference('adherent-71', Adherent::class)->followCommittee($committee9));
 
         // Committee 10
-        $manager->persist($membership = $referent->followCommittee($committee10));
+        $manager->persist($membership = $this->getReference('adherent-8', Adherent::class)->followCommittee($committee10));
         $membership->enableVote();
-        $manager->persist($adherent13->followCommittee($committee10));
-        $manager->persist($adherent14->followCommittee($committee10));
+        $manager->persist($this->getReference('adherent-72', Adherent::class)->followCommittee($committee10));
+        $manager->persist($this->getReference('adherent-14', Adherent::class)->followCommittee($committee10));
 
         // Committee 11
-        $committee11->addProvisionalSupervisor($adherent13);
+        $committee11->addProvisionalSupervisor($adherent13 = $this->getReference('adherent-13', Adherent::class));
         $manager->persist($adherent13->followCommittee($committee11));
-        $manager->persist($adherent14->followCommittee($committee11));
+        $manager->persist($this->getReference('adherent-73', Adherent::class)->followCommittee($committee11));
 
         // Committee 12
-        $manager->persist($adherent10->hostCommittee($committee12, new \DateTime('-2 months')));
-        $manager->persist($adherent20->followCommittee($committee12, new \DateTime('-2 months')));
-        $manager->persist($adherent22->followCommittee($committee12, new \DateTime('-2 months')));
-        $manager->persist($adherent13->followCommittee($committee12));
-        $manager->persist($adherent14->followCommittee($committee12));
+        $manager->persist($this->getReference('adherent-74', Adherent::class)->hostCommittee($committee12, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-75', Adherent::class)->followCommittee($committee12, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-76', Adherent::class)->followCommittee($committee12, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-77', Adherent::class)->followCommittee($committee12));
+        $manager->persist($this->getReference('adherent-78', Adherent::class)->followCommittee($committee12));
 
         // Committee 13
-        $manager->persist($this->getReference('adherent-21', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-79', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
         $manager->persist($this->getReference('adherent-22', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
         $manager->persist($this->getReference('adherent-23', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
         $manager->persist($this->getReference('adherent-24', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
@@ -381,23 +355,23 @@ class LoadCommitteeV1Data extends AbstractLoadPostAddressData implements Depende
         $manager->persist($this->getReference('adherent-28', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
         $manager->persist($this->getReference('adherent-29', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
         $manager->persist($this->getReference('adherent-30', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
-        $adherent31 = $this->getReference('adherent-31', Adherent::class);
-        $manager->persist($adherent31->followCommittee($committee13, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-31', Adherent::class)->followCommittee($committee13, new \DateTime('-2 months')));
 
         // Committee 14
-        $manager->persist($this->getReference('adherent-21', Adherent::class)->followCommittee($committee14, new \DateTime('-2 months')));
-        $manager->persist($this->getReference('adherent-29', Adherent::class)->followCommittee($committee14, new \DateTime('-2 months')));
-        $manager->persist($this->getReference('adherent-30', Adherent::class)->followCommittee($committee14, new \DateTime('-2 months')));
-        $manager->persist($this->getReference('adherent-31', Adherent::class)->followCommittee($committee14, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-80', Adherent::class)->followCommittee($committee14, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-81', Adherent::class)->followCommittee($committee14, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-82', Adherent::class)->followCommittee($committee14, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-83', Adherent::class)->followCommittee($committee14, new \DateTime('-2 months')));
 
         // Committee 15
-        $adherent32 = $this->getReference('adherent-32', Adherent::class);
-        $manager->persist($adherent32->followCommittee($committee15, new \DateTime('-2 months')));
+        $manager->persist($this->getReference('adherent-32', Adherent::class)->followCommittee($committee15, new \DateTime('-2 months')));
         foreach (range(33, 50) as $index) {
             $manager->persist($this->getReference('adherent-'.$index, Adherent::class)->followCommittee($committee15, new \DateTime('-2 months')));
         }
 
         $manager->flush();
+
+        $manager->getRepository(Committee::class)->updateMembershipsCounters();
     }
 
     public function getDependencies(): array

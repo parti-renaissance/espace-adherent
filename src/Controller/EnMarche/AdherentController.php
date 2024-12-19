@@ -4,7 +4,6 @@ namespace App\Controller\EnMarche;
 
 use App\AppCodeEnum;
 use App\Committee\CommandHandler\CommitteeCreationCommandHandler;
-use App\Committee\CommitteeManager;
 use App\Committee\CommitteePermissionEnum;
 use App\Committee\DTO\CommitteeCreationCommand;
 use App\Contact\ContactMessage;
@@ -32,6 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -138,13 +138,13 @@ class AdherentController extends AbstractController
     }
 
     #[Route(path: '/mes-comites', name: 'app_adherent_committees', methods: ['GET'])]
-    public function committeesAction(CommitteeManager $manager): Response
+    public function committeesAction(UserInterface $adherent): Response
     {
         /** @var Adherent $adherent */
-        $adherent = $this->getUser();
+        $committeeMembership = $adherent->getCommitteeMembership();
 
         return $this->render('adherent/my_activity_committees.html.twig', [
-            'committeeMemberships' => $manager->getCommitteeMembershipsForAdherent($adherent),
+            'committeeMemberships' => $committeeMembership ? [$committeeMembership] : [],
         ]);
     }
 

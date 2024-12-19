@@ -72,55 +72,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         self::assertStringNotContainsString('Quitter ce comité', $response->getContent());
     }
 
-    public function testAuthenticatedCommitteeHostCanUnfollowCommittee()
-    {
-        // Login as host
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->request(Request::METHOD_GET, '/evenements');
-        $crawler = $this->client->click($crawler->selectLink('Mes comités')->link());
-        $this->assertEquals('http://test.enmarche.code/parametres/mes-activites#committees', $crawler->getUri());
-
-        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $unfollowButton = $crawler->filter('.committee-unfollow');
-
-        // Button should be enabled for there is a supervisor
-        $this->assertNull($unfollowButton->attr('disabled'));
-
-        // Unfollowing
-        $committeeUrl = $this->client->getRequest()->getRequestUri();
-        $this->client->request(Request::METHOD_POST, $committeeUrl.'/quitter', [
-            'token' => $unfollowButton->attr('data-csrf-token'),
-        ]);
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
-
-        // Ex-host should be allow to follow again
-        $this->assertTrue($this->seeFollowLink($crawler));
-
-        $this->logout($this->client);
-        $this->getEntityManager(Adherent::class)->clear();
-
-        // Login again as supervisor
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        // Unfollow link must not exist because there is no other host
-        $this->assertSame(0, $crawler->filter('.committee-unfollow')->count());
-        // Other follower/register links must not exist
-        $this->assertFalse($this->seeFollowLink($crawler));
-        $this->assertFalse($this->seeRegisterLink($crawler, 0));
-    }
-
     public function testAuthenticatedAdherentCanFollowCommittee()
     {
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -131,7 +82,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertStringContainsString('2 adhérents', $crawler->filter('.committee__infos')->text());
+        $this->assertStringContainsString('1 adhérent', $crawler->filter('.committee__infos')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -146,7 +97,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertStringContainsString('2 adhérents', $crawler->filter('.committee__infos')->text());
+        $this->assertStringContainsString('1 adhérent', $crawler->filter('.committee__infos')->text());
         $this->assertFalse($this->seeFollowLink($crawler));
         $this->assertTrue($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -161,7 +112,7 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertStringContainsString('2 adhérents', $crawler->filter('.committee__infos')->text());
+        $this->assertStringContainsString('1 adhérent', $crawler->filter('.committee__infos')->text());
         $this->assertTrue($this->seeFollowLink($crawler));
         $this->assertFalse($this->seeUnfollowLink($crawler));
         $this->assertFalse($this->seeRegisterLink($crawler, 0));
@@ -176,21 +127,11 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->seeMessageForContactHosts($crawler);
-        $this->assertSeeHosts($crawler, [
-            ['FB', 'Francis B.', 'Animateur'],
-            ['GB', 'Gisele B.', 'Animatrice provisoire'],
-            ['JF', 'Jean-Baptiste F.', 'Animateur provisoire'],
-            ['JP', 'Jacques P.', 'Co-animateur'],
-        ], false);
         $this->assertSeeDesignedAdherents($crawler, [
             ['LO', 'Lucie O.', 'Adhérente désignée'],
             ['JP', 'Jacques P.', 'Adhérent désigné'],
         ]);
         $this->assertCountTimelineMessages($crawler, 2);
-        $this->assertSeeTimelineMessages($crawler, [
-            ['Jacques P.', 'co-animateur', 'Connectez-vous'],
-            ['Jacques P.', 'co-animateur', 'Connectez-vous'],
-        ]);
 
         // Adherent
         $this->authenticateAsAdherent($this->client, 'carl999@example.fr');
@@ -199,10 +140,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCountTimelineMessages($crawler, 2);
-        $this->assertSeeTimelineMessages($crawler, [
-            ['Jacques Picard', 'co-animateur', 'À la recherche de volontaires !'],
-            ['Jacques Picard', 'co-animateur', 'Lancement du comité !'],
-        ]);
 
         $this->logout($this->client);
 
@@ -213,10 +150,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCountTimelineMessages($crawler, 2);
-        $this->assertSeeTimelineMessages($crawler, [
-            ['Jacques Picard', 'co-animateur', 'À la recherche de volontaires !'],
-            ['Jacques Picard', 'co-animateur', 'Lancement du comité !'],
-        ]);
     }
 
     public function testAnyoneCanSeeSupervisorProvisionalOnCommitteePage()
@@ -257,8 +190,8 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertFalse($this->seeFollowLink($crawler), 'The guest should not see the "follow link"');
         $this->assertFalse($this->seeUnfollowLink($crawler), 'The guest should not see the "unfollow link"');
-        $this->assertTrue($this->seeMembersCount($crawler, 2), 'The guest should see the members count');
-        $this->assertTrue($this->seeHosts($crawler, 2), 'The guest should see the hosts');
+        $this->assertTrue($this->seeMembersCount($crawler, 1), 'The guest should see the members count');
+        $this->assertTrue($this->seeHosts($crawler, 1), 'The guest should see the hosts');
         $this->assertFalse($this->seeHostNav($crawler), 'The guest should not see the host navigation');
         $this->assertSeeSocialLinks($crawler, $this->committeeRepository->findOneByUuid(LoadCommitteeV1Data::COMMITTEE_1_UUID));
         $this->assertFalse($this->seeMessageForm($crawler));
@@ -276,7 +209,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertSeeHosts($crawler, [
             ['JP', 'Jacques Picard', 'Animateur'],
-            ['GB', 'Gisele Berthoux', 'Co-animatrice'],
         ]);
         $this->assertSeeDesignedAdherents($crawler, [
             ['GB', 'Gisele Berthoux', 'Adhérente désignée'],
@@ -287,9 +219,9 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $this->assertFalse($this->seeLoginLink($crawler), 'The adherent should not see the "login link"');
         $this->assertTrue($this->seeFollowLink($crawler), 'The adherent should see the "follow link"');
         $this->assertFalse($this->seeUnfollowLink($crawler), 'The adherent should not see the "unfollow link"');
-        $this->assertTrue($this->seeMembersCount($crawler, 2), 'The adherent should see the members count');
-        $this->assertTrue($this->seeHosts($crawler, 2), 'The adherent should see the hosts');
-        $this->assertTrue($this->seeHostsContactLink($crawler, 2), 'The adherent should see the hosts contact link');
+        $this->assertTrue($this->seeMembersCount($crawler, 1), 'The adherent should see the members count');
+        $this->assertTrue($this->seeHosts($crawler, 1), 'The adherent should see the hosts');
+        $this->assertTrue($this->seeHostsContactLink($crawler, 1), 'The adherent should see the hosts contact link');
         $this->assertFalse($this->seeHostNav($crawler), 'The adherent should not see the host navigation');
         $this->assertFalse($this->seeMessageForm($crawler));
     }
@@ -305,29 +237,11 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $this->assertFalse($this->seeLoginLink($crawler), 'The adherent should not see the "login link"');
         $this->assertFalse($this->seeFollowLink($crawler), 'The follower should not see the "follow link"');
         $this->assertTrue($this->seeUnfollowLink($crawler), 'The follower should see the "unfollow link"');
-        $this->assertTrue($this->seeMembersCount($crawler, 2), 'The follower should see the members count');
-        $this->assertTrue($this->seeHosts($crawler, 2), 'The follower should see the hosts');
-        $this->assertTrue($this->seeHostsContactLink($crawler, 2), 'The follower should see the hosts contact link');
+        $this->assertTrue($this->seeMembersCount($crawler, 1), 'The follower should see the members count');
+        $this->assertTrue($this->seeHosts($crawler, 1), 'The follower should see the hosts');
+        $this->assertTrue($this->seeHostsContactLink($crawler, 1), 'The follower should see the hosts contact link');
         $this->assertFalse($this->seeHostNav($crawler), 'The follower should not see the host navigation');
         $this->assertFalse($this->seeMessageForm($crawler));
-    }
-
-    public function testAuthenticatedCommitteeHostCanShowCommitteePage()
-    {
-        $this->authenticateAsAdherent($this->client, 'gisele-berthoux@caramail.com');
-        $crawler = $this->client->request(Request::METHOD_GET, '/parametres/mes-activites#committees');
-        $crawler = $this->client->click($crawler->filter('a[title="En Marche Paris 8"]')->link());
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-        $this->assertFalse($this->seeRegisterLink($crawler, 0), 'The host should not see the "register link"');
-        $this->assertFalse($this->seeLoginLink($crawler), 'The adherent should not see the "login link"');
-        $this->assertFalse($this->seeFollowLink($crawler), 'The host should not see the "follow link"');
-        $this->assertTrue($this->seeUnfollowLink($crawler), 'The host should see the "unfollow link" because there is another host');
-        $this->assertTrue($this->seeMembersCount($crawler, 2), 'The host should see the members count');
-        $this->assertTrue($this->seeHosts($crawler, 2), 'The host should see the hosts');
-        $this->assertTrue($this->seeHostsContactLink($crawler, 1), 'The host should see the other contact links');
-        $this->assertTrue($this->seeSelfHostContactLink($crawler, 'Gisele Berthoux', 'Co-animatrice'), 'The host should see his own contact link');
-        $this->assertTrue($this->seeHostNav($crawler), 'The host should see the host navigation');
     }
 
     public function testNoEditLinkWithAnonymousUser()
@@ -337,26 +251,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
 
         $this->assertEditDeleteButton($crawler, 0);
-    }
-
-    public function testDisplayEditLinkWithAnimateurUser()
-    {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->assertEditDeleteButton($crawler, 10);
-    }
-
-    public function testDisplayEditLinkWithNormaleUser()
-    {
-        $this->authenticateAsAdherent($this->client, 'francis.brioul@yahoo.com');
-        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8');
-
-        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
-
-        $this->assertEditDeleteButton($crawler, 5);
     }
 
     public function testEditMessage()
@@ -377,29 +271,6 @@ class CommitteeControllerTest extends AbstractGroupControllerTestCase
 
         $this->client->followRedirect();
         self::assertStringContainsString($messages->getContent().' test', $this->client->getResponse()->getContent());
-    }
-
-    public function testDeleteMessage()
-    {
-        $committee = $this->manager->getRepository(Committee::class)->findOneBy(['slug' => 'en-marche-paris-8']);
-        $messages = $this->manager->getRepository(CommitteeFeedItem::class)->findMostRecentFeedEvent($committee->getUuid());
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-
-        $crawler = $this->client->request(Request::METHOD_GET, '/comites/en-marche-paris-8');
-        $form = $crawler->selectButton('delete_entity_delete')->form();
-        $this->client->submit($form);
-        $this->assertClientIsRedirectedTo('/comites/en-marche-paris-8', $this->client);
-
-        $this->client->followRedirect();
-        self::assertStringNotContainsString($messages->getContent(), $this->client->getResponse()->getContent());
-    }
-
-    public function testGetTimeLineConnected()
-    {
-        $this->authenticateAsAdherent($this->client, 'jacques.picard@en-marche.fr');
-        $crawler = $this->client->request('GET', '/comites/en-marche-paris-8/timeline?offset=10');
-
-        $this->assertEditDeleteButton($crawler, 10);
     }
 
     public function testGetTimeLineNotConnected()

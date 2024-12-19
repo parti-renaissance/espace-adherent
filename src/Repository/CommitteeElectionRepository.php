@@ -145,7 +145,7 @@ class CommitteeElectionRepository extends ServiceEntityRepository
             ))
             ->innerJoin('committee_election.committee', 'committee')
             ->innerJoin('committee_election.designation', 'designation')
-            ->where('committee.version = 1 AND committee.status = :approved')
+            ->where('committee.status = :approved')
             ->setParameters([
                 'approved' => Committee::APPROVED,
                 'male' => Genders::MALE,

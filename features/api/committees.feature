@@ -14,11 +14,11 @@ Feature:
         Given I am logged with "referent-75-77@en-marche-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "GET" request to "/api/v3/committees?scope=president_departmental_assembly"
         Then the JSON nodes should be equal to:
-            | metadata.count | 0 |
+            | metadata.count | 2 |
 
-    Scenario Outline: As a user granted with local scope, I can get committees in a zone I am manager of
-        Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
-        When I send a "GET" request to "/api/v3/committees?scope=<scope>"
+    Scenario: As a user granted with local scope, I can get committees in a zone I am manager of
+        Given I am logged with "president-ad@renaissance-dev.fr" via OAuth client "JeMengage Web" with scope "jemengage_admin"
+        When I send a "GET" request to "/api/v3/committees?scope=president_departmental_assembly"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:
@@ -48,20 +48,20 @@ Feature:
                         "created_at": "@string@.isDateTime()",
                         "updated_at": "@string@.isDateTime()",
                         "name": "Second Comité des 3 communes",
-                        "members_count": 3,
+                        "members_count": 2,
                         "members_em_count": 0,
                         "sympathizers_count": 0
                     }
                 ]
             }
             """
-        When I send a "GET" request to "/api/v3/committees/8c4b48ec-9290-47ae-a5db-d1cf2723e8b3?scope=<scope>"
+        When I send a "GET" request to "/api/v3/committees/8c4b48ec-9290-47ae-a5db-d1cf2723e8b3?scope=president_departmental_assembly"
         Then the response status code should be 200
         And the response should be in JSON
         And the JSON should be equal to:
             """
             {
-                "members_count": 3,
+                "members_count": 2,
                 "members_em_count": 0,
                 "sympathizers_count": 0,
                 "description": "Un petit comité avec seulement 3 communes",
@@ -107,12 +107,6 @@ Feature:
             }
             """
 
-        Examples:
-            | user                            | scope                                          |
-            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | president_departmental_assembly                |
-            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
-
     Scenario Outline: As a user granted with local scope, I can update a committee
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"
         When I send a "GET" request to "/api/v3/committees/8c4b48ec-9290-47ae-a5db-d1cf2723e8b3?scope=<scope>"
@@ -121,7 +115,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "members_count": 3,
+                "members_count": 2,
                 "members_em_count": 0,
                 "sympathizers_count": 0,
                 "description": "Un petit comité avec seulement 3 communes",
@@ -178,7 +172,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "members_count": 3,
+                "members_count": 2,
                 "members_em_count": 0,
                 "sympathizers_count": 0,
                 "description": "my desc",
@@ -234,7 +228,7 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "members_count": 3,
+                "members_count": 2,
                 "members_em_count": 0,
                 "sympathizers_count": 0,
                 "description": "my desc",
@@ -404,38 +398,23 @@ Feature:
         And the JSON should be equal to:
             """
             [
-                {
-                    "type": "city",
-                    "code": "92002"
-                },
-                {
-                    "type": "city",
-                    "code": "92004"
-                },
-                {
-                    "type": "city",
-                    "code": "92007"
-                },
-                {
-                    "type": "city",
-                    "code": "92012"
-                },
-                {
-                    "type": "city",
-                    "code": "92014"
-                },
-                {
-                    "type": "city",
-                    "code": "92024"
-                }
+                { "type": "borough", "code": "13203" },
+                { "type": "city", "code": "92002" },
+                { "type": "city", "code": "92004" },
+                { "type": "city", "code": "92007" },
+                { "type": "city", "code": "92012" },
+                { "type": "city", "code": "92014" },
+                { "type": "city", "code": "92024" },
+                { "type": "city", "code": "77152" },
+                { "type": "city", "code": "77186" },
+                { "type": "city", "code": "76540" }
             ]
             """
 
         Examples:
-            | user                            | scope                                          |
-            | president-ad@renaissance-dev.fr | president_departmental_assembly                |
-            | referent@en-marche-dev.fr       | president_departmental_assembly                |
-            | senateur@en-marche-dev.fr       | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+            | user                      | scope                                          |
+            | referent@en-marche-dev.fr | president_departmental_assembly                |
+            | senateur@en-marche-dev.fr | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a user granted with local scope, I can get a committee election
         Given I am logged with "<user>" via OAuth client "JeMengage Web" with scope "jemengage_admin"

@@ -192,67 +192,47 @@ Feature:
                                 "elected": false,
                                 "candidates": [
                                     {
+                                        "first_name": "Adherent 50",
+                                        "last_name": "Fa50ke",
+                                        "gender": "female"
+                                    },
+                                    {
                                         "first_name": "Adherent 32",
                                         "last_name": "Fa32ke",
                                         "gender": "female"
-                                    },
-                                    {
-                                        "first_name": "Adherent 33",
-                                        "last_name": "Fa33ke",
-                                        "gender": "male"
                                     }
                                 ],
-                                "title": "Adherent 33 Fa33ke (+1 candidat)"
+                                "title": "Adherent 50 Fa50ke (+1 candidat)"
                             },
-                            "total": 2,
-                            "rate": 40
-                        },
-                        {
-                            "candidate_group": {
-                                "elected": true,
-                                "candidates": [
-                                    {
-                                        "first_name": "Adherent 34",
-                                        "last_name": "Fa34ke",
-                                        "gender": "female"
-                                    },
-                                    {
-                                        "first_name": "Adherent 35",
-                                        "last_name": "Fa35ke",
-                                        "gender": "male"
-                                    }
-                                ],
-                                "title": "Adherent 35 Fa35ke (+1 candidat)"
-                            },
-                            "total": 3,
-                            "rate": 60
+                            "total": 1,
+                            "rate": 50
                         },
                         {
                             "candidate_group": {
                                 "elected": false,
                                 "candidates": [
                                     {
-                                        "first_name": "Adherent 36",
-                                        "last_name": "Fa36ke",
+                                        "first_name": "Adherent 48",
+                                        "last_name": "Fa48ke",
                                         "gender": "female"
                                     },
                                     {
-                                        "first_name": "Adherent 37",
-                                        "last_name": "Fa37ke",
-                                        "gender": "male"
+                                        "first_name": "Adherent 50",
+                                        "last_name": "Fa50ke",
+                                        "gender": "female"
                                     }
                                 ],
-                                "title": "Adherent 37 Fa37ke (+1 candidat)"
+                                "title": "Adherent 48 Fa48ke (+1 candidat)"
                             },
-                            "total": 0,
-                            "rate": 0
+                            "total": 1,
+                            "rate": 50
                         }
                     ],
-                    "expressed": 5,
+                    "expressed": 2,
                     "blank": 0,
-                    "participated": 6,
+                    "participated": 3,
                     "abstentions": 1,
-                    "bulletin_count": 5
+                    "bulletin_count": 2
                 }
             ]
             """
@@ -272,8 +252,8 @@ Feature:
             """
             [
                 {
-                    "first_name": "Adherent 33",
-                    "last_name": "Fa33ke",
+                    "first_name": "Adherent 50",
+                    "last_name": "Fa50ke",
                     "postal_code": "77000",
                     "voted_at": null
                 },
@@ -284,26 +264,8 @@ Feature:
                     "voted_at": "@string@.isDateTime()"
                 },
                 {
-                    "first_name": "Adherent 35",
-                    "last_name": "Fa35ke",
-                    "postal_code": "77000",
-                    "voted_at": "@string@.isDateTime()"
-                },
-                {
-                    "first_name": "Adherent 34",
-                    "last_name": "Fa34ke",
-                    "postal_code": "77000",
-                    "voted_at": "@string@.isDateTime()"
-                },
-                {
-                    "first_name": "Adherent 37",
-                    "last_name": "Fa37ke",
-                    "postal_code": "77000",
-                    "voted_at": "@string@.isDateTime()"
-                },
-                {
-                    "first_name": "Adherent 36",
-                    "last_name": "Fa36ke",
+                    "first_name": "Adherent 48",
+                    "last_name": "Fa48ke",
                     "postal_code": "77000",
                     "voted_at": "@string@.isDateTime()"
                 }

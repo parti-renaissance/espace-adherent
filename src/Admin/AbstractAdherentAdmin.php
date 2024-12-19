@@ -1038,7 +1038,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
                     'Préférences de notifications' => implode(', ', array_map(function (SubscriptionType $subscriptionType): string {
                         return $subscriptionType->getLabel();
                     }, $adherent->getSubscriptionTypes())),
-                    'Comité' => (string) $adherent->getCommitteeV2Membership()?->getCommittee(),
+                    'Comité' => (string) $adherent->getCommitteeMembership()?->getCommittee(),
                     'Adresse postale' => $adherent->getAddress(),
                     'Complément d\'adresse' => $adherent->getAdditionalAddress(),
                     'Code postal' => $adherent->getPostalCode(),
@@ -1118,7 +1118,7 @@ abstract class AbstractAdherentAdmin extends AbstractAdmin
             )
             ->leftJoin($alias.'.staticLabels', '_static_labels')
             ->leftJoin($alias.'.adherentMandates', '_adherent_mandate')
-            ->leftJoin($alias.'.memberships', '_committee_membership')
+            ->leftJoin($alias.'.committeeMembership', '_committee_membership')
             ->leftJoin($alias.'.receivedDelegatedAccesses', '_delegated_access')
             ->leftJoin($alias.'.zoneBasedRoles', '_zone_based_role')
             ->leftJoin('_zone_based_role.zones', '_zone_based_role_zone')

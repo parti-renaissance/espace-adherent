@@ -114,7 +114,7 @@ class PersistentTokenFactory
 
     private function getUser(string $identifier): Adherent
     {
-        if (!$user = $this->adherentRepository->findByUuid(Uuid::fromString($identifier))) {
+        if (!$user = $this->adherentRepository->findOneByUuid(Uuid::fromString($identifier))) {
             throw new \RuntimeException(\sprintf('Unable to find %s entity by its identifier "%s".', Adherent::class, $identifier));
         }
 

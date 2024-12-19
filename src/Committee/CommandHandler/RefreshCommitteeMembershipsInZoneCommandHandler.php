@@ -62,8 +62,8 @@ class RefreshCommitteeMembershipsInZoneCommandHandler
                     $committeeAdherentIds[$committee->getId()][] = $alreadyAssignedAdherentIds[] = $adherent->getId();
                 }
 
-                if ($adherentsMembership) {
-                    $this->committeeMembershipManager->batchFollowCommittee($adherentsMembership, $committee, CommitteeMembershipTriggerEnum::COMMITTEE_EDITION);
+                foreach ($adherentsMembership as $adherent) {
+                    $this->committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::COMMITTEE_EDITION);
                 }
             }
         }
@@ -80,7 +80,7 @@ class RefreshCommitteeMembershipsInZoneCommandHandler
                 }
 
                 if (!\in_array($membership->getAdherent()->getId(), $committeeAdherentIds[$committee->getId()])) {
-                    $this->committeeMembershipManager->unfollowCommittee($membership, $committee);
+                    $this->committeeMembershipManager->unfollowCommittee($membership);
                 }
             }
         }

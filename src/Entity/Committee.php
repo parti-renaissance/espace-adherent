@@ -76,9 +76,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: CommitteeRepository::class)]
 #[ORM\Index(columns: ['status'])]
-#[ORM\Index(columns: ['version'])]
 #[ORM\Table(name: 'committees')]
-class Committee implements SynchronizedEntity, StaticSegmentInterface, AddressHolderInterface, ZoneableEntityInterface, ExposedObjectInterface, EntityAdherentBlameableInterface, GeoPointInterface, CoordinatorAreaInterface, ReportableInterface, EntityAdministratorBlameableInterface
+class Committee implements StaticSegmentInterface, AddressHolderInterface, ZoneableEntityInterface, ExposedObjectInterface, EntityAdherentBlameableInterface, GeoPointInterface, CoordinatorAreaInterface, ReportableInterface, EntityAdministratorBlameableInterface
 {
     use EntityNullablePostAddressTrait;
     use EntityZoneTrait;
@@ -196,9 +195,6 @@ class Committee implements SynchronizedEntity, StaticSegmentInterface, AddressHo
      */
     #[ORM\OneToMany(mappedBy: 'committee', targetEntity: CommitteeAdherentMandate::class, fetch: 'EXTRA_LAZY')]
     private $adherentMandates;
-
-    #[ORM\Column(type: 'smallint', options: ['unsigned' => true, 'default' => '2'])]
-    public int $version = 2;
 
     #[AssertZoneType(types: Zone::COMMITTEE_TYPES, groups: ['api_committee_edition'])]
     #[Assert\Count(min: 1, minMessage: 'Le comité doit contenir au moins une zone.', groups: ['api_committee_edition'])]
@@ -792,16 +788,6 @@ class Committee implements SynchronizedEntity, StaticSegmentInterface, AddressHo
     public function getStatus(): string
     {
         return $this->status;
-    }
-
-    public function getVersion(): int
-    {
-        return $this->version;
-    }
-
-    public function isVersion2(): bool
-    {
-        return 2 === $this->version;
     }
 
     public function allowMembershipsMoving(): bool

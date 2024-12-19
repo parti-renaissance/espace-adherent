@@ -85,7 +85,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
     {
         return $this->createQueryBuilder('adherent')
             ->select('PARTIAL adherent.{id, uuid, emailAddress, firstName, lastName}')
-            ->innerJoin('adherent.memberships', 'membership', Join::WITH, 'membership.committee = :committee')
+            ->innerJoin('adherent.committeeMembership', 'membership', Join::WITH, 'membership.committee = :committee')
             ->andWhere('adherent.status = :status')
             ->andWhere('adherent.tags like :adherent_tag')
             ->setParameters([
@@ -151,14 +151,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->getQuery()
             ->getOneOrNullResult()
         ;
-    }
-
-    /**
-     * Finds an Adherent instance by its unique UUID.
-     */
-    public function findByUuid(string $uuid): ?Adherent
-    {
-        return $this->findOneBy(['uuid' => $uuid]);
     }
 
     public function loadUserByUuid(UuidInterface $uuid): ?Adherent
@@ -630,7 +622,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         if (null !== $isCommitteeMember = $audience->getIsCommitteeMember()) {
             $qb
-                ->leftJoin('adherent.memberships', 'committee_membership')
+                ->leftJoin('adherent.committeeMembership', 'committee_membership')
                 ->andWhere('committee_membership.id '.($isCommitteeMember ? 'IS NOT NULL' : 'IS NULL'))
             ;
         }
@@ -862,8 +854,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
 
         if ($filter->committee || $filter->managedCommitteeUuids) {
             $qb
-                ->innerJoin('a.memberships', 'membership')
-                ->innerJoin('membership.committee', 'committee', Join::WITH, 'committee.version = 2')
+                ->innerJoin('a.committeeMembership', 'membership')
+                ->innerJoin('membership.committee', 'committee')
                 ->andWhere('a.tags like :adherent_tag')
                 ->setParameter('adherent_tag', TagEnum::ADHERENT.'%')
             ;
@@ -1057,7 +1049,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->addSelect('mandates')
             ->addSelect('zone_based_role')
             ->leftJoin($alias.'.jecouteManagedArea', 'jma')
-            ->leftJoin($alias.'.memberships', 'cm')
+            ->leftJoin($alias.'.committeeMembership', 'cm')
             ->leftJoin('cm.committee', 'c')
             ->leftJoin($alias.'.receivedDelegatedAccesses', 'rda')
             ->leftJoin($alias.'.adherentMandates', 'mandates')
@@ -1181,8 +1173,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $excludedAdherentQueryBuilder = $this
             ->createQueryBuilder('exl_adh')
             ->select('DISTINCT exl_adh.id')
-            ->innerJoin('exl_adh.memberships', 'exl_membership', Join::WITH, 'exl_membership.trigger = :manual_trigger')
-            ->innerJoin('exl_membership.committee', 'committee', Join::WITH, 'committee.version = 2')
+            ->innerJoin('exl_adh.committeeMembership', 'exl_membership', Join::WITH, 'exl_membership.trigger = :manual_trigger')
+            ->innerJoin('exl_membership.committee', 'committee')
             ->where('exl_adh.source IS NULL OR exl_adh.source = :source')
         ;
 

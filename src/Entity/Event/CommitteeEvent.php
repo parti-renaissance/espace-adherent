@@ -6,7 +6,6 @@ use App\Address\AddressInterface;
 use App\Address\GeoCoder;
 use App\Entity\Adherent;
 use App\Entity\Committee;
-use App\Entity\SynchronizedEntity;
 use App\Entity\UserDocument;
 use App\Entity\UserDocumentInterface;
 use App\Entity\UserDocumentTrait;
@@ -19,7 +18,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
-class CommitteeEvent extends BaseEvent implements UserDocumentInterface, SynchronizedEntity
+class CommitteeEvent extends BaseEvent implements UserDocumentInterface
 {
     use UserDocumentTrait;
 

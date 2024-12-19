@@ -37,7 +37,7 @@ class CommitteeMembership implements UuidEntityInterface
      */
     #[Groups(['export', 'api_candidacy_read', 'committee_candidacy:read', 'committee_election:read'])]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    #[ORM\ManyToOne(targetEntity: Adherent::class, inversedBy: 'memberships')]
+    #[ORM\OneToOne(inversedBy: 'committeeMembership', targetEntity: Adherent::class)]
     private $adherent;
 
     /**
@@ -312,11 +312,6 @@ class CommitteeMembership implements UuidEntityInterface
     public function setTrigger(?CommitteeMembershipTriggerEnum $trigger): void
     {
         $this->trigger = $trigger;
-    }
-
-    public function isCommitteeV2(): bool
-    {
-        return $this->committee->isVersion2();
     }
 
     public function isManual(): bool

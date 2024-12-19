@@ -127,7 +127,7 @@
 
                     <div class="em-tooltip--content em-tooltip--content-bordered">
                         {% set ref_date = committee_election.getVoteEndDate ?? date() %}
-                        {% set candidacy_membership = app.user.memberships.committeeCandidacyMembership() %}
+                        {% set candidacy_membership = app.user.getCommitteeMembership() %}
 
                         {% if app.user.isMinor(ref_date) %}
                             Les mineurs ne peuvent pas candidater.
@@ -208,7 +208,7 @@
 
                             <div class="em-tooltip--content em-tooltip--content-bordered">
                                 {% set ref_date = committee_election.getVoteEndDate ?? date() %}
-                                {% set candidacy_membership = app.user.memberships.committeeCandidacyMembership() %}
+                                {% set candidacy_membership = app.user.getCommitteeMembership() %}
 
                                 {% if my_vote %}
                                     Vous avez déjà voté.

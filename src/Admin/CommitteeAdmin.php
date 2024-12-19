@@ -22,7 +22,6 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -220,14 +219,6 @@ class CommitteeAdmin extends AbstractAdmin
                 'label' => 'Nom',
                 'show_filter' => true,
             ])
-            ->add('version', ChoiceFilter::class, [
-                'label' => 'Version',
-                'show_filter' => true,
-                'field_type' => ChoiceType::class,
-                'field_options' => [
-                    'choices' => [1 => 1, 2 => 2],
-                ],
-            ])
             ->add('createdAt', DateRangeFilter::class, [
                 'label' => 'Date de création',
                 'field_type' => DateRangePickerType::class,
@@ -371,7 +362,6 @@ class CommitteeAdmin extends AbstractAdmin
     {
         $list
             ->add('id', null, ['label' => 'ID'])
-            ->add('version', null, ['label' => 'Version'])
             ->addIdentifier('name', null, ['label' => 'Nom'])
             ->add('animator', null, [
                 'label' => 'Responsable',

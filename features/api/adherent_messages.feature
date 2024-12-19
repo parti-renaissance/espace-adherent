@@ -371,7 +371,10 @@ Feature:
                             "options": {
                                 "choices": {
                                     "5e00c264-1d4b-43b8-862e-29edc38389b3": "Comité des 3 communes",
-                                    "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3": "Second Comité des 3 communes"
+                                    "508d4ac0-27d6-4635-8953-4cc8600018f9": "En Marche - Comité de Rouen",
+                                    "b0cd0e52-a5a4-410b-bba3-37afdd326a0a": "En Marche Dammarie-les-Lys",
+                                    "8c4b48ec-9290-47ae-a5db-d1cf2723e8b3": "Second Comité des 3 communes",
+                                    "d648d486-fbb3-4394-b4b3-016fac3658af": "Antenne En Marche de Fontainebleau"
                                 },
                                 "multiple": false,
                                 "required": false

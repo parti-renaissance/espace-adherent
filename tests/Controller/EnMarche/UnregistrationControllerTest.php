@@ -11,6 +11,7 @@ use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\App\AbstractEnMarcheWebTestCase;
 use Tests\App\Controller\ControllerTestTrait;
+use Tests\App\Controller\Renaissance\Adherent\Contribution\ContributionControllerTest;
 
 #[Group('functional')]
 #[Group('controller')]
@@ -18,7 +19,7 @@ class UnregistrationControllerTest extends AbstractEnMarcheWebTestCase
 {
     use ControllerTestTrait;
 
-    #[DependsExternal('Tests\App\Controller\Renaissance\Adherent\Contribution\ContributionControllerTest', 'testOnGoingElectedRepresentativeCanSeeContributionWorkflow')]
+    #[DependsExternal(ContributionControllerTest::class, 'testOnGoingElectedRepresentativeCanSeeContributionWorkflow')]
     public function testAdherentCanUnregisterSuccessfully(): void
     {
         $countForbidden = 0;
@@ -71,6 +72,6 @@ class UnregistrationControllerTest extends AbstractEnMarcheWebTestCase
             $handler(new RemoveAdherentAndRelatedDataCommand($adherent->getUuid()));
         }
 
-        self::assertSame(17, $countForbidden);
+        self::assertSame(8, $countForbidden);
     }
 }

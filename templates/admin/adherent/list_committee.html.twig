@@ -1,7 +1,7 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {% set committee_membership = object.getCommitteeV2Membership() %}
+    {% set committee_membership = object.getCommitteeMembership() %}
     {% set committee = committee_membership ? committee_membership.getCommittee() : null %}
 
     {% if committee %}

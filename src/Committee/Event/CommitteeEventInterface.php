@@ -2,12 +2,9 @@
 
 namespace App\Committee\Event;
 
-use App\Entity\Adherent;
-use App\Entity\Committee;
+use App\Entity\CommitteeMembership;
 
 interface CommitteeEventInterface
 {
-    public function getCommittee(): ?Committee;
-
-    public function getAdherent(): Adherent;
+    public function getCommitteeMembership(): CommitteeMembership;
 }

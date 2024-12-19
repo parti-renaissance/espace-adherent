@@ -857,7 +857,7 @@ class LoadAdherentData extends AbstractLoadPostAddressData implements DependentF
         $manager->persist($adherent);
         $this->addReference('adherent-31', $adherent);
 
-        foreach (range(32, 60) as $index) {
+        foreach (range(32, 90) as $index) {
             $gender = 0 === $index % 2 ? GenderEnum::FEMALE : GenderEnum::MALE;
 
             $adherent = $this->adherentFactory->createFromArray([

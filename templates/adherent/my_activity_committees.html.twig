@@ -1,6 +1,6 @@
 {% extends 'adherent/my_activity_layout.html.twig' %}
 
-{% set committee_candidacy_membership = app.user.memberships.committeeCandidacyMembership %}
+{% set committee_candidacy_membership = app.user.getCommitteeMembership() %}
 
 {% block tab %}
     <div class="l__wrapper--narrow b__nudge--bottom-huge">
