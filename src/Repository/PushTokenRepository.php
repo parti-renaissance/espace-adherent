@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Adherent\Tag\TagEnum;
 use App\Entity\Action\Action;
 use App\Entity\Action\ActionParticipant;
 use App\Entity\Adherent;
@@ -68,6 +69,8 @@ class PushTokenRepository extends ServiceEntityRepository
             $queryBuilder
                 ->innerJoin('a.committeeMembership', 'cm')
                 ->andWhere('cm.committee = :committee')
+                ->andWhere('a.tags LIKE :adherent_tag')
+                ->setParameter('adherent_tag', TagEnum::ADHERENT.'%')
                 ->setParameter('committee', $object->getCommittee())
             ;
         } elseif ($object instanceof Action) {
