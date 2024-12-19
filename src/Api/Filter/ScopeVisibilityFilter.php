@@ -70,11 +70,24 @@ final class ScopeVisibilityFilter extends AbstractScopeFilter
         $queryBuilder
             ->andWhere("$alias.visibility = :visibility")
             ->setParameter('visibility', ScopeVisibilityEnum::LOCAL)
-            ->innerJoin("$alias.zone", 'zone')
-            ->leftJoin('zone.parents', 'parent_zone')
-            ->andWhere('zone IN (:zones) OR parent_zone IN (:zones)')
-            ->setParameter('zones', $scope->getZones())
         ;
+
+        if ($scope->getZones()) {
+            $queryBuilder
+                ->innerJoin("$alias.zone", 'zone')
+                ->leftJoin('zone.parents', 'parent_zone')
+                ->andWhere('zone IN (:zones) OR parent_zone IN (:zones)')
+                ->setParameter('zones', $scope->getZones())
+            ;
+        }
+
+        if (News::class === $resourceClass && $committeeUuids = $scope->getCommitteeUuids()) {
+            $queryBuilder
+                ->innerJoin("$alias.committee", 'committee')
+                ->andWhere('committee.uuid IN (:committee_uuids)')
+                ->setParameter('committee_uuids', $committeeUuids)
+            ;
+        }
     }
 
     protected function getAllowedOperationNames(string $resourceClass): array

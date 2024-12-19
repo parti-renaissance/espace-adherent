@@ -5,7 +5,6 @@ namespace App\Admin\Poll;
 use App\Entity\Administrator;
 use App\Entity\Poll\Poll;
 use App\Form\Admin\Poll\PollChoiceType;
-use App\Poll\PollManager;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -23,9 +22,6 @@ class NationalPollAdmin extends AbstractAdmin
 {
     /** @var Security */
     private $security;
-
-    /** @var PollManager */
-    private $pollManager;
 
     protected function configureDefaultSortValues(array &$sortValues): void
     {
@@ -128,23 +124,9 @@ class NationalPollAdmin extends AbstractAdmin
         $object->setAdministrator($administrator);
     }
 
-    /**
-     * @param Poll $object
-     */
-    protected function postPersist(object $object): void
-    {
-        $this->pollManager->scheduleNotification($object);
-    }
-
     #[Required]
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
-    }
-
-    #[Required]
-    public function setPollManager(PollManager $pollManager): void
-    {
-        $this->pollManager = $pollManager;
     }
 }

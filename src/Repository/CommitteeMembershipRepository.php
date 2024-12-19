@@ -12,7 +12,6 @@ use App\Entity\Committee;
 use App\Entity\CommitteeCandidacy;
 use App\Entity\CommitteeElection;
 use App\Entity\CommitteeMembership;
-use App\Entity\PushToken;
 use App\Entity\VotingPlatform\Designation\CandidacyInterface;
 use App\Entity\VotingPlatform\Designation\Designation;
 use App\Repository\Helper\MembershipFilterHelper;
@@ -129,21 +128,6 @@ class CommitteeMembershipRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
-    }
-
-    public function findPushTokenIdentifiers(Committee $committee): array
-    {
-        $tokens = $this->createQueryBuilder('cm')
-            ->select('DISTINCT(token.identifier)')
-            ->innerJoin('cm.adherent', 'adherent')
-            ->innerJoin(PushToken::class, 'token', Join::WITH, 'token.adherent = adherent')
-            ->where('cm.committee = :committee')
-            ->setParameter('committee', $committee)
-            ->getQuery()
-            ->getArrayResult()
-        ;
-
-        return array_map('current', $tokens);
     }
 
     /**

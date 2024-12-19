@@ -10,7 +10,7 @@ trait AuthoredTrait
     /**
      * @var Adherent|null
      */
-    #[Groups(['action_read', 'action_read_list', 'action_write', 'survey_replies_list'])]
+    #[Groups(['action_read', 'action_read_list', 'action_write', 'survey_replies_list', 'jecoute_news_read_dc'])]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[ORM\ManyToOne(targetEntity: Adherent::class, fetch: 'EAGER')]
     protected $author;

@@ -134,7 +134,7 @@
     <div class="datagrid__table__tabs">
         <div class="datagrid__pre-table b__nudge--bottom-larger">
             <h3>Questionnaires</h3>
-            {% if not (space_name == constant('App\\Jecoute\\JecouteSpaceEnum::CANDIDATE_SPACE') and is_granted('ROLE_CANDIDATE_DEPARTMENTAL')) %}
+            {% if not is_granted('ROLE_CANDIDATE_DEPARTMENTAL') %}
                 <a href="{{ path("app_jecoute_#{space_name}_local_survey_create") }}" class="btn-secondary btn-secondary--blue">
                     + Créer un questionnaire local
                 </a>

@@ -5,7 +5,6 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Adherent;
 use App\Entity\Device;
 use App\Entity\PushToken;
-use App\PushToken\PushTokenSourceEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -26,28 +25,24 @@ class LoadPushTokenData extends Fixture implements DependentFixtureInterface
             self::PUSH_TOKEN_1_UUID,
             $adherent77,
             'token-francis-jemarche-1',
-            PushTokenSourceEnum::JE_MARCHE
         );
 
         $pushToken2 = $this->createPushTokenForAdherent(
             self::PUSH_TOKEN_2_UUID,
             $adherent77,
             'token-francis-jemarche-2',
-            PushTokenSourceEnum::JE_MARCHE
         );
 
         $pushToken3 = $this->createPushTokenForDevice(
             self::PUSH_TOKEN_3_UUID,
             $this->getReference('device-1', Device::class),
             'token-device-1-jemarche',
-            PushTokenSourceEnum::JE_MARCHE
         );
 
         $pushToken4 = $this->createPushTokenForDevice(
             self::PUSH_TOKEN_4_UUID,
             $this->getReference('device-2', Device::class),
             'token-device-2-jemarche',
-            PushTokenSourceEnum::JE_MARCHE
         );
 
         $manager->persist($pushToken1);
@@ -62,13 +57,11 @@ class LoadPushTokenData extends Fixture implements DependentFixtureInterface
         string $uuid,
         Adherent $adherent,
         string $identifier,
-        string $source,
     ): PushToken {
         return PushToken::createForAdherent(
             Uuid::fromString($uuid),
             $adherent,
             $identifier,
-            $source
         );
     }
 
@@ -76,13 +69,11 @@ class LoadPushTokenData extends Fixture implements DependentFixtureInterface
         string $uuid,
         Device $device,
         string $identifier,
-        string $source,
     ): PushToken {
         return PushToken::createForDevice(
             Uuid::fromString($uuid),
             $device,
             $identifier,
-            $source
         );
     }
 

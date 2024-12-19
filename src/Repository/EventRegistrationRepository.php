@@ -8,7 +8,6 @@ use App\Collection\EventRegistrationCollection;
 use App\Entity\Adherent;
 use App\Entity\Event\BaseEvent;
 use App\Entity\Event\EventRegistration;
-use App\Entity\PushToken;
 use Cake\Chronos\Chronos;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -239,19 +238,6 @@ class EventRegistrationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
         ;
-    }
-
-    public function findPushTokenIdentifiers(BaseEvent $event): array
-    {
-        $tokens = $this->createEventRegistrationQueryBuilder($event->getUuidAsString())
-            ->select('DISTINCT(token.identifier)')
-            ->innerJoin(Adherent::class, 'adherent', Join::WITH, 'r.adherentUuid = adherent.uuid')
-            ->innerJoin(PushToken::class, 'token', Join::WITH, 'token.adherent = adherent')
-            ->getQuery()
-            ->getArrayResult()
-        ;
-
-        return array_map('current', $tokens);
     }
 
     public function countEventParticipantsWithoutCreator(BaseEvent $event): int
