@@ -1,21 +1,20 @@
 <?php
 
-namespace App\JeMarche\Subscriber;
+namespace App\Event\EventListener;
 
 use App\Entity\Event\CommitteeEvent;
 use App\Entity\Event\DefaultEvent;
 use App\Event\EventEvent;
 use App\Events;
-use App\JeMarche\JeMarcheDeviceNotifier;
+use App\JeMarche\Command\CommitteeEventCreationNotificationCommand;
+use App\JeMarche\Command\DefaultEventCreationNotificationCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
-class NotificationSubscriber implements EventSubscriberInterface
+class SendEventPushNotificationListener implements EventSubscriberInterface
 {
-    private $deviceNotifier;
-
-    public function __construct(JeMarcheDeviceNotifier $deviceNotifier)
+    public function __construct(private readonly MessageBusInterface $bus)
     {
-        $this->deviceNotifier = $deviceNotifier;
     }
 
     public function notifyEventCreation(EventEvent $eventEvent): void
@@ -23,9 +22,9 @@ class NotificationSubscriber implements EventSubscriberInterface
         $event = $eventEvent->getEvent();
 
         if ($event instanceof CommitteeEvent) {
-            $this->deviceNotifier->sendCommitteeEventCreatedNotification($event);
+            $this->bus->dispatch(new CommitteeEventCreationNotificationCommand($event->getUuid()));
         } elseif ($event instanceof DefaultEvent) {
-            $this->deviceNotifier->sendDefaultEventCreatedNotification($event);
+            $this->bus->dispatch(new DefaultEventCreationNotificationCommand($event->getUuid()));
         }
     }
 

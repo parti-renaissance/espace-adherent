@@ -60,11 +60,15 @@ class Notification
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $data;
 
+    #[ORM\Column(nullable: true)]
+    private ?string $scope;
+
     public function __construct(
         string $notificationClass,
         string $title,
         string $body,
         ?array $data = null,
+        ?string $scope = null,
         ?string $topic = null,
         ?array $tokens = null,
     ) {
@@ -72,6 +76,7 @@ class Notification
         $this->title = $title;
         $this->body = $body;
         $this->data = $data;
+        $this->scope = $scope;
         $this->topic = $topic;
         $this->tokens = $tokens;
     }
@@ -85,6 +90,7 @@ class Notification
             $notification->getTitle(),
             $notification->getBody(),
             $notification->getData(),
+            $notification->getScope(),
             $notification instanceof TopicNotificationInterface
                 ? $notification->getTopic()
                 : null,
@@ -107,6 +113,21 @@ class Notification
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    public function getScope(): ?string
+    {
+        return $this->scope;
+    }
+
+    public function getData(): ?array
+    {
+        return $this->data;
+    }
+
+    public function getTokensCount(): int
+    {
+        return \count($this->tokens);
     }
 
     public function getBody(): string

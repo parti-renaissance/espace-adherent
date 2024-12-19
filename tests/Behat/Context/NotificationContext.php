@@ -6,10 +6,13 @@ use App\Entity\Notification;
 use App\Repository\NotificationRepository;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Coduo\PHPMatcher\PHPUnit\PHPMatcherAssertions;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class NotificationContext extends RawMinkContext
 {
+    use PHPMatcherAssertions;
+
     private NotificationRepository $notificationRepository;
     private PropertyAccessorInterface $propertyAccessor;
 
@@ -58,9 +61,7 @@ class NotificationContext extends RawMinkContext
     ): void {
         $actualValue = $this->propertyAccessor->getValue($notification, $property);
 
-        if ($expectedValue !== $actualValue) {
-            $this->raiseException(\sprintf('Expected notification with %s "%s", but got "%s" instead.', $property, $expectedValue, $actualValue));
-        }
+        $this->assertMatchesPattern($expectedValue, $actualValue);
     }
 
     private function raiseException(string $message): void

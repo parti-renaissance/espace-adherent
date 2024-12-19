@@ -5,7 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Entity\Jecoute\News;
-use App\Jecoute\JecouteSpaceEnum;
+use App\Scope\ScopeEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -34,22 +34,18 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             self::NEWS_1_UUID,
             'Nouveau sondage disponible',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.',
-            'global_topic',
             null,
             null,
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_59'),
-            JecouteSpaceEnum::CANDIDATE_SPACE
         ));
 
         $manager->persist($this->createNews(
             self::NEWS_2_UUID,
             'Rassemblement',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.',
-            'global_topic',
             'https://en-marche.fr',
             'Voir',
             LoadGeoZoneData::getZoneReference($manager, 'zone_region_11'),
-            JecouteSpaceEnum::CANDIDATE_SPACE,
             true,
             true,
             false,
@@ -58,14 +54,12 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             new \DateTime('-1 hour')
         ));
 
-        $manager->persist($this->createNews(
+        $manager->persist($object = $this->createNews(
             self::NEWS_3_UUID,
             'Nouveau assemblement',
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.',
-            null,
             'https://en-marche.fr',
             'Voir',
-            null,
             null,
             true,
             false,
@@ -74,16 +68,15 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             null,
             new \DateTime('-2 hours')
         ));
+        $object->setAuthorInstance(ScopeEnum::SCOPE_INSTANCES[ScopeEnum::NATIONAL]);
 
         $manager->persist($this->createNews(
             self::NEWS_4_UUID,
             'Nouvelle actualité à 92 du référent',
             'Ut porttitor vitae velit sit amet posuere. Mauris semper sagittis diam, convallis viverra lorem rutrum.',
-            null,
             'https://referent.en-marche.fr',
             'Voir',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
-            JecouteSpaceEnum::REFERENT_SPACE,
             true,
             true,
             false,
@@ -96,11 +89,9 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             self::NEWS_5_UUID,
             'Nouvelle actualité non publiée à 59 du référent délégué',
             'Fusce lacinia, diam et sodales iaculis, velit ante mollis ex, eu commodo felis lectus eu dui.',
-            null,
             'https://referent.en-marche.fr',
             'Voir le lien',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_59'),
-            JecouteSpaceEnum::REFERENT_SPACE,
             true,
             false,
             false,
@@ -113,11 +104,9 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             self::NEWS_6_UUID,
             'Nouvelle actualité à 92 de l\'admin',
             'Curabitur in fermentum urna, sit amet venenatis orci. Proin accumsan ultricies congue.',
-            null,
             'https://referent.en-marche.fr',
             'Voir',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
-            null,
             true,
             true,
             false,
@@ -130,11 +119,9 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             self::NEWS_7_UUID,
             'Une actualité à 75',
             'Quisque interdum lectus et ultrices rhoncus. Cras nunc diam, rutrum eget velit vel, cursus varius justo.',
-            null,
             'https://75.en-marche.fr',
             'Voir le lien',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_75'),
-            JecouteSpaceEnum::REFERENT_SPACE,
             true,
             true,
             false,
@@ -147,11 +134,9 @@ class LoadJecouteNewsData extends Fixture implements DependentFixtureInterface
             self::NEWS_8_UUID,
             'Actualité épinglée à 92 du référent',
             'Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.',
-            null,
             'https://epingle.en-marche.fr',
             'Voir le lien',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
-            JecouteSpaceEnum::REFERENT_SPACE,
             true,
             true,
             true,
@@ -185,11 +170,9 @@ Sed eu nibh tempor, pulvinar lectus ac, mattis nunc.
 2. Phasellus iaculis elementum iaculis.
 
 Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.',
-            null,
             'https://epingle.en-marche.fr',
             'Voir le lien',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
-            JecouteSpaceEnum::REFERENT_SPACE,
             true,
             true,
             true,
@@ -198,14 +181,12 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             new \DateTime('-3 days')
         ));
 
-        $manager->persist($this->createNews(
+        $manager->persist($object = $this->createNews(
             self::NEWS_10_UUID,
             'Pour toute la France',
             'Nulla eleifend sed nisl eget efficitur. Nunc at ante diam. Phasellus condimentum dui nisi, sed imperdiet elit porttitor ut. Sed bibendum congue hendrerit. Proin pretium augue a urna interdum, ac congue felis egestas.',
-            null,
             'https://en-marche.fr',
             'Voir le lien',
-            null,
             null,
             false,
             true,
@@ -214,16 +195,15 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             null,
             new \DateTime('-1 day')
         ));
+        $object->setAuthorInstance(ScopeEnum::SCOPE_INSTANCES[ScopeEnum::NATIONAL]);
 
         $manager->persist($this->createNews(
             self::NEWS_11_UUID,
             'Une actualité du correspondent à 92',
             'Cras libero mauris, euismod blandit ornare eu, congue quis nulla. Maecenas sodales diam nec tincidunt pulvinar.',
-            null,
             'https://92.en-marche.fr',
             'Voir le lien',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
-            JecouteSpaceEnum::CORRESPONDENT_SPACE,
             false,
             true,
             false,
@@ -236,11 +216,9 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             self::NEWS_12_UUID,
             'Une actualité à 75',
             'Ut at porttitor ipsum. Sed quis volutpat ipsum.',
-            null,
             'https://92-delegated.en-marche.fr',
             'Voir le lien',
             LoadGeoZoneData::getZoneReference($manager, 'zone_department_92'),
-            JecouteSpaceEnum::CORRESPONDENT_SPACE,
             false,
             true,
             false,
@@ -253,11 +231,9 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             self::NEWS_13_UUID,
             'Une actualité d\'un candidat aux législatives à 75-1',
             'Donec viverra odio.',
-            null,
             'https://un-candidat-aux-legislatives.en-marche.fr',
             'Voir le lien',
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'),
-            JecouteSpaceEnum::LEGISLATIVE_CANDIDATE_SPACE,
             false,
             true,
             false,
@@ -270,11 +246,9 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             self::NEWS_14_UUID,
             'Une actualité d\'un candidat aux législatives délégué à 75-1',
             'Aenean varius condimentum diam in rutrum.',
-            null,
             'https://un-candidat-aux-legislatives-delegue.en-marche.fr',
             'Voir le lien',
             LoadGeoZoneData::getZoneReference($manager, 'zone_district_75-1'),
-            JecouteSpaceEnum::LEGISLATIVE_CANDIDATE_SPACE,
             false,
             true,
             false,
@@ -290,11 +264,9 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
         string $uuid,
         string $title,
         string $text,
-        ?string $topic = null,
         ?string $externalLink = null,
         ?string $linkLabel = null,
         ?Zone $zone = null,
-        ?string $space = null,
         bool $notification = true,
         bool $published = true,
         bool $pinned = false,
@@ -306,7 +278,6 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             Uuid::fromString($uuid),
             $title,
             $text,
-            $topic,
             $externalLink,
             $linkLabel,
             $zone,
@@ -315,7 +286,6 @@ Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, 
             $pinned,
             $enriched
         );
-        $news->setSpace($space);
         $news->setCreatedAt($createdAt ?? new \DateTime());
         if ($author) {
             $news->setAuthor($author);

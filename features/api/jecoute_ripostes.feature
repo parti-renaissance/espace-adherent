@@ -360,11 +360,6 @@ Feature:
                 "creator": "Député PARIS I"
             }
             """
-        And I should have 1 notification "RiposteCreatedNotification" with data:
-            | key   | value                                         |
-            | topic | staging_jemarche_global                       |
-            | title | Une nouvelle riposte d'aujourd'hui            |
-            | body  | Le texte de la nouvelle riposte d'aujourd'hui |
 
     Scenario: As a logged-in user I can edit a riposte
         Given I am logged with "deputy@en-marche-dev.fr" via OAuth client "JeMengage Web"

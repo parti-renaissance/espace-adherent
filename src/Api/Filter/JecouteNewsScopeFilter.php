@@ -26,7 +26,11 @@ final class JecouteNewsScopeFilter extends AbstractScopeFilter
 
         switch ($scopeGenerator->getCode()) {
             case ScopeEnum::NATIONAL:
-                $queryBuilder->andWhere(\sprintf('%s.space IS NULL', $alias));
+                $queryBuilder
+                    ->andWhere(\sprintf('%s.authorInstance = :national', $alias))
+                    ->setParameter('national', ScopeEnum::SCOPE_INSTANCES[ScopeEnum::NATIONAL])
+                ;
+
                 break;
         }
     }

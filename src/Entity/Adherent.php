@@ -833,7 +833,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->emailAddress;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 

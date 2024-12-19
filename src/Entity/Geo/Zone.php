@@ -329,4 +329,20 @@ class Zone implements GeoInterface, UuidEntityInterface
     {
         return str_starts_with($this->code, '751');
     }
+
+    public function getAssemblyZone(): ?self
+    {
+        foreach ($this->getWithParents() as $zone) {
+            if ($zone->isAssemblyZone()) {
+                return $zone;
+            }
+        }
+
+        return null;
+    }
+
+    public function isAssemblyZone(): bool
+    {
+        return $this->hasTag(ZoneTagEnum::ASSEMBLY);
+    }
 }

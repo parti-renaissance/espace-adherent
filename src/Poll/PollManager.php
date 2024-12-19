@@ -5,33 +5,19 @@ namespace App\Poll;
 use App\Entity\Geo\Zone;
 use App\Entity\Poll\LocalPoll;
 use App\Entity\Poll\Poll;
-use App\JeMarche\Command\PollCreatedNotificationCommand;
 use App\Repository\Geo\ZoneRepository;
 use App\Repository\Poll\LocalPollRepository;
 use App\Repository\Poll\NationalPollRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class PollManager
 {
-    private $bus;
-    private $entityManager;
-    private $zoneRepository;
-    private $nationalPollRepository;
-    private $localPollRepository;
-
     public function __construct(
-        MessageBusInterface $bus,
-        EntityManagerInterface $entityManager,
-        ZoneRepository $zoneRepository,
-        NationalPollRepository $nationalPollRepository,
-        LocalPollRepository $localPollRepository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ZoneRepository $zoneRepository,
+        private readonly NationalPollRepository $nationalPollRepository,
+        private readonly LocalPollRepository $localPollRepository,
     ) {
-        $this->bus = $bus;
-        $this->entityManager = $entityManager;
-        $this->zoneRepository = $zoneRepository;
-        $this->nationalPollRepository = $nationalPollRepository;
-        $this->localPollRepository = $localPollRepository;
     }
 
     public function findActivePoll(?string $postalCode = null): ?Poll
@@ -84,11 +70,6 @@ class PollManager
         return null;
     }
 
-    public function scheduleNotification(Poll $poll): void
-    {
-        $this->bus->dispatch(new PollCreatedNotificationCommand($poll->getUuid()));
-    }
-
     public function save(Poll $poll): void
     {
         $this->entityManager->persist($poll);
@@ -101,8 +82,6 @@ class PollManager
         $this->entityManager->getRepository($poll::class)->unpublishExceptOf($poll);
 
         $this->entityManager->flush();
-
-        $this->scheduleNotification($poll);
     }
 
     public function unpublish(Poll $poll): void

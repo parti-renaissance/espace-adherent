@@ -1,7 +1,11 @@
 {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 
 {% block field %}
-    {% set zone = object.zone %}
-
-    {{ zone is not null ? zone : 'Toute la France' }}
+    {% if object.committee %}
+        <a href="{{ path('admin_app_committee_show', {id: object.committee.getId()}) }}">{{ object.committee.name }}</a>
+    {% elseif object.zone %}
+        {{ object.zone }}
+    {% else %}
+        Toute la France
+    {% endif %}
 {% endblock %}

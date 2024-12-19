@@ -8,7 +8,6 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use App\Controller\Api\PushToken\CreateController;
-use App\PushToken\PushTokenSourceEnum;
 use App\Repository\PushTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
@@ -72,45 +71,38 @@ class PushToken
     #[ORM\Column(unique: true)]
     private $identifier;
 
-    /**
-     * @var string|null
-     */
-    #[Assert\Choice(choices: PushTokenSourceEnum::ALL)]
-    #[Assert\NotBlank]
-    #[Groups(['push_token_write'])]
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private $source;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    public ?\DateTime $lastActiveDate = null;
 
     public function __construct(
         ?UuidInterface $uuid = null,
         ?Adherent $adherent = null,
         ?Device $device = null,
         ?string $identifier = null,
-        ?string $source = null,
     ) {
         $this->uuid = $uuid ?? Uuid::uuid4();
         $this->adherent = $adherent;
         $this->device = $device;
         $this->identifier = $identifier;
-        $this->source = $source;
     }
 
     public static function createForAdherent(
         UuidInterface $uuid,
         Adherent $adherent,
         string $identifier,
-        string $source,
     ): self {
-        return new self($uuid, $adherent, null, $identifier, $source);
+        return new self($uuid, $adherent, null, $identifier);
     }
 
     public static function createForDevice(
         UuidInterface $uuid,
         Device $device,
         string $identifier,
-        string $source,
     ): self {
-        return new self($uuid, null, $device, $identifier, $source);
+        return new self($uuid, null, $device, $identifier);
     }
 
     public function getAdherent(): ?Adherent
@@ -131,16 +123,6 @@ class PushToken
     public function setIdentifier(string $identifier): void
     {
         $this->identifier = $identifier;
-    }
-
-    public function getSource(): ?string
-    {
-        return $this->source;
-    }
-
-    public function setSource(string $source): void
-    {
-        $this->source = $source;
     }
 
     public function getDevice(): ?Device

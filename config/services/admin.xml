@@ -777,6 +777,14 @@
             <argument>App\Controller\Admin\AdminEmailCRUDController</argument>
         </service>
 
+        <service id="app.admin.push_notification" class="App\Admin\PushNotificationAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Push logs" group="Tech" />
+
+            <argument />
+            <argument>App\Entity\Notification</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.transactional_email_template" class="App\Admin\Email\TransactionalEmailTemplateAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Templates Email" group="Tech" />
 
@@ -1264,6 +1272,7 @@
             <tag name="sonata.admin.extension" target="app.admin.procuration_v2.election" />
             <tag name="sonata.admin.extension" target="app.admin.hub_item" />
             <tag name="sonata.admin.extension" target="app.admin.transactional_email_template" />
+            <tag name="sonata.admin.extension" target="app.admin.jecoute.news" />
         </service>
 
         <service id="app.admin.entity_scope_visibility_extension" class="App\Admin\Extension\EntityScopeVisibilityAdminExtension">

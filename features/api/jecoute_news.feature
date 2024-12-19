@@ -34,26 +34,23 @@ Feature:
                         "enriched": false,
                         "pinned": true,
                         "created_at": "@string@.isDateTime()",
-                        "visibility": "national",
-                        "creator": null
+                        "visibility": "national"
                     },
                     {
                         "uuid": "72b68bf7-de51-4325-8933-02d2ff658dc3",
-                        "title": "[Référent] Actualité épinglée à 92 du référent",
+                        "title": "Actualité épinglée à 92 du référent",
                         "text": "Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
                         "external_link": "https://epingle.en-marche.fr",
                         "link_label": "Voir le lien",
                         "enriched": false,
                         "pinned": true,
                         "created_at": "@string@.isDateTime()",
-                        "visibility": "local",
-                        "creator": "Referent Referent (référent)"
+                        "visibility": "local"
                     },
                     {
                         "uuid": "16373659-fed1-443c-a956-a257e2c2bae4",
-                        "title": "[Régionales] Nouveau sondage disponible",
+                        "title": "Nouveau sondage disponible",
                         "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
-                        "creator": "Anonyme (candidat aux départementales)",
                         "external_link": null,
                         "link_label": null,
                         "enriched": false,
@@ -63,9 +60,8 @@ Feature:
                     },
                     {
                         "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
-                        "title": "[Régionales] Rassemblement",
+                        "title": "Rassemblement",
                         "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
-                        "creator": "Anonyme (candidat aux départementales)",
                         "external_link": "https://en-marche.fr",
                         "link_label": "Voir",
                         "enriched": false,
@@ -102,20 +98,17 @@ Feature:
                         "enriched": false,
                         "pinned": true,
                         "created_at": "@string@.isDateTime()",
-                        "visibility": "national",
-                        "creator": null
+                        "visibility": "national"
                     },
                     {
                         "uuid": "72b68bf7-de51-4325-8933-02d2ff658dc3",
-                        "title": "[Référent] Actualité épinglée à 92 du référent",
+                        "title": "Actualité épinglée à 92 du référent",
                         "text": "Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
-                        "creator": "Anonyme (candidat aux départementales)",
                         "external_link": "https://epingle.en-marche.fr",
                         "link_label": "Voir le lien",
                         "enriched": false,
                         "pinned": true,
                         "visibility": "local",
-                        "creator": "Referent Referent (référent)",
                         "created_at": "@string@.isDateTime()"
                     }
                 ]
@@ -142,7 +135,6 @@ Feature:
                         "uuid": "dd938794-2b00-400c-a817-9e04b5d20bc0",
                         "title": "Pour toute la France",
                         "text": "Nulla eleifend sed nisl eget efficitur. Nunc at ante diam. Phasellus condimentum dui nisi, sed imperdiet elit porttitor ut. Sed bibendum congue hendrerit. Proin pretium augue a urna interdum, ac congue felis egestas.",
-                        "creator": null,
                         "external_link": "https://en-marche.fr",
                         "link_label": "Voir le lien",
                         "enriched": false,
@@ -169,15 +161,13 @@ Feature:
                 "items": [
                     {
                         "uuid": "72b68bf7-de51-4325-8933-02d2ff658dc3",
-                        "title": "[Référent] Actualité épinglée à 92 du référent",
+                        "title": "Actualité épinglée à 92 du référent",
                         "text": "Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
-                        "creator": "Anonyme (candidat aux départementales)",
                         "external_link": "https://epingle.en-marche.fr",
                         "link_label": "Voir le lien",
                         "enriched": false,
                         "pinned": true,
                         "visibility": "local",
-                        "creator": "Referent Referent (référent)",
                         "created_at": "@string@.isDateTime()"
                     }
                 ]
@@ -202,9 +192,8 @@ Feature:
                 "items": [
                     {
                         "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
-                        "title": "[Régionales] Rassemblement",
+                        "title": "Rassemblement",
                         "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
-                        "creator": "Anonyme (candidat aux départementales)",
                         "external_link": "https://en-marche.fr",
                         "link_label": "Voir",
                         "enriched": false,
@@ -236,7 +225,6 @@ Feature:
                         "uuid": "dd938794-2b00-400c-a817-9e04b5d20bc0",
                         "title": "Pour toute la France",
                         "text": "Nulla eleifend sed nisl eget efficitur. Nunc at ante diam. Phasellus condimentum dui nisi, sed imperdiet elit porttitor ut. Sed bibendum congue hendrerit. Proin pretium augue a urna interdum, ac congue felis egestas.",
-                        "creator": null,
                         "external_link": "https://en-marche.fr",
                         "link_label": "Voir le lien",
                         "enriched": false,
@@ -246,9 +234,8 @@ Feature:
                     },
                     {
                         "uuid": "16373659-fed1-443c-a956-a257e2c2bae4",
-                        "title": "[Régionales] Nouveau sondage disponible",
+                        "title": "Nouveau sondage disponible",
                         "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
-                        "creator": "Anonyme (candidat aux départementales)",
                         "external_link": null,
                         "link_label": null,
                         "enriched": false,
@@ -277,7 +264,6 @@ Feature:
                         "uuid": "dd938794-2b00-400c-a817-9e04b5d20bc0",
                         "title": "Pour toute la France",
                         "text": "Nulla eleifend sed nisl eget efficitur. Nunc at ante diam. Phasellus condimentum dui nisi, sed imperdiet elit porttitor ut. Sed bibendum congue hendrerit. Proin pretium augue a urna interdum, ac congue felis egestas.",
-                        "creator": null,
                         "external_link": "https://en-marche.fr",
                         "link_label": "Voir le lien",
                         "enriched": false,
@@ -287,15 +273,14 @@ Feature:
                     },
                     {
                         "uuid": "72b68bf7-de51-4325-8933-02d2ff658dc3",
-                        "title": "[Référent] Actualité épinglée à 92 du référent",
+                        "title": "Actualité épinglée à 92 du référent",
                         "text": "Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
                         "external_link": "https://epingle.en-marche.fr",
                         "link_label": "Voir le lien",
                         "enriched": false,
                         "pinned": true,
                         "created_at": "@string@.isDateTime()",
-                        "visibility": "local",
-                        "creator": "Referent Referent (référent)"
+                        "visibility": "local"
                     }
                 ]
             }
@@ -323,32 +308,29 @@ Feature:
                         "pinned": true,
                         "enriched": false,
                         "created_at": "@string@.isDateTime()",
-                        "visibility": "national",
-                        "creator": null
+                        "visibility": "national"
                     },
                     {
                         "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
-                        "title": "[Régionales] Rassemblement",
+                        "title": "Rassemblement",
                         "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
                         "external_link": "https://en-marche.fr",
                         "link_label": "Voir",
                         "pinned": false,
                         "enriched": false,
                         "created_at": "@string@.isDateTime()",
-                        "visibility": "local",
-                        "creator": "Anonyme (candidat aux départementales)"
+                        "visibility": "local"
                     },
                     {
                         "uuid": "25632c43-c224-4745-84d7-09dfa8249367",
-                        "title": "[Référent] Une actualité à 75",
+                        "title": "Une actualité à 75",
                         "text": "Quisque interdum lectus et ultrices rhoncus. Cras nunc diam, rutrum eget velit vel, cursus varius justo.",
                         "external_link": "https://75.en-marche.fr",
                         "link_label": "Voir le lien",
                         "pinned": false,
                         "enriched": false,
                         "created_at": "@string@.isDateTime()",
-                        "visibility": "local",
-                        "creator": "Referent75and77 Referent75and77 (référent)"
+                        "visibility": "local"
                     },
                     {
                         "uuid": "4f5db386-1819-4055-abbd-fb5d840cd6c0",
@@ -359,8 +341,7 @@ Feature:
                         "pinned": false,
                         "enriched": false,
                         "created_at": "@string@.isDateTime()",
-                        "visibility": "local",
-                        "creator": "Gisele Berthoux (candidat aux législatives)"
+                        "visibility": "local"
                     },
                     {
                         "uuid": "2c28b246-b17e-409d-992a-b8a57481fb7a",
@@ -371,8 +352,7 @@ Feature:
                         "pinned": false,
                         "enriched": false,
                         "created_at": "@string@.isDateTime()",
-                        "visibility": "local",
-                        "creator": "Jean-Baptiste Fortin (candidat aux législatives)"
+                        "visibility": "local"
                     }
                 ]
             }
@@ -391,9 +371,8 @@ Feature:
             """
             {
                 "uuid": "0bc3f920-da90-4773-80e1-a388005926fc",
-                "title": "[Régionales] Rassemblement",
+                "title": "Rassemblement",
                 "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
-                "creator": "Anonyme (candidat aux départementales)",
                 "external_link": "https://en-marche.fr",
                 "link_label": "Voir",
                 "enriched": false,
@@ -409,15 +388,14 @@ Feature:
             """
             {
                 "uuid": "82068546-47d1-4f78-a6ba-692812984442",
-                "title": "[Référent] Actualité épinglée et enrichie à 92 du référent",
+                "title": "Actualité épinglée et enrichie à 92 du référent",
                 "text": "**Tincidunt** Sed vitae erat sagittis, *ultricies* nulla et, tincidunt eros.\n# In hac habitasse platea dictumst\n## Pellentesque imperdiet erat arcu\nCras hendrerit, mi et malesuada convallis, elit orci hendrerit purus, a euismod erat nisl at lorem.\n\n### Eget varius felis sodales sit amet\n\nNulla at odio non augue congue sollicitudin.  [Mon URL](https://en-marche.fr)\nNulla ac augue sapien. In tincidunt nec massa ac rhoncus.![Mon image](https://cdn.futura-sciences.com/buildsv6/images/mediumoriginal/6/5/2/652a7adb1b_98148_01-intro-773.jpg)\n\nCras vitae fringilla nunc. Suspendisse facilisis rhoncus urna a placerat.\n\n* Vestibulum facilisis convallis mauris eu eleifend.\n* Aenean sit amet elementum ex.\n* In erat enim, pulvinar quis dui et, volutpat imperdiet nulla.\n\nSed eu nibh tempor, pulvinar lectus ac, mattis nunc.\n\n1. Praesent scelerisque sagittis orci in sagittis.\n2. Phasellus iaculis elementum iaculis.\n\nNulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
                 "external_link": "https://epingle.en-marche.fr",
                 "link_label": "Voir le lien",
                 "enriched": true,
                 "pinned": true,
                 "visibility": "local",
-                "created_at": "@string@.isDateTime()",
-                "creator": "Referent Referent (référent)"
+                "created_at": "@string@.isDateTime()"
             }
             """
 
@@ -444,7 +422,7 @@ Feature:
                 "items": [
                     {
                         "uuid": "16373659-fed1-443c-a956-a257e2c2bae4",
-                        "title": "[Régionales] Nouveau sondage disponible",
+                        "title": "Nouveau sondage disponible",
                         "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a commodo diam. Etiam congue auctor dui, non consequat libero faucibus sit amet.",
                         "external_link": null,
                         "link_label": null,
@@ -460,11 +438,11 @@ Feature:
                         "enriched": false,
                         "pinned": false,
                         "published": true,
-                        "creator": "Anonyme"
+                        "author": null
                     },
                     {
                         "uuid": "b2b8e6a3-f5a9-4b34-a761-37438c3c3602",
-                        "title": "[Référent] Nouvelle actualité à 92 du référent",
+                        "title": "Nouvelle actualité à 92 du référent",
                         "text": "Ut porttitor vitae velit sit amet posuere. Mauris semper sagittis diam, convallis viverra lorem rutrum.",
                         "external_link": "https://referent.en-marche.fr",
                         "link_label": "Voir",
@@ -480,11 +458,14 @@ Feature:
                         "enriched": false,
                         "pinned": false,
                         "published": true,
-                        "creator": "Referent Referent"
+                        "author": {
+                            "first_name": "Referent",
+                            "last_name": "Referent"
+                        }
                     },
                     {
                         "uuid": "6c70f8e8-6bce-4376-8b9e-3ce342880673",
-                        "title": "[Référent] Nouvelle actualité non publiée à 59 du référent délégué",
+                        "title": "Nouvelle actualité non publiée à 59 du référent délégué",
                         "text": "Fusce lacinia, diam et sodales iaculis, velit ante mollis ex, eu commodo felis lectus eu dui.",
                         "external_link": "https://referent.en-marche.fr",
                         "link_label": "Voir le lien",
@@ -500,7 +481,10 @@ Feature:
                         "enriched": false,
                         "pinned": false,
                         "published": false,
-                        "creator": "Bob Senateur (59)"
+                        "author": {
+                            "first_name": "Bob",
+                            "last_name": "Senateur (59)"
+                        }
                     },
                     {
                         "uuid": "560bab7a-d624-47d6-bf5e-3864c2406daf",
@@ -520,11 +504,10 @@ Feature:
                         "enriched": false,
                         "pinned": false,
                         "published": true,
-                        "creator": "Anonyme"
+                        "author": null
                     },
                     {
                         "created_at": "@string@.isDateTime()",
-                        "creator": "Jules Fullstack",
                         "external_link": "https://92.en-marche.fr",
                         "link_label": "Voir le lien",
                         "notification": false,
@@ -540,11 +523,14 @@ Feature:
                             "created_at": "2020-12-04T15:24:38+01:00",
                             "name": "Hauts-de-Seine",
                             "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                        },
+                        "author": {
+                            "first_name": "Jules",
+                            "last_name": "Fullstack"
                         }
                     },
                     {
                         "created_at": "@string@.isDateTime()",
-                        "creator": "Laura Deloche",
                         "external_link": "https://92-delegated.en-marche.fr",
                         "link_label": "Voir le lien",
                         "notification": false,
@@ -560,11 +546,15 @@ Feature:
                             "created_at": "2020-12-04T15:24:38+01:00",
                             "name": "Hauts-de-Seine",
                             "uuid": "e3efe6fd-906e-11eb-a875-0242ac150002"
+                        },
+                        "author": {
+                            "first_name": "Laura",
+                            "last_name": "Deloche"
                         }
                     },
                     {
                         "uuid": "72b68bf7-de51-4325-8933-02d2ff658dc3",
-                        "title": "[Référent] Actualité épinglée à 92 du référent",
+                        "title": "Actualité épinglée à 92 du référent",
                         "text": "Nulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
                         "external_link": "https://epingle.en-marche.fr",
                         "link_label": "Voir le lien",
@@ -580,11 +570,14 @@ Feature:
                         "enriched": false,
                         "pinned": true,
                         "published": true,
-                        "creator": "Referent Referent"
+                        "author": {
+                            "first_name": "Referent",
+                            "last_name": "Referent"
+                        }
                     },
                     {
                         "uuid": "82068546-47d1-4f78-a6ba-692812984442",
-                        "title": "[Référent] Actualité épinglée et enrichie à 92 du référent",
+                        "title": "Actualité épinglée et enrichie à 92 du référent",
                         "text": "**Tincidunt** Sed vitae erat sagittis, *ultricies* nulla et, tincidunt eros.\n# In hac habitasse platea dictumst\n## Pellentesque imperdiet erat arcu\nCras hendrerit, mi et malesuada convallis, elit orci hendrerit purus, a euismod erat nisl at lorem.\n\n### Eget varius felis sodales sit amet\n\nNulla at odio non augue congue sollicitudin.  [Mon URL](https://en-marche.fr)\nNulla ac augue sapien. In tincidunt nec massa ac rhoncus.![Mon image](https://cdn.futura-sciences.com/buildsv6/images/mediumoriginal/6/5/2/652a7adb1b_98148_01-intro-773.jpg)\n\nCras vitae fringilla nunc. Suspendisse facilisis rhoncus urna a placerat.\n\n* Vestibulum facilisis convallis mauris eu eleifend.\n* Aenean sit amet elementum ex.\n* In erat enim, pulvinar quis dui et, volutpat imperdiet nulla.\n\nSed eu nibh tempor, pulvinar lectus ac, mattis nunc.\n\n1. Praesent scelerisque sagittis orci in sagittis.\n2. Phasellus iaculis elementum iaculis.\n\nNulla facilisi. Vestibulum vitae neque justo. Aliquam fringilla accumsan metus, sit amet blandit ligula.",
                         "external_link": "https://epingle.en-marche.fr",
                         "link_label": "Voir le lien",
@@ -600,7 +593,10 @@ Feature:
                         "enriched": true,
                         "pinned": true,
                         "published": true,
-                        "creator": "Referent Referent"
+                        "author": {
+                            "first_name": "Referent",
+                            "last_name": "Referent"
+                        }
                     }
                 ]
             }
@@ -645,7 +641,10 @@ Feature:
                             "name": "Paris (1)",
                             "created_at": "2020-12-04T15:24:38+01:00"
                         },
-                        "creator": "Gisele Berthoux"
+                        "author": {
+                            "first_name": "Gisele",
+                            "last_name": "Berthoux"
+                        }
                     },
                     {
                         "uuid": "2c28b246-b17e-409d-992a-b8a57481fb7a",
@@ -665,7 +664,10 @@ Feature:
                             "name": "Paris (1)",
                             "created_at": "2020-12-04T15:24:38+01:00"
                         },
-                        "creator": "Jean-Baptiste Fortin"
+                        "author": {
+                            "first_name": "Jean-Baptiste",
+                            "last_name": "Fortin"
+                        }
                     }
                 ]
             }
@@ -705,7 +707,7 @@ Feature:
                         "enriched": false,
                         "pinned": false,
                         "published": false,
-                        "creator": "Anonyme"
+                        "author": null
                     },
                     {
                         "uuid": "dd938794-2b00-400c-a817-9e04b5d20bc0",
@@ -720,7 +722,7 @@ Feature:
                         "enriched": false,
                         "pinned": true,
                         "published": true,
-                        "creator": "Anonyme"
+                        "author": null
                     }
                 ]
             }
@@ -837,12 +839,61 @@ Feature:
                 "enriched": false,
                 "pinned": false,
                 "published": true,
-                "creator": "Député PARIS I"
+                "author": {
+                    "first_name": "Député",
+                    "last_name": "PARIS I"
+                }
             }
             """
         And I should have 1 notification "NewsCreatedNotification" with data:
             | key   | value                                                                                                                                                             |
-            | topic | staging_jemarche_global                                                                                                                                           |
+            | scope | national                                                                                                                                                          |
+            | title | Une nouvelle actualité d'aujourd'hui                                                                                                                              |
+            | body  | Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula. |
+
+    Scenario: As a logged-in user with role RCL I can create a news
+        Given I am logged with "adherent-male-55@en-marche-dev.fr" via OAuth client "JeMengage Web"
+        Then I should have 0 notification
+        When I send a "POST" request to "/api/v3/jecoute/news?scope=animator" with body:
+            """
+            {
+                "title": "Une nouvelle actualité d'aujourd'hui",
+                "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
+                "external_link": "http://test.en-marche.fr",
+                "link_label": "Voir",
+                "global": true,
+                "notification": true,
+                "enriched": false,
+                "pinned": false,
+                "published": true,
+                "committee": "5e00c264-1d4b-43b8-862e-29edc38389b3"
+            }
+            """
+        Then the response status code should be 201
+        And the JSON should be equal to:
+            """
+            {
+                "uuid": "@uuid@",
+                "title": "Une nouvelle actualité d'aujourd'hui",
+                "text": "Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula.",
+                "external_link": "http://test.en-marche.fr",
+                "link_label": "Voir",
+                "visibility": "local",
+                "zone": null,
+                "created_at": "@string@.isDateTime()",
+                "notification": true,
+                "enriched": false,
+                "pinned": false,
+                "published": true,
+                "author": {
+                    "first_name": "Adherent 55",
+                    "last_name": "Fa55ke"
+                }
+            }
+            """
+        And I should have 1 notification "NewsCreatedNotification" with data:
+            | key   | value                                                                                                                                                             |
+            | scope | committee:17                                                                                                                                                      |
             | title | Une nouvelle actualité d'aujourd'hui                                                                                                                              |
             | body  | Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula. |
 
@@ -885,19 +936,22 @@ Feature:
                 "published": true,
                 "enriched": false,
                 "pinned": false,
-                "creator": "<name>"
+                "author": {
+                    "first_name": "<fname>",
+                    "last_name": "<lname>"
+                }
             }
             """
         And I should have 1 notification "NewsCreatedNotification" with data:
             | key   | value                                                                                                                                                             |
-            | topic | staging_jemarche_department_77                                                                                                                                    |
+            | scope | zone:77                                                                                                                                                           |
             | title | Une nouvelle actualité d'aujourd'hui                                                                                                                              |
             | body  | Nulla dapibus ornare elementum. Curabitur volutpat erat justo, et facilisis eros finibus. Sed eget neque nec dolor gravida luctus. Vestibulum et lectus vehicula. |
 
         Examples:
-            | user                      | name              | scope                                          |
-            | referent@en-marche-dev.fr | Referent Referent | president_departmental_assembly                |
-            | senateur@en-marche-dev.fr | Bob Senateur (59) | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
+            | user                      | fname    | lname         | scope                                          |
+            | referent@en-marche-dev.fr | Referent | Referent      | president_departmental_assembly                |
+            | senateur@en-marche-dev.fr | Bob      | Senateur (59) | delegated_08f40730-d807-4975-8773-69d8fae1da74 |
 
     Scenario Outline: As a (delegated) correspondent I can create a news
         Given I am logged with "<user>" via OAuth client "JeMengage Web"
@@ -937,19 +991,22 @@ Feature:
                 "published": true,
                 "enriched": true,
                 "pinned": true,
-                "creator": "<name>"
+                "author": {
+                    "first_name": "<fname>",
+                    "last_name": "<lname>"
+                }
             }
             """
         And I should have 1 notification "NewsCreatedNotification" with data:
             | key   | value                                              |
-            | topic | staging_jemarche_department_92                     |
+            | scope | zone:92                                            |
             | title | Une nouvelle actualité d'aujourd'hui               |
             | body  | Vestibulum et lectus vehicula. Sed eget neque nec… |
 
         Examples:
-            | user                               | name            | scope                                          |
-            | je-mengage-user-1@en-marche-dev.fr | Jules Fullstack | correspondent                                  |
-            | laura@deloche.com                  | Laura Deloche   | delegated_2c6134f7-4312-45c4-9ab7-89f2b0731f86 |
+            | user                               | fname | lname     | scope                                          |
+            | je-mengage-user-1@en-marche-dev.fr | Jules | Fullstack | correspondent                                  |
+            | laura@deloche.com                  | Laura | Deloche   | delegated_2c6134f7-4312-45c4-9ab7-89f2b0731f86 |
 
     Scenario Outline: As a (delegated) correspondent I can update a news
         Given I am logged with "<user>" via OAuth client "JeMengage Web"
@@ -987,14 +1044,17 @@ Feature:
                 "published": false,
                 "enriched": false,
                 "pinned": false,
-                "creator": "<user_name>"
+                "author": {
+                    "first_name": "<fname>",
+                    "last_name": "<lname>"
+                }
             }
             """
 
         Examples:
-            | user                               | user_name       | news_uuid                            | scope                                          |
-            | je-mengage-user-1@en-marche-dev.fr | Jules Fullstack | b09185ba-f271-404b-a73f-76d92ca8c120 | correspondent                                  |
-            | laura@deloche.com                  | Laura Deloche   | 6101c6a6-f7ef-4952-95db-8553952d656d | delegated_2c6134f7-4312-45c4-9ab7-89f2b0731f86 |
+            | user                               | fname | lname     | news_uuid                            | scope                                          |
+            | je-mengage-user-1@en-marche-dev.fr | Jules | Fullstack | b09185ba-f271-404b-a73f-76d92ca8c120 | correspondent                                  |
+            | laura@deloche.com                  | Laura | Deloche   | 6101c6a6-f7ef-4952-95db-8553952d656d | delegated_2c6134f7-4312-45c4-9ab7-89f2b0731f86 |
 
     Scenario Outline: As a (delegated) legislative candidate I can create a news
         Given I am logged with "<user>" via OAuth client "JeMengage Web"
@@ -1034,19 +1094,22 @@ Feature:
                 "published": true,
                 "enriched": true,
                 "pinned": true,
-                "creator": "<name>"
+                "author": {
+                    "first_name": "<fname>",
+                    "last_name": "<lname>"
+                }
             }
             """
         And I should have 1 notification "NewsCreatedNotification" with data:
             | key   | value                                                 |
-            | topic | staging_jemarche_department_75                        |
+            | scope | zone:75                                               |
             | title | Une nouvelle actualité d'un candidat aux législatives |
             | body  | Duis ut elit vel felis mattis pretium. Curabitur ut…  |
 
         Examples:
-            | user                                  | name                 | scope                                          |
-            | senatorial-candidate@en-marche-dev.fr | Jean-Baptiste Fortin | legislative_candidate                          |
-            | gisele-berthoux@caramail.com          | Gisele Berthoux      | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c |
+            | user                                  | fname         | lname    | scope                                          |
+            | senatorial-candidate@en-marche-dev.fr | Jean-Baptiste | Fortin   | legislative_candidate                          |
+            | gisele-berthoux@caramail.com          | Gisele        | Berthoux | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c |
 
     Scenario Outline: As a (delegated) legislative candidate I can update a news
         Given I am logged with "<user>" via OAuth client "JeMengage Web"
@@ -1084,14 +1147,17 @@ Feature:
                 "published": false,
                 "enriched": false,
                 "pinned": true,
-                "creator": "<user_name>"
+                "author": {
+                    "first_name": "<fname>",
+                    "last_name": "<lname>"
+                }
             }
             """
 
         Examples:
-            | user                                  | user_name            | news_uuid                            | scope                                          |
-            | senatorial-candidate@en-marche-dev.fr | Jean-Baptiste Fortin | 2c28b246-b17e-409d-992a-b8a57481fb7a | legislative_candidate                          |
-            | gisele-berthoux@caramail.com          | Gisele Berthoux      | 4f5db386-1819-4055-abbd-fb5d840cd6c0 | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c |
+            | user                                  | fname         | lname    | news_uuid                            | scope                                          |
+            | senatorial-candidate@en-marche-dev.fr | Jean-Baptiste | Fortin   | 2c28b246-b17e-409d-992a-b8a57481fb7a | legislative_candidate                          |
+            | gisele-berthoux@caramail.com          | Gisele        | Berthoux | 4f5db386-1819-4055-abbd-fb5d840cd6c0 | delegated_b24fea43-ecd8-4bf4-b500-6f97886ab77c |
 
     Scenario Outline: As a (delegated) referent I can get a news
         Given I am logged with "<user>" via OAuth client "JeMengage Web"
@@ -1102,7 +1168,7 @@ Feature:
             """
             {
                 "uuid": "6c70f8e8-6bce-4376-8b9e-3ce342880673",
-                "title": "[Référent] Nouvelle actualité non publiée à 59 du référent délégué",
+                "title": "Nouvelle actualité non publiée à 59 du référent délégué",
                 "text": "Fusce lacinia, diam et sodales iaculis, velit ante mollis ex, eu commodo felis lectus eu dui.",
                 "external_link": "https://referent.en-marche.fr",
                 "link_label": "Voir le lien",
@@ -1118,7 +1184,10 @@ Feature:
                 "enriched": false,
                 "pinned": false,
                 "published": false,
-                "creator": "Bob Senateur (59)"
+                "author": {
+                    "first_name": "Bob",
+                    "last_name": "Senateur (59)"
+                }
             }
             """
 
@@ -1147,7 +1216,7 @@ Feature:
             """
             {
                 "uuid": "@uuid@",
-                "title": "[Référent] Nouveau titre",
+                "title": "Nouveau titre",
                 "text": "Nouveau texte",
                 "external_link": "https://nouveau.en-marche.fr",
                 "link_label": "Voir le lien (nouveau)",
@@ -1163,7 +1232,10 @@ Feature:
                 "enriched": false,
                 "pinned": false,
                 "published": false,
-                "creator": "Bob Senateur (59)"
+                "author": {
+                    "first_name": "Bob",
+                    "last_name": "Senateur (59)"
+                }
             }
             """
 

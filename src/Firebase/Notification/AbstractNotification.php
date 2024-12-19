@@ -7,10 +7,9 @@ use App\Firebase\DynamicLinks\DynamicLinkObjectInterface;
 abstract class AbstractNotification implements NotificationInterface
 {
     private string $title;
-
     private string $body;
-
     protected array $data;
+    private ?string $scope = null;
 
     public function __construct(string $title, string $body, array $data = [])
     {
@@ -61,5 +60,15 @@ abstract class AbstractNotification implements NotificationInterface
     public function setDeepLink(string $deeplink): void
     {
         $this->addData('deeplink', $deeplink);
+    }
+
+    public function setScope(?string $scope): void
+    {
+        $this->scope = $scope;
+    }
+
+    public function getScope(): ?string
+    {
+        return $this->scope;
     }
 }

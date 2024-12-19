@@ -2,10 +2,10 @@
 
 namespace App\JeMarche\Command;
 
-use App\Messenger\Message\UuidDefaultAsyncMessage;
+use App\Entity\Action\Action;
 use Ramsey\Uuid\UuidInterface;
 
-class NotifyForActionCommand extends UuidDefaultAsyncMessage
+class NotifyForActionCommand extends AbstractSendNotificationCommand
 {
     public const string EVENT_CREATE = 'create';
     public const string EVENT_CANCEL = 'cancel';
@@ -17,5 +17,10 @@ class NotifyForActionCommand extends UuidDefaultAsyncMessage
     public function __construct(UuidInterface $uuid, public readonly string $event)
     {
         parent::__construct($uuid);
+    }
+
+    public function getClass(): string
+    {
+        return Action::class;
     }
 }
