@@ -770,7 +770,7 @@
         </service>
 
         <service id="app.admin.push_notification" class="App\Admin\PushNotificationAdmin">
-            <tag name="sonata.admin" manager-type="orm" label="Push logs" group="Tech" />
+            <tag name="sonata.admin" manager-type="orm" label="Logs Push" group="Tech" />
 
             <argument />
             <argument>App\Entity\Notification</argument>

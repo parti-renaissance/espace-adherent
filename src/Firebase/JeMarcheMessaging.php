@@ -78,8 +78,10 @@ class JeMarcheMessaging
     {
         $data = $notification->getData();
 
-        if (!empty($data['link'])) {
-            $data['link'] = parse_url($data['link'], \PHP_URL_PATH);
+        if (!empty($link = $data['link'])) {
+            $data['link'] = parse_url($link, \PHP_URL_PATH);
+            $queryParams = parse_url($link, \PHP_URL_QUERY);
+            $data['link'] .= $queryParams ? '?'.$queryParams : '';
         }
 
         return $data;
