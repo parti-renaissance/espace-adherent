@@ -2,17 +2,22 @@ monolog:
     handlers:
         main:
             type: fingers_crossed
+            channels: ['!deprecation']
             action_level: error
-            stop_buffering: false
             handler: sentry
             excluded_http_codes:
                 - 400
                 - 403
                 - 404
                 - 405
+        sentry_breadcrumbs:
+            type: service
+            channels: ['!deprecation']
+            name: sentry_breadcrumbs
+            id: Sentry\Monolog\BreadcrumbHandler
         sentry:
             type: sentry
             level: !php/const Monolog\Logger::ERROR
             hub_id: Sentry\State\HubInterface
-        console:
-            type: console
+            fill_extra_context: true
+            process_psr_3_messages: false

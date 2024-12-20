@@ -1,9 +1,0 @@
-services:
-    _defaults:
-        autowire: true
-        autoconfigure: true
-        public: false
-
-    App\Monolog\SentryHandler:
-        decorates: 'monolog.handler.sentry'
-        arguments: ['@App\Monolog\SentryHandler.inner']
