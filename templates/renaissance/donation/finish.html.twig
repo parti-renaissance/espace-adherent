@@ -23,33 +23,23 @@
                 Merci <span class="text-ui_green-50 font-medium">{{ donation.donator.firstName }}</span> pour votre <span class="whitespace-nowrap">don !</span>
             </h1>
             <div class="text-ui_gray-80 text-base flex flex-col gap-4">
-                <p>
-                    Je vous remercie d’avoir participé à la construction de notre parti Renaissance avec un don de {{ donation.amountInEuros() }} euros. Votre soutien est très précieux.
-                </p>
-                <p>
-                     La priorité de Renaissance est de faire réussir le quinquennat d’Emmanuel Macron, également Président d’honneur du parti. Avec toutes les forces progressistes, nous continuerons à nous battre pour tenir les engagements du Président de la République et pour ne jamais laisser les clés de notre pays aux extrêmes.
-                </p>
-                <p>
-                    Sans réussite collective, il n’y a pas de réussite individuelle. Ensemble, faisons de Renaissance la première force de proposition, le parti d'idées et l’organisation politique la plus décentralisée de la Vème République.
-                </p>
-                <p>
-                    Merci à vous de soutenir notre parti.
-                </p>
-                <p>
-                    <span class="font-medium">Stéphane Séjourné</span><br>
-                    Secrétaire général de Renaissance
-                </p>
-
+                <p>Dans cette période si difficile, nous avons besoin de chacun pour faire entendre la voix de l’apaisement et de la responsabilité, la voix du progrès et des valeurs républicaines.</p>
+                <p>Dans ce moment plus encore, votre don de {{ donation.amountInEuros() }}€ est décisif.</p>
+                <p>C’est grâce à lui que nous pourrons reconstruire notre parti et faire entendre nos idées, nos combats et nos valeurs.</p>
+                <p>Grâce à lui que nous allons pouvoir retourner pleinement auprès des Français, à leurs côtés et à leur écoute.</p>
+                <p>Grâce à lui, grâce à vous, que nous allons pouvoir préparer l’avenir, combattre les extrêmes et montrer que nos idées ont encore de beaux jours devant elles.</p>
+                <p>Votre engagement pour notre parti et nos valeurs est précieux.<br>L’enjeu est immense : nous ne pouvons pas décevoir.</p>
+                <p>Vous pouvez compter sur Renaissance.<br>Vous pouvez compter sur moi.</p>
+                <p>Merci !</p>
+                <p><span class="font-bold">Gabriel Attal</span><br>Secrétaire général de Renaissance</p>
             </div>
             <twig:ReParagraphStatus status="success">
                 <p class="text-ui_gray-80">
-                    Un <span class="font-medium">email contenant le reçu</span> de votre don vous a été envoyé. Merci de faire partie intégrante de notre succès commun.
+                    Un email contenant le reçu de votre don vous a été envoyé. Merci de faire partie intégrante de notre succès commun.
                 </p>
             </twig:ReParagraphStatus>
 
-            {% set backPath = app.user ? 'app_renaissance_adherent_space' : 'renaissance_site' %}
-
-            <twig:ReButton href="{{ path(backPath) }}" tag="a" color="green">
+            <twig:ReButton href="{{ app.user ? path('vox_app_redirect') : path('renaissance_site') }}" tag="a" color="green">
                 Retour
             </twig:ReButton>
 
