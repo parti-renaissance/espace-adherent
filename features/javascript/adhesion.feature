@@ -70,6 +70,32 @@ Feature:
         And I should see "Votre paiement a bien été validé !"
         And I should see "Confirmer votre adresse email"
         And I should see "adherent@renaissance.code"
+        And I should have 1 email "RenaissanceAdherentAccountConfirmationMessage" for "adherent@renaissance.code" with payload:
+            """
+            {
+                "template_name": "renaissance-adherent-account-confirmation",
+                "template_content": [],
+                "message": {
+                    "subject": "Bienvenue chez Renaissance !",
+                    "from_email": "contact@parti-renaissance.fr",
+                    "html": null,
+                    "global_merge_vars": [
+                        {
+                            "name": "first_name",
+                            "content": "Marine"
+                        }
+                    ],
+                    "from_name": "Gabriel Attal",
+                    "to": [
+                        {
+                            "email": "adherent@renaissance.code",
+                            "type": "to",
+                            "name": "Marine Dupont"
+                        }
+                    ]
+                }
+            }
+            """
         And I should have 1 email "AdhesionCodeValidationMessage" for "adherent@renaissance.code" with payload:
             """
             {
@@ -417,6 +443,32 @@ Feature:
         And I should be on "/paiement" wait otherwise
         When I simulate IPN call with "00000" code for the last donation of "renaissance-user-4@en-marche-dev.fr"
         Then I should be on "/adhesion/felicitations" wait otherwise
+        And I should have 1 email "RenaissanceReAdhesionConfirmationMessage" for "renaissance-user-4@en-marche-dev.fr" with payload:
+            """
+            {
+                "template_name": "renaissance-re-adhesion-confirmation",
+                "template_content": [],
+                "message": {
+                    "subject": "Et une année de plus !",
+                    "from_email": "contact@parti-renaissance.fr",
+                    "html": null,
+                    "global_merge_vars": [
+                        {
+                            "name": "first_name",
+                            "content": "Louis"
+                        }
+                    ],
+                    "from_name": "Gabriel Attal",
+                    "to": [
+                        {
+                            "email": "renaissance-user-4@en-marche-dev.fr",
+                            "type": "to",
+                            "name": "Louis Roche"
+                        }
+                    ]
+                }
+            }
+            """
         And I should see "Vous êtes à jour de cotisations, félicitations !"
         And User "renaissance-user-4@en-marche-dev.fr" should have zones "borough_75108, district_75-4"
 

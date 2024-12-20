@@ -23,6 +23,9 @@ class SendWelcomeEmailListener implements EventSubscriberInterface
 
     public function sendWelcomeEmail(NewCotisationEvent $event): void
     {
-        $this->bus->dispatch(new SendWelcomeEmailCommand($event->getAdherent()->getUuid()), [new DelayStamp(600000)]);
+        $this->bus->dispatch(
+            new SendWelcomeEmailCommand($event->getAdherent()->getUuid(), $event->donation->isReAdhesion()),
+            [new DelayStamp(600000)] // 10 minutes delay
+        );
     }
 }

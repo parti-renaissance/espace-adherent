@@ -46,19 +46,13 @@ class MembershipNotifier implements LoggerAwareInterface
         return $this->transactionalMailer->sendMessage(Message\Renaissance\AdherentMembershipReminderMessage::create($adherent, $adhesionUrl));
     }
 
-    public function sendConfirmationJoinMessage(Adherent $adherent): void
+    public function sendConfirmationJoinMessage(Adherent $adherent, bool $renew): void
     {
-        $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent($adherent));
-    }
-
-    public function sendReAdhesionConfirmationMessage(Adherent $adherent): void
-    {
-        $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceReAdhesionConfirmationMessage::createFromAdherent(
-            $adherent,
-            $this->callbackManager->generateUrl('app_renaissance_adherent_profile', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            $this->callbackManager->generateUrl('app_donation_index', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            $this->callbackManager->generateUrl('app_my_committee_show_current', [], UrlGeneratorInterface::ABSOLUTE_URL),
-        ));
+        if ($renew) {
+            $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceReAdhesionConfirmationMessage::createFromAdherent($adherent));
+        } else {
+            $this->transactionalMailer->sendMessage(Message\Renaissance\RenaissanceAdherentAccountConfirmationMessage::createFromAdherent($adherent));
+        }
     }
 
     public function sendUnregistrationMessage(Adherent $adherent): void
