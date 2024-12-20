@@ -66,10 +66,10 @@ class JeMarcheMessaging
     {
         return [
             'notification' => [
-                'icon', 'https://app.parti-renaissance.fr/images/icons/icon-512x512.png',
+                'icon' => 'https://app.parti-renaissance.fr/images/icons/icon-512x512.png',
             ],
             'fcm_options' => [
-                'link', $notification->getData()['link'] ?? null,
+                'link' => $notification->getData()['link'] ?? null,
             ],
         ];
     }
