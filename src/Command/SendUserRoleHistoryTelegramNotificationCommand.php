@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\UserActionHistory;
 use App\History\UserActionHistoryTypeEnum;
 use App\Repository\UserActionHistoryRepository;
+use App\Utils\StringCleaner;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -87,7 +88,7 @@ class SendUserRoleHistoryTelegramNotificationCommand extends Command
 
         $messageBlock = [
             \sprintf(
-                '*%s %s* ([%s](%s))',
+                '*%s %s* \([%s](%s)\)',
                 $civility,
                 $user->getFullName(),
                 $user->getId(),
@@ -96,19 +97,19 @@ class SendUserRoleHistoryTelegramNotificationCommand extends Command
         ];
 
         if (UserActionHistoryTypeEnum::ROLE_ADD === $history->type) {
-            $messageBlock[] = \sprintf(
+            $messageBlock[] = StringCleaner::escapeMarkdown(\sprintf(
                 '❇️ %s (%s)',
                 $this->translateRole($history->data['role']),
                 implode(', ', $history->data['zones'])
-            );
+            ));
         }
 
         if (UserActionHistoryTypeEnum::ROLE_REMOVE === $history->type) {
-            $messageBlock[] = \sprintf(
+            $messageBlock[] = StringCleaner::escapeMarkdown(\sprintf(
                 '❌ %s (%s)',
                 $this->translateRole($history->data['role']),
                 implode(', ', $history->data['zones'])
-            );
+            ));
         }
 
         if ($administrator = $history->impersonator) {
@@ -119,7 +120,7 @@ class SendUserRoleHistoryTelegramNotificationCommand extends Command
             implode(\PHP_EOL, $messageBlock),
             (new TelegramOptions())
                 ->chatId($this->telegramChatIdNominations)
-                ->parseMode(TelegramOptions::PARSE_MODE_MARKDOWN)
+                ->parseMode(TelegramOptions::PARSE_MODE_MARKDOWN_V2)
                 ->disableWebPagePreview(true)
                 ->disableNotification(true)
         );
@@ -138,6 +139,11 @@ class SendUserRoleHistoryTelegramNotificationCommand extends Command
 
     private function translateRole(string $role): string
     {
-        return $this->translator->trans("role.$role");
+        $label = $this->translator->trans("role.$role");
+        if (str_starts_with($label, 'role.')) {
+            return $role;
+        }
+
+        return $label;
     }
 }

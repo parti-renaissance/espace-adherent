@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Reporting\DeclaredMandateHistory;
 use App\Repository\Reporting\DeclaredMandateHistoryRepository;
+use App\Utils\StringCleaner;
 use App\ValueObject\Genders;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -86,7 +87,7 @@ class SendDeclaredMandateChangeTelegramNotificationCommand extends Command
 
         $messageBlock = [
             \sprintf(
-                '*%s %s* ([%s](%s))',
+                '*%s %s* \([%s](%s)\)',
                 $civility,
                 $adherent->getFullName(),
                 $adherent->getId(),
@@ -95,11 +96,11 @@ class SendDeclaredMandateChangeTelegramNotificationCommand extends Command
         ];
 
         if (!empty($added)) {
-            $messageBlock[] = \sprintf('Ajout : %s', implode(', ', $added));
+            $messageBlock[] = StringCleaner::escapeMarkdown(\sprintf('Ajout : %s', implode(', ', $added)));
         }
 
         if (!empty($removed)) {
-            $messageBlock[] = \sprintf('Retrait : %s', implode(', ', $removed));
+            $messageBlock[] = StringCleaner::escapeMarkdown(\sprintf('Retrait : %s', implode(', ', $removed)));
         }
 
         if ($administrator = $history->getAdministrator()) {
@@ -110,7 +111,7 @@ class SendDeclaredMandateChangeTelegramNotificationCommand extends Command
             implode(\PHP_EOL, $messageBlock),
             (new TelegramOptions())
                 ->chatId($this->telegramChatIdDeclaredMandates)
-                ->parseMode(TelegramOptions::PARSE_MODE_MARKDOWN)
+                ->parseMode(TelegramOptions::PARSE_MODE_MARKDOWN_V2)
                 ->disableWebPagePreview(true)
                 ->disableNotification(true)
         );
@@ -129,16 +130,14 @@ class SendDeclaredMandateChangeTelegramNotificationCommand extends Command
 
     private function translateMandates(array $mandates): array
     {
-        $chars = implode('', array_map('preg_quote', ['\\', '_', '*', '[', ']', '(', ')', '~', '`', '>', '<', '&', '#', '+', '-', '=', '|', '{', '}', '.', '!']));
-
-        return array_map(function (string $mandate) use ($chars): string {
+        return array_map(function (string $mandate): string {
             $translation = $this->translator->trans("adherent.mandate.type.$mandate");
 
             if (str_starts_with($translation, 'adherent.mandate.type.')) {
-                $translation = $mandate;
+                return $mandate;
             }
 
-            return addcslashes($translation, $chars);
+            return $translation;
         }, $mandates);
     }
 }

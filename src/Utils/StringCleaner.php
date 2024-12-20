@@ -20,4 +20,9 @@ class StringCleaner
 
         return trim($text);
     }
+
+    public static function escapeMarkdown(string $text): string
+    {
+        return preg_replace('/([_*\[\]()])/', '\\\\$1', $text);
+    }
 }
