@@ -7,12 +7,12 @@ use App\Mailer\Message\Renaissance\AbstractRenaissanceMessage;
 
 final class DonationThanksMessage extends AbstractRenaissanceMessage
 {
-    public static function createFromTransaction(Transaction $transaction): self
+    public static function createFromTransaction(Transaction $transaction): Message
     {
         $donation = $transaction->getDonation();
         $donator = $donation->getDonator();
 
-        return new self(
+        $message = new self(
             $donation->getUuid(),
             $donator->getEmailAddress(),
             $donator->getFullName(),
@@ -22,5 +22,7 @@ final class DonationThanksMessage extends AbstractRenaissanceMessage
                 'donation_amount' => $donation->getAmountInEuros(),
             ]
         );
+
+        return self::updateSenderInfo($message);
     }
 }
