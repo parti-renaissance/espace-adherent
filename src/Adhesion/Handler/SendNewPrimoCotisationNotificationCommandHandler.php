@@ -8,6 +8,7 @@ use App\Adhesion\Command\SendNewPrimoCotisationNotificationCommand;
 use App\Entity\Adherent;
 use App\Entity\Geo\Zone;
 use App\Repository\AdherentRepository;
+use App\Utils\StringCleaner;
 use App\ValueObject\Genders;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Notifier\Bridge\Telegram\TelegramOptions;
@@ -72,7 +73,7 @@ class SendNewPrimoCotisationNotificationCommandHandler
             $zoneLines[] = \sprintf('%s - %s', $committee->getAssemblyZone()?->getCode(), $committee->getName());
         }
 
-        $zoneLines = implode("\n", $zoneLines);
+        $zoneLines = StringCleaner::escapeMarkdown(implode("\n", $zoneLines));
 
         $smsSubscriber = $adherent->hasSmsSubscriptionType() ? '✅' : '❌';
         $emailSubscriber = $adherent->isEmailSubscribed() ? '✅' : '❌';
@@ -82,7 +83,7 @@ class SendNewPrimoCotisationNotificationCommandHandler
 
         $chatMessage = new ChatMessage(
             <<<MESSAGE
-                *{$civility}{$adherent->getFullName()}* ([{$adherent->getId()}]({$url}))
+                *{$civility}{$adherent->getFullName()}* \([{$adherent->getId()}]({$url})\)
                 {$zoneLines}
 
                 {$command->amount} €
@@ -95,7 +96,7 @@ class SendNewPrimoCotisationNotificationCommandHandler
                 MESSAGE,
             (new TelegramOptions())
                 ->chatId($this->telegramChatIdPrimoAdhesion)
-                ->parseMode(TelegramOptions::PARSE_MODE_MARKDOWN)
+                ->parseMode(TelegramOptions::PARSE_MODE_MARKDOWN_V2)
                 ->disableWebPagePreview(true)
                 ->disableNotification(true)
         );
