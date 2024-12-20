@@ -24,6 +24,6 @@ class InscriptionConfirmationCommandHandler
             return;
         }
 
-        $this->membershipNotifier->sendConfirmationJoinMessage($adherent);
+        $this->membershipNotifier->sendConfirmationJoinMessage($adherent, false);
     }
 }

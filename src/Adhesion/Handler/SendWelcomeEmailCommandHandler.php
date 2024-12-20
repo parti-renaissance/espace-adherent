@@ -2,7 +2,6 @@
 
 namespace App\Adhesion\Handler;
 
-use App\Adherent\Tag\TagEnum;
 use App\Adhesion\Command\SendWelcomeEmailCommand;
 use App\Entity\Adherent;
 use App\Membership\MembershipNotifier;
@@ -29,10 +28,6 @@ class SendWelcomeEmailCommandHandler
             return;
         }
 
-        if (!$adherent->hasTag(TagEnum::getAdherentYearTag(tag: TagEnum::ADHERENT_YEAR_PRIMO_TAG_PATTERN))) {
-            return;
-        }
-
-        $this->membershipNotifier->sendConfirmationJoinMessage($adherent);
+        $this->membershipNotifier->sendConfirmationJoinMessage($adherent, $command->renew);
     }
 }

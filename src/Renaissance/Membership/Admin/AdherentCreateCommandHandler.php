@@ -77,10 +77,8 @@ class AdherentCreateCommandHandler
 
         if (!$adherent->isEnabled()) {
             $this->notifier->sendAccountCreatedEmail($adherent);
-        } elseif ($donation->isReAdhesion()) {
-            $this->notifier->sendReAdhesionConfirmationMessage($adherent);
         } else {
-            $this->notifier->sendConfirmationJoinMessage($adherent);
+            $this->notifier->sendConfirmationJoinMessage($adherent, $donation->isReAdhesion());
         }
     }
 }
