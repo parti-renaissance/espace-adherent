@@ -1146,16 +1146,16 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         $qb = $this
             ->createQueryBuilder('adherent')
             ->select('PARTIAL adherent.{id, uuid, emailAddress, source, lastMembershipDonation}')
-            ->where('adherent.source IS NULL OR adherent.source = :source')
+            ->addSelect('committee_membership')
+            ->addSelect('cl')
+            ->leftJoin('adherent.committeeMembership', 'committee_membership')
+            ->leftJoin('committee_membership.committee', 'cl')
             ->andWhere('adherent.status = :enabled')
             ->setParameters([
                 'enabled' => Adherent::ENABLED,
-                'source' => MembershipSourceEnum::RENAISSANCE,
                 'manual_trigger' => CommitteeMembershipTriggerEnum::MANUAL,
             ])
         ;
-
-        $zoneQueryModifier = fn (QueryBuilder $queryBuilder, string $entityClassAlias) => $queryBuilder->andWhere(\sprintf('%1$s.source IS NULL OR %1$s.source = :source', $entityClassAlias));
 
         $this->withGeoZones(
             [$zone],
@@ -1165,7 +1165,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             'a2',
             'zones',
             'z2',
-            $zoneQueryModifier,
+            null,
             $zone->isCityCommunity() || $zone->isBoroughCity(),
             'zone_parent2'
         );
@@ -1175,7 +1175,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->select('DISTINCT exl_adh.id')
             ->innerJoin('exl_adh.committeeMembership', 'exl_membership', Join::WITH, 'exl_membership.trigger = :manual_trigger')
             ->innerJoin('exl_membership.committee', 'committee')
-            ->where('exl_adh.source IS NULL OR exl_adh.source = :source')
         ;
 
         $qb
