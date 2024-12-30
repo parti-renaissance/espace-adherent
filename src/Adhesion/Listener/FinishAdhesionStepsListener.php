@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventListener;
+namespace App\Adhesion\Listener;
 
 use App\Adhesion\AdhesionStepEnum;
 use App\Entity\Adherent;
@@ -10,10 +10,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class FinishAdhesionListener implements EventSubscriberInterface
+class FinishAdhesionStepsListener implements EventSubscriberInterface
 {
-    public function __construct(private readonly Security $security, private readonly UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        private readonly Security $security,
+        private readonly UrlGeneratorInterface $urlGenerator,
+    ) {
     }
 
     public static function getSubscribedEvents(): array
@@ -25,17 +27,13 @@ class FinishAdhesionListener implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-        if (!$event->isMainRequest() || !str_starts_with($request->getPathInfo(), '/espace-adherent')) {
+        if (!$event->isMainRequest() || 'vox_app_redirect' !== $request->attributes->get('_route')) {
             return;
         }
 
         $adherent = $this->security->getUser();
 
-        if (!$adherent instanceof Adherent) {
-            return;
-        }
-
-        if (!$adherent->isV2() || $adherent->isFullyCompletedAdhesion($adherent->isRenaissanceAdherent())) {
+        if (!$adherent instanceof Adherent || $adherent->isFullyCompletedAdhesion()) {
             return;
         }
 

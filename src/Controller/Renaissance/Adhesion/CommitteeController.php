@@ -42,7 +42,7 @@ class CommitteeController extends AbstractController
         }
 
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::COMMITTEE)) {
-            return $this->redirectToRoute('app_renaissance_adherent_space');
+            return $this->redirectToRoute('vox_app_redirect');
         }
 
         $committees = $this->committeeRepository->findInAdherentZone($adherent);

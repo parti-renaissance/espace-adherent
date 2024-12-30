@@ -21,7 +21,7 @@ class DepartmentElectionController extends AbstractController
     public function candidaturesListAction(Designation $designation): Response
     {
         if (!$localElection = $this->localElectionRepository->findByDesignation($designation)) {
-            return $this->redirectToRoute('app_renaissance_adherent_space');
+            return $this->redirectToRoute('vox_app_redirect');
         }
 
         return $this->render('renaissance/local_election/lists.html.twig', [

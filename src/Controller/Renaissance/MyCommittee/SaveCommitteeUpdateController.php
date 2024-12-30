@@ -12,7 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route(path: '/espace-adherent/mon-comite-local/modifier/{uuid}', name: 'app_my_committee_update', methods: ['GET'])]
 #[Security('is_granted("ABLE_TO_CHANGE_COMMITTEE") or is_granted("IS_IMPERSONATOR")')]
@@ -28,7 +27,7 @@ class SaveCommitteeUpdateController extends AbstractController
         $adherent = $this->getUser();
 
         if ($adherent->isForeignResident() && !$this->isGranted('IS_IMPERSONATOR')) {
-            return $this->redirect($this->generateUrl('app_renaissance_adherent_space', [], UrlGeneratorInterface::ABSOLUTE_URL));
+            return $this->redirectToRoute('vox_app_redirect');
         }
 
         $committeeMembershipManager->followCommittee($adherent, $committee, CommitteeMembershipTriggerEnum::MANUAL);

@@ -45,7 +45,7 @@ class MemberCardController extends AbstractController
         }
 
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::MEMBER_CARD)) {
-            return $this->redirectToRoute('app_renaissance_adherent_space');
+            return $this->redirectToRoute('vox_app_redirect');
         }
 
         $form = $this
