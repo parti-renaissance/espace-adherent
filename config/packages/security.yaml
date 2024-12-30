@@ -523,6 +523,11 @@ security:
           }
         - {
               host: '%admin_renaissance_host%',
+              path: '^/robots.txt',
+              roles: [PUBLIC_ACCESS],
+          }
+        - {
+              host: '%admin_renaissance_host%',
               path: '^/(?!(oauth|vox))',
               roles: [ROLE_ADMIN_DASHBOARD],
           }

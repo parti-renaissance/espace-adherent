@@ -274,6 +274,15 @@ app_certification:
     requirements:
         app_domain: '%app_host%|%app_renaissance_host%'
 
+robots:
+    host: '{app_domain}'
+    path: '/robots.txt'
+    controller: App\Controller\RobotsController
+    defaults:
+        app_domain: '%user_vox_host%'
+    requirements:
+        app_domain: '%user_vox_host%|%admin_renaissance_host%'
+
 # VOX redirect paths
 app_renaissance_event_show:
     path: '/app/evenements/{slug}'
