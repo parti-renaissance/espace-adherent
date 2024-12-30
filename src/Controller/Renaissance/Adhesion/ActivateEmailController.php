@@ -41,7 +41,7 @@ class ActivateEmailController extends AbstractController
         }
 
         if ($adherent->hasFinishedAdhesionStep(AdhesionStepEnum::ACTIVATION)) {
-            return $this->redirectToRoute('app_renaissance_adherent_space');
+            return $this->redirectToRoute('vox_app_redirect');
         }
 
         $validateAccountRequest = new ValidateAccountRequest();

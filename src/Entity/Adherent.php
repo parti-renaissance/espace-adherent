@@ -609,6 +609,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         ?array $mandates = [],
         ?string $nationality = null,
         ?string $customGender = null,
+        ?array $finishedSteps = null,
     ): self {
         $adherent = new self();
 
@@ -629,6 +630,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $adherent->mandates = $mandates ?? [];
         $adherent->nationality = $nationality;
         $adherent->customGender = $customGender;
+        $adherent->finishedAdhesionSteps = $finishedSteps ?? [];
 
         return $adherent;
     }
@@ -2501,19 +2503,14 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return !$this->isOtherPartyMembership();
     }
 
-    public function finishAdhesionSteps(array $steps): void
-    {
-        $this->finishedAdhesionSteps = $steps;
-    }
-
     public function finishAdhesionStep(string $step): void
     {
         $this->finishedAdhesionSteps = array_unique(array_merge($this->finishedAdhesionSteps, [$step]));
     }
 
-    public function isFullyCompletedAdhesion(bool $isAdherent): bool
+    public function isFullyCompletedAdhesion(): bool
     {
-        return empty(array_diff(AdhesionStepEnum::all($isAdherent), $this->finishedAdhesionSteps));
+        return empty(array_diff(AdhesionStepEnum::all($this->isRenaissanceAdherent()), $this->finishedAdhesionSteps));
     }
 
     public function isFullyCompletedBesoinDEuropeInscription(): bool

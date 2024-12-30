@@ -171,7 +171,8 @@ class AdherentFactory
             $data['registered_at'] ?? 'now',
             null,
             $data['nationality'] ?? null,
-            $data['custom_gender'] ?? null
+            $data['custom_gender'] ?? null,
+            AdhesionStepEnum::all($data['is_adherent'] ?? false),
         );
 
         if (!isset($data['is_adherent']) || $data['is_adherent']) {

@@ -33,6 +33,6 @@ class ConfirmNewsletterController extends AbstractController
 
         $this->addFlash('success', 'Votre inscription à la newsletter a bien été confirmée.');
 
-        return $this->redirectToRoute('app_renaissance_adherent_space');
+        return $this->redirectToRoute('vox_app_redirect');
     }
 }

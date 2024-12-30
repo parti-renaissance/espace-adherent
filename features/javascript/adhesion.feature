@@ -551,8 +551,61 @@ Feature:
         And I click the ".textCenter:last-child a" selector
         And I should be on "/paiement" wait otherwise
         When I simulate IPN call with "00000" code for the last donation of "carl999@example.fr"
+        Then I should be on "/adhesion/carte-adherent" wait otherwise
+        And I should see "Votre paiement a bien été validé !"
+        And I should have 1 email "RenaissanceAdherentAccountConfirmationMessage" for "carl999@example.fr" with payload:
+            """
+            {
+                "template_name": "renaissance-adherent-account-confirmation",
+                "template_content": [],
+                "message": {
+                    "subject": "Bienvenue chez Renaissance !",
+                    "from_email": "contact@parti-renaissance.fr",
+                    "html": null,
+                    "global_merge_vars": [
+                        {
+                            "name": "first_name",
+                            "content": "Carl"
+                        }
+                    ],
+                    "from_name": "Gabriel Attal",
+                    "to": [
+                        {
+                            "email": "carl999@example.fr",
+                            "type": "to",
+                            "name": "Carl Mirabeau"
+                        }
+                    ]
+                }
+            }
+            """
+        And I should see "Carte d'adhérant"
+        When I click the ".aucomplete-fields-toggle" selector
+        And I fill in the following:
+            | member_card[address][address]           | 92 bld Victor Hugo |
+            | member_card[address][additionalAddress] |                    |
+            | member_card[address][postalCode]        | 92110              |
+            | member_card[address][cityName]          | Clichy             |
+        When I press "Recevoir ma carte"
+
+        # Step 10 : committee
+        Then I should be on "/adhesion/comite-local" wait otherwise
+        And I should see "Comité local"
+        And I should see "Comité : Second Comité des 3 communes"
+        And I should see "Responsable : Adherent 56 Fa56ke"
+        When I press "Changer de comité"
+        Then I should see "Choisissez un nouveau comité près de chez vous"
+        And I should see "Comité : Comité des 3 communes"
+        And I should see "Responsable : Adherent 55 Fa55ke"
+        When I press "Rejoindre"
+        Then I should not see "Choisissez un nouveau comité près de chez vous"
+        And I should see "Comité : Comité des 3 communes"
+        And I should see "Responsable : Adherent 55 Fa55ke"
+        When I press "Continuer"
+
+        # Finish step
         Then I should be on "/adhesion/felicitations" wait otherwise
         And I should see "Vous êtes désormais adhérent, félicitations !"
-        And User "carl999@example.fr" should have zones "borough_75108, district_75-4"
+        And User "carl999@example.fr" should have zones "district_92-5, city_92024"
         When I click the ".re-button" selector
         Then I should be on "/app"
