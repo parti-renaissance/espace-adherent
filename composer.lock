@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a0db5dae91eaf8e411eef37f7703e145",
+    "content-hash": "1b276d478ae15ff7f24c23ec0dd0bd4d",
     "packages": [
         {
             "name": "a2lix/auto-form-bundle",
@@ -17121,26 +17121,25 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v6.4.13",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
-                "reference": "0f605f72a363f8743001038a176eeb2a11223b51"
+                "reference": "1a6a89f95a46af0f142874c9d650a6358d13070d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/0f605f72a363f8743001038a176eeb2a11223b51",
-                "reference": "0f605f72a363f8743001038a176eeb2a11223b51",
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/1a6a89f95a46af0f142874c9d650a6358d13070d",
+                "reference": "1a6a89f95a46af0f142874c9d650a6358d13070d",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1",
-                "symfony/deprecation-contracts": "^2.5|^3"
+                "php": ">=8.2"
             },
             "require-dev": {
                 "symfony/property-access": "^6.4|^7.0",
                 "symfony/serializer": "^6.4|^7.0",
-                "symfony/var-dumper": "^5.4|^6.0|^7.0"
+                "symfony/var-dumper": "^6.4|^7.0"
             },
             "type": "library",
             "autoload": {
@@ -17178,7 +17177,7 @@
                 "serialize"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-exporter/tree/v6.4.13"
+                "source": "https://github.com/symfony/var-exporter/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -17194,7 +17193,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-25T14:18:03+00:00"
+            "time": "2024-10-18T07:58:17+00:00"
         },
         {
             "name": "symfony/web-link",
@@ -17441,27 +17440,28 @@
         },
         {
             "name": "tales-from-a-dev/twig-tailwind-extra",
-            "version": "v0.1.0",
+            "version": "v0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tales-from-a-dev/twig-tailwind-extra.git",
-                "reference": "abf0b46350751b69d770dece65be7eae26b390c7"
+                "reference": "a3cb86414dd5810740cf91966bc1cf10047ce8ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tales-from-a-dev/twig-tailwind-extra/zipball/abf0b46350751b69d770dece65be7eae26b390c7",
-                "reference": "abf0b46350751b69d770dece65be7eae26b390c7",
+                "url": "https://api.github.com/repos/tales-from-a-dev/twig-tailwind-extra/zipball/a3cb86414dd5810740cf91966bc1cf10047ce8ef",
+                "reference": "a3cb86414dd5810740cf91966bc1cf10047ce8ef",
                 "shasum": ""
             },
             "require": {
                 "gehrisandro/tailwind-merge-php": "^1.0",
                 "php": ">=8.2",
-                "symfony/cache": "^6.3",
+                "symfony/cache": "^6.4 || ^7.0",
+                "symfony/framework-bundle": "^6.4 || ^7.0",
                 "twig/twig": "^3.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.38",
-                "symfony/phpunit-bridge": "^6.3"
+                "symfony/phpunit-bridge": "^6.4 || ^7.0"
             },
             "type": "twig",
             "autoload": {
@@ -17489,9 +17489,9 @@
             ],
             "support": {
                 "issues": "https://github.com/tales-from-a-dev/twig-tailwind-extra/issues",
-                "source": "https://github.com/tales-from-a-dev/twig-tailwind-extra/tree/v0.1.0"
+                "source": "https://github.com/tales-from-a-dev/twig-tailwind-extra/tree/v0.3.0"
             },
-            "time": "2023-11-17T11:35:31+00:00"
+            "time": "2024-08-07T23:27:08+00:00"
         },
         {
             "name": "telegram-bot/api",
@@ -22601,20 +22601,20 @@
         },
         {
             "name": "symfony/process",
-            "version": "v6.4.15",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "3cb242f059c14ae08591c5c4087d1fe443564392"
+                "reference": "d34b22ba9390ec19d2dd966c40aa9e8462f27a7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/3cb242f059c14ae08591c5c4087d1fe443564392",
-                "reference": "3cb242f059c14ae08591c5c4087d1fe443564392",
+                "url": "https://api.github.com/repos/symfony/process/zipball/d34b22ba9390ec19d2dd966c40aa9e8462f27a7e",
+                "reference": "d34b22ba9390ec19d2dd966c40aa9e8462f27a7e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1"
+                "php": ">=8.2"
             },
             "type": "library",
             "autoload": {
@@ -22642,7 +22642,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v6.4.15"
+                "source": "https://github.com/symfony/process/tree/v7.2.0"
             },
             "funding": [
                 {
@@ -22658,7 +22658,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-11-06T14:19:14+00:00"
+            "time": "2024-11-06T14:24:19+00:00"
         },
         {
             "name": "symfony/web-profiler-bundle",
