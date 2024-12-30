@@ -51,7 +51,7 @@ class NewsNormalizer extends AbstractJeMengageTimelineFeedNormalizer
     /** @param News $object */
     protected function getZoneCodes(object $object): ?array
     {
-        return $this->buildZoneCodes($object->getZone());
+        return $this->buildZoneCodes($object->committee ? $object->committee->getAssemblyZone() : $object->getZone());
     }
 
     /** @param News $object */
