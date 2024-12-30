@@ -279,7 +279,7 @@ Feature:
                         "last_name": "Berthoux",
                         "image_url": null,
                         "birthdate": "1983-12-24T00:00:00+01:00",
-                        "age": 40,
+                        "age": 41,
                         "phone": "+33 6 66 66 66 66",
                         "nationality": "FR",
                         "tags": [
@@ -463,7 +463,7 @@ Feature:
                         "last_name": "Berthoux",
                         "image_url": null,
                         "birthdate": "1983-12-24T00:00:00+01:00",
-                        "age": 40,
+                        "age": 41,
                         "phone": "+33 6 66 66 66 66",
                         "nationality": "FR",
                         "tags": [
@@ -649,7 +649,7 @@ Feature:
                         "last_name": "Berthoux",
                         "image_url": null,
                         "birthdate": "1983-12-24T00:00:00+01:00",
-                        "age": 40,
+                        "age": 41,
                         "phone": "+33 6 66 66 66 66",
                         "nationality": "FR",
                         "tags": [
