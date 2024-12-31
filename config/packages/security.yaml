@@ -8,10 +8,6 @@ security:
     password_hashers:
         App\Entity\Administrator: bcrypt
         App\Entity\Adherent: bcrypt
-        legacy_encoder:
-            algorithm: sha1
-            encode_as_base64: false
-            iterations: 1
 
     role_hierarchy:
         ## ALL

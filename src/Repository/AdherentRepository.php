@@ -51,12 +51,10 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class AdherentRepository extends ServiceEntityRepository implements UserLoaderInterface, UserProviderInterface, PasswordUpgraderInterface
+class AdherentRepository extends ServiceEntityRepository implements UserLoaderInterface, UserProviderInterface
 {
     use NearbyTrait;
     use UuidEntityRepositoryTrait {
@@ -1354,17 +1352,5 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         );
 
         return $qb->getQuery()->getResult();
-    }
-
-    public function upgradePassword(PasswordAuthenticatedUserInterface|self $user, string $newHashedPassword): void
-    {
-        if (!$user->hasLegacyPassword()) {
-            return;
-        }
-
-        $user->clearOldPassword();
-        $user->migratePassword($newHashedPassword);
-
-        $this->getEntityManager()->flush();
     }
 }

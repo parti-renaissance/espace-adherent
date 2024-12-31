@@ -198,7 +198,7 @@ class EventRepository extends ServiceEntityRepository
             committees.address_city_name AS committee_address_city_name, committees.address_city_insee AS committee_address_city_insee,
             committees.address_postal_code AS committee_address_postal_code, committees.address_latitude AS committee_address_latitude,
             committees.address_longitude AS committee_address_longitude, adherents.uuid AS adherent_uuid,
-            adherents.email_address AS adherent_email_address, adherents.password AS adherent_password, adherents.old_password AS adherent_old_password,
+            adherents.email_address AS adherent_email_address,
             adherents.gender AS adherent_gender, adherents.first_name AS adherent_first_name,
             adherents.last_name AS adherent_last_name, adherents.birthdate AS adherent_birthdate,
             adherents.address_address AS adherent_address_address, adherents.address_country AS adherent_address_country,

@@ -56,13 +56,12 @@ class EventHydrator extends AbstractHydrator
             $committee = new Committee($uuidCommittee, $uuidCommitteeOrganizer, $row['committee_name'], $row['committee_description'], $addressCommittee, null, $row['committee_slug']);
         }
 
-        $password = $row['adherent_password'] ?? $row['adherent_old_password'];
         $organizer = null;
         if ($uuidOrganizer = $row['adherent_uuid'] ? Uuid::fromString($row['adherent_uuid']) : null) {
             $organizer = Adherent::create(
                 $uuidOrganizer,
                 $row['adherent_email_address'],
-                $password,
+                $uuidOrganizer,
                 $row['adherent_gender'],
                 $row['adherent_first_name'],
                 $row['adherent_last_name'],
