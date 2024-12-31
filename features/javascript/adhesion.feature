@@ -152,12 +152,14 @@ Feature:
             | adherent_reset_password[password][second] | 1234test |
         And I press "Valider"
         Then I should see "Les deux mots de passe doivent correspondre."
-        When I fill in the following:
+        When I wait 1 second
+        And I fill in the following:
             | adherent_reset_password[password][first]  | test123 |
             | adherent_reset_password[password][second] | test123 |
         And I press "Valider"
         Then I should see "Votre mot de passe doit comporter au moins 8 caractères."
-        When I fill in the following:
+        When I wait 1 second
+        And I fill in the following:
             | adherent_reset_password[password][first]  | test1234 |
             | adherent_reset_password[password][second] | test1234 |
         And I press "Valider"
