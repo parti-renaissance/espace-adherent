@@ -70,7 +70,6 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -117,7 +116,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'adherents')]
 #[UniqueEntity(fields: ['nickname'], groups: ['anonymize'])]
 #[UniqueMembership(groups: ['Admin'])]
-class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, PasswordHasherAwareInterface, MembershipInterface, ZoneableEntityInterface, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface, TranslatedTagInterface, EntityPostAddressInterface, ExposedImageOwnerInterface
+class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface, MembershipInterface, ZoneableEntityInterface, EntityMediaInterface, EquatableInterface, UuidEntityInterface, MailchimpCleanableContactInterface, PasswordAuthenticatedUserInterface, EntityAdministratorBlameableInterface, TranslatedTagInterface, EntityPostAddressInterface, ExposedImageOwnerInterface
 {
     use EntityIdentityTrait;
     use EntityPersonNameTrait;
@@ -143,9 +142,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     #[ORM\Column(nullable: true)]
     private $password;
-
-    #[ORM\Column(nullable: true)]
-    private $oldPassword;
 
     #[Assert\Choice(callback: [Genders::class, 'all'], message: 'common.gender.invalid_choice', groups: ['adhesion_complete_profile'])]
     #[Assert\NotBlank(message: 'common.gender.not_blank', groups: ['adhesion_complete_profile'])]
@@ -809,25 +805,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function getPassword(): ?string
     {
-        return !$this->password ? $this->oldPassword : $this->password;
-    }
-
-    public function hasLegacyPassword(): bool
-    {
-        return null !== $this->oldPassword;
-    }
-
-    public function getPasswordHasherName(): ?string
-    {
-        if ($this->hasLegacyPassword()) {
-            return 'legacy_encoder';
-        }
-
-        return null;
-    }
-
-    public function getSalt()
-    {
+        return $this->password;
     }
 
     public function getUserIdentifier(): string
@@ -1039,7 +1017,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
         $token->consume($this);
 
-        $this->clearOldPassword();
         $this->password = $newPassword;
     }
 
@@ -1052,16 +1029,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         $token->consume($this);
 
         $this->emailAddress = $token->getEmail();
-    }
-
-    public function clearOldPassword(): void
-    {
-        $this->oldPassword = null;
-    }
-
-    public function migratePassword(string $newEncodedPassword): void
-    {
-        $this->password = $newEncodedPassword;
     }
 
     /**

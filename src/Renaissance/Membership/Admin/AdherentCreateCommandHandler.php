@@ -2,6 +2,7 @@
 
 namespace App\Renaissance\Membership\Admin;
 
+use App\Adhesion\AdhesionStepEnum;
 use App\Donation\Handler\DonationRequestHandler;
 use App\Donation\Paybox\PayboxPaymentSubscription;
 use App\Donation\Request\DonationRequest;
@@ -47,6 +48,7 @@ class AdherentCreateCommandHandler
             $adherent = $this->adherentFactory->createFromAdminAdherentCreateCommand($command, $administrator);
         }
 
+        $adherent->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);
         $adherent->join();
         $adherent->setPapUserRole(true);
 

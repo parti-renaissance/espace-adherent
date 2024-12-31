@@ -86,10 +86,6 @@ class Administrator implements UserInterface, TwoFactorInterface, PasswordAuthen
         return $roles;
     }
 
-    public function getSalt()
-    {
-    }
-
     public function getUserIdentifier(): string
     {
         return $this->emailAddress;
