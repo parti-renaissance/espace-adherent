@@ -18,6 +18,8 @@
                     <p>Nous utiliserons cette adresse pour vous envoyer votre reçu fiscal et votre carte d’adhérent.</p>
                 </div>
 
+                {{ form_errors(form) }}
+
                 {{ form_row(form.address, {label: false}) }}
 
                 <twig:ReButton
