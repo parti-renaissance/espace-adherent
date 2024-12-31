@@ -574,6 +574,15 @@
             "config/packages/workflow.yaml"
         ]
     },
+    "tales-from-a-dev/twig-tailwind-extra": {
+        "version": "0.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "0.2",
+            "ref": "7243ab070ed66198eb82c026684e9b9773e7b64a"
+        }
+    },
     "twig/extra-bundle": {
         "version": "v3.4.0"
     },
