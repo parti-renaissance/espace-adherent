@@ -425,11 +425,12 @@ Feature:
         And I should see "Cotisation pour l’année 2022"
         And I should see "Cotisation pour l’année 2023"
         And I should see "Cotisation pour l’année 2024"
-        When I press "Je cotise pour 120 €"
+        And I should see "Cotisation pour l’année 2025"
+        When I press "Je cotise pour 150 €"
 
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I wait until I see "120.00 EUR"
+        And I wait until I see "150.00 EUR"
         When I fill in the following:
             | CVVX         | 123              |
             | NUMERO_CARTE | 1111222233334444 |
