@@ -22,10 +22,6 @@ class AdherentUnregistrationVoter extends Voter
             return false;
         }
 
-        if ($subject->isUser()) {
-            return true;
-        }
-
         return !$subject->isPresidentDepartmentalAssembly()
             && !$subject->isAnimator()
             && !$subject->isDeputy()

@@ -73,7 +73,8 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return (int) $this
             ->createQueryBuilder('a')
             ->select('COUNT(a)')
-            ->andWhere('a.adherent = 1')
+            ->andWhere('a.tags LIKE :adherent_tag')
+            ->setParameter('adherent_tag', TagEnum::ADHERENT.'%')
             ->getQuery()
             ->getSingleScalarResult()
         ;
@@ -249,19 +250,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
         return array_map(function (UuidInterface $uuid) {
             return $uuid->toString();
         }, array_column($query->getArrayResult(), 'uuid'));
-    }
-
-    public function countByGender(): array
-    {
-        return $this->createQueryBuilder('a', 'a.gender')
-            ->select('a.gender, COUNT(a) AS count')
-            ->where('a.adherent = 1')
-            ->andWhere('a.status = :status')
-            ->setParameter('status', Adherent::ENABLED)
-            ->groupBy('a.gender')
-            ->getQuery()
-            ->getArrayResult()
-        ;
     }
 
     public function refresh(Adherent $adherent): void
@@ -516,7 +504,7 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
             ->andWhere('adherent.status = :adherent_status')
             ->setParameter('adherent_status', Adherent::ENABLED)
             ->andWhere((new Orx())
-                ->add('adherent.source IS NULL AND adherent.adherent = true')
+                ->add('adherent.source IS NULL')
                 ->add('adherent.source = :source_jme')
                 ->add('adherent.source = :source_renaissance')
             )
@@ -595,7 +583,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 function (QueryBuilder $zoneQueryBuilder, string $entityClassAlias) {
                     $zoneQueryBuilder
                         ->andWhere(\sprintf('%s.status = :adherent_status', $entityClassAlias))
-                        ->andWhere(\sprintf('%s.adherent = true', $entityClassAlias))
                         ->andWhere((new Orx())
                             ->add(\sprintf('%s.source IS NULL', $entityClassAlias))
                             ->add(\sprintf('%s.source = :source_jme', $entityClassAlias))
@@ -1106,7 +1093,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 adherent.status = :status
                 AND adherent.registered_at < :since_date
                 AND adherent.certified_at IS NOT NUll
-                AND adherent.adherent = 1
                 AND adherent.source IS NULL
             ON DUPLICATE KEY UPDATE is_poll_voter = 1
             SQL;
@@ -1125,7 +1111,6 @@ class AdherentRepository extends ServiceEntityRepository implements UserLoaderIn
                 AND adherent.status = :status
                 AND adherent.registered_at < :since_date
                 AND adherent.certified_at IS NOT NUll
-                AND adherent.adherent = 1
                 AND adherent.source IS NULL
             SQL;
 

@@ -671,7 +671,6 @@ class DonationAdmin extends AbstractAdmin
             && ($adherent = $donation->getDonator()->getAdherent())
         ) {
             $adherent->donatedForMembership($donation->getDonatedAt());
-            $adherent->join();
             $adherent->setSource(MembershipSourceEnum::RENAISSANCE);
             $adherent->setPapUserRole(true);
         }

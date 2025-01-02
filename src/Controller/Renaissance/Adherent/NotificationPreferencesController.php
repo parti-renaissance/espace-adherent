@@ -26,7 +26,7 @@ class NotificationPreferencesController extends AbstractController
 
         $form = $this
             ->createForm(AdherentEmailSubscriptionType::class, $adherent, [
-                'is_adherent' => $adherent->isAdherent(),
+                'is_adherent' => $adherent->isRenaissanceAdherent(),
                 'validation_groups' => 'subscriptions_update',
             ])
             ->handleRequest($request)

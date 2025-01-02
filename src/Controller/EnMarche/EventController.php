@@ -66,7 +66,7 @@ class EventController extends AbstractController
     }
 
     #[Entity('event', expr: 'repository.findOneActiveBySlug(slug)')]
-    #[IsGranted('ROLE_ADHERENT')]
+    #[IsGranted('ROLE_USER')]
     #[Route(path: '/inscription-adherent', name: '_attend_adherent', methods: ['GET'])]
     public function attendAdherentAction(
         BaseEvent $event,

@@ -113,7 +113,6 @@ class AdherentFactory
 
         $adherent->tags = [TagEnum::SYMPATHISANT_ENSEMBLE2024];
         $adherent->setPapUserRole(true);
-        $adherent->join();
         $adherent->setV2(true);
         $adherent->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);
         $adherent->setSource(MembershipSourceEnum::LEGISLATIVE);
@@ -154,7 +153,7 @@ class AdherentFactory
             $phone = PhoneNumberUtils::create($data['phone']);
         }
 
-        $adherent = Adherent::create(
+        return Adherent::create(
             isset($data['uuid']) ? Uuid::fromString($data['uuid']) : Adherent::createUuid($data['email']),
             $data['email'],
             $this->hashPassword($data['password']),
@@ -174,12 +173,6 @@ class AdherentFactory
             $data['custom_gender'] ?? null,
             AdhesionStepEnum::all($data['is_adherent'] ?? false),
         );
-
-        if (!isset($data['is_adherent']) || $data['is_adherent']) {
-            $adherent->join();
-        }
-
-        return $adherent;
     }
 
     /**

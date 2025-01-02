@@ -506,7 +506,7 @@ security:
 
     access_control:
         - { path: '^/parametres', roles: [ROLE_USER] }
-        - { path: '^/espace-adherent', roles: [ROLE_ADHERENT] }
+        - { path: '^/espace-adherent', roles: [ROLE_USER] }
         - {
               host: '%admin_renaissance_host%',
               path: '^/login/(2fa|logout)',
@@ -528,7 +528,7 @@ security:
               roles: [ROLE_ADMIN_DASHBOARD],
           }
         - { path: '^/membre/.*', roles: [IS_AUTHENTICATED_REMEMBERED] }
-        - { path: '^/elections/.+', roles: [ROLE_ADHERENT] }
+        - { path: '^/elections/.+', roles: [ROLE_USER] }
         - {
               path: '^/(adhesion|don|espace-elus)',
               allow_if: "not is_granted('ROLE_ADMIN_DASHBOARD')",

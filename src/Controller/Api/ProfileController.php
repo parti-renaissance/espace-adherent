@@ -161,12 +161,7 @@ class ProfileController extends AbstractController
             AbstractNormalizer::GROUPS => $groups,
         ]);
 
-        $validationGroups = ['api_put_validation'];
-        if ($adherent->isAdherent()) {
-            $validationGroups[] = 'Default';
-        }
-
-        $violations = $validator->validate($adherentProfile, null, $validationGroups);
+        $violations = $validator->validate($adherentProfile, null, ['Default', 'api_put_validation']);
 
         if (0 === $violations->count()) {
             $handler->update($adherent, $adherentProfile);
@@ -293,7 +288,8 @@ class ProfileController extends AbstractController
             AbstractNormalizer::GROUPS => ['unregister'],
         ]);
 
-        $validationGroups = [$user->isAdherent() ? 'unregister_adherent' : 'unregister_user'];
+        /** @var Adherent $user */
+        $validationGroups = [$user->isRenaissanceAdherent() ? 'unregister_adherent' : 'unregister_user'];
 
         if ($user->getAuthAppVersion() >= 5110) {
             $validationGroups[] = 'unregister';

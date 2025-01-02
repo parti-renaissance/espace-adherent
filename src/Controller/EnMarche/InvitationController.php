@@ -43,7 +43,7 @@ class InvitationController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_ADHERENT')]
+    #[IsGranted('ROLE_USER')]
     #[Route(path: '/espace-depute/invitation', name: 'app_deputy_adherent_invitation', methods: ['GET', 'POST'], defaults: ['type' => 'deputy'])]
     #[Route(path: '/espace-comite/{slug}/invitation', name: 'app_supervisor_adherent_invitation', methods: ['GET', 'POST'], defaults: ['type' => 'supervisor'])]
     #[Route(path: '/espace-candidat-legislative/invitation', name: 'app_legislative_candidate_adherent_invitation', methods: ['GET', 'POST'], defaults: ['type' => 'legislative_candidate'])]

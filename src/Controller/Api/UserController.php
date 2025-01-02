@@ -54,7 +54,7 @@ class UserController extends AbstractController
         );
     }
 
-    #[IsGranted('ROLE_ADHERENT')]
+    #[IsGranted('ROLE_USER')]
     public function showMe(SerializerInterface $serializer): JsonResponse
     {
         /* @var Adherent $user */

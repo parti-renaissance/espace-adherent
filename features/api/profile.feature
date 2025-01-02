@@ -77,7 +77,6 @@ Feature:
                     }
                 ],
                 "interests": [],
-                "adherent": true,
                 "last_membership_donation": null,
                 "committee_membership": {
                     "committee": {
@@ -794,7 +793,6 @@ Feature:
                 "birthdate": null,
                 "position": "employed",
                 "subscription_types": [],
-                "adherent": false,
                 "facebook_page_url": null,
                 "twitter_page_url": null,
                 "linkedin_page_url": null,
@@ -1300,7 +1298,6 @@ Feature:
                         "code": "senator_email"
                     }
                 ],
-                "adherent": true,
                 "facebook_page_url": null,
                 "twitter_page_url": null,
                 "linkedin_page_url": null,
@@ -1412,7 +1409,6 @@ Feature:
                         "code": "senator_email"
                     }
                 ],
-                "adherent": true,
                 "facebook_page_url": null,
                 "twitter_page_url": null,
                 "linkedin_page_url": null,
@@ -1498,7 +1494,6 @@ Feature:
                         "code": "senator_email"
                     }
                 ],
-                "adherent": true,
                 "facebook_page_url": null,
                 "twitter_page_url": null,
                 "linkedin_page_url": null,
@@ -1654,7 +1649,7 @@ Feature:
         When I send a "POST" request to "/api/v3/profile/unregister" with body:
             """
             {
-                "reasons": ["unregistration_reasons.emails", "unregistration_reasons.support"],
+                "reasons": ["unregistration_reasons.emails", "unregistration_reasons.tools"],
                 "comment": "Lorem ipsum dolor sit amet"
             }
             """

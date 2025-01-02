@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[IsGranted('ROLE_ADHERENT')]
+#[IsGranted('ROLE_USER')]
 class FunnelController extends AbstractController
 {
     #[Route(path: '/funnel/general', name: 'app_funnel_general', methods: ['GET', 'POST'])]

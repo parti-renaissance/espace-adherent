@@ -243,10 +243,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: CommitteeFeedItem::class, cascade: ['remove'])]
     private $committeeFeedItems;
 
-    #[Groups(['profile_read'])]
-    #[ORM\Column(type: 'boolean', options: ['default' => false])]
-    private $adherent = false;
-
     /**
      * @var InMemoryOAuthUser|null
      */
@@ -656,10 +652,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function getRoles(): array
     {
         $roles = ['ROLE_USER'];
-
-        if ($this->isAdherent()) {
-            $roles[] = 'ROLE_ADHERENT';
-        }
 
         if ($this->isDeputy()) {
             $roles[] = 'ROLE_DEPUTY';
@@ -1357,21 +1349,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function isDelegatedPresidentDepartmentalAssembly(): bool
     {
         return \count($this->getReceivedDelegatedAccessOfType(ScopeEnum::PRESIDENT_DEPARTMENTAL_ASSEMBLY)) > 0;
-    }
-
-    public function isAdherent(): bool
-    {
-        return $this->adherent;
-    }
-
-    public function isUser(): bool
-    {
-        return !$this->isAdherent();
-    }
-
-    public function join(): void
-    {
-        $this->adherent = true;
     }
 
     public function getOAuthUser(): InMemoryOAuthUser

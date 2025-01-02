@@ -49,7 +49,6 @@ class AdherentCreateCommandHandler
         }
 
         $adherent->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);
-        $adherent->join();
         $adherent->setPapUserRole(true);
 
         $this->entityManager->persist($adherent);

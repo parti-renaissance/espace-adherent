@@ -243,8 +243,6 @@ renaissance.membership.none: Ni adhérent RE ni sympathisant RE
 
 adherent.source.renaissance_adherent: Adhérent RE
 adherent.source.renaissance_sympathizer: Sympathisant RE
-adherent.source.enmarche_adherent: Adhérent EM
-adherent.source.enmarche_user: Utilisateur EM
 
 membership.type.exclusive: Certifie n'appartenir à aucun autre parti politique
 membership.type.territoires_progres: Membre de « Territoires de Progrès »

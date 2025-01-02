@@ -87,12 +87,8 @@ class AdherentExtractCommandHandler extends AbstractEmailExtractCommandHandler
                 case AdherentExtractCommand::FIELD_SOURCE:
                     if ($adherent->isRenaissanceAdherent()) {
                         $source = 'renaissance_adherent';
-                    } elseif ($adherent->isRenaissanceSympathizer()) {
-                        $source = 'renaissance_sympathizer';
-                    } elseif ($adherent->isAdherent()) {
-                        $source = 'enmarche_adherent';
                     } else {
-                        $source = 'enmarche_user';
+                        $source = 'renaissance_sympathizer';
                     }
 
                     $row[$this->translateField($field)] = $this->translator->trans(\sprintf('adherent.source.%s', $source));

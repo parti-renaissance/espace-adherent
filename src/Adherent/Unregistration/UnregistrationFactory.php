@@ -18,7 +18,7 @@ class UnregistrationFactory
             $command->getComment(),
             $adherent->getRegisteredAt(),
             $adherent->getPostAddress()->getPostalCode(),
-            $adherent->isAdherent(),
+            $adherent->isRenaissanceAdherent(),
             $adherent->isRenaissanceUser(),
             $command->getExcludedBy()
         );
@@ -33,7 +33,7 @@ class UnregistrationFactory
             $comment,
             $adherent->getRegisteredAt(),
             $adherent->getPostAddress()->getPostalCode(),
-            $adherent->isAdherent(),
+            $adherent->isRenaissanceAdherent(),
             $adherent->isRenaissanceUser(),
         );
     }

@@ -166,6 +166,7 @@ class AdherentProfile implements MembershipInterface
     #[Groups(['profile_write'])]
     public ?string $partyMembership = null;
 
+    // Used to skip nationality field validation when user is a sympathizer @see nationality field
     public bool $isAdherent = false;
 
     public function __construct()
