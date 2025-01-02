@@ -97,7 +97,7 @@ class SendAdhesionReportCommand extends Command
     {
         return $this->repository->createQueryBuilder('a')
             ->leftJoin('a.zoneBasedRoles', 'zoneBasedRole')
-            ->where('a.status = :status AND a.adherent = :true')
+            ->where('a.status = :status')
             ->andWhere('zoneBasedRole.type = :deputy')
             ->setParameters([
                 'status' => Adherent::ENABLED,
@@ -154,11 +154,10 @@ class SendAdhesionReportCommand extends Command
 
         return $this->repository->createQueryBuilder('a')
             ->select('COUNT(DISTINCT a.id)')
-            ->where('a.status = :status AND a.adherent = :true')
+            ->where('a.status = :status')
             ->andWhere('a.activatedAt >= :start_date AND a.activatedAt <= :end_date')
             ->setParameters([
                 'status' => Adherent::ENABLED,
-                'true' => true,
                 'start_date' => $startDate->format('Y-m-d 00:00:00'),
                 'end_date' => $endDate->format('Y-m-d 23:59:59'),
             ])

@@ -28,7 +28,7 @@
                                     {% endif %}
                                 </div>
                                 <div class="adhesion-date">
-                                    {% if has_role_adherent and app.user.activatedAt %}
+                                    {% if has_role_user and app.user.activatedAt %}
                                         Adhérent{{ app.user.female ? 'e' }} depuis le<br/>{{ app.user.registeredAt|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}
                                     {% else %}
                                         Non adhérent{{ app.user.female ? 'e' }}.

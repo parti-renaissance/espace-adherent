@@ -67,7 +67,6 @@ class RemindActivatedMembershipCommand extends Command
     {
         return $this->adherentRepository
             ->createQueryBuilder('adherent')
-            ->where('adherent.adherent = 1')
             ->andWhere('adherent.membershipRemindedAt IS NULL')
             ->andWhere('adherent.lastMembershipDonation IS NULL')
             ->andWhere('adherent.registeredAt < :date')

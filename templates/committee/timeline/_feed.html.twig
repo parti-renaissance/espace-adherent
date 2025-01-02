@@ -5,7 +5,7 @@
                 {{ item.author.initials }}
             </div>
             <h3 class="text--body">
-                {{ has_role_adherent ? item.author.fullName : item.author.partialName }}
+                {{ has_role_user ? item.author.fullName : item.author.partialName }}
                 <span class="text--summary text--small text--gray b__nudge--bottom">{{ item.author.isSupervisorOf(committee) ? 'animateur' : (item.author.isHostOf(committee) ? 'co-animateur') }}</span>
             </h3>
         </div>

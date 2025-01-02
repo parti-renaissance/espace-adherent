@@ -43,11 +43,6 @@ class AdherentUnregistrationVoterTest extends TestCase
     {
         $adherent = $this->createAdherentMock();
 
-        $adherent->expects($this->once())
-            ->method('isUser')
-            ->willReturn(true)
-        ;
-
         $this->assertSame(
             VoterInterface::ACCESS_GRANTED,
             $this->voter->vote($this->createTokenMock(), $adherent, [AdherentUnregistrationVoter::PERMISSION_UNREGISTER])

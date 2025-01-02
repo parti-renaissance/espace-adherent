@@ -3,7 +3,7 @@
         <div class="font-roboto text--silver-gray b__nudge--bottom">Vous êtes membre de ce comité depuis le {{ membership.subscriptionDate|format_datetime('none', 'none', 'd MMMM yyyy à HH:mm') }}</div>
     {% endif %}
 
-    {% if has_role_adherent and committee.hasActiveElection and is_granted('ABLE_TO_CANDIDATE_IN_COMMITTEE', committee) %}
+    {% if has_role_user and committee.hasActiveElection and is_granted('ABLE_TO_CANDIDATE_IN_COMMITTEE', committee) %}
         {% set committee_election = committee.committeeElection %}
 
         {# If the vote was started, hide box if 0 candidates #}
@@ -48,7 +48,7 @@
                         {{ host.initials }}
                     </div>
                     <div class="b__nudge--left-medium">
-                        <div class="text--body text--bold">{{ has_role_adherent ? host.fullName : host.partialName }}</div>
+                        <div class="text--body text--bold">{{ has_role_user ? host.fullName : host.partialName }}</div>
                         <span class="text--normal text--gray b__nudge--bottom">
                             {% if host.female %}
                                 {{ host.isSupervisorOf(committee, false)
@@ -87,7 +87,7 @@
                             {{ adherent.initials }}
                         </div>
                         <div class="b__nudge--left-medium">
-                            <div class="text--body text--bold">{{ has_role_adherent ? adherent.fullName : adherent.partialName }}</div>
+                            <div class="text--body text--bold">{{ has_role_user ? adherent.fullName : adherent.partialName }}</div>
                             <span class="text--normal text--gray b__nudge--bottom">{{ adherent.isFemale ? 'Adhérente désignée' : 'Adhérent désigné' }}</span>
                         </div>
                     </li>

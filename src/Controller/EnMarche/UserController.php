@@ -122,8 +122,9 @@ class UserController extends AbstractController
         }
 
         $unregistrationCommand = new UnregistrationCommand();
-        $viewFolder = $user->isUser() ? 'user' : 'adherent';
-        $reasons = $user->isUser() ? Unregistration::REASONS_LIST_USER : Unregistration::REASONS_LIST_ADHERENT;
+        /** @var Adherent $user */
+        $viewFolder = $user->isRenaissanceSympathizer() ? 'user' : 'adherent';
+        $reasons = $user->isRenaissanceSympathizer() ? Unregistration::REASONS_LIST_USER : Unregistration::REASONS_LIST_ADHERENT;
 
         $form = $this->createForm(UnregistrationType::class, $unregistrationCommand, [
             'csrf_token_id' => self::UNREGISTER_TOKEN,
@@ -134,7 +135,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $handler->terminateMembership($user, $unregistrationCommand, $user->isAdherent());
+            $handler->terminateMembership($user, $unregistrationCommand, $user->isRenaissanceAdherent());
             $security->logout(false);
 
             return $this->render(

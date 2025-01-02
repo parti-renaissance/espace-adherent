@@ -63,9 +63,9 @@ class UnregistrationControllerTest extends AbstractEnMarcheWebTestCase
 
             self::assertCount(0, $crawler->filter('.form__errors > li'));
             self::assertSame(
-                $adherent->isUser(
-                ) ? 'Votre compte En Marche a bien été supprimé et vos données personnelles effacées de notre base.' :
-                    'Votre adhésion et votre compte En Marche ont bien été supprimés et vos données personnelles effacées de notre base.',
+                $adherent->isRenaissanceSympathizer() ?
+                    'Votre compte En Marche a bien été supprimé et vos données personnelles effacées de notre base.'
+                    : 'Votre adhésion et votre compte En Marche ont bien été supprimés et vos données personnelles effacées de notre base.',
                 trim($crawler->filter('#is_not_adherent h1')->eq(0)->text())
             );
 

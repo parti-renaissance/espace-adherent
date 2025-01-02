@@ -3,7 +3,7 @@
 {% block page_title %}{{ committee.name }} - {{ committee.cityName }}{% endblock %}
 {% block canonical_url url('app_committee_show', {slug: committee.slug}) %}
 
-{% set membership = is_granted('ROLE_ADHERENT') ? app.user.getMembershipFor(committee) : null %}
+{% set membership = is_granted('ROLE_USER') ? app.user.getMembershipFor(committee) : null %}
 
 {% block json_ld %}
     <script type="application/ld+json">
@@ -51,7 +51,7 @@
                     Suivre ce comité
                 </button>
             </div>
-        {% elseif not has_role_adherent %}
+        {% elseif not has_role_user %}
             <div class="committee-follow--anonymous">
                 <button role="button"
                         class="btn btn--no-border committee-follow--disabled btn--no-wrap"
@@ -110,7 +110,7 @@
             </div>
         </section>
     {% else %}
-        {% if has_role_adherent and committee.hasActiveElection and membership %}
+        {% if has_role_user and committee.hasActiveElection and membership %}
             {% set committee_election = committee.committeeElection %}
 
             {# If the vote was started, hide box if 0 candidates #}
@@ -176,7 +176,7 @@
             });
             {% endif %}
 
-            {% if has_role_adherent %}
+            {% if has_role_user %}
                 findAll(document, '.committee-action-button').forEach(function (button) {
                     on(button, 'click', function () {
                         let loader = findOne(button, '.btn-loader');

@@ -21,44 +21,12 @@ class AdherentRuntime implements RuntimeExtensionInterface
         private readonly AdherentRepository $adherentRepository,
         private readonly DonationRepository $donationRepository,
         private readonly TagTranslator $tagTranslator,
-        private readonly array $adherentInterests,
     ) {
-    }
-
-    public function getMemberInterestLabel(string $interest)
-    {
-        if (!isset($this->adherentInterests[$interest])) {
-            return '';
-        }
-
-        return $this->adherentInterests[$interest];
     }
 
     public function translateTag(string $tag, bool $fullTag = true): string
     {
         return $this->tagTranslator->trans($tag, $fullTag);
-    }
-
-    public function getUserLevelLabel(Adherent $adherent): string
-    {
-        if (!$adherent->isAdherent()) {
-            return 'Non-adhérent(e)';
-        }
-
-        if ($adherent->isDeputy()) {
-            return $adherent->isFemale() ? 'Députée 🏛' : 'Député 🏛';
-        }
-
-        if ($adherent->isSupervisor()) {
-            return $adherent->isFemale() ? 'Animatrice 🏅' : 'Animateur 🏅';
-        }
-
-        if ($adherent->isHost()) {
-            return $adherent->isFemale() ? 'Co-animatrice 🏅' : 'Co-animateur 🏅';
-        }
-
-        // It means the user is an adherent
-        return $adherent->isFemale() ? 'Adhérente 😍' : 'Adhérent 😍';
     }
 
     public function getAdherentRoleLabels(Adherent $adherent): array
@@ -99,13 +67,6 @@ class AdherentRuntime implements RuntimeExtensionInterface
     public function getElectedRepresentative(Adherent $adherent): ?ElectedRepresentative
     {
         return $this->electedRepresentativeRepository->findOneBy(['adherent' => $adherent]);
-    }
-
-    public function getNameByUuid(string $uuid): string
-    {
-        $adherent = $this->adherentRepository->findNameByUuid($uuid);
-
-        return \count($adherent) > 0 ? $adherent[0]['firstName'].' '.$adherent[0]['lastName'] : '';
     }
 
     public function hasActiveParliamentaryMandate(Adherent $adherent): bool

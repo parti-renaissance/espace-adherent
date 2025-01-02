@@ -28,11 +28,11 @@ use Symfony\Component\Validator\Constraints as Assert;
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: JemarcheDataSurveyReplyController::class,
             normalizationContext: ['groups' => ['data_survey_read']],
-            security: '(is_granted(\'ROLE_ADHERENT\') or is_granted(\'ROLE_OAUTH_DEVICE\')) and (is_granted(\'ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS\') or is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\'))'
+            security: '(is_granted(\'ROLE_USER\') or is_granted(\'ROLE_OAUTH_DEVICE\')) and (is_granted(\'ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS\') or is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\'))'
         ),
         new Post(
             uriTemplate: '/v3/jemarche_data_surveys',
-            security: '(is_granted(\'ROLE_ADHERENT\') or is_granted(\'ROLE_OAUTH_DEVICE\')) and (is_granted(\'ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS\') or is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\'))'
+            security: '(is_granted(\'ROLE_USER\') or is_granted(\'ROLE_OAUTH_DEVICE\')) and (is_granted(\'ROLE_OAUTH_SCOPE_JECOUTE_SURVEYS\') or is_granted(\'ROLE_OAUTH_SCOPE_JEMARCHE_APP\'))'
         ),
         new GetCollection(
             uriTemplate: '/v3/jemarche_data_surveys/kpi',

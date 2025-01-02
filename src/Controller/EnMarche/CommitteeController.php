@@ -102,7 +102,6 @@ class CommitteeController extends AbstractController
         return $this->render('committee/timeline/_feed.html.twig', [
             'committee' => $committee,
             'committee_timeline' => $timeline,
-            'has_role_adherent' => $this->getUser() instanceof Adherent && $this->getUser()->isAdherent(),
             'has_role_user' => $this->isGranted('ROLE_USER'),
         ]);
     }

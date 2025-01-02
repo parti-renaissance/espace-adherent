@@ -63,7 +63,6 @@ class CreateAccountCommandHandler
             3 => MembershipTypeEnum::OTHER,
         };
 
-        $currentUser->join();
         $currentUser->setV2(true);
         $currentUser->finishAdhesionStep(AdhesionStepEnum::MAIN_INFORMATION);
 

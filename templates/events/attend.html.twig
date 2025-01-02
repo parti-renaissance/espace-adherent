@@ -54,7 +54,7 @@
                     <label for="{{ form.acceptTerms.vars.id }}">
                         {{ 'event.personal_data_collect'|trans({'%organisator_name%':
                             event.organizer ?
-                                (has_role_adherent ? event.organizer.fullName : event.organizer.partialName)
+                                (has_role_user ? event.organizer.fullName : event.organizer.partialName)
                                 : '',
                         }) }}
                     </label>
