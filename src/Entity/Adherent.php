@@ -2176,29 +2176,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
         return $this->isRenaissanceAdherent() && $this->hasTag(TagEnum::getAdherentYearTag());
     }
 
-    public function hasMembershipDonationCurrentYear(): bool
-    {
-        return $this->lastMembershipDonation && $this->lastMembershipDonation->format('Y') === date('Y');
-    }
-
-    public function getMissingMembershipYears(): array
-    {
-        if ($this->hasMembershipDonationCurrentYear()) {
-            return [];
-        }
-
-        $lastYear = $this->getLastMembershipYearFromTags();
-
-        if (!$lastYear) {
-            return [date('Y')];
-        }
-
-        return range(
-            ((int) $lastYear) + 1,
-            (int) date('Y')
-        );
-    }
-
     public function getLastMembershipDonation(): ?\DateTimeInterface
     {
         return $this->lastMembershipDonation;
@@ -2421,28 +2398,6 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     public function hasTag(string $tag): bool
     {
         return TagEnum::includesTag($tag, $this->tags ?? []);
-    }
-
-    public function getLastMembershipYearFromTags(): ?string
-    {
-        $adherentTag = null;
-        foreach ($this->tags as $tag) {
-            if (preg_match('/^adherent:a_jour_[\d]{4}/', $tag)) {
-                $adherentTag = $tag;
-                break;
-            }
-        }
-
-        if (!$adherentTag) {
-            return null;
-        }
-
-        $matches = [];
-        if (preg_match('/^adherent:a_jour_([\d]{4})/', $adherentTag, $matches)) {
-            return $matches[1];
-        }
-
-        return null;
     }
 
     public function updateFromMembershipRequest(MembershipRequest $membershipRequest): void
