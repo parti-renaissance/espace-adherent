@@ -422,15 +422,12 @@ Feature:
             | membership_request[address][cityName]   | Paris                 |
         When I press "Suivant"
         And I wait 3 seconds
-        And I should see "Cotisation pour l’année 2022"
-        And I should see "Cotisation pour l’année 2023"
-        And I should see "Cotisation pour l’année 2024"
         And I should see "Cotisation pour l’année 2025"
-        When I press "Je cotise pour 150 €"
+        When I press "Je cotise pour 60 €"
 
         # Step 5 : payment
         Then I should be on "https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi" wait otherwise
-        And I wait until I see "150.00 EUR"
+        And I wait until I see "60.00 EUR"
         When I fill in the following:
             | CVVX         | 123              |
             | NUMERO_CARTE | 1111222233334444 |
@@ -529,7 +526,12 @@ Feature:
             | membership_request[address][postalCode] | 75008                 |
             | membership_request[address][cityName]   | Paris                 |
         And I press "Suivant"
-        And I wait 3 seconds
+        And I wait 1 second
+        When I click the "membership_request_exclusiveMembership_0" element
+        And I click the "membership_request_isPhysicalPerson" element
+        And I click the "membership_request_allowNotifications" element
+        Then I click the "#step_3 .re-button" selector
+        And I wait 5 seconds
         And I scroll element "#step_4 #amount_3_label" into view
         And I click the "#step_4 #amount_4_label" selector
         And I should see "Je confirme être étudiant, une personne bénéficiant des minima sociaux ou sans emploi"
