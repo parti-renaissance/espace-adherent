@@ -4,6 +4,7 @@ namespace App\Entity\Jecoute;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\HttpOperation;
 use ApiPlatform\Metadata\Post;
 use App\Controller\Api\Jecoute\JemarcheDataSurveyKpiController;
 use App\Controller\Api\Jecoute\JemarcheDataSurveyReplyController;
@@ -22,9 +23,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
-        new Post(
+        new HttpOperation(
+            method: 'POST',
             uriTemplate: '/v3/jemarche_data_surveys/{uuid}/reply',
-            defaults: ['_api_receive' => false],
+            deserialize: false,
             requirements: ['uuid' => '%pattern_uuid%'],
             controller: JemarcheDataSurveyReplyController::class,
             normalizationContext: ['groups' => ['data_survey_read']],

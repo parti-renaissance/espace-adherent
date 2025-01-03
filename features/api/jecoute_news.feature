@@ -749,17 +749,14 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "text: Le texte est obligatoire.\ntitle: Cette valeur ne doit pas être vide.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "text",
                         "message": "Le texte est obligatoire."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "title",
                         "message": "Cette valeur ne doit pas être vide."
                     }
@@ -782,22 +779,18 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "text: Le texte ne doit pas contenir plus de 1000 caractères.\ntitle: Vous devez saisir au maximum 120 caractères.\nexternal_link: Cette valeur n'est pas une URL valide.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "text",
                         "message": "Le texte ne doit pas contenir plus de 1000 caractères."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "title",
                         "message": "Vous devez saisir au maximum 120 caractères."
                     },
                     {
-                        "code": "@uuid@",
                         "propertyPath": "external_link",
                         "message": "Cette valeur n'est pas une URL valide."
                     }
@@ -1293,12 +1286,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "zone: Veuillez spécifier une zone.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "zone",
                         "message": "Veuillez spécifier une zone."
                     }
@@ -1324,12 +1315,10 @@ Feature:
         And the JSON should be equal to:
             """
             {
-                "type": "https://tools.ietf.org/html/rfc2616#section-10",
-                "title": "An error occurred",
-                "detail": "zone: La zone spécifiée n'est pas gérée par votre rôle.",
+                "message": "Validation Failed",
+                "status": "error",
                 "violations": [
                     {
-                        "code": null,
                         "propertyPath": "zone",
                         "message": "La zone spécifiée n'est pas gérée par votre rôle."
                     }
