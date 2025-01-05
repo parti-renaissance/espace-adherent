@@ -81,9 +81,11 @@ class SendNewPrimoCotisationNotificationCommandHandler
         $step = AdhesionStepEnum::LABELS[AdhesionStepEnum::getLastFilledStep($adherent->isRenaissanceAdherent(), $adherent->getFinishedAdhesionSteps())] ?? '';
         $url = $this->urlGenerator->generate('admin_app_adherent_edit', ['id' => $adherent->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
+        $fullName = StringCleaner::escapeMarkdown($adherent->getFullName());
+
         $chatMessage = new ChatMessage(
             <<<MESSAGE
-                *{$civility}{$adherent->getFullName()}* \([{$adherent->getId()}]({$url})\)
+                *{$civility}{$fullName}* \([{$adherent->getId()}]({$url})\)
                 {$zoneLines}
 
                 {$command->amount} €
