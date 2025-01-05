@@ -90,7 +90,7 @@ class SendUserRoleHistoryTelegramNotificationCommand extends Command
             \sprintf(
                 '*%s %s* \([%s](%s)\)',
                 $civility,
-                $user->getFullName(),
+                StringCleaner::escapeMarkdown($user->getFullName()),
                 $user->getId(),
                 $this->urlGenerator->generate('admin_app_adherent_edit', ['id' => $user->getId()], UrlGeneratorInterface::ABSOLUTE_URL)
             ),

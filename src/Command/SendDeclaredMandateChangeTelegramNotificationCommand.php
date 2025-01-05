@@ -89,7 +89,7 @@ class SendDeclaredMandateChangeTelegramNotificationCommand extends Command
             \sprintf(
                 '*%s %s* \([%s](%s)\)',
                 $civility,
-                $adherent->getFullName(),
+                StringCleaner::escapeMarkdown($adherent->getFullName()),
                 $adherent->getId(),
                 $this->urlGenerator->generate('admin_app_adherent_edit', ['id' => $adherent->getId()], UrlGeneratorInterface::ABSOLUTE_URL)
             ),
