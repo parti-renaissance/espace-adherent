@@ -35,9 +35,8 @@ runs:
                   --cache-from=$REGISTRY:$TAG-$HASH \
                   --cache-from=$REGISTRY:$TAG \
                   --tag=$REGISTRY:$TAG-$HASH \
-                  --target=php_caddy \
+                  --target=php_caddy_prod \
                   --build-arg BUILDKIT_INLINE_CACHE=1 \
-                  --build-arg BUILD_DEV=1 \
                   --compress \
                   .
 
