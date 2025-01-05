@@ -3,7 +3,7 @@
 
 ARG CADDY_VERSION=2
 # Fix the version of PHP to avoid this bug https://github.com/php/php-src/issues/14480
-ARG PHP_VERSION=8.3.7
+ARG PHP_VERSION=8.3
 ARG NODE_VERSION=18
 
 FROM node:${NODE_VERSION}-alpine AS node
@@ -20,8 +20,6 @@ ENV TZ Europe/Paris
 ENV LANG fr_FR.UTF-8
 ENV LANGUAGE fr_FR.UTF-8
 ENV LC_ALL fr_FR.UTF-8
-
-ARG BUILD_DEV
 
 WORKDIR /srv/app
 
@@ -60,9 +58,7 @@ RUN apk add --no-cache tzdata && \
     echo "Europe/Paris" >  /etc/timezone && \
     apk del tzdata
 
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY --link docker/php/conf.d/default.ini $PHP_INI_DIR/conf.d/
-COPY --link docker/php/conf.d/app.prod.ini $PHP_INI_DIR/conf.d/app.ini
 
 COPY --link docker/php/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 RUN mkdir -p /var/run/php
@@ -83,20 +79,33 @@ COPY --link --from=composer/composer:2-bin /composer /usr/bin/composer
 
 COPY --link . .
 
-RUN test -z "$BUILD_DEV" && ( \
-        set -eux; \
-        mkdir -p var/cache var/log; \
-        composer install --prefer-dist --no-dev --no-progress --no-scripts --no-interaction; \
-        composer dump-autoload --classmap-authoritative --no-dev; \
-        composer dump-env prod; \
-        composer run-script --no-dev post-install-cmd; \
-        rm -rf /root/.composer; \
-        chmod +x bin/console; sync \
-    ) || :
-
 COPY --link --from=caddy /usr/bin/caddy /usr/bin/caddy
 COPY --link docker/caddy/Caddyfile /etc/caddy/Caddyfile
 
 EXPOSE 80
 
 CMD ["multirun", "docker-entrypoint php-fpm -F -R", "caddy run --config /etc/caddy/Caddyfile --adapter caddyfile"]
+
+FROM php_caddy AS php_caddy_dev
+
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+COPY --link docker/php/conf.d/app.dev.ini $PHP_INI_DIR/conf.d/app.ini
+
+RUN set -eux; \
+	install-php-extensions \
+		xdebug \
+	;
+
+FROM php_caddy AS php_caddy_prod
+
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+COPY --link docker/php/conf.d/app.prod.ini $PHP_INI_DIR/conf.d/app.ini
+
+RUN set -eux; \
+    mkdir -p var/cache var/log; \
+    composer install --prefer-dist --no-dev --no-progress --no-scripts --no-interaction; \
+    composer dump-autoload --classmap-authoritative --no-dev; \
+    composer dump-env prod; \
+    composer run-script --no-dev post-install-cmd; \
+    rm -rf /root/.composer; \
+    chmod +x bin/console; sync
