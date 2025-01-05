@@ -1004,13 +1004,13 @@ Feature:
             """
             {
                 "adherent": {
-                    "info": "Député, @integer@ ans, habitant Paris 2ème (75002). N’a encore jamais été appelé.",
+                    "info": "@string@. N’a encore jamais été appelé.",
                     "gender": "male",
                     "phone": {
                         "country": "FR",
-                        "number": "01 87 65 67 81"
+                        "number": "@string@"
                     },
-                    "uuid": "160cdf45-80c4-4663-aa21-0ae23091a381"
+                    "uuid": "@uuid@"
                 },
                 "uuid": "@uuid@"
             }
