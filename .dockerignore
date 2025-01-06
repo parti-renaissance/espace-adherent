@@ -15,10 +15,6 @@
 **/docker-compose.*.yml
 **/docker-compose.yaml
 **/docker-compose.yml
-**/compose.*.yaml
-**/compose.*.yml
-**/compose.yaml
-**/compose.yml
 **/Dockerfile
 **/Thumbs.db
 .github/
@@ -36,6 +32,7 @@ vendor/
 .idea
 .tmp
 app/
+docker-dev.md5
 .php_cs.*
 features
 Makefile
