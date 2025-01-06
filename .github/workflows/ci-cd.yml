@@ -7,7 +7,7 @@ on:
 
 env:
     DOCKER_BUILDKIT: 1
-    DOCKER_COMPOSE_ARGS: -f docker-compose.yml -f docker-compose.ci.yml
+    DOCKER_COMPOSE_ARGS: -f compose.yml -f compose.ci.yml
     EXEC_ARGS: -T
     # Update this to force cache reset
     CACHE_KEY: ${{ secrets.CACHE_KEY }}
