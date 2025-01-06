@@ -3,7 +3,7 @@
 
 ARG CADDY_VERSION=2
 # Fix the version of PHP to avoid this bug https://github.com/php/php-src/issues/14480
-ARG PHP_VERSION=8.3.7
+ARG PHP_VERSION=8.3
 ARG NODE_VERSION=18
 
 FROM node:${NODE_VERSION}-alpine AS node
