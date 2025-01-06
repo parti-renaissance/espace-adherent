@@ -2,7 +2,9 @@ services:
     app:
         build:
             context: .
-            target: php_caddy_dev
+            target: php_caddy
+            args:
+                BUILD_DEV: true
         restart: unless-stopped
         networks:
             default:
