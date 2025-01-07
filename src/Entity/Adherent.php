@@ -2114,7 +2114,15 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
 
     public function getAuthAppVersion(): int
     {
-        return (int) str_replace(['v', '.'], '', (string) $this->authAppVersion);
+        $parts = preg_split('/[.#]/', str_replace('v', '', (string) $this->authAppVersion));
+
+        return (int) \sprintf(
+            '%02d%02d%02d%02d',
+            $parts[0] ?? 0,
+            $parts[1] ?? 0,
+            $parts[2] ?? 0,
+            $parts[3] ?? 0
+        );
     }
 
     public function setAuthAppVersion(?string $authAppVersion): void

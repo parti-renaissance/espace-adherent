@@ -8,7 +8,7 @@ class ImageTransformationProcessor extends AbstractFeedProcessor
 {
     public function process(array $item, Adherent $user): array
     {
-        if ($user->getAuthAppVersion() < 5130) {
+        if ($user->getAuthAppVersion() < 5130000) {
             if (\is_array($item['image'])) {
                 $item['image'] = $item['image']['url'] ?? null;
             }
