@@ -440,52 +440,6 @@ Feature:
                                 }
                             },
                             "type": "select"
-                        },
-                        {
-                            "code": "political_functions",
-                            "label": "Fonctions",
-                            "options": {
-                                "choices": {
-                                    "mayor": "Maire",
-                                    "deputy_mayor": "Maire délégué(e)",
-                                    "mayor_assistant": "Adjoint(e) au maire",
-                                    "president_of_regional_council": "Président(e) de conseil régional",
-                                    "vice_president_of_regional_council": "Vice-président(e) de conseil régional",
-                                    "president_of_departmental_council": "Président(e) de conseil départemental",
-                                    "vice_president_of_departmental_council": "Vice-président(e) de conseil départemental",
-                                    "deputy_vice_president_of_departmental_council": "Vice-président(e) délégué du conseil départemental",
-                                    "secretary": "Secrétaire",
-                                    "quaestor": "Questeur(rice)",
-                                    "president_of_national_assembly": "Président(e) de l'Assemblée nationale",
-                                    "vice_president_of_national_assembly": "Vice-président(e) de l'Assemblée nationale",
-                                    "president_of_senate": "Président(e) du Sénat",
-                                    "vice_president_of_senate": "Vice-président(e) du Sénat",
-                                    "president_of_commission": "Président(e) de commission",
-                                    "president_of_group": "Président(e) de groupe",
-                                    "president_of_epci": "Président(e) d'EPCI",
-                                    "vice_president_of_epci": "Vice-président(e) d'EPCI",
-                                    "other_member_of_standing_committee": "Autre membre commission permanente",
-                                    "other_member": "Autre membre"
-                                },
-                                "multiple": true
-                            },
-                            "type": "select"
-                        },
-                        {
-                            "code": "revenueDeclared",
-                            "label": "Indemnités déclarées",
-                            "options": {
-                                "choices": ["Non", "Oui"]
-                            },
-                            "type": "select"
-                        },
-                        {
-                            "code": "contributionActive",
-                            "label": "Cotisation active",
-                            "options": {
-                                "choices": ["Non", "Oui"]
-                            },
-                            "type": "select"
                         }
                     ]
                 }
