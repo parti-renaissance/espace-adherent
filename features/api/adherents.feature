@@ -952,14 +952,6 @@ Feature:
                             "type": "select"
                         },
                         {
-                            "code": "isCommitteeMember",
-                            "label": "Membre d'un comité",
-                            "options": {
-                                "choices": ["Non", "Oui"]
-                            },
-                            "type": "select"
-                        },
-                        {
                             "code": "lastMembership",
                             "label": "Dernière cotisation",
                             "options": null,
@@ -1206,7 +1198,7 @@ Feature:
                 ]
             }
             """
-        When I send a "GET" request to "/api/v3/adherents?scope=<scope>&firstName=Jacques&lastName=Picard&gender=male&registered%5Bstart%5D=2017-01-01&registered%5Bend%5D=2022-01-01&age%5Bmin%5D=25&age%5Bmax%5D=90&isCommitteeMember=1&isCertified=1&emailSubscription=1&smsSubscription=1"
+        When I send a "GET" request to "/api/v3/adherents?scope=<scope>&firstName=Jacques&lastName=Picard&gender=male&registered%5Bstart%5D=2017-01-01&registered%5Bend%5D=2022-01-01&age%5Bmin%5D=25&age%5Bmax%5D=90&isCertified=1&emailSubscription=1&smsSubscription=1"
         Then the response status code should be 200
         And the JSON should be equal to:
             """
