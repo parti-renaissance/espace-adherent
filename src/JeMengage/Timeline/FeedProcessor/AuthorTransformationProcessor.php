@@ -8,7 +8,7 @@ class AuthorTransformationProcessor extends AbstractFeedProcessor
 {
     public function process(array $item, Adherent $user): array
     {
-        if ($user->getAuthAppVersion() < 540) {
+        if ($user->getAuthAppVersion() < 5040000) {
             if (\is_array($item['author'])) {
                 $item['author'] = implode(' ', array_filter([
                     $item['author']['first_name'] ?? '',
