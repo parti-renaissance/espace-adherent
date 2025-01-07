@@ -226,7 +226,7 @@ Feature:
                         "last_name": "Brioul",
                         "image_url": null,
                         "birthdate": "1962-01-07T00:00:00+01:00",
-                        "age": 62,
+                        "age": @integer@,
                         "phone": null,
                         "nationality": null,
                         "tags": [
@@ -577,7 +577,7 @@ Feature:
                 "last_name": "Brioul",
                 "image_url": null,
                 "birthdate": "1962-01-07T00:00:00+01:00",
-                "age": 62,
+                "age": @integer@,
                 "phone": null,
                 "nationality": null,
                 "tags": [
