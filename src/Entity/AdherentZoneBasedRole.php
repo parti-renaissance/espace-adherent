@@ -119,6 +119,11 @@ class AdherentZoneBasedRole
         $this->type = $type;
     }
 
+    public function getAdherent(): ?Adherent
+    {
+        return $this->adherent;
+    }
+
     public function setAdherent(Adherent $adherent): void
     {
         $this->adherent = $adherent;

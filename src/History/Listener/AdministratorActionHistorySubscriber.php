@@ -87,7 +87,7 @@ class AdministratorActionHistorySubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
         $routeName = $request->get('_route');
 
-        if (!preg_match('/^admin_(.)+_export$/', $routeName)) {
+        if (!$routeName || !preg_match('/^admin_(.)+_export$/', $routeName)) {
             return;
         }
 
