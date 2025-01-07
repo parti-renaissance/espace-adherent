@@ -3,7 +3,7 @@
 {% block title 'Statut du paiement' %}
 
 {% block content %}
-<twig:ReStandaloneLayout class="re_new_ui ">
+<twig:ReStandaloneLayout class="bg-gradient-to-b from-slate-600 to-slate-500">
     <twig:Atoms:ReCard class="max-w-[500px] items-center">
         {% if result_code == '00000' %}
             {{ include('renaissance/payment/status/_success.html.twig') }}

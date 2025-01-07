@@ -21,6 +21,7 @@ use App\Entity\VotingPlatform\Vote;
 use App\Entity\VotingPlatform\Voter;
 use App\Intl\FranceCitiesBundle;
 use App\Search\SearchParametersFilter;
+use App\Utils\GeometryUtils;
 use App\ValueObject\Genders;
 use App\VotingPlatform\Designation\DesignationGlobalZoneEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -475,5 +476,70 @@ class CommitteeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function getCommitteesPerimeters(): array
+    {
+        $rows = $this->createQueryBuilder('c')
+            ->select('c.id')
+            ->addSelect('c.name')
+            ->addSelect('animator.firstName')
+            ->addSelect('animator.lastName')
+            ->addSelect('animator.id as animatorId')
+            ->addSelect('animator.emailAddress')
+            ->addSelect('c.membersCount')
+            ->addSelect('c.sympathizersCount')
+            ->addSelect('COALESCE(gd1.id, gd2.id) AS shapeId')
+            ->addSelect('ST_AsText(st_simplify(COALESCE(gd1.geoShape, gd2.geoShape), 0.0001)) AS shape')
+            ->innerJoin('c.zones', 'z')
+            ->leftJoin('z.children', 'child_city', Join::WITH, 'z.type IN (:city_child_types)')
+            ->leftJoin('z.geoData', 'gd1')
+            ->leftJoin('child_city.geoData', 'gd2')
+            ->leftJoin('c.animator', 'animator')
+            ->where('COALESCE(gd1.geoShape, gd2.geoShape) IS NOT NULL')
+            ->setParameters([
+                'city_child_types' => [Zone::CANTON, Zone::CITY_COMMUNITY],
+            ])
+            ->getQuery()
+            ->enableResultCache(43200)
+            ->getResult()
+        ;
+
+        $committees = [];
+
+        foreach ($rows as $row) {
+            if (!isset($committees[$row['id']])) {
+                $committees[$row['id']] = [
+                    'id' => $row['id'],
+                    'name' => $row['name'],
+                    'animator' => [
+                        'id' => $row['animatorId'],
+                        'firstName' => $row['firstName'],
+                        'lastName' => $row['lastName'],
+                        'emailAddress' => $row['emailAddress'],
+                    ],
+                    'membersCount' => $row['membersCount'],
+                    'sympathizersCount' => $row['sympathizersCount'],
+                    'features' => [],
+                    'features_id' => [],
+                ];
+            }
+
+            if ($row['shape'] && !\in_array($row['shapeId'], $committees[$row['id']]['features_id'])) {
+                $committees[$row['id']]['features'][] = $row['shape'];
+                $committees[$row['id']]['features_id'][] = $row['shapeId'];
+            }
+        }
+
+        foreach ($committees as $key => &$committee) {
+            if (!$committee['features']) {
+                unset($committees[$key]);
+                continue;
+            }
+            unset($committee['features_id']);
+            $committee['features'] = GeometryUtils::mergeWkt($committee['features'])->toJson();
+        }
+
+        return array_values($committees);
     }
 }

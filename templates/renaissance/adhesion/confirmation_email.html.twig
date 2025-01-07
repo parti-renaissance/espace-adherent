@@ -8,7 +8,7 @@
 {% form_theme new_code_form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
 {% block content %}
-    <twig:ReStandaloneLayout class="re_new_ui"
+    <twig:ReStandaloneLayout class="bg-gradient-to-b from-slate-600 to-slate-500"
                            x-data="xEmailVerificationForm({
                                email: '{{ app.user.emailAddress }}',
                                step: '{{ request.emailAddress or not form.emailAddress.first.vars.valid ? 'email' : 'code' }}'

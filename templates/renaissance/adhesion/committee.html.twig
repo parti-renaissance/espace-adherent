@@ -5,7 +5,7 @@
 {% block flash_message '' %}
 
 {% block content %}
-    <twig:ReStandaloneLayout class="re_new_ui" x-data="xCommitteeForm({
+    <twig:ReStandaloneLayout class="bg-gradient-to-b from-slate-600 to-slate-500" x-data="xCommitteeForm({
         committees: {{ committees|map(committee => {name: committee.name, uuid: committee.uuid, location: committee.getInlineFormattedAddress(), animator: committee.animator ? committee.animator.getFullName() : ''})|json_encode|e('html_attr') }},
         defaultCommittee: '{{ default_committee.uuid }}',
     })">

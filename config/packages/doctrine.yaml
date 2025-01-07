@@ -59,6 +59,8 @@ doctrine:
                 sin: DoctrineExtensions\Query\Mysql\Sin
                 st_geomfromtext: LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StGeomFromText
                 st_within: LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StWithin
+                st_astext: LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StAsText
+                st_simplify: App\Query\Mysql\StSimplify
                 point: LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StPoint
                 round: DoctrineExtensions\Query\Mysql\Round
             string_functions:

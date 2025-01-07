@@ -29,6 +29,8 @@ twig:
         legislative_host: '%env(LEGISLATIVE_HOST)%'
         user_vox_host: '%env(USER_VOX_HOST)%'
         ticket_besoindeurope_host: '%env(GCLOUD_NATIONAL_EVENT_BUCKET)%'
+        mapbox_token: '%env(MAPBOX_TOKEN)%'
+        mapbox_style: '%env(MAPBOX_STYLE)%'
 
     form_themes:
         - 'form_theme.html.twig'
