@@ -7,7 +7,7 @@
 {% form_theme form 'renaissance/forms/tailwind_form_theme.html.twig' %}
 
 {% block content %}
-    <twig:ReStandaloneLayout class="re_new_ui "
+    <twig:ReStandaloneLayout class="bg-gradient-to-b from-slate-600 to-slate-500 "
                            x-data="xFurtherInformationForm({
                             isJam: {{ (form.vars.data.getAge() and form.vars.data.getAge() < 35 ? 'true' : 'false')|e('js') }},
                             isElu: {{ (form.mandates.vars.value and form.mandates.vars.value|length ? 'true' : 'false')|e('js') }}

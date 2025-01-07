@@ -1,0 +1,99 @@
+{% extends 'base_renaissance.html.twig' %}
+
+{% block page_title 'Carte de nos comités locaux' %}
+
+{% block stylesheets %}
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <main class="re_new_ui min-h-screen flex flex-col items-center md:justify-center">
+        <section class="flex flex-col justify-center items-center w-full">
+            <div class=" flex-col w-full">
+                <div class="flex flex-col flex-1 justify-center items-center">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block final_javascripts %}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script>
+        mapboxgl.accessToken = '{{ mapbox_token }}';
+
+        Bootstrap.onLoad(() => {
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: '{{ mapbox_style }}',
+                center: [3, 47],
+                zoom: 6,
+            });
+
+            const popup = new mapboxgl.Popup({
+                closeButton: false
+            });
+
+            map.on('load', async () => {
+                map.addSource('committees', {
+                    type: 'geojson',
+                    data: '{{ url('app_committees_perimeters') }}',
+                })
+
+                map.addLayer({
+                    id: 'committees-layer',
+                    type: 'fill',
+                    source: 'committees',
+                    paint: {
+                        "fill-outline-color": 'rgba(0,0,0,0)',
+                        'fill-color': ['get', 'color'],
+                        'fill-opacity': 0.5,
+                    },
+                });
+
+                map.addLayer({
+                    id: 'committees-layer-highlighted',
+                    type: 'fill',
+                    source: 'committees',
+                    paint: {
+                        "fill-outline-color": 'rgba(0,0,0,0)',
+                        'fill-color': ['get', 'color'],
+                    },
+                    filter: ['==', ['get', 'id'], ''],
+                });
+            });
+
+            map.on('mousemove', 'committees-layer', (e) => {
+                map.getCanvas().style.cursor = 'pointer';
+
+                const feature = e.features[0];
+
+                map.setFilter('committees-layer-highlighted', [
+                    '==',
+                    ['get', 'id'],
+                    feature.properties.id
+                ]);
+
+                popup
+                    .setLngLat(e.lngLat)
+                    .setText(feature.properties.name)
+                    .addTo(map);
+            });
+
+            map.on('mouseleave', 'committees-layer', () => {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+                map.setFilter('committees-layer-highlighted', ['==', ['get', 'id'], '']);
+            });
+
+            map.addControl(new mapboxgl.NavigationControl());
+        });
+    </script>
+{% endblock %}
