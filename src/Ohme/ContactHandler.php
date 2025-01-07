@@ -24,14 +24,6 @@ class ContactHandler
             return;
         }
 
-        $totalPayments = $this->paymentImporter->getPaymentsCount([], $contact);
-        $pageSize = 100;
-        $offset = 0;
-
-        do {
-            $this->paymentImporter->importPayments($pageSize, $offset, [], $contact);
-
-            $offset += $pageSize;
-        } while ($offset < $totalPayments);
+        $this->paymentImporter->importPayments($contact);
     }
 }

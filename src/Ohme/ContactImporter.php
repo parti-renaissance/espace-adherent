@@ -42,21 +42,7 @@ class ContactImporter
 
             $this->updateContact($contact, $contactData);
 
-            $totalPayments = $this->paymentImporter->getPaymentsCount([], $contact);
-
-            if ($totalPayments !== $contact->paymentCount) {
-                $contact->paymentCount = $totalPayments;
-
-                $this->contactRepository->save($contact);
-            }
-
-            $pageSize = 100;
-            $offset = 0;
-            do {
-                $this->paymentImporter->importPayments($pageSize, $offset, [], $contact);
-
-                $offset += $pageSize;
-            } while ($offset < $totalPayments);
+            $this->paymentImporter->importPayments($contact);
         }
     }
 

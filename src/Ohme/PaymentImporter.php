@@ -16,24 +16,18 @@ class PaymentImporter
     ) {
     }
 
-    public function getPaymentsCount(array $options = [], ?Contact $contact = null): int
+    public function importPayments(Contact $contact, array $options = []): void
     {
-        if ($contact) {
-            $options['contact_id'] = $contact->ohmeIdentifier;
+        $options['contact_id'] = $contact->ohmeIdentifier;
+
+        $payments = $this->client->getPayments($options);
+
+        $totalPayments = $payments['count'] ?? 0;
+        if ($totalPayments !== $contact->paymentCount) {
+            $contact->paymentCount = $totalPayments;
+
+            $this->contactRepository->save($contact);
         }
-
-        $payments = $this->client->getPayments(1, 0, $options);
-
-        return $payments['count'] ?? 0;
-    }
-
-    public function importPayments(int $limit = 100, int $offset = 0, array $options = [], ?Contact $contact = null): void
-    {
-        if ($contact) {
-            $options['contact_id'] = $contact->ohmeIdentifier;
-        }
-
-        $payments = $this->client->getPayments($limit, $offset, $options);
 
         if (empty($payments['data']) || !is_iterable($payments['data'])) {
             return;
@@ -44,14 +38,8 @@ class PaymentImporter
                 continue;
             }
 
-            $currentContact = $contact;
-
-            if (!$currentContact) {
-                $currentContact = $this->findContact((string) $paymentData['contact_id']);
-            }
-
             // Do not retrieve payments that can't be associated to an adherent
-            if (!$currentContact || !$currentContact->adherent) {
+            if (!$contact->adherent) {
                 continue;
             }
 
@@ -62,24 +50,19 @@ class PaymentImporter
             $identifier = (string) $paymentData['id'];
 
             $payment = $this->findPayment($identifier) ?? $this->createPayment($identifier);
-            $payment->adherent = $currentContact->adherent;
+            $payment->adherent = $contact->adherent;
 
             $this->updatePayment($payment, $paymentData);
 
             if (
-                !$currentContact->lastPaymentDate
-                || $currentContact->lastPaymentDate < $payment->date
+                !$contact->lastPaymentDate
+                || $contact->lastPaymentDate < $payment->date
             ) {
-                $currentContact->lastPaymentDate = $payment->date;
+                $contact->lastPaymentDate = $payment->date;
 
-                $this->contactRepository->save($currentContact);
+                $this->contactRepository->save($contact);
             }
         }
-    }
-
-    private function findContact(string $identifier): ?Contact
-    {
-        return $this->contactRepository->findOneByOhmeIdentifier($identifier);
     }
 
     private function findPayment(string $identifier): ?Payment
